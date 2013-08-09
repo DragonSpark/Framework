@@ -1,0 +1,31 @@
+﻿<client:ShellNode x:Class="DragonSpark.Application.Server.Testing.TestObjects.Navigation"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:client="clr-namespace:DragonSpark.Web.Client;assembly=DragonSpark.Web"
+    Path="shell"
+	TransitionName="entrance"
+>
+    <client:NavigationNode Path="hello/index" Title="Hello World" />
+    <client:NavigationNode Route="view-composition" Path="viewComposition/index" Title="View Composition" />
+    <client:NavigationNode Path="modal/index" Title="Modal Dialogs" />
+    <client:NavigationNode Route="event-aggregator" Path="eventAggregator/index" Title="Events" />
+    <client:NavigationNode Path="widgets/index" Title="Widgets" />
+    <client:NavigationNode Route="master-detail" Path="masterDetail/index" Title="Master Detail" />
+    <client:NavigationNode Route="knockout-samples*details" Path="ko/index" Title="Knockout Samples" Tag="knockout-samples">
+        <client:NavigationNode Path="helloWorld/index" Title="Hello World" Type="intro" IsVisible="False" />
+        <client:NavigationNode Path="helloWorld/index" Title="Hello World" Type="intro" />
+        <client:NavigationNode Path="clickCounter/index" Title="Click Counter" Type="intro" />
+        <client:NavigationNode Path="simpleList/index" Title="Simple List" Type="intro" />
+        <client:NavigationNode Path="betterList/index" Title="Better List" Type="intro" />
+        <client:NavigationNode Path="controlTypes/index" Title="Control Types" Type="intro" />
+        <client:NavigationNode Path="collections/index" Title="Collection" Type="intro" />
+        <client:NavigationNode Path="pagedGrid/index" Title="Paged Grid" Type="intro" />
+        <client:NavigationNode Path="animatedTrans/index" Title="Animated Transition" Type="intro" />
+
+        <client:NavigationNode Path="contactsEditor/index" Title="Contacts Editor" Type="detailed" />
+        <client:NavigationNode Path="gridEditor/index" Title="Grid Editor" Type="detailed" />
+        <client:NavigationNode Path="shoppingCart/index" Title="Shopping Cart" Type="detailed" />
+        <client:NavigationNode Path="twitterClient/index" Title="Twitter Client" Type="detailed" />
+    </client:NavigationNode>
+	
+</client:ShellNode>
