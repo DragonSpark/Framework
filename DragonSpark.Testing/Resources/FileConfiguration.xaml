@@ -1,0 +1,14 @@
+﻿<Configuration:ConfigurationDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Configuration="clr-namespace:DragonSpark.Configuration;assembly=DragonSpark"
+	xmlns:Core="clr-namespace:DragonSpark.Testing.TestObjects;assembly=DragonSpark.Testing"
+	>
+	<Core:DragonSparkObject x:Key="DefaultKey" Name="Default Name" Description="This is the default object." />
+	<Core:DragonSparkObject x:Key="DragonSparkKey" Name="DragonSpark Name" Description="This is a description of a DragonSpark object." />
+	<Core:DragonSparkObject x:Key="SecondKey" Name="Another Name" Description="This is a description of a another DragonSpark object.">
+		<Core:DragonSparkObject.Children>
+			<Core:DragonSparkChild Category="Pimpin'" />
+		</Core:DragonSparkObject.Children>
+	</Core:DragonSparkObject>
+</Configuration:ConfigurationDictionary>

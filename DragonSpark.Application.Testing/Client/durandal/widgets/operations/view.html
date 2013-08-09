@@ -1,0 +1,27 @@
+﻿<div style="position: absolute; height: 100%; z-index: 1000; width: 100%;" data-bind="visible: operations().length != 0">
+	<div style="background: silver; height: 100%; opacity: .8; position: absolute; width: 100%; z-index: -1" />
+	
+	<div style="display: table; width: 100%; height: 100%; font: 8pt verdana;">
+		<div style="display: table-cell; text-align: center; vertical-align: middle">
+			<div style="display: inline-block; background-color: white; border: 1px solid black; padding: 10px; text-align: left">
+				<div data-bind="html: options().title" style="font-weight: bold" />
+				
+				<div id="items" style="margin: 8px 0" data-bind="foreach: operations">
+					<div data-bind="compose: $data" />
+				</div>
+				
+				<div style="margin: 8px 0" data-bind="jqxProgressBar: { value: 100 * percentageComplete(), width: $ds.view.sizeMonitor($($element).parent()).width, showText: true, animationDuration: 150 }" />
+				
+				<div data-bind="html: 'Status: {0}'.format(status().description)"></div>
+				
+				<div style="margin: 8px 0" data-bind="visible: options().allowCancel">
+					<button style="float: right; width: 150px">Cancel</button>
+					<div style="padding-top: 7px">
+						<div data-bind="jqxCheckBox: { checked: options().closeOnCompletion }">Close when finished</div>
+					</div>
+				</div>
+				<button data-bind="visible: allowClose() && status().value >= module.ExecutionStatus.Completed.value, click: close" style="width: 100%; margin: 8px 0">Close</button>
+			</div>		
+		</div>
+	</div>
+</div>
