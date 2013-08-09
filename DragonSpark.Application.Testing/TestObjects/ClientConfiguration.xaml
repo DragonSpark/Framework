@@ -1,0 +1,33 @@
+﻿<ioC:LocatorDefinition
+	x:Class="DragonSpark.Application.Testing.TestObjects.ClientConfiguration"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:client="clr-namespace:DragonSpark.Web.Client;assembly=DragonSpark.Web" xmlns:ds="http://framework.dragonspark.us"
+	xmlns:ioC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark"
+	xmlns:testObjects="clr-namespace:DragonSpark.Application.Testing.TestObjects"
+	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib">
+	<ds:RegisterFromMetadataCommand />
+	<ds:AssignServiceLocatorCommand />
+	<ds:UnityInstance>
+		<client:ClientApplicationConfiguration EnableDebugging="{ds:IsDebug}" Widgets="{ds:Factory {x:Type client:WidgetsBuilder}}" Commands="{ds:Factory {x:Type client:CommandsBuilder}}" Logo="{ds:PathSupport '~/images/Logo.png'}">
+			<client:ClientApplicationConfiguration.ApplicationDetails>
+				<dragonSpark:ApplicationDetails 
+					Title="{ds:Metadata {x:Type reflection:AssemblyTitleAttribute}, 'Title'}"
+					Product="{ds:Metadata {x:Type reflection:AssemblyProductAttribute}, 'Product'}" 
+					Company="{ds:Metadata {x:Type reflection:AssemblyCompanyAttribute}, 'Company'}" 
+					Description="{ds:Metadata {x:Type reflection:AssemblyDescriptionAttribute}, 'Description'}"
+					Configuration="{ds:Metadata {x:Type reflection:AssemblyConfigurationAttribute}, 'Configuration'}"
+					Copyright="{ds:Metadata {x:Type reflection:AssemblyCopyrightAttribute}, 'Copyright'}" 
+					Version="{ds:AssemblyVersion}"
+					
+					DeploymentDate="3/1/2013" 
+					CompanyUri="http://www.dragonspark.us"
+					/>
+			</client:ClientApplicationConfiguration.ApplicationDetails>
+			<client:ClientApplicationConfiguration.Navigation>
+				<ds:FactoryExtension Type="{x:Type client:NavigationBuilder}" Parameter="{ds:Locate testObjects:Navigation}" />
+			</client:ClientApplicationConfiguration.Navigation>
+		</client:ClientApplicationConfiguration>
+	</ds:UnityInstance>
+</ioC:LocatorDefinition>

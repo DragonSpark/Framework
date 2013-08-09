@@ -1,0 +1,11 @@
+﻿<Framework:TestingContext x:Class="DragonSpark.Testing.Framework.Testing.Configuration"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+			mc:Ignorable="d" 
+			xmlns:Framework="clr-namespace:DragonSpark.Testing.Framework;assembly=DragonSpark.Testing.Framework" xmlns:Testing="clr-namespace:DragonSpark.Testing.Framework.Testing"
+ x:TypeArguments="Testing:SimpleObject"
+>
+	<Configuration:AssignServiceLocatorCommand />
+</Framework:TestingContext>

@@ -1,0 +1,61 @@
+﻿<ioC:LocatorDefinition x:Class="DragonSpark.Application.Configuration.Server"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ioC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark" 
+	xmlns:ds="http://framework.dragonspark.us"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+    xmlns:dsweb="clr-namespace:DragonSpark.Web.Configuration;assembly=DragonSpark.Web"
+    xmlns:dsLogging="clr-namespace:DragonSpark.Logging;assembly=DragonSpark"
+    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
+    xmlns:controllers="clr-namespace:DragonSpark.Application.Controllers"
+    xmlns:configuration="clr-namespace:DragonSpark.Application.Configuration"
+                       xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
+                       xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Models">
+	<ds:RegisterFromMetadataCommand />
+	<ds:AssignServiceLocatorCommand />
+    <ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">
+        <ds:InjectionConstructor>
+            <ds:InstanceValue Instance="Application" />
+            <ds:InstanceValue Instance="." />
+            <ds:InstanceValue Instance="DragonSpark Application" />
+        </ds:InjectionConstructor>
+    </ds:UnityType>
+    <ds:LoggingConfiguration EnableAll="True">
+        <ds:EventListenerDefinition>
+            <ds:RollingFlatFileLogFactory LogFilePath="{dsweb:MapPath '~/Logs/DragonSpark.log' }" IsAsynchronus="True" />
+            <ds:EventListenerDefinition.Registrations>
+                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Informational" />
+            </ds:EventListenerDefinition.Registrations>
+        </ds:EventListenerDefinition>
+        <ds:EventListenerDefinition Factory="{ds:LocationFactory {x:Type dsLogging:EventLogEventListener}}">
+            <ds:EventListenerDefinition.Registrations>
+                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Critical" />
+                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Error" />
+            </ds:EventListenerDefinition.Registrations>
+        </ds:EventListenerDefinition>
+    </ds:LoggingConfiguration>
+    <ds:ExceptionHandlingConfiguration>
+        <ds:ExceptionPolicyDefinition PolicyName="{x:Static dsLogging:EnterpriseLibraryExceptionHandler.DefaultExceptionPolicy}">
+            <ds:ExceptionPolicyEntry ExceptionType="{x:Type system:Exception}" Action="ThrowNewException">
+                <dsLogging:LogExceptionHandler />
+                <ds:WrapHandler WrapExceptionType="{x:Type system:ApplicationException}" Message="{}An exception was encountered with this application and was handled.  Administrators have been notified.  Reference ID: {handlingInstanceID}" />
+                <dsLogging:LogExceptionAsInformationHandler />
+            </ds:ExceptionPolicyEntry>
+            <ds:ExceptionPolicyEntry ExceptionType="{x:Type dragonSpark:FatalApplicationException}" Action="NotifyRethrow">
+                <dsLogging:LogFatalExceptionHandler />
+            </ds:ExceptionPolicyEntry>
+        </ds:ExceptionPolicyDefinition>
+        <ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:ClientController.ClientExceptionReporting}">
+            <ds:ExceptionPolicyEntry ExceptionType="{x:Type dragonSpark:ClientException}" Action="None">
+                <dsLogging:LogExceptionAsInformationHandler />
+                <dsLogging:LogExceptionHandler />
+            </ds:ExceptionPolicyEntry>
+        </ds:ExceptionPolicyDefinition>
+    </ds:ExceptionHandlingConfiguration>
+
+    <configuration:Registrations />
+    <configuration:Application />
+	<entity:DatabaseInitializationConfigurationCommand ContextType="{x:Type applicationEntity:EntityStorage}" />
+<!--	<IoC:CompositionConfiguration DirectorySearchPath="Bin" />-->
+</ioC:LocatorDefinition>

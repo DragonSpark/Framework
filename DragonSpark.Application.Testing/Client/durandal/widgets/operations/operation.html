@@ -1,0 +1,11 @@
+﻿<div style="border: 1px solid silver; min-width: 350px; display: table; width: 100%">
+	<div style="display: table-cell; width: 30px">
+		<img data-bind="attr: { src: determine('./Images/{0}.png'.format(status().name)), title: status().description }" width="14" height="14" style="width: 14px; height: 14px; display: inline-block; margin: 8px" />
+	</div>
+	<div style="display: table-cell; padding: 8px 4px; width: 100%">
+		<span style="vertical-align: middle" data-bind="html: title" />
+	</div>
+	<div style="display: table-cell" data-bind="visible: exception()">
+		<a href="#" style="vertical-align: middle; margin: 8px 10px" data-bind="locateCommand: { path: 'commands/displayError', parameter: exception() }">Details</a>
+	</div>
+</div>

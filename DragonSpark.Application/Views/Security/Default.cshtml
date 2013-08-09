@@ -1,0 +1,19 @@
+﻿@model DragonSpark.ApplicationDetails
+
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <title>@Model.Title: Authenticate</title>
+        
+		@Styles.Render("~/Content/css")
+    </head>
+	<body style="height: 100%; margin: 25px">
+		<hgroup class="title">
+			<h1>Authenticate</h1>
+		</hgroup>
+
+		<section id="socialLoginForm">
+			@Html.Action("ExternalLoginsList", new { ViewBag.ReturnUrl })
+		</section>
+	</body>
+</html>
