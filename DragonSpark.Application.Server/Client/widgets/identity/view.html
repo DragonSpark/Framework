@@ -1,0 +1,12 @@
+﻿<div style="white-space: nowrap">
+	<div>
+		<span data-bind="text: 'Welcome {0}'.format(displayName())"></span>		
+		<span data-bind="visible: !configuration().UserProfile" style="margin-right: 8px; vertical-align: bottom">
+			<span style="margin: 8px; vertical-align: bottom">|</span>
+			<a href="#" target="_blank" data-bind="click: function () { open(configuration().AuthenticationUri) }">Sign In</a>
+		</span>
+	</div>
+	<div data-bind="visible: provider() != null">
+		[via <span data-bind="text: provider"></span> - <a href="#" data-bind="	visible: configuration().UserProfile, operation: { title: 'Signing out... Please Wait.', dataContext: $parent, items: [{ path: 'widgets/identity/signout', title: 'Contacting server.' }] }">Sign Out</a>]
+	</div>
+</div>
