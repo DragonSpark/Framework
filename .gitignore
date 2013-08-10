@@ -28,3 +28,7 @@ MSSCCPRJ.SCC
 *.debug.css
 Packages/
 *.db
+*.mdf
+*.ldf
+*.log
+*.pubxml
