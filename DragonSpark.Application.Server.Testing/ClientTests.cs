@@ -17,7 +17,7 @@ namespace DragonSpark.Application.Server.Testing
 			var subject = new TestObjects.ClientConfiguration().Instance.GetInstance<ClientApplicationConfiguration>();
 			Assert.IsNotNull( subject );
 			Assert.IsNotNull( subject.Navigation );
-			Assert.IsNotNull( subject.ApplicationDetails ); 
+			Assert.IsNotNull( subject.ApplicationDetails );
 			Assert.IsNotNull( subject.Commands );
 			Assert.IsNotNull( subject.Widgets );
 			Assert.IsNotNull( subject.Logo );
