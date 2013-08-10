@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Threading;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Web.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Threading;
 using Navigation = DragonSpark.Application.Server.Testing.TestObjects.Navigation;
 
 namespace DragonSpark.Application.Server.Testing
@@ -17,7 +17,7 @@ namespace DragonSpark.Application.Server.Testing
 			var subject = new TestObjects.ClientConfiguration().Instance.GetInstance<ClientApplicationConfiguration>();
 			Assert.IsNotNull( subject );
 			Assert.IsNotNull( subject.Navigation );
-			Assert.IsNotNull( subject.ApplicationDetails );
+			Assert.IsNotNull( subject.ApplicationDetails ); 
 			Assert.IsNotNull( subject.Commands );
 			Assert.IsNotNull( subject.Widgets );
 			Assert.IsNotNull( subject.Logo );
