@@ -1,4 +1,4 @@
-﻿using DragonSpark.Web;
+﻿using DragonSpark.Server;
 using System.Web.Http;
 
 namespace DragonSpark.Application.Server

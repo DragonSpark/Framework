@@ -1,4 +1,4 @@
-﻿using DragonSpark.Web.Security;
+﻿using DragonSpark.Server.Security;
 using Microsoft.Web.WebPages.OAuth;
 using System.Web.Mvc;
 

@@ -160,6 +160,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SharpKit.Html, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
+    <Reference Include="SharpKit.JavaScript, Version=1.5.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
+    <Reference Include="SharpKit.jQuery, Version=1.6.4.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -431,9 +434,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Web\DragonSpark.Web.csproj">
+    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
+      <Project>{aa6df806-14f1-4451-bffc-1823e9340826}</Project>
+      <Name>DragonSpark.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
       <Project>{3cca84f9-0680-438a-9a0d-8dbada88b909}</Project>
-      <Name>DragonSpark.Web</Name>
+      <Name>DragonSpark.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
@@ -468,7 +475,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64977</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

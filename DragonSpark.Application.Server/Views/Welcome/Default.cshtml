@@ -1,4 +1,5 @@
-﻿@model DragonSpark.ApplicationDetails
+﻿@using DragonSpark.Server.Client
+@model DragonSpark.ApplicationDetails
 
 <!DOCTYPE html>
 <html style="height: 100%">
@@ -41,7 +42,8 @@
 			</div>
 		</div>
 		
-		@Scripts.Render( "~/scripts/vendor" )
+		@Scripts.Render( "~/Scripts/Vendor" )
+		@Scripts.Render( VirtualPathProvider.Path )
 		
         <script type="text/javascript" src="~/Client/vendor/require.js" data-main="Client/Application"></script>
 	</body>

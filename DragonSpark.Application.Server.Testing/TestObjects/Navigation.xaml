@@ -1,7 +1,7 @@
 ﻿<client:ShellNode x:Class="DragonSpark.Application.Server.Testing.TestObjects.Navigation"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:client="clr-namespace:DragonSpark.Web.Client;assembly=DragonSpark.Web"
+    xmlns:client="clr-namespace:DragonSpark.Server.Client;assembly=DragonSpark.Server"
     Path="shell"
 	TransitionName="entrance"
 >

@@ -8,9 +8,9 @@
     xmlns:net="clr-namespace:System.Net;assembly=System"
     xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
     xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
-    xmlns:dsweb="clr-namespace:DragonSpark.Web.Configuration;assembly=DragonSpark.Web"
-    xmlns:web="clr-namespace:DragonSpark.Web;assembly=DragonSpark.Web"
-    xmlns:webSecurity="clr-namespace:DragonSpark.Web.Security;assembly=DragonSpark.Web"
+    xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
+    xmlns:web="clr-namespace:DragonSpark.Server;assembly=DragonSpark.Server"
+    xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
     xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration">
     <ds:ApplicationConfigurationCommand.ApplicationDetails>
         <dragonSpark:ApplicationDetails
@@ -35,13 +35,14 @@
         <x:Type Type="configuration:Application" />
     </dsweb:EnableAttributeRouting>
     <dsweb:EnableQuerySupport />
+    <dsweb:EnableEmbeddedScripts />
     <dsweb:BundlesConfigurator>
         <dsweb:BundlesConfigurator.Ignore>
             <dsweb:IgnoreDirective Item="*.intellisense.js" />
             <dsweb:IgnoreDirective Item="*-vsdoc.js" />
             <dsweb:IgnoreDirective Item="*.debug.js" Mode="WhenEnabled" />
         </dsweb:BundlesConfigurator.Ignore>
-        <dsweb:ScriptBundle Path="~/scripts/vendor">
+        <dsweb:ScriptBundle Path="~/Scripts/Vendor">
             <dsweb:BundleFile File="~/Scripts/jquery-{version}.js" />
             <dsweb:BundleFile File="~/Scripts/bootstrap.min.js" />
             <dsweb:BundleFile File="~/Scripts/knockout-{version}.js" />

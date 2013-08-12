@@ -302,15 +302,15 @@
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Server\DragonSpark.Application.Server.csproj">
       <Project>{E517513A-E4EA-48ED-9E1A-8197BBDC9270}</Project>
-      <Name>DragonSpark.Application.Server</Name>
+      <Name>DragonSpark.Application.Server %28DragonSpark.Application.Server\DragonSpark.Application.Server%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
       <Project>{96F63F2B-7D11-4D0F-A932-26C29F8E48BF}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Web\DragonSpark.Web.csproj">
+    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
       <Project>{3CCA84F9-0680-438A-9A0D-8DBADA88B909}</Project>
-      <Name>DragonSpark.Web</Name>
+      <Name>DragonSpark.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>

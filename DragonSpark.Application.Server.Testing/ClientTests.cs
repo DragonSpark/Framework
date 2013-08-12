@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Server.Client;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Web.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading;
