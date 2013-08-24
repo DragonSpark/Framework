@@ -1,6 +1,6 @@
 ﻿using AttributeRouting;
 using AttributeRouting.Web.Http;
-using DragonSpark.Server.Client;
+using DragonSpark.Server.ClientHosting;
 using System;
 using System.IdentityModel.Services;
 

@@ -146,7 +146,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SharpKit.JavaScript, Version=1.5.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -230,42 +229,45 @@
   <ItemGroup>
     <Compile Include="ApplicationConfigurationCommand.cs" />
     <Compile Include="ApplicationInitializer.cs" />
-    <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
-    <Compile Include="Client\AnonymousAuthorizer.cs" />
-    <Compile Include="Client\AuthenticatedAuthorizer.cs" />
-    <Compile Include="Client\ClaimsAuthorizer.cs" />
-    <Compile Include="Client\ClientApplicationConfiguration.cs">
+    <Compile Include="ClientHosting\AnonymousAuthorizer.cs" />
+    <Compile Include="ClientHosting\AuthenticatedAuthorizer.cs" />
+    <Compile Include="ClientHosting\ClaimsAuthorizer.cs" />
+    <Compile Include="ClientHosting\ClientApplicationConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client\ClientControllerBase.cs" />
-    <Compile Include="Client\ClientModule.cs">
+    <Compile Include="ClientHosting\ClientControllerBase.cs" />
+    <Compile Include="ClientHosting\ClientModule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client\ClientModuleBuilder.cs" />
-    <Compile Include="Client\CommandsBuilder.cs" />
-    <Compile Include="Client\EmbeddedScriptHttpHandler.cs" />
-    <Compile Include="Client\EmbeddedResourceFile.cs" />
-    <Compile Include="Client\IAuthorizer.cs" />
-    <Compile Include="Client\InitializersBuilder.cs" />
-    <Compile Include="Client\Navigation.cs" />
-    <Compile Include="Client\NavigationBuilder.cs" />
-    <Compile Include="Client\NavigationNode.cs" />
-    <Compile Include="Client\PrincipalProvider.cs" />
-    <Compile Include="Client\ResourcesContainer.cs" />
-    <Compile Include="Client\ResourcesContainerBuilder.cs" />
-    <Compile Include="Client\RolesAuthorizer.cs" />
-    <Compile Include="Client\RouteInfo.cs" />
-    <Compile Include="Client\ShellInfo.cs" />
-    <Compile Include="Client\ShellNode.cs" />
-    <Compile Include="Client\UserContext.cs" />
-    <Compile Include="Client\UserProfileFactory.cs" />
-    <Compile Include="Client\VirtualPathProvider.cs" />
-    <Compile Include="Client\WidgetModule.cs" />
-    <Compile Include="Client\WidgetsBuilder.cs" />
+    <Compile Include="ClientHosting\ClientModuleBuilder.cs" />
+    <Compile Include="ClientHosting\CommandsBuilder.cs" />
+    <Compile Include="ClientHosting\EmbeddedScriptHttpHandler.cs" />
+    <Compile Include="ClientHosting\EmbeddedResourceFile.cs" />
+    <Compile Include="ClientHosting\IAuthorizer.cs" />
+    <Compile Include="ClientHosting\InitializersBuilder.cs" />
+    <Compile Include="ClientHosting\Navigation.cs" />
+    <Compile Include="ClientHosting\NavigationBuilder.cs" />
+    <Compile Include="ClientHosting\NavigationNode.cs" />
+    <Compile Include="ClientHosting\PrincipalProvider.cs" />
+    <Compile Include="ClientHosting\ResourcesContainer.cs" />
+    <Compile Include="ClientHosting\ResourcesContainerBuilder.cs" />
+    <Compile Include="ClientHosting\RolesAuthorizer.cs" />
+    <Compile Include="ClientHosting\RouteInfo.cs" />
+    <Compile Include="ClientHosting\ShellInfo.cs" />
+    <Compile Include="ClientHosting\ShellNode.cs" />
+    <Compile Include="ClientHosting\UserContext.cs" />
+    <Compile Include="ClientHosting\UserProfileFactory.cs" />
+    <Compile Include="ClientHosting\VirtualPathProvider.cs" />
+    <Compile Include="ClientHosting\WidgetModule.cs" />
+    <Compile Include="ClientHosting\WidgetsBuilder.cs" />
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="Configuration\ApplyFilters.cs" />
-    <Compile Include="Configuration\ApplyGlobalFilters.cs" />
-    <Compile Include="Configuration\ApplyRoutes.cs" />
+    <Compile Include="Configuration\ApplyGlobalFilters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ApplyRoutes.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Configuration\Bundle.cs" />
     <Compile Include="Configuration\BundleDirective.cs" />
     <Compile Include="Configuration\BundleDirectory.cs" />
@@ -290,10 +292,12 @@
     <Compile Include="Configuration\RequestLifetimeManager.cs" />
     <Compile Include="Configuration\ResXExtension.cs" />
     <Compile Include="Configuration\Route.cs" />
-    <Compile Include="Configuration\ScriptBundle.cs" />
+    <Compile Include="Configuration\ScriptBundle.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Configuration\SessionLifetimeManager.cs" />
     <Compile Include="Configuration\StyleBundle.cs" />
-    <Compile Include="Client\EmbeddedScriptBundle.cs" />
+    <Compile Include="ClientHosting\EmbeddedScriptBundle.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="ExceptionHandlerFilter.cs" />
     <Compile Include="ExceptionHandlingConfiguration.cs" />
@@ -310,8 +314,12 @@
     <Compile Include="Security\ClaimsRepository.cs" />
     <Compile Include="Security\FacebookClient.cs" />
     <Compile Include="Security\AuthenticationModule.cs" />
-    <Compile Include="Security\IAuthenticationResultProcessor.cs" />
-    <Compile Include="Security\IClaimsRepository.cs" />
+    <Compile Include="Security\IAuthenticationResultProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\IClaimsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Security\SessionAuthenticationModule.cs">
       <SubType>Code</SubType>
     </Compile>

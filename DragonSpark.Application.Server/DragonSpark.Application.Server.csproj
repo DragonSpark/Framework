@@ -275,10 +275,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client\application.js" />
-    <Content Include="Client\commands\alert.js" />
-    <Content Include="Client\commands\displayError.js" />
-    <Content Include="Client\commands\wait.js" />
     <Content Include="Client\dragonspark\application.js" />
+    <Content Include="Client\dragonspark\commands\alert.js" />
+    <Content Include="Client\dragonspark\commands\displayError.js" />
+    <Content Include="Client\dragonspark\commands\wait.js" />
     <Content Include="Client\dragonspark\compensations.js" />
     <Content Include="Client\dragonspark\configuration.js" />
     <Content Include="Client\dragonspark\enum.js" />
@@ -286,28 +286,26 @@
     <Content Include="Client\dragonspark\error.js" />
     <Content Include="Client\dragonspark\service.js" />
     <Content Include="Client\dragonspark\view.js" />
-    <Content Include="Client\durandal\activator.js" />
-    <Content Include="Client\durandal\app.js" />
-    <Content Include="Client\durandal\binder.js" />
-    <Content Include="Client\durandal\composition.js" />
-    <Content Include="Client\durandal\events.js" />
-    <Content Include="Client\durandal\system.js" />
-    <Content Include="Client\durandal\transitions\entrance.js" />
-    <Content Include="Client\durandal\viewEngine.js" />
-    <Content Include="Client\durandal\viewLocator.js" />
-    <Content Include="Client\plugins\dialog.js" />
-    <Content Include="Client\plugins\history.js" />
-    <Content Include="Client\plugins\http.js" />
-    <Content Include="Client\plugins\observable.js" />
-    <Content Include="Client\plugins\router.js" />
-    <Content Include="Client\plugins\serializer.js" />
-    <Content Include="Client\plugins\widget.js" />
-    <Content Include="Client\vendor\almond-custom.js" />
-    <Content Include="Client\vendor\bootstrap.js" />
-    <Content Include="Client\vendor\bootstrap.min.js" />
-    <Content Include="Client\vendor\r.js" />
-    <Content Include="Client\vendor\require.js" />
-    <Content Include="Client\vendor\text.js" />
+    <Content Include="Client\dragonspark\widgets\copyright\about.html" />
+    <Content Include="Client\dragonspark\widgets\copyright\about.js" />
+    <Content Include="Client\dragonspark\widgets\copyright\view.html" />
+    <Content Include="Client\dragonspark\widgets\copyright\viewmodel.js" />
+    <Content Include="Client\dragonspark\widgets\identity\signout.js" />
+    <Content Include="Client\dragonspark\widgets\identity\view.html" />
+    <Content Include="Client\dragonspark\widgets\identity\viewmodel.initialize.js" />
+    <Content Include="Client\dragonspark\widgets\identity\viewmodel.js" />
+    <Content Include="Client\dragonspark\widgets\operations\images\Aborted.png" />
+    <Content Include="Client\dragonspark\widgets\operations\images\Canceled.png" />
+    <Content Include="Client\dragonspark\widgets\operations\images\Completed.png" />
+    <Content Include="Client\dragonspark\widgets\operations\images\CompletedWithException.png" />
+    <Content Include="Client\dragonspark\widgets\operations\images\Executing.png" />
+    <Content Include="Client\dragonspark\widgets\operations\images\None.png" />
+    <Content Include="Client\dragonspark\widgets\operations\monitor.js" />
+    <Content Include="Client\dragonspark\widgets\operations\operation.html" />
+    <Content Include="Client\dragonspark\widgets\operations\operation.js" />
+    <Content Include="Client\dragonspark\widgets\operations\view.html" />
+    <Content Include="Client\dragonspark\widgets\operations\viewmodel.initialize.js" />
+    <Content Include="Client\dragonspark\widgets\operations\viewmodel.js" />
     <Content Include="Client\viewmodels\exceptions.js" />
     <Content Include="Client\viewmodels\navigation.js" />
     <Content Include="Client\viewmodels\notfound.js" />
@@ -336,29 +334,6 @@
     <Content Include="Client\views\security\yahoo.html" />
     <Content Include="Client\views\shell.html" />
     <Content Include="Client\views\welcome.html" />
-    <Content Include="Client\widgets\copyright\about.html" />
-    <Content Include="Client\widgets\copyright\about.js" />
-    <Content Include="Client\widgets\copyright\view.html" />
-    <Content Include="Client\widgets\copyright\viewmodel.js" />
-    <Content Include="Client\widgets\expander\view.html" />
-    <Content Include="Client\widgets\expander\viewmodel.initialize.js" />
-    <Content Include="Client\widgets\expander\viewmodel.js" />
-    <Content Include="Client\widgets\identity\signout.js" />
-    <Content Include="Client\widgets\identity\view.html" />
-    <Content Include="Client\widgets\identity\viewmodel.initialize.js" />
-    <Content Include="Client\widgets\identity\viewmodel.js" />
-    <Content Include="Client\widgets\operations\images\Aborted.png" />
-    <Content Include="Client\widgets\operations\images\Canceled.png" />
-    <Content Include="Client\widgets\operations\images\Completed.png" />
-    <Content Include="Client\widgets\operations\images\CompletedWithException.png" />
-    <Content Include="Client\widgets\operations\images\Executing.png" />
-    <Content Include="Client\widgets\operations\images\None.png" />
-    <Content Include="Client\widgets\operations\monitor.js" />
-    <Content Include="Client\widgets\operations\operation.html" />
-    <Content Include="Client\widgets\operations\operation.js" />
-    <Content Include="Client\widgets\operations\view.html" />
-    <Content Include="Client\widgets\operations\viewmodel.initialize.js" />
-    <Content Include="Client\widgets\operations\viewmodel.js" />
     <Content Include="Content\application.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -380,17 +355,6 @@
     <Content Include="Content\images\Logo.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Client\widgets\Readme.md" />
-    <None Include="Scripts\jquery-2.0.2.intellisense.js" />
-    <Content Include="Scripts\jquery-2.0.2.js" />
-    <Content Include="Scripts\jquery-2.0.2.min.js" />
-    <None Include="Scripts\linq-vsdoc.js" />
-    <Content Include="Scripts\knockout-2.3.0.debug.js" />
-    <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\knockout.mapping-latest.js" />
-    <Content Include="Scripts\linq.js" />
-    <Content Include="Scripts\linq.min.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -422,7 +386,6 @@
     <Content Include="Views\Security\Error.cshtml" />
     <Content Include="Views\Security\Complete.cshtml" />
     <Content Include="Views\Security\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Scripts\jquery-2.0.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -434,9 +397,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
+    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.Scripts.csproj">
       <Project>{aa6df806-14f1-4451-bffc-1823e9340826}</Project>
-      <Name>DragonSpark.Client</Name>
+      <Name>DragonSpark.Client.Scripts</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
       <Project>{3cca84f9-0680-438a-9a0d-8dbada88b909}</Project>

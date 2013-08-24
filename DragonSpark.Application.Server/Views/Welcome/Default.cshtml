@@ -24,7 +24,9 @@
     			height: 100%;
     		}
     	</style>
-
+		
+		
+	    <script type="text/javascript" src="~/Client/jsclr.min.js"></script>
 	    <script type="text/javascript">
 	    	if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 	    		var msViewportStyle = document.createElement("style");
@@ -44,6 +46,7 @@
 		
 		@Scripts.Render( "~/Scripts/Vendor" )
 		@Scripts.Render( VirtualPathProvider.Path )
+		<script> $(Compile); $(DefaultClient_Load);</script>
 		
         <script type="text/javascript" src="~/Client/vendor/require.js" data-main="Client/Application"></script>
 	</body>

@@ -1,16 +1,15 @@
 ﻿// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-using SharpKit.JavaScript;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("DragonSpark.Client")]
+[assembly: AssemblyTitle("DragonSpark.Client.Scripts")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DragonSpark.Client")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("DragonSpark.Client.Scripts")]
+[assembly: AssemblyCopyright("Copyright © DragonSpark Technologies Inc. 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,4 +34,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: JsEmbeddedResource( "res/DragonSpark.Client.js" )]
+// [assembly: JsMergedFile( Filename = "MySite.js", Sources = new[] { "jQuery.js", "MyPage1.js", "MyPage2.js" } )]
+// [assembly: JsMergedFile( Filename = "Resources/DragonSpark.Client.min.js", Sources = new[] { "res/DragonSpark.Client.js" }, Minify = true )]
+
+// [assembly: JsEmbeddedResource( "Resources/DragonSpark.Client.min.js" )]

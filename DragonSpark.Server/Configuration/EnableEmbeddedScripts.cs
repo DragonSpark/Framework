@@ -1,12 +1,12 @@
 ﻿using DragonSpark.Objects;
-using DragonSpark.Server.Client;
+using DragonSpark.Server.ClientHosting;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using VirtualPathProvider = DragonSpark.Server.Client.VirtualPathProvider;
+using VirtualPathProvider = DragonSpark.Server.ClientHosting.VirtualPathProvider;
 
 namespace DragonSpark.Server.Configuration
 {

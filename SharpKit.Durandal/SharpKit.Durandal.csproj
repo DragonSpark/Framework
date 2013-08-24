@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E153AD4C-27CA-421C-B6BC-E8C98F62553C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpKit.Durandal</RootNamespace>
+    <AssemblyName>SharpKit.Durandal</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SharpKit.Html, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
+    <Reference Include="SharpKit.JavaScript, Version=1.5.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
+    <Reference Include="SharpKit.jQuery, Version=1.6.4.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL" />
+    <Reference Include="SharpKit.KnockoutJs, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2575297a09c47a96, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\SharpKit\5\Assemblies\v4.0\SharpKit.KnockoutJs.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Binder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompositionTransaction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Events.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\LifetimeMode.cs" />
+    <Compile Include="Modules\ModuleAttribute.cs" />
+    <Compile Include="Modules\ModuleRegistration.cs" />
+    <Compile Include="Modules\Require.cs" />
+    <Compile Include="Modules\Text.cs" />
+    <Compile Include="Plugins\Dialog.cs" />
+    <Compile Include="Plugins\History.cs" />
+    <Compile Include="Plugins\Http.cs" />
+    <Compile Include="Plugins\Observable.cs" />
+    <Compile Include="Plugins\Router.cs" />
+    <Compile Include="Plugins\Serializer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewEngine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\activator.js" />
+    <Content Include="Resources\app.js" />
+    <Content Include="Resources\binder.js" />
+    <Content Include="Resources\composition.js" />
+    <Content Include="Resources\events.js" />
+    <Content Include="Resources\Modules\jquery-2.0.2.min.js" />
+    <Content Include="Resources\Modules\knockout-2.3.0.js" />
+    <Content Include="Resources\system.js" />
+    <Content Include="Resources\Transitions\entrance.js" />
+    <Content Include="Resources\viewEngine.js" />
+    <Content Include="Resources\viewLocator.js" />
+    <Content Include="Resources\Plugins\dialog.js" />
+    <Content Include="Resources\Plugins\history.js" />
+    <Content Include="Resources\Plugins\http.js" />
+    <Content Include="Resources\Plugins\observable.js" />
+    <Content Include="Resources\Plugins\router.js" />
+    <Content Include="Resources\Plugins\serializer.js" />
+    <Content Include="Resources\Plugins\widget.js" />
+    <Content Include="Resources\Modules\require.js" />
+    <Content Include="Resources\Modules\text.js" />
+    <Content Include="Resources\Widgets\Expander\view.html" />
+    <Content Include="Resources\Widgets\Expander\viewmodel.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Widgets\Readme.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

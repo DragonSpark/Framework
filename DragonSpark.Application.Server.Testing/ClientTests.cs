@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Server.Client;
+using DragonSpark.Server.ClientHosting;
 using DragonSpark.Testing.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;

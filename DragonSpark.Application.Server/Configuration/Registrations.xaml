@@ -13,17 +13,18 @@
     xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
     xmlns:claims="clr-namespace:System.Security.Claims;assembly=mscorlib"
     xmlns:identityModel="clr-namespace:System.IdentityModel.Claims;assembly=System.IdentityModel"
-    xmlns:client="clr-namespace:DragonSpark.Server.Client;assembly=DragonSpark.Server"
+    xmlns:client="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server"
     xmlns:ef="clr-namespace:System.Data.Entity;assembly=EntityFramework"
                                            xmlns:security="clr-namespace:DragonSpark.Security;assembly=DragonSpark"
     xmlns:principal="clr-namespace:System.Security.Principal;assembly=mscorlib"
     xmlns:system1="clr-namespace:System;assembly=System"
     xmlns:security1="clr-namespace:System.Web.Security;assembly=System.Web"
                                            xmlns:hosting="clr-namespace:System.ComponentModel.Composition.Hosting;assembly=System.ComponentModel.Composition"
-                                           xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models">
+                                           xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models"
+                                           xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server">
     <Configuration:UnityType RegistrationType="{x:Type principal:IPrincipal}">
         <Configuration:InjectionFactoryInstance>
-            <client:PrincipalProvider />
+            <clientHosting:PrincipalProvider />
         </Configuration:InjectionFactoryInstance>
     </Configuration:UnityType>
     <Configuration:UnityType RegistrationType="{x:Type security:UserProfile}">
@@ -35,7 +36,7 @@
         </Configuration:InjectionFactory>
     </Configuration:UnityType>
 
-    <Configuration:UnityType RegistrationType="{x:Type client:ClientApplicationConfiguration}">
+    <Configuration:UnityType RegistrationType="{x:Type clientHosting:ClientApplicationConfiguration}">
         <ds:UnityType.Lifetime>
             <dsweb:RequestLifetimeManager KeyName="DDA55141-1528-4519-84B0-1C2B2F6255BA" />
         </ds:UnityType.Lifetime>
@@ -56,60 +57,60 @@
         </Configuration:InjectionProperty>
         <Configuration:InjectionProperty PropertyName="Navigation">
             <Configuration:FactoryParameterValue>
-                <Configuration:NamedTypeBuildKey BuildType="{x:Type client:NavigationBuilder}" />
+                <Configuration:NamedTypeBuildKey BuildType="{x:Type clientHosting:NavigationBuilder}" />
                 <Configuration:FactoryParameterValue.Parameter>
-                    <client:ShellNode Path="shell" TransitionName="entrance">
-                        <client:ShellNode.NotFound>
-                            <client:NavigationNode Path="notfound" Title="Not Found" />
-                        </client:ShellNode.NotFound>
-                        <client:NavigationNode Route="" Path="welcome" Title="The Welcome Page" />
-                        <client:NavigationNode Path="operations" Title="Operations Showcase" />
-                        <client:NavigationNode Path="exceptions" Title="Exceptions" />
-                        <client:NavigationNode Route="security*details" Path="security" Title="Security" Tag="security" >
+                    <clientHosting:ShellNode Path="shell" TransitionName="entrance">
+                        <clientHosting:ShellNode.NotFound>
+                            <clientHosting:NavigationNode Path="notfound" Title="Not Found" />
+                        </clientHosting:ShellNode.NotFound>
+                        <clientHosting:NavigationNode Route="" Path="welcome" Title="The Welcome Page" />
+                        <clientHosting:NavigationNode Path="operations" Title="Operations Showcase" />
+                        <clientHosting:NavigationNode Path="exceptions" Title="Exceptions" />
+                        <clientHosting:NavigationNode Route="security*details" Path="security" Title="Security" Tag="security" >
                             
-                            <client:NavigationNode Route="" Path="default" Title="Security Features" IsVisible="False" />
-                            <client:NavigationNode Route="default" Path="default" Title="Security Features" />
+                            <clientHosting:NavigationNode Route="" Path="default" Title="Security Features" IsVisible="False" />
+                            <clientHosting:NavigationNode Route="default" Path="default" Title="Security Features" />
                             
-                            <client:NavigationNode Path="anonymous" Title="Anonymous">
-                                <client:NavigationNode.Authorizers>
-                                    <client:AnonymousAuthorizer />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                            <client:NavigationNode Path="authenticated" Title="Authenticated">
-                                <client:NavigationNode.Authorizers>
-                                    <client:AuthenticatedAuthorizer />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                            <client:NavigationNode Path="facebook" Title="Facebook">
-                                <client:NavigationNode.Authorizers>
-                                    <client:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Facebook" />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                            <client:NavigationNode Path="microsoft" Title="Microsoft Account">
-                                <client:NavigationNode.Authorizers>
-                                    <client:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Microsoft" />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                            <client:NavigationNode Path="yahoo" Title="Yahoo">
-                                <client:NavigationNode.Authorizers>
-                                    <client:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Yahoo" />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                            <client:NavigationNode Path="google" Title="Google">
-                                <client:NavigationNode.Authorizers>
-                                    <client:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Google" />
-                                </client:NavigationNode.Authorizers>
-                            </client:NavigationNode>
-                        </client:NavigationNode>
-                    </client:ShellNode>
+                            <clientHosting:NavigationNode Path="anonymous" Title="Anonymous">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:AnonymousAuthorizer />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="authenticated" Title="Authenticated">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:AuthenticatedAuthorizer />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="facebook" Title="Facebook">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Facebook" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="microsoft" Title="Microsoft Account">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Microsoft" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="yahoo" Title="Yahoo">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Yahoo" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="google" Title="Google">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Google" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                        </clientHosting:NavigationNode>
+                    </clientHosting:ShellNode>
                 </Configuration:FactoryParameterValue.Parameter>
             </Configuration:FactoryParameterValue>
         </Configuration:InjectionProperty>
         <Configuration:InjectionProperty PropertyName="Widgets">
-            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:WidgetsBuilder}}" />
+            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:WidgetsBuilder}}" />
         </Configuration:InjectionProperty>
         <Configuration:InjectionProperty PropertyName="Commands">
-            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:CommandsBuilder}}" />
+            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:CommandsBuilder}}" />
         </Configuration:InjectionProperty>
     </Configuration:UnityType>
 
