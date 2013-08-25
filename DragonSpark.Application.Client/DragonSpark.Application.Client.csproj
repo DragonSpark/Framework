@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark.Application.Client</RootNamespace>
+    <AssemblyName>DragonSpark.Application.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ViewModels\exceptions.js" />
+    <EmbeddedResource Include="ViewModels\navigation.js" />
+    <EmbeddedResource Include="ViewModels\notfound.js" />
+    <EmbeddedResource Include="ViewModels\operations.js" />
+    <EmbeddedResource Include="ViewModels\security.js" />
+    <EmbeddedResource Include="ViewModels\security\anonymous.js" />
+    <EmbeddedResource Include="ViewModels\security\authenticated.js" />
+    <EmbeddedResource Include="ViewModels\security\default.js" />
+    <EmbeddedResource Include="ViewModels\security\facebook.js" />
+    <EmbeddedResource Include="ViewModels\security\google.js" />
+    <EmbeddedResource Include="ViewModels\security\microsoft.js" />
+    <EmbeddedResource Include="ViewModels\security\yahoo.js" />
+    <EmbeddedResource Include="ViewModels\shell.js" />
+    <EmbeddedResource Include="ViewModels\welcome.js" />
+    <EmbeddedResource Include="Views\exceptions.html" />
+    <EmbeddedResource Include="Views\navigation.html" />
+    <EmbeddedResource Include="Views\notfound.html" />
+    <EmbeddedResource Include="Views\operations.html" />
+    <EmbeddedResource Include="Views\security.html" />
+    <EmbeddedResource Include="Views\security\anonymous.html" />
+    <EmbeddedResource Include="Views\security\authenticated.html" />
+    <EmbeddedResource Include="Views\security\default.html" />
+    <EmbeddedResource Include="Views\security\facebook.html" />
+    <EmbeddedResource Include="Views\security\google.html" />
+    <EmbeddedResource Include="Views\security\microsoft.html" />
+    <EmbeddedResource Include="Views\security\yahoo.html" />
+    <EmbeddedResource Include="Views\shell.html" />
+    <EmbeddedResource Include="Views\welcome.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
+      <Project>{3CCA84F9-0680-438A-9A0D-8DBADA88B909}</Project>
+      <Name>DragonSpark.Server</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Commands\alert.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

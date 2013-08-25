@@ -1,16 +1,16 @@
-﻿using DragonSpark.Server.ClientHosting;
-// General Information about an assembly is controlled through the following 
+﻿// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+using DragonSpark.Server.ClientHosting;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("DragonSpark.Client")]
+[assembly: AssemblyTitle("DragonSpark.Application.Client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DragonSpark.Client")]
-[assembly: AssemblyCopyright("Copyright © DragonSpark Technologies Inc. 2013")]
+[assembly: AssemblyProduct("DragonSpark.Application.Client")]
+[assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f1561bb9-aec0-4454-a447-3670af957222")]
+[assembly: Guid("a6f92439-d772-4605-8a2f-17d3e044ce26")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,11 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-// [assembly: JsMergedFile( Filename = "MySite.js", Sources = new[] { "jQuery.js", "MyPage1.js", "MyPage2.js" } )]
-// [assembly: JsMergedFile( Filename = "Resources/DragonSpark.Client.min.js", Sources = new[] { "res/DragonSpark.Client.js" }, Minify = true )]
-
-[assembly: ClientResources( "dragonspark" )]
-[assembly: ClientResource( "Core/jquery-2.0.2.min.js" )]
-[assembly: ClientResource( "Core/knockout-2.3.0.js" )]
-[assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
-[assembly: ClientResource( "Core/linq.min.js" )]
+[assembly: ClientApplication]

@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(function () {
 	return ko.command({
 		execute: function(parameter) {
 			$ds.throw( parameter );

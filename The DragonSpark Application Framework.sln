@@ -33,11 +33,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{98474E
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DragonSpark.Application.Server", "DragonSpark.Application.Server", "{24B7E760-A9EE-4EC0-80C8-33E505A02DD6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DragonSpark.Application", "DragonSpark.Application", "{24B7E760-A9EE-4EC0-80C8-33E505A02DD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{84CD79AD-B9EB-4E93-8E7A-B5D15CE6D90C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client.Scripts", "DragonSpark.Client\DragonSpark.Client.Scripts.csproj", "{AA6DF806-14F1-4451-BFFC-1823E9340826}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client", "DragonSpark.Client\DragonSpark.Client.csproj", "{AA6DF806-14F1-4451-BFFC-1823E9340826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Client", "DragonSpark.Application.Client\DragonSpark.Application.Client.csproj", "{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -301,6 +303,36 @@ Global
 		{AA6DF806-14F1-4451-BFFC-1823E9340826}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AA6DF806-14F1-4451-BFFC-1823E9340826}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AA6DF806-14F1-4451-BFFC-1823E9340826}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Build|Any CPU.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Build|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Build|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Build|x86.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug-Deploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug-Deploy|Any CPU.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug-Deploy|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug-Deploy|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Debug-Deploy|x86.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Development|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Development|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Development|x86.ActiveCfg = Debug|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Pre-Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Pre-Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Pre-Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Pre-Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Pre-Release|x86.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,6 +346,7 @@ Global
 		{AA6DF806-14F1-4451-BFFC-1823E9340826} = {84CD79AD-B9EB-4E93-8E7A-B5D15CE6D90C}
 		{AFF7F745-5687-4094-8722-190153EC23A9} = {24B7E760-A9EE-4EC0-80C8-33E505A02DD6}
 		{E517513A-E4EA-48ED-9E1A-8197BBDC9270} = {24B7E760-A9EE-4EC0-80C8-33E505A02DD6}
+		{DB1D8833-22F9-44FF-983C-92DE7CDDADD1} = {24B7E760-A9EE-4EC0-80C8-33E505A02DD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.WCF.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45

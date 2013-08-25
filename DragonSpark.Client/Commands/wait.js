@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(function () {
 	return ko.asyncCommand({
 		execute: function (parameter, complete) {
 			$ds.wait(2000).then(function() {

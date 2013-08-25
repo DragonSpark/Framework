@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Server.Testing
 		[TestMethod]
 		public void Ensure_Widgets_Are_Resolved_As_Expected()
 		{
-			var builder = new WidgetsBuilder( new Implementations.PathResolver() );
+			var builder = new WidgetsBuilder();
 			var modules = builder.Create().ToArray();
 
 			Assert.AreEqual( 1, modules.Count() );
@@ -38,7 +38,7 @@ namespace DragonSpark.Application.Server.Testing
 		[TestMethod]
 		public void Ensure_Commands_Are_Resolved_As_Expected()
 		{
-			var builder = new CommandsBuilder( new Implementations.PathResolver() );
+			var builder = new CommandsBuilder();
 			var modules = builder.Create().ToArray();
 
 			Assert.AreEqual( 3, modules.Count() );

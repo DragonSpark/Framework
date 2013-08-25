@@ -302,7 +302,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Server\DragonSpark.Application.Server.csproj">
       <Project>{E517513A-E4EA-48ED-9E1A-8197BBDC9270}</Project>
-      <Name>DragonSpark.Application.Server %28DragonSpark.Application.Server\DragonSpark.Application.Server%29</Name>
+      <Name>DragonSpark.Application.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
       <Project>{96F63F2B-7D11-4D0F-A932-26C29F8E48BF}</Project>

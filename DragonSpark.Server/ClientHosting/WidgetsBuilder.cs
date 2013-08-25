@@ -1,26 +1,27 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using DragonSpark.Extensions;
-using DragonSpark.Io;
+using System;
+using System.IO;
 
 namespace DragonSpark.Server.ClientHosting
 {
-	public class WidgetsBuilder : ClientModuleBuilder
+	public class WidgetsBuilder : ClientModuleBuilder<WidgetModule>
 	{
-		public WidgetsBuilder( IPathResolver pathResolver, string initialPath = "widgets" ) : base( pathResolver, initialPath )
+		public WidgetsBuilder( string initialPath = "widgets" ) : base( initialPath )
 		{}
 
-		protected override IEnumerable<ClientModule> Create( FileInfo entryPoint, DirectoryInfo root )
+		protected override bool IsResource( AssemblyResource resource )
 		{
-			var result = new DirectoryInfo( Path.Combine( entryPoint.DirectoryName, InitialPath ) ).EnumerateDirectories().Select( x => new WidgetModule
-				{
-					Name = x.Name,
-					Path = x.GetFiles( "*.initialize.js" ).FirstOrDefault()
-					       .Transform( y => root.DetermineRelative( y, false )
-					                            .Transform( z => Path.Combine( Path.GetDirectoryName( z ), Path.GetFileNameWithoutExtension(z) ).ToUri() ) )
-				} ).ToArray();
-			return result;	
+			var result = base.IsResource( resource ) && resource.ResourceName.EndsWith( ".initialize.js", StringComparison.InvariantCultureIgnoreCase );
+			return result;
+		}
+
+		protected override WidgetModule Create( AssemblyResource resource )
+		{
+			return new WidgetModule
+			{
+				Name = resource.ResourceName,
+				Path = string.Concat( resource.Assembly.FromMetadata<ClientResourcesAttribute, string>( x => x.Name ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resource.ResourceName ) )
+			};
 		}
 	}
 }

@@ -1,20 +1,55 @@
+using DragonSpark.Extensions;
+using DragonSpark.Objects;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DragonSpark.Extensions;
-using DragonSpark.Io;
-using DragonSpark.Objects;
+using System.Reflection;
 
 namespace DragonSpark.Server.ClientHosting
 {
-	public abstract class ClientModuleBuilder : Factory<string, IEnumerable<ClientModule>>
+	public class AssemblyResource
 	{
-		readonly IPathResolver pathResolver;
+		readonly Assembly assembly;
+		readonly string resourceName;
+
+		public AssemblyResource( Assembly assembly, string resourceName )
+		{
+			this.assembly = assembly;
+			this.resourceName = resourceName;
+		}
+
+		public Assembly Assembly
+		{
+			get { return assembly; }
+		}
+
+		public string ResourceName
+		{
+			get { return resourceName; }
+		}
+	}
+
+	public abstract class ClientModuleBuilder : ClientModuleBuilder<ClientModule>
+	{
+		protected ClientModuleBuilder( string initialPath ) : base( initialPath )
+		{}
+
+		protected override ClientModule Create( AssemblyResource resource )
+		{
+			return new ClientModule
+			{
+				Path = string.Concat( resource.Assembly.FromMetadata<ClientResourcesAttribute, string>( x => x.Name ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resource.ResourceName ) )
+			};
+		}
+	}
+
+	public abstract class ClientModuleBuilder<TModule> : Factory<string, IEnumerable<TModule>> where TModule : ClientModule
+	{
 		readonly string initialPath;
 
-		protected ClientModuleBuilder( IPathResolver pathResolver, string initialPath )
+		protected ClientModuleBuilder( string initialPath )
 		{
-			this.pathResolver = pathResolver;
 			this.initialPath = initialPath;
 		}
 
@@ -23,14 +58,20 @@ namespace DragonSpark.Server.ClientHosting
 			get { return initialPath; }
 		}
 
-		protected override IEnumerable<ClientModule> CreateItem( string parameter )
+		protected override IEnumerable<TModule> CreateItem( string parameter )
 		{
-			var entry = new FileInfo( pathResolver.Resolve( parameter ?? "~/Client/application.js"  ) );
-			var root = new DirectoryInfo( Path.Combine( entry.DirectoryName, initialPath.ToStringArray( Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar ).First() ) );
-			var result = Create( entry, root );
+			var result = AppDomain.CurrentDomain.GetAssemblies()
+				.Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() )
+				.SelectMany( x => x.GetManifestResourceNames().Select( y => new AssemblyResource( x, y ) ) ).Where( IsResource ).Select( Create ).ToArray();
 			return result;
 		}
 
-		protected abstract IEnumerable<ClientModule> Create( FileInfo entryPoint, DirectoryInfo root );
+		protected virtual bool IsResource( AssemblyResource resource )
+		{
+			var result = resource.ResourceName.StartsWith( string.Concat( resource.Assembly.GetName().Name, ".", InitialPath ), StringComparison.InvariantCultureIgnoreCase );
+			return result;
+		}
+
+		protected abstract TModule Create( AssemblyResource resource );
 	}
 }

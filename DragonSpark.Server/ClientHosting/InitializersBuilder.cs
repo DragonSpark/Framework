@@ -1,22 +1,15 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DragonSpark.Extensions;
-using DragonSpark.Io;
+using System;
 
 namespace DragonSpark.Server.ClientHosting
 {
 	public class InitializersBuilder : ClientModuleBuilder
 	{
-		public InitializersBuilder( IPathResolver pathResolver, string initialPath = "viewmodels" ) : base( pathResolver, initialPath )
+		public InitializersBuilder( string initialPath = "viewmodels" ) : base( initialPath )
 		{}
 
-		protected override IEnumerable<ClientModule> Create( FileInfo entryPoint, DirectoryInfo root )
+		protected override bool IsResource( AssemblyResource resource )
 		{
-			var result = new DirectoryInfo( Path.Combine( entryPoint.DirectoryName, InitialPath ) ).EnumerateFiles( "*.initialize.js", SearchOption.AllDirectories ).Select( x => new ClientModule
-			{
-				Path = root.DetermineRelative( x, false ).Transform( z => Path.Combine( Path.GetDirectoryName( z ), Path.GetFileNameWithoutExtension(z) ).ToUri() )
-			} ).ToArray();
+			var result = base.IsResource( resource ) && resource.ResourceName.EndsWith( ".initialize.js", StringComparison.InvariantCultureIgnoreCase );
 			return result;
 		}
 	}

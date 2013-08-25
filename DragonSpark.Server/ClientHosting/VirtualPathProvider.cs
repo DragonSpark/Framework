@@ -1,16 +1,16 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
 using System.Web.Hosting;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Server.ClientHosting
 {
 	public class VirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
-		public const string Path = "~/Resources/Embedded";
+		public const string Path = "~/Client";
 
 		readonly System.Web.Hosting.VirtualPathProvider contained;
 

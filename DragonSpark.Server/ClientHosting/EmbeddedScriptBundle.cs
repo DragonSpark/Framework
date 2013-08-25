@@ -1,26 +1,50 @@
 ﻿using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web.Optimization;
 namespace DragonSpark.Server.ClientHosting
 {
-	[AttributeUsage( AttributeTargets.Assembly, AllowMultiple = true )]
-	public class EmbeddedResourceAttribute : Attribute
+	[AttributeUsage( AttributeTargets.Assembly )]
+	public class ClientApplicationAttribute : ClientResourcesAttribute
 	{
-		public EmbeddedResourceAttribute( string filename )
+		public ClientApplicationAttribute() : base( "application" )
+		{}
+	}
+
+	[AttributeUsage( AttributeTargets.Assembly )]
+	public class ClientResourcesAttribute : Attribute
+	{
+		readonly string name;
+
+		public ClientResourcesAttribute( string name )
 		{
-			Filename = filename;
+			this.name = name;
 		}
 
-		public string Filename { get; set; }
-
-		/*public string ResourceName { get; set; }*/
-
-		/*public EmbeddedResourceAttribute(string filename, string resourceName)
+		public string Name
 		{
-		  this.ResourceName = resourceName;
-		}*/
+			get { return name; }
+		}
+	}
+
+	[AttributeUsage( AttributeTargets.Assembly, AllowMultiple = true )]
+	public class ClientResourceAttribute : Attribute
+	{
+		public ClientResourceAttribute( string fileName )
+		{
+			FileName = fileName;
+		}
+
+		public string FileName { get; private set; }
+
+		public string GetName( Assembly assembly )
+		{
+			var result = string.Concat( assembly.GetName().Name, '.', FileName.Replace( Path.AltDirectorySeparatorChar, '.' ) );
+			return result;
+		}
 	}
 
 	public class EmbeddedScriptsBundle : ScriptBundle
@@ -30,10 +54,8 @@ namespace DragonSpark.Server.ClientHosting
 
 		public override IEnumerable<BundleFile> EnumerateFiles( BundleContext context )
 		{
-			var files = AppDomain.CurrentDomain.GetAssemblies()
-				.Where( x => x.IsDecoratedWith<EmbeddedResourceAttribute>() )
-				.Select( x => x.FromMetadata<EmbeddedResourceAttribute, string>( y => y.Filename )
-				.Transform( y => new EmbeddedResourceFile( x.GetManifestResourceStream( y ), string.Concat( Path, System.IO.Path.AltDirectorySeparatorChar, x.GetName().Name, System.IO.Path.AltDirectorySeparatorChar, y ) ) ) );
+			var files = AppDomain.CurrentDomain.GetAssemblies().SelectMany( x => x.GetAttributes<ClientResourceAttribute>().Select( y => new { Assembly = x, Attribute = y } ) )
+				.Select( x => new EmbeddedResourceFile( x.Assembly.GetManifestResourceStream( x.Attribute.GetName( x.Assembly ) ), string.Concat( Path, System.IO.Path.AltDirectorySeparatorChar, x.Assembly.GetName().Name, System.IO.Path.AltDirectorySeparatorChar, x.Attribute.FileName ) ) );
 			var result = files.Select( x => new BundleFile( x.VirtualPath, x ) ).ToArray();
 			return result;
 		}

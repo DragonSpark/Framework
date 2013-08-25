@@ -1,4 +1,5 @@
-﻿using DragonSpark.Objects;
+﻿using DragonSpark.Io;
+using DragonSpark.Objects;
 using DragonSpark.Server.ClientHosting;
 using System.Web;
 using System.Web.Hosting;
@@ -12,22 +13,26 @@ namespace DragonSpark.Server.Configuration
 {
 	public class EnableEmbeddedScripts : IHttpApplicationConfigurator, IRouteHandler
 	{
-		[DefaultPropertyValue( "Resources/Embedded/{assemblyName}/{*filePath}" )]
+		[DefaultPropertyValue( "Client/{assemblyName}/{*filePath}" )]
 		public string RouteTemplate { get; set; }
 
 		[DefaultPropertyValue( VirtualPathProvider.Path )]
 		public string VirtualPath { get; set; }
 
+		[IoCDefault]
+		public IPathResolver PathResolver { get; set; }
+
 		public void Configure( HttpConfiguration configuration )
 		{
 			BundleTable.VirtualPathProvider = new VirtualPathProvider( HostingEnvironment.VirtualPathProvider );
-			RouteTable.Routes.MapRoute( "EmbeddedScripts", RouteTemplate ).RouteHandler = this;
+			RouteTable.Routes.MapRoute( "Client", RouteTemplate ).RouteHandler = this;
 			BundleTable.Bundles.Add( new EmbeddedScriptsBundle( VirtualPath ) );
 		}
 
 		IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
 		{
-			return new EmbeddedScriptHttpHandler(requestContext.RouteData);
+			var result = new EmbeddedScriptHttpHandler( PathResolver, requestContext.RouteData );
+			return result;
 		}
 	}
 }
