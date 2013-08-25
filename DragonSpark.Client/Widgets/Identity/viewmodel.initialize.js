@@ -1,5 +1,4 @@
 ﻿define(["dragonspark/application", "dragonspark/configuration", "widgets/identity/signout"], function (application, configuration) {
-	alert( 124 );
 	var instance = {};
 	application.on("application:operations:refreshing").then(function (profile) {
 		profile.items.pushAll([
