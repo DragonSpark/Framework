@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Io;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,12 +10,12 @@ using System.Web.Routing;
 
 namespace DragonSpark.Server.ClientHosting
 {
-	public class EmbeddedScriptHttpHandler : IHttpHandler
+	public class ClientResourceHttpHandler : IHttpHandler
 	{
 		readonly IPathResolver pathResolver;
 		readonly RouteData routeData;
 
-		public EmbeddedScriptHttpHandler( IPathResolver pathResolver, RouteData routeData )
+		public ClientResourceHttpHandler( IPathResolver pathResolver, RouteData routeData )
 		{
 			this.pathResolver = pathResolver;
 			this.routeData = routeData;
@@ -33,7 +34,6 @@ namespace DragonSpark.Server.ClientHosting
 			var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault( x => x.GetName().Name == assemblyName );
 
 			var filePath = routeDataValues[ "filePath" ].ToString();
-
 			var stream = DetermineLocal( assembly, filePath ) ?? assembly.Transform( x => new[] { filePath, string.Concat( assemblyName, ".", filePath ).Replace( Path.AltDirectorySeparatorChar, '.' ) }.Select( x.GetManifestResourceStream ).NotNull().FirstOrDefault() );
 			stream.NotNull( x =>
 			{
@@ -43,12 +43,37 @@ namespace DragonSpark.Server.ClientHosting
 			} );
 		}
 
+		static string DeterminePath( string root, string filePath, string name )
+		{
+			var result = Path.Combine( root, filePath );
+			if ( !File.Exists( result ) )
+			{
+				var directory = root;
+				var queue = new Queue<string>( filePath.Replace( name, string.Empty ).ToStringArray( '.' ) );
+				while ( queue.Any() )
+				{
+					var file = Path.Combine( directory, string.Join( ".", queue.ToArray() ) );
+					if ( File.Exists( file ) )
+					{
+						return file;
+					}
+					directory = Path.Combine( directory, queue.Dequeue() );
+				}
+				return null;
+			}
+			return result;
+		}
+
 		Stream DetermineLocal( Assembly assembly, string filePath )
 		{
 			try
 			{
-				var path = Path.Combine( pathResolver.Resolve( "~/" ), "..", assembly.GetName().Name, filePath );
-				var result = File.Exists( path ) ? new MemoryStream( File.ReadAllBytes( path ) ) : null;
+				var name = assembly.GetName().Name;
+				var root = Path.Combine( pathResolver.Resolve( "~/" ), "..", name );
+
+				var path = DeterminePath( root, filePath, name );
+
+				var result = path.Transform( x => new MemoryStream( File.ReadAllBytes( x ) ) );
 				return result;
 			}
 			catch ( IOException )

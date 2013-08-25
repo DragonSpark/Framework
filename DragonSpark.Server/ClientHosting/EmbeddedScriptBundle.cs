@@ -47,9 +47,9 @@ namespace DragonSpark.Server.ClientHosting
 		}
 	}
 
-	public class EmbeddedScriptsBundle : ScriptBundle
+	public class ClientResourcesBundle : ScriptBundle
 	{
-		public EmbeddedScriptsBundle( string virtualPath = VirtualPathProvider.Path ) : base( virtualPath )
+		public ClientResourcesBundle( string virtualPath = VirtualPathProvider.Path ) : base( virtualPath )
 		{}
 
 		public override IEnumerable<BundleFile> EnumerateFiles( BundleContext context )

@@ -11,7 +11,7 @@ using VirtualPathProvider = DragonSpark.Server.ClientHosting.VirtualPathProvider
 
 namespace DragonSpark.Server.Configuration
 {
-	public class EnableEmbeddedScripts : IHttpApplicationConfigurator, IRouteHandler
+	public class EnableClientResources : IHttpApplicationConfigurator, IRouteHandler
 	{
 		[DefaultPropertyValue( "Client/{assemblyName}/{*filePath}" )]
 		public string RouteTemplate { get; set; }
@@ -26,12 +26,12 @@ namespace DragonSpark.Server.Configuration
 		{
 			BundleTable.VirtualPathProvider = new VirtualPathProvider( HostingEnvironment.VirtualPathProvider );
 			RouteTable.Routes.MapRoute( "Client", RouteTemplate ).RouteHandler = this;
-			BundleTable.Bundles.Add( new EmbeddedScriptsBundle( VirtualPath ) );
+			BundleTable.Bundles.Add( new ClientResourcesBundle( VirtualPath ) );
 		}
 
 		IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
 		{
-			var result = new EmbeddedScriptHttpHandler( PathResolver, requestContext.RouteData );
+			var result = new ClientResourceHttpHandler( PathResolver, requestContext.RouteData );
 			return result;
 		}
 	}

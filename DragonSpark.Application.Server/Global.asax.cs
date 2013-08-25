@@ -9,6 +9,7 @@ namespace DragonSpark.Application.Server
 		{
 			var initializer = new ApplicationInitializer( new Configuration.Server().Instance ); 
 			initializer.Initialize( GlobalConfiguration.Configuration );
+			// RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
 		}
 	}
 }

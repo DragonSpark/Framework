@@ -241,7 +241,7 @@
     </Compile>
     <Compile Include="ClientHosting\ClientModuleBuilder.cs" />
     <Compile Include="ClientHosting\CommandsBuilder.cs" />
-    <Compile Include="ClientHosting\EmbeddedScriptHttpHandler.cs" />
+    <Compile Include="ClientHosting\ClientResourceHttpHandler.cs" />
     <Compile Include="ClientHosting\EmbeddedResourceFile.cs" />
     <Compile Include="ClientHosting\IAuthorizer.cs" />
     <Compile Include="ClientHosting\InitializersBuilder.cs" />
@@ -276,7 +276,7 @@
     <Compile Include="Configuration\ClientPathExtension.cs" />
     <Compile Include="Configuration\CustomAuthenticationClientRegistration.cs" />
     <Compile Include="Configuration\EnableAttributeRouting.cs" />
-    <Compile Include="Configuration\EnableEmbeddedScripts.cs" />
+    <Compile Include="Configuration\EnableClientResources.cs" />
     <Compile Include="Configuration\EnableQuerySupport.cs" />
     <Compile Include="Configuration\IgnoreDirective.cs" />
     <Compile Include="Configuration\IgnoreDirectiveCollection.cs" />

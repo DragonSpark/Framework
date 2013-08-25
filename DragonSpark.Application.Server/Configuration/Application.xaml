@@ -35,20 +35,13 @@
         <x:Type Type="configuration:Application" />
     </dsweb:EnableAttributeRouting>
     <dsweb:EnableQuerySupport />
-    <dsweb:EnableEmbeddedScripts />
+    <dsweb:EnableClientResources />
     <dsweb:BundlesConfigurator>
         <dsweb:BundlesConfigurator.Ignore>
             <dsweb:IgnoreDirective Item="*.intellisense.js" />
             <dsweb:IgnoreDirective Item="*-vsdoc.js" />
             <dsweb:IgnoreDirective Item="*.debug.js" Mode="WhenEnabled" />
         </dsweb:BundlesConfigurator.Ignore>
-        <dsweb:ScriptBundle Path="~/Scripts/Vendor">
-            <dsweb:BundleFile File="~/Scripts/jquery-{version}.js" />
-            <dsweb:BundleFile File="~/Scripts/bootstrap.min.js" />
-            <dsweb:BundleFile File="~/Scripts/knockout-{version}.js" />
-            <dsweb:BundleFile File="~/Scripts/knockout.mapping-latest.js" />
-            <dsweb:BundleFile File="~/Scripts/linq.min.js" />
-        </dsweb:ScriptBundle>
         <dsweb:StyleBundle Path="~/Content/css">
             <dsweb:BundleFile File="~/Content/ie10mobile.css" />
             <dsweb:BundleFile File="~/Content/bootstrap.min.css" />
