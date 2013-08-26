@@ -72,6 +72,10 @@
     <EmbeddedResource Include="Views\welcome.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
+      <Project>{AA6DF806-14F1-4451-BFFC-1823E9340826}</Project>
+      <Name>DragonSpark.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
       <Project>{3CCA84F9-0680-438A-9A0D-8DBADA88B909}</Project>
       <Name>DragonSpark.Server</Name>
