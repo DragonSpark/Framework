@@ -1,8 +1,13 @@
-﻿using System;
+﻿using DragonSpark.Runtime;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Extensions
 {
+	public class StringReplacementDictionary : Dictionary<string, string>
+	{}
+
 	public static class StringExtensions
 	{
 		/*public static string ToMembershipName( this string target )
@@ -11,6 +16,13 @@ namespace DragonSpark.Extensions
 			string result = credential.UserName ?? string.Empty;
 			return result;
 		}*/
+
+		public static string WithReplacements( this string target, StringReplacementDictionary replacements = null )
+		{
+			var parameter = replacements ?? ServiceLocation.Locate<StringReplacementDictionary>();
+			var result = parameter.Transform( x => string.Format( NamedTokenFormatter.Instance, target, parameter ) ) ?? target;
+			return result;
+		}
 
 		public static string Capitalized( this string target )
 		{

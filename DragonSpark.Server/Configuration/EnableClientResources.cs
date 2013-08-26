@@ -22,6 +22,9 @@ namespace DragonSpark.Server.Configuration
 		[IoCDefault]
 		public IPathResolver PathResolver { get; set; }
 
+		[DefaultPropertyValue( ".." )]
+		public string FrameworkPath { get; set; } // TODO: Figure this out.  It's lowwwwwwww rent.
+
 		public void Configure( HttpConfiguration configuration )
 		{
 			BundleTable.VirtualPathProvider = new VirtualPathProvider( HostingEnvironment.VirtualPathProvider );
@@ -31,7 +34,7 @@ namespace DragonSpark.Server.Configuration
 
 		IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
 		{
-			var result = new ClientResourceHttpHandler( PathResolver, requestContext.RouteData );
+			var result = new ClientResourceHttpHandler( PathResolver, requestContext.RouteData, FrameworkPath );
 			return result;
 		}
 	}

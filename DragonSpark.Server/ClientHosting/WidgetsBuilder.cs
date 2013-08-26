@@ -1,6 +1,4 @@
-using DragonSpark.Extensions;
 using System;
-using System.IO;
 
 namespace DragonSpark.Server.ClientHosting
 {
@@ -17,11 +15,8 @@ namespace DragonSpark.Server.ClientHosting
 
 		protected override WidgetModule Create( AssemblyResource resource )
 		{
-			return new WidgetModule
-			{
-				Name = resource.ResourceName,
-				Path = string.Concat( resource.Assembly.FromMetadata<ClientResourcesAttribute, string>( x => x.Name ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resource.ResourceName ) )
-			};
+			var result = new WidgetModule { Name = resource.ResourceName, Path = CreatePath( resource ) };
+			return result;
 		}
 	}
 }

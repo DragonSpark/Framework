@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Objects;
 using System;
@@ -37,10 +39,8 @@ namespace DragonSpark.Server.ClientHosting
 
 		protected override ClientModule Create( AssemblyResource resource )
 		{
-			return new ClientModule
-			{
-				Path = string.Concat( resource.Assembly.FromMetadata<ClientResourcesAttribute, string>( x => x.Name ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resource.ResourceName ) )
-			};
+			var result = new ClientModule { Path = CreatePath( resource ) };
+			return result;
 		}
 	}
 
@@ -73,5 +73,28 @@ namespace DragonSpark.Server.ClientHosting
 		}
 
 		protected abstract TModule Create( AssemblyResource resource );
+
+		protected string CreatePath( AssemblyResource resource )
+		{
+			var assembly = resource.Assembly.FromMetadata<ClientResourcesAttribute, string>( x => x.Name );
+			var name = resource.Assembly.GetName().Name;
+			var resourceName = resource.ResourceName.StartsWith( name ) ? DeterminePath( resource.ResourceName.Substring( name.Length + 1 ) ) : resource.ResourceName;
+
+			var result = string.Concat( assembly, Path.AltDirectorySeparatorChar, Path.GetDirectoryName( resourceName ).Replace( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resourceName ) );
+			return result;
+		}
+
+		static string DeterminePath( string resourceName )
+		{
+			var parts = resourceName.ToStringArray( '.' );
+
+			var lower = parts.FirstOrDefault( x => char.IsLetter( x[0] ) && char.IsLower( x[0] ) );
+
+			var index = Array.IndexOf( parts, lower );
+
+			var separator = Path.AltDirectorySeparatorChar.ToString();
+			var result = index > -1 && index < parts.Length ? string.Concat( string.Join( separator, parts.Take( index ) ), separator, string.Join( ".", parts.Skip( index ).Take( parts.Length - index ) ) ) : resourceName;
+			return result;
+		}
 	}
 }

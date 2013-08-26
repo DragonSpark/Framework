@@ -1,3 +1,4 @@
+using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Io;
 using System;
@@ -14,11 +15,13 @@ namespace DragonSpark.Server.ClientHosting
 	{
 		readonly IPathResolver pathResolver;
 		readonly RouteData routeData;
+		readonly string frameworkPath;
 
-		public ClientResourceHttpHandler( IPathResolver pathResolver, RouteData routeData )
+		public ClientResourceHttpHandler( IPathResolver pathResolver, RouteData routeData, string frameworkPath )
 		{
 			this.pathResolver = pathResolver;
 			this.routeData = routeData;
+			this.frameworkPath = frameworkPath;
 		}
 
 		public bool IsReusable
@@ -26,19 +29,19 @@ namespace DragonSpark.Server.ClientHosting
 			get { return false; }
 		}
 
-		public void ProcessRequest( HttpContext context )
+		void IHttpHandler.ProcessRequest( HttpContext context )
 		{
 			var routeDataValues = routeData.Values;
 
 			var assemblyName = routeDataValues[ "assemblyName" ].ToString();
-			var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault( x => x.GetName().Name == assemblyName );
+			var assembly = AppDomain.CurrentDomain.GetAssemblies().Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() ).FirstOrDefault( x => x.GetName().Name == assemblyName );
 
 			var filePath = routeDataValues[ "filePath" ].ToString();
 			var stream = DetermineLocal( assembly, filePath ) ?? assembly.Transform( x => new[] { filePath, string.Concat( assemblyName, ".", filePath ).Replace( Path.AltDirectorySeparatorChar, '.' ) }.Select( x.GetManifestResourceStream ).NotNull().FirstOrDefault() );
 			stream.NotNull( x =>
 			{
 				context.Response.Clear();
-				context.Response.ContentType = "text/javascript";
+				context.Response.ContentType = MimeMapping.GetMimeMapping( filePath );
 				x.CopyTo( context.Response.OutputStream );
 			} );
 		}
@@ -69,17 +72,17 @@ namespace DragonSpark.Server.ClientHosting
 			try
 			{
 				var name = assembly.GetName().Name;
-				var root = Path.Combine( pathResolver.Resolve( "~/" ), "..", name );
 
-				var path = DeterminePath( root, filePath, name );
+				var candidates = new[] { frameworkPath, ".." };
 
-				var result = path.Transform( x => new MemoryStream( File.ReadAllBytes( x ) ) );
+				var result = candidates.Select( x => Path.Combine( pathResolver.Resolve( "~/" ), x, name ).Transform( y => DeterminePath( y, filePath, name ).Transform( z => new MemoryStream( File.ReadAllBytes( z ) ) ) ) ).NotNull().FirstOrDefault();
+
 				return result;
 			}
 			catch ( IOException )
 			{
 				return null;
-			}
+			}	
 		}
 	}
 }

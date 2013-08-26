@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,12 +89,12 @@
     <EmbeddedResource Include="Widgets\Identity\view.html" />
     <EmbeddedResource Include="Widgets\Identity\viewmodel.initialize.js" />
     <EmbeddedResource Include="Widgets\Identity\viewmodel.js" />
-    <EmbeddedResource Include="Widgets\Operations\images\Aborted.png" />
-    <EmbeddedResource Include="Widgets\Operations\images\Canceled.png" />
-    <EmbeddedResource Include="Widgets\Operations\images\Completed.png" />
-    <EmbeddedResource Include="Widgets\Operations\images\CompletedWithException.png" />
-    <EmbeddedResource Include="Widgets\Operations\images\Executing.png" />
-    <EmbeddedResource Include="Widgets\Operations\images\None.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\Aborted.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\Canceled.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\Completed.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\CompletedWithException.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\Executing.png" />
+    <EmbeddedResource Include="Widgets\Operations\Images\None.png" />
     <EmbeddedResource Include="Widgets\Operations\monitor.js" />
     <EmbeddedResource Include="Widgets\Operations\operation.html" />
     <EmbeddedResource Include="Widgets\Operations\operation.js" />
@@ -102,13 +103,16 @@
     <EmbeddedResource Include="Widgets\Operations\viewmodel.js" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
-      <Project>{3CCA84F9-0680-438A-9A0D-8DBADA88B909}</Project>
-      <Name>DragonSpark.Server</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Core\knockout.mapping-latest.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\knockout.mapping-latest.js" />
+    <EmbeddedResource Include="Core\jquery.dateFormat-1.0.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->

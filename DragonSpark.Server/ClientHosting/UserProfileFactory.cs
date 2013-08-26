@@ -1,32 +1,22 @@
-using System.Data.Entity;
-using System.Security.Principal;
-using DragonSpark.Entity;
 using DragonSpark.Extensions;
 using DragonSpark.Objects;
 using DragonSpark.Security;
+using System.Security.Principal;
 
 namespace DragonSpark.Server.ClientHosting
 {
 	public class UserProfileFactory<TUserProfile> : Factory<IPrincipal, TUserProfile> where TUserProfile : UserProfile
 	{
-		readonly DbContext context;
+		readonly IUserService userService;
 
-		public UserProfileFactory( DbContext context )
+		public UserProfileFactory( IUserService userService )
 		{
-			this.context = context;
+			this.userService = userService;
 		}
 
 		protected override TUserProfile CreateItem( IPrincipal parameter )
 		{
-			return parameter.Identity.IsAuthenticated ? Load( parameter ) : null;
-		}
-
-		TUserProfile Load( IPrincipal parameter )
-		{
-			var set = context.Set<TUserProfile>();
-			var id = parameter.Identity.Name;
-			var result = set.Find( id ).To<TUserProfile>();
-			context.Include( result, x => x.Claims );
+			var result = parameter.Identity.IsAuthenticated ? userService.Get( parameter.Identity.Name ).To<TUserProfile>() : null;
 			return result;
 		}
 	}
