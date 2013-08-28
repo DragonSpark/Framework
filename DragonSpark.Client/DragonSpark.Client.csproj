@@ -89,6 +89,7 @@
     <EmbeddedResource Include="Widgets\Identity\view.html" />
     <EmbeddedResource Include="Widgets\Identity\viewmodel.initialize.js" />
     <EmbeddedResource Include="Widgets\Identity\viewmodel.js" />
+    <EmbeddedResource Include="Widgets\Operations\core.js" />
     <EmbeddedResource Include="Widgets\Operations\Images\Aborted.png" />
     <EmbeddedResource Include="Widgets\Operations\Images\Canceled.png" />
     <EmbeddedResource Include="Widgets\Operations\Images\Completed.png" />
@@ -113,6 +114,9 @@
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\jquery.signalR-2.0.0-rc1.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->

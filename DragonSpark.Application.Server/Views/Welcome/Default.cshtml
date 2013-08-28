@@ -26,14 +26,15 @@
     	</style>
 		
 	    <script type="text/javascript">
-	    	if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-	    		var msViewportStyle = document.createElement("style");
-	    		var mq = "@@-ms-viewport{width:auto!important}";
-	    		msViewportStyle.appendChild(document.createTextNode(mq));
-	    		document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-	    	}
+    		if (navigator.userAgent.match(/IEMobile\/10\.0/)) 
+    		{
+    			var msViewportStyle = document.createElement("style");
+    			var mq = "@@-ms-viewport{width:auto!important}";
+    			msViewportStyle.appendChild(document.createTextNode(mq));
+    			document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+    		}
     	</script>
-    </head>
+	</head>
 	<body style="height: 100%; overflow-x: hidden">
 		<div id="applicationHost" style="height: 100%">
 			<div class="splash">
@@ -44,6 +45,8 @@
 		
 		@Scripts.Render( VirtualPathProvider.Path )
 		
-        <script type="text/javascript" src="~/Client/DragonSpark.Client/Core/require.js" data-main="Client/Application"></script>
+		<script src="~/signalr/hubs"></script>
+		
+		<script type="text/javascript" src="~/Client/DragonSpark.Client/Core/require.js" data-main="Client/Application"></script>
 	</body>
 </html>

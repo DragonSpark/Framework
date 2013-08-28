@@ -222,6 +222,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             return 'transitions/' + name;
         },
         /**
+         * The name of the transition to use in all compositions.
+         * @property {string} defaultTransitionName
+         * @default null
+         */
+        defaultTransitionName: null,
+        /**
          * Represents the currently executing composition transaction.
          * @property {CompositionTransaction} current
          */
@@ -385,8 +391,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
 
             tryActivate(context, function () {
-                if (context.beforeBind) {
-                    context.beforeBind(child, context);
+                if (context.binding) {
+                    context.binding(context.child, context.parent, context);
                 }
 
                 if (context.preserveContext && context.bindingContext) {
@@ -434,7 +440,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @return {promise} A promise for the view.
          */
         defaultStrategy: function (context) {
-            return viewLocator.locateViewForObject(context.model, context.viewElements);
+            return viewLocator.locateViewForObject(context.model, context.area, context.viewElements);
         },
         getSettings: function (valueAccessor, element) {
             var value = valueAccessor(),

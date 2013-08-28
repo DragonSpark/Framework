@@ -1,4 +1,4 @@
-﻿define(["durandal/system", "plugins/serializer"], function (system, serializer) {
+﻿define(["durandal/system"], function (system) {
 
 	function determineParameter(parameter) {
 		try {
@@ -8,11 +8,11 @@
 		} 
 	}
 
-	function invoke(name, parameter, method) {
+	function invoke(name, parameter, method, controller) {
 		var result = system.defer(function (dfd) {
-			var serialize = determineParameter(parameter);
+			var serialize = parameter ? determineParameter(parameter) : null;
 			$.ajax({
-				url: "Client/{0}".format(name),
+				url: "{0}/{1}".format(controller, name),
 				type: method ? method : parameter ? "POST" : "GET",
 				dataType: "json",
 				data: serialize,
@@ -31,17 +31,11 @@
 	}
 
 	return {
-		invoke: function (method, parameter) {
-			return invoke(method, parameter, "POST");
+		invoke: function (method, parameter, controller) {
+			return invoke(method, parameter, "POST", controller || "Session");
 		},
-		call: function (method, parameter) {
-			return invoke(method, parameter);
+		call: function (method, parameter, controller) {
+			return invoke(method, parameter, null, controller || "Session");
 		}
 	};
 });
-
-function ServiceError(message) {
-	this.message = message;
-	this.stack = "None Available.";
-}
-ServiceError.prototype = new Error;

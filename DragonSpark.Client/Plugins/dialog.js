@@ -43,6 +43,17 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     };
 
     /**
+     * Configures a custom view to use when displaying message boxes.
+     * @method setViewUrl
+     * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
+     * @static
+     */
+    MessageBox.setViewUrl = function(viewUrl){
+        delete MessageBox.prototype.getView;
+        MessageBox.prototype.viewUrl = viewUrl;
+    };
+
+    /**
      * The title to be used for the message box if one is not provided.
      * @property {string} defaultTitle
      * @default Application
@@ -103,13 +114,13 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         MessageBox:MessageBox,
         /**
          * The css zIndex that the last dialog was displayed at.
-         * @property {int} currentZIndex
+         * @property {number} currentZIndex
          */
         currentZIndex: 1050,
         /**
          * Gets the next css zIndex at which a dialog should be displayed.
          * @method getNextZIndex
-         * @param {int} The zIndex.
+         * @return {number} The next usable zIndex.
          */
         getNextZIndex: function () {
             return ++this.currentZIndex;
@@ -244,7 +255,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         },
         /**
          * Shows a message box.
-         * @method show
+         * @method showMessage
          * @param {string} message The message to display in the dialog.
          * @param {string} [title] The title message.
          * @param {string[]} [options] The options to provide to the user.
@@ -262,7 +273,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             return dialog.show(new this.MessageBox(message, title, options));
         },
         /**
-         * Installs this module into Durandal. Adds `app.showDialog` and `app.showMessage` convenience methods.
+         * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
          * @method install
          * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
          */

@@ -1,22 +1,4 @@
-﻿define(["dragonspark/enum", "./monitor"], function (enumerable, monitor) {
-	var instance = {
-		ExecutionStatus: new enumerable({
-			None: {},
-			Executing: {},
-			Canceling: {},
-			Canceled: { description: "Canceled by User" },
-			Aborted: {},
-			Completed: {},
-			CompletedWithException: { description: "Completed with Exception" },
-			CompletedWithFatalException: { description: "Completed with Fatal Exception (oops!)" }
-		}),
-		ExceptionHandlingAction: new enumerable({
-			None: {},
-			Continue: {},
-			Throw: {}
-		})
-	};
-
+﻿define(["./monitor", "dragonspark/application"], function ( monitor, application ) {
 	ko.bindingHandlers.operation = {
 		init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			var settings = valueAccessor();
@@ -50,5 +32,8 @@
 		}
 	};
 	
-	return instance;
+	application.on("application:refresh").then(function () {
+		monitor._broadcast("Refreshing Application... Please Wait.", "application:operations:refreshing", "application:operations:refreshed");
+	});
+	return {};
 });

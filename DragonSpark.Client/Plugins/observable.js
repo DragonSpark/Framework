@@ -2,10 +2,10 @@
  * Enables automatic observability of plain javascript object for ES5 compatible browsers. Also, converts promise properties into observables that are updated when the promise resolves.
  * @module observable
  * @requires system
- * @requires viewModelBinder
+ * @requires binder
  * @requires knockout
  */
-define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(system, viewModelBinder, ko) {
+define(['durandal/system', 'durandal/binder', 'knockout'], function(system, binder, ko) {
     var observableModule,
         toString = Object.prototype.toString,
         nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'],
@@ -310,10 +310,10 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
      * @method install
      */
     observableModule.install = function(options) {
-        var original = viewModelBinder.beforeBind;
+        var original = binder.binding;
 
-        viewModelBinder.beforeBind = function(obj, view, instruction) {
-            if(instruction.applyBindings && ! instruction.skipConversion){
+        binder.binding = function(obj, view, instruction) {
+            if(instruction.applyBindings && !instruction.skipConversion){
                 convertObject(obj);
             }
 

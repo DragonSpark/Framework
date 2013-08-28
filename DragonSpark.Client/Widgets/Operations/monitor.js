@@ -91,9 +91,5 @@
 			}
 		};
 	
-	application.on("application:refresh").then(function () {
-		instance._broadcast("Refreshing Application... Please Wait.", "application:operations:refreshing", "application:operations:refreshed");
-	}, instance);
-
 	return instance;
 });

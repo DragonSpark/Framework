@@ -46,7 +46,7 @@
                 <dsLogging:LogFatalExceptionHandler />
             </ds:ExceptionPolicyEntry>
         </ds:ExceptionPolicyDefinition>
-        <ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:ClientController.ClientExceptionReporting}">
+        <ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:ClientHub.ClientExceptionReporting}">
             <ds:ExceptionPolicyEntry ExceptionType="{x:Type dragonSpark:ClientException}" Action="None">
                 <dsLogging:LogExceptionAsInformationHandler />
                 <dsLogging:LogExceptionHandler />

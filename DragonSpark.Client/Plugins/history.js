@@ -1,5 +1,5 @@
 ﻿/**
- * Abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.
+ * This module is based on Backbone's core history support. It abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.
  * @module history
  * @requires system
  * @requires jquery
@@ -117,7 +117,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
 
         if (oldIE && history._wantsHashChange) {
             history.iframe = $('<iframe src="javascript:0" tabindex="-1" />').hide().appendTo('body')[0].contentWindow;
-            history.navigate(fragment);
+            history.navigate(fragment, false);
         }
 
         // Depending on whether we're using pushState or hashes, and whether
@@ -185,7 +185,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
 
         if (history.iframe) {
-            history.navigate(current);
+            history.navigate(current, false);
         }
         
         history.loadUrl();
@@ -208,12 +208,12 @@ define(['durandal/system', 'jquery'], function (system, $) {
      * Save a fragment into the hash history, or replace the URL state if the
      * 'replace' option is passed. You are responsible for properly URL-encoding
      * the fragment in advance.
-     * The options object can contain `trigger: true` if you wish to have the
-     * route callback be fired (not usually desirable), or `replace: true`, if
+     * The options object can contain `trigger: false` if you wish to not have the
+     * route callback be fired, or `replace: true`, if
      * you wish to modify the current URL without adding an entry to the history.
      * @method navigate
      * @param {string} fragment The url fragment to navigate to.
-     * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option.
+     * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
      * @return {boolean} Returns true/false from loading the url.
      */
     history.navigate = function(fragment, options) {
@@ -221,8 +221,14 @@ define(['durandal/system', 'jquery'], function (system, $) {
             return false;
         }
 
-        if (!options || options === true) {
-            options = {trigger: !!options};
+        if(options === undefined) {
+            options = {
+                trigger: true
+            };
+        }else if(system.isBoolean(options)) {
+            options = {
+                trigger: options
+            };
         }
 
         fragment = history.getFragment(fragment || '');
@@ -263,6 +269,14 @@ define(['durandal/system', 'jquery'], function (system, $) {
         if (options.trigger) {
             return history.loadUrl(fragment);
         }
+    };
+
+    /**
+     * Navigates back in the browser history.
+     * @method navigateBack
+     */
+    history.navigateBack = function() {
+        history.history.back();
     };
 
     /**

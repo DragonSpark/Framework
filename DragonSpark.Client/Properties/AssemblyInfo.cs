@@ -42,6 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: ClientResources( "dragonspark" )]
 [assembly: ClientResource( "Core/jquery-2.0.2.min.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/knockout-2.3.0.js", Priority = Priority.Lower )]
+[assembly: ClientResource( "Core/jquery.signalR-2.0.0-rc1.min.js" )]
 [assembly: ClientResource( "Core/jquery.dateFormat-1.0.js" )]
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/linq.min.js" )]

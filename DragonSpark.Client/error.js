@@ -1,4 +1,4 @@
-﻿define(["dragonspark/service", "dragonspark/configuration", "dragonspark/view", "plugins/dialog"], function (service, configuration, view, modal) {
+﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "service"], function (configuration, view, modal, service) {
 		
 	var ctor = function (error) {
 		var instance = configuration();
@@ -29,7 +29,7 @@
 	ctor.prototype.report = function () {
 		var self = this;
 		var payload = { Message: this.error.message, StackTrace: this.error.stack, ClientExceptionType: this.error.name };
-		return service.call( "Report", payload).always(function() {
+		return service.reportException( payload ).always(function() {
 			self.reported(true);
 		});
 	};

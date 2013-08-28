@@ -1,4 +1,4 @@
-﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "./service"], function (app, events, viewLocator, router, history, widget, system, service) {
+﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "dragonspark/service"], function (app, events, viewLocator, router, history, widget, system, service) {
 	function determineRoute(route) {
 		var colonIndex = route.indexOf(":");
 		var length = colonIndex > 0 ? colonIndex - 1 : route.length;
@@ -9,30 +9,37 @@
 		var result = route.substring(0, index);
 		return result;
 	}
-
 	var routers = [];
 	
 	var instance = $.extend(ko.observable(null), {
 		_build: function (targetRouter, items) {
 			routers.push(targetRouter);
 			targetRouter.map( items ).buildNavigationModel();
+			
+			var moduleId = instance().Navigation.NotFound.moduleId;
+			targetRouter.mapUnknownRoutes(moduleId);
 
 			items.map(function (i) {
 				if (i.children.length) {
-					var parts = i.moduleId.split("/");
-					parts.unshift();
-					var id = parts.join("/");
 					var config = {
-						moduleId: id,
+						moduleId: i.moduleId,
 						route: determineRoute(i.route)
 					};
 					i.childRouter = targetRouter.createChildRouter().makeRelative(config);
+					i.childRouter.on( 'router:route:before-config' ).then( function( configuration ) {
+						if ( configuration.moduleId == i.moduleId + "/" + moduleId )
+						{
+							configuration.moduleId = moduleId;	
+						}
+					} );
 					instance._build(i.childRouter, i.children);
 				}
 			});
 		},
 
 		_assign: function (data) {
+			instance(data);
+			
 			routers.map(function (i) {
 				i.reset();
 			});
@@ -44,11 +51,9 @@
 				ApplicationDetails.Version = new Version(ApplicationDetails.Version);
 				ApplicationDetails.DeploymentDate = new Date(ApplicationDetails.DeploymentDate);
 			}
-			
-			instance(data);
 		},
 		initialize: function() {
-			return service.call("Configuration").then(function (data) {
+			return service.call( "Configuration" ).then(function (data) {
 				return system.defer(function (dfd) {
 					instance._assign(data);
 				
@@ -87,17 +92,10 @@
 		},
 		
 		refresh : function() {
-			return service.call("Configuration").then(function (data) {
+			return service.call( "Configuration" ).then(function (data) {
 				instance.trigger("application:configuration:refreshing");
 				instance._assign(data);
 				
-				var moduleId = instance().Navigation.NotFound.moduleId;
-				router.mapUnknownRoutes(moduleId);
-				
-				// router.navigate(null, { trigger: true, replace: true });
-				
-				/*var shell = instance().Navigation.Shell;
-				app.setRoot(shell.moduleId, shell.transitionName);*/
 				instance.trigger("application:configuration:refreshed");
 			});
 		}

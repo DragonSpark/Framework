@@ -25,13 +25,13 @@ namespace DragonSpark.Server
 
 			configuration.DependencyResolver = new IoCContainer( locator );
 			configuration.Services.Replace( typeof(IHttpControllerActivator), new CompositionRoot( locator ) );
-			DependencyResolver.SetResolver(locator);
+			DependencyResolver.SetResolver( locator );
 
 			configuration.Formatters.Where( f => f.SupportedMediaTypes.Any( v => v.MediaType.Equals( "application/json", StringComparison.CurrentCultureIgnoreCase ) ) ).ToArray().Apply( x => configuration.Formatters.Remove( x ) );
 
 			var serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-			serializerSettings.Converters.Add(new IsoDateTimeConverter());
-			configuration.Formatters.Add(new JsonNetFormatter(serializerSettings));
+			serializerSettings.Converters.Add( new IsoDateTimeConverter() );
+			configuration.Formatters.Add( new JsonNetFormatter( serializerSettings ) );
 		}
 	}
 }

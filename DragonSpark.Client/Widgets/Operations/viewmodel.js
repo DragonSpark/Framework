@@ -1,11 +1,12 @@
-﻿define(["durandal/system", "durandal/binder", "./viewmodel.initialize", "./monitor", "./operation", "dragonspark/view"], function (system, binder, module, monitor, operation, view) {
+﻿define(["durandal/system", "durandal/binder", "./core", "./monitor", "./operation"], function (system, binder, core, monitor, operation) {
 	var ctor = function ()
 		{
+			this.core = core;
+		
 			this.context = ko.observable( this );
 			this.operations = ko.observableArray([]);
 			this._remaining = [];
-			this.module = module;
-			this.status = ko.observable(module.ExecutionStatus.None);
+			this.status = ko.observable(core.ExecutionStatus.None);
 			this.allowClose = ko.observable(true);
 			this.percentageComplete = ko.observable(0);
 
@@ -58,7 +59,7 @@
 
 		if ( items.length && !self._active) {
 			self._active = system.defer();
-			self.status(module.ExecutionStatus.Executing);
+			self.status(core.ExecutionStatus.Executing);
 			self._checkCompletion();
 		}
 
@@ -72,7 +73,7 @@
 
 		this.options().closeOnCompletion( this.options().closeOnCompletion() & args.error == null );
 
-		var next = !args.wasCancelled && ( args.error == null || ( !this.options().anyExceptionIsFatal() && ( this._current == null || this._current.exceptionHandlingAction() == module.ExceptionHandlingAction.Continue ) ) );
+		var next = !args.wasCancelled && ( args.error == null || ( !this.options().anyExceptionIsFatal() && ( this._current == null || this._current.exceptionHandlingAction() == core.ExceptionHandlingAction.Continue ) ) );
 		if (next) {
 			var length = this.operations().length;
 			var complete = length == 1 ? .5 : (this.operations().indexOf(this._current) + 1) / length;
@@ -104,7 +105,7 @@
 		this.operations.removeAll();
 		this._remaining.splice();
 
-		this.status(module.ExecutionStatus.None);
+		this.status(core.ExecutionStatus.None);
 		this.percentageComplete(0);
 		this._currentOperation = null;
 	},
@@ -119,22 +120,22 @@
 		});
 
 		this.percentageComplete(1);
-		var status = cancelled ? module.ExecutionStatus.Canceled : (function () {
+		var status = cancelled ? core.ExecutionStatus.Canceled : (function () {
 			var from = Enumerable.From(self.operations());
 			var item = from.FirstOrDefault(null, "$.exception() != null");
-			var result = item == null ? module.ExecutionStatus.Completed : self.options().anyExceptionIsFatal() || item.exception() instanceof FatalError ? module.ExecutionStatus.CompletedWithFatalException : module.ExecutionStatus.CompletedWithException;
+			var result = item == null ? core.ExecutionStatus.Completed : self.options().anyExceptionIsFatal() || item.exception() instanceof FatalError ? core.ExecutionStatus.CompletedWithFatalException : core.ExecutionStatus.CompletedWithException;
 			return result;
 		})();
 		this.status(status);
 
-		this.allowClose(status != module.ExecutionStatus.CompletedWithFatalException);
+		this.allowClose(status != core.ExecutionStatus.CompletedWithFatalException);
 		this.options().allowCancel( false );
 		
 		var close = this.allowClose() && this.options().closeOnCompletion() && e == null;
 		if (close) {
 			this.close();
 		}
-		var propagate = this._current != null && this._current.exception() != null && this._current.exceptionHandlingAction() == module.ExceptionHandlingAction.Throw ? this._current.exception() : null;
+		var propagate = this._current != null && this._current.exception() != null && this._current.exceptionHandlingAction() == core.ExceptionHandlingAction.Throw ? this._current.exception() : null;
 		this._current = null;
 		if ( propagate != null )
 		{

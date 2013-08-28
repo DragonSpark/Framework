@@ -1,8 +1,9 @@
 ﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, dialog, router, events) {
 	var dragonspark = window.$ds = {
+		_refreshing : ko.observable(false),
 		initialize: function () {
 			dragonspark.trigger("application:initializing", this);
-			return $.when(configuration.initialize()).then(function () {
+			return $.connection.hub.start().then( configuration.initialize ).then(function () {
 				dragonspark.trigger("application:initialized", this);
 			});
 		},
@@ -15,9 +16,9 @@
 			return function () {
 				if (f1) {
 					f1.apply(context, arguments);
-				}
+				}	
 				if (f2) {
-					f2.apply(context, arguments);
+					f2.apply(context, arguments);	
 				}
 			};
 		},
@@ -81,3 +82,9 @@ function FatalError(message) {
 	this.message = message;
 }
 FatalError.prototype = new Error;
+
+function ServiceError(message) {
+	this.message = message;
+	this.stack = "None Available.";
+}
+ServiceError.prototype = new Error;

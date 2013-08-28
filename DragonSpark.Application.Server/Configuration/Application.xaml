@@ -36,6 +36,7 @@
     </dsweb:EnableAttributeRouting>
     <dsweb:EnableQuerySupport />
     <dsweb:EnableClientResources />
+    <dsweb:EnableSignalR />
     <dsweb:BundlesConfigurator>
         <dsweb:BundlesConfigurator.Ignore>
             <dsweb:IgnoreDirective Item="*.intellisense.js" />

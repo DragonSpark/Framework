@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace DragonSpark.Application.Server.Controllers
 {
-    public class SecurityController : Controller
+	public class SecurityController : Controller
     {
 	    readonly ApplicationDetails applicationDetails;
 	    readonly IAuthenticationResultProcessor processor;
@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Server.Controllers
 		    this.processor = processor;
 	    }
 
-	    [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+	    [System.Web.Mvc.HttpPost, System.Web.Mvc.AllowAnonymous, ValidateAntiForgeryToken]
 		public ActionResult Login( string provider, string returnUrl )
 		{
 			return new ExternalLoginResult( provider, Url.Action( "ExternalLoginCallback", new { ReturnUrl = returnUrl } ) );
@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Server.Controllers
 			return result;
         }
 
-		[AllowAnonymous]
+		[System.Web.Mvc.AllowAnonymous]
 		public ActionResult ExternalLoginCallback( string returnUrl )
 		{
 			var authentication = OAuthWebSecurity.VerifyAuthentication( Url.Action( "ExternalLoginCallback", new { ReturnUrl = returnUrl } ) );
@@ -42,14 +42,14 @@ namespace DragonSpark.Application.Server.Controllers
 			return result;
 		}
 
-		[AllowAnonymous, ChildActionOnly]
+		[System.Web.Mvc.AllowAnonymous, ChildActionOnly]
 		public ActionResult ExternalLoginsList( string returnUrl )
 		{
 			ViewBag.ReturnUrl = returnUrl;
 			return PartialView( "_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData );
 		}
 
-        [AllowAnonymous]
+        [System.Web.Mvc.AllowAnonymous]
         public ActionResult Error()
         {
 	        var result = View( applicationDetails );

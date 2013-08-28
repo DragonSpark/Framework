@@ -23,7 +23,7 @@
 							<div data-bind="jqxCheckBox: { checked: options().closeOnCompletion }">Close when finished</div>
 						</div>
 					</div>
-					<button data-bind="visible: allowClose() && status().value >= module.ExecutionStatus.Completed.value, click: close" style="width: 100%; margin: 8px 0">Close</button>
+					<button data-bind="visible: allowClose() && status().value >= core.ExecutionStatus.Completed.value, click: close" style="width: 100%; margin: 8px 0">Close</button>
 				</div>		
 			</div>
 		</div>
