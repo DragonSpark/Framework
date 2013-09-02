@@ -23,7 +23,8 @@
 			};
 		},
 		
-		refresh: function () {
+		refresh: function ()
+		{
 			dragonspark.trigger("application:refresh", this);
 		},
 		

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.IoC
 {
-	public class UnityServiceLocator : ServiceLocatorImplBase
+	public class UnityServiceLocator : ServiceLocatorImplBase, IServiceRegistry
 	{
 		readonly IUnityContainer container;
 		readonly BitFlipper disposed = new BitFlipper();
@@ -16,6 +16,7 @@ namespace DragonSpark.IoC
 		{
 			this.container = container;
 			this.container.RegisterInstance<IServiceLocator>( this );
+			this.container.RegisterInstance<IServiceRegistry>( this );
 		}
 
 		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
@@ -24,7 +25,8 @@ namespace DragonSpark.IoC
 			{
 				throw new ObjectDisposedException( "container" );
 			}
-			return container.ResolveAll( serviceType, new ResolverOverride[0] );
+			var result = container.ResolveAllRegistered( serviceType ).ToArray();
+			return result;
 		}
 
 		protected override object DoGetInstance( Type serviceType, string key )
@@ -61,6 +63,25 @@ namespace DragonSpark.IoC
 
 				ServiceLocator.SetLocatorProvider( () => null );
 			} );
+		}
+
+		public void Register( Type @from, Type to )
+		{
+			container.RegisterType( from, to, new ExternallyControlledLifetimeManager() );
+		}
+
+		public void Register( Type type, object instance )
+		{
+			container.RegisterInstance( type, instance, new ExternallyControlledLifetimeManager() );
+		}
+
+		public void RegisterFactory( Type type, Func<object> factory )
+		{
+			container.RegisterType( type, new TransientLifetimeManager(), new InjectionFactory( x =>
+			{
+				var o = factory();
+				return o;
+			} ) );
 		}
 	}
 }

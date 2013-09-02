@@ -229,6 +229,7 @@
     <Compile Include="ConfigureApplicationFromMetadataCommand.cs" />
     <Compile Include="ConfiguresApplicationAttribute.cs" />
     <Compile Include="FatalApplicationException.cs" />
+    <Compile Include="IoC\IServiceRegistry.cs" />
     <Compile Include="Io\IPathResolver.cs" />
     <Compile Include="Logging\Configuration\ConsoleLogFactory.cs" />
     <Compile Include="Logging\Configuration\EventListenerExtensions.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Runtime\TaskContext.cs" />
     <Compile Include="Runtime\TaskDelegateWorker.cs" />
     <Compile Include="Security\UserProfile.cs" />
+    <Compile Include="ThreadLocalStorage.cs" />
     <Compile Include="VersionConverter.cs" />
     <Compile Include="Entity\CreateDatabaseIfNotExists.cs" />
     <Compile Include="Entity\DatabaseInitializationConfigurationCommand.cs" />

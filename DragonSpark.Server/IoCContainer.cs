@@ -20,19 +20,31 @@ namespace DragonSpark.Server
 
 		public override object GetService( Type serviceType )
 		{
-			var result = locator.GetInstance( serviceType ) ?? base.GetService( serviceType );
+			var result = locator.GetInstance( serviceType );
 			return result;
 		}
 
 		public override IEnumerable<object> GetServices( Type serviceType )
 		{
-			var result = locator.GetAllInstances( serviceType ).Concat( base.GetServices( serviceType ) ?? Enumerable.Empty<object>() ).ToArray();
+			var result = locator.GetAllInstances( serviceType );
 			return result;
+		}
+
+		public override void Register( Type serviceType, Func<object> activator )
+		{
+			var target = locator ?? ServiceLocator.Current;
+			target.RegisterFactory( serviceType, activator );
+		}
+
+		public override void Register( Type serviceType, IEnumerable<Func<object>> activators )
+		{
+			Register( serviceType, () => activators.Select( x => x() ).ToArray() );
 		}
 
 		protected override void Dispose( bool disposing )
 		{
 			disposing.IsTrue( locator.TryDispose );
+			base.Dispose( disposing );
 		}
 
 		public IDependencyScope BeginScope()

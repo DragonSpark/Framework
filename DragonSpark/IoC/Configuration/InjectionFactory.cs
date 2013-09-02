@@ -17,7 +17,7 @@ namespace DragonSpark.IoC.Configuration
 		{
 			var factory = BuildKey.Transform( x => x.Create<IFactory>( container ) );
 
-			var parameter = Parameter.AsTo<NamedTypeBuildKey,object>( x => x.Create( container ) ) ?? Parameter;
+			var parameter = Parameter.AsTo<NamedTypeBuildKey,object>( x => x.Create( container ) ) ?? ( Parameter is NamedTypeBuildKey ? null : Parameter );
 
 			var result = factory.Transform( x => x.Create( type, parameter ) );
 			return result;

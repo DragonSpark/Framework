@@ -244,13 +244,14 @@
   <ItemGroup>
     <Compile Include="ApplicationConfigurationCommand.cs" />
     <Compile Include="ApplicationInitializer.cs" />
+    <Compile Include="ApplicationModule.cs" />
     <Compile Include="ClientHosting\AnonymousAuthorizer.cs" />
     <Compile Include="ClientHosting\AuthenticatedAuthorizer.cs" />
     <Compile Include="ClientHosting\ClaimsAuthorizer.cs" />
     <Compile Include="ClientHosting\ClientApplicationConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClientHosting\ClientControllerBase.cs" />
+    <Compile Include="ClientHosting\ApplicationHubBase.cs" />
     <Compile Include="ClientHosting\ClientModule.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -342,6 +343,7 @@
     <Compile Include="Security\PrincipalExtensions.cs" />
     <Compile Include="Security\ValidateHttpAntiForgeryTokenAttribute.cs" />
     <Compile Include="Security\WebRequestPrincipalFactory.cs" />
+    <Compile Include="ServerContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,7 +1,7 @@
-﻿define(["dragonspark/configuration", "dragonspark/service"], function (configuration, service) {
+﻿define(["dragonspark/application", "dragonspark/service"], function (application, service) {
 	return ko.asyncCommand({
 		execute: function (parameter, complete) {
-			return service.invoke("SignOut").then(configuration.refresh).always(complete);
+			return service.invoke( "SignOut" ).then(application.refresh).always(complete);
 		},
 
 		canExecute: function (isExecuting) {

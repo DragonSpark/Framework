@@ -12,7 +12,7 @@ using Microsoft.Web.WebPages.OAuth;
 
 namespace DragonSpark.Server.Security
 {
-	[Singleton( typeof(IAuthenticationResultProcessor) )]
+	[PerRequest( typeof(IAuthenticationResultProcessor) )]
 	class AuthenticationResultProcessor : IAuthenticationResultProcessor
 	{
 		readonly IClaimsRepository repository;

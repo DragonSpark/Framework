@@ -17,15 +17,6 @@ namespace DragonSpark.Configuration
 		}
 	}
 
-	/*public class ClientProfileExtension : MarkupExtension
-	{
-		public override object ProvideValue( IServiceProvider serviceProvider )
-		{
-			var result = System.Web.HttpContext.Current.Request.Transform( x=> new ClientProfile { HostName = x.UserHostName, IpAddress = IPAddress.Parse( x.UserHostAddress ) } );
-			return result;
-		}
-	}*/
-
 	public class IsDebugExtension : MarkupExtension
 	{
 		public override object ProvideValue( IServiceProvider serviceProvider )

@@ -1,6 +1,6 @@
-using System;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace DragonSpark.Runtime
 {
@@ -13,6 +13,21 @@ namespace DragonSpark.Runtime
 			ServiceLocator.SetLocatorProvider( () => locator );
 			Assigned( locator, EventArgs.Empty );
 			Assigned = delegate { };
+		}
+
+		public static void Register<TFrom, TTo>()
+		{
+			With<IServiceLocator>( x => x.Register<TFrom, TTo>() );
+		}
+
+		public static void Register( Type type, object instance )
+		{
+			With<IServiceLocator>( x => x.Register( type, instance ) );
+		}
+
+		public static void Register<TService>( TService instance )
+		{
+			With<IServiceLocator>( x => x.Register( instance ) );
 		}
 
 		public static void With<TService>( Action<TService> action )

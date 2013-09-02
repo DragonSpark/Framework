@@ -4,12 +4,14 @@ using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
 namespace DragonSpark.Server.ClientHosting
 {
-	public abstract class ClientHubBase : Hub
+	public abstract class ApplicationHubBase : Hub
 	{
+		readonly ClientApplicationConfiguration configuration;
 		readonly string exceptionReportingPolicyName;
 
-		protected ClientHubBase( string exceptionReportingPolicyName = "Client Exception Reporting" )
+		protected ApplicationHubBase( ClientApplicationConfiguration configuration, string exceptionReportingPolicyName = "Client Exception Reporting" )
 		{
+			this.configuration = configuration;
 			this.exceptionReportingPolicyName = exceptionReportingPolicyName;
 		}
 
@@ -19,6 +21,11 @@ namespace DragonSpark.Server.ClientHosting
 			var name = Context.Request.Headers[ "Host" ];
 			var exception = new ClientException( clientExceptionToReport, address, name );
 			ExceptionPolicy.HandleException( exception, exceptionReportingPolicyName );
+		}
+
+		public ClientApplicationConfiguration GetConfiguration()
+		{
+			return configuration;
 		}
 	}
 }

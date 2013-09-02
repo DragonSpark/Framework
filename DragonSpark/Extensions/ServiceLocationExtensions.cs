@@ -1,6 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using DragonSpark.IoC;
 using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Extensions
 {
@@ -23,6 +24,26 @@ namespace DragonSpark.Extensions
 			var types = typeof(TItem).ResolveInterfaces();
 			var result = types.Select( x => target.TryGetInstance(x) ).NotNull().FirstOrDefaultOfType<TItem>();
 			return result;
+		}
+
+		public static void Register<TFrom, TTo>( this IServiceLocator target )
+		{
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( typeof(TFrom), typeof(TTo) ) );
+		}
+
+		public static void Register( this IServiceLocator target, Type type, object instance )
+		{
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( type, instance ) );
+		}
+
+		public static void RegisterFactory( this IServiceLocator target, Type type, Func<object> factory )
+		{
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.RegisterFactory( type, factory ) );
+		}
+
+		public static void Register<TService>( this IServiceLocator target, TService instance )
+		{
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( typeof(TService), instance ) );
 		}
 
 		public static TItem TryGetInstance<TItem>( this IServiceLocator target, string name = null )

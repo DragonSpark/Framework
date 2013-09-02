@@ -1,4 +1,5 @@
 using Microsoft.Practices.ObjectBuilder2;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,56 +8,50 @@ namespace DragonSpark.IoC
 {
 	public class CurrentBuildKeyStrategy : BuilderStrategy
 	{
-		readonly IList<NamedTypeBuildKey> source = new List<NamedTypeBuildKey>();
-		readonly ReadOnlyCollection<NamedTypeBuildKey> stack;
-
-		public CurrentBuildKeyStrategy()
+		static IList<NamedTypeBuildKey> Source
 		{
-			stack = new ReadOnlyCollection<NamedTypeBuildKey>( source );
-		}
-
+			get { return source ?? ( source = new List<NamedTypeBuildKey>() ); }
+		}	[ThreadStatic] static IList<NamedTypeBuildKey> source;
+		
 		public IEnumerable<NamedTypeBuildKey> Stack
 		{
-			get { return stack; }
-		}
+			get { return stack ?? ( stack = new ReadOnlyCollection<NamedTypeBuildKey>( Source ) ); }
+		}	[ThreadStatic] static ReadOnlyCollection<NamedTypeBuildKey> stack;
 
 		public override void PreBuildUp(IBuilderContext context)
 		{
-			source.Add( context.BuildKey );
+			Source.Add( context.BuildKey );
 			base.PreBuildUp(context);
 		}
 
 		public override void PostBuildUp(IBuilderContext context)
 		{
-			source.Remove( source.Last() );
+			Source.Remove( source.Last() );
 			base.PostBuildUp(context);
 		}
 	}
 
 	public class CurrentContextStrategy : BuilderStrategy
 	{
-		readonly IList<IBuilderContext> source = new List<IBuilderContext>();
-		readonly ReadOnlyCollection<IBuilderContext> stack;
-
-		public CurrentContextStrategy()
+		static IList<IBuilderContext> Source
 		{
-			stack = new ReadOnlyCollection<IBuilderContext>( source );
-		}
-
+			get { return source ?? ( source = new List<IBuilderContext>() ); }
+		}	[ThreadStatic] static IList<IBuilderContext> source;
+		
 		public IEnumerable<IBuilderContext> Stack
 		{
-			get { return stack; }
-		}
+			get { return stack ?? ( stack = new ReadOnlyCollection<IBuilderContext>( Source ) ); }
+		}	[ThreadStatic] static ReadOnlyCollection<IBuilderContext> stack;
 
 		public override void PreBuildUp(IBuilderContext context)
 		{
-			source.Add( context );
+			Source.Add( context );
 			base.PreBuildUp(context);
 		}
 
 		public override void PostBuildUp(IBuilderContext context)
 		{
-			source.Remove( source.Last() );
+			Source.Remove( Source.Last() );
 			base.PostBuildUp(context);
 		}
 	}

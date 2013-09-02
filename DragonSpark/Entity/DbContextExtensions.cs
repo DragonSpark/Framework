@@ -351,7 +351,21 @@ namespace DragonSpark.Entity
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( entity != null );
-			context.Entry( entity ).State = EntityState.Deleted;
+			
+			var type = entity.GetType();
+			var properties = context.GetEntityProperties( type ).Where( x => x.FromEndMember.DeleteBehavior == OperationAction.Cascade ).Select( x => x.Name ).ToArray();
+			Load( context, entity, properties );
+
+			properties.Apply( x =>
+			{
+				var property = type.GetProperty( x );
+				var raw = property.GetValue( entity );
+				var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
+				items.Apply( y => context.Set( y.GetType() ).Remove( y ) );
+				context.SaveChanges();
+			} );
+
+			context.Set<T>().Remove( entity );
 		}
 
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "target", Justification = "Used as a convenience to keep from adding another extension method to the object class." )]

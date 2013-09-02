@@ -1,7 +1,6 @@
-﻿using System;
-using System.Web;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using System;
 
 namespace DragonSpark.Server
 {
@@ -10,7 +9,7 @@ namespace DragonSpark.Server
 		protected override void ConfigureExceptionHandling( IExceptionHandler handler )
 		{
 			base.ConfigureExceptionHandling( handler );
-			HttpContext.Current.ApplicationInstance.Error += ( s, a ) => HttpContext.Current.Error.As<Exception>( handler.Process );
+			ServerContext.Current.ApplicationInstance.Error += ( s, a ) => ServerContext.Current.Error.As<Exception>( handler.Process );
 		}
 	}
 }

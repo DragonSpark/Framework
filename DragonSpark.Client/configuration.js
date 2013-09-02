@@ -1,4 +1,4 @@
-﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "dragonspark/service"], function (app, events, viewLocator, router, history, widget, system, service) {
+﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "service"], function (app, events, viewLocator, router, history, widget, system, service) {
 	function determineRoute(route) {
 		var colonIndex = route.indexOf(":");
 		var length = colonIndex > 0 ? colonIndex - 1 : route.length;
@@ -53,7 +53,7 @@
 			}
 		},
 		initialize: function() {
-			return service.call( "Configuration" ).then(function (data) {
+			return service.getConfiguration().then(function (data) {
 				return system.defer(function (dfd) {
 					instance._assign(data);
 				
@@ -91,13 +91,15 @@
 			return result;
 		},
 		
-		refresh : function() {
-			return service.call( "Configuration" ).then(function (data) {
-				instance.trigger("application:configuration:refreshing");
-				instance._assign(data);
-				
-				instance.trigger("application:configuration:refreshed");
-			});
+		refresh : function()
+		{
+			var result = service.getConfiguration()
+				.then(function (data) {
+					instance.trigger("application:configuration:refreshing");
+					instance._assign(data);
+					instance.trigger("application:configuration:refreshed");
+				});
+			return result;
 		}
 	});
 
