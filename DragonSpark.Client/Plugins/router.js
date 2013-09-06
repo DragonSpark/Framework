@@ -35,10 +35,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return route.substring(0, length);
     }
 
-    function hasChildRouter(instance) {
-        return instance.router && instance.router.loadUrl;
-    }
-
     function endsWith(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
@@ -186,6 +182,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             return false;
         };
+
+        function hasChildRouter(instance) {
+            return instance.router && instance.router.parent == router;
+        }
 
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
@@ -504,7 +504,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 var instruction = this.parent.activeInstruction();
                 coreFragment = instruction.params.join('/');
 
-                if(coreFragment && coreFragment[0] == '/'){
+                if(coreFragment && coreFragment.charAt(0) == '/'){
                     coreFragment = coreFragment.substr(1);
                 }
 
@@ -848,6 +848,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter.navigatingBack = false;
 
     /**
+     * Verify that the target is the current window
+     * @method targetIsThisWindow
+     * @return {boolean} True if the event's target is the current window, false otherwise.
+     */
+    rootRouter.targetIsThisWindow = function(event) {
+        var targetWindow = $(event.target).attr('target');
+        
+        if (!targetWindow ||
+            targetWindow === window.name ||
+            targetWindow === '_self' ||
+            (targetWindow === 'top' && window === window.top)) { return true; }
+        
+        return false;
+    };
+
+    /**
      * Activates the router and the underlying history tracking mechanism.
      * @method activate
      * @return {Promise} A promise that resolves when the router is ready.
@@ -873,20 +889,24 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 rootRouter.explicitNavigation = true;
 
                 if(history._hasPushState){
-                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey){
-                        // Get the anchor href and protcol
+                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
+                        // Get the anchor href
                         var href = $(this).attr("href");
-                        var protocol = this.protocol + "//";
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
-                        if (!href || (href.charAt(0) !== "#" && href.slice(protocol.length) !== protocol)) {
+                        if (!href || !/^[a-z]+:/i.test(href)) {
                             evt.preventDefault();
                             history.navigate(href);
                         }
                     }
                 }
             });
+
+            if(history.options.silent && startDeferred){
+                startDeferred.resolve();
+                startDeferred = null;
+            }
         }).promise();
     };
 

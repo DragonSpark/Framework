@@ -17,6 +17,7 @@
 define( "jquery", [], function () { return jQuery; } );
 define( "knockout", [], function () { return ko; } );
 
+define( "client", [], function () { return $.connection.application.client; } );
 define( "service", [], function () { return $.connection.application.server; } );
 
 define(["dragonspark/application"], function (dragonSpark) {

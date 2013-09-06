@@ -27,9 +27,7 @@
 					{
 					case -1:
 						initialized.push( model );
-						instance._broadcast("Initializing Application... Please Wait.", "application:operations:initializing", "application:operations:initialized").then(function () {
-							application.activate();
-						});
+						instance._broadcast("Initializing Application... Please Wait.", "application:operations:initializing", "application:operations:initialized").then(application.activate);
 						break;
 					}
 				}

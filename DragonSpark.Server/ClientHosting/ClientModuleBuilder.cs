@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Objects;
@@ -32,47 +31,43 @@ namespace DragonSpark.Server.ClientHosting
 		}
 	}
 
-	public abstract class ClientModuleBuilder : ClientModuleBuilder<ClientModule>
+	public abstract class ClientModuleBuilder : ClientModuleBuilder<ClientModule, string>
 	{
-		protected ClientModuleBuilder( string initialPath ) : base( initialPath )
+		protected ClientModuleBuilder( string defaultParameter ) : base( defaultParameter )
 		{}
 
-		protected override ClientModule Create( AssemblyResource resource )
+		protected override ClientModule Create( string parameter, AssemblyResource resource )
 		{
 			var result = new ClientModule { Path = CreatePath( resource ) };
 			return result;
 		}
 	}
 
-	public abstract class ClientModuleBuilder<TModule> : Factory<string, IEnumerable<TModule>> where TModule : ClientModule
+	public abstract class ClientModuleBuilder<TModule, TParameter> : Factory<TParameter, IEnumerable<TModule>> where TModule : ClientModule where TParameter : class
 	{
-		readonly string initialPath;
+		readonly TParameter defaultParameter;
 
-		protected ClientModuleBuilder( string initialPath )
+		protected ClientModuleBuilder( TParameter defaultParameter )
 		{
-			this.initialPath = initialPath;
+			this.defaultParameter = defaultParameter;
 		}
 
-		public string InitialPath
+		protected override IEnumerable<TModule> CreateItem( TParameter parameter )
 		{
-			get { return initialPath; }
-		}
-
-		protected override IEnumerable<TModule> CreateItem( string parameter )
-		{
+			var item = parameter ?? defaultParameter;
 			var result = AppDomain.CurrentDomain.GetAssemblies()
 				.Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() )
-				.SelectMany( x => x.GetManifestResourceNames().Select( y => new AssemblyResource( x, y ) ) ).Where( IsResource ).Select( Create ).ToArray();
+				.SelectMany( x => x.GetManifestResourceNames().Select( y => new AssemblyResource( x, y ) ) ).Where( x => IsResource( item, x ) ).Select( x => Create( item, x ) ).ToArray();
 			return result;
 		}
 
-		protected virtual bool IsResource( AssemblyResource resource )
+		protected virtual bool IsResource( TParameter parameter, AssemblyResource resource )
 		{
-			var result = resource.ResourceName.StartsWith( string.Concat( resource.Assembly.GetName().Name, ".", InitialPath ), StringComparison.InvariantCultureIgnoreCase );
+			var result = resource.ResourceName.StartsWith( string.Concat( resource.Assembly.GetName().Name, ".", parameter ), StringComparison.InvariantCultureIgnoreCase );
 			return result;
 		}
 
-		protected abstract TModule Create( AssemblyResource resource );
+		protected abstract TModule Create( TParameter parameter, AssemblyResource resource );
 
 		protected string CreatePath( AssemblyResource resource )
 		{

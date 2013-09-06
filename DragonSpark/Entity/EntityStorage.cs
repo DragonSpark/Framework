@@ -1,5 +1,11 @@
-﻿using DragonSpark.Security;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Security;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Linq;
 
 namespace DragonSpark.Entity
 {
@@ -9,7 +15,17 @@ namespace DragonSpark.Entity
 
 		public DbSet<InstallationEntry> Installations { get; set; }
 
-		protected override void OnModelCreating( DbModelBuilder modelBuilder )
+	    protected override DbEntityValidationResult ValidateEntity( DbEntityEntry entityEntry, IDictionary<object, object> items )
+	    {
+		    var validationResult = base.ValidateEntity( entityEntry, items );
+			validationResult.ValidationErrors.Any().IsFalse( () => entityEntry.Entity.As<TUser>( x =>
+			{
+				x.LastActivity = DateTimeOffset.UtcNow;
+			} ) );
+		    return validationResult;
+	    }
+
+	    protected override void OnModelCreating( DbModelBuilder modelBuilder )
 		{
 			LocalStoragePropertyProcessor.Instance.Process( this, modelBuilder );
 

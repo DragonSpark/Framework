@@ -8,17 +8,20 @@ namespace DragonSpark.Security
     {
         protected override void PerformMapping( Claim claim, UserProfile userProfile )
         {
-            userProfile.DisplayName = claim.Value;
+			userProfile.DisplayName.Null( () =>
+			{
+				userProfile.DisplayName = claim.Value;
 
-            // Check for first name/lastname:
-            var parts = claim.Value.ToStringArray( ' ' );
-            switch ( parts.Length )
-            {
-                case 2:
-                    userProfile.FirstName = parts[ 0 ];
-                    userProfile.LastName = parts[ 1 ];
-                    break;
-            }
+				// Check for first name/lastname:
+				var parts = claim.Value.ToStringArray( ' ' );
+				switch ( parts.Length )
+				{
+					case 2:
+						userProfile.FirstName = parts[ 0 ];
+						userProfile.LastName = parts[ 1 ];
+						break;
+				}
+			});
         }
 
         protected override string TargetClaimType

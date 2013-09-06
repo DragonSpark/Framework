@@ -4,12 +4,12 @@ namespace DragonSpark.Server.ClientHosting
 {
 	public class CommandsBuilder : ClientModuleBuilder
 	{
-		public CommandsBuilder( string initialPath = "commands" ) : base( initialPath )
+		public CommandsBuilder( string defaultParameter = "commands" ) : base( defaultParameter )
 		{}
 
-		protected override bool IsResource( AssemblyResource resource )
+		protected override bool IsResource( string parameter, AssemblyResource resource )
 		{
-			var result = base.IsResource( resource ) && Path.GetExtension( resource.ResourceName ) == ".js";
+			var result = base.IsResource( parameter, resource ) && Path.GetExtension( resource.ResourceName ) == ".js";
 			return result;
 		}
 	}

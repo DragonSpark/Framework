@@ -1,58 +1,92 @@
-﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "service"], function (app, events, viewLocator, router, history, widget, system, service) {
-	function determineRoute(route) {
-		var colonIndex = route.indexOf(":");
-		var length = colonIndex > 0 ? colonIndex - 1 : route.length;
-		var splatIndex = route.indexOf("*");
-
-		var index = splatIndex == -1 ? length : splatIndex;
-
-		var result = route.substring(0, index);
-		return result;
-	}
-	var routers = [];
-	
-	var instance = $.extend(ko.observable(null), {
-		_build: function (targetRouter, items) {
-			routers.push(targetRouter);
+﻿define(["durandal/app", "durandal/events", "durandal/viewLocator", "plugins/router", "plugins/history", "plugins/widget", "durandal/system", "application.service"], function (app, events, viewLocator, router, history, widget, system, service) {
+	var instance = $.extend( ko.observable(), {
+		_build : function (targetRouter, items) 
+		{
 			targetRouter.map( items ).buildNavigationModel();
-			
-			var moduleId = instance().Navigation.NotFound.moduleId;
-			targetRouter.mapUnknownRoutes(moduleId);
 
-			items.map(function (i) {
-				if (i.children.length) {
-					var config = {
-						moduleId: i.moduleId,
-						route: determineRoute(i.route)
-					};
-					i.childRouter = targetRouter.createChildRouter().makeRelative(config);
-					i.childRouter.on( 'router:route:before-config' ).then( function( configuration ) {
-						if ( configuration.moduleId == i.moduleId + "/" + moduleId )
+			var moduleId = instance().Navigation.NotFound.moduleId;
+			targetRouter.mapUnknownRoutes( moduleId );
+		},
+		
+		_determineActiveRouter : function( current )
+		{
+			var parent = current || router;
+			var activeItem = parent.activeItem();
+			var item = activeItem ? activeItem.router : null;
+			var result = item ? instance._determineActiveRouter( item ) : parent;
+			return result;
+		},
+		
+		activateRouter : function( module )
+		{
+			if ( !module.router )
+			{
+				var active = instance._determineActiveRouter();
+				var config = active.activeInstruction().config;
+				var id = config.moduleId;
+
+				var options = { moduleId: id, fromParent: true };
+				module.router = active.createChildRouter().makeRelative( options );
+				instance._build( module.router, config.children );
+
+				/*var navigation = module.navigationModel || ( module.navigationModel = ko.observableArray( [] ) );
+				navigation( module.router.navigationModel() );*/
+
+				var subscribe = function()
+				{
+					module.router.on( "router:route:before-config" ).then( function( configuration ) {
+						var moduleId = instance().Navigation.NotFound.moduleId;
+						if ( configuration.moduleId == id + "/" + moduleId )
 						{
-							configuration.moduleId = moduleId;	
+							configuration.moduleId = moduleId;
 						}
 					} );
-					instance._build(i.childRouter, i.children);
-				}
-			});
-		},
 
+					module.router.on( "router:navigation:attached", function( currentActivation, currentInstruction, child ) {
+						if ( module.__resetRouter__ )
+						{
+							module.__resetRouter__ = false;
+							module.router.reset();
+							module.router.makeRelative( options );
+							var item = child.parent.activeInstruction().config;
+							instance._build( module.router, item.children );
+							subscribe();
+						}
+					} );
+				};
+				subscribe();
+
+				
+
+				instance.on( "application:configuration:refreshed", function() {
+					// var activeRouter = instance._determineActiveRouter();
+					// var isactive = activeRouter == module.router;
+					module.__resetRouter__ = true;
+					// instance._registerChildRouter( module );
+					/*if ( isactive )
+					{
+						module.router.attached();
+					}*/
+				} );
+			}
+
+			return module.router;
+		},
+		
 		_assign: function (data) {
 			instance(data);
 			
-			routers.map(function (i) {
-				i.reset();
-			});
-			routers.length = 0;
+			router.deactivate();
+			router.reset();
 			with (data) {
-				instance._build(router, Navigation.Routes);
-
+				instance._build( router, Navigation.Routes );
 				// TODO: This is dumb.
 				ApplicationDetails.Version = new Version(ApplicationDetails.Version);
 				ApplicationDetails.DeploymentDate = new Date(ApplicationDetails.DeploymentDate);
 			}
 		},
-		initialize: function() {
+		initialize: function()
+		{
 			return service.getConfiguration().then(function (data) {
 				return system.defer(function (dfd) {
 					instance._assign(data);
@@ -64,7 +98,11 @@
 							commands = Enumerable.From(Commands),
 							widgets = Enumerable.From(Widgets);
 
-						var modules = initializers.Concat(commands).Concat(widgets).Where("$.Path != null").Select("$.Path").ToArray();
+						widgets.Where( "$.ViewId != null" ).ToArray().map( function( i ) {
+							widget.mapKind( i.Name, i.ViewId );
+						} );
+
+						var modules = widgets.Concat(commands).Concat(initializers).Where("$.Path != null").Select("$.Path").ToArray();
 
 						require(modules, function () {
 							app.title = ApplicationDetails.Title;
@@ -77,7 +115,6 @@
 
 								var shell = Navigation.Shell;
 								app.setRoot(shell.moduleId, shell.transitionName);
-								router.mapUnknownRoutes(Navigation.NotFound.moduleId);
 								dfd.resolve();
 							});
 						});
@@ -95,21 +132,21 @@
 		{
 			var result = service.getConfiguration()
 				.then(function (data) {
-					instance.trigger("application:configuration:refreshing");
+					instance.trigger("application:configuration:refreshing", instance, data );
 					instance._assign(data);
-					instance.trigger("application:configuration:refreshed");
+					instance.trigger("application:configuration:refreshed", instance, data );
 				});
 			return result;
 		}
 	});
 
-	router.on("router:navigation:attached", function (routeInfo, params, module) {
+	/*router.on("router:navigation:attached", function (routeInfo, params, module) {
 		routers.map(function (i) {
 			if (i.parent == router) {
 				i.attached();
 			}
 		});
-	});
+	});*/
 
 	router.on("router:navigation:complete", function (routeInfo, params, module) {
 		var title = instance().ApplicationDetails.Title;

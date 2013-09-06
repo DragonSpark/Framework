@@ -4,7 +4,6 @@ using DragonSpark.Objects.Synchronization;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -30,25 +29,36 @@ namespace DragonSpark.Security
 				var identity = x.Identity.To<ClaimsIdentity>();
 
 				var user = userService.Ensure<TUser>( principal.Identity.Name );
-				user.Claims.Clear();
-				user.Claims.AddAll( identity.Claims.Select( y => Activator.Create<IdentityClaim>().SynchronizeFrom( y ) ) );
-
-				var type = identity.Find( Claims.IdentityProvider );
-				type.NotNull( y =>
-				{
-					var specific = processors.FirstOrDefault( z => z.IdentityProviderName == y );
-					var @default = processors.FirstOrDefault( z => string.IsNullOrEmpty( z.IdentityProviderName ) );
-					var processor = specific ?? @default;
-					processor.NotNull( z => z.Process( identity, user ) );
-				});
-
-				userService.Save( user );
+				Process( user, identity );
 			} );
+		}
+
+		protected virtual void Process( TUser user, ClaimsIdentity identity )
+		{
+			user.Claims.Clear();
+			user.Claims.AddAll( identity.Claims.Select( y => Activator.Create<IdentityClaim>().SynchronizeFrom( y ) ) );
+
+			var type = identity.Find( Claims.IdentityProvider );
+			type.NotNull( y =>
+			{
+				var specific = processors.FirstOrDefault( z => z.IdentityProviderName == y );
+				var @default = processors.FirstOrDefault( z => string.IsNullOrEmpty( z.IdentityProviderName ) );
+				var processor = specific ?? @default;
+				processor.NotNull( z => z.Process( identity, user ) );
+			} );
+
+			userService.Save( user );
 		}
 	}
 
 	public static class UserServiceExtensions
 	{
+		public static TUser Get<TUser>( this IUserService target, IPrincipal principal ) where TUser : UserProfile
+		{
+			var result = principal.Identity.IsAuthenticated ? target.Get( principal.Identity.Name ).To<TUser>() : null;
+			return result;
+		}
+
 		public static TUser Ensure<TUser>( this IUserService target, string name, string displayName = null ) where TUser : UserProfile
 		{
 			var user = target.Get( name ) ?? target.Create( name ).With( x => x.DisplayName = displayName ).With( target.Save );

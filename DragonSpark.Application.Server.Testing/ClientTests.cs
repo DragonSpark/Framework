@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Server.Testing
 		[TestMethod]
 		public void Ensure_Widgets_Are_Resolved_As_Expected()
 		{
-			var builder = new WidgetsBuilder();
+			var builder = new WidgetsBuilder( new WidgetBuilderOptions() );
 			var modules = builder.Create().ToArray();
 
 			Assert.AreEqual( 1, modules.Count() );

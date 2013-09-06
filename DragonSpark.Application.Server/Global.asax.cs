@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Server
 		protected void Application_Start()
 		{
 			var initializer = new ApplicationInitializer( new Configuration.Server().Instance ); 
-			initializer.Initialize( GlobalConfiguration.Configuration );
+			initializer.Initialize( this, GlobalConfiguration.Configuration );
 		}
 	}
 }

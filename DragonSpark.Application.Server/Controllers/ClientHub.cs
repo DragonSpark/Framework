@@ -6,11 +6,11 @@ using System.IdentityModel.Services;
 namespace DragonSpark.Application.Server.Controllers
 {
     [HubName("application")]
-	public class ClientHub : ClientHubBase
+	public class ClientHub : ApplicationHubBase
 	{
 	    public const string ClientExceptionReporting = "Client Exception Reporting";
 
-	    public ClientHub( string exceptionReportingPolicyName = ClientExceptionReporting ) : base( exceptionReportingPolicyName )
+	    public ClientHub( ClientApplicationConfiguration configuration, string exceptionReportingPolicyName = ClientExceptionReporting ) : base( configuration, exceptionReportingPolicyName )
 	    {}
 
 	    public void SignOut()

@@ -4,12 +4,12 @@ namespace DragonSpark.Server.ClientHosting
 {
 	public class InitializersBuilder : ClientModuleBuilder
 	{
-		public InitializersBuilder( string initialPath = "viewmodels" ) : base( initialPath )
+		public InitializersBuilder( string defaultParameter = "viewmodels" ) : base( defaultParameter )
 		{}
 
-		protected override bool IsResource( AssemblyResource resource )
+		protected override bool IsResource( string parameter, AssemblyResource resource )
 		{
-			var result = base.IsResource( resource ) && resource.ResourceName.EndsWith( ".initialize.js", StringComparison.InvariantCultureIgnoreCase );
+			var result = base.IsResource( parameter, resource ) && resource.ResourceName.EndsWith( ".initialize.js", StringComparison.InvariantCultureIgnoreCase );
 			return result;
 		}
 	}

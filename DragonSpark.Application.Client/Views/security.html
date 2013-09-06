@@ -1,16 +1,18 @@
 ﻿<table style="width: 100%; height: 300px">
-	<tr>
-		<td style="width: 150px">
-			<h4>Available Navigation:</h4>
-			<h6>[Based on your Identity]</h6>
-			<ul data-bind="foreach: navigation">
-				<li data-bind="css: { active: isActive }">
-					<a data-bind="attr: { href: hash }, text: title"></a>
-				</li>
-			</ul>
-		</td>
-		<td style="border: 1px solid black">
-			<div class="span10" data-bind="router: { transition: 'entrance', cacheViews: false }"></div>	
-		</td>
-	</tr>
+<tr>
+	<td style="width: 150px">
+		<h4>Available Navigation:</h4>
+		<h6>[Based on your Identity]</h6>
+		<ul data-bind="foreach: router.navigationModel">
+			<li data-bind="css: { active: isActive }">
+				<a data-bind="attr: { href: hash }, text: title"></a>
+			</li>
+		</ul>
+	</td>
+	<td style="border: 1px solid black">
+		<div class="span10">
+			<div data-bind="router: { cacheViews: false }"></div>
+		</div>
+	</td>
+</tr>
 </table>

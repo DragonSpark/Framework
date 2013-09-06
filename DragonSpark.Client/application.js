@@ -9,7 +9,7 @@
 		},
 		
 		activate : function() {
-			router.activate();
+			return router.activate();
 		},
 		
 		chain: function (f1, f2, context) {
@@ -63,6 +63,14 @@
 	};
 
 	events.includeIn(dragonspark);
+	
+	configuration.on("application:configuration:refreshed", function (instance, data) {
+		var id = data.Navigation.Shell.moduleId;
+		app.setRoot(id);
+		dragonspark.activate().then( function() {
+			app.setRoot(id);
+		} );
+	});
 
 	return dragonspark;
 });

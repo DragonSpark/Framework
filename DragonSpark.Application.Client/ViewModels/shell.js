@@ -1,4 +1,4 @@
-﻿define(["durandal/app", "durandal/system", "dragonspark/configuration", "./navigation", "plugins/router"], function (app, system, configuration, navigation, router) {
+﻿define(["durandal/app", "dragonspark/application", "durandal/system", "dragonspark/configuration", "./navigation", "plugins/router"], function (app, application, system, configuration, navigation, router) {
 	var instance = {
 		isAttached: ko.observable(false),
 		configuration: configuration,
@@ -7,10 +7,5 @@
 			instance.isAttached(true);
 		}
 	};
-	configuration.on("application:configuration:refreshed", function () {
-		app.setRoot(instance);
-		var fragment = router.activeInstruction().fragment;
-		router.loadUrl( fragment );
-	});
 	return instance;
 });

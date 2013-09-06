@@ -1,4 +1,4 @@
-﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "service"], function (configuration, view, modal, service) {
+﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "application.service"], function (configuration, view, modal, service) {
 		
 	var ctor = function (error) {
 		var instance = configuration();
