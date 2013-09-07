@@ -7,6 +7,121 @@
 			});
 		},
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) { }
+	};	
+	
+	ko.bindingHandlers.validation = {
+		init : function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext )
+		{
+			var value = allBindingsAccessor().value;
+			value.extend(valueAccessor());
+		},
+		update : function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext )
+		{
+			//allBindingsAccessor().value.extend(valueAccessor());
+		}
+	};
+	
+	ko.bindingHandlers.slug = {
+		init : function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext )
+		{
+		},
+		update : function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext )
+		{
+			var container = allBindingsAccessor().value;
+			var input = container().toLowerCase();
+			var replace = input.replace(/[^a-zA-Z0-9]+/g, '-');
+			container( replace );
+		}
+	};
+	
+	ko.modifiable = function( model ) {
+		var result = ko.observable(), initialState = null, watching = ko.observableArray([]);
+		
+		result.isModified = ko.observable();
+		result.isValidating = ko.observable();
+		
+		function update()
+		{
+			var validating = isValidating( result() );
+			result.isValidating( validating );
+		}
+		
+		function changed(target, trigger)
+		{
+			var item = result();
+			var modified = initialState !== ko.mapping.toJSON( item );
+			result.isModified( modified );
+
+			setTimeout( function() {
+				update();
+				result.isModified( modified );
+			}, 0 );
+		}
+		
+		function isValidating( item )
+		{
+			for ( var i in item )
+			{
+				var method = item[i].isValidating;
+				if ( method && method() )
+				{
+					switch ( watching.indexOf(i) )
+					{
+					case -1:
+						watching.push(i);
+						var subscription = method.subscribe(function(value) {
+							if ( !value )
+							{
+								update( result );
+								subscription.dispose();
+								watching.remove( i );
+							}
+						});
+						break;
+					}
+					return true;
+				}
+			}
+			return false;
+		};
+		
+		function reset()
+		{
+			if ( result.watcher )
+			{
+				result.watcher.pauseWatch();
+				delete result.watcher;
+			}
+			result.isModified( false );
+			result.watcher = ko.watch( result(), changed );
+		}
+
+		result.accept = function()
+		{
+			var item = ko.mapping.toJS( result() );
+
+			initialState = ko.toJSON( item );
+			
+			reset();
+			return item;
+		};
+
+		result.cancel = function()
+		{
+			var item = ko.mapping.fromJSON( initialState );
+			result( item );
+			reset();
+			return item;
+		};
+
+		var current = ko.mapping.fromJS( model );
+			
+		initialState = ko.toJSON( model );
+			
+		result( current );
+
+		reset();
+		return result;
 	};
 
 	ko.bindingHandlers.locateCommand = {

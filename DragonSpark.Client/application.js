@@ -1,10 +1,24 @@
-﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, dialog, router, events) {
+﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "./navigation", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, navigation, dialog, router, events) {
 	var dragonspark = window.$ds = {
-		_refreshing : ko.observable(false),
 		initialize: function () {
 			dragonspark.trigger("application:initializing", this);
 			return $.connection.hub.start().then( configuration.initialize ).then(function () {
-				dragonspark.trigger("application:initialized", this);
+					ko.validation.configure({
+						registerExtenders: true,
+						messagesOnModified: true,
+						insertMessages: false,
+						parseInputAttributes: true,
+						messageTemplate: null
+					});
+
+					configuration.on("application:configuration:refreshed", function (instance, data) {
+						var id = data.Navigation.Shell.moduleId;
+						app.setRoot(id);
+						dragonspark.activate().then( function() {
+							app.setRoot(id);
+						} );
+						dragonspark.trigger("application:initialized", this);
+					});
 			});
 		},
 		
@@ -64,14 +78,6 @@
 
 	events.includeIn(dragonspark);
 	
-	configuration.on("application:configuration:refreshed", function (instance, data) {
-		var id = data.Navigation.Shell.moduleId;
-		app.setRoot(id);
-		dragonspark.activate().then( function() {
-			app.setRoot(id);
-		} );
-	});
-
 	return dragonspark;
 });
 

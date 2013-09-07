@@ -1,4 +1,4 @@
-﻿define(["dragonspark/configuration"], function ( configuration ) {
+﻿define(["dragonspark/configuration", "./core"], function ( configuration, core ) {
 	var ctor = function() {
 		this.configuration = configuration;
 		this.displayName = ko.computed(function() {
@@ -8,8 +8,7 @@
 		});
 		this.provider = ko.computed(function () {
 			var profile = configuration().UserProfile;
-			var claim = profile != null ? Enumerable.From(profile.Claims).Where("$.Type == 'http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider'").FirstOrDefault() : null;
-			var result = claim != null ? claim.Value : null;
+			var result = core.claim( profile, "http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" );
 			return result;
 		});
 	};

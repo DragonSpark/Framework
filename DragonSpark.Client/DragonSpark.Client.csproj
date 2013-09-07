@@ -132,6 +132,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Core\knockout.validation.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\knockout.reactor.latest.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="navigation.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Widgets\Identity\core.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->

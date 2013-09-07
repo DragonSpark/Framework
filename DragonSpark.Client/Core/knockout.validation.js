@@ -493,7 +493,7 @@
                     // we have to do some special things for the pattern validation
                     if (ctx.rule === "pattern") {
                         if (ctx.params instanceof RegExp) {
-                            params = ctx.params.source; // we need the pure string representation of the RegExpr without the //gi stuff
+                         //    params = ctx.params.source; // we need the pure string representation of the RegExpr without the //gi stuff
                         }
                     }
 
@@ -599,8 +599,11 @@
     };
 
     validation.rules['pattern'] = {
-        validator: function (val, regex) {
-            return utils.isEmptyVal(val) || val.toString().match(regex) !== null;
+        validator: function (val, regex)
+        {
+	        regex.expression = regex.expression || ( typeof regex.params == RegExp ? regex.params :  new RegExp( regex.params ) );
+	        var test = regex.expression.test( val );
+	        return utils.isEmptyVal(val) || test;
         },
         message: 'Please check this value.'
     };

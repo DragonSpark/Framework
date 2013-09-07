@@ -46,4 +46,5 @@ using System.Runtime.InteropServices;
 [assembly: ClientResource( "Core/jquery.dateFormat-1.0.js" )]
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/knockout.validation.js" )]
+[assembly: ClientResource( "Core/knockout.reactor.latest.js" )]
 [assembly: ClientResource( "Core/linq.min.js" )]
