@@ -3,24 +3,34 @@
 		init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			var settings = valueAccessor();
 			var operation = monitor.createOperation(bindingContext, settings);
-			
+
+			var register = function( handler )
+			{
+				if ( ko.bindingHandlers[ handler ] !== undefined )
+				{
+					var accessor = ko.utils.wrapAccessor( operation );
+					ko.bindingHandlers[ handler ].init( element, accessor, allBindingsAccessor, viewModel );
+				} else
+				{
+					var events = {};
+					events[ handler ] = operation;
+					ko.bindingHandlers.event.init( element, ko.utils.wrapAccessor( events ), allBindingsAccessor, viewModel );
+				}
+			};
+
 			if ( settings.event )
 			{
 				var source = settings.eventSource || viewModel;
 				source.off( settings.event, null, ko.bindingHandlers.operation );
 				source.on( settings.event, operation, ko.bindingHandlers.operation );
+				if ( settings.handler )
+				{
+					register( settings.handler );
+				}
 			}
 			else
 			{
-				var handler = settings.handler || 'click';
-				if (ko.bindingHandlers[handler] !== undefined) {
-					var accessor = ko.utils.wrapAccessor(operation);
-					ko.bindingHandlers[handler].init(element, accessor, allBindingsAccessor, viewModel);
-				} else {
-					var events = {};
-					events[handler] = operation;
-					ko.bindingHandlers.event.init(element, ko.utils.wrapAccessor(events), allBindingsAccessor, viewModel);
-				}
+				register( settings.handler || 'click' );
 			}
 		},
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {

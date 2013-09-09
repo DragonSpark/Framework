@@ -37,7 +37,15 @@
 				var result = ko.asyncCommand({
 					execute: function(complete) {
 						var monitor = instance.getMonitor(settings.dataContext) || instance.getMonitor(bindingContext.$data) || instance.getMonitor(bindingContext.$root);
-						monitor.monitor(settings).always(complete);
+						if ( monitor )
+						{
+							monitor.monitor(settings).always(complete);
+						} 
+						else
+						{
+							system.log( "Monitor not found" );
+							complete();
+						}
 						return settings.handler == "click";
 					},
 

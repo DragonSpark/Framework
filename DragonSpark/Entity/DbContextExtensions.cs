@@ -67,7 +67,7 @@ namespace DragonSpark.Entity
 	public static class DbContextExtensions
 	{
 		static readonly MethodInfo 
-			GetMethod = typeof(DbContextExtensions).GetMethod( "Get", new[] { typeof(DbContext), typeof(object) } );
+			GetMethod = typeof(DbContextExtensions).GetMethod( "Get", new[] { typeof(DbContext), typeof(object), typeof(int) } );
 
 		public static int Save( this DbContext target )
 		{
@@ -95,11 +95,11 @@ namespace DragonSpark.Entity
 
 		public static object Get( this DbContext target, object entity, Type entityType = null )
 		{
-			var result = GetMethod.MakeGenericMethod( entityType ?? entity.GetType() ).Invoke( null, new[] {  target, entity } );
+			var result = GetMethod.MakeGenericMethod( entityType ?? entity.GetType() ).Invoke( null, new[] { target, entity, 1 } );
 			return result;
 		}
 
-		public static TItem Get<TItem>( this DbContext target, object container ) where TItem : class
+		public static TItem Get<TItem>( this DbContext target, object container, int levels = 1 ) where TItem : class
 		{
 			using ( target.Configured( x => x.AutoDetectChangesEnabled = false ) )
 			{
@@ -115,7 +115,7 @@ namespace DragonSpark.Entity
 					var current = target.Set<TItem>().Find( key.Values.ToArray() );
 					// tracer.Mark( string.Format( "Get.Store.Find. Type: {0}", typeof(TItem).Name ) );
 					
-					var result = current.Transform( target.Include );
+					var result = current.Transform( x => target.Include( x, levels ) );
 
 					// tracer.Mark( string.Format( "Get.Store.Include. Type: {0}", typeof(TItem).Name ) );
 
@@ -433,55 +433,56 @@ namespace DragonSpark.Entity
 
 		public static TEntity Include<TEntity>( this DbContext target, TEntity entity, params Expression<Func<TEntity, object>>[] expressions ) where TEntity : class
 		{
-			var result = target.Include( entity, expressions.Select( x => x.GetMemberInfo().Name ).ToArray() );
+			var result = target.Include( entity, 1, expressions );
 			return result;
 		}
 
-		public static TEntity Include<TEntity>( this DbContext target, TEntity entity ) where TEntity : class
+		public static TEntity Include<TEntity>( this DbContext target, TEntity entity, int levels, params Expression<Func<TEntity, object>>[] expressions ) where TEntity : class
 		{
-			var includes = DetermineDefaultAssociationProperties( target, typeof(TEntity) ).ToArray();
-			var result = target.Include( entity, includes );
+			var result = target.Include( entity, expressions.Select( x => x.GetMemberInfo().Name ).ToArray(), levels );
 			return result;
 		}
 
-		public static TEntity Include<TEntity>( this DbContext target, TEntity entity, string[] associationNames ) where TEntity : class
+		public static TEntity Include<TEntity>( this DbContext target, TEntity entity, string[] associationNames, int levels = 1 ) where TEntity : class
 		{
-			Load( target, entity, associationNames.Any() ? associationNames : DetermineDefaultAssociationProperties( target, typeof(TEntity) ) );
-			return entity;
+			var associations = associationNames ?? Enumerable.Empty<string>();
+			var names = associations.Union( DetermineDefaultAssociationProperties( target, typeof(TEntity) ) ).ToArray();
+			var result = Load( target, entity, names, levels );
+			return result;
 		}
 
-		public static TItem Load<TItem>( this DbContext target, TItem entity, int? levels = 1, bool? loadAllProperties = null )
+		public static TItem Load<TItem>( this DbContext target, TItem entity, string[] properties = null, int? levels = 1, bool? loadAllProperties = null )
 		{
 			using ( target.Configured( x => x.AutoDetectChangesEnabled = false ) )
 			{
-				LoadAll( target, entity, new ArrayList(), loadAllProperties.GetValueOrDefault( levels == 1 ), levels, 0 );
+				LoadAll( target, entity, new ArrayList(), null, loadAllProperties.GetValueOrDefault( levels == 1 ), levels, 0 );
 				return entity;
 			}
 		}
 
-		static void LoadAll( DbContext target, object entity, IList list, bool loadAllProperties, int? levels, int count )
+		static void LoadAll( DbContext target, object entity, IList list, IEnumerable<string> properties, bool loadAllProperties, int? levels, int count )
 		{
 			if ( !list.Contains( entity ) )
 			{
 				list.Add( entity );
 				var type = entity.GetType();
-				var names = loadAllProperties ? target.GetEntityProperties( type ).Select( x => x.Name ) : DetermineDefaultAssociationProperties( target, type );
+				var names = properties ?? ( loadAllProperties ? target.GetEntityProperties( type ).Select( x => x.Name ) : DetermineDefaultAssociationProperties( target, type ) );
 				var associationNames = names.ToArray();
-				Load( target, entity, associationNames );
+				LoadEntity( target, entity, associationNames );
 
 				if ( !levels.HasValue || ++count < levels.Value )
 				{
 					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Apply( z =>
 					{
 						var items = z.GetType().GetCollectionElementType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.AsItem();
-						items.Apply( a => LoadAll( target, a, list, loadAllProperties, levels, count ) );
+						items.Apply( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;
 				}
 			}
 		}
 
-		static void Load( DbContext target, object entity, IEnumerable<string> associationNames )
+		static void LoadEntity( DbContext target, object entity, IEnumerable<string> associationNames )
 		{
 			var entry = target.Entry( entity );
 			if ( entry.State != EntityState.Added )
@@ -770,7 +771,8 @@ namespace DragonSpark.Entity
 				var namespaceName =
 					workspace.GetItems( DataSpace.CSpace ).OfType<EntityContainer>().First().BaseEntitySets.First().ElementType.
 						NamespaceName;
-				var item = (EntityType)workspace.GetType( type.Name, namespaceName, true, DataSpace.CSpace );
+				var name = type.AssemblyQualifiedName.Contains( "EntityFrameworkDynamicProxies" ) ? type.BaseType.Name : type.Name;
+				var item = (EntityType)workspace.GetType( name, namespaceName, true, DataSpace.CSpace );
 				return item;
 			}
 		}
