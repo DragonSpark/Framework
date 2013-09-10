@@ -37,7 +37,7 @@
 		{
 			if ( !module.router )
 			{
-				var active = determineActiveRouter();
+				var active = router; // determineActiveRouter();
 				var config = active.activeInstruction().config;
 				var id = config.moduleId;
 
