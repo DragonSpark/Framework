@@ -73,7 +73,6 @@
 					module.__resetRouter__ = true;
 				} );
 			}
-
 			return module.router;
 		}
 	};
