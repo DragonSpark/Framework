@@ -183,6 +183,7 @@
 	var monitors = {};
 
 	var instance = {
+		overrides: [],
 		ensureAttached: function (element, delegate) {
 			var check = function () {
 				if ($(element).parents(':last').is('html')) {
