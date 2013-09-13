@@ -41,8 +41,8 @@ namespace DragonSpark.Server.ClientHosting
 
 		protected override WidgetModule Create( WidgetBuilderOptions parameter, AssemblyResource resource )
 		{
-			var path = CreatePath( resource );
-			var name = new DirectoryInfo( path ).Parent.Name.ToLower();
+			var path = CreatePath( resource ).Replace( "dragonspark/Widgets", "widgets" );
+			var name = new DirectoryInfo( path ).Parent.Name;
 			var item = parameter.Modules.FirstOrDefault( x => x.Name == name ) ?? new WidgetModule { Name = name };
 
 			var result = item.With( x => x.Path = x.Path ?? path );

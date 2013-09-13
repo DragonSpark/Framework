@@ -13,7 +13,7 @@
 					{
 						apply();
 					}
-					return result;
+					return result; 
 				}
 				return null;
 			},

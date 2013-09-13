@@ -22,18 +22,22 @@
 	
 	ctor.prototype.execute = function (parameter) {
 		function determinePromise(settings) {
-			try {
-				if (settings.path !== undefined) {
-					var command = require(settings.path());
-					var result = command.isExecuting ? system.defer(function(dfd) {
+			try 
+			{
+				if (settings.path !== undefined)
+				{
+					var result = system.acquire( settings.path() ).then( function( command ) {
+						var promise = command.isExecuting ? system.defer(function(dfd) {
 						var sub = command.isExecuting.subscribe(function(done) {
-							if (!done) {
-								dfd.resolve();
-								sub.dispose();
-							}
-						});
-					}).promise() : null;
-					command.execute(settings.parameter || parameter, result);
+								if (!done) {
+									dfd.resolve();
+									sub.dispose();
+								}
+							});
+						}).promise() : null;
+						command.execute(settings.parameter || parameter, result);
+						return promise;
+					} );
 					return result;
 				} else if (settings.body) {
 					var parameters = [settings.parameter || parameter];

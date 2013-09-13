@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Io;
+using DragonSpark.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,11 +39,13 @@ namespace DragonSpark.Server.ClientHosting
 			var assembly = AppDomain.CurrentDomain.GetAssemblies().Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() ).FirstOrDefault( x => x.GetName().Name == assemblyName );
 
 			var filePath = routeDataValues[ "filePath" ].ToString();
+			Debug.WriteLine( string.Format( "File Path = {0}", filePath ) );
 			var stream = DetermineLocal( assembly, filePath ) ?? assembly.Transform( x => new[] { filePath, string.Concat( assemblyName, ".", filePath ).Replace( Path.AltDirectorySeparatorChar, '.' ) }.Select( x.GetManifestResourceStream ).NotNull().FirstOrDefault() );
 			stream.NotNull( x =>
 			{
 				context.Response.Clear();
-				context.Response.ContentType = MimeMapping.GetMimeMapping( filePath );
+				context.Response.ContentType = filePath.EndsWith( ".js" ) ? "text/javascript" : MimeMapping.GetMimeMapping( filePath );
+				Log.Information( string.Format( "File {0}: {1}", filePath, context.Response.ContentType ) );
 				x.CopyTo( context.Response.OutputStream );
 			} );
 		}

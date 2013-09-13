@@ -38,6 +38,8 @@ namespace DragonSpark.Security
 			user.Claims.Clear();
 			user.Claims.AddAll( identity.Claims.Select( y => Activator.Create<IdentityClaim>().SynchronizeFrom( y ) ) );
 
+			OnProcessing( user, identity );
+
 			var type = identity.Find( Claims.IdentityProvider );
 			type.NotNull( y =>
 			{
@@ -47,7 +49,22 @@ namespace DragonSpark.Security
 				processor.NotNull( z => z.Process( identity, user ) );
 			} );
 
+			OnProcessed( user, identity );
+
 			userService.Save( user );
+		}
+
+		protected virtual void OnProcessing( TUser user, ClaimsIdentity identity )
+		{}
+
+		protected virtual void OnProcessed( TUser user, ClaimsIdentity identity )
+		{
+			switch ( user.MembershipNumber )
+			{
+				case 0:
+					user.MembershipNumber = userService.GetNextMembershipNumber();
+					break;
+			}
 		}
 	}
 
@@ -69,6 +86,8 @@ namespace DragonSpark.Security
 
 	public interface IUserService
 	{
+		long GetNextMembershipNumber();
+
 		UserProfile Create( string name );
 
 		UserProfile Get( string name );
@@ -85,16 +104,16 @@ namespace DragonSpark.Security
 			this.context = context;
 		}
 
-		public UserProfile Create( string name )
+		public long GetNextMembershipNumber()
 		{
-			var result = context.Create<TUser>( x => x.MembershipNumber = DetermineMembershipNumber() );
-			result.Name = name;
+			var result = context.Set<TUser>().Where( x => x.Claims.Any() ).LongCount() + 1;
 			return result;
 		}
 
-		long DetermineMembershipNumber()
+		public UserProfile Create( string name )
 		{
-			var result = context.Set<TUser>().LongCount()  + 1;
+			var result = context.Create<TUser>();
+			result.Name = name;
 			return result;
 		}
 
@@ -106,12 +125,14 @@ namespace DragonSpark.Security
 
 		protected virtual IQueryable<TUser> Query()
 		{
-			return context.Set<TUser>().Include( y => y.Claims );
+			var result = context.Set<TUser>().Include( y => y.Claims );
+			return result;
 		}
 
 		public void Save( UserProfile user )
 		{
 			user.LastActivity = DateTime.Now;
+
 			context.ApplyChanges( user );
 			context.Save();
 		}

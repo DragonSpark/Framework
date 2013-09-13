@@ -26,7 +26,8 @@ namespace DragonSpark.Logging.Configuration
 					var listener = y.Factory.Create<EventListener>( container );
 					y.Registrations.Apply( z => x.Register( listener, z ) );
 				} );
-				Definitions.SelectMany( y => y.Registrations.Select( z => z.EventSourceType ) ).Distinct().Apply( a => container.RegisterInstance( a, EventSourceImplementer.GetEventSource( a ) ) );
+				var types = Definitions.SelectMany( y => y.Registrations.Select( z => z.EventSourceType ) ).Distinct().ToArray();
+				types.Apply( z => container.RegisterInstance( z, EventSourceImplementer.GetEventSource( z ) ) );
 				EnableAll.IsTrue( x.EnableAll );
 			} );
 		}

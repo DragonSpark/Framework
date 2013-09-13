@@ -1,6 +1,7 @@
 ﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "./navigation", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, navigation, dialog, router, events) {
 	var dragonspark = window.$ds = {
-		initialize: function () {
+		initialize: function ()
+		{
 			dragonspark.trigger("application:initializing", this);
 			return $.connection.hub.start().then( configuration.initialize ).then(function () {
 					ko.validation.configure({
@@ -47,9 +48,9 @@
 		throw: function (e) {
 			var model = new error(e);
 
-			var log = "An exception has occurred: {0}".format(dialog.details);
+			var log = "An exception has occurred: {0}".format(model.details);
 			$ds.log(log);
-
+			
 			return dialog.show(model);
 		},
 		
@@ -60,15 +61,6 @@
 		}
 	};
 
-	/*var original = widget.beforeBind;
-	widget.beforeBind = function (element, view, settings) {
-		if (widget.beforeBind != original && (widget.beforeBind = original)) {
-			widget.beforeBind = original;
-			dragonspark.trigger("application:complete", this);
-		}
-		original(element, view, settings);
-	};*/
-	
 	window.onerror = function (message) {
 		var e = new Error(message);
 		e.trace = Enumerable.From(arguments.callee.trace()).Where("$.params.length").Select("	'	at {0} in {1}:line {2}'.format($.name, $.params[1], $.params[2])").Where("$ != ''").ToArray().join("\n");

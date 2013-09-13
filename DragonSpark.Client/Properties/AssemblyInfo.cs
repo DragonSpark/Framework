@@ -33,8 +33,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2013.9.12.1")]
+[assembly: AssemblyFileVersion("2013.9.12.1")]
 
 // [assembly: JsMergedFile( Filename = "MySite.js", Sources = new[] { "jQuery.js", "MyPage1.js", "MyPage2.js" } )]
 // [assembly: JsMergedFile( Filename = "Resources/DragonSpark.Client.min.js", Sources = new[] { "res/DragonSpark.Client.js" }, Minify = true )]

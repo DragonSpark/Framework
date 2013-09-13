@@ -29,4 +29,20 @@ namespace DragonSpark.Security
             get { return ClaimTypes.Name; }
         }
     }
+
+	public class EmailDisplayNameMapper : ClaimsMapperBase<UserProfile>
+    {
+        protected override void PerformMapping( Claim claim, UserProfile userProfile )
+        {
+			userProfile.DisplayName.Null( () =>
+			{
+				userProfile.DisplayName = claim.Value;
+			});
+        }
+
+        protected override string TargetClaimType
+        {
+            get { return ClaimTypes.Email; }
+        }
+    }
 }

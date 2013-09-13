@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Security
 {
-    public class ClaimsProcessor : IClaimsProcessor
+	public class ClaimsProcessor : IClaimsProcessor
     {
         readonly string identityProviderName;
         readonly IEnumerable<IClaimsMapper> mappers;
