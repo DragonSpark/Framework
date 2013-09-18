@@ -88,6 +88,19 @@ namespace DragonSpark.Entity
 			{
 				case EntityState.Detached:
 					target.Set<TEntity>().AddOrUpdate( entity );
+
+					/*var type = entity.GetType();
+					var properties = target.GetEntityProperties( type ).Select( x => x.Name ).ToArray();
+				
+					properties.Apply( x =>
+					{
+						var property = type.GetProperty( x );
+						var raw = property.GetValue( entity );
+						var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
+						items.Apply( y => target.Set( y.GetType() ).Remove( y ) );
+						target.SaveChanges();
+					} );*/
+
 					break;
 			}
 			return entity;
@@ -347,23 +360,26 @@ namespace DragonSpark.Entity
 			return entity;
 		}*/
 
-		public static void Remove<T>( this DbContext context, T entity ) where T : class
+		public static void Remove<T>( this DbContext context, T entity, bool clearProperties = true ) where T : class
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( entity != null );
-			
-			var type = entity.GetType();
-			var properties = context.GetEntityProperties( type ).Where( x => x.FromEndMember.DeleteBehavior == OperationAction.Cascade ).Select( x => x.Name ).ToArray();
-			Load( context, entity, properties );
 
-			properties.Apply( x =>
+			if ( clearProperties )
 			{
-				var property = type.GetProperty( x );
-				var raw = property.GetValue( entity );
-				var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
-				items.Apply( y => context.Set( y.GetType() ).Remove( y ) );
-				context.SaveChanges();
-			} );
+				var type = entity.GetType();
+				var properties = context.GetEntityProperties( type ).Where( x => x.FromEndMember.DeleteBehavior == OperationAction.Cascade ).Select( x => x.Name ).ToArray();
+				Load( context, entity, properties );
+
+				properties.Apply( x =>
+				{
+					var property = type.GetProperty( x );
+					var raw = property.GetValue( entity );
+					var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
+					items.Apply( y => context.Set( y.GetType() ).Remove( y ) );
+					context.SaveChanges();
+				} );
+			}
 
 			context.Set<T>().Remove( entity );
 		}

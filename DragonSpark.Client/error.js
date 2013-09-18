@@ -1,9 +1,11 @@
 ﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "application.service"], function (configuration, view, modal, service) {
 		
 	var ctor = function (error) {
-		var instance = configuration();
-		var self = this,
-			details = { Title: instance.ApplicationDetails.Title, Product: instance.ApplicationDetails.Title, VersionInformation: instance.ApplicationDetails.Version };
+		var instance = configuration(),
+			applicationDetails =  instance ? instance.ApplicationDetails : null,
+			self = this,
+			details = { Title: applicationDetails ? applicationDetails.Title : "N/A", Product: applicationDetails ? applicationDetails.Product : "N/A", VersionInformation: applicationDetails ? applicationDetails.Version : "N/A" };
+		
 		this.error = error;
 		this.details = "Exception occured in application {1} ({2}).{0}[Version: {3}]{0}{0}Message: {4}{0}{0}StackTrace Information Details:{0}======================================{0}{5}".format(
 			"\n",

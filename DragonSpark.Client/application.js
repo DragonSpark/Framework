@@ -1,8 +1,27 @@
-﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "./navigation", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, navigation, dialog, router, events) {
-	var dragonspark = window.$ds = {
+﻿define(["durandal/app", "durandal/system", "plugins/widget", "./error", "./configuration", "./compensations", "./view", "./navigation", "plugins/dialog", "plugins/router", "durandal/events"], function (app, system, widget, error, configuration, compensations, view, navigation, dialog, router, events) 
+{
+	function ensure()
+	{
+		var enabled = navigator.cookieEnabled ? true : false;
+		if ( typeof navigator.cookieEnabled == "undefined" && !enabled )
+		{
+			document.cookie = "testcookie";
+			enabled = document.cookie.indexOf( "testcookie" ) != -1 ? true : false;
+		}
+		
+		if ( !enabled )
+		{
+			throw new Error( "Cookies are not enabled.  Please ensure cookies are enabled." );
+		}
+	}
+
+	var dragonspark = window.$ds = 
+	{
 		initialize: function ()
 		{
+			ensure();
 			dragonspark.trigger("application:initializing", this);
+			$.connection.hub.logging = true;
 			return $.connection.hub.start().then( configuration.initialize ).then(function () {
 					ko.validation.configure({
 						registerExtenders: true,

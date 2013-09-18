@@ -134,6 +134,7 @@ namespace DragonSpark.Security
 			user.LastActivity = DateTime.Now;
 
 			context.ApplyChanges( user );
+
 			context.Save();
 		}
 	}

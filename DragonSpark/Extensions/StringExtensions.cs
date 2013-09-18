@@ -14,15 +14,15 @@ namespace DragonSpark.Extensions
 	{
 		public static string GenerateSlug( this string phrase )
 		{
-			var str = phrase.RemoveAccent().ToLower();
+			var result = Regex.Replace( phrase.RemoveAccent().ToLower(), @"[^a-zA-Z0-9]", "-" ).Transform( x => x.Substring( 0, x.Length ) );
 			// invalid chars           
-			str = Regex.Replace( str, @"[^a-z0-9\s-]", "" );
-			// convert multiple spaces into one space   
+			/*// convert multiple spaces into one space   
 			str = Regex.Replace( str, @"\s+", " " ).Trim();
 			// cut and trim 
 			str = str.Substring( 0, str.Length <= 45 ? str.Length : 45 ).Trim();
-			str = Regex.Replace( str, @"\s", "-" ); // hyphens   
-			return str;
+			str = Regex.Replace( str, @"\s", "-" ); // hyphens   */
+
+			return result;
 		}
 
 		public static string RemoveAccent( this string txt )

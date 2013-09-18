@@ -38,7 +38,6 @@
 							var names = widgets.Select(function (x) { return x.Name; }).ToArray();
 							
 							app.configurePlugins({ router: true, dialog: true, widget: { kinds: names }});
-
 							app.start().then(function () {
 								viewLocator.useConvention();
 

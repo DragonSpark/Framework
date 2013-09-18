@@ -1,10 +1,9 @@
-using System.Diagnostics;
 using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Io;
-using DragonSpark.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -45,7 +44,6 @@ namespace DragonSpark.Server.ClientHosting
 			{
 				context.Response.Clear();
 				context.Response.ContentType = filePath.EndsWith( ".js" ) ? "text/javascript" : MimeMapping.GetMimeMapping( filePath );
-				Log.Information( string.Format( "File {0}: {1}", filePath, context.Response.ContentType ) );
 				x.CopyTo( context.Response.OutputStream );
 			} );
 		}

@@ -35,21 +35,29 @@
 	};
 	
 	ko.modifiable = function( model ) {
-		var result = ko.observable(), initialState = null, watching = ko.observableArray([]);
-		
+		var result = ko.observable(), state = null, watching = ko.observableArray([]), group, method;
+
+		result.original = ko.observable();
 		result.isModified = ko.observable();
 		result.isValidating = ko.observable();
+		result.isValid = ko.observable();
+		result.hasChanges = ko.observable();
 		
 		function update()
 		{
 			var validating = isValidating( result() );
 			result.isValidating( validating );
+			
+			var valid = !validating && !group().length;
+			result.isValid( valid );
+
+			result.hasChanges( valid && result.isModified() );
 		}
 		
 		function changed(target, trigger)
 		{
 			var item = result();
-			var modified = initialState !== ko.mapping.toJSON( item );
+			var modified = state !== ko.mapping.toJSON( item );
 			result.isModified( modified );
 
 			setTimeout( function() {
@@ -62,14 +70,14 @@
 		{
 			for ( var i in item )
 			{
-				var method = item[i].isValidating;
-				if ( method && method() )
+				var m = item[i].isValidating;
+				if ( m && m() )
 				{
 					switch ( watching.indexOf(i) )
 					{
 					case -1:
 						watching.push(i);
-						var subscription = method.subscribe(function(value) {
+						var subscription = m.subscribe(function(value) {
 							if ( !value )
 							{
 								update( result );
@@ -93,14 +101,18 @@
 				delete result.watcher;
 			}
 			result.isModified( false );
-			result.watcher = ko.watch( result(), changed );
+			var target = result();
+			result.watcher = ko.watch( target, changed );
+			delete group;
+			group = ko.validation.group( target );
+			update();
 		}
-
+		
 		result.accept = function()
 		{
 			var item = ko.mapping.toJS( result() );
 
-			initialState = ko.toJSON( item );
+			state = ko.toJSON( item );
 			
 			reset();
 			return item;
@@ -108,19 +120,41 @@
 
 		result.cancel = function()
 		{
-			var item = ko.mapping.fromJSON( initialState );
+			var item = ko.mapping.fromJSON( state );
 			result( item );
 			reset();
 			return item;
 		};
 
-		var current = ko.mapping.fromJS( model );
-			
-		initialState = ko.toJSON( model );
-			
-		result( current );
+		result.apply = function()
+		{
+			if ( method && result.isValid() )
+			{
+				return method.apply( arguments );
+			}
+			return false;
+		};
 
-		reset();
+		result.assign = function( item, callback )
+		{
+			method = callback;
+			
+			result.original( item );
+
+			state = ko.toJSON( item );
+
+			var current = ko.mapping.fromJS( item );
+			result( current );
+		
+			reset();
+		};
+		
+		if ( model )
+		{
+			result.assign( model );
+		}
+
+		
 		return result;
 	};
 

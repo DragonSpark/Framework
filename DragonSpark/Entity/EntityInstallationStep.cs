@@ -1,6 +1,6 @@
-using System.Data.Entity;
 using DragonSpark.Extensions;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 
 namespace DragonSpark.Entity
 {
@@ -44,7 +44,7 @@ namespace DragonSpark.Entity
 	{
 		public void Execute( DbContext context )
 		{
-			Remove.Apply( y => context.Get( y ).NotNull( context.Remove ) );
+			Remove.Apply( y => context.Get( y ).NotNull( x => context.Remove( x ) ) );
 
 			Attach.Apply( y => context.ApplyChanges( y ) );
 		}

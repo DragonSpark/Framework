@@ -39,6 +39,26 @@ namespace DragonSpark.Server.Configuration
 				pipeline.AddModule( new ApplicationModule( Instance.ExceptionPolicyName ) );
 
 				var configuration = new HubConfiguration { Resolver = y, EnableDetailedErrors = true };
+
+				// GlobalHost.Configuration.KeepAlive = null;
+
+				//var current = GlobalHost.Configuration.TransportConnectTimeout;
+
+				// GlobalHost.Configuration.LongPollDelay = TimeSpan.FromSeconds( 10 );
+
+				// GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds( 20 );
+
+				/*GlobalHost.Configuration.TransportConnectTimeout = TimeSpan.FromSeconds( 10 );
+
+				GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds( 10 );
+				GlobalHost.Configuration.KeepAlive = null;
+			    GlobalHost.Configuration.LongPollDelay = TimeSpan.FromSeconds( 5 );
+				 * * 
+				*/
+				// GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromMilliseconds( 5000 );
+				
+				// GlobalHost.Configuration.LongPollDelay = TimeSpan.FromMilliseconds( 5000 );
+
 				app.MapSignalR( configuration );
 			} ) );
 		}
