@@ -53,7 +53,6 @@
     <EmbeddedResource Include="application.js" />
     <EmbeddedResource Include="Commands\displayError.js" />
     <EmbeddedResource Include="Commands\wait.js" />
-    <EmbeddedResource Include="compensations.js" />
     <EmbeddedResource Include="configuration.js" />
     <EmbeddedResource Include="Core\linq.min.js" />
     <EmbeddedResource Include="Durandal\activator.js" />
@@ -78,7 +77,7 @@
     <EmbeddedResource Include="Plugins\router.js" />
     <EmbeddedResource Include="Plugins\serializer.js" />
     <EmbeddedResource Include="Plugins\widget.js" />
-    <EmbeddedResource Include="service.js" />
+    <EmbeddedResource Include="session.js" />
     <EmbeddedResource Include="Transitions\entrance.js" />
     <EmbeddedResource Include="view.js" />
     <EmbeddedResource Include="Widgets\Copyright\about.html" />
@@ -121,11 +120,11 @@
     <EmbeddedResource Include="Core\jquery.signalR-2.0.0-rc1.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Extensions\jquery.js" />
+    <EmbeddedResource Include="Extensions\knockout.js" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Core\jquery.signalR-2.0.0-rc1.js" />
   </ItemGroup>
@@ -143,6 +142,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Commands\watchRouter.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\breeze.debug.js" />
+    <EmbeddedResource Include="Core\breeze.min.js" />
+    <EmbeddedResource Include="Core\q.js" />
+    <EmbeddedResource Include="Core\q.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="model.js" />
+    <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
+    <Content Include="Plugins\server.js" />
+    <EmbeddedResource Include="Plugins\storage.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

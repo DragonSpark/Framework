@@ -8,6 +8,8 @@ namespace DragonSpark.Server
 {
 	public class ApplicationModule : IHttpModule
 	{
+		static readonly object Locker = new object();
+
 		public const string ApplicationModulesKey = "application.Modules";
 
 		protected HttpApplication Application { get; set; }
@@ -31,7 +33,15 @@ namespace DragonSpark.Server
 			}
 		}
 
-		public virtual void Init( HttpApplication application )
+		void IHttpModule.Init( HttpApplication application )
+		{
+			lock ( Locker )
+			{
+				Initialize( application );
+			}
+		}
+
+		protected virtual void Initialize( HttpApplication application )
 		{
 			Application = application;
 

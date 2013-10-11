@@ -1,16 +1,16 @@
-﻿define( [ "durandal/system", "durandal/router" ], function ( system, router ) 
+﻿define( [ "durandal/system", "plugins/router" ], function ( system, router ) 
 {
-	return ko.command( {
-		execute: function( item )
+	return ko.asyncCommand( {
+		execute: function( item, callback )
 		{
 			var target = item || router;
-			var context = {};
+			var context = this;
 			var defer = system.defer( function(dfd) {
-				target.on( "router:navigation:cancelled router:navigation:complete", function() {
+				target.on( "router:navigation:composition-complete", function() {
 					dfd.resolve();
-					target.off( "router:navigation:cancelled router:navigation:complete", null, context );
-				} );
-			}, context );
+					target.off( "router:navigation:composition-complete", null, context );
+				}, context );
+			}, context ).promise().finally(callback);
 			return defer;
 		},
 

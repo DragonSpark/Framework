@@ -14,7 +14,7 @@ namespace DragonSpark.Extensions
 	{
 		public static string GenerateSlug( this string phrase )
 		{
-			var result = Regex.Replace( phrase.RemoveAccent().ToLower(), @"[^a-zA-Z0-9]", "-" ).Transform( x => x.Substring( 0, x.Length ) );
+			var result = Regex.Replace( phrase.Trim().RemoveAccent().ToLower(), @"[^a-zA-Z0-9]", "-" ).Transform( x => x.Substring( 0, x.Length ) );
 			// invalid chars           
 			/*// convert multiple spaces into one space   
 			str = Regex.Replace( str, @"\s+", " " ).Trim();

@@ -9,10 +9,10 @@
 			<div style="font-weight: bold">Current User Details</div>
 			<div style="margin: 8px">
 				<div>
-					Current User is <span data-bind="text: user != null ? 'Authenticated' : 'Anonymous'"></span>.
+					Current User is <span data-bind="text: user && user.Claims.length ? 'Authenticated' : 'Anonymous'"></span>.
 				</div>
 				<div data-bind="visible: user != null">
-					Full Name: <span data-bind="text: user != null ? user.DisplayName : ''"></span>
+					Full Name: <span data-bind="text: user ? user.DisplayName : ''"></span>
 				</div>
 			</div>
 		</div>

@@ -38,19 +38,20 @@
 	};
 
 	ctor.prototype.monitor = function (profile) {
-		var self = this;
-		var extend = $.extend({
-			title: this.settings.title || this.title(),
-			allowCancel: true,
-			closeOnCompletion: true,
-			anyExceptionIsFatal: false,
-			items: profile.item != null ? [profile.item] : []
-		}, profile, { dataContext: null });
+		var self = this,
+		    extend = $.extend( {
+				title: this.settings.title || this.title(),
+				allowCancel: true,
+				closeOnCompletion: true,
+				anyExceptionIsFatal: false,
+			}, profile, { dataContext: null } );
+		
 		var options = ko.mapping.fromJS(extend);
 		self.options(options);
+		
 		self.operations.removeAll();
 
-		var items = options.items();
+		var items = ko.utils.unwrapObservable(profile.items) || ( profile.item ? [profile.item] : [] );
 		items.map(function(i) {
 			var item = new operation(this, i);
 			self.operations.push(item);
@@ -63,7 +64,8 @@
 			self._checkCompletion();
 		}
 
-		var result = self._active ? self._active.promise() : system.defer( function (d) { d.resolve(); } );
+		var deferred = self._active ? self._active : system.defer( function (d) { d.resolve(); } );
+		var result = deferred.promise();
 		return result;
 	};
 
@@ -82,7 +84,7 @@
 			if (this._current) {
 				try {
 					var promise = self._current.execute(self);
-					$.when(promise).then(function () { self._checkCompletion(); }, function (error) { self._complete(error); });
+					Q(promise).then(function () { self._checkCompletion(); }, function (error) { self._complete(error); });
 				} catch (e) {
 					self._complete(e);
 				}

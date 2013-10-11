@@ -10,6 +10,7 @@
 		this.status = ko.observable(core.ExecutionStatus.None);
 		this.exceptionHandlingAction = ko.observable(this.settings.exceptionHandlingAction);
 		this.exception = ko.observable();
+		
 	};
 
 	ctor.prototype.determine = function(path) {
@@ -26,7 +27,7 @@
 			{
 				if (settings.path !== undefined)
 				{
-					var result = system.acquire( settings.path() ).then( function( command ) {
+					var result = system.acquire( settings.path ).then( function( command ) {
 						var promise = command.isExecuting ? system.defer(function(dfd) {
 						var sub = command.isExecuting.subscribe(function(done) {
 								if (!done) {
@@ -35,13 +36,14 @@
 								}
 							});
 						}).promise() : null;
-						command.execute(settings.parameter || parameter, result);
+						command.execute(settings.parameter, result);
 						return promise;
 					} );
 					return result;
 				} else if (settings.body) {
-					var parameters = [settings.parameter || parameter];
-					return settings.body.apply( parameter.settings.bindingContext.$data, parameters);
+					var parameters = [settings.parameter];
+					var apply = settings.body.apply( parameter.settings.bindingContext.$data, parameters);
+					return apply;
 				}
 				return null;
 			} catch (e) {
@@ -66,7 +68,7 @@
 				self.exception(exception);
 				dfd.reject(exception);
 			};
-			var complete = function (context) {
+			var complete = function () {
 				self.status(core.ExecutionStatus.Completed);
 				dfd.resolve();
 			};
@@ -74,7 +76,7 @@
 			if (promise instanceof Error) {
 				error(promise);
 			} else if (promise) {
-				$.when( promise ).then(complete, error);
+				Q( promise ).then( complete, error );
 			} else {
 				complete();
 			}

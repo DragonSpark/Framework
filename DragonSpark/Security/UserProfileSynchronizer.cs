@@ -72,7 +72,8 @@ namespace DragonSpark.Security
 	{
 		public static TUser Get<TUser>( this IUserService target, IPrincipal principal ) where TUser : UserProfile
 		{
-			var result = principal.Identity.IsAuthenticated ? target.Get( principal.Identity.Name ).To<TUser>() : null;
+			var user = principal.Identity.IsAuthenticated ? target.Get( principal.Identity.Name ) : target.GetAnonymous();
+			var result = user.To<TUser>();
 			return result;
 		}
 
@@ -92,6 +93,8 @@ namespace DragonSpark.Security
 
 		UserProfile Get( string name );
 
+		UserProfile GetAnonymous();
+
 		void Save( UserProfile user );
 	}
 
@@ -110,17 +113,22 @@ namespace DragonSpark.Security
 			return result;
 		}
 
-		public UserProfile Create( string name )
+		public virtual UserProfile Create( string name )
 		{
 			var result = context.Create<TUser>();
 			result.Name = name;
 			return result;
 		}
 
-		public UserProfile Get( string name )
+		public virtual UserProfile Get( string name )
 		{
 			var result = Query().SingleOrDefault( y => y.Name == name );
 			return result;
+		}
+
+		public virtual UserProfile GetAnonymous()
+		{
+			return null;
 		}
 
 		protected virtual IQueryable<TUser> Query()

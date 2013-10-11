@@ -33,9 +33,6 @@ namespace DragonSpark.Server.ClientHosting
 
 	public abstract class ClientModuleBuilder : ClientModuleBuilder<ClientModule, string>
 	{
-		protected ClientModuleBuilder( string defaultParameter ) : base( defaultParameter )
-		{}
-
 		protected override ClientModule Create( string parameter, AssemblyResource resource )
 		{
 			var result = new ClientModule { Path = CreatePath( resource ) };
@@ -45,28 +42,22 @@ namespace DragonSpark.Server.ClientHosting
 
 	public abstract class ClientModuleBuilder<TModule, TParameter> : Factory<TParameter, IEnumerable<TModule>> where TModule : ClientModule where TParameter : class
 	{
-		readonly TParameter defaultParameter;
-
-		protected ClientModuleBuilder( TParameter defaultParameter )
-		{
-			this.defaultParameter = defaultParameter;
-		}
-
 		protected override IEnumerable<TModule> CreateItem( TParameter parameter )
 		{
-			var item = parameter ?? defaultParameter;
 			var result = AppDomain.CurrentDomain.GetAssemblies()
 				.Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() )
-				.SelectMany( x => x.GetManifestResourceNames().Select( y => new AssemblyResource( x, y ) ) ).Where( x => IsResource( item, x ) ).Select( x => Create( item, x ) ).ToArray();
+				.SelectMany( x => x.GetManifestResourceNames().Select( y => new AssemblyResource( x, y ) ) ).Where( x => IsResource( parameter, x ) ).Select( x => Create( parameter, x ) ).ToArray();
 			return result;
 		}
 
-		protected virtual bool IsResource( TParameter parameter, AssemblyResource resource )
+		protected bool IsResource( AssemblyResource resource, string identifier )
 		{
-			var result = resource.ResourceName.StartsWith( string.Concat( resource.Assembly.GetName().Name, ".", parameter ), StringComparison.InvariantCultureIgnoreCase );
+			var result = resource.ResourceName.StartsWith( string.Concat( resource.Assembly.GetName().Name, ".", identifier, "." ), StringComparison.InvariantCultureIgnoreCase );
 			return result;
 		}
 
+		protected abstract bool IsResource( TParameter parameter, AssemblyResource resource );
+		
 		protected abstract TModule Create( TParameter parameter, AssemblyResource resource );
 
 		protected string CreatePath( AssemblyResource resource )

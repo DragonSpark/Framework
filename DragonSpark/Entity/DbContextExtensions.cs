@@ -377,7 +377,7 @@ namespace DragonSpark.Entity
 					var raw = property.GetValue( entity );
 					var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
 					items.Apply( y => context.Set( y.GetType() ).Remove( y ) );
-					context.SaveChanges();
+					context.Save();
 				} );
 			}
 

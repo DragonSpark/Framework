@@ -14,6 +14,14 @@
 		target.mapUnknownRoutes( instance.data.NotFound.moduleId );
 		return result;
 	}
+	
+	function subscribe()
+	{
+		router.on("router:navigation:complete", function (routeInfo, params, module) {
+			var title = configuration().ApplicationDetails.Title;
+			document.title = "{0} - {1}".format(params.config.title || "Not Found", title);
+		});
+	}
 
 	var instance =
 	{
@@ -21,6 +29,7 @@
 		{
 			router.deactivate();
 			router.reset();
+			subscribe();
 
 			build( router, routes );
 		},
@@ -82,9 +91,7 @@
 		instance.load( data.Navigation.Routes );
 	} );
 
-	router.on("router:navigation:complete", function (routeInfo, params, module) {
-		var title = configuration().ApplicationDetails.Title;
-		document.title = "{0} - {1}".format(params.config.title || "Not Found", title);
-	});
+	subscribe();
+	
 	return instance;
 });

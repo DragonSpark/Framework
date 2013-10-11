@@ -1,5 +1,5 @@
-﻿define(["durandal/system"], function (system) {
-
+﻿define([ "durandal/system" ], function (system) 
+{
 	function determineParameter(parameter) {
 		try {
 			return ko.toJSON(parameter);
@@ -8,15 +8,16 @@
 		} 
 	}
 
-	function invoke(name, parameter, method, controller) {
-		var result = system.defer(function (dfd) {
+	function invoke( name, parameter, controller, method )
+	{
+		var result = system.defer( function (dfd) {
 			var serialize = parameter ? determineParameter(parameter) : null;
 			$.ajax({
-				url: "{0}/{1}".format(controller, name),
+				url: "{0}/{1}".format( controller || "Session", name),
 				type: method ? method : parameter ? "POST" : "GET",
 				dataType: "json",
 				data: serialize,
-				contentType: 'application/json; charset=utf-8',
+				contentType: "application/json; charset=utf-8",
 				traditional: true,
 				success: function (data) {
 					dfd.resolve(data);
@@ -26,16 +27,20 @@
 					dfd.reject(e);
 				}
 			});
-		});
+		}).promise();
 		return result;
 	}
 
 	return {
 		invoke: function (method, parameter, controller) {
-			return invoke(method, parameter, "POST", controller || "Session");
+			return invoke(method, parameter, controller, "POST" );
 		},
 		call: function (method, parameter, controller) {
-			return invoke(method, parameter, null, controller || "Session");
+			return invoke(method, parameter, controller );
+		},
+		getConfiguration : function()
+		{
+			return invoke( "Configuration" );
 		}
 	};
 });

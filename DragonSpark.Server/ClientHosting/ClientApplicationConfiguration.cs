@@ -1,6 +1,6 @@
+using DragonSpark.Security;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Security;
 
 namespace DragonSpark.Server.ClientHosting
 {
@@ -24,6 +24,6 @@ namespace DragonSpark.Server.ClientHosting
 
 		public IEnumerable<WidgetModule> Widgets { get; set; }
 
-		public ResourcesContainer Resources { get; set; }
+		public ServerConfiguration ServerConfiguration { get; set; }
 	}
 }
