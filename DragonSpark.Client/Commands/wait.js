@@ -1,9 +1,9 @@
-﻿define(function () {
+﻿define([ "durandal/system" ], function ( system ) {
 	return ko.asyncCommand({
-		execute: function (parameter, complete) {
-			$ds.wait(2000).then(function() {
-				$ds.log("Hello World!  Executing command with parameter: {0}".format(parameter));
-			}).then(complete);
+		execute: function (parameter) {
+			return Q.delay(2000).then(function() {
+				system.log("Hello World!  Executing command with parameter: {0}".format(parameter));
+			});
 		},
 
 		canExecute: function (isExecuting) {

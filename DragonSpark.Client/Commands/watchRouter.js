@@ -1,21 +1,38 @@
-﻿define( [ "durandal/system", "plugins/router" ], function ( system, router ) 
-{
-	return ko.asyncCommand( {
-		execute: function( item, callback )
+﻿define( [ "durandal/system", "dragonspark/application", "dragonspark/navigation" ], function ( system, application, navigation ) {
+	function check( dfd, resolve )
+	{
+		var exception = navigation.exception;
+		if ( exception )
 		{
-			var target = item || router;
+			dfd.reject( exception );
+			navigation.exception = null;
+		} 
+		else if ( resolve )
+		{
+			dfd.resolve();
+		}
+		return resolve || exception != null;
+	}
+	var instance = ko.asyncCommand( {
+		execute: function()
+		{
 			var context = this;
-			var defer = system.defer( function(dfd) {
-				target.on( "router:navigation:composition-complete", function() {
-					dfd.resolve();
-					target.off( "router:navigation:composition-complete", null, context );
-				}, context );
-			}, context ).promise().finally(callback);
-			return defer;
+
+			return system.defer( function( dfd ) {
+				var dfd1 = !navigation.isActive();
+				if ( !check( dfd, dfd1 ) )
+				{
+					navigation.on( "navigation:complete", function() {
+						navigation.off( "navigation:complete", null, context );
+						check( dfd, true );
+					}, context );
+				}
+			}, context ).promise();
 		},
 
 		canExecute: function(isExecuting) {
 			return !isExecuting;
 		}
 	} );
-});
+	return instance;
+} );

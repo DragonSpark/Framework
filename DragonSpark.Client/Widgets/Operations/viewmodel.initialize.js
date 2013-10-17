@@ -1,4 +1,13 @@
 ﻿define(["./monitor", "dragonspark/application"], function ( monitor, application ) {
+	function canExecute(commands) {
+		for (var command in commands) {
+			if (commands[command] && commands[command].canExecute) {
+				return  commands[command].canExecute;
+			}
+		}
+		return commands.canExecute;
+	}
+
 	ko.bindingHandlers.operation = {
 		init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			var settings = valueAccessor();
@@ -35,19 +44,10 @@
 		},
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			var commands = valueAccessor();
-			var canExecute = ko.bindingHandlers.operation._determineCanExecute( commands );
-			if (canExecute) {
-				ko.bindingHandlers.enable.update(element, canExecute, allBindingsAccessor, viewModel);
+			var execute = canExecute( commands );
+			if (execute) {
+				ko.bindingHandlers.enable.update(element, execute, allBindingsAccessor, viewModel);
 			}
-		},
-		
-		_determineCanExecute: function (commands) {
-			for (var command in commands) {
-				if (commands[command] && commands[command].canExecute) {
-					return  commands[command].canExecute;
-				}
-			}
-			return commands.canExecute;
 		}
 	};
 	

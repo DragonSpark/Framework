@@ -1,7 +1,8 @@
-﻿define(function () {
+﻿define( [ "durandal/system" ], function ( system ) {
 	return ko.command({
-		execute: function(parameter) {
-			$ds.throw( parameter );
+		execute: function( parameter )
+		{
+			system.error( parameter );
 		},
 
 		canExecute: function(isExecuting) {

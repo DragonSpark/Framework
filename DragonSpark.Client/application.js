@@ -1,5 +1,5 @@
-﻿define( [ "durandal/app", "durandal/system", "durandal/events", "durandal/viewLocator", "plugins/widget", "plugins/dialog", "plugins/router", "plugins/server", "./navigation", "./configuration", "./error" ], 
-function ( app, system, events, viewLocator, widget, dialog, router, server, navigation, configuration, error ) 
+﻿define( [ "durandal/app", "durandal/system", "durandal/events", "durandal/viewLocator", "./configuration", "./error", "plugins/widget", "plugins/dialog", "plugins/router", "plugins/server" ], 
+function ( app, system, events, viewLocator, configuration, error, widget, dialog, router, server ) 
 {
 	function supportsLocalStorage() 
 	{
@@ -39,6 +39,7 @@ function ( app, system, events, viewLocator, widget, dialog, router, server, nav
 		// app.setRoot( shell.moduleId );
 		dragonspark.activate().then( function() {
 			app.setRoot( shell.moduleId );
+			dragonspark.trigger( "application:refreshed", this );
 		} );
 	}
 	
@@ -59,20 +60,29 @@ function ( app, system, events, viewLocator, widget, dialog, router, server, nav
 		{
 			ensure();
 			dragonspark.trigger( "application:initializing", this );
-			return server.initialize().then(function () {
-				ko.validation.configure( {
-					registerExtenders: true,
-					messagesOnModified: true,
-					insertMessages: false,
-					parseInputAttributes: true,
-					messageTemplate: null
-				} );
-
+			return system.acquire( "dragonspark/navigation" ).then( server.initialize ).then(function () {
+				
 				configuration.on( "application:configuration:refreshed", refresh );
 				
 				with ( configuration() )
 				{
 					system.debug(EnableDebugging);
+					
+					system.error = function( e )
+					{
+						var args = { exception: dragonspark.determineError( e ), handled : false };
+						dragonspark.trigger( "application:exception", args );
+
+						if ( !args.handled )
+						{
+							var model = new error( args.exception );
+
+							var log = "An exception has occurred: {0}".format( model.details );
+							system.log( log );
+			
+							dialog.show( model );
+						}
+					};
 
 					var initializers = Enumerable.From(Initializers),
 						commands = Enumerable.From(Commands),
@@ -87,6 +97,14 @@ function ( app, system, events, viewLocator, widget, dialog, router, server, nav
 					return system.acquire( modules ).then( function () {
 						app.title = ApplicationDetails.Title;
 						app.configurePlugins( { router: true, dialog: true, widget: true } );
+						
+						ko.validation.configure( {
+							registerExtenders: true,
+							messagesOnModified: true,
+							insertMessages: false,
+							parseInputAttributes: true,
+							messageTemplate: null
+						} );
 					});
 				}
 			}).then( server.start ).then( function() {
@@ -120,29 +138,20 @@ function ( app, system, events, viewLocator, widget, dialog, router, server, nav
 			dragonspark.trigger("application:refresh", this);
 		},
 		
-		log: function (message) { console.log(message); },
-		
-		throw: function (e) {
-			var model = new error(e);
-
-			var log = "An exception has occurred: {0}".format(model.details);
-			$ds.log(log);
+		determineError: function( e )
+		{
+			var exception = e instanceof Error ? e : new Error( e );
 			
-			return dialog.show(model);
-		},
-		
-		wait: function (milliseconds) {
-			return system.defer(function (dfd) {
-				setTimeout( dfd.resolve, milliseconds || 2000);
-			}).promise();
+			exception.stack = exception.stack || printStackTrace( exception ).splice( 5 ).join( "\n" );
+			return exception;
 		}
 	};
 
-	window.onerror = function (message) {
-		var e = new Error(message);
-		e.trace = Enumerable.From(arguments.callee.trace()).Where("$.params.length").Select("	'	at {0} in {1}:line {2}'.format($.name, $.params[1], $.params[2])").Where("$ != ''").ToArray().join("\n");
-		var result = $ds.throw(e);
-		return result;
+	window.onerror = function ( e )
+	{
+		var item = dragonspark.determineError( e );
+		system.error( item );
+		return true;
 	};
 
 	events.includeIn(dragonspark);
@@ -189,6 +198,13 @@ ko.observableArray.fn.pushAll = function (valuesToPush) {
 	this.valueHasMutated();
 	return this;  //optional
 };
+
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 
 /*if (typeof Object.getTypeName !== 'function') {
 	Object.prototype.getTypeName = function () {

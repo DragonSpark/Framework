@@ -86,19 +86,34 @@
 			owner.manager.metadataStore.setEntityTypeForResourceName(resourceName, entityTypeName);
 		}
 
-		this.withId = function( key ) 
+		this.expanding = function( entity, expand )
 		{
+			var query = breeze.EntityQuery.fromEntities( entity ).expand( expand );
+			return this.find( query ).then( function( items ) {
+				var item = Enumerable.From( items ).SingleOrDefault();
+				return item;
+			} );
+		};
+
+		this.withId = function( key, expand )
+		{
+			var that = this;
+
 			if (!entityTypeName)
 				throw new Error("Repository must be created with an entity type specified");
 
 			return owner.manager.fetchEntityByKey(entityTypeName, key, true).then(function (data) {
-				if (!data.entity)
+				if ( !data.entity )
+				{
 					throw new Error("Entity not found!");
-				return data.entity;
+				}
+
+				var result = expand ? that.expanding( data.entity, expand ) : data.entity;
+				return result;
 			});
 		};
 
-		this.query = function( expand, predicate )
+		this.query = function( predicate, expand )
 		{
 			var core = breeze.EntityQuery.from( resourceName );
 			var expanded = expand ? core.expand( expand ) : core;
@@ -118,9 +133,9 @@
 			return result;
 		};
 
-		this.item = function( expand )
+		this.item = function( query )
 		{
-			var result = executeQuery( this.query( expand ) ).then( function( items ) {
+			var result = executeQuery( query ).then( function( items ) {
 				return Enumerable.From( items ).SingleOrDefault();
 			} );
 			return result;
@@ -128,7 +143,7 @@
 
 		this.all = function ( expand ) 
 		{
-			var query = this.query( expand );
+			var query = this.query( null, expand );
 			var result = executeQuery( query );
 			return result;
 		};
@@ -216,6 +231,12 @@
 				configuration.apply( data );
 				return configured;
 			} );
+			return result;
+		},
+		
+		refreshConfiguration : function()
+		{
+			var result = session.getConfiguration().then( configuration.apply );
 			return result;
 		},
 		

@@ -1,5 +1,7 @@
-﻿define([ "require", "./Extensions/jquery", "./Extensions/knockout" ], function (require) {
+﻿define([ "require", "durandal/binder", "./Extensions/jquery", "./Extensions/knockout" ], function (require, binder) {
 	var monitors = {};
+
+	binder.throwOnErrors = true;
 
 	var instance = window.$dsView = {
 		overrides: [],

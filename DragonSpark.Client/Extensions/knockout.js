@@ -43,7 +43,9 @@
 		});
 
 		self.execute = function (arg1, arg2) {
-			if (self.canExecute()) {
+			if (self.canExecute())
+			{
+				self.error();
 				var args = [];
 				if (executeDelegate.length >= 2) {
 					args.push(arg1);
@@ -54,7 +56,15 @@
 
 				args.push(completeCallback);
 				self.isExecuting(true);
-				return executeDelegate.apply(this, args);
+				var result = executeDelegate.apply( this, args );
+
+				switch ( result && result.toString() )
+				{
+				case "[object Promise]":
+					Q( result ).then( completeCallback, completeCallback );
+					break;
+				}
+				return result;
 			}
 			return null;
 		};
@@ -126,6 +136,30 @@
 			settings.command = require(settings.path);
 			ko.bindingHandlers[settings.interaction || "enable"].update(element, settings.command.canExecute, allBindingsAccessor, viewModel);
 		}
+	};
+
+	ko.validationMonitor = function( item )
+	{
+		var watch = ko.observable( item );
+		var result = ko.computed( function() {
+			var target = watch();
+			if ( target )
+			{
+				for ( var i in target )
+				{
+					if ( target[ i ].isValid && !target[ i ].isValid() )
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		} );
+		result.monitor = function( input )
+		{
+			watch( input );
+		};
+		return result;
 	};
 
 	ko.tracker = function( item, modified ) {

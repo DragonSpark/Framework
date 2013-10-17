@@ -152,6 +152,7 @@
   <ItemGroup>
     <EmbeddedResource Include="model.js" />
     <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
+    <EmbeddedResource Include="Core\stacktrace.js" />
     <Content Include="Plugins\server.js" />
     <EmbeddedResource Include="Plugins\storage.js" />
   </ItemGroup>

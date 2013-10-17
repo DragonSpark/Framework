@@ -40,6 +40,8 @@ using System.Runtime.InteropServices;
 // [assembly: JsMergedFile( Filename = "Resources/DragonSpark.Client.min.js", Sources = new[] { "res/DragonSpark.Client.js" }, Minify = true )]
 
 [assembly: ClientResources( "dragonspark" )]
+// [assembly: ClientResource( "Core/require.js", Priority = Priority.Lowest )]
+[assembly: ClientResource( "Core/stacktrace.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/jquery-2.0.2.min.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/knockout-2.3.0.js", Priority = Priority.Lower )]
 [assembly: ClientResource( "Core/q.js", Priority = Priority.Lower )]

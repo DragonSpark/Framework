@@ -38,15 +38,28 @@
 
     return ctor;
 });
+/*
 
 Function.prototype.trace = function() {
-	var trace = [];
+	function getCaller( item )
+	{
+		try
+		{
+			return item.caller;
+		}
+		catch( e )
+		{
+			return null;
+		} 
+	}
+
+	var result = [];
 	var current = this;
 	while (current) {
-		trace.push(current.signature());
-		current = current.caller;
+		result.push(current.signature());
+		current = getCaller( current );
 	}
-	return trace;
+	return result;
 };
 
 Function.prototype.signature = function() {
@@ -54,8 +67,7 @@ Function.prototype.signature = function() {
 		name: this.getName(),
 		params: [],
 		toString: function() {
-			var params = this.params.length > 0 ?
-				"'" + this.params.join("', '") + "'" : "";
+			var params = this.params.length > 0 ? "'" + this.params.join("', '") + "'" : "";
 			return this.name + "(" + params + ")";
 		}
 	};
@@ -76,3 +88,4 @@ Function.prototype.getName = function() {
 		return definition.split("\n")[0].replace(exp, "$1") || "anonymous";
 	return "anonymous";
 };
+*/

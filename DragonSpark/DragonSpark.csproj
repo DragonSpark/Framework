@@ -168,8 +168,12 @@
     <CodeAnalysisRuleSet>..\The DragonSpark Application Framework.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PulseNation\packages\EntityFramework.6.0.0-rc1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\PulseNation\packages\EntityFramework.6.0.0-rc1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="EventSourceProxy">
       <HintPath>..\packages\EventSourceProxy.1.1.2\lib\EventSourceProxy.dll</HintPath>
@@ -210,7 +214,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Design" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />

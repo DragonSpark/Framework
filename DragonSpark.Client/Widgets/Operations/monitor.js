@@ -60,7 +60,7 @@
 				if ( widget != current )
 				{
 					var apply = function() { initialize( widget, model ); };
-					var result = current && current._active ? current._active.fin( apply ) : null;
+					var result = current && current._active ? Q(current._active).fin( apply ) : null;
 					if ( !result )
 					{
 						apply();

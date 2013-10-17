@@ -1,4 +1,4 @@
-﻿define(["dragonspark/configuration"], function ( configuration ) {
+﻿define( [ "dragonspark/configuration" ], function ( configuration ) {
 	var instance = {
 		claim : function (user, name) {
 			var profile = user || configuration().UserProfile;
@@ -6,7 +6,7 @@
 			var result = claim != null ? claim.Value : null;
 			return result;
 		}
-	};
+	}; 
 
 	return instance;
 });
