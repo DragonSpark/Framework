@@ -3,7 +3,6 @@ using DragonSpark.IoC;
 using DragonSpark.Logging.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
 
@@ -13,32 +12,32 @@ namespace DragonSpark.Logging
 	{
 		public static void EnableAll( this IEventListenerRegistry target )
 		{
-			target.GetAll().Apply( x => target.Retrieve( x ).Apply( y => x.ListenTo( y.EventSourceType, y.Level, y.Keywords ) ) );
+			target.GetAll().Apply( x => target.Retrieve( x ).Apply( y => x.ListenTo( y.Key, y.Value.Level, y.Value.Keywords ) ) );
 		}
 
 		public static void DisableAll( this IEventListenerRegistry target )
 		{
-			target.GetAll().Apply( x => target.Retrieve( x ).Apply( y => x.Ignore( y.EventSourceType ) ) );
+			target.GetAll().Apply( x => target.Retrieve( x ).Apply( y => x.Ignore( y.Key ) ) );
 		}
 	}
 
 	public interface IEventListenerRegistry
 	{
-		void Register( EventListener listener, EventListenerRegistration registration );
+		void Register( EventListener listener, Type eventSourceType, EventSourceRegistration registration );
 
 		IEnumerable<EventListener> GetAll();
 
-		IEnumerable<EventListenerRegistration> Retrieve( EventListener listener );
+		IEnumerable<KeyValuePair<Type, EventSourceRegistration>> Retrieve( EventListener listener );
 	}
 
 	[Singleton( typeof(IEventListenerRegistry) )]
 	class EventListenerRegistry : IEventListenerRegistry
 	{
-		readonly IDictionary<EventListener, ICollection<EventListenerRegistration>> cache = new Dictionary<EventListener, ICollection<EventListenerRegistration>>();
+		readonly IDictionary<EventListener, IDictionary<Type, EventSourceRegistration>> cache = new Dictionary<EventListener, IDictionary<Type, EventSourceRegistration>>();
 
-		public void Register( EventListener listener, EventListenerRegistration registration )
+		public void Register( EventListener listener, Type eventSourceType, EventSourceRegistration registration )
 		{
-			Ensure( listener ).Add( registration );
+			Ensure( listener )[ eventSourceType ] = registration;
 		}
 
 		public IEnumerable<EventListener> GetAll()
@@ -47,28 +46,26 @@ namespace DragonSpark.Logging
 			return result;
 		}
 
-		public IEnumerable<EventListenerRegistration> Retrieve( EventListener listener )
+		public IEnumerable<KeyValuePair<Type,EventSourceRegistration>> Retrieve( EventListener listener )
 		{
 			var result = Ensure( listener ).ToArray();
 			return result;
 		}
 
-		ICollection<EventListenerRegistration> Ensure( EventListener listener )
+		IDictionary<Type, EventSourceRegistration> Ensure( EventListener listener )
 		{
-			var result = cache.Ensure( listener, x => new Collection<EventListenerRegistration>() );
+			var result = cache.Ensure( listener, x => new Dictionary<Type, EventSourceRegistration>() );
 			return result;
 		}
 	}
 
-	public class EventListenerRegistration
+	public class EventSourceRegistration
 	{
-		public EventListenerRegistration()
+		public EventSourceRegistration()
 		{
 			Level = EventLevel.LogAlways;
 			Keywords = Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Keywords.All;
 		}
-
-		public Type EventSourceType { get; set; }
 
 		public EventLevel Level { get; set; }
 

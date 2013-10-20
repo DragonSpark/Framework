@@ -1,12 +1,25 @@
-using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using Microsoft.Practices.EnterpriseLibrary.SemanticLogging;
 using Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Formatters;
 using Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Schema;
 using Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Utility;
+using System.Diagnostics;
+using System.Diagnostics.Tracing;
 
 namespace DragonSpark.Logging
 {
+	public class TraceEventListener : EventListener
+	{
+		readonly IEventTextFormatter formatter = new EventTextFormatter();
+
+		protected override void OnEventWritten( EventWrittenEventArgs eventData )
+		{
+			var schema = EventSourceSchemaCache.Instance.GetSchema( eventData.EventId, eventData.EventSource );
+			var entry = EventEntry.Create( eventData, schema );
+			var message = formatter.WriteEvent( entry ).Trim();
+			Trace.WriteLine( message );
+		}
+	}
+
 	public class EventLogEventListener : EventListener
 	{
 		readonly IEventTextFormatter formatter = new EventTextFormatter();

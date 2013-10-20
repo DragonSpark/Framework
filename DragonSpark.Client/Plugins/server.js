@@ -1,4 +1,4 @@
-﻿define([ "durandal/app", "durandal/system", "durandal/events", "dragonspark/session", "dragonspark/configuration" ], function ( app, system, events, session, configuration ) {
+﻿define([ "breeze", "durandal/app", "durandal/system", "durandal/events", "dragonspark/session", "dragonspark/configuration" ], function ( breeze, app, system, events, session, configuration ) {
 	// breeze.NamingConvention.camelCase.setAsDefault();
 
 	var references = {};
@@ -24,7 +24,9 @@
 			return value;
 		};
 
-		this.clear = function () {
+		this.clear = function ()
+		{
+			value.off();
 			value = null;
 			this.referenceCount = 0;
 
@@ -102,7 +104,7 @@
 			if (!entityTypeName)
 				throw new Error("Repository must be created with an entity type specified");
 
-			return owner.manager.fetchEntityByKey(entityTypeName, key, true).then(function (data) {
+			return owner.manager.fetchEntityByKey(entityTypeName, key).then(function (data) {
 				if ( !data.entity )
 				{
 					throw new Error("Entity not found!");
@@ -153,7 +155,7 @@
 	{
 		var that = this;
 		return this.manager.saveChanges().then( function ( saveResult ) {
-			that.trigger( "application:server:saved", saveResult.entities );
+			that.trigger( "application:entityContext:saved", saveResult.entities );
 			return saveResult;
 		} );
 	};
@@ -202,10 +204,10 @@
 			define( i + ".client", [], function() { return $.connection[ i ].client; } );
 			define( i + ".service", [], function() { return $.connection[ i ].server; } );
 			define( i, [], function() { return $.connection[ i ].server; } );
-			$.connection[ i ].client.exceptionHandler = function( error )
+			/*$.connection[ i ].client.exceptionHandler = function( error )
 			{
 				$ds.lastServiceError = error;
-			};
+			};*/
 		} );
 
 		var initializers = [];

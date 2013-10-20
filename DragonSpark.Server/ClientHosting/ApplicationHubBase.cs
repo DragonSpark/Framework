@@ -1,4 +1,3 @@
-using AttributeRouting.Web.Http;
 using DragonSpark.Extensions;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
@@ -34,14 +33,12 @@ namespace DragonSpark.Server.ClientHosting
 			this.configuration = configuration;
 		}
 		
-		[POST( "{action}" ), System.Web.Http.Authorize, HttpPost]
-		public void SignOut()
+		public virtual void SignOut()
 		{
 			FederatedAuthentication.SessionAuthenticationModule.SignOut();
 		}
 
-		[GET( "Configuration" ), HttpGet]
-		public ClientApplicationConfiguration GetConfiguration()
+		public virtual ClientApplicationConfiguration GetConfiguration()
 		{
 			return configuration;
 		}

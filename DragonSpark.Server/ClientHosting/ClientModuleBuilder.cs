@@ -66,7 +66,9 @@ namespace DragonSpark.Server.ClientHosting
 			var name = resource.Assembly.GetName().Name;
 			var resourceName = resource.ResourceName.StartsWith( name ) ? DeterminePath( resource.ResourceName.Substring( name.Length + 1 ) ) : resource.ResourceName;
 
-			var result = string.Concat( assembly, Path.AltDirectorySeparatorChar, Path.GetDirectoryName( resourceName ).Replace( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar ), Path.AltDirectorySeparatorChar, Path.GetFileNameWithoutExtension( resourceName ) );
+			var directoryName = Path.GetDirectoryName( resourceName );
+			var path = string.Concat( assembly, Path.AltDirectorySeparatorChar, directoryName.Replace( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar ), !string.IsNullOrEmpty( directoryName ) ? (object)Path.AltDirectorySeparatorChar : string.Empty, Path.GetFileNameWithoutExtension( resourceName ) );
+			var result = path.StartsWith( "application/Viewmodels" ) ? path.Replace( "application/Viewmodels", "viewmodels" ) : path;
 			return result;
 		}
 
@@ -79,7 +81,7 @@ namespace DragonSpark.Server.ClientHosting
 			var index = Array.IndexOf( parts, lower );
 
 			var separator = Path.AltDirectorySeparatorChar.ToString();
-			var result = index > -1 && index < parts.Length ? string.Concat( string.Join( separator, parts.Take( index ) ), separator, string.Join( ".", parts.Skip( index ).Take( parts.Length - index ) ) ) : resourceName;
+			var result = index > 0 && index < parts.Length ? string.Concat( string.Join( separator, parts.Take( index ) ), separator, string.Join( ".", parts.Skip( index ).Take( parts.Length - index ) ) ) : resourceName;
 			return result;
 		}
 	}

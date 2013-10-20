@@ -2,7 +2,7 @@
 	function build( target, items ) 
 	{
 		var result = target.map( items ).buildNavigationModel();
-		target.mapUnknownRoutes( instance.data.NotFound.moduleId );
+		target.mapUnknownRoutes( configuration().Navigation.NotFound.moduleId );
 		return result;
 	}
 	
@@ -14,7 +14,10 @@
 		{
 			var part = mappings[ $(model).getUID() ].title || "Not Found";
 			parts.unshift( part );
-			current = current.parent;
+
+			model = current.activeItem();
+			
+			current = model && model.router && model.router.parent == current ? model.router : null;
 		}
 
 		parts.unshift( configuration().ApplicationDetails.Title );
@@ -71,8 +74,6 @@
 			application.on( "application:exception", function( args ) {
 				args.handled = true;
 				that.exception = args.exception;
-				/*var model = that.source.activeItem();
-				that.continue( model );*/
 			}, that );
 			
 			var source = that.source;
@@ -197,7 +198,7 @@
 			mappings[ $(model).getUID() ] = instruction.config;
 			ensure( model, instruction, source );
 
-			if ( !source.parent && instruction.config.moduleId != instance.data.NotFound.moduleId )
+			if ( !source.parent && instruction.config.moduleId != configuration().Navigation.NotFound.moduleId )
 			{
 				storage.set( fragmentKey, instruction.fragment );
 				if ( !options )
@@ -282,9 +283,8 @@
 		    }
 	    };
 
-	configuration.on( "application:configuration:refreshing", function( module, data ) {
-		instance.data = data.Navigation;
-		instance.load( data.Navigation.Routes );
+	configuration.on( "application:configuration:refreshed", function( module, data ) {
+		instance.load( configuration().Navigation.Routes );
 	} );
 
 	application.on( "application:refreshed", function() {

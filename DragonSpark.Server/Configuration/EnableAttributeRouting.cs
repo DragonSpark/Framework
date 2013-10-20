@@ -1,9 +1,5 @@
-﻿using AttributeRouting.Web.Http.WebHost;
-using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
 using System.Web.Http;
 using System.Windows.Markup;
 
@@ -14,13 +10,16 @@ namespace DragonSpark.Server.Configuration
 	{
 		public void Configure( HttpConfiguration configuration )
 		{
-			var assemblies = Types.Any() ? Types.Select( x => x.Assembly ) : new[] { Assembly.GetExecutingAssembly() };
+//			var assemblies = Types.Any() ? Types.Select( x => x.Assembly ) : new[] { Assembly.GetExecutingAssembly() };
 
-			configuration.Routes.MapHttpAttributeRoutes( x =>
+			configuration.MapHttpAttributeRoutes();
+			configuration.EnsureInitialized();
+
+			/*configuration.Routes.MapHttpAttributeRoutes( x =>
 			{
 				x.InheritActionsFromBaseController = true;
 				assemblies.Apply( x.AddRoutesFromAssembly );
-			} );
+			} );*/
 		}
 
 		public Collection<Type> Types

@@ -1,9 +1,9 @@
 using DragonSpark.Client;
 using DragonSpark.Extensions;
 using DragonSpark.Io;
+using DragonSpark.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,16 +36,26 @@ namespace DragonSpark.Server.ClientHosting
 
 			var assemblyName = routeDataValues[ "assemblyName" ].ToString();
 			var assembly = AppDomain.CurrentDomain.GetAssemblies().Where( x => x.IsDecoratedWith<ClientResourcesAttribute>() ).FirstOrDefault( x => x.GetName().Name == assemblyName );
-
-			var filePath = routeDataValues[ "filePath" ].ToString();
-			Debug.WriteLine( string.Format( "File Path = {0}", filePath ) );
-			var stream = DetermineLocal( assembly, filePath ) ?? assembly.Transform( x => new[] { filePath, string.Concat( assemblyName, ".", filePath ).Replace( Path.AltDirectorySeparatorChar, '.' ) }.Select( x.GetManifestResourceStream ).NotNull().FirstOrDefault() );
-			stream.NotNull( x =>
+			if ( assembly != null )
 			{
-				context.Response.Clear();
-				context.Response.ContentType = filePath.EndsWith( ".js" ) ? "text/javascript" : MimeMapping.GetMimeMapping( filePath );
-				x.CopyTo( context.Response.OutputStream );
-			} );
+				var filePath = routeDataValues["filePath"].ToString();
+				Log.Information( string.Format( "File Path = {0}", filePath ) );
+				var stream = DetermineLocal( assembly, filePath ) ?? new EmbeddedResourceFile( assembly, filePath ).Open();
+				if ( stream != null )
+				{
+					context.Response.Clear();
+					context.Response.ContentType = filePath.EndsWith( ".js" ) ? "text/javascript" : MimeMapping.GetMimeMapping( filePath );
+					stream.CopyTo( context.Response.OutputStream );
+				}
+				else
+				{
+					Log.Warning( string.Format( "Could not load stream for {0}.", filePath ) );
+				}
+			}
+			else
+			{
+				Log.Warning( string.Format( "Assembly not found for: {0}", assemblyName ) );
+			}
 		}
 
 		static string DeterminePath( string root, string filePath, string name )

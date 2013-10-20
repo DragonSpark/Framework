@@ -10,7 +10,10 @@ namespace DragonSpark.Server.ClientHosting
 {
 	public class VirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
-		public const string Path = "~/Client";
+		public const string 
+			Directory = "~/Client",
+			Application = "~/Client/application.js",
+			Packaged = "~/Client/application.packaged.js";
 
 		readonly System.Web.Hosting.VirtualPathProvider contained;
 
@@ -49,16 +52,17 @@ namespace DragonSpark.Server.ClientHosting
 
 		static VirtualFile DetermineFile( string virtualPath )
 		{
-			var parts = new Queue<string>( virtualPath.Replace( Path, string.Empty ).ToStringArray( System.IO.Path.AltDirectorySeparatorChar ) );
+			var parts = new Queue<string>( virtualPath.Replace( Directory, string.Empty ).ToStringArray( System.IO.Path.AltDirectorySeparatorChar ) );
 			var assemblyName = parts.Dequeue();
 			var path = string.Join( System.IO.Path.AltDirectorySeparatorChar.ToString(), parts.ToArray() );
-			var stream = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault( x => x.GetName().Name == assemblyName ).Transform( x => x.GetManifestResourceStream( path ) );
-			return new EmbeddedResourceFile( stream, virtualPath );
+			var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault( x => x.GetName().Name == assemblyName );
+			var result = new EmbeddedResourceFile( assembly, path );
+			return result;
 		}
 
 		static bool IsEmbeddedPath( string path )
 		{
-			var result = path.StartsWith( Path );
+			var result = path.StartsWith( Directory ) && path != Packaged;
 			return result;
 		}
 	}

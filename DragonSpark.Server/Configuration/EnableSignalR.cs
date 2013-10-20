@@ -75,47 +75,12 @@ namespace DragonSpark.Server.Configuration
 			this.policyName = policyName;
 		}
 
-		protected override void OnIncomingError(Exception ex, IHubIncomingInvokerContext context)
+		protected override void OnIncomingError( ExceptionContext exceptionContext, IHubIncomingInvokerContext invokerContext )
 		{
 			Exception error;
-			ExceptionPolicy.HandleException( ex, policyName, out error );
-
-			context.Hub.Clients.Caller.ExceptionHandler( error );
+			ExceptionPolicy.HandleException( exceptionContext.Error, policyName, out error );
+			exceptionContext.Error = error;
+			base.OnIncomingError( exceptionContext, invokerContext );
 		}
-
-		/*protected override void OnAfterDisconnect( IHub hub )
-		{
-			base.OnAfterDisconnect( hub );
-
-			hub.As<Hub>( x =>
-			{
-				x.Context.Request.GetHttpContext().DisposeOnPipelineCompleted()
-			} );
-
-			ServerContext.Dispose();
-		}*/
-
-		/*protected override bool OnBeforeConnect( IHub hub )
-		{
-			return base.OnBeforeConnect( hub );
-		}
-
-		protected override void OnAfterConnect( IHub hub )
-		{
-			base.OnAfterConnect( hub );
-		}
-
-		protected override bool OnBeforeDisconnect( IHub hub )
-		{
-			var current = ServerContext.Current;
-			return base.OnBeforeDisconnect( hub );
-		}
-
-		public override Func<IHub, Task> BuildDisconnect( Func<IHub, Task> disconnect )
-		{
-			var current = ServerContext.Current;
-			return base.BuildDisconnect( disconnect );
-		}*/
 	}
-
 }

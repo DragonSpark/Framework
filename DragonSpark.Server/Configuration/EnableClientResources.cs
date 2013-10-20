@@ -16,8 +16,8 @@ namespace DragonSpark.Server.Configuration
 		[DefaultPropertyValue( "Client/{assemblyName}/{*filePath}" )]
 		public string RouteTemplate { get; set; }
 
-		[DefaultPropertyValue( VirtualPathProvider.Path )]
-		public string VirtualPath { get; set; }
+		/*[DefaultPropertyValue( VirtualPathProvider.Directory )]
+		public string VirtualPath { get; set; }*/
 
 		[IoCDefault]
 		public IPathResolver PathResolver { get; set; }
@@ -29,7 +29,8 @@ namespace DragonSpark.Server.Configuration
 		{
 			BundleTable.VirtualPathProvider = new VirtualPathProvider( HostingEnvironment.VirtualPathProvider );
 			RouteTable.Routes.MapRoute( "Client", RouteTemplate ).RouteHandler = this;
-			BundleTable.Bundles.Add( new ClientResourcesBundle( VirtualPath ) );
+			BundleTable.Bundles.Add( new ClientResourcesBundle() );
+			BundleTable.Bundles.Add( new PackagedClientResourcesBundle() );
 		}
 
 		IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)

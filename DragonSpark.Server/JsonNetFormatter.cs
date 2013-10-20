@@ -11,13 +11,36 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Server
 {
+	public class IsoDateTimeConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
+	{
+		public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
+		{
+			writer.WriteRaw( @"{ ""type"": ""System.DateTime"", ""value"":" );
+			base.WriteJson( writer, value, serializer );
+			writer.WriteRaw( @"}" );
+		}
+	}
+
+	/*public class VersionConverter : Newtonsoft.Json.Converters.VersionConverter
+	{
+		public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
+		{
+			writer.WriteRaw( @"{ ""type"": ""System.Version"", ""value"":" );
+			base.WriteJson( writer, value, serializer );
+			writer.WriteRaw( @"}" );
+		}
+	}*/
+
 	public class JsonNetFormatter : MediaTypeFormatter
 	{
 		readonly JsonSerializerSettings settings;
 
-		public JsonNetFormatter( JsonSerializerSettings jsonSerializerSettings )
+		public JsonNetFormatter( JsonSerializerSettings jsonSerializerSettings = null )
 		{
-			settings = jsonSerializerSettings ?? new JsonSerializerSettings();
+			settings = jsonSerializerSettings ?? new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+			settings.Converters.Add( new IsoDateTimeConverter() );
+			settings.Converters.Add( new Newtonsoft.Json.Converters.VersionConverter() );
+
 
 			SupportedMediaTypes.Add( new MediaTypeHeaderValue( "application/json" ) );
 			SupportedEncodings.Add( new UTF8Encoding( false, true ) );

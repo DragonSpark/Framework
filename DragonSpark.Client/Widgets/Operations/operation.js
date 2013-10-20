@@ -58,13 +58,10 @@
 			{
 				self.status(core.ExecutionStatus.CompletedWithException);
 				
-				// HACK: SignalR returns messages and not errors, lesigh.
-				var serviceError = typeof e == "string" && $ds.lastServiceError;
-				var exception = serviceError ? new ServiceError( $ds.lastServiceError.Message ) : e;
-				$ds.lastServiceError = serviceError ? null : $ds.lastServiceError;
-				
-				self.exception(exception);
-				dfd.reject(exception);
+				var serviceError = e.source == "Exception" || e.status == 500 || ( e.message && e.message.message );
+				var exception = serviceError ? new ServiceError( e ) : e;
+				self.exception( exception );
+				dfd.reject( exception );
 			};
 
 			var promise = determinePromise( self.settings );

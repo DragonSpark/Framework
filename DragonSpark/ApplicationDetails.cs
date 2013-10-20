@@ -38,7 +38,7 @@ namespace DragonSpark
 		public string Copyright { get; set; }
 
 		[DataMember]
-		public DateTime? DeploymentDate { get; set; }
+		public DateTimeOffset? DeploymentDate { get; set; }
 
 		[DataMember, TypeConverter(typeof(VersionConverter))]
 		public Version Version { get; set; }

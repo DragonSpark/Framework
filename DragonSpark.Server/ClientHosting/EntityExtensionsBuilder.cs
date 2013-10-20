@@ -3,8 +3,13 @@ using DragonSpark.Extensions;
 using DragonSpark.Objects;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
+using System.Web.Http;
+using System.Web.Http.OData.Query;
 using System.Xml.Serialization;
 
 namespace DragonSpark.Server.ClientHosting
@@ -13,10 +18,50 @@ namespace DragonSpark.Server.ClientHosting
 	public class EntityInitializerAttribute : Attribute
 	{}
 
+	public class QueryHelper : Breeze.WebApi.QueryHelper
+	{
+		static readonly MethodInfo CreateInfo = typeof(QueryHelper).GetMethod( "Create", DragonSparkBindingOptions.AllProperties );
+
+		public QueryHelper( ODataQuerySettings querySettings ) : base( querySettings )
+		{}
+
+		static IEnumerable<TItem> Create<TItem>( IEnumerable source )
+		{
+			var result = source.Cast<TItem>().ToList();
+			return result;
+		}
+
+		/// <summary>
+		///     Perform any work after the query is executed.  Does nothing in this implementation but is available to derived
+		///     classes.
+		/// </summary>
+		/// <param name="queryResult"></param>
+		/// <returns></returns>
+		public override IEnumerable PostExecuteQuery( IEnumerable queryResult )
+		{
+			var list = queryResult.Cast<object>().Select( x => x.GetType().GetProperty( "Instance" ).Transform( y => y.GetValue( x, null ), () => x ) ).ToArray();
+
+			var type = list.FirstOrDefault().Transform( x => x.GetType() ) ?? typeof(object);
+
+			var result = (IEnumerable)CreateInfo.MakeGenericMethod( type ).Invoke( null, new object[] { list } );
+			return result;
+		}
+
+		public override IQueryable ApplySelectAndExpand( IQueryable queryable, NameValueCollection map )
+		{
+			return queryable;
+		}
+	}
+
 	[AttributeUsage( AttributeTargets.Method )]
-	public class EntityMethodAttribute : Attribute
+	public class EntityQueryAttribute : BreezeQueryableAttribute
 	{
 		public string EntityName { get; set; }
+
+		protected override Breeze.WebApi.QueryHelper NewQueryHelper()
+		{
+			return new QueryHelper( GetODataQuerySettings() );
+		}
 	}
 
 	public class EntityExtensionsBuilder : ClientModuleBuilder
@@ -59,17 +104,21 @@ namespace DragonSpark.Server.ClientHosting
 			var result = new EntityService
 			{
 				Extensions = extensionsBuilder.Create( string.Concat( "entityextensions.", location ) ),
-				Location = location, 
-				InitializationMethod = methods.FirstOrDefault( x => x.IsDecoratedWith<EntityInitializerAttribute>() ).Transform( x => x.Name ),
+				Location = location,
+				InitializationMethod = methods.FirstOrDefault( x => x.IsDecoratedWith<EntityInitializerAttribute>() ).Transform( x => x.FromMetadata<RouteAttribute, string>( y => y.Template ) ?? x.Name ),
 				Queries = methods
-				.Where( x => x.IsDecoratedWith<EntityMethodAttribute>() /*&& x.ReturnType.IsGenericType && typeof(IQueryable<>).IsAssignableFrom( x.ReturnType.GetGenericTypeDefinition() )*/ )
-				.Select( x => new EntityQuery
-				{
-					SetName = CodeIdentifier.MakeCamel( x.Name ),
-					EntityName = x.FromMetadata<EntityMethodAttribute, string>( y => y.EntityName ) ?? x.ReturnType.GetCollectionElementType().Transform( y => y == typeof(object) ? null : y.Name ), 
-					Path = x.Name.ToLower(),
-					IsLocal = x.IsPrivate
-				} )
+					.Where( x => x.IsDecoratedWith<EntityQueryAttribute>() /*&& x.ReturnType.IsGenericType && typeof(IQueryable<>).IsAssignableFrom( x.ReturnType.GetGenericTypeDefinition() )*/ )
+					.Select( x =>
+					{
+						var identifier = x.FromMetadata<RouteAttribute, string>( z => z.Template ) ?? x.Name;
+						return new EntityQuery
+						{
+							SetName = CodeIdentifier.MakeCamel( identifier ),
+							EntityName = x.FromMetadata<EntityQueryAttribute, string>( y => y.EntityName ) ?? x.ReturnType.GetCollectionElementType().Transform( y => y == typeof(object) ? null : y.Name ),
+							Path = identifier.ToLower(),
+							IsLocal = x.IsPrivate
+						};
+					} )
 			};
 			return result;
 		}
@@ -122,5 +171,4 @@ namespace DragonSpark.Server.ClientHosting
 		public string Path { get; set; }
 		public bool IsLocal { get; set; }
 	}
-
 }

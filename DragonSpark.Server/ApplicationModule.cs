@@ -47,7 +47,6 @@ namespace DragonSpark.Server
 
 			Application.BeginRequest += ( sender, args ) =>
 			{
-				Application.Context.Items["Testes"] = Application.Context;
 				Application.Context.Items[ApplicationModulesKey] = Application.Modules;
 				Application.Context.DisposeOnPipelineCompleted( new DisposeContext( Application.Context.Items ) );
 			};

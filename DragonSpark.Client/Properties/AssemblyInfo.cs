@@ -33,23 +33,20 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2013.9.12.1")]
-[assembly: AssemblyFileVersion("2013.9.12.1")]
-
-// [assembly: JsMergedFile( Filename = "MySite.js", Sources = new[] { "jQuery.js", "MyPage1.js", "MyPage2.js" } )]
-// [assembly: JsMergedFile( Filename = "Resources/DragonSpark.Client.min.js", Sources = new[] { "res/DragonSpark.Client.js" }, Minify = true )]
+[assembly: AssemblyVersion("2013.10.22.1")]
+[assembly: AssemblyFileVersion("2013.10.22.1")]
 
 [assembly: ClientResources( "dragonspark" )]
-// [assembly: ClientResource( "Core/require.js", Priority = Priority.Lowest )]
+/*[assembly: ClientResource( "Core/require.debug.js", Priority = Priority.Lowest )]*/
 [assembly: ClientResource( "Core/stacktrace.js", Priority = Priority.Lowest )]
-[assembly: ClientResource( "Core/jquery-2.0.2.min.js", Priority = Priority.Lowest )]
+[assembly: ClientResource( "Core/jquery-2.0.3.min.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/knockout-2.3.0.js", Priority = Priority.Lower )]
-[assembly: ClientResource( "Core/q.js", Priority = Priority.Lower )]
-[assembly: ClientResource( "Core/breeze.debug.js" )]
-[assembly: ClientResource( "Core/jquery.signalR-2.0.0-rc1.js" )]
+[assembly: ClientResource( "Core/q.min.js", Priority = Priority.Lower )]
+[assembly: ClientResource( "Core/breeze.min.js" )]
+[assembly: ClientResource( "Core/jquery.signalR-2.0.0.js" )]
 [assembly: ClientResource( "Core/jquery.ba-resize.min.js" )]
 [assembly: ClientResource( "Core/jquery.dateFormat-1.0.js" )]
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/knockout.validation.js" )]
-[assembly: ClientResource( "Core/knockout.reactor.latest.js" )]
+// [assembly: ClientResource( "Core/knockout.reactor.latest.js" )]
 [assembly: ClientResource( "Core/linq.min.js" )]

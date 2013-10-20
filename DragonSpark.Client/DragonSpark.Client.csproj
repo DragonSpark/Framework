@@ -66,8 +66,6 @@
     <EmbeddedResource Include="enum.js" />
     <EmbeddedResource Include="error.html" />
     <EmbeddedResource Include="error.js" />
-    <EmbeddedResource Include="Core\jquery-2.0.2.min.js" />
-    <EmbeddedResource Include="Core\knockout-2.3.0.js" />
     <EmbeddedResource Include="Core\require.js" />
     <EmbeddedResource Include="Core\text.js" />
     <EmbeddedResource Include="Plugins\dialog.js" />
@@ -117,22 +115,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\jquery.signalR-2.0.0-rc1.min.js" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Extensions\jquery.js" />
     <EmbeddedResource Include="Extensions\knockout.js" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Core\jquery.signalR-2.0.0-rc1.js" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Core\knockout.validation.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Core\knockout.reactor.latest.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="navigation.js" />
@@ -144,15 +132,18 @@
     <EmbeddedResource Include="Commands\watchRouter.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\breeze.debug.js" />
-    <EmbeddedResource Include="Core\breeze.min.js" />
-    <EmbeddedResource Include="Core\q.js" />
-    <EmbeddedResource Include="Core\q.min.js" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="model.js" />
     <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
     <EmbeddedResource Include="Core\stacktrace.js" />
+    <EmbeddedResource Include="Core\q.min.js" />
+    <EmbeddedResource Include="Core\breeze.min.js" />
+    <EmbeddedResource Include="Core\jquery-2.0.3.min.js" />
+    <EmbeddedResource Include="Core\knockout-2.3.0.js" />
+    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.js" />
+    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.min.js" />
+    <EmbeddedResource Include="Core\breeze.debug.js" />
+    <EmbeddedResource Include="Core\breeze.intellisense.js" />
+    <EmbeddedResource Include="Core\jquery-2.0.3.debug.js" />
     <Content Include="Plugins\server.js" />
     <EmbeddedResource Include="Plugins\storage.js" />
   </ItemGroup>

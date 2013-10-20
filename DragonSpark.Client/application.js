@@ -1,5 +1,5 @@
-﻿define( [ "durandal/app", "durandal/system", "durandal/events", "durandal/viewLocator", "./configuration", "./error", "plugins/widget", "plugins/dialog", "plugins/router", "plugins/server" ], 
-function ( app, system, events, viewLocator, configuration, error, widget, dialog, router, server ) 
+﻿define( [ "durandal/app", "durandal/system", "durandal/events", "durandal/viewLocator", "./configuration", "./error", "plugins/serializer", "plugins/widget", "plugins/dialog", "plugins/router", "plugins/server" ], 
+function ( app, system, events, viewLocator, configuration, error, serializer, widget, dialog, router, server ) 
 {
 	function supportsLocalStorage() 
 	{
@@ -155,11 +155,25 @@ function ( app, system, events, viewLocator, configuration, error, widget, dialo
 	};
 
 	events.includeIn(dragonspark);
-	
+
+	function asDeserializer( ctor )
+	{
+		var result = function( item )
+		{
+			var object = new ctor( item.value );
+			return object;
+		};
+		return result;
+	}
+
+	$.ajaxSettings.converters[ "text json" ] = serializer.deserialize.bind( serializer );
+	serializer.registerType( "System.DateTime", asDeserializer( Date ) );
+	// serializer.registerType( "System.Version", asDeserializer( Version ) );
+
 	return dragonspark;
 });
 
-function Version(version) {
+/*function Version(version) {
 	this.major = version.Major;
 	this.minor = version.Minor;
 	this.build = version.Build;
@@ -169,7 +183,7 @@ function Version(version) {
 		var result = "{0}.{1}.{2}.{3}".format(this.major, this.minor, this.build, this.revision);
 		return result;
 	};
-}
+}*/
 
 function FatalError(message) {
 	this.message = message;
@@ -191,28 +205,12 @@ if (!String.prototype.format) {
 	};
 }
 	
-ko.observableArray.fn.pushAll = function (valuesToPush) {
-	var underlyingArray = this();
-	this.valueWillMutate();
-	ko.utils.arrayPushAll(underlyingArray, valuesToPush);
-	this.valueHasMutated();
-	return this;  //optional
-};
-
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
 };
 
-
-/*if (typeof Object.getTypeName !== 'function') {
-	Object.prototype.getTypeName = function () {
-		var funcNameRegex = /function (.{1,})\(/;
-		var results = (funcNameRegex).exec((this).constructor.toString());  // 
-		return (results && results.length > 1) ? results[1] : "";
-	};
-}*/
 
 if (typeof Object.clone !== 'function') {
 	Object.clone = function (o) {
