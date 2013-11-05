@@ -29,7 +29,7 @@ namespace DragonSpark.Entity
 		{
 			LocalStoragePropertyProcessor.Instance.Process( this, modelBuilder );
 
-			modelBuilder.Entity<UserProfile>().HasMany( x => x.Claims ).WithRequired().HasForeignKey( x => x.Name );
+			// modelBuilder.Entity<UserProfile>().HasMany( x => x.Claims ).WithRequired().HasForeignKey( x => x.Name );
 
 			base.OnModelCreating( modelBuilder );
 		}

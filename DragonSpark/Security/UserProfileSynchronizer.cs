@@ -1,13 +1,12 @@
 ﻿using DragonSpark.Entity;
 using DragonSpark.Extensions;
-using DragonSpark.Objects.Synchronization;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using Activator = DragonSpark.Runtime.Activator;
+using System.Threading;
 
 namespace DragonSpark.Security
 {
@@ -36,7 +35,7 @@ namespace DragonSpark.Security
 		protected virtual void Process( TUser user, ClaimsIdentity identity )
 		{
 			user.Claims.Clear();
-			user.Claims.AddAll( identity.Claims.Select( y => Activator.Create<IdentityClaim>().SynchronizeFrom( y ) ) );
+			user.Claims.AddAll( identity.Claims );
 
 			OnProcessing( user, identity );
 
@@ -59,12 +58,8 @@ namespace DragonSpark.Security
 
 		protected virtual void OnProcessed( TUser user, ClaimsIdentity identity )
 		{
-			switch ( user.MembershipNumber )
-			{
-				case 0:
-					user.MembershipNumber = userService.GetNextMembershipNumber();
-					break;
-			}
+			user.MembershipNumber = user.MembershipNumber.HasValue ? user.MembershipNumber : userService.GetNextMembershipNumber();
+
 		}
 	}
 
@@ -109,7 +104,7 @@ namespace DragonSpark.Security
 
 		public long GetNextMembershipNumber()
 		{
-			var result = context.Set<TUser>().Where( x => x.Claims.Any() ).LongCount() + 1;
+			var result = context.Set<TUser>().Where( x => x.MembershipNumber.HasValue ).LongCount() + 1;
 			return result;
 		}
 
@@ -123,6 +118,13 @@ namespace DragonSpark.Security
 		public virtual UserProfile Get( string name )
 		{
 			var result = Query().SingleOrDefault( y => y.Name == name );
+
+			if ( result != null && name == Thread.CurrentPrincipal.Identity.Name )
+			{
+				var items = Thread.CurrentPrincipal.Identity.AsTo<ClaimsIdentity, IEnumerable<Claim>>( x => x.Claims );
+				result.Claims.AddAll( items );
+			}
+
 			return result;
 		}
 
@@ -133,7 +135,7 @@ namespace DragonSpark.Security
 
 		protected virtual IQueryable<TUser> Query()
 		{
-			var result = context.Set<TUser>().Include( y => y.Claims );
+			var result = context.Set<TUser>();
 			return result;
 		}
 

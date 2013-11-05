@@ -288,7 +288,6 @@
     <Compile Include="Security\DisplayNameMapper.cs" />
     <Compile Include="Security\IClaimsMapper.cs" />
     <Compile Include="Security\IClaimsProcessor.cs" />
-    <Compile Include="Security\IdentityClaim.cs" />
     <Compile Include="Security\IUserProfileSynchronizer.cs" />
     <Compile Include="Logging\EnterpriseLibraryExceptionHandler.cs" />
     <Compile Include="Runtime\Process.cs" />
