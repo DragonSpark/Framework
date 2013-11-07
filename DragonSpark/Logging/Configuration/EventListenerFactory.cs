@@ -2,7 +2,6 @@
 using System.Diagnostics.Tracing;
 using DragonSpark.Extensions;
 using DragonSpark.IoC.Configuration;
-using DragonSpark.Objects;
 using Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Formatters;
 using Microsoft.Practices.Unity;
 

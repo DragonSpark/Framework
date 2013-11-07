@@ -1,5 +1,3 @@
-using DragonSpark.Objects.Configuration;
-
 namespace DragonSpark.Objects.Synchronization.Configuration
 {
 	public class ListSynchronizationContext : ObjectResolvingSynchronizationContext

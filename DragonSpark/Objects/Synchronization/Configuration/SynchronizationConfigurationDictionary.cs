@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using DragonSpark.Configuration;
-using DragonSpark.Objects;
 
 namespace DragonSpark.Objects.Synchronization.Configuration
 {

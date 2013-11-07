@@ -1,16 +1,12 @@
-using Breeze.WebApi;
+using System.Xml.Serialization;
+using Breeze.WebApi2;
 using DragonSpark.Extensions;
 using DragonSpark.Objects;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Reflection;
 using System.Web.Http;
-using System.Web.Http.OData.Query;
-using System.Xml.Serialization;
 
 namespace DragonSpark.Server.ClientHosting
 {
@@ -18,7 +14,7 @@ namespace DragonSpark.Server.ClientHosting
 	public class EntityInitializerAttribute : Attribute
 	{}
 
-	public class QueryHelper : Breeze.WebApi.QueryHelper
+	/*public class QueryHelper : Breeze.WebApi.QueryHelper
 	{
 		static readonly MethodInfo CreateInfo = typeof(QueryHelper).GetMethod( "Create", DragonSparkBindingOptions.AllProperties );
 
@@ -51,17 +47,17 @@ namespace DragonSpark.Server.ClientHosting
 		{
 			return queryable;
 		}
-	}
+	}*/
 
 	[AttributeUsage( AttributeTargets.Method )]
 	public class EntityQueryAttribute : BreezeQueryableAttribute
 	{
 		public string EntityName { get; set; }
 
-		protected override Breeze.WebApi.QueryHelper NewQueryHelper()
+		/*protected override Breeze.WebApi.QueryHelper NewQueryHelper()
 		{
 			return new QueryHelper( GetODataQuerySettings() );
-		}
+		}*/
 	}
 
 	public class EntityExtensionsBuilder : ClientModuleBuilder

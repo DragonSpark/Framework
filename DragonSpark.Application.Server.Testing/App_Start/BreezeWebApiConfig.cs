@@ -1,8 +1,8 @@
 using System.Web.Http;
 
 [assembly: WebActivator.PreApplicationStartMethod(
-    typeof(DragonSpark.Server.App_Start.BreezeWebApiConfig), "RegisterBreezePreStart")]
-namespace DragonSpark.Server.App_Start {
+    typeof(DragonSpark.Application.Server.Testing.App_Start.BreezeWebApiConfig), "RegisterBreezePreStart")]
+namespace DragonSpark.Application.Server.Testing.App_Start {
   ///<summary>
   /// Inserts the Breeze Web API controller route at the front of all Web API routes
   ///</summary>

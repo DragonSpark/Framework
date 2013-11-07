@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark;
 using DragonSpark.Runtime;
 
 namespace DragonSpark.Objects.Synchronization

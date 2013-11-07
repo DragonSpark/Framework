@@ -1,6 +1,4 @@
 using System;
-using System.Windows;
-using System.Windows.Markup;
 using DragonSpark.Extensions;
 
 namespace DragonSpark.Configuration

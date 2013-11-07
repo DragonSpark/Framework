@@ -1,6 +1,4 @@
-using DragonSpark.Objects;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Objects;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;

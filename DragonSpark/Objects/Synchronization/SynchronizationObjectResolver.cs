@@ -1,5 +1,4 @@
 using System;
-using DragonSpark.Objects;
 
 namespace DragonSpark.Objects.Synchronization
 {

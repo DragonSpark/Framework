@@ -1,5 +1,4 @@
-﻿using DragonSpark.Objects;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using System.Diagnostics.Contracts;
 using System.Windows;
 

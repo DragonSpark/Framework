@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Configuration;
 using DragonSpark.Configuration;
 
 namespace DragonSpark.Objects.Synchronization.Configuration

@@ -1,6 +1,5 @@
 ﻿using DragonSpark;
 using DragonSpark.IoC.Configuration;
-using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;

@@ -3,7 +3,6 @@
 // associated with an assembly.
 
 using DragonSpark.Client;
-using DragonSpark.Server.ClientHosting;
 using System.Reflection;
 using System.Runtime.InteropServices;
 

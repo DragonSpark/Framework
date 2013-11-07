@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DragonSpark.Objects.Synchronization;
-using DragonSpark.Testing.Objects.Synchronization;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects.Synchronization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

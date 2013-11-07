@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;

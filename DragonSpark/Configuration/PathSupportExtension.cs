@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Io;
 using System;
-using System.Web;
 using System.Windows.Markup;
 
 namespace DragonSpark.Configuration

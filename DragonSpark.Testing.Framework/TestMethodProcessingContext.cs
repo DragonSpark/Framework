@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing.Framework
 {

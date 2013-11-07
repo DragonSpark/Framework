@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using DragonSpark.Extensions;
 
 namespace DragonSpark.Runtime

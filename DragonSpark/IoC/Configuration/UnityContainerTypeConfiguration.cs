@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using Microsoft.Practices.Unity;
 
 namespace DragonSpark.IoC.Configuration

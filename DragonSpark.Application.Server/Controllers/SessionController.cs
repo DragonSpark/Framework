@@ -1,31 +1,24 @@
-﻿using AttributeRouting;
-using AttributeRouting.Web.Http;
-using DragonSpark.Server.ClientHosting;
-using System.IdentityModel.Services;
+﻿using DragonSpark.Server.ClientHosting;
 using System.Web.Http;
 
 namespace DragonSpark.Application.Server.Controllers
 {
-	[RoutePrefix( "{controller}" )]
-	public class SessionController : ApiController
+	[RoutePrefix( "Session" )]
+	public class SessionController : SessionControllerBase
 	{
-		readonly ClientApplicationConfiguration configuration;
+		public SessionController( ClientApplicationConfiguration configuration ) : base( configuration )
+		{}
 
-		public SessionController( ClientApplicationConfiguration configuration )
+		[Route( "{action}" ), System.Web.Http.Authorize]
+		public override void SignOut()
 		{
-			this.configuration = configuration;
+			base.SignOut();
 		}
 
-		[POST( "{action}" ), Authorize]
-		public void SignOut()
+		[Route( "Configuration" )]
+		public override ClientApplicationConfiguration GetConfiguration()
 		{
-			FederatedAuthentication.SessionAuthenticationModule.SignOut();
-		}
-
-		[GET( "Configuration" )]
-		public ClientApplicationConfiguration GetConfiguration()
-		{
-			return configuration;
+			return base.GetConfiguration();
 		}
 	}
 }

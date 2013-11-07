@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Configuration
 {

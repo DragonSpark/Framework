@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Testing.TestObjects.IoC;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing.IoC

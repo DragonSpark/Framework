@@ -1,9 +1,10 @@
-﻿using DragonSpark.Server;
+﻿using System.Web;
+using DragonSpark.Server;
 using System.Web.Http;
 
 namespace DragonSpark.Application.Server
 {
-	public class MvcApplication : System.Web.HttpApplication
+	public class MvcApplication : HttpApplication
 	{
 		protected void Application_Start()
 		{

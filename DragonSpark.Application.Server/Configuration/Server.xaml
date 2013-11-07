@@ -8,10 +8,10 @@
     xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
     xmlns:dsLogging="clr-namespace:DragonSpark.Logging;assembly=DragonSpark"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
-                       xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
-                       xmlns:controllers="clr-namespace:DragonSpark.Application.Server.Controllers"
-                       xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
-                       xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models">
+    xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
+    xmlns:controllers="clr-namespace:DragonSpark.Application.Server.Controllers"
+    xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
+    xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models">
 	<ds:RegisterFromMetadataCommand />
 	<ds:AssignServiceLocatorCommand />
     <ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">
@@ -25,13 +25,20 @@
         <ds:EventListenerDefinition>
             <ds:RollingFlatFileLogFactory LogFilePath="{dsweb:MapPath '~/Logs/DragonSpark.log' }" IsAsynchronus="True" />
             <ds:EventListenerDefinition.Registrations>
-                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Informational" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type dsLogging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type dsLogging:ILogger}">
+                        <dsLogging:EventSourceRegistration Level="Informational" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
             </ds:EventListenerDefinition.Registrations>
         </ds:EventListenerDefinition>
         <ds:EventListenerDefinition Factory="{ds:LocationFactory {x:Type dsLogging:EventLogEventListener}}">
             <ds:EventListenerDefinition.Registrations>
-                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Critical" />
-                <dsLogging:EventListenerRegistration EventSourceType="{x:Type dsLogging:ILogger}" Level="Error" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type dsLogging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type dsLogging:ILogger}">
+                        <dsLogging:EventSourceRegistration Level="Error" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
             </ds:EventListenerDefinition.Registrations>
         </ds:EventListenerDefinition>
     </ds:LoggingConfiguration>

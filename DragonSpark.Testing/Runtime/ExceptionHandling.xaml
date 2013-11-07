@@ -15,7 +15,11 @@
 				<testObjects:TestEventListener Level="Informational" />
 			</ds:Instance>
 			<ds:EventListenerDefinition.Registrations>
-				<logging:EventListenerRegistration EventSourceType="{x:Type logging:ILogger}" Level="Informational" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type logging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type logging:ILogger}">
+                        <logging:EventSourceRegistration Level="Informational" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
 			</ds:EventListenerDefinition.Registrations>
 		</ds:EventListenerDefinition>
 		<ds:EventListenerDefinition>
@@ -23,7 +27,11 @@
 				<testObjects:TestEventListener Level="Warning" />
 			</ds:Instance>
 			<ds:EventListenerDefinition.Registrations>
-				<logging:EventListenerRegistration EventSourceType="{x:Type logging:ILogger}" Level="Warning" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type logging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type logging:ILogger}">
+                        <logging:EventSourceRegistration Level="Warning" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
 			</ds:EventListenerDefinition.Registrations>
 		</ds:EventListenerDefinition>
 		<ds:EventListenerDefinition>
@@ -31,7 +39,11 @@
 				<testObjects:TestEventListener Level="Error" />
 			</ds:Instance>
 			<ds:EventListenerDefinition.Registrations>
-				<logging:EventListenerRegistration EventSourceType="{x:Type logging:ILogger}" Level="Error" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type logging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type logging:ILogger}">
+                        <logging:EventSourceRegistration Level="Error" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
 			</ds:EventListenerDefinition.Registrations>
 		</ds:EventListenerDefinition>
 		<ds:EventListenerDefinition>
@@ -39,7 +51,11 @@
 				<testObjects:TestEventListener Level="Critical" />
 			</ds:Instance>
 			<ds:EventListenerDefinition.Registrations>
-				<logging:EventListenerRegistration EventSourceType="{x:Type logging:ILogger}" Level="Critical" />
+                <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type logging:EventSourceRegistration}">
+                    <ds:KeyValuePair Key="{x:Type logging:ILogger}">
+                        <logging:EventSourceRegistration Level="Critical" />
+                    </ds:KeyValuePair>
+                </ds:DictionaryOfT>
 			</ds:EventListenerDefinition.Registrations>
 		</ds:EventListenerDefinition>
 	</ds:LoggingConfiguration>
@@ -71,7 +87,7 @@
 					
 				DeploymentDate="3/5/2013"
 				CompanyUri="http://framework.dragonspark.us"
-					/>
+			/>
 		</ds:ApplicationConfigurationCommand.ApplicationDetails>
 	</ds:ApplicationConfigurationCommand>
 </ds:TestingContext>

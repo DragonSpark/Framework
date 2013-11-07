@@ -1,5 +1,4 @@
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Objects;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

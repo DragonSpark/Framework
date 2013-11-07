@@ -2,7 +2,6 @@ using System.IO;
 using DragonSpark.Configuration;
 using DragonSpark.Serialization;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Objects;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Serialization
 {

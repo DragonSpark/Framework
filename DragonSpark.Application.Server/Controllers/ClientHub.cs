@@ -1,7 +1,7 @@
-﻿using DragonSpark.Server.ClientHosting;
+﻿using System.IdentityModel.Services;
+using DragonSpark.Server.ClientHosting;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
-using System.IdentityModel.Services;
 
 namespace DragonSpark.Application.Server.Controllers
 {
@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Server.Controllers
 	{
 	    public const string ClientExceptionReporting = "Client Exception Reporting";
 
-	    public ClientHub( ClientApplicationConfiguration configuration, string exceptionReportingPolicyName = ClientExceptionReporting ) : base( configuration, exceptionReportingPolicyName )
+	    public ClientHub( string exceptionReportingPolicyName = ClientExceptionReporting ) : base( exceptionReportingPolicyName )
 	    {}
 
 	    public void SignOut()

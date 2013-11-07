@@ -1,7 +1,6 @@
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DragonSpark.IoC

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Diagnostics.Contracts;
 using System.Dynamic;
 using DragonSpark.Extensions;
 using DragonSpark.Objects.Synchronization;
