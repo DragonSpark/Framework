@@ -1,16 +1,20 @@
 ﻿<div>
-<div data-bind="widget: 'operations'"></div>
+	<div data-bind="widget: 'Operations'"></div>
 	<div class="header shellrow">
 		<table style="width: 100%">
 			<tr>
 				<td style="width: 125px; padding: 20px">
-					<a data-bind="attr: { href: navigation.default().hash }">
+					<a data-bind="attr: { href: navigation.default() }">
 						<img data-bind="attr: { src: configuration().Logo }" style="width: 100%" />
 					</a>
 				</td>
 				<td class="navbar">
 					<div class="navbar-inner">
-						<div data-bind="compose: { model: navigation }"></div>
+						<ul class="nav" data-bind="foreach: navigation.router.navigationModel">
+							<li data-bind="css: { active: isActive() }">
+								<a data-bind="attr: { href: hash }, html: title"></a>&nbsp;
+							</li>
+						</ul>
 					</div>
 				</td>
 				<td style="width: 25px">
@@ -36,7 +40,7 @@
 		
 				<a href="http://dragonspark.codeplex.com" style="font-weight: bold">Source Code</a>
 			</div>
-			<div data-bind="widget: 'copyright'"></div>
+			<div data-bind="widget: 'Copyright'"></div>
 		</div>
 	</div>
 </div>

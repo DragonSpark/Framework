@@ -6,10 +6,12 @@ namespace DragonSpark.Application.Server.Controllers
 	[RoutePrefix( "Session" )]
 	public class SessionController : SessionControllerBase
 	{
+		public const string ClientExceptionReporting = "Client Exception Reporting";
+
 		public SessionController( ClientApplicationConfiguration configuration ) : base( configuration )
 		{}
 
-		[Route( "{action}" ), System.Web.Http.Authorize]
+		[Route( "{action}" ), Authorize]
 		public override void SignOut()
 		{
 			base.SignOut();

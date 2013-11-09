@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ViewModels\exceptions.js" />
-    <EmbeddedResource Include="ViewModels\navigation.js" />
     <EmbeddedResource Include="ViewModels\notfound.js" />
     <EmbeddedResource Include="ViewModels\operations.js" />
     <EmbeddedResource Include="ViewModels\security.js" />
@@ -60,7 +59,6 @@
     <EmbeddedResource Include="ViewModels\shell.js" />
     <EmbeddedResource Include="ViewModels\welcome.js" />
     <EmbeddedResource Include="Views\exceptions.html" />
-    <EmbeddedResource Include="Views\navigation.html" />
     <EmbeddedResource Include="Views\notfound.html" />
     <EmbeddedResource Include="Views\operations.html" />
     <EmbeddedResource Include="Views\security.html" />

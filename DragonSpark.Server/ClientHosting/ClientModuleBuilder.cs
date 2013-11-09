@@ -68,7 +68,7 @@ namespace DragonSpark.Server.ClientHosting
 
 			var directoryName = Path.GetDirectoryName( resourceName );
 			var path = string.Concat( assembly, Path.AltDirectorySeparatorChar, directoryName.Replace( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar ), !string.IsNullOrEmpty( directoryName ) ? (object)Path.AltDirectorySeparatorChar : string.Empty, Path.GetFileNameWithoutExtension( resourceName ) );
-			var result = path.StartsWith( "application/Viewmodels" ) ? path.Replace( "application/Viewmodels", "viewmodels" ) : path;
+			var result = path.StartsWith( "application/ViewModels" ) ? path.Replace( "application/ViewModels", "viewmodels" ) : path;
 			return result;
 		}
 

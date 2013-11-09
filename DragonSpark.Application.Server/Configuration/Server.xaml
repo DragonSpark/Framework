@@ -22,7 +22,7 @@
         </ds:InjectionConstructor>
     </ds:UnityType>
     <ds:LoggingConfiguration EnableAll="True">
-        <ds:EventListenerDefinition>
+        <!--<ds:EventListenerDefinition>
             <ds:RollingFlatFileLogFactory LogFilePath="{dsweb:MapPath '~/Logs/DragonSpark.log' }" IsAsynchronus="True" />
             <ds:EventListenerDefinition.Registrations>
                 <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type dsLogging:EventSourceRegistration}">
@@ -31,8 +31,17 @@
                     </ds:KeyValuePair>
                 </ds:DictionaryOfT>
             </ds:EventListenerDefinition.Registrations>
-        </ds:EventListenerDefinition>
-        <ds:EventListenerDefinition Factory="{ds:LocationFactory {x:Type dsLogging:EventLogEventListener}}">
+        </ds:EventListenerDefinition>-->
+		<ds:EventListenerDefinition Factory="{ds:LocationFactory {x:Type dsLogging:TraceEventListener}}">
+			<ds:EventListenerDefinition.Registrations>
+				<ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type dsLogging:EventSourceRegistration}">
+					<ds:KeyValuePair Key="{x:Type dsLogging:ILogger}">
+						<dsLogging:EventSourceRegistration Level="Informational" />
+					</ds:KeyValuePair>
+				</ds:DictionaryOfT>
+			</ds:EventListenerDefinition.Registrations>
+		</ds:EventListenerDefinition>
+		<ds:EventListenerDefinition Factory="{ds:LocationFactory {x:Type dsLogging:EventLogEventListener}}">
             <ds:EventListenerDefinition.Registrations>
                 <ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type dsLogging:EventSourceRegistration}">
                     <ds:KeyValuePair Key="{x:Type dsLogging:ILogger}">
@@ -53,7 +62,7 @@
                 <dsLogging:LogFatalExceptionHandler />
             </ds:ExceptionPolicyEntry>
         </ds:ExceptionPolicyDefinition>
-        <ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:ClientHub.ClientExceptionReporting}">
+		<ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:SessionController.ClientExceptionReporting}">
             <ds:ExceptionPolicyEntry ExceptionType="{x:Type dragonSpark:ClientException}" Action="None">
                 <dsLogging:LogExceptionAsInformationHandler />
                 <dsLogging:LogExceptionHandler />

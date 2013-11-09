@@ -1,4 +1,5 @@
 using DragonSpark.Extensions;
+using DragonSpark.Logging;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace DragonSpark.IoC.Configuration
 
 		static IEnumerable<IComponentRegistration> ResolveRegistrations( Assembly item )
 		{
-			var result = item.GetTypes().SelectMany( a => a.GetAttributes<IComponentMetadata>( true ).OrderBy( x => x.Priority ).Select( b => b.GetComponentInfo( a ) ) );
+			var result = item.GetValidTypes().SelectMany( a => a.GetAttributes<IComponentMetadata>( true ).OrderBy( x => x.Priority ).Select( b => b.GetComponentInfo( a ) ) );
 			return result;
 		}
 

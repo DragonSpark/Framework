@@ -232,7 +232,15 @@
 	var mappings = {}, monitors = {}, models = [], completed = [], fragmentKey = "navigation.fragment.lastAttempted",
 	    instance =
 	    {
-		    router : initialize( router ),
+	    	router: initialize(router),
+
+	    	default : function()
+		    {
+	    		var source = Enumerable.From(router.routes).FirstOrDefault();
+			    var result = source ? source.hash : "#/";
+			    return result;
+		    },
+
 		    load : function( routes )
 		    {
 			    router.deactivate();

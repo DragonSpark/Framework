@@ -22,21 +22,16 @@
                                            xmlns:hosting="clr-namespace:System.ComponentModel.Composition.Hosting;assembly=System.ComponentModel.Composition"
                                            xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models"
                                            xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server">
-    <Configuration:UnityType RegistrationType="{x:Type principal:IPrincipal}">
-        <Configuration:InjectionFactoryInstance>
-            <clientHosting:PrincipalProvider />
-        </Configuration:InjectionFactoryInstance>
-    </Configuration:UnityType>
-    <Configuration:UnityType RegistrationType="{x:Type security:UserProfile}">
-        <Configuration:InjectionFactory>
-            <Configuration:NamedTypeBuildKey BuildType="{ds:GenericType client:UserProfileFactory(applicationEntity:ApplicationUserProfile)}" />
-            <Configuration:InjectionFactory.Parameter>
-                <Configuration:NamedTypeBuildKey BuildType="{x:Type principal:IPrincipal}" />
-            </Configuration:InjectionFactory.Parameter>
-        </Configuration:InjectionFactory>
-    </Configuration:UnityType>
+	<Configuration:UnityType RegistrationType="{x:Type principal:IPrincipal}">
+		<Configuration:InjectionFactoryInstance>
+			<client:PrincipalProvider />
+		</Configuration:InjectionFactoryInstance>
+	</Configuration:UnityType>
+	<Configuration:UnityType RegistrationType="{x:Type security:UserProfile}" MapTo="{x:Type applicationEntity:ApplicationUserProfile}">
+		<Configuration:InjectionFactory BuildKey="{ds:NamedTypeBuildKey {x:Type client:UserProfileFactory}}" Parameter="{ds:NamedTypeBuildKey {x:Type principal:IPrincipal}}" />
+	</Configuration:UnityType>
 
-    <Configuration:UnityType RegistrationType="{x:Type clientHosting:ClientApplicationConfiguration}">
+	<Configuration:UnityType RegistrationType="{x:Type clientHosting:ClientApplicationConfiguration}">
         <ds:UnityType.Lifetime>
             <dsweb:RequestLifetimeManager KeyName="DDA55141-1528-4519-84B0-1C2B2F6255BA" />
         </ds:UnityType.Lifetime>
@@ -59,7 +54,7 @@
             <Configuration:FactoryParameterValue>
                 <Configuration:NamedTypeBuildKey BuildType="{x:Type clientHosting:NavigationBuilder}" />
                 <Configuration:FactoryParameterValue.Parameter>
-                    <clientHosting:ShellNode Path="shell" TransitionName="entrance">
+                    <clientHosting:ShellNode Path="shell">
                         <clientHosting:ShellNode.NotFound>
                             <clientHosting:NavigationNode Path="notfound" Title="Not Found" />
                         </clientHosting:ShellNode.NotFound>
@@ -109,7 +104,10 @@
         <Configuration:InjectionProperty PropertyName="Widgets">
             <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:WidgetsBuilder}}" />
         </Configuration:InjectionProperty>
-        <Configuration:InjectionProperty PropertyName="Commands">
+		<Configuration:InjectionProperty PropertyName="Initializers">
+			<Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:InitializersBuilder}}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="Commands">
             <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:CommandsBuilder}}" />
         </Configuration:InjectionProperty>
     </Configuration:UnityType>
@@ -134,7 +132,8 @@
             <ds:InstanceValue ParameterType="{x:Type system:String}" />
             <ds:ResolvedArrayParameter ElementType="{x:Type security:IClaimsMapper}">
                 <ds:DependencyValue DependencyType="{x:Type security:DisplayNameMapper}" />
-            </ds:ResolvedArrayParameter>
+				<ds:DependencyValue DependencyType="{x:Type security:EmailDisplayNameMapper}" />
+			</ds:ResolvedArrayParameter>
         </ds:InjectionConstructor>
     </ds:UnityType>
 

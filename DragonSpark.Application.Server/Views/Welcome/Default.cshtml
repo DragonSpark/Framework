@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Server.ClientHosting
+﻿@using DragonSpark.Server
+@using DragonSpark.Server.ClientHosting
 @model DragonSpark.ApplicationDetails
 
 <!DOCTYPE html>
@@ -20,9 +21,10 @@
 	    @Styles.Render("~/Content/css")
         
 	    <style>
-    		.durandal-wrapper {
-    			height: 100%;
-    		}
+			h1 {
+				margin: 0;
+				padding: 0;
+			}
     	</style>
 		
 	    <script type="text/javascript">
@@ -36,17 +38,23 @@
     	</script>
 	</head>
 	<body style="height: 100%; overflow-x: hidden">
-		<div id="applicationHost" style="height: 100%">
+		<div id="applicationHost">
 			<div class="splash">
 				<div class="message">Loading...</div>
 				<i class="icon-spinner icon-2x icon-spin active"></i>
 			</div>
 		</div>
-		
-		@Scripts.Render( VirtualPathProvider.Path )
-		
-		<script src="~/signalr/hubs"></script>
-		
-		<script type="text/javascript" src="~/Client/DragonSpark.Client/Core/require.js" data-main="Client/Application"></script>
+
+
+		@{
+			var package = !ServerContext.Current.IsDebuggingEnabled || BundleTable.EnableOptimizations;
+		}
+		@Scripts.Render( package ? VirtualPathProvider.Application : VirtualPathProvider.Directory )
+
+		@if ( !package )
+		{
+			<script src="~/signalr/hubs"></script>
+			<script type="text/javascript" src="~/Client/DragonSpark.Client/Core/require.js" data-main="Client/initializer.development"></script>
+		}
 	</body>
 </html>

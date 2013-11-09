@@ -1,4 +1,5 @@
-﻿using DragonSpark.Server.Security;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Server.Security;
 using Microsoft.Web.WebPages.OAuth;
 using System.Web.Mvc;
 
@@ -15,7 +16,7 @@ namespace DragonSpark.Application.Server.Controllers
 		    this.processor = processor;
 	    }
 
-	    [System.Web.Mvc.HttpPost, System.Web.Mvc.AllowAnonymous, ValidateAntiForgeryToken]
+	    [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
 		public ActionResult Login( string provider, string returnUrl )
 		{
 			return new ExternalLoginResult( provider, Url.Action( "ExternalLoginCallback", new { ReturnUrl = returnUrl } ) );
@@ -33,7 +34,7 @@ namespace DragonSpark.Application.Server.Controllers
 			return result;
         }
 
-		[System.Web.Mvc.AllowAnonymous]
+		[AllowAnonymous]
 		public ActionResult ExternalLoginCallback( string returnUrl )
 		{
 			var authentication = OAuthWebSecurity.VerifyAuthentication( Url.Action( "ExternalLoginCallback", new { ReturnUrl = returnUrl } ) );
@@ -42,14 +43,14 @@ namespace DragonSpark.Application.Server.Controllers
 			return result;
 		}
 
-		[System.Web.Mvc.AllowAnonymous, ChildActionOnly]
+		[AllowAnonymous, ChildActionOnly]
 		public ActionResult ExternalLoginsList( string returnUrl )
 		{
 			ViewBag.ReturnUrl = returnUrl;
 			return PartialView( "_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData );
 		}
 
-        [System.Web.Mvc.AllowAnonymous]
+        [AllowAnonymous]
         public ActionResult Error()
         {
 	        var result = View( applicationDetails );
