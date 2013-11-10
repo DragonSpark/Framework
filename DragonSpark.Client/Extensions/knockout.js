@@ -132,17 +132,17 @@
 
 			if (ko.bindingHandlers[handler] !== undefined) {
 				var accessor = ko.utils.wrapAccessor(target);
-				ko.bindingHandlers[handler].init(element, accessor, allBindingsAccessor, viewModel);
+				ko.bindingHandlers[handler].init(element, accessor, allBindingsAccessor, viewModel, bindingContext);
 			} else {
 				var events = {};
 				events[handler] = command;
-				ko.bindingHandlers.event.init(element, ko.utils.wrapAccessor(target), allBindingsAccessor, viewModel);
+				ko.bindingHandlers.event.init(element, ko.utils.wrapAccessor(target), allBindingsAccessor, viewModel, bindingContext);
 			}
 		},
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			var settings = valueAccessor();
 			settings.command = require(settings.path);
-			ko.bindingHandlers[settings.interaction || "enable"].update(element, settings.command.canExecute, allBindingsAccessor, viewModel);
+			ko.bindingHandlers[settings.interaction || "enable"].update(element, settings.command.canExecute, allBindingsAccessor, viewModel, bindingContext);
 		}
 	};
 

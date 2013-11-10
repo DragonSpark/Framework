@@ -110,7 +110,10 @@
 		<Configuration:InjectionProperty PropertyName="Commands">
             <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:CommandsBuilder}}" />
         </Configuration:InjectionProperty>
-    </Configuration:UnityType>
+		<Configuration:InjectionProperty PropertyName="ServerConfiguration">
+			<Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:ServerConfigurationBuilder}}" />
+		</Configuration:InjectionProperty>
+	</Configuration:UnityType>
 
     <ds:UnityType RegistrationType="{ds:GenericType ef:IDatabaseInitializer(applicationEntity:EntityStorage)}" MapTo="{ds:GenericType entity:DropCreateDatabaseIfModelChanges(applicationEntity:EntityStorage)}" />
 

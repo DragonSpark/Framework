@@ -1,7 +1,7 @@
-﻿define(["dragonspark/configuration", "./navigation", "plugins/router"], function (configuration, navigation, router) {
-	var model = {};
+﻿define( [ "dragonspark/navigation" ], function ( navigation ) {
+	var instance = {};
 
-	configuration.activateRouter( model );
+	navigation.attach( instance );
 
-	return model;
-});
+	return instance;
+} );

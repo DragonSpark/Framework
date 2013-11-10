@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Resources;
 using System.Resources.Tools;
 using System.Text;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Serialization
 {
@@ -41,7 +42,7 @@ namespace DragonSpark.Serialization
 
 		static Type ResolveType( Assembly key )
 		{
-			foreach ( var type in key.GetTypes() )
+			foreach ( var type in key.GetValidTypes() )
 			{
 				var attribute = Attribute.GetCustomAttribute( type, typeof(GeneratedCodeAttribute) ) as GeneratedCodeAttribute;
 				if ( attribute != null && attribute.Tool == typeof(StronglyTypedResourceBuilder).FullName )

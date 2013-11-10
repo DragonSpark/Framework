@@ -62,7 +62,7 @@
                 <dsLogging:LogFatalExceptionHandler />
             </ds:ExceptionPolicyEntry>
         </ds:ExceptionPolicyDefinition>
-		<ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:SessionController.ClientExceptionReporting}">
+		<ds:ExceptionPolicyDefinition PolicyName="{x:Static controllers:ApplicationHub.ClientExceptionReporting}">
             <ds:ExceptionPolicyEntry ExceptionType="{x:Type dragonSpark:ClientException}" Action="None">
                 <dsLogging:LogExceptionAsInformationHandler />
                 <dsLogging:LogExceptionHandler />
@@ -72,6 +72,6 @@
 
     <configuration:Registrations />
     <configuration:Application />
-	<entity:DatabaseInitializationConfigurationCommand ContextType="{x:Type applicationEntity:EntityStorage}" />
+	<!--<entity:DatabaseInitializationConfigurationCommand ContextType="{x:Type applicationEntity:EntityStorage}" />-->
 <!--	<IoC:CompositionConfiguration DirectorySearchPath="Bin" />-->
 </ioC:LocatorDefinition>

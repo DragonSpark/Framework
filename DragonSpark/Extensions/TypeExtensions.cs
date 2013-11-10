@@ -52,7 +52,7 @@ namespace DragonSpark.Extensions
 
 		public static Type[] GetKnownTypes( this Type target )
 		{
-			var result = KnownTypeCache.Ensure( target, x => AppDomain.CurrentDomain.GetAssemblies().SelectMany( y => y.GetTypes() ).Where( y => y.IsSubclassOf( x ) ).ToArray() );
+			var result = KnownTypeCache.Ensure( target, x => AppDomain.CurrentDomain.GetAssemblies().SelectMany( y => y.GetValidTypes() ).Where( y => y.IsSubclassOf( x ) ).ToArray() );
 			return result;
 		}
 	}

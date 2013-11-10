@@ -1,11 +1,11 @@
-﻿<div data-bind="widget: 'operations'"></div>
+﻿<div data-bind="widget: 'Operations'"></div>
 
 <table style="width: 100%; height: 100%">
 	<tr>
-		<td align="center" valign="middle">
-			<button data-bind="click: clientException">Throw a Client Exception</button>
+	<td align="center" valign="middle">
+		<button data-bind="click: clientException">Throw a Client Exception</button>
 	
-			<button data-bind="operation: { title: 'Contacting Server... Please Wait...', allowCancel: false, closeOnCompletion: false, items: [{ body: serverException, title: 'Throwing exception on the server.' }] }">Throw a Server Exception</button>
-			</td>
-		</tr>
-	</table>
+		<button data-bind="operation: { title: 'Contacting Server... Please Wait...', allowCancel: false, closeOnCompletion: false, items: [{ body: serverException, title: 'Throwing exception on the server.' }] }">Throw a Server Exception</button>
+		</td>
+	</tr>
+</table>

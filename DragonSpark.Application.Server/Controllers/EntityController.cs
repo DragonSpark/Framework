@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace DragonSpark.Application.Server.Controllers
 {
-    [RoutePrefix( "Entity" ), BreezeController]
+	[RoutePrefix( "Entity" ), BreezeController]
 	public class EntityController : ApiController
 	{
 		readonly EFContextProvider<EntityStorage> provider = new EFContextProvider<EntityStorage>();

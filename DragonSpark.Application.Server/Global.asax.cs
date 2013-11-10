@@ -10,6 +10,7 @@ namespace DragonSpark.Application.Server
 		{
 			var initializer = new ApplicationInitializer( new Configuration.Server().Instance ); 
 			initializer.Initialize( this, GlobalConfiguration.Configuration );
+			// BundleTable.EnableOptimizations = true;
 		}
 	}
 }

@@ -6,8 +6,6 @@ namespace DragonSpark.Application.Server.Controllers
 	[RoutePrefix( "Session" )]
 	public class SessionController : SessionControllerBase
 	{
-		public const string ClientExceptionReporting = "Client Exception Reporting";
-
 		public SessionController( ClientApplicationConfiguration configuration ) : base( configuration )
 		{}
 

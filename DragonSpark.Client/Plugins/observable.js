@@ -26,8 +26,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         return first === '_' || first === '$';
     }
 
+    function isNode(obj) {
+        return !!(obj && obj.nodeType !== undefined && system.isNumber(obj.nodeType));
+    }
+
     function canConvertType(value) {
-        if (!value || system.isElement(value) || value.ko === ko || value.jquery) {
+        if (!value || isNode(value) || value.ko === ko || value.jquery) {
             return false;
         }
 
@@ -166,13 +170,13 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         //if this was originally an observableArray, then always check to see if we need to add/replace the array methods (if newValue was an entirely new array)
         if (isArray) {
-            if (!val.destroyAll) {
+            if (!val) {
                 //don't allow null, force to an empty array
-                if (!val) {
-                    val = [];
-                    observable(val);
-                }
-
+                val = [];
+                observable(val);
+                makeObservableArray(val, observable);
+            }
+            else if (!val.destroyAll) {
                 makeObservableArray(val, observable);
             }
         } else {

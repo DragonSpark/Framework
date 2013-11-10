@@ -178,7 +178,7 @@
 			updateSubscriptions( model.router, options );
 
 			configuration.on( "application:configuration:refreshed", function() {
-				model.__resetRouter__ = true;
+				model.router.__requiresReset__ = true;
 			} );
 		}
 	}
@@ -198,7 +198,7 @@
 			mappings[ $(model).getUID() ] = instruction.config;
 			ensure( model, instruction, source );
 
-			if ( !source.parent && instruction.config.moduleId != configuration().Navigation.NotFound.moduleId )
+			if ( !source.parent /*&& instruction.config.moduleId != configuration().Navigation.NotFound.moduleId*/ )
 			{
 				storage.set( fragmentKey, instruction.fragment );
 				if ( !options )
@@ -211,20 +211,24 @@
 		if ( options )
 		{
 			item.on( "router:navigation:attached", function( model, instruction, source ) {
-				if ( model && model.__resetRouter__ )
+				if ( source.__requiresReset__ )
 				{
-					model.__resetRouter__ = false;
+					source.__requiresReset__ = false;
 					source.reset();
 					source.makeRelative( options );
-						
-					var children = mappings[ $(model).getUID() ].config.children;
+
+					var id = $(source.parent.activeItem()).getUID();
+					var children = mappings[ id ].children;
 					build( source, children );
 					updateSubscriptions( source, options );
+					source.parent.compositionComplete();
 				}
 			} );
 			
-			item.on( "router:route:before-config" ).then( function( routeConfiguration ) {
-				routeConfiguration.moduleId = routeConfiguration.moduleId == id + "/" + options.id ? moduleId : routeConfiguration.moduleId;
+			item.on( "router:route:before-config" ).then( function( routeConfiguration )
+			{
+				var id = configuration().Navigation.NotFound.moduleId;
+				routeConfiguration.moduleId = routeConfiguration.moduleId == "{0}{1}".format( options.moduleId, id ) ? id : routeConfiguration.moduleId;
 			} );
 		}
 	}
@@ -248,6 +252,7 @@
 			    updateSubscriptions();
 
 			    build( router, routes );
+			    instance.trigger( "application:navigation:loaded", this );
 		    },
 
 		    data : null,

@@ -1,5 +1,5 @@
-﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "plugins/server"], function (configuration, view, modal, server) {
-		
+﻿define(["dragonspark/configuration", "dragonspark/view", "plugins/dialog", "plugins/server"], function (configuration, view, modal, server)
+{
 	var ctor = function (error) {
 		var instance = configuration(),
 			applicationDetails =  instance ? instance.ApplicationDetails : null,
@@ -31,61 +31,10 @@
 	ctor.prototype.report = function () {
 		var self = this;
 		var payload = { Message: this.error.message, StackTrace: this.error.stack, ClientExceptionType: this.error.name };
-		return Q(server.hubs.application.reportException( payload )).fin(function() {
+		return Q(server.hubs.application.server.reportException( payload )).fin(function() {
 			self.reported(true);
 		});
 	};
 
     return ctor;
 });
-/*
-
-Function.prototype.trace = function() {
-	function getCaller( item )
-	{
-		try
-		{
-			return item.caller;
-		}
-		catch( e )
-		{
-			return null;
-		} 
-	}
-
-	var result = [];
-	var current = this;
-	while (current) {
-		result.push(current.signature());
-		current = getCaller( current );
-	}
-	return result;
-};
-
-Function.prototype.signature = function() {
-	var signature = {
-		name: this.getName(),
-		params: [],
-		toString: function() {
-			var params = this.params.length > 0 ? "'" + this.params.join("', '") + "'" : "";
-			return this.name + "(" + params + ")";
-		}
-	};
-
-	if (this.arguments) {
-		for (var x = 0; x < this.arguments.length; x++)
-			signature.params.push(this.arguments[x]);
-	}
-	return signature;
-};
-
-Function.prototype.getName = function() {
-	if (this.name)
-		return this.name;
-	var definition = this.toString().split("\n")[0];
-	var exp = /^function ([^\s(]+).+/;
-	if (exp.test(definition))
-		return definition.split("\n")[0].replace(exp, "$1") || "anonymous";
-	return "anonymous";
-};
-*/

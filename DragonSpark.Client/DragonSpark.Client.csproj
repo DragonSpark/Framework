@@ -53,9 +53,7 @@
   <ItemGroup>
     <EmbeddedResource Include="application.js" />
     <EmbeddedResource Include="Commands\displayError.js" />
-    <EmbeddedResource Include="Commands\wait.js" />
     <EmbeddedResource Include="configuration.js" />
-    <EmbeddedResource Include="Core\linq.min.js" />
     <EmbeddedResource Include="Durandal\activator.js" />
     <EmbeddedResource Include="Durandal\app.js" />
     <EmbeddedResource Include="Durandal\binder.js" />
@@ -67,8 +65,6 @@
     <EmbeddedResource Include="enum.js" />
     <EmbeddedResource Include="error.html" />
     <EmbeddedResource Include="error.js" />
-    <EmbeddedResource Include="Core\require.js" />
-    <EmbeddedResource Include="Core\text.js" />
     <EmbeddedResource Include="Plugins\dialog.js" />
     <EmbeddedResource Include="Plugins\history.js" />
     <EmbeddedResource Include="Plugins\http.js" />
@@ -104,12 +100,6 @@
     <EmbeddedResource Include="Widgets\Operations\viewmodel.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\knockout.mapping-latest.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Core\jquery.dateFormat-1.0.js" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
@@ -118,10 +108,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Extensions\jquery.js" />
     <EmbeddedResource Include="Extensions\knockout.js" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="Core\knockout.validation.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="navigation.js" />
@@ -134,20 +120,26 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="model.js" />
-    <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
-    <EmbeddedResource Include="Core\stacktrace.js" />
-    <EmbeddedResource Include="Core\q.min.js" />
-    <EmbeddedResource Include="Core\breeze.min.js" />
-    <EmbeddedResource Include="Core\jquery-2.0.3.min.js" />
-    <EmbeddedResource Include="Core\knockout-2.3.0.js" />
-    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.js" />
-    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.min.js" />
     <EmbeddedResource Include="Core\breeze.debug.js" />
-    <EmbeddedResource Include="Core\breeze.intellisense.js" />
+    <EmbeddedResource Include="Core\breeze.min.js" />
     <EmbeddedResource Include="Core\jquery-2.0.3.debug.js" />
+    <EmbeddedResource Include="Core\jquery-2.0.3.min.js" />
+    <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
+    <EmbeddedResource Include="Core\jquery.dateFormat-1.0.js" />
+    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.min.js" />
+    <EmbeddedResource Include="Core\knockout-3.0.0.debug.js" />
+    <EmbeddedResource Include="Core\knockout-3.0.0.js" />
+    <EmbeddedResource Include="Core\knockout.mapping-latest.js" />
+    <EmbeddedResource Include="Core\knockout.validation.js" />
+    <EmbeddedResource Include="Core\linq.min.js" />
+    <EmbeddedResource Include="Core\q.min.js" />
+    <EmbeddedResource Include="Core\require.js" />
+    <EmbeddedResource Include="Core\stacktrace.js" />
+    <EmbeddedResource Include="Core\text.js" />
     <Content Include="Plugins\server.js" />
     <EmbeddedResource Include="Plugins\storage.js" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->

@@ -20,9 +20,9 @@ namespace DragonSpark.Server.ClientHosting
 		protected override ResourcesContainer CreateItem( object parameter )
 		{
 			var result = new ResourcesContainer();
-			applicationAssembly.GetTypes().Where( x => x.Namespace == resourcesNamespace ).Apply( x =>
+			applicationAssembly.GetValidTypes().Where( x => x.Namespace == resourcesNamespace ).Apply( x =>
 			{
-				var propertyInfos = Enumerable.Where<PropertyInfo>( x.GetProperties( DragonSparkBindingOptions.AllProperties ), y => y.PropertyType == typeof(string) );
+				var propertyInfos = x.GetProperties( DragonSparkBindingOptions.AllProperties ).Where( y => y.PropertyType == typeof(string) );
 				result.Add( x.Name, propertyInfos.ToDictionary( y =>  y.Name, y => (string)y.GetValue( null, null ) ) );
 			} );
 			return result;

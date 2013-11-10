@@ -21,7 +21,7 @@ namespace DragonSpark.Extensions
 		static Type[] ResolveTypes( AppDomain target )
 		{
 			var query = from assembly in target.GetAssemblies()
-			            from type in assembly.GetTypes()
+			            from type in assembly.GetValidTypes()
 			            select type;
 			var result = query.ToArray();
 			return result;

@@ -58,6 +58,7 @@
     <Compile Include="Configuration\Server.xaml.cs">
       <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ApplicationHub.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Client\application.packaged.js" />
     <Content Include="Client\initializer.js" />
     <Content Include="Client\build\almond-custom.js" />
     <Content Include="Client\build\require.js" />
@@ -98,12 +100,7 @@
     <Content Include="Content\images\Logo.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
-    <Content Include="Scripts\jquery-2.0.3.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\jquery.signalR-2.0.0.js" />
-    <Content Include="Scripts\jquery.signalR-2.0.0.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="weyland-config.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -135,7 +132,6 @@
     <Content Include="Views\Security\Error.cshtml" />
     <Content Include="Views\Security\Complete.cshtml" />
     <Content Include="Views\Security\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -436,6 +432,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent Condition="'$(Configuration)'=='Release'">
+    cd $(ProjectDir)
+    weyland build
+</PostBuildEvent>
+  </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

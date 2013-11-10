@@ -1,6 +1,8 @@
 using System.IO;
 using System.Reflection;
 using System.Web.Hosting;
+using DragonSpark.Extensions;
+using DragonSpark.Logging;
 
 namespace DragonSpark.Server.ClientHosting
 {
@@ -25,6 +27,7 @@ namespace DragonSpark.Server.ClientHosting
 		{
 			var resource = string.Concat( assembly.GetName().Name, ".", name ).Replace( Path.AltDirectorySeparatorChar, '.' );
 			var result = assembly.GetManifestResourceStream( resource );
+			result.Null( () => Log.Warning( string.Format( "Stream not found for {0}, in assembly {1}.", name, assembly.GetName() ) ) );
 			return result;
 		}
 	}

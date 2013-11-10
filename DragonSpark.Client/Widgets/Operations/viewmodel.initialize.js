@@ -18,12 +18,12 @@
 				if ( ko.bindingHandlers[ handler ] !== undefined )
 				{
 					var accessor = ko.utils.wrapAccessor( operation );
-					ko.bindingHandlers[ handler ].init( element, accessor, allBindingsAccessor, viewModel );
+					ko.bindingHandlers[ handler ].init( element, accessor, allBindingsAccessor, viewModel, bindingContext );
 				} else
 				{
 					var events = {};
 					events[ handler ] = operation;
-					ko.bindingHandlers.event.init( element, ko.utils.wrapAccessor( events ), allBindingsAccessor, viewModel );
+					ko.bindingHandlers.event.init( element, ko.utils.wrapAccessor( events ), allBindingsAccessor, viewModel, bindingContext );
 				}
 			};
 

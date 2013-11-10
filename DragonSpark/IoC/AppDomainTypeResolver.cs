@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 
 namespace DragonSpark.IoC
@@ -25,7 +26,7 @@ namespace DragonSpark.IoC
 
 		static TItem[] ResolveInternal<TItem>( IUnityContainer container, IEnumerable<Type> typesToExclude )
 		{
-			var result = AppDomain.CurrentDomain.GetAssemblies().SelectMany( x => x.GetTypes() ).Where( x => !x.IsAbstract && !x.IsInterface && typeof(TItem).IsAssignableFrom( x ) ).Except( typesToExclude ).Select( x => container.Resolve( x ) ).Cast<TItem>().ToArray();
+			var result = AppDomain.CurrentDomain.GetAssemblies().SelectMany( x => x.GetValidTypes() ).Where( x => !x.IsAbstract && !x.IsInterface && typeof(TItem).IsAssignableFrom( x ) ).Except( typesToExclude ).Select( x => container.Resolve( x ) ).Cast<TItem>().ToArray();
 			return result;
 		}
 	}

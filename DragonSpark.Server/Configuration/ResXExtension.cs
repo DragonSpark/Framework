@@ -29,7 +29,7 @@ namespace DragonSpark.Server.Configuration
 			var assembly = applicationAssembly ?? BuildManager.GetGlobalAsaxType().BaseType.Assembly;
 			var fullName = string.Join( ".", parts.Reverse() );
 
-			var type = assembly.GetTypes().FirstOrDefault( x => x.FullName == fullName );
+			var type = assembly.GetValidTypes().FirstOrDefault( x => x.FullName == fullName );
 			var propertyInfo = type.GetProperty( property, DragonSparkBindingOptions.AllProperties );
 			var result = propertyInfo.GetValue( null, null );
 			return result;

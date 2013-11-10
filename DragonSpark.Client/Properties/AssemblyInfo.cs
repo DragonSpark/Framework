@@ -33,20 +33,18 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2013.10.22.1")]
-[assembly: AssemblyFileVersion("2013.10.22.1")]
+[assembly: AssemblyVersion("2013.11.10.1")]
+[assembly: AssemblyFileVersion("2013.11.10.1")]
 
 [assembly: ClientResources( "dragonspark" )]
-/*[assembly: ClientResource( "Core/require.debug.js", Priority = Priority.Lowest )]*/
 [assembly: ClientResource( "Core/stacktrace.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/jquery-2.0.3.min.js", Priority = Priority.Lowest )]
-[assembly: ClientResource( "Core/knockout-2.3.0.js", Priority = Priority.Lower )]
+[assembly: ClientResource( "Core/knockout-3.0.0.js", Priority = Priority.Lower )]
 [assembly: ClientResource( "Core/q.min.js", Priority = Priority.Lower )]
 [assembly: ClientResource( "Core/breeze.min.js" )]
-[assembly: ClientResource( "Core/jquery.signalR-2.0.0.js" )]
+[assembly: ClientResource( "Core/jquery.signalR-2.0.0.min.js" )]
 [assembly: ClientResource( "Core/jquery.ba-resize.min.js" )]
 [assembly: ClientResource( "Core/jquery.dateFormat-1.0.js" )]
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/knockout.validation.js" )]
-// [assembly: ClientResource( "Core/knockout.reactor.latest.js" )]
 [assembly: ClientResource( "Core/linq.min.js" )]

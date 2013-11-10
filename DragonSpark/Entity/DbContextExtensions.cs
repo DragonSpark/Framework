@@ -38,7 +38,7 @@ namespace DragonSpark.Entity
 
 		public void Process( DbContext context, DbModelBuilder modelBuilder, bool useConvention = true )
 		{
-			var types = context.GetDeclaredEntityTypes().Select( x => x.GetHierarchy( false ).Last() ).Distinct().SelectMany( x => x.Assembly.GetTypes().Where( y => x.Namespace == y.Namespace ) ).Distinct().ToArray();
+			var types = context.GetDeclaredEntityTypes().Select( x => x.GetHierarchy( false ).Last() ).Distinct().SelectMany( x => x.Assembly.GetValidTypes().Where( y => x.Namespace == y.Namespace ) ).Distinct().ToArray();
 
 			types.SelectMany( y => y.GetProperties( DragonSparkBindingOptions.AllProperties ).Where( z => z.IsDecoratedWith<LocalStorageAttribute>() || ( useConvention && FollowsConvention( z ) )  ) ).Apply( x =>
 			{
