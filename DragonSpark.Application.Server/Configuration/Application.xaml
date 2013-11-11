@@ -30,7 +30,7 @@
     </dsweb:RegisterCustomAuthenticationClients>
     <dsweb:RegisterYahooClient />
     <dsweb:RegisterGoogleClient />
-    <dsweb:RegisterMicrosoftClient ApplicationId="000000004C0F909A" ApplicationSecret="31fKyvBFs4NKm35eBO5cHdyqb25X9Btz" />
+	<dsweb:RegisterMicrosoftClient ApplicationId="{ds:ApplicationConfiguration 'Microsoft-ApplicationId'}" ApplicationSecret="{ds:ApplicationConfiguration 'Microsoft-ApplicationSecret'}" />
     <dsweb:EnableAttributeRouting>
         <x:Type Type="configuration:Application" />
     </dsweb:EnableAttributeRouting>

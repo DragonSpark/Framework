@@ -75,10 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client\application.packaged.js" />
-    <Content Include="Client\initializer.js" />
     <Content Include="Client\build\almond-custom.js" />
     <Content Include="Client\build\require.js" />
     <Content Include="Client\initializer.development.js" />
+    <Content Include="Client\initializer.js" />
     <Content Include="Content\application.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.min.css" />
