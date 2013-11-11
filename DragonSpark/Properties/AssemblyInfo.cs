@@ -40,8 +40,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2013.11.10.1")]
-[assembly: AssemblyFileVersion("2013.11.10.1")]
+[assembly: AssemblyVersion("2013.11.12.1")]
+[assembly: AssemblyFileVersion("2013.11.12.1")]
 // [assembly: InternalsVisibleTo( "DragonSpark.Testing, PublicKey=002400000480000094000000060200000024000052534131000400000100010015b5cbe04089f7b0a29ed23a95e0b6601a65a2b27191460d819f3523802925f16d210ed7fbd6bee26e4a3d3d33832ab05182cc7157c3d66977b0d274dec3096a23c56e9e06c6c132e246a6ad283305b3670af7f101b3b3f4628813555ce3448b6cdafc3ceb2982ae79704e7b7763c03ca58ec2000bed3814cbea63c25c3a36b1" )]
 [assembly: InternalsVisibleTo( "DragonSpark.Testing" )]
 
