@@ -48,7 +48,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="Configuration\Registrations.xaml.cs">
       <DependentUpon>Registrations.xaml</DependentUpon>
     </Compile>
@@ -63,36 +62,12 @@
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
-    <Compile Include="Models\ApplicationUserProfile.cs" />
-    <Compile Include="Models\EntityStorage.cs" />
-    <Compile Include="Models\UserMetadata.cs" />
-    <Compile Include="Models\UserProfileSynchronizer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Client\application.packaged.js" />
-    <Content Include="Client\initializer.js" />
-    <Content Include="Client\build\almond-custom.js" />
-    <Content Include="Client\build\require.js" />
-    <Content Include="Client\initializer.development.js" />
-    <Content Include="Content\application.css" />
-    <Content Include="Content\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\durandal.css" />
-    <Content Include="Content\font-awesome-ie7.min.css" />
-    <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\font\fontawesome-webfont.eot" />
-    <Content Include="Content\font\fontawesome-webfont.svg" />
-    <Content Include="Content\font\fontawesome-webfont.ttf" />
-    <Content Include="Content\font\fontawesome-webfont.woff" />
-    <Content Include="Content\font\FontAwesome.otf" />
-    <Content Include="Content\ie10mobile.css" />
-    <Content Include="Content\images\glyphicons-halflings-white.png" />
-    <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\icon-48x48.png" />
     <Content Include="Content\images\icon.png" />
     <Content Include="Content\images\ios-startup-image-landscape.png" />
@@ -100,7 +75,6 @@
     <Content Include="Content\images\Logo.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="weyland-config.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -111,19 +85,6 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -391,9 +352,17 @@
       <Project>{db1d8833-22f9-44ff-983c-92de7cddadd1}</Project>
       <Name>DragonSpark.Application.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj">
+      <Project>{69FA0B23-DEF8-46ED-9901-D0B1CDF3C4E0}</Project>
+      <Name>DragonSpark.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
       <Project>{aa6df806-14f1-4451-bffc-1823e9340826}</Project>
       <Name>DragonSpark.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Server.ClientHosting\DragonSpark.Server.ClientHosting.csproj">
+      <Project>{4d191ac0-4888-48fd-b497-3de088908082}</Project>
+      <Name>DragonSpark.Server.ClientHosting</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj">
       <Project>{3cca84f9-0680-438a-9a0d-8dbada88b909}</Project>

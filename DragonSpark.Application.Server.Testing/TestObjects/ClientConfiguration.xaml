@@ -2,12 +2,12 @@
 	x:Class="DragonSpark.Application.Server.Testing.TestObjects.ClientConfiguration"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:client="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server" xmlns:ds="http://framework.dragonspark.us"
+	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:ioC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark"
     xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
 	xmlns:testObjects="clr-namespace:DragonSpark.Application.Server.Testing.TestObjects"
-	xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server">
+	xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting">
 	<ds:RegisterFromMetadataCommand />
 	<ds:AssignServiceLocatorCommand />
 	<ds:UnityInstance>

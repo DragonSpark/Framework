@@ -50,38 +50,6 @@
     <Compile Include="ApplicationConfigurationCommand.cs" />
     <Compile Include="ApplicationInitializer.cs" />
     <Compile Include="ApplicationModule.cs" />
-    <Compile Include="ClientHosting\AnonymousAuthorizer.cs" />
-    <Compile Include="ClientHosting\AuthenticatedAuthorizer.cs" />
-    <Compile Include="ClientHosting\ClaimsAuthorizer.cs" />
-    <Compile Include="ClientHosting\ClientApplicationConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClientHosting\ApplicationHubBase.cs" />
-    <Compile Include="ClientHosting\ClientModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClientHosting\ClientModuleBuilder.cs" />
-    <Compile Include="ClientHosting\CommandsBuilder.cs" />
-    <Compile Include="ClientHosting\ClientResourceHttpHandler.cs" />
-    <Compile Include="ClientHosting\EmbeddedResourceFile.cs" />
-    <Compile Include="ClientHosting\EntityExtensionsBuilder.cs" />
-    <Compile Include="ClientHosting\IAuthorizer.cs" />
-    <Compile Include="ClientHosting\InitializersBuilder.cs" />
-    <Compile Include="ClientHosting\Navigation.cs" />
-    <Compile Include="ClientHosting\NavigationBuilder.cs" />
-    <Compile Include="ClientHosting\NavigationNode.cs" />
-    <Compile Include="ClientHosting\PrincipalProvider.cs" />
-    <Compile Include="ClientHosting\ResourcesContainer.cs" />
-    <Compile Include="ClientHosting\ResourcesContainerBuilder.cs" />
-    <Compile Include="ClientHosting\RolesAuthorizer.cs" />
-    <Compile Include="ClientHosting\RouteInfo.cs" />
-    <Compile Include="ClientHosting\ShellInfo.cs" />
-    <Compile Include="ClientHosting\ShellNode.cs" />
-    <Compile Include="ClientHosting\UserContext.cs" />
-    <Compile Include="ClientHosting\UserProfileFactory.cs" />
-    <Compile Include="ClientHosting\VirtualPathProvider.cs" />
-    <Compile Include="ClientHosting\WidgetModule.cs" />
-    <Compile Include="ClientHosting\WidgetsBuilder.cs" />
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="Configuration\ApplyFilters.cs" />
     <Compile Include="Configuration\ApplyGlobalFilters.cs">
@@ -98,7 +66,6 @@
     <Compile Include="Configuration\ClientPathExtension.cs" />
     <Compile Include="Configuration\CustomAuthenticationClientRegistration.cs" />
     <Compile Include="Configuration\EnableAttributeRouting.cs" />
-    <Compile Include="Configuration\EnableClientResources.cs" />
     <Compile Include="Configuration\EnableQuerySupport.cs" />
     <Compile Include="Configuration\EnableSignalR.cs" />
     <Compile Include="Configuration\IgnoreDirective.cs" />
@@ -120,7 +87,6 @@
     </Compile>
     <Compile Include="Configuration\SessionLifetimeManager.cs" />
     <Compile Include="Configuration\StyleBundle.cs" />
-    <Compile Include="ClientHosting\ClientResourcesBundle.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="ExceptionHandlerFilter.cs" />
     <Compile Include="ExceptionHandlingConfiguration.cs" />
@@ -356,14 +322,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
-      <Project>{AA6DF806-14F1-4451-BFFC-1823E9340826}</Project>
-      <Name>DragonSpark.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientHosting\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,16 +1,15 @@
-﻿// General Information about an assembly is controlled through the following 
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-using System.Reflection;
-using System.Runtime.InteropServices;
-using DragonSpark.Server.ClientHosting;
-
-[assembly: AssemblyTitle("DragonSpark.Application.Client")]
+[assembly: AssemblyTitle("DragonSpark.Application")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DragonSpark.Application.Client")]
+[assembly: AssemblyProduct("DragonSpark.Application")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +20,7 @@ using DragonSpark.Server.ClientHosting;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a6f92439-d772-4605-8a2f-17d3e044ce26")]
+[assembly: Guid("5fe6b33a-c043-4905-b993-0b7ea27ec705")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,5 +34,3 @@ using DragonSpark.Server.ClientHosting;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: ClientApplication]

@@ -11,7 +11,7 @@
     xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
     xmlns:controllers="clr-namespace:DragonSpark.Application.Server.Controllers"
     xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
-    xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models">
+    >
 	<ds:RegisterFromMetadataCommand />
 	<ds:AssignServiceLocatorCommand />
     <ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">

@@ -1,10 +1,9 @@
-﻿using DragonSpark;
-using DragonSpark.Client;
-// General Information about an assembly is controlled through the following 
+﻿// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Server.ClientHosting;
 
 [assembly: AssemblyTitle("DragonSpark.Client")]
 [assembly: AssemblyDescription("")]
@@ -37,7 +36,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("2013.11.12.1")]
 
 [assembly: ClientResources( "dragonspark" )]
-[assembly: ClientResource( "Core/stacktrace.js", Priority = Priority.Lowest )]
+/*[assembly: ClientResource( "Core/stacktrace.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/jquery-2.0.3.min.js", Priority = Priority.Lowest )]
 [assembly: ClientResource( "Core/knockout-3.0.0.js", Priority = Priority.Lower )]
 [assembly: ClientResource( "Core/q.min.js", Priority = Priority.Lower )]
@@ -47,4 +46,4 @@ using System.Runtime.InteropServices;
 [assembly: ClientResource( "Core/jquery.dateFormat-1.0.js" )]
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/knockout.validation.js" )]
-[assembly: ClientResource( "Core/linq.min.js" )]
+[assembly: ClientResource( "Core/linq.min.js" )]*/

@@ -11,7 +11,8 @@
     xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
     xmlns:web="clr-namespace:DragonSpark.Server;assembly=DragonSpark.Server"
     xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
-    xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration">
+    xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
+    xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting">
     <ds:ApplicationConfigurationCommand.ApplicationDetails>
         <dragonSpark:ApplicationDetails
 				Title="{ds:Metadata {x:Type reflection:AssemblyTitleAttribute}, 'Title'}"
@@ -26,7 +27,7 @@
 					/>
     </ds:ApplicationConfigurationCommand.ApplicationDetails>
     <dsweb:RegisterCustomAuthenticationClients>
-        <dsweb:CustomAuthenticationClientRegistration ClientFactory="{Configuration:LocationFactory {x:Type webSecurity:FacebookClient}}" DisplayName="Facebook" />
+		<dsweb:CustomAuthenticationClientRegistration ClientFactory="{Configuration:LocationFactory {x:Type webSecurity:FacebookClient}}" DisplayName="Facebook" />
     </dsweb:RegisterCustomAuthenticationClients>
     <dsweb:RegisterYahooClient />
     <dsweb:RegisterGoogleClient />
@@ -35,7 +36,7 @@
         <x:Type Type="configuration:Application" />
     </dsweb:EnableAttributeRouting>
     <dsweb:EnableQuerySupport />
-    <dsweb:EnableClientResources />
+    <clientHosting:EnableClientResources />
     <dsweb:EnableSignalR />
     <dsweb:BundlesConfigurator>
         <dsweb:BundlesConfigurator.Ignore>

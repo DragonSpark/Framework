@@ -35,6 +35,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,97 +58,26 @@
     </SkcPlugin>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="application.js" />
-    <EmbeddedResource Include="Commands\displayError.js" />
-    <EmbeddedResource Include="configuration.js" />
-    <EmbeddedResource Include="Durandal\activator.js" />
-    <EmbeddedResource Include="Durandal\app.js" />
-    <EmbeddedResource Include="Durandal\binder.js" />
-    <EmbeddedResource Include="Durandal\composition.js" />
-    <EmbeddedResource Include="Durandal\events.js" />
-    <EmbeddedResource Include="Durandal\system.js" />
-    <EmbeddedResource Include="Durandal\viewEngine.js" />
-    <EmbeddedResource Include="Durandal\viewLocator.js" />
-    <EmbeddedResource Include="enum.js" />
-    <EmbeddedResource Include="error.html" />
-    <EmbeddedResource Include="error.js" />
-    <EmbeddedResource Include="Plugins\dialog.js" />
-    <EmbeddedResource Include="Plugins\history.js" />
-    <EmbeddedResource Include="Plugins\http.js" />
-    <EmbeddedResource Include="Plugins\observable.js" />
-    <EmbeddedResource Include="Plugins\router.js" />
-    <EmbeddedResource Include="Plugins\serializer.js" />
-    <EmbeddedResource Include="Plugins\widget.js" />
-    <EmbeddedResource Include="session.js" />
-    <EmbeddedResource Include="Transitions\entrance.js" />
-    <EmbeddedResource Include="view.js" />
-    <EmbeddedResource Include="Widgets\Copyright\about.html" />
-    <EmbeddedResource Include="Widgets\Copyright\about.js" />
-    <EmbeddedResource Include="Widgets\Copyright\view.html" />
-    <EmbeddedResource Include="Widgets\Copyright\viewmodel.js" />
-    <EmbeddedResource Include="Widgets\Expander\view.html" />
-    <EmbeddedResource Include="Widgets\Expander\viewmodel.js" />
-    <EmbeddedResource Include="Widgets\Identity\signout.js" />
-    <EmbeddedResource Include="Widgets\Identity\view.html" />
-    <EmbeddedResource Include="Widgets\Identity\viewmodel.initialize.js" />
-    <EmbeddedResource Include="Widgets\Identity\viewmodel.js" />
-    <EmbeddedResource Include="Widgets\Operations\core.js" />
-    <EmbeddedResource Include="Widgets\Operations\Images\Aborted.png" />
-    <EmbeddedResource Include="Widgets\Operations\Images\Canceled.png" />
-    <EmbeddedResource Include="Widgets\Operations\Images\Completed.png" />
-    <EmbeddedResource Include="Widgets\Operations\Images\CompletedWithException.png" />
-    <EmbeddedResource Include="Widgets\Operations\Images\Executing.png" />
-    <EmbeddedResource Include="Widgets\Operations\Images\None.png" />
-    <EmbeddedResource Include="Widgets\Operations\monitor.js" />
-    <EmbeddedResource Include="Widgets\Operations\operation.html" />
-    <EmbeddedResource Include="Widgets\Operations\operation.js" />
-    <EmbeddedResource Include="Widgets\Operations\view.html" />
-    <EmbeddedResource Include="Widgets\Operations\viewmodel.initialize.js" />
-    <EmbeddedResource Include="Widgets\Operations\viewmodel.js" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Server.ClientHosting\DragonSpark.Server.ClientHosting.csproj">
+      <Project>{4d191ac0-4888-48fd-b497-3de088908082}</Project>
+      <Name>DragonSpark.Server.ClientHosting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Extensions\jquery.js" />
-    <EmbeddedResource Include="Extensions\knockout.js" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="navigation.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Widgets\Identity\core.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Commands\watchRouter.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="model.js" />
-    <EmbeddedResource Include="Core\breeze.debug.js" />
-    <EmbeddedResource Include="Core\breeze.min.js" />
-    <EmbeddedResource Include="Core\jquery-2.0.3.debug.js" />
-    <EmbeddedResource Include="Core\jquery-2.0.3.min.js" />
-    <EmbeddedResource Include="Core\jquery.ba-resize.min.js" />
-    <EmbeddedResource Include="Core\jquery.dateFormat-1.0.js" />
-    <EmbeddedResource Include="Core\jquery.signalR-2.0.0.min.js" />
-    <EmbeddedResource Include="Core\knockout-3.0.0.debug.js" />
-    <EmbeddedResource Include="Core\knockout-3.0.0.js" />
-    <EmbeddedResource Include="Core\knockout.mapping-latest.js" />
-    <EmbeddedResource Include="Core\knockout.validation.js" />
-    <EmbeddedResource Include="Core\linq.min.js" />
-    <EmbeddedResource Include="Core\q.min.js" />
-    <EmbeddedResource Include="Core\require.js" />
-    <EmbeddedResource Include="Core\stacktrace.js" />
-    <EmbeddedResource Include="Core\text.js" />
-    <Content Include="Plugins\server.js" />
-    <EmbeddedResource Include="Plugins\storage.js" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

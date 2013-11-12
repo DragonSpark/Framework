@@ -13,21 +13,21 @@
     xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
     xmlns:claims="clr-namespace:System.Security.Claims;assembly=mscorlib"
     xmlns:identityModel="clr-namespace:System.IdentityModel.Claims;assembly=System.IdentityModel"
-    xmlns:client="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server"
+    xmlns:client="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting"
     xmlns:ef="clr-namespace:System.Data.Entity;assembly=EntityFramework"
                                            xmlns:security="clr-namespace:DragonSpark.Security;assembly=DragonSpark"
     xmlns:principal="clr-namespace:System.Security.Principal;assembly=mscorlib"
     xmlns:system1="clr-namespace:System;assembly=System"
     xmlns:security1="clr-namespace:System.Web.Security;assembly=System.Web"
                                            xmlns:hosting="clr-namespace:System.ComponentModel.Composition.Hosting;assembly=System.ComponentModel.Composition"
-                                           xmlns:applicationEntity="clr-namespace:DragonSpark.Application.Server.Models"
-                                           xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server">
+                                           xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting"
+                                           xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application">
 	<Configuration:UnityType RegistrationType="{x:Type principal:IPrincipal}">
 		<Configuration:InjectionFactoryInstance>
 			<client:PrincipalProvider />
 		</Configuration:InjectionFactoryInstance>
 	</Configuration:UnityType>
-	<Configuration:UnityType RegistrationType="{x:Type security:UserProfile}" MapTo="{x:Type applicationEntity:ApplicationUserProfile}">
+	<Configuration:UnityType RegistrationType="{x:Type security:UserProfile}" MapTo="{x:Type application:ApplicationUserProfile}">
 		<Configuration:InjectionFactory BuildKey="{ds:NamedTypeBuildKey {x:Type client:UserProfileFactory}}" Parameter="{ds:NamedTypeBuildKey {x:Type principal:IPrincipal}}" />
 	</Configuration:UnityType>
 
@@ -50,7 +50,7 @@
         <Configuration:InjectionProperty PropertyName="UserProfile">
             <Configuration:DependencyValue DependencyType="{x:Type security:UserProfile}" />
         </Configuration:InjectionProperty>
-        <Configuration:InjectionProperty PropertyName="Navigation">
+        <!--<Configuration:InjectionProperty PropertyName="Navigation">
             <Configuration:FactoryParameterValue>
                 <Configuration:NamedTypeBuildKey BuildType="{x:Type clientHosting:NavigationBuilder}" />
                 <Configuration:FactoryParameterValue.Parameter>
@@ -100,8 +100,8 @@
                     </clientHosting:ShellNode>
                 </Configuration:FactoryParameterValue.Parameter>
             </Configuration:FactoryParameterValue>
-        </Configuration:InjectionProperty>
-        <Configuration:InjectionProperty PropertyName="Widgets">
+        </Configuration:InjectionProperty>-->
+       <!-- <Configuration:InjectionProperty PropertyName="Widgets">
             <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:WidgetsBuilder}}" />
         </Configuration:InjectionProperty>
 		<Configuration:InjectionProperty PropertyName="Initializers">
@@ -112,18 +112,18 @@
         </Configuration:InjectionProperty>
 		<Configuration:InjectionProperty PropertyName="ServerConfiguration">
 			<Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:ServerConfigurationBuilder}}" />
-		</Configuration:InjectionProperty>
+		</Configuration:InjectionProperty>-->
 	</Configuration:UnityType>
 
-    <ds:UnityType RegistrationType="{ds:GenericType ef:IDatabaseInitializer(applicationEntity:EntityStorage)}" MapTo="{ds:GenericType entity:DropCreateDatabaseIfModelChanges(applicationEntity:EntityStorage)}" />
+    <ds:UnityType RegistrationType="{ds:GenericType ef:IDatabaseInitializer(applicationEntity:EntityStorage)}" MapTo="{ds:GenericType entity:DropCreateDatabaseIfModelChanges(application:EntityStorage)}" />
 
-    <ds:UnityType RegistrationType="{x:Type ef:DbContext}" MapTo="{x:Type applicationEntity:EntityStorage}">
+    <ds:UnityType RegistrationType="{x:Type ef:DbContext}" MapTo="{x:Type application:EntityStorage}">
         <ds:UnityType.Lifetime>
             <dsweb:RequestLifetimeManager KeyName="056A5293-E260-4365-BE38-376ED6BEEBE4" />
         </ds:UnityType.Lifetime>
     </ds:UnityType>
 
-    <ds:UnityType RegistrationType="{x:Type applicationEntity:EntityStorage}">
+    <ds:UnityType RegistrationType="{x:Type application:EntityStorage}">
         <ds:UnityType.Lifetime>
             <dsweb:RequestLifetimeManager KeyName="056A5293-E260-4365-BE38-376ED6BEEBE4" />
         </ds:UnityType.Lifetime>

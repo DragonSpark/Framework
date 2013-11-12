@@ -352,6 +352,10 @@
       <Project>{E517513A-E4EA-48ED-9E1A-8197BBDC9270}</Project>
       <Name>DragonSpark.Application.Server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Server.ClientHosting\DragonSpark.Server.ClientHosting.csproj">
+      <Project>{4d191ac0-4888-48fd-b497-3de088908082}</Project>
+      <Name>DragonSpark.Server.ClientHosting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
       <Project>{96F63F2B-7D11-4D0F-A932-26C29F8E48BF}</Project>
       <Name>DragonSpark.Testing.Framework</Name>

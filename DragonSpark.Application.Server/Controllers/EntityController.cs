@@ -3,7 +3,6 @@ using System.Web.Http;
 using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Breeze.WebApi2;
-using DragonSpark.Application.Server.Models;
 using DragonSpark.Server.ClientHosting;
 using Newtonsoft.Json.Linq;
 
