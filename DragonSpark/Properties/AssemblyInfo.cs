@@ -50,4 +50,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.IoC.Configuration")]
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 
-[assembly: Registration( Priority.Low )]
+[assembly: Registration( Priority.Lower )]

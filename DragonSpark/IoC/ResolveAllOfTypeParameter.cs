@@ -39,7 +39,7 @@ namespace DragonSpark.IoC
 
 		protected virtual object[] ResolveItems( IUnityContainer container )
 		{
-			return container.ResolveAllRegistered( elementType ).ToArray();
+			return container.ResolveAll( elementType ).ToArray();
 		}
 	}
 }

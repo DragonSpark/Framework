@@ -1,29 +1,61 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.IoC.Configuration
 {
-    [Singleton]
-	public class AssemblySupport
+    public class AssemblySupport
 	{
 		readonly List<Assembly> applied = new List<Assembly>();
 
-		Action<IEnumerable<Assembly>> Action { get; set; }
+		readonly ICollection<Action<IEnumerable<Assembly>>> actions = new List<Action<IEnumerable<Assembly>>>();
 
-		public void RegisterAndApply( Action<IEnumerable<Assembly>> action )
+	    AssemblySupport()
+	    {}
+
+	    public static AssemblySupport Instance
+	    {
+		    get { return InstanceField; }
+	    }	static readonly AssemblySupport InstanceField = new AssemblySupport();
+
+	    void OnLoad( object sender, AssemblyLoadEventArgs args )
+	    {
+		    actions.Any().IsTrue( () => Refresh() );
+	    }
+
+	    public void Register( Action<IEnumerable<Assembly>> action, bool apply = true )
 		{
-			Action = action;
-			Refresh();
+			actions.Add( action );
+			Refresh( apply );
 		}
 
-		void Refresh()
+		[MethodImpl( MethodImplOptions.Synchronized )]
+		void Refresh( bool apply = true )
 		{
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where( x => !x.IsDynamic ).Distinct().Except( applied ).ToArray();// moduleCatalog.Transform( x => x.Modules.Select( y => y.GetAssembly() ) ).NotNull().Union( AppDomain.CurrentDomain.GetAssemblies() ).Where( x => !x.IsDynamic ).Distinct().Except( applied ).ToArray();
+			AppDomain.CurrentDomain.AssemblyLoad -= OnLoad;
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where( x => !x.IsDynamic ).SelectMany( x => x.AsItem( x.GetReferencedAssemblies().Select( Load ) ) ).NotNull().Distinct().Except( applied ).OrderBy( x=> x.GetName().Name ).ToArray();
 
-			applied.AddRange(assemblies);
-			Action( assemblies );
+			applied.AddRange( assemblies );
+
+			apply.IsTrue( () => actions.Apply( x => x( assemblies ) ) );
+			AppDomain.CurrentDomain.AssemblyLoad += OnLoad;
 		}
+
+	    static Assembly Load( AssemblyName arg )
+	    {
+		    try
+		    {
+			    return Assembly.Load( arg );
+		    }
+		    catch ( FileNotFoundException )
+		    {
+			    return null;
+		    }
+	    }
 	}
 }

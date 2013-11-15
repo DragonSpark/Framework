@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Logging;
 using Microsoft.Practices.Unity;
@@ -36,11 +37,7 @@ namespace DragonSpark.IoC.Configuration
 		    AddRegistrationHandler<PerRequestAttribute>( HandlePerRequest );
 		    AddRegistrationHandler<InstanceAttribute>( HandleInstance );
 
-            Container.Resolve<AssemblySupport>().RegisterAndApply( x =>
-            {
-	            var assemblies = x.OrderBy( y => y.FromMetadata<RegistrationAttribute, Priority>( z => z.Priority, () => Priority.Normal ) ).ToArray();
-	            assemblies.SelectMany( ResolveRegistrations ).Apply( Register );
-            } );
+            AssemblySupport.Instance.Register( x => x.OrderBy( y => y.FromMetadata<RegistrationAttribute, Priority>( z => z.Priority, () => Priority.Normal ) ).SelectMany( ResolveRegistrations ).Apply( Register ) );
 		}
 
 		static IEnumerable<IComponentRegistration> ResolveRegistrations( Assembly item )
@@ -61,7 +58,7 @@ namespace DragonSpark.IoC.Configuration
 			else
 			{
 				var exception = new InvalidOperationException( string.Format( "{0} cannot handle registrations of type {1}. Please add an appropriate registration handler.", GetType().FullName, key.FullName ) );
-				Logging.Log.Error( exception );
+				Log.Error( exception );
 				throw exception;
 			}
 		}
@@ -72,47 +69,50 @@ namespace DragonSpark.IoC.Configuration
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed when container is disposed." )]
-		void HandleSingleton( SingletonAttribute singletonAttribute )
+		void HandleSingleton( SingletonAttribute attribute )
 		{
-			if ( !singletonAttribute.HasName() )
+			Trace.WriteLine( string.Format( "'{0}' is performing a singleton registration for type '{1}', with the implementation of '{2}' and name '{3}'", GetType().Name, attribute.Service.FullName, attribute.Implementation.FullName, attribute.Name ) );
+			if ( !attribute.HasName() )
 			{
-				Container.RegisterType( singletonAttribute.Service, singletonAttribute.Implementation, new Microsoft.Practices.Unity.ContainerControlledLifetimeManager() );
+				Container.RegisterType( attribute.Service, attribute.Implementation, new Microsoft.Practices.Unity.ContainerControlledLifetimeManager() );
 			}
 			else
 			{
-				Container.RegisterType( singletonAttribute.HasService() ? singletonAttribute.Service : typeof(object), singletonAttribute.Implementation, singletonAttribute.Name, new Microsoft.Practices.Unity.ContainerControlledLifetimeManager() );
+				Container.RegisterType( attribute.HasService() ? attribute.Service : typeof(object), attribute.Implementation, attribute.Name, new Microsoft.Practices.Unity.ContainerControlledLifetimeManager() );
 			}
 		}
 
-		void HandlePerRequest(PerRequestAttribute perRequestAttribute)
+		void HandlePerRequest(PerRequestAttribute attribute)
 		{
-			if ( !perRequestAttribute.HasName() )
+			Trace.WriteLine( string.Format( "'{0}' is performing a per-request registration for type '{1}', with the implementation of '{2}' and name '{3}'", GetType().Name, attribute.Service.FullName, attribute.Implementation.FullName, attribute.Name ) );
+			if ( !attribute.HasName() )
 			{
-				Container.RegisterType( perRequestAttribute.Service, perRequestAttribute.Implementation );
+				Container.RegisterType( attribute.Service, attribute.Implementation );
 			}
-			else if ( !perRequestAttribute.HasService() )
+			else if ( !attribute.HasService() )
 			{
-				Container.RegisterType( typeof(object), perRequestAttribute.Implementation, perRequestAttribute.Name );
+				Container.RegisterType( typeof(object), attribute.Implementation, attribute.Name );
 			}
 			else
 			{
-				Container.RegisterType( perRequestAttribute.Service, perRequestAttribute.Implementation, perRequestAttribute.Name );
+				Container.RegisterType( attribute.Service, attribute.Implementation, attribute.Name );
 			}
 		}
 
-		void HandleInstance(InstanceAttribute instanceAttribute)
+		void HandleInstance(InstanceAttribute attribute)
 		{
-			if ( !instanceAttribute.HasName() )
+			Trace.WriteLine( string.Format( "'{0}' is registering an instance for type '{1}', with the implementation of '{2}' and name '{3}'", GetType().Name, attribute.Service.FullName, attribute.Implementation, attribute.Name ) );
+			if ( !attribute.HasName() )
 			{
-				Container.RegisterInstance( instanceAttribute.Service, instanceAttribute.Implementation );
+				Container.RegisterInstance( attribute.Service, attribute.Implementation );
 			}
-			else if ( !instanceAttribute.HasService() )
+			else if ( !attribute.HasService() )
 			{
-				Container.RegisterInstance( typeof(object), instanceAttribute.Name, instanceAttribute.Implementation );
+				Container.RegisterInstance( typeof(object), attribute.Name, attribute.Implementation );
 			}
 			else
 			{
-				Container.RegisterInstance( instanceAttribute.Service, instanceAttribute.Name, instanceAttribute.Implementation );
+				Container.RegisterInstance( attribute.Service, attribute.Name, attribute.Implementation );
 			}
 		}
 	}

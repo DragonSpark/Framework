@@ -5,16 +5,14 @@
 	xmlns:ds="http://framework.dragonspark.us"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
-    xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
     xmlns:dsLogging="clr-namespace:DragonSpark.Logging;assembly=DragonSpark"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
-    xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
     xmlns:controllers="clr-namespace:DragonSpark.Application.Server.Controllers"
     xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
     >
 	<ds:RegisterFromMetadataCommand />
 	<ds:AssignServiceLocatorCommand />
-    <ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">
+	<ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">
         <ds:InjectionConstructor>
             <ds:InstanceValue Instance="Application" />
             <ds:InstanceValue Instance="." />
@@ -70,8 +68,8 @@
         </ds:ExceptionPolicyDefinition>
     </ds:ExceptionHandlingConfiguration>
 
-    <configuration:Registrations />
+	<configuration:Registrations />
     <configuration:Application />
-	<!--<entity:DatabaseInitializationConfigurationCommand ContextType="{x:Type applicationEntity:EntityStorage}" />-->
-<!--	<IoC:CompositionConfiguration DirectorySearchPath="Bin" />-->
+	<ioC:CompositionConfiguration DirectorySearchPath="Bin" />
+	<ds:ExecuteExportedConfigurationsCommand />
 </ioC:LocatorDefinition>

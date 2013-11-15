@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+using DragonSpark;
+using DragonSpark.IoC.Configuration;
 using DragonSpark.Server.Configuration;
 using Microsoft.Owin;
 
@@ -44,3 +47,5 @@ using Microsoft.Owin;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server.Security")]
 
 [assembly: OwinStartup( typeof(EnableSignalR) )]
+
+[assembly: Registration( Priority.Low )]

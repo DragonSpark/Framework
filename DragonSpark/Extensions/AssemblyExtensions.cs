@@ -23,6 +23,19 @@ namespace DragonSpark.Extensions
 			}
 		}
 
+		public static bool IsValid( this Assembly target )
+		{
+			try
+			{
+				target.GetTypes();
+				return true;
+			}
+			catch ( ReflectionTypeLoadException )
+			{
+				return false;
+			}
+		}
+
 		public static string GetRootNamespace( this Assembly target )
 		{
 			var root = target.FullName.Transform( x => x.Split( ',' ).FirstOrDefault().Transform( y => y.Replace( ".Client", string.Empty ) ) );

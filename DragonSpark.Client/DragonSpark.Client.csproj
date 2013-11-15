@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,11 +37,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.18.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.18.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,15 +72,365 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Scripts\angular-animate.js" />
+    <Resource Include="Resources\Scripts\angular-animate.min.js" />
+    <Resource Include="Resources\Scripts\angular-cookies.js" />
+    <Resource Include="Resources\Scripts\angular-cookies.min.js" />
+    <Resource Include="Resources\Scripts\angular-csp.css" />
+    <Resource Include="Resources\Scripts\angular-loader.js" />
+    <Resource Include="Resources\Scripts\angular-loader.min.js" />
+    <Resource Include="Resources\Scripts\angular-mocks.js" />
+    <Resource Include="Resources\Scripts\angular-resource.js" />
+    <Resource Include="Resources\Scripts\angular-resource.min.js" />
+    <Resource Include="Resources\Scripts\angular-route.js" />
+    <Resource Include="Resources\Scripts\angular-route.min.js" />
+    <Resource Include="Resources\Scripts\angular-sanitize.js" />
+    <Resource Include="Resources\Scripts\angular-sanitize.min.js" />
+    <Resource Include="Resources\Scripts\angular-scenario.js" />
+    <Resource Include="Resources\Scripts\angular-touch.js" />
+    <Resource Include="Resources\Scripts\angular-touch.min.js" />
+    <Resource Include="Resources\Scripts\angular.js" />
+    <Resource Include="Resources\Scripts\angular.min.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_af-na.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_af-za.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_af.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_am-et.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_am.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-001.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-ae.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-bh.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-dz.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-eg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-iq.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-jo.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-kw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-lb.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-ly.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-ma.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-om.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-qa.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-sa.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-sd.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-sy.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-tn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar-ye.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ar.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_bg-bg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_bg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_bn-bd.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_bn-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_bn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ca-ad.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ca-es.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ca.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_cs-cz.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_cs.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_da-dk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_da.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-at.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-be.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-ch.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-de.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-li.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de-lu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_de.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_el-cy.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_el-gr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_el.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-as.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-au.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-bb.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-be.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-bm.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-bw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-bz.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-ca.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-dsrt-us.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-dsrt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-fm.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-gb.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-gu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-gy.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-hk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-ie.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-iso.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-jm.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-mh.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-mp.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-mt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-mu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-na.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-nz.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-ph.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-pk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-pr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-pw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-sg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-tc.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-tt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-um.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-us.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-vg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-vi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-za.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en-zw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_en.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-419.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ar.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-bo.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-cl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-co.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-cr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-do.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ea.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ec.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-es.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-gq.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-gt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-hn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ic.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-mx.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ni.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-pa.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-pe.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-pr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-py.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-sv.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-us.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-uy.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es-ve.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_es.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_et-ee.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_et.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_eu-es.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_eu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fa-af.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fa-ir.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fa.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fi-fi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fil-ph.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fil.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-be.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-bf.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-bi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-bj.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-bl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ca.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-cd.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-cf.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-cg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ch.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ci.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-cm.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-dj.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-fr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ga.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-gf.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-gn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-gp.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-gq.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-km.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-lu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-mc.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-mf.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-mg.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ml.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-mq.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-ne.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-re.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr-yt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_fr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gl-es.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gsw-ch.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gsw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gu-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_gu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_he-il.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_he.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hi-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hr-hr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hu-hu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_hu.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_id-id.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_id.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_is-is.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_is.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_it-it.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_it-sm.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_it.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_iw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ja-jp.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ja.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_kn-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_kn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ko-kr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ko.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ln-cd.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ln.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_lt-lt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_lt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_lv-lv.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_lv.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ml-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ml.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_mr-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_mr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ms-my.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ms.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_mt-mt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_mt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_nl-cw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_nl-nl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_nl-sx.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_nl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_no.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_or-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_or.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_pl-pl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_pl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_pt-br.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_pt-pt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_pt.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ro-ro.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ro.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ru-ru.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ru.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sk-sk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sl-si.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sq-al.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sq.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sr-cyrl-rs.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sr-latn-rs.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sv-se.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sv.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sw-tz.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_sw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ta-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ta.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_te-in.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_te.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_th-th.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_th.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_tl.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_tr-tr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_tr.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_uk-ua.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_uk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ur-pk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_ur.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_vi-vn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_vi.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zh-cn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zh-hans-cn.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zh-hk.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zh-tw.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zh.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zu-za.js" />
+    <Resource Include="Resources\Scripts\i18n\angular-locale_zu.js" />
     <None Include="app.config" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.eot" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.woff" />
+    <Resource Include="Resources\Content\fonts\FontAwesome.otf" />
+    <None Include="Resources\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Resources\fonts\glyphicons-halflings-regular.woff" />
     <None Include="packages.config" />
+    <Resource Include="Resources\Scripts\angular-animate.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-cookies.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-loader.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-resource.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-route.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-sanitize.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-touch.min.js.map" />
+    <Resource Include="Resources\Scripts\angular.min.js.map" />
+    <Resource Include="Resources\Scripts\errors.json" />
+    <Resource Include="Resources\Scripts\jquery-1.9.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Content\bootstrap-theme.css" />
+    <Resource Include="Resources\Content\bootstrap-theme.min.css" />
+    <Resource Include="Resources\Content\bootstrap.css" />
+    <Resource Include="Resources\Content\bootstrap.min.css" />
+    <Resource Include="Resources\Content\fontawesome\font-awesome.css" />
+    <Resource Include="Resources\Content\fontawesome\font-awesome.min.css" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Resources\fonts\glyphicons-halflings-regular.svg" />
+    <Resource Include="Resources\Scripts\bootstrap.js" />
+    <Resource Include="Resources\Scripts\bootstrap.min.js" />
+    <Resource Include="Resources\Scripts\jquery-1.9.1.intellisense.js" />
+    <Resource Include="Resources\Scripts\jquery-1.9.1.js" />
+    <Resource Include="Resources\Scripts\jquery-1.9.1.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Scripts\typings\angularjs\angular-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-cookies-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-mocks-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-resource-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-resource.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-route.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-sanitize-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-scenario-1.0.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular-scenario.d.ts" />
+    <None Include="Resources\Scripts\typings\angularjs\angular.d.ts" />
+    <None Include="Resources\Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <None Include="Resources\Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Application.ts" />
+    <Resource Include="Application.js">
+      <DependentUpon>Application.ts</DependentUpon>
+    </Resource>
+  <Resource Include="Application.js.map">
+      <DependentUpon>Application.ts</DependentUpon>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\typings\angularjs\angular-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-cookies-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-mocks-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-resource-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-sanitize-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-scenario-1.0.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
+    <None Include="Scripts\typings\angularjs\angular.d.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!--<Import Project="$(MSBuildBinPath)\SharpKit\5\SharpKit.Build.targets" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

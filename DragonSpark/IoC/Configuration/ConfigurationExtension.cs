@@ -7,7 +7,7 @@ namespace DragonSpark.IoC.Configuration
 {
 	public class ConfigurationExtension : UnityContainerExtension, IConfigurationExtensionConfiguration
 	{
-		readonly static ClearStrategyExtension Extension = new ClearStrategyExtension();
+		readonly internal static ClearStrategyExtension Extension = new ClearStrategyExtension();
 
 		protected override void Initialize()
 		{}

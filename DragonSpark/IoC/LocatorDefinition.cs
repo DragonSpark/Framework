@@ -21,6 +21,7 @@ namespace DragonSpark.IoC
 			var container = new UnityContainer().AddNewExtension<DragonSparkExtension>();
 			var result = new UnityServiceLocator( container );
 			Configurations.Apply( x => x.Configure( container ) );
+			container.Configure<DragonSparkExtension>().Complete();
 			return result;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Logging;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
@@ -17,6 +18,13 @@ namespace DragonSpark.IoC
 			this.container = container;
 			this.container.RegisterInstance<IServiceLocator>( this );
 			this.container.RegisterInstance<IServiceRegistry>( this );
+			this.container.RegisterInstance( container );
+		}
+
+		public override IEnumerable<TService> GetAllInstances<TService>()
+		{
+			var result = base.GetAllInstances<TService>().Union( container.TryResolve<IEnumerable<TService>>() ?? Enumerable.Empty<TService>() ).ToArray();
+			return result;
 		}
 
 		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
@@ -25,7 +33,8 @@ namespace DragonSpark.IoC
 			{
 				throw new ObjectDisposedException( "container" );
 			}
-			var result = container.ResolveAllRegistered( serviceType ).ToArray();
+			var result = container.ResolveAll( serviceType ).ToArray();
+			
 			return result;
 		}
 
@@ -35,8 +44,17 @@ namespace DragonSpark.IoC
 			{
 				throw new ObjectDisposedException( "container" );
 			}
-			var result = container.IsResolvable( serviceType, key ) ? container.Resolve( serviceType, key, new ResolverOverride[0] ) : null;
-			return result;
+
+			try
+			{
+				var result = container.Resolve( serviceType, key );
+				return result;
+			}
+			catch ( ResolutionFailedException e )
+			{
+				Log.Warning( string.Format( @"Could not resolve type ""{0}"" with build name ""{1}"".  Details: {2}", e.TypeRequested, e.NameRequested ?? "<None>", e.Message ) );
+				return null;
+			}
 		}
 
 		public IUnityContainer Container

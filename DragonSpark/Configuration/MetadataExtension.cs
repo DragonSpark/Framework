@@ -26,6 +26,15 @@ namespace DragonSpark.Configuration
 		}
 	}
 
+	public class IsReleaseExtension : IsDebugExtension
+	{
+		public override object ProvideValue( IServiceProvider serviceProvider )
+		{
+			var result = !base.ProvideValue( serviceProvider ).To<bool>();
+			return result;
+		}
+	}
+
 	public class MetadataExtension : MarkupExtension
 	{
 		readonly Type attributeType;

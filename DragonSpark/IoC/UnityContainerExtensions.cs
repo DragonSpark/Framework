@@ -22,7 +22,7 @@ namespace DragonSpark.IoC
 			}
 		}
 
-		public static IEnumerable<TItem> ResolveAllRegistered<TItem>( this IUnityContainer target )
+		/*public static IEnumerable<TItem> ResolveAllRegistered<TItem>( this IUnityContainer target )
 		{
 			var result = target.ResolveAllRegistered( typeof(TItem) ).Cast<TItem>();
 			return result;
@@ -32,7 +32,7 @@ namespace DragonSpark.IoC
 		{
 			var result = target.Registrations.Where( x => type.IsAssignableFrom( x.RegisteredType ) ).Select( x => target.Resolve( x.RegisteredType, x.Name ) ).NotNull().Distinct().ToArray();
 			return result;
-		}
+		}*/
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used for convenience.")]
 		public static Type ResolveType<TObject>( this IUnityContainer container, string name = null )

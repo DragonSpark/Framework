@@ -1,3 +1,4 @@
+using System.Reflection;
 using DragonSpark.Extensions;
 using System;
 using System.Collections;
@@ -10,59 +11,46 @@ namespace DragonSpark.Server.ClientHosting
 {
 	public class VirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
-		public const string 
-			Directory = "~/Client",
-			Application = "~/Client/application.js",
-			Packaged = "~/Client/application.packaged.js";
+		public const string Qualifier = "clientResource~/", Application = "~/DragonSpark/Application.js";
 
-		readonly System.Web.Hosting.VirtualPathProvider contained;
+		readonly IClientResourceStreamProvider provider;
+		readonly IClientResourceInformationProvider informationProvider;
+		readonly System.Web.Hosting.VirtualPathProvider inner;
 
-		public VirtualPathProvider( System.Web.Hosting.VirtualPathProvider contained )
+		public VirtualPathProvider( IClientResourceStreamProvider provider, IClientResourceInformationProvider informationProvider, System.Web.Hosting.VirtualPathProvider inner )
 		{
-			this.contained = contained;
+			this.provider = provider;
+			this.informationProvider = informationProvider;
+			this.inner = inner;
 		}
 
 		public override bool FileExists( string virtualPath )
 		{
-			var result = IsEmbeddedPath( virtualPath ) || contained.FileExists( virtualPath );
+			var information = informationProvider.Retrieve( virtualPath );
+			var result = information != null || inner.FileExists( virtualPath );
 			return result;
 		}
 
 		public override CacheDependency GetCacheDependency( string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart )
 		{
-			var result = !IsEmbeddedPath( virtualPath ) ? contained.GetCacheDependency( virtualPath, virtualPathDependencies, utcStart ) : null;
+			var information = informationProvider.Retrieve( virtualPath );
+			var result = information == null ? inner.GetCacheDependency( virtualPath, virtualPathDependencies, utcStart ) : null;
 			return result;
 		}
 
 		public override VirtualDirectory GetDirectory( string virtualDir )
 		{
-			return contained.GetDirectory( virtualDir );
+			return inner.GetDirectory( virtualDir );
 		}
 
 		public override bool DirectoryExists( string virtualDir )
 		{
-			return contained.DirectoryExists( virtualDir );
+			return inner.DirectoryExists( virtualDir );
 		}
 
 		public override VirtualFile GetFile( string virtualPath )
 		{
-			var result = IsEmbeddedPath( virtualPath ) ? DetermineFile( virtualPath ) : contained.GetFile( virtualPath );
-			return result;
-		}
-
-		static VirtualFile DetermineFile( string virtualPath )
-		{
-			var parts = new Queue<string>( virtualPath.Replace( Directory, string.Empty ).ToStringArray( System.IO.Path.AltDirectorySeparatorChar ) );
-			var assemblyName = parts.Dequeue();
-			var path = string.Join( System.IO.Path.AltDirectorySeparatorChar.ToString(), parts.ToArray() );
-			var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault( x => x.GetName().Name == assemblyName );
-			var result = new EmbeddedResourceFile( assembly, path );
-			return result;
-		}
-
-		static bool IsEmbeddedPath( string path )
-		{
-			var result = path.StartsWith( Directory ) && path != Packaged;
+			var result = informationProvider.Retrieve( virtualPath ).Transform( x => new ClientResourceFile( provider, virtualPath ) ) ?? inner.GetFile( virtualPath );
 			return result;
 		}
 	}

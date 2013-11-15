@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.IoC.Configuration;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
@@ -6,11 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using LifetimeManager = Microsoft.Practices.Unity.LifetimeManager;
+using NamedTypeBuildKey = Microsoft.Practices.ObjectBuilder2.NamedTypeBuildKey;
 
 namespace DragonSpark.IoC
 {
 	public class DragonSparkExtension : UnityContainerExtension
 	{
+		readonly BitFlipper initialize = new BitFlipper();
 		internal IList<IDisposable> Disposables
 		{
 			get { return disposables ?? ( disposables = new List<IDisposable>() ); }
@@ -182,7 +186,6 @@ namespace DragonSpark.IoC
 				return creator ?? ( creator = Context.Container.CreateChildContainer() );
 			}
 		}	IUnityContainer creator;
-
 		internal object Create( Type type, object[] parameters )
 		{
 			var values = parameters.NotNull().Select( x => 
@@ -194,7 +197,7 @@ namespace DragonSpark.IoC
 					Creator.RegisterInstance( parameterValue.ParameterType, instance );
 					return instance;
 				}
-				x.GetType().GetInterfaces().Union( x.GetType().ToEnumerable() ).Distinct().Apply( y => Creator.RegisterInstance( y, x ) );
+				x.GetType().GetInterfaces().Union( x.GetType().GetHierarchy( false ) ).Distinct().Apply( y => Creator.RegisterInstance( y, x ) );
 				return x;
 			} ).ToArray();
 
@@ -209,6 +212,11 @@ namespace DragonSpark.IoC
 		{
 			var result = Create( typeof(TResult), parameters ).To<TResult>();
 			return result;
+		}
+
+		public void Complete()
+		{
+			initialize.Check( () => Context.Container.AddExtension( ConfigurationExtension.Extension ) ); // HACK: Weakkkkkk SAUUUUUUUUUCEEEEEEEE!!!
 		}
 	}
 }

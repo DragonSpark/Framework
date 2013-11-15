@@ -1,41 +1,47 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using DragonSpark.Io;
+using System.Windows.Markup;
+using DragonSpark.Extensions;
 using DragonSpark.Objects;
 using DragonSpark.Server.Configuration;
+using Activator = DragonSpark.Runtime.Activator;
 
 namespace DragonSpark.Server.ClientHosting
 {
+	[ContentProperty( "Includes" )]
 	public class EnableClientResources : IHttpApplicationConfigurator, IRouteHandler
 	{
-		[DefaultPropertyValue( "Client/{assemblyName}/{*filePath}" )]
+		readonly ClientResourceHttpHandler handler = new ClientResourceHttpHandler();
+
+		[DefaultPropertyValue( VirtualPathProvider.Qualifier + "{*url}" )]
 		public string RouteTemplate { get; set; }
-
-		/*[DefaultPropertyValue( VirtualPathProvider.Directory )]
-		public string VirtualPath { get; set; }*/
-
-		[IoCDefault]
-		public IPathResolver PathResolver { get; set; }
-
-		[DefaultPropertyValue( ".." )]
-		public string FrameworkPath { get; set; } // TODO: Figure this out.  It's lowwwwwwww rent.
 
 		public void Configure( HttpConfiguration configuration )
 		{
-			BundleTable.VirtualPathProvider = new VirtualPathProvider( HostingEnvironment.VirtualPathProvider );
+			BundleTable.VirtualPathProvider = Activator.Create<VirtualPathProvider>( HostingEnvironment.VirtualPathProvider );
 			RouteTable.Routes.MapRoute( "Client", RouteTemplate ).RouteHandler = this;
-			BundleTable.Bundles.Add( new ClientResourcesBundle() );
-			BundleTable.Bundles.Add( new PackagedClientResourcesBundle() );
+
+			var bundle = new ClientResourcesBundle();
+			
+			Includes.Apply( x => bundle.Include( x ) );
+
+			BundleTable.Bundles.Add( bundle );
 		}
 
-		IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
+		public Collection<string> Includes
 		{
-			var result = new ClientResourceHttpHandler( PathResolver, requestContext.RouteData, FrameworkPath );
-			return result;
+			get { return includes; }
+		}	readonly Collection<string> includes = new Collection<string>();
+		
+		IHttpHandler IRouteHandler.GetHttpHandler( RequestContext requestContext )
+		{
+			return handler;
 		}
 	}
 }

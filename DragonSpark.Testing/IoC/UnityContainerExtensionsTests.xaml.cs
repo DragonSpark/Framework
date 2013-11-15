@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.IoC
 			var defaultResolve = Subject.ResolveAll<INamedObject>();
 			Assert.AreEqual( 2, defaultResolve.Count() );
 
-			var items = Subject.ResolveAllRegistered<INamedObject>();
+			var items = Subject.ResolveAll<INamedObject>();
 			Assert.AreEqual( 4, items.Count() );
 
 			var first = items.First();

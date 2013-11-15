@@ -29,7 +29,5 @@ namespace DragonSpark.IoC
 			var result = target.GetExports( definition ).Select( x => x.Definition ).Distinct( ExportDefinitionComparer.Instance ).ToArray();
 			return result;
 		}
-
-
 	}
 }
