@@ -30,7 +30,7 @@ namespace DragonSpark.IoC
 	{
 		public void Configure( IUnityContainer container )
 		{
-			var composition = container.Configure<CompositionExtension>().CompositionContainer;
+			var composition = container.AddNewExtension<CompositionExtension>().Configure<CompositionExtension>().CompositionContainer;
 			container.RegisterInstance( composition );
 			DirectorySearchPath.NullIfEmpty().NotNull( x =>
 			{

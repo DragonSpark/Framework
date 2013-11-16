@@ -184,7 +184,4 @@
 			</ds:CollectionOfTExtension>
 		</ds:UnityInstance>
 	</ds:UnityContainerConfiguration.Instances>
-	<Configuration:UnityContainerConfiguration.Extensions>
-		<ioC:CompositionExtension EnableRegistration="True" />
-	</Configuration:UnityContainerConfiguration.Extensions>
 </Configuration:UnityContainerConfiguration>

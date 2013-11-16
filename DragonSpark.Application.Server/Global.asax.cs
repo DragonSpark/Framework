@@ -4,6 +4,7 @@ using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Optimization;
 using DragonSpark.Server;
 using System.Web.Http;
 using Microsoft.Cci;

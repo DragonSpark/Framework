@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,17 @@ namespace DragonSpark.Extensions
 {
 	public static class AssemblyExtensions
 	{
+		public static string[] GetResourceNames( this Assembly @this )
+		{
+			var resName = @this.GetName().Name + ".g.resources";
+			using (var stream = @this.GetManifestResourceStream(resName))
+			using (var reader = new System.Resources.ResourceReader(stream))
+			{
+				var result = reader.Cast<DictionaryEntry>().Select(entry => (string)entry.Key).ToArray();
+				return result;
+			}
+		}
+
 		public static IEnumerable<Type> GetValidTypes( this Assembly target )
 		{
 			try

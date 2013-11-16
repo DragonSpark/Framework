@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -22,22 +23,27 @@ namespace DragonSpark.Server.ClientHosting
 		[DefaultPropertyValue( VirtualPathProvider.Qualifier + "{*url}" )]
 		public string RouteTemplate { get; set; }
 
+		[IoCDefault]
+		public IClientResourceLocator Locator { get; set; }
+
 		public void Configure( HttpConfiguration configuration )
 		{
 			BundleTable.VirtualPathProvider = Activator.Create<VirtualPathProvider>( HostingEnvironment.VirtualPathProvider );
 			RouteTable.Routes.MapRoute( "Client", RouteTemplate ).RouteHandler = this;
 
-			var bundle = new ClientResourcesBundle();
-			
-			Includes.Apply( x => bundle.Include( x ) );
+			var bundle = new ScriptBundle( VirtualPathProvider.Application );
 
+			var resources = Locator.LocateAll().Select( x => x.LocalPath ).Concat( Includes.Select( x => x.Location.LocalPath ) ).Select( x => string.Concat( "~/", VirtualPathProvider.Qualifier, x.Substring( 1 ) ) ).ToArray();
+				
+			resources.Apply( x => bundle.Include( x ) );
+				
 			BundleTable.Bundles.Add( bundle );
 		}
 
-		public Collection<string> Includes
+		public Collection<ClientResource> Includes
 		{
 			get { return includes; }
-		}	readonly Collection<string> includes = new Collection<string>();
+		}	readonly Collection<ClientResource> includes = new Collection<ClientResource>();
 		
 		IHttpHandler IRouteHandler.GetHttpHandler( RequestContext requestContext )
 		{

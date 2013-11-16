@@ -3,6 +3,8 @@
 // associated with an assembly.
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark;
+using DragonSpark.IoC.Configuration;
 using DragonSpark.Server.ClientHosting;
 
 [assembly: AssemblyTitle("DragonSpark.Client")]
@@ -47,3 +49,4 @@ using DragonSpark.Server.ClientHosting;
 [assembly: ClientResource( "Core/knockout.mapping-latest.js" )]
 [assembly: ClientResource( "Core/knockout.validation.js" )]
 [assembly: ClientResource( "Core/linq.min.js" )]*/
+[assembly: Registration( Priority.Lower )]

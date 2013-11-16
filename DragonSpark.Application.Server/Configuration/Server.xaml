@@ -12,6 +12,7 @@
     >
 	<ds:RegisterFromMetadataCommand />
 	<ds:AssignServiceLocatorCommand />
+	<ioC:CompositionConfiguration DirectorySearchPath="Bin" />
 	<ds:UnityType RegistrationType="{x:Type diagnostics:EventLog}">
         <ds:InjectionConstructor>
             <ds:InstanceValue Instance="Application" />
@@ -70,6 +71,5 @@
 
 	<configuration:Registrations />
     <configuration:Application />
-	<ioC:CompositionConfiguration DirectorySearchPath="Bin" />
 	<ds:ExecuteExportedConfigurationsCommand />
 </ioC:LocatorDefinition>

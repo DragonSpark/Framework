@@ -427,11 +427,11 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-	<PropertyGroup>
-		<PostBuildEvent Condition="'$(Configuration)'=='Release'">
+  <PropertyGroup>
+    <PostBuildEvent Condition="'$(Configuration)'=='Release'">
 			del $(TargetDir)dragonspark.*development.*
 		</PostBuildEvent>
-	</PropertyGroup>
+  </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

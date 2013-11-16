@@ -1,4 +1,7 @@
+using System.IO;
+using System.IO.Packaging;
 using System.Reflection;
+using System.Web;
 using DragonSpark.Extensions;
 using System;
 using System.Collections;
@@ -11,7 +14,7 @@ namespace DragonSpark.Server.ClientHosting
 {
 	public class VirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
-		public const string Qualifier = "clientResource~/", Application = "~/DragonSpark/Application.js";
+		public const string Qualifier = "-=clientResource=-/", Application = "~/DragonSpark/Application.js";
 
 		readonly IClientResourceStreamProvider provider;
 		readonly IClientResourceInformationProvider informationProvider;
@@ -33,24 +36,26 @@ namespace DragonSpark.Server.ClientHosting
 
 		public override CacheDependency GetCacheDependency( string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart )
 		{
-			var information = informationProvider.Retrieve( virtualPath );
-			var result = information == null ? inner.GetCacheDependency( virtualPath, virtualPathDependencies, utcStart ) : null;
+			var result = virtualPath != Application ? inner.GetCacheDependency( virtualPath, virtualPathDependencies, utcStart ) : null;
 			return result;
 		}
 
 		public override VirtualDirectory GetDirectory( string virtualDir )
 		{
-			return inner.GetDirectory( virtualDir );
+			var items = informationProvider.RetrieveAll( virtualDir ).Select( x => new ClientResourceFile( x.VirtualPath, () => provider.Retrieve( x ) ) ).ToArray();
+			var result = items.Any() ? new ClientResourceVirtualDirectory( virtualDir, items ) : inner.GetDirectory( virtualDir );
+			return result;
 		}
 
 		public override bool DirectoryExists( string virtualDir )
 		{
-			return inner.DirectoryExists( virtualDir );
+			var result = informationProvider.RetrieveAll( virtualDir ).Any() || inner.DirectoryExists( virtualDir );
+			return result;
 		}
 
 		public override VirtualFile GetFile( string virtualPath )
 		{
-			var result = informationProvider.Retrieve( virtualPath ).Transform( x => new ClientResourceFile( provider, virtualPath ) ) ?? inner.GetFile( virtualPath );
+			var result = informationProvider.Retrieve( virtualPath ).Transform( x => new ClientResourceFile( virtualPath, () => provider.Retrieve( x ) ) ) ?? inner.GetFile( virtualPath );
 			return result;
 		}
 	}
