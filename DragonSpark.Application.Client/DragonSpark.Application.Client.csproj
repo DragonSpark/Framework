@@ -122,7 +122,6 @@
     <Resource Include="Services.js.map">
       <DependentUpon>Services.ts</DependentUpon>
     </Resource>
-    <None Include="_references.ts" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ClientResourceManifest.xaml">

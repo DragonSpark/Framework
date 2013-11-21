@@ -83,6 +83,33 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.eot" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.woff" />
+    <Resource Include="Resources\Content\fonts\FontAwesome.otf" />
+    <Resource Include="Resources\Scripts\jquery-2.0.3.intellisense.js" />
+    <Resource Include="Resources\Scripts\jquery-2.0.3.js" />
+    <Resource Include="Resources\Scripts\jquery-2.0.3.min.js" />
+    <Resource Include="Resources\Scripts\angular-animate.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-cookies.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-loader.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-resource.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-route.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-sanitize.min.js.map" />
+    <Resource Include="Resources\Scripts\angular-touch.min.js.map" />
+    <Resource Include="Resources\Scripts\angular.min.js.map" />
+    <Resource Include="Resources\Scripts\errors.json" />
+    <Resource Include="Resources\Scripts\jquery-2.0.3.min.map" />
+    <None Include="app.config" />
+    <Resource Include="Resources\fonts\glyphicons-halflings-regular.eot" />
+    <Resource Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
+    <Resource Include="Resources\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Content\fontawesome\font-awesome.css" />
+    <Resource Include="Resources\Content\fontawesome\font-awesome.min.css" />
+    <Resource Include="Resources\Content\fonts\fontawesome-webfont.svg" />
     <Resource Include="Resources\Scripts\angular-animate.js" />
     <Resource Include="Resources\Scripts\angular-animate.min.js" />
     <Resource Include="Resources\Scripts\angular-cookies.js" />
@@ -347,57 +374,11 @@
     <Resource Include="Resources\Scripts\i18n\angular-locale_zh.js" />
     <Resource Include="Resources\Scripts\i18n\angular-locale_zu-za.js" />
     <Resource Include="Resources\Scripts\i18n\angular-locale_zu.js" />
-    <None Include="app.config" />
-    <Resource Include="Resources\Content\fonts\fontawesome-webfont.eot" />
-    <Resource Include="Resources\Content\fonts\fontawesome-webfont.ttf" />
-    <Resource Include="Resources\Content\fonts\fontawesome-webfont.woff" />
-    <Resource Include="Resources\Content\fonts\FontAwesome.otf" />
-    <None Include="Resources\fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
-    <None Include="Resources\fonts\glyphicons-halflings-regular.woff" />
-    <None Include="packages.config" />
-    <Resource Include="Resources\Scripts\angular-animate.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-cookies.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-loader.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-resource.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-route.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-sanitize.min.js.map" />
-    <Resource Include="Resources\Scripts\angular-touch.min.js.map" />
-    <Resource Include="Resources\Scripts\angular.min.js.map" />
-    <Resource Include="Resources\Scripts\errors.json" />
-    <Resource Include="Resources\Scripts\jquery-1.9.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Content\bootstrap-theme.css" />
     <Resource Include="Resources\Content\bootstrap-theme.min.css" />
     <Resource Include="Resources\Content\bootstrap.css" />
     <Resource Include="Resources\Content\bootstrap.min.css" />
-    <Resource Include="Resources\Content\fontawesome\font-awesome.css" />
-    <Resource Include="Resources\Content\fontawesome\font-awesome.min.css" />
-    <Resource Include="Resources\Content\fonts\fontawesome-webfont.svg" />
-    <Content Include="Resources\fonts\glyphicons-halflings-regular.svg" />
-    <Resource Include="Resources\Scripts\bootstrap.js" />
-    <Resource Include="Resources\Scripts\bootstrap.min.js" />
-    <Resource Include="Resources\Scripts\jquery-1.9.1.intellisense.js" />
-    <Resource Include="Resources\Scripts\jquery-1.9.1.js" />
-    <Resource Include="Resources\Scripts\jquery-1.9.1.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Scripts\typings\angularjs\angular-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-cookies-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-cookies.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-mocks-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-mocks.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-resource-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-resource.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-route.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-sanitize-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-sanitize.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-scenario-1.0.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular-scenario.d.ts" />
-    <None Include="Resources\Scripts\typings\angularjs\angular.d.ts" />
-    <None Include="Resources\Scripts\typings\bootstrap\bootstrap.d.ts" />
-    <None Include="Resources\Scripts\typings\jquery\jquery.d.ts" />
+    <Resource Include="Resources\fonts\glyphicons-halflings-regular.svg" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Application.ts" />
@@ -407,13 +388,24 @@
     <Resource Include="Application.js.map">
       <DependentUpon>Application.ts</DependentUpon>
     </Resource>
-    <None Include="Resources\Scripts\typings\_references.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular-scenario.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Resources\Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ClientResourceManifest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

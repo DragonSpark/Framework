@@ -1,4 +1,3 @@
-/// <reference path="Resources/Scripts/typings/_references.ts" />
 
 window.onload = ()=>
 {
