@@ -1,12 +1,8 @@
 
-window.onload = ()=>
-{
-	window.alert("Hello World!");
-	angular.module("app.controllers", [])
-		.controller( "FirstCtrl", [<any> "$scope", $scope => {
+module DragonSpark {
+	export class Class {
+		constructor(count: number) {
 
-		} ] )
-		.controller( "SecondCtrl", [<any> "$scope", $scope => {
-
-		} ] );
-};
+		}
+	}	
+}
