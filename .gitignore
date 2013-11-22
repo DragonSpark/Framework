@@ -32,3 +32,4 @@ Packages/
 *.ldf
 *.log
 *.pubxml
+Publish.bat

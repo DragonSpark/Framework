@@ -1,6 +1,7 @@
 /// 
 /// AngularJS Modules
 /// -------------------------------------------------------------------------------------------------------------------
+
 /// <reference path="_references.ts" />
 /// <reference path="../DragonSpark.Client/Application.ts" />
 
