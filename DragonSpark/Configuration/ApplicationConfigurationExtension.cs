@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.IoC.Configuration;
 using DragonSpark.Runtime;
-using Microsoft.Practices.Unity;
 using System;
 using System.Configuration;
 using System.Reflection;
@@ -9,21 +7,6 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Configuration
 {
-    public class ApplicationConfigurationCommand : IContainerConfigurationCommand
-	{
-	    public ApplicationDetails ApplicationDetails { get; set; }
-
-		public void Configure( IUnityContainer container )
-		{
-			OnConfigure( container );
-		}
-
-		protected virtual void OnConfigure( IUnityContainer container )
-		{
-			container.RegisterInstance( ApplicationDetails );
-		}
-	}
-
 	public class ApplicationConfigurationExtension : MarkupExtension
 	{
 		readonly Type type;

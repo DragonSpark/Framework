@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.ServiceModel;
 using System.Windows.Markup;
 
 namespace DragonSpark.Configuration
@@ -24,7 +23,7 @@ namespace DragonSpark.Configuration
 			}
 			catch ( NotSupportedException )
 			{
-				var assemblies = new[] {typeof(Uri).Assembly, typeof(Type).Assembly, typeof(IClientChannel).Assembly};
+				var assemblies = new[] {typeof(Uri).Assembly, typeof(Type).Assembly/*, typeof(IClientChannel).Assembly*/};
 				var name = typeName.Split( ':' )[1];
 				var result = assemblies.SelectMany( x => x.GetExportedTypes() ).FirstOrDefault( y => y.Name == name );
 				return result;

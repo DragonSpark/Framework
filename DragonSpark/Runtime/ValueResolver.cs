@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Dynamic;
-using DragonSpark.Extensions;
 using DragonSpark.Objects.Synchronization;
+using System.Collections;
 
 namespace DragonSpark.Runtime
 {
@@ -49,12 +47,12 @@ namespace DragonSpark.Runtime
 				return result;
 			}*/
 
-			var model = source as IDynamicMetaObjectProvider;
+			/*var model = source as IDynamicMetaObjectProvider;
 			if ( model != null )
 			{
 				var resolve = model.GetValue( name );
 				return resolve;
-			}
+			}*/
 
 			var result = source.EvaluateValue( name );
 			return result;

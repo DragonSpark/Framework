@@ -169,9 +169,9 @@
     <Compile Include="ApplicationHubBase.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="AssemblyResource.cs" />
-    <Compile Include="ClientApplicationAttribute.cs" />
     <Compile Include="AuthenticatedAuthorizer.cs" />
     <Compile Include="ClaimsAuthorizer.cs" />
+    <Compile Include="ClientApplicationAttribute.cs" />
     <Compile Include="ClientApplicationConfiguration.cs" />
     <Compile Include="ClientModule.cs" />
     <Compile Include="ClientModuleBuilder.cs" />

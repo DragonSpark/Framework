@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 
 namespace DragonSpark.Extensions
 {
@@ -158,7 +156,7 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult Clone<TResult>( this TResult source )
+		/*public static TResult Clone<TResult>( this TResult source )
 		{
 			Contract.Requires( !Equals( source, default(TResult) ) );
 
@@ -201,7 +199,7 @@ namespace DragonSpark.Extensions
 			var current = property.GetValue( source, parameters );
 			var result = current.As<DependencyObject>().Transform( Clone, () => current );
 			return result;
-		}
+		}*/
 
 		public static TResult As<TResult>( this object target ) where TResult : class
 		{

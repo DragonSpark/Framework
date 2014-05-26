@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-
+﻿
 namespace DragonSpark.Configuration
 {
-	/// <summary>
+	/*/// <summary>
 	/// The shared resource dictionary is a specialized resource dictionary
 	/// that loads it content only once. If a second instance with the same source
 	/// is created, it only merges the resources from the cache.
@@ -47,7 +44,7 @@ namespace DragonSpark.Configuration
 				}
 			}
 		}
-	}
+	}*/
 }
 
 

@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Windows.Markup;
+using System.Xaml;
 
 namespace DragonSpark.Serialization
 {
@@ -9,7 +9,7 @@ namespace DragonSpark.Serialization
 		{
 			using ( var writer = new StringWriter() )
 			{
-				XamlWriter.Save( target, writer );
+				XamlServices.Save( writer, target );
 				var result = writer.GetStringBuilder().ToString();
 				return result;
 			}
@@ -19,19 +19,19 @@ namespace DragonSpark.Serialization
 		{
 			using ( var file = File.Create( filePath ) )
 			{
-				XamlWriter.Save( target, file );
+				XamlServices.Save( file, target );
 			}
 		}
 
 		public static TResult Parse<TResult>( string xaml )
 		{
-			var result = (TResult)XamlReader.Parse( xaml );
+			var result = (TResult)XamlServices.Parse( xaml );
 			return result;
 		}
 
 		static TResult ResolveLoad<TResult>( Stream stream )
 		{
-			var result = (TResult)XamlReader.Load( stream );
+			var result = (TResult)XamlServices.Load( stream );
 			return result;
 		}
 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-
+﻿
 namespace DragonSpark
 {
 	public static class Environment
 	{
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification =  "Used to determine the Environment Design Mode." )]
+		/*[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification =  "Used to determine the Environment Design Mode." )]
 		static bool ResolveDesignMode()
 		{
 			var prop = DesignerProperties.IsInDesignModeProperty;
@@ -21,6 +17,6 @@ namespace DragonSpark
 		public static bool IsInDesignMode
 		{
 			get { return (bool)( IsInDesignModeField ?? ( IsInDesignModeField = ResolveDesignMode() ) ); }
-		}	static bool? IsInDesignModeField;
+		}	static bool? IsInDesignModeField;*/
 	}
 }

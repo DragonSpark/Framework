@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Properties;
-using Microsoft.VisualBasic.FileIO;
 using System;
 using System.IO;
 using System.Linq;
@@ -51,7 +49,7 @@ namespace DragonSpark.Io
 			return result;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This method throws many types of exceptions." ), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Any other FileSystemInfo object will cause an error.")]
+		/*[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This method throws many types of exceptions." ), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Any other FileSystemInfo object will cause an error.")]
 		public static DirectoryInfo CopyTo( this DirectoryInfo target, string destinationPath )
 		{
 			try
@@ -66,6 +64,6 @@ namespace DragonSpark.Io
 			}
 			var result = new DirectoryInfo( destinationPath );
 			return result;
-		}
+		}*/
 	}
 }

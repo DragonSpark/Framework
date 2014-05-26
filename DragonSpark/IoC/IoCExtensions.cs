@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.IoC
 {
@@ -16,7 +16,7 @@ namespace DragonSpark.IoC
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "BuildUp", Justification = "Following existing convention." )]
 		public static bool BuildUpOnce( this object target )
 		{
-			var result = !BuildCache.Exists( target ) && !Environment.IsInDesignMode;
+			var result = !BuildCache.Exists( target ); // && !Environment.IsInDesignMode;
 			result.IsTrue( () => ServiceLocator.Current.TryGetInstance<IUnityContainer>().NotNull( x =>
 			{
 				x.BuildUp( target.GetType(), target );

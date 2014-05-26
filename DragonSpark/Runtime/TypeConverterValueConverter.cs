@@ -3,11 +3,10 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Windows.Data;
 
 namespace DragonSpark.Runtime
 {
-	public class TypeConverterValueConverter : IValueConverter
+	public class TypeConverterValueConverter // : IValueConverter
 	{
 		readonly Type typeConverterType;
 
