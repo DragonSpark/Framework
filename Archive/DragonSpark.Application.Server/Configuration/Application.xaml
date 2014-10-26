@@ -1,0 +1,90 @@
+﻿<web:ApplicationConfigurationCommand x:Class="DragonSpark.Application.Server.Configuration.Application"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+	xmlns:ds="http://framework.dragonspark.us"
+	xmlns:mvc="clr-namespace:System.Web.Mvc;assembly=System.Web.Mvc"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:net="clr-namespace:System.Net;assembly=System"
+	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
+	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
+	xmlns:web="clr-namespace:DragonSpark.Server;assembly=DragonSpark.Server"
+	xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
+	xmlns:configuration="clr-namespace:DragonSpark.Application.Server.Configuration"
+	xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting">
+	<ds:ApplicationConfigurationCommand.ApplicationDetails>
+		<dragonSpark:ApplicationDetails
+			Title="{ds:Metadata {x:Type reflection:AssemblyTitleAttribute}, 'Title'}"
+			Product="{ds:Metadata {x:Type reflection:AssemblyProductAttribute}, 'Product'}"
+			Company="{ds:Metadata {x:Type reflection:AssemblyCompanyAttribute}, 'Company'}"
+			Description="{ds:Metadata {x:Type reflection:AssemblyDescriptionAttribute}, 'Description'}"
+			Configuration="{ds:Metadata {x:Type reflection:AssemblyConfigurationAttribute}, 'Configuration'}"
+			Copyright="{ds:Metadata {x:Type reflection:AssemblyCopyrightAttribute}, 'Copyright'}"
+			Version="{ds:AssemblyVersion}"
+			DeploymentDate="8/1/2013"
+			CompanyUri="http://framework.dragonspark.us" />
+	</ds:ApplicationConfigurationCommand.ApplicationDetails>
+	<dsweb:RegisterCustomAuthenticationClients>
+		<dsweb:CustomAuthenticationClientRegistration
+			ClientFactory="{Configuration:LocationFactory {x:Type webSecurity:FacebookClient}}" DisplayName="Facebook" />
+	</dsweb:RegisterCustomAuthenticationClients>
+	<dsweb:RegisterYahooClient />
+	<dsweb:RegisterGoogleClient />
+	<dsweb:RegisterMicrosoftClient ApplicationId="000000004C0F909A" ApplicationSecret="31fKyvBFs4NKm35eBO5cHdyqb25X9Btz" />
+	<dsweb:EnableAttributeRouting>
+		<x:Type Type="configuration:Application" />
+	</dsweb:EnableAttributeRouting>
+	<dsweb:EnableQuerySupport />
+	<clientHosting:EnableClientResources>
+		<!--<system:String>~/Client.Resource/</system:String>-->
+	</clientHosting:EnableClientResources>
+	<dsweb:EnableSignalR />
+	<dsweb:BundlesConfigurator>
+		<dsweb:BundlesConfigurator.Ignore>
+			<dsweb:IgnoreDirective Item="*.intellisense.js" />
+			<dsweb:IgnoreDirective Item="*-vsdoc.js" />
+			<dsweb:IgnoreDirective Item="*.debug.js" Mode="WhenEnabled" />
+		</dsweb:BundlesConfigurator.Ignore>
+		<!--<dsweb:StyleBundle Path="~/Content/css">
+			<dsweb:BundleFile File="~/Content/ie10mobile.css" />
+			<dsweb:BundleFile File="~/Content/bootstrap.min.css" />
+			<dsweb:BundleFile File="~/Content/bootstrap-responsive.min.css" />
+			<dsweb:BundleFile File="~/Content/font-awesome.min.css" />
+			<dsweb:BundleFile File="~/Content/durandal.css" />
+			<dsweb:BundleFile File="~/Content/application.css" />
+		</dsweb:StyleBundle>-->
+	</dsweb:BundlesConfigurator>
+	<dsweb:ApplyRoutes>
+		<dsweb:ApplyRoutes.Ignores>
+			<dsweb:IgnoreRoute Url="{}{resource}.axd/{*pathInfo}" />
+		</dsweb:ApplyRoutes.Ignores>
+		<dsweb:Route Template="{}{controller}/{action}/{id}">
+			<ds:DictionaryOfT KeyType="{x:Type system:String}" TypeArgument="{x:Type system:Object}">
+				<ds:KeyValuePair Key="controller" Value="Welcome" />
+				<ds:KeyValuePair Key="action" Value="Default" />
+				<ds:KeyValuePair Key="id" Value="{x:Static mvc:UrlParameter.Optional}" />
+			</ds:DictionaryOfT>
+		</dsweb:Route>
+	</dsweb:ApplyRoutes>
+	<dsweb:ApplyGlobalFilters>
+		<ds:Locate Type="{x:Type mvc:HandleErrorAttribute}" />
+	</dsweb:ApplyGlobalFilters>
+	<dsweb:ApplyFilters>
+		<ds:Locate Type="{x:Type web:ExceptionHandlerFilter}">
+			<ds:PropertySetter PropertyName="Mappings">
+				<ds:DictionaryOfT KeyType="{x:Type system:Type}" TypeArgument="{x:Type net:HttpStatusCode}">
+					<ds:KeyValuePair Key="{x:Type system:NotImplementedException}"
+					                 Value="{x:Static net:HttpStatusCode.NotImplemented}" />
+					<ds:KeyValuePair Key="{x:Type system:ArgumentNullException}" Value="{x:Static net:HttpStatusCode.BadRequest}" />
+					<ds:KeyValuePair Key="{x:Type system:InvalidOperationException}"
+					                 Value="{x:Static net:HttpStatusCode.InternalServerError}" />
+					<ds:KeyValuePair Key="{x:Type system:ApplicationException}"
+					                 Value="{x:Static net:HttpStatusCode.InternalServerError}" />
+					<ds:KeyValuePair Key="{x:Type system:ArgumentException}" Value="{x:Static net:HttpStatusCode.BadRequest}" />
+					<ds:KeyValuePair Key="{x:Type system:NotSupportedException}" Value="{x:Static net:HttpStatusCode.BadRequest}" />
+				</ds:DictionaryOfT>
+			</ds:PropertySetter>
+		</ds:Locate>
+	</dsweb:ApplyFilters>
+</web:ApplicationConfigurationCommand>

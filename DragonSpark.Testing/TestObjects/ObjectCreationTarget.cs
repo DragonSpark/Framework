@@ -1,5 +1,5 @@
 using System;
-using DragonSpark.Objects;
+using DragonSpark.ComponentModel;
 
 namespace DragonSpark.Testing.TestObjects
 {

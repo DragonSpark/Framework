@@ -5,9 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing
 {
-	/// <summary>
-	/// Summary description for NamedTokenFormatterTests
-	/// </summary>
 	[TestClass]
 	public class NamedTokenFormatterTests
 	{

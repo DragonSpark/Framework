@@ -1,6 +1,7 @@
 
 using DragonSpark.Extensions;
 using DragonSpark.IoC;
+using DragonSpark.IoC.Configuration;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +12,7 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class TestingContext : LocatorDefinition
+	public class TestingContext : ServiceLocatorFactory
 	{
 		public Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
 		{

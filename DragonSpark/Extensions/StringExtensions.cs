@@ -1,27 +1,16 @@
 ﻿using DragonSpark.Runtime;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DragonSpark.Extensions
 {
-	public class StringReplacementDictionary : Dictionary<string, string>
-	{}
-
 	public static class StringExtensions
 	{
 		public static string GenerateSlug( this string phrase )
 		{
 			var result = Regex.Replace( phrase.Trim().RemoveAccent().ToLower(), @"[^a-zA-Z0-9]", "-" ).Transform( x => x.Substring( 0, x.Length ) );
-			// invalid chars           
-			/*// convert multiple spaces into one space   
-			str = Regex.Replace( str, @"\s+", " " ).Trim();
-			// cut and trim 
-			str = str.Substring( 0, str.Length <= 45 ? str.Length : 45 ).Trim();
-			str = Regex.Replace( str, @"\s", "-" ); // hyphens   */
-
 			return result;
 		}
 
@@ -30,14 +19,6 @@ namespace DragonSpark.Extensions
 			var bytes = Encoding.GetEncoding( "Cyrillic" ).GetBytes( txt );
 			return Encoding.ASCII.GetString( bytes );
 		}
-
-
-		/*public static string ToMembershipName( this string target )
-		{
-			NetworkCredential credential = CredentialHelper.Create( target, null );
-			string result = credential.UserName ?? string.Empty;
-			return result;
-		}*/
 
 		public static string WithReplacements( this string target, StringReplacementDictionary replacements = null )
 		{

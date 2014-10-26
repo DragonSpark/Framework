@@ -79,10 +79,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Server.ClientHosting\DragonSpark.Server.ClientHosting.csproj">
-      <Project>{4D191AC0-4888-48FD-B497-3DE088908082}</Project>
-      <Name>DragonSpark.Server.ClientHosting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
       <Name>DragonSpark</Name>

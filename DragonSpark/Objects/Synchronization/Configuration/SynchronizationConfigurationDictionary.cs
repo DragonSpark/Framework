@@ -33,9 +33,9 @@ namespace DragonSpark.Objects.Synchronization.Configuration
 			Instance.Synchronize( source, target, name, IncludeBasePolicies );
 		}
 
-		object IFactory.Create( Type resultType, object source )
+		object IFactory.Create( Type resultType, object parameter )
 		{
-			var result = CreateMethod.MakeGenericMethod( resultType ).Invoke( this, new[] { source } );
+			var result = CreateMethod.MakeGenericMethod( resultType ).Invoke( this, new[] { parameter } );
 			return result;
 		}
 	}

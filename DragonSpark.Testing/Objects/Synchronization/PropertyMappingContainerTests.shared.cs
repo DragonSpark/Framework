@@ -8,9 +8,6 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Objects.Synchronization
 {
-	/// <summary>
-	/// Summary description for PropertyMappingContainerTests
-	/// </summary>
 	[TestClass]
 	public class PropertyMappingContainerTests
 	{

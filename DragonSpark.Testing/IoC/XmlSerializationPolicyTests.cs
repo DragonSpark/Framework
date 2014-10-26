@@ -3,9 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing.IoC
 {
-	/// <summary>
-	/// Summary description for XmlSerializationPolicyTests
-	/// </summary>
 	[TestClass]
 	public class XmlSerializationPolicyTests
 	{

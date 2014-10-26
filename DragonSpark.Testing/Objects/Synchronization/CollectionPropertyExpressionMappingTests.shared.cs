@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Objects;
 using DragonSpark.Objects.Synchronization;
+using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects.Synchronization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

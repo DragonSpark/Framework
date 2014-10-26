@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using DragonSpark.ComponentModel;
 using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

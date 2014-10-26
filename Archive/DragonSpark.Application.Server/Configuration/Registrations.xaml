@@ -1,0 +1,187 @@
+﻿<Configuration:UnityContainerConfiguration x:Class="DragonSpark.Application.Server.Configuration.Registrations"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+	xmlns:ds="http://framework.dragonspark.us"
+    xmlns:mvc="clr-namespace:System.Web.Mvc;assembly=System.Web.Mvc"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:entity="clr-namespace:DragonSpark.Entity;assembly=DragonSpark"
+    xmlns:net="clr-namespace:System.Net;assembly=System"
+    xmlns:generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+    xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+    xmlns:dsweb="clr-namespace:DragonSpark.Server.Configuration;assembly=DragonSpark.Server"
+    xmlns:webSecurity="clr-namespace:DragonSpark.Server.Security;assembly=DragonSpark.Server"
+    xmlns:claims="clr-namespace:System.Security.Claims;assembly=mscorlib"
+    xmlns:identityModel="clr-namespace:System.IdentityModel.Claims;assembly=System.IdentityModel"
+    xmlns:client="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting"
+    xmlns:ef="clr-namespace:System.Data.Entity;assembly=EntityFramework"
+                                           xmlns:security="clr-namespace:DragonSpark.Security;assembly=DragonSpark"
+    xmlns:principal="clr-namespace:System.Security.Principal;assembly=mscorlib"
+    xmlns:system1="clr-namespace:System;assembly=System"
+    xmlns:security1="clr-namespace:System.Web.Security;assembly=System.Web"
+                                           xmlns:hosting="clr-namespace:System.ComponentModel.Composition.Hosting;assembly=System.ComponentModel.Composition"
+                                           xmlns:clientHosting="clr-namespace:DragonSpark.Server.ClientHosting;assembly=DragonSpark.Server.ClientHosting"
+                                           xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application"
+                                           xmlns:ioC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark">
+	<Configuration:UnityType RegistrationType="{x:Type principal:IPrincipal}">
+		<Configuration:InjectionFactoryInstance>
+			<client:PrincipalProvider />
+		</Configuration:InjectionFactoryInstance>
+	</Configuration:UnityType>
+	<Configuration:UnityType RegistrationType="{x:Type security:UserProfile}" MapTo="{x:Type application:ApplicationUserProfile}">
+		<Configuration:InjectionFactory BuildKey="{ds:NamedTypeBuildKey {x:Type client:UserProfileFactory}}" Parameter="{ds:NamedTypeBuildKey {x:Type principal:IPrincipal}}" />
+	</Configuration:UnityType>
+
+	<Configuration:UnityType RegistrationType="{x:Type clientHosting:ClientApplicationConfiguration}">
+		<ds:UnityType.Lifetime>
+			<dsweb:RequestLifetimeManager KeyName="DDA55141-1528-4519-84B0-1C2B2F6255BA" />
+		</ds:UnityType.Lifetime>
+		<Configuration:InjectionProperty PropertyName="EnableDebugging">
+			<Configuration:InstanceValue Instance="{ds:IsDebug}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="Logo">
+			<Configuration:InstanceValue Instance="{dsweb:ClientPath '~/Content/images/Logo.png'}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="ApplicationDetails">
+			<Configuration:DependencyValue DependencyType="{x:Type dragonSpark:ApplicationDetails}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="AuthenticationUri">
+			<Configuration:InstanceValue ParameterType="{x:Type system1:Uri}" Instance="{x:Static security1:FormsAuthentication.LoginUrl}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="UserProfile">
+			<Configuration:DependencyValue DependencyType="{x:Type security:UserProfile}" />
+		</Configuration:InjectionProperty>
+		<!--<Configuration:InjectionProperty PropertyName="Navigation">
+            <Configuration:FactoryParameterValue>
+                <Configuration:NamedTypeBuildKey BuildType="{x:Type clientHosting:NavigationBuilder}" />
+                <Configuration:FactoryParameterValue.Parameter>
+                    <clientHosting:ShellNode Path="shell">
+                        <clientHosting:ShellNode.NotFound>
+                            <clientHosting:NavigationNode Path="notfound" Title="Not Found" />
+                        </clientHosting:ShellNode.NotFound>
+                        <clientHosting:NavigationNode Route="" Path="welcome" Title="The Welcome Page" />
+                        <clientHosting:NavigationNode Path="operations" Title="Operations Showcase" />
+                        <clientHosting:NavigationNode Path="exceptions" Title="Exceptions" />
+                        <clientHosting:NavigationNode Route="security*details" Path="security" Title="Security" Tag="security" >
+                            
+                            <clientHosting:NavigationNode Route="" Path="default" Title="Security Features" IsVisible="False" />
+                            <clientHosting:NavigationNode Route="default" Path="default" Title="Security Features" />
+                            
+                            <clientHosting:NavigationNode Path="anonymous" Title="Anonymous">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:AnonymousAuthorizer />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="authenticated" Title="Authenticated">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:AuthenticatedAuthorizer />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="facebook" Title="Facebook">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Facebook" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="microsoft" Title="Microsoft Account">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Microsoft" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="yahoo" Title="Yahoo">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Yahoo" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                            <clientHosting:NavigationNode Path="google" Title="Google">
+                                <clientHosting:NavigationNode.Authorizers>
+                                    <clientHosting:ClaimsAuthorizer Type="http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider" Value="Google" />
+                                </clientHosting:NavigationNode.Authorizers>
+                            </clientHosting:NavigationNode>
+                        </clientHosting:NavigationNode>
+                    </clientHosting:ShellNode>
+                </Configuration:FactoryParameterValue.Parameter>
+            </Configuration:FactoryParameterValue>
+        </Configuration:InjectionProperty>-->
+		<!-- <Configuration:InjectionProperty PropertyName="Widgets">
+            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:WidgetsBuilder}}" />
+        </Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="Initializers">
+			<Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:InitializersBuilder}}" />
+		</Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="Commands">
+            <Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type clientHosting:CommandsBuilder}}" />
+        </Configuration:InjectionProperty>
+		<Configuration:InjectionProperty PropertyName="ServerConfiguration">
+			<Configuration:FactoryInstanceParameterValue Factory="{ds:Locate {x:Type client:ServerConfigurationBuilder}}" />
+		</Configuration:InjectionProperty>-->
+	</Configuration:UnityType>
+
+	<ds:UnityType RegistrationType="{ds:GenericType ef:IDatabaseInitializer(application:EntityStorage)}" MapTo="{ds:GenericType entity:DropCreateDatabaseIfModelChanges(application:EntityStorage)}" />
+
+	<ds:UnityType RegistrationType="{x:Type ef:DbContext}" MapTo="{x:Type application:EntityStorage}">
+		<ds:UnityType.Lifetime>
+			<dsweb:RequestLifetimeManager KeyName="056A5293-E260-4365-BE38-376ED6BEEBE4" />
+		</ds:UnityType.Lifetime>
+	</ds:UnityType>
+
+	<ds:UnityType RegistrationType="{x:Type application:EntityStorage}">
+		<ds:UnityType.Lifetime>
+			<dsweb:RequestLifetimeManager KeyName="056A5293-E260-4365-BE38-376ED6BEEBE4" />
+		</ds:UnityType.Lifetime>
+	</ds:UnityType>
+
+
+	<ds:UnityType RegistrationType="{x:Type security:IClaimsProcessor}" MapTo="{x:Type security:ClaimsProcessor}">
+		<ds:InjectionConstructor>
+			<ds:InstanceValue ParameterType="{x:Type system:String}" />
+			<ds:ResolvedArrayParameter ElementType="{x:Type security:IClaimsMapper}">
+				<ds:DependencyValue DependencyType="{x:Type security:DisplayNameMapper}" />
+				<ds:DependencyValue DependencyType="{x:Type security:EmailDisplayNameMapper}" />
+			</ds:ResolvedArrayParameter>
+		</ds:InjectionConstructor>
+	</ds:UnityType>
+
+	<ds:UnityType RegistrationType="{ds:GenericType generic:IEnumerable(security:IClaimsProcessor)}">
+		<ds:GenericEnumerableFactory>
+			<ds:NamedTypeBuildKey BuildType="{x:Type security:IClaimsProcessor}" />
+		</ds:GenericEnumerableFactory>
+	</ds:UnityType>
+	<ds:UnityContainerConfiguration.Instances>
+		<ds:UnityInstance RegistrationType="{ds:EnumerableType webSecurity:ClaimMappingDefinition}">
+			<ds:CollectionOfTExtension TypeArgument="{x:Type webSecurity:ClaimMappingDefinition}">
+				<webSecurity:ClaimMappingDefinition ProviderName="Facebook">
+					<webSecurity:ClaimMapping FieldName="id" Claim="{x:Static identityModel:ClaimTypes.NameIdentifier}" />
+					<webSecurity:ClaimMapping FieldName="username" Claim="{x:Static claims:ClaimTypes.Upn}" />
+					<webSecurity:ClaimMapping FieldName="name" Claim="{x:Static claims:ClaimTypes.Name}" />
+					<webSecurity:ClaimMapping FieldName="first_name" Claim="{x:Static claims:ClaimTypes.GivenName}" />
+					<webSecurity:ClaimMapping FieldName="last_name" Claim="{x:Static claims:ClaimTypes.Surname}" />
+					<webSecurity:ClaimMapping FieldName="gender" Claim="{x:Static claims:ClaimTypes.Gender}" />
+					<webSecurity:ClaimMapping FieldName="link" Claim="{x:Static claims:ClaimTypes.Webpage}" />
+					<webSecurity:ClaimMapping FieldName="birthday" Claim="{x:Static claims:ClaimTypes.DateOfBirth}" />
+					<webSecurity:ClaimMapping FieldName="locale" Claim="{x:Static claims:ClaimTypes.Locality}" />
+					<webSecurity:ClaimMapping FieldName="email" Claim="{x:Static claims:ClaimTypes.Email}" />
+				</webSecurity:ClaimMappingDefinition>
+				<webSecurity:ClaimMappingDefinition ProviderName="Yahoo">
+					<webSecurity:ClaimMapping FieldName="fullName" Claim="{x:Static claims:ClaimTypes.Name}" />
+					<webSecurity:ClaimMapping FieldName="email" Claim="{x:Static claims:ClaimTypes.Email}" />
+				</webSecurity:ClaimMappingDefinition>
+				<webSecurity:ClaimMappingDefinition ProviderName="Google">
+					<webSecurity:ClaimMapping FieldName="firstName" Claim="{x:Static claims:ClaimTypes.GivenName}" />
+					<webSecurity:ClaimMapping FieldName="lastName" Claim="{x:Static claims:ClaimTypes.Surname}" />
+					<webSecurity:ClaimMapping FieldName="country" Claim="{x:Static claims:ClaimTypes.Country}" />
+					<webSecurity:ClaimMapping FieldName="email" Claim="{x:Static claims:ClaimTypes.Email}" />
+				</webSecurity:ClaimMappingDefinition>
+
+				<webSecurity:ClaimMappingDefinition ProviderName="Microsoft">
+					<webSecurity:ClaimMapping FieldName="id" Claim="{x:Static identityModel:ClaimTypes.NameIdentifier}" />
+					<webSecurity:ClaimMapping FieldName="username" Claim="{x:Static claims:ClaimTypes.Upn}" />
+					<webSecurity:ClaimMapping FieldName="name" Claim="{x:Static claims:ClaimTypes.Name}" />
+					<webSecurity:ClaimMapping FieldName="link" Claim="{x:Static claims:ClaimTypes.Webpage}" />
+					<webSecurity:ClaimMapping FieldName="gender" Claim="{x:Static claims:ClaimTypes.Gender}" />
+					<webSecurity:ClaimMapping FieldName="firstname" Claim="{x:Static claims:ClaimTypes.GivenName}" />
+					<webSecurity:ClaimMapping FieldName="lastname" Claim="{x:Static claims:ClaimTypes.Surname}" />
+				</webSecurity:ClaimMappingDefinition>
+			</ds:CollectionOfTExtension>
+		</ds:UnityInstance>
+	</ds:UnityContainerConfiguration.Instances>
+</Configuration:UnityContainerConfiguration>

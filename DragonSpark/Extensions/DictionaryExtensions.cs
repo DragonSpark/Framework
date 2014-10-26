@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
-using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Extensions
 {
@@ -19,19 +16,16 @@ namespace DragonSpark.Extensions
 			target.ContainsKey( key ).IsTrue( () => action( target[key] ) );
 		}
 
-		[MethodImpl( MethodImplOptions.Synchronized )]
-		public static TValue Ensure<TKey, TValue>( this IDictionary<TKey, TValue> target, TKey key, Func<TKey,TValue> resolve = null )
+		public static TValue Ensure<TKey, TValue>( this IDictionary<TKey, TValue> target, TKey key, Func<TKey,TValue> resolve )
 		{
-			Contract.Requires( target != null );
-			// Contract.Requires( !key.IsDefault() );
-
-			resolve = resolve ?? ( item => ServiceLocator.Current.GetInstance<TValue>() );
-
-			if ( !target.ContainsKey( key ) )
+			lock ( Locker )
 			{
-				target.Add( key, resolve( key ) );
+				if ( !target.ContainsKey( key ) )
+				{
+					target.Add( key, resolve( key ) );
+				}
 			}
 			return target[ key ];
-		}
+		}	readonly static object Locker = new object();
 	}
 }

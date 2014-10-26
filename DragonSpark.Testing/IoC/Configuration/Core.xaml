@@ -1,35 +1,38 @@
-﻿<DragonSparkConfiguration:ConfigurationDictionary x:Class="DragonSpark.Testing.IoC.Configuration.Core"
+﻿<markup:ConfigurationDictionary x:Class="DragonSpark.Testing.IoC.Configuration.Core"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:DragonSparkConfiguration="clr-namespace:DragonSpark.Configuration;assembly=DragonSpark" 
-	xmlns:System="clr-namespace:System;assembly=mscorlib" 
+												  xmlns:System="clr-namespace:System;assembly=mscorlib" 
 	xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark"
 	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
-	xmlns:TestObjects="clr-namespace:DragonSpark.Testing.TestObjects.IoC" x:TypeArguments="IoC:LocatorDefinition"
+	xmlns:TestObjects="clr-namespace:DragonSpark.Testing.TestObjects.IoC"
+	xmlns:markup="clr-namespace:DragonSpark.Markup;assembly=DragonSpark"
+	xmlns:commands="clr-namespace:DragonSpark.IoC.Commands;assembly=DragonSpark"
+	xmlns:injection="clr-namespace:DragonSpark.IoC.Configuration.Injection;assembly=DragonSpark"
+	x:TypeArguments="Configuration:ServiceLocatorFactory"
 	>
 	<System:Int32 x:Key="Pimpin">6776</System:Int32>
-	<IoC:LocatorDefinition x:Key="DefaultContainer">
-		<Configuration:AssignServiceLocatorCommand />
-		<Configuration:UnityContainerConfiguration>
+	<IoC:ServiceLocator x:Key="DefaultContainer">
+		<commands:AssignServiceLocatorCommand />
+		<commands:UnityContainerConfiguration>
 			<!-- Basic NamedTypeObject: -->
 			<Configuration:UnityType RegistrationType="{x:Type TestObjects:INamedObject}" MapTo="{x:Type TestObjects:NamedObject}">
-				<Configuration:InjectionProperty PropertyName="Name" Parameter="Mapped Named Object" />
+				<injection:InjectionProperty PropertyName="Name" Parameter="Mapped Named Object" />
 			</Configuration:UnityType>
 
 			<!-- NamedTypeObject with String Type: -->
 			<Configuration:UnityType BuildName="Default" RegistrationType="{x:Type TestObjects:INamedTypeObject}" MapTo="{x:Type TestObjects:NamedTypeObject}">
-				<Configuration:InjectionProperty PropertyName="Name" Parameter="Mapped Named-Type Object" />
-				<Configuration:InjectionProperty PropertyName="Type">
-					<Configuration:InstanceValue Instance="{x:Type System:String}" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Name" Parameter="Mapped Named-Type Object" />
+				<injection:InjectionProperty PropertyName="Type">
+					<injection:InstanceValue Instance="{x:Type System:String}" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
 
 			<!-- NamedTypeObject with Int32 Type: -->
 			<Configuration:UnityType BuildName="Normal" RegistrationType="{x:Type TestObjects:INamedTypeObject}" MapTo="{x:Type TestObjects:NamedTypeObject}">
-				<Configuration:InjectionProperty PropertyName="Name" Parameter="Named-Type Object" />
-				<Configuration:InjectionProperty PropertyName="Type">
-					<Configuration:InstanceValue Instance="{x:Type System:Int32}" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Name" Parameter="Named-Type Object" />
+				<injection:InjectionProperty PropertyName="Type">
+					<injection:InstanceValue Instance="{x:Type System:Int32}" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
 
 			<!-- GenericObject with INamedTypeObject Type: -->
@@ -37,31 +40,31 @@
 				<Configuration:UnityType.RegistrationType>
 					<x:Type TypeName="TestObjects:GenericObject(TestObjects:INamedTypeObject)" />
 				</Configuration:UnityType.RegistrationType>
-				<Configuration:InjectionProperty PropertyName="Property">
-					<Configuration:DependencyValue DependencyType="{x:Type TestObjects:INamedTypeObject}" BuildName="Normal" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Property">
+					<injection:DependencyValue DependencyType="{x:Type TestObjects:INamedTypeObject}" BuildName="Normal" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
 
 			<Configuration:UnityType RegistrationType="{x:Type TestObjects:ConstructorObject}">
-				<Configuration:InjectionConstructor>
-					<Configuration:InstanceValue Instance="String-based Construction!" />
-				</Configuration:InjectionConstructor>
+				<injection:InjectionConstructor>
+					<injection:InstanceValue Instance="String-based Construction!" />
+				</injection:InjectionConstructor>
 			</Configuration:UnityType>
 
 			<Configuration:UnityType RegistrationType="{x:Type TestObjects:ConstructorObject}" BuildName="Int">
-				<Configuration:InjectionConstructor>
-					<Configuration:InstanceValue Instance="{StaticResource Pimpin}" />
-				</Configuration:InjectionConstructor>
+				<injection:InjectionConstructor>
+					<injection:InstanceValue Instance="{StaticResource Pimpin}" />
+				</injection:InjectionConstructor>
 			</Configuration:UnityType>
 
 			<Configuration:UnityType RegistrationType="{x:Type TestObjects:MethodObject}">
-				<Configuration:InjectionMethod MethodName="Method">
-					<Configuration:InstanceValue Instance="Hello Method Call!" />
-				</Configuration:InjectionMethod>
+				<injection:InjectionMethod MethodName="Method">
+					<injection:InstanceValue Instance="Hello Method Call!" />
+				</injection:InjectionMethod>
 			</Configuration:UnityType>
-			<Configuration:UnityContainerConfiguration.Extensions>
+			<commands:UnityContainerConfiguration.Extensions>
 				<IoC:DragonSparkExtension />
-			</Configuration:UnityContainerConfiguration.Extensions>
-		</Configuration:UnityContainerConfiguration>
-	</IoC:LocatorDefinition>
-</DragonSparkConfiguration:ConfigurationDictionary>
+			</commands:UnityContainerConfiguration.Extensions>
+		</commands:UnityContainerConfiguration>
+	</IoC:ServiceLocator>
+</markup:ConfigurationDictionary>

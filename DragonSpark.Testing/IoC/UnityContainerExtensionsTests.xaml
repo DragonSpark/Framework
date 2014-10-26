@@ -1,27 +1,30 @@
 ﻿<Framework:TestingContext x:Class="DragonSpark.Testing.IoC.UnityContainerExtensionsTests" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 							  xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Framework="clr-namespace:DragonSpark.Testing.Framework;assembly=DragonSpark.Testing.Framework"
-							  xmlns:IoC="clr-namespace:DragonSpark.Testing.TestObjects.IoC" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Unity="clr-namespace:Microsoft.Practices.Unity;assembly=Microsoft.Practices.Unity" x:TypeArguments="Unity:IUnityContainer" mc:Ignorable="d">
-		<Configuration:AssignServiceLocatorCommand />
-		<Configuration:UnityContainerConfiguration>
-			<Configuration:UnityContainerConfiguration.Instances>
+							  xmlns:IoC="clr-namespace:DragonSpark.Testing.TestObjects.IoC" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Unity="clr-namespace:Microsoft.Practices.Unity;assembly=Microsoft.Practices.Unity"
+						  xmlns:commands="clr-namespace:DragonSpark.IoC.Commands;assembly=DragonSpark"
+						  xmlns:injection="clr-namespace:DragonSpark.IoC.Configuration.Injection;assembly=DragonSpark"
+						  x:TypeArguments="Unity:IUnityContainer" mc:Ignorable="d">
+		<commands:AssignServiceLocatorCommand />
+		<commands:UnityContainerConfiguration>
+			<commands:UnityContainerConfiguration.Instances>
 				<Configuration:UnityInstance BuildName="Instance">
 					<IoC:NamedObject Name="Instance Registration" />
 				</Configuration:UnityInstance>
-			</Configuration:UnityContainerConfiguration.Instances>
+			</commands:UnityContainerConfiguration.Instances>
 			<Configuration:UnityType MapTo="{x:Type IoC:NamedObject}" RegistrationType="{x:Type IoC:INamedObject}">
-				<Configuration:InjectionProperty PropertyName="Name">
-					<Configuration:InstanceValue Instance="Default Registration" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Name">
+					<injection:InstanceValue Instance="Default Registration" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
 			<Configuration:UnityType BuildName="Build1" MapTo="{x:Type IoC:NamedObject}" RegistrationType="{x:Type IoC:INamedObject}">
-				<Configuration:InjectionProperty PropertyName="Name">
-					<Configuration:InstanceValue Instance="Build1 Registration" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Name">
+					<injection:InstanceValue Instance="Build1 Registration" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
 			<Configuration:UnityType BuildName="Build2" MapTo="{x:Type IoC:NamedObject}" RegistrationType="{x:Type IoC:INamedObject}">
-				<Configuration:InjectionProperty PropertyName="Name">
-					<Configuration:InstanceValue Instance="Build2 Registration" />
-				</Configuration:InjectionProperty>
+				<injection:InjectionProperty PropertyName="Name">
+					<injection:InstanceValue Instance="Build2 Registration" />
+				</injection:InjectionProperty>
 			</Configuration:UnityType>
-		</Configuration:UnityContainerConfiguration>
+		</commands:UnityContainerConfiguration>
 </Framework:TestingContext>

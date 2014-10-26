@@ -7,9 +7,6 @@ using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Testing.IoC
 {
-	/// <summary>
-	/// Interaction logic for UnityContainerExtensionsTests.xaml
-	/// </summary>
 	[TestClass]
 	public partial class UnityContainerExtensionsTests
 	{

@@ -2,7 +2,7 @@ using DragonSpark.Configuration;
 
 namespace DragonSpark.Objects.Configuration
 {
-	public abstract class ObjectFinderBase : IInstanceSource<ILocator>
+	public abstract class ObjectFinderBase : ISingleton<ILocator>
 	{
 		protected abstract ILocator Create();
 		

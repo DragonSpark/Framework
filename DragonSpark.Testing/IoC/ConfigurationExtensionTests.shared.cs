@@ -4,9 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing.IoC
 {
-	/// <summary>
-	/// Summary description for ConfigurationExtensionTests
-	/// </summary>
 	[TestClass]
 	public class ConfigurationExtensionTests
 	{

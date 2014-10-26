@@ -9,9 +9,6 @@ using System.Linq;
 
 namespace DragonSpark.Testing.IoC
 {
-	/// <summary>
-	/// Summary description for DragonSparkExtensionTests
-	/// </summary>
 	[TestClass]
 	public class DragonSparkExtensionTests
 	{

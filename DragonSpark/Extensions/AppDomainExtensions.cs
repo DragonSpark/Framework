@@ -8,7 +8,6 @@ namespace DragonSpark.Extensions
 	{
 		static readonly Dictionary<AppDomain,Type[]> TypeCache = new Dictionary<AppDomain, Type[]>();
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Used for convenience.")]
 		public static IEnumerable<Tuple<TAttribute,Type>> GetAllTypesWith<TAttribute>( this AppDomain target ) where TAttribute : Attribute
 		{
 			var result = from type in TypeCache.Ensure( target, ResolveTypes )

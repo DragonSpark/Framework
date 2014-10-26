@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 
 namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		[Pure]
-		public static bool IsDefault<TItem>( this TItem target )
+		public static TItem ThrowIfNull<TItem>( this TItem @this, string parameterName = null ) where TItem : class 
 		{
-			var result = Equals( target, default(TItem) );
-			return result;
+			if ( @this == null )
+			{
+				throw new ArgumentNullException( parameterName ?? "parameter" );
+			}
+			return @this;
+		}
+
+		public static TItem InvalidIfNull<TItem>( this TItem @this, string message = null ) where TItem : class 
+		{
+			if ( @this == null )
+			{
+				throw new InvalidOperationException( message ?? "This object is null." );
+			}
+			return @this;
 		}
 
 		public static void TryDispose( this object target )
@@ -34,32 +42,27 @@ namespace DragonSpark.Extensions
 
 		public static void NotNull<TItem>( this TItem target, Action<TItem> action )
 		{
-			Contract.Requires( action != null );
-
 			if ( !Equals( target, default(TItem) ) )
 			{
 				action( target );
 			}
 		}
 
-		public static void Null<TItem>( this TItem target, System.Action action )
+		public static void Null<TItem>( this TItem target, Action action )
 		{
-			Contract.Requires( action != null );
-
 			if ( Equals( target, default(TItem) ) )
 			{
 				action();
 			}
 		}
 
-		public static IEnumerable<TItem> ToEnumerable<TItem>( this TItem target, IEnumerable<TItem> others = null )
+		/*public static IEnumerable<TItem> ToEnumerable<TItem>( this TItem target, IEnumerable<TItem> others = null )
 		{
-			Contract.Requires( !Equals( target, default(TItem) ) );
 			var second = others ?? Enumerable.Empty<TItem>();
 
 			var result = new[] { target }.Union( second ).ToArray();
 			return result;
-		}
+		}*/
 
 		public static IEnumerable<TItem> Enumerate<TItem>( this IEnumerator<TItem> target )
 		{
@@ -68,18 +71,12 @@ namespace DragonSpark.Extensions
 			{
 				result.Add( target.Current );
 			}
-
-			// reset.IsTrue( target.Reset );
 			return result;
 		}
 
-		public static TResult ResolveFromParent<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem,bool> condition, Func<TItem,TResult> extract = null, TResult defaultValue = default(TResult) )
+		public static TResult Loop<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem, bool> condition, Func<TItem, TResult> extract = null, TResult defaultValue = default(TResult) )
 		{
-			Contract.Requires( !Equals( current, default(TItem) ) );
-			Contract.Requires( resolveParent != null );
-			Contract.Requires( condition != null );
-
-			extract = extract ?? new Func<TItem, TResult>( x => x is TResult ? x.To<TResult>() : default(TResult) );
+			// extract = extract ?? ( x => x is TResult ? x.To<TResult>() : default(TResult) );
 
 			do
 			{
@@ -96,53 +93,68 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<TItem> GetAllPropertyValuesOf<TItem>( this object target )
 		{
-			var result = target.GetAllPropertyValuesOf( typeof(TItem) ).Cast<TItem>();
+			var result = target.GetAllPropertyValuesOf( typeof(TItem) ).Cast<TItem>().ToArray();
 			return result;
 		}
 
-		public static IEnumerable GetAllPropertyValuesOf( this object target, Type propertyType, BindingFlags? propertyBindings = null )
+		public static IEnumerable GetAllPropertyValuesOf( this object target, Type propertyType )
 		{
-			var result = target.GetType().GetProperties( propertyBindings ?? DragonSparkBindingOptions.PublicProperties ).Where( x => !x.GetIndexParameters().Any() && propertyType.IsAssignableFrom( x.PropertyType ) ).Select( x => x.GetValue( target, null ) ).ToArray();
+			var result = target.GetType().GetRuntimeProperties().Where( x => !x.GetIndexParameters().Any() && propertyType.GetTypeInfo().IsAssignableFrom( x.PropertyType.GetTypeInfo() ) ).Select( x => x.GetValue( target, null ) ).ToArray();
 			return result;
 		}
 
 		public static TResult FromMetadata<TAttribute,TResult>( this object target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
 		{
-			Contract.Requires( target != null );
-			Contract.Requires( resolveValue != null );
-
-			var result = target.Transform( x => x.GetType().FromMetadata( resolveValue, resolveDefault, condition ) );
-			return result;
-		}
-		
-		public static TResult FromMetadata<TAttribute,TResult>( this ICustomAttributeProvider target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
-		{
-			Contract.Requires( target != null );
-			Contract.Requires( resolveValue != null );
-
-			resolveDefault = resolveDefault ?? ResolveResult<TResult>;
-			var result = target.GetAttribute<TAttribute>().Transform( resolveValue, resolveDefault, condition );
+			var result = target.Transform( x => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault, condition ) );
 			return result;
 		}
 
-		/*public static TResult TranslateOrNew<TItem,TResult>( this TItem target, Func<TItem,bool> condition, Func<TItem,TResult> resolve ) where TResult : new()
+		public static TResult FromMetadata<TAttribute,TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
 		{
-			Contract.Requires( resolve != null );
-
-			var result = target.Transform( resolve, () => new TResult(), condition );
+			var result = target.GetCustomAttribute<TAttribute>().Transform( resolveValue, resolveDefault ?? DetermineDefault<TResult>, condition );
 			return result;
+		}
+
+		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class 
+		{
+			/*target.GetType().GetRuntimeProperties()
+				.Where( x => x.IsDecoratedWith<System.ComponentModel.DefaultValueAttribute>() )
+				.Select( x =>
+					{
+						var defaultValue = x.PropertyType.GetDefaultValue();
+						var current = x.GetValue( target, null );
+
+						var equalsDefault = current.As<string>().Transform( string.IsNullOrEmpty, () => Equals( current , defaultValue ) );
+						var value = equalsDefault ? x.FromMetadata<System.ComponentModel.DefaultValueAttribute, object>( y => y.As<DefaultPropertyValueAttribute>().Transform( z => z.GetValue( target, x ), () => y.Value  ) ) : null;
+						var result = value.Transform( y => new { Property = x, Value = y } );
+						return result;
+					} )
+				.NotNull()
+				.Apply( item => item.Property.SetValue( target, item.Value, null ) );
+			return target;*/
+			return target;
+		}
+
+		/*public static object Evaluate( this object container, string expression )
+		{
+			return null; // TODO: Implement.
+		}
+
+		public static TResult Evaluate<TResult>( this object container, string expression )
+		{
+			return default(TResult); // TODO: Implement.
 		}*/
 
-		static TResult ResolveResult<TResult>()
+		public static TResult DetermineDefault<TResult>()
 		{
-			var type = typeof(TResult);
+			var type = typeof(TResult).GetTypeInfo();
 			if ( type.IsGenericType )
 			{
-				var typeArguments = type.GetGenericArguments().First();
-				var genericType = typeof(IEnumerable<>).MakeGenericType( typeArguments );
+				var typeArguments = type.GenericTypeArguments.First();
+				var genericType = typeof(IEnumerable<>).MakeGenericType( typeArguments ).GetTypeInfo();
 				if ( genericType.IsAssignableFrom( type ) )
 				{
-					var result = typeArguments.Transform( x => Activator.CreateInstance( x.MakeArrayType(), 0 ) ).To<TResult>();
+					var result = typeArguments.Transform( x => Activator.CreateInstance( x.MakeArrayType(), new object[] { 0 } ) ).To<TResult>();
 					return result;
 				}
 			}
@@ -151,19 +163,15 @@ namespace DragonSpark.Extensions
 
 		public static TResult Transform<TItem,TResult>( this TItem target, Func<TItem,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TItem,bool> condition = null )
 		{
-			Contract.Requires( resolveValue != null );
-
-			resolveDefault = resolveDefault ?? ResolveResult<TResult>;
+			resolveDefault = resolveDefault ?? DetermineDefault<TResult>;
 			var result = !Equals( target, default(TItem) ) && ( condition == null || condition( target ) ) ? resolveValue( target ) : resolveDefault();
 			return result;
 		}
 
-		public static TResult Clone<TResult>( this TResult source )
+		/*public static TResult Clone<TResult>( this TResult source )
 		{
-			Contract.Requires( !Equals( source, default(TResult) ) );
-
 			var result = (TResult)Activator.CreateInstance( source.GetType() );
-			var properties = source.GetType().GetProperties().Where( x => x.CanRead && x.CanWrite ).NotNull();
+			var properties = source.GetType().GetRuntimeProperties().Where( x => x.CanRead && x.CanWrite ).NotNull();
 			properties.Apply( x =>
 			{
 			    if ( typeof(IList).IsAssignableFrom( x.PropertyType ) )
@@ -189,7 +197,7 @@ namespace DragonSpark.Extensions
 			        }
 			        catch ( TargetInvocationException error )
 			        {
-			            Debug.WriteLine( string.Format( "Could not write property '{0}'.  Error: '{1}'.", x.Name, error.Message ) );
+			            Debug.WriteLine( "Could not write property '{0}'.  Error: '{1}'.", x.Name, error.Message );
 			        }
 			    }                		
 			} );
@@ -201,28 +209,23 @@ namespace DragonSpark.Extensions
 			var current = property.GetValue( source, parameters );
 			var result = current.As<DependencyObject>().Transform( Clone, () => current );
 			return result;
-		}
+		}*/
 
 		public static TResult As<TResult>( this object target ) where TResult : class
 		{
-			return As<TResult,Exception>( target, null, null );
+			return As<TResult,Exception>( target, null );
 		}
 
 		public static TResult As<TResult>( this object target, Action<TResult> action ) where TResult : class
 		{
-			return As<TResult,Exception>( target, action, null );
+			return As<TResult,Exception>( target, action );
 		}
-
-		/*public static TResult As<TResult,TException>( this object target, Func<TException> resolveException ) where TResult : class where TException : Exception
-		{
-			return As<TResult, TException>( target, resolveException, null );
-		}*/
 
 		public static TResult As<TResult,TException>( this object target, Action<TResult> action, Func<TException> resolveException = null ) where TResult : class where TException : Exception
 		{
 			var result = target as TResult;
 
-			// Check for exception:
+			// Apply for exception:
 			if ( result == null && resolveException != null )
 			{
 				throw resolveException();
@@ -235,9 +238,10 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult AsTo<TSource,TResult>( this object target, Func<TSource,TResult> transform )
+		public static TResult AsTo<TSource, TResult>( this object target, Func<TSource,TResult> transform, Func<TResult> resolve = null )
 		{
-			var result = target is TSource ? transform( target.To<TSource>() ) : ResolveResult<TResult>();
+			resolve = resolve ?? DetermineDefault<TResult>;
+			var result = target is TSource ? transform( target.To<TSource>() ) : resolve();
 			return result;
 		}
 
@@ -246,6 +250,34 @@ namespace DragonSpark.Extensions
 		{
 			var result = (TResult)target;
 			return result;
+		}
+
+		public static T ConvertTo<T>( this object @this )
+		{
+			var result = (T)ConvertTo( @this, typeof(T) );
+			return result;
+		}
+
+		public static object ConvertTo( this object @this, Type to )
+		{
+			var info = to.GetTypeInfo();
+			if ( !info.IsAssignableFrom( @this.GetType().GetTypeInfo() ) )
+			{
+				return info.IsEnum ? Enum.Parse( to, @this.ToString() ) : ChangeType( @this, to );
+			}
+			return @this;
+		}
+
+		static object ChangeType( object @this, Type to )
+		{
+			try
+			{
+				return Convert.ChangeType( @this, to );
+			}
+			catch ( InvalidCastException )
+			{
+				return null;
+			}
 		}
 	}
 }

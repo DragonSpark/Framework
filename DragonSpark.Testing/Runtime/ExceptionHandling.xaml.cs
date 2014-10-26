@@ -7,13 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using IExceptionHandler = DragonSpark.Runtime.IExceptionHandler;
+using IExceptionHandler = DragonSpark.Exceptions.IExceptionHandler;
 
 namespace DragonSpark.Testing.Runtime
 {
-	/// <summary>
-	/// Interaction logic for ExceptionHandling.xaml
-	/// </summary>
 	[TestClass]
 	public partial class ExceptionHandling
 	{

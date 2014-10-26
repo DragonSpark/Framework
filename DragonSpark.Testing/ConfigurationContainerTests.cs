@@ -5,9 +5,6 @@ using System.Linq;
 
 namespace DragonSpark.Testing
 {
-	/// <summary>
-	/// Summary description for ConfigurationContainerTests
-	/// </summary>
 	[TestClass]
 	public class ConfigurationContainerTests
 	{

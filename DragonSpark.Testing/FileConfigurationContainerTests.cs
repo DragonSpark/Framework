@@ -1,5 +1,5 @@
 using System.IO;
-using DragonSpark.Configuration;
+using DragonSpark.Markup;
 using DragonSpark.Serialization;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;

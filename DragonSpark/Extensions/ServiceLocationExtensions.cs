@@ -1,34 +1,19 @@
-﻿using DragonSpark.IoC;
+﻿using DragonSpark.Activation;
 using Microsoft.Practices.ServiceLocation;
 using System;
-using System.Linq;
 
 namespace DragonSpark.Extensions
 {
 	public static class ServiceLocationExtensions
 	{
-		public static TServiceLocator Initialized<TServiceLocator>( this TServiceLocator target ) where TServiceLocator : IServiceLocator
-		{
-			target.GetInstance<object>();
-			return target;
-		}
-
-		public static IServiceLocator AsCurrent( this IServiceLocator target )
-		{
-			ServiceLocator.SetLocatorProvider( () => target );
-			return target;
-		}
-
-		public static TItem GetInstanceWithInheritance<TItem>( this IServiceLocator target ) where TItem : class
-		{
-			var types = typeof(TItem).ResolveInterfaces();
-			var result = types.Select( x => target.TryGetInstance(x) ).NotNull().FirstOrDefaultOfType<TItem>();
-			return result;
-		}
-
 		public static void Register<TFrom, TTo>( this IServiceLocator target )
 		{
-			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( typeof(TFrom), typeof(TTo) ) );
+			Register( target, typeof(TFrom), typeof(TTo) );
+		}
+
+		public static void Register( this IServiceLocator target, Type from, Type to )
+		{
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( from, to ) );
 		}
 
 		public static void Register( this IServiceLocator target, Type type, object instance )
@@ -59,8 +44,8 @@ namespace DragonSpark.Extensions
 				var result = target.GetInstance( type, name );
 				return result;
 			}
-			catch ( NullReferenceException ) {}
-			catch ( ActivationException ) {}
+			catch ( ActivationException )
+			{}
 			return null;
 		}
 	}

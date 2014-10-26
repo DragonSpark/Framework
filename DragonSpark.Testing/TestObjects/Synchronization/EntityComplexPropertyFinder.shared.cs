@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Objects;
 
 namespace DragonSpark.Testing.TestObjects.Synchronization
 {

@@ -5,9 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DragonSpark.Testing.Objects.Synchronization
 {
-	/// <summary>
-	/// Summary description for PropertyMappingConfigurationContainerTests
-	/// </summary>
 	[TestClass]
 	public class PropertyMappingConfigurationContainerTests
 	{

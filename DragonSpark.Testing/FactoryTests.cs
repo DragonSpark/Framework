@@ -1,12 +1,13 @@
 using System;
 using DragonSpark.IoC;
-using DragonSpark.Objects;
+using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using InjectionProperty=Microsoft.Practices.Unity.InjectionProperty;
+using ServiceLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 using UnityContainer=Microsoft.Practices.Unity.UnityContainer;
 
 namespace DragonSpark.Testing
@@ -33,7 +34,7 @@ namespace DragonSpark.Testing
 			var container = new UnityContainer()
 				.AddNewExtension<DragonSparkExtension>()
 				.RegisterType<DragonSparkObject>( "Instance", new InjectionProperty( "Name", "My Name" ) );
-			var result = new DragonSpark.IoC.UnityServiceLocator( container );
+			var result = new DragonSpark.IoC.ServiceLocator( container );
 			return result;
 		}
 	}

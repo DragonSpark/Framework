@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Extensions
 {
 	public static class AssemblyExtensions
 	{
-		public static string[] GetResourceNames( this Assembly @this )
+		/*public static string[] GetResourceNames( this Assembly @this )
 		{
 			var resName = @this.GetName().Name + ".g.resources";
 			using (var stream = @this.GetManifestResourceStream(resName))
@@ -19,12 +15,12 @@ namespace DragonSpark.Extensions
 				return result;
 			}
 		}
-
+		 
 		public static IEnumerable<Type> GetValidTypes( this Assembly target )
 		{
 			try
 			{
-				var result = target.GetTypes();
+				var result = target.DefinedTypes.Select( x => x.AsType() ).ToArray();
 				return result;
 			}
 			catch ( ReflectionTypeLoadException e )
@@ -39,19 +35,19 @@ namespace DragonSpark.Extensions
 		{
 			try
 			{
-				target.GetTypes();
+				target.DefinedTypes.ToArray();
 				return true;
 			}
 			catch ( ReflectionTypeLoadException )
 			{
 				return false;
 			}
-		}
+		}*/
 
 		public static string GetRootNamespace( this Assembly target )
 		{
-			var root = target.FullName.Transform( x => x.Split( ',' ).FirstOrDefault().Transform( y => y.Replace( ".Client", string.Empty ) ) );
-			var result = target.GetExportedTypes().Where( x => x.Namespace.StartsWith( root ) ).Select( x => x.Namespace ).OrderBy( x => x.Length ).FirstOrDefault();
+			var root = target.FullName.Transform( x => x.Split( ',' ).FirstOrDefault() );
+			var result = target.ExportedTypes.Where( x => x.Namespace.StartsWith( root ) ).Select( x => x.Namespace ).OrderBy( x => x.Length ).FirstOrDefault();
 			return result;
 		}
 

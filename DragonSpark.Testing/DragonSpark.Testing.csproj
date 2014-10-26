@@ -37,7 +37,8 @@
     <SccAuxPath />
     <SccProvider />
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>Common.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
@@ -99,214 +100,156 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dynamitey">
+      <HintPath>..\packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
       <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+      <HintPath>..\packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.Albedo">
+      <HintPath>..\packages\Albedo.1.0.1\lib\net35\Ploeh.Albedo.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.3.19.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.AutoMoq">
+      <HintPath>..\packages\AutoFixture.AutoMoq.3.19.1\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.Idioms">
+      <HintPath>..\packages\AutoFixture.Idioms.3.19.1\lib\net40\Ploeh.AutoFixture.Idioms.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.Xunit">
+      <HintPath>..\packages\AutoFixture.Xunit.3.19.1\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.8.0.1549\lib\xunit.dll</HintPath>
     </Reference>
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.XML" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.8.0.1549\lib\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationConfiguration.xaml.cs">
-      <DependentUpon>ApplicationConfiguration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationContainerTests.cs" />
-    <Compile Include="IoC\CommonExtensionTests.shared.cs" />
-    <Compile Include="IoC\Configuration\Core.xaml.cs">
-      <DependentUpon>Core.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IoC\ConfigurationTests.shared.cs" />
-    <Compile Include="IoC\Configuration\Configuration.xaml.cs">
-      <DependentUpon>Configuration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IoC\ConfigurationExtensionTests.shared.cs" />
-    <Compile Include="Runtime\ExceptionHandling.xaml.cs">
-      <DependentUpon>ExceptionHandling.xaml</DependentUpon>
+    <Compile Include="Activation\ActivatorTests.cs" />
+    <Compile Include="Activation\FactoryTests.cs" />
+    <Compile Include="ApplicationDetailsTests.cs" />
+    <Compile Include="ComponentModel\AttributeProviderTests.cs" />
+    <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\Logging.xaml.cs">
-      <DependentUpon>Logging.xaml</DependentUpon>
+    <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
+    <Compile Include="Extensions\BooleanExtensionsTest.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestObjects\Communication\ITestingService.cs" />
-    <Compile Include="TestObjects\Communication\TestingService.cs" />
-    <Compile Include="TestObjects\IoC\ISpyPolicy.shared.cs" />
-    <Compile Include="TestObjects\IoC\ISpyTarget.shared.cs" />
-    <Compile Include="TestObjects\IoC\SpyPolicy.shared.cs" />
-    <Compile Include="TestObjects\IoC\SpyStrategy.shared.cs" />
-    <Compile Include="TestObjects\IoC\SpyTarget.shared.cs" />
-    <Compile Include="IoC\Configuration\Serialization.xaml.cs">
-      <DependentUpon>Serialization.xaml</DependentUpon>
+    <Compile Include="Extensions\DictionaryExtensionsTests.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IoC\XmlSerializationPolicyTests.cs" />
-    <Compile Include="TestObjects\Providers\MembershipProvider.cs" />
-    <Compile Include="TestObjects\Providers\RoleProvider.cs" />
-    <Compile Include="TestObjects\TargetObject.shared.cs" />
-    <Compile Include="IoC\PropertyMappingCreatorPolicyTests.shared.cs" />
-    <Compile Include="IoC\NamedTypeBuildKeyConverterTests.cs" />
-    <Compile Include="TestObjects\IoC\ConstructorObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\GenericObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\INamedObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\INamedTypeObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\MethodObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\NamedObject.shared.cs" />
-    <Compile Include="TestObjects\IoC\NamedTypeObject.shared.cs" />
-    <Compile Include="IoC\UnityContainerExtensionsTests.xaml.cs">
-      <DependentUpon>UnityContainerExtensionsTests.xaml</DependentUpon>
+    <Compile Include="Extensions\EnumerableExtensionsTests.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileConfigurationContainerTests.cs" />
-    <Compile Include="ListSupportTests.cs" />
-    <Compile Include="NamedTokenFormatterTests.cs" />
-    <Compile Include="FactoryTests.cs" />
-    <Compile Include="TestObjects\CommonChild.cs" />
-    <Compile Include="TestObjects\CommonObject.cs" />
-    <Compile Include="TestObjects\ListItem.cs" />
-    <Compile Include="TestObjects\ObjectCreationTarget.cs" />
-    <Compile Include="Objects\Synchronization\CollectionMappingsTests.shared.cs" />
-    <Compile Include="Objects\Synchronization\CollectionPropertyExpressionMappingTests.shared.cs" />
-    <Compile Include="Objects\Synchronization\ComplexPropertyMappingTests.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\Entity.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityChild.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityChildFinder.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityComplexPropertyFinder.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityView.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityViewChild.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityViewWithCollectionProperty.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityViewWithSimilarProperties.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityWithCollectionProperty.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\EntityWithSimilarProperties.shared.cs" />
-    <Compile Include="TestObjects\Synchronization\SuperEntity.shared.cs" />
-    <Compile Include="Objects\Synchronization\PropertyMappingConfigurationContainerTests.shared.cs" />
-    <Compile Include="Objects\Synchronization\PropertyMappingContainerTests.shared.cs" />
-    <Compile Include="Resources\CollectionMappings.xaml.cs">
-      <DependentUpon>CollectionMappings.xaml</DependentUpon>
+    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
+    <Compile Include="Extensions\ReflectionExtensionsTests.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Resources\ComplexPropertyMappings.xaml.cs">
-      <DependentUpon>ComplexPropertyMappings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\ExpressionMappings.xaml.cs">
-      <DependentUpon>ExpressionMappings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\SimilarMappings.xaml.cs">
-      <DependentUpon>SimilarMappings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Synchronization\SimilarPropertiesPropertyMappingContextResolverTests.shared.cs" />
+    <Compile Include="Extensions\TypeExtensionsTests.cs" />
+    <Compile Include="Extensions\WeakReferenceListExtensionsTests.cs" />
+    <Compile Include="Framework\AutoMoqDataAttributeTests.cs" />
+    <Compile Include="Framework\ServiceLocationCustomizationTests.cs" />
+    <Compile Include="Framework\ThreadLocalStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceLocatorTests.cs" />
-    <Compile Include="TestObjects\TestingException.cs" />
-    <Compile Include="TypeConverterValueConverterTests.cs" />
+    <Compile Include="Diagnostics\LogTests.cs" />
+    <Compile Include="Activation\ServiceLocationTests.cs" />
+    <Compile Include="Server\EnterpriseLibraryExceptionFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\EnterpriseLibraryTracer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\ExceptionFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\ExceptionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\MetadataTypeDefinitionProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Activator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Attribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Class.cs" />
+    <Compile Include="TestObjects\ClassWithParameter.cs" />
+    <Compile Include="TestObjects\ClassWithProperties.cs" />
+    <Compile Include="TestObjects\Convention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\ConventionMetadata.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Decorated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Derived.cs" />
+    <Compile Include="TestObjects\Disposable.cs" />
+    <Compile Include="TestObjects\Generic.cs" />
+    <Compile Include="TestObjects\HighPriority.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\IAnotherInterface.cs" />
+    <Compile Include="TestObjects\IClassWithParameter.cs" />
+    <Compile Include="TestObjects\IInterface.cs" />
+    <Compile Include="TestObjects\IItem.cs" />
+    <Compile Include="TestObjects\IObject.cs" />
+    <Compile Include="TestObjects\Item.cs" />
+    <Compile Include="TestObjects\LowPriority.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\NormalPriority.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Object.cs" />
+    <Compile Include="TestObjects\Relayed.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestObjects\Static.cs" />
+    <Compile Include="TestObjects\TypeDefinitionProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ApplicationConfiguration.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="IoC\Configuration\Core.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="IoC\Configuration\Configuration.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="IoC\Configuration\Serialization.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="IoC\UnityContainerExtensionsTests.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Runtime\ExceptionHandling.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Runtime\Logging.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\CollectionMappings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ComplexPropertyMappings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ExpressionMappings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\SimilarMappings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceItemConfiguration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceConfiguration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\NamedObjectAssembly.xml" />
-    <Content Include="Resources\NamedObjectFile.xml" />
-    <EmbeddedResource Include="Resources\NamedObjectType.xml" />
-    <Content Include="Resources\FileConfiguration.xaml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Common.pfx" />
     <None Include="packages.config" />
-    <None Include="Resources\CountryInfo.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

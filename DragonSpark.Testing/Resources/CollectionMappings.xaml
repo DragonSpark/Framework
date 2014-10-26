@@ -6,9 +6,9 @@
 		<CoreConfiguration:ObjectResolver.ObjectFinder>
 			<CoreConfiguration:ObjectFinder ObjectFinderType="{x:Type Synchronization:EntityChildFinder}" />
 		</CoreConfiguration:ObjectResolver.ObjectFinder>
-		<CoreConfiguration:ObjectResolver.InstanceSource>
-			<CoreConfiguration:InstanceSource SourceType="{x:Type Synchronization:EntityViewChild}" ResultType="{x:Type Synchronization:EntityChild}" />
-		</CoreConfiguration:ObjectResolver.InstanceSource>
+		<CoreConfiguration:ObjectResolver.Singleton>
+			<CoreConfiguration:Singleton SourceType="{x:Type Synchronization:EntityViewChild}" ResultType="{x:Type Synchronization:EntityChild}" />
+		</CoreConfiguration:ObjectResolver.Singleton>
 	</CoreConfiguration:ObjectResolver>
 
 	<Configuration:SynchronizationKey x:Key="KeyEntityViewEntity" First="{x:Type Synchronization:EntityViewWithCollectionProperty}" Second="{x:Type Synchronization:EntityWithCollectionProperty}" />

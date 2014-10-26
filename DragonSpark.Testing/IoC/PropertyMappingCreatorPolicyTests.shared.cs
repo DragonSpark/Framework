@@ -8,9 +8,6 @@ using UnityContainer = Microsoft.Practices.Unity.UnityContainer;
 
 namespace DragonSpark.Testing.IoC
 {
-	/// <summary>
-	/// Summary description for PropertyMappingCreatorPolicyTests
-	/// </summary>
 	[TestClass]
 	public class PropertyMappingCreatorPolicyTests
 	{

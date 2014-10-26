@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.Exceptions;
+using DragonSpark.Runtime;
 using System;
 
 namespace DragonSpark.Testing.TestObjects
