@@ -160,7 +160,7 @@ namespace DragonSpark.Server.Entity
 	[ContentProperty( "Initializer" )]
 	public class PreloadApplicationCommand : IContainerConfigurationCommand
 	{
-		[DefaultPropertyValue( true )]
+		[Default( true )]
 		public bool IsEnabled { get; set; }
 
 		public Type PreloaderType { get; set; }

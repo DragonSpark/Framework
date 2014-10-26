@@ -172,6 +172,9 @@
     <CodeAnalysisRuleSet>..\The DragonSpark Application Framework.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\portable-windows8+net40+wp8+sl5+MonoAndroid+MonoTouch\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Dynamitey">
       <HintPath>..\packages\Dynamitey.1.0.2.0\lib\portable-win+net45+sl40+wp80\Dynamitey.dll</HintPath>
     </Reference>
@@ -211,13 +214,23 @@
     <Compile Include="Activation\IFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
+    <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComponentModel\CurrentTimeDefaultAttribute.cs" />
+    <Compile Include="ComponentModel\DefaultAttribute.cs" />
+    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\FactoryAttribute.cs" />
     <Compile Include="ComponentModel\IMemberInfoLocator.cs" />
     <Compile Include="ComponentModel\ITypeDefinitionProvider.cs" />
-    <Compile Include="ComponentModel\MemberInfoLocator.cs" />
+    <Compile Include="ComponentModel\MemberInfoLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComponentModel\NewGuidDefaultValueAttribute.cs" />
     <Compile Include="ConditionMonitor.cs" />
     <Compile Include="ApplicationDetails.cs" />
-    <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs" />
     <Compile Include="Diagnostics\ExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>

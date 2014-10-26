@@ -1,6 +1,5 @@
 using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using Moq;

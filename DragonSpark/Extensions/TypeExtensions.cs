@@ -7,7 +7,7 @@ namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
-		/*readonly static IDictionary<Type,object> Cache = new Dictionary<Type, object>();
+		readonly static IDictionary<Type,object> Cache = new Dictionary<Type, object>();
 
 		public static object GetDefaultValue( this Type target )
 		{
@@ -15,7 +15,7 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static Type MakeGeneric( this Type target, params Type[] types )
+		/*public static Type MakeGeneric( this Type target, params Type[] types )
 		{
 			var result = target.MakeGenericType( types );
 			return result;

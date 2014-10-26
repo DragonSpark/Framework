@@ -1,8 +1,8 @@
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
 using System;
 using System.Collections.Generic;
+using DragonSpark.Testing.TestObjects;
 using Xunit;
 using Xunit.Extensions;
 

@@ -1,7 +1,6 @@
 using System;
 using DragonSpark.Activation;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
-using Object = DragonSpark.Testing.Framework.Testing.TestObjects.Object;
+using Object = DragonSpark.Testing.TestObjects.Object;
 
 namespace DragonSpark.Testing.TestObjects
 {

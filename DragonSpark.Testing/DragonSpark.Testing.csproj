@@ -100,6 +100,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Dynamitey">
       <HintPath>..\packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
     </Reference>
@@ -147,7 +153,10 @@
     <Compile Include="Activation\ActivatorTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="ApplicationDetailsTests.cs" />
-    <Compile Include="ComponentModel\AttributeProviderTests.cs" />
+    <Compile Include="ComponentModel\AttributeProviderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComponentModel\DefaultValueProviderTests.cs" />
     <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -155,6 +164,7 @@
     <Compile Include="Extensions\BooleanExtensionsTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -291,6 +301,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

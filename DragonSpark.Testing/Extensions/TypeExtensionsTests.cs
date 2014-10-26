@@ -1,6 +1,6 @@
 using System.Linq;
 using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
+using DragonSpark.Testing.TestObjects;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions

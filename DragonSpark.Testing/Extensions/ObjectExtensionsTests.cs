@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
+using AutoMapper;
 using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit;
 using System;
@@ -13,6 +14,34 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class ObjectExtensionsTests
 	{
+		[Theory, AutoData]
+		void Mapper( TestObjects.ClassWithProperties instance )
+		{
+			var mapped = instance.MapInto<ClassWithProperties>();
+			Assert.Equal( instance.PropertyOne, mapped.PropertyOne );
+			Assert.Equal( instance.PropertyTwo, mapped.PropertyTwo );
+			Assert.Equal( instance.PropertyThree, mapped.PropertyThree );
+			Assert.Equal( instance.PropertyFour, mapped.PropertyFour );
+		}
+
+		class ClassWithProperties
+		{
+			public string PropertyOne { get; set; }
+ 
+			public int PropertyTwo { get; set; }
+
+			public object PropertyThree { get; set; }
+
+			public string PropertyFour { get; set; }
+
+			public string this[ int index ]
+			{
+				get { return null; }
+				set { }
+			}
+
+		}
+
 		[Fact]
 		void ThrowIfNull()
 		{

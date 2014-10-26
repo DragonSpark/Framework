@@ -1,4 +1,4 @@
-namespace DragonSpark.Testing.Framework.Testing.TestObjects
+namespace DragonSpark.Testing.TestObjects
 {
 	interface IObject
 	{

@@ -4,7 +4,7 @@ using System.Reflection;
 namespace DragonSpark.ComponentModel
 {
 	[AttributeUsage( AttributeTargets.Property )]
-	public sealed class NewGuidDefaultValueAttribute : DefaultPropertyValueAttribute
+	public sealed class NewGuidAttribute : DefaultAttribute
 	{
 		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
 		{

@@ -2,7 +2,6 @@ using System;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit;
 using Xunit;

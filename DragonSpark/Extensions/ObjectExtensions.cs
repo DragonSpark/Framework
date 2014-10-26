@@ -1,13 +1,30 @@
-﻿using System;
+﻿using AutoMapper;
+using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Activator = System.Activator;
 
 namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
+		public static TResult MapInto<TResult>( this object source )
+		{
+			var type = source.GetType();
+				
+			Mapper.FindTypeMapFor( type, typeof(TResult) ).Null( () =>
+			{
+				Mapper.CreateMap( type, typeof(TResult) );
+				Mapper.FindTypeMapFor( type, typeof(TResult) ).DestinationCtor = x => Activation.Activator.CreateInstance<object>( x.DestinationType );
+			} );
+			var result = Mapper.Map<TResult>( source );
+			return result;
+		}
+
 		public static TItem ThrowIfNull<TItem>( this TItem @this, string parameterName = null ) where TItem : class 
 		{
 			if ( @this == null )
@@ -115,23 +132,9 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class 
+		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
 		{
-			/*target.GetType().GetRuntimeProperties()
-				.Where( x => x.IsDecoratedWith<System.ComponentModel.DefaultValueAttribute>() )
-				.Select( x =>
-					{
-						var defaultValue = x.PropertyType.GetDefaultValue();
-						var current = x.GetValue( target, null );
-
-						var equalsDefault = current.As<string>().Transform( string.IsNullOrEmpty, () => Equals( current , defaultValue ) );
-						var value = equalsDefault ? x.FromMetadata<System.ComponentModel.DefaultValueAttribute, object>( y => y.As<DefaultPropertyValueAttribute>().Transform( z => z.GetValue( target, x ), () => y.Value  ) ) : null;
-						var result = value.Transform( y => new { Property = x, Value = y } );
-						return result;
-					} )
-				.NotNull()
-				.Apply( item => item.Property.SetValue( target, item.Value, null ) );
-			return target;*/
+			ServiceLocation.With<IDefaultValueProvider>( x => x.Apply( target ) );
 			return target;
 		}
 

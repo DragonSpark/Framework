@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Testing.TestObjects;
 using DragonSpark.Testing.TestObjects;
 using System;
 using System.Linq;

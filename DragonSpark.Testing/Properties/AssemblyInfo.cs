@@ -1,12 +1,11 @@
-﻿using System.Reflection;
-using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following 
+﻿// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DragonSpark.Testing")]
 [assembly: AssemblyDescription("")]
@@ -40,3 +39,4 @@ using DragonSpark.Testing.TestObjects;
 // TODO: Registration-by-convention should take care of this:
 [assembly: Register( typeof(ITypeDefinitionProvider), typeof(TypeDefinitionProvider) )]
 [assembly: Register( typeof(IMemberInfoLocator), typeof(MemberInfoLocator) )]
+[assembly: Register( typeof(IDefaultValueProvider), typeof(DefaultValueProvider) )]

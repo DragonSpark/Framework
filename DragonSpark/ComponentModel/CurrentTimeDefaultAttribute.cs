@@ -4,11 +4,12 @@ using System.Reflection;
 namespace DragonSpark.ComponentModel
 {
 	[AttributeUsage( AttributeTargets.Property )]
-	public sealed class CurrentTimeDefaultAttribute : DefaultPropertyValueAttribute
+	public sealed class CurrentTimeAttribute : DefaultAttribute
 	{
 		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
-			return DateTime.Now;
+			var result = propertyInfo.PropertyType == typeof(DateTime) ? (object)DateTime.UtcNow : DateTimeOffset.UtcNow;
+			return result;
 		}
 	}
 }
