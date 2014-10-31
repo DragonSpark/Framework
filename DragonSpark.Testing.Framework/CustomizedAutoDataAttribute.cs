@@ -1,13 +1,17 @@
+using System.Diagnostics;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using Ploeh.AutoFixture;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class CustomizedAutoDataAttribute : Ploeh.AutoFixture.Xunit.AutoDataAttribute
+	public class CustomizedAutoDataAttribute : AutoDataAttribute
 	{
 		readonly Type[] cutomizationTypes;
 
@@ -16,18 +20,27 @@ namespace DragonSpark.Testing.Framework
 			this.cutomizationTypes = cutomizationTypes;
 		}
 
+		static IEnumerable<T> Determine<T>( IEnumerable<Type> types )
+		{
+			var result = types.Where( typeof(T).IsAssignableFrom ).Select( Activator.CreateInstance<T> ).ToArray();
+			return result;
+		}
+
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest, Type[] parameterTypes )
 		{
-			var instances =  cutomizationTypes./*Where( x => typeof(ICustomization).IsAssignableFrom( x ) ).*/Select( Activator.CreateInstance ).ToArray();
-			instances.OfType<ICustomization>().Apply( x => Fixture.Customize( x ) );
-			var customizations = instances.OfType<IMethodCustomization>().ToArray();
-			
-			customizations.Apply( x => x.Customizing( methodUnderTest, parameterTypes ) );
+			var type = methodUnderTest.DeclaringType;
+			var customizers = type.Assembly.GetCustomAttributes()
+				.Concat( type.GetCustomAttributes() )
+				.Concat( methodUnderTest.GetCustomAttributes() ).OfType<ICustomization>();
+			var instances = Determine<ICustomization>( cutomizationTypes ).Concat( customizers ).Prioritize().ToArray();
 
+			instances.Apply( customization => customization.Customize( Fixture ) );
+
+			/*var customizations = instances.OfType<IMethodCustomization>().ToArray();
+			customizations.Apply( x => x.Customizing( methodUnderTest, parameterTypes ) );
+			customizations.Apply( x => x.Customized( methodUnderTest, parameterTypes, result ) );*/
+			
 			var result = base.GetData( methodUnderTest, parameterTypes );
-			
-			customizations.Apply( x => x.Customized( methodUnderTest, parameterTypes, result ) );
-			
 			return result;
 		}
 	}

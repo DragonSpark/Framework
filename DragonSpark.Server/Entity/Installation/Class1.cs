@@ -1,8 +1,4 @@
-﻿using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
-using DragonSpark.IoC;
-using DragonSpark.IoC.Build;
-using DragonSpark.Markup;
+﻿using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

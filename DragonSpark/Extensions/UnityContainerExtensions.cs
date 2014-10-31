@@ -1,36 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using DragonSpark.IoC;
+﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		static readonly IList<WeakReference> BuildCache = new List<WeakReference>();
+		static readonly IList<WeakReference<object>> BuildCache = new List<WeakReference<object>>();
 
 		public static bool BuildUpOnce( this object target )
 		{
 			var result = !BuildCache.Exists( target );
-			result.IsTrue( () => Microsoft.Practices.ServiceLocation.ServiceLocator.Current.TryGetInstance<IUnityContainer>().NotNull( x =>
+			result.IsTrue( () => ServiceLocation.With<IObjectBuilder>( x =>
 			{
-				x.BuildUp( target.GetType(), target );
-				BuildCache.Add( new WeakReference( target ) );
+				x.BuildUp( target );
+				BuildCache.Add( new WeakReference<object>( target ) );
 			} ) );
 			return result;
 		}
 
-		public static IUnityContainer FromConfiguration( this IUnityContainer container )
+		/*public static IUnityContainer FromConfiguration( this IUnityContainer container )
 		{
 			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => container.LoadConfiguration() ) );
 			return container;
-		}
+		}*/
 
-		public static TResult TryResolve<TResult>( this IUnityContainer target, string name = null )
+		/*public static TResult TryResolve<TResult>( this IUnityContainer target, string name = null )
 		{
 			try
 			{
@@ -39,11 +40,11 @@ namespace DragonSpark.Extensions
 			}
 			catch ( ResolutionFailedException )
 			{
-				return default( TResult );
+				return default(TResult);
 			}
-		}
+		}*/
 
-		public static Type ResolveType<TObject>( this IUnityContainer container, string name = null )
+		/*public static Type ResolveType<TObject>( this IUnityContainer container, string name = null )
 		{
 			return ResolveType( container, typeof(TObject), name );
 		}
@@ -62,9 +63,9 @@ namespace DragonSpark.Extensions
 				return registered ? type : null;
 			}
 			return null;
-		}
+		}*/
 
-		public static IEnumerable<Type> ResolveMappings<TObject>( this IUnityContainer container )
+		/*public static IEnumerable<Type> ResolveMappings<TObject>( this IUnityContainer container )
 		{
 			return ResolveMappings( container, typeof(TObject), null );
 		}
@@ -77,9 +78,9 @@ namespace DragonSpark.Extensions
 		public static IEnumerable<Type> ResolveMappings( this IUnityContainer container, Type type )
 		{
 			return ResolveMappings( container, type, null );
-		}
+		}*/
 
-		public static IEnumerable<Type> ResolveMappings( this IUnityContainer container, Type type, string name )
+		/*public static IEnumerable<Type> ResolveMappings( this IUnityContainer container, Type type, string name )
 		{
 			Microsoft.Practices.Unity.Utility.Guard.ArgumentNotNull( type, "type" );
 			var extension = container.Configure<IoCExtension>();
@@ -92,40 +93,41 @@ namespace DragonSpark.Extensions
 				}
 			}
 			return new Type[0];
-		}
+		}*/
 
-		public static bool IsRegisteredOrMapped<TObjectType>( this IUnityContainer container, string name = null )
+		/*public static bool IsRegisteredOrMapped<TObjectType>( this IUnityContainer container, string name = null )
 		{
 			var result = container.IsRegisteredOrMapped( typeof(TObjectType), name );
 			return result;
-		}
+		}*/
 
-		public static bool IsRegisteredOrMapped( this IUnityContainer container, Type type, string name = null )
+		/*public static bool IsRegisteredOrMapped( this IUnityContainer container, Type type, string name = null )
 		{
-			var result = container.IsRegistered( type, name ) || IsMapped( container, type, name );
+			var result = container.IsRegistered( type, name );
 			return result;
-		}
+		}*/
 
 		public static bool IsResolvable( this IUnityContainer container, Type type, string name = null )
 		{
-			var result = ( !type.IsInterface && !type.IsAbstract ) || container.IsRegisteredOrMapped( type, name );
+			var info = type.GetTypeInfo();
+			var result = !info.IsInterface || container.IsRegistered( type, name );
 			return result;
 		}
 
 
-		static bool IsMapped( IUnityContainer container, Type type, string name )
+		/*static bool IsMapped( IUnityContainer container, Type type, string name )
 		{
 			var result = container.Registrations.Transform( x => x.Any(y => y.MappedToType == type && y.Name == name) );
 			return result;
-		}
+		}*/
 
-		public static TContainer GetRootContainer<TContainer>( this TContainer target ) where TContainer : class, IUnityContainer
+		/*public static TContainer GetRootContainer<TContainer>( this TContainer target ) where TContainer : class, IUnityContainer
 		{
-			var result = target.ResolveFromParent( x => x.Parent.To<TContainer>(), x => x.Parent == null, x => x );
+			var result = target.Loop( x => x.Parent.To<TContainer>(), x => x.Parent == null, x => x );
 			return result;
-		}
+		}*/
 
-		public static TContainer RegisterDisposable<TContainer>( this TContainer target, IDisposable disposable ) where TContainer : IUnityContainer
+		/*public static TContainer RegisterDisposable<TContainer>( this TContainer target, IDisposable disposable ) where TContainer : IUnityContainer
 		{
 			var extension = EnsureExtension( target );
 			if ( !extension.Disposables.Contains( disposable ) )
@@ -133,31 +135,32 @@ namespace DragonSpark.Extensions
 				extension.Disposables.Add( disposable );
 			}
 			return target;
-		}
+		}*/
 
 		public static TContainer DisposeAll<TContainer>( this TContainer target ) where TContainer : IUnityContainer
 		{
-			var extension = EnsureExtension( target );
+			var extension = EnsureExtension<IoCExtension>( target );
 			var container = extension.LifetimeContainer;
 			var entries = target.GetLifetimeEntries().Where( x => x.Value == (object)target ).Select( x => x.Key ).ToArray();
 			entries.Apply( container.Remove );
-			extension.Children.NotNull( x => x.ToArray().Apply( y => y.DisposeAll() ) );
-			extension.Disposables.Apply( x => x.Dispose() );
+			extension.Children.ToArray().Apply( y => y.DisposeAll() );
+			// extension.Disposables.Apply( x => x.Dispose() );
+			target.RemoveAllExtensions();
 			target.Dispose();
 			return target;
 		}
 
 		public static TResult Create<TResult>( this IUnityContainer target, params object[] parameters )
 		{
-			var result = EnsureExtension( target ).Create<TResult>( parameters );
+			var result = EnsureExtension<IoCExtension>( target ).Create( typeof(TResult), parameters ).To<TResult>();
 			return result;
 		}
 
-		public static object Create( this IUnityContainer target, Type type, params object[] parameters )
+		/*public static object Create( this IUnityContainer target, Type type, params object[] parameters )
 		{
 			var result = EnsureExtension( target ).Create( type, parameters );
 			return result;
-		}
+		}*/
 
 		public static IEnumerable<LifetimeEntry> GetLifetimeEntries( this IUnityContainer target )
 		{
@@ -168,30 +171,33 @@ namespace DragonSpark.Extensions
 
 		static LifetimeEntry ResolveLifetimeEntry( object x )
 		{
-			var resolveLifetimeEntry = x.As<ILifetimePolicy>().Transform( y => new LifetimeEntry( y, y.GetValue() ), () => new LifetimeEntry( x ) );
-			return resolveLifetimeEntry;
+			var result = x.AsTo<ILifetimePolicy, LifetimeEntry>( y => new LifetimeEntry( y, y.GetValue() ), () => new LifetimeEntry( x ) );
+			return result;
 		}
 
 		public static ILifetimeContainer GetLifetimeContainer( this IUnityContainer target )
 		{
-			var result = EnsureExtension( target ).LifetimeContainer;
+			var result = EnsureExtension<IoCExtension>( target ).LifetimeContainer;
 			return result;
 		}
 
-		public static IEnumerable<NamedTypeBuildKey> GetBuildKeyStack( this IUnityContainer target )
+		/*public static IEnumerable<NamedTypeBuildKey> GetBuildKeyStack( this IUnityContainer target )
 		{
 			var result = EnsureExtension( target ).CurrentBuildKeyStrategy.Stack;
 			return result;
+		}*/
+
+		public static TExtension EnsureExtension<TExtension>( this IUnityContainer container ) where TExtension : UnityContainerExtension
+		{
+			var result = (TExtension)container.EnsureExtension( typeof(TExtension) );
+			return result;
 		}
 
-		static IoCExtension EnsureExtension( IUnityContainer container )
+		public static IUnityContainerExtensionConfigurator EnsureExtension( this IUnityContainer container, Type extensionType )
 		{
-			var extension = container.Configure<IoCExtension>();
-			if ( extension == null )
-			{
-				container.AddExtension( extension = new IoCExtension() );
-			}
-			return extension;
+			var extension = container.Configure( extensionType ) ?? container.AddExtension( Activator.CreateInstance<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
+			var result = (IUnityContainerExtensionConfigurator)extension;
+			return result;
 		}
 	}
 }

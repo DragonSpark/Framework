@@ -24,7 +24,7 @@ namespace DragonSpark.Activation
 
 		protected virtual TResult FromActivation( TParameter parameter )
 		{
-			var result = System.Activator.CreateInstance<TResult>();
+			var result = Activator.Create<TResult>();
 			return result;
 		}
 

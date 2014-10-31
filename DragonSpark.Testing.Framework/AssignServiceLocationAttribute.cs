@@ -1,23 +1,26 @@
-using System.Reflection;
 using DragonSpark.Activation;
-using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
+using System.Collections.Generic;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class AssignServiceLocationAttribute : BeforeAfterTestAttribute
+	[Priority( Priority.High )]
+	public class AssignServiceLocationAttribute : BeforeAfterTestAttribute, ICustomization
 	{
-		public override void Before( MethodInfo methodUnderTest )
-		{
-			base.Before( methodUnderTest );
+		static readonly List<string>  TestsList = new List<string>();
 
-			var serviceLocator = Fixture.Current.Create<IServiceLocator>();
-			ServiceLocation.Assign( serviceLocator );
+		public void Customize( IFixture fixture )
+		{
+			var locator = new ServiceLocator( fixture );
+			ServiceLocation.Assign( locator );
 		}
-		
+
 		public override void After( MethodInfo methodUnderTest )
 		{
+			TestsList.Add( methodUnderTest.Name );
+
 			base.After( methodUnderTest );
 
 			ServiceLocation.Assign( null );

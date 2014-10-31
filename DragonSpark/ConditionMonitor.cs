@@ -5,16 +5,21 @@ namespace DragonSpark
 {
 	public class ConditionMonitor
 	{
-		public bool Applied { get; private set; }
+		bool? applied;
+
+		public bool Applied
+		{
+			get { return applied.GetValueOrDefault(); }
+		}
 
 		public void Reset()
 		{
-			Applied = false;
+			applied = null;
 		}
 
 		public bool Apply()
 		{
-			var result = !Applied && ( Applied = true );
+			var result = !Applied && (bool)( applied = true );
 			return result;
 		}
 
@@ -25,13 +30,15 @@ namespace DragonSpark
 
 		public bool ApplyIf( Func<bool> condition, Action action )
 		{
-			var original = Applied;
-			if ( !Applied )
+			var current = applied.HasValue;
+			if ( !current )
 			{
-				Applied = condition.Transform( item => item(), () => true );
-				Applied.IsTrue( action );
+				applied = false;
+				var updated = condition.Transform( item => item(), () => true );
+				updated.IsTrue( action );
+				applied = updated ? true : (bool?)null;
 			}
-			var result = !original && Applied;
+			var result = !current && Applied;
 			return result;
 		}
 	}

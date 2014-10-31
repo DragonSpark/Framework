@@ -1,16 +1,14 @@
 using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.TestObjects;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Testing.TestObjects;
 using Xunit;
-using Xunit.Extensions;
 
 namespace DragonSpark.Testing.Extensions
 {
 	public class WeakReferenceListExtensionsTests
 	{
-		[Theory, AutoData]
+		[Fact]
 		void CheckWith()
 		{
 			var list = new List<WeakReference<Class>>();

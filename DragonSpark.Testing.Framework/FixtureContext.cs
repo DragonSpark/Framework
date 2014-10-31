@@ -2,7 +2,7 @@ using Ploeh.AutoFixture;
 
 namespace DragonSpark.Testing.Framework
 {
-	public static class Fixture
+	public static class FixtureContext
 	{
 		static readonly string Key = typeof(IFixture).AssemblyQualifiedName;
 

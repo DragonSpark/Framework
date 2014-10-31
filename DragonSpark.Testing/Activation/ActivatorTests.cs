@@ -26,7 +26,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, AutoData, AssignServiceLocation]
+		[Theory, AutoDataCustomization, AssignServiceLocation]
 		public void CreateInstance()
 		{
 			var instance = DragonSpark.Activation.Activator.CreateInstance<IObject>( typeof(Object) );
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, AutoData, AssignServiceLocation]
+		[Theory, AutoDataCustomization, AssignServiceLocation]
 		public void CreateNamedInstance( string name )
 		{
 			var instance = DragonSpark.Activation.Activator.CreateNamedInstance<IObject>( typeof(Object), name );
@@ -46,14 +46,14 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, Framework.AutoData, AssignServiceLocation]
+		[Theory, Framework.AutoDataCustomization, AssignServiceLocation]
 		public void CreateItem()
 		{
 			var parameters = new object[] { typeof(Object), "This is Some Name." };
 			var instance = DragonSpark.Activation.Activator.Create<Item>( parameters );
 			Assert.NotNull( instance );
 
-			Assert.Same( parameters, instance.Parameters );
+			Assert.Equal( parameters, instance.Parameters );
 		}
 	}
 }

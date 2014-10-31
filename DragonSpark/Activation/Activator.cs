@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.Activation
 {
@@ -24,7 +25,13 @@ namespace DragonSpark.Activation
 
 		public static TResult Create<TResult>( params object[] parameters )
 		{
-			var result = ResolveActivator().Create<TResult>( parameters );
+			var result = (TResult)Create( typeof(TResult), parameters );
+			return result;
+		}
+
+		public static object Create( Type type, params object[] parameters )
+		{
+			var result = ResolveActivator().InvokeGeneric( "Create", new [] { type }, parameters );
 			return result;
 		}
 	} 

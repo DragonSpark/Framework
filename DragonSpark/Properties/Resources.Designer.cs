@@ -62,128 +62,38 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error has occurred while consuming this service. Please contact your administrator for more information. Error ID: {handlingInstanceID}.
+        ///   Looks up a localized string similar to Could not resolve type &quot;{0}&quot; with build name &quot;{1}&quot;.  Details: {2}.
         /// </summary>
-        internal static string Message_AnErrorHasOccuredWhileConsumingThisService {
+        internal static string Activator_CouldNotActivate {
             get {
-                return ResourceManager.GetString("Message_AnErrorHasOccuredWhileConsumingThisService", resourceCulture);
+                return ResourceManager.GetString("Activator_CouldNotActivate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking access on Resource:{0}, Action:{1} for Principal:{2}.
+        ///   Looks up a localized string similar to &lt;None&gt;.
         /// </summary>
-        internal static string Message_CheckingAccess {
+        internal static string Activator_None {
             get {
-                return ResourceManager.GetString("Message_CheckingAccess", resourceCulture);
+                return ResourceManager.GetString("Activator_None", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource {0} not found in {1}..
+        ///   Looks up a localized string similar to container.
         /// </summary>
-        internal static string Message_DefaultResourceManager {
+        internal static string ServiceLocator_Container {
             get {
-                return ResourceManager.GetString("Message_DefaultResourceManager", resourceCulture);
+                return ResourceManager.GetString("ServiceLocator_Container", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initializing Interface....
+        ///   Looks up a localized string similar to Specified type is not registered: &quot;{0}&quot; with build name &quot;{1}&quot;..
         /// </summary>
-        internal static string Message_InitializingInterface {
+        internal static string ServiceLocator_NotRegistered {
             get {
-                return ResourceManager.GetString("Message_InitializingInterface", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading....
-        /// </summary>
-        internal static string Message_Loading {
-            get {
-                return ResourceManager.GetString("Message_Loading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading policy for Resource:{0}, Action:{1}.
-        /// </summary>
-        internal static string Message_LoadingPolicyForResource {
-            get {
-                return ResourceManager.GetString("Message_LoadingPolicyForResource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There were problems while copying the directory &apos;{0}&apos;.  The encountered problems are as follows:{1}{2}.
-        /// </summary>
-        internal static string Message_Logging_DirectoryInfo {
-            get {
-                return ResourceManager.GetString("Message_Logging_DirectoryInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No busy indicator with name &apos;{0}&apos; was found in the UI hierarchy. Using modal..
-        /// </summary>
-        internal static string Message_NoBusyIndicatorFound {
-            get {
-                return ResourceManager.GetString("Message_NoBusyIndicatorFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Argument is null..
-        /// </summary>
-        internal static string Message_Null {
-            get {
-                return ResourceManager.GetString("Message_Null", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specified argument is null or empty..
-        /// </summary>
-        internal static string Message_NullOrEmpty {
-            get {
-                return ResourceManager.GetString("Message_NullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A property that&apos;s part of a key was not found..
-        /// </summary>
-        internal static string Message_PropertyNotFound {
-            get {
-                return ResourceManager.GetString("Message_PropertyNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An exception occured while setting the property &apos;{0}&apos; of object type &apos;{1}&apos; to a value of type &apos;{2}&apos; with value &apos;{3}&apos;: {4}..
-        /// </summary>
-        internal static string Message_SynchronizationContext_LoggingMessage {
-            get {
-                return ResourceManager.GetString("Message_SynchronizationContext_LoggingMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Created Directory: {0}..
-        /// </summary>
-        internal static string Message_Workspace_Created {
-            get {
-                return ResourceManager.GetString("Message_Workspace_Created", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleted Directory: {0}..
-        /// </summary>
-        internal static string Message_Workspace_Dispose {
-            get {
-                return ResourceManager.GetString("Message_Workspace_Dispose", resourceCulture);
+                return ResourceManager.GetString("ServiceLocator_NotRegistered", resourceCulture);
             }
         }
     }

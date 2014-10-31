@@ -214,6 +214,11 @@
     <Compile Include="Activation\IFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Activation\IoC\Activator.cs" />
+    <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
+    <Compile Include="Activation\IoC\IoCExtension.cs" />
+    <Compile Include="Activation\IoC\LifetimeEntry.cs" />
+    <Compile Include="Activation\IoC\ServiceLocator.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
@@ -253,6 +258,7 @@
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ITracer.cs" />
     <Compile Include="Diagnostics\Log.cs" />
+    <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAllowsPriority.cs" />

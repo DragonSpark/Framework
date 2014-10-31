@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using DragonSpark.Activation;
+﻿using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
@@ -11,79 +10,115 @@ using System.Linq;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocationCustomization : ServiceLocatorImplBase, ICustomization, IServiceRegistry, IMethodCustomization
+	public class ServiceLocator : ServiceLocatorImplBase
 	{
-		IFixture Fixture { get; set; }
+		readonly SpecimenContext context;
 
-		public void Customize( IFixture fixture )
+		/*public ServiceLocator() : this( new Fixture() )
+		{}*/
+
+		public ServiceLocator( IFixture fixture )
 		{
-			Fixture = fixture;
+			context = new SpecimenContext( fixture );
 
-			new[] { typeof(IServiceLocator), typeof(IServiceRegistry) }.Apply( x => Register( x, this ) );
+			var support = new FixtureSupport( fixture );
+			support.RegisterInstance<IServiceLocator>( this );
+			support.RegisterInstance<IServiceRegistry>( support );
+			support.RegisterInstance( fixture );
 		}
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
-			var result = new SpecimenContext( Fixture ).Resolve( new SeededRequest( serviceType, null ) );
+			var result = context.Resolve( serviceType );
 			return result;
 		}
 
 		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
 		{
-			var result = new SpecimenContext( Fixture ).Resolve( new MultipleRequest( new SeededRequest( serviceType, null ) ) ).To<IEnumerable>().Cast<object>().ToArray();
+			var result = context.Resolve( new MultipleRequest( serviceType ) ).To<IEnumerable>().Cast<object>().ToArray();
 			return result;
 		}
+	}
 
-		public void Register( Type @from, Type mappedTo )
+	class FixtureSupport : IServiceRegistry
+	{
+		readonly IFixture fixture;
+
+		public FixtureSupport( IFixture fixture )
 		{
-			this.GenericInvoke( "Register", new[] { from, mappedTo } );
+			this.fixture = fixture;
 		}
 
-		void Register<TFrom, TTo>() where TTo : TFrom
+		public void Register( Type @from, Type mappedTo, string name = null )
 		{
-			Fixture.Customize<TFrom>( c => c.FromFactory( () => Fixture.Create<TTo>() ) );
+			this.InvokeGenericAction( "Register", new[] { from, mappedTo } );
+		}
+
+		public void Register<TFrom, TTo>() where TTo : TFrom
+		{
+			fixture.Customize<TFrom>( c => c.FromFactory( () => fixture.Create<TTo>() ) );
 		}
 
 		public void Register( Type type, object instance )
 		{
-			this.GenericInvoke( "RegisterInstance", new[] { type }, instance );
+			this.InvokeGenericAction( "RegisterInstance", new[] { type }, instance );
 		}
 
-		void RegisterInstance<T>( T instance )
+		public void RegisterInstance<T>( T instance )
 		{
-			Fixture.Customize<T>( c => c.FromFactory( () => instance ).OmitAutoProperties() );
+			fixture.Customize<T>( c => c.FromFactory( () => instance ).OmitAutoProperties() );
 		}
 
 		public void RegisterFactory( Type type, Func<object> factory )
 		{
-			this.GenericInvoke( "RegisterFactory", new[] { type }, factory );
+			this.InvokeGenericAction( "RegisterFactory", new[] { type }, factory );
 		}
 
-		void RegisterFactory<T>( Func<object> factory )
+		public void RegisterFactory<T>( Func<object> factory )
 		{
-			Fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
+			fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
 		}
+	}
 
-		static T[] GetAll<T>( MemberInfo method ) where T : RegistrationAttribute
+	/*interface IMethodAware
+	{
+		void Customize( MethodInfo methodUnderTest );
+	}
+
+	public class ApplyRegistrationsCustomization : IMethodAware
+	{
+		
+
+		/*public void Customizing( MethodInfo methodUnderTest )
 		{
-			var type = method.DeclaringType;
-			var result = type.Assembly.GetCustomAttributes<T>()
-				.Concat( type.GetAttributes<T>() )
-				.Concat( method.GetAttributes<T>() ).ToArray();
-			return result;
-		}
+			/*var register = GetAll<RegisterAttribute>( methodUnderTest );
+			register.Apply( x => Register( x.From, x.To ) );#2#
 
-		public void Customizing( MethodInfo methodUnderTest, Type[] parameterTypes )
-		{
-			var register = GetAll<RegisterAttribute>( methodUnderTest );
-			register.Apply( x => Register( x.From, x.To ) );
-
-			GetAll<FreezeAttribute>( methodUnderTest ).Where( x => !x.After ).Apply( x => Register( x.From, GetInstance( x.To ) ) );
+			Apply( methodUnderTest, x => !x.After );
 		}
 
 		public void Customized( MethodInfo methodUnderTest, Type[] parameterTypes, IEnumerable<object[]> parameters )
 		{
-			GetAll<FreezeAttribute>( methodUnderTest ).Where( x => x.After ).Apply( x => Register( x.From, GetInstance( x.To ) ) );
+			Apply( methodUnderTest, x => x.After );
+		}#1#
+
+		void Apply( MemberInfo methodUnderTest, Func<FreezeAttribute, bool> where )
+		{
+			/*GetAll<FreezeAttribute>( methodUnderTest )
+				.Where( where )
+				.Apply( x => Register( x.From, x.GetInstance( this, x.To ) ) );#1#
 		}
-	}
+
+		/*public void Customize( IFixture fixture )
+		{
+			// var info = fixture.Create<MemberInfo>();
+
+			/*var register = GetAll<RegisterAttribute>( methodUnderTest );
+			register.Apply( x => Register( x.From, x.To ) );#2#
+		}#1#
+
+		public void Customize( MethodInfo methodUnderTest )
+		{
+		}
+	}*/
 }

@@ -1,23 +1,28 @@
-﻿using System;
-using Dynamitey;
+﻿using Dynamitey;
+using System;
 
 namespace DragonSpark.Extensions
 {
 	public static class ReflectionExtensions
 	{
-		public static void GenericInvoke( this Type @this, string methodName, Type[] types, params object[] parameters )
+		public static object InvokeGeneric( this object @this, string methodName, Type[] types, params object[] parameters )
 		{
-			Invoke( InvokeContext.CreateStatic( @this ), methodName, types, parameters );
+			return Invoke( @this.AsTo<Type, object>( InvokeContext.CreateStatic ) ?? @this, methodName, types, parameters );
 		}
 
-		public static void GenericInvoke( this object @this, string methodName, Type[] types, params object[] parameters )
+		public static void InvokeGenericAction( this object @this, string methodName, Type[] types, params object[] parameters )
 		{
-			Invoke( @this, methodName, types, parameters );
+			InvokeAction( @this.AsTo<Type, object>( InvokeContext.CreateStatic ) ?? @this, methodName, types, parameters );
 		}
 
-		static void Invoke( object @this, string methodName, Type[] types, object[] parameters )
+		static void InvokeAction( object @this, string methodName, Type[] types, object[] parameters )
 		{
 			Dynamic.InvokeMemberAction( @this, InvokeMemberName.Create( methodName, types ), parameters );
+		}
+
+		static object Invoke( object @this, string methodName, Type[] types, object[] parameters )
+		{
+			return Dynamic.InvokeMember( @this, InvokeMemberName.Create( methodName, types ), parameters );
 		}
 	}
 }

@@ -1,15 +1,18 @@
 ﻿using System;
+using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using Xunit;
 using Xunit.Extensions;
+using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.ComponentModel
 {
+	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class DefaultValueProviderTests
 	{
-		[Theory, AutoData, AssignServiceLocation]
+		[Theory, AutoDataCustomization, AssignServiceLocation]
 		void Apply( DefaultValueProvider sut )
 		{
 			var current = DateTime.UtcNow;
@@ -32,8 +35,8 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.NotEqual( DateTime.MinValue, target.CurrentDateTime );
 			Assert.NotEqual( DateTimeOffset.MinValue, target.CurrentDateTimeOffset );
 
-			Assert.True( target.CurrentDateTime > current );
-			Assert.True( target.CurrentDateTimeOffset > current );
+			Assert.True( target.CurrentDateTime >= current );
+			Assert.True( target.CurrentDateTimeOffset >= current );
 
 			Assert.NotNull( target.Activated );
 

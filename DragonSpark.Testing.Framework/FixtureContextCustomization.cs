@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Framework
 	{
 		public void Customize( IFixture fixture )
 		{
-			Fixture.Current = fixture;
+			FixtureContext.Current = fixture;
 		}
 	}
 }

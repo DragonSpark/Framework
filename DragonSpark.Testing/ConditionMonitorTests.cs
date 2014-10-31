@@ -1,9 +1,21 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
+using DragonSpark.Extensions;
 using Xunit;
 using Xunit.Extensions;
+using Xunit.Sdk;
 
 namespace DragonSpark.Testing
 {
+	/*public class TheoryAttribute : Xunit.Extensions.TheoryAttribute
+	{
+		protected override IEnumerable<ITestCommand> EnumerateTestCommands( IMethodInfo method )
+		{
+			return base.EnumerateTestCommands( method ).Concat( this.AsItem() );
+		}
+	}*/
+
 	public class ConditionMonitorTests
 	{
 		[Theory, Framework.AutoMockData]

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
+using Dynamitey.DynamicObjects;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
@@ -24,6 +26,7 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		public void GetItemType()
 		{
+			Assert.Equal( typeof(Class), typeof(List<Class>).GetItemType() );
 			Assert.Equal( typeof(Class), typeof(Class[]).GetItemType() );
 			Assert.Null( typeof(Class).GetItemType() );
 		}

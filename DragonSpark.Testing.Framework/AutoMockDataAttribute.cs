@@ -4,7 +4,7 @@ namespace DragonSpark.Testing.Framework
 {
 	public class AutoMockDataAttribute : CustomizedAutoDataAttribute
 	{
-		public AutoMockDataAttribute() : base( typeof(FixtureContextCustomization), typeof(AutoMoqCustomization), typeof(ServiceLocationCustomization) )
+		public AutoMockDataAttribute() : base( typeof(AutoMoqCustomization) )
 		{}
 	}
 }

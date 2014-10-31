@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Framework.Testing
 {
 	public class ThreadLocalStorageTests
 	{
-		[Theory, AutoData]
+		[Theory, AutoDataCustomization]
 		void Push( Class sut )
 		{
 			using ( ThreadLocalStorage.Push( sut ) )

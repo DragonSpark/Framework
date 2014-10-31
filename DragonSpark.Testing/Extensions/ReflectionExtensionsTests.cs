@@ -7,14 +7,14 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class ReflectionExtensionsTests
 	{
-		[Theory, Framework.AutoData]
+		[Theory, Framework.AutoDataCustomization]
 		void GenericInvoke( Class @class )
 		{
-			typeof(Static).GenericInvoke( "Assign", new []{ typeof(Class) }, null );
+			typeof(Static).InvokeGenericAction( "Assign", new []{ typeof(Class) }, null );
 			
 			Assert.Null( Static.Instance );
 			
-			typeof(Static).GenericInvoke( "Assign", new []{ typeof(Class) }, @class );
+			typeof(Static).InvokeGenericAction( "Assign", new []{ typeof(Class) }, @class );
 
 			Assert.Equal( @class, Static.Instance );
 		}

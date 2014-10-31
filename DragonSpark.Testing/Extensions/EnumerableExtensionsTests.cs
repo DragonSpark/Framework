@@ -2,6 +2,7 @@
 using DragonSpark.Testing.TestObjects;
 using System;
 using System.Linq;
+using Ploeh.AutoFixture.Xunit;
 using Xunit;
 using Xunit.Extensions;
 
@@ -33,7 +34,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.IsType<LowPriority>( items.Last() );
 		}
 
-		[Theory, Framework.AutoData]
+		[Theory, AutoData]
 		void AsItem( object[] sut, object item )
 		{
 			var items = item.AsItem( sut );
@@ -43,7 +44,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Single( item.AsItem(), item );
 		}
 
-		[Theory, Framework.AutoData]
+		[Theory, AutoData]
 		void Adding( object[] sut, object item )
 		{
 			var items = sut.Adding( item );
@@ -51,7 +52,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.First(), items.First() );
 		}
 
-		[Theory, Framework.AutoData]
+		[Theory, AutoData]
 		public void TupleWith( Type[] types, string[] strings )
 		{
 			var tuple = types.TupleWith( strings ).ToList();
@@ -66,7 +67,7 @@ namespace DragonSpark.Testing.Extensions
 			} );
 		}
 
-		[Theory, Framework.AutoData]
+		[Theory, AutoData]
 		void FirstOrDefaultOfType( Class first, ClassWithParameter second, string third, Derived fourth )
 		{
 			var items = new object[] { first, second, third, fourth };

@@ -1,3 +1,6 @@
+using System;
+using Microsoft.Practices.Unity;
+
 namespace DragonSpark.Testing.TestObjects
 {
 	public class ClassWithParameter : IClassWithParameter, IInterface
@@ -7,6 +10,49 @@ namespace DragonSpark.Testing.TestObjects
 		public ClassWithParameter( object parameter )
 		{
 			Parameter = parameter;
+		}
+	}
+
+	class ClassCreatedFromDefault
+	{
+		static int count = 0;
+
+		public ClassCreatedFromDefault( string message )
+		{
+			switch ( count++ )
+			{
+				case 0:
+					throw new ResolutionFailedException( GetType(), null, new InvalidOperationException( message ), null );
+			}
+		}
+	}
+
+	class ClassWithManyParameters
+	{
+		readonly string s;
+		readonly int integer;
+		readonly Class @class;
+
+		public ClassWithManyParameters( string @string, int integer, Class @class )
+		{
+			s = @string;
+			this.integer = integer;
+			this.@class = @class;
+		}
+
+		public string String
+		{
+			get { return s; }
+		}
+
+		public int Integer
+		{
+			get { return integer; }
+		}
+
+		public Class Class
+		{
+			get { return @class; }
 		}
 	}
 }

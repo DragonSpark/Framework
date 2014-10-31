@@ -117,46 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Message_NoBusyIndicatorFound" xml:space="preserve">
-    <value>No busy indicator with name '{0}' was found in the UI hierarchy. Using modal.</value>
+	<data name="Activator_CouldNotActivate" xml:space="preserve">
+    <value>Could not resolve type "{0}" with build name "{1}".  Details: {2}</value>
   </data>
-  <data name="Message_CheckingAccess" xml:space="preserve">
-    <value>Checking access on Resource:{0}, Action:{1} for Principal:{2}</value>
+	<data name="Activator_None" xml:space="preserve">
+    <value>&lt;None&gt;</value>
   </data>
-  <data name="Message_LoadingPolicyForResource" xml:space="preserve">
-    <value>Loading policy for Resource:{0}, Action:{1}</value>
+	<data name="ServiceLocator_NotRegistered" xml:space="preserve">
+    <value>Specified type is not registered: "{0}" with build name "{1}".</value>
   </data>
-  <data name="Message_InitializingInterface" xml:space="preserve">
-    <value>Initializing Interface...</value>
-  </data>
-  <data name="Message_AnErrorHasOccuredWhileConsumingThisService" xml:space="preserve">
-    <value>An error has occurred while consuming this service. Please contact your administrator for more information. Error ID: {handlingInstanceID}</value>
-  </data>
-  <data name="Message_Loading" xml:space="preserve">
-    <value>Loading...</value>
-  </data>
-  <data name="Message_PropertyNotFound" xml:space="preserve">
-    <value>A property that's part of a key was not found.</value>
-  </data>
-  <data name="Message_NullOrEmpty" xml:space="preserve">
-    <value>Specified argument is null or empty.</value>
-  </data>
-  <data name="Message_Null" xml:space="preserve">
-    <value>Argument is null.</value>
-  </data>
-  <data name="Message_Logging_DirectoryInfo" xml:space="preserve">
-    <value>There were problems while copying the directory '{0}'.  The encountered problems are as follows:{1}{2}</value>
-  </data>
-  <data name="Message_SynchronizationContext_LoggingMessage" xml:space="preserve">
-    <value>An exception occured while setting the property '{0}' of object type '{1}' to a value of type '{2}' with value '{3}': {4}.</value>
-  </data>
-  <data name="Message_Workspace_Dispose" xml:space="preserve">
-    <value>Deleted Directory: {0}.</value>
-  </data>
-  <data name="Message_Workspace_Created" xml:space="preserve">
-    <value>Created Directory: {0}.</value>
-  </data>
-  <data name="Message_DefaultResourceManager" xml:space="preserve">
-    <value>Resource {0} not found in {1}.</value>
+	<data name="ServiceLocator_Container" xml:space="preserve">
+    <value>container</value>
   </data>
 </root>

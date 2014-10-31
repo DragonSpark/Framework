@@ -1,6 +1,6 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.Diagnostics
 {
@@ -26,11 +26,17 @@ namespace DragonSpark.Diagnostics
 			Handle( x => x.Fatal, exception, contextId );
 		}
 
+		public static string GetMessage( this Exception exception, Guid? contextId = null )
+		{
+			var result = ServiceLocation.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
+			return result;
+		}
+
 		static void Handle( Func<ILogger, Action<string, Exception>> determineHandler, Exception exception, Guid? contextId = null )
 		{
 			ServiceLocation.With<ILogger>( x =>
 			{
-				var message = ServiceLocation.With<IExceptionFormatter,string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
+				var message = exception.GetMessage( contextId );
 				var handler = determineHandler( x );
 				handler( message, exception );
 			} );

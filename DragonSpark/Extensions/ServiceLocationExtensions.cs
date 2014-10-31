@@ -6,14 +6,14 @@ namespace DragonSpark.Extensions
 {
 	public static class ServiceLocationExtensions
 	{
-		public static void Register<TFrom, TTo>( this IServiceLocator target )
+		public static void Register<TFrom, TTo>( this IServiceLocator target, string name = null )
 		{
-			Register( target, typeof(TFrom), typeof(TTo) );
+			Register( target, typeof(TFrom), typeof(TTo), name );
 		}
 
-		public static void Register( this IServiceLocator target, Type from, Type to )
+		public static void Register( this IServiceLocator target, Type from, Type to, string name = null )
 		{
-			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( from, to ) );
+			target.TryGetInstance<IServiceRegistry>().NotNull( x => x.Register( from, to, name ) );
 		}
 
 		public static void Register( this IServiceLocator target, Type type, object instance )
