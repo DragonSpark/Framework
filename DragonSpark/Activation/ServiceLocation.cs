@@ -59,14 +59,15 @@ namespace DragonSpark.Activation
 
 		public static bool IsAvailable()
 		{
-			try
+			return ServiceLocator.IsLocationProviderSet;
+			/*try
 			{
 				return ServiceLocator.Current != null;
 			}
 			catch ( InvalidOperationException )
 			{
 				return false;
-			}
+			}*/
 		}
 	}
 }

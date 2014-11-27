@@ -2,8 +2,9 @@ using System;
 using System.IO;
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
+using Microsoft.Practices.EnterpriseLibrary.SemanticLogging;
 
-namespace DragonSpark.Testing.Server
+namespace DragonSpark.Stationed
 {
 	public class EnterpriseLibraryExceptionFormatter : IExceptionFormatter
 	{
@@ -12,6 +13,10 @@ namespace DragonSpark.Testing.Server
 			var writer = new StringWriter();
 			new TextExceptionFormatter( writer, exception, contextId.GetValueOrDefault() ).Format();
 			var result = writer.GetStringBuilder().ToString();
+
+			/*var listener = new ObservableEventListener();
+			listener.LogToConsole()*/
+
 			return result;
 		}
 	}

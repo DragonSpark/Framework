@@ -1,7 +1,6 @@
 using DragonSpark.ComponentModel;
-using DragonSpark.Testing.Server;
 
-namespace DragonSpark.Testing.TestObjects
+namespace DragonSpark.Stationed
 {
 	public class TypeDefinitionProvider : CompositeTypeDefinitionProvider
 	{

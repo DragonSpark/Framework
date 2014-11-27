@@ -1,8 +1,33 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace DragonSpark.Extensions
 {
+	public static class AssemblyLocatorExtensions
+	{
+		static readonly Dictionary<IAssemblyLocator, TypeInfo[]> TypeCache = new Dictionary<IAssemblyLocator, TypeInfo[]>();
+
+		public static IEnumerable<Tuple<TAttribute, TypeInfo>> GetAllTypesWith<TAttribute>( this IAssemblyLocator target ) where TAttribute : Attribute
+		{
+			var result = from type in TypeCache.Ensure( target, ResolveTypes )
+			             let attribute = type.GetAttribute<TAttribute>()
+			             where attribute != null
+			             select new Tuple<TAttribute, TypeInfo>( attribute, type );
+			return result;
+		}
+
+		static TypeInfo[] ResolveTypes( IAssemblyLocator target )
+		{
+			var query = from assembly in target.GetAllAssemblies()
+			            from type in assembly.DefinedTypes
+			            select type;
+			var result = query.ToArray();
+			return result;
+		}
+	}
+
 	public static class AssemblyExtensions
 	{
 		/*public static string[] GetResourceNames( this Assembly @this )

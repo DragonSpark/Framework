@@ -3,7 +3,7 @@ using DragonSpark.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 
-namespace DragonSpark.Testing.Server
+namespace DragonSpark.Stationed
 {
 	public class ExceptionHandler : IExceptionHandler
 	{

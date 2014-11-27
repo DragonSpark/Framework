@@ -1,9 +1,9 @@
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
-using System;
-
 namespace DragonSpark.Diagnostics
 {
+	using System;
+	using Activation;
+	using Extensions;
+
 	public static class Log
 	{
 		public static void Information( string message, Priority priority = Priority.Normal )
@@ -32,20 +32,10 @@ namespace DragonSpark.Diagnostics
 			return result;
 		}
 
-		static void Handle( Func<ILogger, Action<string, Exception>> determineHandler, Exception exception, Guid? contextId = null )
-		{
-			ServiceLocation.With<ILogger>( x =>
-			{
-				var message = exception.GetMessage( contextId );
-				var handler = determineHandler( x );
-				handler( message, exception );
-			} );
-		}
-
-		public static void Trace( this Action action, string message, Guid? guid = null )
+		/*public static void Trace( this Action action, string message, Guid? guid = null )
 		{
 			ServiceLocation.With<ITracer>( x => x.Trace( action, message, guid ) );
-		}
+		}*/
 
 		public static Exception Try( this Action action )
 		{
@@ -65,6 +55,16 @@ namespace DragonSpark.Diagnostics
 		{
 			var exception = action.Try();
 			exception.NotNull( x => ServiceLocation.With<IExceptionHandler>( y => y.Process( x ) ) );
+		}
+
+		static void Handle( Func<ILogger, Action<string, Exception>> determineHandler, Exception exception, Guid? contextId = null )
+		{
+			ServiceLocation.With<ILogger>( x =>
+			{
+				var message = exception.GetMessage( contextId );
+				var handler = determineHandler( x );
+				handler( message, exception );
+			} );
 		}
 	}
 }

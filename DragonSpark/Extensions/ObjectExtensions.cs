@@ -12,14 +12,19 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		public static TResult MapInto<TResult>( this object source )
+		public static TResult Clone<TResult>( this TResult @this ) where TResult : class
+		{
+			var result = @this.MapInto<TResult>();
+			return result;
+		}
+		public static TResult MapInto<TResult>( this object source, TResult existing = null ) where TResult : class 
 		{
 			var type = source.GetType();
 				
 			Mapper.FindTypeMapFor( type, typeof(TResult) ).Null( () =>
 			{
 				Mapper.CreateMap( type, typeof(TResult) );
-				Mapper.FindTypeMapFor( type, typeof(TResult) ).DestinationCtor = x => Activation.Activator.CreateInstance<object>( x.DestinationType );
+				Mapper.FindTypeMapFor( type, typeof(TResult) ).DestinationCtor = x => existing ?? Activation.Activator.CreateInstance<object>( x.DestinationType );
 			} );
 			var result = Mapper.Map<TResult>( source );
 			return result;
@@ -257,7 +262,7 @@ namespace DragonSpark.Extensions
 
 		public static T ConvertTo<T>( this object @this )
 		{
-			var result = (T)ConvertTo( @this, typeof(T) );
+			var result = @this.Transform( x => (T)ConvertTo( @this, typeof(T) ) );
 			return result;
 		}
 

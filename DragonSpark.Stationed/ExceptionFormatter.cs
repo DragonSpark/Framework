@@ -1,4 +1,4 @@
-namespace DragonSpark.Testing.Server
+namespace DragonSpark.Stationed
 {
 	public class ExceptionFormatter : DragonSpark.Diagnostics.ExceptionFormatter
 	{

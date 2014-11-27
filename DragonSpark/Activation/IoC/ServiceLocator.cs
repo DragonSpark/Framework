@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
@@ -7,6 +6,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -42,8 +42,6 @@ namespace DragonSpark.Activation.IoC
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
-
-
 			if ( Container.IsResolvable( serviceType, key ) )
 			{
 				try
@@ -64,7 +62,7 @@ namespace DragonSpark.Activation.IoC
 
 		static void Warn( Type type, string message )
 		{
-			typeof(ILogger).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() ).IsFalse( () => Log.Warning( message ) );
+			// typeof(ILogger).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() ).IsFalse( () => Log.Warning( message ) );
 		}
 
 		public IUnityContainer Container

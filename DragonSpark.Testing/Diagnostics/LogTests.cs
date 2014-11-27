@@ -1,16 +1,14 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Diagnostics;
-using DragonSpark.Testing.Framework;
-using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Xunit;
-using System;
-using Xunit;
-using Xunit.Extensions;
-using ExceptionFormatter = DragonSpark.Testing.Server.ExceptionFormatter;
-
-namespace DragonSpark.Testing.Diagnostics
+﻿namespace DragonSpark.Testing.Diagnostics
 {
+	using System;
+	using DragonSpark.Activation;
+	using DragonSpark.Diagnostics;
+	using Framework;
+	using Moq;
+	using Ploeh.AutoFixture.Xunit;
+	using Xunit;
+	using Xunit.Extensions;
+
 	[Freeze( typeof(ApplicationDetails) )]
 	public class LogTests
 	{
@@ -35,7 +33,7 @@ namespace DragonSpark.Testing.Diagnostics
 		}
 
 		[Theory, AutoMockData, AssignServiceLocation]
-		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
+		[Register( typeof(IExceptionFormatter), typeof(Stationed.ExceptionFormatter) )]
 		public void Error( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error, Guid id )
 		{
 			Log.Error( error, id );
@@ -66,7 +64,7 @@ namespace DragonSpark.Testing.Diagnostics
 			Mock.Get( logger ).Verify( x => x.Fatal( message, error ) );
 		}
 
-		[Theory, AutoMockData, AssignServiceLocation]
+		/*[Theory, AutoMockData, AssignServiceLocation]
 		[Freeze( typeof(ITracer), typeof(Tracer) )]
 		public void Trace( [Frozen]ILogger logger, string message )
 		{
@@ -89,7 +87,7 @@ namespace DragonSpark.Testing.Diagnostics
 			Assert.Equal( ServiceLocation.Locate<ITracer>(), ServiceLocation.Locate<Tracer>() );
 			Mock.Get( logger ).Verify( x => x.StartTrace( message, id ) );
 			Mock.Get( logger ).Verify( x => x.EndTrace( message, id, It.Is<TimeSpan>( y => y > TimeSpan.Zero ) ) );
-		}
+		}*/
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
