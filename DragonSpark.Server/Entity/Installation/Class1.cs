@@ -1,5 +1,4 @@
-﻿using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,9 +8,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel;
 using System.Windows.Markup;
+using DragonSpark.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
-namespace DragonSpark.Server.Entity.Installation
+namespace DragonSpark.Server.Legacy.Entity.Installation
 {
 	[ContentProperty( "Steps" )]
 	public abstract class CompositeInstallationStep<TContext> : InstallationStep<TContext> where TContext : DbContext

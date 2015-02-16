@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using DragonSpark.Extensions;
-using DragonSpark.IoC;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	[Singleton( typeof(IClaimsRepository) )]
 	class ClaimsRepository : IClaimsRepository

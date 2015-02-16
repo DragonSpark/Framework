@@ -1,7 +1,7 @@
 using System.Security.Principal;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public static class UserServiceExtensions
 	{

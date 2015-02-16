@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Markup;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	[ContentProperty( "Mappings" )]
 	public class ClaimMappingDefinition

@@ -1,9 +1,8 @@
 using System;
 using System.ServiceModel;
-using DragonSpark.IoC.Configuration;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Server.Configuration
+namespace DragonSpark.Server.Legacy.Configuration
 {
 	public class CurrentOperationContextCallbackFactory : GenericItemFactoryBase
 	{

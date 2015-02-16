@@ -1,8 +1,7 @@
-using DragonSpark.IoC;
 using System.Web.Hosting;
-using DragonSpark.Server.IO;
+using DragonSpark.Server.Legacy.Io;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Server.Legacy
 {
 	[Singleton(typeof(IPathResolver))]
 	public class PathResolver : IPathResolver

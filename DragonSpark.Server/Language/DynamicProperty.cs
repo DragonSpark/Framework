@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	public class DynamicProperty
 	{

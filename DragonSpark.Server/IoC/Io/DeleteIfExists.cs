@@ -1,10 +1,8 @@
 ﻿using System.IO;
 using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using DragonSpark.IoC.Configuration;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.IoC.Io
+namespace DragonSpark.Server.Legacy.IoC.Io
 {
 	public class DeleteIfExists : UnityContainerTypeConfiguration
 	{

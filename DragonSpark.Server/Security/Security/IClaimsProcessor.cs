@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
     public interface IClaimsProcessor
     {

@@ -1,7 +1,4 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.IoC;
-using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -13,8 +10,10 @@ using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.Web;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Server.IoC
+namespace DragonSpark.Server.Legacy.IoC
 {
 	public class UnityCallContextInitializer : ICallContextInitializer
 	{

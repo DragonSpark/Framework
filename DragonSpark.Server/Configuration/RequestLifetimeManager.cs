@@ -1,6 +1,4 @@
-using DragonSpark.IoC.Configuration;
-
-namespace DragonSpark.Server.Configuration
+namespace DragonSpark.Server.Legacy.Configuration
 {
 	public class RequestLifetimeManager : LifetimeManagerBase<IoC.RequestLifetimeManager>
 	{

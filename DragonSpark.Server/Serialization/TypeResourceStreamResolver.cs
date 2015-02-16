@@ -1,4 +1,3 @@
-using DragonSpark.Extensions;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 
-namespace DragonSpark.Serialization
+namespace DragonSpark.Server.Legacy.Serialization
 {
 	public class TypeResourceStreamResolver : IStreamResolver
 	{

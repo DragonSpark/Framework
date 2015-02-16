@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.IoC
+namespace DragonSpark.Server.Legacy.IoC
 {
 	public static class DirectoryCatalogExtensions
 	{

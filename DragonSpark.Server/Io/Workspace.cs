@@ -4,7 +4,7 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public partial class Workspace : IWorkspace
 	{

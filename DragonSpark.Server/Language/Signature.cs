@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	internal class Signature : IEquatable<Signature>
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Configuration;
 using System.Windows.Markup;
 
-namespace DragonSpark.Markup
+namespace DragonSpark.Server.Legacy.Markup
 {
 	[MarkupExtensionReturnType( typeof(string) )]
 	public class ConnectionStringExtension : MarkupExtension

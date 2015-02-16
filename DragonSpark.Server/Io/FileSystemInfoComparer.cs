@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public static class FileSystemInfoComparer
 	{

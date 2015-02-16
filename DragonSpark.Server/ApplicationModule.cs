@@ -1,10 +1,10 @@
-﻿using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Web;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Server.Legacy
 {
 	public class ApplicationModule : IHttpModule
 	{

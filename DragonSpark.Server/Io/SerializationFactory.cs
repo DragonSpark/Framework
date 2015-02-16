@@ -1,9 +1,9 @@
-using DragonSpark.Activation;
-using DragonSpark.Serialization;
 using System;
 using System.IO;
+using DragonSpark.Activation;
+using DragonSpark.Server.Legacy.Serialization;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public abstract class SerializationFactory : IFactory
 	{

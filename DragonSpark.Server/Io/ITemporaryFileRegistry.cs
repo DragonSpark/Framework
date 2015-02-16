@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public interface ITemporaryFileRegistry
 	{

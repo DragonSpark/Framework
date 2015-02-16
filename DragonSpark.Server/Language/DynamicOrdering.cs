@@ -1,4 +1,4 @@
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	internal class DynamicOrdering
 	{

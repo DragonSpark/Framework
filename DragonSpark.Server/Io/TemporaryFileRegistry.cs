@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public sealed class TemporaryFileRegistry : ITemporaryFileRegistry, IDisposable
 	{

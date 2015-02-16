@@ -1,7 +1,7 @@
-using DragonSpark.Extensions;
 using System.Security.Claims;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
     public static class ClaimsIdentityExtensions
     {

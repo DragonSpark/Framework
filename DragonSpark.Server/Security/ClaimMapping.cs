@@ -1,4 +1,4 @@
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	public class ClaimMapping
 	{

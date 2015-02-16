@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace DragonSpark.Serialization
+namespace DragonSpark.Server.Legacy.Serialization
 {
 	public class AssemblyStreamResolver : IStreamResolver
 	{

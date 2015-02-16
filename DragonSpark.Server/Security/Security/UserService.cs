@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public class UserService<TUser> : IUserService where TUser : UserProfile, new()
 	{

@@ -1,11 +1,11 @@
-﻿using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Runtime
 {
 	public static class Process
 	{

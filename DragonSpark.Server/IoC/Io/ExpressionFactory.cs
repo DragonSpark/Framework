@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Windows.Markup;
-using DragonSpark.IoC.Configuration;
-using DragonSpark.Objects.Synchronization;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.IoC.Io
+namespace DragonSpark.Server.Legacy.IoC.Io
 {
 	[ContentProperty( "Source" )]
 	public class ExpressionFactory : FactoryBase

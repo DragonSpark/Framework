@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Server.Entity
+namespace DragonSpark.Server.Legacy.Entity
 {
 	[AttributeUsage( AttributeTargets.Property )]
 	public class DefaultIncludeAttribute : Attribute

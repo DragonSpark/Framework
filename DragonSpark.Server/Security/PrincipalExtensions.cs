@@ -1,9 +1,9 @@
-using DragonSpark.Extensions;
-using DragonSpark.Security;
 using System.Security.Claims;
 using System.Security.Principal;
+using DragonSpark.Extensions;
+using DragonSpark.Server.Legacy.Security.Security;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	public static class PrincipalExtensions
 	{

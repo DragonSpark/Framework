@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace DragonSpark
+namespace DragonSpark.Server.Legacy
 {
 	[Serializable]
 	public class ClientException : Exception

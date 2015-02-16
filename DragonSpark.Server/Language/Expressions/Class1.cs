@@ -1,12 +1,12 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Expressions;
+using DragonSpark.Activation;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Server.Expressions
+namespace DragonSpark.Server.Legacy.Language.Expressions
 {
 	public abstract class ExpressionFactory<TSource, TParameter> : ExpressionFactory<object, TSource, TParameter>
 	{

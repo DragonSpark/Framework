@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Markup;
 
-namespace DragonSpark.Serialization
+namespace DragonSpark.Server.Legacy.Serialization
 {
 	public static class XamlSerializationSupport
 	{

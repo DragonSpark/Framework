@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Markup;
 
-namespace DragonSpark.Markup
+namespace DragonSpark.Server.Legacy.Markup
 {
 	[MarkupExtensionReturnType( typeof(string) )]
 	public class PathSupportExtension : MarkupExtension

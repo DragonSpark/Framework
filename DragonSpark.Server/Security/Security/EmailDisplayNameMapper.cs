@@ -2,7 +2,7 @@ using System.Security.Claims;
 using DragonSpark.Extensions;
 using ClaimTypes = System.IdentityModel.Claims.ClaimTypes;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public class EmailDisplayNameMapper : ClaimsMapperBase<UserProfile>
 	{

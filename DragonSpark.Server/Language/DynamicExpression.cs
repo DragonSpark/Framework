@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	public static class DynamicExpression
 	{

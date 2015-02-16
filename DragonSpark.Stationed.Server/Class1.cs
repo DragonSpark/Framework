@@ -1,5 +1,5 @@
 ﻿
-namespace DragonSpark.Application.Server
+namespace DragonSpark.Server
 {
 	public class Class1
 	{

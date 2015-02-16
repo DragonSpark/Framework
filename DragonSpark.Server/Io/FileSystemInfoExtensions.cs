@@ -1,12 +1,12 @@
-﻿using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public static class FileSystemInfoExtensions
 	{

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Configuration;
 
-namespace DragonSpark.Markup
+namespace DragonSpark.Server.Legacy.Markup
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public sealed class ApplicationServiceProviderLocatorAttribute : Attribute

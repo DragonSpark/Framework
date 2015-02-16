@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	internal class ExpressionParser
 	{

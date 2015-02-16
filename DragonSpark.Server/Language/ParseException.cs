@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	[Serializable]
 	public sealed class ParseException : Exception

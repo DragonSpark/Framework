@@ -1,7 +1,6 @@
 using System;
-using System.Runtime.Serialization;
 
-namespace DragonSpark
+namespace DragonSpark.Server.Legacy
 {
 	[DataContract]
 	public class ClientExceptionDetail

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DragonSpark.Server.Entity
+namespace DragonSpark.Server.Legacy.Entity
 {
 	public interface IAuthorizable
 	{

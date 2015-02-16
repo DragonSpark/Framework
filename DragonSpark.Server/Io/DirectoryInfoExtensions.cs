@@ -1,10 +1,10 @@
-﻿using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public static class DirectoryInfoExtensions
 	{

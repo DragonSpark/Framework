@@ -2,7 +2,7 @@
 using System.Web.Hosting;
 using System.Windows.Markup;
 
-namespace DragonSpark.Server.Configuration
+namespace DragonSpark.Server.Legacy.Configuration
 {
 	[MarkupExtensionReturnType( typeof(string) )]
 	public class MapPathExtension : MarkupExtension

@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public static class PathSupport
 	{

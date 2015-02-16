@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	public interface IClaimsRepository
 	{

@@ -1,7 +1,7 @@
-﻿using Microsoft.Practices.Unity;
-using System.Windows.Markup;
+﻿using System.Windows.Markup;
+using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Server.Legacy
 {
 	[ContentProperty( "Configurators" )]
 	public class ApplicationConfigurationCommand : DragonSpark.IoC.Commands.ApplicationConfigurationCommand

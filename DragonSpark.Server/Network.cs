@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Server.Legacy
 {
 	public static class Network
 	{

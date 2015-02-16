@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace DragonSpark.Serialization
+namespace DragonSpark.Server.Legacy.Serialization
 {
 	public interface IStreamResolver
 	{

@@ -1,9 +1,9 @@
-using DragonSpark.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public class ClaimsProcessor : IClaimsProcessor
     {

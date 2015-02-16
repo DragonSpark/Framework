@@ -1,10 +1,10 @@
-﻿using DragonSpark.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public class UserProfileSynchronizer<TUser> : IUserProfileSynchronizer where TUser : UserProfile
 	{

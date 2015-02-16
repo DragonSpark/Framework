@@ -1,7 +1,7 @@
 using System;
 using System.IdentityModel.Services;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	public class SessionAuthenticationModule : System.IdentityModel.Services.SessionAuthenticationModule
 	{

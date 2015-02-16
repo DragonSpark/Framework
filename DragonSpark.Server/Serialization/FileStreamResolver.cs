@@ -1,7 +1,7 @@
-using DragonSpark.Server.IO;
 using System.IO;
+using DragonSpark.Server.Legacy.Io;
 
-namespace DragonSpark.Serialization
+namespace DragonSpark.Server.Legacy.Serialization
 {
 	public class FileStreamResolver : IStreamResolver
 	{

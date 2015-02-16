@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using DragonSpark.Io;
-using DragonSpark.IoC.Configuration;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.IoC.Io
+namespace DragonSpark.Server.Legacy.IoC.Io
 {
 	public class WorkspaceDirectoryFactory : FactoryBase
 	{

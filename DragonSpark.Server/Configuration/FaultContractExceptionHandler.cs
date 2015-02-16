@@ -3,10 +3,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Markup;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
-namespace DragonSpark.Markup
+namespace DragonSpark.Server.Legacy.Configuration
 {
 	[ContentProperty( "Attributes" )]
 	public class FaultContractExceptionHandler : Singleton<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.WCF.FaultContractExceptionHandler>

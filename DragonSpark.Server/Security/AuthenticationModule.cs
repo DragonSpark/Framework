@@ -1,6 +1,6 @@
 using System.IdentityModel.Services;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Server.Legacy.Security
 {
 	public class AuthenticationModule : WSFederationAuthenticationModule
 	{}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace DragonSpark.Server.IO
+namespace DragonSpark.Server.Legacy.Io
 {
 	public static class FileInfoExtensions
 	{

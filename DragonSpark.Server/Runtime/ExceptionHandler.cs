@@ -1,7 +1,7 @@
-using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using System;
+using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
-namespace DragonSpark.Exceptions
+namespace DragonSpark.Server.Legacy.Runtime
 {
 	public class ExceptionHandler : IExceptionHandler
 	{

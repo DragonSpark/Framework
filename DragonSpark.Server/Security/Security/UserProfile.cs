@@ -2,10 +2,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DragonSpark.ComponentModel;
 using Claim = System.Security.Claims.Claim;
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
 	public class UserProfile
 	{

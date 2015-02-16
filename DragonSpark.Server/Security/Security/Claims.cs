@@ -1,5 +1,5 @@
 
-namespace DragonSpark.Security
+namespace DragonSpark.Server.Legacy.Security.Security
 {
     public static class Claims
     {

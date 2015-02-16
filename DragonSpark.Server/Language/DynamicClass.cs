@@ -3,7 +3,7 @@
 using System.Reflection;
 using System.Text;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Server.Legacy.Language
 {
 	#region Namespaces
 	

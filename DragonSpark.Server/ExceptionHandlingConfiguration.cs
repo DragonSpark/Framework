@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Runtime;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Server.Legacy
 {
 	public class ExceptionHandlingConfiguration : DragonSpark.IoC.Commands.ExceptionHandlingConfiguration
 	{

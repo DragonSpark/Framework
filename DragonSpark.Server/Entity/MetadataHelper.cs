@@ -1,7 +1,3 @@
-using DragonSpark.ComponentModel;
-using DragonSpark.IoC.Commands;
-using DragonSpark.IoC.Configuration;
-using Microsoft.Practices.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +9,10 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Web.Hosting;
 using System.Windows.Markup;
+using DragonSpark.ComponentModel;
+using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Server.Entity
+namespace DragonSpark.Server.Legacy.Entity
 {
 	public static class MetadataHelper
 	{

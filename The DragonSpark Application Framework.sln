@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Framewo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{3A30E5F6-BF9A-4FD7-903F-958F4789BD52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Server.Legacy", "DragonSpark.Server\DragonSpark.Application.Server.Legacy.csproj", "{3CCA84F9-0680-438A-9A0D-8DBADA88B909}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Server.Legacy", "DragonSpark.Server\DragonSpark.Server.Legacy.csproj", "{3CCA84F9-0680-438A-9A0D-8DBADA88B909}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{98474E73-902E-44DD-B59B-F9B8C46F7716}"
 	ProjectSection(SolutionItems) = preProject
@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application", "DragonSpark.Stationed\DragonSpark.Application.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Server", "DragonSpark.Stationed.Server\DragonSpark.Application.Server.csproj", "{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Server", "DragonSpark.Stationed.Server\DragonSpark.Server.csproj", "{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client.Windows", "DragonSpark.Client.Stationed\DragonSpark.Client.Windows.csproj", "{EB77A62A-7527-4BBE-A335-28BA901D8FB2}"
 EndProject
