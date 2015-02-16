@@ -7,8 +7,8 @@
     <ProjectGuid>{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DragonSpark.Stationed.Server</RootNamespace>
-    <AssemblyName>DragonSpark.Stationed.Server</AssemblyName>
+    <RootNamespace>DragonSpark.Application.Server</RootNamespace>
+    <AssemblyName>DragonSpark.Application.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
