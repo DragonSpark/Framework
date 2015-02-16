@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	internal sealed class MD5CryptoServiceProvider : MD5
 	{

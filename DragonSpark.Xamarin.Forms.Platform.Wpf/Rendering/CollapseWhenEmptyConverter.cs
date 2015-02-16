@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class CollapseWhenEmptyConverter : System.Windows.Data.IValueConverter
 	{

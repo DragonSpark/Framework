@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class XAlignConverter : System.Windows.Data.IValueConverter
 	{

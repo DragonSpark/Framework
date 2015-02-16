@@ -1,5 +1,3 @@
-using DragonSpark.Extensions;
-using FirstFloor.ModernUI.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DragonSpark.Extensions;
+using FirstFloor.ModernUI.Windows.Media;
 using Xamarin.Forms;
 using Xceed.Wpf.Toolkit.Zoombox;
 using Binding = System.Windows.Data.Binding;
@@ -17,7 +17,7 @@ using ListView = Xamarin.Forms.ListView;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class ListViewRenderer : ViewRenderer<ListView, ListBox>
 	{

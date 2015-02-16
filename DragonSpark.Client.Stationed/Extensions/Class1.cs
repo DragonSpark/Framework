@@ -15,16 +15,17 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Application.Client.Infrastructure;
-using DragonSpark.Application.Client.Presentation;
+using DragonSpark.Application;
+using DragonSpark.Client.Windows.Infrastructure;
+using DragonSpark.Client.Windows.Presentation;
 using DragonSpark.Extensions;
 using Microsoft.Expression.Interactions.Extensions.DataHelpers;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.ServiceLocation;
 using Xceed.Wpf.Toolkit;
-using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
+using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
 
-namespace DragonSpark.Application.Client.Extensions
+namespace DragonSpark.Client.Windows.Extensions
 {
 	public static class BindingExtensions
 	{

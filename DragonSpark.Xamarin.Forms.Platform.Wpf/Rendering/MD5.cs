@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	internal abstract class MD5 : HashAlgorithm
 	{

@@ -10,7 +10,7 @@ using Grid = System.Windows.Controls.Grid;
 using Size = System.Windows.Size;
 using TextChangedEventArgs = System.Windows.Controls.TextChangedEventArgs;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class EntryRenderer : ViewRenderer<Entry, Grid>
 	{

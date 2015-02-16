@@ -1,7 +1,7 @@
 using System.Windows.Controls;
 using Page = Xamarin.Forms.Page;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class PageRenderer : VisualElementRenderer<Page, Panel>
 	{

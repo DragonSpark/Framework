@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Client
+﻿namespace DragonSpark.Client.Windows
 {
 	public enum ApplicationLaunchStatus
 	{

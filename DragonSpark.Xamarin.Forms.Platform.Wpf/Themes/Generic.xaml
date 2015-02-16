@@ -5,9 +5,9 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	mc:Ignorable="d"
 	xmlns:forms="http://xamarin.com/schemas/2014/forms"
-	xmlns:rendering="clr-namespace:DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering"
-	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	xmlns:rendering="clr-namespace:DragonSpark.Client.Windows.Compensations.Rendering">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="ThemeResources.xaml" />
 	</ResourceDictionary.MergedDictionaries>

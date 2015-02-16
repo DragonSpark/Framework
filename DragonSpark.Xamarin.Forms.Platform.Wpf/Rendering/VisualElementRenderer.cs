@@ -1,15 +1,15 @@
-using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Color = Xamarin.Forms.Color;
 using Size = System.Windows.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class VisualElementRenderer<TElement, TNativeElement> : Canvas, IVisualElementRenderer where TElement : VisualElement where TNativeElement : FrameworkElement
 	{

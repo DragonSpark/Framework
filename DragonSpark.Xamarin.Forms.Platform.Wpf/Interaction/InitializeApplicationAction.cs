@@ -1,9 +1,8 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Application;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Interactivity;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Interaction
+namespace DragonSpark.Client.Windows.Compensations.Interaction
 {
 	class InitializeApplicationAction : TriggerAction<FrameworkElement>
 	{

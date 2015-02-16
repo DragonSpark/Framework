@@ -1,18 +1,18 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering;
-using FirstFloor.ModernUI.Windows.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Client.Windows.Compensations.Rendering;
+using DragonSpark.Client.Windows.Extensions;
+using DragonSpark.Extensions;
+using FirstFloor.ModernUI.Windows.Controls;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Application
+namespace DragonSpark.Client.Windows.Compensations.Application
 {
 	public class ShellBehavior : System.Windows.Interactivity.Behavior<FrameworkElement>
 	{

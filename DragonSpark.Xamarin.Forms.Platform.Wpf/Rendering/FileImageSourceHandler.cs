@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public sealed class FileImageSourceHandler : IImageSourceHandler, IRegisterable
 	{

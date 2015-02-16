@@ -32,7 +32,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>DragonSpark.Xamarin.Forms.Platform.Wpf</RootNamespace>
+    <RootNamespace>DragonSpark.Client.Windows.Compensations</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirstFloor.ModernUI">
@@ -154,9 +154,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Application.Client.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Client.Windows.csproj">
       <Project>{EB77A62A-7527-4BBE-A335-28BA901D8FB2}</Project>
-      <Name>DragonSpark.Application.Client</Name>
+      <Name>DragonSpark.Client.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Application.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>

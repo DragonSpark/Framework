@@ -1,11 +1,11 @@
-﻿using DragonSpark.Xamarin.Forms.Platform.Wpf.Infrastructure;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using DragonSpark.Client.Windows.Compensations.Infrastructure;
+using DragonSpark.Client.Windows.Compensations.Rendering;
 using Xamarin.Forms;
 
 [assembly:ThemeInfo( ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly )]

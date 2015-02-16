@@ -5,10 +5,10 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Client.Windows.Extensions;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application.Client.Presentation
+namespace DragonSpark.Client.Windows.Presentation
 {
 	public class BindExtension : MarkupExtension
 	{

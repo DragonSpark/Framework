@@ -1,7 +1,7 @@
 using System.Windows;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class CellTemplateSelector : DataTemplateSelector
 	{

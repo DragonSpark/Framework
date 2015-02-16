@@ -1,10 +1,10 @@
-using DragonSpark.Extensions;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Application;
+using DragonSpark.Client.Windows.Compensations.Application;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Xceed.Wpf.Toolkit.Panels;
 using Binding = System.Windows.Data.Binding;
@@ -12,7 +12,7 @@ using DataTemplate = System.Windows.DataTemplate;
 using Page = Xamarin.Forms.Page;
 using Size = Xamarin.Forms.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class CarouselPageRenderer : Carousel, IVisualElementRenderer
 	{

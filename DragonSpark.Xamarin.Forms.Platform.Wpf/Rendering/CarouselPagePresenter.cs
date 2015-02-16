@@ -5,7 +5,7 @@ using System.Windows.Media;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class CarouselPagePresenter : ContentPresenter
 	{

@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public abstract class VisualElementTracker : IDisposable
 	{

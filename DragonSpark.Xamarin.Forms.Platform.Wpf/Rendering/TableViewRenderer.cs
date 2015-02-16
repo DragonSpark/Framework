@@ -1,12 +1,12 @@
-using DragonSpark.Extensions;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Point = System.Windows.Point;
 using Size = Xamarin.Forms.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class TableViewRenderer : ViewRenderer<global::Xamarin.Forms.TableView, TableView>
 	{

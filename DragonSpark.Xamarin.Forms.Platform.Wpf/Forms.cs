@@ -7,7 +7,7 @@ using Xamarin.Forms;
 using Expression = System.Linq.Expressions.Expression;
 using Size = Xamarin.Forms.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf
+namespace DragonSpark.Client.Windows.Compensations
 {
 	public interface IApplicationView
 	{

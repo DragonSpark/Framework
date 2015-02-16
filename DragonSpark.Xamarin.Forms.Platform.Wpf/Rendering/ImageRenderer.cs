@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 using Xamarin.Forms;
 using Image = Xamarin.Forms.Image;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class ImageRenderer : ViewRenderer<Image, System.Windows.Controls.Image>
 	{

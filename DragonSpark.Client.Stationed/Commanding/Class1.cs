@@ -12,19 +12,18 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
 using DragonSpark.Activation;
-using DragonSpark.Application.Client.Extensions;
-using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Application.IoC.Commands;
-using DragonSpark.Client;
+using DragonSpark.Client.Windows.Extensions;
+using DragonSpark.Client.Windows.Presentation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
-using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
+using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
 
-namespace DragonSpark.Application.Client.Commanding
+namespace DragonSpark.Client.Windows.Commanding
 {
 	public static class CommandExtensions
 	{

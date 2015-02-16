@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Threading;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Infrastructure
+namespace DragonSpark.Client.Windows.Compensations.Infrastructure
 {
 	class Ticker : global::Xamarin.Forms.Ticker
 	{

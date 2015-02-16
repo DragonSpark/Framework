@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class ViewToRendererConverter : System.Windows.Data.IValueConverter
 	{

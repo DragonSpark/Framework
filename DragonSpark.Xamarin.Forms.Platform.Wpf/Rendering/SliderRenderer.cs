@@ -3,7 +3,7 @@ using System.Windows;
 using Xamarin.Forms;
 using Slider = Xamarin.Forms.Slider;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class SliderRenderer : ViewRenderer<Slider, System.Windows.Controls.Slider>
 	{

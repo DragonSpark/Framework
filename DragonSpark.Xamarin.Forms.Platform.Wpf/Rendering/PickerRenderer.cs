@@ -1,12 +1,12 @@
-using DragonSpark.Extensions;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using DataTemplate = System.Windows.DataTemplate;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class PickerRenderer : ViewRenderer<Picker, ComboBox>
 	{

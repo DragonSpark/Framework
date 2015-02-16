@@ -2,7 +2,7 @@ using System.Windows.Controls;
 using Xamarin.Forms;
 using Label = Xamarin.Forms.Label;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	internal class ResourcesProvider : ISystemResourcesProvider
 	{

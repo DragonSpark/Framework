@@ -1,15 +1,15 @@
-using DragonSpark.Extensions;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Application;
+using DragonSpark.Client.Windows.Compensations.Application;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 using Page = Xamarin.Forms.Page;
 using Size = Xamarin.Forms.Size;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class TabbedPageRenderer : TabControl, IVisualElementRenderer
 	{

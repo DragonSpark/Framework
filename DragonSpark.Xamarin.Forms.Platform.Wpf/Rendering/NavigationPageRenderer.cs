@@ -1,10 +1,10 @@
-using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Windows;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class NavigationPageRenderer : VisualElementRenderer<NavigationPage, FrameworkElement>
 	{

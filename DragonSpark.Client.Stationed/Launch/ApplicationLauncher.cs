@@ -7,7 +7,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Application.Client.Launch
+namespace DragonSpark.Client.Windows.Launch
 {
 	[ContentProperty( "Parameters" )]
 	public class ApplicationLauncher : Launcher

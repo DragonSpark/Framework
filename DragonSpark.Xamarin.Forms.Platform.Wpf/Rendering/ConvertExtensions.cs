@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	internal static class ConvertExtensions
 	{

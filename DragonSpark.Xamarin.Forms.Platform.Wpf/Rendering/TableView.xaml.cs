@@ -1,5 +1,5 @@
 ﻿
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	/// <summary>
 	/// Interaction logic for TableView.xaml

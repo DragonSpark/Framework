@@ -1,7 +1,7 @@
 using System;
 using Xamarin.Forms;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Infrastructure
+namespace DragonSpark.Client.Windows.Compensations.Infrastructure
 {
 	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 	public sealed class ExportRendererAttribute : HandlerAttribute

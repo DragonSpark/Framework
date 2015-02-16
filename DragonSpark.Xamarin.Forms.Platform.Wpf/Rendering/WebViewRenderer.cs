@@ -1,14 +1,14 @@
-using DragonSpark.Extensions;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using NavigationEventArgs = System.Windows.Navigation.NavigationEventArgs;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public class WebViewRenderer : ViewRenderer<WebView, WebBrowser>, IWebViewRenderer
 	{

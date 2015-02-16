@@ -1,8 +1,8 @@
-using DragonSpark.Extensions;
 using System.Windows;
 using System.Windows.Controls;
+using DragonSpark.Extensions;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public sealed class CustomContextMenu : ContextMenu
 	{

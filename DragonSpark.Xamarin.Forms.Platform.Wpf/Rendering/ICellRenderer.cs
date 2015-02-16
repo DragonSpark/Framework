@@ -1,9 +1,9 @@
-using DragonSpark.Extensions;
 using System.Linq;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using DataTemplate = System.Windows.DataTemplate;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	public interface ICellRenderer : IRegisterable
 	{

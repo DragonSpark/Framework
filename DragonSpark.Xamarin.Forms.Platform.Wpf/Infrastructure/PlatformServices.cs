@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering;
+using DragonSpark.Client.Windows.Compensations.Rendering;
 using Xamarin.Forms;
 using FileAccess = Xamarin.Forms.FileAccess;
 using FileMode = Xamarin.Forms.FileMode;
 using FileShare = Xamarin.Forms.FileShare;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Infrastructure
+namespace DragonSpark.Client.Windows.Compensations.Infrastructure
 {
 	class PlatformServices : IPlatformServices
 	{

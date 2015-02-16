@@ -5,9 +5,8 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Xml;
 using Xamarin.Forms;
-using FileMode = Xamarin.Forms.FileMode;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	internal class Deserializer : IDeserializer
 	{

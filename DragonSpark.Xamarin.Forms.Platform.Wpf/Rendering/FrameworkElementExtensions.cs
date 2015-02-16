@@ -1,4 +1,3 @@
-using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +5,12 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 using Point = System.Windows.Point;
 
-namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
+namespace DragonSpark.Client.Windows.Compensations.Rendering
 {
 	static class FrameworkElementExtensions
 	{
