@@ -13,13 +13,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using DragonSpark.Activation;
-using DragonSpark.Client.Stationed.Commanding;
-using DragonSpark.Client.Stationed.Extensions;
+using DragonSpark.Application.Client.Commanding;
+using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism;
 using Xceed.Wpf.Toolkit;
 
-namespace DragonSpark.Client.Stationed.Presentation
+namespace DragonSpark.Application.Client.Presentation
 {
 	public class ViewCollection<T> : ObservableCollection<T>, IObservableCollection<T>
 	{

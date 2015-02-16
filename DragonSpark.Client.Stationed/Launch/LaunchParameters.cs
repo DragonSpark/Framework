@@ -1,15 +1,15 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Application.Client.Commanding;
+using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Application.IoC.Commands;
-using DragonSpark.Client.Stationed.Commanding;
-using DragonSpark.Client.Stationed.Extensions;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Client.Stationed.Launch
+namespace DragonSpark.Application.Client.Launch
 {
 
 	[ContentProperty( "Shell" )]

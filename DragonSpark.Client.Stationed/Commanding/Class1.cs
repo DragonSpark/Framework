@@ -12,18 +12,19 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
 using DragonSpark.Activation;
+using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Application.IoC.Commands;
-using DragonSpark.Client.Stationed.Extensions;
-using DragonSpark.Client.Stationed.Presentation;
+using DragonSpark.Client;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
-using IAttachedObject = DragonSpark.Client.Stationed.Presentation.IAttachedObject;
+using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
 
-namespace DragonSpark.Client.Stationed.Commanding
+namespace DragonSpark.Application.Client.Commanding
 {
 	public static class CommandExtensions
 	{
@@ -315,7 +316,7 @@ namespace DragonSpark.Client.Stationed.Commanding
 		System.Windows.Input.ICommand Command { get;  }
 	}
 
-	public abstract class ViewCommandBase<TParameter> : CommandBase<TParameter>, IAttachedObject
+	public abstract class ViewCommandBase<TParameter> : CommandBase<TParameter>, Presentation.IAttachedObject
 	{
 		readonly ViewAwareSupporter viewAwareSupporter;
 
@@ -1123,7 +1124,7 @@ namespace DragonSpark.Client.Stationed.Commanding
 	}
 
 	[ContentProperty( "Command" )]
-	public sealed class InvokeCommandAction : TriggerAction<DependencyObject>, IAttachedObject
+	public sealed class InvokeCommandAction : TriggerAction<DependencyObject>, Presentation.IAttachedObject
 	{
 		public event EventHandler Attached = delegate { } , Detached = delegate { };
 

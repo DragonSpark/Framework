@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Microsoft.Practices.Prism.Regions;
 
-namespace DragonSpark.Client.Stationed.Infrastructure
+namespace DragonSpark.Application.Client.Infrastructure
 {
 	public interface IRegionManagerService
 	{

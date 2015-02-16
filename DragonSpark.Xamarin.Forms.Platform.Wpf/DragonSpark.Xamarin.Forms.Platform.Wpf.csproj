@@ -154,9 +154,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Client.Stationed.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Application.Client.csproj">
       <Project>{EB77A62A-7527-4BBE-A335-28BA901D8FB2}</Project>
-      <Name>DragonSpark.Client.Stationed</Name>
+      <Name>DragonSpark.Application.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Application.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Name>DragonSpark.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>

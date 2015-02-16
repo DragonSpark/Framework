@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-namespace DragonSpark.Client.Stationed
+namespace DragonSpark.Application.Client
 {
 	public class ApplicationLaunchEvent : PubSubEvent<ApplicationLaunchStatus>
 	{

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-namespace DragonSpark.Client.Stationed.Infrastructure
+namespace DragonSpark.Application.Client.Infrastructure
 {
 	public static class EventSupport
 	{

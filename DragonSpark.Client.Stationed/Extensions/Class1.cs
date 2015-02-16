@@ -1,10 +1,4 @@
-﻿using DragonSpark.Client.Stationed.Infrastructure;
-using DragonSpark.Client.Stationed.Presentation;
-using DragonSpark.Extensions;
-using Microsoft.Expression.Interactions.Extensions.DataHelpers;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.ServiceLocation;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,11 +15,16 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Application;
+using DragonSpark.Application.Client.Infrastructure;
+using DragonSpark.Application.Client.Presentation;
+using DragonSpark.Extensions;
+using Microsoft.Expression.Interactions.Extensions.DataHelpers;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.ServiceLocation;
 using Xceed.Wpf.Toolkit;
-using IAttachedObject = DragonSpark.Client.Stationed.Presentation.IAttachedObject;
+using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
 
-namespace DragonSpark.Client.Stationed.Extensions
+namespace DragonSpark.Application.Client.Extensions
 {
 	public static class BindingExtensions
 	{

@@ -1,12 +1,12 @@
+using System.Windows;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using System.Windows;
-using DragonSpark.Application.Runtime;
 
-namespace DragonSpark.Client.Stationed
+namespace DragonSpark.Application.Client
 {
 	public class LaunchParameters
 	{

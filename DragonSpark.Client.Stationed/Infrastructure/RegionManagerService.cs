@@ -7,7 +7,7 @@ using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 
-namespace DragonSpark.Client.Stationed.Infrastructure
+namespace DragonSpark.Application.Client.Infrastructure
 {
 	public static class RegionManagerContext
     {

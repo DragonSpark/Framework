@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using DragonSpark.Client.Stationed.Extensions;
+using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Extensions;
 using Xceed.Wpf.Toolkit;
 
-namespace DragonSpark.Client.Stationed.Commanding
+namespace DragonSpark.Application.Client.Commanding
 {
 	public class CommandRegistry : ICommandRegistry
 	{

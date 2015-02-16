@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Client.Stationed.Presentation
+namespace DragonSpark.Application.Client.Presentation
 {
 	public class DebugConverter : IValueConverter
 	{

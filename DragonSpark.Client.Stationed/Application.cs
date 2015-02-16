@@ -2,7 +2,7 @@
 using System.Windows.Markup;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Client.Stationed
+namespace DragonSpark.Application.Client
 {
 	[ContentProperty( "Launcher" )]
 	public class Application : System.Windows.Application

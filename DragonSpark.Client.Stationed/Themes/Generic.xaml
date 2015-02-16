@@ -8,8 +8,8 @@
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:markup="clr-namespace:DragonSpark.Application.Markup;assembly=DragonSpark.Application"
-             xmlns:presentation="clr-namespace:DragonSpark.Client.Stationed.Presentation"
-             xmlns:commanding="clr-namespace:DragonSpark.Client.Stationed.Commanding">
+             xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation"
+             xmlns:commanding="clr-namespace:DragonSpark.Application.Client.Commanding">
 
     <Style x:Key="LinkButton" 
 	   TargetType="Button"

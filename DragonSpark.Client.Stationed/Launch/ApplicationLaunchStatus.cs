@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Interactivity;
-using DragonSpark.Client.Stationed.Extensions;
+using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Client.Stationed.Launch
+namespace DragonSpark.Application.Client.Launch
 {
 	public enum ApplicationLaunchStatus
 	{

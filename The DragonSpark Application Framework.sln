@@ -34,15 +34,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client", "Drago
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7C73884D-953A-4AF2-88A6-DA991CB6E6FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stationed", "Stationed", "{66A36228-A2CC-4CA4-8618-456D00F9961C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application", "DragonSpark.Stationed\DragonSpark.Application.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Server", "DragonSpark.Stationed.Server\DragonSpark.Application.Server.csproj", "{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client.Stationed", "DragonSpark.Client.Stationed\DragonSpark.Client.Stationed.csproj", "{EB77A62A-7527-4BBE-A335-28BA901D8FB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Client", "DragonSpark.Client.Stationed\DragonSpark.Application.Client.csproj", "{EB77A62A-7527-4BBE-A335-28BA901D8FB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Expression.Interactions.Extensions", "Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj", "{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA}"
 EndProject

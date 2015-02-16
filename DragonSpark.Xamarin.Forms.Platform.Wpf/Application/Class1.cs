@@ -1,5 +1,4 @@
-﻿using DragonSpark.Client.Stationed.Extensions;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering;
 using FirstFloor.ModernUI.Windows.Controls;
 using System;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using DragonSpark.Application.Client.Extensions;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
 
