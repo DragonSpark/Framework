@@ -6,7 +6,7 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using DragonSpark.Application;
+using DragonSpark.Common;
 
 [assembly: AssemblyTitle("DragonSpark.Testing")]
 [assembly: AssemblyDescription("")]

@@ -1,4 +1,4 @@
-namespace DragonSpark.Application
+namespace DragonSpark.Common
 {
 	public class ExceptionFormatter : DragonSpark.Diagnostics.ExceptionFormatter
 	{

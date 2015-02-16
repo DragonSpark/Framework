@@ -111,9 +111,9 @@
       <Project>{37cb4b8e-4d06-47d1-989f-67091821f96c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Application.csproj">
+    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Common.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
-      <Name>DragonSpark.Application</Name>
+      <Name>DragonSpark.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Xamarin.Forms.Platform.Wpf\DragonSpark.Client.Windows.Compensations.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>

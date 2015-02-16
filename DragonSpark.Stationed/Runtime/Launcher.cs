@@ -16,7 +16,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 
-namespace DragonSpark.Application.Runtime
+namespace DragonSpark.Common.Runtime
 {
 	public class LoggerFacade : ILoggerFacade
 	{

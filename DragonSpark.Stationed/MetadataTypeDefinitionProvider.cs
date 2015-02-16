@@ -3,7 +3,7 @@ using System.Reflection;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Common
 {
 	public class MetadataTypeDefinitionProvider : ITypeDefinitionProvider
 	{

@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
-using DragonSpark.Application.IoC.Commands;
 using DragonSpark.Client.Windows.Commanding;
 using DragonSpark.Client.Windows.Extensions;
+using DragonSpark.Common.IoC.Commands;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;

@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Windows.Markup;
 
-namespace DragonSpark.Application.Markup
+namespace DragonSpark.Common.Markup
 {
 	[ContentProperty( "Value" )]
 	public class PropertySetter

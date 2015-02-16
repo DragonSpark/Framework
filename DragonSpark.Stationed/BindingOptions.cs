@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Common
 {
 	public static class BindingOptions
 	{

@@ -3,7 +3,7 @@ using System.IO;
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Common
 {
 	public class EnterpriseLibraryExceptionFormatter : IExceptionFormatter
 	{

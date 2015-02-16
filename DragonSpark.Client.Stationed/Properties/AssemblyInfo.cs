@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Application.IoC.Commands;
+using DragonSpark.Common.IoC.Commands;
 
 // using Xceed.Wpf.AvalonDock;
 

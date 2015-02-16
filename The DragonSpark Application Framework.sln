@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7C7388
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application", "DragonSpark.Stationed\DragonSpark.Application.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Common", "DragonSpark.Stationed\DragonSpark.Common.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Server", "DragonSpark.Stationed.Server\DragonSpark.Server.csproj", "{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67}"
 EndProject
