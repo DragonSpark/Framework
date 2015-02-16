@@ -1,4 +1,11 @@
-﻿using System;
+﻿using DragonSpark.Client.Stationed.Infrastructure;
+using DragonSpark.Client.Stationed.Presentation;
+using DragonSpark.Extensions;
+using DragonSpark.Stationed;
+using Microsoft.Expression.Interactions.Extensions.DataHelpers;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,15 +20,8 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Client.Stationed.Infrastructure;
-using DragonSpark.Client.Stationed.Presentation;
-using DragonSpark.Extensions;
-using DragonSpark.Stationed;
-using Microsoft.Expression.Interactions.Extensions.DataHelpers;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.ServiceLocation;
-using Xceed.Wpf.AvalonDock.Controls;
 using Xceed.Wpf.Toolkit;
 using IAttachedObject = DragonSpark.Client.Stationed.Presentation.IAttachedObject;
 
@@ -764,6 +764,79 @@ namespace DragonSpark.Client.Stationed.Extensions
 
 	public static partial class DependencyObjectExtensions
 	{
+		public static IEnumerable<T> FindVisualChildren<T>( this DependencyObject depObj ) where T : DependencyObject
+		{
+			if ( depObj != null )
+			{
+				for ( var i = 0; i < VisualTreeHelper.GetChildrenCount( depObj ); ++i )
+				{
+					var child = VisualTreeHelper.GetChild( depObj, i );
+					var children = child as T;
+					if ( children != null )
+					{
+						yield return children;
+					}
+					foreach ( T obj in child.FindVisualChildren<T>() )
+					{
+						yield return obj;
+					}
+				}
+			}
+		}
+
+		public static IEnumerable<T> FindLogicalChildren<T>( this DependencyObject depObj ) where T : DependencyObject
+		{
+			if ( depObj != null )
+			{
+				foreach ( var depObj1 in LogicalTreeHelper.GetChildren( depObj ).OfType<DependencyObject>() )
+				{
+					var children = depObj1 as T;
+					if ( children != null )
+					{
+						yield return children;
+					}
+					foreach ( T obj in depObj1.FindLogicalChildren<T>() )
+					{
+						yield return obj;
+					}
+				}
+			}
+		}
+
+		public static DependencyObject FindVisualTreeRoot( this DependencyObject initial )
+		{
+			var dependencyObject1 = initial;
+			var dependencyObject2 = initial;
+			for ( ; dependencyObject1 != null; dependencyObject1 = dependencyObject1 is Visual || dependencyObject1 is Visual3D ? VisualTreeHelper.GetParent( dependencyObject1 ) : LogicalTreeHelper.GetParent( dependencyObject1 ) )
+			{
+				dependencyObject2 = dependencyObject1;
+			}
+			return dependencyObject2;
+		}
+
+		public static T FindVisualAncestor<T>( this DependencyObject dependencyObject ) where T : class
+		{
+			var reference = dependencyObject;
+			do
+			{
+				reference = VisualTreeHelper.GetParent( reference );
+			}
+			while ( reference != null && !( reference is T ) );
+			return reference as T;
+		}
+
+		public static T FindLogicalAncestor<T>( this DependencyObject dependencyObject ) where T : class
+		{
+			var current = dependencyObject;
+			do
+			{
+				var reference = current;
+				current = LogicalTreeHelper.GetParent( current ) ?? VisualTreeHelper.GetParent( reference );
+			}
+			while ( current != null && !( current is T ) );
+			return current as T;
+		}
+	
 		public static TResult EnsureWithNewInstance<TResult>(this DependencyObject target, DependencyProperty property, Action<DependencyObject, TResult> setter) where TResult : new()
 		{
 			return Ensure(target, property, setter, () => new TResult());

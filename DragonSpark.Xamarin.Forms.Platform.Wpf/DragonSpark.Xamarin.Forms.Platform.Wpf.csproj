@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{7DA5FD28-7E89-459F-9CDC-A2D278A95662}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Xamarin.Forms.Platform.WP8</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>81625678</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <DontImportPostSharp>True</DontImportPostSharp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>DragonSpark.Xamarin.Forms.Platform.Wpf</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirstFloor.ModernUI">
+      <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=4.1.8.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\PostSharp.4.1.8-beta\lib\net35-client\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\packages\Xamarin.Forms.1.3.3.6323\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\packages\Xamarin.Forms.1.3.3.6323\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.6.15111.10510, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xceed.Wpf.Toolkit.2.6.15111.10510\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\ExportCellAttribute.cs" />
+    <Compile Include="Infrastructure\ExportImageSourceHandlerAttribute.cs" />
+    <Compile Include="Infrastructure\ExportRendererAttribute.cs" />
+    <Compile Include="Infrastructure\PlatformServices.cs" />
+    <Compile Include="Infrastructure\Ticker.cs" />
+    <Compile Include="Interaction\InitializeApplicationAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms.cs" />
+    <Compile Include="Rendering\ActivityIndicatorRenderer.cs" />
+    <Compile Include="Rendering\AsyncValue.cs" />
+    <Compile Include="Rendering\BackgroundTracker.cs" />
+    <Compile Include="Rendering\BoxViewRenderer.cs" />
+    <Compile Include="Rendering\ButtonRenderer.cs" />
+    <Compile Include="Rendering\CarouselPagePresenter.cs" />
+    <Compile Include="Rendering\CarouselPageRenderer.cs" />
+    <Compile Include="Rendering\CaseConverter.cs" />
+    <Compile Include="Rendering\CellControl.cs" />
+    <Compile Include="Rendering\CellTemplateSelector.cs" />
+    <Compile Include="Rendering\CollapseWhenEmptyConverter.cs" />
+    <Compile Include="Rendering\ColorConverter.cs" />
+    <Compile Include="Rendering\ConvertExtensions.cs" />
+    <Compile Include="Rendering\CustomContextMenu.cs" />
+    <Compile Include="Rendering\DataTemplateSelector.cs" />
+    <Compile Include="Rendering\DatePickerRenderer.cs" />
+    <Compile Include="Rendering\Deserializer.cs" />
+    <Compile Include="Rendering\EditorRenderer.cs" />
+    <Compile Include="Rendering\ElementChangedEventArgs.cs" />
+    <Compile Include="Rendering\EntryCellPhoneTextBox.cs" />
+    <Compile Include="Rendering\EntryCellRendererCompleted.cs" />
+    <Compile Include="Rendering\EntryRenderer.cs" />
+    <Compile Include="Rendering\EntryTextBox.cs" />
+    <Compile Include="Rendering\FileImageSourceHandler.cs" />
+    <Compile Include="Rendering\FontExtensions.cs" />
+    <Compile Include="Rendering\FormattedStringExtensions.cs" />
+    <Compile Include="Rendering\FrameRenderer.cs" />
+    <Compile Include="Rendering\FrameworkElementExtensions.cs" />
+    <Compile Include="Rendering\HeightConverter.cs" />
+    <Compile Include="Rendering\ICellRenderer.cs" />
+    <Compile Include="Rendering\IImageSourceHandler.cs" />
+    <Compile Include="Rendering\ImageCellRenderer.cs" />
+    <Compile Include="Rendering\ImageConverter.cs" />
+    <Compile Include="Rendering\ImageExtensions.cs" />
+    <Compile Include="Rendering\ImageLoaderSourceHandler.cs" />
+    <Compile Include="Rendering\ImageRenderer.cs" />
+    <Compile Include="Rendering\IVisualElementRenderer.cs" />
+    <Compile Include="Rendering\KeyboardConverter.cs" />
+    <Compile Include="Rendering\KeyboardExtensions.cs" />
+    <Compile Include="Rendering\LabelRenderer.cs" />
+    <Compile Include="Rendering\ListViewRenderer.cs" />
+    <Compile Include="Rendering\MasterDetailRenderer.cs" />
+    <Compile Include="Rendering\MD5.cs" />
+    <Compile Include="Rendering\MD5CryptoServiceProvider.cs" />
+    <Compile Include="Rendering\NavigationMenuRenderer.cs" />
+    <Compile Include="Rendering\NavigationPageRenderer.cs" />
+    <Compile Include="Rendering\PageRenderer.cs" />
+    <Compile Include="Rendering\PageToRendererConverter.cs" />
+    <Compile Include="Rendering\PickerRenderer.cs" />
+    <Compile Include="Rendering\ProgressBarRenderer.cs" />
+    <Compile Include="Rendering\RendererFactory.cs" />
+    <Compile Include="Rendering\ResourcesProvider.cs" />
+    <Compile Include="Rendering\ScrollViewRenderer.cs" />
+    <Compile Include="Rendering\SearchBarRenderer.cs" />
+    <Compile Include="Rendering\SliderRenderer.cs" />
+    <Compile Include="Rendering\StepperRenderer.cs" />
+    <Compile Include="Rendering\StreamImagesourceHandler.cs" />
+    <Compile Include="Rendering\SwitchRenderer.cs" />
+    <Compile Include="Rendering\TabbedPageRenderer.cs" />
+    <Compile Include="Rendering\TableView.xaml.cs">
+      <DependentUpon>TableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\TableViewRenderer.cs" />
+    <Compile Include="Rendering\TextCellRenderer.cs" />
+    <Compile Include="Rendering\TimePickerRenderer.cs" />
+    <Compile Include="Rendering\ViewProperties.cs" />
+    <Compile Include="Rendering\ViewRenderer.cs" />
+    <Compile Include="Rendering\ViewToRendererConverter.cs" />
+    <Compile Include="Rendering\VisualElementChangedEventArgs.cs" />
+    <Compile Include="Rendering\VisualElementPackager.cs" />
+    <Compile Include="Rendering\VisualElementRenderer.cs" />
+    <Compile Include="Rendering\VisualElementTracker.cs" />
+    <Compile Include="Rendering\WebViewRenderer.cs" />
+    <Compile Include="Rendering\XAlignConverter.cs" />
+    <Compile Include="Application\Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Client.Stationed.csproj">
+      <Project>{EB77A62A-7527-4BBE-A335-28BA901D8FB2}</Project>
+      <Name>DragonSpark.Client.Stationed</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Rendering\TableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ThemeResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.Forms.1.3.3.6323\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.3.3.6323\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Xamarin.Forms.1.3.3.6323\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.3.3.6323\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
+  <Import Project="..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+</Project>

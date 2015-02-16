@@ -9,5 +9,11 @@ namespace DragonSpark.Extensions
 			var result = serviceProvider.GetService( typeof(TService) ).To<TService>();
 			return result;
 		}
+
+		public static TService Get<TService>( this object @this )
+		{
+			var result = @this.AsTo<IServiceProvider, TService>( x => x.Get<TService>() );
+			return result;
+		}
 	}
 }

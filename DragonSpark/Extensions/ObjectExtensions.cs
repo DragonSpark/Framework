@@ -221,15 +221,15 @@ namespace DragonSpark.Extensions
 
 		public static TResult As<TResult>( this object target ) where TResult : class
 		{
-			return As<TResult,Exception>( target, null );
+			return As<TResult, Exception>( target, null );
 		}
 
 		public static TResult As<TResult>( this object target, Action<TResult> action ) where TResult : class
 		{
-			return As<TResult,Exception>( target, action );
+			return As<TResult, Exception>( target, action );
 		}
 
-		public static TResult As<TResult,TException>( this object target, Action<TResult> action, Func<TException> resolveException = null ) where TResult : class where TException : Exception
+		public static TResult As<TResult, TException>( this object target, Action<TResult> action, Func<TException> resolveException = null ) where TResult : class where TException : Exception
 		{
 			var result = target as TResult;
 

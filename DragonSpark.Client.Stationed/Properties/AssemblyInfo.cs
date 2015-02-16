@@ -1,14 +1,12 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using DragonSpark.Stationed.IoC.Commands;
+using System.Reflection;
 using System.Runtime.InteropServices;
-
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Stationed.IoC.Commands;
-using Xceed.Wpf.AvalonDock;
+// using Xceed.Wpf.AvalonDock;
 
 [assembly: AssemblyTitle("DragonSpark.Client.Stationed")]
 [assembly: AssemblyDescription("")]
@@ -43,5 +41,5 @@ using Xceed.Wpf.AvalonDock;
 
 [assembly:ThemeInfo( ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly )]
 
-[assembly: IgnoreNamespaceDuringRegistration( typeof(DockingManager) )]
+// [assembly: IgnoreNamespaceDuringRegistration( typeof(DockingManager) )]
 [assembly: IgnoreNamespaceDuringRegistration( typeof(RichTextBox) )]

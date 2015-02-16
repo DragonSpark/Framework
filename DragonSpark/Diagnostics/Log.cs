@@ -1,8 +1,8 @@
 namespace DragonSpark.Diagnostics
 {
-	using System;
 	using Activation;
 	using Extensions;
+	using System;
 
 	public static class Log
 	{

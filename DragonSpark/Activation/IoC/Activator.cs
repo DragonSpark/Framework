@@ -1,4 +1,6 @@
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
 using System;
 
@@ -31,7 +33,7 @@ namespace DragonSpark.Activation.IoC
 			}
 			catch ( ResolutionFailedException e )
 			{
-				// Log.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
+				Log.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
 				return backup();
 			}
 		}

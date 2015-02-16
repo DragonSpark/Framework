@@ -62,7 +62,7 @@ namespace DragonSpark.Activation.IoC
 
 		static void Warn( Type type, string message )
 		{
-			// typeof(ILogger).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() ).IsFalse( () => Log.Warning( message ) );
+			typeof(ILogger).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() ).IsFalse( () => Log.Warning( message ) );
 		}
 
 		public IUnityContainer Container

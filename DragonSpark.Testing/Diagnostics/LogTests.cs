@@ -12,7 +12,7 @@
 	[Freeze( typeof(ApplicationDetails) )]
 	public class LogTests
 	{
-		[Theory, AutoMockData, AssignServiceLocation]
+		/*[Theory, AutoMockData, AssignServiceLocation]
 		public void Information( [Frozen]ILogger logger, string message )
 		{
 			Log.Information( message );
@@ -30,7 +30,7 @@
 
 			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.High ) );
 			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.Low ) );
-		}
+		}*/
 
 		[Theory, AutoMockData, AssignServiceLocation]
 		[Register( typeof(IExceptionFormatter), typeof(Stationed.ExceptionFormatter) )]

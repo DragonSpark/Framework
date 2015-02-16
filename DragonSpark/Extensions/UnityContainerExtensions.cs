@@ -25,6 +25,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static TResult With<TResult>( this IUnityContainer @this, Action<TResult> action )
+		{
+			var result = @this.IsRegistered<TResult>() ? @this.Resolve<TResult>().With( action ) : default(TResult);
+			return result;
+		}
+
 		/*public static IUnityContainer FromConfiguration( this IUnityContainer container )
 		{
 			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => container.LoadConfiguration() ) );
