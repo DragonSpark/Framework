@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Application.IoC.Commands;
 using DragonSpark.Client.Stationed.Commanding;
 using DragonSpark.Client.Stationed.Extensions;
 using DragonSpark.Extensions;
-using DragonSpark.Stationed.IoC.Commands;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;

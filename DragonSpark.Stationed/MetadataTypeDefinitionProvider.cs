@@ -1,10 +1,10 @@
-﻿namespace DragonSpark.Stationed
-{
-	using System.ComponentModel.DataAnnotations;
-	using System.Reflection;
-	using ComponentModel;
-	using Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
 
+namespace DragonSpark.Application
+{
 	public class MetadataTypeDefinitionProvider : ITypeDefinitionProvider
 	{
 		public TypeInfo GetDefinition( TypeInfo info )

@@ -1,6 +1,6 @@
 using DragonSpark.ComponentModel;
 
-namespace DragonSpark.Stationed
+namespace DragonSpark.Application
 {
 	public class TypeDefinitionProvider : CompositeTypeDefinitionProvider
 	{

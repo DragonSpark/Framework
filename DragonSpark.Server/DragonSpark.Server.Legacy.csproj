@@ -7,8 +7,8 @@
     <ProjectGuid>{3CCA84F9-0680-438A-9A0D-8DBADA88B909}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DragonSpark.Server</RootNamespace>
-    <AssemblyName>DragonSpark.Server</AssemblyName>
+    <RootNamespace>DragonSpark.Server.Legacy</RootNamespace>
+    <AssemblyName>DragonSpark.Server.Legacy</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName />

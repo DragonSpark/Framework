@@ -33,7 +33,7 @@
 		}*/
 
 		[Theory, AutoMockData, AssignServiceLocation]
-		[Register( typeof(IExceptionFormatter), typeof(Stationed.ExceptionFormatter) )]
+		[Register( typeof(IExceptionFormatter), typeof(Application.ExceptionFormatter) )]
 		public void Error( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error, Guid id )
 		{
 			Log.Error( error, id );

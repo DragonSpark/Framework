@@ -22,7 +22,7 @@ using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Activator = DragonSpark.Activation.Activator;
 
-namespace DragonSpark.Stationed.IoC.Commands
+namespace DragonSpark.Application.IoC.Commands
 {
 	[AttributeUsage( AttributeTargets.Assembly, AllowMultiple = true )]
 	public class IgnoreNamespaceDuringRegistrationAttribute : Attribute

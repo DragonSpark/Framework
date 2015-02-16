@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Extensions;
-using DragonSpark.Stationed.Application;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;

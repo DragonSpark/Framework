@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Client.Stationed.Infrastructure;
 using DragonSpark.Client.Stationed.Presentation;
 using DragonSpark.Extensions;
-using DragonSpark.Stationed;
 using Microsoft.Expression.Interactions.Extensions.DataHelpers;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.ServiceLocation;
@@ -22,6 +21,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
+using DragonSpark.Application;
 using Xceed.Wpf.Toolkit;
 using IAttachedObject = DragonSpark.Client.Stationed.Presentation.IAttachedObject;
 

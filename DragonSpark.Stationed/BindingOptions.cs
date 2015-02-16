@@ -1,7 +1,7 @@
-﻿namespace DragonSpark.Stationed
-{
-	using System.Reflection;
+﻿using System.Reflection;
 
+namespace DragonSpark.Application
+{
 	public static class BindingOptions
 	{
 		public static readonly BindingFlags

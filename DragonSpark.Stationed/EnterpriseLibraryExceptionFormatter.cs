@@ -2,9 +2,8 @@ using System;
 using System.IO;
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
-using Microsoft.Practices.EnterpriseLibrary.SemanticLogging;
 
-namespace DragonSpark.Stationed
+namespace DragonSpark.Application
 {
 	public class EnterpriseLibraryExceptionFormatter : IExceptionFormatter
 	{

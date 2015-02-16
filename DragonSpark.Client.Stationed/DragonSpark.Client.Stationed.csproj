@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DragonSpark.Client.Stationed</RootNamespace>
     <AssemblyName>DragonSpark.Client.Stationed</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -116,9 +117,9 @@
       <Project>{bc17a341-a812-43b5-adca-0b93e924889c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Stationed.csproj">
+    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Application.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
-      <Name>DragonSpark.Stationed</Name>
+      <Name>DragonSpark.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>

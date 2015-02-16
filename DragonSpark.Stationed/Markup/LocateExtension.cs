@@ -8,7 +8,7 @@ using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 
-namespace DragonSpark.Stationed.Markup
+namespace DragonSpark.Application.Markup
 {
 	[ContentProperty( "Properties" )]
 	public class LocateExtension : MarkupExtension

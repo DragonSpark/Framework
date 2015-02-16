@@ -9,13 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DragonSpark.Testing.Client.Stationed.Application</RootNamespace>
     <AssemblyName>DragonSpark.Testing.Client.Stationed.Application</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>f19b4d9d</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -110,9 +111,9 @@
       <Project>{37cb4b8e-4d06-47d1-989f-67091821f96c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Stationed.csproj">
+    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Application.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
-      <Name>DragonSpark.Stationed</Name>
+      <Name>DragonSpark.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Xamarin.Forms.Platform.Wpf\DragonSpark.Xamarin.Forms.Platform.Wpf.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>

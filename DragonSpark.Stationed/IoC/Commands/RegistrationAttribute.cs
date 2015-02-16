@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Stationed.IoC.Commands
+namespace DragonSpark.Application.IoC.Commands
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public class RegistrationAttribute : Attribute

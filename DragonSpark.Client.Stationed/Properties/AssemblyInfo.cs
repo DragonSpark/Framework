@@ -1,11 +1,12 @@
-﻿using DragonSpark.Stationed.IoC.Commands;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 using System.Windows;
 using System.Windows.Controls;
+using DragonSpark.Application.IoC.Commands;
+
 // using Xceed.Wpf.AvalonDock;
 
 [assembly: AssemblyTitle("DragonSpark.Client.Stationed")]
