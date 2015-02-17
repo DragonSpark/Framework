@@ -11,7 +11,7 @@
              xmlns:presentation="clr-namespace:DragonSpark.Client.Windows.Presentation"
              xmlns:commanding="clr-namespace:DragonSpark.Client.Windows.Commanding">
 
-    <Style x:Key="LinkButton" 
+    <!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"
 	   >
@@ -162,5 +162,5 @@
                 </si:DataStateSwitchBehavior>
             </i:Interaction.Behaviors>
         </Border>
-    </DataTemplate>
+    </DataTemplate>-->
 </ResourceDictionary>

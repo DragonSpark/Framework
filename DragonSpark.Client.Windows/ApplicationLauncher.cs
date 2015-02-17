@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Markup;
 using DragonSpark.Common.Runtime;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
@@ -8,24 +9,7 @@ using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Client.Windows
 {
-	public class LaunchParameters
-	{
-		public LaunchParameters()
-		{
-			RunWithDefaultConfiguration = true;
-		}
-
-		public Window Shell { get; set; }
-
-		public IModuleCatalog Catalog { get; set; }
-
-		public bool RunWithDefaultConfiguration { get; set; }
-
-		public bool LaunchShellAsDialog { get; set; }
-
-		public string[] Arguments { get; set; }
-	}
-
+	[ContentProperty( "Parameters" )]
 	public class ApplicationLauncher : Launcher
 	{
 		public LaunchParameters Parameters { get; set; }
@@ -60,11 +44,10 @@ namespace DragonSpark.Client.Windows
 
 		protected override void ConfigureContainer()
 		{
-			Container.RegisterInstance( typeof(ApplicationLauncher), this );
+			Container.RegisterInstance( this );
 			
 			Container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
 			Container.RegisterInstance( Parameters );
-			// Container.RegisterInstance( IsolatedStorageSettings.ApplicationSettings );
 			
 			base.ConfigureContainer();
 

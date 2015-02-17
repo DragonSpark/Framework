@@ -1,15 +1,8 @@
-using System.Threading;
+using Microsoft.Practices.Prism.Modularity;
 using System.Windows;
 using System.Windows.Markup;
-using DragonSpark.Client.Windows.Commanding;
-using DragonSpark.Client.Windows.Extensions;
-using DragonSpark.Common.IoC.Commands;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Client.Windows.Launch
+namespace DragonSpark.Client.Windows
 {
 
 	[ContentProperty( "Shell" )]
@@ -31,7 +24,7 @@ namespace DragonSpark.Client.Windows.Launch
 		public string[] Arguments { get; set; }
 	}
 
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	/*[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
 	public class LaunchInitializationOperation : CommandBase<IEventAggregator>
 	{
 		readonly ManualResetEvent initialized = new ManualResetEvent( false );
@@ -41,5 +34,5 @@ namespace DragonSpark.Client.Windows.Launch
 			parameter.ExecuteWhenStatusIs( ApplicationLaunchStatus.Initialized, () => initialized.Set() )
 				.IsFalse( () => initialized.WaitOne() );
 		}
-	}
+	}*/
 }

@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using DragonSpark.Extensions;
+using System.Windows;
 using System.Windows.Markup;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Client.Windows
 {
@@ -9,7 +9,7 @@ namespace DragonSpark.Client.Windows
 	{
 		public Application()
 		{
-			Startup += ( s, a ) => OnStartup( a );
+			// Startup += ( s, a ) => OnStartup( a );
 		}
 
 		public ApplicationLauncher Launcher { get; set; }

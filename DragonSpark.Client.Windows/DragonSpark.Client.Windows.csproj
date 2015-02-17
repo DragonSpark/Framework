@@ -102,23 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Extensions\Class1.cs" />
+    <Compile Include="Forms\Class1.cs" />
     <Compile Include="ApplicationLauncher.cs" />
     <Compile Include="ApplicationLaunchEvent.cs" />
     <Compile Include="ApplicationLaunchStatus.cs" />
-    <Compile Include="Commanding\Class1.cs" />
-    <Compile Include="Commanding\CommandRegistry.cs" />
-    <Compile Include="Extensions\Class1.cs" />
-    <Compile Include="Forms\Class1.cs" />
-    <Compile Include="Infrastructure\EventSupport.cs" />
-    <Compile Include="Infrastructure\IRegionManagerService.cs" />
-    <Compile Include="Infrastructure\RegionManagerService.cs" />
-    <Compile Include="Launch\ApplicationLauncher.cs" />
-    <Compile Include="Launch\ApplicationLaunchEvent.cs" />
-    <Compile Include="Launch\ApplicationLaunchStatus.cs" />
-    <Compile Include="Launch\LaunchParameters.cs" />
-    <Compile Include="Presentation\Class1.cs" />
-    <Compile Include="Presentation\Converters.cs" />
-    <Compile Include="Presentation\Markup.cs" />
+    <Compile Include="LaunchParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,10 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Common;
+using DragonSpark.Extensions;
+using Microsoft.Expression.Interactions.Extensions.DataHelpers;
+using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,15 +19,8 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Client.Windows.Infrastructure;
-using DragonSpark.Client.Windows.Presentation;
-using DragonSpark.Common;
-using DragonSpark.Extensions;
-using Microsoft.Expression.Interactions.Extensions.DataHelpers;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.ServiceLocation;
 using Xceed.Wpf.Toolkit;
-using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
+// using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
 
 namespace DragonSpark.Client.Windows.Extensions
 {
@@ -40,7 +37,7 @@ namespace DragonSpark.Client.Windows.Extensions
 		}				
 	}
 
-	public static class ApplicationLaunchEventExtensions
+	/*public static class ApplicationLaunchEventExtensions
 	{
 		public static bool ExecuteWhenStatusIs( this IEventAggregator target, Launch.ApplicationLaunchStatus status, Action action )
 		{
@@ -60,7 +57,7 @@ namespace DragonSpark.Client.Windows.Extensions
 			}
 			return ready;
 		}
-	}
+	}*/
 
 	public static class ExtensionMethods
 	{
@@ -546,7 +543,7 @@ namespace DragonSpark.Client.Windows.Extensions
 
 		public static void EnsureLoaded<TFrameworkElement>( this TFrameworkElement target, Action<TFrameworkElement> callback, bool immediateExecution = true ) where TFrameworkElement : FrameworkElement
 		{
-			Action<TFrameworkElement> action = x => x.IsLoaded.IsTrue( () => callback( x ) );
+			/*Action<TFrameworkElement> action = x => x.IsLoaded.IsTrue( () => callback( x ) );
 
 			if ( target.IsLoaded )
 			{
@@ -560,7 +557,7 @@ namespace DragonSpark.Client.Windows.Extensions
 				{
 					target.Loaded += new Loader<TFrameworkElement>( action ).OnLoad;
 				} );
-			}
+			}*/
 		}
 
 		readonly static IDictionary<Type,IEnumerable<DependencyProperty>> Properties = new Dictionary<Type, IEnumerable<DependencyProperty>>();
@@ -715,7 +712,7 @@ namespace DragonSpark.Client.Windows.Extensions
 
 		public static bool EnsureLoadedElement( this object target, Action<FrameworkElement> action )
 		{
-			var attached = target.As<Presentation.IAttachedObject>( x =>
+			/*var attached = target.As<Presentation.IAttachedObject>( x =>
 			{
 				if ( x.AssociatedObject != null )
 				{
@@ -728,7 +725,8 @@ namespace DragonSpark.Client.Windows.Extensions
 				}
 			} );
 			var result = attached != null || Ensure( target, action ) != null;
-			return result;
+			return result;*/
+			return false;
 		}
 
 		static FrameworkElement Ensure( object x, Action<FrameworkElement> action )
@@ -738,7 +736,7 @@ namespace DragonSpark.Client.Windows.Extensions
 			return result;
 		}
 
-		class Loader
+		/*class Loader
 		{
 			readonly Action<Presentation.IAttachedObject> callback;
 
@@ -753,7 +751,7 @@ namespace DragonSpark.Client.Windows.Extensions
 				callback( element );
 				element.Attached -= OnAttached;
 			}
-		}
+		}*/
 
 		public static FrameworkElement DetermineFrameworkElement( this object target )
 		{
