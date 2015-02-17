@@ -7,7 +7,7 @@
     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:markup="clr-namespace:DragonSpark.Application.Markup;assembly=DragonSpark.Application"
+             xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
              xmlns:presentation="clr-namespace:DragonSpark.Client.Windows.Presentation"
              xmlns:commanding="clr-namespace:DragonSpark.Client.Windows.Commanding">
 

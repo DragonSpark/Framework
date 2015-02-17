@@ -5,13 +5,13 @@
     xmlns:application="clr-namespace:DragonSpark.Client.Windows.Compensations.Application;assembly=Xamarin.Forms.Platform.WP8"
     Title="DragonSpark Client Testing Application" Height="350" Width="525"
 >
-    <mui:ModernWindow.Resources>
+    <!--<mui:ModernWindow.Resources>
         <DataTemplate DataType="{x:Type application:ApplicationHost}">
             <Canvas>
                 
             </Canvas>
         </DataTemplate>
-    </mui:ModernWindow.Resources>
+    </mui:ModernWindow.Resources>-->
     
     <!--<application:ApplicationHost />-->
 </mui:ModernWindow>

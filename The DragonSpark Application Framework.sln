@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client", "Drago
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7C73884D-953A-4AF2-88A6-DA991CB6E6FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Common", "DragonSpark.Stationed\DragonSpark.Common.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
 EndProject
@@ -51,6 +51,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client.Stationed", "DragonSpark.Testing.Client.Stationed\DragonSpark.Testing.Client.Stationed.csproj", "{843C0764-97CD-42EB-8934-858F95A80A7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{3DE4CCC7-DAFD-4E0C-A921-C03F828D56A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{04F6E55E-9E59-4B7D-91CA-7DE1D23C91EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -632,11 +634,12 @@ Global
 		{37CB4B8E-4D06-47D1-989F-67091821F96C} = {3DE4CCC7-DAFD-4E0C-A921-C03F828D56A6}
 		{B51D28D3-BC96-41EA-885F-F7BE1543D6F4} = {3DE4CCC7-DAFD-4E0C-A921-C03F828D56A6}
 		{3C36DDEC-2BDC-4C7F-B66E-8207B125CD67} = {E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}
-		{EB77A62A-7527-4BBE-A335-28BA901D8FB2} = {E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}
-		{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA} = {7C73884D-953A-4AF2-88A6-DA991CB6E6FD}
-		{7DA5FD28-7E89-459F-9CDC-A2D278A95662} = {E52D7FC5-331C-4ED9-B068-B2BFAF5D67EF}
+		{EB77A62A-7527-4BBE-A335-28BA901D8FB2} = {04F6E55E-9E59-4B7D-91CA-7DE1D23C91EA}
+		{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA} = {04F6E55E-9E59-4B7D-91CA-7DE1D23C91EA}
+		{7DA5FD28-7E89-459F-9CDC-A2D278A95662} = {04F6E55E-9E59-4B7D-91CA-7DE1D23C91EA}
 		{70260364-ED20-40E0-85CF-78CC97AF477C} = {3A30E5F6-BF9A-4FD7-903F-958F4789BD52}
 		{843C0764-97CD-42EB-8934-858F95A80A7A} = {3A30E5F6-BF9A-4FD7-903F-958F4789BD52}
+		{04F6E55E-9E59-4B7D-91CA-7DE1D23C91EA} = {7C73884D-953A-4AF2-88A6-DA991CB6E6FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.WCF.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.PolicyInjection.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Validation.6.0.1304.0\lib\NET45
