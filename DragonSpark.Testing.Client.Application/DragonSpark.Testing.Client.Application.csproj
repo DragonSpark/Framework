@@ -115,9 +115,9 @@
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Client.Windows.Compensations\DragonSpark.Client.Windows.Compensations.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Windows.Forms\DragonSpark.Client.Windows.Forms.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>
-      <Name>DragonSpark.Client.Windows.Compensations</Name>
+      <Name>DragonSpark.Client.Windows.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>

@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-    xmlns:application="clr-namespace:DragonSpark.Client.Windows.Compensations.Application;assembly=Xamarin.Forms.Platform.WP8"
     Title="DragonSpark Client Testing Application" Height="350" Width="525"
 >
     <!--<mui:ModernWindow.Resources>
