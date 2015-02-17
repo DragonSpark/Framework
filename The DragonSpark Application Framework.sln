@@ -46,9 +46,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Expression.Intera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Client.Windows.Compensations", "DragonSpark.Xamarin.Forms.Platform.Wpf\DragonSpark.Client.Windows.Compensations.csproj", "{7DA5FD28-7E89-459F-9CDC-A2D278A95662}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client.Stationed.Application", "DragonSpark.Testing.Client.Stationed.Application\DragonSpark.Testing.Client.Stationed.Application.csproj", "{70260364-ED20-40E0-85CF-78CC97AF477C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client.Application", "DragonSpark.Testing.Client.Stationed.Application\DragonSpark.Testing.Client.Application.csproj", "{70260364-ED20-40E0-85CF-78CC97AF477C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client.Stationed", "DragonSpark.Testing.Client.Stationed\DragonSpark.Testing.Client.Stationed.csproj", "{843C0764-97CD-42EB-8934-858F95A80A7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client", "DragonSpark.Testing.Client.Stationed\DragonSpark.Testing.Client.csproj", "{843C0764-97CD-42EB-8934-858F95A80A7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{3DE4CCC7-DAFD-4E0C-A921-C03F828D56A6}"
 EndProject

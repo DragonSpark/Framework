@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Testing.Client.Stationed
+﻿namespace DragonSpark.Testing.Client
 {
 	public partial class ApplicationInstance
 	{

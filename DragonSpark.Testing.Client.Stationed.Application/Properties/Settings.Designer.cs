@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DragonSpark.Testing.Client.Stationed.Application.Properties {
+namespace DragonSpark.Testing.Client.Application.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

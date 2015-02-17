@@ -1,4 +1,4 @@
-﻿<Application x:Class="DragonSpark.Testing.Client.Stationed.Application.Application"
+﻿<Application x:Class="DragonSpark.Testing.Client.Application.Application"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Shell.xaml">

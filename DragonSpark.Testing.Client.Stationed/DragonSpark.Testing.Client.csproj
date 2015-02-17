@@ -8,8 +8,8 @@
     <ProjectGuid>{843C0764-97CD-42EB-8934-858F95A80A7A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DragonSpark.Testing.Client.Stationed</RootNamespace>
-    <AssemblyName>DragonSpark.Testing.Client.Stationed</AssemblyName>
+    <RootNamespace>DragonSpark.Testing.Client</RootNamespace>
+    <AssemblyName>DragonSpark.Testing.Client</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

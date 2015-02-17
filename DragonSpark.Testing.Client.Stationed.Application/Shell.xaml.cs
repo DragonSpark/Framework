@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Testing.Client.Stationed.Application
+﻿namespace DragonSpark.Testing.Client.Application
 {
 	/// <summary>
 	/// Interaction logic for Shell.xaml
