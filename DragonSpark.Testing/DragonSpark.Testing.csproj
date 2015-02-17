@@ -302,7 +302,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Common</Name>
     </ProjectReference>

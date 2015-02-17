@@ -154,11 +154,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Client.Windows.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Windows\DragonSpark.Client.Windows.csproj">
       <Project>{EB77A62A-7527-4BBE-A335-28BA901D8FB2}</Project>
       <Name>DragonSpark.Client.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Common</Name>
     </ProjectReference>

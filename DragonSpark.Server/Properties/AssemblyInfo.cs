@@ -1,19 +1,16 @@
-﻿// General Information about an assembly is controlled through the following 
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-using DragonSpark;
-using DragonSpark.IoC.Commands;
-using DragonSpark.IoC.Configuration;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows.Markup;
-
-[assembly: AssemblyTitle("DragonSpark.Server")]
+[assembly: AssemblyTitle("DragonSpark.Stationed.Server")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DragonSpark.Server")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("DragonSpark.Stationed.Server")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -23,7 +20,7 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fdc73486-ab1f-48e2-aeeb-f5f93cc75445")]
+[assembly: Guid("8c69f320-ce87-4e49-badb-9116d35f04c5")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,13 +32,5 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2013.11.12.1")]
-[assembly: AssemblyFileVersion("2013.11.12.1")]
-
-[assembly: XmlnsPrefix("http://framework.dragonspark.us/web", "dsweb")]
-
-[assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server")]
-[assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server.Configuration")]
-[assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server.Security")]
-
-[assembly: DragonSpark.IoC.Commands.Registration( Priority.Low )]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

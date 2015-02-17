@@ -15,7 +15,7 @@ using IValueConverter = System.Windows.Data.IValueConverter;
 using RowDefinition = System.Windows.Controls.RowDefinition;
 using Thickness = System.Windows.Thickness;
 
-namespace DragonSpark.Client.Windows.Compensations.Rendering
+namespace DragonSpark.Xamarin.Forms.Platform.Wpf.Rendering
 {
 	public enum TileSize
 	{

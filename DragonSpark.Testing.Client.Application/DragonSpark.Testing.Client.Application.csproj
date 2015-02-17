@@ -103,7 +103,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Stationed\DragonSpark.Client.Windows.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Windows\DragonSpark.Client.Windows.csproj">
       <Project>{eb77a62a-7527-4bbe-a335-28ba901d8fb2}</Project>
       <Name>DragonSpark.Client.Windows</Name>
     </ProjectReference>
@@ -111,11 +111,11 @@
       <Project>{37cb4b8e-4d06-47d1-989f-67091821f96c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Xamarin.Forms.Platform.Wpf\DragonSpark.Client.Windows.Compensations.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Windows.Compensations\DragonSpark.Client.Windows.Compensations.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>
       <Name>DragonSpark.Client.Windows.Compensations</Name>
     </ProjectReference>

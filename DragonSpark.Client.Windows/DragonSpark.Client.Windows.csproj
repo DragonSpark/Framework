@@ -117,7 +117,7 @@
       <Project>{bc17a341-a812-43b5-adca-0b93e924889c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Stationed\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Common</Name>
     </ProjectReference>
