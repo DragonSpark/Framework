@@ -32,11 +32,31 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			this.loaded = true;
 			this.renderer.Element.ChildAdded += new EventHandler<ElementEventArgs>(this.HandleChildAdded);
 			this.renderer.Element.ChildRemoved += new EventHandler<ElementEventArgs>(this.HandleChildRemoved);
+			this.renderer.Element.ChildrenReordered += new EventHandler(this.HandleChildrenReordered);
+			
 			foreach (Element current in this.renderer.Element.LogicalChildren)
 			{
 				this.HandleChildAdded(this.renderer.Element, new ElementEventArgs(current));
 			}
 		}
+
+		private void HandleChildrenReordered(object sender, EventArgs e)
+		{
+			this.EnsureZIndex();
+		}
+		private void EnsureZIndex()
+		{
+			for (int i = 0; i < this.renderer.Element.LogicalChildren.Count; i++)
+			{
+				VisualElement self = (VisualElement)this.renderer.Element.LogicalChildren[i];
+				IVisualElementRenderer visualElementRenderer = self.GetRenderer();
+				if (visualElementRenderer != null)
+				{
+					Canvas.SetZIndex(visualElementRenderer.ContainerElement, i + 1);
+				}
+			}
+		}
+
 		private void HandleChildRemoved(object sender, ElementEventArgs e)
 		{
 			VisualElement visualElement = e.Element as VisualElement;
@@ -49,6 +69,7 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			{
 				this.panel.Children.Remove(uIElement);
 			}
+			this.EnsureZIndex();
 		}
 		private void HandleChildAdded(object sender, ElementEventArgs e)
 		{
@@ -60,6 +81,7 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			IVisualElementRenderer visualElementRenderer;
 			visualElement.SetRenderer(visualElementRenderer = RendererFactory.GetRenderer(visualElement));
 			this.panel.Children.Add(visualElementRenderer.ContainerElement);
+			this.EnsureZIndex();
 		}
 	}
 }

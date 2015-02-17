@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
 
@@ -150,19 +149,18 @@ namespace DragonSpark.Client.Windows.Forms
 
 		public Task PushAsync( Page root )
 		{
-			return PushAsync( root, true );
+			return this.PushAsync(root, true);
 		}
 
-		public Task PushAsync( Page root, bool animated )
+		public async Task PushAsync(Xamarin.Forms.Page root, bool animated)
 		{
-			Push( root, platform.Page, animated );
-			return Task.FromResult( root );
+			await this.Push(root, platform.Page, animated);
 		}
 
-		public void Push( Page root, Page ancester, bool animated )
+		public async Task Push(Xamarin.Forms.Page root, Xamarin.Forms.Page ancester, bool animated)
 		{
 			model.Push( root, ancester );
-			SetCurrent( model.CurrentPage, animated );
+			await SetCurrent( model.CurrentPage, animated );
 			if ( root.GetNavigation() == null )
 			{
 				root.AssignNavigation( this );
@@ -176,13 +174,13 @@ namespace DragonSpark.Client.Windows.Forms
 
 		public Task<Page> PopAsync( bool animated )
 		{
-			return Task.FromResult( Pop( platform.Page, animated ) );
+			return Pop( platform.Page, animated );
 		}
 
-		public Page Pop( Page ancestor, bool animated )
+		public async Task<Page> Pop( Page ancestor, bool animated )
 		{
 			var result = model.Pop( ancestor );
-			SetCurrent( model.CurrentPage, animated, true );
+			await SetCurrent( model.CurrentPage, animated, true );
 			return result;
 		}
 
@@ -191,15 +189,20 @@ namespace DragonSpark.Client.Windows.Forms
 			return PopToRootAsync( true );
 		}
 
-		public Task PopToRootAsync( bool animated )
+		public async Task PopToRootAsync( bool animated )
 		{
-			model.PopToRoot( platform.Page );
-			SetCurrent( model.CurrentPage, animated, true );
-			return Task.FromResult( model.CurrentPage );
+			await PopToRoot( platform.Page, animated );
 		}
 
-		void SetCurrent( Page page, bool animated, bool popping = false, Action completedCallback = null )
+		public async Task PopToRoot( Page ancestor, bool animated )
 		{
+			model.PopToRoot( ancestor );
+			await SetCurrent( model.CurrentPage, animated, true, null );
+		}
+
+		Task SetCurrent( Page page, bool animated, bool popping = false, Action completedCallback = null )
+		{
+			return Task.FromResult( 0 );
 			/*if ( page != currentDisplayedPage )
 			{
 				page.Platform = platform;

@@ -1,10 +1,10 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Color = Xamarin.Forms.Color;
 using Size = System.Windows.Size;
@@ -242,10 +242,21 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 				var tElement2 = this.Element;
 				tElement2.IsNativeStateConsistent = true;
 			};
-			element.GotFocus += delegate { this.Element.To<IElementController>().SetValueFromRenderer( VisualElement.IsFocusedPropertyKey, true ); };
-			element.LostFocus += delegate { this.Element.To<IElementController>().SetValueFromRenderer( VisualElement.IsFocusedPropertyKey, false ); };
+			
+			element.GotFocus += OnGotFocus;
+			element.LostFocus += OnLostFocus;
 			tracker.Child = element;
 			UpdateBackgroundColor();
+		}
+
+		protected virtual void OnGotFocus( object sender, RoutedEventArgs e )
+		{
+			this.Element.To<IElementController>().SetValueFromRenderer( VisualElement.IsFocusedPropertyKey, true );
+		}
+
+		protected virtual void OnLostFocus( object sender, RoutedEventArgs e )
+		{
+			this.Element.To<IElementController>().SetValueFromRenderer( VisualElement.IsFocusedPropertyKey, false );
 		}
 	}
 }

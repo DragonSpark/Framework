@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Windows;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
 
 namespace DragonSpark.Client.Windows.Forms.Rendering
@@ -84,7 +84,8 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			/*var platform = Element.ApplicationHost as ApplicationHost;
 			if ( platform != null )
 			{
-				platform.PopToRoot( Element, eventArgs.Animated );
+				eventArgs.Task = platform.PopToRoot(base.Element, eventArgs.Animated).ContinueWith<bool>((Task t, object o) => true, null);
+				// platform.PopToRoot( Element, eventArgs.Animated );
 			}*/
 		}
 
@@ -93,7 +94,8 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			/*var platform = Element.ApplicationHost as ApplicationHost;
 			if ( platform != null )
 			{
-				platform.Pop( Element, eventArg.Animated );
+				eventArg.Task = platform.Pop(base.Element, eventArg.Animated).ContinueWith<bool>((Task<Page> t, object o) => true, null);
+				// platform.Pop( Element, eventArg.Animated );
 			}*/
 		}
 

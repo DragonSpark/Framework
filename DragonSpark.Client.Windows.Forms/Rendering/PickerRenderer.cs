@@ -1,8 +1,8 @@
+using DragonSpark.Extensions;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
 using DataTemplate = System.Windows.DataTemplate;
 
@@ -99,9 +99,40 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			{
 				MaxHeight = 0
 			} );
+			/*System.Windows.Data.Binding binding = new System.Windows.Data.Binding("ListPickerMode")
+			{
+				Source = listPicker
+			};
+			DependencyProperty dp = DependencyProperty.RegisterAttached("ListPickerModeChanged", typeof(ComboBoxMo), typeof(ListPicker), new PropertyMetadata(new PropertyChangedCallback(this.ListPickerModeChanged)));
+			listPicker.SetBinding(dp, binding);*/
 			SetNativeControl( listPicker );
 			UpdatePicker();
 			listPicker.SelectionChanged += PickerSelectionChanged;
+		}
+
+		/*private void ListPickerModeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (e.OldValue == null || e.NewValue == null)
+			{
+				return;
+			}
+			ListPickerMode listPickerMode = (ListPickerMode)e.OldValue;
+			ListPickerMode listPickerMode2 = (ListPickerMode)e.NewValue;
+			if (listPickerMode == ListPickerMode.Normal && listPickerMode2 == ListPickerMode.Full)
+			{
+				((IElementController)base.Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
+				return;
+			}
+			if (listPickerMode == ListPickerMode.Full && listPickerMode2 == ListPickerMode.Normal)
+			{
+				((IElementController)base.Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
+			}
+		}*/
+		protected override void OnGotFocus(object sender, RoutedEventArgs args)
+		{
+		}
+		protected override void OnLostFocus(object sender, RoutedEventArgs args)
+		{
 		}
 
 		void ItemsCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -166,6 +197,34 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			{
 				Control.SelectedIndex = Element.SelectedIndex + 1;
 			}
+		}
+		internal override void OnModelFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
+		{
+			if (base.Control == null)
+			{
+				return;
+			}
+			if (args.Focus)
+			{
+				args.Result = this.OpenPickerPage();
+				return;
+			}
+			args.Result = this.ClosePickerPage();
+			base.UnfocusControl(base.Control);
+		}
+		private bool OpenPickerPage()
+		{
+			return Control.IsDropDownOpen = true;
+		}
+
+		bool ClosePickerPage()
+		{
+			Control.IsDropDownOpen = false;
+			return true;
+			/*FieldInfo field = typeof(ListPicker).GetField( "_listPickerPage", BindingFlags.Instance | BindingFlags.NonPublic );
+			ListPickerPage target = field.GetValue( base.Control ) as ListPickerPage;
+			typeof(ListPickerPage).InvokeMember( "ClosePickerPage", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, Type.DefaultBinder, target, null );
+			return true;*/
 		}
 	}
 }

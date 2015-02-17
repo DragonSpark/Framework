@@ -158,6 +158,10 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 			{
 				VisualElement visualElement = model;
 				element.Visibility = ( visualElement.IsVisible ? Visibility.Visible : Visibility.Collapsed );
+				if ( Child != null )
+				{
+					Child.Visibility = visualElement.IsVisible ? Visibility.Visible : Visibility.Collapsed;
+				}
 				if ( visualElement.Batched || visualElement.Bounds.IsEmpty )
 				{
 					element.Opacity = 0.0;
