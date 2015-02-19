@@ -2,11 +2,11 @@
 namespace DragonSpark.Testing.Client.Application
 {
 	/// <summary>
-	/// Interaction logic for Shell.xaml
+	/// Interaction logic for Setup.xaml
 	/// </summary>
-	public partial class Shell
+	public partial class Setup
 	{
-		public Shell()
+		public Setup()
 		{
 			InitializeComponent();
 		}

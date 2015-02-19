@@ -1,7 +1,7 @@
-﻿
-namespace DragonSpark.Testing.Client
+﻿namespace DragonSpark.Testing.Client
 {
-    public class Class1
-    {
-    }
+	public class Class1
+	{
+		public string PropertyName { get; set; }
+	}
 }

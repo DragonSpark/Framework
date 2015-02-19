@@ -19,6 +19,8 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
+using DragonSpark.Client.Windows.Infrastructure;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Xceed.Wpf.Toolkit;
 // using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
 
@@ -37,18 +39,18 @@ namespace DragonSpark.Client.Windows.Extensions
 		}				
 	}
 
-	/*public static class ApplicationLaunchEventExtensions
+	public static class ApplicationLaunchEventExtensions
 	{
-		public static bool ExecuteWhenStatusIs( this IEventAggregator target, Launch.ApplicationLaunchStatus status, Action action )
+		public static bool ExecuteWhenStatusIs( this IEventAggregator target, ApplicationLaunchStatus status, Action action )
 		{
-			var ready = target.GetEvent<Launch.ApplicationLaunchEvent>().History.Transform( y => y.Contains( status ) );
+			var ready = target.GetEvent<ApplicationLaunchEvent>().History.Transform( y => y.Contains( status ) );
 			if ( ready )
 			{
 				action();
 			}
 			else
 			{
-				target.Subscribe<Launch.ApplicationLaunchEvent,Launch.ApplicationLaunchStatus>( ( e, p ) =>
+				target.Subscribe<ApplicationLaunchEvent, ApplicationLaunchStatus>( ( e, p ) =>
 				{
 					var result = p == status;
 					result.IsTrue( action );
@@ -57,7 +59,7 @@ namespace DragonSpark.Client.Windows.Extensions
 			}
 			return ready;
 		}
-	}*/
+	}
 
 	public static class ExtensionMethods
 	{

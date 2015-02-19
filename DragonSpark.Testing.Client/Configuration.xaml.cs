@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Testing.Client
 {
-	public partial class ApplicationInstance
+	public partial class Configuration
 	{
-		public ApplicationInstance()
+		public Configuration()
 		{
 			InitializeComponent();
 		}

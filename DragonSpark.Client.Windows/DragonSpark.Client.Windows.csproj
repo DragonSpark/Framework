@@ -104,10 +104,14 @@
     <Compile Include="Application.cs" />
     <Compile Include="Extensions\Class1.cs" />
     <Compile Include="Forms\Class1.cs" />
-    <Compile Include="ApplicationLauncher.cs" />
+    <Compile Include="Infrastructure\EventSupport.cs" />
+    <Compile Include="Interaction\InitializeApplicationAction.cs" />
+    <Compile Include="Markup\ConfigurationObject.cs" />
+    <Compile Include="Markup\PropertySetter.cs" />
+    <Compile Include="Setup.cs" />
     <Compile Include="ApplicationLaunchEvent.cs" />
     <Compile Include="ApplicationLaunchStatus.cs" />
-    <Compile Include="LaunchParameters.cs" />
+    <Compile Include="SetupParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

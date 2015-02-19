@@ -9,7 +9,7 @@ namespace DragonSpark.ComponentModel
 		void Apply( object target );
 	}
 
-	class DefaultValueProvider : IDefaultValueProvider
+	public class DefaultValueProvider : IDefaultValueProvider
 	{
 		public void Apply( object target )
 		{

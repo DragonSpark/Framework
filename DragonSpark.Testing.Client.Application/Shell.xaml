@@ -1,16 +1,28 @@
-﻿<mui:ModernWindow x:Class="DragonSpark.Testing.Client.Application.Shell"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-    Title="DragonSpark Client Testing Application" Height="350" Width="525"
+﻿<Window x:Class="DragonSpark.Testing.Client.Application.Shell"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+	Title="DragonSpark Client Testing Application" Height="350" Width="525"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:forms="clr-namespace:DragonSpark.Client.Windows.Forms;assembly=DragonSpark.Client.Windows"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:interaction="clr-namespace:DragonSpark.Client.Windows.Interaction;assembly=DragonSpark.Client.Windows"
+	mc:Ignorable="d" 
+	d:DesignHeight="768" d:DesignWidth="1366"
+	d:DataContext="{d:DesignInstance {x:Type forms:PlatformModel}}"
 >
-    <!--<mui:ModernWindow.Resources>
-        <DataTemplate DataType="{x:Type application:ApplicationHost}">
-            <Canvas>
-                
-            </Canvas>
-        </DataTemplate>
-    </mui:ModernWindow.Resources>-->
-    
-    <!--<application:ApplicationHost />-->
-</mui:ModernWindow>
+	<i:Interaction.Behaviors>
+		<interaction:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+	</i:Interaction.Behaviors>
+	<mui:TransitioningContentControl Content="{Binding Content}" />
+	<!--<mui:ModernWindow.Resources>
+		<DataTemplate DataType="{x:Type forms:Platform}">
+			<mui:TransitioningContentControl Content="{}">
+				
+			</mui:TransitioningContentControl>
+		</DataTemplate>
+	</mui:ModernWindow.Resources>-->
+	
+	<!--<application:ApplicationHost />-->
+</Window>

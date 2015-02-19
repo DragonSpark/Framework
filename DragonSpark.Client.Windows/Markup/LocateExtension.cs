@@ -1,14 +1,14 @@
+using DragonSpark.Activation;
+using DragonSpark.Extensions;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Markup;
-using DragonSpark.Extensions;
-using DragonSpark.Runtime;
-using Microsoft.Practices.ServiceLocation;
 
-namespace DragonSpark.Markup
+namespace DragonSpark.Client.Windows.Markup
 {
 	[ContentProperty( "Properties" )]
 	public class LocateExtension : MarkupExtension

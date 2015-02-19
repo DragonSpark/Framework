@@ -1,11 +1,19 @@
-﻿using DragonSpark.Client.Windows.Forms.Rendering;
+﻿using DragonSpark.Activation.IoC;
+using DragonSpark.Client.Windows.Extensions;
+using DragonSpark.Client.Windows.Forms.Rendering;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
+using Size = System.Windows.Size;
 
 namespace DragonSpark.Client.Windows.Forms
 {
@@ -23,6 +31,47 @@ namespace DragonSpark.Client.Windows.Forms
 		}
 	}*/
 
+	[System.Windows.Markup.ContentProperty( "Initializer" )]
+	public class InitializeFormsCommand : IContainerConfigurationCommand
+	{
+		public void Configure( IUnityContainer container )
+		{
+			var initializer = Initializer ?? new Initializer();
+			initializer.Initialize();
+		}
+
+		// [Activate( typeof(Initializer) )]
+		public IInitializer Initializer { get; set; }
+	}
+
+	[System.Windows.Markup.ContentProperty( "Application" )]
+	public class SetupFormsCommand : IContainerConfigurationCommand
+	{
+		public async void Configure( IUnityContainer container )
+		{
+			var platform = new PlatformModel( Engine, Application );
+
+			var navigation = new Navigation( platform, NavigationModel );
+			await navigation.PushAsync( Application.MainPage );
+
+			var aggregator = container.Resolve<IEventAggregator>();
+			aggregator.ExecuteWhenStatusIs( ApplicationLaunchStatus.Initialized, () =>
+			{
+				System.Windows.Application.Current.MainWindow.DataContext = platform;
+			} );
+
+			container.RegisterInstance<IPlatform>( platform );
+		}
+
+		public Xamarin.Forms.Application Application { get; set; }
+
+		[Activate( typeof(Engine) )]
+		public IPlatformEngine Engine { get; set; }
+
+		[Activate( typeof(NavigationModel) )]
+		public INavigationModel NavigationModel { get; set; }
+	}
+
 	class Engine : IPlatformEngine
 	{
 		public SizeRequest GetNativeSize( VisualElement view, double widthConstraint, double heightConstraint )
@@ -37,31 +86,63 @@ namespace DragonSpark.Client.Windows.Forms
 		}
 	}
 
-	public class ApplicationHost : IPlatform
+	public class PlatformModel : BindableBase, IPlatform
 	{
 		public event EventHandler BindingContextChanged = delegate {};
 
 		readonly IPlatformEngine engine;
 		readonly global::Xamarin.Forms.Application application;
 
-		public ApplicationHost( IPlatformEngine engine, global::Xamarin.Forms.Application application )
+		public PlatformModel( IPlatformEngine engine, global::Xamarin.Forms.Application application )
 		{
 			this.engine = engine;
 			this.application = application;
 		}
 
-		public void SetPage( Page newRoot )
+		public Size Size
 		{
-			if ( newRoot != Page )
+			get { return size; }
+			set
 			{
-				application.MainPage = newRoot;
+				if ( SetProperty( ref size, value ) )
+				{
+					Refresh();
+				}
+			}
+		}	Size size;
+
+		void Refresh()
+		{
+			Page.With( page => page.Layout( new Rectangle( 0.0, 0.0, Size.Width, Size.Height ) ) );
+		}
+
+		public object Content
+		{
+
+			get { return content; }
+			private set 
+			{
+				if ( SetProperty( ref content, value ) )
+				{
+					Refresh();
+				}
+			}
+		}	object content;
+
+		void IPlatform.SetPage( Page current )
+		{
+			if ( current != Page )
+			{
+				Page = current;
+				current.Assign( this );
+				
+				Content = current.DetermineRenderer();
+				// UpdateToolbarTracker();
+
 			}
 		}
 
-		public Page Page
-		{
-			get { return application.MainPage; }
-		}
+		public Page Page { get; private set; }
 
 		public object BindingContext
 		{
@@ -152,12 +233,12 @@ namespace DragonSpark.Client.Windows.Forms
 			return this.PushAsync(root, true);
 		}
 
-		public async Task PushAsync(Xamarin.Forms.Page root, bool animated)
+		public async Task PushAsync( Page root, bool animated )
 		{
-			await this.Push(root, platform.Page, animated);
+			await Push( root, platform.Page, animated );
 		}
 
-		public async Task Push(Xamarin.Forms.Page root, Xamarin.Forms.Page ancester, bool animated)
+		public async Task Push( Page root, Page ancester, bool animated )
 		{
 			model.Push( root, ancester );
 			await SetCurrent( model.CurrentPage, animated );
@@ -197,51 +278,16 @@ namespace DragonSpark.Client.Windows.Forms
 		public async Task PopToRoot( Page ancestor, bool animated )
 		{
 			model.PopToRoot( ancestor );
-			await SetCurrent( model.CurrentPage, animated, true, null );
+			await SetCurrent( model.CurrentPage, animated, true );
 		}
 
 		Task SetCurrent( Page page, bool animated, bool popping = false, Action completedCallback = null )
 		{
-			return Task.FromResult( 0 );
-			/*if ( page != currentDisplayedPage )
+			return Task.Factory.StartNew( () =>
 			{
-				page.Platform = platform;
-				if ( page.GetRenderer() == null )
-				{
-					page.SetRenderer( RendererFactory.GetRenderer( page ) );
-				}
-				page.Layout( new Rectangle( 0.0, 0.0, renderer.ActualWidth, renderer.ActualHeight ) );
-				if ( popping )
-				{
-					var self = currentDisplayedPage;
-					var currentElement = (UIElement)self.GetRenderer();
-					renderer.Children.Remove( currentElement );
-					var previous = page;
-					// UpdateToolbarTracker();
-					renderer.Children.Add( (UIElement)previous.GetRenderer() );
-					if ( completedCallback != null )
-					{
-						completedCallback();
-					}
-				}
-				else
-				{
-					var page2 = currentDisplayedPage;
-					if ( page2 != null )
-					{
-						var previousElement = (UIElement)page2.GetRenderer();
-						renderer.Children.Remove( previousElement );
-					}
-					renderer.Children.Add( (UIElement)page.GetRenderer() );
-					// UpdateToolbarTracker();
-					if ( completedCallback != null )
-					{
-						completedCallback();
-					}
-					//}
-				}
-				currentDisplayedPage = page;
-			}*/
+				platform.SetPage( page );
+				completedCallback.With( x => x() );
+			}, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext() );
 		}
 	}
 

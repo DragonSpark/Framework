@@ -77,7 +77,11 @@ namespace DragonSpark.Common.Runtime
 		{
 			base.ConfigureContainer();
 
-			Configurations.Apply( x => x.WithDefaults().Configure( Container ) );
+			Configurations.Apply( x =>
+			{
+				var command = x.WithDefaults();
+				command.Configure( Container );
+			} );
 
 			var logger = Container.IsRegistered<ILoggerFacade>() ? Container.Resolve<ILoggerFacade>() : base.CreateLogger();
 			Logger = StorageLogger.Instance.Purge( logger );

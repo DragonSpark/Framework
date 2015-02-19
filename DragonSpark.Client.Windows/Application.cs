@@ -4,7 +4,7 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Client.Windows
 {
-	[ContentProperty( "Launcher" )]
+	[ContentProperty( "Setup" )]
 	public class Application : System.Windows.Application
 	{
 		public Application()
@@ -12,13 +12,13 @@ namespace DragonSpark.Client.Windows
 			// Startup += ( s, a ) => OnStartup( a );
 		}
 
-		public ApplicationLauncher Launcher { get; set; }
+		public Setup Setup { get; set; }
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			base.OnStartup( e );
 
-			Launcher.With( x => x.Launch( e.Args ) );
+			Setup.With( x => x.Launch( e.Args ) );
 		}
 	}
 }

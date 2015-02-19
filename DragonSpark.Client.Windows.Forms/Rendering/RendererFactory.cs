@@ -6,9 +6,9 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 	{
 		public static IVisualElementRenderer GetRenderer(VisualElement view)
 		{
-			IVisualElementRenderer visualElementRenderer = Registrar.Registered.GetHandler<IVisualElementRenderer>(view.GetType()) ?? new ViewRenderer();
-			visualElementRenderer.SetElement(view);
-			return visualElementRenderer;
+			var result = Registrar.Registered.GetHandler<IVisualElementRenderer>(view.GetType()) ?? new ViewRenderer();
+			result.SetElement(view);
+			return result;
 		}
 	}
 }

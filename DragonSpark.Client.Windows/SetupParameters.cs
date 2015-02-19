@@ -6,9 +6,9 @@ namespace DragonSpark.Client.Windows
 {
 
 	[ContentProperty( "Shell" )]
-	public class LaunchParameters
+	public class SetupParameters
 	{
-		public LaunchParameters()
+		public SetupParameters()
 		{
 			RunWithDefaultConfiguration = true;
 		}
@@ -19,7 +19,7 @@ namespace DragonSpark.Client.Windows
 
 		public bool RunWithDefaultConfiguration { get; set; }
 
-		public bool LaunchShellAsDialog { get; set; }
+		/*public bool LaunchShellAsDialog { get; set; }*/
 
 		public string[] Arguments { get; set; }
 	}

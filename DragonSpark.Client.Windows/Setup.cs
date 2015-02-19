@@ -1,18 +1,19 @@
-using System.Windows;
-using System.Windows.Markup;
+using System.Diagnostics;
 using DragonSpark.Common.Runtime;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace DragonSpark.Client.Windows
 {
 	[ContentProperty( "Parameters" )]
-	public class ApplicationLauncher : Launcher
+	public class Setup : Launcher
 	{
-		public LaunchParameters Parameters { get; set; }
+		public SetupParameters Parameters { get; set; }
 
 		public void Launch( string[] arguments = null )
 		{
@@ -58,18 +59,25 @@ namespace DragonSpark.Client.Windows
 		{
 			base.InitializeShell();
 
-			Parameters.With( x =>
+			Shell.As<Window>( window =>
 			{
-				if ( x.LaunchShellAsDialog )
+				System.Windows.Application.Current.MainWindow = window;
+				window.Show();
+			} );
+
+			/*Parameters.With( x =>
+			{
+				System.Windows.Application.Current.MainWindow = x.Shell;
+				x.Shell.Show();
+				Debugger.Break();
+				/*if ( x.LaunchShellAsDialog )
 				{
 					x.Shell.ShowDialog();
 				}
 				else
 				{
-					System.Windows.Application.Current.MainWindow = x.Shell;
-					x.Shell.Show();
-				}
-			} );
+				}#1#
+			} );*/
 		}
 
 		protected override DependencyObject CreateShell()

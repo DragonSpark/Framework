@@ -38,6 +38,6 @@ using DragonSpark.Common;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // TODO: Registration-by-convention should take care of this:
-[assembly: Register( typeof(ITypeDefinitionProvider), typeof(TypeDefinitionProvider) )]
+/*[assembly: Register( typeof(ITypeDefinitionProvider), typeof(TypeDefinitionProvider) )]
 [assembly: Register( typeof(IMemberInfoLocator), typeof(MemberInfoLocator) )]
-[assembly: Register( typeof(IDefaultValueProvider), typeof(DefaultValueProvider) )]
+[assembly: Register( typeof(IDefaultValueProvider), typeof(DefaultValueProvider) )]*/
