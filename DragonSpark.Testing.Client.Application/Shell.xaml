@@ -2,7 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-	Height="350" Width="525"
+	Height="403" Width="546"
 	IsTitleVisible="True"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,8 +12,7 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
-	mc:Ignorable="d" 
-	d:DesignHeight="768" d:DesignWidth="1366"
+	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance {x:Type ds:PlatformModel}}"
 	DataContext="{markup:Locate Type={x:Type ds:PlatformModel}}"
 >
@@ -126,7 +125,7 @@
 
 							<!--<ContentPresenter Grid.Row="2" Margin="42,8,16,16"  ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />-->
 							<Frame x:Name="ContentFrame" Grid.Row="2" Margin="42,8,16,16" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
-							
+
 							<!--<mui:ModernFrame x:Name="ContentFrame" Grid.Row="3" Grid.RowSpan="2" Margin="42,8,16,16" ContentLoader="{TemplateBinding mui:ModernWindow.ContentLoader}" Source="{Binding ContentSource,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />-->
 							<Grid Grid.Name="ResizeGrip" Grid.Row="2" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
 								<Path FrameworkElement.Width="12" FrameworkElement.Height="12" FrameworkElement.Margin="1" Shape.Stroke="{DynamicResource WindowText}" Shape.StrokeThickness="1" Shape.Stretch="None" Path.Data="F1M1,10L3,10 M5,10L7,10 M9,10L11,10 M2,9L2,11 M6,9L6,11 M10,9L10,11 M5,6L7,6 M9,6L11,6 M6,5L6,7 M10,5L10,7 M9,2L11,2 M10,1L10,3" />

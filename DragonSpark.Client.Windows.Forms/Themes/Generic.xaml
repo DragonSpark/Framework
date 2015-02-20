@@ -5,12 +5,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	mc:Ignorable="d"
 	xmlns:forms="http://xamarin.com/schemas/2014/forms"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	xmlns:rendering="clr-namespace:DragonSpark.Client.Windows.Forms.Rendering">
 	<ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Xamarin.Forms.Platform.WP8;component/Themes/ThemeResources.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="ThemeResources.xaml" />
+	</ResourceDictionary.MergedDictionaries>
 	
 	<rendering:CaseConverter x:Key="UpperConverter" ConvertToUpper="True" />
 	<rendering:CaseConverter x:Key="LowerConverter" ConvertToUpper="False" />

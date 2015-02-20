@@ -33,3 +33,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Forms" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Interaction" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Markup" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Controls" )]

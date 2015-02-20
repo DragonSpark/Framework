@@ -10,10 +10,14 @@
 	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-	>
-	
+	xmlns:controls="clr-namespace:DragonSpark.Client.Windows.Controls"
+	xmlns:presentation="clr-namespace:DragonSpark.Client.Windows.Presentation">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="Controls.xaml" />
+	</ResourceDictionary.MergedDictionaries>
 
-	<!--<Style x:Key="LinkButton" 
+
+		<!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"
 	   >

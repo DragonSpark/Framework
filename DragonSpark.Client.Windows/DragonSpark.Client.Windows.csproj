@@ -105,6 +105,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\ItemCollectionExtensions.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelector.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelectorEventArgs.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelectorGroup.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelectorItem.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelectorItemsControl.cs" />
+    <Compile Include="Controls\LongListSelector\LongListSelectorItemType.cs" />
+    <Compile Include="Controls\LongListSelector\MotionParameters.cs" />
+    <Compile Include="Controls\LongListSelector\TemplatedListBox.cs" />
+    <Compile Include="Controls\LongListSelector\TemplatedListBoxItem.cs" />
+    <Compile Include="Controls\ManipulationHook.cs" />
+    <Compile Include="Controls\ManipulationTracker.cs" />
+    <Compile Include="Controls\PanoramaControl.cs" />
+    <Compile Include="Controls\PanoramaItem.cs" />
+    <Compile Include="Controls\PanoramaView.cs" />
+    <Compile Include="Controls\PivotControl.cs" />
+    <Compile Include="Controls\PivotItem.cs" />
+    <Compile Include="Controls\PivotItemCollectionAdaptor.cs" />
+    <Compile Include="Controls\PivotView.cs" />
+    <Compile Include="Controls\ScrollCompletedEvent.cs" />
+    <Compile Include="Controls\Shell.cs" />
+    <Compile Include="Controls\UIElementCollectionExtensions.cs" />
+    <Compile Include="Controls\WriteableBitmapExtensions.cs" />
     <Compile Include="Extensions\Class1.cs" />
     <Compile Include="Forms\Class1.cs" />
     <Compile Include="Interaction\SetupEventTrigger.cs">
@@ -149,6 +172,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
