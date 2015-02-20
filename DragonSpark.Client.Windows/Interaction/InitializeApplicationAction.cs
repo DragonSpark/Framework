@@ -3,10 +3,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using DragonSpark.Client.Windows.Presentation;
-using DragonSpark.Common.Application;
-using DragonSpark.ComponentModel;
-using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace DragonSpark.Client.Windows.Interaction
 {
@@ -45,11 +41,6 @@ namespace DragonSpark.Client.Windows.Interaction
 
 	public class ContentMonitorBehavior : Behavior<ContentControl>
 	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
-		}
-
 		public object Content
 		{
 			get { return GetValue( ContentProperty ).To<object>(); }

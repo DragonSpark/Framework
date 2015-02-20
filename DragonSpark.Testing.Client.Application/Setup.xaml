@@ -35,5 +35,5 @@
 		<activationCommands:AssignServiceLocatorCommand />
 		<forms:SetupFormsCommand Application="{markup:Locate {x:Type client:ApplicationDefinition}}" />
 	</windows:Setup.Configurations>
-	<windows:SetupParameters Shell="{markup:LocateOnSetup {x:Type application:Shell}, SetupStatus=Configured}" />
+	<windows:SetupParameters Shell="{markup:Setup {x:Type application:Shell}, SetupStatus=Configured}" />
 </windows:Setup>

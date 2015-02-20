@@ -9,14 +9,13 @@
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
-	xmlns:presentation="clr-namespace:DragonSpark.Client.Windows.Presentation;assembly=DragonSpark.Client.Windows"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	mc:Ignorable="d" 
 	d:DesignHeight="768" d:DesignWidth="1366"
 	d:DataContext="{d:DesignInstance {x:Type ds:PlatformModel}}"
-	DataContext="{markup:LocateOnSetup Type={x:Type ds:PlatformModel}}"
+	DataContext="{markup:Locate Type={x:Type ds:PlatformModel}}"
 >
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
