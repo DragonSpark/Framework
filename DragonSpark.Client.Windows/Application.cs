@@ -16,9 +16,9 @@ namespace DragonSpark.Client.Windows
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
-			base.OnStartup( e );
-
 			Setup.With( x => x.Launch( e.Args ) );
+
+			base.OnStartup( e );
 		}
 	}
 }

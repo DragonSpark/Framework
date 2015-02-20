@@ -1,166 +1,168 @@
 ﻿<ResourceDictionary
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
-             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
-             xmlns:presentation="clr-namespace:DragonSpark.Client.Windows.Presentation"
-             xmlns:commanding="clr-namespace:DragonSpark.Client.Windows.Commanding">
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
+	xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+	xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+	xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
+	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
+	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+	>
+	
 
-    <!--<Style x:Key="LinkButton" 
+	<!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"
 	   >
 
-        <Setter Property="Width" Value="Auto"/>
+		<Setter Property="Width" Value="Auto"/>
 
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <ContentPresenter Content="{TemplateBinding Content}" 
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<ContentPresenter Content="{TemplateBinding Content}" 
 								  ContentTemplate="{TemplateBinding  ContentTemplate}"
 								  VerticalAlignment="Center"
 								  >
-                        <ContentPresenter.Resources>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="TextDecorations" Value="Underline" />
-                            </Style>
-                        </ContentPresenter.Resources>
-                    </ContentPresenter>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="Foreground" Value="Red" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+						<ContentPresenter.Resources>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="TextDecorations" Value="Underline" />
+							</Style>
+						</ContentPresenter.Resources>
+					</ContentPresenter>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Foreground" Value="White" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="true">
+				<Setter Property="Foreground" Value="Red" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
 
-    <presentation:CountConverter x:Key="OneCountConverter" Count="1" Inverse="True">
-        <presentation:BooleanToVisibilityTranslator />
-    </presentation:CountConverter>
+	<presentation:CountConverter x:Key="OneCountConverter" Count="1" Inverse="True">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:CountConverter>
 
-    <presentation:BooleanConverter x:Key="BooleanToVisibilityConverter">
-        <presentation:BooleanToVisibilityTranslator />
-    </presentation:BooleanConverter>
+	<presentation:BooleanConverter x:Key="BooleanToVisibilityConverter">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:BooleanConverter>
 
-    <presentation:NullToBooleanConverter x:Key="NullToBoleanVisibilityConverter">
-        <presentation:BooleanToVisibilityTranslator />
-    </presentation:NullToBooleanConverter>
+	<presentation:NullToBooleanConverter x:Key="NullToBoleanVisibilityConverter">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:NullToBooleanConverter>
 
-    <DataTemplate DataType="{x:Type commanding:CommandMonitor}">
-        <Grid>
-            <VisualStateManager.CustomVisualStateManager>
-                <ei:ExtendedVisualStateManager/>
-            </VisualStateManager.CustomVisualStateManager>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="DefaultGroup">
-                    <VisualState x:Name="Default"/>
-                    <VisualState x:Name="Completed">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseOnCompletion">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Collapsed</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Cancel">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Collapsed</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Close">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Visible</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-            <DockPanel Background="White">
-                <StackPanel Margin="10">
-                    <TextBlock Text="{Binding Title}" Foreground="Black" FontWeight="Bold" Margin="0 0 0 4" />
-                    <ItemsControl ItemsSource="{Binding Items}" />
+	<DataTemplate DataType="{x:Type commanding:CommandMonitor}">
+		<Grid>
+			<VisualStateManager.CustomVisualStateManager>
+				<ei:ExtendedVisualStateManager/>
+			</VisualStateManager.CustomVisualStateManager>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="DefaultGroup">
+					<VisualState x:Name="Default"/>
+					<VisualState x:Name="Completed">
+						<Storyboard>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseOnCompletion">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<Visibility>Collapsed</Visibility>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Cancel">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<Visibility>Collapsed</Visibility>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Close">
+								<DiscreteObjectKeyFrame KeyTime="0">
+									<DiscreteObjectKeyFrame.Value>
+										<Visibility>Visible</Visibility>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<DockPanel Background="White">
+				<StackPanel Margin="10">
+					<TextBlock Text="{Binding Title}" Foreground="Black" FontWeight="Bold" Margin="0 0 0 4" />
+					<ItemsControl ItemsSource="{Binding Items}" />
 
-                    <ProgressBar Height="22" Margin="0 4" Value="{Binding PercentageComplete, Mode=OneWay}" Minimum="0" Maximum="1" Visibility="{Binding Items, Converter={StaticResource OneCountConverter}}" IsTabStop="False" />
+					<ProgressBar Height="22" Margin="0 4" Value="{Binding PercentageComplete, Mode=OneWay}" Minimum="0" Maximum="1" Visibility="{Binding Items, Converter={StaticResource OneCountConverter}}" IsTabStop="False" />
 
-                    <DockPanel Margin="4 0">
-                        <TextBlock Text="Status: " />
-                        <TextBlock Text="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" />
-                    </DockPanel>
+					<DockPanel Margin="4 0">
+						<TextBlock Text="Status: " />
+						<TextBlock Text="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" />
+					</DockPanel>
 
-                    <DockPanel Margin="0 4" Visibility="{Binding AllowClose, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <CheckBox x:Name="CloseOnCompletion" Content="Close when Finished" VerticalAlignment="Center" Margin="0 0 5 0" IsChecked="{Binding Options.CloseOnCompletion, Mode=TwoWay}" />
-                        <Grid VerticalAlignment="Center">
-                            <Button x:Name="Cancel" Command="{Binding Cancel}" Content="Cancel" Visibility="{Binding Visibility, ElementName=CloseOnCompletion}" />
-                            <Button x:Name="Close" Command="{Binding Close}" Content="Close" Visibility="Collapsed" />
-                        </Grid>
-                    </DockPanel>
-                </StackPanel>
-            </DockPanel>
+					<DockPanel Margin="0 4" Visibility="{Binding AllowClose, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<CheckBox x:Name="CloseOnCompletion" Content="Close when Finished" VerticalAlignment="Center" Margin="0 0 5 0" IsChecked="{Binding Options.CloseOnCompletion, Mode=TwoWay}" />
+						<Grid VerticalAlignment="Center">
+							<Button x:Name="Cancel" Command="{Binding Cancel}" Content="Cancel" Visibility="{Binding Visibility, ElementName=CloseOnCompletion}" />
+							<Button x:Name="Close" Command="{Binding Close}" Content="Close" Visibility="Collapsed" />
+						</Grid>
+					</DockPanel>
+				</StackPanel>
+			</DockPanel>
 
-            <i:Interaction.Behaviors>
-                <si:DataStateSwitchBehavior Binding="{presentation:Bind {Binding Status}}">
-                    <si:DataStateSwitchCase Value="None" State="Default" />
-                    <si:DataStateSwitchCase Value="Executing" State="Default" />
-                    <si:DataStateSwitchCase Value="Canceled" State="Completed" />
-                    <si:DataStateSwitchCase Value="Completed" State="Completed" />
-                    <si:DataStateSwitchCase Value="CompletedWithException" State="Completed"  />
-                </si:DataStateSwitchBehavior>
-            </i:Interaction.Behaviors>
-        </Grid>
-    </DataTemplate>
+			<i:Interaction.Behaviors>
+				<si:DataStateSwitchBehavior Binding="{presentation:Bind {Binding Status}}">
+					<si:DataStateSwitchCase Value="None" State="Default" />
+					<si:DataStateSwitchCase Value="Executing" State="Default" />
+					<si:DataStateSwitchCase Value="Canceled" State="Completed" />
+					<si:DataStateSwitchCase Value="Completed" State="Completed" />
+					<si:DataStateSwitchCase Value="CompletedWithException" State="Completed"  />
+				</si:DataStateSwitchBehavior>
+			</i:Interaction.Behaviors>
+		</Grid>
+	</DataTemplate>
 
-    <DataTemplate DataType="{x:Type commanding:CommandModel}">
-        <Border CornerRadius="1.5,1.5,1.5,1.5" Margin="1,1,1,1" BorderBrush="Silver" BorderThickness="1" Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <VisualStateManager.CustomVisualStateManager>
-                <ei:ExtendedVisualStateManager />
-            </VisualStateManager.CustomVisualStateManager>
-            <DockPanel>
-                <Image Margin="8" VerticalAlignment="Top" ToolTipService.ToolTip="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" Source="{Binding Status, Converter={x:Static presentation:StringFormatConverter.Instance}, ConverterParameter='{}/HpInc.Common.Client;component/Themes/Images/Operations/{0}.png'}" Stretch="None" />
+	<DataTemplate DataType="{x:Type commanding:CommandModel}">
+		<Border CornerRadius="1.5,1.5,1.5,1.5" Margin="1,1,1,1" BorderBrush="Silver" BorderThickness="1" Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+			<VisualStateManager.CustomVisualStateManager>
+				<ei:ExtendedVisualStateManager />
+			</VisualStateManager.CustomVisualStateManager>
+			<DockPanel>
+				<Image Margin="8" VerticalAlignment="Top" ToolTipService.ToolTip="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" Source="{Binding Status, Converter={x:Static presentation:StringFormatConverter.Instance}, ConverterParameter='{}/HpInc.Common.Client;component/Themes/Images/Operations/{0}.png'}" Stretch="None" />
 
-                <Button x:Name="DisplayExceptionDetails" Style="{StaticResource LinkButton}" Foreground="DodgerBlue" Command="{markup:Locate {x:Type commanding:ExceptionHandlingCommand}}" CommandParameter="{Binding Exception}" Content="Details" Opacity="0" IsHitTestVisible="False" Margin="8" VerticalAlignment="Top" DockPanel.Dock="Right" />
+				<Button x:Name="DisplayExceptionDetails" Style="{StaticResource LinkButton}" Foreground="DodgerBlue" Command="{markup:Locate {x:Type commanding:ExceptionHandlingCommand}}" CommandParameter="{Binding Exception}" Content="Details" Opacity="0" IsHitTestVisible="False" Margin="8" VerticalAlignment="Top" DockPanel.Dock="Right" />
 
-                <TextBlock VerticalAlignment="Top" Text="{Binding Title}" Foreground="Black" TextWrapping="Wrap" Margin="0 8" />
-                <ContentControl Content="{Binding Content}" Margin="8" />
-            </DockPanel>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="DefaultGroup">
-                    <VisualState x:Name="DefaultState" />
-                    <VisualState x:Name="Exception">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="DisplayExceptionDetails" Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0" />
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisplayExceptionDetails" Storyboard.TargetProperty="IsHitTestVisible">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.00">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <system:Boolean>True</system:Boolean>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-            <i:Interaction.Behaviors>
-                <si:DataStateSwitchBehavior Binding="{Binding Status}">
-                    <si:DataStateSwitchCase Value="None" State="DefaultState" />
-                    <si:DataStateSwitchCase Value="Executing" State="DefaultState" />
-                    <si:DataStateSwitchCase Value="CompletedWithException" State="Exception" />
-                </si:DataStateSwitchBehavior>
-            </i:Interaction.Behaviors>
-        </Border>
-    </DataTemplate>-->
+				<TextBlock VerticalAlignment="Top" Text="{Binding Title}" Foreground="Black" TextWrapping="Wrap" Margin="0 8" />
+				<ContentControl Content="{Binding Content}" Margin="8" />
+			</DockPanel>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="DefaultGroup">
+					<VisualState x:Name="DefaultState" />
+					<VisualState x:Name="Exception">
+						<Storyboard>
+							<DoubleAnimation Storyboard.TargetName="DisplayExceptionDetails" Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0" />
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisplayExceptionDetails" Storyboard.TargetProperty="IsHitTestVisible">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.00">
+									<DiscreteObjectKeyFrame.Value>
+										<system:Boolean>True</system:Boolean>
+									</DiscreteObjectKeyFrame.Value>
+								</DiscreteObjectKeyFrame>
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<i:Interaction.Behaviors>
+				<si:DataStateSwitchBehavior Binding="{Binding Status}">
+					<si:DataStateSwitchCase Value="None" State="DefaultState" />
+					<si:DataStateSwitchCase Value="Executing" State="DefaultState" />
+					<si:DataStateSwitchCase Value="CompletedWithException" State="Exception" />
+				</si:DataStateSwitchBehavior>
+			</i:Interaction.Behaviors>
+		</Border>
+	</DataTemplate>-->
 </ResourceDictionary>

@@ -1,7 +1,12 @@
 ﻿using DragonSpark.Extensions;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interactivity;
+using DragonSpark.Client.Windows.Presentation;
+using DragonSpark.Common.Application;
+using DragonSpark.ComponentModel;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace DragonSpark.Client.Windows.Interaction
 {
@@ -38,17 +43,28 @@ namespace DragonSpark.Client.Windows.Interaction
 		}
 	}
 
-	/*class InitializeApplicationAction : TriggerAction<FrameworkElement>
+	public class ContentMonitorBehavior : Behavior<ContentControl>
 	{
-		protected override void Invoke( object parameter )
+		protected override void OnAttached()
 		{
-			// var host = new ApplicationHost( Application );
-
+			base.OnAttached();
 		}
-		public global::Xamarin.Forms.Application Application
+
+		public object Content
 		{
-			get { return GetValue( ApplicationProperty ).To<global::Xamarin.Forms.Application>(); }
-			set { SetValue( ApplicationProperty, value ); }
-		}	public static readonly DependencyProperty ApplicationProperty = DependencyProperty.Register( "Application", typeof(global::Xamarin.Forms.Application), typeof(InitializeApplicationAction), null );
-	}*/
+			get { return GetValue( ContentProperty ).To<object>(); }
+			set { SetValue( ContentProperty, value ); }
+		}	public static readonly DependencyProperty ContentProperty = DependencyProperty.Register( "Content", typeof(object), typeof(ContentMonitorBehavior), new PropertyMetadata( ( o, args ) => o.As<ContentMonitorBehavior>( x => OnContentChanged( args.NewValue ) ) ) );
+
+		static void OnContentChanged( object newValue )
+		{
+			newValue.As<FrameworkElement>( element =>
+			{
+				if ( element.ReadLocalValue( FrameworkElement.DataContextProperty ) == DependencyProperty.UnsetValue )
+				{
+					element.DataContext = element;
+				}
+			} );			
+		}
+	}
 }

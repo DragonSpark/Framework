@@ -1,9 +1,15 @@
+using System.Collections.Generic;
 using DragonSpark.Extensions;
 using System.Linq;
 using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
+	public interface IExpressionEvaluator
+	{
+		object Evaluate( object context, string expression );
+	}
+
 	public interface IDefaultValueProvider
 	{
 		void Apply( object target );
@@ -13,7 +19,8 @@ namespace DragonSpark.ComponentModel
 	{
 		public void Apply( object target )
 		{
-			target.GetType().GetRuntimeProperties()
+			var runtimeProperties = target.GetType().GetRuntimeProperties();
+			runtimeProperties
 				.Where( x => x.IsDecoratedWith<System.ComponentModel.DefaultValueAttribute>() )
 				.Select( x =>
 					{

@@ -2,11 +2,10 @@
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 using DragonSpark;
-using DragonSpark.IoC.Commands;
-using DragonSpark.IoC.Configuration;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
+using DragonSpark.Common.IoC.Commands;
 
 [assembly: AssemblyTitle("DragonSpark.Server")]
 [assembly: AssemblyDescription("")]
@@ -44,4 +43,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server.Configuration")]
 [assembly: XmlnsDefinition("http://framework.dragonspark.us/web", "DragonSpark.Server.Security")]
 
-[assembly: DragonSpark.IoC.Commands.Registration( Priority.Low )]
+[assembly: Registration( Priority.Low )]

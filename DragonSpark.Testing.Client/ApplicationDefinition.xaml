@@ -4,7 +4,7 @@
 	x:Class="DragonSpark.Testing.Client.ApplicationDefinition"
 	>
 	<Application.MainPage>
-		<ContentPage BackgroundColor="Red">
+		<ContentPage BackgroundColor="Red" Title="Why Hello World!">
 			<Label Text="Hello World!" VerticalOptions="Center" HorizontalOptions="Center" />
 		</ContentPage>
 	</Application.MainPage>

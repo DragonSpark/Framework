@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Common;
 using DragonSpark.Extensions;
 using Microsoft.Expression.Interactions.Extensions.DataHelpers;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections;
@@ -19,9 +20,11 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Client.Windows.Infrastructure;
-using Microsoft.Practices.Prism.PubSubEvents;
+using DragonSpark.Client.Windows.Presentation;
+using DragonSpark.Common.Application;
 using Xceed.Wpf.Toolkit;
+using IAttachedObject = System.Windows.Interactivity.IAttachedObject;
+
 // using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
 
 namespace DragonSpark.Client.Windows.Extensions
@@ -37,28 +40,6 @@ namespace DragonSpark.Client.Windows.Extensions
 				new BindingListener( ( s, a ) => setter( a.EventArgs.NewValue ) ) { Binding = @this, Element = source };
 			} );
 		}				
-	}
-
-	public static class ApplicationLaunchEventExtensions
-	{
-		public static bool ExecuteWhenStatusIs( this IEventAggregator target, ApplicationLaunchStatus status, Action action )
-		{
-			var ready = target.GetEvent<ApplicationLaunchEvent>().History.Transform( y => y.Contains( status ) );
-			if ( ready )
-			{
-				action();
-			}
-			else
-			{
-				target.Subscribe<ApplicationLaunchEvent, ApplicationLaunchStatus>( ( e, p ) =>
-				{
-					var result = p == status;
-					result.IsTrue( action );
-					return result;
-				} );
-			}
-			return ready;
-		}
 	}
 
 	public static class ExtensionMethods
@@ -703,18 +684,18 @@ namespace DragonSpark.Client.Windows.Extensions
 	{
 		static readonly List<WeakReference<CallbackContext<IAttachedObject>>> Items = new List<WeakReference<CallbackContext<IAttachedObject>>>();
 
-		/*public static void SetProperty( this DependencyObject target, DependencyProperty property, object value, Type targetType = null )
+		public static void SetProperty( this DependencyObject target, DependencyProperty property, object value, Type targetType = null )
 		{
 			Threading.Application.Execute( () =>
 			{
-				var checkedValue = /*value.AsTo<Binding,Binding>( x => x.ConnectedTo( target ) ) ??#1# targetType.Transform( x => value.ConvertTo( x ), () => value );
+				var checkedValue = /*value.AsTo<Binding,Binding>( x => x.ConnectedTo( target ) ) ??*/ targetType.Transform( value.ConvertTo, () => value );
 				target.SetValue( property, checkedValue );
 			} );
-		}*/
+		}
 
 		public static bool EnsureLoadedElement( this object target, Action<FrameworkElement> action )
 		{
-			/*var attached = target.As<Presentation.IAttachedObject>( x =>
+			var attached = target.As<Presentation.IAttachedObject>( x =>
 			{
 				if ( x.AssociatedObject != null )
 				{
@@ -727,8 +708,7 @@ namespace DragonSpark.Client.Windows.Extensions
 				}
 			} );
 			var result = attached != null || Ensure( target, action ) != null;
-			return result;*/
-			return false;
+			return result;
 		}
 
 		static FrameworkElement Ensure( object x, Action<FrameworkElement> action )
@@ -738,7 +718,7 @@ namespace DragonSpark.Client.Windows.Extensions
 			return result;
 		}
 
-		/*class Loader
+		class Loader
 		{
 			readonly Action<Presentation.IAttachedObject> callback;
 
@@ -753,7 +733,7 @@ namespace DragonSpark.Client.Windows.Extensions
 				callback( element );
 				element.Attached -= OnAttached;
 			}
-		}*/
+		}
 
 		public static FrameworkElement DetermineFrameworkElement( this object target )
 		{

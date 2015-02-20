@@ -10,7 +10,12 @@ namespace DragonSpark.Common.Markup
 
 		public object Value { get; set; }
 
-		protected internal virtual void Apply( PropertyInfo info, object target )
+		internal void Apply( PropertyInfo info, object target )
+		{
+			OnApply( info, target );
+		}
+
+		protected virtual void OnApply( PropertyInfo info, object target )
 		{
 			info.SetValue( target, Value, null );
 		}

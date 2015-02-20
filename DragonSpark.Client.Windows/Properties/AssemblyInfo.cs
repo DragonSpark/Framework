@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 [assembly: AssemblyTitle("DragonSpark.Client.Windows")]
 [assembly: AssemblyDescription("")]
@@ -27,3 +28,8 @@ using System.Windows.Controls;
 [assembly: NeutralResourcesLanguage("en-US")]
 [assembly: InternalsVisibleTo("DragonSpark.Client.Windows.Testing")]
 [assembly: InternalsVisibleTo("DragonSpark.Testing")]
+[assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Forms" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Interaction" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Client.Windows.Markup" )]

@@ -7,14 +7,33 @@
 	xmlns:activationCommands="clr-namespace:DragonSpark.Activation.IoC.Commands;assembly=DragonSpark"
 	xmlns:forms="clr-namespace:DragonSpark.Client.Windows.Forms;assembly=DragonSpark.Client.Windows"
 	xmlns:client="clr-namespace:DragonSpark.Testing.Client;assembly=DragonSpark.Testing.Client"
-	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common">
-	<windows:SetupParameters>
-		<application:Shell />
-	</windows:SetupParameters>
+	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
+	xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
+	xmlns:ioC1="clr-namespace:DragonSpark.Client.Windows.IoC;assembly=DragonSpark.Client.Windows"
+	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
+	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark">
 	<windows:Setup.Configurations>
+		<ioC1:ApplicationConfigurationCommand>
+			<dragonSpark:ApplicationDetails
+				Title="{markup:Metadata {x:Type reflection:AssemblyTitleAttribute}, 'Title'}"
+				Product="{markup:Metadata {x:Type reflection:AssemblyProductAttribute}, 'Product'}"
+				Company="{markup:Metadata {x:Type reflection:AssemblyCompanyAttribute}, 'Company'}"
+				Description="{markup:Metadata {x:Type reflection:AssemblyDescriptionAttribute}, 'Description'}"
+				Configuration="{markup:Metadata {x:Type reflection:AssemblyConfigurationAttribute}, 'Configuration'}"
+				Copyright="{markup:Metadata {x:Type reflection:AssemblyCopyrightAttribute}, 'Copyright'}"
+				Version="{markup:AssemblyVersion}"
+				DeploymentDate="10/1/2015"
+				CompanyUri="http://framework.dragonspark.us" />
+		</ioC1:ApplicationConfigurationCommand>
 		<commands:ApplyRegistrationsFromConventionsCommand />
+		<activationCommands:UnityContainerConfiguration>
+			<activationCommands:UnityContainerConfiguration.Extensions>
+				<ioC:IoCExtension />
+			</activationCommands:UnityContainerConfiguration.Extensions>
+		</activationCommands:UnityContainerConfiguration>
 		<forms:InitializeFormsCommand />
 		<activationCommands:AssignServiceLocatorCommand />
 		<forms:SetupFormsCommand Application="{markup:Locate {x:Type client:ApplicationDefinition}}" />
 	</windows:Setup.Configurations>
+	<windows:SetupParameters Shell="{markup:LocateOnSetup {x:Type application:Shell}, SetupStatus=Configured}" />
 </windows:Setup>

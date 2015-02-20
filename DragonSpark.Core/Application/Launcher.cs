@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows;
 using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
@@ -13,10 +8,15 @@ using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using Microsoft.Practices.Unity.Configuration;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 
-namespace DragonSpark.Common.Runtime
+namespace DragonSpark.Application
 {
 	public class LoggerFacade : ILoggerFacade
 	{
@@ -77,11 +77,7 @@ namespace DragonSpark.Common.Runtime
 		{
 			base.ConfigureContainer();
 
-			Configurations.Apply( x =>
-			{
-				var command = x.WithDefaults();
-				command.Configure( Container );
-			} );
+			Configurations.Apply( x => x.WithDefaults().Configure( Container ) );
 
 			var logger = Container.IsRegistered<ILoggerFacade>() ? Container.Resolve<ILoggerFacade>() : base.CreateLogger();
 			Logger = StorageLogger.Instance.Purge( logger );

@@ -1,11 +1,9 @@
-using DragonSpark.Activation.IoC;
-using DragonSpark.Activation.IoC.Commands;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Unity;
 using System.Collections.ObjectModel;
 using System.Linq;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
 
-namespace DragonSpark.IoC.Commands
+namespace DragonSpark.Activation.IoC.Commands
 {
 	// [ContentProperty( "Types" )]
 	public class UnityContainerConfiguration : IContainerConfigurationCommand

@@ -3,14 +3,16 @@ using System;
 using System.Linq;
 using System.Windows;
 using Xamarin.Forms;
+using Binding = System.Windows.Data.Binding;
 
 namespace DragonSpark.Client.Windows.Forms.Rendering
 {
 	public class NavigationPageRenderer : VisualElementRenderer<NavigationPage, FrameworkElement>
 	{
-		public NavigationPageRenderer() // TODO: Uncomment and render through Frame control.
+		public NavigationPageRenderer() // TODO: Uncomment and render through Frame control?
 		{
 			AutoPackage = false;
+			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		protected override void OnElementChanged( ElementChangedEventArgs<NavigationPage> e )

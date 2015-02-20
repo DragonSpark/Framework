@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using DragonSpark.Client.Windows.Forms;
+using DragonSpark.Client.Windows.Forms.Rendering;
+using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using DragonSpark.Client.Windows.Forms;
-using DragonSpark.Client.Windows.Forms.Rendering;
+using System.Windows.Markup;
 using Xamarin.Forms;
 using Switch = Xamarin.Forms.Switch;
 
@@ -66,3 +67,7 @@ using Switch = Xamarin.Forms.Switch;
 [assembly: ExportRenderer(typeof(CarouselPage), typeof(CarouselPageRenderer))]
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Page), typeof(PageRenderer))]
 [assembly: ExportRenderer(typeof(MasterDetailPage), typeof(MasterDetailRenderer))]
+
+[assembly: XmlnsPrefix( "http://framework.dragonspark.us/forms/rendering", "xfr" )] // Xamarin Forms Rendering
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Client.Windows.Forms.Rendering" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Client.Windows.Forms" )]

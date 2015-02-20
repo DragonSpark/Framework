@@ -8,11 +8,14 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DragonSpark.Activation;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
+using ServiceLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 using Size = System.Windows.Size;
 
 namespace DragonSpark.Client.Windows.Forms
@@ -50,17 +53,11 @@ namespace DragonSpark.Client.Windows.Forms
 		public async void Configure( IUnityContainer container )
 		{
 			var platform = new PlatformModel( Engine, Application );
+			container.RegisterInstance<IPlatform>( platform );
+			container.RegisterInstance( platform );
 
 			var navigation = new Navigation( platform, NavigationModel );
 			await navigation.PushAsync( Application.MainPage );
-
-			var aggregator = container.Resolve<IEventAggregator>();
-			aggregator.ExecuteWhenStatusIs( ApplicationLaunchStatus.Initialized, () =>
-			{
-				System.Windows.Application.Current.MainWindow.DataContext = platform;
-			} );
-
-			container.RegisterInstance<IPlatform>( platform );
 		}
 
 		public Xamarin.Forms.Application Application { get; set; }

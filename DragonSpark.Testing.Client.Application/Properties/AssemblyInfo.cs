@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "DragonSpark.Testing.Client.Application" )]
+[assembly: AssemblyTitle( "DragonSpark Client Testing Application" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "DragonSpark.Testing.Client.Application" )]
+[assembly: AssemblyCompany( "DragonSpark Technologies Incorporated" )]
+[assembly: AssemblyProduct( "DragonSpark Application Framework" )]
 [assembly: AssemblyCopyright( "Copyright ©  2015" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]

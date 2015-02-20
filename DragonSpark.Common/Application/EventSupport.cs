@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-namespace DragonSpark.Client.Windows.Infrastructure
+namespace DragonSpark.Common.Application
 {
 	public static class EventSupport
 	{
@@ -40,7 +40,7 @@ namespace DragonSpark.Client.Windows.Infrastructure
 				this.unsubscribeDelegate = unsubscribeDelegate;               
 			}
 
-			public void Initialize( ThreadOption option = ThreadOption.UIThread, bool keepReferenceAlive = true )
+			public void Initialize( ThreadOption option = ThreadOption.PublisherThread, bool keepReferenceAlive = true )
 			{
 				Token = @event.Subscribe( Execute, option, keepReferenceAlive );
 			}
@@ -62,7 +62,7 @@ namespace DragonSpark.Client.Windows.Infrastructure
 			}
 		}
 
-		public static void Subscribe<TEvent,TPayload>( this IEventAggregator target, Func<TEvent,TPayload,bool> unsubscribeDelegate, ThreadOption option = ThreadOption.UIThread, bool keepReferenceAlive = true ) where TEvent : PubSubEvent<TPayload>, new()
+		public static void Subscribe<TEvent,TPayload>( this IEventAggregator target, Func<TEvent,TPayload,bool> unsubscribeDelegate, ThreadOption option = ThreadOption.PublisherThread, bool keepReferenceAlive = true ) where TEvent : PubSubEvent<TPayload>, new()
 		{
 			var e = target.GetEvent<TEvent>();
 			var context = new SubscriptionContext<TEvent, TPayload>( e, unsubscribeDelegate );

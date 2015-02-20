@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Activation;
+using DragonSpark.Client.Windows.Extensions;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Prism;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,11 +16,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using DragonSpark.Activation;
-using DragonSpark.Client.Windows.Commanding;
-using DragonSpark.Client.Windows.Extensions;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Prism;
 using Xceed.Wpf.Toolkit;
 
 namespace DragonSpark.Client.Windows.Presentation
@@ -410,7 +409,7 @@ namespace DragonSpark.Client.Windows.Presentation
 
 		protected virtual void UpdateCommands()
 		{
-			this.GetAllPropertyValuesOf<System.Windows.Input.ICommand>().Apply( x => x.Update() );
+			// this.GetAllPropertyValuesOf<ICommand>().Apply( x => x.Update() );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Used as convenience." ), System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Used to extract expression name." )]
@@ -666,5 +665,4 @@ namespace DragonSpark.Client.Windows.Presentation
 			base.OnIsBusyChanged(e);
 		}
 	}
-
 }

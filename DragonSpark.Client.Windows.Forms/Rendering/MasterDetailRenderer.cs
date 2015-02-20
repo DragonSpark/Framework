@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using Xamarin.Forms;
+using Binding = System.Windows.Data.Binding;
 
 namespace DragonSpark.Client.Windows.Forms.Rendering
 {
@@ -25,7 +26,10 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 		public MasterDetailRenderer()
 		{
 			AutoPackage = false;
+
+			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
+
 		public bool Visible { get; private set; }
 
 		protected override void OnElementChanged( ElementChangedEventArgs<MasterDetailPage> e )

@@ -1,17 +1,16 @@
-using System.Diagnostics;
-using DragonSpark.Common.Runtime;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System.Windows;
-using System.Windows.Markup;
+using DragonSpark.Common.Application;
+using Xamarin.Forms;
 
 namespace DragonSpark.Client.Windows
 {
-	[ContentProperty( "Parameters" )]
-	public class Setup : Launcher
+	[System.Windows.Markup.ContentProperty( "Parameters" )]
+	public class Setup : Common.Application.Setup
 	{
 		public SetupParameters Parameters { get; set; }
 
@@ -24,19 +23,6 @@ namespace DragonSpark.Client.Windows
 			} );
 		}
 		
-		public override void Run( bool runWithDefaultConfiguration )
-		{
-			base.Run( runWithDefaultConfiguration );
-
-			Publish( ApplicationLaunchStatus.Initialized );
-		}
-
-		void Publish( ApplicationLaunchStatus status )
-		{
-			var e = Container.Resolve<IEventAggregator>().GetEvent<ApplicationLaunchEvent>();
-			e.Publish( status );
-		}
-
 		protected override IModuleCatalog CreateModuleCatalog()
 		{
 			var result = Parameters.Catalog ?? base.CreateModuleCatalog();
@@ -47,23 +33,25 @@ namespace DragonSpark.Client.Windows
 		{
 			Container.RegisterInstance( this );
 			
-			Container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
+			// Container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
 			Container.RegisterInstance( Parameters );
 			
 			base.ConfigureContainer();
-
-			Publish( ApplicationLaunchStatus.Initializing );
+			
 		}
 
 		protected override void InitializeShell()
 		{
 			base.InitializeShell();
 
+			var application = System.Windows.Application.Current;
 			Shell.As<Window>( window =>
 			{
-				System.Windows.Application.Current.MainWindow = window;
+				application.MainWindow = window;
 				window.Show();
 			} );
+
+			MessagingCenter.Send( application, "DragonSpark.Application.Setup.Shell.Initialized");
 
 			/*Parameters.With( x =>
 			{

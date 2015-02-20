@@ -143,15 +143,16 @@ namespace DragonSpark.Extensions
 			return target;
 		}
 
-		/*public static object Evaluate( this object container, string expression )
+		public static object Evaluate( this object container, string expression )
 		{
-			return null; // TODO: Implement.
+			var result = ServiceLocation.With<IExpressionEvaluator, object>( x => x.Evaluate( container, expression ) );
+			return result;
 		}
 
 		public static TResult Evaluate<TResult>( this object container, string expression )
 		{
-			return default(TResult); // TODO: Implement.
-		}*/
+			return (TResult)container.Evaluate( expression );
+		}
 
 		public static TResult DetermineDefault<TResult>()
 		{
