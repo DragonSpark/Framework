@@ -35,232 +35,232 @@ namespace DragonSpark.Client.Windows.Forms.Rendering
 
 	public static class HubTileService
 {
-    // Fields
-    private static List<WeakReference> EnabledImagesPool = new List<WeakReference>();
-    private static List<WeakReference> FrozenImagesPool = new List<WeakReference>();
-    private const int NumberOfSimultaneousAnimations = 1;
-    private static Random ProbabilisticBehaviorSelector = new Random();
-    private static List<WeakReference> StalledImagesPipeline = new List<WeakReference>();
-    private static DispatcherTimer Timer = new DispatcherTimer();
-    private const bool TrackResurrection = false;
-    private const int WaitingPipelineSteps = 3;
+	// Fields
+	private static List<WeakReference> EnabledImagesPool = new List<WeakReference>();
+	private static List<WeakReference> FrozenImagesPool = new List<WeakReference>();
+	private const int NumberOfSimultaneousAnimations = 1;
+	private static Random ProbabilisticBehaviorSelector = new Random();
+	private static List<WeakReference> StalledImagesPipeline = new List<WeakReference>();
+	private static DispatcherTimer Timer = new DispatcherTimer();
+	private const bool TrackResurrection = false;
+	private const int WaitingPipelineSteps = 3;
 
-    // Methods
-    static HubTileService()
-    {
-        Timer.Tick += new EventHandler(HubTileService.OnTimerTick);
-    }
+	// Methods
+	static HubTileService()
+	{
+		Timer.Tick += new EventHandler(HubTileService.OnTimerTick);
+	}
 
-    private static void AddReferenceToEnabledPool(WeakReference tile)
-    {
-        if (!ContainsTarget(EnabledImagesPool, tile.Target))
-        {
-            EnabledImagesPool.Add(tile);
-        }
-    }
+	private static void AddReferenceToEnabledPool(WeakReference tile)
+	{
+		if (!ContainsTarget(EnabledImagesPool, tile.Target))
+		{
+			EnabledImagesPool.Add(tile);
+		}
+	}
 
-    private static void AddReferenceToFrozenPool(WeakReference tile)
-    {
-        if (!ContainsTarget(FrozenImagesPool, tile.Target))
-        {
-            FrozenImagesPool.Add(tile);
-        }
-    }
+	private static void AddReferenceToFrozenPool(WeakReference tile)
+	{
+		if (!ContainsTarget(FrozenImagesPool, tile.Target))
+		{
+			FrozenImagesPool.Add(tile);
+		}
+	}
 
-    private static void AddReferenceToStalledPipeline(WeakReference tile)
-    {
-        if (!ContainsTarget(StalledImagesPipeline, tile.Target))
-        {
-            StalledImagesPipeline.Add(tile);
-        }
-    }
+	private static void AddReferenceToStalledPipeline(WeakReference tile)
+	{
+		if (!ContainsTarget(StalledImagesPipeline, tile.Target))
+		{
+			StalledImagesPipeline.Add(tile);
+		}
+	}
 
-    private static bool ContainsTarget(List<WeakReference> list, object target)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (list[i].Target == target)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+	private static bool ContainsTarget(List<WeakReference> list, object target)
+	{
+		for (int i = 0; i < list.Count; i++)
+		{
+			if (list[i].Target == target)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
-    internal static void FinalizeReference(HubTile tile)
-    {
-        WeakReference reference = new WeakReference(tile, false);
-        RemoveReferenceFromEnabledPool(reference);
-        RemoveReferenceFromFrozenPool(reference);
-        RemoveReferenceFromStalledPipeline(reference);
-    }
+	internal static void FinalizeReference(HubTile tile)
+	{
+		WeakReference reference = new WeakReference(tile, false);
+		RemoveReferenceFromEnabledPool(reference);
+		RemoveReferenceFromFrozenPool(reference);
+		RemoveReferenceFromStalledPipeline(reference);
+	}
 
-    public static void FreezeGroup(string group)
-    {
-        for (int i = 0; i < EnabledImagesPool.Count; i++)
-        {
-            if ((EnabledImagesPool[i].Target as HubTile).GroupTag == group)
-            {
-                (EnabledImagesPool[i].Target as HubTile).IsFrozen = true;
-                i--;
-            }
-        }
-        for (int j = 0; j < StalledImagesPipeline.Count; j++)
-        {
-            if ((StalledImagesPipeline[j].Target as HubTile).GroupTag == group)
-            {
-                (StalledImagesPipeline[j].Target as HubTile).IsFrozen = true;
-                j--;
-            }
-        }
-    }
+	public static void FreezeGroup(string group)
+	{
+		for (int i = 0; i < EnabledImagesPool.Count; i++)
+		{
+			if ((EnabledImagesPool[i].Target as HubTile).GroupTag == group)
+			{
+				(EnabledImagesPool[i].Target as HubTile).IsFrozen = true;
+				i--;
+			}
+		}
+		for (int j = 0; j < StalledImagesPipeline.Count; j++)
+		{
+			if ((StalledImagesPipeline[j].Target as HubTile).GroupTag == group)
+			{
+				(StalledImagesPipeline[j].Target as HubTile).IsFrozen = true;
+				j--;
+			}
+		}
+	}
 
-    public static void FreezeHubTile(HubTile tile)
-    {
-        WeakReference reference = new WeakReference(tile, false);
-        AddReferenceToFrozenPool(reference);
-        RemoveReferenceFromEnabledPool(reference);
-        RemoveReferenceFromStalledPipeline(reference);
-    }
+	public static void FreezeHubTile(HubTile tile)
+	{
+		WeakReference reference = new WeakReference(tile, false);
+		AddReferenceToFrozenPool(reference);
+		RemoveReferenceFromEnabledPool(reference);
+		RemoveReferenceFromStalledPipeline(reference);
+	}
 
-    internal static void InitializeReference(HubTile tile)
-    {
-        WeakReference reference = new WeakReference(tile, false);
-        if (tile.IsFrozen)
-        {
-            AddReferenceToFrozenPool(reference);
-        }
-        else
-        {
-            AddReferenceToEnabledPool(reference);
-        }
-        RestartTimer();
-    }
+	internal static void InitializeReference(HubTile tile)
+	{
+		WeakReference reference = new WeakReference(tile, false);
+		if (tile.IsFrozen)
+		{
+			AddReferenceToFrozenPool(reference);
+		}
+		else
+		{
+			AddReferenceToEnabledPool(reference);
+		}
+		RestartTimer();
+	}
 
-    private static void OnTimerTick(object sender, EventArgs e)
-    {
-        Timer.Stop();
-        for (int i = 0; i < StalledImagesPipeline.Count; i++)
-        {
-            HubTile target = StalledImagesPipeline[i].Target as HubTile;
-            if (target._stallingCounter-- == 0)
-            {
-                AddReferenceToEnabledPool(StalledImagesPipeline[i]);
-                RemoveReferenceFromStalledPipeline(StalledImagesPipeline[i]);
-                i--;
-            }
-        }
-        if (EnabledImagesPool.Count > 0)
-        {
-            for (int j = 0; j < 1; j++)
-            {
-                int num3 = ProbabilisticBehaviorSelector.Next(EnabledImagesPool.Count);
-                switch ((EnabledImagesPool[num3].Target as HubTile).State)
-                {
-                    case ImageState.Expanded:
-                        if (((EnabledImagesPool[num3].Target as HubTile)._canDrop || (EnabledImagesPool[num3].Target as HubTile)._canFlip) && ((EnabledImagesPool[num3].Target as HubTile).Size != TileSize.Small))
-                        {
-                            if (!(EnabledImagesPool[num3].Target as HubTile)._canDrop && (EnabledImagesPool[num3].Target as HubTile)._canFlip)
-                            {
-                                (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Flipped;
-                            }
-                            else if (!(EnabledImagesPool[num3].Target as HubTile)._canFlip && (EnabledImagesPool[num3].Target as HubTile)._canDrop)
-                            {
-                                (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Semiexpanded;
-                            }
-                            else if (ProbabilisticBehaviorSelector.Next(2) == 0)
-                            {
-                                (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Semiexpanded;
-                            }
-                            else
-                            {
-                                (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Flipped;
-                            }
-                        }
-                        break;
+	private static void OnTimerTick(object sender, EventArgs e)
+	{
+		Timer.Stop();
+		for (int i = 0; i < StalledImagesPipeline.Count; i++)
+		{
+			HubTile target = StalledImagesPipeline[i].Target as HubTile;
+			if (target._stallingCounter-- == 0)
+			{
+				AddReferenceToEnabledPool(StalledImagesPipeline[i]);
+				RemoveReferenceFromStalledPipeline(StalledImagesPipeline[i]);
+				i--;
+			}
+		}
+		if (EnabledImagesPool.Count > 0)
+		{
+			for (int j = 0; j < 1; j++)
+			{
+				int num3 = ProbabilisticBehaviorSelector.Next(EnabledImagesPool.Count);
+				switch ((EnabledImagesPool[num3].Target as HubTile).State)
+				{
+					case ImageState.Expanded:
+						if (((EnabledImagesPool[num3].Target as HubTile)._canDrop || (EnabledImagesPool[num3].Target as HubTile)._canFlip) && ((EnabledImagesPool[num3].Target as HubTile).Size != TileSize.Small))
+						{
+							if (!(EnabledImagesPool[num3].Target as HubTile)._canDrop && (EnabledImagesPool[num3].Target as HubTile)._canFlip)
+							{
+								(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Flipped;
+							}
+							else if (!(EnabledImagesPool[num3].Target as HubTile)._canFlip && (EnabledImagesPool[num3].Target as HubTile)._canDrop)
+							{
+								(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Semiexpanded;
+							}
+							else if (ProbabilisticBehaviorSelector.Next(2) == 0)
+							{
+								(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Semiexpanded;
+							}
+							else
+							{
+								(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Flipped;
+							}
+						}
+						break;
 
-                    case ImageState.Semiexpanded:
-                        (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Collapsed;
-                        break;
+					case ImageState.Semiexpanded:
+						(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Collapsed;
+						break;
 
-                    case ImageState.Collapsed:
-                        (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Expanded;
-                        break;
+					case ImageState.Collapsed:
+						(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Expanded;
+						break;
 
-                    case ImageState.Flipped:
-                        (EnabledImagesPool[num3].Target as HubTile).State = ImageState.Expanded;
-                        break;
-                }
-                (EnabledImagesPool[num3].Target as HubTile)._stallingCounter = 3;
-                AddReferenceToStalledPipeline(EnabledImagesPool[num3]);
-                RemoveReferenceFromEnabledPool(EnabledImagesPool[num3]);
-            }
-        }
-        else if (StalledImagesPipeline.Count == 0)
-        {
-            return;
-        }
-        Timer.Interval = TimeSpan.FromMilliseconds((double) (ProbabilisticBehaviorSelector.Next(1, 0x1f) * 100));
-        Timer.Start();
-    }
+					case ImageState.Flipped:
+						(EnabledImagesPool[num3].Target as HubTile).State = ImageState.Expanded;
+						break;
+				}
+				(EnabledImagesPool[num3].Target as HubTile)._stallingCounter = 3;
+				AddReferenceToStalledPipeline(EnabledImagesPool[num3]);
+				RemoveReferenceFromEnabledPool(EnabledImagesPool[num3]);
+			}
+		}
+		else if (StalledImagesPipeline.Count == 0)
+		{
+			return;
+		}
+		Timer.Interval = TimeSpan.FromMilliseconds((double) (ProbabilisticBehaviorSelector.Next(1, 0x1f) * 100));
+		Timer.Start();
+	}
 
-    private static void RemoveReferenceFromEnabledPool(WeakReference tile)
-    {
-        RemoveTarget(EnabledImagesPool, tile.Target);
-    }
+	private static void RemoveReferenceFromEnabledPool(WeakReference tile)
+	{
+		RemoveTarget(EnabledImagesPool, tile.Target);
+	}
 
-    private static void RemoveReferenceFromFrozenPool(WeakReference tile)
-    {
-        RemoveTarget(FrozenImagesPool, tile.Target);
-    }
+	private static void RemoveReferenceFromFrozenPool(WeakReference tile)
+	{
+		RemoveTarget(FrozenImagesPool, tile.Target);
+	}
 
-    private static void RemoveReferenceFromStalledPipeline(WeakReference tile)
-    {
-        RemoveTarget(StalledImagesPipeline, tile.Target);
-    }
+	private static void RemoveReferenceFromStalledPipeline(WeakReference tile)
+	{
+		RemoveTarget(StalledImagesPipeline, tile.Target);
+	}
 
-    private static void RemoveTarget(List<WeakReference> list, object target)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (list[i].Target == target)
-            {
-                list.RemoveAt(i);
-                return;
-            }
-        }
-    }
+	private static void RemoveTarget(List<WeakReference> list, object target)
+	{
+		for (int i = 0; i < list.Count; i++)
+		{
+			if (list[i].Target == target)
+			{
+				list.RemoveAt(i);
+				return;
+			}
+		}
+	}
 
-    private static void RestartTimer()
-    {
-        if (!Timer.IsEnabled)
-        {
-            Timer.Interval = TimeSpan.FromMilliseconds(2500.0);
-            Timer.Start();
-        }
-    }
+	private static void RestartTimer()
+	{
+		if (!Timer.IsEnabled)
+		{
+			Timer.Interval = TimeSpan.FromMilliseconds(2500.0);
+			Timer.Start();
+		}
+	}
 
-    public static void UnfreezeGroup(string group)
-    {
-        for (int i = 0; i < FrozenImagesPool.Count; i++)
-        {
-            if ((FrozenImagesPool[i].Target as HubTile).GroupTag == group)
-            {
-                (FrozenImagesPool[i].Target as HubTile).IsFrozen = false;
-                i--;
-            }
-        }
-        RestartTimer();
-    }
+	public static void UnfreezeGroup(string group)
+	{
+		for (int i = 0; i < FrozenImagesPool.Count; i++)
+		{
+			if ((FrozenImagesPool[i].Target as HubTile).GroupTag == group)
+			{
+				(FrozenImagesPool[i].Target as HubTile).IsFrozen = false;
+				i--;
+			}
+		}
+		RestartTimer();
+	}
 
-    public static void UnfreezeHubTile(HubTile tile)
-    {
-        WeakReference reference = new WeakReference(tile, false);
-        AddReferenceToEnabledPool(reference);
-        RemoveReferenceFromFrozenPool(reference);
-        RemoveReferenceFromStalledPipeline(reference);
-        RestartTimer();
-    }
+	public static void UnfreezeHubTile(HubTile tile)
+	{
+		WeakReference reference = new WeakReference(tile, false);
+		AddReferenceToEnabledPool(reference);
+		RemoveReferenceFromFrozenPool(reference);
+		RemoveReferenceFromStalledPipeline(reference);
+		RestartTimer();
+	}
 }
 
 

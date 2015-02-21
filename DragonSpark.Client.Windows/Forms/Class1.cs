@@ -1,54 +1,48 @@
 ﻿using DragonSpark.Activation.IoC;
-using DragonSpark.Client.Windows.Extensions;
 using DragonSpark.Client.Windows.Forms.Rendering;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using DragonSpark.Activation;
 using Xamarin.Forms;
 using Page = Xamarin.Forms.Page;
-using ServiceLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 using Size = System.Windows.Size;
 
 namespace DragonSpark.Client.Windows.Forms
 {
-	/*public class ShellBehavior : System.Windows.Interactivity.Behavior<FrameworkElement>
-	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
-			AssociatedObject.SizeChanged += RendererSizeChanged;
-		}
-
-		void RendererSizeChanged( object sender, SizeChangedEventArgs e )
-		{
-			throw new NotImplementedException();
-		}
-	}*/
-
 	[System.Windows.Markup.ContentProperty( "Initializer" )]
-	public class InitializeFormsCommand : IContainerConfigurationCommand
+	public class ConfigureApplicationCommand : Common.IoC.Commands.ConfigureApplicationCommand
 	{
-		public void Configure( IUnityContainer container )
-		{
-			var initializer = Initializer ?? new Initializer();
-			initializer.Initialize();
-		}
-
-		// [Activate( typeof(Initializer) )]
 		public IInitializer Initializer { get; set; }
+
+		// [Default( PrincipalPolicy.WindowsPrincipal )]
+		public PrincipalPolicy? PrincipalPolicy { get; set; }
+
+		protected override void OnConfigure( IUnityContainer container )
+		{
+			base.OnConfigure( container );
+
+			PrincipalPolicy.WithValue( AppDomain.CurrentDomain.SetPrincipalPolicy );
+
+			Initializer.Initialize();
+
+			System.Windows.Application.Current.With( x =>
+			{
+				container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
+				x.Exit += ( s, a ) => container.Resolve<IServiceLocator>().TryDispose();
+			} );
+		}
 	}
 
 	[System.Windows.Markup.ContentProperty( "Application" )]
-	public class SetupFormsCommand : IContainerConfigurationCommand
+	public class ConfigureFormsCommand : IContainerConfigurationCommand
 	{
 		public async void Configure( IUnityContainer container )
 		{
@@ -94,6 +88,11 @@ namespace DragonSpark.Client.Windows.Forms
 		{
 			this.engine = engine;
 			this.application = application;
+		}
+
+		public Xamarin.Forms.Application Application
+		{
+			get { return application; }
 		}
 
 		public Size Size

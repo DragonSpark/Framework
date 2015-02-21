@@ -45,6 +45,7 @@
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <NuGetPackageImportStamp>15f89dc6</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -217,8 +218,12 @@
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
+    <Compile Include="Activation\IoC\Commands\ApplyRegistrationsFromConventionsCommand.cs" />
     <Compile Include="Activation\IoC\Commands\AssignServiceLocatorCommand.cs" />
+    <Compile Include="Activation\IoC\Commands\IgnoreNamespaceDuringRegistrationAttribute.cs" />
     <Compile Include="Activation\IoC\Commands\IUnityContainerTypeConfiguration.cs" />
+    <Compile Include="Activation\IoC\Commands\LifetimeManagerAttribute.cs" />
+    <Compile Include="Activation\IoC\Commands\RegistrationAttribute.cs" />
     <Compile Include="Activation\IoC\Commands\UnityContainerConfiguration.cs" />
     <Compile Include="Activation\IoC\Commands\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Activation\IoC\Commands\UnityInstance.cs" />
@@ -227,6 +232,7 @@
     <Compile Include="Activation\IoC\IoCExtension.cs" />
     <Compile Include="Activation\IoC\LifetimeEntry.cs" />
     <Compile Include="Activation\IoC\ServiceLocator.cs" />
+    <Compile Include="ApplicationProfile.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
@@ -243,7 +249,6 @@
     </Compile>
     <Compile Include="ComponentModel\NewGuidDefaultValueAttribute.cs" />
     <Compile Include="ConditionMonitor.cs" />
-    <Compile Include="ApplicationDetails.cs" />
     <Compile Include="Diagnostics\ExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -338,6 +343,13 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

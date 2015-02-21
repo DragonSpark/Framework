@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Common.Markup
 {
@@ -40,10 +41,9 @@ namespace DragonSpark.Common.Markup
 		}
 	}
 
-	public abstract class MarkupExtension : System.Windows.Markup.MarkupExtension
+	public abstract class LocationBasedExtension : MarkupExtension
 	{
 		readonly object placeholder = null;
-
 
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
@@ -87,8 +87,25 @@ namespace DragonSpark.Common.Markup
 		}
 	}
 
+	public class ActivateExtension : LocateExtension
+	{
+		public ActivateExtension()
+		{}
+
+		public ActivateExtension( Type type ) : base( type )
+		{}
+
+		public ActivateExtension( Type type, string buildName ) : base( type, buildName )
+		{}
+
+		public override object ProvideValue( IServiceProvider serviceProvider )
+		{
+			return base.GetValue( serviceProvider );
+		}
+	}
+
 	[ContentProperty( "Properties" )]
-	public class LocateExtension : MarkupExtension
+	public class LocateExtension : LocationBasedExtension
 	{
 		public LocateExtension()
 		{}
@@ -108,7 +125,7 @@ namespace DragonSpark.Common.Markup
 
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
-			 var result = Type.Transform( x => ServiceLocator.Current.GetInstance( x, BuildName ) );
+			 var result = Type.Transform( x => Activator.CreateNamedInstance<object>( x, BuildName ) );
 			result.As<ISupportInitialize>( x => x.BeginInit() );
 			result.NotNull( x => Properties.Apply( y => x.GetType().GetProperty( y.PropertyName ).NotNull( z => y.Apply( z, x ) ) ) );
 			result.As<ISupportInitialize>( x => x.EndInit() );
@@ -123,35 +140,17 @@ namespace DragonSpark.Common.Markup
 
 	public class FactoryExtension : LocateExtension
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FactoryExtension"/> class.
-		/// </summary>
 		public FactoryExtension()
 		{}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FactoryExtension"/> class.
-		/// </summary>
-		/// <param name="type">The type.</param>
 		public FactoryExtension( Type type ) : base( type) 
 		{}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FactoryExtension"/> class.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="parameter">The parameter.</param>
 		public FactoryExtension( Type type, object parameter ) : base( type )
 		{
 			Parameter = parameter;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FactoryExtension"/> class.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="parameter">The parameter.</param>
-		/// <param name="buildName">Name of the build.</param>
 		public FactoryExtension( Type type, object parameter, string buildName ) : base( type, buildName )
 		{
 			Parameter = parameter;
@@ -164,15 +163,8 @@ namespace DragonSpark.Common.Markup
 			return factory;
 		}
 
-		/// <summary>
-		/// The instance of the factory.
-		/// </summary>
 		public IFactory Instance { get; set; }
 
-		/// <summary>
-		/// Gets or sets the parameter.
-		/// </summary>
-		/// <value>The parameter.</value>
 		public object Parameter { get; set; }
 	}
 }

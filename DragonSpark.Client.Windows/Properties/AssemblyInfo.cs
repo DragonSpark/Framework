@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using DragonSpark.Activation.IoC.Commands;
 
 [assembly: AssemblyTitle("DragonSpark.Client.Windows")]
 [assembly: AssemblyDescription("")]

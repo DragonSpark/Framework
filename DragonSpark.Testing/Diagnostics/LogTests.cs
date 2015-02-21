@@ -9,7 +9,7 @@
 	using Xunit;
 	using Xunit.Extensions;
 
-	[Freeze( typeof(ApplicationDetails) )]
+	[Freeze( typeof(ApplicationProfile) )]
 	public class LogTests
 	{
 		/*[Theory, AutoMockData, AssignServiceLocation]

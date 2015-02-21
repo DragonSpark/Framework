@@ -1,10 +1,8 @@
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System.Windows;
-using DragonSpark.Common.Application;
 using Xamarin.Forms;
 
 namespace DragonSpark.Client.Windows

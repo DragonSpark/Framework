@@ -65,11 +65,11 @@
     <Compile Include="ExportCellAttribute.cs" />
     <Compile Include="ExportImageSourceHandlerAttribute.cs" />
     <Compile Include="ExportRendererAttribute.cs" />
+    <Compile Include="Forms.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="PlatformServices.cs" />
     <Compile Include="Ticker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms.cs" />
     <Compile Include="Rendering\ActivityIndicatorRenderer.cs" />
     <Compile Include="Rendering\AsyncValue.cs" />
     <Compile Include="Rendering\BackgroundTracker.cs" />

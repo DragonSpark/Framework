@@ -62,6 +62,15 @@ namespace DragonSpark.Extensions
 			return target;
 		}
 
+		public static TItem WithValue<TItem>( this TItem? target, Action<TItem> action ) where TItem : struct 
+		{
+			if ( action != null && target.HasValue )
+			{
+				target.Value.With( action );
+			}
+			return target.GetValueOrDefault();
+		}
+
 		public static void NotNull<TItem>( this TItem target, Action<TItem> action )
 		{
 			if ( !Equals( target, default(TItem) ) )

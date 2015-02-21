@@ -1,16 +1,33 @@
+using DragonSpark.Extensions;
 using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Common.Markup
 {
 	public class AssemblyVersionExtension : MarkupExtension
 	{
-		protected override object GetValue( IServiceProvider serviceProvider )
+		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
-			var result = serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetName().Version;
+			var result = serviceProvider.Get<IRootObjectProvider>().Transform( x => x.RootObject.GetType().Assembly.GetName().Version );
 			return result;
+		}
+	}
+
+	public class StaticResourceExtension : System.Windows.StaticResourceExtension
+	{
+		public StaticResourceExtension()
+		{}
+
+		public StaticResourceExtension( object resourceKey ) : base( resourceKey )
+		{}
+
+		public override object ProvideValue( IServiceProvider serviceProvider )
+		{
+			// ... 
+			return DesignerProperties.GetIsInDesignMode( new DependencyObject() ) ? null : base.ProvideValue( serviceProvider );
 		}
 	}
 }

@@ -12,13 +12,15 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:converters="clr-namespace:DragonSpark.Client.Windows.Converters;assembly=DragonSpark.Client.Windows"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance {x:Type ds:PlatformModel}}"
 	DataContext="{markup:Locate Type={x:Type ds:PlatformModel}}"
+	TitleLinks="{Binding Application.Items, Converter={x:Static converters:ShellLinksConverter.Instance}}"
 >
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{markup:Locate {x:Type dragonSpark:ApplicationDetails}}" Path="Title" />
+			<Binding Source="{markup:Locate {x:Type dragonSpark:ApplicationProfile}}" Path="Title" />
 			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>

@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	mc:Ignorable="d"
-	xmlns:forms="http://xamarin.com/schemas/2014/forms"
+	xmlns:forms="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	xmlns:rendering="clr-namespace:DragonSpark.Client.Windows.Forms.Rendering">
 	<ResourceDictionary.MergedDictionaries>
@@ -33,7 +33,7 @@
 		<rendering:CellControl Cell="{Binding}" HorizontalContentAlignment="Stretch" />
 	</DataTemplate>
 
-	<DataTemplate x:Key="TableGroup" DataType="{x:Type TableRowGroup}">
+	<DataTemplate x:Key="TableGroup" DataType="TableRowGroup">
 		<StackPanel Margin="0,20,0,0">
 			<TextBlock Text="{Binding Title, Converter={StaticResource LowerConverter}}" Style="{StaticResource PhoneTextGroupHeaderStyle}" />
 			<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource CellTemplate}" />
@@ -233,7 +233,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="EntryCell">
-		<Grid HorizontalAlignment="Stretch" d:DataContext="{d:DesignInstance {x:Type forms:EntryCell}}">
+		<Grid HorizontalAlignment="Stretch" d:DataContext="{d:DesignInstance forms:EntryCell}">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>
@@ -295,11 +295,11 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<Style TargetType="{x:Type rendering:TabbedPageRenderer}">
+	<Style TargetType="rendering:TabbedPageRenderer">
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding Title, Converter={StaticResource LowerConverter}}" d:DataContext="{d:DesignInstance {x:Type forms:TabbedPage}}" />
+					<TextBlock Text="{Binding Title, Converter={StaticResource LowerConverter}}" d:DataContext="{d:DesignInstance d:Type=forms:TabbedPage}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>

@@ -2,7 +2,7 @@ namespace DragonSpark.Common
 {
 	public class ExceptionFormatter : DragonSpark.Diagnostics.ExceptionFormatter
 	{
-		public ExceptionFormatter( ApplicationDetails details ) : base( new EnterpriseLibraryExceptionFormatter(), details )
+		public ExceptionFormatter( ApplicationProfile profile ) : base( new EnterpriseLibraryExceptionFormatter(), profile )
 		{}
 	}
 }

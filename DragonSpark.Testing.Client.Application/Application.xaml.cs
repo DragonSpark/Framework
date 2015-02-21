@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-
+﻿
 namespace DragonSpark.Testing.Client.Application
 {
 	/// <summary>
@@ -8,6 +6,11 @@ namespace DragonSpark.Testing.Client.Application
 	/// </summary>
 	public partial class Application
 	{
+		public Application()
+		{
+			InitializeComponent();
+		}
+
 		/*protected override void OnStartup( StartupEventArgs e )
 		{
 			try

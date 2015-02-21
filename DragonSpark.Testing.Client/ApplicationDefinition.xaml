@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
+<client:Application xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:client="clr-namespace:DragonSpark.Client;assembly=DragonSpark.Client"
 	x:Class="DragonSpark.Testing.Client.ApplicationDefinition"
 	>
+	<client:Application.Items>
+		<ToolbarItem Text="Application Item 1" />
+		<ToolbarItem Text="Application Item 2" />
+	</client:Application.Items>
 	<Application.MainPage>
 		<ContentPage BackgroundColor="Red" Title="Why Hello World!">
+			<ContentPage.ToolbarItems>
+				<ToolbarItem Text="Page Item 1" />
+				<ToolbarItem Text="Page Item 2" />
+			</ContentPage.ToolbarItems>
 			<Label Text="Hello World!" VerticalOptions="Center" HorizontalOptions="Center" />
 		</ContentPage>
 	</Application.MainPage>
-</Application>
+</client:Application>

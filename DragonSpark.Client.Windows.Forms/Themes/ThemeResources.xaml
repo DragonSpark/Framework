@@ -48,7 +48,7 @@ Copyright (c) Microsoft Corporation.  All rights reserved.
 <Color x:Key="PhoneTextBoxReadOnlyColor">#77000000</Color>
 
 <!-- 60 percent White -->
-<Color x:Key="PhoneSubtleColor">#99FFFFFF</Color>
+<Color x:Key="PhoneSubtleColor">#98FFFFFF</Color>
 
 <!-- 100 percent White -->
 <Color x:Key="PhoneTextBoxSelectionForegroundColor">#FFFFFFFF</Color>
@@ -64,7 +64,7 @@ Copyright (c) Microsoft Corporation.  All rights reserved.
 <Color x:Key="PhoneTextHighContrastColor">#FFFFFFFF</Color>
 
 <!-- 60 percent White -->
-<Color x:Key="PhoneTextMidContrastColor">#99FFFFFF</Color>
+<Color x:Key="PhoneTextMidContrastColor">#79FFFFFF</Color>
 
 <!-- 45 percent White -->
 <Color x:Key="PhoneTextLowContrastColor">#73FFFFFF</Color>
@@ -385,7 +385,7 @@ Copyright (c) Microsoft Corporation.  All rights reserved.
 <Style x:Key="EmptyListHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextBlockBase}">
   <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
   <Setter Property="FontSize" Value="{StaticResource EmptyListHeaderFontSize}"/>
-  <Setter Property="Foreground" Value="{StaticResource PhoneTextMidContrastColor}"/>
+  <Setter Property="Foreground" Value="{DynamicResource PhoneTextMidContrastColor}"/>
 </Style>
 </ResourceDictionary>
 

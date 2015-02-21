@@ -165,11 +165,11 @@ namespace DragonSpark.Client.Windows.Controls.LongListSelector
 			}*/
 		}
 
-		void page_BackKeyPress( object sender, CancelEventArgs e )
+		/*void page_BackKeyPress( object sender, CancelEventArgs e )
 		{
 			e.Cancel = true;
 			ClosePopup( null, true );
-		}
+		}*/
 
 		/*void page_OrientationChanged(object sender, OrientationChangedEventArgs e)
 		{

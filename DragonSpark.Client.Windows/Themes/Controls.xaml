@@ -6,6 +6,7 @@
 <ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:controls="clr-namespace:DragonSpark.Client.Windows.Controls">
 
+		<BitmapCache x:Key="BitmapCache" />
 <!--
   Style : local:PanoramaControl
   File : Panorama\PanoramaControl.xaml
@@ -23,18 +24,18 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="controls:PanoramaControl">
-					<Canvas Name="LayoutRoot" Background="{TemplateBinding Background}" CacheMode="BitmapCache">
+					<Canvas Name="LayoutRoot" Background="{TemplateBinding Background}" CacheMode="{StaticResource BitmapCache}">
 
-						<StackPanel Name="BackgroundPanelHost" Orientation="Horizontal" CacheMode="BitmapCache">
-							<ContentPresenter Name="BackgroundPanel" Height="{TemplateBinding Height}" Content="{TemplateBinding BackgroundImage}" ContentTemplate="{TemplateBinding BackgroundImageTemplate}" CacheMode="BitmapCache" />
+						<StackPanel Name="BackgroundPanelHost" Orientation="Horizontal" CacheMode="{StaticResource BitmapCache}">
+							<ContentPresenter Name="BackgroundPanel" Height="{TemplateBinding Height}" Content="{TemplateBinding BackgroundImage}" ContentTemplate="{TemplateBinding BackgroundImageTemplate}" CacheMode="{StaticResource BitmapCache}" />
 						</StackPanel>
 
-						<StackPanel Name="TitlePanelHost" Orientation="Horizontal" Margin="10,0,0,0" CacheMode="BitmapCache">
-							<ContentPresenter Name="TitlePanel" Content="{TemplateBinding Title}" ContentTemplate="{TemplateBinding TitleTemplate}" CacheMode="BitmapCache" />
+						<StackPanel Name="TitlePanelHost" Orientation="Horizontal" Margin="10,0,0,0" CacheMode="{StaticResource BitmapCache}">
+							<ContentPresenter Name="TitlePanel" Content="{TemplateBinding Title}" ContentTemplate="{TemplateBinding TitleTemplate}" CacheMode="{StaticResource BitmapCache}" />
 						</StackPanel>
 
-						<StackPanel Name="ItemsPanelHost" Orientation="Horizontal" Margin="22,178,0,0" CacheMode="BitmapCache">
-							<ItemsPresenter Name="ItemsPanel" CacheMode="BitmapCache" />
+						<StackPanel Name="ItemsPanelHost" Orientation="Horizontal" Margin="22,178,0,0" CacheMode="{StaticResource BitmapCache}">
+							<ItemsPresenter Name="ItemsPanel" CacheMode="{StaticResource BitmapCache}" />
 						</StackPanel>
 
 					</Canvas>
@@ -47,7 +48,7 @@
 			<Setter.Value>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
-						<Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" CacheMode="BitmapCache" />
+						<Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" CacheMode="{StaticResource BitmapCache}" />
 					</StackPanel>
 				</DataTemplate>
 			</Setter.Value>
@@ -57,7 +58,7 @@
 		<Setter Property="TitleTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="0,-75,0,0" FontSize="186" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PanoramaControl}}}" CacheMode="BitmapCache" />
+					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="0,-75,0,0" FontSize="186" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=controls:PanoramaControl}}" CacheMode="{StaticResource BitmapCache}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
@@ -91,8 +92,8 @@
 							<RowDefinition Height="25" />
 							<RowDefinition Height="*" />
 						</Grid.RowDefinitions>
-						<ContentControl x:Name="PanoramaItemHeader" Grid.Row="0" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" HorizontalAlignment="Left" FontFamily="{TemplateBinding FontFamily}" FontSize="72" Foreground="{TemplateBinding Foreground}" CacheMode="BitmapCache" />
-						<ContentPresenter x:Name="PanoramaItemContent" Grid.Row="2" Width="{TemplateBinding Width}" CacheMode="BitmapCache" />
+						<ContentControl x:Name="PanoramaItemHeader" Grid.Row="0" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" HorizontalAlignment="Left" FontFamily="{TemplateBinding FontFamily}" FontSize="72" Foreground="{TemplateBinding Foreground}" CacheMode="{StaticResource BitmapCache}" />
+						<ContentPresenter x:Name="PanoramaItemContent" Grid.Row="2" Width="{TemplateBinding Width}" CacheMode="{StaticResource BitmapCache}" />
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
@@ -114,14 +115,14 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="controls:PivotControl">
-					<Canvas Name="LayoutRoot" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}" CacheMode="BitmapCache">
+					<Canvas Name="LayoutRoot" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}" CacheMode="{StaticResource BitmapCache}">
 
-						<ContentPresenter Name="TitleContent" Margin="24,50,0,0" Content="{TemplateBinding Title}" ContentTemplate="{TemplateBinding TitleTemplate}" CacheMode="BitmapCache" />
+						<ContentPresenter Name="TitleContent" Margin="24,50,0,0" Content="{TemplateBinding Title}" ContentTemplate="{TemplateBinding TitleTemplate}" CacheMode="{StaticResource BitmapCache}" />
 
-						<StackPanel Name="HeadersPanelHost" Margin="12,80,0,0" Height="100" VerticalAlignment="Top" Orientation="Horizontal" CacheMode="BitmapCache">
+						<StackPanel Name="HeadersPanelHost" Margin="12,80,0,0" Height="100" VerticalAlignment="Top" Orientation="Horizontal" CacheMode="{StaticResource BitmapCache}">
 						</StackPanel>
 
-						<Canvas Name="ItemsPanelHost" Margin="10,185,0,0" Height="615" Width="{TemplateBinding Width}" CacheMode="BitmapCache">
+						<Canvas Name="ItemsPanelHost" Margin="10,185,0,0" Height="615" Width="{TemplateBinding Width}" CacheMode="{StaticResource BitmapCache}">
 						</Canvas>
 
 					</Canvas>
@@ -133,7 +134,7 @@
 		<Setter Property="TitleTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" FontSize="22" FontFamily="Segoe WP Semibold" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PivotControl}}}" CacheMode="BitmapCache" />
+					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" FontSize="22" FontFamily="Segoe WP Semibold" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=controls:PivotControl}}" CacheMode="{StaticResource BitmapCache}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
@@ -142,7 +143,7 @@
 		<Setter Property="UnselectedHeaderTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="10,-10" FontSize="72" Foreground="#FF999999" CacheMode="BitmapCache" />
+					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="10,-10" FontSize="72" Foreground="#FF999999" CacheMode="{StaticResource BitmapCache}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
@@ -151,7 +152,7 @@
 		<Setter Property="SelectedHeaderTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="10,-10" FontSize="72" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PivotControl}}}" CacheMode="BitmapCache" />
+					<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Margin="10,-10" FontSize="72" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=controls:PivotControl}}" CacheMode="{StaticResource BitmapCache}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
@@ -169,7 +170,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="controls:PivotItem">
-					<ContentPresenter x:Name="PivotItemContent" Width="{TemplateBinding Width}" CacheMode="BitmapCache" />
+					<ContentPresenter x:Name="PivotItemContent" Width="{TemplateBinding Width}" CacheMode="{StaticResource BitmapCache}" />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

@@ -5,7 +5,7 @@ using System.Xaml;
 
 namespace DragonSpark.Common.Markup
 {
-	public class MetadataExtension : MarkupExtension
+	public class MetadataExtension : LocationBasedExtension
 	{
 		readonly Type attributeType;
 		readonly string expression;
