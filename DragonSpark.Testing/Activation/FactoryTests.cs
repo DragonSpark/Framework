@@ -1,9 +1,9 @@
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit;
 using System;
+using DragonSpark.Activation;
+using DragonSpark.Extensions;
 using Xunit;
 using Xunit.Extensions;
 using Activator = DragonSpark.Activation.IoC.Activator;

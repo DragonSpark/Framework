@@ -1,7 +1,7 @@
-using DragonSpark.Activation;
 using Ploeh.AutoFixture;
 using System.Collections.Generic;
 using System.Reflection;
+using DragonSpark.Activation;
 using Xunit;
 
 namespace DragonSpark.Testing.Framework

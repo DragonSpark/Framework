@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Reflection;
+using DragonSpark.Application;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Extensions;
 
 namespace DragonSpark.Server.Legacy.Entity

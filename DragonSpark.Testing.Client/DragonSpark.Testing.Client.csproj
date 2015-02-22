@@ -71,11 +71,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
+    <ProjectReference Include="..\DragonSpark.Core.Client\DragonSpark.Client.csproj">
       <Project>{37cb4b8e-4d06-47d1-989f-67091821f96c}</Project>
       <Name>DragonSpark.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+    <ProjectReference Include="..\DragonSpark.Core\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>

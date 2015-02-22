@@ -231,11 +231,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark\DragonSpark.Application.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
-      <Name>DragonSpark.Common</Name>
+      <Name>DragonSpark.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+    <ProjectReference Include="..\DragonSpark.Core\DragonSpark.csproj">
       <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>

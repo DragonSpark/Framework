@@ -1,12 +1,12 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Extensions;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Activation;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Framework
 {

@@ -1,11 +1,11 @@
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using Dynamitey;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit;
 using System;
 using System.Reflection;
+using DragonSpark.Activation;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Framework
 {

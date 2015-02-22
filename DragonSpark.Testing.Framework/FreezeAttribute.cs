@@ -1,9 +1,9 @@
 using System.Threading;
-using DragonSpark.Activation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
 using System.Linq;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework
 {

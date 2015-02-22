@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit;
@@ -7,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Testing.Framework

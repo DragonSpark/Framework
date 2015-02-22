@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Server.Legacy
 {
-	public class ExceptionHandlingConfiguration : DragonSpark.IoC.Commands.ExceptionHandlingConfiguration
+	public class ExceptionHandlingConfiguration : Application.IoC.Commands.ExceptionHandlingConfiguration
 	{
 		protected override void ConfigureExceptionHandling( IExceptionHandler handler )
 		{

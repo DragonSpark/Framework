@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using AutoMapper;
-using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Extensions;
 using Xunit;
 using Xunit.Extensions;
 

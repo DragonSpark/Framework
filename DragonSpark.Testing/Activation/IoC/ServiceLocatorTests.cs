@@ -1,10 +1,12 @@
-﻿namespace DragonSpark.Testing.Activation.IoC
+﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
+using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using Activator = DragonSpark.Activation.IoC.Activator;
+
+namespace DragonSpark.Testing.Activation.IoC
 {
-	using DragonSpark.Activation;
-	using DragonSpark.Activation.IoC;
-	using DragonSpark.ComponentModel;
-	using DragonSpark.Diagnostics;
-	using DragonSpark.Extensions;
 	using Dynamitey;
 	using Framework;
 	using Microsoft.Practices.Unity;
@@ -16,8 +18,8 @@
 	using TestObjects;
 	using Xunit;
 	using Xunit.Extensions;
-	using Activator = DragonSpark.Activation.IoC.Activator;
-	using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
+	using Activator = Activator;
+	using ServiceLocator = ServiceLocator;
 
 	[Freeze( typeof(IActivator), typeof(Activator) )]
 	[Freeze( typeof(IUnityContainer), typeof(UnityContainer) )]

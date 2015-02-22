@@ -1,5 +1,4 @@
 using System;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.TestObjects
 {

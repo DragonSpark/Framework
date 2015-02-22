@@ -1,8 +1,9 @@
-﻿namespace DragonSpark.Testing.Diagnostics
+﻿using DragonSpark.Diagnostics;
+using ExceptionFormatter = DragonSpark.Application.Runtime.ExceptionFormatter;
+
+namespace DragonSpark.Testing.Diagnostics
 {
 	using System;
-	using DragonSpark.Activation;
-	using DragonSpark.Diagnostics;
 	using Framework;
 	using Moq;
 	using Ploeh.AutoFixture.Xunit;
@@ -33,7 +34,7 @@
 		}*/
 
 		[Theory, AutoMockData, AssignServiceLocation]
-		[Register( typeof(IExceptionFormatter), typeof(Common.ExceptionFormatter) )]
+		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void Error( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error, Guid id )
 		{
 			Log.Error( error, id );

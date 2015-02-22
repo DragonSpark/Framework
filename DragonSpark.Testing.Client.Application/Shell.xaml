@@ -7,20 +7,19 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+				  xmlns:core="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
-	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
 	xmlns:ds="http://framework.dragonspark.us"
-	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
-	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
-	xmlns:converters="clr-namespace:DragonSpark.Client.Windows.Converters;assembly=DragonSpark.Client.Windows"
+	xmlns:xfr="clr-namespace:DragonSpark.Application.Client.Forms;assembly=Xamarin.Forms.Platform.WP8"
+	xmlns:forms="clr-namespace:DragonSpark.Application.Client.Forms;assembly=DragonSpark.Application.Client"
 	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance d:Type=ds:PlatformModel}"
-	DataContext="{markup:Locate Type=ds:PlatformModel}"
-	TitleLinks="{Binding Application.Items, Converter={x:Static converters:ShellLinksConverter.Instance}}"
+	d:DataContext="{d:DesignInstance d:Type=forms:PlatformModel}"
+	DataContext="{ds:Locate Type=forms:PlatformModel}"
+	TitleLinks="{Binding Application.Items, Converter={x:Static ds:ShellLinksConverter.Instance}}"
 >
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{markup:Locate dragonSpark:ApplicationProfile}" Path="Title" />
+			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
 			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>

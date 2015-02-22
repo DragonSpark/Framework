@@ -1,7 +1,6 @@
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
 using System;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework
 {

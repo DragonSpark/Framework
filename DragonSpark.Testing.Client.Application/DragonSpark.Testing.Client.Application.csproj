@@ -131,27 +131,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Windows\DragonSpark.Client.Windows.csproj">
+    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Application.Client.csproj">
       <Project>{eb77a62a-7527-4bbe-a335-28ba901d8fb2}</Project>
-      <Name>DragonSpark.Client.Windows</Name>
+      <Name>DragonSpark.Application.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Client\DragonSpark.Client.csproj">
-      <Project>{37cb4b8e-4d06-47d1-989f-67091821f96c}</Project>
-      <Name>DragonSpark.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Common\DragonSpark.Common.csproj">
+    <ProjectReference Include="..\DragonSpark\DragonSpark.Application.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
-      <Name>DragonSpark.Common</Name>
+      <Name>DragonSpark.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Client.Windows.Forms\DragonSpark.Client.Windows.Forms.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Forms\DragonSpark.Application.Client.Forms.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>
-      <Name>DragonSpark.Client.Windows.Forms</Name>
+      <Name>DragonSpark.Application.Client.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Client\DragonSpark.Testing.Client.csproj">
       <Project>{843C0764-97CD-42EB-8934-858F95A80A7A}</Project>
       <Name>DragonSpark.Testing.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+    <ProjectReference Include="..\DragonSpark.Core\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
