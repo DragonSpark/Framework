@@ -14,13 +14,13 @@
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:converters="clr-namespace:DragonSpark.Client.Windows.Converters;assembly=DragonSpark.Client.Windows"
 	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance {x:Type ds:PlatformModel}}"
-	DataContext="{markup:Locate Type={x:Type ds:PlatformModel}}"
+	d:DataContext="{d:DesignInstance d:Type=ds:PlatformModel}"
+	DataContext="{markup:Locate Type=ds:PlatformModel}"
 	TitleLinks="{Binding Application.Items, Converter={x:Static converters:ShellLinksConverter.Instance}}"
 >
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{markup:Locate {x:Type dragonSpark:ApplicationProfile}}" Path="Title" />
+			<Binding Source="{markup:Locate dragonSpark:ApplicationProfile}" Path="Title" />
 			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
@@ -31,7 +31,7 @@
 		</i:Interaction.Behaviors>
 	</mui:TransitioningContentControl>
 	<Window.Template>
-		<ControlTemplate TargetType="{x:Type mui:ModernWindow}">
+		<ControlTemplate TargetType="mui:ModernWindow">
 			<Border Name="WindowBorder" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
 				<Border.Background>
 					<SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
@@ -60,7 +60,7 @@
 									<ColumnDefinition Width="96" />
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="{TemplateBinding Title}" Margin="8,0" VerticalAlignment="Center" Style="{StaticResource ModernWindowTitle}" DataContext="{TemplateBinding IsTitleVisible}" Visibility="{Binding Converter={StaticResource BooleanToVisibilityConverter}}" />
-								<ItemsControl Grid.Column="1" ItemsSource="{TemplateBinding mui:ModernWindow.TitleLinks}" Margin="0,0,24,0" WindowChrome.IsHitTestVisibleInChrome="True">
+								<ItemsControl Grid.Column="1" ItemsSource="{TemplateBinding TitleLinks}" Margin="0,0,24,0" WindowChrome.IsHitTestVisibleInChrome="True">
 									<ItemsControl.ItemsPanel>
 										<ItemsPanelTemplate>
 											<StackPanel Orientation="Horizontal" />

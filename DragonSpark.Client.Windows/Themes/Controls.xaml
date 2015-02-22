@@ -1,24 +1,15 @@
-<!--
-  WARNING : This file was auto-generated.
-  DO NOT MODIFY
--->
-
 <ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:controls="clr-namespace:DragonSpark.Client.Windows.Controls"
-					xmlns:longListSelector="clr-namespace:DragonSpark.Client.Windows.Controls.LongListSelector">
-
-		<BitmapCache x:Key="BitmapCache" />
-<!--
-  Style : local:PanoramaControl
-  File : Panorama\PanoramaControl.xaml
--->
+	xmlns:controls="clr-namespace:DragonSpark.Client.Windows.Controls"
+	xmlns:longListSelector="clr-namespace:DragonSpark.Client.Windows.Controls.LongListSelector"
+>
+	<BitmapCache x:Key="BitmapCache" />
+	
 	<Style TargetType="longListSelector:LongListSelector">
 		<Setter Property="Background" Value="{StaticResource PhoneBackgroundBrush}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate>
-					<longListSelector:TemplatedListBox x:Name="TemplatedListBox" 
-												 Background="{TemplateBinding Background}">
+					<longListSelector:TemplatedListBox x:Name="TemplatedListBox" Background="{TemplateBinding Background}">
 						<longListSelector:TemplatedListBox.ItemContainerStyle>
 							<Style TargetType="ListBoxItem">
 								<Setter Property="HorizontalContentAlignment" Value="Stretch" />

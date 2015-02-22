@@ -88,7 +88,11 @@ namespace DragonSpark.Client.Windows.Forms
 	[RegisterAs( typeof(IPlatform) )]
 	public class PlatformModel : BindableBase, IPlatform
 	{
-		public event EventHandler BindingContextChanged = delegate {};
+		public event EventHandler BindingContextChanged
+		{
+			add { Application.BindingContextChanged += value; }
+			remove { Application.BindingContextChanged -= value; }
+		}
 
 		readonly IPlatformEngine engine;
 		readonly global::Xamarin.Forms.Application application;
@@ -136,20 +140,25 @@ namespace DragonSpark.Client.Windows.Forms
 
 		void IPlatform.SetPage( Page current )
 		{
-			if ( current != Page )
-			{
-				Page = current;
-				current.Assign( this );
-				
-				Content = current.DetermineRenderer();
-				// UpdateToolbarTracker();
-
-			}
+			Page = current;
 		}
 
-		public Page Page { get; private set; }
+		public Page Page
+		{
+			get { return page; }
+			private set
+			{
+				if ( SetProperty( ref page, value ) )
+				{
+					page.Assign( this );
+				
+					Content = page.DetermineRenderer();
+					// UpdateToolbarTracker();
+				}
+			}
+		}	Page page;
 
-		public object BindingContext
+		object IPlatform.BindingContext
 		{
 			get { return application.BindingContext; }
 			set
@@ -157,7 +166,6 @@ namespace DragonSpark.Client.Windows.Forms
 				if ( application.BindingContext != value )
 				{
 					application.BindingContext = value;
-					BindingContextChanged( this, EventArgs.Empty );
 				}
 			}
 		}
