@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public abstract class DataTemplateSelector : ContentControl
 	{

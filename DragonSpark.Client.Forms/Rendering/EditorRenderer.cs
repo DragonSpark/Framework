@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class EditorRenderer : ViewRenderer<Editor, System.Windows.Controls.TextBox>
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class CollapseWhenEmptyConverter : System.Windows.Data.IValueConverter
 	{

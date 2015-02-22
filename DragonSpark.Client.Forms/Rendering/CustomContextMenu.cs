@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public sealed class CustomContextMenu : ContextMenu
 	{

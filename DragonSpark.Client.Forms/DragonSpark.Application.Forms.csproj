@@ -31,7 +31,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>DragonSpark.Client.Forms</RootNamespace>
+    <RootNamespace>DragonSpark.Application.Forms</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirstFloor.ModernUI">
@@ -62,13 +62,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExportCellAttribute.cs" />
-    <Compile Include="ExportImageSourceHandlerAttribute.cs" />
-    <Compile Include="ExportRendererAttribute.cs" />
-    <Compile Include="Forms.cs" />
+    <Compile Include="Compensations.cs" />
+    <Compile Include="ComponentModel\DeviceInfo.cs" />
+    <Compile Include="ComponentModel\ExportCellAttribute.cs" />
+    <Compile Include="ComponentModel\ExportImageSourceHandlerAttribute.cs" />
+    <Compile Include="ComponentModel\ExportRendererAttribute.cs" />
+    <Compile Include="ComponentModel\ExpressionSearch.cs" />
     <Compile Include="FormsInitializer.cs" />
-    <Compile Include="PlatformServices.cs" />
-    <Compile Include="Ticker.cs" />
+    <Compile Include="ComponentModel\INavigationModel.cs" />
+    <Compile Include="ComponentModel\PlatformServices.cs" />
+    <Compile Include="ComponentModel\ShellInteraction.cs" />
+    <Compile Include="ComponentModel\ShellProperties.cs" />
+    <Compile Include="ComponentModel\Ticker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\ActivityIndicatorRenderer.cs" />
     <Compile Include="Rendering\AsyncValue.cs" />
@@ -175,9 +180,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

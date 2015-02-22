@@ -6,7 +6,7 @@ using System.Windows.Media;
 using Xamarin.Forms;
 using Label = Xamarin.Forms.Label;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public static class FontExtensions
 	{

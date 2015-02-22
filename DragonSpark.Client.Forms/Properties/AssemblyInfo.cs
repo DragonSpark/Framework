@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Client.Forms;
-using DragonSpark.Application.Client.Forms.Rendering;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Application.Forms.ComponentModel;
+using DragonSpark.Application.Forms.Rendering;
 using Xamarin.Forms;
 using Switch = Xamarin.Forms.Switch;
 
@@ -69,5 +69,6 @@ using Switch = Xamarin.Forms.Switch;
 [assembly: ExportRenderer(typeof(MasterDetailPage), typeof(MasterDetailRenderer))]
 
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us/forms/rendering", "xfr" )] // Xamarin Forms Rendering
-[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms.Rendering" )]
-[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Forms" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Forms.ComponentModel" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Forms.Rendering" )]

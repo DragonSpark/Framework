@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class KeyboardConverter : System.Windows.Data.IValueConverter
 	{

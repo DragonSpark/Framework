@@ -1,7 +1,7 @@
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	internal static class KeyboardExtensions
 	{

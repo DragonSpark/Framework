@@ -31,7 +31,6 @@ namespace DragonSpark.Application.Client
 		{
 			Container.RegisterInstance( this );
 			
-			// Container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
 			Container.RegisterInstance( Parameters );
 			
 			base.ConfigureContainer();

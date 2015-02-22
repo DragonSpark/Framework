@@ -1,10 +1,11 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using DragonSpark.Application.Forms.ComponentModel;
 using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class MasterDetailRenderer : VisualElementRenderer<MasterDetailPage, FrameworkElement>
 	{

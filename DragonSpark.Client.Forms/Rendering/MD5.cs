@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	internal abstract class MD5 : HashAlgorithm
 	{

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 using Color = Xamarin.Forms.Color;
 using Size = System.Windows.Size;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class VisualElementRenderer<TElement, TNativeElement> : Canvas, IVisualElementRenderer where TElement : VisualElement where TNativeElement : FrameworkElement
 	{

@@ -139,9 +139,9 @@
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Client.Forms\DragonSpark.Application.Client.Forms.csproj">
+    <ProjectReference Include="..\DragonSpark.Client.Forms\DragonSpark.Application.Forms.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>
-      <Name>DragonSpark.Application.Client.Forms</Name>
+      <Name>DragonSpark.Application.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Client\DragonSpark.Testing.Client.csproj">
       <Project>{843C0764-97CD-42EB-8934-858F95A80A7A}</Project>

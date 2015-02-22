@@ -1,7 +1,7 @@
 using System;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class ElementChangedEventArgs<TElement> : EventArgs where TElement : Element
 	{

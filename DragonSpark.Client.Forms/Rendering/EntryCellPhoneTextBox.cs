@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class EntryCellPhoneTextBox : System.Windows.Controls.TextBox
 	{

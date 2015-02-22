@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	[TemplatePart( Name = "Text", Type = typeof(TextBox) ), TemplatePart( Name = "HintContent", Type = typeof(ContentControl) ), TemplatePart( Name = "LengthIndicator", Type = typeof(TextBlock) ), TemplateVisualState( Name = "LengthIndicatorHidden", GroupName = "LengthIndicatorStates" ), TemplateVisualState( Name = "ReadOnly", GroupName = "CommonStates" ), TemplateVisualState( Name = "LengthIndicatorVisible", GroupName = "LengthIndicatorStates" ), TemplateVisualState( Name = "Normal", GroupName = "CommonStates" ), TemplateVisualState( Name = "Disabled", GroupName = "CommonStates" ), TemplateVisualState( Name = "Unfocused", GroupName = "FocusStates" ), TemplateVisualState( Name = "Focused", GroupName = "FocusStates" )]
 	public class EntryTextBox : TextBox

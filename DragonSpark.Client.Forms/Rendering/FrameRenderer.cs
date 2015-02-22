@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using Xamarin.Forms;
 using Frame = Xamarin.Forms.Frame;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class FrameRenderer : ViewRenderer<Frame, Border>
 	{

@@ -1,5 +1,5 @@
 ﻿
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	/// <summary>
 	/// Interaction logic for TableView.xaml

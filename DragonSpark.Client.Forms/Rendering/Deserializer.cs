@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	internal class Deserializer : IDeserializer
 	{

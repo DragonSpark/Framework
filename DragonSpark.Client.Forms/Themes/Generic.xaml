@@ -6,7 +6,7 @@
 	mc:Ignorable="d"
 	xmlns:forms="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:rendering="clr-namespace:DragonSpark.Application.Client.Forms.Rendering">
+	xmlns:rendering="clr-namespace:DragonSpark.Application.Forms.Rendering">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="ThemeResources.xaml" />
 	</ResourceDictionary.MergedDictionaries>

@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Windows;
+using DragonSpark.Application.Forms.ComponentModel;
 using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class NavigationPageRenderer : VisualElementRenderer<NavigationPage, FrameworkElement>
 	{

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 using Point = System.Windows.Point;
 using Size = Xamarin.Forms.Size;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class TableViewRenderer : ViewRenderer<global::Xamarin.Forms.TableView, TableView>
 	{

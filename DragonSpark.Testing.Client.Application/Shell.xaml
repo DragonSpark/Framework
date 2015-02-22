@@ -12,6 +12,7 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="clr-namespace:DragonSpark.Application.Client.Forms;assembly=Xamarin.Forms.Platform.WP8"
 	xmlns:forms="clr-namespace:DragonSpark.Application.Client.Forms;assembly=DragonSpark.Application.Client"
+	xmlns:componentModel="http://framework.dragonspark.us/forms/rendering"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance d:Type=forms:PlatformModel}"
 	DataContext="{ds:Locate Type=forms:PlatformModel}"
@@ -20,7 +21,7 @@
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
 			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
-			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
+			<Binding ElementName="ContentHost" Path="Content.(componentModel:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
 	<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">

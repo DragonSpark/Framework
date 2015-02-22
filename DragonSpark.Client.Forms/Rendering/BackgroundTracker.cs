@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 using Xamarin.Forms;
 using Color = Xamarin.Forms.Color;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	class BackgroundTracker<T> : BackgroundTracker<Page, T> where T : FrameworkElement
 	{

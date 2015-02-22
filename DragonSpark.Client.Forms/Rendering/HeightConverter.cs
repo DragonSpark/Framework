@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace DragonSpark.Application.Client.Forms.Rendering
+namespace DragonSpark.Application.Forms.Rendering
 {
 	public class HeightConverter : System.Windows.Data.IValueConverter
 	{
