@@ -9,9 +9,9 @@ Originally, this project started out as an ASP.NET framework, then got ported to
 
 This is still very much a work in progress.  Please excuse the mess. 
 
-*insert 90's internets construction guy here*
+**insert 90's internets construction guy here**
 
-As mentioned, this codebase is being moved to Xamarin.Forms.  For starters, this project will feature a WPF Renderer that is based on heavily modified and adapted Windows Phone Renderer that currently exists in Xamarin.Forms 1.3.x.
+As mentioned, this codebase is being moved to Xamarin.Forms.  For starters, this project will feature a WPF Renderer that is based on a heavily modified and adapted Windows Phone Renderer that currently exists in Xamarin.Forms 1.3.x.
 
 From there, it is off to the Feature-Set application.
 
