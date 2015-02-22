@@ -218,7 +218,7 @@
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
-    <Compile Include="Activation\IoC\Commands\ApplyRegistrationsFromConventionsCommand.cs" />
+    <Compile Include="Activation\IoC\Commands\RegisterTypesCommand.cs" />
     <Compile Include="Activation\IoC\Commands\AssignServiceLocatorCommand.cs" />
     <Compile Include="Activation\IoC\Commands\IgnoreNamespaceDuringRegistrationAttribute.cs" />
     <Compile Include="Activation\IoC\Commands\IUnityContainerTypeConfiguration.cs" />

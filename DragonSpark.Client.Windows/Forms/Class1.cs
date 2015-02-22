@@ -1,8 +1,9 @@
-﻿using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Client.Windows.Forms.Rendering;
-using DragonSpark.ComponentModel;
+using DragonSpark.Common.Application;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
@@ -33,6 +34,18 @@ namespace DragonSpark.Client.Windows.Forms
 
 			Initializer.Initialize();
 
+			container.Resolve<IEventAggregator>().With( aggregator => aggregator.ExecuteWhenStatusIs( SetupStatus.Configured, async () =>
+			{
+				var navigation = container.Resolve<INavigation>();
+				var application = container.Resolve<Xamarin.Forms.Application>();
+				await navigation.PushAsync( application.MainPage );
+				/*var platform = container.Resolve<IPlatform>();
+				container.RegisterInstance( platform );
+
+				var navigation = new Navigation( platform, NavigationModel );
+				await navigation.PushAsync( Application.MainPage );*/
+			} ) );
+
 			System.Windows.Application.Current.With( x =>
 			{
 				container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
@@ -41,29 +54,24 @@ namespace DragonSpark.Client.Windows.Forms
 		}
 	}
 
-	[System.Windows.Markup.ContentProperty( "Application" )]
+	/*[System.Windows.Markup.ContentProperty( "Application" )]
 	public class ConfigureFormsCommand : IContainerConfigurationCommand
 	{
 		public async void Configure( IUnityContainer container )
 		{
-			var platform = new PlatformModel( Engine, Application );
-			container.RegisterInstance<IPlatform>( platform );
-			container.RegisterInstance( platform );
-
-			var navigation = new Navigation( platform, NavigationModel );
-			await navigation.PushAsync( Application.MainPage );
+			
 		}
 
 		public Xamarin.Forms.Application Application { get; set; }
 
-		[Activate( typeof(Engine) )]
+		[Activate( typeof(PlatformEngine) )]
 		public IPlatformEngine Engine { get; set; }
 
 		[Activate( typeof(NavigationModel) )]
 		public INavigationModel NavigationModel { get; set; }
-	}
+	}*/
 
-	class Engine : IPlatformEngine
+	public class PlatformEngine : IPlatformEngine
 	{
 		public SizeRequest GetNativeSize( VisualElement view, double widthConstraint, double heightConstraint )
 		{
@@ -77,6 +85,7 @@ namespace DragonSpark.Client.Windows.Forms
 		}
 	}
 
+	[RegisterAs( typeof(IPlatform) )]
 	public class PlatformModel : BindableBase, IPlatform
 	{
 		public event EventHandler BindingContextChanged = delegate {};
@@ -159,7 +168,7 @@ namespace DragonSpark.Client.Windows.Forms
 		}
 	}
 
-	class Navigation : INavigation
+	public class Navigation : INavigation
 	{
 		readonly IPlatform platform;
 		readonly INavigationModel model;

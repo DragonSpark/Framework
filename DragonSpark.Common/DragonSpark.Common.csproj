@@ -136,7 +136,7 @@
     <Compile Include="EnterpriseLibraryExceptionFormatter.cs" />
     <Compile Include="ExceptionFormatter.cs" />
     <Compile Include="ExceptionHandler.cs" />
-    <Compile Include="IoC\Commands\ApplyRegistrationsFromConventionsCommand.cs">
+    <Compile Include="IoC\Commands\RegisterTypesCommand.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssemblyLocator.cs" />

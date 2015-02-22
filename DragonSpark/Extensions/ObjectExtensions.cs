@@ -148,7 +148,8 @@ namespace DragonSpark.Extensions
 
 		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
 		{
-			ServiceLocation.With<IDefaultValueProvider>( x => x.Apply( target ) );
+			var provider = ServiceLocation.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
+			provider.With( x => x.Apply( target ) );
 			return target;
 		}
 

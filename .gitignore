@@ -33,3 +33,4 @@ Packages/
 *.log
 *.pubxml
 Publish.bat
+/TestResults

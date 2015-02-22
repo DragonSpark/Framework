@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Extensions;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +16,11 @@ namespace DragonSpark.ComponentModel
 
 	public class DefaultValueProvider : IDefaultValueProvider
 	{
+		public static DefaultValueProvider Instance
+		{
+			get { return InstanceField; }
+		}	static readonly DefaultValueProvider InstanceField = new DefaultValueProvider();
+
 		public void Apply( object target )
 		{
 			var runtimeProperties = target.GetType().GetRuntimeProperties();

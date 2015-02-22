@@ -12,7 +12,7 @@ using Page = Xamarin.Forms.Page;
 
 namespace DragonSpark.Client.Windows.Forms
 {
-	public class Initializer : IInitializer
+	public class FormsInitializer : IInitializer
 	{
 		public SolidColorBrush Accent { get; set; }
 

@@ -27,18 +27,17 @@
 					DeploymentDate="8/1/2015"
 					CompanyUri="http://framework.dragonspark.us" />
 			</ds:ConfigureApplicationCommand.Profile>
-			<xfr:Initializer Accent="{ds:StaticResource PhoneAccentBrush}" />
+			<xfr:FormsInitializer Accent="{ds:StaticResource PhoneAccentBrush}" />
 		</ds:ConfigureApplicationCommand>
-		<commands:ApplyRegistrationsFromConventionsCommand Locator="{ds:Activate common:AssemblyLocator}">
+		<commands:ApplyRegistrationsCommand>
 			<x:Type TypeName="forms:Application" />
-		</commands:ApplyRegistrationsFromConventionsCommand>
+		</commands:ApplyRegistrationsCommand>
 		<activationCommands:UnityContainerConfiguration>
 			<activationCommands:UnityContainerConfiguration.Extensions>
 				<ioC:IoCExtension />
 			</activationCommands:UnityContainerConfiguration.Extensions>
 		</activationCommands:UnityContainerConfiguration>
 		<activationCommands:AssignServiceLocatorCommand />
-		<ds:ConfigureFormsCommand Application="{ds:Locate client:ApplicationDefinition}" />
 	</windows:Setup.Configurations>
 	<windows:SetupParameters Shell="{ds:Setup application:Shell, SetupStatus=Configured}" />
 </windows:Setup>

@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using DragonSpark.Activation.IoC.Commands;
 using Xamarin.Forms;
 using Application = System.Windows.Application;
 using Expression = System.Linq.Expressions.Expression;
@@ -27,6 +28,7 @@ namespace DragonSpark.Client.Windows.Forms
 		Page Pop( Page ancestor );
 	}
 
+	[RegisterAs( typeof(INavigationModel) )]
 	class NavigationModel : Xamarin.Forms.NavigationModel, INavigationModel
 	{}
 
