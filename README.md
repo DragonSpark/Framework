@@ -18,8 +18,8 @@ From there, it is off to the Feature-Set application.
 As reference, an older deployed featureset application built in HTML5 hosted on Windows Azure may be found here:
 http://framework.dragonspark.us/
 
-Feature-Set
-The DragonSpark Application Framework addresses these key application and system development friction points:
+#### Feature-Set Application
+The DragonSpark Multiversal Application Framework addresses these key application and system development friction points:
 - Application Initialization
 - Application Configuration (Xaml-Driven IoC and WebApi Controller Configuration)
 - Proxy-based REST Service Calls
