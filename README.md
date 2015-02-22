@@ -1,25 +1,30 @@
-The DragonSpark Framework
-=========================
+The DragonSpark Multiversal Application Framework
+=================================================
 
-The DragonSpark Framework is an application development accelerator for Xaml-based application services and HTML5 clients.
+The DragonSpark Multiversal Application Framework is an application development accelerator for Xaml-based application services and application clients.
 
-This framework features a robust infrastructure for defining and configuring your application services with Xaml-based functionality, while developing your clients with HTML5 and JavaScript. 
+This framework is a work of progress that stretches almost a decade, and features the best coding practices and patterns I have found during that time.
 
-In effect, components are defined in Xaml on the server side, and then serialized as JSON and sent to the client via ASP.NET WebAPI controllers.
+Originally, this project started out as an ASP.NET framework, then got ported to Silverlight, then to HTML5, and now Xamarin.Forms.
 
-A deployed featureset application hosted on Windows Azure may be found here:
+This is still very much a work in progress.  Please excuse the mess.
+
+As mentioned, this codebase is being moved to Xamarin.Forms.  For starters, I am creating a WPF Renderer based on the Windows Phone Renderer that currently exists in Xamarin.Forms 1.3.x.
+
+From there, it is off to the Feature-Set application.
+
+As reference, an older deployed featureset application built in HTML5 hosted on Windows Azure may be found here:
 http://framework.dragonspark.us/
 
 Feature-Set
 The DragonSpark Application Framework addresses these key application and system development friction points:
 - Application Initialization
 - Application Configuration (Xaml-Driven IoC and WebApi Controller Configuration)
-- Synchronous Web Service Calls in Silverlight (via T4-generated Service Proxies)
+- Proxy-based REST Service Calls
 - Operation Management and User Experience
 - Exception Handling, Reporting and User Experience
 - Authentication
 - Authorization
 - Navigation
 - User Profile Management
-- Entity Installation (Versioned Xaml-Driven Database seeding -- no more Sql Scripts)
-- Entity Management
+- Entity Installation and Management
