@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class TimePickerRenderer : ViewRenderer<TimePicker, Xceed.Wpf.Toolkit.TimePicker>
 	{

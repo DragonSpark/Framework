@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using Microsoft.Practices.Prism.PubSubEvents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace DragonSpark.Application
 {
@@ -18,7 +18,7 @@ namespace DragonSpark.Application
 			}
 			else
 			{
-				target.Subscribe<SetupEvent, SetupStatus>( ( e, p ) =>
+				target.SubscribeUntil<SetupEvent, SetupStatus>( ( e, p ) =>
 				{
 					var result = p == status;
 					result.IsTrue( action );

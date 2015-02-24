@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	internal sealed class MD5CryptoServiceProvider : MD5
 	{

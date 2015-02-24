@@ -1,6 +1,6 @@
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms
+namespace DragonSpark.Application.Client.Forms
 {
 	public static class Compensations
 	{

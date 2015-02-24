@@ -1,11 +1,10 @@
+using DragonSpark.Application.Client.Forms.ComponentModel;
 using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DragonSpark.Application.Forms;
-using DragonSpark.Application.Forms.ComponentModel;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms
@@ -58,7 +57,7 @@ namespace DragonSpark.Application.Client.Forms
 			var tcs = new TaskCompletionSource<object>();
 			model.PushModal( modal );
 			SetCurrent( model.CurrentPage, animated, false, () => tcs.SetResult( null ) );
-			modal.AssignNavigation( this );
+			modal.NavigationProxy.Inner = this;
 			return tcs.Task;
 		}
 
@@ -89,9 +88,9 @@ namespace DragonSpark.Application.Client.Forms
 		{
 			model.Push( root, ancester );
 			await SetCurrent( model.CurrentPage, animated );
-			if ( root.GetNavigation() == null )
+			if ( root.NavigationProxy.Inner == null )
 			{
-				root.AssignNavigation( this );
+				root.NavigationProxy.Inner = this;
 			}
 		}
 

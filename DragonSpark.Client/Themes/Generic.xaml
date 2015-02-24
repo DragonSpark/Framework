@@ -7,14 +7,151 @@
 	xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
 	xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
-	xmlns:markup="clr-namespace:DragonSpark.Common.Markup;assembly=DragonSpark.Common"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
-	xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+	xmlns:controls="clr-namespace:DragonSpark.Application.Client.Controls">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Controls.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
+	<Color x:Key="WinChromeColor">#FFDDDDDD</Color>
+	<Color x:Key="WinForegroundColor">#DE000000</Color>
+	<FontFamily x:Key="WinFontFamilyNormal">Segoe UI</FontFamily>
+	<system:Double x:Key="WinFontSizeNormal">15</system:Double>
+	<SolidColorBrush x:Key="WinForegroundBrush" Color="{StaticResource WinForegroundColor}"/>
+	<Thickness x:Key="WinVerticalMargin">0,12</Thickness>
+	<FontFamily x:Key="WinFontFamilySemiLight">Segoe UI SemiLight</FontFamily>
+	<Thickness x:Key="WinHorizontalMargin">12,0</Thickness>
+	<system:Double x:Key="WinFontSizeMedium">17</system:Double>
+	<SolidColorBrush x:Key="WinChromeBrush" Color="{StaticResource WinChromeColor}"/>
+	<Style x:Key="WinTextBlockBase" TargetType="TextBlock">
+		<Setter Property="FontFamily" Value="{StaticResource WinFontFamilyNormal}"/>
+		<Setter Property="FontSize" Value="{StaticResource WinFontSizeNormal}"/>
+		<Setter Property="Foreground" Value="{StaticResource WinForegroundBrush}"/>
+		<Setter Property="Margin" Value="{StaticResource WinHorizontalMargin}"/>
+	</Style>
+	<Style x:Key="WinTextTitle3Style" TargetType="TextBlock" BasedOn="{StaticResource WinTextBlockBase}">
+		<Setter Property="FontFamily" Value="{StaticResource WinFontFamilySemiLight}"/>
+		<Setter Property="FontSize" Value="{StaticResource WinFontSizeMedium}"/>
+	</Style>
+	<Color x:Key="WinTextBoxForegroundColor">#DE000000</Color>
+	<system:Double x:Key="ApplicationBarIconSize">48</system:Double>
+	<system:Double x:Key="WinFontSizeSmall">14</system:Double>
+	<SolidColorBrush x:Key="WinTextBoxForegroundBrush" Color="{StaticResource WinTextBoxForegroundColor}"/>
+	<Style x:Key="WinTextSmallStyle" TargetType="TextBlock" BasedOn="{StaticResource WinTextBlockBase}">
+		<Setter Property="FontSize" Value="{StaticResource WinFontSizeSmall}"/>
+		<Setter Property="Foreground" Value="{StaticResource WinTextBoxForegroundBrush}"/>
+	</Style>
 
+	
+	<!-- System chrome color -->
+	<ControlTemplate x:Key="ChromeButtonControlTemplate" TargetType="{x:Type ButtonBase}">
+		<Border x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Margin="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+			<ContentPresenter
+				x:Name="contentPresenter"
+				ContentTemplate="{TemplateBinding ContentTemplate}"
+				Content="{TemplateBinding Content}"
+				ContentStringFormat="{TemplateBinding ContentStringFormat}"
+				HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+				Margin="{TemplateBinding Padding}"
+				RecognizesAccessKey="True"
+				SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+				VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="#FFADADAD" />
+				<Setter Property="Opacity" TargetName="Chrome" Value="0.5" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<Style x:Key="ChromeButtonStyle" TargetType="{x:Type Button}">
+		<Style.Resources>
+			<Storyboard x:Key="OnMouseDownStoryboard">
+				<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="{x:Null}">
+					<EasingDoubleKeyFrame KeyTime="0" Value="0.5" />
+				</DoubleAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard
+				x:Key="OnMouseUpStoryboard">
+				<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="{x:Null}">
+					<EasingDoubleKeyFrame KeyTime="0" Value="1" />
+				</DoubleAnimationUsingKeyFrames>
+			</Storyboard>
+		</Style.Resources>
+		<Setter Property="FontFamily" Value="{StaticResource WinFontFamilyNormal}"/>
+		<Setter Property="FontSize" Value="{StaticResource WinFontSizeNormal}"/>
+		<Setter Property="Foreground" Value="{StaticResource WinForegroundBrush}"/>
+		<Setter Property="Background" Value="#00000000" />
+		<Setter	Property="BorderBrush" Value="{x:Null}" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}" />
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Opacity" Value="0.5" />
+			</Trigger>
+			<EventTrigger RoutedEvent="Mouse.PreviewMouseDown">
+				<BeginStoryboard x:Name="OnMouseDown_BeginStoryboard" Storyboard="{StaticResource OnMouseDownStoryboard}" />
+			</EventTrigger>
+			<EventTrigger RoutedEvent="Mouse.PreviewMouseUp">
+				<BeginStoryboard x:Name="OnMouseUp_BeginStoryboard" Storyboard="{StaticResource OnMouseUpStoryboard}" />
+			</EventTrigger>
+		</Style.Triggers>
+	</Style>
+
+	
+
+
+	<DataTemplate DataType="controls:ApplicationBarMenuItem">
+		<Button HorizontalAlignment="Left" Style="{StaticResource ChromeButtonStyle}" Margin="{StaticResource WinVerticalMargin}" Command="{Binding Command}" Visibility="{Binding Visibility}">
+			<TextBlock HorizontalAlignment="Left" Style="{StaticResource WinTextTitle3Style}" Text="{Binding Description}" />
+		</Button>
+	</DataTemplate>
+	<DataTemplate DataType="controls:ApplicationBarIconButton">
+		<StackPanel Orientation="Horizontal" Visibility="{Binding Visibility}">
+			<Button Style="{StaticResource ChromeButtonStyle}" Command="{Binding Command}" Margin="12, 3, 12, 3" Focusable="{Binding Focusable}" IsCancel="{Binding IsCancel}" IsDefault="{Binding IsDefault}">
+				<Image Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" Source ="{Binding ImageSource}" />
+			</Button>
+			<TextBlock Text="{Binding Description}" HorizontalAlignment="Center" Style="{StaticResource WinTextSmallStyle}" Focusable="{Binding Focusable}" />
+		</StackPanel>
+	</DataTemplate>
+
+	<Style TargetType="controls:ApplicationBar">
+		<Setter Property="Background" Value="{StaticResource WinChromeBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="controls:ApplicationBar">
+					<Border>
+						<Border.RenderTransform>
+							<TranslateTransform x:Name="LayoutTranslation" />
+						</Border.RenderTransform>
+						<Grid Margin="12 6">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+
+							<ItemsPresenter Grid.Column="1" />
+							
+							<Button x:Name="MenuButton" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource ChromeButtonStyle}" Margin="3">
+								<Image Source="/Themes/appbar.overflowdots.png" Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" />
+							</Button>
+
+							<ItemsControl x:Name="MenuItemPanel" ItemsSource="{TemplateBinding MenuItemsSource}" ItemTemplate="{TemplateBinding MenuItemTemplate}" HorizontalAlignment="Left" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" />
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 		<!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"

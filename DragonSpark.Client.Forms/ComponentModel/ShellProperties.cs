@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	public static class ShellProperties
 	{

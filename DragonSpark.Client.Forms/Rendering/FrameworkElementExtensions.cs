@@ -10,7 +10,7 @@ using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 using Point = System.Windows.Point;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	static class FrameworkElementExtensions
 	{

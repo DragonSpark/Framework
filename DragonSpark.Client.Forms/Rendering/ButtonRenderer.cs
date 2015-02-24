@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 using Xamarin.Forms;
 using Button = Xamarin.Forms.Button;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class ButtonRenderer : ViewRenderer<Button, System.Windows.Controls.Button>
 	{

@@ -1,74 +1,65 @@
-using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Markup;
 using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.PubSubEvents;
+using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Markup;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Application.Markup
 {
-	public class SetupExtension : LocateExtension
-	{
-		public SetupExtension()
-		{}
-
-		public SetupExtension( Type type ) : base( type )
-		{}
-
-		public SetupExtension( Type type, string buildName ) : base( type, buildName )
-		{}
-
-		[Default( SetupStatus.Initialized )]
-		public SetupStatus SetupStatus { get; set; }
-
-		[Activate]
-		IEventAggregator EventAggregator { get; set; }
-
-
-		protected override void Assign( PropertyInfo info, object target, Func<object> factory )
-		{
-			this.BuildUpOnce();
-			
-			EventAggregator.ExecuteWhenStatusIs( SetupStatus, () => base.Assign( info, target, factory ) );
-		}
-	}
-
-	public abstract class LocationBasedExtension : MarkupExtension
+	public abstract class LocateExtensionBase : MarkupExtension
 	{
 		readonly object placeholder = null;
 
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
-			var result = ServiceLocation.IsAvailable() ? GetValue( serviceProvider ) : GetPlaceholder( serviceProvider );
+			this.BuildUpOnce();
+			var result = IsAvailable() ? GetValue( serviceProvider ) : GetPlaceholder( serviceProvider );
+			return result;
+		}
+
+		protected virtual bool IsAvailable()
+		{
+			var result = EventAggregator.Transform( aggregator => aggregator.GetEvent<SetupEvent>().History.Last() >= SetupStatus );
 			return result;
 		}
 
 		protected abstract object GetValue( IServiceProvider serviceProvider );
-
-
+		
 		object GetPlaceholder( IServiceProvider serviceProvider )
 		{
-			serviceProvider.Get<IProvideValueTarget>().With( target => Subscribe( target, () => GetValue( serviceProvider ) ) );
+			serviceProvider.Get<IProvideValueTarget>().With( target => Subscribe( target.TargetProperty, target.TargetObject, () => GetValue( serviceProvider ) ) );
 			return placeholder;
 		}
 
-		void Subscribe( IProvideValueTarget service, Func<object> factory )
+		void Subscribe( object property, object target, Func<object> factory )
 		{
-			var property = service.TargetProperty.As<PropertyInfo>() ?? service.TargetProperty.AsTo<DependencyProperty, PropertyInfo>( x => service.TargetObject.GetType().GetProperty( x.Name ) );
-			property.With( info =>
+			var item = property.As<PropertyInfo>() ?? property.AsTo<DependencyProperty, PropertyInfo>( x => target.GetType().GetProperty( x.Name ) );
+			item.With( info =>
 			{
-				var target = service.TargetObject;
-				ServiceLocation.Assigned += ( sender, args ) => Assign( info, target, factory );
+				Defer( () => Assign( info, target, factory ) );
 			} );
 
-			property.Null( () => service.TargetObject.As<IList>( list => ServiceLocation.Assigned += ( sender, args ) => AssignList( list, factory ) ) );
+			property.Null( () => target.As<IList>( list => Defer( () => AssignList( list, factory ) ) ) );
 		}
+
+		protected virtual void Defer( Action action )
+		{
+			EventAggregator.ExecuteWhenStatusIs( SetupStatus, action );
+		}
+
+		[Default( SetupStatus.Configured )]
+		public SetupStatus SetupStatus { get; set; }
+
+		[Activate]
+		IEventAggregator EventAggregator { get; set; }
 
 		protected virtual void Assign( PropertyInfo info, object target, Func<object> factory )
 		{
@@ -103,7 +94,7 @@ namespace DragonSpark.Application.Markup
 	}
 
 	[ContentProperty( "Properties" )]
-	public class LocateExtension : LocationBasedExtension
+	public class LocateExtension : LocateExtensionBase
 	{
 		public LocateExtension()
 		{}

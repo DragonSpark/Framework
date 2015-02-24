@@ -1,9 +1,9 @@
 using System.Windows.Controls;
 using System.Windows.Data;
-using DragonSpark.Application.Forms.ComponentModel;
+using DragonSpark.Application.Client.Forms.ComponentModel;
 using Page = Xamarin.Forms.Page;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class PageRenderer : VisualElementRenderer<Page, Panel>
 	{

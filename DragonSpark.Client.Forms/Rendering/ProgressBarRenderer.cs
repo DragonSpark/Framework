@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using ProgressBar = Xamarin.Forms.ProgressBar;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class ProgressBarRenderer : ViewRenderer<ProgressBar, System.Windows.Controls.ProgressBar>
 	{

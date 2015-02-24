@@ -7,31 +7,21 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-				  xmlns:core="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:core="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:ds="http://framework.dragonspark.us"
-	xmlns:xfr="clr-namespace:DragonSpark.Application.Client.Forms;assembly=Xamarin.Forms.Platform.WP8"
-	xmlns:forms="clr-namespace:DragonSpark.Application.Client.Forms;assembly=DragonSpark.Application.Client"
-	xmlns:componentModel="http://framework.dragonspark.us/forms/rendering"
+				  xmlns:componentModel="http://framework.dragonspark.us/forms/rendering"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:forms1="http://xamarin.com/schemas/2014/forms"
+	xmlns:application="clr-namespace:DragonSpark.Testing.Client.Application"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance d:Type=forms:PlatformModel}"
 	DataContext="{ds:Locate Type=forms:PlatformModel}"
 	TitleLinks="{Binding Application.Items, Converter={x:Static ds:ShellLinksConverter.Instance}}"
+				  Template="{DynamicResource Shell}"
 >
-	<mui:ModernWindow.Title>
-		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
-			<Binding ElementName="ContentHost" Path="Content.(componentModel:ShellProperties.Title)" />
-		</MultiBinding>
-	</mui:ModernWindow.Title>
-	<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
-		<i:Interaction.Behaviors>
-			<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
-			<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
-		</i:Interaction.Behaviors>
-	</mui:TransitioningContentControl>
-	<Window.Template>
-		<ControlTemplate TargetType="mui:ModernWindow">
+	<Window.Resources>
+		<ControlTemplate x:Key="Shell" TargetType="mui:ModernWindow">
 			<Border Name="WindowBorder" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
 				<Border.Background>
 					<SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
@@ -52,7 +42,7 @@
 								<RowDefinition Height="*" />
 							</Grid.RowDefinitions>
 							<ContentControl Grid.RowSpan="5" Content="{TemplateBinding BackgroundContent}" />
-							<Grid>
+							<Grid >
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="*" />
 									<ColumnDefinition Width="Auto" />
@@ -134,7 +124,7 @@
 							</Grid>
 						</Grid>
 					</AdornerDecorator>
-				</Border>
+				</Border> 
 			</Border>
 			<ControlTemplate.Triggers>
 				<Trigger Trigger.Property="Window.IsActive" Trigger.Value="True">
@@ -158,5 +148,18 @@
 				</MultiTrigger>
 			</ControlTemplate.Triggers>
 		</ControlTemplate>
-	</Window.Template>
+	</Window.Resources>
+	<mui:ModernWindow.Title>
+		<MultiBinding StringFormat="{}{0}: {1}">
+			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
+			<Binding ElementName="ContentHost" Path="Content.(componentModel:ShellProperties.Title)" />
+		</MultiBinding>
+	</mui:ModernWindow.Title>
+	<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
+		<i:Interaction.Behaviors>
+			<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+			<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
+		</i:Interaction.Behaviors>
+	</mui:TransitioningContentControl>
+	
 </mui:ModernWindow>

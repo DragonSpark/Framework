@@ -1,25 +1,23 @@
-﻿using System;
+﻿using DragonSpark.Activation.IoC;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
+using Microsoft.Practices.Prism.Logging;
+using Microsoft.Practices.Prism.UnityExtensions;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Windows;
-using DragonSpark.Activation.IoC;
-using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
-using Microsoft.Practices.Prism.Logging;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.UnityExtensions;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Application
 {
-	// [ContentProperty( "Configurations" )]
 	public class Setup : UnityBootstrapper
 	{
 		class StorageLogger : ILoggerFacade
@@ -50,7 +48,7 @@ namespace DragonSpark.Application
 		{
 			base.Run( runWithDefaultConfiguration );
 
-			Publish( SetupStatus.Initialized );
+			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Initialized );
 		}
 
 		protected override ILoggerFacade CreateLogger()
@@ -70,13 +68,15 @@ namespace DragonSpark.Application
 			var container = Container ?? base.CreateContainer();
 			var configured = container.FromConfiguration();
 			var result = new ServiceLocator( configured );
+			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => result );
 			return result;
 		}
 
 		protected override void ConfigureContainer()
 		{
 			base.ConfigureContainer();
-			Publish( SetupStatus.Configuring );
+
+			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configuring );
 
 			Configurations.Apply( x =>
 			{
@@ -84,10 +84,10 @@ namespace DragonSpark.Application
 				command.Configure( Container );
 			} );
 
-			var logger = Container.IsRegistered<ILoggerFacade>() ? Container.Resolve<ILoggerFacade>() : base.CreateLogger();
+			var logger = Container.TryResolve<ILoggerFacade>() ?? base.CreateLogger();
 			Logger = StorageLogger.Instance.Purge( logger );
 			
-			Publish( SetupStatus.Configured );
+			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configured );
 		}
 
 		public Collection<IContainerConfigurationCommand> Configurations
@@ -98,12 +98,6 @@ namespace DragonSpark.Application
 		protected override DependencyObject CreateShell()
 		{
 			return null;
-		}
-
-		void Publish( SetupStatus status )
-		{
-			var e = Container.Resolve<IEventAggregator>().GetEvent<SetupEvent>();
-			e.Publish( status );
 		}
 	}
 

@@ -1,13 +1,13 @@
+using DragonSpark.Application.Client.Forms.ComponentModel;
+using DragonSpark.Extensions;
 using System;
 using System.Windows.Media;
-using DragonSpark.Application.Forms.ComponentModel;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
-using DeviceInfo = DragonSpark.Application.Forms.ComponentModel.DeviceInfo;
+using DeviceInfo = DragonSpark.Application.Client.Forms.ComponentModel.DeviceInfo;
 using EventTrigger = System.Windows.EventTrigger;
-using ExpressionSearch = DragonSpark.Application.Forms.ComponentModel.ExpressionSearch;
+using ExpressionSearch = DragonSpark.Application.Client.Forms.ComponentModel.ExpressionSearch;
 
-namespace DragonSpark.Application.Forms
+namespace DragonSpark.Application.Client.Forms
 {
 	public interface IInitializer
 	{
@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Forms
 		{
 			new EventTrigger();
 			
-			Accent.Transform( brush =>  Xamarin.Forms.Color.FromRgba( brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A ) ).With( color =>
+			Accent.Transform( brush => Xamarin.Forms.Color.FromRgba( brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A ) ).With( color =>
 			{
 				Xamarin.Forms.Color.Accent = color;
 			} );

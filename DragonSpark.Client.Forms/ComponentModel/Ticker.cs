@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Threading;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	class Ticker : global::Xamarin.Forms.Ticker
 	{

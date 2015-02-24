@@ -11,7 +11,7 @@ namespace DragonSpark.Testing
 	{
 		protected override IEnumerable<ITestCommand> EnumerateTestCommands( IMethodInfo method )
 		{
-			return base.EnumerateTestCommands( method ).Concat( this.AsItem() );
+			return base.EnumerateTestCommands( method ).Concat( this.Prepend() );
 		}
 	}*/
 

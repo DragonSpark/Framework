@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AutoMapper;
-using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
 using Activator = System.Activator;
 
 namespace DragonSpark.Extensions

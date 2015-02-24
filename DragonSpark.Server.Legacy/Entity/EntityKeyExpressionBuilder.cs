@@ -7,7 +7,7 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Server.Legacy.Entity
 {
-	public class EntityKeyExpressionBuilder<TItem> : Factory<Expression<Func<TItem, bool>>>
+	public class EntityKeyExpressionBuilder<TItem> : FactoryBase<Expression<Func<TItem, bool>>>
 	{
 		readonly IDictionary<string, object> key;
 

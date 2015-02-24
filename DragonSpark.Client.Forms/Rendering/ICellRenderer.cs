@@ -3,7 +3,7 @@ using DragonSpark.Extensions;
 using Xamarin.Forms;
 using DataTemplate = System.Windows.DataTemplate;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public interface ICellRenderer : IRegisterable
 	{

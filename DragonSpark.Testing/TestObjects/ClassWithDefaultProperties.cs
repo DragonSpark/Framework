@@ -63,9 +63,4 @@ namespace DragonSpark.Testing.TestObjects
 		[DefaultValue( "This does not get set to this value." )]
 		public string AlreadySet { get; set; }
 	}
-
-	class Factory : Factory<ClassWithParameter>
-	{
-		 
-	}
 }

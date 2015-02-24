@@ -105,6 +105,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\ApplicationBar.cs" />
+    <Compile Include="Controls\ApplicationBarIconButton.cs" />
+    <Compile Include="Controls\ApplicationBarMenuItem.cs" />
     <Compile Include="Controls\ItemCollectionExtensions.cs" />
     <Compile Include="Controls\LongListSelector\LongListSelector.cs" />
     <Compile Include="Controls\LongListSelector\LongListSelectorEventArgs.cs" />
@@ -130,12 +133,7 @@
     <Compile Include="Controls\WriteableBitmapExtensions.cs" />
     <Compile Include="Converters\ShellLinksConverter.cs" />
     <Compile Include="Extensions\Class1.cs" />
-    <Compile Include="Forms\ConfigureApplicationCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Forms\Navigation.cs" />
-    <Compile Include="Forms\PlatformEngine.cs" />
-    <Compile Include="Forms\PlatformModel.cs" />
+    <Compile Include="FormsEvent.cs" />
     <Compile Include="Interaction\SetupEventTrigger.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -156,10 +154,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Client.Forms\DragonSpark.Application.Forms.csproj">
-      <Project>{7DA5FD28-7E89-459F-9CDC-A2D278A95662}</Project>
-      <Name>DragonSpark.Application.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Core.Client\DragonSpark.Client.csproj">
       <Project>{37CB4B8E-4D06-47D1-989F-67091821F96C}</Project>
       <Name>DragonSpark.Client</Name>
@@ -187,8 +181,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
+    <Resource Include="Themes\appbar.overflowdots.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

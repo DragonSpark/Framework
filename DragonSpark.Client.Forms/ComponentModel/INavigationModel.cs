@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DragonSpark.Activation.IoC.Commands;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	public interface INavigationModel
 	{

@@ -8,7 +8,7 @@ using DragonSpark.Extensions;
 using Xamarin.Forms;
 using NavigationEventArgs = System.Windows.Navigation.NavigationEventArgs;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class WebViewRenderer : ViewRenderer<WebView, WebBrowser>, IWebViewRenderer
 	{

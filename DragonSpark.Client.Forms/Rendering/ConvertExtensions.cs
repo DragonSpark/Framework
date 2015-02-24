@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	internal static class ConvertExtensions
 	{

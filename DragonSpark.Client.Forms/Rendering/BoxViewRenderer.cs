@@ -1,7 +1,7 @@
 using System.Windows.Shapes;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class BoxViewRenderer : ViewRenderer<BoxView, System.Windows.Shapes.Rectangle>
 	{

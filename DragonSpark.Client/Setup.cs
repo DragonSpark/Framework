@@ -1,9 +1,9 @@
-using System.Windows;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using Xamarin.Forms;
+using System;
+using System.Windows;
 
 namespace DragonSpark.Application.Client
 {
@@ -48,21 +48,7 @@ namespace DragonSpark.Application.Client
 				window.Show();
 			} );
 
-			MessagingCenter.Send( application, "DragonSpark.Application.Setup.Shell.Initialized");
-
-			/*Parameters.With( x =>
-			{
-				System.Windows.Application.Current.MainWindow = x.Shell;
-				x.Shell.Show();
-				Debugger.Break();
-				/*if ( x.LaunchShellAsDialog )
-				{
-					x.Shell.ShowDialog();
-				}
-				else
-				{
-				}#1#
-			} );*/
+			this.Event<AplicationInitializedEvent>().Publish( application );
 		}
 
 		protected override DependencyObject CreateShell()

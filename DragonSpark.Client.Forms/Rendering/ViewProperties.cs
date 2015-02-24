@@ -1,7 +1,7 @@
 using DragonSpark.Extensions;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
     public static class ViewProperties
     {

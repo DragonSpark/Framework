@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class VisualElementPackager
 	{

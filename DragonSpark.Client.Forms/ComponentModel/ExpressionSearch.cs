@@ -6,7 +6,7 @@ using System.Reflection;
 using Xamarin.Forms;
 using Expression = System.Linq.Expressions.Expression;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	sealed class ExpressionSearch : IExpressionSearch
 	{

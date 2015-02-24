@@ -1,4 +1,4 @@
-using DragonSpark.Application.Forms.Rendering;
+using DragonSpark.Application.Client.Forms.Rendering;
 using DragonSpark.Extensions;
 using Xamarin.Forms;
 

@@ -1,7 +1,7 @@
 using System.Windows.Media;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	internal static class ImageExtensions
 	{

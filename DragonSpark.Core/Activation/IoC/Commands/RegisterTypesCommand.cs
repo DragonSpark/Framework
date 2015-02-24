@@ -63,7 +63,7 @@ namespace DragonSpark.Activation.IoC.Commands
 
 		protected virtual Type[] DetermineTypesForConvention( Assembly[] assemblies )
 		{
-			var ignore = string.Join( ";", IgnoreNamespaces.AsItem( IgnorableTypes.Concat( IgnoreNamespacesFromTypes ).Select( x => x.Namespace ).ToArray() ) ).ToStringArray();
+			var ignore = string.Join( ";", IgnoreNamespaces.Prepend( IgnorableTypes.Concat( IgnoreNamespacesFromTypes ).Select( x => x.Namespace ).ToArray() ) ).ToStringArray();
 			var names = AssemblyNamesStartsWith.ToStringArray();
 			var namespaces = ignore.Concat( Locator.GetAllAssemblies().SelectMany( x => x.GetCustomAttributes<IgnoreNamespaceDuringRegistrationAttribute>().Select( y => y.Namespace ) ) ).ToArray();
 			var types = DetermineCandidateTypes()

@@ -57,13 +57,13 @@ namespace DragonSpark.Server.Legacy.Language.Expressions
 
 		protected override Expression Create( ParameterExpression parameter )
 		{
-			var types = new Stack<Type>( typeof(TType).AsItem( typeof(TType).GetKnownTypes() ).Where( x => !x.IsAbstract && x.Namespace != "System.Data.Entity.DynamicProxies" ).ToArray() );
+			var types = new Stack<Type>( typeof(TType).Prepend( typeof(TType).GetKnownTypes() ).Where( x => !x.IsAbstract && x.Namespace != "System.Data.Entity.DynamicProxies" ).ToArray() );
 			var result = Create( parameter, types );
 			return result;
 		}
 	}
 
-	public abstract class ExpressionFactory<TSource, TParameter, TResult> : Factory<TSource, Expression<Func<TParameter, TResult>>> where TSource : class
+	public abstract class ExpressionFactory<TSource, TParameter, TResult> : FactoryBase<TSource, Expression<Func<TParameter, TResult>>> where TSource : class
 	{
 		protected override sealed Expression<Func<TParameter, TResult>> CreateFrom( TSource source )
 		{
@@ -79,7 +79,7 @@ namespace DragonSpark.Server.Legacy.Language.Expressions
 	public abstract class FilterExpressionFactory<TSource, TParameter> : ExpressionFactory<TSource, TParameter, bool> where TSource : class
 	{}
 
-	public abstract class FilterExpressionFactoryBase<TItem> : Factory<string, Expression<Func<TItem, bool>>> where TItem : class
+	public abstract class FilterExpressionFactoryBase<TItem> : FactoryBase<string, Expression<Func<TItem, bool>>> where TItem : class
 	{
 		static readonly IDictionary<Type, IEnumerable<string>> Properties = new Dictionary<Type, IEnumerable<string>>();
 

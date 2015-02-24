@@ -1,7 +1,7 @@
 using System;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 	public sealed class ExportRendererAttribute : HandlerAttribute

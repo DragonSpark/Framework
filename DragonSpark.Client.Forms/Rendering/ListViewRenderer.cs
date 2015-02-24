@@ -17,7 +17,7 @@ using ListView = Xamarin.Forms.ListView;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class ListViewRenderer : ViewRenderer<ListView, ListBox>
 	{

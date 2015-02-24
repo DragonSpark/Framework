@@ -14,20 +14,20 @@ namespace DragonSpark.Testing.Activation
 	public class FactoryTests
 	{
 		[Theory, AutoDataCustomization]
-		void CreateActivation( Factory<Class> sut )
+		void CreateActivation( FactoryBase<Class> sut )
 		{
 			var creation = sut.Create();
 			Assert.NotNull( creation );
 		}
 
 		[Theory, AutoDataCustomization]
-		void CreateActivationException( Factory<ClassWithParameter> sut )
+		void CreateActivationException( FactoryBase<ClassWithParameter> sut )
 		{
 			Assert.Throws<MissingMethodException>( () => sut.Create() );
 		}
 
 		[Theory, AutoDataCustomization]
-		void Create( Factory<Class> sut )
+		void Create( FactoryBase<Class> sut )
 		{
 			var factory = sut.To<IFactory>();
 			var result = factory.Create( typeof(object) );
@@ -38,7 +38,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void CreateLocation( [Frozen]ClassWithParameter item, Factory<ClassWithParameter> sut )
+		void CreateLocation( [Frozen]ClassWithParameter item, FactoryBase<ClassWithParameter> sut )
 		{
 			var creation = sut.Create();
 			Assert.NotNull( creation );

@@ -37,17 +37,17 @@ namespace DragonSpark.Testing.Extensions
 		[Theory, AutoData]
 		void AsItem( object[] sut, object item )
 		{
-			var items = item.AsItem( sut );
+			var items = item.Prepend( sut );
 			Assert.Equal( item, items.First() );
 			Assert.Equal( sut.Last(), items.Last() );
 
-			Assert.Single( item.AsItem(), item );
+			Assert.Single( item.Prepend(), item );
 		}
 
 		[Theory, AutoData]
 		void Adding( object[] sut, object item )
 		{
-			var items = sut.Adding( item );
+			var items = sut.Append( item );
 			Assert.Equal( item, items.Last() );
 			Assert.Equal( sut.First(), items.First() );
 		}

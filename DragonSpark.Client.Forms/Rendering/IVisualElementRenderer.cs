@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public interface IVisualElementRenderer : IRegisterable
 	{

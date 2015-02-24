@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class CaseConverter : System.Windows.Data.IValueConverter
 	{

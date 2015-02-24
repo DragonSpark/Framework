@@ -125,12 +125,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoggerFacade.cs" />
+    <Compile Include="Markup\Deferred\AsyncImageSourceExtension.cs" />
+    <Compile Include="Markup\Deferred\ClrMemberMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\Deferred\DeferredMarkupExtension.cs" />
+    <Compile Include="Markup\Deferred\DependencyPropertyMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\Deferred\IMarkupTargetValueSetter.cs" />
     <Compile Include="Setup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SetupEvent.cs" />
     <Compile Include="SetupStatus.cs" />
-    <Compile Include="EventSupport.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="Runtime\BindingOptions.cs">
       <SubType>Code</SubType>
     </Compile>

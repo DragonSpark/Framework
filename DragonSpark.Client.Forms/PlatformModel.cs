@@ -1,9 +1,8 @@
-using System;
 using DragonSpark.Activation.IoC.Commands;
-using DragonSpark.Application.Forms;
-using DragonSpark.Application.Forms.Rendering;
+using DragonSpark.Application.Client.Forms.Rendering;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Mvvm;
+using System;
 using Xamarin.Forms;
 using Size = System.Windows.Size;
 
@@ -74,8 +73,7 @@ namespace DragonSpark.Application.Client.Forms
 			{
 				if ( SetProperty( ref page, value ) )
 				{
-					page.Assign( this );
-				
+					page.Platform = this;
 					Content = page.DetermineRenderer();
 					// UpdateToolbarTracker();
 				}

@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Extensions;
 using Xamarin.Forms;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
 	sealed class DeviceInfo : Xamarin.Forms.DeviceInfo
 	{
@@ -13,7 +12,7 @@ namespace DragonSpark.Application.Forms.ComponentModel
 		{
 			if ( !Assign() )
 			{
-				MessagingCenter.Subscribe<System.Windows.Application>( this, "DragonSpark.Application.Setup.Shell.Initialized", OnReady );
+				this.Event<AplicationInitializedEvent>().Subscribe( this, OnReady );
 			}
 		}
 
@@ -21,7 +20,7 @@ namespace DragonSpark.Application.Forms.ComponentModel
 		{
 			Assign();
 
-			Task.Run( () => MessagingCenter.Unsubscribe<System.Windows.Application>( this, "DragonSpark.Application.Setup.Shell.Initialized" ) );
+			this.Event<AplicationInitializedEvent>().Unsubscribe( this, OnReady );
 		}
 
 		bool Assign()

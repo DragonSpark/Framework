@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using Xceed.Wpf.Toolkit;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class DatePickerRenderer : ViewRenderer<DatePicker, DateTimePicker>
 	{

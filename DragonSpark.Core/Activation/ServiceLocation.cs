@@ -1,6 +1,6 @@
-using System;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace DragonSpark.Activation
 {

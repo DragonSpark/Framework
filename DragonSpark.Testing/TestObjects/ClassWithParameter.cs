@@ -1,8 +1,12 @@
-using System;
+using DragonSpark.Activation;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Testing.TestObjects
 {
+	class Factory : Factory<ClassWithParameter>
+	{}
+
 	public class ClassWithParameter : IClassWithParameter, IInterface
 	{
 		public object Parameter { get; set; }

@@ -210,7 +210,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\Factory.cs" />
+    <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
     <Compile Include="Activation\IAssembliesProvider.cs" />
     <Compile Include="Activation\IFactory.cs">
@@ -219,7 +219,6 @@
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
     <Compile Include="Activation\IoC\Commands\RegisterTypesCommand.cs" />
-    <Compile Include="Activation\IoC\Commands\AssignServiceLocatorCommand.cs" />
     <Compile Include="Activation\IoC\Commands\IgnoreNamespaceDuringRegistrationAttribute.cs" />
     <Compile Include="Activation\IoC\Commands\IUnityContainerTypeConfiguration.cs" />
     <Compile Include="Activation\IoC\Commands\LifetimeManagerAttribute.cs" />

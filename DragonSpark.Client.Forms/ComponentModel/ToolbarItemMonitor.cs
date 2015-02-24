@@ -1,22 +1,37 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+using DragonSpark.Application.Client.Controls;
+using DragonSpark.Application.Client.Forms.Rendering;
 using DragonSpark.Extensions;
-using FirstFloor.ModernUI.Windows.Controls;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Media.Imaging;
 using Xamarin.Forms;
-using Page = Xamarin.Forms.Page;
 
-namespace DragonSpark.Application.Forms.ComponentModel
+namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
-	public class ShellInteraction
+	public class ToolbarItemMonitor
 	{
 		readonly ToolbarTracker tracker = new ToolbarTracker();
 
-		public ShellInteraction( Window shell )
+		public ToolbarItemMonitor( IPlatform platform )
 		{
 			// page.BackKeyPress += new EventHandler<CancelEventArgs>( OnBackKeyPress );
 			tracker.CollectionChanged += ( sender, args ) => UpdateToolbarItems();
+
+			platform.As<INotifyPropertyChanged>( x => // TODO:  Fix this.  Should be event.
+			{
+				x.PropertyChanged += ( sender, args ) =>
+				{
+					switch ( args.PropertyName )
+					{
+						case "Page":
+							tracker.Target = platform.Page;
+							break;
+					}
+				};
+			} );
+
 			// ProgressIndicator indicator;
 			/*SystemTray.SetProgressIndicator( page, indicator = new ProgressIndicator
 			{
@@ -29,7 +44,7 @@ namespace DragonSpark.Application.Forms.ComponentModel
 				busyCount = Math.Max( 0, enabled ? ( busyCount + 1 ) : ( busyCount - 1 ) );
 				indicator.IsVisible = ( busyCount > 0 );
 			}, null );*/
-			MessagingCenter.Subscribe( this, "Xamarin.SendAlert", delegate( Page sender, AlertArguments arguments )
+			/*MessagingCenter.Subscribe( this, "Xamarin.SendAlert", delegate( Page sender, AlertArguments arguments )
 			{
 				var dialog = new ModernDialog
 				{
@@ -86,7 +101,7 @@ namespace DragonSpark.Application.Forms.ComponentModel
 				};
 				dialog.Show();
 				ShellProperties.SetDialog( shell, dialog );
-			} );
+			} );*/
 		}
 
 		void UpdateToolbarTracker()
@@ -94,7 +109,7 @@ namespace DragonSpark.Application.Forms.ComponentModel
 			// navigationModel.Roots.LastOrDefault().With( x => tracker.Target = x );
 		}
 
-		/*class TaggedAppBarButton : ApplicationBarIconButton, IDisposable
+		class TaggedAppBarButton : ApplicationBarIconButton, IDisposable
 		{
 			object tag;
 			bool disposed;
@@ -126,31 +141,30 @@ namespace DragonSpark.Application.Forms.ComponentModel
 				}
 				if (e.PropertyName == Xamarin.Forms.MenuItem.TextProperty.PropertyName)
 				{
-					base.Text = ((!string.IsNullOrWhiteSpace(toolbarItem.Name)) ? toolbarItem.Text : (toolbarItem.Icon ?? "ApplicationIcon.jpg"));
+					base.Description = !string.IsNullOrWhiteSpace(toolbarItem.Name) ? toolbarItem.Text : (string)(toolbarItem.Icon ?? "ApplicationIcon.jpg");
 					return;
 				}
 				if (e.PropertyName == Xamarin.Forms.MenuItem.IconProperty.PropertyName)
 				{
-					base.IconUri = new Uri(toolbarItem.Icon ?? "ApplicationIcon.jpg", UriKind.Relative);
+					ImageSource = new BitmapImage(new Uri(toolbarItem.Icon ?? "ApplicationIcon.jpg", UriKind.Relative));
 				}
 			}
 
 			public void Dispose()
 			{
-				if ( disposed )
+				if ( !disposed )
 				{
-					return;
-				}
-				disposed = true;
-				var item = Tag as ToolbarItem;
-				if ( item != null )
-				{
-					item.PropertyChanged -= TaggedAppBarButton_PropertyChanged;
+					disposed = true;
+					var item = Tag as ToolbarItem;
+					if ( item != null )
+					{
+						item.PropertyChanged -= TaggedAppBarButton_PropertyChanged;
+					}
 				}
 			}
 		}
 
-		class TaggedAppBarMenuItem : ApplicationBarMenuItem
+		/*class TaggedAppBarMenuItem : ApplicationBarMenuItem
 		{
 			public object Tag { get; set; }
 		}*/
@@ -179,13 +193,10 @@ namespace DragonSpark.Application.Forms.ComponentModel
 
 		void UpdateToolbarItems()
 		{
-			/*if ( page.ApplicationBar == null )
-			{
-				page.ApplicationBar = new ApplicationBar();
-			}
+			/*var bar = ApplicationBar.EnsureInstance( page );
 			var items = tracker.ToolbarItems.ToArray();
-			var masterDetail = tracker.Target.Descendants().Prepend( tracker.Target ).OfType<MasterDetailPage>().FirstOrDefault();
-			var taggedAppBarButton = Enumerable.OfType<TaggedAppBarButton>( page.ApplicationBar.Buttons ).FirstOrDefault( ( TaggedAppBarButton b ) => b.Tag is MasterDetailPage && b.Tag != masterDetail );
+			var masterDetail = tracker.Target.Descendants().Prepend( tracker.Target ).FirstOrDefaultOfType<MasterDetailPage>();
+			var taggedAppBarButton = Enumerable.OfType<TaggedAppBarButton>( bar.Buttons ).FirstOrDefault( ( TaggedAppBarButton b ) => b.Tag is MasterDetailPage && b.Tag != masterDetail );
 			if ( taggedAppBarButton != null )
 			{
 				page.ApplicationBar.Buttons.Remove( taggedAppBarButton );

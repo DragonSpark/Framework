@@ -7,7 +7,7 @@ using System.Windows.Media;
 using Xamarin.Forms;
 using Label = Xamarin.Forms.Label;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class LabelRenderer : ViewRenderer<Label, TextBlock>
 	{

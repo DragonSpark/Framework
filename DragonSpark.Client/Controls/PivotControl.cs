@@ -26,8 +26,7 @@ namespace DragonSpark.Application.Client.Controls
 			this.DefaultStyleKey = typeof(PivotControl);
 
 			// create the headers panel
-			HeadersPanel = new StackPanel();
-			HeadersPanel.Orientation = Orientation.Horizontal;
+			HeadersPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
 			// defaults selected item to none
 			SelectedIndex = -1;

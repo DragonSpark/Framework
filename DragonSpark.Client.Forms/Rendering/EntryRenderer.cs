@@ -10,7 +10,7 @@ using Grid = System.Windows.Controls.Grid;
 using Size = System.Windows.Size;
 using TextChangedEventArgs = System.Windows.Controls.TextChangedEventArgs;
 
-namespace DragonSpark.Application.Forms.Rendering
+namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class EntryRenderer : ViewRenderer<Entry, Grid>
 	{

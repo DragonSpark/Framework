@@ -11,4 +11,14 @@ namespace DragonSpark.Testing.Client.Application
 			InitializeComponent();
 		}
 	}
+
+	public class Source
+	{
+		public string Message { get; set; }
+	}
+
+	public class Target
+	{
+		public string Description { get; set; } 
+	}
 }
