@@ -29,14 +29,13 @@
 			</xfr:ConfigureApplicationCommand.Profile>
 			<xfr:FormsInitializer Accent="{ds:StaticResource PhoneAccentBrush}" />
 		</xfr:ConfigureApplicationCommand>
-		<commands:ApplyRegistrationsCommand>
-			<x:Type TypeName="xf:Application" />
-		</commands:ApplyRegistrationsCommand>
+		<commands:ApplyRegistrationsCommand />
 		<activation:UnityContainerConfiguration>
 			<activation:UnityContainerConfiguration.Extensions>
 				<ioC:IoCExtension />
 			</activation:UnityContainerConfiguration.Extensions>
 		</activation:UnityContainerConfiguration>
+		<commands:InitializeMarkupCommand />
 	</application:Setup.Configurations>
 	<client:SetupParameters Shell="{ds:Locate local:Shell}" />
 </client:Setup>

@@ -69,9 +69,10 @@ namespace DragonSpark.Activation.IoC
 		{
 			get
 			{
-				if ( disposed.Applied )
+				switch ( disposed.State )
 				{
-					throw new ObjectDisposedException( Resources.ServiceLocator_Container );
+					case ConditionMonitorState.Applied:
+						throw new ObjectDisposedException( Resources.ServiceLocator_Container );
 				}
 				return container;
 			}

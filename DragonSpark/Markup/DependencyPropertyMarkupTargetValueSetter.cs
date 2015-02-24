@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 
-namespace DragonSpark.Application.Markup.Deferred
+namespace DragonSpark.Application.Markup
 {
 	public sealed class DependencyPropertyMarkupTargetValueSetter : IMarkupTargetValueSetter
 	{

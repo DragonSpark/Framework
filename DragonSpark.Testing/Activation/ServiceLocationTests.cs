@@ -18,20 +18,20 @@ namespace DragonSpark.Testing.Activation
 		{
 			Assert.False( ServiceLocation.IsAvailable() );
 
-			ServiceLocation.Assign( new ServiceLocator( new Fixture() ) );
+			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => new ServiceLocator( new Fixture() ) );
 
 			var isAvailable = ServiceLocation.IsAvailable();
 			Assert.True( isAvailable );
 		}
 
-		[Fact]
+		/*[Fact]
 		public void Assign()
 		{
 			var assigned = false;
 			ServiceLocation.Assigned += ( sender, args ) => assigned = true;
 			ServiceLocation.Assign( new ServiceLocator( new Fixture() ) );
 			Assert.True( assigned );
-		}
+		}*/
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		public void RegisterGeneric()

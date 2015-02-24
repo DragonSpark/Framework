@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using DragonSpark;
+using DragonSpark.Activation.IoC.Commands;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
+using Microsoft.Practices.Prism;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -36,3 +39,5 @@ using System.Windows.Markup;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Application.Markup" )]
+[assembly: Registration( Priority.BelowLower )]
+[assembly: Include( typeof(Bootstrapper) )]

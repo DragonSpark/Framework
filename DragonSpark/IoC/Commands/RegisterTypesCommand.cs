@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Markup;
-using AutoMapper;
 using DragonSpark.Application.Runtime;
 using DragonSpark.ComponentModel;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.Regions;
+using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Markup;
+using DragonSpark.Activation.IoC.Commands;
 
 namespace DragonSpark.Application.IoC.Commands
 {
@@ -17,11 +16,6 @@ namespace DragonSpark.Application.IoC.Commands
 	[ContentProperty( "IgnoreNamespacesFromTypes" )]
 	public class ApplyRegistrationsCommand : Activation.IoC.Commands.ApplyRegistrationsCommand
 	{
-		protected override IEnumerable<Type> IgnorableTypes
-		{
-			get { return base.IgnorableTypes.Concat( new [] { typeof(Notification), typeof(EventAggregator), typeof(Region), typeof(Mapper), typeof(ModuleCatalog) } ); }
-		}
-
 		[Activate( typeof(AssemblyLocator) )]
 		public override IAssemblyLocator Locator
 		{
@@ -29,20 +23,20 @@ namespace DragonSpark.Application.IoC.Commands
 			set { base.Locator = value; }
 		}
 
-		protected override void RegisterFromConvention( IUnityContainer container, Type[] types )
+		protected override void RegisterBasedOnConvention( RegistrationContext context )
 		{
-			container.RegisterTypes( types, WithMappings.FromMatchingInterface, WithName.Default, DetermineLifetimeContainer<ContainerControlledLifetimeManager>, overwriteExistingMappings: true );
+			var ignore = context.Application.SelectMany( assembly => assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) ).ToArray();
+			var register = context.Candidates.Where( x => WithMappings.FromMatchingInterface( x )
+				.Any( found => found.IsPublic && /*context.Application.Contains( found.Assembly ) &&*/ !ignore.Contains( found ) )
+				).ToArray();
+			register.Apply( type => Trace.WriteLine( string.Format( "Registering for convention: {0}", type.FullName ) ) );
+			context.Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, DetermineLifetimeContainer<ContainerControlledLifetimeManager>, overwriteExistingMappings: true );
 		}
 
-		protected override Func<Type, bool> AdditionalFilter
-		{
-			get { return x => WithMappings.FromMatchingInterface( x ).Any( y => y.IsPublic ); }
-		}
-
-		protected override IEnumerable<Type> DetermineCandidateTypes()
+		/*protected override IEnumerable<Type> DetermineCandidateTypes()
 		{
 			var result = AllClasses.FromAssembliesInBasePath().Where( x => x.Namespace != null );
 			return result;
-		}
+		}*/
 	}
 }

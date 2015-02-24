@@ -1,24 +1,65 @@
 using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
 using System.Windows.Markup;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Application.Markup
 {
-	public abstract class LocateExtensionBase : MarkupExtension
+	public class MarkupExtensionMonitor
 	{
-		readonly object placeholder = null;
+		public static MarkupExtensionMonitor Instance
+		{
+			get { return InstanceField; }
+		}	static readonly MarkupExtensionMonitor InstanceField = new MarkupExtensionMonitor();
 
-		public override object ProvideValue( IServiceProvider serviceProvider )
+		readonly ConditionMonitor monitor = new ConditionMonitor();
+		
+		public event EventHandler Initialized = delegate { };
+
+		MarkupExtensionMonitor()
+		{}
+
+		public bool IsInitialized
+		{
+			get { return monitor.State != ConditionMonitorState.None; }
+		}
+
+		public void Initialize()
+		{
+			monitor.Apply( () =>
+			{
+				Initialized( this, EventArgs.Empty );
+				Initialized = delegate { };
+			} );
+		}
+	}
+
+	public abstract class MonitoredMarkupExtension : DeferredMarkupExtension
+	{
+		// readonly object placeholder = null;
+
+		protected override object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
+		{
+			var result = MarkupExtensionMonitor.Instance.IsInitialized ? GetValue( serviceProvider ) : Listen( serviceProvider, setter );
+			return result;
+		}
+
+		protected virtual object Listen( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
+		{
+			MarkupExtensionMonitor.Instance.Initialized += ( sender, args ) =>
+			{
+				var value = GetValue( serviceProvider );
+				setter.SetValue( value );
+			};
+			return null;
+		}
+
+		protected abstract object GetValue( IServiceProvider serviceProvider );
+
+		/*public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			this.BuildUpOnce();
 			var result = IsAvailable() ? GetValue( serviceProvider ) : GetPlaceholder( serviceProvider );
@@ -73,10 +114,10 @@ namespace DragonSpark.Application.Markup
 				list.Remove( placeholder );
 				 list.Add( value );
 			} );
-		}
+		}*/
 	}
 
-	public class ActivateExtension : LocateExtension
+	/*public class ActivateExtension : LocateExtension
 	{
 		public ActivateExtension()
 		{}
@@ -91,10 +132,10 @@ namespace DragonSpark.Application.Markup
 		{
 			return base.GetValue( serviceProvider );
 		}
-	}
+	}*/
 
 	[ContentProperty( "Properties" )]
-	public class LocateExtension : LocateExtensionBase
+	public class LocateExtension : MonitoredMarkupExtension
 	{
 		public LocateExtension()
 		{}

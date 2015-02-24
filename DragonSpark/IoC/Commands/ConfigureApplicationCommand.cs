@@ -1,6 +1,7 @@
-﻿using System.Windows.Markup;
-using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation.IoC;
+using DragonSpark.Application.Markup;
 using Microsoft.Practices.Unity;
+using System.Windows.Markup;
 
 namespace DragonSpark.Application.IoC.Commands
 {
@@ -17,6 +18,14 @@ namespace DragonSpark.Application.IoC.Commands
 		protected virtual void OnConfigure( IUnityContainer container )
 		{
 			container.RegisterInstance( Profile );
+		}
+	}
+
+	public class InitializeMarkupCommand : IContainerConfigurationCommand
+	{
+		public void Configure( IUnityContainer container )
+		{
+			MarkupExtensionMonitor.Instance.Initialize();
 		}
 	}
 }

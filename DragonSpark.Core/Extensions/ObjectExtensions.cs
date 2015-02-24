@@ -146,6 +146,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static TResult FromMetadata<TAttribute,TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
+		{
+			var result = target.GetCustomAttribute<TAttribute>().Transform( resolveValue, resolveDefault ?? DetermineDefault<TResult>, condition );
+			return result;
+		}
+
 		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
 		{
 			var provider = ServiceLocation.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
@@ -173,7 +179,7 @@ namespace DragonSpark.Extensions
 				var genericType = typeof(IEnumerable<>).MakeGenericType( typeArguments ).GetTypeInfo();
 				if ( genericType.IsAssignableFrom( type ) )
 				{
-					var result = typeArguments.Transform( x => Activator.CreateInstance( x.MakeArrayType(), new object[] { 0 } ) ).To<TResult>();
+					var result = typeArguments.Transform( x => Activator.CreateInstance( x.MakeArrayType(), 0 ) ).To<TResult>();
 					return result;
 				}
 			}

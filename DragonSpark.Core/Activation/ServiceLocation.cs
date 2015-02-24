@@ -6,14 +6,14 @@ namespace DragonSpark.Activation
 {
 	public static class ServiceLocation
 	{
-		public static event EventHandler Assigned = delegate { };
+		/*public static event EventHandler Assigned = delegate { };
 
 		public static void Assign( IServiceLocator locator )
 		{
 			ServiceLocator.SetLocatorProvider( locator.Transform( x => new ServiceLocatorProvider( () => locator ) ) );
 			Assigned( locator, EventArgs.Empty );
 			Assigned = delegate { };
-		}
+		}*/
 
 		public static void Register<TFrom, TTo>()
 		{

@@ -67,8 +67,7 @@ namespace DragonSpark.Application
 		{
 			var container = Container ?? base.CreateContainer();
 			var configured = container.FromConfiguration();
-			var result = new ServiceLocator( configured );
-			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => result );
+			var result = new ServiceLocator( configured ).Assigned();
 			return result;
 		}
 
@@ -107,27 +106,6 @@ namespace DragonSpark.Application
 		{
 			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => container.LoadConfiguration() ) );
 			return container;
-		}
-	}
-
-	public class ExceptionHandler : IExceptionHandler
-	{
-		public const string DefaultExceptionPolicy = "Default Exception Policy";
-		readonly ExceptionManager manager;
-		readonly string policyName;
-
-		public ExceptionHandler( ExceptionManager manager, string policyName = DefaultExceptionPolicy )
-		{
-			this.manager = manager;
-			this.policyName = policyName;
-		}
-
-		public virtual ExceptionHandlingResult Handle( Exception exception )
-		{
-			Exception resultingException;
-			var rethrow = manager.HandleException( exception, policyName, out resultingException );
-			var result = new ExceptionHandlingResult( rethrow, resultingException ?? exception );
-			return result;
 		}
 	}
 }

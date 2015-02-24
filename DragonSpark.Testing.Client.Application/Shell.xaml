@@ -10,13 +10,10 @@
 	xmlns:core="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:ds="http://framework.dragonspark.us"
-				  xmlns:componentModel="http://framework.dragonspark.us/forms/rendering"
-	xmlns:system="clr-namespace:System;assembly=mscorlib"
-	xmlns:forms1="http://xamarin.com/schemas/2014/forms"
-	xmlns:application="clr-namespace:DragonSpark.Testing.Client.Application"
+	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
 	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance d:Type=forms:PlatformModel}"
-	DataContext="{ds:Locate Type=forms:PlatformModel}"
+	d:DataContext="{d:DesignInstance d:Type=xfr:PlatformModel}"
+	DataContext="{ds:Locate Type=xfr:PlatformModel}"
 	TitleLinks="{Binding Application.Items, Converter={x:Static ds:ShellLinksConverter.Instance}}"
 				  Template="{DynamicResource Shell}"
 >
@@ -152,7 +149,7 @@
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
 			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
-			<Binding ElementName="ContentHost" Path="Content.(componentModel:ShellProperties.Title)" />
+			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
 	<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">

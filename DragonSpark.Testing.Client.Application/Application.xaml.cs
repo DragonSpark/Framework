@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 namespace DragonSpark.Testing.Client.Application
 {
 	/// <summary>
@@ -8,6 +10,7 @@ namespace DragonSpark.Testing.Client.Application
 	{
 		public Application()
 		{
+			Trace.WriteLine( "Instantiating Application." );
 			InitializeComponent();
 		}
 

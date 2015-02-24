@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Markup;
 
 // Based on/Credit: http://blogs.msdn.com/b/ifeanyie/archive/2010/03/27/9986217.aspx
-namespace DragonSpark.Application.Markup.Deferred
+namespace DragonSpark.Application.Markup
 {
 	public abstract class DeferredMarkupExtension : MarkupExtension
 	{
@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Markup.Deferred
 		{
 			var result = serviceProvider.Get<IProvideValueTarget>()
 				.Transform( target => Builders.Select( builder => builder.Create<IMarkupTargetValueSetter>( serviceProvider ) ).NotNull().FirstOrDefault()
-					.Transform( setter => BeginProvideValue( serviceProvider, setter ), () => this ) );
+					.Transform( setter => BeginProvideValue( serviceProvider, setter ) ) );
 			return result;
 		}
 

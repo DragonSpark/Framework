@@ -124,12 +124,26 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoC\Commands\EventListenerDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IoC\Commands\EventListenerRegistry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IoC\Commands\ExceptionHandlerExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IoC\Commands\IEventListenerRegistry.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LoggerFacade.cs" />
-    <Compile Include="Markup\Deferred\AsyncImageSourceExtension.cs" />
-    <Compile Include="Markup\Deferred\ClrMemberMarkupTargetValueSetter.cs" />
-    <Compile Include="Markup\Deferred\DeferredMarkupExtension.cs" />
-    <Compile Include="Markup\Deferred\DependencyPropertyMarkupTargetValueSetter.cs" />
-    <Compile Include="Markup\Deferred\IMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\AsyncImageSourceExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Markup\ClrMemberMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\DeferredMarkupExtension.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\IMarkupTargetValueSetter.cs" />
     <Compile Include="Setup.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -149,16 +163,12 @@
     <Compile Include="IoC\Commands\ConfigureApplicationCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IoC\Commands\EventListenerDefinition.cs" />
     <Compile Include="IoC\Commands\EventListenerExtensions.cs" />
-    <Compile Include="IoC\Commands\EventListenerRegistry.cs" />
     <Compile Include="IoC\Commands\EventListenerRegistryExtensions.cs" />
     <Compile Include="IoC\Commands\EventSourceRegistration.cs" />
-    <Compile Include="IoC\Commands\ExceptionHandlerExtensions.cs" />
     <Compile Include="IoC\Commands\ExceptionHandlingConfiguration.cs" />
     <Compile Include="IoC\Commands\ExceptionPolicyDefinition.cs" />
     <Compile Include="IoC\Commands\ExceptionPolicyEntry.cs" />
-    <Compile Include="IoC\Commands\IEventListenerRegistry.cs" />
     <Compile Include="IoC\Commands\LoggingConfiguration.cs" />
     <Compile Include="Markup\AssemblyVersionExtension.cs" />
     <Compile Include="Markup\LocateExtension.cs">

@@ -114,7 +114,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 			object tag;
 			bool disposed;
 
-			public object Tag
+			/*public object Tag
 			{
 				get { return tag; }
 				set
@@ -125,7 +125,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 					}
 					tag = value;
 				}
-			}
+			}*/
 
 			void TaggedAppBarButton_PropertyChanged( object sender, PropertyChangedEventArgs e )
 			{
@@ -141,7 +141,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 				}
 				if (e.PropertyName == Xamarin.Forms.MenuItem.TextProperty.PropertyName)
 				{
-					base.Description = !string.IsNullOrWhiteSpace(toolbarItem.Name) ? toolbarItem.Text : (string)(toolbarItem.Icon ?? "ApplicationIcon.jpg");
+					base.Description = !string.IsNullOrWhiteSpace(toolbarItem.Text) ? toolbarItem.Text : (string)(toolbarItem.Icon ?? "ApplicationIcon.jpg");
 					return;
 				}
 				if (e.PropertyName == Xamarin.Forms.MenuItem.IconProperty.PropertyName)

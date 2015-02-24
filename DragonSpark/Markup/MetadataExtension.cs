@@ -5,7 +5,7 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Application.Markup
 {
-	public class MetadataExtension : LocateExtensionBase
+	public class MetadataExtension : MonitoredMarkupExtension
 	{
 		readonly Type attributeType;
 		readonly string expression;

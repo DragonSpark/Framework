@@ -20,19 +20,19 @@ namespace DragonSpark.Testing
 		[Theory, Framework.AutoMockData]
 		public void Apply( ConditionMonitor sut )
 		{
-			Assert.False( sut.Applied );
+			Assert.False( sut.State == ConditionMonitorState.Applied );
 
 			var applied = sut.Apply();
 
 			Assert.True( applied );
-			Assert.True( sut.Applied );
+			Assert.True( sut.State == ConditionMonitorState.Applied );
 
 
 			Assert.False( sut.Apply() );
 			
 			sut.Reset();
 
-			Assert.False( sut.Applied );
+			Assert.False( sut.State == ConditionMonitorState.Applied );
 		}
 
 		[Theory, Framework.AutoMockData]

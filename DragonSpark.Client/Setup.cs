@@ -4,6 +4,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System;
 using System.Windows;
+using Microsoft.Practices.Prism.Logging;
 
 namespace DragonSpark.Application.Client
 {
@@ -34,7 +35,6 @@ namespace DragonSpark.Application.Client
 			Container.RegisterInstance( Parameters );
 			
 			base.ConfigureContainer();
-			
 		}
 
 		protected override void InitializeShell()
@@ -44,11 +44,14 @@ namespace DragonSpark.Application.Client
 			var application = System.Windows.Application.Current;
 			Shell.As<Window>( window =>
 			{
+				Logger.Log( "Assigning and Displaying Primary Window/Shell.", Category.Info, Microsoft.Practices.Prism.Logging.Priority.None );
 				application.MainWindow = window;
 				window.Show();
+				Logger.Log( "Primary Window/Shell Displayed.", Category.Info, Microsoft.Practices.Prism.Logging.Priority.None );
 			} );
 
-			this.Event<AplicationInitializedEvent>().Publish( application );
+			this.Event<ShellInitializedEvent>().Publish( application );
+			Logger.Log( "Primary Window/Shell Initialized.", Category.Info, Microsoft.Practices.Prism.Logging.Priority.None );
 		}
 
 		protected override DependencyObject CreateShell()

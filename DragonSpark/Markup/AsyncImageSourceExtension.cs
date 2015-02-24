@@ -1,20 +1,13 @@
-﻿using DragonSpark.Extensions;
-//-----------------------------------------------------------------------
-// <copyright company="Microsoft Corporation">
-//     Copyright (c) Microsoft Corporation. All rights reserved.
-// </copyright>
-//-----------------------------------------------------------------------
-using System;
-using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+using DragonSpark.Extensions;
 
 // Credit: http://blogs.msdn.com/b/ifeanyie/archive/2010/03/27/9986217.aspx
-namespace DragonSpark.Application.Markup.Deferred
+namespace DragonSpark.Application.Markup
 {
 	[MarkupExtensionReturnType( typeof(ImageSource) )]
 	public class AsyncImageSourceExtension : DeferredMarkupExtension
@@ -27,42 +20,23 @@ namespace DragonSpark.Application.Markup.Deferred
 			Source = sourceUri;
 		}
 
-		/// <summary>
-		///     Uri of image to download and decode
-		/// </summary>
 		public Uri Source { get; set; }
 
-		/// <summary>
-		///     Image source to display while the primary image is being downloaded and decoded
-		/// </summary>
 		public ImageSource BusySource { get; set; }
 
-		/// <summary>
-		///     Image source to display if there is a download or decode error
-		/// </summary>
 		public ImageSource ErrorSource { get; set; }
 
 		protected override object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
 		{
-			Uri baseUri = null;
-			var uriContextService = serviceProvider.Get<IUriContext>();
-			if ( uriContextService != null )
-			{
-				baseUri = uriContextService.BaseUri;
-			}
-
-			DependencyObject targetObject = null;
-			var provideValueTarget = serviceProvider.Get<IProvideValueTarget>();
-			if ( provideValueTarget != null )
-			{
-				targetObject = provideValueTarget.TargetObject as DependencyObject;
-			}
-
+			var baseUri = serviceProvider.Get<IUriContext>().Transform( context => context.BaseUri );
+			
+			var targetObject = serviceProvider.Get<IProvideValueTarget>().Transform( target => target.TargetObject as DependencyObject );
+			
 			var imageUri = ResolveUri( targetObject, baseUri, Source );
 
 			if ( imageUri != null && imageUri.IsAbsoluteUri )
 			{
-				Task.Run( () => SetFrozenImageSourceFromUri( imageUri, setter ) );
+				Task.Run( () => SetFrozenImageSourceFromUri( imageUri, setter ) )/*.ConfigureAwait( false )*/;
 			}
 
 			return BusySource;
@@ -70,21 +44,17 @@ namespace DragonSpark.Application.Markup.Deferred
 
 		object SetFrozenImageSourceFromUri( Uri uri, IMarkupTargetValueSetter setter )
 		{
-			Action<ImageSource> setValueAndDispose = x =>
+			ImageSourceOperations.GetFrozenImageSourceFromUri( uri, 
+				x =>
 				{
 					setter.SetValue( x );
 					setter.Dispose();
-				};
-
-			var errorSource = ErrorSource;
-
-			Action<Exception> setErrorAndDispose = e =>
+				}, 
+				e =>
 				{
-					setter.SetValue( errorSource );
+					setter.SetValue( ErrorSource );
 					setter.Dispose();
-				};
-
-			ImageSourceOperations.GetFrozenImageSourceFromUri( uri, setValueAndDispose, setErrorAndDispose );
+				} );
 
 			return null;
 		}
@@ -195,7 +165,7 @@ namespace DragonSpark.Application.Markup.Deferred
 		}
 	}
 
-	public static class AsyncScheduler
+	/*public static class AsyncScheduler
 	{
 		public static void Post( Action callback )
 		{
@@ -209,5 +179,5 @@ namespace DragonSpark.Application.Markup.Deferred
 			dispatcher.BeginInvoke( DispatcherPriority.Normal, (Action)arg );
 			Dispatcher.Run();
 		}
-	}
+	}*/
 }

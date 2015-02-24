@@ -1,7 +1,6 @@
 using Ploeh.AutoFixture;
 using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.Activation;
 using Xunit;
 
 namespace DragonSpark.Testing.Framework
@@ -14,7 +13,7 @@ namespace DragonSpark.Testing.Framework
 		public void Customize( IFixture fixture )
 		{
 			var locator = new ServiceLocator( fixture );
-			ServiceLocation.Assign( locator );
+			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => locator );
 		}
 
 		public override void After( MethodInfo methodUnderTest )
@@ -23,7 +22,7 @@ namespace DragonSpark.Testing.Framework
 
 			base.After( methodUnderTest );
 
-			ServiceLocation.Assign( null );
+			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( null );
 		}
 	}
 }

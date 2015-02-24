@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
 
-namespace DragonSpark.Application.Markup.Deferred
+namespace DragonSpark.Application.Markup
 {
 	public interface IMarkupTargetValueSetter : IDisposable
 	{
@@ -13,9 +13,7 @@ namespace DragonSpark.Application.Markup.Deferred
 	}
 
 	public interface IMarkupTargetValueSetterBuilder : IFactory
-	{
-		/*IMarkupTargetValueSetter Build( IProvideValueTarget target );*/
-	}
+	{}
 
 	public class DependencyPropertyMarkupTargetValueSetterBuilder : FactoryBase<IProvideValueTarget, IMarkupTargetValueSetter>, IMarkupTargetValueSetterBuilder
 	{
