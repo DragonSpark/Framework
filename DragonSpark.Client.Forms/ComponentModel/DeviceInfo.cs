@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 		{
 			Assign();
 
-			this.Event<ShellInitializedEvent>().Unsubscribe( this, OnReady );
+			this.Event<ShellInitializedEvent>().Unsubscribe( OnReady );
 		}
 
 		bool Assign()

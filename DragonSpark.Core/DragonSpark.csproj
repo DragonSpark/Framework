@@ -230,7 +230,9 @@
     <Compile Include="Activation\IoC\IoCExtension.cs" />
     <Compile Include="Activation\IoC\LifetimeEntry.cs" />
     <Compile Include="Activation\IoC\ServiceLocator.cs" />
-    <Compile Include="ApplicationProfile.cs" />
+    <Compile Include="ApplicationProfile.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
@@ -246,7 +248,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentModel\NewGuidDefaultValueAttribute.cs" />
-    <Compile Include="ConditionMonitor.cs" />
+    <Compile Include="ConditionMonitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Diagnostics\ExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -275,7 +279,9 @@
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAllowsPriority.cs" />
-    <Compile Include="Priority.cs" />
+    <Compile Include="Priority.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PriorityAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
