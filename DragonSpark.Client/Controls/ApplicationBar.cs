@@ -1,20 +1,45 @@
-﻿using DragonSpark.Extensions;
+﻿using DragonSpark.Application.Client.Commanding;
+using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using DragonSpark.Application.Client.Presentation;
 
 namespace DragonSpark.Application.Client.Controls
 {
+	public class DisplayApplicationBarCommand : CommandBase<ApplicationBar>
+	{
+		public static DisplayApplicationBarCommand Instance
+		{
+			get { return InstanceField; }
+		}	static readonly DisplayApplicationBarCommand InstanceField = new DisplayApplicationBarCommand();
+
+		protected override void Execute( ApplicationBar parameter )
+		{
+			switch ( parameter.MenuState )
+			{
+				case Visibility.Hidden:
+					parameter.MenuState = Visibility.Visible;
+					break;
+			}
+		}
+	}
+
 	[TemplatePart(Name = "LayoutTranslation", Type = typeof(TranslateTransform))]
 	[TemplatePart(Name = "MenuItemPanel", Type = typeof(ItemsControl))]
 	[TemplatePart(Name = "MenuButton", Type = typeof(Button))]
 	public class ApplicationBar : ItemsControl
 	{
-		public static readonly DependencyProperty InstanceProperty = DependencyProperty.RegisterAttached( "Instance", typeof(ApplicationBar), typeof(ApplicationBar), new PropertyMetadata( OnInstancePropertyChanged ) );
+		static ApplicationBar()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata( typeof(ApplicationBar), new FrameworkPropertyMetadata( typeof(ApplicationBar) ) );
+		}
+		/*public static readonly DependencyProperty InstanceProperty = DependencyProperty.RegisterAttached( "Instance", typeof(ApplicationBar), typeof(ApplicationBar), new PropertyMetadata( OnInstancePropertyChanged ) );
 
 		static void OnInstancePropertyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
 		{}
@@ -33,20 +58,19 @@ namespace DragonSpark.Application.Client.Controls
 		public static void SetInstance( FrameworkElement element, ApplicationBar value )
 		{
 			element.SetValue( InstanceProperty, value );
-		}
+		}*/
 
-		TranslateTransform layoutTranslation;
+		// TranslateTransform layoutTranslation;
 
 		ItemsControl menuItemPanel;
 
-		Button menuButton;
+		// Button menuButton;
 
 		/// <summary>
 		///     Initializes a new Application Bar
 		/// </summary>
 		public ApplicationBar()
 		{
-			SizeChanged += AdjustHorizontalSize;
 			Loaded += OnLoaded;
 			Unloaded += OnUnloaded;
 		}
@@ -55,19 +79,39 @@ namespace DragonSpark.Application.Client.Controls
 		{
 			base.OnApplyTemplate();
 
-			menuItemPanel.With( x => x.LayoutUpdated -= AdjustHeightToShowOnlyIcons );
-			menuButton.With( x => x.Click -= SwitchMenuItemVisibility );
-
-			layoutTranslation = (TranslateTransform)GetTemplateChild( "LayoutTranslation" );
-
+			menuItemPanel.With( x => x.LayoutUpdated -= OnMenuItemsUpdated );
 			menuItemPanel = (ItemsControl)GetTemplateChild( "MenuItemPanel" );
-			menuItemPanel.LayoutUpdated += AdjustHeightToShowOnlyIcons;
-
-			menuButton =  (Button)GetTemplateChild( "MenuButton" );
-			menuButton.Click += SwitchMenuItemVisibility;
-
+			menuItemPanel.LayoutUpdated += OnMenuItemsUpdated;
+			monitor.Reset();
 		}
 
+		void OnMenuItemsUpdated( object sender, EventArgs e )
+		{
+			ItemsBounds = LayoutInformation.GetLayoutSlot( menuItemPanel );
+
+			monitor.ApplyIf( () => ItemsBounds != Rect.Empty, () => MenuState = InitialState );
+		}
+
+		readonly ConditionMonitor monitor = new ConditionMonitor();
+
+		public Rect ItemsBounds
+		{
+			get { return GetValue( ItemsBoundsProperty ).To<Rect>(); }
+			set { SetValue( ItemsBoundsProperty, value ); }
+		}	public static readonly DependencyProperty ItemsBoundsProperty = DependencyProperty.Register( "ItemsBounds", typeof(Rect), typeof(ApplicationBar), new PropertyMetadata( new Rect() ) );
+		
+		public Visibility MenuState
+		{
+			get { return GetValue( MenuStateProperty ).To<Visibility>(); }
+			set { SetValue( MenuStateProperty, value ); }
+		}	public static readonly DependencyProperty MenuStateProperty = DependencyProperty.Register( "MenuState", typeof(Visibility), typeof(ApplicationBar), new PropertyMetadata( Visibility.Collapsed ) );
+
+		public Visibility InitialState
+		{
+			get { return GetValue( InitialStateProperty ).To<Visibility>(); }
+			set { SetValue( InitialStateProperty, value ); }
+		}	public static readonly DependencyProperty InitialStateProperty = DependencyProperty.Register( "InitialState", typeof(Visibility), typeof(ApplicationBar), new PropertyMetadata( Visibility.Hidden ) );
+		
 		/*/// <summary>
 		/// Unsubscribes the applicationbar from the event aggregator
 		/// </summary>
@@ -121,7 +165,7 @@ namespace DragonSpark.Application.Client.Controls
 			} );
 		}
 
-		#region State Mangement
+		/*#region State Mangement
 		/// <summary>
 		///     Visibility of the menuItems
 		/// </summary>
@@ -149,7 +193,7 @@ namespace DragonSpark.Application.Client.Controls
 		/// </summary>
 		static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds( 200 );
 		#endregion
-
+*/
 		#region Menu Icons
 		/*/// <summary>
 		///     Gets or sets the Application Bar Icons
@@ -422,7 +466,7 @@ namespace DragonSpark.Application.Client.Controls
 		#endregion
 
 		#region Translation Methods
-		/// <summary>
+		/*/// <summary>
 		///     Adjust the height of the control, so that only the icons are visible
 		/// </summary>
 		void AdjustHeightToShowOnlyIcons( object sender, EventArgs eventArgs )
@@ -486,6 +530,25 @@ namespace DragonSpark.Application.Client.Controls
 			// Hide the window on the first start
 
 			// Set the new Clipping Geometry
+		}*/
+
+		protected override void OnPreviewMouseUp( MouseButtonEventArgs e )
+		{
+			base.OnPreviewMouseUp( e );
+
+			switch ( MenuState )
+			{
+				case Visibility.Visible:
+					e.OriginalSource.As<ICommandSource>( source => Threading.Application.Start( () => MenuState = Visibility.Hidden ) );
+					break;
+			}
+		}
+
+		protected override void OnMouseLeftButtonUp( MouseButtonEventArgs e )
+		{
+			base.OnMouseLeftButtonUp( e );
+
+			MenuState = Visibility.Hidden;
 		}
 
 		/// <summary>
@@ -493,20 +556,20 @@ namespace DragonSpark.Application.Client.Controls
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void AdjustHorizontalSize( object sender, SizeChangedEventArgs e )
+		/*void AdjustHorizontalSize( object sender, SizeChangedEventArgs e )
 		{
 			if ( e.WidthChanged )
 			{
 				Clip = new RectangleGeometry( new Rect( 0, 0, e.NewSize.Width, Clip != null ? Clip.Bounds.Height : e.NewSize.Height ) );
 			}
-		}
+		}*/
 		#endregion
 
 		#region Behaviour Implementation
 		/// <summary>
 		///     Switches the visiblity of the menu items
 		/// </summary>
-		void SwitchMenuItemVisibility( object sender, RoutedEventArgs e )
+		/*void SwitchMenuItemVisibility( object sender, RoutedEventArgs e )
 		{
 			switch ( menuItemVisibility )
 			{
@@ -523,14 +586,14 @@ namespace DragonSpark.Application.Client.Controls
 			}
 
 			AdjustHeightToShowOnlyIcons( sender, e );
-		}
+		}*/
 
 		/// <summary>
 		///     This method show the pane when navigation has been finished
 		/// </summary>
 		void ShowWhenNavigated( object sender, NavigationEventArgs e )
 		{
-			menuItemVisibility = Visibility.Collapsed;
+			MenuState = Visibility.Hidden;
 		}
 
 		/// <summary>
@@ -538,7 +601,7 @@ namespace DragonSpark.Application.Client.Controls
 		/// </summary>
 		void HideOnNavigation( object sender, NavigatingCancelEventArgs e )
 		{
-			menuItemVisibility = Visibility.Hidden;
+			MenuState = Visibility.Collapsed;
 		}
 		#endregion
 

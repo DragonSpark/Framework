@@ -1,3 +1,4 @@
+using DragonSpark.Application.Client.Commanding;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using Grid = System.Windows.Controls.Grid;
 using GridLength = System.Windows.GridLength;
 using ImageSource = System.Windows.Media.ImageSource;
 using IValueConverter = System.Windows.Data.IValueConverter;
+using MenuItem = Xamarin.Forms.MenuItem;
 using RowDefinition = System.Windows.Controls.RowDefinition;
 using Thickness = System.Windows.Thickness;
 
@@ -573,6 +575,19 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			throw new NotSupportedException();
+		}
+	}
+
+	public class ExecuteToolbarItemCommand : CommandBase<ToolbarItem>
+	{
+		public static ExecuteToolbarItemCommand Instance
+		{
+			get { return InstanceField; }
+		}	static readonly ExecuteToolbarItemCommand InstanceField = new ExecuteToolbarItemCommand();
+
+		protected override void Execute( ToolbarItem parameter )
+		{
+			parameter.Activate();
 		}
 	}
 

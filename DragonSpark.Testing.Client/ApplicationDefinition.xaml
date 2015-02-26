@@ -11,8 +11,9 @@
 	<Application.MainPage>
 		<ContentPage BackgroundColor="Red" Title="Why Hello World!">
 			<ContentPage.ToolbarItems>
-				<ToolbarItem Text="Page Item 1" />
-				<ToolbarItem Text="Page Item 2" />
+				<ToolbarItem Text="Page Item 1" Icon="Toolkit.Content/ApplicationBar.Check.Circle.png" />
+				<ToolbarItem Text="Page Item 2" Icon="Toolkit.Content/ApplicationBar.Cancel.Circle.png" />
+				<ToolbarItem Text="Another Page Item" Order="Secondary" />
 			</ContentPage.ToolbarItems>
 			<Label Text="Hello World!" VerticalOptions="Center" HorizontalOptions="Center" />
 		</ContentPage>

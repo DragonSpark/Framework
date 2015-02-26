@@ -1,25 +1,27 @@
+using DragonSpark.Extensions;
 using System;
 using System.Globalization;
-using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using IValueConverter = System.Windows.Data.IValueConverter;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	public class ImageConverter : System.Windows.Data.IValueConverter
+	public class ImageConverter : IValueConverter
 	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		public static ImageConverter Instance
 		{
-			global::Xamarin.Forms.ImageSource imageSource = (global::Xamarin.Forms.ImageSource)value;
-			IImageSourceHandler handler;
-			if (imageSource != null && (handler = Registrar.Registered.GetHandler<IImageSourceHandler>(imageSource.GetType())) != null)
-			{
-				Task<System.Windows.Media.ImageSource> valueTask = handler.LoadImageAsync(imageSource, default(CancellationToken));
-				return new AsyncValue<System.Windows.Media.ImageSource>(valueTask, null);
-			}
-			return null;
+			get { return InstanceField; }
+		}	static readonly ImageConverter InstanceField = new ImageConverter();
+
+		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			var task = value.AsTo<ImageSource, Task<System.Windows.Media.ImageSource>>( source => Registrar.Registered.GetHandler<IImageSourceHandler>( source.GetType() ).Transform( handler => handler.LoadImageAsync( source )  ) );
+			var result = task.Transform( item => new AsyncValue<System.Windows.Media.ImageSource>( item, null ) );
+			return result;
 		}
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+
+		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			throw new NotSupportedException();
 		}

@@ -81,7 +81,7 @@ namespace Microsoft.Expression.Interactions.Extensions
 					{
 						break;
 					}
-					GoToStateBase.GoToState( targetElement, dataStateSwitchCase.State, true );
+					var success = GoToStateBase.GoToState( targetElement, dataStateSwitchCase.State, true );
 					break;
 				}
 			}

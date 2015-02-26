@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Client.Forms
 			Log.Listeners.Add( new DelegateLogListener( ( c, m ) => Console.WriteLine( @"[{0}] {1}", m, c ) ) );
 			Device.OS = TargetPlatform.Other;
 			Device.PlatformServices = new PlatformServices();
-			Device.Info = new DeviceInfo();
+			Device.Info = new DeviceInfo().Initialized();
 			Device.Idiom = TargetIdiom.Desktop;
 			Xamarin.Forms.Ticker.Default = new Xamarin.Forms.Ticker();
 			Xamarin.Forms.ExpressionSearch.Default = new ExpressionSearch();

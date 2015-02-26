@@ -105,6 +105,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Commanding\Class1.cs" />
+    <Compile Include="Commanding\CommandRegistry.cs" />
     <Compile Include="Controls\ApplicationBar.cs" />
     <Compile Include="Controls\ApplicationBarIconButton.cs" />
     <Compile Include="Controls\ApplicationBarMenuItem.cs" />

@@ -40,6 +40,7 @@
     <Reference Include="FirstFloor.ModernUI">
       <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism.Mvvm">
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
@@ -103,7 +104,7 @@
     <Compile Include="FormsInitializer.cs" />
     <Compile Include="ComponentModel\INavigationModel.cs" />
     <Compile Include="ComponentModel\PlatformServices.cs" />
-    <Compile Include="ComponentModel\ToolbarItemMonitor.cs" />
+    <Compile Include="ComponentModel\ApplicationBarModel.cs" />
     <Compile Include="ComponentModel\ShellProperties.cs" />
     <Compile Include="ComponentModel\Ticker.cs" />
     <Compile Include="Navigation.cs" />
@@ -204,9 +205,17 @@
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj">
+      <Project>{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA}</Project>
+      <Name>Microsoft.Expression.Interactions.Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Rendering\TableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Controls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

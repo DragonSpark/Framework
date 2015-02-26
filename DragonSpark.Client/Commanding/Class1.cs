@@ -12,18 +12,19 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
 using DragonSpark.Activation;
-using DragonSpark.Client.Windows.Extensions;
-using DragonSpark.Client.Windows.Presentation;
-using DragonSpark.Common.IoC.Commands;
+using DragonSpark.Activation.IoC.Commands;
+using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Application.Client.Presentation;
+using DragonSpark.Client;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
-using IAttachedObject = DragonSpark.Client.Windows.Presentation.IAttachedObject;
+using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
 
-namespace DragonSpark.Client.Windows.Commanding
+namespace DragonSpark.Application.Client.Commanding
 {
 	public static class CommandExtensions
 	{
@@ -227,9 +228,7 @@ namespace DragonSpark.Client.Windows.Commanding
 		public IObservableCollection<ICommandModel> Items
 		{
 			get { return items; }
-		}
-
-		readonly IObservableCollection<ICommandModel> items = new ViewCollection<ICommandModel>();
+		}	readonly IObservableCollection<ICommandModel> items = new ViewCollection<ICommandModel>();
 
 		protected override bool CanExecute( object parameter )
 		{
@@ -1076,7 +1075,7 @@ namespace DragonSpark.Client.Windows.Commanding
 			initialized.Apply( () =>
 			{
 				var done = !context.Items.Any();
-				var items = Launch.ApplicationLaunchStatus.Loading.AsItem( done ? new[] { Launch.ApplicationLaunchStatus.Loaded, Launch.ApplicationLaunchStatus.Complete } : Enumerable.Empty<Launch.ApplicationLaunchStatus>() );
+				var items = SetupStatus.Loading.Prepend( done ? new[] { SetupStatus.Loaded, SetupStatus.Complete } : Enumerable.Empty<SetupStatus>() );
 				items.Apply( Publish );
 			} );
 
@@ -1092,7 +1091,7 @@ namespace DragonSpark.Client.Windows.Commanding
 
 		protected override void OnCompleted( System.Exception exception = null, bool wasCanceled = false )
 		{
-			loaded.Apply( () => Publish( Launch.ApplicationLaunchStatus.Loaded ) );
+			loaded.Apply( () => Publish( SetupStatus.Loaded ) );
 			
 			base.OnCompleted( exception, wasCanceled );
 		}
@@ -1101,13 +1100,13 @@ namespace DragonSpark.Client.Windows.Commanding
 		{
 			base.OnClose();
 
-			completed.Apply( () => Publish( Launch.ApplicationLaunchStatus.Complete ) );
+			completed.Apply( () => Publish( SetupStatus.Complete ) );
 		}
 
-		void Publish( Launch.ApplicationLaunchStatus status )
+		void Publish( SetupStatus status )
 		{
 			Threading.Application.Start( () => 
-				aggregator.GetEvent<Launch.ApplicationLaunchEvent>().With( x => Threading.Application.Execute( () => x.Publish( status ) ) ) 
+				aggregator.GetEvent<SetupEvent>().With( x => Threading.Application.Execute( () => x.Publish( status ) ) ) 
 			);
 		}
 	}

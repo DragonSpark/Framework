@@ -9,6 +9,7 @@
 	xmlns:rendering="clr-namespace:DragonSpark.Application.Client.Forms.Rendering">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="ThemeResources.xaml" />
+		<ResourceDictionary Source="Controls.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 	
 	<rendering:CaseConverter x:Key="UpperConverter" ConvertToUpper="True" />

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using FirstFloor.ModernUI.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using DragonSpark.Extensions;
-using FirstFloor.ModernUI.Presentation;
 using Xamarin.Forms;
 using IValueConverter = System.Windows.Data.IValueConverter;
 
@@ -21,6 +21,14 @@ namespace DragonSpark.Application.Client.Converters
 			var result = new LinkCollection( value.Select( item => new Link {	DisplayName = item.Text, Source = new Uri( string.Format( "http://{0}", Guid.NewGuid() ) ) } ) );
 			return result;
 		}
+	}
+
+	public class NegateConverter : Xceed.Wpf.Toolkit.Converters.NegateConverter
+	{
+		public static NegateConverter Instance
+		{
+			get { return InstanceField; }
+		}	static readonly NegateConverter InstanceField = new NegateConverter();
 	}
 
 	/*public class LinkGroupsConverter : ConverterBase<Page>

@@ -1,36 +1,22 @@
-using DragonSpark.Application.Client.Controls;
-using DragonSpark.Application.Client.Forms.Rendering;
-using DragonSpark.Extensions;
-using System;
+using DragonSpark.Application.Client.Presentation;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media.Imaging;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms.ComponentModel
 {
-	public class ToolbarItemMonitor
+	public class ApplicationBarModel : ViewObject
 	{
 		readonly ToolbarTracker tracker = new ToolbarTracker();
 
-		public ToolbarItemMonitor( IPlatform platform )
+		public ApplicationBarModel()
 		{
+			items = new ReadOnlyObservableCollection<ToolbarItem>( itemsSource );
 			// page.BackKeyPress += new EventHandler<CancelEventArgs>( OnBackKeyPress );
 			tracker.CollectionChanged += ( sender, args ) => UpdateToolbarItems();
 
-			platform.As<INotifyPropertyChanged>( x => // TODO:  Fix this.  Should be event.
-			{
-				x.PropertyChanged += ( sender, args ) =>
-				{
-					switch ( args.PropertyName )
-					{
-						case "Page":
-							tracker.Target = platform.Page;
-							break;
-					}
-				};
-			} );
+			this.Event<ShellPageChangedEvent>().Subscribe( this, page => tracker.Target = page );
 
 			// ProgressIndicator indicator;
 			/*SystemTray.SetProgressIndicator( page, indicator = new ProgressIndicator
@@ -104,12 +90,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 			} );*/
 		}
 
-		void UpdateToolbarTracker()
-		{
-			// navigationModel.Roots.LastOrDefault().With( x => tracker.Target = x );
-		}
-
-		class TaggedAppBarButton : ApplicationBarIconButton, IDisposable
+		/*class TaggedAppBarButton : ApplicationBarIconButton, IDisposable
 		{
 			object tag;
 			bool disposed;
@@ -125,7 +106,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 					}
 					tag = value;
 				}
-			}*/
+			}#1#
 
 			void TaggedAppBarButton_PropertyChanged( object sender, PropertyChangedEventArgs e )
 			{
@@ -162,7 +143,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 					}
 				}
 			}
-		}
+		}*/
 
 		/*class TaggedAppBarMenuItem : ApplicationBarMenuItem
 		{
@@ -191,39 +172,57 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 			e.Cancel = flag;
 		}*/
 
+		public IReadOnlyCollection<ToolbarItem> Items
+		{
+			get { return items; }
+		}	readonly IReadOnlyCollection<ToolbarItem> items;
+		readonly ViewCollection<ToolbarItem> itemsSource = new ViewCollection<ToolbarItem>();
+
+		public IEnumerable<ToolbarItem> Primary
+		{
+			get { return Items.Where( item => item.Order < ToolbarItemOrder.Secondary ).ToArray(); }
+		}
+
+		public IEnumerable<ToolbarItem> Secondary
+		{
+			get { return Items.Where( item => item.Order == ToolbarItemOrder.Secondary ).ToArray(); }
+		}	
+
 		void UpdateToolbarItems()
 		{
-			/*var bar = ApplicationBar.EnsureInstance( page );
+			itemsSource.Clear();
+
+			/*var master = tracker.Target.Descendants().Prepend( tracker.Target ).FirstOrDefaultOfType<MasterDetailPage>().Transform( page => page.ShouldShowToolbarButton() )
+			var add = .Prepend().NotNull();*/
+
+			var add = tracker.ToolbarItems.ToArray();
+			itemsSource.AddRange( add ); // TODO: MasterDetails
+			NotifyOfPropertyChange( () => Primary );
+			NotifyOfPropertyChange( () => Secondary );
+			/*var bar = ApplicationBar.EnsureInstance( tracker.Target );
 			var items = tracker.ToolbarItems.ToArray();
 			var masterDetail = tracker.Target.Descendants().Prepend( tracker.Target ).FirstOrDefaultOfType<MasterDetailPage>();
-			var taggedAppBarButton = Enumerable.OfType<TaggedAppBarButton>( bar.Buttons ).FirstOrDefault( ( TaggedAppBarButton b ) => b.Tag is MasterDetailPage && b.Tag != masterDetail );
+			var taggedAppBarButton = Primary.OfType<ApplicationBarIconButton>().FirstOrDefault( b => b.Tag is MasterDetailPage && b.Tag != masterDetail );
 			if ( taggedAppBarButton != null )
 			{
-				page.ApplicationBar.Buttons.Remove( taggedAppBarButton );
+				primarySource.Remove( taggedAppBarButton );
 			}
 			if ( masterDetail != null && masterDetail.ShouldShowToolbarButton() )
 			{
-				if ( Enumerable.OfType<TaggedAppBarButton>( page.ApplicationBar.Buttons ).All( ( TaggedAppBarButton b ) => b.Tag != masterDetail ) )
+				if ( Enumerable.OfType<ApplicationBarIconButton>( page.ApplicationBar.Buttons ).All( b => b.Tag != masterDetail ) )
 				{
-					var taggedAppBarButton2 = new TaggedAppBarButton
+					var taggedAppBarButton2 = new ApplicationBarIconButton
 					{
 						IconUri = new Uri( masterDetail.Master.Icon ?? "ApplicationIcon.jpg", UriKind.Relative ),
 						Text = masterDetail.Master.Title,
 						IsEnabled = true,
 						Tag = masterDetail
 					};
-					taggedAppBarButton2.Click += delegate( object sender, EventArgs args )
-					{
-						var masterDetailRenderer = masterDetail.GetRenderer() as MasterDetailRenderer;
-						if ( masterDetailRenderer != null )
-						{
-							masterDetailRenderer.Toggle();
-						}
-					};
+					taggedAppBarButton2.MouseLeftButtonUp += ( sender, args ) => masterDetail.GetRenderer().As<MasterDetailRenderer>( renderer => renderer.Toggle() );
 					page.ApplicationBar.Buttons.Add( taggedAppBarButton2 );
 				}
 			}
-			var list = new List<TaggedAppBarButton>();
+			var list = new List<ApplicationBarIconButton>();
 			using ( var enumerator = items.Where( ( ToolbarItem i ) => i.Order != ToolbarItemOrder.Secondary ).GetEnumerator() )
 			{
 				while ( enumerator.MoveNext() )

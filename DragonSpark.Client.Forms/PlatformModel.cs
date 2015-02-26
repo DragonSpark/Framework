@@ -11,16 +11,16 @@ namespace DragonSpark.Application.Client.Forms
 	[RegisterAs( typeof(IPlatform) )]
 	public class PlatformModel : BindableBase, IPlatform
 	{
+		readonly IPlatformEngine engine;
+		readonly Xamarin.Forms.Application application;
+
 		public event EventHandler BindingContextChanged
 		{
 			add { Application.BindingContextChanged += value; }
 			remove { Application.BindingContextChanged -= value; }
 		}
 
-		readonly IPlatformEngine engine;
-		readonly global::Xamarin.Forms.Application application;
-
-		public PlatformModel( IPlatformEngine engine, global::Xamarin.Forms.Application application )
+		public PlatformModel( IPlatformEngine engine, Xamarin.Forms.Application application )
 		{
 			this.engine = engine;
 			this.application = application;
@@ -45,7 +45,7 @@ namespace DragonSpark.Application.Client.Forms
 
 		void Refresh()
 		{
-			Page.With( page => page.Layout( new Rectangle( 0.0, 0.0, Size.Width, Size.Height ) ) );
+			Page.With( item => item.Layout( new Rectangle( 0.0, 0.0, Size.Width, Size.Height ) ) );
 		}
 
 		public object Content
@@ -75,7 +75,7 @@ namespace DragonSpark.Application.Client.Forms
 				{
 					page.Platform = this;
 					Content = page.DetermineRenderer();
-					// UpdateToolbarTracker();
+					Events.Publish<ShellPageChangedEvent, Page>( page );
 				}
 			}
 		}	Page page;

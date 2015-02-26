@@ -108,4 +108,7 @@ namespace DragonSpark.Application.Client
 
 	public class ShellInitializedEvent : FormsEvent<System.Windows.Application>
 	{}
+
+	public class ShellPageChangedEvent : FormsEvent<Page>
+	{}
 }

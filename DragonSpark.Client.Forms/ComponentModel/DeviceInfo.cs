@@ -8,12 +8,13 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 		Size pixelScreenSize, scaledScreenSize;
 		double scalingFactor;
 
-		public DeviceInfo()
+		public DeviceInfo Initialized()
 		{
 			if ( !Assign() )
 			{
 				this.Event<ShellInitializedEvent>().Subscribe( this, OnReady );
 			}
+			return this;
 		}
 
 		void OnReady( System.Windows.Application sender )

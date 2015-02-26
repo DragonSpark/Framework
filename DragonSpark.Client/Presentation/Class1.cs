@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Activation;
+using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Prism;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,10 +16,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using DragonSpark.Activation;
-using DragonSpark.Application.Client.Extensions;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Prism;
 using Xceed.Wpf.Toolkit;
 
 namespace DragonSpark.Application.Client.Presentation
@@ -379,27 +379,15 @@ namespace DragonSpark.Application.Client.Presentation
 
 	public class ViewObject : IViewObject
 	{
-		/// <summary>
-		/// Creates an instance of <see cref="ViewObject"/>.
-		/// </summary>
 		public ViewObject()
 		{
 			IsNotifying = true;
 		}
 
-		/// <summary>
-		/// Occurs when a property value changes.
-		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-		/// <summary>
-		/// Enables/Disables property change notification.
-		/// </summary>
 		public bool IsNotifying { get; set; }
 
-		/// <summary>
-		/// Raises a change notification indicating that all bindings should be refreshed.
-		/// </summary>
 		public void RefreshAllNotifications()
 		{
 			NotifyOfPropertyChange( string.Empty );

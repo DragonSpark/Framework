@@ -11,6 +11,7 @@
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
+	xmlns:forms="http://xamarin.com/schemas/2014/forms"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance d:Type=xfr:PlatformModel}"
 	DataContext="{ds:Locate Type=xfr:PlatformModel}"
@@ -152,11 +153,27 @@
 			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
-	<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
-		<i:Interaction.Behaviors>
-			<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
-			<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
-		</i:Interaction.Behaviors>
-	</mui:TransitioningContentControl>
+	<Grid>
+		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
+			<i:Interaction.Behaviors>
+				<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
+			</i:Interaction.Behaviors>
+		</mui:TransitioningContentControl>
+		<Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Click me" />
+		<ds:ApplicationBar DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom">
+			<ds:ApplicationBar.ItemTemplate>
+				<DataTemplate DataType="forms:ToolbarItem">
+					<ds:ApplicationBarIconButton ImageSource="{Binding Tag.Value, RelativeSource={RelativeSource Self}}" Content="{Binding Text}" Command="{x:Static xfr:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}" Tag="{Binding Icon, Converter={x:Static xfr:ImageConverter.Instance}}" />
+				</DataTemplate>
+			</ds:ApplicationBar.ItemTemplate>
+			<ds:ApplicationBar.MenuItemTemplate>
+				<DataTemplate DataType="forms:ToolbarItem">
+					<ds:ApplicationBarMenuItem Content="{Binding Text}" Command="{x:Static xfr:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}" />
+				</DataTemplate>
+			</ds:ApplicationBar.MenuItemTemplate>
+		</ds:ApplicationBar>
+	</Grid>
+	
 	
 </mui:ModernWindow>

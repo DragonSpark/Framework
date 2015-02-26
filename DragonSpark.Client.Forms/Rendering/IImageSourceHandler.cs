@@ -6,6 +6,6 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public interface IImageSourceHandler : IRegisterable
 	{
-		Task<System.Windows.Media.ImageSource> LoadImageAsync(global::Xamarin.Forms.ImageSource imagesoure, CancellationToken cancelationToken = default(CancellationToken));
+		Task<System.Windows.Media.ImageSource> LoadImageAsync(ImageSource imagesoure, CancellationToken cancelationToken = default(CancellationToken));
 	}
 }
