@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	internal sealed class AsyncValue<T> : INotifyPropertyChanged
+	/*public interface IValueProvider<out T> : INotifyPropertyChanged
+	{
+		T Value { get; }
+	}*/
+
+	sealed class AsyncValue<T> : INotifyPropertyChanged
 	{
 		private readonly Task<T> valueTask;
 		private readonly T defaultValue;
 		private bool isRunning = true;
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler PropertyChanged = delegate {};
+
 		public bool IsRunning
 		{
 			get
@@ -20,25 +26,28 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 			set
 			{
-				if (this.isRunning == value)
+				if ( this.isRunning != value )
 				{
-					return;
+					this.isRunning = value;
+					this.OnPropertyChanged();
 				}
-				this.isRunning = value;
-				this.OnPropertyChanged("IsRunning");
 			}
 		}
 		public T Value
 		{
-			get
-			{
-				if (this.valueTask.Status != TaskStatus.RanToCompletion)
-				{
-					return this.defaultValue;
-				}
-				return this.valueTask.Result;
-			}
+			get { return valueTask.Status != TaskStatus.RanToCompletion ? defaultValue : valueTask.Result; }
 		}
+
+		/*public static implicit operator T( AsyncValue<T> container )
+		{
+			return container.Value;
+		}*/
+
+		/*public static explicit operator T( AsyncValue<T> container )
+		{
+			return container.Value;
+		}*/
+
 		public AsyncValue(Task<T> valueTask, T defaultValue)
 		{
 			if (valueTask == null)
@@ -57,13 +66,10 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 				this.OnPropertyChanged("Value");
 			}, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, scheduler);
 		}
-		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		
+		void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-			if (propertyChanged != null)
-			{
-				propertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
+			PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

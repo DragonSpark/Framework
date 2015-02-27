@@ -13,6 +13,12 @@ namespace DragonSpark
 
 	public class ConditionMonitor
 	{
+
+		public bool IsApplied
+		{
+			get { return State > ConditionMonitorState.None; }
+		}
+
 		public ConditionMonitorState State { get; private set; }
 
 		public void Reset()

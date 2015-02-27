@@ -1,158 +1,38 @@
-﻿<mui:ModernWindow x:Class="DragonSpark.Testing.Client.Application.Shell"
+﻿<ds:Shell x:Class="DragonSpark.Testing.Client.Application.Shell"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
 	Height="403" Width="546"
-	IsTitleVisible="True"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:core="clr-namespace:DragonSpark;assembly=DragonSpark"
-	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
 	xmlns:forms="http://xamarin.com/schemas/2014/forms"
+	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:interaction="clr-namespace:DragonSpark.Application.Client.Forms.Interaction;assembly=Xamarin.Forms.Platform.WP8"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance d:Type=xfr:PlatformModel}"
 	DataContext="{ds:Locate Type=xfr:PlatformModel}"
 	TitleLinks="{Binding Application.Items, Converter={x:Static ds:ShellLinksConverter.Instance}}"
-				  Template="{DynamicResource Shell}"
+	LogoContent="{Binding Item.Value, ElementName=Image}"
 >
-	<Window.Resources>
-		<ControlTemplate x:Key="Shell" TargetType="mui:ModernWindow">
-			<Border Name="WindowBorder" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
-				<Border.Background>
-					<SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
-				</Border.Background>
-				<FrameworkElement.Resources>
-					<ResourceDictionary>
-						<Storyboard x:Key="BackgroundAnimation">
-							<ColorAnimation Storyboard.TargetName="WindowBorderBackground" Storyboard.TargetProperty="Color" To="{DynamicResource WindowBackgroundColor}" Duration="0:0:.6" />
-						</Storyboard>
-					</ResourceDictionary>
-				</FrameworkElement.Resources>
-				<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
-					<AdornerDecorator>
-						<Grid Grid.Name="LayoutRoot">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="36" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="*" />
-							</Grid.RowDefinitions>
-							<ContentControl Grid.RowSpan="5" Content="{TemplateBinding BackgroundContent}" />
-							<Grid >
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="96" />
-								</Grid.ColumnDefinitions>
-								<TextBlock Text="{TemplateBinding Title}" Margin="8,0" VerticalAlignment="Center" Style="{StaticResource ModernWindowTitle}" DataContext="{TemplateBinding IsTitleVisible}" Visibility="{Binding Converter={StaticResource BooleanToVisibilityConverter}}" />
-								<ItemsControl Grid.Column="1" ItemsSource="{TemplateBinding TitleLinks}" Margin="0,0,24,0" WindowChrome.IsHitTestVisibleInChrome="True">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<StackPanel Orientation="Horizontal" />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<StackPanel Orientation="Horizontal">
-												<Line Name="Separator" X1=".5" Y1="3" X2=".5" Y2="12" Margin="5,0" VerticalAlignment="Center" Stroke="{DynamicResource SeparatorBackground}" />
-												<Button Command="mui:LinkCommands.NavigateLink" Style="{StaticResource SystemButtonLink}" Content="{Binding DisplayName}" CommandParameter="{Binding Source}" CommandTarget="{Binding ElementName=ContentFrame}" />
-											</StackPanel>
-											<DataTemplate.Triggers>
-												<DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-													<Setter TargetName="Separator" Property="UIElement.Visibility" Value="Collapsed" />
-												</DataTrigger>
-											</DataTemplate.Triggers>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-								<Border Grid.Column="2" Border.Background="{DynamicResource Accent}" FrameworkElement.Width="36" FrameworkElement.Height="36" FrameworkElement.Margin="8,0" FrameworkElement.DataContext="{TemplateBinding LogoData}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter},ConverterParameter=inverse}">
-									<Path Shape.Stretch="Fill" Shape.Fill="#FFFFFFFF" FrameworkElement.Width="24" FrameworkElement.Height="24" FrameworkElement.HorizontalAlignment="Center" FrameworkElement.VerticalAlignment="Center" Path.Data="{Binding}" />
-								</Border>
-								<StackPanel Grid.Column="3" StackPanel.Orientation="Horizontal" FrameworkElement.VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True">
-									<Button FrameworkElement.ToolTip="{x:Static modernui:Resources.Minimize}" FrameworkElement.Style="{StaticResource SystemButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}">
-										<ContentControl.Content>
-											<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" UIElement.RenderTransform="1,0,0,1,0,1">
-												<Path Path.Data="M0,6L8,6z" FrameworkElement.Width="8" FrameworkElement.Height="7" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="2" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
-											</Grid>
-										</ContentControl.Content>
-									</Button>
-									<Grid FrameworkElement.Margin="1,0,1,0">
-										<Button Button.Name="Restore" FrameworkElement.ToolTip="{x:Static modernui:Resources.Restore}" FrameworkElement.Style="{StaticResource SystemButton}" UIElement.Visibility="Collapsed" ButtonBase.Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}">
-											<ContentControl.Content>
-												<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" FrameworkElement.UseLayoutRounding="True" UIElement.RenderTransform="1,0,0,1,.5,.5">
-													<Path Path.Data="M2,0L8,0 8,6 M0,3L6,3 M0,2L6,2 6,8 0,8z" FrameworkElement.Width="8" FrameworkElement.Height="8" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="1" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
-												</Grid>
-											</ContentControl.Content>
-										</Button>
-										<Button Button.Name="Maximize" FrameworkElement.ToolTip="{x:Static modernui:Resources.Maximize}" FrameworkElement.Style="{StaticResource SystemButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
-											<ContentControl.Content>
-												<Grid FrameworkElement.Width="13" FrameworkElement.Height="12">
-													<Path Path.Data="M0,1L9,1 9,8 0,8z" FrameworkElement.Width="9" FrameworkElement.Height="8" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="2" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
-												</Grid>
-											</ContentControl.Content>
-										</Button>
-									</Grid>
-									<Button FrameworkElement.ToolTip="{x:Static modernui:Resources.Close}" FrameworkElement.Style="{StaticResource SystemCloseButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
-										<ContentControl.Content>
-											<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" UIElement.RenderTransform="1,0,0,1,0,1">
-												<Path Path.Data="M0,0L8,7 M8,0L0,7z" FrameworkElement.Width="8" FrameworkElement.Height="7" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="1.5" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
-											</Grid>
-										</ContentControl.Content>
-									</Button>
-								</StackPanel>
-							</Grid>
-							<Grid Grid.Row="1">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition ColumnDefinition.Width="42" />
-									<ColumnDefinition ColumnDefinition.Width="*" />
-								</Grid.ColumnDefinitions>
-								<mui:ModernButton Margin="8,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" EllipseDiameter="24" IconWidth="12" IconHeight="12" IconData="F1M33,22L33,26 19.75,26 27,33 20.5,33 11,24 20.5,15 27,15 19.75,22 33,22z" Command="NavigationCommands.BrowseBack" ToolTip="{x:Static modernui:Resources.Back}" WindowChrome.IsHitTestVisibleInChrome="True" CommandTarget="{Binding ElementName=ContentFrame}"  />
-								<mui:ModernMenu Grid.Column="1" LinkGroups="{TemplateBinding mui:ModernWindow.MenuLinkGroups}" SelectedSource="{Binding Source,ElementName=ContentFrame,Mode=TwoWay}" />
-							</Grid>
-
-							<!--<ContentPresenter Grid.Row="2" Margin="42,8,16,16"  ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />-->
-							<Frame x:Name="ContentFrame" Grid.Row="2" Margin="42,8,16,16" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
-
-							<!--<mui:ModernFrame x:Name="ContentFrame" Grid.Row="3" Grid.RowSpan="2" Margin="42,8,16,16" ContentLoader="{TemplateBinding mui:ModernWindow.ContentLoader}" Source="{Binding ContentSource,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />-->
-							<Grid Grid.Name="ResizeGrip" Grid.Row="2" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
-								<Path FrameworkElement.Width="12" FrameworkElement.Height="12" FrameworkElement.Margin="1" Shape.Stroke="{DynamicResource WindowText}" Shape.StrokeThickness="1" Shape.Stretch="None" Path.Data="F1M1,10L3,10 M5,10L7,10 M9,10L11,10 M2,9L2,11 M6,9L6,11 M10,9L10,11 M5,6L7,6 M9,6L11,6 M6,5L6,7 M10,5L10,7 M9,2L11,2 M10,1L10,3" />
-							</Grid>
-						</Grid>
-					</AdornerDecorator>
-				</Border> 
-			</Border>
-			<ControlTemplate.Triggers>
-				<Trigger Trigger.Property="Window.IsActive" Trigger.Value="True">
-					<Setter Setter.Value="{DynamicResource WindowBorderActive}" Setter.Property="Control.BorderBrush" />
-				</Trigger>
-				<Trigger Trigger.Property="Window.WindowState" Trigger.Value="Maximized">
-					<Setter Setter.TargetName="Maximize" Setter.Property="UIElement.Visibility" Setter.Value="Collapsed" />
-					<Setter Setter.TargetName="Restore" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
-					<Setter Setter.TargetName="LayoutRoot" Setter.Property="FrameworkElement.Margin" Setter.Value="7" />
-				</Trigger>
-				<Trigger Trigger.Property="Window.WindowState" Trigger.Value="Normal">
-					<Setter Setter.TargetName="Maximize" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
-					<Setter Setter.TargetName="Restore" Setter.Property="UIElement.Visibility" Setter.Value="Collapsed" />
-				</Trigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Condition.Property="Window.ResizeMode" Condition.Value="CanResizeWithGrip" />
-						<Condition Condition.Property="Window.WindowState" Condition.Value="Normal" />
-					</MultiTrigger.Conditions>
-					<Setter Setter.TargetName="ResizeGrip" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
-				</MultiTrigger>
-			</ControlTemplate.Triggers>
-		</ControlTemplate>
-	</Window.Resources>
+	<i:Interaction.Behaviors>
+		<interaction:Host x:Name="Image" Item="{Binding Application.Logo, Converter={x:Static xfr:ImageConverter.Instance}}" />
+	</i:Interaction.Behaviors>
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{ds:Locate core:ApplicationProfile}" Path="Title" />
+			<Binding Source="{ds:Locate dragonSpark:ApplicationProfile}" Path="Title" />
 			<Binding ElementName="ContentHost" Path="Content.(xfr:ShellProperties.Title)" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
+	<ds:Shell.LogoContentTemplate>
+		<DataTemplate DataType="ImageSource">
+			<Border Width="36" Height="{Binding Width, RelativeSource={RelativeSource Self}}" Padding="2" Margin="8,0" DataContext="{Binding}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+				<Image Stretch="Uniform" Source="{Binding}" ToolTipService.ToolTip="{Binding Title, Source={ds:Locate dragonSpark:ApplicationProfile}}" />
+			</Border>
+		</DataTemplate>
+	</ds:Shell.LogoContentTemplate>
 	<Grid>
 		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
 			<i:Interaction.Behaviors>
@@ -160,11 +40,14 @@
 				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
 			</i:Interaction.Behaviors>
 		</mui:TransitioningContentControl>
-		<Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Click me" />
 		<ds:ApplicationBar DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom">
 			<ds:ApplicationBar.ItemTemplate>
 				<DataTemplate DataType="forms:ToolbarItem">
-					<ds:ApplicationBarIconButton ImageSource="{Binding Tag.Value, RelativeSource={RelativeSource Self}}" Content="{Binding Text}" Command="{x:Static xfr:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}" Tag="{Binding Icon, Converter={x:Static xfr:ImageConverter.Instance}}" />
+					<ds:ApplicationBarIconButton ImageSource="{Binding Item.Value, ElementName=Image}" Content="{Binding Text}" Command="{x:Static xfr:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}">
+						<i:Interaction.Behaviors>
+							<interaction:Host x:Name="Image" Item="{Binding Icon, Converter={x:Static xfr:ImageConverter.Instance}}" />
+						</i:Interaction.Behaviors>
+					</ds:ApplicationBarIconButton>
 				</DataTemplate>
 			</ds:ApplicationBar.ItemTemplate>
 			<ds:ApplicationBar.MenuItemTemplate>
@@ -174,6 +57,4 @@
 			</ds:ApplicationBar.MenuItemTemplate>
 		</ds:ApplicationBar>
 	</Grid>
-	
-	
-</mui:ModernWindow>
+</ds:Shell>

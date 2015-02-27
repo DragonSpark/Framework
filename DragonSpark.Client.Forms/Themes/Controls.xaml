@@ -3,7 +3,11 @@
 					xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 					xmlns:ds="http://framework.dragonspark.us"
 					xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
-					xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions">
+					xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+					xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
+					xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+					xmlns:rendering="clr-namespace:DragonSpark.Application.Client.Forms.Rendering"
+					xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation;assembly=DragonSpark.Application.Client">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Generic.xaml" />
 	</ResourceDictionary.MergedDictionaries>
@@ -47,12 +51,37 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ds:ApplicationBarIconButton">
-					<StackPanel>
-						<Button Style="{StaticResource ChromeButtonStyle}" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" CommandTarget="{TemplateBinding CommandTarget}" Margin="12, 3, 12, 3" Focusable="{TemplateBinding Focusable}" IsCancel="{TemplateBinding IsCancel}" IsDefault="{TemplateBinding IsDefault}">
-							<Image Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" Source ="{Binding ImageSource, RelativeSource={RelativeSource TemplatedParent}}" />
+					<DockPanel x:Name="LayoutRoot" ToolTip="{TemplateBinding Content}">
+						<TextBlock x:Name="Text" DockPanel.Dock="Bottom" Text="{TemplateBinding Content}" HorizontalAlignment="Center" Style="{StaticResource WinTextSmallStyle}" Focusable="{TemplateBinding Focusable}" Visibility="Collapsed" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=Button}" TextAlignment="Center" />
+						<Button x:Name="Button" Style="{StaticResource ChromeButtonStyle}" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" CommandTarget="{TemplateBinding CommandTarget}" Margin="12 0" Focusable="{TemplateBinding Focusable}" IsCancel="{TemplateBinding IsCancel}" IsDefault="{TemplateBinding IsDefault}">
+							<Image Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" Source="{Binding ImageSource, RelativeSource={RelativeSource TemplatedParent}}" />
 						</Button>
-						<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" Style="{StaticResource WinTextSmallStyle}" Focusable="{TemplateBinding Focusable}" Visibility="{Binding MenuState, RelativeSource={RelativeSource AncestorType=ds:ApplicationBar}}" />
-					</StackPanel>
+					</DockPanel>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding MenuState, RelativeSource={RelativeSource AncestorType=ds:ApplicationBar}}" Value="{x:Static Visibility.Visible}">
+							<DataTrigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Visibility">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</DataTrigger.EnterActions>
+							<DataTrigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Visibility">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Hidden}" />
+											<DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</DataTrigger.ExitActions>
+							<Setter TargetName="LayoutRoot" Property="ToolTip" Value="{x:Null}" />
+							<!--<Setter TargetName="Text" Property="Visibility" Value="{x:Static Visibility.Visible}" />-->
+						</DataTrigger>
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -99,7 +128,7 @@
 						<Border x:Name="MainContent" Background="{StaticResource WinChromeBrush}" Width="{TemplateBinding ActualWidth}" MinHeight="75">
 							<Border.Resources>
 								<Storyboard x:Key="MenuMinimal">
-									<DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(FrameworkElement.Height)" To="{Binding ItemsBounds.Top, RelativeSource={RelativeSource TemplatedParent}}" Duration="0:0:00.25">
+									<DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(FrameworkElement.Height)" To="{Binding ItemsBounds.Bottom, RelativeSource={RelativeSource TemplatedParent}}" Duration="0:0:00.25">
 										<DoubleAnimation.EasingFunction>
 											<ExponentialEase EasingMode="EaseOut" />
 										</DoubleAnimation.EasingFunction>
@@ -135,7 +164,7 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 
-								<ItemsPresenter Grid.Column="1" />
+								<ItemsPresenter x:Name="Presenter" Grid.Column="1" />
 
 								<Button x:Name="MenuButton" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource ChromeButtonStyle}" Margin="3" Command="{x:Static ds:DisplayApplicationBarCommand.Instance}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
 									<Image Source="/DragonSpark.Application.Client;component/Themes/appbar.overflowdots.png" Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" />

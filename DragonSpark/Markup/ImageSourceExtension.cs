@@ -1,21 +1,24 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using DragonSpark.Extensions;
 
 // Credit: http://blogs.msdn.com/b/ifeanyie/archive/2010/03/27/9986217.aspx
 namespace DragonSpark.Application.Markup
 {
 	[MarkupExtensionReturnType( typeof(ImageSource) )]
-	public class AsyncImageSourceExtension : DeferredMarkupExtension
+	public class ImageSourceExtension : DeferredMarkupExtension
 	{
-		public AsyncImageSourceExtension()
+		public ImageSourceExtension()
 		{}
 
-		public AsyncImageSourceExtension( Uri sourceUri ) : this()
+		public ImageSourceExtension( string sourceUri ) : this( new Uri( sourceUri ) )
+		{}
+
+		public ImageSourceExtension( Uri sourceUri ) : this()
 		{
 			Source = sourceUri;
 		}
@@ -59,11 +62,6 @@ namespace DragonSpark.Application.Markup
 			return null;
 		}
 
-		/// <summary>
-		///     Resolve relative Uri's
-		/// </summary>
-		/// <param name="dataContextSource">If sourceUri is null try to substitute dataContextSource.DataContext</param>
-		/// <returns></returns>
 		static Uri ResolveUri( DependencyObject dataContextSource, Uri baseUri, Uri sourceUri )
 		{
 			if ( sourceUri == null && dataContextSource != null )

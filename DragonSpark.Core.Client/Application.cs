@@ -6,6 +6,12 @@ namespace DragonSpark.Client
 {
 	public class Application : Xamarin.Forms.Application
 	{
+		public FileImageSource Logo
+		{
+			get { return (FileImageSource)GetValue( LogoProperty ); }
+			set { SetValue( LogoProperty, value ); }
+		}	public static readonly BindableProperty LogoProperty = BindableProperty.Create( "Logo", typeof(FileImageSource), typeof (Application), default(FileImageSource) );
+
 		public ICollection<ToolbarItem> Items
 		{
 			get { return (ICollection<ToolbarItem>)GetValue( ItemsProperty ); }

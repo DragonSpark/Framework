@@ -7,7 +7,9 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Markup;
 
 // Based on/Credit: http://blogs.msdn.com/b/ifeanyie/archive/2010/03/27/9986217.aspx
@@ -22,9 +24,9 @@ namespace DragonSpark.Application.Markup
 
 		public override sealed object ProvideValue( IServiceProvider serviceProvider )
 		{
-			var result = serviceProvider.Get<IProvideValueTarget>()
+			var result = !DesignerProperties.GetIsInDesignMode( new DependencyObject() ) ? serviceProvider.Get<IProvideValueTarget>()
 				.Transform( target => Builders.Select( builder => builder.Create<IMarkupTargetValueSetter>( serviceProvider ) ).NotNull().FirstOrDefault()
-					.Transform( setter => BeginProvideValue( serviceProvider, setter ) ) );
+					.Transform( setter => BeginProvideValue( serviceProvider, setter ) ) ) : null;
 			return result;
 		}
 

@@ -137,7 +137,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LoggerFacade.cs" />
-    <Compile Include="Markup\AsyncImageSourceExtension.cs">
+    <Compile Include="Markup\ImageSourceExtension.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Markup\ClrMemberMarkupTargetValueSetter.cs" />

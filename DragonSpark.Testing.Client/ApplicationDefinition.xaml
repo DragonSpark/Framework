@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:client="clr-namespace:DragonSpark.Client;assembly=DragonSpark.Client"
 	x:Class="DragonSpark.Testing.Client.ApplicationDefinition"
+	Logo="Images/Logo.png"
 	>
 	<client:Application.Items>
 		<ToolbarItem Text="Application Item 1" />
@@ -11,8 +12,8 @@
 	<Application.MainPage>
 		<ContentPage BackgroundColor="Red" Title="Why Hello World!">
 			<ContentPage.ToolbarItems>
-				<ToolbarItem Text="Page Item 1" Icon="Toolkit.Content/ApplicationBar.Check.Circle.png" />
-				<ToolbarItem Text="Page Item 2" Icon="Toolkit.Content/ApplicationBar.Cancel.Circle.png" />
+				<ToolbarItem Text="Page Item 1" Icon="Images/Play.png" />
+				<ToolbarItem Text="Page Item 2" Icon="Images/Stop.png" />
 				<ToolbarItem Text="Another Page Item" Order="Secondary" />
 			</ContentPage.ToolbarItems>
 			<Label Text="Hello World!" VerticalOptions="Center" HorizontalOptions="Center" />

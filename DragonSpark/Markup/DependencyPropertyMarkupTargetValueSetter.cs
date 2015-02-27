@@ -4,9 +4,42 @@ using System.Windows.Threading;
 
 namespace DragonSpark.Application.Markup
 {
-	public sealed class DependencyPropertyMarkupTargetValueSetter : IMarkupTargetValueSetter
+	public abstract class MarkupTargetValueSetterBase : IMarkupTargetValueSetter
 	{
 		readonly ConditionMonitor monitor = new ConditionMonitor();
+		
+		public void SetValue( object value )
+		{
+			if ( monitor.IsApplied )
+			{
+				throw new ObjectDisposedException( GetType().FullName );
+			}
+
+			Apply( value );
+		}
+
+		protected abstract void Apply( object value );
+
+		protected bool IsDisposed
+		{
+			get { return monitor.IsApplied; }
+		}
+
+		public void Dispose()
+		{
+			monitor.Apply( () =>
+			{
+				Dispose( true );
+				GC.SuppressFinalize( this );
+			} );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{}
+	}
+
+	public sealed class DependencyPropertyMarkupTargetValueSetter : MarkupTargetValueSetterBase
+	{
 		readonly DependencyObject targetObject;
 		readonly DependencyProperty targetProperty;
 
@@ -16,26 +49,14 @@ namespace DragonSpark.Application.Markup
 			this.targetProperty = targetProperty;
 		}
 
-		public void SetValue( object value )
+		protected override void Apply( object value )
 		{
-			if ( targetObject == null || targetProperty == null )
-			{
-				throw new ObjectDisposedException( GetType().FullName );
-			}
-
 			// Marshal the call back to the UI thread
 			targetObject.Dispatcher.Invoke( DispatcherPriority.Normal, (DispatcherOperationCallback)( o =>
 			{
 				targetObject.SetValue( targetProperty, o );
 				return null;
 			} ), value );
-		}
-
-		public void Dispose()
-		{
-			// GC.SuppressFinalize( this );
-			// targetObject = null;
-			// targetProperty = null;
 		}
 	}
 }

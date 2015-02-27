@@ -1,14 +1,13 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
-	xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	xmlns:controls="clr-namespace:DragonSpark.Application.Client.Controls"
->
+	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Controls.xaml" />
+		<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 	<Color x:Key="WinChromeColor">#FFDDDDDD</Color>
@@ -33,7 +32,7 @@
 	</Style>
 	<Color x:Key="WinTextBoxForegroundColor">#DE000000</Color>
 	<system:Double x:Key="ApplicationBarIconSize">32</system:Double>
-	<system:Double x:Key="WinFontSizeSmall">14</system:Double>
+	<system:Double x:Key="WinFontSizeSmall">12</system:Double>
 	<SolidColorBrush x:Key="WinTextBoxForegroundBrush" Color="{StaticResource WinTextBoxForegroundColor}"/>
 	<Style x:Key="WinTextSmallStyle" TargetType="TextBlock" BasedOn="{StaticResource WinTextBlockBase}">
 		<Setter Property="FontSize" Value="{StaticResource WinFontSizeSmall}"/>
@@ -61,6 +60,149 @@
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
+
+	<Style TargetType="controls:Shell" BasedOn="{StaticResource {x:Type mui:ModernWindow}}">
+		<Setter Property="IsTitleVisible" Value="True" />
+		<Setter Property="LogoContent" Value="{Binding LogoData, RelativeSource={RelativeSource Self}}" />
+		<Setter Property="LogoContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<Border Background="{DynamicResource Accent}" Width="36" Height="36" Margin="8,0" DataContext="{Binding}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter},ConverterParameter=inverse}">
+						<Path Stretch="Fill" Fill="#FFFFFFFF" Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Data="{Binding}" />
+					</Border>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="controls:Shell">
+					<Border Name="WindowBorder" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+						<Border.Background>
+							<SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
+						</Border.Background>
+						<FrameworkElement.Resources>
+							<ResourceDictionary>
+								<Storyboard x:Key="BackgroundAnimation">
+									<ColorAnimation Storyboard.TargetName="WindowBorderBackground" Storyboard.TargetProperty="Color" To="{DynamicResource WindowBackgroundColor}" Duration="0:0:.6" />
+								</Storyboard>
+							</ResourceDictionary>
+						</FrameworkElement.Resources>
+						<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+							<AdornerDecorator>
+								<Grid Grid.Name="LayoutRoot">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="36" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<ContentControl Grid.RowSpan="5" Content="{TemplateBinding BackgroundContent}" />
+									<Grid >
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="96" />
+										</Grid.ColumnDefinitions>
+										<TextBlock Text="{TemplateBinding Title}" Margin="8,0" VerticalAlignment="Center" Style="{DynamicResource ModernWindowTitle}" DataContext="{TemplateBinding IsTitleVisible}" Visibility="{Binding Converter={StaticResource BooleanToVisibilityConverter}}" />
+										<ItemsControl Grid.Column="1" ItemsSource="{TemplateBinding TitleLinks}" Margin="0,0,24,0" WindowChrome.IsHitTestVisibleInChrome="True">
+											<ItemsControl.ItemsPanel>
+												<ItemsPanelTemplate>
+													<StackPanel Orientation="Horizontal" />
+												</ItemsPanelTemplate>
+											</ItemsControl.ItemsPanel>
+											<ItemsControl.ItemTemplate>
+												<DataTemplate>
+													<StackPanel Orientation="Horizontal">
+														<Line Name="Separator" X1=".5" Y1="3" X2=".5" Y2="12" Margin="5,0" VerticalAlignment="Center" Stroke="{DynamicResource SeparatorBackground}" />
+														<Button Command="mui:LinkCommands.NavigateLink" Style="{StaticResource SystemButtonLink}" Content="{Binding DisplayName}" CommandParameter="{Binding Source}" CommandTarget="{Binding ElementName=ContentFrame}" />
+													</StackPanel>
+													<DataTemplate.Triggers>
+														<DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+															<Setter TargetName="Separator" Property="UIElement.Visibility" Value="Collapsed" />
+														</DataTrigger>
+													</DataTemplate.Triggers>
+												</DataTemplate>
+											</ItemsControl.ItemTemplate>
+										</ItemsControl>
+										<StackPanel Grid.Column="3" StackPanel.Orientation="Horizontal" FrameworkElement.VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True">
+											<Button FrameworkElement.ToolTip="{x:Static modernui:Resources.Minimize}" FrameworkElement.Style="{StaticResource SystemButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}">
+												<ContentControl.Content>
+													<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" UIElement.RenderTransform="1,0,0,1,0,1">
+														<Path Path.Data="M0,6L8,6z" FrameworkElement.Width="8" FrameworkElement.Height="7" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="2" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
+													</Grid>
+												</ContentControl.Content>
+											</Button>
+											<Grid FrameworkElement.Margin="1,0,1,0">
+												<Button Button.Name="Restore" FrameworkElement.ToolTip="{x:Static modernui:Resources.Restore}" FrameworkElement.Style="{StaticResource SystemButton}" UIElement.Visibility="Collapsed" ButtonBase.Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}">
+													<ContentControl.Content>
+														<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" FrameworkElement.UseLayoutRounding="True" UIElement.RenderTransform="1,0,0,1,.5,.5">
+															<Path Path.Data="M2,0L8,0 8,6 M0,3L6,3 M0,2L6,2 6,8 0,8z" FrameworkElement.Width="8" FrameworkElement.Height="8" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="1" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
+														</Grid>
+													</ContentControl.Content>
+												</Button>
+												<Button Button.Name="Maximize" FrameworkElement.ToolTip="{x:Static modernui:Resources.Maximize}" FrameworkElement.Style="{StaticResource SystemButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
+													<ContentControl.Content>
+														<Grid FrameworkElement.Width="13" FrameworkElement.Height="12">
+															<Path Path.Data="M0,1L9,1 9,8 0,8z" FrameworkElement.Width="9" FrameworkElement.Height="8" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="2" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
+														</Grid>
+													</ContentControl.Content>
+												</Button>
+											</Grid>
+											<Button FrameworkElement.ToolTip="{x:Static modernui:Resources.Close}" FrameworkElement.Style="{StaticResource SystemCloseButton}" ButtonBase.Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
+												<ContentControl.Content>
+													<Grid FrameworkElement.Width="13" FrameworkElement.Height="12" UIElement.RenderTransform="1,0,0,1,0,1">
+														<Path Path.Data="M0,0L8,7 M8,0L0,7z" FrameworkElement.Width="8" FrameworkElement.Height="7" FrameworkElement.VerticalAlignment="Center" FrameworkElement.HorizontalAlignment="Center" Shape.StrokeThickness="1.5" Shape.Stroke="{Binding Foreground,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button}}" />
+													</Grid>
+												</ContentControl.Content>
+											</Button>
+										</StackPanel>
+										<ContentControl Grid.Column="2" ContentTemplate="{TemplateBinding LogoContentTemplate}" Content="{TemplateBinding LogoContent}" WindowChrome.IsHitTestVisibleInChrome="True" />
+									</Grid>
+									<Grid Grid.Row="1">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition ColumnDefinition.Width="42" />
+											<ColumnDefinition ColumnDefinition.Width="*" />
+										</Grid.ColumnDefinitions>
+										<mui:ModernButton Margin="8,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" EllipseDiameter="24" IconWidth="12" IconHeight="12" IconData="F1M33,22L33,26 19.75,26 27,33 20.5,33 11,24 20.5,15 27,15 19.75,22 33,22z" Command="NavigationCommands.BrowseBack" ToolTip="{x:Static modernui:Resources.Back}" WindowChrome.IsHitTestVisibleInChrome="True" CommandTarget="{Binding ElementName=ContentFrame}"  />
+										<mui:ModernMenu Grid.Column="1" LinkGroups="{TemplateBinding mui:ModernWindow.MenuLinkGroups}" SelectedSource="{Binding Source,ElementName=ContentFrame,Mode=TwoWay}" />
+									</Grid>
+
+									<!--<ContentPresenter Grid.Row="2" Margin="42,8,16,16"  ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />-->
+									<Frame x:Name="ContentFrame" Grid.Row="2" Margin="42,8,16,16" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
+
+									<!--<mui:ModernFrame x:Name="ContentFrame" Grid.Row="3" Grid.RowSpan="2" Margin="42,8,16,16" ContentLoader="{TemplateBinding mui:ModernWindow.ContentLoader}" Source="{Binding ContentSource,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />-->
+									<Grid Grid.Name="ResizeGrip" Grid.Row="2" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
+										<Path FrameworkElement.Width="12" FrameworkElement.Height="12" FrameworkElement.Margin="1" Shape.Stroke="{DynamicResource WindowText}" Shape.StrokeThickness="1" Shape.Stretch="None" Path.Data="F1M1,10L3,10 M5,10L7,10 M9,10L11,10 M2,9L2,11 M6,9L6,11 M10,9L10,11 M5,6L7,6 M9,6L11,6 M6,5L6,7 M10,5L10,7 M9,2L11,2 M10,1L10,3" />
+									</Grid>
+								</Grid>
+							</AdornerDecorator>
+						</Border>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Trigger.Property="Window.IsActive" Trigger.Value="True">
+							<Setter Setter.Value="{DynamicResource WindowBorderActive}" Setter.Property="Control.BorderBrush" />
+						</Trigger>
+						<Trigger Trigger.Property="Window.WindowState" Trigger.Value="Maximized">
+							<Setter Setter.TargetName="Maximize" Setter.Property="UIElement.Visibility" Setter.Value="Collapsed" />
+							<Setter Setter.TargetName="Restore" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
+							<Setter Setter.TargetName="LayoutRoot" Setter.Property="FrameworkElement.Margin" Setter.Value="7" />
+						</Trigger>
+						<Trigger Trigger.Property="Window.WindowState" Trigger.Value="Normal">
+							<Setter Setter.TargetName="Maximize" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
+							<Setter Setter.TargetName="Restore" Setter.Property="UIElement.Visibility" Setter.Value="Collapsed" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Condition.Property="Window.ResizeMode" Condition.Value="CanResizeWithGrip" />
+								<Condition Condition.Property="Window.WindowState" Condition.Value="Normal" />
+							</MultiTrigger.Conditions>
+							<Setter Setter.TargetName="ResizeGrip" Setter.Property="UIElement.Visibility" Setter.Value="Visible" />
+						</MultiTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 	<!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"

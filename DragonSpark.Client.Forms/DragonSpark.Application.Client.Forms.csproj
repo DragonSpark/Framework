@@ -107,6 +107,7 @@
     <Compile Include="ComponentModel\ApplicationBarModel.cs" />
     <Compile Include="ComponentModel\ShellProperties.cs" />
     <Compile Include="ComponentModel\Ticker.cs" />
+    <Compile Include="Interaction\ImageContextBehavior.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="PlatformEngine.cs" />
     <Compile Include="PlatformModel.cs" />

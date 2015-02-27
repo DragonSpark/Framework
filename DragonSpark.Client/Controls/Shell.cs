@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using FirstFloor.ModernUI.Windows.Controls;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
 using DragonSpark.Extensions;
-using FirstFloor.ModernUI.Presentation;
-using FirstFloor.ModernUI.Windows.Controls;
-using Microsoft.Practices.Prism;
 
 namespace DragonSpark.Application.Client.Controls
 {
@@ -16,7 +12,12 @@ namespace DragonSpark.Application.Client.Controls
 			DefaultStyleKeyProperty.OverrideMetadata( typeof(Shell), new FrameworkPropertyMetadata( typeof(Shell) ) );
 		}
 
-		public DataTemplate TitleLinkTemplate
+		public Shell()
+		{
+			DefaultStyleKey = typeof(Shell);
+		}
+
+		/*public DataTemplate TitleLinkTemplate
 		{
 			get { return GetValue( TitleLinkTemplateProperty ).To<DataTemplate>(); }
 			set { SetValue( TitleLinkTemplateProperty, value ); }
@@ -37,6 +38,24 @@ namespace DragonSpark.Application.Client.Controls
 				shell.TitleLinks.AddRange( links );
 
 			} );
-		}
+		}*/
+
+		public DataTemplate LogoContentTemplate
+		{
+			get { return GetValue( LogoContentTemplateProperty ).To<DataTemplate>(); }
+			set { SetValue( LogoContentTemplateProperty, value ); }
+		}	public static readonly DependencyProperty LogoContentTemplateProperty = DependencyProperty.Register( "LogoContentTemplate", typeof(DataTemplate), typeof(Shell), null );
+
+		public object LogoContent
+		{
+			get { return GetValue( LogoContentProperty ).To<object>(); }
+			set { SetValue( LogoContentProperty, value ); }
+		}	public static readonly DependencyProperty LogoContentProperty = DependencyProperty.Register( "LogoContent", typeof(object), typeof(Shell), null );
+
+		/*public ImageSource LogoSource
+		{
+			get { return (ImageSource)GetValue(LogoSourceProperty); }
+			set { SetValue( LogoSourceProperty, value ); }
+		}	public static DependencyProperty LogoSourceProperty = DependencyProperty.Register("LogoSource", typeof(ImageSource), typeof(Shell));*/
 	}
 }

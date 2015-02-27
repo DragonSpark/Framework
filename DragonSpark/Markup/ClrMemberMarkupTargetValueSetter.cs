@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace DragonSpark.Application.Markup
 {
-	public sealed class ClrMemberMarkupTargetValueSetter<T> : IMarkupTargetValueSetter where T : MemberInfo
+	public sealed class ClrMemberMarkupTargetValueSetter<T> : MarkupTargetValueSetterBase where T : MemberInfo
 	{
 		readonly object targetObject;
 		readonly T targetProperty;
@@ -22,23 +21,9 @@ namespace DragonSpark.Application.Markup
 			this.assign = assign;
 		}
 
-		public void SetValue( object value )
+		protected override void Apply( object value )
 		{
-			/*if ( targetProperty == null )
-			{
-				throw new ObjectDisposedException( GetType().FullName );
-			}*/
 			assign( targetObject, targetProperty, value );
-
-			// targetProperty.SetValue( targetObject, value, null );
-		}
-
-		public void Dispose()
-		{
-			Debugger.Break();
-			// GC.SuppressFinalize( this );
-			// targetObject = null;
-			// targetProperty = null;
 		}
 	}
 }
