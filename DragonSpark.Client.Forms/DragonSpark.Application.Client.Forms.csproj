@@ -41,6 +41,9 @@
       <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm">
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
@@ -186,6 +189,7 @@
     <Compile Include="Rendering\VisualElementTracker.cs" />
     <Compile Include="Rendering\WebViewRenderer.cs" />
     <Compile Include="Rendering\XAlignConverter.cs" />
+    <Compile Include="SystemAlert.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

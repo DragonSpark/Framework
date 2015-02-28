@@ -1,3 +1,4 @@
+using DragonSpark.Application.Client.Eventing;
 using DragonSpark.Extensions;
 using Xamarin.Forms;
 

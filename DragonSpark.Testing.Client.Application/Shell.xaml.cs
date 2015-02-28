@@ -1,6 +1,9 @@
 ﻿
 using System;
 using System.Diagnostics;
+using System.Windows;
+using DragonSpark.Application.Client.Forms;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Client.Application
 {
@@ -21,6 +24,11 @@ namespace DragonSpark.Testing.Client.Application
 			Trace.WriteLine( "Shell Activated." );
 
 			base.OnActivated( e );
+		}
+
+		void ButtonBase_OnClick( object sender, RoutedEventArgs e )
+		{
+			Trigger.Source.As<SystemAlert>( alert => alert.Test() );
 		}
 	}
 

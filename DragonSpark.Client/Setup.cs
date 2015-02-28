@@ -4,6 +4,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System;
 using System.Windows;
+using DragonSpark.Application.Client.Eventing;
 using Microsoft.Practices.Prism.Logging;
 
 namespace DragonSpark.Application.Client

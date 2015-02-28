@@ -134,12 +134,20 @@
     <Compile Include="Controls\UIElementCollectionExtensions.cs" />
     <Compile Include="Controls\WriteableBitmapExtensions.cs" />
     <Compile Include="Converters\ShellLinksConverter.cs" />
+    <Compile Include="Eventing\FormsEventBase.cs" />
+    <Compile Include="Eventing\FormsMessage.cs" />
+    <Compile Include="Eventing\MessageNameAttribute.cs" />
+    <Compile Include="Eventing\ReturningEvent.cs" />
+    <Compile Include="Eventing\ShellInitializedEvent.cs" />
+    <Compile Include="Eventing\ShellPageChangedEvent.cs" />
     <Compile Include="Extensions\Class1.cs" />
-    <Compile Include="FormsEvent.cs" />
+    <Compile Include="Eventing\FormsEvent.cs" />
+    <Compile Include="Interaction\ContentMonitorBehavior.cs" />
+    <Compile Include="Interaction\Notification.cs" />
     <Compile Include="Interaction\SetupEventTrigger.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interaction\InitializeApplicationAction.cs" />
+    <Compile Include="Interaction\ActualSizeBehavior.cs" />
     <Compile Include="IoC\Class1.cs" />
     <Compile Include="Markup\PropertySetter.cs">
       <SubType>Code</SubType>

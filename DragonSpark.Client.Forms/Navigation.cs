@@ -1,7 +1,9 @@
+using DragonSpark.Application.Client.Eventing;
 using DragonSpark.Application.Client.Forms.ComponentModel;
 using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +20,29 @@ namespace DragonSpark.Application.Client.Forms
 		{
 			this.platform = platform;
 			this.model = model;
+
+			this.Event<ReturningEvent>().Subscribe( this, OnReturning );
+		}
+
+		void OnReturning( FormsMessage<Page, CancelEventArgs> message )
+		{
+			message.Argument.Cancel |= ShouldCancel();
+		}
+
+		protected virtual bool ShouldCancel()
+		{
+			var page = model.Roots.Last();
+			var cancel = page.SendBackButtonPressed();
+			if ( !cancel && model.Tree.Count > 1 )
+			{
+				var page2 = model.PopModal();
+				if ( page2 != null )
+				{
+					SetCurrent( model.CurrentPage, true, true );
+					cancel = true;
+				}
+			}
+			return cancel;
 		}
 
 		public IReadOnlyList<Page> NavigationStack

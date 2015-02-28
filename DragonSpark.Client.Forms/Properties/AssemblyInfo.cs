@@ -24,6 +24,7 @@ using TableView = Xamarin.Forms.TableView;
 [assembly: AssemblyTrademark("")]
 [assembly: NeutralResourcesLanguage("en-US")]
 [assembly: CompilationRelaxations(8)]
+// [assembly: InternalsVisibleTo("DragonSpark")]
 [assembly: InternalsVisibleTo("DragonSpark.Client")]
 [assembly: InternalsVisibleTo("DragonSpark.Client.Forms.Testing")]
 [assembly: InternalsVisibleTo("DragonSpark.Testing")]
