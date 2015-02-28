@@ -90,18 +90,20 @@
 			</Border>
 		</DataTemplate>
 	</ds:Shell.LogoContentTemplate>
-	<DockPanel>
-		<ds:ApplicationBar DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
-		<Grid>
-			<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
-				<i:Interaction.Behaviors>
-					<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
-					<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
-				</i:Interaction.Behaviors>
-			</mui:TransitioningContentControl>
-			<Button Click="ButtonBase_OnClick" Content="Click Me!" />
-		</Grid>
-	</DockPanel>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
+			<i:Interaction.Behaviors>
+				<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
+			</i:Interaction.Behaviors>
+		</mui:TransitioningContentControl>
+		<Button Click="ButtonBase_OnClick" Content="Click Me!" />
+		<ds:ApplicationBar Grid.Row="1" DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
+	</Grid>
 	<i:Interaction.Triggers>
 		<interactionRequest:InteractionRequestTrigger x:Name="Trigger" SourceObject="{ds:Locate xfr:SystemAlert}">
 			<ds:PopupWindowAction CenterOverAssociatedObject="True" IsModal="True" WindowType="mui:ModernDialog" WindowStyle="{StaticResource Dialog}" />

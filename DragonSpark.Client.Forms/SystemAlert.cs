@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Client.Forms
 
 		~SystemAlert()
 		{
-			this.Event<DialogAlertEvent>().Unsubscribe( this );
+			Events.With<DialogAlertEvent>( @event => @event.Unsubscribe( this ) );
 		}
 
 		public void Test()

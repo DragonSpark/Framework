@@ -10,7 +10,7 @@
 	xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation;assembly=DragonSpark.Application.Client"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:forms="http://xamarin.com/schemas/2014/forms"
+	xmlns:forms="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
 	mc:Ignorable="d" 
 	xmlns:interaction="clr-namespace:DragonSpark.Application.Client.Forms.Interaction"
 	xmlns:defaultPopupWindows="clr-namespace:Microsoft.Practices.Prism.Interactivity.DefaultPopupWindows;assembly=Microsoft.Practices.Prism.Interactivity">
@@ -53,15 +53,15 @@
 		</Style.Triggers>
 	</Style>
 
-	<DataTemplate x:Key="ToolbarItemImage" DataType="forms:ToolbarItem">
+	<DataTemplate x:Key="ToolbarItemImage" DataType="{x:Type forms:ToolbarItem}">
 		<ds:ApplicationBarIconButton ImageSource="{Binding Item.Value, ElementName=Image}" Content="{Binding Text}" Command="{x:Static rendering:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}">
 			<i:Interaction.Behaviors>
 				<interaction:Host x:Name="Image" Item="{Binding Icon, Converter={x:Static rendering:ImageConverter.Instance}}" />
 			</i:Interaction.Behaviors>
 		</ds:ApplicationBarIconButton>
 	</DataTemplate>
-	
-	<DataTemplate DataType="forms:ToolbarItem">
+
+	<DataTemplate DataType="{x:Type forms:ToolbarItem}">
 		<ds:ApplicationBarMenuItem Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Command="{x:Static rendering:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}" />
 	</DataTemplate>
 	
@@ -127,27 +127,14 @@
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
-		<!--<Setter Property="ClipToBounds" Value="True" />-->
-		<!--<Setter Property="Clip">
-			<Setter.Value>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"/>
-				</ItemsPanelTemplate>
-			</Setter.Value>
-		</Setter>-->
-		<!--<Setter Property="Height" Value="{Binding ItemsBounds.Bottom, Mode=OneTime, RelativeSource={RelativeSource Self}}" />-->
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ds:ApplicationBar">
-					<Canvas x:Name="LayoutRoot" ClipToBounds="True" Height="0">
-						<!--<Canvas.RenderTransform>
-							<TranslateTransform x:Name="LayoutTranslation" Y="-100" />
-							~1~<TranslateTransform x:Name="LayoutTranslation" Y="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}}" />@1@
-						</Canvas.RenderTransform>-->
+					<Canvas x:Name="LayoutRoot" ClipToBounds="True" Height="0" VerticalAlignment="Bottom">
 						<Border x:Name="MainContent" Background="{StaticResource WinChromeBrush}" Width="{TemplateBinding ActualWidth}" MinHeight="75">
 							<Border.Resources>
 								<Storyboard x:Key="MenuMinimal">
-									<DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(FrameworkElement.Height)" To="{Binding ItemsBounds.Bottom, RelativeSource={RelativeSource TemplatedParent}}" Duration="0:0:00.25">
+									<DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(FrameworkElement.Height)" To="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}}" Duration="0:0:00.25">
 										<DoubleAnimation.EasingFunction>
 											<ExponentialEase EasingMode="EaseOut" />
 										</DoubleAnimation.EasingFunction>
@@ -185,7 +172,7 @@
 
 								<ItemsPresenter x:Name="Presenter" Grid.Column="1" />
 
-								<Button x:Name="MenuButton" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource ChromeButtonStyle}" Margin="3" Command="{x:Static ds:DisplayApplicationBarCommand.Instance}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+								<Button x:Name="MenuButton" Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ChromeButtonStyle}" Margin="3" Command="{x:Static ds:DisplayApplicationBarCommand.Instance}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
 									<Image Source="/DragonSpark.Application.Client;component/Themes/appbar.overflowdots.png" Stretch="UniformToFill" Width="{StaticResource ApplicationBarIconSize}" Height="{StaticResource ApplicationBarIconSize}" />
 								</Button>
 
