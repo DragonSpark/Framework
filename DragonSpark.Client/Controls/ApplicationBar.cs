@@ -85,9 +85,13 @@ namespace DragonSpark.Application.Client.Controls
             }
         }
 
-        void RefreshMenu( )
+        void RefreshMenu() // TODO: Kinda hacky.  Not happy.
         {
-            monitor.ApplyIf( () => ItemsBounds != Rect.Empty, () => MenuState = InitialState );
+            monitor.ApplyIf( () => ItemsBounds != Rect.Empty, () =>
+            {
+				MenuState = InitialState;
+				Height = ItemsBounds.Bottom;
+            } );
             Threading.Application.Start( () => this.RefreshValue( MenuStateProperty ) );
         }
 

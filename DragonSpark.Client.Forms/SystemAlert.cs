@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Client.Forms
 
 		public void Test()
 		{
-			this.Event<DialogAlertEvent>().Publish( new ContentPage(), new AlertArguments( "Testing 12 3", "This is a Test Message", "OK!!!", "CANELLLLLLLLL" ) );
+			this.Event<DialogAlertEvent>().Publish( new ContentPage(), new AlertArguments( "Testing 12 3", "This is a Test Message", null, null ) );
 		}
 
 		void OnAlert( Page page, AlertArguments arguments )

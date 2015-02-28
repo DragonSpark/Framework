@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Application.Client.Commanding;
 using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using System;
 using System.Windows;
 using System.Windows.Markup;
-using DragonSpark.Application.Client.Commanding;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Application.Client.Interaction
@@ -15,6 +15,7 @@ namespace DragonSpark.Application.Client.Interaction
 
 		protected override void Execute( Window parameter )
 		{
+			parameter.DataContext.As<IConfirmation>( confirmation => confirmation.Confirmed = Result );
 			parameter.DialogResult = Result;
 		}
 	}
@@ -36,7 +37,17 @@ namespace DragonSpark.Application.Client.Interaction
 
 	public class DialogNotification : Notification, IConfirmation
 	{
+		public string Accept
+		{
+			get { return accept; }
+			set { SetProperty(ref accept, value); }
+		}   string accept;
 
+		public string Cancel
+		{
+			get { return cancel; }
+			set { SetProperty(ref cancel, value); }
+		}   string cancel;
 
 		public bool? Result
 		{
@@ -54,12 +65,6 @@ namespace DragonSpark.Application.Client.Interaction
 	[ContentProperty( "WindowStyle" )]
 	public class PopupWindowAction : Microsoft.Practices.Prism.Interactivity.PopupWindowAction
 	{
-		/*public DataTemplate ContentTemplate
-		{
-			get { return GetValue( ContentTemplateProperty ).To<DataTemplate>(); }
-			set { SetValue( ContentTemplateProperty, value ); }
-		}	public static readonly DependencyProperty ContentTemplateProperty = DependencyProperty.Register( "ContentTemplate", typeof(DataTemplate), typeof(PopupWindowAction), null );*/
-
 		public Style WindowStyle
 		{
 			get { return GetValue( WindowStyleProperty ).To<Style>(); }
@@ -82,9 +87,8 @@ namespace DragonSpark.Application.Client.Interaction
 		{
 			var window = WindowType.Transform( Activator.CreateInstance<Window> ) ?? new Window();
 			window.Style = WindowStyle ?? window.Style;
-			// window.ContentTemplate = ContentTemplate ?? window.ContentTemplate;
-		//	window.Content = window.DataContext = notification;
 			window.Title = notification.Title;
+			window.DataContext = window.Content = notification;
 			PrepareContentForWindow( notification, window );
 			return window;
 		}

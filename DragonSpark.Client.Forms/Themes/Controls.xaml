@@ -135,6 +135,7 @@
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>-->
+		<!--<Setter Property="Height" Value="{Binding ItemsBounds.Bottom, Mode=OneTime, RelativeSource={RelativeSource Self}}" />-->
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ds:ApplicationBar">

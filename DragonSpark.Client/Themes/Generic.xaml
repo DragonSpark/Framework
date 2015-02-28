@@ -4,12 +4,26 @@
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	xmlns:controls="clr-namespace:DragonSpark.Application.Client.Controls"
 	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI">
+	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
+	xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation"
+	xmlns:ds="clr-namespace:DragonSpark.Application.Client.Interaction">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Controls.xaml" />
 		<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
+	<presentation:CountConverter x:Key="OneCountConverter" Count="1" Inverse="True">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:CountConverter>
+
+	<presentation:BooleanConverter x:Key="BooleanToVisibilityConverter">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:BooleanConverter>
+
+	<presentation:NullToBooleanConverter x:Key="NullToBoleanVisibilityConverter">
+		<presentation:BooleanToVisibilityTranslator />
+	</presentation:NullToBooleanConverter>
+	
 	<Color x:Key="WinChromeColor">#FFDDDDDD</Color>
 	<Color x:Key="WinForegroundColor">#DE000000</Color>
 	<FontFamily x:Key="WinFontFamilyNormal">Segoe UI</FontFamily>
@@ -203,6 +217,25 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+	<DataTemplate DataType="{x:Type ds:DialogNotification}">
+		<DockPanel x:Name="LayoutRoot">
+			<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+				<Button Content="OK" Width="75" Height="25" HorizontalAlignment="Right" Margin="0,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{Binding Accept, Converter={StaticResource NullToBoleanVisibilityConverter}}">
+					<Button.Command>
+						<ds:ApplyDialogResultCommand Result="True" />
+					</Button.Command>
+				</Button>
+				<Button Content="{Binding Cancel, TargetNullValue='Close'}" Width="75" Height="25" HorizontalAlignment="Right" Margin="20,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+					<Button.Command>
+						<ds:ApplyDialogResultCommand Result="False" />
+					</Button.Command>
+				</Button>
+			</StackPanel>
+			<ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Content}" />
+		</DockPanel>
+	</DataTemplate>
+
 	<!--<Style x:Key="LinkButton" 
 	   TargetType="Button"
 	   BasedOn="{StaticResource ResourceKey={x:Type Button}}"
@@ -234,18 +267,6 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
-
-	<presentation:CountConverter x:Key="OneCountConverter" Count="1" Inverse="True">
-		<presentation:BooleanToVisibilityTranslator />
-	</presentation:CountConverter>
-
-	<presentation:BooleanConverter x:Key="BooleanToVisibilityConverter">
-		<presentation:BooleanToVisibilityTranslator />
-	</presentation:BooleanConverter>
-
-	<presentation:NullToBooleanConverter x:Key="NullToBoleanVisibilityConverter">
-		<presentation:BooleanToVisibilityTranslator />
-	</presentation:NullToBooleanConverter>
 
 	<DataTemplate DataType="{x:Type commanding:CommandMonitor}">
 		<Grid>

@@ -6,7 +6,6 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
-	xmlns:forms="http://xamarin.com/schemas/2014/forms"
 	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
@@ -19,28 +18,8 @@
 	LogoContent="{Binding Item.Value, ElementName=Image}"
 >
 	<Window.Resources>
-		<Style x:Key="Dialog"  TargetType="mui:ModernDialog">
-			<Setter Property="ContentTemplate">
-				<Setter.Value>
-					<DataTemplate DataType="ds:DialogNotification">
-						<DockPanel x:Name="LayoutRoot" Margin="5" d:DataContext="{d:DesignInstance ds:DialogNotification}">
-							<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-								<Button Content="OK" Width="75" Height="25" HorizontalAlignment="Right" Margin="0,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-									<Button.Command>
-										<ds:ApplyDialogResultCommand Result="True" />
-									</Button.Command>
-								</Button>
-								<Button Content="Cancel" Width="75" Height="25" HorizontalAlignment="Right" Margin="20,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-									<Button.Command>
-										<ds:ApplyDialogResultCommand Result="False" />
-									</Button.Command>
-								</Button>
-							</StackPanel>
-							<ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Content}" />
-						</DockPanel>
-					</DataTemplate>
-				</Setter.Value>
-			</Setter>
+		<Style x:Key="Dialog" TargetType="mui:ModernDialog">
+			<!--<Setter Property="ContentTemplate" Value="{StaticResource {x:Type ds:DialogNotification}}"></Setter>-->
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="mui:ModernDialog">
@@ -57,11 +36,11 @@
 												<Rectangle Fill="{DynamicResource Accent}" Canvas.Top="18" Canvas.Left="24" Width="100" Height="6" />
 											</Canvas>
 
-											<Grid Margin="24">
+											<Grid Margin="24 24 24 0">
 												<Grid.RowDefinitions>
 													<RowDefinition Height="Auto" />
 													<RowDefinition Height="*" />
-													<RowDefinition Height="Auto" />
+													<!--<RowDefinition Height="Auto" />-->
 												</Grid.RowDefinitions>
 
 												<!-- title -->
@@ -72,17 +51,16 @@
 												   TextTrimming="CharacterEllipsis" />
 
 												<!-- content -->
-												<mui:TransitioningContentControl Grid.Row="1" Margin="0,20" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+												<mui:TransitioningContentControl Grid.Row="1" Margin="0,20" Content="{TemplateBinding Content}" />
 
 												<!-- buttons -->
-												<ItemsControl Grid.Row="2" ItemsSource="{TemplateBinding Buttons}" HorizontalAlignment="Right">
+												<!--<ItemsControl Grid.Row="2" ItemsSource="{TemplateBinding Buttons}" HorizontalAlignment="Right">
 													<ItemsControl.ItemsPanel>
 														<ItemsPanelTemplate>
 															<StackPanel Orientation="Horizontal" />
 														</ItemsPanelTemplate>
 													</ItemsControl.ItemsPanel>
-												</ItemsControl>
-
+												</ItemsControl>-->
 											</Grid>
 										</Grid>
 									</AdornerDecorator>
@@ -112,23 +90,21 @@
 			</Border>
 		</DataTemplate>
 	</ds:Shell.LogoContentTemplate>
-	<Grid>
-		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
-			<i:Interaction.Behaviors>
-				<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
-				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
-			</i:Interaction.Behaviors>
-		</mui:TransitioningContentControl>
-		<Button Click="ButtonBase_OnClick">
-			<ds:DialogNotification Title="Hello World" />
-		</Button>
-		<ds:ApplicationBar DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
-	</Grid>
+	<DockPanel>
+		<ds:ApplicationBar DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
+		<Grid>
+			<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
+				<i:Interaction.Behaviors>
+					<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+					<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
+				</i:Interaction.Behaviors>
+			</mui:TransitioningContentControl>
+			<Button Click="ButtonBase_OnClick" Content="Click Me!" />
+		</Grid>
+	</DockPanel>
 	<i:Interaction.Triggers>
-		<interactionRequest:InteractionRequestTrigger x:Name="Trigger"  SourceObject="{ds:Locate xfr:SystemAlert}">
+		<interactionRequest:InteractionRequestTrigger x:Name="Trigger" SourceObject="{ds:Locate xfr:SystemAlert}">
 			<ds:PopupWindowAction CenterOverAssociatedObject="True" IsModal="True" WindowType="mui:ModernDialog" WindowStyle="{StaticResource Dialog}" />
-
-
 		</interactionRequest:InteractionRequestTrigger>
 	</i:Interaction.Triggers>
 </ds:Shell>
