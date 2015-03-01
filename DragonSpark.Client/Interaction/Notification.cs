@@ -1,23 +1,135 @@
 ﻿using DragonSpark.Application.Client.Commanding;
 using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Extensions;
+using Microsoft.Expression.Interactions.Extensions.DataHelpers;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using System;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Markup;
+using DragonSpark.Application.Client.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Application.Client.Interaction
 {
-	public class ApplyDialogResultCommand : CommandBase<Window>
+	public class BindingHost : System.Windows.Interactivity.Behavior<FrameworkElement>
 	{
-		public bool Result { get; set; }
+		readonly BindingListener listener  = new BindingListener(HandleBindingValueChanged);
+
+		protected override void OnAttached() {
+			base.OnAttached();
+
+			AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+			AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+
+			
+		}
+
+		void AssociatedObjectOnUnloaded( object sender, RoutedEventArgs routedEventArgs )
+		{
+			this.listener.Binding = null;
+			this.listener.Element = null;
+		}
+
+		void AssociatedObjectOnLoaded( object sender, RoutedEventArgs routedEventArgs )
+		{
+			Refresh();
+		}
+
+		void Refresh()
+		{
+			if ( listener.Value != Item )
+			{
+				listener.Binding.With( binding =>
+				{
+					binding.ElementName.NullIfEmpty().Null( () => binding.Source = AssociatedObject );
+					listener.Element = listener.Binding != null ? AssociatedObject : null;
+					listener.Value = Item;
+				} );
+			}
+		}
+
+		/// <summary>
+		/// Perform cleanup.
+		/// </summary>
+		protected override void OnDetaching() {
+			base.OnDetaching();
+
+			AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+			AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+
+			
+		}
+
+		static void HandleBindingValueChanged( object sender, BindingChangedEventArgs e )
+		{
+		}
+
+		public Binding To
+		{
+			get { return listener.Binding; }
+			set
+			{
+				listener.Binding.With( binding => binding.Source = ReferenceEquals( binding.Source, AssociatedObject ) ? null : binding.Source );
+
+				listener.Binding = value;
+
+				AssociatedObject.With( element => Refresh() );
+			}
+		}
+
+		public object Item
+		{
+			get { return GetValue( ItemProperty ).To<object>(); }
+			set { SetValue( ItemProperty, value ); }
+		}	public static readonly DependencyProperty ItemProperty = DependencyProperty.Register( "Item", typeof(object), typeof(BindingHost), new PropertyMetadata( OnItemChanged ) );
+
+		static void OnItemChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			d.As<BindingHost>( host => host.Refresh() );
+		}
+	}
+
+	public class ApplyDialogResultCommand : ApplyNotificationResultCommand<IConfirmation, bool>
+	{
+		protected override void Assign( IConfirmation notification )
+		{
+			notification.Confirmed = Result;
+		}
+
+		protected override void Close( Window parameter )
+		{
+			parameter.DialogResult = Result;
+		}
+	}
+
+	public class ApplySelectionResultCommand : ApplyNotificationResultCommand<OptionsNotification, string>
+	{
+		public ApplySelectionResultCommand()
+		{}
+
+		protected override void Assign( OptionsNotification notification )
+		{
+			notification.Result = Result;
+		}
+	}
+
+	public abstract class ApplyNotificationResultCommand<TNotification, TResult> : CommandBase<Window> where TNotification : class
+	{
+		public TResult Result { get; set; }
 
 		protected override void Execute( Window parameter )
 		{
-			parameter.DataContext.As<IConfirmation>( confirmation => confirmation.Confirmed = Result );
-			parameter.DialogResult = Result;
+			parameter.DataContext.As<TNotification>( Assign );
+			Close( parameter );
 		}
+
+		protected virtual void Close( Window parameter )
+		{
+			parameter.Close();
+		}
+
+		protected abstract void Assign( TNotification notification );
 	}
 
 	public class Notification : ViewObject, INotification
@@ -35,7 +147,16 @@ namespace DragonSpark.Application.Client.Interaction
 		}   object content;
 	}
 
-	public class DialogNotification : Notification, IConfirmation
+	public class OptionsNotification : SystemNotification<string>
+	{
+		public string Destruction
+		{
+			get { return destruction; }
+			set { SetProperty(ref destruction, value); }
+		}   string destruction;
+	}
+
+	public class DialogNotification : SystemNotification<bool?>, IConfirmation
 	{
 		public string Accept
 		{
@@ -43,23 +164,26 @@ namespace DragonSpark.Application.Client.Interaction
 			set { SetProperty(ref accept, value); }
 		}   string accept;
 
+		bool IConfirmation.Confirmed
+		{
+			get { return Result.GetValueOrDefault(); }
+			set { Result = value; }
+		}
+	}
+
+	public abstract class SystemNotification<TResult> : Notification
+	{
 		public string Cancel
 		{
 			get { return cancel; }
 			set { SetProperty(ref cancel, value); }
 		}   string cancel;
 
-		public bool? Result
+		public TResult Result
 		{
 			get { return result; }
-			private set { SetProperty(ref result, value); }
-		}   bool? result;
-
-		bool IConfirmation.Confirmed
-		{
-			get { return Result.GetValueOrDefault(); }
-			set { Result = value; }
-		}
+			set { SetProperty(ref result, value); }
+		}   TResult result;
 	}
 
 	[ContentProperty( "WindowStyle" )]
@@ -85,12 +209,12 @@ namespace DragonSpark.Application.Client.Interaction
 
 		Window Create( INotification notification )
 		{
-			var window = WindowType.Transform( Activator.CreateInstance<Window> ) ?? new Window();
-			window.Style = WindowStyle ?? window.Style;
-			window.Title = notification.Title;
-			window.DataContext = window.Content = notification;
-			PrepareContentForWindow( notification, window );
-			return window;
+			var result = WindowType.Transform( Activator.CreateInstance<Window> ) ?? new Window();
+			result.Style = WindowStyle ?? result.Style;
+			result.Title = notification.Title;
+			result.DataContext = result.Content = notification;
+			PrepareContentForWindow( notification, result );
+			return result;
 		}
 	}
 }

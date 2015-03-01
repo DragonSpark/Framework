@@ -103,12 +103,12 @@
     <Compile Include="ComponentModel\ExportImageSourceHandlerAttribute.cs" />
     <Compile Include="ComponentModel\ExportRendererAttribute.cs" />
     <Compile Include="ComponentModel\ExpressionSearch.cs" />
+    <Compile Include="ComponentModel\RendererProperties.cs" />
     <Compile Include="ConfigureApplicationCommand.cs" />
     <Compile Include="FormsInitializer.cs" />
     <Compile Include="ComponentModel\INavigationModel.cs" />
     <Compile Include="ComponentModel\PlatformServices.cs" />
     <Compile Include="ComponentModel\ApplicationBarModel.cs" />
-    <Compile Include="ComponentModel\ShellProperties.cs" />
     <Compile Include="ComponentModel\Ticker.cs" />
     <Compile Include="Interaction\ImageContextBehavior.cs" />
     <Compile Include="Navigation.cs" />
@@ -189,7 +189,7 @@
     <Compile Include="Rendering\VisualElementTracker.cs" />
     <Compile Include="Rendering\WebViewRenderer.cs" />
     <Compile Include="Rendering\XAlignConverter.cs" />
-    <Compile Include="SystemAlert.cs" />
+    <Compile Include="SystemMessageRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

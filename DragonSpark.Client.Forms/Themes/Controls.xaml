@@ -56,7 +56,7 @@
 	<DataTemplate x:Key="ToolbarItemImage" DataType="{x:Type forms:ToolbarItem}">
 		<ds:ApplicationBarIconButton ImageSource="{Binding Item.Value, ElementName=Image}" Content="{Binding Text}" Command="{x:Static rendering:ExecuteToolbarItemCommand.Instance}" CommandParameter="{Binding}">
 			<i:Interaction.Behaviors>
-				<interaction:Host x:Name="Image" Item="{Binding Icon, Converter={x:Static rendering:ImageConverter.Instance}}" />
+				<ds:BindingHost x:Name="Image" Item="{Binding Icon, Converter={x:Static rendering:ImageConverter.Instance}}" />
 			</i:Interaction.Behaviors>
 		</ds:ApplicationBarIconButton>
 	</DataTemplate>

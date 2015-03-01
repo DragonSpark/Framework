@@ -36,7 +36,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		{
 			tracker = new BackgroundTracker<TabbedPage, TabControl>( new TabControl(), BackgroundProperty );
 
-			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
+			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 			SetBinding( ItemsSourceProperty, new Binding( "Children" ) );
 			
 			// HeaderTemplate = (DataTemplate)Application.Current.Resources["TabbedPageHeader"];

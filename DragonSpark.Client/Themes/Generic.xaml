@@ -6,10 +6,13 @@
 	xmlns:mui="http://firstfloorsoftware.com/ModernUI"
 	xmlns:modernui="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI"
 	xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation"
-	xmlns:ds="clr-namespace:DragonSpark.Application.Client.Interaction">
+	xmlns:ds="clr-namespace:DragonSpark.Application.Client.Interaction"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
+	xmlns:markup="http://framework.dragonspark.us">
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Controls.xaml" />
 		<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Controls.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 	<presentation:CountConverter x:Key="OneCountConverter" Count="1" Inverse="True">
@@ -52,7 +55,12 @@
 		<Setter Property="FontSize" Value="{StaticResource WinFontSizeSmall}"/>
 		<Setter Property="Foreground" Value="{StaticResource WinTextBoxForegroundBrush}"/>
 	</Style>
-	
+
+	<Style TargetType="ContentPresenter">
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+	</Style>
+
 	<!-- System chrome color -->
 	<ControlTemplate x:Key="ChromeButtonControlTemplate" TargetType="{x:Type ButtonBase}">
 		<Border x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Margin="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -221,7 +229,7 @@
 	<DataTemplate DataType="{x:Type ds:DialogNotification}">
 		<DockPanel x:Name="LayoutRoot">
 			<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-				<Button Content="OK" Width="75" Height="25" HorizontalAlignment="Right" Margin="0,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{Binding Accept, Converter={StaticResource NullToBoleanVisibilityConverter}}">
+				<Button Content="{Binding Accept}" Width="75" Height="25" HorizontalAlignment="Right" Margin="0,10,0,0" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{Binding Accept, Converter={StaticResource NullToBoleanVisibilityConverter}}">
 					<Button.Command>
 						<ds:ApplyDialogResultCommand Result="True" />
 					</Button.Command>
@@ -233,6 +241,44 @@
 				</Button>
 			</StackPanel>
 			<ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Content}" />
+		</DockPanel>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type ds:OptionsNotification}">
+		<DockPanel x:Name="LayoutRoot" MinWidth="250">
+			<DockPanel DockPanel.Dock="Bottom">
+				<Button Content="{Binding Destruction}" Padding="0" Width="75" Height="25" Foreground="Red" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{markup:Locate ds:ApplySelectionResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{Binding Destruction, Converter={StaticResource NullToBoleanVisibilityConverter}}">
+					<i:Interaction.Behaviors>
+						<ds:BindingHost Item="{Binding Destruction}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+					</i:Interaction.Behaviors>
+				</Button>
+				<Button DockPanel.Dock="Right" Padding="0" Content="{Binding Cancel, TargetNullValue='Close'}" Width="75" Height="25" HorizontalAlignment="Right" Margin="20,10,0,0" Command="{markup:Locate ds:ApplySelectionResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+					<i:Interaction.Behaviors>
+						<ds:BindingHost Item="{Binding Cancel}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+					</i:Interaction.Behaviors>
+				</Button>
+			</DockPanel>
+			<ListBox FontSize="18" ItemsSource="{Binding Content}">
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="ListBoxItem">
+						<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+					</Style>
+				</ListBox.ItemContainerStyle>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Button Command="{markup:Locate ds:ApplySelectionResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+							<Button.Template>
+								<ControlTemplate>
+									<TextBlock Text="{Binding}" Margin="0 12" TextAlignment="Center" />
+								</ControlTemplate>
+							</Button.Template>
+							<i:Interaction.Behaviors>
+								<ds:BindingHost Item="{Binding}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+							</i:Interaction.Behaviors>
+						</Button>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</DockPanel>
 	</DataTemplate>
 

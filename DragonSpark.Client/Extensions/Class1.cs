@@ -35,9 +35,9 @@ namespace DragonSpark.Application.Client.Extensions
 		{
 			References.CheckWith( @this, x =>
 			{
-				new BindingListener( ( s, a ) => setter( a.EventArgs.NewValue ) ) { Binding = @this, Element = source };
+				new BindingListener( ( s, a ) => setter( a.EventArgs.NewValue.Transform( item => Equals( @this.Source, source ) && Equals( item, source ) ? item.AsTo<FrameworkElement, object>( e => e.DataContext ) : item ) ) ) { Binding = @this, Element = source };
 			} );
-		}				
+		}
 	}
 
 	public static class ExtensionMethods
@@ -524,7 +524,7 @@ namespace DragonSpark.Application.Client.Extensions
 
 		public static void EnsureLoaded<TFrameworkElement>( this TFrameworkElement target, Action<TFrameworkElement> callback, bool immediateExecution = true ) where TFrameworkElement : FrameworkElement
 		{
-			/*Action<TFrameworkElement> action = x => x.IsLoaded.IsTrue( () => callback( x ) );
+			Action<TFrameworkElement> action = x => x.IsLoaded.IsTrue( () => callback( x ) );
 
 			if ( target.IsLoaded )
 			{
@@ -538,7 +538,7 @@ namespace DragonSpark.Application.Client.Extensions
 				{
 					target.Loaded += new Loader<TFrameworkElement>( action ).OnLoad;
 				} );
-			}*/
+			}
 		}
 
 		readonly static IDictionary<Type,IEnumerable<DependencyProperty>> Properties = new Dictionary<Type, IEnumerable<DependencyProperty>>();

@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Markup
 		{
 			var result = !DesignerProperties.GetIsInDesignMode( new DependencyObject() ) ? serviceProvider.Get<IProvideValueTarget>()
 				.Transform( target => Builders.Select( builder => builder.Create<IMarkupTargetValueSetter>( serviceProvider ) ).NotNull().FirstOrDefault()
-					.Transform( setter => BeginProvideValue( serviceProvider, setter ) ) ) : null;
+					.Transform( setter => BeginProvideValue( serviceProvider, setter ), () => this ) ) : null;
 			return result;
 		}
 

@@ -1,9 +1,9 @@
 ﻿
+using DragonSpark.Application.Client.Forms;
+using DragonSpark.Extensions;
 using System;
 using System.Diagnostics;
 using System.Windows;
-using DragonSpark.Application.Client.Forms;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Client.Application
 {
@@ -28,7 +28,7 @@ namespace DragonSpark.Testing.Client.Application
 
 		void ButtonBase_OnClick( object sender, RoutedEventArgs e )
 		{
-			Trigger.Source.As<SystemAlert>( alert => alert.Test() );
+			Trigger.Source.As<DisplayOptionsRequest>( alert => alert.Test() );
 		}
 	}
 

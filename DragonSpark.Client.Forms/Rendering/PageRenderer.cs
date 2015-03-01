@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 	{
 		public PageRenderer()
 		{
-			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
+			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		protected override void OnElementChanged( ElementChangedEventArgs<Page> e )

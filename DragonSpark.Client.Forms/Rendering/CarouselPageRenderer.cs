@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		{
 			tracker = new BackgroundTracker<CarouselPage, Panel>( this, BackgroundProperty );
 
-			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
+			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		public UIElement ContainerElement

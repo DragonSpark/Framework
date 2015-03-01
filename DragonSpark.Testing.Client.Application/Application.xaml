@@ -7,9 +7,8 @@
 	<Application.Resources>
 		 <ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Xamarin.Forms.Platform.WP8;component/Themes/Generic.xaml" />
-				<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
 				<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
+				<ResourceDictionary Source="/Xamarin.Forms.Platform.WP8;component/Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

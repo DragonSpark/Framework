@@ -63,7 +63,7 @@ namespace Microsoft.Expression.Interactions.Extensions {
 		/// <summary>
 		/// Backing DP for the Duration property
 		/// </summary>
-		public static readonly DependencyProperty DurationProperty = DependencyProperty.Register("Duration", typeof(Duration), typeof(SetProperty), new PropertyMetadata(new Duration(TimeSpan.FromSeconds(.25))));
+		public static readonly DependencyProperty DurationProperty = DependencyProperty.Register("Duration", typeof(Duration), typeof(SetProperty), new PropertyMetadata(System.Windows.Duration.Automatic));
 
 		/// <summary>
 		/// Duration of the animation for the transition

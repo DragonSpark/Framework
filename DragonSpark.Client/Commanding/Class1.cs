@@ -40,7 +40,7 @@ namespace DragonSpark.Application.Client.Commanding
 		void Refresh();
 	}
 
-	public abstract class CommandBase<TParameter> : ICommand
+	public abstract class CommandBase<TParameter> : ViewObject, ICommand
 	{
 		public event EventHandler CanExecuteChanged = delegate { };
 

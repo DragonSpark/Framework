@@ -50,8 +50,12 @@ namespace Microsoft.Expression.Interactions.Extensions.DataHelpers {
 		public Binding Binding {
 			get { return this.binding; }
 			set {
-				this.binding = value;
-				this.Attach();
+				if ( binding != value )
+				{
+					this.binding = value;
+					this.Attach();
+				}
+				
 			}
 		}
 
@@ -61,8 +65,12 @@ namespace Microsoft.Expression.Interactions.Extensions.DataHelpers {
 		public DependencyObject Element {
 			get { return this.target; }
 			set {
-				this.target = value;
-				this.Attach();
+				if ( !Equals( target, value ) )
+				{
+					this.target = value;
+					this.Attach();
+				}
+				
 			}
 		}
 
@@ -114,6 +122,7 @@ namespace Microsoft.Expression.Interactions.Extensions.DataHelpers {
 
 			BindingListener.freeListeners.Add(this.listener);
 
+			this.listener.Detach();
 			this.listener = null;
 		}
 

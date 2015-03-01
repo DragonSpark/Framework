@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		{
 			AutoPackage = false;
 
-			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
+			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		public bool Visible { get; private set; }

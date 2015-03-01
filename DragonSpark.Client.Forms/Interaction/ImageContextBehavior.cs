@@ -1,18 +1,45 @@
 ﻿
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interactivity;
-using DragonSpark.Application.Client.Forms.Rendering;
+using DragonSpark.Application.Client.Eventing;
+using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Extensions;
+using System.ComponentModel;
+using System.Windows;
 
 namespace DragonSpark.Application.Client.Forms.Interaction
 {
-	public class Host : Behavior<FrameworkElement>
+	public class CloseOnReturningBehavior : System.Windows.Interactivity.Behavior<FrameworkElement>
 	{
-		public object Item
+		protected override void OnAttached()
 		{
-			get { return GetValue( ItemProperty ).To<object>(); }
-			set { SetValue( ItemProperty, value ); }
-		}	public static readonly DependencyProperty ItemProperty = DependencyProperty.Register( "Item", typeof(object), typeof(Host), null );
+			base.OnAttached();
+
+			AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+			AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+		}
+
+		protected override void OnDetaching()
+		{
+			base.OnDetaching();
+
+			AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+			AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+		}
+
+		void AssociatedObjectOnLoaded( object sender, RoutedEventArgs routedEventArgs )
+		{
+			this.Event<ReturningEvent>().Subscribe( OnReturning );
+		}
+
+		void OnReturning( CancelEventArgs eventArgs )
+		{
+			eventArgs.Cancel = true;
+			var window = AssociatedObject.GetParentOfType<Window>();
+			window.Close();
+		}
+		
+		void AssociatedObjectOnUnloaded( object sender, RoutedEventArgs routedEventArgs )
+		{
+			this.Event<ReturningEvent>().Unsubscribe( OnReturning );
+		}
 	}
 }

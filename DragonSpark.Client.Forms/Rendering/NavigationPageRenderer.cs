@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		public NavigationPageRenderer() // TODO: Uncomment and render through Frame control?
 		{
 			AutoPackage = false;
-			SetBinding( ShellProperties.TitleProperty, new Binding( "Element.Title" ) );
+			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		protected override void OnElementChanged( ElementChangedEventArgs<NavigationPage> e )

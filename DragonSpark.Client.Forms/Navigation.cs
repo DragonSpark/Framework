@@ -21,12 +21,12 @@ namespace DragonSpark.Application.Client.Forms
 			this.platform = platform;
 			this.model = model;
 
-			this.Event<ReturningEvent>().Subscribe( this, OnReturning );
+			this.Event<ReturningEvent>().Subscribe( OnReturning );
 		}
 
-		void OnReturning( FormsMessage<Page, CancelEventArgs> message )
+		void OnReturning( CancelEventArgs args )
 		{
-			message.Argument.Cancel |= ShouldCancel();
+			args.Cancel |= ShouldCancel();
 		}
 
 		protected virtual bool ShouldCancel()
