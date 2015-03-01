@@ -306,7 +306,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark\DragonSpark.Application.csproj">
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Application</Name>
     </ProjectReference>
@@ -314,7 +314,7 @@
       <Project>{96f63f2b-7d11-4d0f-a932-26c29f8e48bf}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Core\DragonSpark.csproj">
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>

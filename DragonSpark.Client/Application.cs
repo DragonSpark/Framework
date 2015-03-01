@@ -1,19 +1,21 @@
-﻿using DragonSpark.Extensions;
-using System.Windows;
-using System.Windows.Markup;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Xamarin.Forms;
 
-namespace DragonSpark.Application.Client
+namespace DragonSpark.Client
 {
-	[ContentProperty( "Setup" )]
-	public class Application : System.Windows.Application
+	public class Application : Xamarin.Forms.Application
 	{
-		public Setup Setup { get; set; }
-
-		protected override void OnStartup( StartupEventArgs e )
+		public FileImageSource Logo
 		{
-			Setup.With( x => x.Launch( e.Args ) );
+			get { return (FileImageSource)GetValue( LogoProperty ); }
+			set { SetValue( LogoProperty, value ); }
+		}	public static readonly BindableProperty LogoProperty = BindableProperty.Create( "Logo", typeof(FileImageSource), typeof (Application), default(FileImageSource) );
 
-			base.OnStartup( e );
-		}
+		public ICollection<ToolbarItem> Items
+		{
+			get { return (ICollection<ToolbarItem>)GetValue( ItemsProperty ); }
+			// set { SetValue( ItemsProperty, value ); }
+		}	public static readonly BindableProperty ItemsProperty = BindableProperty.Create( "Items", typeof(IEnumerable<ToolbarItem>), typeof (Application), new ObservableCollection<ToolbarItem>() );
 	}
 }
