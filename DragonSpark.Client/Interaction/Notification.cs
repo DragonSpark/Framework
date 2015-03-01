@@ -7,82 +7,56 @@ using System;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using DragonSpark.Application.Client.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Application.Client.Interaction
 {
 	public class BindingHost : System.Windows.Interactivity.Behavior<FrameworkElement>
 	{
-		readonly BindingListener listener  = new BindingListener(HandleBindingValueChanged);
+		readonly BindingListener listener = new BindingListener();
 
-		protected override void OnAttached() {
+		protected override void OnAttached() 
+		{
 			base.OnAttached();
 
 			AssociatedObject.Loaded += AssociatedObjectOnLoaded;
-			AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
-
-			
-		}
-
-		void AssociatedObjectOnUnloaded( object sender, RoutedEventArgs routedEventArgs )
-		{
-			this.listener.Binding = null;
-			this.listener.Element = null;
+			AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;			
 		}
 
 		void AssociatedObjectOnLoaded( object sender, RoutedEventArgs routedEventArgs )
 		{
+			listener.Binding.With( binding => binding.ElementName.NullIfEmpty().Null( () => binding.Source = AssociatedObject ) );
+			listener.Element = AssociatedObject;
 			Refresh();
 		}
 
+		void AssociatedObjectOnUnloaded( object sender, RoutedEventArgs routedEventArgs )
+		{
+			listener.Clear();
+		}
+		
 		void Refresh()
 		{
-			if ( listener.Value != Item )
-			{
-				listener.Binding.With( binding =>
-				{
-					binding.ElementName.NullIfEmpty().Null( () => binding.Source = AssociatedObject );
-					listener.Element = listener.Binding != null ? AssociatedObject : null;
-					listener.Value = Item;
-				} );
-			}
+			AssociatedObject.With( element => listener.Value = Item );
 		}
 
-		/// <summary>
-		/// Perform cleanup.
-		/// </summary>
 		protected override void OnDetaching() {
 			base.OnDetaching();
 
 			AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
-			AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
-
-			
+			AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;			
 		}
-
-		static void HandleBindingValueChanged( object sender, BindingChangedEventArgs e )
-		{
-		}
-
-		public Binding To
-		{
-			get { return listener.Binding; }
-			set
-			{
-				listener.Binding.With( binding => binding.Source = ReferenceEquals( binding.Source, AssociatedObject ) ? null : binding.Source );
-
-				listener.Binding = value;
-
-				AssociatedObject.With( element => Refresh() );
-			}
-		}
-
 		public object Item
 		{
 			get { return GetValue( ItemProperty ).To<object>(); }
 			set { SetValue( ItemProperty, value ); }
 		}	public static readonly DependencyProperty ItemProperty = DependencyProperty.Register( "Item", typeof(object), typeof(BindingHost), new PropertyMetadata( OnItemChanged ) );
+
+		public Binding ApplyTo
+		{
+			get { return listener.Binding; }
+			set { listener.Binding = value; }
+		}
 
 		static void OnItemChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{

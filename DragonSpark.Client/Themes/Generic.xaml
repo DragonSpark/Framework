@@ -249,12 +249,12 @@
 			<DockPanel DockPanel.Dock="Bottom">
 				<Button Content="{Binding Destruction}" Padding="0" Width="75" Height="25" Foreground="Red" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{markup:Locate ds:ApplySelectionResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{Binding Destruction, Converter={StaticResource NullToBoleanVisibilityConverter}}">
 					<i:Interaction.Behaviors>
-						<ds:BindingHost Item="{Binding Destruction}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+						<ds:BindingHost Item="{Binding Destruction}" ApplyTo="{Binding Command.Result, Mode=OneWayToSource}" />
 					</i:Interaction.Behaviors>
 				</Button>
 				<Button DockPanel.Dock="Right" Padding="0" Content="{Binding Cancel, TargetNullValue='Close'}" Width="75" Height="25" HorizontalAlignment="Right" Margin="20,10,0,0" Command="{markup:Locate ds:ApplySelectionResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
 					<i:Interaction.Behaviors>
-						<ds:BindingHost Item="{Binding Cancel}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+						<ds:BindingHost Item="{Binding Cancel}" ApplyTo="{Binding Command.Result, Mode=OneWayToSource}" />
 					</i:Interaction.Behaviors>
 				</Button>
 			</DockPanel>
@@ -273,7 +273,7 @@
 								</ControlTemplate>
 							</Button.Template>
 							<i:Interaction.Behaviors>
-								<ds:BindingHost Item="{Binding}" To="{Binding Command.Result, Mode=OneWayToSource}" />
+								<ds:BindingHost Item="{Binding}" ApplyTo="{Binding Command.Result, Mode=OneWayToSource}" />
 							</i:Interaction.Behaviors>
 						</Button>
 					</DataTemplate>

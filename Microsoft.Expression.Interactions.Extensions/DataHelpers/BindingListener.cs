@@ -85,6 +85,12 @@ namespace Microsoft.Expression.Interactions.Extensions.DataHelpers {
 			}
 		}
 
+		public void Clear()
+		{
+			Element = null;
+			Value = null;
+			Detach();
+		}
 
 		private void Attach() {
 			this.Detach();

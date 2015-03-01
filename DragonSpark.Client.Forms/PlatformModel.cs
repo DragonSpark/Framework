@@ -27,14 +27,8 @@ namespace DragonSpark.Application.Client.Forms
 		{
 			this.engine = engine;
 			this.application = application;
-		}
 
-		public InteractionRequest<DialogNotification> DisplayRequest
-		{
-			get { return displayRequest; }
-		}	readonly InteractionRequest<DialogNotification> displayRequest = new InteractionRequest<DialogNotification>();
-
-		// ProgressIndicator indicator;
+			// ProgressIndicator indicator;
 			/*SystemTray.SetProgressIndicator( page, indicator = new ProgressIndicator
 			{
 				IsVisible = false,
@@ -46,6 +40,12 @@ namespace DragonSpark.Application.Client.Forms
 				busyCount = Math.Max( 0, enabled ? ( busyCount + 1 ) : ( busyCount - 1 ) );
 				indicator.IsVisible = ( busyCount > 0 );
 			}, null );*/
+		}
+
+		public InteractionRequest<DialogNotification> DisplayRequest
+		{
+			get { return displayRequest; }
+		}	readonly InteractionRequest<DialogNotification> displayRequest = new InteractionRequest<DialogNotification>();
 
 		public Xamarin.Forms.Application Application
 		{
