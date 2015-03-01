@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Client.Eventing
 		}
 	}
 
-	public abstract class FormsEventBase<TSender> : PubSubEvent<TSender> where TSender : class
+	public abstract class FormsEventBase<TSender> : PubSubEvent<TSender>
 	{
 		protected string GetMessageName()
 		{

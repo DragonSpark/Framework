@@ -33,6 +33,9 @@
 			</Border>
 		</DataTemplate>
 	</ds:Shell.LogoContentTemplate>
+	<ds:Shell.RenderTransform>
+		<ScaleTransform ScaleX="{Binding ScaleFactor, Mode=TwoWay}" />
+	</ds:Shell.RenderTransform>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -44,7 +47,6 @@
 				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
 			</i:Interaction.Behaviors>
 		</mui:TransitioningContentControl>
-		<Button Click="ButtonBase_OnClick" Content="Click Me!" />
 		<ds:ApplicationBar Grid.Row="1" DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
 	</Grid>
 	<i:Interaction.Triggers>

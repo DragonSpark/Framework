@@ -51,7 +51,7 @@ namespace DragonSpark.Application.Client
 				Logger.Log( "Primary Window/Shell Displayed.", Category.Info, Microsoft.Practices.Prism.Logging.Priority.None );
 			} );
 
-			this.Event<ShellInitializedEvent>().Publish( application );
+			// this.Event<ShellInitializedEvent>().Publish( application );
 			Logger.Log( "Primary Window/Shell Initialized.", Category.Info, Microsoft.Practices.Prism.Logging.Priority.None );
 		}
 

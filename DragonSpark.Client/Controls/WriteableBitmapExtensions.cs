@@ -4,9 +4,9 @@ using System.Windows.Media.Imaging;
 
 namespace DragonSpark.Application.Client.Controls
 {
-	public static partial class WriteableBitmapExtensions
+	public static class WriteableBitmapExtensions
 	{
-		public static System.Windows.Media.Imaging.BitmapSource Rendered( this FrameworkElement @this, Size? size = null, Transform transform = null )
+		public static BitmapSource Rendered( this FrameworkElement @this, Size? size = null, Transform transform = null )
 		{
 			var dimensions = size.GetValueOrDefault( new Size( (int)@this.ActualWidth, (int)@this.ActualHeight ) );
 			var source = PresentationSource.FromVisual( @this );

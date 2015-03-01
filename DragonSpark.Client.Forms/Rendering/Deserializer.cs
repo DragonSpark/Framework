@@ -1,3 +1,4 @@
+using DragonSpark.Application.Client.Forms.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +19,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		{
 			return Task.Run( () =>
 			{
-				using ( var store = DetermineStore() )
+				using ( var store = PlatformServices.DetermineStore() )
 				{
 					var result = store.FileExists( PropertyStoreFile ) ? Load( store ) : null;
 					return result;
@@ -35,18 +36,6 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 		}
 
-		static IsolatedStorageFile DetermineStore()
-		{
-			try
-			{
-				return IsolatedStorageFile.GetUserStoreForApplication();
-			}
-			catch ( IsolatedStorageException ) // Outside of a click-once
-			{
-				return IsolatedStorageFile.GetUserStoreForAssembly();
-			}
-		}
-
 		public Task SerializePropertiesAsync( IDictionary<string, object> properties )
 		{
 			var target = new Dictionary<string, object>( properties );
@@ -56,7 +45,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 				if ( Save( target, temp ) )
 				{
-					using ( var store = DetermineStore() )
+					using ( var store = PlatformServices.DetermineStore() )
 					{
 						try
 						{
@@ -77,7 +66,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 		static bool Save( IDictionary<string, object> properties, string temp )
 		{
-			using ( var store = DetermineStore() )
+			using ( var store = PlatformServices.DetermineStore() )
 			{
 				using ( var stream = store.OpenFile( temp, FileMode.OpenOrCreate ) )
 				{

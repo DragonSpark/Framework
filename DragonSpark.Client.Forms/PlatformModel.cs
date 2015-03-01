@@ -66,7 +66,12 @@ namespace DragonSpark.Application.Client.Forms
 
 		void Refresh()
 		{
-			Page.With( item => item.Layout( new Rectangle( 0.0, 0.0, Size.Width, Size.Height ) ) );
+			Page.With( item =>
+			{
+				var bounds = new Rectangle( 0.0, 0.0, Size.Width, Size.Height );
+				item.Layout( bounds );
+				this.Event<ShellSizeChangedEvent>().Publish( bounds.Size );
+			} );
 		}
 
 		public object Content
@@ -101,6 +106,18 @@ namespace DragonSpark.Application.Client.Forms
 				}
 			}
 		}	Page page;
+
+		public double ScaleFactor
+		{
+			get { return scaleFactor; }
+			set
+			{
+				if ( SetProperty( ref scaleFactor, value ) )
+				{
+					this.Event<ShellScaleFactorChangedEvent>().Publish( value );
+				}
+			}
+		}   double scaleFactor = 1.0d;
 
 		object IPlatform.BindingContext
 		{

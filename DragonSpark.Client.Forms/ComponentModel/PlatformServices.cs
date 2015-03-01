@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -215,7 +216,19 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 
 		public IIsolatedStorageFile GetUserStoreForApplication()
 		{
-			return new IsolatedStorageFile( System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication() );
+			return new IsolatedStorageFile( DetermineStore() );
+		}
+
+		internal static System.IO.IsolatedStorage.IsolatedStorageFile DetermineStore()
+		{
+			try
+			{
+				return System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+			}
+			catch ( IsolatedStorageException ) // Outside of a click-once
+			{
+				return System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForAssembly();
+			}
 		}
 
 		public string GetMD5Hash( string input )
