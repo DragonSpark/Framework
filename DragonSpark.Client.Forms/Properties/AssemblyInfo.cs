@@ -74,6 +74,7 @@ using TableView = Xamarin.Forms.TableView;
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us/forms/rendering", "xfr" )] // Xamarin Forms Rendering
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms.ComponentModel" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms.Interaction" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us/forms/rendering", "DragonSpark.Application.Client.Forms.Rendering" )]
 [assembly: Registration( Priority.Lower, typeof(ICellRenderer), typeof(IAnimatable) )]
 [assembly: Include( typeof(BindingBase) )]

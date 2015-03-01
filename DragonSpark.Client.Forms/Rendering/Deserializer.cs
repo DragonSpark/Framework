@@ -1,90 +1,110 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.IO.IsolatedStorage;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using System.Xml;
+using System.Xaml;
 using Xamarin.Forms;
+using FileMode = System.IO.FileMode;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	internal class Deserializer : IDeserializer
+	class Deserializer : IDeserializer
 	{
-		private const string propertyStoreFile = "PropertyStore.forms";
+		const string PropertyStoreFile = "PropertyStore.forms";
+
 		public Task<IDictionary<string, object>> DeserializePropertiesAsync()
 		{
-			return Task.Run<IDictionary<string, object>>(delegate
+			return Task.Run( () =>
 			{
-				using (IsolatedStorageFile userStoreForApplication = IsolatedStorageFile.GetUserStoreForApplication())
+				using ( var store = DetermineStore() )
 				{
-					using (IsolatedStorageFileStream isolatedStorageFileStream = userStoreForApplication.OpenFile("PropertyStore.forms", System.IO.FileMode.OpenOrCreate))
-					{
-						using (XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateBinaryReader(isolatedStorageFileStream, XmlDictionaryReaderQuotas.Max))
-						{
-							if (isolatedStorageFileStream.Length == 0L)
-							{
-								IDictionary<string, object> result = null;
-								return result;
-							}
-							try
-							{
-								DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Dictionary<string, object>));
-								IDictionary<string, object> result = (IDictionary<string, object>)dataContractSerializer.ReadObject(xmlDictionaryReader);
-								return result;
-							}
-							catch (Exception)
-							{
-							}
-						}
-					}
+					var result = store.FileExists( PropertyStoreFile ) ? Load( store ) : null;
+					return result;
 				}
-				return null;
-			});
+			} );
 		}
-		public Task SerializePropertiesAsync(IDictionary<string, object> properties)
+
+		static IDictionary<string, object> Load( IsolatedStorageFile store )
 		{
-			properties = new Dictionary<string, object>(properties);
-			return Task.Run(delegate
+			using ( var stream = store.OpenFile( PropertyStoreFile, FileMode.OpenOrCreate ) )
 			{
-				bool flag = false;
-				using (IsolatedStorageFile userStoreForApplication = IsolatedStorageFile.GetUserStoreForApplication())
+				var result = stream.Length > 0 ? (IDictionary<string, object>)XamlServices.Load( stream ) : null;
+				return result;
+			}
+		}
+
+		static IsolatedStorageFile DetermineStore()
+		{
+			try
+			{
+				return IsolatedStorageFile.GetUserStoreForApplication();
+			}
+			catch ( IsolatedStorageException ) // Outside of a click-once
+			{
+				return IsolatedStorageFile.GetUserStoreForAssembly();
+			}
+		}
+
+		public Task SerializePropertiesAsync( IDictionary<string, object> properties )
+		{
+			var target = new Dictionary<string, object>( properties );
+			return Task.Run( () =>
+			{
+				var temp = string.Format( "{0}.tmp", PropertyStoreFile );
+
+				if ( Save( target, temp ) )
 				{
-					using (IsolatedStorageFileStream isolatedStorageFileStream = userStoreForApplication.OpenFile("PropertyStore.forms.tmp", System.IO.FileMode.OpenOrCreate))
+					using ( var store = DetermineStore() )
 					{
-						using (XmlDictionaryWriter xmlDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(isolatedStorageFileStream))
+						try
 						{
-							try
+							if ( store.FileExists( PropertyStoreFile ) )
 							{
-								DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Dictionary<string, object>));
-								dataContractSerializer.WriteObject(xmlDictionaryWriter, properties);
-								xmlDictionaryWriter.Flush();
-								flag = true;
+								store.DeleteFile( PropertyStoreFile );
 							}
-							catch (Exception)
-							{
-							}
+							store.MoveFile( temp, PropertyStoreFile );
+						}
+						catch ( Exception e )
+						{
+							Trace.WriteLine( e );
 						}
 					}
 				}
-				if (!flag)
-				{
-					return;
-				}
-				using (IsolatedStorageFile userStoreForApplication2 = IsolatedStorageFile.GetUserStoreForApplication())
+			} );
+		}
+
+		static bool Save( IDictionary<string, object> properties, string temp )
+		{
+			using ( var store = DetermineStore() )
+			{
+				using ( var stream = store.OpenFile( temp, FileMode.OpenOrCreate ) )
 				{
 					try
 					{
-						if (userStoreForApplication2.FileExists("PropertyStore.forms"))
-						{
-							userStoreForApplication2.DeleteFile("PropertyStore.forms");
-						}
-						userStoreForApplication2.MoveFile("PropertyStore.forms.tmp", "PropertyStore.forms");
+						XamlServices.Save( new StreamWriter( stream ), properties );
+						return true;
 					}
-					catch (Exception)
+					catch ( Exception e )
 					{
+						Trace.WriteLine( e );
+						return false;
 					}
+					/*using ( var xmlDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter( stream ) )
+						{
+							try
+							{
+								var dataContractSerializer = new DataContractSerializer( typeof(Dictionary<string, object>) );
+								dataContractSerializer.WriteObject( xmlDictionaryWriter, properties );
+								xmlDictionaryWriter.Flush();
+								flag = true;
+							}
+							catch ( Exception )
+							{}
+						}*/
 				}
-			});
+			}
 		}
 	}
 }
