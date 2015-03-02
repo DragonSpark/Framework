@@ -3,6 +3,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Threading;
 
 namespace DragonSpark.Application.Client.Eventing
 {
@@ -88,14 +89,13 @@ namespace DragonSpark.Application.Client.Eventing
 		{
 			var name = GetMessageName();
 			var subscription = GetSubscription( token );
-			// TODO: wrap/monitor task exception.
-			Task.Run( () => // Might be unsubscribing during a publish call... might be happening on the same thread as MessageCenter and it throws an error if so.
-			{
-				OnUnsubscribe( subscription, name );
-			} );
+			
+			OnUnsubscribe( subscription, name );
+
 			base.Unsubscribe( token );
 		}
 
+		[Dispatched( true )] // Might be unsubscribing during a publish call... might be happening on the same thread as MessageCenter and it throws an error if so.
 		protected abstract void OnUnsubscribe( FormsEventSubscription<TSender> subscription, string name );
 
 		protected override void InternalPublish( params object[] arguments )

@@ -31,14 +31,14 @@ namespace DragonSpark.Application.Client.Forms.Interaction
 			Application.SendResume();
 		}
 
-		void OnDeactivated( object sender, EventArgs e )
+		async void OnDeactivated( object sender, EventArgs e )
 		{
-			Application.SendSleepAsync().Wait();
+			await Application.SendSleepAsync();
 		}
 
-		void OnClosed( object sender, EventArgs e )
+		async void OnClosed( object sender, EventArgs e )
 		{
-			Application.SendSleepAsync().Wait();
+			await Application.SendSleepAsync();
 		}
 
 		public Xamarin.Forms.Application Application

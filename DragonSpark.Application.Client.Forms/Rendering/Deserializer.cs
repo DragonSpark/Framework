@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xaml;
+using PostSharp.Patterns.Threading;
 using Xamarin.Forms;
 using FileMode = System.IO.FileMode;
 
@@ -36,32 +38,36 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 		}
 
+		[MethodImpl( MethodImplOptions.Synchronized )]
 		public Task SerializePropertiesAsync( IDictionary<string, object> properties )
 		{
 			var target = new Dictionary<string, object>( properties );
-			return Task.Run( () =>
-			{
-				var temp = string.Format( "{0}.tmp", PropertyStoreFile );
+			return Task.Run( () => Save( target ) );
+		}
 
-				if ( Save( target, temp ) )
+		[MethodImpl( MethodImplOptions.Synchronized )]
+		void Save( IDictionary<string, object> target )
+		{
+			var temp = string.Format( "{0}.tmp", PropertyStoreFile );
+
+			if ( Save( target, temp ) )
+			{
+				using ( var store = PlatformServices.DetermineStore() )
 				{
-					using ( var store = PlatformServices.DetermineStore() )
+					try
 					{
-						try
+						if ( store.FileExists( PropertyStoreFile ) )
 						{
-							if ( store.FileExists( PropertyStoreFile ) )
-							{
-								store.DeleteFile( PropertyStoreFile );
-							}
-							store.MoveFile( temp, PropertyStoreFile );
+							store.DeleteFile( PropertyStoreFile );
 						}
-						catch ( Exception e )
-						{
-							Trace.WriteLine( e );
-						}
+						store.MoveFile( temp, PropertyStoreFile );
+					}
+					catch ( Exception e )
+					{
+						Trace.WriteLine( e );
 					}
 				}
-			} );
+			}
 		}
 
 		static bool Save( IDictionary<string, object> properties, string temp )
