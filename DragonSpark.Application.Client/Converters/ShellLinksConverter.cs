@@ -23,12 +23,17 @@ namespace DragonSpark.Application.Client.Converters
 		}
 	}
 
-	public class NegateConverter : Xceed.Wpf.Toolkit.Converters.NegateConverter
+	public class NegateConverter : ConverterBase<double>
 	{
 		public static NegateConverter Instance
 		{
 			get { return InstanceField; }
 		}	static readonly NegateConverter InstanceField = new NegateConverter();
+		protected override object PerformConversion( double value, object parameter )
+		{
+			var result = value * -1;
+			return result;
+		}
 	}
 
 	/*public class LinkGroupsConverter : ConverterBase<Page>

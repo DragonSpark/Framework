@@ -1,12 +1,12 @@
+using DragonSpark.Application.Client.Controls;
+using DragonSpark.Application.Client.Forms.ComponentModel;
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Application.Client.Forms.ComponentModel;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
-using Xceed.Wpf.Toolkit.Panels;
 using Binding = System.Windows.Data.Binding;
 using DataTemplate = System.Windows.DataTemplate;
 using Page = Xamarin.Forms.Page;
@@ -14,16 +14,16 @@ using Size = Xamarin.Forms.Size;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	public class CarouselPageRenderer : Carousel, IVisualElementRenderer
+	public class CarouselPageRenderer : PanoramaControl, IVisualElementRenderer
 	{
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged = delegate {};
 
-		readonly BackgroundTracker<CarouselPage, Panel> tracker;
+		readonly BackgroundTracker<CarouselPage, Control> tracker;
 		readonly ConditionMonitor assign = new ConditionMonitor();
 
 		public CarouselPageRenderer()
 		{
-			tracker = new BackgroundTracker<CarouselPage, Panel>( this, BackgroundProperty );
+			tracker = new BackgroundTracker<CarouselPage, Control>( this, BackgroundProperty );
 
 			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
@@ -72,7 +72,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			
 				assign.Apply( () =>
 				{
-					ChildEntered += OnSelectionChanged;
+					SelectionChanged += OnSelectionChanged;
 					Loaded += ( sender, args ) => tracker.Model.SendAppearing();
 					Unloaded += ( sender, args ) => tracker.Model.SendDisappearing();
 				} );
@@ -91,7 +91,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			item.As<Page>( page =>
 			{
 				var container = GetContainer( page ) ?? Create( page );
-				Children.Insert( index, container );
+				Items.Insert( index, container );
 			} );
 		}
 
@@ -116,12 +116,12 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 		void OnPagesChanged( object sender, NotifyCollectionChangedEventArgs e )
 		{
-			e.Apply( InsertItem, ( o, i ) => Children.RemoveAt( i ), Reset );
+			e.Apply( InsertItem, ( o, i ) => Items.RemoveAt( i ), Reset );
 		}
 
 		void Reset()
 		{
-			Children.Clear();
+			Items.Clear();
 			
 			var num = 0;
 			tracker.Model.Children.Apply( current => InsertItem( current, num++, true ) );
@@ -131,13 +131,14 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 		void OnSelectionChanged( object sender, EventArgs e )
 		{
-			tracker.Model.CurrentPage = CenteredChild.AsTo<CarouselPageItemContainer, ContentPage>( x => x.Content as ContentPage );
+			tracker.Model.CurrentPage = SelectedItem.AsTo<CarouselPageItemContainer, ContentPage>( x => x.Content as ContentPage );
 		}
 
 		void Select( Page page = null )
 		{
 			var container = GetContainer( page ?? tracker.Model.CurrentPage );
-			CenterChild( container, TimeSpan.FromSeconds( 1 ), false );
+			SelectedItem = container;
+			// CenterChild( container, TimeSpan.FromSeconds( 1 ), false );
 		}
 
 		void OnPropertyChanged( object sender, PropertyChangedEventArgs e )
@@ -146,6 +147,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			{
 				case "CurrentPage":
 					Select();
+					OnItemsChanged( new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Reset ) );
 					break;
 			}
 		}
