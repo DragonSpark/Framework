@@ -1,4 +1,16 @@
-﻿using System;
+﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC.Commands;
+using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Application.Client.Presentation;
+using DragonSpark.Application.Client.Threading;
+using DragonSpark.Client;
+using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -11,17 +23,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
-using DragonSpark.Activation;
-using DragonSpark.Activation.IoC.Commands;
-using DragonSpark.Application.Client.Extensions;
-using DragonSpark.Application.Client.Presentation;
-using DragonSpark.Client;
-using DragonSpark.ComponentModel;
-using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Unity;
 using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
 
 namespace DragonSpark.Application.Client.Commanding
@@ -818,7 +819,7 @@ namespace DragonSpark.Application.Client.Commanding
 					item.Parameter = item.Parameter ?? owner.GetValue( x );
 				}
 
-				Threading.Application.Start( item.Command.Update );
+				Dispatch.Start( item.Command.Update );
 
 				// item.Command.Update();
 			} ) );
@@ -1105,8 +1106,8 @@ namespace DragonSpark.Application.Client.Commanding
 
 		void Publish( SetupStatus status )
 		{
-			Threading.Application.Start( () => 
-				aggregator.GetEvent<SetupEvent>().With( x => Threading.Application.Execute( () => x.Publish( status ) ) ) 
+			Dispatch.Start( () => 
+				aggregator.GetEvent<SetupEvent>().With( x => Dispatch.Execute( () => x.Publish( status ) ) ) 
 			);
 		}
 	}

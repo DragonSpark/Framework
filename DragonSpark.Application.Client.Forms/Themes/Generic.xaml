@@ -425,7 +425,7 @@
 				<ei:ExtendedVisualStateManager />
 			</VisualStateManager.CustomVisualStateManager>
 			<DockPanel>
-				<Image Margin="8" VerticalAlignment="Top" ToolTipService.ToolTip="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" Source="{Binding Status, Converter={x:Static presentation:StringFormatConverter.Instance}, ConverterParameter='{}/HpInc.Common.Client;component/Themes/Images/Operations/{0}.png'}" Stretch="None" />
+				<Image Margin="8" VerticalAlignment="Top" ToolTipService.ToolTip="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" Source="{Binding Status, Converter={x:Static presentation:StringFormatConverter.Instance}, ConverterParameter='{}/DragonSpark.Application.Client;component/Themes/Images/Operations/{0}.png'}" Stretch="None" />
 
 				<Button x:Name="DisplayExceptionDetails" Style="{StaticResource LinkButton}" Foreground="DodgerBlue" Command="{markup:Locate {x:Type commanding:ExceptionHandlingCommand}}" CommandParameter="{Binding Exception}" Content="Details" Opacity="0" IsHitTestVisible="False" Margin="8" VerticalAlignment="Top" DockPanel.Dock="Right" />
 

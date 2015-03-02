@@ -11,9 +11,9 @@
 	xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
 	xmlns:client="clr-namespace:DragonSpark.Application.Client;assembly=DragonSpark.Application.Client"
 	xmlns:local="clr-namespace:DragonSpark.Testing.Client.Application"
-	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application">
+	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application"
+	xmlns:threading="clr-namespace:DragonSpark.Application.Client.Threading;assembly=DragonSpark.Application.Client">
 	<application:Setup.Configurations>
-		<!--<activation:AssignServiceLocatorCommand />-->
 		<xfr:ConfigureApplicationCommand>
 			<xfr:ConfigureApplicationCommand.Profile>
 				<dragonSpark:ApplicationProfile
@@ -35,6 +35,7 @@
 				<ioC:IoCExtension />
 			</activation:UnityContainerConfiguration.Extensions>
 		</activation:UnityContainerConfiguration>
+		<threading:InitializeThreadingCommand /> 
 		<commands:InitializeMarkupCommand />
 	</application:Setup.Configurations>
 	<client:SetupParameters Shell="{ds:Locate local:Shell}" />

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Application.Client.Commanding;
+using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Application.Client.Threading;
+using DragonSpark.Extensions;
+using System;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,10 +10,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using DragonSpark.Application.Client.Commanding;
-using DragonSpark.Application.Client.Extensions;
-using DragonSpark.Application.Client.Presentation;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Application.Client.Controls
 {
@@ -93,7 +93,7 @@ namespace DragonSpark.Application.Client.Controls
 				MenuState = InitialState;
 				Height = ItemsBounds.Bottom;
 			} );
-			Threading.Application.Start( () => this.RefreshValue( MenuStateProperty ) );
+			Dispatch.Start( () => this.RefreshValue( MenuStateProperty ) );
 		}
 
 		public Visibility MenuState
@@ -531,7 +531,7 @@ namespace DragonSpark.Application.Client.Controls
 			switch ( MenuState )
 			{
 				case Visibility.Visible:
-					e.OriginalSource.As<ICommandSource>( source => Threading.Application.Start( () => MenuState = Visibility.Hidden ) );
+					e.OriginalSource.As<ICommandSource>( source => Dispatch.Start( () => MenuState = Visibility.Hidden ) );
 					break;
 			}
 		}

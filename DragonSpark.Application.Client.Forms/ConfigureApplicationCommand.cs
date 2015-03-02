@@ -24,23 +24,18 @@ namespace DragonSpark.Application.Client.Forms
 
 			Initializer.Initialize();
 
-			container.Resolve<IEventAggregator>().With( aggregator => aggregator.ExecuteWhenStatusIs( SetupStatus.Configured, async () =>
-			{
-				var navigation = container.Resolve<INavigation>();
-				var application = container.Resolve<Xamarin.Forms.Application>();
-				await navigation.PushAsync( application.MainPage );
-				/*var platform = container.Resolve<IPlatform>();
-				container.RegisterInstance( platform );
-
-				var navigation = new Navigation( platform, NavigationModel );
-				await navigation.PushAsync( Application.MainPage );*/
-			} ) );
-
 			System.Windows.Application.Current.With( x =>
 			{
 				container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
 				x.Exit += ( s, a ) => container.Resolve<IServiceLocator>().TryDispose();
 			} );
+
+			container.Resolve<IEventAggregator>().With( aggregator => aggregator.ExecuteWhenStatusIs( SetupStatus.Configured, async () =>
+			{
+				var navigation = container.Resolve<INavigation>();
+				var application = container.Resolve<Xamarin.Forms.Application>();
+				await navigation.PushAsync( application.MainPage );
+			} ) );
 		}
 	}
 

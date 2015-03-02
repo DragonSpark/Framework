@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Application.Client.Threading;
+using DragonSpark.Application.Runtime;
+using DragonSpark.Extensions;
+using Microsoft.Expression.Interactions.Extensions.DataHelpers;
+using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,11 +20,6 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
-using DragonSpark.Application.Client.Presentation;
-using DragonSpark.Application.Runtime;
-using DragonSpark.Extensions;
-using Microsoft.Expression.Interactions.Extensions.DataHelpers;
-using Microsoft.Practices.ServiceLocation;
 using Xceed.Wpf.Toolkit;
 using IAttachedObject = System.Windows.Interactivity.IAttachedObject;
 
@@ -470,12 +470,12 @@ namespace DragonSpark.Application.Client.Extensions
 			return result;
 		}
 	}
-	class CallbackContext<TItem> where TItem : class
+	class CallbackContext
 	{
-		readonly TItem item;
+		readonly object item;
 		readonly Delegate callback;
 
-		public CallbackContext( TItem item, Delegate callback )
+		public CallbackContext( object item, Delegate callback )
 		{
 			this.item = item;
 			this.callback = callback;
@@ -483,10 +483,10 @@ namespace DragonSpark.Application.Client.Extensions
 
 		public override bool Equals(object obj)
 		{
-			return obj is CallbackContext<TItem> && Equals( (CallbackContext<TItem>)obj );
+			return obj is CallbackContext && Equals( (CallbackContext)obj );
 		}
 
-		bool Equals( CallbackContext<TItem> obj )
+		bool Equals( CallbackContext obj )
 		{
 			return Equals( obj.item, item ) && Equals( obj.callback, callback );
 		}
@@ -502,7 +502,7 @@ namespace DragonSpark.Application.Client.Extensions
 
 	public static partial class FrameworkElementExtensions
 	{
-		static readonly List<WeakReference<CallbackContext<FrameworkElement>>> Items = new List<WeakReference<CallbackContext<FrameworkElement>>>();
+		static readonly List<WeakReference<CallbackContext>> Items = new List<WeakReference<CallbackContext>>();
 
 		public static bool IsVisibleInTree( this FrameworkElement target )
 		{
@@ -528,12 +528,12 @@ namespace DragonSpark.Application.Client.Extensions
 
 			if ( target.IsLoaded )
 			{
-				var call = immediateExecution ? (Func<Action, IDelegateContext>)Threading.Application.Execute : Threading.Application.Start;
+				var call = immediateExecution ? (Action<Action>)Dispatch.Execute : Dispatch.Start;
 				call( () => action( target ) );
 			}
 			else
 			{
-				var key = new CallbackContext<FrameworkElement>( target, callback );
+				var key = new CallbackContext( target, callback );
 				Items.CheckWith( key, x =>
 				{
 					target.Loaded += new Loader<TFrameworkElement>( action ).OnLoad;
@@ -680,11 +680,11 @@ namespace DragonSpark.Application.Client.Extensions
 
 	public static partial class DependencyObjectExtensions
 	{
-		static readonly List<WeakReference<CallbackContext<IAttachedObject>>> Items = new List<WeakReference<CallbackContext<IAttachedObject>>>();
+		static readonly List<WeakReference<CallbackContext>> Items = new List<WeakReference<CallbackContext>>();
 
 		public static void SetProperty( this DependencyObject target, DependencyProperty property, object value, Type targetType = null )
 		{
-			Threading.Application.Execute( () =>
+			Dispatch.Execute( () =>
 			{
 				var checkedValue = /*value.AsTo<Binding,Binding>( x => x.ConnectedTo( target ) ) ??*/ targetType.Transform( value.ConvertTo, () => value );
 				target.SetValue( property, checkedValue );
@@ -697,11 +697,11 @@ namespace DragonSpark.Application.Client.Extensions
 			{
 				if ( x.AssociatedObject != null )
 				{
-					Threading.Application.Execute( () => Ensure( x, action ) );
+					Dispatch.Execute( () => Ensure( x, action ) );
 				}
 				else
 				{
-					var key = new CallbackContext<IAttachedObject>( x, action );
+					var key = new CallbackContext( x, action );
 					Items.CheckWith( key, y => x.Attached += new Loader( z => Ensure( x, action ) ).OnAttached );
 				}
 			} );

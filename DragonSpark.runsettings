@@ -28,7 +28,7 @@ Included items must then not match any entries in the exclude list to remain inc
 						<ModulePaths>
 							<Include>
 								<!--<Include>
-									<ModulePath>.*hpinc\.common\.dll$</ModulePath>
+									<ModulePath>.*DragonSpark\.common\.dll$</ModulePath>
 								</Include>-->
 								<!--<ModulePath>.*\.dll$</ModulePath>
 								<ModulePath>.*\.exe$</ModulePath>-->
