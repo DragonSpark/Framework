@@ -15,6 +15,7 @@ namespace DragonSpark.Application.Client.Forms.ComponentModel
 		{
 			items = new ReadOnlyObservableCollection<ToolbarItem>( itemsSource );
 			tracker.CollectionChanged += ( sender, args ) => UpdateToolbarItems();
+			tracker.SeparateMasterDetail = true;
 
 			this.Event<ShellPageChangedEvent>().Subscribe( message => tracker.Target = message );
 		}

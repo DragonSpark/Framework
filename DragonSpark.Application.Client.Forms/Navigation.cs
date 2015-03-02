@@ -32,8 +32,8 @@ namespace DragonSpark.Application.Client.Forms
 		protected virtual bool ShouldCancel()
 		{
 			var page = model.Roots.Last();
-			var cancel = page.SendBackButtonPressed();
-			if ( !cancel && model.Tree.Count > 1 )
+			var result = page.SendBackButtonPressed();
+			/*if ( !cancel && model.Tree.Count > 1 )
 			{
 				var page2 = model.PopModal();
 				if ( page2 != null )
@@ -41,8 +41,8 @@ namespace DragonSpark.Application.Client.Forms
 					SetCurrent( model.CurrentPage, true, true );
 					cancel = true;
 				}
-			}
-			return cancel;
+			}*/
+			return result;
 		}
 
 		public IReadOnlyList<Page> NavigationStack
@@ -79,6 +79,7 @@ namespace DragonSpark.Application.Client.Forms
 
 		public Task PushModalAsync( Page modal, bool animated )
 		{
+			modal.Parent = platform.Page.Parent;
 			var tcs = new TaskCompletionSource<object>();
 			model.PushModal( modal );
 			SetCurrent( model.CurrentPage, animated, false, () => tcs.SetResult( null ) );

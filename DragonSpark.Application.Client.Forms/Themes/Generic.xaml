@@ -60,11 +60,11 @@
 	</Style>-->
 
 	<DataTemplate x:Key="ListViewHeader">
-		<rendering:CellTemplateSelector Content="{Binding HeaderContent}" HorizontalContentAlignment="Left" />
+		<rendering:CellControl Cell="{Binding HeaderContent}" HorizontalContentAlignment="Left" ShowContextActions="False" />
 	</DataTemplate>
 
 	<DataTemplate x:Key="ListViewHeaderTextCell">
-		<Border Background="{StaticResource PhoneAccentBrush}" Margin="5" MinWidth="62" MinHeight="62">
+		<Border Background="{StaticResource PhoneAccentBrush}" Height="{Binding RenderHeight, Converter={StaticResource HeightConverter}}" Margin="5" MinWidth="62" MinHeight="62">
 			<StackPanel Margin="6">
 				<StackPanel.Resources>
 					<Style TargetType="TextBlock">

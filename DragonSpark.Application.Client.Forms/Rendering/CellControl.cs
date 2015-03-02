@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
@@ -23,6 +24,14 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 				base.SetValue(CellControl.CellProperty, value);
 			}
 		}
+
+		public bool ShowContextActions
+		{
+			get { return (bool)GetValue( ShowContextActionsProperty ); }
+			set { SetValue( ShowContextActionsProperty, value ); }
+		}	public static readonly DependencyProperty ShowContextActionsProperty = DependencyProperty.Register( "ShowContextActions", typeof(bool), typeof(CellControl), new PropertyMetadata( true ) );
+		
+
 		public CellControl()
 		{
 			base.Unloaded += delegate(object sender, RoutedEventArgs args)
@@ -57,8 +66,11 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			if (newCell != null)
 			{
 				newCell.SendAppearing();
-				System.Windows.DataTemplate template = this.GetTemplate(newCell);
-				base.Content = template.LoadContent();
+				if (oldCell == null || oldCell.GetType() != newCell.GetType())
+				{
+					base.ContentTemplate = this.GetTemplate(newCell);
+				}
+				base.Content = newCell;
 				this.SetupContextMenu();
 				newCell.PropertyChanged += this.propertyChangedHandler;
 				return;
@@ -67,18 +79,22 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		}
 		private void SetupContextMenu()
 		{
-			if (base.Content == null)
+			if (base.Content == null || !this.ShowContextActions)
 			{
 				return;
 			}
 			if (!this.Cell.HasContextActions)
 			{
-				ContextMenuService.SetContextMenu((DependencyObject)base.Content, null);
+				if (VisualTreeHelper.GetChildrenCount(this) > 0)
+				{
+					ContextMenuService.SetContextMenu(VisualTreeHelper.GetChild(this, 0), null);
+				}
 				return;
 			}
+				base.ApplyTemplate();
 			ContextMenu contextMenu = new CustomContextMenu();
 			contextMenu.SetBinding(ItemsControl.ItemsSourceProperty, new System.Windows.Data.Binding("ContextActions"));
-			ContextMenuService.SetContextMenu((DependencyObject)base.Content, contextMenu);
+				ContextMenuService.SetContextMenu(VisualTreeHelper.GetChild(this, 0), contextMenu);
 		}
 	}
 }

@@ -1,3 +1,5 @@
+using DragonSpark.Extensions;
+using FirstFloor.ModernUI.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,15 +9,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using DragonSpark.Extensions;
-using FirstFloor.ModernUI.Windows.Media;
 using Xamarin.Forms;
 using Xceed.Wpf.Toolkit.Zoombox;
 using Binding = System.Windows.Data.Binding;
 using DataTemplate = System.Windows.DataTemplate;
 using ListView = Xamarin.Forms.ListView;
 using Point = System.Windows.Point;
-using Size = System.Windows.Size;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
@@ -71,27 +70,27 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 		}
 
-		static FrameworkElement GetReusable( Dictionary<DataTemplate, FrameworkElement> reusables, DataTemplate template, object dataContext )
+		double GetHeight(Dictionary<System.Windows.DataTemplate, FrameworkElement> reusables, System.Windows.DataTemplate template, object bindingContext)
 		{
-			FrameworkElement result;
-			if ( !reusables.TryGetValue( template, out result ) )
+			double actualWidth = base.Control.ActualWidth;
+			FrameworkElement frameworkElement;
+			if (!reusables.TryGetValue(template, out frameworkElement))
 			{
-				var frameworkElement = (FrameworkElement)template.LoadContent();
-				var contentControl = frameworkElement as ContentControl;
-				if ( contentControl != null && contentControl.ContentTemplate != null )
+				frameworkElement = (FrameworkElement)template.LoadContent();
+				frameworkElement.DataContext = bindingContext;
+				frameworkElement.Measure(new System.Windows.Size(actualWidth, double.PositiveInfinity));
+				frameworkElement.DataContext = null;
+				frameworkElement.Measure(new System.Windows.Size(actualWidth, double.PositiveInfinity));
+				Control control = frameworkElement as Control;
+				if (control != null)
 				{
-					contentControl.DataContext = dataContext;
-					if ( !reusables.TryGetValue( contentControl.ContentTemplate, out result ) )
-					{
-						result = ( reusables[contentControl.ContentTemplate] = (FrameworkElement)contentControl.ContentTemplate.LoadContent() );
-					}
+					control.FontFamily = base.Control.FontFamily;
 				}
-				else
-				{
-					result = ( reusables[template] = frameworkElement );
-				}
+				reusables[template] = frameworkElement;
 			}
-			return result;
+			frameworkElement.DataContext = bindingContext;
+			frameworkElement.Measure(new System.Windows.Size(actualWidth, double.PositiveInfinity));
+			return frameworkElement.DesiredSize.Height;
 		}
 
 		void OnScrollToRequested( object sender, ScrollToRequestedEventArgs e )
@@ -136,53 +135,46 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			var flag = false;
 
 			// TODO: Enable grouping.
-			/*if ( Element.IsGroupingEnabled )
+			/*if (base.Element.IsGroupingEnabled)
 			{
-				for ( var i = 0; i < Element.TemplatedItems.Count; i++ )
+				for (int i = 0; i < base.Element.TemplatedItems.Count; i++)
 				{
-					if ( flag )
+					if (flag)
 					{
 						break;
 					}
-					var group = Element.TemplatedItems.GetGroup( i );
-					var reusable = GetReusable( reusables, Control.GroupHeaderTemplate, group );
-					reusable.DataContext = group.HeaderContent;
-					reusable.Measure( new Size( Control.ActualWidth, double.PositiveInfinity ) );
-					num += reusable.DesiredSize.Height;
-					for ( var j = 0; j < group.Count; j++ )
+					TemplatedItemsList<ItemsView<Cell>, Cell> group = base.Element.TemplatedItems.GetGroup(i);
+					double height = this.GetHeight(reusables, base.Control.GroupHeaderTemplate, group);
+					num += height;
+					for (int j = 0; j < group.Count; j++)
 					{
-						var cell = group[j];
-						var reusable2 = GetReusable( reusables, Control.ItemTemplate, cell );
-						reusable2.DataContext = cell;
-						reusable2.Measure( new Size( Control.ActualWidth, double.PositiveInfinity ) );
-						if ( ( ReferenceEquals( group.BindingContext, e.Group ) || e.Group == null ) && ReferenceEquals( cell.BindingContext, e.Item ) )
+						Cell cell = group[j];
+						double height2 = this.GetHeight(reusables, base.Control.ItemTemplate, cell);
+						if ((object.ReferenceEquals(group.BindingContext, e.Group) || e.Group == null) && object.ReferenceEquals(cell.BindingContext, e.Item))
 						{
-							num3 = reusable.DesiredSize.Height;
-							num2 = reusable2.DesiredSize.Height;
+							num3 = height;
+							num2 = height2;
 							flag = true;
 							break;
 						}
-						num += reusable2.DesiredSize.Height;
+						num += height2;
 					}
 				}
 			}
 			else
 			{
 			*/
-				for ( var k = 0; k < Element.TemplatedItems.Count; k++ )
+				for (int k = 0; k < base.Element.TemplatedItems.Count; k++)
 				{
-					var cell2 = Element.TemplatedItems[k];
-					var reusable3 = GetReusable( reusables, Control.ItemTemplate, cell2 );
-					reusable3.DataContext = cell2;
-					reusable3.Measure( new Size( Control.ActualWidth, double.PositiveInfinity ) );
-					var height = reusable3.DesiredSize.Height;
-					if ( ReferenceEquals( cell2.BindingContext, e.Item ) )
+					Cell cell2 = base.Element.TemplatedItems[k];
+					double height3 = this.GetHeight(reusables, base.Control.ItemTemplate, cell2);
+					if (object.ReferenceEquals(cell2.BindingContext, e.Item))
 					{
 						flag = true;
-						num2 = height;
+						num2 = height3;
 						break;
 					}
-					num += height;
+					num += height3;
 				}
 			// }
 			if ( !flag )

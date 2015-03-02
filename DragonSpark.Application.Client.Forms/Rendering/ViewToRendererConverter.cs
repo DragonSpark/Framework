@@ -37,6 +37,10 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 				FrameworkElement frameworkElement = base.Content as FrameworkElement;
 				frameworkElement.Measure(availableSize);
 				global::Xamarin.Forms.Size request = this.view.GetSizeRequest(availableSize.Width, availableSize.Height).Request;
+				if (this.view.HorizontalOptions.Alignment == LayoutAlignment.Fill)
+				{
+					return new System.Windows.Size(availableSize.Width, request.Height);
+				}
 				return new System.Windows.Size(request.Width, request.Height);
 			}
 		}

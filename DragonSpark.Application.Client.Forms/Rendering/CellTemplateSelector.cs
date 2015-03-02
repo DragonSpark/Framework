@@ -1,8 +1,10 @@
+using System;
 using System.Windows;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
+	[Obsolete("Deprecated in favor of CellControl")]
 	public class CellTemplateSelector : DataTemplateSelector
 	{
 		public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(object), typeof(CellTemplateSelector), new PropertyMetadata(delegate(DependencyObject o, DependencyPropertyChangedEventArgs e)
