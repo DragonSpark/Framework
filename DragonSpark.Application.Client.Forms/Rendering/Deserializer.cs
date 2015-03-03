@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xaml;
-using PostSharp.Patterns.Threading;
 using Xamarin.Forms;
 using FileMode = System.IO.FileMode;
 
@@ -16,6 +15,8 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 	class Deserializer : IDeserializer
 	{
 		const string PropertyStoreFile = "PropertyStore.forms";
+
+		readonly SemaphoreSlim locker = new SemaphoreSlim( 1, 1 );
 
 		public Task<IDictionary<string, object>> DeserializePropertiesAsync()
 		{
@@ -38,36 +39,31 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 		}
 
-		[MethodImpl( MethodImplOptions.Synchronized )]
 		public Task SerializePropertiesAsync( IDictionary<string, object> properties )
 		{
-			var target = new Dictionary<string, object>( properties );
-			return Task.Run( () => Save( target ) );
-		}
-
-		[MethodImpl( MethodImplOptions.Synchronized )]
-		void Save( IDictionary<string, object> target )
-		{
-			var temp = string.Format( "{0}.tmp", PropertyStoreFile );
-
-			if ( Save( target, temp ) )
+			return Task.Run( () =>
 			{
-				using ( var store = PlatformServices.DetermineStore() )
+				var target = new Dictionary<string, object>( properties );
+				var temp = string.Format( "{0}.tmp", PropertyStoreFile );
+				if ( Save( target, temp ) )
 				{
-					try
+					using ( var store = PlatformServices.DetermineStore() )
 					{
-						if ( store.FileExists( PropertyStoreFile ) )
+						try
 						{
-							store.DeleteFile( PropertyStoreFile );
+							if ( store.FileExists( PropertyStoreFile ) )
+							{
+								store.DeleteFile( PropertyStoreFile );
+							}
+							store.MoveFile( temp, PropertyStoreFile );
 						}
-						store.MoveFile( temp, PropertyStoreFile );
-					}
-					catch ( Exception e )
-					{
-						Trace.WriteLine( e );
+						catch ( Exception e )
+						{
+							Trace.WriteLine( e );
+						}
 					}
 				}
-			}
+			} );
 		}
 
 		static bool Save( IDictionary<string, object> properties, string temp )
@@ -86,18 +82,6 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 						Trace.WriteLine( e );
 						return false;
 					}
-					/*using ( var xmlDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter( stream ) )
-						{
-							try
-							{
-								var dataContractSerializer = new DataContractSerializer( typeof(Dictionary<string, object>) );
-								dataContractSerializer.WriteObject( xmlDictionaryWriter, properties );
-								xmlDictionaryWriter.Flush();
-								flag = true;
-							}
-							catch ( Exception )
-							{}
-						}*/
 				}
 			}
 		}

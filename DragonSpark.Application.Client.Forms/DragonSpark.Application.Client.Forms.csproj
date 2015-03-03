@@ -145,6 +145,7 @@
     <Compile Include="ComponentModel\Ticker.cs" />
     <Compile Include="GlobalAspects.cs" />
     <Compile Include="Interaction\CloseOnReturningBehavior.cs" />
+    <Compile Include="Interaction\FormsEventsBehavior.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="PlatformEngine.cs" />
     <Compile Include="PlatformModel.cs" />

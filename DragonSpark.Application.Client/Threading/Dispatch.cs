@@ -1,5 +1,7 @@
 using DragonSpark.Activation;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Client.Threading
 {
@@ -18,6 +20,17 @@ namespace DragonSpark.Application.Client.Threading
 		public static void Delay( Action target, TimeSpan time )
 		{
 			ServiceLocation.With<IDispatchHandler>( x => x.Delay( target, time ) );
+		}
+	}
+
+	public static class Background
+	{
+		static readonly SemaphoreSlim Locker = new SemaphoreSlim( 1, 1 );
+		public static async void Locked( this Task @this )
+		{
+			await Locker.WaitAsync();
+			await @this;
+			Locker.Release();
 		}
 	}
 }
