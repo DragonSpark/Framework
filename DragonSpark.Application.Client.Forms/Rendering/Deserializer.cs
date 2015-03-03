@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xaml;
 using Xamarin.Forms;
@@ -15,8 +14,6 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 	class Deserializer : IDeserializer
 	{
 		const string PropertyStoreFile = "PropertyStore.forms";
-
-		readonly SemaphoreSlim locker = new SemaphoreSlim( 1, 1 );
 
 		public Task<IDictionary<string, object>> DeserializePropertiesAsync()
 		{
