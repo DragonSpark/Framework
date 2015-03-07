@@ -10,13 +10,13 @@
 		<ToolbarItem Text="Application Item 2" />
 	</client:Application.Items>
 	<Application.MainPage>
-		<ContentPage BackgroundColor="Red" Title="Why Hello World!">
+		<!--<ContentPage BackgroundColor="Red" Title="Why Hello World!">
 			<ContentPage.ToolbarItems>
 				<ToolbarItem Text="Page Item 1" Icon="Images/Play.png" />
 				<ToolbarItem Text="Page Item 2" Icon="Images/Stop.png" />
 				<ToolbarItem Text="Another Page Item" Order="Secondary" />
 			</ContentPage.ToolbarItems>
 			<Label Text="Hello World!" VerticalOptions="Center" HorizontalOptions="Center" />
-		</ContentPage>
+		</ContentPage>-->
 	</Application.MainPage>
 </client:Application>

@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 namespace DragonSpark.Client
 {
+	[ContentProperty( "MainPage" )]
 	public class Application : Xamarin.Forms.Application
 	{
 		public FileImageSource Logo
