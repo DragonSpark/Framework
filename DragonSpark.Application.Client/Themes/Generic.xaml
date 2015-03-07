@@ -179,9 +179,9 @@
 										</StackPanel>
 										<ContentControl Grid.Column="2" ContentTemplate="{TemplateBinding LogoContentTemplate}" Content="{TemplateBinding LogoContent}" WindowChrome.IsHitTestVisibleInChrome="True" />
 									</Grid>
-									
-									<ContentPresenter Grid.Row="1" ContentTemplate="{TemplateBinding Template}" Content="{TemplateBinding Content}" />
 
+									<mui:TransitioningContentControl Grid.Row="1" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
+									
 									<Grid Grid.Name="ResizeGrip" Grid.Row="1" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
 										<Path FrameworkElement.Width="12" FrameworkElement.Height="12" FrameworkElement.Margin="1" Shape.Stroke="{DynamicResource WindowText}" Shape.StrokeThickness="1" Shape.Stretch="None" Path.Data="F1M1,10L3,10 M5,10L7,10 M9,10L11,10 M2,9L2,11 M6,9L6,11 M10,9L10,11 M5,6L7,6 M9,6L11,6 M6,5L6,7 M10,5L10,7 M9,2L11,2 M10,1L10,3" />
 									</Grid>
@@ -396,7 +396,7 @@
 			<DockPanel>
 				<Image Margin="8" VerticalAlignment="Top" ToolTipService.ToolTip="{Binding Status, Converter={x:Static presentation:ComponentDescriptionConverter.Instance}}" Source="{Binding Status, Converter={x:Static presentation:StringFormatConverter.Instance}, ConverterParameter='{}/DragonSpark.Application.Client;component/Themes/Images/Operations/{0}.png'}" Stretch="None" />
 
-				<Button x:Name="DisplayExceptionDetails" Style="{StaticResource LinkButton}" Foreground="DodgerBlue" Command="{markup:Locate {x:Type commanding:ExceptionHandlingCommand}}" CommandParameter="{Binding Exception}" Content="Details" Opacity="0" IsHitTestVisible="False" Margin="8" VerticalAlignment="Top" DockPanel.Dock="Right" />
+				<Button x:Name="DisplayExceptionDetails" Style="{StaticResource LinkButton}" Foreground="DodgerBlue" Command="{markup:Locate {x:Type commanding:ExceptionHandlingCommand}}" CommandParameter="{Binding Exception}" Content="Details" ty="0" IsHitTestVisible="False" Margin="8" VerticalAlignment="Top" DockPanel.Dock="Right" />
 
 				<TextBlock VerticalAlignment="Top" Text="{Binding Title}" Foreground="Black" TextWrapping="Wrap" Margin="0 8" />
 				<ContentControl Content="{Binding Content}" Margin="8" />

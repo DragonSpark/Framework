@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using DragonSpark.Application.Client.Forms.ComponentModel;
 using Page = Xamarin.Forms.Page;
 
@@ -9,7 +10,8 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 	{
 		public PageRenderer()
 		{
-			SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
+			Background = Brushes.BurlyWood;
+			// SetBinding( RendererProperties.TitleProperty, new Binding( "Element.Title" ) );
 		}
 
 		protected override void OnElementChanged( ElementChangedEventArgs<Page> e )

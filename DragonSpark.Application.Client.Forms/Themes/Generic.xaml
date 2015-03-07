@@ -20,7 +20,7 @@
 	<rendering:KeyboardConverter x:Key="KeyboardConverter"/>
 	<rendering:ImageConverter x:Key="ImageConverter" />
 	<rendering:ViewToRendererConverter x:Key="ViewToRenderer" />
-	<rendering:PageToRendererConverter x:Key="PageToRenderer" />
+	<!--<rendering:PageToRendererConverter x:Key="PageToRenderer" />-->
 	<rendering:CollapseWhenEmptyConverter x:Key="CollapseWhenEmpty" />
 	<rendering:EntryCellRendererCompleted x:Key="EntryCellRendererCompleted" />
 
@@ -41,9 +41,9 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<!--<DataTemplate x:Key="ViewCell" DataType="{x:Type forms:ViewCell}">
-		<ContentPresenter Height="{Binding RenderHeight, Converter={StaticResource HeightConverter}}"  Content="{Binding View,Converter={StaticResource ViewToRenderer}}" />
-	</DataTemplate>-->
+	<DataTemplate x:Key="ViewCell" DataType="{x:Type forms:ViewCell}">
+		<ContentPresenter Height="{Binding RenderHeight, Converter={StaticResource HeightConverter}}"  Content="{Binding View, Converter={StaticResource ViewToRenderer}}" />
+	</DataTemplate>
 
 	<!--<Style x:Key="HeaderJumpStyle" TargetType="phone:LongListSelector">
 		<Setter Property="GridCellSize" Value="113,113" />
@@ -273,7 +273,7 @@
 	</DataTemplate>
 
 	<!--<DataTemplate x:Key="TabbedPage">
-		<rendering:TabbedPagePresenter Content="{Binding Converter={StaticResource PageToRenderer}}" />
+		<rendering:TabbedPagePresenter Content="{Binding Converter={x:Static rendering:RenderingConverter.Instance}}" />
 	</DataTemplate>-->
 
 	<DataTemplate x:Key="TabbedPageHeader">
@@ -281,7 +281,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="CarouselPage">
-		<rendering:CarouselPagePresenter Content="{Binding Converter={StaticResource PageToRenderer}}" />
+		<rendering:CarouselPagePresenter Content="{Binding Converter={x:Static rendering:RenderingConverter.Instance}}" />
 	</DataTemplate>
 
 	<DataTemplate x:Key="PickerItemTemplate">

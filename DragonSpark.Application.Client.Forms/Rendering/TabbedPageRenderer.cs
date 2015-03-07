@@ -1,9 +1,9 @@
+using DragonSpark.Application.Client.Forms.ComponentModel;
+using DragonSpark.Extensions;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using DragonSpark.Application.Client.Forms.ComponentModel;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
 using Binding = System.Windows.Data.Binding;
 using Page = Xamarin.Forms.Page;
@@ -54,8 +54,8 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		{
 			element.As<TabbedPage>( page =>
 			{
-				tracker.Model = page;
-				DataContext = element;
+				DataContext = tracker.Model = page;
+
 				page.PropertyChanged += OnPropertyChanged;
 				Loaded += delegate { tracker.Model.SendAppearing(); };
 				Unloaded += delegate { tracker.Model.SendDisappearing(); };

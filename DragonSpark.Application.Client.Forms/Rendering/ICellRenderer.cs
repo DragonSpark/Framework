@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		public DataTemplate GetTemplate( Cell cell )
 		{
 			var type = cell.GetType();
-			var result = new object[] { cell, type, type.Name }.Select( System.Windows.Application.Current.TryFindResource ).NotNull().FirstOrDefaultOfType<DataTemplate>();
+			var result = new object[] { type, type.Name }.Select( System.Windows.Application.Current.TryFindResource ).NotNull().FirstOrDefaultOfType<DataTemplate>();
 			return result;
 		}
 	}

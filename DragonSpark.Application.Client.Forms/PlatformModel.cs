@@ -74,7 +74,7 @@ namespace DragonSpark.Application.Client.Forms
 			} );
 		}
 
-		public object Content
+		/*public object Content
 		{
 
 			get { return content; }
@@ -85,7 +85,7 @@ namespace DragonSpark.Application.Client.Forms
 					Refresh();
 				}
 			}
-		}	object content;
+		}	object content;*/
 
 		void IPlatform.SetPage( Page current )
 		{
@@ -100,7 +100,7 @@ namespace DragonSpark.Application.Client.Forms
 				if ( SetProperty( ref page, value ) )
 				{
 					page.Platform = this;
-					Content = page.DetermineRenderer();
+					// Content = page.DetermineRenderer();
 
 					this.Event<ShellPageChangedEvent>().Publish( Page );
 				}

@@ -197,7 +197,7 @@
     <Compile Include="Rendering\NavigationMenuRenderer.cs" />
     <Compile Include="Rendering\NavigationPageRenderer.cs" />
     <Compile Include="Rendering\PageRenderer.cs" />
-    <Compile Include="Rendering\PageToRendererConverter.cs" />
+    <Compile Include="Rendering\RenderingConverter.cs" />
     <Compile Include="Rendering\PickerRenderer.cs" />
     <Compile Include="Rendering\ProgressBarRenderer.cs" />
     <Compile Include="Rendering\RendererFactory.cs" />

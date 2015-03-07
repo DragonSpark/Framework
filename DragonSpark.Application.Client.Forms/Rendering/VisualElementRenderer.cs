@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			get { return this; }
 		}
 
-		public TElement Element { get; set; }
+		public TElement Element { get; private set; }
 
 		VisualElement IVisualElementRenderer.Element
 		{

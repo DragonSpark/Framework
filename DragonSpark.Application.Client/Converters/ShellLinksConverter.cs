@@ -64,7 +64,7 @@ namespace DragonSpark.Application.Client.Converters
 
 		protected virtual object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
-			var result = PerformConversion( value.To<TSource>(), parameter.To<TParameter>() );
+			var result = value is TSource ? PerformConversion( value.To<TSource>(), parameter.To<TParameter>() ) : default(TSource);
 			return result;
 		}
 

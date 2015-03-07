@@ -2,7 +2,7 @@ using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	public class ImageCellRenderer : ICellRenderer, IRegisterable
+	public class ImageCellRenderer : ICellRenderer
 	{
 		public virtual System.Windows.DataTemplate GetTemplate(Cell cell)
 		{

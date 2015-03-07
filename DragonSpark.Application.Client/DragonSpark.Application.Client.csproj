@@ -178,7 +178,6 @@
     <Compile Include="Extensions\Class1.cs" />
     <Compile Include="GlobalAspects.cs" />
     <Compile Include="Threading\IDispatchHandler.cs" />
-    <Compile Include="Interaction\ContentMonitorBehavior.cs" />
     <Compile Include="Interaction\Notification.cs" />
     <Compile Include="Interaction\SetupEventTrigger.cs">
       <SubType>Code</SubType>

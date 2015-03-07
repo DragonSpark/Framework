@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Extensions;
-using System;
+using PostSharp.Patterns.Threading;
 using System.Windows;
 using System.Windows.Interactivity;
 
@@ -29,9 +29,10 @@ namespace DragonSpark.Application.Client.Interaction
 
 		void AssociatedObjectSizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			Dispatcher.BeginInvoke( new Action( Update ) );
+			Update();
 		}
 
+		[Dispatched( true )]
 		void Update()
 		{
 			ActualSize = new Size( AssociatedObject.ActualWidth, AssociatedObject.ActualHeight );

@@ -15,15 +15,17 @@
 	DataContext="{ds:Locate Type=xfr:PlatformModel}"
 	TitleLinks="{Binding Application.Items, Converter={x:Static ds:ShellLinksConverter.Instance}}"
 	LogoContent="{Binding Item.Value, ElementName=Image}"
+	Content="{Binding}"
 >
 	<i:Interaction.Behaviors>
 		<xfr:FormsEventsBehavior Application="{Binding Application}" />
+		<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
 		<ds:BindingHost x:Name="Image" Item="{Binding Application.Logo, Converter={x:Static xfr:ImageConverter.Instance}}" />
 	</i:Interaction.Behaviors>
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
 			<Binding Source="{ds:Locate dragonSpark:ApplicationProfile}" Path="Title" />
-			<Binding ElementName="ContentHost" Path="Content.(xfr:RendererProperties.Title)" />
+			<Binding Path="Page.Title" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
 	<ds:Shell.LogoContentTemplate>
@@ -36,16 +38,24 @@
 	<ds:Shell.RenderTransform>
 		<ScaleTransform ScaleX="{Binding ScaleFactor, Mode=TwoWay}" />
 	</ds:Shell.RenderTransform>
-	<DockPanel>
-		<ds:ApplicationBar DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
-		
-		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
-			<i:Interaction.Behaviors>
-				<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
-				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
-			</i:Interaction.Behaviors>
-		</mui:TransitioningContentControl>
-	</DockPanel>
+	<Window.ContentTemplate>
+		<DataTemplate>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<ContentControl Content="{Binding Page, Converter={x:Static xfr:RenderingConverter.Instance}}">
+					<i:Interaction.Behaviors>
+						<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
+					</i:Interaction.Behaviors>
+				</ContentControl>
+				
+				<ds:ApplicationBar Grid.Row="1" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" ItemTemplate="{StaticResource ToolbarItemImage}" />
+			</Grid>
+		</DataTemplate>
+	</Window.ContentTemplate>
 	<i:Interaction.Triggers>
 		<interactionRequest:InteractionRequestTrigger SourceObject="{ds:Locate xfr:SystemMessageRequest}">
 			<ds:PopupWindowAction CenterOverAssociatedObject="True" IsModal="True" WindowType="mui:ModernDialog" WindowStyle="{StaticResource Dialog}" />
