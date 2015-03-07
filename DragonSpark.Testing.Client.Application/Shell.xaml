@@ -36,19 +36,16 @@
 	<ds:Shell.RenderTransform>
 		<ScaleTransform ScaleX="{Binding ScaleFactor, Mode=TwoWay}" />
 	</ds:Shell.RenderTransform>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
+	<DockPanel>
+		<ds:ApplicationBar DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
+		
 		<mui:TransitioningContentControl x:Name="ContentHost" Content="{Binding Content, ElementName=Monitor}">
 			<i:Interaction.Behaviors>
 				<ds:ActualSizeBehavior ActualSize="{Binding Size, Mode=OneWayToSource}" />
 				<ds:ContentMonitorBehavior x:Name="Monitor" Content="{Binding Content}" />
 			</i:Interaction.Behaviors>
 		</mui:TransitioningContentControl>
-		<ds:ApplicationBar Grid.Row="1" DockPanel.Dock="Bottom" DataContext="{ds:Locate xfr:ApplicationBarModel}" d:DataContext="{d:DesignInstance d:Type=xfr:ApplicationBarModel}" ItemsSource="{Binding Primary}" MenuItemsSource="{Binding Secondary}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ToolbarItemImage}" />
-	</Grid>
+	</DockPanel>
 	<i:Interaction.Triggers>
 		<interactionRequest:InteractionRequestTrigger SourceObject="{ds:Locate xfr:SystemMessageRequest}">
 			<ds:PopupWindowAction CenterOverAssociatedObject="True" IsModal="True" WindowType="mui:ModernDialog" WindowStyle="{StaticResource Dialog}" />

@@ -114,10 +114,9 @@
 								<Grid Grid.Name="LayoutRoot">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="36" />
-										<RowDefinition Height="Auto" />
 										<RowDefinition Height="*" />
 									</Grid.RowDefinitions>
-									<ContentControl Grid.RowSpan="5" Content="{TemplateBinding BackgroundContent}" />
+									<ContentControl Grid.RowSpan="2" Content="{TemplateBinding BackgroundContent}" />
 									<Grid >
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*" />
@@ -180,20 +179,10 @@
 										</StackPanel>
 										<ContentControl Grid.Column="2" ContentTemplate="{TemplateBinding LogoContentTemplate}" Content="{TemplateBinding LogoContent}" WindowChrome.IsHitTestVisibleInChrome="True" />
 									</Grid>
-									<Grid Grid.Row="1">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition ColumnDefinition.Width="42" />
-											<ColumnDefinition ColumnDefinition.Width="*" />
-										</Grid.ColumnDefinitions>
-										<mui:ModernButton Margin="8,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" EllipseDiameter="24" IconWidth="12" IconHeight="12" IconData="F1M33,22L33,26 19.75,26 27,33 20.5,33 11,24 20.5,15 27,15 19.75,22 33,22z" Command="NavigationCommands.BrowseBack" ToolTip="{x:Static modernui:Resources.Back}" WindowChrome.IsHitTestVisibleInChrome="True" CommandTarget="{Binding ElementName=ContentFrame}"  />
-										<mui:ModernMenu Grid.Column="1" LinkGroups="{TemplateBinding mui:ModernWindow.MenuLinkGroups}" SelectedSource="{Binding Source,ElementName=ContentFrame,Mode=TwoWay}" />
-									</Grid>
+									
+									<ContentPresenter Grid.Row="1" ContentTemplate="{TemplateBinding Template}" Content="{TemplateBinding Content}" />
 
-									<!--<ContentPresenter Grid.Row="2" Margin="42,8,16,16"  ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />-->
-									<Frame x:Name="ContentFrame" Grid.Row="2" Margin="42,8,16,16" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
-
-									<!--<mui:ModernFrame x:Name="ContentFrame" Grid.Row="3" Grid.RowSpan="2" Margin="42,8,16,16" ContentLoader="{TemplateBinding mui:ModernWindow.ContentLoader}" Source="{Binding ContentSource,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />-->
-									<Grid Grid.Name="ResizeGrip" Grid.Row="2" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
+									<Grid Grid.Name="ResizeGrip" Grid.Row="1" Panel.Background="#00FFFFFF" UIElement.Visibility="Collapsed" FrameworkElement.HorizontalAlignment="Right" FrameworkElement.VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
 										<Path FrameworkElement.Width="12" FrameworkElement.Height="12" FrameworkElement.Margin="1" Shape.Stroke="{DynamicResource WindowText}" Shape.StrokeThickness="1" Shape.Stretch="None" Path.Data="F1M1,10L3,10 M5,10L7,10 M9,10L11,10 M2,9L2,11 M6,9L6,11 M10,9L10,11 M5,6L7,6 M9,6L11,6 M6,5L6,7 M10,5L10,7 M9,2L11,2 M10,1L10,3" />
 									</Grid>
 								</Grid>
@@ -225,6 +214,22 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+	<ControlTemplate x:Key="NavigationFrame" TargetType="ContentControl">
+		<DockPanel>
+			<Grid DockPanel.Dock="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="42" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<mui:ModernButton Margin="8,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" EllipseDiameter="24" IconWidth="12" IconHeight="12" IconData="F1M33,22L33,26 19.75,26 27,33 20.5,33 11,24 20.5,15 27,15 19.75,22 33,22z" Command="NavigationCommands.BrowseBack" ToolTip="{x:Static modernui:Resources.Back}" WindowChrome.IsHitTestVisibleInChrome="True" CommandTarget="{Binding ElementName=ContentFrame}"  />
+				<mui:ModernMenu Grid.Column="1" LinkGroups="{TemplateBinding mui:ModernWindow.MenuLinkGroups}" SelectedSource="{Binding Source,ElementName=ContentFrame,Mode=TwoWay}" />
+			</Grid>
+
+			<!--<ContentPresenter Grid.Row="2" Margin="42,8,16,16"  ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />-->
+			<Frame x:Name="ContentFrame" Margin="42,8,16,16" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
+		</DockPanel>
+	</ControlTemplate>
 
 	<DataTemplate DataType="{x:Type ds:DialogNotification}">
 		<DockPanel x:Name="LayoutRoot">
