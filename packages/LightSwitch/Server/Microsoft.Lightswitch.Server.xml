@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.LightSwitch.Server</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.LightSwitch.Framework.Server.ServerApplication`3">
+      <summary>
+            Represents the running application on the server tier.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Server.ServerApplication`2">
+      <summary>
+            Represents the running application on the server tier.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Server.ServerApplication`2.#ctor(Microsoft.LightSwitch.Model.IApplicationDefinition,Microsoft.LightSwitch.Threading.IDispatcher)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.LightSwitch.Framework.Server.ServerApplication`2" /> class.
+            </summary>
+      <param name="model">The model item of the application.</param>
+      <param name="logicDispatcher">The application's logic dispatcher.</param>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Server.ServerApplication`2.User">
+      <summary>
+            Gets the current user. The user can be used to get authentication information and check a user's permissions.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Server.ServerApplication`2.Microsoft#LightSwitch#Server#IServerApplication#Details">
+      <summary>
+            Gets the detail state of the server application.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Server.ServerApplication`2.Current">
+      <summary>
+            Gets the current server application instance.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Server.ServerApplication`3.#ctor(Microsoft.LightSwitch.Model.IApplicationDefinition,Microsoft.LightSwitch.Threading.IDispatcher)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.LightSwitch.Framework.Server.ServerApplication`2" /> class.
+            </summary>
+      <param name="model">The model item of the application.</param>
+      <param name="logicDispatcher">The application's logic dispatcher.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Server.ServerApplication`3.CreateDataWorkspaceCore">
+      <summary>
+            Creates a new data workspace.
+            </summary>
+      <returns>The data workspace that was created.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Server.ServerApplication`3.CreateDataWorkspace">
+      <summary>
+            Creates a new data workspace.
+            </summary>
+      <returns>The data workspace that was created.</returns>
+    </member>
+  </members>
+</doc>

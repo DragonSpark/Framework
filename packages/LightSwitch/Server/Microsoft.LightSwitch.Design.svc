@@ -1,0 +1,1 @@
+<%@ServiceHost language="c#" Debug="true" Factory="Microsoft.LightSwitch.WebHost.Implementation.PollingDuplexServiceHostFactory, Microsoft.LightSwitch.Server.Internal, Version=11.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" %>

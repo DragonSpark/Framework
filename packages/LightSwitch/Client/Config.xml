@@ -1,0 +1,19 @@
+﻿<Configuration>
+  <Manifests>
+    <Manifest>Microsoft.LightSwitch.Base.Client.Manifest.xml</Manifest>
+    <Manifest>Microsoft.LightSwitch.Client.Manifest.xml</Manifest>
+    <Manifest>Microsoft.LightSwitch.Client.Internal.Manifest.xml</Manifest>
+    <Manifest>Microsoft.LightSwitch.DebugOptions.Client.Internal.Manifest.xml</Manifest>
+    <Manifest>Microsoft.LightSwitch.Model.Xaml.Client.Manifest.xml</Manifest>
+    <Manifest>Microsoft.LightSwitch.RuntimeEditor.Internal.Manifest.xml</Manifest>
+    <Manifest>Microsoft.VisualStudio.Debugger.Runtime.Dll.Manifest.xml</Manifest>
+  </Manifests>
+  <SubsystemPackages>
+    <SubsystemPackage>RuntimeLoaders</SubsystemPackage>
+    <SubsystemPackage>RuntimeEditLoader</SubsystemPackage>
+    <SubsystemPackage>BaseServicesLoader</SubsystemPackage>
+    <SubsystemPackage>DiagnosticsLoader</SubsystemPackage>
+  </SubsystemPackages>
+  <UserCodeAssemblies />
+  <ExtensionAssemblies />
+</Configuration>

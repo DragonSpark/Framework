@@ -1,0 +1,1228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.LightSwitch.Client</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommandGroup">
+      <summary>
+            Represents a group of commands belonging to a LightSwitch application shell.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommandGroup.Name">
+      <summary>
+            Gets the name of the group in the application model.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommandGroup.DisplayName">
+      <summary>
+            Gets the display name of the group (as it is shown to the end user in the LightSwitch application).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommandGroup.Commands">
+      <summary>
+            Gets the set of commands that belong to the group.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Client.ClientApplication`3">
+      <Summary>
+            Represents the running application on the client tier.
+            </Summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Client.ClientApplication`2">
+      <Summary>
+            Represents the running application on the client tier.
+            </Summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.ShowDefaultScreen(Microsoft.LightSwitch.IEntityObject)">
+      <summary>
+            Displays a default detail screen for a given entity.  If there has been 
+            no default detail screen specified for the entity type, one will be auto-generated. 
+            </summary>
+      <param name="entity">The entity for which to display the default screen. </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.ShowScreen(Microsoft.LightSwitch.Model.IScreenDefinition,System.Collections.Generic.IEnumerable{System.Object})">
+      <summary>
+            Displays a specific screen.  If the screen is not multi-instance, this will focus any 
+            existing instance of the screen.
+            </summary>
+      <param name="screenDefinition">The model definition that describes the screen to open. </param>
+      <param name="parameters"> Any parameters required by the screen. </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.SetAuthenticationService(Microsoft.LightSwitch.Security.Client.IAuthenticationService)">
+      <summary>
+            Sets the authentication service.
+            </summary>
+      <param name="service">Authentication service.</param>
+      <remarks>
+            Having this method marked as internal allows tests to reset the authentication service, bypassing
+            the argument check in the AuthenticationService property setter.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.AuthenticationService">
+      <summary>
+            Gets or sets the authentication service that is used to determine and authenticate the current user.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.User">
+      <summary>
+            Gets the current user.  The user can be used to get authentication information and check a user's permissions.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.ActiveScreens">
+      <summary>
+            Provides a collection of screens instances in the application.  This can be used to set focus to specific screens or run code on other screens.  
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ClientApplication`2.Current">
+      <summary>
+            Gets the current client application instance.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ClientApplication`3.CreateDataWorkspaceCore">
+      <summary>
+            Creates a new data workspace.
+            </summary>
+      <returns>The data workspace that was created.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ClientApplication`3.CreateDataWorkspace">
+      <summary>
+            Initializes a new data workspace.  A data workspace can be used to 
+            query data and make changes to data sources independent of any other 
+            screens or data workspaces. 
+            </summary>
+      <returns>The data workspace that was created.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Presentation.IContentItem">
+      <summary>
+            Represent an element of the screen content tree.  
+            </summary>
+      <remarks>
+            Content item serves as the view model for LightSwitch visuals - all LightSwitch controls bind to an instance of a class that implements 
+            this interface. Content item provides properties that affect the visualization (such as 
+            DisplayName), and provides binding information for how the visual can bind itself to the actual data.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItem.FindShortcutForCommand(System.String)">
+      <summary>
+            Finds the appropriate executable for (implementation of) a keyboard 
+            shortcut associated with a command for this content item.
+            </summary>
+      <remarks>
+            Using this method instead of calling the executable in the Details property allows the 
+            content item to handle appropriate enabling/disabling behavior according to the context 
+            in the content tree. For instance, if the programmer removes the DeleteSelected command 
+            from a collection node in the screen designer, that command will not be displayed in the 
+            screen.  Likewise, the functionality of any shortcuts for that command should be disabled.
+            
+            Do not cache the return from the function, because the binding for the content item could 
+            change, causing a different value to be returned at a later time.
+            
+            Callers should check CanExecute/CanExecuteAsync on the returned IExecutable object before 
+            calling Execute/ExecuteAsync.
+            </remarks>
+      <param name="targetMethodName">The name of the method to find a shortcut executable for.</param>
+      <returns>
+            Executable object representing the action that should be performed when the user 
+            invokes a keyboard shortcut.
+            </returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItem.CreateTemplatedTreeCopy(System.Object)">
+      <summary>
+            Uses this content item and its children as a template to create a new tree that
+            is the same as the current tree except for its data bindings.  This should be
+            used when creating visual children of a collection.
+            </summary>
+      <param name="newBindingRoot">The new data binding root for the new instance, which
+            overrides the value from the template content item.</param>
+      <returns>A content item tree with data binding set to the new binding root. </returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItem.GetService``1">
+      <summary>
+            This method is intended for internal LightSwitch use.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItem.SetValidationResult(System.String,Microsoft.LightSwitch.ValidationSeverity)">
+      <summary>
+            Sets the validation result on the content item. This can be called by controls 
+            to set transient validation errors like parsing error etc. This will be cleared 
+            automatically upon any change in data.
+            </summary>
+      <param name="result">Validation result to set to.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItem.ClearValidationResult">
+      <summary>
+            Clears a custom validation result set by SetValidationResult() method.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.DisplayName">
+      <summary>
+            Gets or sets content item display name, commonly used for control captions
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Description">
+      <summary>
+            Gets or sets the descriptions for the current content item.  The description is commonly used as a tooltip.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsEnabled">
+      <summary>
+            Gets or sets a value indicating whether the UI associated with this content item should be enabled or not.  
+            </summary>
+      <remarks>
+            The value of this property will be false if the value of IsAvailable property is false.  
+            The value of this property will be false if a command's CanExecute() returns false.
+            There is no need to bind to this property explicitly, it will be set automatically on the control's parent.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsReadOnly">
+      <summary>
+            Gets or sets a value indicating whether the UI associated with this content item should be read-only.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsVisible">
+      <summary>
+            Gets or sets a value indicating whether the content item is visible. 
+            </summary>
+      <remarks>
+            If hidden, content item is not displayed by ContentItemPresenter.
+            There is no need to bind to this property.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsProcessing">
+      <summary>
+            Indicates the value is still being computed/loaded in the runtime, and is not ready to be shown.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsAvailable">
+      <summary>
+            Gets a value indicating if the object providing the value for this content item is not null.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Details">
+      <summary>
+            Gets the details object for the item that this content item is bound to.  
+            </summary>
+      <remarks>
+            The value of this property will be the details object for the corresponding screen property.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Value">
+      <summary>
+            Gets or sets the data value that this content item is bound to.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.StringValue">
+      <summary>
+            Gets the string value of the content item.
+            </summary>
+      <remarks>
+            Controls such as text editor that work on string based values can bind to this property. This property handles 
+            conversion between string and other simple types as well as null--empty string conversion. This property also 
+            handles Choices display name to value mapping. i.e., if a property has choices, then the stringValue should be 
+            displayName of one of the choices.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Choices">
+      <summary>
+            Gets the screen collection property that provides possible value choices for the piece of data that is represented by this 
+            content item. This property is commonly used by picker controls.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Properties">
+      <summary>
+            Gets the property bag for control properties such as DisplayName, Height, Width, etc.
+            To retrieve a property value, index with the property name.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.DataError">
+      <summary>
+            Gets an exception representing the data load failure associated with this content item (if any).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.BindingPath">
+      <summary>
+            Gets the binding path, relative to the content item's position in the content tree (relative to the data source root).
+            The format of this path is a simple dot notation (e.g., "Address.City") that is not dependent on target application platform.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.DataSourceRoot">
+      <summary>
+            Gets the source that the visual should use to bind against. For items on a screen, this could be the screen, but it
+            could be an entity or, in the case of a collection, an actual data element contained in a collection.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.DataSourceRootDefinition">
+      <summary>
+            Gets the application model definition of the data binding root object, if any.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ChoicesSourceRootDefinition">
+      <summary>
+            Reserved for internal use and may be obsoleted in future LightSwitch releases.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.View">
+      <summary>
+            Gets the control or view type to use for this content item. 
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ChildItems">
+      <summary>
+            Gets children for the given content item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.CommandItems">
+      <summary>
+            Gets a list of content items representing commands available for this content item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ParentItem">
+      <summary>
+            Gets the parent of this content item, if one exists.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.EffectiveParentItem">
+      <summary>
+            Gets the effective parent content item if one exists.  If this content item was cloned from another content 
+            item, returns the parent of the item it was cloned from.  Otherwise returns the owner. 
+            </summary>
+      <remarks>
+            A content item might not have a true parent (ParentItem property might return null), but it will always 
+            have an effective parent item.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.GeneratedFromItem">
+      <summary>
+            Gets the content item this content item was generated from, if any.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.Screen">
+      <summary>
+            Gets the root screen of this content item. 
+            </summary>
+      <remarks>
+            This property may be null in some scenarios (the content item is item 
+            template or created by data presenter).
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ContentItemKind">
+      <summary>
+            Gets a value indicating the kind of data and the purpose of this ContentItem.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.LastMemberModelItem">
+      <summary>
+            Gets the last member model in the binding path for this content item.  For example, if a content item's 
+            binding root is the screen's Customer property, and the binding path is "Order.Employee.Address.City", then 
+            this property will return the model definition for the City member of the Address data type.
+            </summary>
+      <remarks>Returns null if there is no binding path, or if the binding expression is empty
+            (thus binding directly to the data source)</remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ResultingDataType">
+      <summary>
+            Gets the data type of the bound value.  This property returns null if the content item bound to the whole screen.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ResultingModel">
+      <summary>
+            Gets the model item describing the type of the bound value.  
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.ContentItemDefinition">
+      <summary>
+            Gets the IContentItemDefinition this content item was created from. Content items might be created dynamically, without 
+            using application model, so this property can return null .
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.IsDisposed">
+      <summary>
+            Gets a value indicating if this content item has been disposed.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IContentItem.FontStyle">
+      <summary>
+            Gets or sets a value indicating what font style will be used to display this content item.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Presentation.IContentItemService">
+      <summary>
+            Represents a service is used to create content items.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItemService.CreateContentItem(Microsoft.LightSwitch.Presentation.IContentItem,Microsoft.LightSwitch.Presentation.IContentItem,Microsoft.LightSwitch.Model.IContentItemDefinition,Microsoft.LightSwitch.Client.IScreenObject)">
+      <summary>
+            Creates a content item based on a content item definition
+            </summary>
+      <param name="parent">If specified, this content item is added to the parent's ChildItems collection.</param>
+      <param name="owner">The owner, if different from the parent, otherwise may be null.
+            The content item will inherit properties from the owner.  For example, a button has no parent, but its owner 
+            is the content item that contains it.</param>
+      <param name="contentItemDefinition">Application model definition to create the content item from.</param>
+      <param name="screen">Screen that will host the content item.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItemService.CreateContentItem(Microsoft.LightSwitch.Presentation.IContentItem,Microsoft.LightSwitch.Presentation.IContentItem,Microsoft.LightSwitch.Model.INamedItem,Microsoft.LightSwitch.Model.INamedItem,System.String,System.String,System.String,Microsoft.LightSwitch.Client.IScreenObject)">
+      <summary>
+            Dynamically creates a content item bound to some screen member. 
+            </summary>
+      <param name="parent">If specified, this content item is added to the parent's ChildItems collection.</param>
+      <param name="owner">The owner, if different from the parent, otherwise may be null.
+            The content item will inherit properties from the owner.  For example, a button has no parent, but its owner is 
+            the content item that contains it.</param>
+      <param name="dataSourceRootDefinition">Application model definition for the root data source object for this 
+            content item.</param>
+      <param name="choicesRootModelDefinition">This parameter is obsolete, pass null</param>
+      <param name="bindingPath">The binding path that the content item should use for data binding.</param>
+      <param name="overrideViewId">Specifies the control (view) to use, otherwise a default is selected.</param>
+      <param name="overrideBucketName">Specifies the placeholder name for the content item. This parameter is used if the 
+            content item has a smart layout as its parent.</param>
+      <param name="screen">Screen that will host the content item.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IContentItemService.CreateContentItemTree(Microsoft.LightSwitch.Client.IScreenObject)">
+      <summary>
+            Creates new content tree for the screen object.
+            </summary>
+      <param name="screen">Screen to create the content tree for.</param>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Presentation.IControlFactory">
+      <summary>
+            Implementer of this interface provides a data template that can be used to create a control for 
+            a screen's content item.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Presentation.IControlFactory.GetDisplayModeDataTemplate(Microsoft.LightSwitch.Presentation.IContentItem)">
+      <summary>
+            Optionally allows providing a read-only data template for the given control.
+            This simpler template may be used by controls such as DataGrid to represent
+            the control when it does not have focus. The contentItem parameter may be
+            used to determine whether the simpler template is available based on control
+            property settings or other context.  If null is returned, the data template
+            returned from DataTemplate property will be used instead.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Presentation.IControlFactory.DataTemplate">
+      <summary>
+            Provides a regular data template that can be used to create a control for a screen's content item.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView">
+      <summary>
+            Represents user interface (view) of an existing (instantiated) screen inside a LightSwitch application.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.ActivateUIElement(Microsoft.LightSwitch.IBusinessObject,Microsoft.LightSwitch.Details.IBusinessProperty)">
+      <summary>
+            Finds the UI element that displays target/property combination and sets focus to it.
+            </summary>
+      <param name="target">Target entity</param>
+      <param name="targetProperty">Target property. If null, activate the entity.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.Focus">
+      <summary>
+            Sets focus to this screen.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.BeginModal(Microsoft.LightSwitch.Runtime.Shell.View.IScreenModalDialog)">
+      <summary>
+            Prepares the screen to show a modal dialog on top of it. It should always be called before 
+            a modal dialog is shown.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.EndModal(Microsoft.LightSwitch.Runtime.Shell.View.IScreenModalDialog)">
+      <summary>
+            Reverts the screen back to normal appearance and behavior after a modal dialog is dismissed.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.CommitUIChanges">
+      <summary>
+            Ensures that all pending changes in the UI layer (e.g. end user editing a value) are commited 
+            (sent to the screen data model). This is usually necessary before initiating screen data workspace save operation.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.GetActiveModalDialogs">
+      <summary>
+            Gets all existing modal dialogs that have this screen as owner.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.RootUI">
+      <summary>
+            Gets the root control (FrameworkElement) of the screen UI.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.Screen">
+      <summary>
+            Gets the screen object that is displayed using this screen view.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.ShellCommands">
+      <summary>
+            Gets the set of shell commands associated with this screen.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.IsShowingModal">
+      <summary>
+            Gets a value indicating if the screen is showing a modal dialog.
+            </summary>
+    </member>
+    <member name="E:Microsoft.LightSwitch.Runtime.Shell.View.IScreenView.PreviewShowingModal">
+      <summary>
+            Event raised before showing a modal dialog.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Services.IExecutableInfo">
+      <summary>
+            Retrieves information about an IExecutableItem without instantiating it.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Services.IExecutableInfo.CreateExecutableObject">
+      <summary>
+            Creates a command that will execute the given IExecutableItem (e.g., execute
+            a method, or show a screen).
+            </summary>
+      <returns>The command to execute the IExecutableItem.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.View.IUserSettingsService">
+      <summary>
+            Represents a service is used to manage user settings.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IUserSettingsService.GetSetting``1(System.String)">
+      <summary>
+            Get a specified user setting from storage.
+            </summary>
+      <typeparam name="T">Type of the user setting object.</typeparam>
+      <param name="name">Unique name of the setting.</param>
+      <returns>Specified user setting object. Return null if the setting doesn't exist.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IUserSettingsService.SetSetting(System.String,System.Object)">
+      <summary>
+            Set a specified user setting to storage.
+            </summary>
+      <param name="name">Unique name of the setting.</param>
+      <param name="setting">Specified user setting object.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.View.IUserSettingsService.ResetSetting(System.String)">
+      <summary>
+            Resets (clears) a specified setting in storage.
+            </summary>
+      <param name="name">Unique name of the setting.</param>
+    </member>
+    <member name="E:Microsoft.LightSwitch.Runtime.Shell.View.IUserSettingsService.Closing">
+      <summary>
+            Closing event is originated by application closing event. Either from closing browser
+            or closing Out Of Browser window, depends on the deployment scenarios.
+            Should controls has any settings have not saved to setting service's cache, it 
+            needs to be saved when this event fires. Control should explicitly call SetSetting 
+            method to save settings. After this event, setting service will persist settings from 
+            memory cache to physical disk before the application is closed.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel">
+      <summary>
+            Represents the screen level validation view model.  It provides information about validation errors associated with the screen's members and data workspace. 
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.Screen">
+      <summary>
+            Gets the screen object associated with this view model.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.Summary">
+      <summary>
+            Gets a short description of all validation results associated with a given screen.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.ServerValidationResults">
+      <summary>
+            Gets all validation results that originated from the server.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.ClientValidationResults">
+      <summary>
+            Gets validation results that originated from the client application.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.AllValidationResults">
+      <summary>
+            Gets all known validation results (client-originated and server-originated).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.HasResults">
+      <summary>
+            Gets a value indicating if the screen has any errors, warnings, or informational validation results.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.HasErrors">
+      <summary>
+            Gets a value indicating if the screen has any errors.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.HasWarnings">
+      <summary>
+            Gets a value indicating if the screen has any validation results of type warning.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.HasInformation">
+      <summary>
+            Gets a value indicating if the screen has informational validation results.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModel.HasServerResults">
+      <summary>
+            Gets a value indicating if the screen has any validation results originating from the server (data source).
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModelService">
+      <summary>
+            Represents a service can be used to retrieve the validation view model for a given screen.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.ViewModels.IScreenValidationViewModelService.GetViewModel(Microsoft.LightSwitch.Client.IScreenObject)">
+      <summary>
+            Gets the validation view model for a given screen. 
+            </summary>
+      <param name="screen">Screen object</param>
+      <remarks>The screen must be active (running) in order to retireve its validation view model.</remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Client.IClientMessageAlertService">
+      <summary>
+            Represents a service that can be used to show simple messages (alerts) to the user of a LightSwitch application.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IClientMessageAlertService.ShowScreenAlert(System.String,System.String,Microsoft.LightSwitch.BaseServices.Alert.MessageAlertType,Microsoft.LightSwitch.Client.MessageConfirmationType,System.Action{Microsoft.LightSwitch.Client.MessageAlertResult},Microsoft.LightSwitch.Client.IScreenObject)">
+      <summary>
+            Shows an alert modal to the specified screen.
+            </summary>
+      <param name="message">Message to show.</param>
+      <param name="caption">Caption</param>
+      <param name="messageConfirmation">Type of alert confirmations.</param>
+      <param name="alertType">Alert type</param>
+      <param name="callback">Callback to call on completion.</param>
+      <param name="screen">Screen to which the alert should be modal.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IClientMessageAlertService.ShowScreenAlert(System.String,System.String,Microsoft.LightSwitch.BaseServices.Alert.MessageAlertType,Microsoft.LightSwitch.Client.MessageConfirmationType,System.Action{Microsoft.LightSwitch.Client.MessageAlertResult},Microsoft.LightSwitch.Client.IScreenObject,System.String[])">
+      <summary>
+            Shows an alert modal to the specified screen.
+            </summary>
+      <param name="message">Message to show</param>
+      <param name="caption">Caption</param>
+      <param name="messageConfirmation">Type of alert confirmations.</param>
+      <param name="alertType">Alert type</param>
+      <param name="callback">Callback to call on completion</param>
+      <param name="screen">Screen to which the alert should be modal</param>
+      <param name="customButtonText">
+            Specify custom text for buttons. The order should be same as the order specified in messageConfirmation.
+            </param>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel">
+      <summary>
+            Represents the view model for the current user information which is displayed within the application shell.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel.ChangePassword(System.String,System.String)">
+      <summary>
+            Changes the password of the current user.
+            </summary>
+      <param name="oldPassword">The old password of the user.</param>
+      <param name="newPassword">The new password for the user.</param>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel.IsUserInfoAvailable">
+      <summary>
+            Gets a value indicating whether any user information is available.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel.AreUserInfoAndOperationsAvailable">
+      <summary>
+            Gets a value indicating whether the user infomation and operations are available to execute for the current user.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel.IsOnlyUserInfoAvailable">
+      <summary>
+            Gets a value which indicates whether only user information is available.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.CurrentUser.ICurrentUserViewModel.CurrentUserDisplayName">
+      <summary>
+            Gets the display name for the current application user.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.ActiveScreens.IActiveScreensViewModel">
+      <summary>
+            Represents a view model for an active screen (a screen that has focus).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.ActiveScreens.IActiveScreensViewModel.Current">
+      <summary>
+            Gets the screen that is active.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.ICommandsViewModel">
+      <summary>
+            Represents the view model for application shell commands.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.ICommandsViewModel.ShellCommands">
+      <summary>
+            Gets a flat list of all shell commands.
+            </summary>
+      <remarks>
+            A shell that is able to show commands in groups should use ShellCommandGroups property. 
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.ICommandsViewModel.ShellCommandGroups">
+      <summary>
+            Gets a collection of all shell command groups.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand">
+      <summary>
+            Represents a view model of a shell command.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.DisplayName">
+      <summary>
+            Gets the display name for the command.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.Description">
+      <summary>
+            Gets description of the command (can be used for information tooltip or similar).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.Image">
+      <summary>
+            Gets the source for command's icon (ImageSource object).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.IsVisible">
+      <summary>
+            Gets a value indicating whether the command UI should be visible.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.IsEnabled">
+      <summary>
+            Gets the value indicating whether the command is enabled.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.Group">
+      <summary>
+            Gets the name of a group that contains this command.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.ShowSmallImage">
+      <summary>
+            Gets a value indicating whether a small icon should be used for the shell command UI (as opposed to regular-size icon).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Commands.IShellCommand.ExecutableObject">
+      <summary>
+            Gets an executable object that can be invoked to execute the command. 
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationGroup">
+      <summary>
+            Represents a navigation item that can contain nested navigation items.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem">
+      <summary>
+            Represents a navigation item that appears within the screen navigation menu.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem.Id">
+      <summary>
+            Gets the unique identifier of the current navigation item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem.DisplayName">
+      <summary>
+            Gets the display name of the current navigation item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem.Description">
+      <summary>
+            Gets the description of the current navigation item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem.Parent">
+      <summary>
+            Gets the navigation item which is the parent of the current navigation item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationItem.IsSelected">
+      <summary>
+            Gets or sets a value which indicates whether the current navigation item is selected.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationGroup.Children">
+      <summary>
+            Gets the navigation items that are contained by the current navigation group.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationGroup.DefaultChild">
+      <summary>
+            Gets the default child navigation item of the current navigation group.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationGroup.IsExpanded">
+      <summary>
+            Gets or sets a value which indicates whether the current navigation group is expanded.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationViewModel">
+      <summary>
+            Represents the view model for screen navigation menu.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationViewModel.NavigationItems">
+      <summary>
+            Gets the top level navigation items to display in the navigation menu.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Runtime.Shell.ViewModels.Navigation.INavigationViewModel.DefaultItem">
+      <summary>
+            Gets the default navigation item.  The default item is the navigation item that is displayed when the application starts.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Client.IMessageAlertState">
+      <summary>
+            This interface allows you to programmatically control alerts displayed by message alert service.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IMessageAlertState.Dismiss">
+      <summary>
+            Dismiss the alert dialog.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IMessageAlertState.Dismiss(Microsoft.LightSwitch.Client.MessageAlertResult)">
+      <summary>
+            Dismisses the alert with specific result.
+            </summary>
+      <param name="alertResult">Alert result that should be returned to the alert invoker.</param>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Client.IMessageAlertState.IsDismissed">
+      <summary>
+            Returns true if the alert is already dismissed.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Client.IScreenObject">
+      <summary>
+            Provides an instance of a screen on which to execute business logic. 
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IScreenObject.Save">
+      <summary>
+            Saves the data in the screen's default data workspace.  
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IScreenObject.Refresh">
+      <summary>
+            Reloads the screen's data, discarding any changes. 
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Client.IScreenObject.Close(System.Boolean)">
+      <summary>
+            Closes the screen.
+            </summary>
+      <param name="promptUserToSave">When set to True, this will prompt the user to save modified data prior to closing the screen.  </param>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Client.IScreenObject.Name">
+      <summary>
+            Returns the name of the screen.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Client.IScreenObject.DisplayName">
+      <summary>
+            Gets or sets the title of the screen. 
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Client.IScreenObject.Description">
+      <summary>
+            Gets or sets the screen's description.  A screenâ€™s description is commonly 
+            used in the application for additional visual cues such as tooltips.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Client.IScreenObject.CanSave">
+      <summary>
+            Returns whether the screen can be saved. 
+            </summary>
+      <remarks>
+            This is determined based on a number of factors including logic written by 
+            the user, the validation state of data on the screen and whether the data 
+            source for the screen can be saved.  
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Client.ScreenObject`2">
+      <summary>
+            Represents a screen that is displayed in the application.  This class can be used to 
+            encapsulate business logic to associate with the screen.
+            </summary>
+      <typeparam name="TScreen">The specific type of the screen.  </typeparam>
+      <typeparam name="TDetails">The details class for the specific type of the screen.  </typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Save">
+      <summary>
+            Saves the data in the screen's default data workspace.  
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Refresh">
+      <summary>
+            Reloads the screen's data, discarding any changes. 
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Close(System.Boolean)">
+      <summary>
+            Closes the screen.
+            </summary>
+      <param name="promptUserToSave">When set to True, this will prompt the user to save modified data prior to closing the screen.  </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.SetDisplayNameFromEntity(Microsoft.LightSwitch.IEntityObject)">
+      <summary>
+            Sets the Screen's DisplayName based on the given <see cref="T:Microsoft.LightSwitch.IEntityObject" />.
+            </summary>
+      <remarks>
+            If the <see cref="T:Microsoft.LightSwitch.IEntityObject" /> is null or its ToString() value is null or white space,
+            the DisplayName will come from the Screen Model.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Microsoft#LightSwitch#Client#IScreenObject#Details">
+      <summary>
+            Returns screen details.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Name">
+      <summary>
+            Returns the name of the screen.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.DisplayName">
+      <summary>
+            Gets or sets the title of the screen. 
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.Description">
+      <summary>
+            Gets or sets the screen's description.  A screenâ€™s description is commonly 
+            used in the application for additional visual cues such as tooltips.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.ScreenObject`2.CanSave">
+      <summary>
+            Returns whether the screen can be saved. 
+            </summary>
+      <remarks>
+            This is determined based on a number of factors including logic written by the user, 
+            the validation state of data on the screen and whether the data source for the screen 
+            can be saved.  
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2">
+      <summary>
+            Represents the additional details class for a screen.
+            </summary>
+      <typeparam name="TScreen">The type of the screen.</typeparam>
+      <typeparam name="TDetails">The type of the details class.</typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.Microsoft#LightSwitch#Client#Implementation#Internal#IScreenDetailsImplementation#PushCommandExecution">
+      <summary>
+            Called by screen commands to notify that command is executing.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.Microsoft#LightSwitch#Client#Implementation#Internal#IScreenDetailsImplementation#PopCommandExecution">
+      <summary>
+            Called to remove current executing command.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.GetPropertyValue``1(`0,Microsoft.LightSwitch.Details.Framework.Client.ScreenProperty{`0,`1,``0}.Entry)">
+      <summary>
+            Given a Screen and its Property Entry, gets the property value.
+            </summary>
+      <remarks>
+            This method is called from
+            - ScreenProperty.OfT2::Value property.
+            - All public static methods GetValue above.
+            The more strongly-typed public static methods are required for VB compiler
+            to infer the type correctly.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.InvalidateCollectionPropertyDependency``1(Microsoft.LightSwitch.Details.Framework.Client.ScreenCollectionProperty{`0,`1,``0}.Entry)">
+      <summary>
+            Invalidates a Screen Collection Property dependencies,
+            but not raising Property Changed Event for that Property.
+            VisualCollection will invoke this method when making collection change,
+            because the property itself does not change, but its dependencies
+            need to be invalidated.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.InvokeChangedPartialMethod``1(Microsoft.LightSwitch.Details.Framework.Client.ScreenLocalProperty{`0,`1,``0}.Entry)">
+      <summary>
+            Invokes the partial XXX_Changed() method on the Screen.
+            </summary>
+      <remarks>
+            Since this is Tim's code, this can only run on the LogicDispatcher.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.InvokeChangedPartialMethod``1(Microsoft.LightSwitch.Details.Framework.Client.ScreenReferenceProperty{`0,`1,``0}.Entry)">
+      <summary>
+            Invokes the partial XXX_Changed() method on the Screen.
+            </summary>
+      <remarks>
+            Since this is Tim's code, this can only run on the LogicDispatcher.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.TryNormalizeLocalPropertyValue``1(Microsoft.LightSwitch.Details.Framework.Client.ScreenLocalProperty{`0,`1,``0}.Entry,``0)">
+      <summary>
+            Attempts to normalize the value before setting it on a Screen Local Property.
+            </summary>
+      <returns>
+            - If T is DateTime or DateTime?
+              + If the LightSwitch Property Type is Date, the value will be truncated.
+              + If the LightSwitch Property Type is DateTime, the value will have Unspecified Kind.
+            - Otherwise the same value passed in.
+            </returns>
+      <remarks>
+            - Screen Local Property of LightSwitch Data Type Date should be truncated and have Unspecified Kind.
+            - Screen Local Property of LightSwitch Data Type DateTime should have Unspecified Kind.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.InvalidateDependency``1(Microsoft.LightSwitch.Details.Framework.Client.ScreenCollectionProperty{`0,`1,``0}.Entry,Microsoft.LightSwitch.Details.Framework.Client.ScreenCollectionProperty{`0,`1,``0}.Data@)">
+      <summary>
+            Invalidate a Screen Collection Property dependencies,
+            but not raising Property Changed Event for that Property.
+            This method is used by Screen Collection Property Entries (code gened).
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.IsValidationPassed">
+      <summary>
+            Returns true if there are no blocking validation results before asking the domain service to save.
+            </summary>
+      <returns></returns>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.Name">
+      <summary>
+            Gets the name of the screen as specified in the screen designer.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.Screen">
+      <summary>
+            Gets the screen to which these details apply.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.DisplayName">
+      <summary>
+            Gets the display name as specified in the screen designer.  This is the name that is displayed to the end user.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Client.ScreenDetails`2.Description">
+      <summary>
+            Gets the description of the screen as specified in the screen designer.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder">
+      <summary>
+            Adds new ValidationResult instances to the current IScreenObject in scope.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddScreenError(System.String)">
+      <summary>
+            Adds a validation error that targets the whole screen to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddScreenResult(System.String,Microsoft.LightSwitch.ValidationSeverity)">
+      <summary>
+            Adds a validation result that targets the whole screen to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddScreenResult(System.String,Microsoft.LightSwitch.ValidationSeverity,System.String)">
+      <summary>
+            Adds a validation result that targets the whole screen to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyError(System.String)">
+      <summary>
+            Adds a validation error to the results collection.  The property is defaulted based on the item being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyError(System.String,Microsoft.LightSwitch.Details.Client.IScreenProperty)">
+      <summary>
+            Adds a property validation error that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation error will apply.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity)">
+      <summary>
+            Adds a validation result to the results collection.  The property is defaulted based on the item being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,System.String)">
+      <summary>
+            Adds a validation result to the results collection.  The property is defaulted based on the item being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,Microsoft.LightSwitch.Details.Client.IScreenProperty)">
+      <summary>
+            Adds a property validation result that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation result will apply.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.ScreenValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,Microsoft.LightSwitch.Details.Client.IScreenProperty,System.String)">
+      <summary>
+            Adds a property validation result that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation result will apply.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Client.VisualCollection`1">
+      <summary>
+            Represents a collection that is used in a screen.  
+            </summary>
+      <typeparam name="T">The type of object used in the collection.  </typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.AddNew">
+      <summary>
+            Adds a new object to the VisualCollection.
+            </summary>
+      <returns>The object that was added to the collection.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.AddAndEditNew">
+      <summary>
+            Adds a new object to the VisualCollection and opens a modal window to edit it.  
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.AddAndEditNew(System.Action{`0})">
+      <summary>
+            Adds a new object to the VisualCollection and opens a modal window to edit it.  
+            </summary>
+      <param name="completeAction">A method to be run when the modal window dialog has been closed.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.EditSelected">
+      <summary>
+            Opens a modal window editor for the selected item in the collection.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.RemoveSelected">
+      <summary>
+            Removes the selected item from the collection.  If this collection represents a 
+            collection navigation property, the removed item will be unassociated from the related entity.  
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.DeleteSelected">
+      <summary>
+            Marks the currently selected item for deletion and removes it from the collection.  
+            It will be deleted when the DataWorkspace is saved. 
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.Refresh">
+      <summary>
+            Refreshes the collection, adding any new items from the data source.  
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.Load">
+      <summary>
+            Loads the data for this collection. If the collection has already been
+            loaded, re-executes the query to re-load the collection.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.Screen">
+      <summary>
+            Gets the screen on which this VisualCollection instance exists.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.Count">
+      <summary>
+            Gets the number of items that are currently in the collection.  If this is a 
+            paged collection, this is a count of the number of items on the current page.  
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.CanAddNew">
+      <summary>
+            Gets a value indicating whether the current user has permission to 
+            add new objects to the Visual Collection.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.CanEdit">
+      <summary>
+            Gets a value indicating whether the current user has permission to 
+            edit objects in the Visual Collection.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.CanRemove">
+      <summary>
+            Gets a value indicating whether the current user has permission to 
+            remove objects from the Visual Collection.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.CanDelete">
+      <summary>
+            Gets a value indicating whether the current user has permission to 
+            delete objects from the Visual Collection.  This both removes it from the 
+            collection and deletes the object.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Client.VisualCollection`1.SelectedItem">
+      <summary>
+            Gets or sets the object that is currently selected in the Visual Collection.
+            </summary>
+    </member>
+  </members>
+</doc>

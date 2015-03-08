@@ -1,0 +1,1105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.LightSwitch</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.LightSwitch.BaseServices.Notifications.INotificationService">
+      <summary>
+            Represents a service for publishing and subscribing to notifications.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.Notifications.INotificationService.Publish(Microsoft.LightSwitch.BaseServices.Notifications.Notification)">
+      <summary>
+            Sends a notification to all the subscribers for that notification.
+            </summary>
+      <param name="notification">The notification to be published.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.Notifications.INotificationService.Subscribe(System.Type,Microsoft.LightSwitch.BaseServices.Notifications.NotificationHandler)">
+      <summary>
+            Registers a handler for the specified notification.
+            </summary>
+      <param name="notificationType">The type of the notification being subscribed to.</param>
+      <param name="handler">The handler to be invoked when this notification is published.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.Notifications.INotificationService.Unsubscribe(System.Type,Microsoft.LightSwitch.BaseServices.Notifications.NotificationHandler)">
+      <summary>
+            Unregisters a handler for the specified notification.
+            </summary>
+      <param name="notificationType">The type of the notification being unsubscribed from.</param>
+      <param name="handler">The handler that is associated with the notification type.</param>
+    </member>
+    <member name="T:Microsoft.LightSwitch.BaseServices.Notifications.Notification">
+      <summary>
+             This is the abstract base class from which all notification types derive.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.BaseServices.Notifications.NotificationHandler">
+      <summary>
+             This is the delegate, provided by subscribers, that is called when a notification is published.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.BaseServices.ResourceService.IResourceService">
+      <summary>
+            Represents a global service for finding resources for LightSwitch applications.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.ResourceService.IResourceService.GetResource(System.String,System.Globalization.CultureInfo)">
+      <summary>
+            Retrieves a resource using a global identifier. 
+            </summary>
+      <param name="globalResourceId">The identifier for the resource</param>
+      <param name="cultureInfo">Culture for the resource</param>
+      <remarks>
+            The format of the globalResourceId is ResourceProviderId::ResourceId. Some examples:
+            RESX::Microsoft.LightSwitch.Client.Resources:SaveCommandIcon
+            SERVER::example.jpg
+            Contoso.Controls.Icons::TextBoxControlImage
+            The ResourceId is *not* a Uri.  Rather, it is a key interpreted by the provider.
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorContext">
+      <summary>
+            Base interface for all ErrorContexts, which are used to pass callsite-specific information to the error handler service.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorHandlerService">
+      <summary>
+            Provides a service that can locate and invoke a handler for an error.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorHandlerService.TryHandle(System.Exception,Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorContext)">
+      <summary>
+            Attempts to handle an error and returns whether the error was handled or not.
+            </summary>
+      <param name="exception">The error to handle.</param>
+      <param name="context">The callsite-specific context for the error.</param>
+      <returns>True if the error was handled, false otherwise.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorHandlerService.Handle(System.Exception,Microsoft.LightSwitch.BaseServices.ErrorHandler.IErrorContext)">
+      <summary>
+            Attempts to handle an error, and rethrows the exception if handling fails.
+            </summary>
+      <param name="exception">The error to handle.</param>
+      <param name="context">The callsite-specific context for the error.</param>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.INamedItem">
+      <summary>
+            Provides the base interface for all named items.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.INamedItem.Name">
+      <summary>
+            Gets the name of the item.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.IGlobalItem">
+      <summary>
+            Represents a global (top-level) model item inside a LightSwitch application model fragment.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IGlobalItem.Module">
+      <summary>
+            Returns the module from which this global item comes.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.IMethodDefinition">
+      <summary>
+            Represents a method in LighSwitch application model.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.IContentItemDefinition">
+      <summary>
+            Represents a content item in a screen's visual content tree.
+            </summary>
+      <remarks>
+            A content item is the smallest unit of visualization for a screen.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.DataSource">
+      <summary>
+            Gets the source of the primary data value.
+            </summary>
+      <remarks>
+            This can be a constant value, or be a data binding from a screen property.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.ChoicesSource">
+      <summary>
+            Gets the source of possible values for the data that the content item is bound to.
+            </summary>
+      <remarks>
+            This property is valid only for content items that represent picker controls.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.PropertySources">
+      <summary>
+            Gets content item property sources to initialize properties on this content item.
+            </summary>
+      <remarks>
+            PropertySources enable the ability to customize the content item by
+            initializing control properties to specific values, or binding
+            them to items in the screen data.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.CommandItems">
+      <summary>
+            Gets the command content items for this content item (if they exist).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.IsHidden">
+      <summary>
+            Gets the visibility status.
+            </summary>
+      <remarks>
+            This property indicates if the content item is hidden or not. If set to true content
+            item is not shown in the Runtime.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.Kind">
+      <summary>
+            Gets the value indicating the type of the content item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.DataType">
+      <summary>
+            Gets the primary input's datatype on this content item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.View">
+      <summary>
+            Gets the view to be used for this content item.
+            </summary>
+      <remarks>
+            If this is null, the content item will use default view based on data type of the
+            data it is bound to.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.Placement">
+      <summary>
+            Gets the placeholder a content item has been placed in.
+            </summary>
+      <remarks>
+            This property is effective only for content items using smart layout controls.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IContentItemDefinition.ChildContentItems">
+      <summary>
+            Returns the child content items.
+            </summary>
+      <remarks>
+            Not all ContentItemDefinitions semantically can have children.
+            In content items that represent collections, the child items represent
+            a template to use for creating the children at run time.
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.IPresentationViewDefinition">
+      <summary>
+            Represents a definition for a control that can visualize a content item.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.IsHidden">
+      <summary>
+            Gets a value indicating whether this view should be hidden in the development environment.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.DesignerImageResource">
+      <summary>
+            Gets a resource id that can be used to get a designer image that represents this control.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.CommandItemsSupport">
+      <summary>
+            Gets a value indicating whether a view supports command items, and what is responsible for presenting them in the UI.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.ChildDescriptionInDesigner">
+      <summary>
+            Specifies an optional description that is shown in the designer for children of this view.
+            For example children under Rows control are labeled as "Row".
+            </summary>
+      <remarks>
+            The value of this property is localized.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.ParentView">
+      <summary>
+            Returns the parent view that this control expects.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.DefaultChildView">
+      <summary>
+            Overrides the default presentation for any children.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.ChildView">
+      <summary>
+            Returns the only type of child item that this view supports.
+            </summary>
+      <remarks>
+            This property is used most often for collection controls, where the child item is the item template.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.CommandChildView">
+      <summary>
+            Returns the type of view that should be used for displaying commands belonging to this view.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.SupportsErrorState">
+      <summary>
+            Returns a value indicating whether the view manages its own error state.
+            </summary>
+      <remarks>
+            If this property is false, LightSwitch run time will automatically add error glyphs to the control described by this
+            view definition.  If true, the control is expected to handle error glyph display by itself.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.ContainerAttachedLabelSupport">
+      <summary>
+            Gets a value indicating level of support for attached labels on its children.
+            </summary>
+      <remarks>
+            This property is effective only for group controls.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.AttachedLabelSupport">
+      <summary>
+            Gets a value indicating whether the control supports attached labels.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Model.IPresentationViewDefinition.IsViewer">
+      <summary>
+            Specifies whether this view is a viewer control, like Label, DateViewer etc.
+            or an editable control, like TextBox, DatePicker etc. IsViewer should only be
+            set to true for controls which will never allow editing. All editor controls
+            (TextBox, AutoCompleteBox, etc.) can work on editable or read-only data,
+            so IsViewer should be False for them.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Model.IModelItemResolver">
+      <summary>
+            Represents a service that can be used to search and retrieve application model items.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Model.IModelItemResolver.LookupItem``1(System.String)">
+      <summary>
+            Searches for a model item with specific id.
+            </summary>
+      <typeparam name="T">Type of the item being looked for.</typeparam>
+      <param name="id"> Id to look for.</param>
+      <returns>Item associated with the specific Id.</returns>
+      <exception cref="T:System.Collections.Generic.KeyNotFoundException">A model item does not exist with the specified Id.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Model.IModelItemResolver.LookupItem(System.String,System.Type)">
+      <summary>
+            Searches for a model item with specific id.
+            </summary>
+      <param name="expectedType">Type of the item being looked for.</param>
+      <param name="id"> Id to look for.</param>
+      <returns>Item associated with the specific Id.</returns>
+      <exception cref="T:System.Collections.Generic.KeyNotFoundException">A model item does not exist with the specified Id.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Model.IModelItemResolver.TryLookupItem``1(System.String,``0@)">
+      <summary>
+            Searches for a model item with specific id.
+            </summary>
+      <typeparam name="T">Type of the item being looked for.</typeparam>
+      <param name="id">Id to look for.</param>
+      <param name="item">
+            When this method returns, contains the item associated with the specified
+            id, if the id is found; otherwise, null.
+            </param>
+      <returns> true if the if id found; otherwise, false.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Model.IModelItemResolver.TryLookupItem(System.String,System.Type,Microsoft.LightSwitch.Model.IModelItem@)">
+      <summary>
+            Searches for a model item with specific id.
+            </summary>
+      <param name="expectedType">Type of the item being looked for.</param>
+      <param name="id">Id to look for.</param>
+      <param name="item">
+            When this method returns, contains the item associated with the specified
+            id, if the id is found; otherwise, null.
+            </param>
+      <returns> true if the if is found; otherwise, false.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IApplication`1">
+      <summary>
+            Represents the running application.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IApplication">
+      <summary>
+            Represents the running application.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.IApplication.CreateDataWorkspace">
+      <summary>
+            Creates a new data workspace.
+            </summary>
+      <returns>New data workspace.</returns>
+    </member>
+    <member name="P:Microsoft.LightSwitch.IApplication.Details">
+      <summary>
+            Gets the details of the application.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.IApplication.User">
+      <summary>
+            Gets the current user. The user can be used to get 
+            authentication information and check a user's permissions.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.IApplication`1.CreateDataWorkspace">
+      <summary>
+            Creates a new data workspace.
+            </summary>
+      <returns>New data workspace.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IDataServiceQueryable">
+      <summary>
+            Provides functionality to evaluate queries against entities contained in a specific data source.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.IDataServiceQueryable.Execute">
+      <summary>
+            Executes the query specified in the IDataServiceQueryable and returns a list of filtered and/or sorted entities.
+            </summary>
+      <returns>An enumerable list of entities returned by the query.</returns>
+    </member>
+    <member name="P:Microsoft.LightSwitch.IDataServiceQueryable.ElementType">
+      <summary>
+            Gets the type of the entity being queried.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.IDataServiceQueryable.Expression">
+      <summary>
+            Gets the LINQ expression that represents the query built with this IDataServiceQueryable.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.IDataServiceQueryable.DataService">
+      <summary>
+            Gets the data service on which this query will be executed.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IDataServiceQueryable`1">
+      <summary>
+            Provides functionality to evaluate queries against entities contained in a specific data source.
+            </summary>
+      <typeparam name="T">The type of the entity represented by the query.</typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.IDataServiceQueryable`1.Execute">
+      <summary>
+            Executes the query specified in the IDataServiceQueryable and returns a list of filtered and/or sorted entities.
+            </summary>
+      <returns>An enumerable list of entities returned by the query.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IOrderedDataServiceQueryable">
+      <summary>
+            Represents the result of a sorting operation on an IDataServiceQueryable.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.IOrderedDataServiceQueryable`1">
+      <summary>
+            Represents the result of a sorting operation on an IDataServiceQueryable.
+            </summary>
+      <typeparam name="T">The type of the entity returned by the query.</typeparam>
+    </member>
+    <member name="T:Microsoft.LightSwitch.ValidationResult">
+      <summary>
+            Represents a single result when validating an entity, property or screen.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.ValidationResult.ToString">
+      <summary>
+            Returns the string that represents this validation result.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.Id">
+      <summary>
+            Gets the identifier for this validation result.
+            </summary>
+      <remarks>
+            Id allows programmatic matching of validation results between tiers.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.Target">
+      <summary>
+            Gets the item to which the validation result applies.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.Property">
+      <summary>
+            Gets the property to which the validation result applies.  If null, the validation result applies to the whole Target.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.Severity">
+      <summary>
+            Gets the severity of this validation result.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.Message">
+      <summary>
+            Gets the message to be displayed to the end user for this validation result.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.PropertyEntry">
+      <summary>
+            Gets the property entry to which the validation result applies.  If null, the validation result applies to the whole Target.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResult.CreatedPropertyEntry">
+      <summary>
+            Gets the property entry whose Validation rule created the validation result.  If null, the validation result was created by a whole object validation.
+            </summary>
+      <remarks>
+            This is used to tell which validation results to clear when they become invalidated.
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.ValidationResults">
+      <summary>
+            ValidationResults is a collection of ValidationResult instances that identify what is not valid on a validated item.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.ValidationResults.Refresh">
+      <summary>
+            Refreshes the validation results.  This causes the current results to be discarded and validation to be re-executed.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResults.HasErrors">
+      <summary>
+            Gets a value indicating whether there are any results that have Severity equal to “Error” in the current validation results.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.ValidationResults.Errors">
+      <summary>
+            Gets a collection of ValidationResult instances that have Severity equal to “Error” in the current validation results.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Details.EntityConflict">
+      <summary>
+            Represents an entity that is in conflict after a save attempt.  A conflict includes cases where a property was 
+            changed on the server after the entity was read or an entity that was deleted on the server after the entity was read.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.EntityConflict.ResolveConflicts(Microsoft.LightSwitch.Details.ConflictResolution)">
+      <summary>
+            Resolves all of the conflicts for this entity using the given resolution.  After calling ResolveConflicts, 
+            the save can be re-attempted.  If resolution is ClientWins, the values of each conflicting property will 
+            remain and the original values will be updated to the server values.  If resolution is ServerWins, the values 
+            and original values of each conflicting property will be updated to the server values.
+            </summary>
+      <param name="resolution">The desired resolution for the Entity's conflicting properties.</param>
+      <exception cref="T:System.ArgumentException">ClientWins is not a valid resolution when IsDeletedOnServer is true.</exception>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityConflict.ConflictingProperties">
+      <summary>
+            Gets a collection of properties that are in conflict.  These properties have 
+            different values on the server than they did when the entity was read.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityConflict.Entity">
+      <summary>
+            Gets the entity which is in conflict.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityConflict.IsDeletedOnServer">
+      <summary>
+            Gets a value indicating whether the entity no longer exists on the server.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Details.EntityPropertyConflict">
+      <summary>
+            Represents a conflict on a single entity property as part of an EntityConflict.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityPropertyConflict.EntityConflict">
+      <summary>
+            Gets the EntityConflict to which this property conflict belongs.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityPropertyConflict.Property">
+      <summary>
+            Gets the property object on which the conflict has occurred.  The property object can be used 
+            to get the name, value and attributes of the property in conflict.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityPropertyConflict.OriginalValue">
+      <summary>
+            Gets the original value of the property in conflict.  The original value is the value of 
+            the property when the entity was originally queried.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.EntityPropertyConflict.ServerValue">
+      <summary>
+            Gets the server value of the property in conflict.  The server value is the value of 
+            the property on the server when the conflict occurred.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Security.IUser">
+      <summary>
+            Represents an application user.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Security.IUser.HasPermission(System.String)">
+      <summary>
+            Returns whether the user has the specified permission.
+            </summary>
+      <param name="permissionId">ID of the permission.</param>
+      <returns>True if the user has the permission; otherwise, false.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Security.IUser.DemandPermission(System.String)">
+      <summary>
+            Ensures that the user has the specified permission.
+            </summary>
+      <param name="permissionId">ID of the permission the user must have.</param>
+      <exception cref="T:Microsoft.LightSwitch.PermissionException">
+            User does not have the specified permission.
+            </exception>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Security.IUser.AuthenticationType">
+      <summary>
+            Gets the authentication type of the user.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Security.IUser.FullName">
+      <summary>
+            Gets the full name of the person represented by the application user.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Base.EntityObject`2">
+      <summary>
+            Provides an instance of an entity on which to perform business logic.
+            </summary>
+      <typeparam name="TEntity">The type of the entity.</typeparam>
+      <typeparam name="TDetails">The type of the details for the entity.</typeparam>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.Base.ObjectWithDetails`2">
+      <summary>
+            Represents an object that holds additional detail information in a Details class.
+            </summary>
+      <typeparam name="TObject">The type of the object.</typeparam>
+      <typeparam name="TDetails">The type of the details class.</typeparam>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.Base.ObjectWithDetails`2.Details">
+      <summary>
+            Gets additional detail information about this item.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Base.EntityObject`2.#ctor(Microsoft.LightSwitch.Framework.EntitySet{`0})">
+      <summary>
+            Creates a new entity instance.
+            </summary>
+      <param name="entitySet">The entity set in which to create the entity instance.</param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Base.EntityObject`2.Delete">
+      <summary>
+            Marks the entity instance for deletion.  The instance will be deleted when SaveChanges() is called.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.Base.EntityObject`2.ToString">
+      <summary>
+            Provides a string representation of the entity instance.  The string representation is determined 
+            by the Summary Property that is specified in the entity designer.
+            </summary>
+      <returns>The string representation of the entity instance.</returns>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2">
+      <summary>
+            Represents the additional details class for an entity.
+            </summary>
+      <typeparam name="TEntity">The type of the entity.</typeparam>
+      <typeparam name="TDetails">The type of the details class.</typeparam>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2">
+      <summary>
+            Represents the additional detail class for a screen or entity.
+            </summary>
+      <typeparam name="TObject">The type of the screen or entity.</typeparam>
+      <typeparam name="TDetails">The type of the details class.</typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.Microsoft#LightSwitch#Details#Internal#IBusinessDetailsCore#RefreshValidationResults">
+      <summary>
+            Refreshes the whole object's ValidationResults.
+            </summary>
+      <remarks>
+            Refresh needs to invalidate the object's ValidationResults and all properties' ValidationResults,
+            then it needs to recompute the results.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.Microsoft#LightSwitch#Details#Internal#IBusinessDetailsCore#RefreshPropertyValidationResults(Microsoft.LightSwitch.Details.IBusinessPropertyEntry)">
+      <summary>
+            Refreshes a single property's ValidationResults.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.CanHaveErrors">
+      <summary>
+            Gets a value indicating whether the current state of the object allows it to have errors.
+            </summary>
+      <returns>
+            true if the object can have errors; otherwise, false.
+            </returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.GetObjectValidationResults">
+      <summary>
+            This method is called to retrieve all the non-property validation errors that
+            needs to be returned by INotifyDataErrorInfo.GetErrors() call.
+            </summary>
+      <returns></returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.EnsureValidationDependenciesAreRegistered">
+      <summary>
+            A helper method that will ensure validation has run which sets up the dependency tracking.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.RemoveValidationResultsCreatedBy(Microsoft.LightSwitch.Details.IBusinessPropertyEntry)">
+      <summary>
+            Removes all validation results created by the specified by validating the specified property.
+            </summary>
+      <param name="entry">
+            Any validation results created by validating this property will be removed from the collection.
+            If null, all results created by validating the whole object will be removed.
+            </param>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.DisplayName">
+      <summary>
+            Gets the display name for the screen or entity as specified in the designer.  This is the name that is displayed to the end user.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.Description">
+      <summary>
+            Gets the description for the screen or entity as specified in the designer.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.IsValidated">
+      <summary>
+            Gets a value indicating whether the screen or entity has been validated.  
+            If true is returned, the ValidationResults member is up to date.  
+            If false is returned, accessing the ValidationResults will trigger the 
+            validation logic to be executed..
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.BusinessDetails`2.ValidationResults">
+      <summary>
+            Gets the validation results for the screen or entity.  If the screen or entity has not 
+            been validated, accessing this property will trigger the validation logic to be executed.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.Microsoft#LightSwitch#Details#Internal#IEntityDetailsCore#OnServerDeserialized">
+      <summary>
+            Initializes the entity after it has been deserialized on the service-tier.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.Microsoft#LightSwitch#Details#Internal#IEntityDetailsCore#OnEntityStatePropertyChanged">
+      <summary>
+            The logic to respond to the Entity's EntityState property changing.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.SetIsChangedValue``1(Microsoft.LightSwitch.Details.Framework.Base.EntityProperty{`0,`1}.Entry,System.Func{`1,``0},System.Nullable{System.Boolean},System.Boolean@)">
+      <summary>
+            Sets IsChanged's Value to the specified value.
+            </summary>
+      <returns>
+            True if the PropertyChanged event should be raised for the IsChanged property; otherwise, false.
+            </returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.CanHaveErrors">
+      <summary>
+            A new entity cannot have errors if it hasn't been attempted to be saved.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.CanHavePropertyErrors">
+      <summary>
+            Entity properties can have errors unless entity is in unmodified state.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.InvokeChangedPartialMethod``1(Microsoft.LightSwitch.Details.Framework.EntityStorageProperty{`0,`1,``0}.Entry)">
+      <summary>
+            Invokes the partial XXX_Changed() method on the EntityObject class.
+            </summary>
+      <remarks>
+            Since this is Tim's code, this can only run on the LogicDispatcher.
+            </remarks>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.Name">
+      <summary>
+            Gets the name of the entity as specified in the entity designer.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.Entity">
+      <summary>
+            Gets the entity to which these details apply.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.EntityConflict">
+      <summary>
+            Gets an entity conflict, if this entity was returned in a ConcurrencyException.  Returns null if there is no conflict.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.EntityState">
+      <summary>
+            Gets the current state of the entity.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.EntitySet">
+      <summary>
+            Gets the entity set in which this entity is contained.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.AllowSaveWithErrors">
+      <summary>
+            Gets a value indicating whether the entity instance can be saved when it has validation errors.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.Microsoft#LightSwitch#Details#Internal#IEntityDetailsCore#IsMarkedForDeletion">
+      <summary>
+            Gets a value that indicates whether or not the entity is marked for deletion.  This is currently only
+            used on the service tier (see bug 910782 for additional details).
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Details.Framework.Base.EntityDetails`2.IsNewlyAdded">
+      <summary>
+            Gets or sets a value indicating that this entity instance is a newly added entity instance and needs to be initialized.
+            </summary>
+      <remarks>
+            Initialization includes defaulting property values, calling user code "_Created", etc.
+            </remarks>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.First``1(Microsoft.LightSwitch.IDataServiceQueryable{``0})">
+      <summary>
+            Returns the first entity in the results of the IDataServiceQueryable.
+            </summary>
+      <typeparam name="TSource">The type of the entity being returned.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <returns>The first entity in the results.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.InvalidOperationException">There are no entities in the resuls of the IDataServiceQuerable.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.FirstOrDefault``1(Microsoft.LightSwitch.IDataServiceQueryable{``0})">
+      <summary>
+            Returns the first entity in the results of the IDataServiceQueryable or null if no entities exist in the results.
+            </summary>
+      <typeparam name="TSource">The type of the entity being returned.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <returns>The first entity in the results or null.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.OrderBy``2(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+      <summary>
+            Orders the results of the IDataServiceQueryable according to a key.
+            </summary>
+      <typeparam name="TSource">The type of the entity being queried.</typeparam>
+      <typeparam name="TKey">The type of the property returned by keySelector.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <param name="keySelector">A function to extract a key from an element.</param>
+      <returns>An IOrderedDataServiceQueryable that is sorted.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The keySelector is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.OrderByDescending``2(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+      <summary>
+            Orders the results of the IDataServiceQueryable in a descending order according to a key.  Throws if the keySelector is null.
+            </summary>
+      <typeparam name="TSource">The type of the entity being queried.</typeparam>
+      <typeparam name="TKey">The type of the property returned by keySelector.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <param name="keySelector">A function to extract a key from an element.</param>
+      <returns>An IOrderedDataServiceQueryable that is sorted.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The keySelector is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Search``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.String[])">
+      <summary>
+            Searches for specific entities in the IDataServiceQueryable whose string properties contain the search terms specified.
+            </summary>
+      <typeparam name="TSource">The type of the entities being searched.</typeparam>
+      <param name="source">The IDataServiceQuerable on which to search.</param>
+      <param name="searchTerms">The set of string terms to search for.</param>
+      <returns>A new IDataServiceQuerable which contains only those entities which match all of the search terms.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Search``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},Microsoft.LightSwitch.SearchTerm[])">
+      <summary>
+            Searches for specific entities in the IDataServiceQueryable whose string properties contain the search terms specified.
+            </summary>
+      <typeparam name="TSource">The type of the entities being searched.</typeparam>
+      <param name="source">The IDataServiceQuerable on which to search.</param>
+      <param name="searchTerms">An array of search terms to search for.</param>
+      <returns>A new IDataServiceQuerable which contains only those entities which match the search terms.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Search``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Collections.Generic.IEnumerable{Microsoft.LightSwitch.SearchTerm},Microsoft.LightSwitch.SearchOptions)">
+      <summary>
+            Searches for specific entities in the IDataServiceQueryable whose string properties contain the search terms specified.
+            </summary>
+      <typeparam name="TSource">The type of the entities being searched.</typeparam>
+      <param name="source">The IDataServiceQuerable on which to search.</param>
+      <param name="searchTerms">An array of search terms to search for.</param>
+      <param name="searchOptions">Search options containing which string properties to search.</param>
+      <returns>A new IDataServiceQuerable which contains only those entities which match the search terms.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The searchTerms are null.</exception>
+      <exception cref="T:System.ArgumentNullException">The searchOptions are null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Single``1(Microsoft.LightSwitch.IDataServiceQueryable{``0})">
+      <summary>
+            Returns the only entity in the results of the IDataServiceQueryable and throws if there is not exactly one entity in the results.
+            </summary>
+      <typeparam name="TSource">The type of the entity being returned.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <returns>The entity in the results.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.InvalidOperationException">There is not exactly one entity in the resuls of the IDataServiceQuerable.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.SingleOrDefault``1(Microsoft.LightSwitch.IDataServiceQueryable{``0})">
+      <summary>
+            Returns the only entity in the results of the IDataServiceQueryable or null if there is not exactly one entity in the results.
+            </summary>
+      <typeparam name="TSource">The type of the entity being returned.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <returns>The entity in the results or null.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Skip``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Int32)">
+      <summary>
+            Bypasses a specified number of entities in an IDataServiceQueryable and then returns the remaining entities.
+            </summary>
+      <typeparam name="TSource">The type of the entities being skipped.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <param name="count">The number of entities to skip.</param>
+      <returns>An IDataServiceQueryable that contains the remaining enitities.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Take``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Int32)">
+      <summary>
+            Returns a specified number of contiguous entities from the start of an IDataServiceQueryable.
+            </summary>
+      <typeparam name="TSource">The type of the entities.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <param name="count">The number of entities to return.</param>
+      <returns>An IDataServiceQueryable that contains the specified number of entities.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.ThenBy``2(Microsoft.LightSwitch.IOrderedDataServiceQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+      <summary>
+            Performs a subsequent ordering of the entities in an IDataServiceQueryable in ascending order according to a key.
+            Throws if keySelector is null.
+            </summary>
+      <typeparam name="TSource">The type of the entity being queried.</typeparam>
+      <typeparam name="TKey">The type of the property returned by keySelector.</typeparam>
+      <param name="source">The IDataServiceQueryable to sort.</param>
+      <param name="keySelector">A function to extract a key from an element.</param>
+      <returns>An IOrderedDataServiceQueryable that is sorted.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The keySelector is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.ThenByDescending``2(Microsoft.LightSwitch.IOrderedDataServiceQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+      <summary>
+            Performs a subsequent ordering of the entities in an IDataServiceQueryable in descending order according to a key.
+            Throws if keySelector is null.
+            </summary>
+      <typeparam name="TSource">The type of the entity being queried.</typeparam>
+      <typeparam name="TKey">The type of the property returned by keySelector.</typeparam>
+      <param name="source">The IDataServiceQueryable to sort.</param>
+      <param name="keySelector">A function to extract a key from an element.</param>
+      <returns>An IOrderedDataServiceQueryable that is sorted.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The keySelector is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Where``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+      <summary>
+            Filters an IDataServiceQueryable based on a predicate.
+            </summary>
+      <typeparam name="TSource">The type of the entities being processed.</typeparam>
+      <param name="source">The IDataServiceQueryable being filtered.</param>
+      <param name="predicate">A function to test each entity for a condition.</param>
+      <returns>An IDataServiceQueryable which contains the entities from the source that satisfy the condition.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The predicate is null.</exception>
+    </member>
+    <member name="M:Microsoft.LightSwitch.DataServiceQueryable.Include``1(Microsoft.LightSwitch.IDataServiceQueryable{``0},System.String)">
+      <summary>
+            Specifies which related entities should be included in the results when an IDataServiceQueryable is executed.  Any related entities which are related with a multiplicity of one (1) or zero or one (0..1) may be included.
+            </summary>
+      <typeparam name="TSource">The type of the entities in the IDataServiceQueryable.</typeparam>
+      <param name="source">The IDataServiceQueryable to process.</param>
+      <param name="path">A dotted path of related entities to include.</param>
+      <returns>An IDataServiceQueryable which, when executed, will return the target entity along with the specified related entities.</returns>
+      <exception cref="T:System.ArgumentNullException">The source is null.</exception>
+      <exception cref="T:System.ArgumentNullException">The path is null.</exception>
+      <exception cref="T:System.ArgumentException">The data provider doesn't support includes.</exception>
+    </member>
+    <member name="T:Microsoft.LightSwitch.Framework.EntitySet`1">
+      <summary>
+            Represents a container for a set of entity instances of the same type.  The entity key is unique with the entity set.
+            </summary>
+      <typeparam name="TEntity">The type of the contained entities.</typeparam>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.EntitySet`1.AddNew">
+      <summary>
+            Adds a new entity to the specified entity set.
+            </summary>
+      <returns>The new entity.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.EntitySet`1.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the entities in the entity set.
+            </summary>
+      <returns>An enumerator that iterates through the entities in the entity set.</returns>
+    </member>
+    <member name="M:Microsoft.LightSwitch.Framework.EntitySet`1.GetQuery">
+      <summary>
+            Gets the query that represents the entity set.  Executing this query will retrieve all entity 
+            instances in the entity set.
+            </summary>
+      <returns>The query that represents the entity set.</returns>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.EntitySet`1.CanRead">
+      <summary>
+            Gets a value indicating whether the current user has permission to read entities from the entity set.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.EntitySet`1.CanInsert">
+      <summary>
+            Gets a value indicating whether the current user has permission to insert entities into the entity set.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.EntitySet`1.CanUpdate">
+      <summary>
+            Gets a value indicating whether the current user has permission to update entities in the entity set.
+            </summary>
+    </member>
+    <member name="P:Microsoft.LightSwitch.Framework.EntitySet`1.CanDelete">
+      <summary>
+            Gets a value indicating whether the current user has permission to delete entities from the entity set.
+            </summary>
+    </member>
+    <member name="T:Microsoft.LightSwitch.EntitySetValidationResultsBuilder">
+      <summary>
+            EntitySetValidationResultsBuilder adds new ValidationResult instances to the current entity being validated.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddEntityError(System.String)">
+      <summary>
+            Adds a validation error that targets the whole entity to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddEntityResult(System.String,Microsoft.LightSwitch.ValidationSeverity)">
+      <summary>
+            Adds a validation result that targets the whole entity to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddEntityResult(System.String,Microsoft.LightSwitch.ValidationSeverity,System.String)">
+      <summary>
+            Adds a validation result that targets the whole entity to the results collection.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddPropertyError(System.String,Microsoft.LightSwitch.Details.IEntityProperty)">
+      <summary>
+            Adds a property validation error that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation error will apply.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,Microsoft.LightSwitch.Details.IEntityProperty)">
+      <summary>
+            Adds a property validation result that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation result will apply.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,Microsoft.LightSwitch.Details.IEntityProperty,System.String)">
+      <summary>
+            Adds a property validation result that targets a specific property.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="property">
+            The property to which the new validation result will apply.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntitySetValidationResultsBuilder.GetCurrentPropertyEntry">
+      <summary>
+            Returns the current IBusinessPropertyEntry that is in scope.
+            </summary>
+      <remarks>
+            The current IBusinessPropertyEntry is the property currently being validated.
+            If the whole entity is being validated, this returns null.
+            </remarks>
+    </member>
+    <member name="T:Microsoft.LightSwitch.EntityValidationResultsBuilder">
+      <summary>
+            EntityValidationResultsBuilder adds new ValidationResult instances to the current entity being validated.
+            </summary>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntityValidationResultsBuilder.AddPropertyError(System.String)">
+      <summary>
+            Adds a validation error to the results collection.  Target and property members are defaulted based on the entity being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntityValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity)">
+      <summary>
+            Adds a validation result to the results collection.  Target and property members are defaulted based on the entity being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+    </member>
+    <member name="M:Microsoft.LightSwitch.EntityValidationResultsBuilder.AddPropertyResult(System.String,Microsoft.LightSwitch.ValidationSeverity,System.String)">
+      <summary>
+            Adds a validation result to the results collection.  Target and property members are defaulted based on the entity being validated.
+            </summary>
+      <param name="message">
+            The message to be displayed to the end user for the new validation result.
+            </param>
+      <param name="severity">
+            The severity of the new validation result.
+            </param>
+      <param name="id">
+            A string identifier for the new validation result.
+            </param>
+    </member>
+  </members>
+</doc>
