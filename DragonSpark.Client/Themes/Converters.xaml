@@ -1,0 +1,49 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ds="http://framework.dragonspark.us">
+
+	<ds:SecurityConverter x:Key="SecurityVisibilityConverter">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:SecurityConverter>
+
+	<ds:EnumConverter x:Key="enumConverter" />
+	<!--<Micro:BooleanToVisibilityConverter x:Key="booleanToVisibility" />-->
+	<ds:ComponentDescriptionConverter x:Key="ComponentDescriptionConverter" />
+	<ds:NotNullToBooleanConverter x:Key="NotNullConverter" />
+	<ds:StringFormatConverter x:Key="StringFormatConverter" />
+	<ds:TriggerActionConverter x:Key="TriggerActionConverter" />
+	<ds:NamedTokenFormatConverter x:Key="NamedTokenFormatConverter" />
+	<ds:BooleanConverter x:Key="BooleanToVisibilityConverter">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:BooleanConverter>
+	<ds:BooleanConverter x:Key="BooleanConverter" />
+	<ds:NotNullToBooleanConverter x:Key="NotNullVisibilityConverter">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:NotNullToBooleanConverter>
+	<ds:TabSizeConverter x:Key="TabSizeConverter" />
+	<ds:CollapseWhenEmptyConverter x:Key="CollapseWhenEmptyConverter" />
+	<ds:IsGreaterThanConverter x:Key="IsGreaterThanOneConverter" Target="1" />
+	<ds:IsGreaterThanConverter x:Key="IsGreaterThanOneVisibilityConverter" Target="1">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:IsGreaterThanConverter>
+	<ds:CountConverter x:Key="CountConverter" />
+	<ds:CountConverter x:Key="CountVisibilityConverter">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:CountConverter>
+	<ds:CountConverter x:Key="OneCountConverter" Count="1" />
+
+	<!--<Navigation:NavigationUriConverter x:Key="NavigationUriConverter" />
+	<Navigation:NavigationItemConverter x:Key="NavigationItemConverter" />-->
+	<ds:YearRangeConverter x:Key="YearRangeConverter" />
+	<ds:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+	<ds:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyVisibilityConverter">
+		<ds:BooleanToVisibilityTranslator />
+	</ds:StringNotNullOrEmptyConverter>
+	<ds:DebugConverter x:Key="DebugConverter" />
+	<ds:ExternalImageConverter x:Key="ExternalImageConverter" />
+	<ds:DisplayIndexConverter x:Key="DisplayIndexConverter" />
+	<ds:DisplayFieldConverter x:Key="DisplayFieldConverter" />
+	<ds:PlainTextConverter x:Key="PlainTextConverter"  />
+	<ds:AllBooleanMultiConverter x:Key="AllBooleanMultiConverter" />
+	<ds:AnyBooleanMultiConverter x:Key="AnyBooleanMultiConverter" />
+</ResourceDictionary>

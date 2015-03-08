@@ -1,0 +1,123 @@
+﻿<Launch:ApplicationLauncher x:Class="DragonSpark.Features.Application.Launcher"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:IoCConfiguration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark.Client" xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark.Client"
+	xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Client"
+	xmlns:Communications="clr-namespace:DragonSpark.Application.Communication;assembly=DragonSpark.Client"
+	xmlns:Features="clr-namespace:DragonSpark.Features;assembly=DragonSpark.Features.Client" xmlns:ds="http://framework.dragonspark.us"
+	xmlns:Entity="clr-namespace:DragonSpark.Application.Communication.Entity;assembly=DragonSpark.Client"
+	xmlns:PresentationEntity="clr-namespace:DragonSpark.Application.Presentation.Entity;assembly=DragonSpark.Client"
+	xmlns:Client="clr-namespace:System.ServiceModel.DomainServices.Client;assembly=System.ServiceModel.DomainServices.Client"
+	xmlns:local="clr-namespace:DragonSpark.Features.Application"
+	xmlns:Launch="clr-namespace:DragonSpark.Application.Presentation.Launch;assembly=DragonSpark.Client"
+	xmlns:System="clr-namespace:System;assembly=System" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:Views="clr-namespace:DragonSpark.Features.Application.Views"
+	xmlns:ServiceModel="clr-namespace:System.ServiceModel;assembly=System.ServiceModel"
+	xmlns:Infrastructure="clr-namespace:DragonSpark.Application.Presentation.Infrastructure;assembly=DragonSpark.Client"
+	xmlns:ApplicationServicesWeb="clr-namespace:System.ServiceModel.DomainServices.Client.ApplicationServices;assembly=System.ServiceModel.DomainServices.Client.Web"
+							xmlns:ApplicationServices="clr-namespace:System.ServiceModel.DomainServices.Client.ApplicationServices;assembly=System.ServiceModel.DomainServices.Client"
+                            mc:Ignorable="d"
+	>
+	<IoCConfiguration:AssignServiceLocatorCommand />
+	<IoCConfiguration:RegisterFromMetadataCommand />
+	<IoCConfiguration:UnityContainerConfiguration>
+		<IoCConfiguration:UnityContainerConfiguration.Instances>
+			<IoCConfiguration:UnityInstance RegistrationType="{ds:DictionaryType KeyTypeName=sys:Type, TypeName=System:Uri}">
+				<!--<ds:DictionaryOfTExtension KeyType="{ds:Type TypeName=sys:Type}" TypeArgument="{ds:Type TypeName=System:Uri}">
+					<ds:KeyValuePair Key="{ds:Type TypeName=sys:ArgumentException}" Value="/ResourceNotFound" />
+					<ds:KeyValuePair Key="{ds:Type TypeName=sys:NotSupportedException}" Value="/ResourceNotFound" />
+					<ds:KeyValuePair Key="{ds:Type TypeName=sys:UnauthorizedAccessException}" Value="/SecurityException" />
+					<ds:KeyValuePair Key="{ds:Type TypeName=sys:Exception}" Value="/GeneralException" />
+				</ds:DictionaryOfTExtension>-->
+			</IoCConfiguration:UnityInstance>
+		</IoCConfiguration:UnityContainerConfiguration.Instances>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:EnumerableType TypeName=Entity:IEntitySetProfile}">
+			<IoCConfiguration:InjectionFactory>
+				<IoCConfiguration:NamedTypeBuildKey BuildType="{ds:Type TypeName=Entity:MetadataBasedEntitySetProfileFactory}" />
+			</IoCConfiguration:InjectionFactory>
+		</IoCConfiguration:UnityType>
+		<IoCConfiguration:UnityType RegistrationType="{ds:EnumerableType TypeName=PresentationEntity:IEntityView}">
+			<IoCConfiguration:InjectionFactory>
+				<IoCConfiguration:NamedTypeBuildKey BuildType="{ds:Type TypeName=PresentationEntity:MetadataBasedEntityViewFactory}" />
+			</IoCConfiguration:InjectionFactory>
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=ApplicationServicesWeb:WebContextBase}" MapTo="{ds:Type TypeName=local:WebContext}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:InjectionProperty PropertyName="Authentication">
+				<IoCConfiguration:DependencyValue DependencyType="{ds:Type TypeName=ApplicationServices:AuthenticationService}" />
+			</IoCConfiguration:InjectionProperty>
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=ApplicationServices:AuthenticationService}" MapTo="{ds:Type TypeName=ApplicationServicesWeb:FormsAuthentication}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:InjectionProperty PropertyName="DomainContext">
+				<IoCConfiguration:DependencyValue DependencyType="{ds:Type TypeName=ApplicationServicesWeb:AuthenticationDomainContextBase}" />
+			</IoCConfiguration:InjectionProperty>
+		</IoCConfiguration:UnityType>
+		
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=ApplicationServicesWeb:AuthenticationDomainContextBase}" MapTo="{ds:Type TypeName=Features:AuthenticationContext}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:InjectionConstructor />
+			<IoCConfiguration:PolicyReference PolicyType="{ds:Type TypeName=IoC:IBehaviorPolicy}" BuildType="{ds:Type TypeName=Communications:DomainContextCookieInjection}" />
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:EnumerableType TypeName=Client:DomainContext}">
+			<IoCConfiguration:InjectionFactoryInstance>
+				<IoCConfiguration:AllAppDomainTypesOfFactory />
+			</IoCConfiguration:InjectionFactoryInstance>
+		</IoCConfiguration:UnityType>
+
+		<!--<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Client:DomainContext}" MapTo="{ds:Type TypeName=Features:FeaturesEntityContext}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}" />-->
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Features:SecurityEntityContext}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:InjectionConstructor />
+			<IoCConfiguration:PolicyReference PolicyType="{ds:Type TypeName=IoC:IBehaviorPolicy}" BuildType="{ds:Type TypeName=Communications:DomainContextCookieInjection}" />
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Features:FeaturesEntityContext}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:InjectionConstructor />
+			<IoCConfiguration:PolicyReference PolicyType="{ds:Type TypeName=IoC:IBehaviorPolicy}" BuildType="{ds:Type TypeName=Communications:DomainContextCookieInjection}" />
+		</IoCConfiguration:UnityType>
+		
+		<!--<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Features:IFeaturesApplicationService}" MapTo="{ds:Type TypeName=Services:FeaturesApplicationService}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:UnityType.TypeConfigurations>
+				<Communications:CookieContainerConfigurator ChannelType="{ds:Type TypeName=Services:IFeaturesApplicationServiceChannel}" />
+			</IoCConfiguration:UnityType.TypeConfigurations>
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Application:IApplicationService}" MapTo="{ds:Type TypeName=Services:ApplicationService}" Lifetime="{ds:Locate TypeName=IoCConfiguration:ContainerControlledLifetimeManager}">
+			<IoCConfiguration:UnityType.TypeConfigurations>
+				<Communications:CookieContainerConfigurator ChannelType="{ds:Type TypeName=Services:IApplicationServiceChannel}" />
+			</IoCConfiguration:UnityType.TypeConfigurations>
+		</IoCConfiguration:UnityType>
+-->
+		<IoCConfiguration:UnityType RegistrationType="{ds:Type TypeName=Application:ApplicationDetails}">
+			<Application:ApplicationDetailsFactory SourceType="{ds:Type TypeName=local:Application}" />
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:EnumerableType TypeName=Infrastructure:IViewValidator}">
+			<IoCConfiguration:GenericEnumerableFactory>
+				<IoCConfiguration:NamedTypeBuildKey BuildType="{ds:Type TypeName=Infrastructure:ContentIsFrameworkElementValidator}" />
+				<IoCConfiguration:NamedTypeBuildKey BuildType="{ds:Type TypeName=ds:SecurityValidator}" />
+			</IoCConfiguration:GenericEnumerableFactory>
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityType RegistrationType="{ds:EnumerableType TypeName=sys:Type}">
+			<IoCConfiguration:GenericEnumerableFactory>
+				<ds:Type TypeName="ServiceModel:FaultException" />
+				<ds:Type TypeName="Client:DomainOperationException" />
+			</IoCConfiguration:GenericEnumerableFactory>
+		</IoCConfiguration:UnityType>
+
+		<IoCConfiguration:UnityContainerConfiguration.Extensions>
+			<IoC:DragonSparkExtension />
+			<IoC:CompositionExtension />
+		</IoCConfiguration:UnityContainerConfiguration.Extensions>
+	</IoCConfiguration:UnityContainerConfiguration>
+	<Launch:ApplicationConfigurationCommand />
+	<IoC:CompositionConfiguration />
+	<Views:Configuration />
+	<ds:RegisterViewProfilesCommand>
+		<ds:ViewProfile Identifier="Default" Title="Default View Profile" Description="The default view profile." IsSelected="True" ContentTemplate="{ds:Resource Key=DefaultViewProfile}" />
+	</ds:RegisterViewProfilesCommand>
+</Launch:ApplicationLauncher>

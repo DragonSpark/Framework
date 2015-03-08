@@ -1,0 +1,15 @@
+﻿<sdk:Page x:Class="DragonSpark.Features.Modules.Administration.View" 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Design="clr-namespace:DragonSpark.Application.Presentation.Design;assembly=DragonSpark.Application.Presentation.Client"
+	xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+	xmlns:ds="http://framework.dragonspark.us"
+	mc:Ignorable="d Design" Style="{StaticResource DefaultPage}" Title="Application Administration">
+	<ContentControl Margin="5">
+		<ds:Locate Type="{ds:Type TypeName=ds:EntitySetCollectionViewSource}">
+			<ds:PropertySetter PropertyName="ProfileViewName" Value="Administration" />
+		</ds:Locate>
+	</ContentControl>
+</sdk:Page>

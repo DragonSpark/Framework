@@ -1,0 +1,26 @@
+﻿<#+
+// <copyright file="OperationImplementationTemplate.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
+// </copyright>
+
+public class OperationImplementationTemplate : OperationDescriptionTemplate
+{
+    public OperationImplementationTemplate( OperationContractDefinition description ) : base( description )
+    {}
+
+	public override string TransformText()
+	{#>
+	
+	    public <#= Definition.ReturnTypeName #> <#= Definition.Name #>(<#+ RenderParameters( true, false ); #>)
+		{
+	        using ( var channel = DragonSpark.Application.Communication.ClientChannelFactory<<#= Definition.ServiceName #>Channel>.Create( null ) )
+			{
+				var begin = channel.Begin<#= Definition.Name #>( <#+ RenderParameters( false ); #>null, null );
+				<#= Definition.ReturnTypeName == "void" ? string.Empty : "var result = " #>channel.End<#= Definition.Name #>( begin );
+				<#= Definition.ReturnTypeName == "void" ? string.Empty : "return result;" #>
+			}
+		}
+<#+ 
+		return this.GenerationEnvironment.ToString();
+    }
+}#>

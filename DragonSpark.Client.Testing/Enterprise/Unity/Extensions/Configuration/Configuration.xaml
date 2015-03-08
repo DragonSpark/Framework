@@ -1,0 +1,36 @@
+﻿<Configuration:UnityConfigurationContainer x:Class="Common.Testing.Unity.Extensions.Configuration.Configuration"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Configuration="clr-namespace:Common.Enterprise.Unity.Configuration;assembly=Common.Client"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:Objects="clr-namespace:Common.Enterprise.Unity.Extensions.Configuration.Objects"
+    xmlns:Unity="clr-namespace:Common.Enterprise.Unity;assembly=Common.Client"
+    xmlns:ExtensionConfiguration="clr-namespace:Common.Enterprise.Unity.Extensions.Configuration;assembly=Common.Client"
+	>
+	<Configuration:UnityContainer x:Key="DefaultContainer">
+		<Configuration:UnityType Type="ISpyPolicy" MapTo="SpyPolicy">
+			<Configuration:InjectionProperty PropertyName="Enabled">
+				<Configuration:InstanceValue Type="Boolean">
+					<System:Boolean>True</System:Boolean>
+				</Configuration:InstanceValue>
+			</Configuration:InjectionProperty>
+		</Configuration:UnityType>
+		
+		<Configuration:UnityType Type="ISpyTarget" MapTo="SpyTarget">
+			<ExtensionConfiguration:PolicyReference BuildType="ISpyPolicy" />
+		</Configuration:UnityType>
+		
+		<Configuration:UnityContainer.Extensions>
+			<Unity:CommonExtension />
+			<ExtensionConfiguration:ConfigurationExtension />
+		</Configuration:UnityContainer.Extensions>
+		
+		<Configuration:UnityContainer.Configurations>
+			<ExtensionConfiguration:ConfigurationExtensionConfigurator>
+				<ExtensionConfiguration:ConfigurationExtensionConfigurator.Strategies>
+					<ExtensionConfiguration:StrategyReference Type="SpyStrategy" Stage="Initialization" />
+				</ExtensionConfiguration:ConfigurationExtensionConfigurator.Strategies>
+			</ExtensionConfiguration:ConfigurationExtensionConfigurator>
+		</Configuration:UnityContainer.Configurations>
+	</Configuration:UnityContainer>
+</Configuration:UnityConfigurationContainer>

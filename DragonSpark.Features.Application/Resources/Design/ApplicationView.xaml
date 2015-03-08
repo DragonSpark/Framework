@@ -1,0 +1,21 @@
+﻿<Design:DesignApplicationViewModel xmlns:Design="clr-namespace:DragonSpark.Design;assembly=DragonSpark.Client" xmlns:Navigation="clr-namespace:DragonSpark.Presentation.Navigation;assembly=DragonSpark.Client" xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Client" xmlns:Assemblies="clr-namespace:DragonSpark.Application.Assemblies;assembly=DragonSpark.Client">
+	<Design:DesignApplicationViewModel.ApplicationDetails>
+		<Application:ApplicationDetails Title="Hello World!" Description="Hello Hello Hello!" Company="The Common Framework" CompanyUri="http://common-framework.com" Copyright="Copyright © The Common Framework 2011" IssueTrackingUri="http://common-framework.com/Issues.aspx" OriginalLaunchDate="4/1/2011" Product="Hello World" SupportDescription="Here is the Support Uri">
+			<Application:ApplicationDetails.VersionInformation>
+				<Assemblies:VersionInformation Major="1" />
+			</Application:ApplicationDetails.VersionInformation>
+		</Application:ApplicationDetails>
+	</Design:DesignApplicationViewModel.ApplicationDetails>
+	<Design:DesignApplicationViewModel.ActiveItem>
+		<Navigation:NavigationNode Title="Screen One" Description="This is Screen One." Icon="/Views/Welcome/Icon.png" />
+	</Design:DesignApplicationViewModel.ActiveItem>
+	<Design:DesignApplicationViewModel.Items>
+		<Design:ScreenCollection>
+			<Navigation:NavigationNode Title="Screen One" Description="This is Screen One." Icon="/Views/Welcome/Icon.png" />
+			<Navigation:NavigationNode Title="Screen Two" Description="This is Screen Two." Icon="/Views/Operations/Icon.png" />
+			<Navigation:NavigationNode Title="Screen Three" Description="This is Screen Three." Icon="/Views/Navigation/Icon.png" />
+			<Navigation:NavigationNode Title="Screen Four" Description="This is Screen Four." Icon="/Views/About/Icon.png" />
+		</Design:ScreenCollection>
+	</Design:DesignApplicationViewModel.Items>
+</Design:DesignApplicationViewModel>
+	

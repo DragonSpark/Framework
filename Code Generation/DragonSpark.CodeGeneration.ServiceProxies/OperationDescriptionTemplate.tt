@@ -1,0 +1,34 @@
+﻿<#+
+
+// <copyright file="OperationDefinitionTemplate.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
+// </copyright>
+
+public abstract class OperationDescriptionTemplate : Template
+{
+    readonly OperationContractDefinition definition;
+    
+    public OperationDescriptionTemplate( OperationContractDefinition definition )
+    {
+        this.definition = definition;
+    }
+    
+    public OperationContractDefinition Definition
+    {
+        get { return definition; }
+    }
+    
+    protected void RenderParameters( bool qualify )
+    {
+        RenderParameters( qualify, true );
+    }
+    
+    protected void RenderParameters( bool qualify, bool suffix )
+    {
+        var query = from parameter in Definition.Parameters
+                    select string.Concat( qualify ? string.Concat( parameter.TypeName, " " ) : string.Empty, parameter.Name );
+        var text = string.Concat( string.Join( ", ", query.ToArray() ), suffix && query.Count() > 0 ? ", " : string.Empty );
+        Write ( text );
+    }
+}
+#>

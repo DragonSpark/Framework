@@ -1,0 +1,23 @@
+﻿<Framework:TestingContext x:Class="DragonSpark.Testing.Logging.ExceptionHandling"
+	x:TypeArguments="Runtime:IExceptionHandler" 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Framework="clr-namespace:DragonSpark.Testing.Framework;assembly=DragonSpark.Testing.Framework"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+						  xmlns:Runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
+						  xmlns:Logging="clr-namespace:DragonSpark.Application.Logging;assembly=DragonSpark"
+						  mc:Ignorable="d">
+	<Configuration:AssignServiceLocatorCommand />
+	<Configuration:RegisterFromMetadataCommand />
+	<Configuration:UnityContainerConfiguration>
+		<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Error">
+			<Logging:TraceListenerFactory ListenerName="ErrorLoggingListener" />
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Critical">
+			<Logging:TraceListenerFactory ListenerName="CriticalLoggingListener" />
+		</Configuration:UnityType>
+	</Configuration:UnityContainerConfiguration>
+	<Configuration:ConfigureContainerFromConfigurationCommand />
+</Framework:TestingContext>

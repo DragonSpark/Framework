@@ -1,0 +1,37 @@
+﻿<Configuration:UnityContainerConfiguration x:Class="DragonSpark.Features.Modules.Authentication.Configuration"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark.Client"
+	xmlns:ds="http://framework.dragonspark.us" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+	xmlns:Authentication="clr-namespace:DragonSpark.Features.Modules.Authentication" mc:Ignorable="d"
+	>
+	<ds:ViewType RegistrationType="{ds:Type TypeName=Authentication:View}">
+		<ds:ViewType.TypeConfigurations>
+			<ds:RegionViewRegistration RegionName="PrimaryNavigation">
+				<ds:RegisterInstanceWithRegionAction>
+					<ds:ViewLocation Title="Authentication" Location="/Authentication" TargetName="PrimaryContent" Icon="/DragonSpark.Features.Modules.Authentication;component/Icon.png" />
+				</ds:RegisterInstanceWithRegionAction>
+			</ds:RegionViewRegistration>
+			<ds:RegionViewRegistration RegionName="PrimaryContent">
+				<ds:RegisterUriMappingsAction>
+					<sdk:UriMapping Uri="/Authentication" />
+				</ds:RegisterUriMappingsAction>
+			</ds:RegionViewRegistration>
+		</ds:ViewType.TypeConfigurations>
+	</ds:ViewType>
+
+	<!--<Configuration:UnityType RegistrationType="{ds:Type TypeName=Security:AuthenticationServiceOptions}">
+		<Configuration:UnityType.Lifetime>
+			<Configuration:IsolatedStorageLifetimeManager KeyName="0CAAFF52-657A-42E0-8D17-CC21EFB18EFB" DisposeAction="Save" />
+		</Configuration:UnityType.Lifetime>
+	</Configuration:UnityType>
+	
+	<Configuration:UnityType RegistrationType="{ds:EnumerableType TypeName=Security:AuthenticationServiceProfile}" Lifetime="{ds:Locate TypeName=Configuration:ContainerControlledLifetimeManager}">
+		<Configuration:GenericEnumerableFactory>
+			<Security:AuthenticationServiceProfile Title="Facebook Connect" Description="The provider used to authenticate using Facebook Connect." CompanyUri="http://facebook.com" Icon="http://www.somego.co/wp-content/uploads/2011/07/facebook-icon-1024x1024.png" AdditionalInformationUri="http://connect.facebook.com" ServiceType="{ds:Type TypeName=Facebook:FacebookConnectAuthentication}" Image="/DragonSpark.Features.Modules.Authentication;component/Resources/SignInWithFacebook.png" />
+			<Security:AuthenticationServiceProfile Title="Windows Live ID" Description="The provider used to authenticate using Windows Live." CompanyUri="http://live.com" AdditionalInformationUri="http://id.live.com" />
+		</Configuration:GenericEnumerableFactory>
+	</Configuration:UnityType>-->
+</Configuration:UnityContainerConfiguration>

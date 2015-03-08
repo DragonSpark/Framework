@@ -1,0 +1,29 @@
+﻿<Configuration:SynchronizationConfigurationContainer x:Class="Common.Testing.Objects.Synchronization.Resources.ComplexPropertyMappings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Configuration="clr-namespace:Common.Objects.Synchronization.Configuration;assembly=Common.Client"
+    xmlns:CoreConfiguration="clr-namespace:Common.Objects.Configuration;assembly=Common.Client"
+	
+>
+	<Configuration:SynchronizationKey x:Key="KeyEntityViewEntity" First="EntityView" Second="Entity" />
+	<Configuration:SynchronizationKey x:Key="KeyObjectObject" First="Object" Second="Object" />
+	<Configuration:SynchronizationContainer x:Key="DefaultContainer">
+		<Configuration:SynchronizationPolicy Key="{StaticResource KeyObjectObject}">
+			<Configuration:SimilarProperties />
+		</Configuration:SynchronizationPolicy>
+		<Configuration:SynchronizationPolicy Key="{StaticResource KeyEntityViewEntity}">
+			<Configuration:SynchronizationContexts>
+				<Configuration:ObjectResolvingSynchronizationContext FirstExpression="ComplexPropertyView" SecondExpression="ComplexProperty">
+					<CoreConfiguration:ObjectResolver ItemType="EntityComplexProperty">
+						<CoreConfiguration:ObjectResolver.ObjectFinder>
+							<CoreConfiguration:ObjectFinder ObjectFinderType="EntityComplexPropertyFinder" />
+						</CoreConfiguration:ObjectResolver.ObjectFinder>
+						<CoreConfiguration:ObjectResolver.ObjectCreator>
+							<CoreConfiguration:ObjectCreator SourceType="EntityViewComplexProperty" ResultType="EntityComplexProperty" />
+						</CoreConfiguration:ObjectResolver.ObjectCreator>
+					</CoreConfiguration:ObjectResolver>
+				</Configuration:ObjectResolvingSynchronizationContext>
+			</Configuration:SynchronizationContexts>
+		</Configuration:SynchronizationPolicy>
+	</Configuration:SynchronizationContainer>
+</Configuration:SynchronizationConfigurationContainer>

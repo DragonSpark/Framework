@@ -1,0 +1,16 @@
+﻿<Modularity:ModuleCatalog x:Class="DragonSpark.Features.Application.Modules"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Modularity="clr-namespace:Microsoft.Practices.Prism.Modularity;assembly=Microsoft.Practices.Prism"
+	mc:Ignorable="d"
+	>
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Welcome.xap" ModuleName="Welcome" ModuleType="DragonSpark.Features.Modules.Welcome.Module, DragonSpark.Features.Modules.Welcome, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Authentication.xap" ModuleName="Authentication" ModuleType="DragonSpark.Features.Modules.Authentication.Module, DragonSpark.Features.Modules.Authentication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Operations.xap" ModuleName="Operations" ModuleType="DragonSpark.Features.Modules.Operations.Module, DragonSpark.Features.Modules.Operations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Exceptions.xap" ModuleName="Exceptions" ModuleType="DragonSpark.Features.Modules.Exceptions.Module, DragonSpark.Features.Modules.Exceptions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Navigation.xap" ModuleName="Navigation" ModuleType="DragonSpark.Features.Modules.Navigation.Module, DragonSpark.Features.Modules.Navigation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.ViewProfiles.xap" ModuleName="ViewProfiles" ModuleType="DragonSpark.Features.Modules.ViewProfiles.Module, DragonSpark.Features.Modules.ViewProfiles, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+	<Modularity:ModuleInfo Ref="DragonSpark.Features.Modules.Administration.xap" ModuleName="Administration" ModuleType="DragonSpark.Features.Modules.Administration.Module, DragonSpark.Features.Modules.Administration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+</Modularity:ModuleCatalog>

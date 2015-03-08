@@ -1,0 +1,131 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ds="http://framework.dragonspark.us"
+	xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+	xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:prism="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
+	xmlns:InteractionRequest="clr-namespace:Microsoft.Practices.Prism.Interactivity.InteractionRequest;assembly=Microsoft.Practices.Prism.Interactivity"
+	xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Client"
+	xmlns:Principal="clr-namespace:System.Security.Principal;assembly=mscorlib">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/DragonSpark.Features.Client;component/Themes/DataTemplates.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<DataTemplate x:Key="DefaultViewProfile" DataType="ds:ViewProfile">
+		<UserControl>
+			<i:Interaction.Triggers>
+				<ds:ApplicationEventTrigger TargetStatus="Complete">
+					<ds:GoToState StateName="InitializedState" />
+				</ds:ApplicationEventTrigger>
+			</i:Interaction.Triggers>
+			<VisualStateManager.CustomVisualStateManager>
+				<ds:ExtendedVisualStateManager />
+			</VisualStateManager.CustomVisualStateManager>
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="InitializedGroup">
+					<VisualState x:Name="DefaultInitializedState" />
+					<VisualState x:Name="InitializedState">
+						<Storyboard>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ContentContainer">
+								<EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1"/>
+							</DoubleAnimationUsingKeyFrames >
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<toolkit:DockPanel x:Name="LayoutRoot" ds:RegionManagerContext.Assign="{ds:Locate TypeName=prism:IRegionManager}">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="SecurityGroup">
+						<VisualState x:Name="AnonymousState" />
+						<VisualState x:Name="AuthenticatedState">
+							<Storyboard>
+								<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AuthenticatedPanel">
+									<DiscreteObjectKeyFrame KeyTime="0">
+										<DiscreteObjectKeyFrame.Value>
+											<Visibility>Visible</Visibility>
+										</DiscreteObjectKeyFrame.Value>
+									</DiscreteObjectKeyFrame>
+								</ObjectAnimationUsingKeyFrames>
+								<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AnonymousPanel">
+									<DiscreteObjectKeyFrame KeyTime="0">
+										<DiscreteObjectKeyFrame.Value>
+											<Visibility>Collapsed</Visibility>
+										</DiscreteObjectKeyFrame.Value>
+									</DiscreteObjectKeyFrame>
+								</ObjectAnimationUsingKeyFrames>
+							</Storyboard>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<i:Interaction.Behaviors>
+					<ds:DataStateBehavior Binding="{Binding Identity.IsAuthenticated, Source={ds:Locate TypeName=Principal:IPrincipal}}" TrueState="AuthenticatedState" FalseState="AnonymousState" Value="True" />
+				</i:Interaction.Behaviors>
+				<toolkit:DockPanel Margin="10" toolkit:DockPanel.Dock="Top" LastChildFill="False">
+					<HyperlinkButton NavigateUri="/Welcome" Foreground="Black">
+						<HyperlinkButton.Template>
+							<ControlTemplate>
+								<toolkit:DockPanel>
+									<Image Source="/DragonSpark.Features.Application;component/Resources/Images/DragonSpark.png" Height="65" Stretch="Uniform" />
+									<StackPanel Margin="15 10" VerticalAlignment="Center" DataContext="{ds:Locate TypeName=Application:ApplicationDetails}">
+										<TextBlock Text="{Binding Product}" FontSize="24" FontWeight="Bold" TextTrimming="WordEllipsis" ToolTipService.ToolTip="{Binding Product}" />
+										<TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" Padding="1,0,1.4,0" ToolTipService.ToolTip="{Binding Description}" />
+									</StackPanel>
+								</toolkit:DockPanel>
+							</ControlTemplate>
+						</HyperlinkButton.Template>
+					</HyperlinkButton>
+
+					<toolkit:DockPanel x:Name="AnonymousPanel" HorizontalAlignment="Right" Margin="10" toolkit:DockPanel.Dock="Right">
+						<HyperlinkButton Content="Sign-In" HorizontalAlignment="Right" toolkit:DockPanel.Dock="Right" NavigateUri="{ds:ApplicationParameter TypeName=ds:AuthenticationStatusMonitor, ParameterName=LoginUri}" VerticalAlignment="Center" TargetName="_blank" />
+						<TextBlock Text="Welcome Guest" toolkit:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="15" />
+					</toolkit:DockPanel>
+
+					<toolkit:DockPanel x:Name="AuthenticatedPanel" HorizontalAlignment="Right" Margin="10" toolkit:DockPanel.Dock="Right" Visibility="Collapsed">
+						<HyperlinkButton Cursor="Hand" toolkit:DockPanel.Dock="Right" ds:Command.Attach="{ds:Locate TypeName=ds:SignOutOperation}" Content="Sign Out" VerticalAlignment="Center" />
+
+						<TextBlock Text="|" toolkit:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" />
+
+						<StackPanel Orientation="Horizontal" toolkit:DockPanel.Dock="Right" VerticalAlignment="Center">
+							<TextBlock Text="Welcome "  />
+							<HyperlinkButton Content="{Binding Identity.DisplayName, Source={ds:Locate TypeName=Principal:IPrincipal}}" toolkit:DockPanel.Dock="Right" VerticalAlignment="Center" FontWeight="Bold" NavigateUri="/Profile" ToolTipService.ToolTip="Click to visit your profile." />
+						</StackPanel>
+					</toolkit:DockPanel>
+				</toolkit:DockPanel>
+
+				<Border BorderBrush="Black" BorderThickness="0 2 0 0" Background="LightGray" toolkit:DockPanel.Dock="Bottom">
+					<Grid>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+							<HyperlinkButton Content="Contact" TargetName="_blank" NavigateUri="mailto:contact@dragonspark.us" VerticalAlignment="Center" Margin="10" FontWeight="Bold" Foreground="DarkSlateGray" />
+							<TextBlock Text="|" VerticalAlignment="Center" />
+							<HyperlinkButton Content="Source Code" toolkit:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10" FontWeight="Bold" TargetName="_blank" NavigateUri="http://dragonspark.codeplex.com" Foreground="DarkSlateGray" />
+						</StackPanel>
+
+						<toolkit:DockPanel HorizontalAlignment="Right" VerticalAlignment="Center" LastChildFill="False" Margin="10" DataContext="{ds:Locate TypeName=Application:ApplicationDetails}">
+							<ContentControl Content="{Binding}" ContentTemplate="{StaticResource Copyright}" />
+							<TextBlock Text="   Version: " />
+							<HyperlinkButton x:Name="About" Content="{Binding VersionInformation}" FontWeight="Bold" Command="{ds:Locate TypeName=ds:DialogCommand}" CommandParameter="{ds:Locate TypeName=ds:AboutNotification}">
+								<i:Interaction.Triggers>
+									<InteractionRequest:InteractionRequestTrigger SourceObject="{Binding Command.DisplayRequest, ElementName=About}">
+										<InteractionRequest:PopupChildWindowAction />
+									</InteractionRequest:InteractionRequestTrigger>
+								</i:Interaction.Triggers>
+							</HyperlinkButton>
+						</toolkit:DockPanel>
+					</Grid>
+				</Border>
+
+				<Border x:Name="ContentContainer" Opacity="0" Margin="1" toolkit:DockPanel.Dock="Top">
+					<toolkit:DockPanel>
+						<ListBox x:Name="PrimaryNavigation" prism:RegionManager.RegionName="{Binding Name, RelativeSource={RelativeSource Self}}" SelectedValuePath="ContractName" toolkit:DockPanel.Dock="Top" Style="{StaticResource NavigationListBox}" />
+						<sdk:Frame x:Name="PrimaryContent" prism:RegionManager.RegionName="{Binding Name, RelativeSource={RelativeSource Self}}">
+							<i:Interaction.Behaviors>
+								<ds:CurrentContractBehavior x:Name="CurrentContract" CurrentContract="{Binding SelectedValue, ElementName=PrimaryNavigation, Mode=TwoWay}" />
+							</i:Interaction.Behaviors>
+						</sdk:Frame>
+					</toolkit:DockPanel>
+				</Border>
+
+			</toolkit:DockPanel>
+		</UserControl>		
+	</DataTemplate>
+</ResourceDictionary>

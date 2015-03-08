@@ -1,0 +1,17 @@
+<#@ Assembly Name="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\Microsoft.Cci.dll" #>
+<#@ assembly name="System.ServiceModel" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="VSLangProj" #>
+<#@ import namespace="Microsoft.FxCop.Sdk" #>
+<#@ import namespace="System.ServiceModel" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.ServiceModel.Description" #>
+<#@ import namespace="VSLangProj" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\ServiceTemplate.tt" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\ProxyGenerator.tt" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\ProxyTemplate.tt" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\ChannelOperationTemplate.tt" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\OperationDescriptionTemplate.tt" #>
+<#@ include file="DragonSpark.CodeGeneration.ServiceProxies\OperationImplementationTemplate.tt" #>

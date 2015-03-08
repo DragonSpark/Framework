@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetDatabaseName>DragonSpark-Features-Storage</TargetDatabaseName>
+    <DeployScriptFileName>DragonSpark-Features-Storage.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=tcp:v1dti6149t.database.windows.net,1433;Persist Security Info=True;User ID=DragonSparkFeaturesAccess@v1dti6149t;Pooling=False;Encrypt=True</TargetConnectionString>
+    <PublishDependentProjects>False</PublishDependentProjects>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,73 @@
+﻿<Entity1:Installer x:Class="DragonSpark.Features.Site.Installation"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:FeaturesEntity="clr-namespace:DragonSpark.Features.Entity;assembly=DragonSpark.Features"
+						xmlns:Security="clr-namespace:DragonSpark.Application.Communication.Security;assembly=DragonSpark"
+                        xmlns:Entity1="clr-namespace:DragonSpark.Application.Communication.Entity;assembly=DragonSpark"
+                        xmlns:site="clr-namespace:DragonSpark.Features.Site"
+                        mc:Ignorable="d" 
+			 Id="335C673A-EEE4-42E9-BC96-269C863B2BF3" Version="1.1.5.0">
+	<Entity1:Installer.Steps>
+		<Entity1:EntityInstallationStep>
+			<Entity1:EntityInstallationStep.Attach>
+				<!-- Seed Data: -->
+
+				<Security:Role Name="Administrator" Order="0" />
+				<Security:Role Name="User" Order="1" />
+				<Security:Role Name="Contributor" Order="2" />
+
+				<FeaturesEntity:SampleUser Name="606735205" FirstName="Bubba" LastName="Franks" MembershipNumber="2" JoinedDate="5/1/2010 12:00 PM" IsEnabled="True" RolesSource="User" DisplayName="Bubba Franks" />
+				<FeaturesEntity:SampleUser Name="203745205" FirstName="Sir" LastName="Henry" MembershipNumber="3" JoinedDate="6/1/2010 12:00 PM" IsEnabled="True" RolesSource="User" DisplayName="Sir Henry" />
+				<FeaturesEntity:SampleUser Name="606765805" FirstName="Harry" LastName="Night" MembershipNumber="4" JoinedDate="7/1/2010 12:00 PM" IsEnabled="True" RolesSource="User; Contributor" DisplayName="Harry Night" />
+				<FeaturesEntity:SampleUser Name="636738845" FirstName="Sarah" LastName="Goldfarb" SomeStringProperty="Juice by Sarah!!!" MembershipNumber="5" JoinedDate="8/1/2010 12:00 PM" IsEnabled="False" RolesSource="User; Contributor" DisplayName="Sarah Goldfarb" />
+				<FeaturesEntity:SampleUser Name="506535305" FirstName="Matthew" LastName="Stafford" MembershipNumber="6" JoinedDate="9/1/2010 12:00 PM" IsEnabled="True" RolesSource="User" DisplayName="Matthew Stafford" />
+
+				<FeaturesEntity:BasicEntity Title="First Basic Entity" BasicStringProperty="Basic String" AnotherStringProperty="Another String!" AnotherStringProperty2="Whatcha know?" />
+				<FeaturesEntity:BasicEntity Title="Another Basic Entity" BasicStringProperty="Hello World!" AnotherStringProperty="This has been a long time" AnotherStringProperty2="In the making, Dawg" />
+				<FeaturesEntity:BasicEntity Title="A Third Basic Entity" BasicStringProperty="Well Then" AnotherStringProperty="What's next?" AnotherStringProperty2="PulseNation.com" />
+
+				<FeaturesEntity:EntityWithReference Title="A Referenced Entity my Dear!">
+					<FeaturesEntity:EntityWithReference.ReferencedEntity>
+						<FeaturesEntity:ReferencedEntity Title="A referenced Entity, Oh my!" Description="Hope this works." />
+					</FeaturesEntity:EntityWithReference.ReferencedEntity>
+				</FeaturesEntity:EntityWithReference>
+				<FeaturesEntity:EntityWithReference Title="Another Referenced Entity">
+					<FeaturesEntity:EntityWithReference.ReferencedEntity>
+						<FeaturesEntity:ReferencedEntity Title="Another referenced Entity, Oh my!" Description="Hope this works again." />
+					</FeaturesEntity:EntityWithReference.ReferencedEntity>
+				</FeaturesEntity:EntityWithReference>
+				<FeaturesEntity:EntityWithReference Title="Third referenced Entity!">
+					<FeaturesEntity:EntityWithReference.ReferencedEntity>
+						<FeaturesEntity:ReferencedEntity Title="A 3rd referenced Entity, Oh my!" Description="Hope this works a third time!" />
+					</FeaturesEntity:EntityWithReference.ReferencedEntity>
+				</FeaturesEntity:EntityWithReference>
+
+				<FeaturesEntity:EntityWithCollection Title="This is an Entity with a Collection">
+					<FeaturesEntity:EntityWithCollection.Entities>
+						<FeaturesEntity:CollectionEntity Title="An Entity Collection Item 1" />
+						<FeaturesEntity:CollectionEntity Title="An Entity Collection Item 2" />
+						<FeaturesEntity:CollectionEntity Title="An Entity Collection Item 3" />
+					</FeaturesEntity:EntityWithCollection.Entities>
+				</FeaturesEntity:EntityWithCollection>
+
+				<FeaturesEntity:EntityWithCollection Title="This is a Another Entity with a Collection">
+					<FeaturesEntity:EntityWithCollection.Entities>
+						<FeaturesEntity:CollectionEntity Title="Another Entity Collection Item 1" />
+						<FeaturesEntity:CollectionEntity Title="Another Entity Collection Item 2" />
+						<FeaturesEntity:CollectionEntity Title="Another Entity Collection Item 3" />
+					</FeaturesEntity:EntityWithCollection.Entities>
+				</FeaturesEntity:EntityWithCollection>
+
+				<FeaturesEntity:EntityWithCollection Title="This is a Third Entity with a Collection">
+					<FeaturesEntity:EntityWithCollection.Entities>
+						<FeaturesEntity:CollectionEntity Title="Third Entity Collection Item 1" />
+						<FeaturesEntity:CollectionEntity Title="Third Entity Collection Item 2" />
+						<FeaturesEntity:CollectionEntity Title="Third Entity Collection Item 3" />
+					</FeaturesEntity:EntityWithCollection.Entities>
+				</FeaturesEntity:EntityWithCollection>
+			</Entity1:EntityInstallationStep.Attach>
+		</Entity1:EntityInstallationStep>
+	</Entity1:Installer.Steps>
+
+</Entity1:Installer>

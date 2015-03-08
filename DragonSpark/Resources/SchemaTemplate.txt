@@ -1,0 +1,4 @@
+﻿[{0:FileName}]
+Format={0:Delimiter}
+ColNameHeader={0:FirstRowContainsHeaderInfo}
+CharacterSet={0:CharacterSet}

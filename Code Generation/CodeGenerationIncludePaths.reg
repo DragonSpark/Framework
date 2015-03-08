@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\10.0\TextTemplating\IncludeFolders\.tt]
+"IncludeDragonSparkFramework"="C:\\Projects\\DragonSpark\\Code Generation\\"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\9.0\TextTemplating\IncludeFolders\.tt]
+"IncludeDragonSparkFramework"="C:\\Projects\\DragonSpark\\Code Generation\\"

@@ -1,0 +1,26 @@
+﻿<Configuration:UnityContainerConfiguration x:Class="DragonSpark.Features.Modules.Exceptions.Configuration"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark.Client"
+	xmlns:ds="http://framework.dragonspark.us" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+	xmlns:Exceptions="clr-namespace:DragonSpark.Features.Modules.Exceptions"
+	xmlns:Infrastructure="clr-namespace:DragonSpark.Application.Presentation.Infrastructure;assembly=DragonSpark.Client"
+	mc:Ignorable="d"
+	>
+	<ds:ViewType RegistrationType="{ds:Type TypeName=Exceptions:View}">
+		<ds:ViewType.TypeConfigurations>
+			<Infrastructure:RegionViewRegistration RegionName="PrimaryNavigation">
+				<Infrastructure:RegisterInstanceWithRegionAction>
+					<ds:ViewLocation Title="Exceptions" Location="/Exceptions" TargetName="PrimaryContent" Icon="/DragonSpark.Features.Modules.Exceptions;component/Icon.png" />
+				</Infrastructure:RegisterInstanceWithRegionAction>
+			</Infrastructure:RegionViewRegistration>
+			<Infrastructure:RegionViewRegistration RegionName="PrimaryContent">
+				<ds:RegisterUriMappingsAction>
+					<sdk:UriMapping Uri="/Exceptions" />
+				</ds:RegisterUriMappingsAction>
+			</Infrastructure:RegionViewRegistration>
+		</ds:ViewType.TypeConfigurations>
+	</ds:ViewType>
+</Configuration:UnityContainerConfiguration>

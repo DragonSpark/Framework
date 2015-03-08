@@ -1,0 +1,21 @@
+﻿<nav:Page x:Class="DragonSpark.Features.Modules.Exceptions.View"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:nav="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+		  xmlns:ds="http://framework.dragonspark.us"
+		  xmlns:Exceptions="clr-namespace:DragonSpark.Features.Modules.Exceptions" mc:Ignorable="d"
+		  Style="{StaticResource DefaultPage}" Title="Exceptions"
+	d:DesignHeight="550" d:DesignWidth="452">
+	<ds:BusyIndicator x:Name="LayoutRoot" BusyContent="{ds:Locate TypeName=ds:ICommandMonitor}">
+		<Controls:DockPanel LastChildFill="False" Margin="5">
+			<StackPanel Controls:DockPanel.Dock="Top">
+				<TextBlock Text="Exceptions" Style="{StaticResource TextHeader}" />
+				<TextBlock Margin="10 5 10 10" TextWrapping="Wrap" ><Run Text="This section demonstrates two types of exceptions that can occur within an application: Client and Server (Service)."/><LineBreak/><Run/><LineBreak/><Run Text="The service is configured to output exceptions through Enterprise Library's Logging Application Block, and the client is configured to allow the user to report exceptions back to the service-tier." /></TextBlock>
+			</StackPanel>
+
+			<Button x:Name="ThrowClientException" Command="{ds:Locate TypeName=Exceptions:ThrowClientExceptionCommand}" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}" Content="Throw Client Exception" Padding="10" Controls:DockPanel.Dock="Top" Margin="10" />
+			<Button ds:Command.Attach="{ds:Locate TypeName=Exceptions:ThrowServiceExceptionCommand}" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}" Content="Throw Server Exception" Padding="10" Controls:DockPanel.Dock="Top" Margin="10" />
+		</Controls:DockPanel>
+	</ds:BusyIndicator>
+</nav:Page>

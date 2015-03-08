@@ -1,0 +1,67 @@
+﻿<Unity:UnityConfigurationContainer x:Class="Common.Testing.Unity.Configuration"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Configuration="clr-namespace:Common.Configuration;assembly=Common.Client"
+	xmlns:Unity="clr-namespace:Common.Enterprise.Unity.Configuration;assembly=Common.Client"
+	xmlns:Objects="clr-namespace:Common.Enterprise.Unity.Objects"
+	xmlns:System="clr-namespace:System;assembly=mscorlib"
+	xmlns:CommonUnity="clr-namespace:Common.Enterprise.Unity;assembly=Common.Client"
+	>
+	<System:Int32 x:Key="Pimpin">6776</System:Int32>
+	<Unity:UnityContainer x:Key="DefaultContainer">
+		<!-- Basic NamedTypeObject: -->
+		<Unity:UnityType Type="INamedObject" MapTo="NamedObject">
+			<Unity:InjectionProperty PropertyName="Name">
+				<Unity:InstanceValue Instance="Mapped Named Object" />
+			</Unity:InjectionProperty>
+		</Unity:UnityType>
+
+		<!-- NamedTypeObject with String Type: -->
+		<Unity:UnityType BuildName="Default" Type="INamedTypeObject" MapTo="NamedTypeObject">
+			<Unity:InjectionProperty PropertyName="Name">
+				<Unity:InstanceValue Instance="Mapped Named-Type Object" />
+			</Unity:InjectionProperty>
+			<Unity:InjectionProperty PropertyName="Type">
+				<Unity:TypeInstanceValue TypeInstance="String" />
+			</Unity:InjectionProperty>
+		</Unity:UnityType>
+
+		<!-- NamedTypeObject with Int32 Type: -->
+		<Unity:UnityType BuildName="Normal" Type="INamedTypeObject" MapTo="NamedTypeObject">
+			<Unity:InjectionProperty PropertyName="Name">
+				<Unity:InstanceValue Instance="Named-Type Object" />
+			</Unity:InjectionProperty>
+			<Unity:InjectionProperty PropertyName="Type">
+				<Unity:TypeInstanceValue TypeInstance="Int32" />
+			</Unity:InjectionProperty>
+		</Unity:UnityType>
+
+		<!-- GenericObject with INamedTypeObject Type: -->
+		<Unity:UnityType Type="Common.Unity.Testing.Objects.GenericObject`1[Common.Unity.Testing.Objects.INamedTypeObject]">
+			<Unity:InjectionProperty PropertyName="Property">
+				<Unity:DependencyValue Type="INamedTypeObject" BuildName="Normal" />
+			</Unity:InjectionProperty>
+		</Unity:UnityType>
+
+		<Unity:UnityType Type="ConstructorObject">
+			<Unity:InjectionConstructor>
+				<Unity:InstanceValue Instance="String-based Construction!" />
+			</Unity:InjectionConstructor>
+		</Unity:UnityType>
+
+		<Unity:UnityType Type="ConstructorObject" BuildName="Int">
+			<Unity:InjectionConstructor>
+				<Unity:InstanceValue Instance="{StaticResource Pimpin}" />
+			</Unity:InjectionConstructor>
+		</Unity:UnityType>
+
+		<Unity:UnityType Type="MethodObject">
+			<Unity:InjectionMethod MethodName="Method">
+				<Unity:InstanceValue Instance="Hello Method Call!" />
+			</Unity:InjectionMethod>
+		</Unity:UnityType>
+		<Unity:UnityContainer.Extensions>
+			<CommonUnity:CommonExtension />
+		</Unity:UnityContainer.Extensions>
+	</Unity:UnityContainer>
+</Unity:UnityConfigurationContainer>

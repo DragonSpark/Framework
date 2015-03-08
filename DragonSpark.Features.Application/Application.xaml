@@ -1,0 +1,24 @@
+﻿<ds:Application x:Class="DragonSpark.Features.Application.Application" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:ds="http://framework.dragonspark.us">
+	<ds:Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources/Styles.xaml" />
+				<ResourceDictionary Source="/DragonSpark.Features.Client;component/Themes/generic.xaml" />
+                <ResourceDictionary Source="/DragonSpark.Application.Presentation.Client;component/Themes/generic.xaml" />
+                <ResourceDictionary Source="/DragonSpark.Application.Presentation.Entity.Client;component/Themes/generic.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>		
+	</ds:Application.Resources>
+	<ds:Application.ApplicationLifetimeObjects>
+		<!--<Configuration:WebContext>
+			<Configuration:WebContext.Authentication>
+				<ApplicationServices:FormsAuthentication>
+					<ApplicationServices:FormsAuthentication.DomainContext>
+						<Features:AuthenticationContext />
+					</ApplicationServices:FormsAuthentication.DomainContext>
+				</ApplicationServices:FormsAuthentication>
+			</Configuration:WebContext.Authentication>
+		</Configuration:WebContext>-->
+	</ds:Application.ApplicationLifetimeObjects>	
+</ds:Application>

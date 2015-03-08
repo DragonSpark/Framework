@@ -1,0 +1,22 @@
+﻿<Configuration:UnityServiceLocatorDefinition x:Class="DragonSpark.Testing.Communications.Configuration.Container"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:StaticFactory="clr-namespace:Microsoft.Practices.Unity.StaticFactory;assembly=Microsoft.Practices.Unity"
+			xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark" 
+			xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+>
+	<Configuration:AssignServiceLocatorCommand />
+	<Configuration:UnityContainerConfiguration>
+		<Configuration:UnityContainerConfiguration.Instances>
+			<Configuration:UnityInstance Instance="This is a baseline message" />
+		</Configuration:UnityContainerConfiguration.Instances>
+		<Configuration:UnityContainerConfiguration.Extensions>
+			<IoC:DragonSparkExtension />
+			<Configuration:ConfigurationExtension />
+			<StaticFactory:StaticFactoryExtension />
+		</Configuration:UnityContainerConfiguration.Extensions>
+		<Configuration:UnityContainerConfiguration.PostConfigurations>
+			<Configuration:ConfigureContainerFromConfigurationCommand />
+		</Configuration:UnityContainerConfiguration.PostConfigurations>
+	</Configuration:UnityContainerConfiguration>		
+</Configuration:UnityServiceLocatorDefinition>

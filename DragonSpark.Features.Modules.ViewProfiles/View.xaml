@@ -1,0 +1,21 @@
+﻿<sdk:Page x:Class="DragonSpark.Features.Modules.ViewProfiles.View"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		  xmlns:ds="http://framework.dragonspark.us"
+		  xmlns:Design="clr-namespace:DragonSpark.Application.Presentation.Design;assembly=DragonSpark.Client"
+		 xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+		  xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" mc:Ignorable="d Design" Style="{StaticResource DefaultPage}" Title="View Profiles"
+	d:DesignHeight="600">
+	<StackPanel x:Name="LayoutRoot" Margin="5" toolkit:DockPanel.Dock="Top">
+		<TextBlock Text="View Profiles" Style="{StaticResource TextHeader}" />
+		<TextBlock Margin="5" TextWrapping="Wrap" Text="The DragonSpark Application Framework features the support of View Profiles.  Applications can use these profiles to display the appropriate view to the user based on the current resolution of the application, or other criteria, such as the current form factor currently being used." />
+
+		<TextBlock Margin="5" TextWrapping="Wrap" Text="Explore the different registered view profiles of this application by selecting an item from the list below:" />
+		<toolkit:DockPanel Margin="5">
+			<Button Margin="5 0 0 0" toolkit:DockPanel.Dock="Right" Content="Assign" Command="{ds:Locate TypeName=ds:SelectProfileCommand}" CommandParameter="{Binding SelectedItem, ElementName=Items}" Padding="10 5" />
+			<ComboBox x:Name="Items" ItemsSource="{Binding Profiles, Source={ds:Locate TypeName=ds:IViewProfileService}}" SelectedItem="{Binding SelectedProfile, Source={ds:Locate TypeName=ds:IViewProfileService}}" DisplayMemberPath="Title" ToolTipService.ToolTip="{Binding SelectedProfile.Description, Source={ds:Locate TypeName=ds:IViewProfileService}}" />
+		</toolkit:DockPanel>
+	</StackPanel>
+</sdk:Page>

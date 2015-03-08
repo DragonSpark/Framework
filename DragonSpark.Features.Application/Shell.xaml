@@ -1,0 +1,61 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	x:Class="DragonSpark.Features.Application.Shell" 
+	xmlns:ds="http://framework.dragonspark.us"
+	xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:InteractionRequest="clr-namespace:Microsoft.Practices.Prism.Interactivity.InteractionRequest;assembly=Microsoft.Practices.Prism.Interactivity"
+	xmlns:Runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark.Client"
+	xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Client" mc:Ignorable="d"
+	ds:ApplicationTitle.Title="{Binding Title, Source={ds:Locate TypeName=Application:ApplicationDetails}}"
+	>
+	<ds:BusyIndicator x:Name="LayoutRoot" BusyContent="{ds:Locate TypeName=ds:ApplicationCommandMonitor}" FontSize="11" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+		<i:Interaction.Behaviors>
+			<ds:AuthenticationStatusMonitor x:Name="AuthenticationStatus" />
+		</i:Interaction.Behaviors>
+
+		<i:Interaction.Triggers>
+			<ds:ApplicationEventTrigger TargetStatus="Initializing">
+				<ds:InvokeCommandAction CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+					<ds:InvokeCommandAction.Command>
+						<ds:ExecuteCommandSetCommand>
+							<ds:ExecuteCommandSetCommand.Options>
+								<ds:CommandMonitorOptions AllowCancel="False" CloseOnCompletion="True" AnyExceptionIsFatal="True" />
+							</ds:ExecuteCommandSetCommand.Options>
+							<ds:Locate Type="{ds:Type TypeName=ds:LaunchInitializationOperation}" />
+							<ds:Locate Type="{ds:Type TypeName=ds:RetrieveServiceApplicationDetailsOperation}" />
+							<ds:Locate Type="{ds:Type TypeName=ds:LoadModulesOperation}" />
+							<ds:Locate Type="{ds:Type TypeName=ds:LoadAndValidateUserOperation}" />
+						</ds:ExecuteCommandSetCommand>
+					</ds:InvokeCommandAction.Command>
+				</ds:InvokeCommandAction>
+			</ds:ApplicationEventTrigger>
+			<InteractionRequest:InteractionRequestTrigger SourceObject="{Binding DisplayException, Source={ds:Locate TypeName=Runtime:IExceptionHandler}}">
+				<InteractionRequest:PopupChildWindowAction />
+			</InteractionRequest:InteractionRequestTrigger>
+			<InteractionRequest:InteractionRequestTrigger SourceObject="{Binding DisplayInterface, Source={ds:Locate TypeName=ds:IProfileValidationManager}}">
+				<InteractionRequest:PopupChildWindowAction>
+					<InteractionRequest:PopupChildWindowAction.ChildWindow>
+						<ds:ChildWindow Style="{StaticResource NotificationChildWindow}" />
+					</InteractionRequest:PopupChildWindowAction.ChildWindow>
+				</InteractionRequest:PopupChildWindowAction>
+			</InteractionRequest:InteractionRequestTrigger>
+			<i:EventTrigger SourceName="AuthenticationStatus" EventName="Refreshed">
+				<ds:InvokeCommandAction CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+					<ds:InvokeCommandAction.Command>
+						<ds:ExecuteCommandSetCommand>
+							<ds:ExecuteCommandSetCommand.Options>
+								<ds:CommandMonitorOptions AllowCancel="False" CloseOnCompletion="True" AnyExceptionIsFatal="True" />
+							</ds:ExecuteCommandSetCommand.Options>
+							<ds:Locate Type="{ds:Type TypeName=ds:LoadAndValidateUserOperation}" />
+						</ds:ExecuteCommandSetCommand>
+					</ds:InvokeCommandAction.Command>
+				</ds:InvokeCommandAction>
+			</i:EventTrigger>
+		</i:Interaction.Triggers>
+		<toolkit:TransitioningContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Content="{Binding SelectedProfile, Source={ds:Locate TypeName=ds:IViewProfileService}}" ContentTemplate="{Binding SelectedProfile.ContentTemplate, Source={ds:Locate TypeName=ds:IViewProfileService}}" />
+	</ds:BusyIndicator>
+</UserControl>

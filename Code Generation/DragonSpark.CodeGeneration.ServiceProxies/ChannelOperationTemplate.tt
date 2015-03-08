@@ -1,0 +1,34 @@
+﻿<#+
+
+// <copyright file="ChannelOperationTemplate.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
+// </copyright>
+
+public class ChannelOperationTemplate : OperationDescriptionTemplate
+{
+    public ChannelOperationTemplate( OperationContractDefinition description ) : base( description )
+    {}
+    
+    void RenderFaultAttributes()
+    {
+        if ( Definition.FaultTypeName != null )
+        {
+        #>
+        [FaultContractAttribute( typeof(<#= Definition.FaultTypeName #>) )]
+        <#+
+        }
+    }
+    
+    public override string TransformText()
+	{
+        #>
+        
+    	[OperationContract( AsyncPattern = true, Action="<#= Definition.Action #>", ReplyAction="<#= Definition.Action #>Response")]
+    	<#+ RenderFaultAttributes(); #>IAsyncResult Begin<#= Definition.Name #>( <#+ RenderParameters( true ); #>AsyncCallback callback, object asyncState );
+
+		<#= Definition.ReturnTypeName #> End<#= Definition.Name #>( IAsyncResult result );
+		
+<#+ 
+        return this.GenerationEnvironment.ToString();
+    }
+}#>

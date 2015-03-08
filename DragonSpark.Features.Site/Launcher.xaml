@@ -1,0 +1,68 @@
+﻿<IoC:Launcher x:Class="DragonSpark.Features.Site.Launcher"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:StaticFactory="clr-namespace:Microsoft.Practices.Unity.StaticFactory;assembly=Microsoft.Practices.Unity"
+	xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark" xmlns:Features="clr-namespace:DragonSpark.Features;assembly=DragonSpark.Features" xmlns:Site="clr-namespace:DragonSpark.Features.Site" 
+	xmlns:EF="clr-namespace:System.Data.Entity;assembly=EntityFramework" 
+	xmlns:Logging="clr-namespace:DragonSpark.Application.Logging;assembly=DragonSpark" 
+	xmlns:Entity="clr-namespace:DragonSpark.Application.Communication.Entity;assembly=DragonSpark"
+	xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark"
+	xmlns:PrismLogging="clr-namespace:Microsoft.Practices.Prism.Logging;assembly=Microsoft.Practices.Prism"
+	xmlns:System="clr-namespace:System;assembly=mscorlib"
+	xmlns:Security="clr-namespace:DragonSpark.Application.Communication.Security;assembly=DragonSpark"
+              xmlns:Generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+    xmlns:ds="http://framework.dragonspark.us">
+	<ds:AssignServiceLocatorCommand />    
+	<ds:UnityContainerConfiguration>
+		<ds:UnityType RegistrationType="{x:Type Application:ApplicationDetails}">
+			<Application:ApplicationDetailsFactory SourceType="{x:Type Site:Launcher}" />
+		</ds:UnityType>
+
+		<ds:UnityType RegistrationType="{x:Type Features:IFeaturesApplicationService}" MapTo="{x:Type Features:FeaturesApplicationService}" />
+
+
+        <ds:UnityType RegistrationType="{ds:GenericType EF:IDatabaseInitializer(Features:FeaturesEntityStorage)}" MapTo="{ds:GenericType Entity:CreateDatabaseIfNotExists(Features:FeaturesEntityStorage)}" />
+        <!--<ds:UnityType RegistrationType="{ds:GenericType EF:IDatabaseInitializer(Features:FeaturesEntityStorage)}" MapTo="{ds:GenericType Entity:DropCreateDatabaseIfModelChanges(Features:FeaturesEntityStorage)}" />-->
+
+        <ds:UnityType RegistrationType="{x:Type EF:DbContext}" MapTo="{x:Type Features:FeaturesEntityStorage}">
+            <ds:UnityType.Lifetime>
+                <ds:RequestLifetimeManager KeyName="056A5293-E260-4365-BE38-376ED6BEEBE4" />
+            </ds:UnityType.Lifetime>
+		</ds:UnityType>
+
+		<ds:UnityType RegistrationType="{x:Type Security:IClaimsProcessor}" MapTo="{x:Type Security:ClaimsProcessor}">
+			<ds:InjectionConstructor>
+				<ds:InstanceValue ParameterType="{x:Type System:String}" />
+				<ds:ResolvedArrayParameter ElementType="{x:Type Security:IClaimsMapper}">
+					<ds:DependencyValue DependencyType="{x:Type Security:NameMapper}" />
+					<ds:DependencyValue DependencyType="{x:Type Security:DisplayNameMapper}" />
+					<ds:DependencyValue DependencyType="{x:Type Security:EmailMapper}" />
+				</ds:ResolvedArrayParameter>
+			</ds:InjectionConstructor>
+		</ds:UnityType>
+
+		<ds:UnityType RegistrationType="{ds:GenericType Generic:IEnumerable(Security:IClaimsProcessor)}">
+			<ds:GenericEnumerableFactory>
+				<ds:NamedTypeBuildKey BuildType="{x:Type Security:IClaimsProcessor}" />
+			</ds:GenericEnumerableFactory>
+		</ds:UnityType>
+
+		<!--<Configuration:UnityType RegistrationType="{x:Type Notifications:IEventNotificationService}" MapTo="{x:Type Notifications:NullEventNotificationService}" />-->
+
+		<ds:UnityType RegistrationType="{x:Type PrismLogging:ILoggerFacade}" MapTo="{x:Type Logging:EnterpriseLibraryLogger}" />
+
+		<ds:UnityContainerConfiguration.Extensions>
+			<IoC:DragonSparkExtension />
+			<ds:ConfigurationExtension />
+			<StaticFactory:StaticFactoryExtension />
+			<IoC:CompositionExtension EnableRegistration="False" />
+		</ds:UnityContainerConfiguration.Extensions>
+		<ds:UnityContainerConfiguration.PostConfigurations>
+            <Entity:DatabaseInitializationConfigurationCommand ContextType="{x:Type Features:FeaturesEntityStorage}" />
+			<ds:ConfigureContainerFromConfigurationCommand />
+			<ds:RegisterFromMetadataCommand />
+			<IoC:CompositionConfiguration DirectorySearchPath="Bin" />
+			<!--<Entity:DomainServiceFactoryConfiguration />-->
+		</ds:UnityContainerConfiguration.PostConfigurations>
+	</ds:UnityContainerConfiguration>
+</IoC:Launcher>

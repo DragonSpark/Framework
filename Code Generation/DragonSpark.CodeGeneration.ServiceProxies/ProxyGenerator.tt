@@ -1,0 +1,217 @@
+﻿<#+
+// <copyright file="ProxyGenerator.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
+// </copyright>
+public class ProxyGenerator : Generator
+{
+	readonly ServiceContractDefinitionProvider provider = new ServiceContractDefinitionProvider();
+	
+	protected override void RunCore()
+	{
+		var project = (VSLangProj.VSProject)TransformationContext.Project.Object;
+		var query = from reference in project.References.Cast<VSLangProj.Reference>()
+			let paths = from assembly in AppDomain.CurrentDomain.GetAssemblies()
+						select Path.GetFileName( assembly.Location )     
+			where !paths.Contains( Path.GetFileName( reference.Path ) )
+			from definition in provider.Resolve( reference.Path )
+			select definition;
+		var template = new ProxyTemplate( query );
+		template.Render();
+	}
+}
+
+	public class ServiceContractDefinition
+	{
+		public string Name { get; set; }
+		public string FullName { get; set; }
+		public string Namespace { get; set; }
+		public string ContractNamespace { get; set; }
+		public string ConfigurationName { get; set; }
+		public IEnumerable<OperationContractDefinition> Operations { get; set; }
+
+		public string ClassName
+		{
+			get { return className ?? ( className = Name.Substring( Name.StartsWith( "I" ) ? 1 : 0 ) ); }
+		}	string className;
+
+	}
+
+	public class OperationContractDefinition
+	{
+		public string Action { get; set; }
+		public string Name { get; set; }
+	    public string ServiceName { get; set; }
+	    public string ReturnTypeName { get; set; }
+		public IEnumerable<ParameterDefinition> Parameters { get; set; }
+		public string FaultTypeName { get; set; }
+	}
+
+	public class ParameterDefinition
+	{
+		public string TypeName { get; set; }
+		public string Name { get; set; }
+	}
+
+	public class ServiceContractDefinitionCreator
+	{
+		readonly InterfaceNode serviceType;
+		readonly AttributeNode serviceContractAttribute;
+
+		public ServiceContractDefinitionCreator( InterfaceNode serviceType, AttributeNode serviceContractAttribute )
+		{
+			this.serviceType = serviceType;
+			this.serviceContractAttribute = serviceContractAttribute;
+		}
+
+		static string Resolve( AttributeNode node, string name, string defaultValue )
+		{
+			var argument = node.GetNamedArgument( Identifier.For( name ) );
+			var result = argument != null ? ( (Literal)argument ).ToString() : defaultValue;
+			return result;
+		}
+		
+		public ServiceContractDefinition Create()
+		{
+			var @namespace = Resolve( serviceContractAttribute, "Namespace", "http://tempuri.org/" );
+			var name = Resolve( serviceContractAttribute, "Name", serviceType.Name.Name );
+											 
+			// Initialize members (keeps exception from occuring during query):
+			serviceType.Members.ToArray();
+			
+			var result = new ServiceContractDefinition
+							{
+								ConfigurationName = Resolve( serviceContractAttribute, "ConfigurationName", serviceType.FullName ),
+								Name = name,
+								FullName = serviceType.GetFullUnmangledNameWithTypeParameters(),
+								Namespace = serviceType.Namespace.Name,
+								ContractNamespace = @namespace,
+								Operations = from @interface in new[]{ serviceType }.Concat( serviceType.Interfaces )
+											 where @interface != null
+											 from method in @interface.Members.OfType<Method>()
+											 let attribute = Utilities.GetAttribute<OperationContractAttribute>( method )
+                                             where attribute != null
+                                             let serviceAttribute = Utilities.GetAttribute<ServiceContractAttribute>( @interface )
+											 let ns = Resolve( serviceAttribute, "Namespace", "http://tempuri.org/" )
+											 let fault = Utilities.GetAttribute<FaultContractAttribute>( method )
+											 select new OperationContractDefinition
+												{
+	                                               	ServiceName = name,
+													Action =
+														string.Format( "{0}{1}{2}/{3}", ns,
+																	   ns.EndsWith( "/" ) ? string.Empty : "/",
+																	   @interface.Name.Name, Resolve( attribute, "Name", method.Name.Name ) ),
+													Name = method.Name.Name,
+													ReturnTypeName = method.ReturnType.FullName == "System.Void" ? "void" : method.ReturnType.GetFullUnmangledNameWithTypeParameters(),
+													Parameters = from parameter in method.Parameters
+																 select new ParameterDefinition
+																			{
+																				Name = parameter.Name.Name,
+																				TypeName = parameter.Type.GetFullUnmangledNameWithTypeParameters()
+																			},
+													FaultTypeName = fault != null ? ((ClassNode)((Literal)fault.Expressions.First()).Value).GetFullUnmangledNameWithTypeParameters() : null
+												}
+							};
+			return result;
+		}
+	}
+	
+	public static class Utilities
+	{
+		public static string PascalCase(string identifier)
+		{
+			if (string.IsNullOrEmpty(identifier))
+				return identifier;
+
+			if (identifier.Length == 1)
+				return identifier[0].ToString(CultureInfo.InvariantCulture).ToUpperInvariant();
+
+			return identifier[0].ToString(CultureInfo.InvariantCulture).ToUpperInvariant() + identifier.Substring(1);
+		}
+		   
+		public static string Pluralize( string name )
+				{
+					if ( name.EndsWith( "s" ) )
+					{
+						return string.Concat( name, "es" );
+					}
+					else if ( name.EndsWith( "y" ) && !name.EndsWith( "ay" ) )
+					{
+						return name.Substring( 0, name.Length - 1 ) + "ies";
+					}
+					return string.Concat( name, "s" );
+				}
+		
+		public static string CamelCase(string identifier)
+		{
+			if (string.IsNullOrEmpty(identifier))
+				return identifier;
+
+			if (identifier.Length == 1)
+				return identifier[0].ToString(CultureInfo.InvariantCulture).ToLowerInvariant();
+
+			return identifier[0].ToString(CultureInfo.InvariantCulture).ToLowerInvariant() + identifier.Substring(1);
+		}
+		
+		public static TypeNode Resolve( ModuleNode assemblyNode, Type type )
+		{
+			var result = assemblyNode.GetType( Identifier.For( type.Namespace ), Identifier.For( type.Name ), true );
+			return result;
+		}
+
+		public static TypeNode Resolve<TType>( ModuleNode assemblyNode )
+		{
+			var result = Resolve( assemblyNode, typeof(TType) );
+			return result;
+		}
+
+		public static AttributeNode GetAttribute<TAttribute>( Member member ) where TAttribute : Attribute
+		{
+			var query = from attribute in member.Attributes
+						where attribute.Type.FullName == typeof(TAttribute).FullName
+						select attribute;
+			var result = query.FirstOrDefault();
+			return result;
+		}
+	}
+
+	public class ServiceContractDefinitionProvider : IEqualityComparer<InterfaceNode>
+	{
+		public IEnumerable<InterfaceNode> ResolveInterfaces( AssemblyNode assembly )
+		{
+			try
+			{
+				return assembly.Types.OfType<InterfaceNode>().Distinct( this );
+			}
+			catch ( Exception )
+			{
+				return Enumerable.Empty<InterfaceNode>();
+			}
+		}
+		
+		public ServiceContractDefinition[] Resolve( string path )
+		{
+			using ( var assembly = AssemblyNode.GetAssembly( path ) )
+			{
+				var query = from type in ResolveInterfaces( assembly )
+							where !type.IsGeneric
+							let attribute = Utilities.GetAttribute<ServiceContractAttribute>( type )
+							where attribute != null
+							select new ServiceContractDefinitionCreator( type, attribute ).Create();
+				var result = query.ToArray();
+				return result;
+			}
+		}
+		
+		public bool Equals( InterfaceNode x, InterfaceNode y )
+		{
+			var result = x.FullName == y.FullName;
+			return result;
+		}
+
+		public int GetHashCode( InterfaceNode obj )
+		{
+			var result = obj.GetHashCode();
+			return result;
+		}
+	}
+#>

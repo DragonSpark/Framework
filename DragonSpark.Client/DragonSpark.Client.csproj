@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{133D9D93-EFE6-4255-92E4-5315EB37CF26}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark</RootNamespace>
+    <AssemblyName>DragonSpark.Client</AssemblyName>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>..\DragonSpark\DragonSpark.csproj</LinkedServerProject>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <ExpressionBlendVersion>4.0.20421.0</ExpressionBlendVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\Common\Common Framework.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Common.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>Bin\Debug\Common.Client.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pre-Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Pre-Release\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisLogFile>Bin\Debug\Common.Client.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Expression.Samples.Interactivity">
+      <HintPath>..\packages\Expression.Samples.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="MefContrib.Integration.Unity.Client">
+      <HintPath>..\packages\MefContrib.Integration.Unity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\SL5\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Base.Client">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.Base.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Client">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Client.Internal">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.Client.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.ExportProvider">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.ExportProvider.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.ManifestService.Client">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.ManifestService.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\SL5\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\SL5\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\packages\Prism.UnityExtensions.4.1.0.0\lib\SL5\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\SL30\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Silverlight">
+      <HintPath>..\packages\Unity.2.1.505.2\lib\SL30\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\RIAServices.ViewModel.4.1.60730.1\lib\Sl40\Microsoft.Windows.Data.DomainServices.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="SLaB.Utilities.Xaml.Serializer">
+      <HintPath>..\packages\SLaB.Utilities.Xaml.Serializer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.ServiceModel.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data.DataForm.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-Data.4.2010.4\lib\sl4\System.Windows.Controls.Data.DataForm.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Data.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-Data.4.2010.4\lib\sl4\System.Windows.Controls.Data.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Layout.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-Layout.4.2010.4\lib\sl4\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Navigation, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-Core.4.2010.4\lib\sl4\System.Windows.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\SL5\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\ClientExceptionDetail.cs" />
+    <Compile Include="Application\Communication\Channels\ChannelFactory.cs" />
+    <Compile Include="Application\Communication\Channels\ProxyBase.cs" />
+    <Compile Include="Application\Communication\Channels\TypeExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Application\Communication\Channels\TypeGenerator.cs" />
+    <Compile Include="Application\Communication\CookieContainerConfigurator.cs" />
+    <Compile Include="Application\Communication\CookieContainerFactory.cs" />
+    <Compile Include="Application\Communication\DomainContextCookieInjection.cs" />
+    <Compile Include="Application\Communication\DomainContextFactory.cs" />
+    <Compile Include="Application\Communication\Entity\DomainContextExtensions.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetOperationAttribute.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetOperationDescriptor.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetOperationDescriptorCollection.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetProfile.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetProfileCollection.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetService.cs" />
+    <Compile Include="Application\Communication\Entity\IEntitySetService.cs" />
+    <Compile Include="Application\Communication\Entity\IQueryGenerator.cs" />
+    <Compile Include="Application\Communication\Entity\IQueryShaper.cs" />
+    <Compile Include="Application\Communication\Entity\MetadataBasedEntitySetProfileFactory.cs" />
+    <Compile Include="Application\Communication\Entity\QueryGenerator.cs" />
+    <Compile Include="Application\Communication\Entity\QueryNameAttribute.cs" />
+    <Compile Include="Application\Communication\SharedCookieHttpBehavior.cs" />
+    <Compile Include="Application\Communication\SystemServices\ServiceInstallation.cs" />
+    <Compile Include="Application\Communication\SystemServices\Downloader.cs" />
+    <Compile Include="Application\Communication\SystemServices\IDownloader.cs" />
+    <Compile Include="Application\Communication\SystemServices\IServiceInstaller.cs" />
+    <Compile Include="Application\Communication\SystemServices\ServiceInstaller.cs" />
+    <Compile Include="Application\Communication\SystemServices\ServiceLauncherAction.cs" />
+    <Compile Include="Application\EventSupport.cs" />
+    <Compile Include="Application\Logging\TraceEventType.cs" />
+    <Compile Include="Application\NavigationChangingEventArgs.cs" />
+    <Compile Include="Application\Presentation\AboutNotification.cs" />
+    <Compile Include="Application\Presentation\Application.cs" />
+    <Compile Include="Application\Presentation\AuthenticationServiceBridge.cs" />
+    <Compile Include="Application\Presentation\ButtonModelCollection.cs" />
+    <Compile Include="Application\Presentation\Commands\Command.cs" />
+    <Compile Include="Application\Presentation\Commands\CommandBase.shared.cs" />
+    <Compile Include="Application\Presentation\Commands\CommandExceptionHandlingAction.cs" />
+    <Compile Include="Application\Presentation\Commands\CommandMonitor.cs" />
+    <Compile Include="Application\Presentation\Commands\CommandMonitorContext.cs" />
+    <Compile Include="Application\Presentation\Commands\CommandMonitorOptions.cs" />
+    <Compile Include="Application\Presentation\Commands\CopyToClipboardCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\DialogCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\ExceptionHandlingCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\ExecuteCommandSetCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\ExecutionStatus.cs" />
+    <Compile Include="Application\Presentation\Commands\ICommandMonitor.cs" />
+    <Compile Include="Application\Presentation\Commands\IMonitoredCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\IOperation.cs" />
+    <Compile Include="Application\Presentation\Commands\MonitoredCommandBase.cs" />
+    <Compile Include="Application\Presentation\Commands\MonitoredCommandBase.shared.cs" />
+    <Compile Include="Application\Presentation\Commands\OperationCommandBase.shared.cs" />
+    <Compile Include="Application\Presentation\Commands\OperationCompletedEventArgs.cs" />
+    <Compile Include="Application\Presentation\Commands\ReportExceptionCommand.cs" />
+    <Compile Include="Application\Presentation\Commands\RetrieveServiceApplicationDetailsOperation.cs" />
+    <Compile Include="Application\Presentation\Configuration\ApplicationParameter.cs" />
+    <Compile Include="Application\Presentation\Configuration\ApplicationService.cs" />
+    <Compile Include="Application\Presentation\Configuration\ApplyBinding.cs" />
+    <Compile Include="Application\Presentation\Configuration\BehaviorCollection.cs" />
+    <Compile Include="Application\Presentation\Configuration\Behaviors.cs" />
+    <Compile Include="Application\Presentation\Configuration\BindingCollection.cs" />
+    <Compile Include="Application\Presentation\Configuration\BindingPropertySetter.cs" />
+    <Compile Include="Application\Presentation\Configuration\BindingTarget.cs" />
+    <Compile Include="Application\Presentation\Configuration\DictionaryOfTExtension.cs" />
+    <Compile Include="Application\Presentation\Configuration\DictionaryType.cs" />
+    <Compile Include="Application\Presentation\Configuration\EnumerableType.cs" />
+    <Compile Include="Application\Presentation\Configuration\IdentityType.cs" />
+    <Compile Include="Application\Presentation\Configuration\InstanceFactory.cs" />
+    <Compile Include="Application\Presentation\Configuration\ItemsFactory.cs" />
+    <Compile Include="Application\Presentation\Configuration\KeyValuePair.cs" />
+    <Compile Include="Application\Presentation\Configuration\MultiBinding.cs" />
+    <Compile Include="Application\Presentation\Configuration\Resource.cs" />
+    <Compile Include="Application\Presentation\Configuration\SetterValueBindingSupport.cs" />
+    <Compile Include="Application\Presentation\Configuration\Static.cs" />
+    <Compile Include="Application\Presentation\Configuration\Type.cs" />
+    <Compile Include="Application\Presentation\Configuration\TypeFullName.cs" />
+    <Compile Include="Application\Presentation\Configuration\ValueProxy.cs" />
+    <Compile Include="Application\Presentation\Configuration\XamlTypeResolverExtensions.cs" />
+    <Compile Include="Application\Presentation\Controls\AlignmentBehavior.cs" />
+    <Compile Include="Application\Presentation\Controls\BusyIndicator.cs" />
+    <Compile Include="Application\Presentation\Controls\ChildWindow.cs" />
+    <Compile Include="Application\Presentation\Controls\ChildWindowExtensions.cs" />
+    <Compile Include="Application\Presentation\Controls\DialogChrome.cs" />
+    <Compile Include="Application\Presentation\Controls\Menu.cs" />
+    <Compile Include="Application\Presentation\Controls\QueryTextBox.cs" />
+    <Compile Include="Application\Presentation\Controls\TabItem.cs" />
+    <Compile Include="Application\Presentation\Controls\UniformGrid.cs" />
+    <Compile Include="Application\Presentation\Controls\WatermarkedComboBox.cs" />
+    <Compile Include="Application\Presentation\Converters\AllBooleanMultiConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\AnyBooleanMultiConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\CoerceConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\CurrentUserConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\ExternalImageConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\IMultiValueConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\InstanceTypeConverter.cs" />
+    <Compile Include="Application\Presentation\Converters\PlainTextConverter.cs" />
+    <Compile Include="Application\Presentation\Cookie.cs" />
+    <Compile Include="Application\Presentation\Design\ArrayList.cs" />
+    <Compile Include="Application\Presentation\Design\DesignTimeCompensations.cs" />
+    <Compile Include="Application\Presentation\Design\DesignTimePropertySetterCollection.cs" />
+    <Compile Include="Application\Presentation\DispatcherDelegateWorker.cs" />
+    <Compile Include="Application\Presentation\Entity\DomainCollectionView.cs" />
+    <Compile Include="Application\Presentation\Entity\DomainCollectionViewExtensions.cs" />
+    <Compile Include="Application\Presentation\Entity\DomainCollectionViewLoader.cs" />
+    <Compile Include="Application\Presentation\Entity\DomainCollectionViewSource.cs" />
+    <Compile Include="Application\Presentation\Entity\DomainContextLocator.cs" />
+    <Compile Include="Application\Presentation\Entity\Entity.cs" />
+    <Compile Include="Application\Presentation\Entity\EntitySetCollectionViewSource.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\AssignEntityContext.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\AssignEntityDialogCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\AssignEntityDialogConfirmation.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\AssociationQueryShaper.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\CheckFormForChangesCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\CreateEntityDialogCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\DelegateDialogCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EditEntityDialogCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EditEntityReferenceDialog.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EntityAssociationField.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EntityCollectionField.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EntityDialogCommandBase.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EntityDialogNotification.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\EntityReferenceField.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\InclusiveItemViewModel.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\ManageEntityCollectionContext.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\ManageEntityCollectionDialogCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\ManageEntityCollectionNotification.cs" />
+    <Compile Include="Application\Presentation\Entity\Fields\RolesFieldBase.cs" />
+    <Compile Include="Application\Presentation\Entity\IAppendSource.cs" />
+    <Compile Include="Application\Presentation\Entity\IDomainContextLocator.cs" />
+    <Compile Include="Application\Presentation\Entity\ILoadOperationListener.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\ChangeTrackingExtensions.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\ConfirmRemoval.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\DataFieldBinding.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\DisplayFieldView.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\EntityDataBehavior.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\EntityDataBehaviorAttribute.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\EntityDataBehaviorBase.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\EntityDataBehaviorConverter.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\IEntityDataBehavior.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\IEntityDataBehaviorRepository.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\IPreserveChangesDialog.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\IRemovalDialog.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\MetadataBasedEntityDataBehaviorRepository.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\PreserveChanges.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\PreserveChangesDialog.cs" />
+    <Compile Include="Application\Presentation\Entity\Interactivity\RemovalDialog.cs" />
+    <Compile Include="Application\Presentation\Entity\IViewSupport.cs" />
+    <Compile Include="Application\Presentation\Entity\LoadOperationEventArgs.cs" />
+    <Compile Include="Application\Presentation\Entity\MetadataBasedEntityViewFactory.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\DomainCollectionViewRefreshCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\EntityOperationCommmandBase.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\InvokeOperationDefinition.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\LoadEntityOperationCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\LoadEntitySetSourceOperation.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\LoadSingleEntityOperationCommand.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\LoadSourceOperation.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\MethodParameter.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\OperationInstanceCommandBase.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\QueryDefinition.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\SubmitEntitySetSourceOperation.cs" />
+    <Compile Include="Application\Presentation\Entity\Operations\SubmitSourceOperation.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\AuthenticationOperationCommandBase.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\AuthenticationStatusMonitor.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\IProfileValidationManager.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\IProfileValidator.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\LoadAndValidateUserOperation.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\LoadUserOperation.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\PrincipalMonitor.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\ProfileValidationConfirmation.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\ProfileValidationManager.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\ProfileValidator.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\SignInOperation.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\Security\SignOutOperation.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\ViewSupport.cs" />
+    <Compile Include="Application\Presentation\ExceptionHandler.shared.cs" />
+    <Compile Include="Application\Presentation\Exports.cs" />
+    <Compile Include="Application\Presentation\Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\ApplicationSettingsExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\BindingExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\ControlExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\NotifyChangedExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\RegionExtensions.cs" />
+    <Compile Include="Application\Presentation\HtmlWindowCloseEventArgs.cs" />
+    <Compile Include="Application\Presentation\HtmlWindowCloseMonitor.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\BasicNotification.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ContentIsFrameworkElementValidator.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ExceptionNotification.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\IRegionContract.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\IRegionManagerService.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\IViewProfileService.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\IViewValidator.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RefreshOnPrincipalChangedBehavior.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionBehaviorBase.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionExtensions.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionManagerContext.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionManagerService.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionViewRegistration.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegionViewRegistrationAction.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegisterInstancesWithRegionAction.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegisterInstanceWithRegionAction.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegisterSecurityRules.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegisterViewProfilesCommand.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\RegisterViewTypeWithRegionAction.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\SecurityValidator.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\SelectProfileCommand.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ViewProfile.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ViewProfileService.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ViewRegistration.cs" />
+    <Compile Include="Application\Presentation\Infrastructure\ViewType.cs" />
+    <Compile Include="Application\Presentation\Interaction\ActiveElement.cs" />
+    <Compile Include="Application\Presentation\Interaction\ActualSizeBehavior.cs" />
+    <Compile Include="Application\Presentation\Interaction\AttachResources.cs" />
+    <Compile Include="Application\Presentation\Interaction\BehaviorTriggerBase.cs" />
+    <Compile Include="Application\Presentation\Interaction\ChildWindowCompensations.cs" />
+    <Compile Include="Application\Presentation\Interaction\CollectionItem.cs" />
+    <Compile Include="Application\Presentation\Interaction\ConfirmAction.cs" />
+    <Compile Include="Application\Presentation\Interaction\ConfirmationDialog.cs" />
+    <Compile Include="Application\Presentation\Interaction\ControlStoryboardAction.cs" />
+    <Compile Include="Application\Presentation\Interaction\DataFormCancelCompensations.cs" />
+    <Compile Include="Application\Presentation\Interaction\DataFormCompensations.cs" />
+    <Compile Include="Application\Presentation\Interaction\DataGridIndexResolver.cs" />
+    <Compile Include="Application\Presentation\Interaction\DataStateBehavior.cs" />
+    <Compile Include="Application\Presentation\Interaction\DataTemplateSelector.cs" />
+    <Compile Include="Application\Presentation\Interaction\DefaultFocusElement.cs" />
+    <Compile Include="Application\Presentation\Interaction\EmptyItemsBindingTrigger.cs" />
+    <Compile Include="Application\Presentation\Interaction\EnsureCenterPosition.cs" />
+    <Compile Include="Application\Presentation\Interaction\EnsureDimensions.cs" />
+    <Compile Include="Application\Presentation\Interaction\EnsureVisualStateGroup.cs" />
+    <Compile Include="Application\Presentation\Interaction\ExtendedVisualStateManager.cs" />
+    <Compile Include="Application\Presentation\Interaction\FocusWhenContentExists.cs" />
+    <Compile Include="Application\Presentation\Interaction\GoToState.cs" />
+    <Compile Include="Application\Presentation\Interaction\GoToStateContext.cs" />
+    <Compile Include="Application\Presentation\Interaction\IConfirmationDialog.cs" />
+    <Compile Include="Application\Presentation\Interaction\IIndexResolver.cs" />
+    <Compile Include="Application\Presentation\Interaction\IModifiable.cs" />
+    <Compile Include="Application\Presentation\Interaction\InvokeCommandAction.cs" />
+    <Compile Include="Application\Presentation\Interaction\ItemIndex.cs" />
+    <Compile Include="Application\Presentation\Interaction\ItemsControlIndexResolver.cs" />
+    <Compile Include="Application\Presentation\Interaction\ParentElement.cs" />
+    <Compile Include="Application\Presentation\Interaction\PrincipalRefreshedBehaviorBase.cs" />
+    <Compile Include="Application\Presentation\Interaction\PropertyChangedTrigger.cs" />
+    <Compile Include="Application\Presentation\Interaction\RefreshBindingsBehavior.cs" />
+    <Compile Include="Application\Presentation\Interaction\RefreshDataContextBehavior.cs" />
+    <Compile Include="Application\Presentation\Interaction\ScaleToHostBehavior.cs" />
+    <Compile Include="Application\Presentation\Interaction\ScrollIntoView.cs" />
+    <Compile Include="Application\Presentation\Interaction\SelectAllOnFocus.cs" />
+    <Compile Include="Application\Presentation\Interaction\SetIndexAction.cs" />
+    <Compile Include="Application\Presentation\Interaction\SetProperty.cs" />
+    <Compile Include="Application\Presentation\Interaction\ShowMessageBox.cs" />
+    <Compile Include="Application\Presentation\Interaction\StoryboardCompensations.cs" />
+    <Compile Include="Application\Presentation\Interaction\TriggerActionConverter.cs" />
+    <Compile Include="Application\Presentation\Interaction\UpdateStatus.cs" />
+    <Compile Include="Application\Presentation\IResourceDictionaryLocator.cs" />
+    <Compile Include="Application\Presentation\IResourceDictionaryProcessor.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationCommandMonitor.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationConfigurationCommand.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationEventTrigger.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationLauncher.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationLaunchEvent.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationLaunchEventConfiguration.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationLaunchEventExtensions.cs" />
+    <Compile Include="Application\Presentation\Launch\ApplicationLaunchStatus.cs" />
+    <Compile Include="Application\Presentation\Launch\LaunchInitializationOperation.cs" />
+    <Compile Include="Application\Presentation\Launch\LoadModulesOperation.cs" />
+    <Compile Include="Application\Presentation\Launch\SecurityConverter.cs" />
+    <Compile Include="Application\Presentation\Navigation\ApplicationTitle.cs" />
+    <Compile Include="Application\Presentation\Navigation\AuthenticationRefreshFrameBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\CurrentContractBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\DeferLoadBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\ExceptionModel.cs" />
+    <Compile Include="Application\Presentation\Navigation\FailedNavigationHandlingBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameContentLoader.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameExtensions.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameNavigationContainerPage.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameRegionAdapter.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameRegionNavigationJournal.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameRegionNavigationService.cs" />
+    <Compile Include="Application\Presentation\Navigation\FrameRegionSyncBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\IViewNavigationExceptionHandler.cs" />
+    <Compile Include="Application\Presentation\Navigation\PageTitleBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\QueryValueTrigger.cs" />
+    <Compile Include="Application\Presentation\Navigation\RefreshOnApplicationCompleteBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\RegisterUriMappingsAction.cs" />
+    <Compile Include="Application\Presentation\Navigation\UriMappingContainerBehavior.cs" />
+    <Compile Include="Application\Presentation\Navigation\ViewLocation.cs" />
+    <Compile Include="Application\Presentation\Navigation\ViewNavigationExceptionHandler.cs" />
+    <Compile Include="Application\Presentation\Navigation\ViewValidationContext.cs" />
+    <Compile Include="Application\Presentation\ResourceDictionaryLocator.cs" />
+    <Compile Include="Application\Presentation\ResourceDictionaryProcessor.cs" />
+    <Compile Include="Application\Presentation\Security\AuthenticatedRule.cs" />
+    <Compile Include="Application\Presentation\Security\ISecurityManager.cs" />
+    <Compile Include="Application\Presentation\Security\ISecurityRule.cs" />
+    <Compile Include="Application\Presentation\Security\SecurityManager.cs" />
+    <Compile Include="Application\Presentation\Security\ServiceUser.cs" />
+    <Compile Include="Environment.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IoC\Configuration\IsolatedStorageLifetimeManager.cs" />
+    <Compile Include="IoC\Configuration\TypeInstanceValue.cs" />
+    <Compile Include="IoC\Configuration\UnityContainerExtensions.cs" />
+    <Compile Include="IoC\IsolatedStorageLifetimeDisposeAction.cs" />
+    <Compile Include="IoC\IsolatedStorageLifetimeManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\ConvertibleTypeConverter.cs" />
+    <Compile Include="Runtime\Disposable.cs" />
+    <Compile Include="Runtime\TypeDescriptor.cs" />
+    <Compile Include="System\ComponentModel\StringArrayConverter.shared.cs" />
+    <Compile Include="Extensions\ApplicationException.cs" />
+    <Compile Include="ListHelper.cs" />
+    <Compile Include="Io\PathHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\PropertyInfoTypeConverterValueConverter.cs" />
+    <Compile Include="Serialization\XamlSerializationHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System\ComponentModel\DataAnnotations\MetadataTypeAttribute.cs" />
+    <Compile Include="Runtime\TypeConverterValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+	<Folder Include="Objects\Configuration\" />
+	<Folder Include="Objects\Synchronization\Configuration\" />
+	<Folder Include="Objects\Synchronization\Extensions\" />
+	-->
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Common.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Entities.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\Aborted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\Canceled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\Completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\CompletedWithException.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\Executing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Operations\None.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Application\Presentation\Entity\Themes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

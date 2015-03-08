@@ -1,0 +1,16 @@
+﻿<Configuration:SynchronizationConfigurationContainer x:Class="Common.Testing.Objects.Synchronization.Resources.ExpressionMappings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Configuration="clr-namespace:Common.Objects.Synchronization.Configuration;assembly=Common.Client"
+    >
+	<Configuration:SynchronizationKey x:Key="KeyEntityViewEntity" First="EntityView" Second="Entity" />
+	<Configuration:SynchronizationContainer x:Key="DefaultContainer">
+		<Configuration:SynchronizationContainer.Policies>
+			<Configuration:SynchronizationPolicy Key="{StaticResource KeyEntityViewEntity}">
+				<Configuration:SynchronizationContexts>
+					<Configuration:SynchronizationContext FirstExpression="CommentsField" SecondExpression="Comments" />
+				</Configuration:SynchronizationContexts>
+			</Configuration:SynchronizationPolicy>
+		</Configuration:SynchronizationContainer.Policies>
+	</Configuration:SynchronizationContainer>
+</Configuration:SynchronizationConfigurationContainer>

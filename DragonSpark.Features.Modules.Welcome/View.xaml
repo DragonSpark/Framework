@@ -1,0 +1,90 @@
+﻿<sdk:Page x:Class="DragonSpark.Features.Modules.Welcome.View"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		  xmlns:ds="http://framework.dragonspark.us"
+		  xmlns:Design="clr-namespace:DragonSpark.Application.Presentation.Design;assembly=DragonSpark.Client"
+		 xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+		  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+		  xmlns:System="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d Design" Style="{StaticResource DefaultPage}" Title="Welcome!"
+	d:DesignHeight="600">
+	<i:Interaction.Triggers>
+		<ds:QueryValueTrigger ParameterName="Activate" TargetValue="True" TargetValueType="{ds:Type TypeName=System:Boolean}">
+			<ds:GoToState StateName="ActivatedState" />
+		</ds:QueryValueTrigger>
+	</i:Interaction.Triggers>
+	<!--<Interactivity:Interaction.Behaviors>
+			<ds:DataStateBehavior Binding="{Binding NavigationActivated}" TrueState="ActivatedState" FalseState="DefaultState" Value="True" />
+		</Interactivity:Interaction.Behaviors>-->
+	<StackPanel x:Name="LayoutRoot" Margin="5">
+		<VisualStateManager.CustomVisualStateManager>
+			<ds:ExtendedVisualStateManager />
+		</VisualStateManager.CustomVisualStateManager>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="VisualStates">
+				<VisualState x:Name="DefaultState" />
+				<VisualState x:Name="ActivatedState">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NavigationPanel">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<ColorAnimationUsingKeyFrames Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color">
+							<LinearColorKeyFrame KeyTime="00:00:00.00" Value="Transparent" />
+							<LinearColorKeyFrame KeyTime="00:00:01.00" Value="Yellow" />
+							<LinearColorKeyFrame KeyTime="00:00:01.50" Value="Transparent" />
+						</ColorAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<Design:DesignTimeCompensations.Setters>
+			<Design:DesignTimePropertySetterCollection>
+				<Setter Property="StackPanel.Background" Value="White" />
+			</Design:DesignTimePropertySetterCollection>
+		</Design:DesignTimeCompensations.Setters>
+		<TextBlock Text="Welcome" Style="{StaticResource TextHeader}" />
+		<StackPanel x:Name="NavigationPanel"  Margin="10" Visibility="Collapsed">
+			<StackPanel.Background>
+				<SolidColorBrush x:Name="BackgroundBrush" Color="Transparent" />
+			</StackPanel.Background>
+			<TextBlock TextWrapping="Wrap" Text="This section is now available and activated since you have navigated from the Navigation Section. Clicking the link below will navigate you back to the Navigation Section, while activating the second sub-section of the section." Margin="5" />
+			<HyperlinkButton Content="Click here to Navigate Back" Margin="5" NavigateUri="/Navigation/SecondSubSection" />
+		</StackPanel>
+		<RichTextBox Margin="5" TextWrapping="Wrap" IsReadOnly="True" Background="Transparent" BorderBrush="{x:Null}" BorderThickness="0" AcceptsReturn="False" VerticalScrollBarVisibility="Auto" FontFamily="Verdana, Arial, Arial Unicode MS, Lucida Sans Unicode, Lucida Grande">
+			<Paragraph><Run Text="Welcome to The DragonSpark Featureset Application, hosted on "/><Hyperlink TargetName="_blank" NavigateUri="http://windows.azure.com"><Run Text="Microsoft's Azure Servers"/></Hyperlink><Run Text="."/>
+			<LineBreak/>
+			<LineBreak/>
+			<Run Text="The DragonSpark Application Framework is a development accelerator that assists in creating and maintaining Xaml-driven Windows Runtime applications." /></Paragraph>
+			<Paragraph><Run/></Paragraph>
+			<Paragraph><Run FontWeight="Bold" Text="Feature-Set"/></Paragraph>
+			<Paragraph><Run Text="Here are a few of the key friction points that The DragonSpark Application Framework addresses:"/></Paragraph>
+			<Paragraph><Run Text="     - Application Initialization" /></Paragraph>
+			<Paragraph><Run Text="     - Application Configuration (Xaml-Driven IoC)" /></Paragraph>
+			<Paragraph><Run Text="     - Synchronous Web Service Calls in Silverlight (via T4-generated Service Proxies)" /></Paragraph>
+			<Paragraph><Run Text="     - Operation Management and User Experience" /></Paragraph>
+			<Paragraph><Run Text="     - Exception Handling, Reporting and User Experience" /></Paragraph>
+			<Paragraph><Run Text="     - Authentication and Claims Transformation (from external identity providers)" /></Paragraph>
+			<Paragraph><Run Text="     - Authorization" /></Paragraph>
+			<Paragraph><Run Text="     - Navigation" /></Paragraph>
+			<Paragraph><Run Text="     - User Profile Initialization and Management" /></Paragraph>
+			<Paragraph><Run Text="     - Entity Installation (Versioned Xaml-Driven Database seeding -- no more Sql Scripts)" /></Paragraph>
+			<Paragraph><Run Text="     - Entity Management" /></Paragraph>
+			<Paragraph/>
+			<Paragraph><Run FontWeight="Bold" Text="Technologies"/></Paragraph>
+			<Paragraph><Run Text="We are proud to make use of the following technologies:"/></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="http://prism.codeplex.com" TargetName="_blank" TextDecorations="Underline"><Run Text="Microsoft Patterns and Practices' Prism"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="https://www.silverlight.net/getstarted/riaservices/" TargetName="_blank"><Run Text="Wcf Ria Services"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="http://social.msdn.microsoft.com/Forums/eu/adonetefx/threads" TargetName="_blank"><Run Text="Entity Framework CodeFirst"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="http://unity.codeplex.com/" TargetName="_blank"><Run Text="Microsoft Patterns and Practices' Unity for Service Location and IoC"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="http://entlib.codeplex.com/" TargetName="_blank"><Run Text="Microsoft Patterns and Practices' Enterprise Library"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="https://windows.azure.com/" TargetName="_blank"><Run Text="Windows Azure"/></Hyperlink></Paragraph>
+			<Paragraph><Run Text="     - "/><Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/windowsazure/gg429786.aspx" TargetName="_blank"><Run Text="Windows Azure Access Control 2.0"/></Hyperlink></Paragraph>			
+		</RichTextBox>			
+	</StackPanel>
+
+</sdk:Page>

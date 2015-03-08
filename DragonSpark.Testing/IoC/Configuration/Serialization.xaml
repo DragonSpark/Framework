@@ -1,0 +1,67 @@
+﻿<Configuration:UnityServiceLocatorDefinition x:Class="DragonSpark.Testing.IoC.Configuration.Serialization"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Properties="clr-namespace:DragonSpark.Testing.Properties"
+	xmlns:CoreSerialization="clr-namespace:DragonSpark.Serialization;assembly=DragonSpark" 
+									  xmlns:DragonSparkObjects="clr-namespace:DragonSpark.Objects;assembly=DragonSpark" 
+									  xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark" 
+									  xmlns:Io="clr-namespace:DragonSpark.Io;assembly=DragonSpark" 
+									  xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark" 
+									  xmlns:IoC1="clr-namespace:DragonSpark.Testing.TestObjects.IoC">
+	<Configuration:AssignServiceLocatorCommand />
+	<Configuration:UnityContainerConfiguration>
+		<Configuration:UnityType RegistrationType="{x:Type DragonSparkObjects:IFactory}" MapTo="{x:Type Io:XmlSerializationFactory}">
+			<Configuration:InjectionConstructor>
+				<Configuration:DependencyValue DependencyType="{x:Type CoreSerialization:IStreamResolver}" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type DragonSparkObjects:IFactory}" MapTo="{x:Type Io:XmlSerializationFactory}" BuildName="AssemblyResourceBased">
+			<Configuration:InjectionConstructor>
+				<Configuration:DependencyValue DependencyType="{x:Type CoreSerialization:IStreamResolver}" BuildName="AssemblyResourceBased" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type DragonSparkObjects:IFactory}" MapTo="{x:Type Io:XmlSerializationFactory}" BuildName="TypeResourceBased">
+			<Configuration:InjectionConstructor>
+				<Configuration:DependencyValue DependencyType="{x:Type CoreSerialization:IStreamResolver}" BuildName="TypeResourceBased" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type CoreSerialization:IStreamResolver}" MapTo="{x:Type CoreSerialization:FileStreamResolver}">
+			<Configuration:InjectionConstructor>
+				<Configuration:InstanceValue Instance="NamedObjectFile.xml" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type CoreSerialization:IStreamResolver}" MapTo="{x:Type CoreSerialization:AssemblyStreamResolver}" BuildName="AssemblyResourceBased">
+			<Configuration:InjectionConstructor>
+				<Configuration:InstanceValue Instance="DragonSpark.Testing" />
+				<Configuration:InstanceValue Instance="DragonSpark.Testing.Enterprise.Unity.Extensions.Serialization.Resources.NamedObjectAssembly.xml" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type CoreSerialization:IStreamResolver}" MapTo="{x:Type CoreSerialization:TypeResourceStreamResolver}" BuildName="TypeResourceBased">
+			<Configuration:InjectionConstructor>
+				<Configuration:InstanceValue Instance="{x:Type Properties:Resources}" />
+				<Configuration:InstanceValue Instance="NamedObjectType" />
+			</Configuration:InjectionConstructor>
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type IoC1:INamedObject}" MapTo="{x:Type IoC1:NamedObject}" BuildName="FileBased">
+			<IoC:ResolveFactory />
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type IoC1:INamedObject}" MapTo="{x:Type IoC1:NamedObject}" BuildName="AssemblyResourceBased">
+			<IoC:ResolveFactory FactoryBuildName="AssemblyResourceBased" />
+		</Configuration:UnityType>
+
+		<Configuration:UnityType RegistrationType="{x:Type IoC1:INamedObject}" MapTo="{x:Type IoC1:NamedObject}" BuildName="TypeResourceBased">
+			<IoC:ResolveFactory FactoryBuildName="TypeResourceBased" />
+		</Configuration:UnityType>
+
+		<Configuration:UnityContainerConfiguration.Extensions>
+			<IoC:DragonSparkExtension />
+			<Configuration:ConfigurationExtension />
+		</Configuration:UnityContainerConfiguration.Extensions>
+	</Configuration:UnityContainerConfiguration>		
+</Configuration:UnityServiceLocatorDefinition>

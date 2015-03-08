@@ -1,0 +1,28 @@
+﻿<Configuration:UnityContainerConfiguration x:Class="DragonSpark.Features.Modules.Administration.Configuration"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark.Client"
+	xmlns:ds="http://framework.dragonspark.us" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:Administration="clr-namespace:DragonSpark.Features.Modules.Administration"
+    mc:Ignorable="d"
+	>
+	<ds:ViewType RegistrationType="{ds:Type TypeName=Administration:View}">
+		<ds:ViewType.TypeConfigurations>
+			<ds:RegisterSecurityRules>
+				<ds:AuthenticatedRule />
+			</ds:RegisterSecurityRules>
+			<ds:RegionViewRegistration RegionName="PrimaryNavigation" SupportedProfiles="Default">
+				<ds:RegisterInstanceWithRegionAction>
+					<ds:ViewLocation Title="Administration" Location="/Administration" TargetName="PrimaryContent" Icon="/DragonSpark.Features.Modules.Administration;component/Icon.png" />
+				</ds:RegisterInstanceWithRegionAction>
+			</ds:RegionViewRegistration>
+			<ds:RegionViewRegistration RegionName="PrimaryContent">
+				<ds:RegisterUriMappingsAction>
+					<sdk:UriMapping Uri="/Administration" />
+				</ds:RegisterUriMappingsAction>
+			</ds:RegionViewRegistration>
+		</ds:ViewType.TypeConfigurations>
+	</ds:ViewType>
+</Configuration:UnityContainerConfiguration>

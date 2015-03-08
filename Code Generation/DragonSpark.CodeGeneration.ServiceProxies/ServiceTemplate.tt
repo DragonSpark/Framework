@@ -1,0 +1,55 @@
+﻿<#+
+// <copyright file="ServiceTemplate.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
+// </copyright>
+
+public class ServiceTemplate : Template
+{
+    readonly ServiceContractDefinition definition;
+    
+    public ServiceTemplate( ServiceContractDefinition definition )
+    {
+        this.definition = definition;
+    }
+    
+    void RenderChannelOperations()
+    {
+        var query = from operation in definition.Operations
+                    select new ChannelOperationTemplate( operation );
+        foreach ( var item in query )
+        {
+            Write( item.TransformText() );
+        }
+    }
+    
+    void RenderOperationImplmentations()
+    {
+        var query = from operation in definition.Operations
+                    select new OperationImplementationTemplate( operation );
+        foreach ( var item in query )
+        {
+            Write( item.TransformText() );
+        }
+    }
+    
+
+	public override string TransformText()
+	{#>
+    
+    [GeneratedCodeAttribute( "System.ServiceModel", "3.0.0.0" )]
+    [ServiceContractAttribute( Namespace="<#= definition.ContractNamespace #>", ConfigurationName="<#= definition.ConfigurationName #>" )]
+    public interface <#= definition.Name #>Channel : IClientChannel
+    {<#+ RenderChannelOperations(); #>
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+    public partial class <#= definition.ClassName #> : <#= definition.FullName #>
+    {
+        <#+ RenderOperationImplmentations(); #>
+    }
+	<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>

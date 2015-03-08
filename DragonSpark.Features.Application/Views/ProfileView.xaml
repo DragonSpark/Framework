@@ -1,0 +1,58 @@
+﻿<sdk:Page x:Class="DragonSpark.Features.Application.Views.ProfileView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ds="http://framework.dragonspark.us"
+			 xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			 xmlns:ApplicationServices="clr-namespace:System.ServiceModel.DomainServices.Client.ApplicationServices;assembly=System.ServiceModel.DomainServices.Client.Web"
+			 xmlns:Entity="clr-namespace:DragonSpark.Features.Entity;assembly=DragonSpark.Features.Client"
+			 xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" Style="{StaticResource DefaultPage}"
+		  xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" mc:Ignorable="d" Title="Manage Your Profile"
+	d:DesignHeight="300" d:DesignWidth="400">
+	<ds:BusyIndicator x:Name="LayoutRoot" BusyContent="{ds:Locate TypeName=ds:ICommandMonitor}">
+		<ds:BusyIndicator.DataContext>
+			<ds:DomainCollectionViewSource DomainContext="{ds:Locate TypeName=ApplicationServices:AuthenticationDomainContextBase}" EntityType="{ds:Type TypeName=Entity:User}" PageSize="0" />
+		</ds:BusyIndicator.DataContext>
+		<i:Interaction.Triggers>
+			<i:EventTrigger EventName="Loading" SourceObject="{Binding}">
+				<ds:InvokeCommandAction>
+					<ds:Command.Attach>
+						<ds:LoadSourceOperation Context="{ds:ApplyBinding Binding={Binding}}">
+							<ds:QueryDefinition QueryName="GetUser" />
+						</ds:LoadSourceOperation>
+					</ds:Command.Attach>
+				</ds:InvokeCommandAction>
+			</i:EventTrigger>
+		</i:Interaction.Triggers>
+		<toolkit:DataForm ItemsSource="{Binding View}" AutoEdit="True" CommandButtonsVisibility="Commit, Cancel" AutoCommit="False">
+			<toolkit:DataForm.Header>
+				<StackPanel toolkit:DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
+					<HyperlinkButton NavigateUri="/">
+						<TextBlock Text="Home" Style="{StaticResource TextHeader}" />
+					</HyperlinkButton>
+					<TextBlock Text=" &gt;&gt; Manage Your Profile" Style="{StaticResource TextHeader}" />
+				</StackPanel>
+			</toolkit:DataForm.Header>
+			<i:Interaction.Behaviors>
+				<ds:DataFormCompensations x:Name="Compensations" FocusedFieldIndex="0" />
+				<ds:DisplayFieldView FieldViewName="Profile" />
+				<ds:PreserveChanges />
+				<ds:PreserveChangesDialog Message="Your profile currently has pending changes.  Continuing will lose these changes.  Continue and lose your current changes?" />
+				<ds:EntityDataBehavior Behaviors="{Binding EntityType, Converter={ds:Static Member=ds:EntityDataBehaviorConverter.Instance}}" />
+			</i:Interaction.Behaviors>
+			<i:Interaction.Triggers>
+				<i:EventTrigger SourceObject="{Binding ElementName=Compensations}" EventName="Submitted">
+					<ds:InvokeCommandAction x:Name="SubmitCommandAction">
+						<ds:Command.Attach>
+							<ds:SubmitSourceOperation Context="{ds:ApplyBinding Binding={Binding}}" Title="Updating Profile" />
+						</ds:Command.Attach>
+					</ds:InvokeCommandAction>
+				</i:EventTrigger>
+				<i:EventTrigger SourceObject="{Binding Command, ElementName=SubmitCommandAction}" EventName="Completed">
+					<ei:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ds:ChildWindow}}" MethodName="Close" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</toolkit:DataForm>
+	</ds:BusyIndicator>
+</sdk:Page>

@@ -1,0 +1,5 @@
+﻿<Application:ApplicationDetails xmlns:Application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Client" xmlns:Assemblies="clr-namespace:DragonSpark.Application.Assemblies;assembly=DragonSpark.Client" Company="The Common Framework" CompanyUri="http://common-framework.com" Copyright="Copyright © The Common Framework 2010" Description="This is a decription" Product="Hello World!" SupportDescription="This is a Url to Get Support." IssueTrackingUri="http://common-framework.com/Issue.aspx"  SupportUri="http://common-framework.com/Support.aspx" Title="The Common Framework - Hello World!" OriginalLaunchDate="12/1/2010">
+	<Application:ApplicationDetails.VersionInformation>
+		<Assemblies:VersionInformation Major="1" Minor="0" Revision="0" Build="0" />
+	</Application:ApplicationDetails.VersionInformation>
+</Application:ApplicationDetails>

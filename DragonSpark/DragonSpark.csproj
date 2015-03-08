@@ -1,0 +1,919 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark</RootNamespace>
+    <AssemblyName>DragonSpark</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>Common.pfx</AssemblyOriginatorKeyFile>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\The DragonSpark Application Framework.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Build|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisLogFile>bin\Debug\Common.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pre-Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Pre-Release\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisLogFile>bin\Debug\Common.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MefContrib">
+      <HintPath>..\packages\MefContrib.1.2.2.1\lib\net40-Client\MefContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="MefContrib.Integration.Unity">
+      <HintPath>..\packages\MefContrib.Integration.Unity.1.2.2.1\lib\net40-Client\MefContrib.Integration.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+	  <Reference Include="Microsoft.Data.Services">
+		    <HintPath>..\packages\LightSwitch\Server\Microsoft.Data.Services.dll</HintPath>
+	  </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch">
+      <HintPath>..\packages\LightSwitch\Client\Microsoft.LightSwitch.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Base.Server">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LightSwitch\Server\Microsoft.LightSwitch.Base.Server.dll</HintPath>
+    </Reference>
+	  <Reference Include="Microsoft.LightSwitch.Design.Server.Internal">
+		  <HintPath>..\packages\LightSwitch\Server\Microsoft.LightSwitch.Design.Server.Internal.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Microsoft.LightSwitch.Server">
+		  <HintPath>..\packages\LightSwitch\Server\Microsoft.LightSwitch.Server.dll</HintPath>
+	  </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging">
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.WCF">
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.WCF.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.WCF.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+      <HintPath>..\packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\packages\Prism.UnityExtensions.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
+      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.DomainServices.EntityFramework">
+      <HintPath>..\packages\RIAServices.EntityFramework.4.1.60730.0\lib\Net40\Microsoft.ServiceModel.DomainServices.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.identitymodel.services" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Server, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\ApplicationConfigurationCommand.cs" />
+    <Compile Include="Application\ApplicationConfiguratorAttribute.shared.cs" />
+    <Compile Include="Application\ApplicationDetails.shared.cs" />
+    <Compile Include="Application\ApplicationDetailsFactory.shared.cs" />
+    <Compile Include="Application\ApplicationDetailsProvider.shared.cs" />
+    <Compile Include="Application\ApplicationParameter.shared.cs" />
+    <Compile Include="Application\ApplicationParameterProvider.shared.cs" />
+    <Compile Include="Application\ApplicationServiceBase.cs" />
+    <Compile Include="Application\Assemblies\CompanyUriAttribute.shared.cs" />
+    <Compile Include="Application\Assemblies\IssueTrackingUriAttribute.shared.shared.cs" />
+    <Compile Include="Application\Assemblies\OriginalLaunchDateAttribute.shared.cs" />
+    <Compile Include="Application\Assemblies\SupportDescriptionAttribute.shared.cs" />
+    <Compile Include="Application\Assemblies\SupportUriAttribute.shared.shared.cs" />
+    <Compile Include="Application\Assemblies\VersionConverter.shared.cs" />
+    <Compile Include="Application\Assemblies\VersionInformation.shared.cs" />
+    <Compile Include="Application\ClientException.cs" />
+    <Compile Include="Application\ClientExceptionDetail.cs" />
+    <Compile Include="Application\ClientExceptionDetail.shared.cs" />
+    <Compile Include="Application\CloudApplicationConfigurationCommand.cs" />
+    <Compile Include="Application\CloudBlobContainerExtensions.cs" />
+    <Compile Include="Application\CloudStorageContainerFactory.cs" />
+    <Compile Include="Application\Communication\ApplyCyclicDataContractSerializerOperationBehavior.cs" />
+    <Compile Include="Application\Communication\CallbackResultEventArgs.cs" />
+    <Compile Include="Application\Communication\ClientChannelFactory.shared.cs" />
+    <Compile Include="Application\Communication\Configuration\CurrentOperationContextCallbackFactory.cs" />
+    <Compile Include="Application\Communication\Configuration\DuplexServiceFactory.cs" />
+    <Compile Include="Application\Communication\Configuration\EnsureWorkflowExtensionsBehavior.cs" />
+    <Compile Include="Application\Communication\Configuration\EnsureWorkflowExtensionsElement.cs" />
+    <Compile Include="Application\Communication\Configuration\ExceptionUtility.cs" />
+    <Compile Include="Application\Communication\Configuration\FaultBehavior.cs" />
+    <Compile Include="Application\Communication\Configuration\FaultMessageInspector.cs" />
+    <Compile Include="Application\Communication\Configuration\HttpApplicationExtensions.cs" />
+    <Compile Include="Application\Communication\Configuration\HttpApplicationServiceLocationElement.cs" />
+    <Compile Include="Application\Communication\Configuration\ProxyCodeGenerationAttribute.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceFactory.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceHostLifetimeElement.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceLifetimeBehavior.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceLocationBehavior.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceLocationElement.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceLocatorFactory.cs" />
+    <Compile Include="Application\Communication\Configuration\ServiceLocatorInstanceFactory.cs" />
+    <Compile Include="Application\Communication\Configuration\UnityServiceHostBaseExtension.cs" />
+    <Compile Include="Application\Communication\Configuration\UnityServiceHostBaseLifetimeManager.cs" />
+    <Compile Include="Application\Communication\Configuration\UnityWcfExtension.cs" />
+    <Compile Include="Application\Communication\Configuration\UnityWcfLifetimeManager.cs" />
+    <Compile Include="Application\Communication\CyclicReferencesAwareAttribute.cs" />
+    <Compile Include="Application\Communication\CyclicReferencesAwareContractBehavior.cs" />
+    <Compile Include="Application\Communication\DuplexContextChannelExtensions.cs" />
+    <Compile Include="Application\Communication\Entity\CreateDatabaseIfNotExists.cs" />
+    <Compile Include="Application\Communication\Entity\DatabaseInitializationConfigurationCommand.cs" />
+    <Compile Include="Application\Communication\Entity\DbContextExtensions.cs" />
+    <Compile Include="Application\Communication\Entity\DbDomainService.cs" />
+    <Compile Include="Application\Communication\Entity\DefaultSortAttribute.shared.cs" />
+    <Compile Include="Application\Communication\Entity\DomainServiceFactoryConfiguration.cs" />
+    <Compile Include="Application\Communication\Entity\DropCreateDatabaseAlways.cs" />
+    <Compile Include="Application\Communication\Entity\DropCreateDatabaseIfModelChanges.cs" />
+    <Compile Include="Application\Communication\Entity\EntityInstallationInitialization.cs" />
+    <Compile Include="Application\Communication\Entity\EntityInstallationStep.cs" />
+    <Compile Include="Application\Communication\Entity\InstallationContext.cs" />
+    <Compile Include="Application\Communication\Entity\Installer.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetAttribute.shared.cs" />
+    <Compile Include="Application\Communication\Entity\EntitySetOperations.cs" />
+    <Compile Include="Application\Communication\Entity\EntityStorage.cs" />
+    <Compile Include="Application\Communication\Entity\FilterExpressionFactory.shared.cs" />
+    <Compile Include="Application\Communication\Entity\FilterExpressionFactoryBase.shared.cs" />
+    <Compile Include="Application\Communication\Entity\IAuthorizable.shared.cs" />
+    <Compile Include="Application\Communication\Entity\IInstaller.cs" />
+    <Compile Include="Application\Communication\Entity\IEntitySetOperationProfile.shared.cs" />
+    <Compile Include="Application\Communication\Entity\IEntitySetProfile.shared.cs" />
+    <Compile Include="Application\Communication\Entity\IEntityStorage.cs" />
+    <Compile Include="Application\Communication\Entity\InstallationEntry.cs" />
+    <Compile Include="Application\Communication\Entity\InstallationEntryMetadata.cs" />
+    <Compile Include="Application\Communication\Entity\MetadataHelper.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\ApplicationRequest.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\ApplicationRequestNotification.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\ApplicationRequestProcessorAttribute.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\ApplicationUser.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\EmailEventNotificationService.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\EmailEventNotificationSettings.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\EventNotification.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\IApplicationRequestProvider.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\IEventNotificationService.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\INotification.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\INotificationMessageSender.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\INotificationProcessor.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\INotificationProcessorLocator.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\IUserNotificationService.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\MetadataNotificationProcessorLocator.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\Notification.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\NotificationMessage.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\NotificationMessageExtensions.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\NotificationMessageSender.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\NotificationProcessorBase.shared.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\NullEventNotificationService.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\PersonInformation.cs" />
+    <Compile Include="Application\Communication\Entity\Notifications\UserNotificationService.cs" />
+    <Compile Include="Application\Communication\Entity\ParameterRebinder.cs" />
+    <Compile Include="Application\Communication\Entity\PropertyInfoExtensions.shared.cs" />
+    <Compile Include="Application\Communication\Entity\QueryableExtensions.cs" />
+    <Compile Include="Application\Communication\Entity\RootEntitySetAttribute.shared.cs" />
+    <Compile Include="Application\Communication\Entity\SearchFilterExpressionFactory.cs" />
+    <Compile Include="Application\Communication\Entity\TagAttribute.shared.cs" />
+    <Compile Include="Application\Communication\GlobalSuppressions.cs" />
+    <Compile Include="Application\Communication\INotifyCallbackCompleted.cs" />
+    <Compile Include="Application\Communication\IServiceLocatorModule.cs" />
+    <Compile Include="Application\Communication\LauncherModule.cs" />
+    <Compile Include="Application\Communication\Security\ApplicationUser.cs" />
+    <Compile Include="Application\Communication\Security\ApplicationUserExtensions.cs" />
+    <Compile Include="Application\Communication\Security\AuthenticationModule.cs" />
+    <Compile Include="Application\Communication\Security\AuthenticationService.cs" />
+    <Compile Include="Application\Communication\Security\AuthenticationServiceBase.cs" />
+    <Compile Include="Application\Communication\Security\Claims.cs" />
+    <Compile Include="Application\Communication\Security\ClaimsIdentityExtensions.cs" />
+    <Compile Include="Application\Communication\Security\ClaimsIdentitySynchronizer.cs" />
+    <Compile Include="Application\Communication\Security\ClaimsMapperBase.cs" />
+    <Compile Include="Application\Communication\Security\ClaimsProcessor.cs" />
+    <Compile Include="Application\Communication\Security\DisplayNameMapper.cs" />
+    <Compile Include="Application\Communication\Security\EmailMapper.cs" />
+    <Compile Include="Application\Communication\Security\IClaimsMapper.cs" />
+    <Compile Include="Application\Communication\Security\IClaimsProcessor.cs" />
+    <Compile Include="Application\Communication\Security\IdentityClaim.cs" />
+    <Compile Include="Application\Communication\Security\IIdentitySynchronizer.cs" />
+    <Compile Include="Application\Communication\Security\NameMapper.cs" />
+    <Compile Include="Application\Communication\Security\Role.cs" />
+    <Compile Include="Application\Communication\Security\SecurityServiceBase.cs" />
+    <Compile Include="Application\Communication\Security\SecurityStorageRoleProvider.cs" />
+    <Compile Include="Application\Communication\Security\SessionAuthenticationModule.cs" />
+    <Compile Include="Application\Communication\Security\SessionSecurityTokenHandler.cs" />
+    <Compile Include="Application\Communication\Security\UserFactory.cs" />
+    <Compile Include="Application\Communication\Security\WebRequestPrincipalFactory.cs" />
+    <Compile Include="Application\Communication\ServiceLocatorModule.cs" />
+    <Compile Include="Application\Communication\SubmitOperation.cs" />
+    <Compile Include="Application\Communication\WcfBehaviorBaseAttribute.cs" />
+    <Compile Include="Application\Communication\WcfBehaviorBaseWcfErrorBehaviorAttribute.cs" />
+    <Compile Include="Application\Communication\WcfBehaviorBaseWcfSilverlightFaultBehaviorAttribute.cs" />
+    <Compile Include="Application\Communication\WcfErrorBehavior.cs" />
+    <Compile Include="Application\Communication\WcfSilverlightFaultBehavior.cs" />
+    <Compile Include="Application\ConfigureApplicationFromMetadataCommand.cs" />
+    <Compile Include="Application\Runtime\ConsoleExtensions.cs" />
+    <Compile Include="Application\Runtime\Markup\ArgumentAttribute.cs" />
+    <Compile Include="Application\Runtime\Markup\ConsoleProgramAttribute.cs" />
+    <Compile Include="Application\Runtime\Markup\Localized\ArgumentAttribute.cs" />
+    <Compile Include="Application\Runtime\Markup\Localized\ConsoleProgramAttribute.cs" />
+    <Compile Include="Application\Runtime\Markup\Localized\VerbAttribute.cs" />
+    <Compile Include="Application\Runtime\Markup\VerbAttribute.cs" />
+    <Compile Include="Application\Runtime\Model\ArgumentModel.cs" />
+    <Compile Include="Application\Runtime\Model\ProgramModel.cs" />
+    <Compile Include="Application\Runtime\Model\VerbModel.cs" />
+    <Compile Include="Application\DelegateWorkerExtensions.shared.cs" />
+    <Compile Include="Application\ExceptionFormatter.shared.cs" />
+    <Compile Include="Application\Execute.shared.cs" />
+    <Compile Include="Application\FatalApplicationException.cs" />
+    <Compile Include="Application\FatalApplicationException.shared.cs" />
+    <Compile Include="Application\GlobalSuppressions.cs" />
+    <Compile Include="Application\IApplicationContext.shared.cs" />
+    <Compile Include="Application\IApplicationParameterSource.shared.cs" />
+    <Compile Include="Application\IApplicationService.shared.cs" />
+    <Compile Include="Application\IDelegateContext.shared.cs" />
+    <Compile Include="Application\IDelegateWorker.shared.cs" />
+    <Compile Include="Application\IDelegateWorkerProvider.shared.cs" />
+    <Compile Include="Application\IModule.shared.cs" />
+    <Compile Include="Application\IModuleMonitor.shared.cs" />
+    <Compile Include="Application\INotifyPrincipalChanged.shared.cs" />
+    <Compile Include="Application\IResourceManager.shared.cs" />
+    <Compile Include="Application\Logging\EnterpriseLibraryExceptionHandler.cs" />
+    <Compile Include="Application\Logging\EnterpriseLibraryLogger.cs" />
+    <Compile Include="Application\Logging\EnterpriseLibraryTracer.cs" />
+    <Compile Include="Application\Logging\ExceptionInformationFormatter.cs" />
+    <Compile Include="Application\Logging\ILoggingOutput.cs" />
+    <Compile Include="Application\Logging\ILoggingParameterTranslator.shared.cs" />
+    <Compile Include="Application\Logging\Indentation.cs" />
+    <Compile Include="Application\Logging\LoggingAdapter.shared.cs" />
+    <Compile Include="Application\Logging\LoggingDefaults.shared.cs" />
+    <Compile Include="Application\Logging\LoggingEntryProfile.shared.cs" />
+    <Compile Include="Application\Logging\LoggingInformationException.cs" />
+    <Compile Include="Application\Logging\LoggingParameterTranslator.shared.cs" />
+    <Compile Include="Application\Logging\LoggingPriorityMapping.shared.cs" />
+    <Compile Include="Application\Logging\TextExceptionFormatter.cs" />
+    <Compile Include="Application\Logging\TextFormatter.cs" />
+    <Compile Include="Application\Logging\TextFormatterData.cs" />
+    <Compile Include="Application\Logging\TraceListener.cs" />
+    <Compile Include="Application\Logging\TraceListenerFactory.cs" />
+    <Compile Include="Application\Logging\TraceListenerLocator.cs" />
+    <Compile Include="Application\Module.shared.cs" />
+    <Compile Include="Application\ModuleMonitor.shared.cs" />
+    <Compile Include="Application\Presentation\ApplicationContext.shared.cs" />
+    <Compile Include="Application\Presentation\Behaviors\ScrollToLastLineBehavior.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ActiveContext.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ActiveContextExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\BindableEnumerationItem.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ButtonConverter.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ButtonModel.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\IActiveContext.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\IAttachedObject.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\INotifyPropertyChangedEx.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\IObservableCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\NotificationCollection.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\NotificationCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\PropertySupport.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\SelectableCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\SelectionChangingEventArgs.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewAwareCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewAwareObject.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewAwareSupporter.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewCollection.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewCollectionExtensions.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewEnumCollection.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewModel.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewModelCollectionView.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewModelExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\ComponentModel\ViewObject.shared.cs" />
+    <Compile Include="Application\Presentation\Configuration\BindableCollectionOfTExtension.shared.cs" />
+    <Compile Include="Application\Presentation\Configuration\PropertySetter.shared.cs" />
+    <Compile Include="Application\Presentation\Configuration\RegisterResourceDictionaryCommand.shared.cs" />
+    <Compile Include="Application\Presentation\Controls\ButtonPanel.shared.cs" />
+    <Compile Include="Application\Presentation\Controls\DialogChrome.shared.cs" />
+    <Compile Include="Application\Presentation\Controls\ElementExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Controls\Menu.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\BooleanConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\BooleanToVisibilityTranslator.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\CollapseWhenEmptyConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\ComponentDescriptionConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\CountConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\DebugConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\DisplayFieldConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\DisplayIndexConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\EnumConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\ErrorConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\InvertBooleanTranslator.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\IsGreaterThanConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\ItemProfileConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\LocationConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\NamedTokenFormatConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\NotNullToBooleanConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\StaticBooleanConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\StringCollectionConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\StringFormatConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\StringNotNullOrEmptyConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\TabSizeConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\ValidToBrushConverter.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\ValueConverterBase.shared.cs" />
+    <Compile Include="Application\Presentation\Converters\YearRangeConverter.shared.cs" />
+    <Compile Include="Application\Presentation\DefaultResourceManager.shared.cs" />
+    <Compile Include="Application\Presentation\DispatcherDelegateWorker.cs" />
+    <Compile Include="Application\Presentation\DispatcherDelegateWorker.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityField.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityFieldView.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityFieldViewAttribute.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityFieldViewService.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityTitleMonitor.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityView.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\EntityViewField.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\GlobalSuppressions.cs" />
+    <Compile Include="Application\Presentation\Entity\IEntityFieldView.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\IEntityFieldViewService.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\IEntityView.shared.cs" />
+    <Compile Include="Application\Presentation\Entity\IEntityViewField.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\CallbackContext.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\CollectionExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\CommandExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\DependencyObjectExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\FrameworkElementExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\ListExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\NotifyChangedExtensions.cs" />
+    <Compile Include="Application\Presentation\Extensions\NotifyCollectionChangedEventArgsExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\NotifyPropertyChangedExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\ObjectExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\ResourceExtensions.shared.cs" />
+    <Compile Include="Application\Presentation\Extensions\WindowCompensations.cs" />
+    <Compile Include="Application\Presentation\GlobalSuppressions.cs" />
+    <Compile Include="Application\Presentation\IViewTypeLocator.shared.cs" />
+    <Compile Include="Application\Presentation\Launcher.cs" />
+    <Compile Include="Application\Presentation\View\AvailabilityEffect.shared.cs" />
+    <Compile Include="Application\Presentation\View\AvailabilityEffectConverter.shared.cs" />
+    <Compile Include="Application\Presentation\View\CompositeAvailabilityEffect.cs" />
+    <Compile Include="Application\Presentation\View\DisplayAvailabilityEffect.shared.cs" />
+    <Compile Include="Application\Presentation\View\IAvailabilityEffect.shared.cs" />
+    <Compile Include="Application\Presentation\View\ModelActionAttribute.cs" />
+    <Compile Include="Application\Presentation\View\ModelActionConverter.cs" />
+    <Compile Include="Application\Presentation\View\ModelActionDescriptor.cs" />
+    <Compile Include="Application\Presentation\View\ValidateAttribute.cs" />
+    <Compile Include="Application\Presentation\VisualState.shared.cs" />
+    <Compile Include="Application\PrincipalChangedEventArgs.shared.cs" />
+    <Compile Include="Application\Process.cs" />
+    <Compile Include="Application\Runtime.shared.cs" />
+    <Compile Include="Application\Runtime\ServiceLauncherState.cs" />
+    <Compile Include="Application\ServiceLocationDelegateWorkerProvider.shared.cs" />
+    <Compile Include="Application\StackTracePolicy.shared.cs" />
+    <Compile Include="Application\TaskContext.shared.cs" />
+    <Compile Include="Application\TaskDelegateWorker.shared.cs" />
+    <Compile Include="BitFlipper.shared.cs" />
+    <Compile Include="CommonBindingOptions.shared.cs" />
+    <Compile Include="Configuration\ConfigurationDictionary.shared.cs" />
+    <Compile Include="Configuration\GenericTypeExtension.cs" />
+    <Compile Include="Configuration\InstanceProviderBase.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\PathHelperExtension.cs" />
+    <Compile Include="Environment.cs" />
+    <Compile Include="Environment.shared.cs" />
+    <Compile Include="Extensions\DynamicExtensions.shared.cs" />
+    <Compile Include="Extensions\AppDomainExtensions.shared.cs" />
+    <Compile Include="Extensions\ApplyException.cs" />
+    <Compile Include="Extensions\ApplyException.shared.cs" />
+    <Compile Include="Extensions\ArgumentExtensions.cs" />
+    <Compile Include="Extensions\CoreExtensions.shared.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.shared.cs" />
+    <Compile Include="Extensions\ExtensionMethods.shared.cs" />
+    <Compile Include="Extensions\MetadataEnabledMemberInfoAttributeProvider.shared.cs" />
+    <Compile Include="Extensions\ObjectExtensions.shared.cs" />
+    <Compile Include="Extensions\ServiceProviderExtensions.shared.cs" />
+    <Compile Include="Extensions\UriExtensions.shared.cs" />
+    <Compile Include="IoC\AllAppDomainTypesOfParameter.shared.cs" />
+    <Compile Include="IoC\AppDomainTypeResolver.shared.cs" />
+    <Compile Include="IoC\ApplyBehaviorStrategy.shared.cs" />
+    <Compile Include="IoC\BehaviorPolicyBase.shared.cs" />
+    <Compile Include="IoC\CommonExtension.shared.cs" />
+    <Compile Include="IoC\ComponentRegistrationBase.shared.cs" />
+    <Compile Include="IoC\CompositionConfiguration.cs" />
+    <Compile Include="IoC\CompositionConfiguration.shared.cs" />
+    <Compile Include="IoC\CompositionExtension.shared.cs" />
+    <Compile Include="IoC\CompositionExtensions.shared.cs" />
+    <Compile Include="IoC\Configuration\AdditionalBuilderContextConfigurationCommand.cs" />
+    <Compile Include="IoC\Configuration\AllAppDomainTypesOfFactory.shared.cs" />
+    <Compile Include="IoC\Configuration\AllAppDomainTypesOfParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\AssemblySupport.shared.cs" />
+    <Compile Include="IoC\Configuration\AssignServiceLocatorCommand.shared.cs" />
+    <Compile Include="IoC\Configuration\AutoRegisterInterfaces.shared.cs" />
+    <Compile Include="IoC\Configuration\ClearStrategyExtension.shared.cs" />
+    <Compile Include="IoC\Configuration\ConfigurationExtension.shared.cs" />
+    <Compile Include="IoC\Configuration\ConfigureContainerFromConfigurationCommand.cs" />
+    <Compile Include="IoC\Configuration\ContainerControlledLifetimeManager.shared.cs" />
+    <Compile Include="IoC\Configuration\DependencyValue.shared.cs" />
+    <Compile Include="IoC\Configuration\ExecuteExportedConfigurationsCommand.shared.cs" />
+    <Compile Include="IoC\Configuration\FactoryBase.shared.cs" />
+    <Compile Include="IoC\Configuration\FactoryParameterValue.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericEnumerableFactory.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericFactoryBase.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericItemFactoryBase.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericParameterBase.shared.cs" />
+    <Compile Include="IoC\Configuration\GenericResolvedArrayParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\IConfigurationExtensionConfiguration.shared.cs" />
+    <Compile Include="IoC\Configuration\IContainerConfigurationCommand.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionConstructor.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionFactory.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionFactoryInstance.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionMember.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionMemberParameterBase.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionMethod.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionParameterValue.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionParameterValueCollection.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionParameterValueTypeConverter.shared.cs" />
+    <Compile Include="IoC\Configuration\InjectionProperty.shared.cs" />
+    <Compile Include="IoC\Configuration\InstanceInjectionConfiguration.cs" />
+    <Compile Include="IoC\Configuration\InstanceProviderValue.shared.cs" />
+    <Compile Include="IoC\Configuration\InstanceValue.shared.cs" />
+    <Compile Include="IoC\Configuration\IUnityContainerTypeConfiguration.shared.cs" />
+    <Compile Include="IoC\Configuration\LifetimeManager.shared.cs" />
+    <Compile Include="IoC\Configuration\LifetimeManagerBase.shared.cs" />
+    <Compile Include="IoC\Configuration\LifetimeManagerInstance.shared.cs" />
+    <Compile Include="IoC\Configuration\NamedTypeBuildKey.shared.cs" />
+    <Compile Include="IoC\Configuration\NamedTypeBuildKeyExtensions.shared.cs" />
+    <Compile Include="IoC\Configuration\OptionalParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\PolicyCreator.shared.cs" />
+    <Compile Include="IoC\Configuration\PolicyCreatorBase.shared.cs" />
+    <Compile Include="IoC\Configuration\PolicyInjection.shared.cs" />
+    <Compile Include="IoC\Configuration\PolicyInstance.shared.cs" />
+    <Compile Include="IoC\Configuration\PolicyReference.shared.cs" />
+    <Compile Include="IoC\Configuration\RegisterFromMetadataCommand.shared.cs" />
+    <Compile Include="IoC\Configuration\RequestLifetimeManager.cs" />
+    <Compile Include="IoC\Configuration\ResolveAllOfTypeParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\ResolvedArrayParameter.shared.cs" />
+    <Compile Include="IoC\Configuration\SessionLifetimeManager.cs" />
+    <Compile Include="IoC\Configuration\StrategyReference.shared.cs" />
+    <Compile Include="IoC\Configuration\TypedLifetimeManager.shared.cs" />
+    <Compile Include="IoC\Configuration\TypeInjectionConfiguration.cs" />
+    <Compile Include="IoC\Configuration\UnityContainerConfiguration.shared.cs" />
+    <Compile Include="IoC\Configuration\UnityContainerDefinition.shared.cs" />
+    <Compile Include="IoC\Configuration\UnityContainerTypeConfiguration.shared.cs" />
+    <Compile Include="IoC\Configuration\UnityInstance.shared.cs" />
+    <Compile Include="IoC\Configuration\UnityType.shared.cs" />
+    <Compile Include="IoC\Configuration\XamlFactory.shared.cs" />
+    <Compile Include="IoC\CurrentBuildKeyStrategy.shared.cs" />
+    <Compile Include="IoC\DefaultUnityConstructorSelectorPolicy.shared.cs" />
+    <Compile Include="IoC\DefaultValueStrategy.shared.cs" />
+    <Compile Include="IoC\DisposableTransientLifetimeManager.shared.cs" />
+    <Compile Include="IoC\ExportDefinitionComparer.shared.cs" />
+    <Compile Include="IoC\FactoryParameterValue.shared.cs" />
+    <Compile Include="IoC\GlobalSuppressions.cs" />
+    <Compile Include="IoC\IBehaviorPolicy.shared.cs" />
+    <Compile Include="IoC\IComponentMetadata.shared.cs" />
+    <Compile Include="IoC\IComponentRegistration.shared.cs" />
+    <Compile Include="IoC\Instance.shared.cs" />
+    <Compile Include="IoC\IoCExtensions.shared.cs" />
+    <Compile Include="IoC\Io\DeleteIfExists.cs" />
+    <Compile Include="IoC\Io\DirectoryInfoFactory.cs" />
+    <Compile Include="IoC\Io\ExpressionFactory.shared.cs" />
+    <Compile Include="IoC\Io\FileInfoFactory.cs" />
+    <Compile Include="IoC\Io\SubdirectoryFactory.cs" />
+    <Compile Include="IoC\Io\WorkspaceDirectoryFactory.cs" />
+    <Compile Include="IoC\Io\WorkspaceFactory.cs" />
+    <Compile Include="IoC\KeybasedLifetimeManager.shared.cs" />
+    <Compile Include="IoC\Launcher.shared.cs" />
+    <Compile Include="IoC\LifetimeEntry.shared.cs" />
+    <Compile Include="IoC\ModuleInfoExtensions.shared.cs" />
+    <Compile Include="IoC\NamedTypeBuildKeyConverter.cs" />
+    <Compile Include="IoC\PerRequest.shared.cs" />
+    <Compile Include="IoC\RequestLifetimeManager.cs" />
+    <Compile Include="IoC\ResolveAllOfTypeParameter.shared.cs" />
+    <Compile Include="IoC\ResolveFactory.shared.cs" />
+    <Compile Include="IoC\SessionLifetimeManager.cs" />
+    <Compile Include="IoC\Singleton.shared.cs" />
+    <Compile Include="IoC\UnityContainerActivator.shared.cs" />
+    <Compile Include="IoC\UnityContainerExtensions.shared.cs" />
+    <Compile Include="IoC\UnityServiceLocator.shared.cs" />
+    <Compile Include="Io\FileSystemInfoComparer.cs" />
+    <Compile Include="Io\ITemporaryFileRegistry.cs" />
+    <Compile Include="Io\TemporaryFileRegistry.cs" />
+    <Compile Include="Io\XmlSerializationFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\ActivationDefaultAttribute.shared.cs" />
+    <Compile Include="Objects\IObjectWithName.shared.cs" />
+    <Compile Include="Objects\ObjectCreatingEventArgs.shared.cs" />
+    <Compile Include="Objects\Synchronization\Expression.shared.cs" />
+    <Compile Include="Objects\Synchronization\ISynchronizationContext.shared.cs" />
+    <Compile Include="Configuration\ApplicationConfigurationExtension.cs" />
+    <Compile Include="Configuration\ApplicationServiceProviderLocatorAttribute.cs" />
+    <Compile Include="Configuration\CollectionOfTExtension.shared.cs" />
+    <Compile Include="Configuration\CollectionOfTExtensionBase.shared.cs" />
+    <Compile Include="Configuration\ConfigurationContainer.shared.cs" />
+    <Compile Include="Configuration\ConfigurationProviderSection.cs" />
+    <Compile Include="Configuration\ConfigurationSettingsNameAttribute.cs" />
+    <Compile Include="Configuration\DictionaryOfTExtension.shared.cs" />
+    <Compile Include="Configuration\GenericExtension.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\GenericTypeExtension.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\IInstanceProvider.shared.cs" />
+    <Compile Include="Configuration\ListOfTExtension.shared.cs" />
+    <Compile Include="Configuration\ObservableCollectionOfTExtension.shared.cs" />
+    <Compile Include="Configuration\PathHelperExtension.shared.cs" />
+    <Compile Include="Configuration\ResourceDictionaryServiceLocator.shared.cs" />
+    <Compile Include="Runtime\Activator.shared.cs" />
+    <Compile Include="Runtime\ConversionHelper.shared.cs" />
+    <Compile Include="Runtime\DisposableActionContext.shared.cs" />
+    <Compile Include="Objects\CacheManagerCreator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Runtime\Dynamic.cs" />
+    <Compile Include="Runtime\Dynamic.shared.cs" />
+    <Compile Include="Runtime\ExceptionHandlingResult.shared.cs" />
+    <Compile Include="Runtime\IActivator.shared.cs" />
+    <Compile Include="Runtime\IExceptionHandler.shared.cs" />
+    <Compile Include="Runtime\ILogger.shared.cs" />
+    <Compile Include="Runtime\LogExtensions.shared.cs" />
+    <Compile Include="Runtime\IExceptionFormatter.shared.cs" />
+    <Compile Include="Runtime\PropertyContext.shared.cs" />
+    <Compile Include="Io\SerializationFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Io\XamlSerializationFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\AssemblyExtensions.shared.cs" />
+    <Compile Include="Extensions\AttributeProviderExtensions.shared.cs" />
+    <Compile Include="Extensions\BooleanExtensions.shared.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.shared.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.shared.cs" />
+    <Compile Include="Extensions\ListExtension.shared.cs" />
+    <Compile Include="Extensions\TypeExtensions.shared.cs" />
+    <Compile Include="Extensions\ServiceLocationExtensions.shared.cs" />
+    <Compile Include="Extensions\CredentialHelper.cs" />
+    <Compile Include="Extensions\StringExtensions.shared.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Io\CharacterSet.cs" />
+    <Compile Include="Io\DirectoryInfoExtensions.cs" />
+    <Compile Include="Io\DirectoryInfoExtensions.shared.cs" />
+    <Compile Include="Io\FileInfoExtensions.cs" />
+    <Compile Include="Io\FileSystemInfoComparer.shared.cs" />
+    <Compile Include="Io\FileSystemInfoExtensions.cs" />
+    <Compile Include="Io\FileSystemInfoExtensions.shared.cs" />
+    <Compile Include="Io\IWorkspace.shared.cs" />
+    <Compile Include="Io\JetFileReader.cs" />
+    <Compile Include="Io\JetReaderOptions.cs" />
+    <Compile Include="Io\TextDelimiter.cs" />
+    <Compile Include="Io\Workspace.shared.cs" />
+    <Compile Include="ListHelper.shared.cs" />
+    <Compile Include="ListHelper.cs" />
+    <Compile Include="Runtime\NamedTokenFormatter.shared.cs" />
+    <Compile Include="Objects\Configuration\InstanceSource.shared.cs" />
+    <Compile Include="Objects\Configuration\InstanceSourceBase.shared.cs" />
+    <Compile Include="Objects\Configuration\ObjectFinder.shared.cs" />
+    <Compile Include="Objects\Configuration\ObjectFinderBase.shared.cs" />
+    <Compile Include="Objects\Configuration\ObjectResolver.shared.cs" />
+    <Compile Include="Objects\CurrentTimeDefaultAttribute.shared.cs" />
+    <Compile Include="Objects\DefaultValueAttribute.shared.cs" />
+    <Compile Include="Objects\Factory.shared.cs" />
+    <Compile Include="Objects\ObjectExtensions.shared.cs" />
+    <Compile Include="Objects\IFactory.shared.cs" />
+    <Compile Include="Objects\ILocator.shared.cs" />
+    <Compile Include="Objects\IObjectResolver.shared.cs" />
+    <Compile Include="Objects\IObjectWithKey.shared.cs" />
+    <Compile Include="Objects\NewGuidDefaultValueAttribute.shared.cs" />
+    <Compile Include="Objects\ObjectCreatedEventArgs.shared.cs" />
+    <Compile Include="Objects\ObjectCreatingEventArgs.generic.shared.cs" />
+    <Compile Include="Objects\ObjectCreator.shared.cs" />
+    <Compile Include="Objects\IoCDefaultAttribute.shared.cs" />
+    <Compile Include="Objects\Locator.shared.cs" />
+    <Compile Include="Objects\LocatorBase.shared.cs" />
+    <Compile Include="Objects\ObjectFindingEventArgs.shared.cs" />
+    <Compile Include="Objects\ObjectResolvedEventArgs.shared.cs" />
+    <Compile Include="Objects\ObjectResolver.shared.cs" />
+    <Compile Include="Objects\StaticCacheLocator.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationConfigurationDictionary.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\Synchronization\ListSynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\ListSynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\ObjectResolvingSynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationContainer.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationExpressionResolverBase.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationContexts.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationKey.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationPolicy.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SynchronizationPolicyBase.shared.cs" />
+    <Compile Include="Objects\Synchronization\Configuration\SimilarProperties.shared.cs" />
+    <Compile Include="Objects\Synchronization\ObjectExtensions.shared.cs" />
+    <Compile Include="Objects\Synchronization\ISynchronizationExpressionResolver.shared.cs" />
+    <Compile Include="Objects\Synchronization\ISynchronizationPolicy.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationAttribute.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationContainer.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationContainerContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationExpressionResolver.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationContextInformation.shared.cs" />
+    <Compile Include="Objects\Synchronization\Container.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationKey.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationObjectResolver.shared.cs" />
+    <Compile Include="Objects\Synchronization\SynchronizationPolicy.shared.cs" />
+    <Compile Include="Objects\Synchronization\ReflectedPropertyMappingExpressionResolver.shared.cs" />
+    <Compile Include="Objects\Synchronization\SimilarProperties.shared.cs" />
+    <Compile Include="Objects\Synchronization\SimilarPropertyHelper.shared.cs" />
+    <Compile Include="Objects\Synchronization\SimpleProperty.shared.cs" />
+    <Compile Include="Runtime\PartialMethodResultContext.shared.cs" />
+    <Compile Include="Io\PathHelper.shared.cs" />
+    <Compile Include="Io\PathHelper.cs" />
+    <Compile Include="Priority.shared.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\PropertyInfoTypeConverterValueConverter.shared.cs" />
+    <Compile Include="Runtime\PropertyInfoTypeConverterValueConverter.cs" />
+    <Compile Include="Runtime\ServiceLocation.shared.cs" />
+    <Compile Include="Runtime\SystemActivator.shared.cs" />
+    <Compile Include="Serialization\AssemblyStreamResolver.shared.cs" />
+    <Compile Include="Serialization\FileStreamResolver.shared.cs" />
+    <Compile Include="Serialization\IStreamResolver.shared.cs" />
+    <Compile Include="Serialization\TypeResourceStreamResolver.cs" />
+    <Compile Include="Serialization\XamlSerializationHelper.shared.cs" />
+    <Compile Include="Serialization\XamlSerializationHelper.cs" />
+    <Compile Include="ThreadLocalStorage.cs" />
+    <Compile Include="Runtime\TypeConverterManager.cs" />
+    <Compile Include="Runtime\TypeConverterValueConverter.shared.cs" />
+    <Compile Include="Runtime\TypeConverterValueConverter.cs" />
+    <Compile Include="Runtime\ValueResolver.shared.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <Compile Include="Configuration\SharedResourceDictionary.cs" />
+    <Compile Include="Objects\Synchronization\ObjectResolvingSynchronizationContext.shared.cs" />
+    <Compile Include="Objects\Synchronization\PropertyContext.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="Common.pfx" />
+    <None Include="packages.config" />
+    <None Include="Resources\SchemaTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="Application\Presentation\Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Design="clr-namespace:DragonSpark.Design;assembly=DragonSpark.Client">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Common.Client;component/Themes/generic.xaml"/>
+        <ResourceDictionary Source="/Features.Application;component/Resources/Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!-- Resource dictionary entries should be defined here. -->
+    <Design:DesignTimeWebContext x:Key="Services.WebContext">
+        <Design:DesignTimeUser Name="User Name" FirstName="FirstName" LastName="LastName"  IsAuthenticated="true" />
+    </Design:DesignTimeWebContext>
+</ResourceDictionary>

@@ -1,0 +1,106 @@
+﻿<nav:Page x:Class="DragonSpark.Features.Modules.Operations.View"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		  xmlns:nav="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+		  xmlns:ds="http://framework.dragonspark.us"
+		  xmlns:Features="clr-namespace:DragonSpark.Features;assembly=DragonSpark.Features.Client"
+		  xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" mc:Ignorable="d"
+		  Style="{StaticResource DefaultPage}" Title="Operations"
+	d:DesignHeight="300" d:DesignWidth="400">
+	<ds:BusyIndicator x:Name="LayoutRoot" BusyContent="{ds:Locate TypeName=ds:ICommandMonitor}">
+		<StackPanel Margin="5">
+			<TextBlock Text="Operations" Style="{StaticResource TextHeader}" />
+			<TextBlock Text="This section demonstrates how operations are presented to the user while they are active.  Below, you'll find examples of different modes of configuration." Margin="10 5 10 10" TextWrapping="Wrap" />
+
+			<Button Content="Simple List of Operations" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Simple List of Operations." />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+			<Button Content="Operations without Cancel" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Executing Operations without Cancel." AllowCancel="False" />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+			<Button Content="Operations without Closing" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Executing Operations That Do Not Close on Completion." CloseOnCompletion="False" />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+			<Button Content="Operations with Exception" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Executing Operations That Throw Exception." />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:ExceptionThrowingOperation Title="Throw an Exception." />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+			<Button Content="Operations with Exception Continued" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Executing Operations That Throw Exception." />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:ExceptionThrowingOperation Title="Throw an Exception." ExceptionHandlingAction="Continue" />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+			<Button Content="Operations Throwing Exception Immediately" toolkit:DockPanel.Dock="Top" Padding="10" VerticalAlignment="Center" Margin="5" CommandParameter="{Binding BusyContent, ElementName=LayoutRoot}">
+				<Button.Command>
+					<ds:ExecuteCommandSetCommand>
+						<ds:ExecuteCommandSetCommand.Options>
+							<ds:CommandMonitorOptions Title="Executing Operations That Throw Exception Immediately." />
+						</ds:ExecuteCommandSetCommand.Options>
+						<Features:SampleOperation Title="Making the Thread Sleep, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Sleeping some more, Dawg." Context="00:00:00.5" />
+						<Features:ExceptionThrowingOperation Title="Throw an Exception." ExceptionHandlingAction="Throw" />
+						<Features:SampleOperation Title="Yawn, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="Almost there, Dawg." Context="00:00:00.5" />
+						<Features:SampleOperation Title="A little bit more, Dawg." Context="00:00:00.5" />
+					</ds:ExecuteCommandSetCommand>
+				</Button.Command>
+			</Button>
+		</StackPanel>
+	</ds:BusyIndicator>
+</nav:Page>
