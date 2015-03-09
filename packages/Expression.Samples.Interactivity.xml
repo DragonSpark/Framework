@@ -1,0 +1,1243 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Expression.Samples.Interactivity</name>
+    </assembly>
+    <members>
+        <member name="T:Expression.Samples.Interactivity.PropertyChangedTrigger">
+            <summary>
+            Triggers whenever a property changes, regardless of the value it changes to.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.PropertyChangedTrigger.BindingProperty">
+            <summary>Backing DP for Binding property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PropertyChangedTrigger.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PropertyChangedTrigger.OnAttached">
+            <summary>
+            Perform initialization.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PropertyChangedTrigger.OnDetaching">
+            <summary>
+            Perform cleanup.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PropertyChangedTrigger.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the binding property changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.PropertyChangedTrigger.Binding">
+            <summary>
+            Binding used to trigger this.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataHelpers.BindingListener">
+            <summary>
+            Helper class for adding Bindings to non-FrameworkElements
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.BindingListener.#ctor(Expression.Samples.Interactivity.DataHelpers.BindingListener.ChangedHandler)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="changedHandler">Callback whenever the value of this binding has changed.</param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.BindingListener.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataHelpers.BindingListener.Binding">
+            <summary>
+            The Binding which is to be evaluated
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataHelpers.BindingListener.Element">
+            <summary>
+            The element to be used as the context on which to evaluate the binding.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataHelpers.BindingListener.Value">
+            <summary>
+            The current value of this binding.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataHelpers.BindingListener.ChangedHandler">
+            <summary>
+            Delegate for when the binding listener has changed.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataHelpers.BindingChangedEventArgs">
+            <summary>
+            Event args for when binding values change.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.BindingChangedEventArgs.#ctor(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataHelpers.BindingChangedEventArgs.EventArgs">
+            <summary>
+            Original event args.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.CallMethod">
+            <summary>
+            An action that invokes a method on the targeted object.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.CallMethod.MethodNameProperty">
+            <summary>Backing DP for the MethodName property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallMethod.Invoke(System.Object)">
+            <summary>
+            Implementation of Invoke
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallMethod.OnTargetChanged(System.Windows.DependencyObject,System.Windows.DependencyObject)">
+            <summary>
+            Update the method info when the target changes.
+            </summary>
+            <param name="oldTarget"></param>
+            <param name="newTarget"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.CallMethod.MethodName">
+            <summary>
+            The name of method to invoke.  It is expected that this method takes no arguments.  This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ClippingBehavior">
+            <summary>
+            Provides a rounded rectangular clipping that scales with the element.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.ClippingBehavior.CornerRadiusProperty">
+            <summary>Backing DP for the CornerRadius property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.ClippingBehavior.MarginProperty">
+            <summary>Backing DP for the Margin property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ClippingBehavior.OnAttached">
+            <summary>
+            Initialization
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ClippingBehavior.OnDetaching">
+            <summary>
+            Cleanup
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ClippingBehavior.UpdateClipping">
+            <summary>
+            Updates the clipping rectangle.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ClippingBehavior.CornerRadius">
+            <summary>
+            Radius of the corners
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ClippingBehavior.Margin">
+            <summary>
+            Margin of the clip to the edge of the element.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ClippingBehavior.CalculatedCornerRadius">
+            <summary>
+            Calculates what the corner radius should be. 
+            If this is attached to a Border, it automatically uses the Border's radius.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.TargetedTriggerBase">
+            <summary>
+            Base class for triggers that can target named elements.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.TargetedTriggerBase.SourceNameProperty">
+            <summary>Backing DP for SourceName property </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase.OnSourceObjectAttached">
+            <summary>
+            Notification that this is now attached to a source.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase.OnSourceObjectDetaching">
+            <summary>
+            Notification that this is no longer attached to a source.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase.OnAttached">
+            <summary>
+            Performs initialization
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase.OnSourceNameChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the source name property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.TargetedTriggerBase.SourceName">
+            <summary>
+            Name of the object to be targeted
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.TargetedTriggerBase.SourceObject">
+            <summary>
+            Object which this is targeting.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.TargetedTriggerBase`1">
+            <summary>
+            TargetedTriggerBase which targets specific types.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase`1.OnSourceAttached">
+            <summary>
+            Notification that this is now attached to a source.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase`1.OnSourceDetaching">
+            <summary>
+            Notification that this is no longer attached to a source.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase`1.OnSourceObjectAttached">
+            <summary>
+            Performs initialization.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TargetedTriggerBase`1.OnSourceObjectDetaching">
+            <summary>
+            Performs cleanup.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.TargetedTriggerBase`1.Source">
+            <summary>
+            The object which this is targeting.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ShowMessageBox">
+            <summary>
+            Displays a message box.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.ShowMessageBox.MessageProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.ShowMessageBox.CaptionProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.ShowMessageBox.MessageBoxButtonProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ShowMessageBox.Invoke(System.Object)">
+            <summary>
+            Displays the message box.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ShowMessageBox.Message">
+            <summary>
+            Message to be displayed in the message box.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ShowMessageBox.Caption">
+            <summary>
+            Caption for the message box.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ShowMessageBox.MessageBoxButton">
+            <summary>
+            Type of messagebox confirmation.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.SetProperty">
+            <summary>
+            Sets or increments a property when triggered.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetProperty.ValueProperty">
+            <summary>
+            Backing DP for Value property
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetProperty.PropertyNameProperty">
+            <summary>
+            Backing DP for the PropertyName property
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetProperty.EaseProperty">
+            <summary>
+            Backing DP for the Ease property
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetProperty.DurationProperty">
+            <summary>
+            Backing DP for the Duration property
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetProperty.IncrementProperty">
+            <summary>
+            Backing DP for the Increment property
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetProperty.Invoke(System.Object)">
+            <summary>
+            Sets the property
+            </summary>
+            <param name="parameter">Unused.</param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetProperty.Value">
+            <summary>
+            The value to be set
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetProperty.PropertyName">
+            <summary>
+            Name of the property to be set.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetProperty.Ease">
+            <summary>
+            Easing function to be used for the animation.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetProperty.Duration">
+            <summary>
+            Duration of the animation for the transition
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetProperty.Increment">
+            <summary>
+            True if the value is added to the current value rather than directly set.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.SetDataProperty">
+            <summary>
+            Sets a property on the data context.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetDataProperty.BindingProperty">
+            <summary>Backing DP for Binding property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetDataProperty.ValueProperty">
+            <summary>Backing DP for Value property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.SetDataProperty.IncrementProperty">
+            <summary>Backing DP for Increment property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetDataProperty.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetDataProperty.OnAttached">
+            <summary>
+            Perform initialization.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetDataProperty.OnDetaching">
+            <summary>
+            Perform cleanup.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetDataProperty.Invoke(System.Object)">
+            <summary>
+            Invokes this action.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.SetDataProperty.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the binding has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetDataProperty.Binding">
+            <summary>
+            Binding to the property to be set. Must be a two-way binding.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetDataProperty.Increment">
+            <summary>
+            True if the property should be incremented rather than set.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.SetDataProperty.Value">
+            <summary>
+            The value to be set, or to be incremented by.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.CallDataMethod">
+            <summary>
+            Invokes a method on the data context of this.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.CallDataMethod.TargetProperty">
+            <summary>
+            Backing DependencyProperty for Target.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.CallDataMethod.MethodProperty">
+            <summary>
+            Backing DependencyProperty for Method.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallDataMethod.Invoke(System.Object)">
+            <summary>
+            Implementation of Invoke
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallDataMethod.OnAttached">
+            <summary>
+            Implementation of OnAttached.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallDataMethod.OnDetaching">
+            <summary>
+            Implementation of OnDetaching.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.CallDataMethod.OnTargetBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the TargetBinding property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.CallDataMethod.Target">
+            <summary>
+            Binding to the object on which the method is to be called.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.CallDataMethod.Method">
+            <summary>
+            Name of the method to be called
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ListBoxAddOne">
+            <summary>
+            Sample action for quick prototyping with Data.
+            Takes a random item in a ListBox and duplicates it into a random position.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ListBoxAddOne.Invoke(System.Object)">
+            <summary>
+            Implementation of action.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ListBoxRemoveOne">
+            <summary>
+            Sample action for quick prototyping with Data.
+            Takes a random item in a ListBox and removes it.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ListBoxRemoveOne.Invoke(System.Object)">
+            <summary>
+            Removes the item from the ListBox.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ListBoxRemoveThisItem">
+            <summary>
+            Sample action for quick prototyping with Data.
+            For use inside of a ListBoxItem, will remove this item (DataContext) from the ListBox.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.ListBoxRemoveThisItem.Invoke(System.Object)">
+            <summary>
+            Removes the item from the ListBox.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataEventTrigger">
+            <summary>
+            Trigger which fires when a CLR event is raised on an object.
+            Can be used to trigger from events on the data context, as opposed to
+            a standard EventTrigger which uses routed events on FrameworkElements.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataEventTrigger.SourceProperty">
+            <summary>Backing DP for the Source property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataEventTrigger.EventNameProperty">
+            <summary>Backing DP for the EventName property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataEventTrigger.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataEventTrigger.OnAttached">
+            <summary>
+            Initialization
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataEventTrigger.OnDetaching">
+            <summary>
+            Cleanup
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataEventTrigger.OnEventNameChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the EventName has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataEventTrigger.OnSourceChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the Source has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataEventTrigger.Source">
+            <summary>
+            The source object for the event
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataEventTrigger.EventName">
+            <summary>
+            The name of the event which triggers this
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.MouseEventTrigger">
+            <summary>
+            Trigger to allow more specialized triggering of mouse events
+            Such as handling modifier keys and double click events.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseEventTrigger.DoubleClickTimeProperty">
+            <summary>Backing DP for DoubleClickTime property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseEventTrigger.ClickCountProperty">
+            <summary>Backing DP for ClickCount property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseEventTrigger.ProcessHandledEventsProperty">
+            <summary>Backing DP for ProcessHandledEvents property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseEventTrigger.ModifiersProperty">
+            <summary>Backing DP for Modifiers property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseEventTrigger.ClickModeProperty">
+            <summary>Backing DP for ClickMode property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.MouseEventTrigger.OnSourceAttached">
+            <summary>
+            Hook up event handlers.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.MouseEventTrigger.OnSourceDetaching">
+            <summary>
+            Clean up event handlers.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.DoubleClickTime">
+            <summary>
+            Maximum time between clicks to count as a double-click.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.ProcessHandledEvents">
+            <summary>
+            True if this should trigger off of already handled events.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.ClickCount">
+            <summary>
+            Number of times the mouse needs to be clicked to trigger this.
+            For double-click events, this would be 2.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.Modifiers">
+            <summary>
+            Any modifier keys which should be active to trigger this.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.ClickMode">
+            <summary>
+            Mode which this is triggering
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseEventTrigger.ShouldProcessHandledEvents">
+            <summary>
+            Checks to see if processed events should be handled as well.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.InvokeDataCommand">
+            <summary>
+            Invokes a command which is exposed by the data context.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.InvokeDataCommand.CommandProperty">
+            <summary>Backing DP for the Command property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.InvokeDataCommand.CommandParameterProperty">
+            <summary>Backing DP for the CommandParameter property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.InvokeDataCommand.OnAttached">
+            <summary>
+            Initialization
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.InvokeDataCommand.OnDetaching">
+            <summary>
+            Cleanup
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.InvokeDataCommand.Invoke(System.Object)">
+            <summary>
+            Fire the command.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.InvokeDataCommand.OnCommandChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the command property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.InvokeDataCommand.Command">
+            <summary>
+            Binding to the command which is to be invoked
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.InvokeDataCommand.CommandParameter">
+            <summary>
+            Optional parameter for the command.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.ExceptionStringTable">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ExceptionStringTable.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ExceptionStringTable.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ExceptionStringTable.CallMethodActionMethodDoesNotExistMessage">
+            <summary>
+              Looks up a localized string similar to Could not find method &quot;{0}&quot; on type &quot;{1}&quot;. Verify that the method exists and is publicly accessible..
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ExceptionStringTable.CallMethodActionZeroParametersOnlyMessage">
+            <summary>
+              Looks up a localized string similar to Methods used by CallMethodAction must accept no parameters..
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.ExceptionStringTable.UnableToResolveTargetNameWarningMessage">
+            <summary>
+              Looks up a localized string similar to Unable to resolve TargetName &quot;{0}.&quot;.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.PlayMedia">
+            <summary>
+            Play a media element.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PlayMedia.Invoke(System.Object)">
+            <summary>
+            Play the media.
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.PauseMedia">
+            <summary>
+            Pause a media element.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.PauseMedia.Invoke(System.Object)">
+            <summary>
+            Pause the media
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.TogglePlayPauseMedia">
+            <summary>
+            Togggle between play/pause for a media element.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.TogglePlayPauseMedia.Invoke(System.Object)">
+            <summary>
+            Toggle between play and pause.
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.RewindMedia">
+            <summary>
+            Seeks a media element to position 0.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.RewindMedia.Invoke(System.Object)">
+            <summary>
+            Rewind the media
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.StopMedia">
+            <summary>
+            Stops a media element.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.StopMedia.Invoke(System.Object)">
+            <summary>
+            Stop the media.
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.NameResolvedEventArgs">
+            <summary>
+            Provides data about which objects were affected when resolving a name change.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.NameResolver">
+            <summary>
+            Helper class to handle the logic of resolving a TargetName into a Target element
+            based on the context provided by a host element.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.NameResolver.UpdateObjectFromName(System.Windows.DependencyObject)">
+            <summary>
+            Attempts to update the resolved object from the name within the context of the namescope reference element.
+            </summary>
+            <param name="oldObject">The old resolved object.</param>
+            <remarks>
+            Resets the existing target and attempts to resolve the current TargetName from the
+            context of the current Host. If it cannot resolve from the context of Host, it will
+            continue up the visual tree until it resolves. If it has not resolved it when it reaches
+            the root, it will set the Target to null and write a warning message to Debug output.
+            </remarks>
+        </member>
+        <member name="E:Expression.Samples.Interactivity.NameResolver.ResolvedElementChanged">
+            <summary>
+            Occurs when the resolved element has changed.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.NameResolver.Name">
+            <summary>
+            Gets or sets the name of the element to attempt to resolve.
+            </summary>
+            <value>The name to attempt to resolve.</value>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.NameResolver.Object">
+            <summary>
+            The resolved object. Will return the reference element is TargetName is null or empty, or if a resolve has not been attempted.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.NameResolver.NameScopeReferenceElement">
+            <summary>
+            Gets or sets the reference element from which to perform the name resolution.
+            </summary>
+            <value>The reference element.</value>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.NameResolver.PendingReferenceElementLoad">
+            <summary>
+            Gets or sets a value indicating whether the reference element load is pending.
+            </summary>
+            <value>
+            	<c>true</c> if [pending reference element load]; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            If the Host has not been loaded, the name will not be resolved.
+            In that case, delay the resolution and track that fact with this property.
+            </remarks>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataStateSwitchBehavior">
+            <summary>
+            Switches between multiple visual states depending on a condition.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateSwitchBehavior.BindingProperty">
+            <summary>
+            Backing DependencyProperty for Binding.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateSwitchBehavior.StatesProperty">
+            <summary>
+            Backing DependencyProperty for States.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateSwitchBehavior.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateSwitchBehavior.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the Binding property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateSwitchBehavior.OnAttached">
+            <summary>
+            Performs some initialization.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateSwitchBehavior.OnDetaching">
+            <summary>
+            Performs some cleanup.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateSwitchBehavior.Binding">
+            <summary>
+            Binding to be evaluated.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateSwitchBehavior.States">
+            <summary>
+            Various states on which this is active or not.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataStateSwitchCase">
+            <summary>
+            Represents a case to check if the visual state should be activated.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateSwitchCase.IsValid(System.Object)">
+            <summary>
+            Compares this value to the target value to determine if the
+            state should be activated.
+            </summary>
+            <param name="targetValue"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateSwitchCase.Value">
+            <summary>
+            The value to be compared against
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateSwitchCase.State">
+            <summary>
+            The name of the state to be activated if the value is true
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.Helpers">
+            <summary>
+            Collection of helper methods.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.Helpers.IsLoaded(System.Windows.FrameworkElement)">
+            <summary>
+            Helper to attempt to detect if an element is loaded or not.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.GoToStateBase">
+            <summary>
+            Base class for a number of GoToState triggers.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.GoToStateBase.UseTransitionsProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.GoToStateBase.OnAttached">
+            <summary>
+            Hooks up necessary handlers for the state changes.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.GoToStateBase.OnDetaching">
+            <summary>
+            Cleans up when getting removed.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.GoToStateBase.GoToState(System.Int32,System.Boolean)">
+            <summary>
+            Goes to the specified state on the targetted VSM.
+            </summary>
+            <param name="targetIndex">index of the state to be activated</param>
+            <param name="useTransitions">True if transitions should be used.</param>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.GoToStateBase.LoopProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.GoToStateBase.UseTransitions">
+            <summary>
+            True if transitions should be used for the state change.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.GoToStateBase.StateCount">
+            <summary>
+            The total number of states in the targetted VSM.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.GoToStateBase.CurrentStateIndex">
+            <summary>
+            The index of the current state in the targetted VSM.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.GoToStateBase.TargetElement">
+            <summary>
+            Get the control which this action should be changing the state of.
+            The control is always the parent in the logical tree which contains a VSM. If this
+            action is attached to a button in UserControl.xaml, then the state group should be the
+            UserControl's state group- not the Button's.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.GoToStateBase.Loop">
+            <summary>
+            True if this should loop around when it gets to the end.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.GoToNextState">
+            <summary>
+            Go to the next state in the targetted VSM.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.GoToNextState.Invoke(System.Object)">
+            <summary>
+            Does the state transition.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.GoToPreviousState">
+            <summary>
+            Go to the previous state in the targetted VSM.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.GoToPreviousState.Invoke(System.Object)">
+            <summary>
+            Does the state transition.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.FluidBindProperty">
+            <summary>
+            Allows animating the changes from databound properties
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.FluidBindProperty.BindingProperty">
+            <summary>Backing DP for the Binding property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.FluidBindProperty.DurationProperty">
+            <summary>Backing DP for the Duration property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.FluidBindProperty.PropertyNameProperty">
+            <summary>Backing DP for the PropertyName property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.FluidBindProperty.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.FluidBindProperty.EaseProperty">
+            <summary>Backing DP for the Ease property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.FluidBindProperty.OnAttached">
+            <summary>
+            Perform initialization.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.FluidBindProperty.OnDetaching">
+            <summary>
+            Perform cleanup.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.FluidBindProperty.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the binding property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.FluidBindProperty.Binding">
+            <summary>
+            Binding to the value which is to be animated to.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.FluidBindProperty.Ease">
+            <summary>
+            Easing function used to animate to the value.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.FluidBindProperty.Duration">
+            <summary>
+            Duration of the animation
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.FluidBindProperty.PropertyName">
+            <summary>
+            Name of the property to be set.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataStateBehavior">
+            <summary>
+            Behavior that activates two visual states based on the condition of a binding.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateBehavior.BindingProperty">
+            <summary>Backing DP for the Binding property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateBehavior.ValueProperty">
+            <summary>Backing DP for the Value property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateBehavior.TrueStateProperty">
+            <summary>Backing DP for the TrueState property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataStateBehavior.FalseStateProperty">
+            <summary>Backing DP for the FalseState property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateBehavior.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateBehavior.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the Binding property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateBehavior.OnValueChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the Value property has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateBehavior.OnAttached">
+            <summary>
+            Implementation of OnAttached.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataStateBehavior.OnDetaching">
+            <summary>
+            Implementation of OnDetaching.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateBehavior.Binding">
+            <summary>
+            The binding to be used to evaluate the state.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateBehavior.Value">
+            <summary>
+            The value to which the binding is compared against.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateBehavior.FalseState">
+            <summary>
+            The name of the VisualState tobe activated when true.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataStateBehavior.TrueState">
+            <summary>
+            The name of the VisualState tobe activated when false.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.StateChanged">
+            <summary>
+            Triggers when the state is changed.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.StateChanged.StateNameProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.StateChanged.CompletedProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.StateChanged.OnAttached">
+            <summary>
+            Hooks up to the necessary events on the VSM.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.StateChanged.OnDetaching">
+            <summary>
+            Cleans up when getting removed.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.StateChanged.Completed">
+            <summary>
+            True if this should be triggering after the state change has completed,
+            False if it triggers when the state change starts.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.StateChanged.StateName">
+            <summary>
+            Name of the state to be triggered on.
+            If this is null, then it will trigger on all state changes.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.MouseGestureTrigger">
+            <summary>
+            Provides a trigger based on the user making a gesture with their mouse on the element
+            which this is attached to. An example of this is when the user draws a chevron, then this can trigger.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.MouseGestureTrigger.GesturePointListProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.MouseGestureTrigger.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.MouseGestureTrigger.OnAttached">
+            <summary>
+            Attach the appropriate events.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.MouseGestureTrigger.OnDetaching">
+            <summary>
+            Detach from the appropriate events.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseGestureTrigger.ErrorThreshold">
+            <summary>
+            Defines how tolerant this is to how close the users gesture is to this gesture.
+            A lower number indicates lower tolerance.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.MouseGestureTrigger.GesturePointList">
+            <summary>
+            List of points which define the gesture which this is triggering off of.
+            </summary>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataHelpers.ConverterHelper">
+            <summary>
+            Helper for converting objects to different types.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.ConverterHelper.ConvertToType(System.Object,System.Type)">
+            <summary>
+            Attempts to convert the provided value to the specified type
+            </summary>
+            <param name="value">object to be converted</param>
+            <param name="type">Type to be converted to</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.ConverterHelper.GetTypeConverter(System.Type)">
+            <summary>
+            Finds the type converter for the specified type.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataHelpers.ConvertFromStringConverter">
+            <summary>
+            General string to object converter which uses the internal
+            platforms type converters.
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.ConvertFromStringConverter.#ctor(System.Type)">
+            <summary>
+            General purpose converter that converts from a string to the specified type.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.ConvertFromStringConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Allow conversion from strings.
+            </summary>
+            <param name="context"></param>
+            <param name="sourceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataHelpers.ConvertFromStringConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Convert the value
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Expression.Samples.Interactivity.DataTrigger">
+            <summary>
+            Allows triggering actions based on the value of a property on the data context.
+            </summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataTrigger.ValueProperty">
+            <summary>Backing DP for the Value property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataTrigger.BindingProperty">
+            <summary>Backing DP for the Bindng property</summary>
+        </member>
+        <member name="F:Expression.Samples.Interactivity.DataTrigger.TriggerOnRisingProperty">
+            <summary>Backing DP for the TriggerOnRising property</summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataTrigger.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataTrigger.OnAttached">
+            <summary>
+            Perform initialization
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataTrigger.OnDetaching">
+            <summary>
+            Perform cleanup
+            </summary>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataTrigger.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the binding has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Expression.Samples.Interactivity.DataTrigger.OnValueChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Notification that the value has changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataTrigger.TriggerOnRising">
+            <summary>
+            True if this should invoke the action when the condition goes true,
+            False if this inokes when the condition goes false.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataTrigger.Value">
+            <summary>
+            The value to compare against.
+            </summary>
+        </member>
+        <member name="P:Expression.Samples.Interactivity.DataTrigger.Binding">
+            <summary>
+            Binding to the property on which this should be comparing the Value to.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,355 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MefContrib.Integration.Unity.Client</name>
+    </assembly>
+    <members>
+        <member name="T:MefContrib.Integration.Unity.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Properties.Resources.ExtensionMissing">
+            <summary>
+              Looks up a localized string similar to {0} extension missing..
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Properties.Resources.TooManyInstances">
+            <summary>
+              Looks up a localized string similar to Requested type has more than one instance..
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Properties.Resources.UnityNullException">
+            <summary>
+              Looks up a localized string similar to Returned Unity instance is null..
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Exporters.ExternalExportProvider">
+            <summary>
+            Represents an external export provider.
+            </summary>
+            <remarks>
+            This class can be used to build custom <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider"/> which
+            provides exports from various data sources.
+            </remarks>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.ExternalExportProvider.#ctor(System.Func{System.Type,System.String,System.Object})">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.Exporters.ExternalExportProvider"/> class.
+            </summary>
+            <param name="factoryMethod">Method that is called when an instance os specific type
+            is requested, optionally with given registration name.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.ExternalExportProvider.AddExportDefinition(System.Type)">
+            <summary>
+            Adds a new export definition.
+            </summary>
+            <param name="type">Type that is being exported.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.ExternalExportProvider.AddExportDefinition(System.Type,System.String)">
+            <summary>
+            Adds a new export definition.
+            </summary>
+            <param name="type">Type that is being exported.</param>
+            <param name="registrationName">Registration name under which <paramref name="type"/>
+            is being exported.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Exporters.ExternalExportProvider.ReadOnlyDefinitions">
+            <summary>
+            Gets a read only list of definitions known to the export provider.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition">
+            <summary>
+            Represents an external export definition that has a type and a registration name.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition"/> class.
+            </summary>
+            <param name="type">Type this export defines.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition"/> class.
+            </summary>
+            <param name="type">Type this export defines.</param>
+            <param name="registrationName">Registration name under which <paramref name="type"/>
+            has been registered.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition.ServiceType">
+            <summary>
+            Gets a type this export defines.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition.RegistrationName">
+            <summary>
+            Gets a registration name under which <see cref="P:MefContrib.Integration.Unity.Exporters.ExternalExportDefinition.ServiceType"/> has been registered.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Exporters.UnityExportProvider">
+            <summary>
+            Exposes all types registered in associated <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> container
+            to MEF using <see cref="T:MefContrib.Integration.Unity.Exporters.ExternalExportProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.UnityExportProvider.#ctor(System.Func{Microsoft.Practices.Unity.IUnityContainer})">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.Exporters.UnityExportProvider"/> class.
+            </summary>
+            <param name="unityContainerResolver">Delegate called when the container is needed for
+            the first time.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.UnityExportProvider.#ctor(Microsoft.Practices.Unity.IUnityContainer)">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.Exporters.UnityExportProvider"/> class.
+            </summary>
+            <param name="unityContainer">An instance of the <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> container.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Exporters.UnityExportProvider.AddExportDefinition(System.Type,System.String)">
+            <summary>
+            Adds a new export definition.
+            </summary>
+            <param name="type">Type that is being exported.</param>
+            <param name="registrationName">Registration name under which <paramref name="type"/>
+            is being exported.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Exporters.UnityExportProvider.UnityContainer">
+            <summary>
+            Gets associated <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> container.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Exporters.UnityExportProvider.ReadOnlyDefinitions">
+            <summary>
+            Gets a read only list of definitions known to the export provider.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Strategies.ComposeStrategy">
+            <summary>
+            Represents a strategy which injects MEF dependencies to
+            the Unity created instance.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Strategies.CompositionStrategy">
+            <summary>
+            Represents a MEF composition strategy which tries to resolve desired
+            component via MEF. If succeeded, build process is completed.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.PartNotComposableAttribute">
+            <summary>
+            Suppresses MEF composition for a class created by the Unity container.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry">
+            <summary>
+            Represents an entry for <see cref="P:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.Entries"/> collection.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of of the <see cref="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry"/> class.
+            </summary>
+            <param name="type">Type this entry represents.</param>
+            <param name="name">Optional name.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of of the <see cref="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry"/> class.
+            </summary>
+            <param name="type">Type this entry represents.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry.Type">
+            <summary>
+            Gets a type registered in the container.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Extensions.TypeRegistrationEntry.Name">
+            <summary>
+            Gets an optional name.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.UnityContainerExtensions">
+            <summary>
+            Contains extensions for the <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> interface.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.UnityContainerExtensions.RegisterCatalog(Microsoft.Practices.Unity.IUnityContainer,System.ComponentModel.Composition.Primitives.ComposablePartCatalog)">
+            <summary>
+            Registers a MEF catalog within Unity container.
+            </summary>
+            <param name="unityContainer">Unity container instance.</param>
+            <param name="catalog">MEF catalog to be registered.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.UnityContainerExtensions.EnableCompositionIntegration(Microsoft.Practices.Unity.IUnityContainer)">
+            <summary>
+            Enables Managed Extensibility Framework two-way integration.
+            </summary>
+            <param name="unityContainer">Target container.</param>
+            <returns>
+            <see cref="T:MefContrib.Integration.Unity.CompositionIntegration"/> instance.
+            </returns>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.UnityContainerExtensions.CreateChildContainer(Microsoft.Practices.Unity.IUnityContainer,System.Boolean)">
+            <summary>
+            Creates child container.
+            </summary>
+            <param name="unityContainer">Target container.</param>
+            <param name="enableComposition">True if the child container should
+            support MEF integration. False otherwise.</param>
+            <returns><see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> child container.</returns>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.UnityContainerExtensions.IsTypeRegistered(Microsoft.Practices.Unity.IUnityContainer,System.Type)">
+            <summary>
+            Returns whether a specified type has a type mapping registered in the container.
+            </summary>
+            <param name="container">The <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> to check for the type mapping.</param>
+            <param name="type">The type to check if there is a type mapping for.</param>
+            <returns><see langword="true"/> if there is a type mapping registered for <paramref name="type"/>.</returns>
+            <remarks>In order to use this extension method, you first need to add the
+            <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> extension to the <see cref="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension"/>.
+            </remarks>        
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Strategies.ICompositionContainerPolicy">
+            <summary>
+            Represents a builder strategy which holds a <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/> instance.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Strategies.ICompositionContainerPolicy.Container">
+            <summary>
+            Gets the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/> instance.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Strategies.CompositionContainerPolicy">
+            <summary>
+            Default implementation of the <see cref="T:MefContrib.Integration.Unity.Strategies.ICompositionContainerPolicy"/> interface.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Strategies.CompositionContainerPolicy.#ctor(System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <summary>
+            Creates a new instance of the <see cref="T:MefContrib.Integration.Unity.Strategies.CompositionContainerPolicy"/> class.
+            </summary>
+            <param name="container">Instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/>
+            this policy holds.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Strategies.CompositionContainerPolicy.Container">
+            <summary>
+            Gets the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/> instance.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension">
+            <summary>
+            Unity extension that exposes events which can be used
+            to track types registered within <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> container.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.IsTypeRegistered(Microsoft.Practices.Unity.IUnityContainer,System.Type)">
+            <summary>
+            Evaluates if a specified type was registered in the container.
+            </summary>
+            <param name="container">The container to check if the type was registered in.</param>
+            <param name="type">The type to check if it was registered.</param>
+            <returns><see langword="true"/> if the <paramref name="type"/> was registered with the container.</returns>
+            <remarks>
+            In order to use this extension, you must first call <see cref="!:IUnityContainer.AddNewExtension&lt;TExtension&gt;"/> 
+            and specify <see cref="T:Microsoft.Practices.Unity.UnityContainerExtension"/> as the extension type.
+            </remarks>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.RegisterIfMissing(Microsoft.Practices.Unity.IUnityContainer)">
+            <summary>
+            Helper method that registers <see cref="T:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension"/> extensions
+            in the Unity container if not previously registered.
+            </summary>
+            <param name="container">Target container.</param>
+        </member>
+        <member name="E:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.RegisteringInstance">
+            <summary>
+            Event raised whenever an instance is being registered.
+            </summary>
+        </member>
+        <member name="E:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.Registering">
+            <summary>
+            Event raised whenever a type is being registered.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.Extensions.TypeRegistrationTrackerExtension.Entries">
+            <summary>
+            Gets all types registered int the <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> since
+            this extension was enabled.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.Exporters.ExporterConstants">
+            <summary>
+            Contains constants used in external export metadata.
+            </summary>
+        </member>
+        <member name="F:MefContrib.Integration.Unity.Exporters.ExporterConstants.IsExternallyProvidedMetadataName">
+            <summary>
+            Identifies an export provided by <see cref="T:MefContrib.Integration.Unity.Exporters.ExternalExportProvider"/>.
+            </summary>
+        </member>
+        <member name="T:MefContrib.Integration.Unity.CompositionIntegration">
+            <summary>
+            Represents a Unity extension that adds integration with
+            Managed Extensibility Framework.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.CompositionIntegration.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.CompositionIntegration"/> class.
+            </summary>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.CompositionIntegration.#ctor(System.ComponentModel.Composition.Hosting.ExportProvider[])">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.CompositionIntegration"/> class.
+            </summary>
+            <param name="providers">An array of export providers.</param>
+        </member>
+        <member name="M:MefContrib.Integration.Unity.CompositionIntegration.#ctor(System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+            <summary>
+            Initializes a new instance of <see cref="T:MefContrib.Integration.Unity.CompositionIntegration"/> class.
+            </summary>
+            <param name="register">If true, <see cref="P:MefContrib.Integration.Unity.CompositionIntegration.CompositionContainer"/> instance
+            will be registered in the Unity container.</param>
+            <param name="providers">An array of export providers.</param>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.CompositionIntegration.Register">
+            <summary>
+            Returns true if underlying <see cref="P:MefContrib.Integration.Unity.CompositionIntegration.CompositionContainer"/> should be registered
+            in the <see cref="T:Microsoft.Practices.Unity.IUnityContainer"/> container.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.CompositionIntegration.Catalogs">
+            <summary>
+            Gets a collection of catalogs MEF is able to access.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.CompositionIntegration.Providers">
+            <summary>
+            Gets a read-only collection of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider"/>s registered in this extension.
+            </summary>
+        </member>
+        <member name="P:MefContrib.Integration.Unity.CompositionIntegration.CompositionContainer">
+            <summary>
+            Gets <see cref="P:MefContrib.Integration.Unity.CompositionIntegration.CompositionContainer"/> used by the extension.
+            </summary>
+        </member>
+    </members>
+</doc>
