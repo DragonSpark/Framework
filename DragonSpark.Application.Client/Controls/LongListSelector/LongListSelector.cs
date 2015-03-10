@@ -607,7 +607,7 @@ namespace DragonSpark.Application.Client.Controls.LongListSelector
 		/// <summary>
 		///     Initializes a new instance of <see cref="LongListSelector" />.
 		/// </summary>
-		public LongListSelector( bool systemTrayVisible, Window page )
+		public LongListSelector( /*bool systemTrayVisible, Window page*/ )
 		{
 			DefaultStyleKey = typeof(LongListSelector);
 		}

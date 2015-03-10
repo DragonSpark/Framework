@@ -1,6 +1,5 @@
 using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Application.Client.Eventing;
-using DragonSpark.Application.Client.Forms.Rendering;
 using DragonSpark.Application.Client.Interaction;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
@@ -11,6 +10,16 @@ using Size = System.Windows.Size;
 
 namespace DragonSpark.Application.Client.Forms
 {
+	class Animatable : IAnimatable
+	{
+		public void BatchBegin()
+		{
+		}
+		public void BatchCommit()
+		{
+		}
+	}
+
 	[RegisterAs( typeof(IPlatform) )]
 	public class PlatformModel : BindableBase, IPlatform
 	{
@@ -119,7 +128,7 @@ namespace DragonSpark.Application.Client.Forms
 			}
 		}   double scaleFactor = 1.0d;
 
-		object IPlatform.BindingContext
+		/*object IPlatform.BindingContext
 		{
 			get { return application.BindingContext; }
 			set
@@ -129,7 +138,7 @@ namespace DragonSpark.Application.Client.Forms
 					application.BindingContext = value;
 				}
 			}
-		}
+		}*/
 
 		public IPlatformEngine Engine
 		{

@@ -14,21 +14,21 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class EntryRenderer : ViewRenderer<Entry, Grid>
 	{
-		EntryTextBox entryTextBox;
+		EntryTextBox textBox;
 		PasswordBox passwordBox;
 		bool passwordBoxHasFocus;
 
 		protected override void OnElementChanged( ElementChangedEventArgs<Entry> e )
 		{
 			base.OnElementChanged( e );
-			entryTextBox = new EntryTextBox();
-			entryTextBox.LostFocus += OnTextBoxUnfocused;
+			textBox = new EntryTextBox();
+			textBox.LostFocus += OnTextBoxUnfocused;
 			passwordBox = new PasswordBox();
 			SetNativeControl( new Grid
 			{
 				Children =
 				{
-					entryTextBox,
+					textBox,
 					passwordBox
 				}
 			} );
@@ -36,10 +36,11 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			UpdateInputScope();
 			UpdatePlaceholder();
 			UpdateColor();
-			entryTextBox.TextChanged += TextBoxOnTextChanged;
-			entryTextBox.KeyUp += TextBoxOnKeyUp;
-			passwordBox.PasswordChanged += PasswordBoxOnPasswordChanged;
-			passwordBox.KeyUp += TextBoxOnKeyUp;
+			textBox.TextChanged += TextBoxOnTextChanged;
+			textBox.KeyUp += TextBoxOnKeyUp;
+			/*passwordBox.PasswordChanged += PasswordBoxOnPasswordChanged;
+			passwordBox.KeyUp += TextBoxOnKeyUp;*/
+			this.passwordBox.IsHitTestVisible = false;
 			passwordBox.GotFocus += delegate
 			{
 				this.passwordBoxHasFocus = true;
@@ -54,7 +55,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 					this.passwordBox.Foreground = base.Element.TextColor.ToBrush();
 				}
 			};
-			passwordBox.IsEnabled = ( entryTextBox.IsEnabled = Element.IsEnabled );
+			passwordBox.IsEnabled = ( textBox.IsEnabled = Element.IsEnabled );
 			UpdateControl();
 		}
 
@@ -66,18 +67,18 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 			if ( !string.IsNullOrEmpty( Element.Text ) )
 			{
-				entryTextBox.Foreground = Element.TextColor.ToBrush();
+				textBox.Foreground = Element.TextColor.ToBrush();
 			}
 		}
 
 		void UpdateInputScope()
 		{
-			entryTextBox.InputScope = Element.Keyboard.ToInputScope();
+			textBox.InputScope = Element.Keyboard.ToInputScope();
 		}
 
 		internal override void OnModelFocusChangeRequested( object sender, VisualElement.FocusRequestArgs args )
 		{
-			var control = entryTextBox.IsHitTestVisible ? (Control)entryTextBox : passwordBox;
+			var control = textBox.IsHitTestVisible ? (Control)textBox : passwordBox;
 			if ( args.Focus )
 			{
 				args.Result = control.Focus();
@@ -116,7 +117,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 		void TextBoxOnTextChanged( object sender, TextChangedEventArgs textChangedEventArgs )
 		{
-			( (IElementController)Element ).SetValueFromRenderer( Entry.TextProperty, entryTextBox.Text );
+			( (IElementController)Element ).SetValueFromRenderer( Entry.TextProperty, textBox.Text );
 		}
 
 		protected override void OnElementPropertyChanged( object sender, PropertyChangedEventArgs e )
@@ -140,7 +141,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			}
 			if ( e.PropertyName == VisualElement.IsEnabledProperty.PropertyName )
 			{
-				passwordBox.IsEnabled = ( entryTextBox.IsEnabled = Element.IsEnabled );
+				passwordBox.IsEnabled = ( textBox.IsEnabled = Element.IsEnabled );
 				return;
 			}
 			if ( e.PropertyName == Entry.TextColorProperty.PropertyName )
@@ -156,14 +157,14 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 
 		void UpdateText()
 		{
-			entryTextBox.Text = ( Element.Text ?? "" );
-			entryTextBox.Select( entryTextBox.Text.Length, 0 );
+			textBox.Text = ( Element.Text ?? "" );
+			textBox.Select( textBox.Text.Length, 0 );
 			passwordBox.Password = ( Element.Text ?? "" );
 		}
 
 		void UpdateColor()
 		{
-			if ( entryTextBox == null )
+			if ( textBox == null )
 			{
 				return;
 			}
@@ -174,48 +175,42 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 				{
 					if ( element.TextColor != Color.Default )
 					{
-						entryTextBox.Foreground = element.TextColor.ToBrush();
-						passwordBox.Foreground = entryTextBox.Foreground;
+						textBox.Foreground = element.TextColor.ToBrush();
+						passwordBox.Foreground = textBox.Foreground;
 						return;
 					}
-					entryTextBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(EntryTextBox) ).DefaultValue;
+					textBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(EntryTextBox) ).DefaultValue;
 					passwordBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(PasswordBox) ).DefaultValue;
 				}
 			}
 			else
 			{
-				entryTextBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(EntryTextBox) ).DefaultValue;
+				textBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(EntryTextBox) ).DefaultValue;
 				passwordBox.Foreground = (Brush)System.Windows.Controls.Control.ForegroundProperty.GetMetadata( typeof(PasswordBox) ).DefaultValue;
 			}
 		}
 
 		void UpdatePlaceholder()
 		{
-			entryTextBox.Hint = ( Element.Placeholder ?? "" );
+			textBox.Hint = ( Element.Placeholder ?? "" );
 		}
 
-		void UpdateControl()
+		private void UpdateControl()
 		{
-			if ( Element.IsPassword )
+			if (!base.Element.IsPassword)
 			{
-				if ( !string.IsNullOrEmpty( Element.Text ) || passwordBoxHasFocus )
-				{
-					passwordBox.Opacity = 1.0;
-					entryTextBox.Opacity = 0.0;
-				}
-				else
-				{
-					passwordBox.Opacity = 0.0;
-					entryTextBox.Opacity = 1.0;
-				}
-				passwordBox.IsHitTestVisible = true;
-				entryTextBox.IsHitTestVisible = false;
+				this.passwordBox.Opacity = 0.0;
+				this.textBox.Opacity = 1.0;
 				return;
 			}
-			passwordBox.Opacity = 0.0;
-			entryTextBox.Opacity = 1.0;
-			passwordBox.IsHitTestVisible = false;
-			entryTextBox.IsHitTestVisible = true;
+			if (!string.IsNullOrEmpty(base.Element.Text) || this.passwordBoxHasFocus)
+			{
+				this.passwordBox.Opacity = 1.0;
+				this.textBox.Opacity = 0.0;
+				return;
+			}
+			this.passwordBox.Opacity = 0.0;
+			this.textBox.Opacity = 1.0;
 		}
 
 		void PasswordBoxOnPasswordChanged( object sender, RoutedEventArgs routedEventArgs )

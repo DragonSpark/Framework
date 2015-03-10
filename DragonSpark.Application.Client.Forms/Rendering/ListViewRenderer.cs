@@ -1,8 +1,8 @@
+using DragonSpark.Application.Client.Controls.LongListSelector;
 using DragonSpark.Extensions;
 using FirstFloor.ModernUI.Windows.Media;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -18,9 +18,9 @@ using Point = System.Windows.Point;
 
 namespace DragonSpark.Application.Client.Forms.Rendering
 {
-	public class ListViewRenderer : ViewRenderer<ListView, ListBox>
+	public class ListViewRenderer : ViewRenderer<ListView, LongListSelector>
 	{
-		class Animatable : IAnimatable
+		/*class Animatable : IAnimatable
 		{
 			public void BatchBegin()
 			{}
@@ -28,9 +28,10 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			public void BatchCommit()
 			{}
 		}
-
+*/
 		Animatable animatable;
-		ListBox listBox;
+		FixedLongListSelector listBox;
+		private System.Windows.Controls.ProgressBar progressBar;
 		Zoombox viewport;
 		object fromNative;
 		bool itemNeedsSelecting;
@@ -40,34 +41,120 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 		protected override void OnElementChanged( ElementChangedEventArgs<ListView> e )
 		{
 			base.OnElementChanged( e );
-			Element.PropertyChanged += ElementOnPropertyChanged;
+			Element.PropertyChanged += OnElementPropertyChanged;
 			Element.ScrollToRequested += OnScrollToRequested;
 			if ( Element.SelectedItem != null )
 			{
 				itemNeedsSelecting = true;
 			}
-			listBox = new ListBox
+			listBox = new FixedLongListSelector
 			{
 				DataContext = Element,
 				ItemsSource = Element.TemplatedItems,
-				ItemTemplate = (DataTemplate)System.Windows.Application.Current.Resources["CellTemplate"]
+				ItemTemplate = (DataTemplate)System.Windows.Application.Current.Resources["CellTemplate"],
+				/*JumpListStyle = (System.Windows.Style)System.Windows.Application.Current.Resources["HeaderJumpStyle"],*/
+				ListHeaderTemplate = (System.Windows.DataTemplate)System.Windows.Application.Current.Resources["View"],
+				ListFooterTemplate = (System.Windows.DataTemplate)System.Windows.Application.Current.Resources["View"]
 				/*GroupHeaderTemplate = (DataTemplate)Application.Current.Resources["ListViewHeader"],
 				JumpListStyle = (Style)Application.Current.Resources["HeaderJumpStyle"]*/
 			};
 			// listBox.SetBinding( LongListSelector.IsGroupingEnabledProperty, new Binding( "IsGroupingEnabled" ) );
 			listBox.SelectionChanged += OnNativeSelectionChanged;
 			listBox.MouseLeftButtonUp += OnNativeItemTapped;
-			listBox.Items.To<INotifyCollectionChanged>().CollectionChanged += OnItemRealized;
+			listBox.Link += OnItemRealized;
+			this.listBox.PullToRefreshStarted += new EventHandler(this.OnPullToRefreshStarted);
+			this.listBox.PullToRefreshCompleted += new EventHandler(this.OnPullToRefreshCompleted);
+			this.listBox.PullToRefreshCanceled += new EventHandler(this.OnPullToRefreshCanceled);
+			this.listBox.PullToRefreshStatusUpdated += new EventHandler(this.OnPullToRefreshStatusUpdated);
 
 			SetNativeControl( listBox );
+			this.progressBar = new System.Windows.Controls.ProgressBar
+			{
+				Maximum = 1.0,
+				Visibility = Visibility.Collapsed
+			};
+			base.Children.Add(this.progressBar);
+			this.UpdateHeader();
+			this.UpdateFooter();
+		}
+		private void OnPullToRefreshStatusUpdated(object sender, EventArgs eventArgs)
+		{
+			if (!base.Element.IsPullToRefreshEnabled)
+			{
+				return;
+			}
+			this.progressBar.Value = Math.Max(0.0, Math.Min(1.0, this.listBox.PullToRefreshStatus));
+		}
+		private void OnPullToRefreshCanceled(object sender, EventArgs args)
+		{
+			if (!base.Element.IsPullToRefreshEnabled)
+			{
+				return;
+			}
+			this.progressBar.Visibility = Visibility.Collapsed;
+		}
+		private void OnPullToRefreshCompleted(object sender, EventArgs args)
+		{
+			if (!base.Element.IsPullToRefreshEnabled)
+			{
+				return;
+			}
+			this.progressBar.IsIndeterminate = true;
+			((IListViewController)base.Element).SendRefreshing();
 		}
 
-		void ElementOnPropertyChanged( object sender, PropertyChangedEventArgs e )
+		private void OnPullToRefreshStarted(object sender, EventArgs args)
 		{
+			if (!base.Element.IsPullToRefreshEnabled)
+			{
+				return;
+			}
+			this.progressBar.Visibility = Visibility.Visible;
+			this.progressBar.IsIndeterminate = false;
+			this.progressBar.Value = Math.Max(0.0, Math.Min(1.0, this.listBox.PullToRefreshStatus));
+		}
+		protected override void UpdateNativeWidget()
+		{
+			base.UpdateNativeWidget();
+			this.progressBar.Width = base.Element.Width;
+		}
+		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			base.OnElementPropertyChanged(sender, e);
 			if ( e.PropertyName == ListView.SelectedItemProperty.PropertyName )
 			{
-				OnItemSelected( Element.SelectedItem );
+				if (e.PropertyName == ListView.SelectedItemProperty.PropertyName)
+				{
+					this.OnItemSelected(base.Element.SelectedItem);
+					return;
+				}
+				if (e.PropertyName == "HeaderElement")
+				{
+					this.UpdateHeader();
+					return;
+				}
+				if (e.PropertyName == "FooterElement")
+				{
+					this.UpdateFooter();
+					return;
+				}
+				if (e.PropertyName == ListView.IsRefreshingProperty.PropertyName)
+				{
+					this.UpdateIsRefreshing();
+				}
 			}
+		}
+
+		private void UpdateIsRefreshing()
+		{
+			if (base.Element.IsRefreshing)
+			{
+				this.progressBar.Visibility = Visibility.Visible;
+				this.progressBar.IsIndeterminate = true;
+				return;
+			}
+			this.progressBar.IsIndeterminate = false;
+			this.progressBar.Visibility = ((this.listBox.IsInPullToRefresh && base.Element.IsPullToRefreshEnabled) ? Visibility.Visible : Visibility.Collapsed);
 		}
 
 		double GetHeight(Dictionary<System.Windows.DataTemplate, FrameworkElement> reusables, System.Windows.DataTemplate template, object bindingContext)
@@ -91,6 +178,15 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			frameworkElement.DataContext = bindingContext;
 			frameworkElement.Measure(new System.Windows.Size(actualWidth, double.PositiveInfinity));
 			return frameworkElement.DesiredSize.Height;
+		}
+
+		private void UpdateHeader()
+		{
+			base.Control.ListHeader = ((IListViewController)base.Element).HeaderElement;
+		}
+		private void UpdateFooter()
+		{
+			base.Control.ListFooter = ((IListViewController)base.Element).FooterElement;
 		}
 
 		void OnScrollToRequested( object sender, ScrollToRequestedEventArgs e )
@@ -233,23 +329,18 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			return desiredSize;
 		}
 
-		void OnItemRealized( object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs )
+		void OnItemRealized( object sender, LinkUnlinkEventArgs linkUnlinkEventArgs )
 		{
 			if ( itemNeedsSelecting )
 			{
-				switch ( notifyCollectionChangedEventArgs.Action )
+				linkUnlinkEventArgs.ContentPresenter.DataContext.As<Cell>( cell =>
 				{
-					case NotifyCollectionChangedAction.Add:
-						notifyCollectionChangedEventArgs.NewItems.OfType<Cell>().Apply( cell =>
-						{
-							if ( cell != null && Equals( cell.BindingContext, Element.SelectedItem ) )
-							{
-								itemNeedsSelecting = false;
-								OnItemSelected( Element.SelectedItem );
-							}
-						} );
-						break;
-				}
+					if ( cell != null && Equals( cell.BindingContext, Element.SelectedItem ) )
+					{
+						itemNeedsSelecting = false;
+						OnItemSelected( Element.SelectedItem );
+					}
+				} );
 			}
 		}
 
@@ -497,6 +588,168 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 				return;
 			}
 			SetSelectedVisual( cellControl );
+		}
+	}
+
+
+	public class FixedLongListSelector : LongListSelector
+	{
+		private bool isInPullToRefresh;
+		private double pullToRefreshStatus;
+		private System.Windows.Point lastPosition;
+		public event EventHandler PullToRefreshStarted;
+		public event EventHandler PullToRefreshCompleted;
+		public event EventHandler PullToRefreshCanceled;
+		public event EventHandler PullToRefreshStatusUpdated;
+		public Zoombox ViewportControl
+		{
+			get;
+			private set;
+		}
+		public double PullToRefreshStatus
+		{
+			get
+			{
+				return this.pullToRefreshStatus;
+			}
+			set
+			{
+				if (this.pullToRefreshStatus == value)
+				{
+					return;
+				}
+				this.pullToRefreshStatus = value;
+				EventHandler pullToRefreshStatusUpdated = this.PullToRefreshStatusUpdated;
+				if (pullToRefreshStatusUpdated != null)
+				{
+					pullToRefreshStatusUpdated(this, EventArgs.Empty);
+				}
+			}
+		}
+		public bool IsInPullToRefresh
+		{
+			get
+			{
+				return this.isInPullToRefresh;
+			}
+			private set
+			{
+				if (this.isInPullToRefresh == value)
+				{
+					return;
+				}
+				this.isInPullToRefresh = value;
+				if (this.isInPullToRefresh)
+				{
+					EventHandler pullToRefreshStarted = this.PullToRefreshStarted;
+					if (pullToRefreshStarted != null)
+					{
+						pullToRefreshStarted(this, EventArgs.Empty);
+						return;
+					}
+				}
+				else
+				{
+					EventHandler eventHandler = (this.PullToRefreshStatus >= 1.0) ? this.PullToRefreshCompleted : this.PullToRefreshCanceled;
+					if (eventHandler != null)
+					{
+						eventHandler(this, EventArgs.Empty);
+					}
+					this.pullToRefreshStatus = 0.0;
+				}
+			}
+		}
+		private bool ViewportAtTop
+		{
+			get { return ViewportControl.Viewport.Top == 0.0; }
+		}
+		public FixedLongListSelector()
+		{
+			base.Loaded += OnLoaded;
+		}
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+			if (this.ViewportControl != null) // TODO: Implement pull-to-refresh for WPF???
+			{
+				this.ViewportControl.CurrentViewChanged -= this.OnViewportChanged;
+				// this.ViewportControl.ManipulationStateChanged -= new EventHandler<ManipulationStateChangedEventArgs>(this.OnManipulationStateChanged);
+			}
+			this.ViewportControl = (Zoombox)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(this, 0), 0), 0);
+			this.ViewportControl.CurrentViewChanged += OnViewportChanged;
+			// this.ViewportControl.ManipulationStateChanged += new EventHandler<ManipulationStateChangedEventArgs>(this.OnManipulationStateChanged);
+		}
+		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+		{
+			base.Loaded -= new RoutedEventHandler(this.OnLoaded);
+			base.Unloaded += new RoutedEventHandler(this.OnUnloaded);
+			Touch.FrameReported += new TouchFrameEventHandler(this.OnFrameReported);
+		}
+		private void OnFrameReported(object sender, TouchFrameEventArgs e)
+		{
+			TouchPoint primaryTouchPoint;
+			try
+			{
+				primaryTouchPoint = e.GetPrimaryTouchPoint(this);
+			}
+			catch (Exception)
+			{
+				return;
+			}
+			if (primaryTouchPoint != null && primaryTouchPoint.Action == TouchAction.Move)
+			{
+				System.Windows.Point position = primaryTouchPoint.Position;
+				if (this.IsInPullToRefresh)
+				{
+					double num = position.Y - this.lastPosition.Y;
+					this.PullToRefreshStatus += num / 150.0;
+				}
+				this.lastPosition = position;
+				return;
+			}
+		}
+		private void OnViewportChanged(object o, EventArgs args)
+		{
+			/*if (this.ViewportControl.ManipulationState == ManipulationState.Manipulating)
+			{
+				this.IsInPullToRefresh = this.ViewportAtTop;
+			}*/
+		}
+		/*private void OnManipulationStateChanged(object o, ManipulationStateChangedEventArgs args)
+		{
+			switch (this.ViewportControl.ManipulationState)
+			{
+			case ManipulationState.Idle:
+				this.IsInPullToRefresh = false;
+				return;
+			case ManipulationState.Manipulating:
+				this.IsInPullToRefresh = this.ViewportAtTop;
+				return;
+			case ManipulationState.Animating:
+				this.IsInPullToRefresh = false;
+				return;
+			default:
+				throw new ArgumentOutOfRangeException();
+			}
+		}*/
+		private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+		{
+			base.Loaded += new RoutedEventHandler(this.OnLoaded);
+			base.Unloaded -= new RoutedEventHandler(this.OnUnloaded);
+			Touch.FrameReported -= new TouchFrameEventHandler(this.OnFrameReported);
+		}
+		protected override System.Windows.Size MeasureOverride(System.Windows.Size availableSize)
+		{
+			System.Windows.Size result;
+			try
+			{
+				result = base.MeasureOverride(availableSize);
+			}
+			catch (ArgumentException)
+			{
+				result = base.MeasureOverride(availableSize);
+			}
+			return result;
 		}
 	}
 }

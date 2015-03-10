@@ -79,11 +79,11 @@ namespace DragonSpark.Application.Client.Forms
 
 		public Task PushModalAsync( Page modal, bool animated )
 		{
-			modal.Parent = platform.Page.Parent;
+			// modal.Parent = platform.Page.Parent;
 			var tcs = new TaskCompletionSource<object>();
 			model.PushModal( modal );
 			SetCurrent( model.CurrentPage, animated, false, () => tcs.SetResult( null ) );
-			modal.NavigationProxy.Inner = this;
+			// modal.NavigationProxy.Inner = this;
 			return tcs.Task;
 		}
 
@@ -114,10 +114,11 @@ namespace DragonSpark.Application.Client.Forms
 		{
 			model.Push( root, ancester );
 			await SetCurrent( model.CurrentPage, animated );
-			if ( root.NavigationProxy.Inner == null )
+
+			new[] { root.NavigationProxy, root.Parent.AsTo<Xamarin.Forms.Application, NavigationProxy>( application => application.NavigationProxy ) }.NotNull().Where( proxy => proxy.Inner == null ).Apply( proxy =>
 			{
-				root.NavigationProxy.Inner = this;
-			}
+				proxy.Inner = this;
+			} );
 		}
 
 		public Task<Page> PopAsync()

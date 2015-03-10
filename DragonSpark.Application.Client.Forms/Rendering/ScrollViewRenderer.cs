@@ -7,22 +7,103 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 {
 	public class ScrollViewRenderer : ViewRenderer<ScrollView, ScrollViewer>
 	{
+		Animatable animatable;
+
 		public ScrollViewRenderer()
 		{
 			base.AutoPackage = false;
 		}
+
+		protected IScrollViewController Controller
+		{
+			get { return Element; }
+		}
+
 		protected override void OnElementChanged(ElementChangedEventArgs<ScrollView> e)
 		{
 			base.OnElementChanged(e);
-			base.SetNativeControl(new ScrollViewer());
-			base.SizeChanged += delegate(object sender, SizeChangedEventArgs args)
+			if (e.OldElement != null)
 			{
-				base.Control.Width = base.ActualWidth;
-				base.Control.Height = base.ActualHeight;
+				((IScrollViewController)e.OldElement).ScrollToRequested -= OnScrollToRequested;
+			}
+			if (e.NewElement != null)
+			{
+				if (base.Control == null)
+				{
+					base.SetNativeControl(new ScrollViewer
+					{
+						// ManipulationMode = ManipulationMode.Control
+					});
+					base.Control.LayoutUpdated += ( sender, args ) => UpdateScrollPosition();
+				}
+				((IScrollViewController)e.NewElement).ScrollToRequested += OnScrollToRequested;
+			}
+			SetNativeControl( new ScrollViewer() );
+			SizeChanged += ( sender, args ) =>
+			{
+				Control.Width = ActualWidth;
+				Control.Height = ActualHeight;
 			};
-			this.UpdateOrientation();
-			this.LoadContent();
+			UpdateOrientation();
+			LoadContent();
 		}
+
+		void OnScrollToRequested(object sender, ScrollToRequestedEventArgs e)
+		{
+			if (this.animatable == null && e.ShouldAnimate)
+			{
+				this.animatable = new Animatable();
+			}
+			ScrollToPosition arg_34_0 = e.Position;
+			double x = e.ScrollX;
+			double y = e.ScrollY;
+			if (e.Mode == ScrollToMode.Element)
+			{
+				Xamarin.Forms.Point scrollPositionForElement = this.Controller.GetScrollPositionForElement(e.Element as VisualElement, e.Position);
+				x = scrollPositionForElement.X;
+				y = scrollPositionForElement.Y;
+			}
+			if (base.Control.VerticalOffset == y && base.Control.HorizontalOffset == x)
+			{
+				return;
+			}
+			if (e.ShouldAnimate)
+			{
+				Animation animation = new Animation(delegate(double v)
+				{
+					this.UpdateScrollOffset(ScrollViewRenderer.GetDistance(this.Control.ViewportWidth, x, v), ScrollViewRenderer.GetDistance(this.Control.ViewportHeight, y, v));
+				}, 0.0, 1.0, null, null);
+				animation.Commit(this.animatable, "ScrollTo", 16u, 500u, Easing.CubicInOut, delegate(double v, bool d)
+				{
+					this.UpdateScrollOffset(x, y);
+					this.Controller.SendScrollFinished();
+				}, null);
+				return;
+			}
+			this.UpdateScrollOffset(x, y);
+			this.Controller.SendScrollFinished();
+		}
+		private void UpdateScrollOffset(double x, double y)
+		{
+			if (base.Element.Orientation == ScrollOrientation.Horizontal)
+			{
+				base.Control.ScrollToHorizontalOffset(x);
+				return;
+			}
+			base.Control.ScrollToVerticalOffset(y);
+		}
+		private static double GetDistance(double start, double position, double v)
+		{
+			return start + (position - start) * v;
+		}
+		private void UpdateScrollPosition()
+		{
+			if (base.Element != null)
+			{
+				this.Controller.SetScrolledPosition(base.Control.HorizontalOffset, base.Control.VerticalOffset);
+			}
+		}
+
 		public override SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
 			SizeRequest desiredSize = base.GetDesiredSize(widthConstraint, heightConstraint);

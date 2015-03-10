@@ -1,10 +1,10 @@
+using DragonSpark.Extensions;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using DragonSpark.Extensions;
 using Xamarin.Forms;
 using NavigationEventArgs = System.Windows.Navigation.NavigationEventArgs;
 
@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Client.Forms.Rendering
 			base.OnElementChanged( e );
 			if ( Control == null )
 			{
-				var webBrowser = new WebBrowser();
+				var webBrowser = new WebBrowser {  }; // TODO: Enable scripting? http://www.dotnetfunda.com/articles/show/840/working-with-webbrowser-in-wpf
 				webBrowser.Navigated += WebBrowserOnNavigated;
 				webBrowser.Navigating += WebBrowserOnNavigating;
 				// webBrowser.NavigationFailed += WebBrowserOnNavigationFailed;

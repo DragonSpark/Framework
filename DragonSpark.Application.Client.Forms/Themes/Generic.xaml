@@ -45,6 +45,10 @@
 		<ContentPresenter Height="{Binding RenderHeight, Converter={StaticResource HeightConverter}}"  Content="{Binding View, Converter={StaticResource ViewToRenderer}}" />
 	</DataTemplate>
 
+	<DataTemplate x:Key="View">
+		<ContentPresenter Content="{Binding Path=.,Converter={StaticResource ViewToRenderer}}" />
+	</DataTemplate>
+
 	<!--<Style x:Key="HeaderJumpStyle" TargetType="phone:LongListSelector">
 		<Setter Property="GridCellSize" Value="113,113" />
 		<Setter Property="LayoutMode" Value="Grid" />
