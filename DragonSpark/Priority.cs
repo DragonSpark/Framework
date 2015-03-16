@@ -1,6 +1,6 @@
 namespace DragonSpark
 {
-	public enum Priority
+	public enum Priority 
 	{
 		Lowest = -9,
 		AboveLowest = -8,
