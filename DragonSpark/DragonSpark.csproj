@@ -24,7 +24,8 @@
     <SccProvider />
     <TargetFrameworkProfile />
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>DragonSpark.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
