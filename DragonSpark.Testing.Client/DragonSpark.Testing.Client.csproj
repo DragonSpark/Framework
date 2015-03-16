@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>c11e989a</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>ff88f343</NuGetPackageImportStamp>
+  <XccRemoveIgnorableContent>True</XccRemoveIgnorableContent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,9 +99,11 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\packages\xcc.1.0.7\build\Xcc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xcc.1.0.7\build\Xcc.targets'))" />
   </Target>
   <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
   <Import Project="..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\xcc.1.0.7\build\Xcc.targets" Condition="Exists('..\packages\xcc.1.0.7\build\Xcc.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
