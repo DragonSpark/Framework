@@ -12,7 +12,7 @@ namespace Prism
     /// </summary>
     public static class ExceptionExtensions
     {
-        private static List<Type> frameworkExceptionTypes = new List<Type>();
+        private static readonly List<Type> FrameworkExceptionTypes = new List<Type>();
 
         /// <summary>
         /// Register the type of an Exception that is thrown by the framework. The <see cref="GetRootException"/> method uses
@@ -23,8 +23,8 @@ namespace Prism
         {
             if (frameworkExceptionType == null) throw new ArgumentNullException("frameworkExceptionType");
 
-            if (!frameworkExceptionTypes.Contains(frameworkExceptionType))
-                frameworkExceptionTypes.Add(frameworkExceptionType);
+            if (!FrameworkExceptionTypes.Contains(frameworkExceptionType))
+                FrameworkExceptionTypes.Add(frameworkExceptionType);
         }
 
 
@@ -38,7 +38,7 @@ namespace Prism
         /// </returns>
         public static bool IsFrameworkExceptionRegistered(Type frameworkExceptionType)
         {
-            return frameworkExceptionTypes.Contains(frameworkExceptionType);
+            return FrameworkExceptionTypes.Contains(frameworkExceptionType);
         }
 
         /// <summary>
@@ -86,12 +86,12 @@ namespace Prism
 
         private static bool IsFrameworkException(Exception exception)
         {
-            bool isFrameworkException = frameworkExceptionTypes.Contains(exception.GetType());
+            bool isFrameworkException = FrameworkExceptionTypes.Contains(exception.GetType());
             bool childIsFrameworkException = false;
 
             if (exception.InnerException != null)
             {
-                childIsFrameworkException = frameworkExceptionTypes.Contains(exception.InnerException.GetType());
+                childIsFrameworkException = FrameworkExceptionTypes.Contains(exception.InnerException.GetType());
             }
 
             return isFrameworkException || childIsFrameworkException;

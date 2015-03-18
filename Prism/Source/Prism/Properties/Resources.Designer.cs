@@ -71,6 +71,15 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bootstrapper sequence completed..
+        /// </summary>
+        public static string BootstrapperSequenceCompleted {
+            get {
+                return ResourceManager.GetString("BootstrapperSequenceCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot change the region name once is set. The current region name is &apos;{0}&apos;..
         /// </summary>
         public static string CannotChangeRegionNameException {
@@ -125,6 +134,51 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuring default region behaviors..
+        /// </summary>
+        public static string ConfiguringDefaultRegionBehaviors {
+            get {
+                return ResourceManager.GetString("ConfiguringDefaultRegionBehaviors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring module catalog..
+        /// </summary>
+        public static string ConfiguringModuleCatalog {
+            get {
+                return ResourceManager.GetString("ConfiguringModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring region adapters..
+        /// </summary>
+        public static string ConfiguringRegionAdapters {
+            get {
+                return ResourceManager.GetString("ConfiguringRegionAdapters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring ServiceLocator singleton..
+        /// </summary>
+        public static string ConfiguringServiceLocatorSingleton {
+            get {
+                return ResourceManager.GetString("ConfiguringServiceLocatorSingleton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring the Unity container..
+        /// </summary>
+        public static string ConfiguringUnityContainer {
+            get {
+                return ResourceManager.GetString("ConfiguringUnityContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ContentControl&apos;s Content property is not empty. 
         ///    This control is being associated with a region, but the control is already bound to something else. 
         ///    If you did not explicitly set the control&apos;s Content property, 
@@ -133,6 +187,24 @@ namespace Prism.Properties {
         public static string ContentControlHasContentException {
             get {
                 return ResourceManager.GetString("ContentControlHasContentException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating module catalog..
+        /// </summary>
+        public static string CreatingModuleCatalog {
+            get {
+                return ResourceManager.GetString("CreatingModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating Unity container..
+        /// </summary>
+        public static string CreatingUnityContainer {
+            get {
+                return ResourceManager.GetString("CreatingUnityContainer", resourceCulture);
             }
         }
         
@@ -335,6 +407,15 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing modules..
+        /// </summary>
+        public static string InitializingModules {
+            get {
+                return ResourceManager.GetString("InitializingModules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The argument must be a valid absolute Uri to an assembly file..
         /// </summary>
         public static string InvalidArgumentAssemblyUri {
@@ -379,6 +460,15 @@ namespace Prism.Properties {
         public static string ItemsControlHasItemsSourceException {
             get {
                 return ResourceManager.GetString("ItemsControlHasItemsSourceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logger was created successfully..
+        /// </summary>
+        public static string LoggerCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoggerCreatedSuccessfully", resourceCulture);
             }
         }
         
@@ -460,6 +550,33 @@ namespace Prism.Properties {
         public static string NoRetrieverCanRetrieveModule {
             get {
                 return ResourceManager.GetString("NoRetrieverCanRetrieveModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ILoggerFacade is required and cannot be null..
+        /// </summary>
+        public static string NullLoggerFacadeException {
+            get {
+                return ResourceManager.GetString("NullLoggerFacadeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The IModuleCatalog is required and cannot be null in order to initialize the modules..
+        /// </summary>
+        public static string NullModuleCatalogException {
+            get {
+                return ResourceManager.GetString("NullModuleCatalogException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The IUnityContainer is required and cannot be null..
+        /// </summary>
+        public static string NullUnityContainerException {
+            get {
+                return ResourceManager.GetString("NullUnityContainerException", resourceCulture);
             }
         }
         
@@ -615,6 +732,15 @@ namespace Prism.Properties {
         public static string RegionViewNameExistsException {
             get {
                 return ResourceManager.GetString("RegionViewNameExistsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registering Framework Exception Types..
+        /// </summary>
+        public static string RegisteringFrameworkExceptionTypes {
+            get {
+                return ResourceManager.GetString("RegisteringFrameworkExceptionTypes", resourceCulture);
             }
         }
         

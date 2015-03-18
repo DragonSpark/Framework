@@ -55,9 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Events\DelegateReference.cs" />
     <Compile Include="Events\WeakDelegatesManager.cs" />
-    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="Interactivity\CommandBehaviorBase.cs" />
     <Compile Include="Interactivity\DefaultPopupWindows\DefaultConfirmationWindow.xaml.cs">
       <DependentUpon>DefaultConfirmationWindow.xaml</DependentUpon>

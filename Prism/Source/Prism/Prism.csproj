@@ -40,6 +40,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +58,8 @@
     <Compile Include="Events\PrismEvent.cs" />
     <Compile Include="Events\SubscriptionToken.cs" />
     <Compile Include="Events\ThreadOption.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="InitializeModulesCommand.cs" />
     <Compile Include="ListDictionary.cs" />
     <Compile Include="Logging\Category.cs" />
     <Compile Include="Logging\EmptyLogger.cs" />
@@ -95,6 +98,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RegisterFrameworkExceptionTypesCommand.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="SetupCommand.cs" />
+    <Compile Include="SetupContext.cs" />
+    <Compile Include="SetupLoggingCommandBase.cs" />
+    <Compile Include="SetupModuleCatalogCommandBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">
