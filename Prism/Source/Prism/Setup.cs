@@ -42,12 +42,17 @@ namespace Prism
         {
             var context = CreateContext( arguments, runWithDefaultConfiguration );
 
-            foreach ( var command in Commands.Where( command => command.CanExecute( context ) ) )
+            foreach ( var command in DetermineCommands( context ) )
             {
                 command.Execute( context );
             }
             
             context.Logger.Log(Resources.BootstrapperSequenceCompleted, Category.Debug, Priority.Low);
+        }
+
+        protected virtual IEnumerable<ICommand> DetermineCommands( SetupContext context )
+        {
+            return Commands.Where( command => command.CanExecute( context ) );
         }
 
         protected virtual SetupContext CreateContext( object arguments, bool runWithDefaultConfiguration )
