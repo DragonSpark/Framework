@@ -224,7 +224,7 @@
     <Compile Include="Setup\IUnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\RegistrationAttribute.cs" />
-    <Compile Include="Setup\UnityContainerConfiguration.cs" />
+    <Compile Include="Setup\SetupUnityContainer.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityInstance.cs" />
     <Compile Include="Setup\UnityType.cs" />

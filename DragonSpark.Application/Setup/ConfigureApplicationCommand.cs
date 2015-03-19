@@ -6,7 +6,7 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Application.Setup
 {
-	[ContentProperty( "Profile" )]
+	/*[ContentProperty( "Profile" )]
 	public class ConfigureApplicationCommand : SetupCommand
 	{
 		public ApplicationProfile Profile { get; set; }
@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Setup
 		{
 			context.Container().RegisterInstance( Profile );
 		}
-	}
+	}*/
 
 	public class InitializeMarkupCommand : SetupCommand
 	{

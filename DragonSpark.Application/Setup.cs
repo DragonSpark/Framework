@@ -12,6 +12,7 @@ using Prism;
 using Prism.Logging;
 using Prism.Modularity;
 using Prism.Unity;
+using RegisterFrameworkExceptionTypesCommand = Prism.Unity.RegisterFrameworkExceptionTypesCommand;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Application
@@ -22,11 +23,21 @@ namespace DragonSpark.Application
 	[ContentProperty( "Commands" )]
 	public class Setup<TLoggingFacade, TModuleCatalog> : Prism.Setup<TLoggingFacade, TModuleCatalog> where TLoggingFacade : ILoggerFacade, new() where TModuleCatalog : IModuleCatalog, new()
 	{
-		public override void Run( object arguments = null, bool runWithDefaultConfiguration = true )
+		protected Setup()
+		{
+			var commands = new ICommand[]
+			{
+				new SetupUnityCommand(), new RegisterFrameworkExceptionTypesCommand()
+			};
+
+			Commands.AddRange( commands );
+		}
+
+		public override void Run( object arguments = null )
 		{
 			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configuring );
 
-			base.Run( runWithDefaultConfiguration );
+			base.Run( arguments );
 
 			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configured );
 		}
@@ -87,7 +98,7 @@ namespace DragonSpark.Application
 		}*/
 	}
 
-	public class SetupUnityCommand : Prism.Unity.SetupUnityCommand
+	public class SetupUnityCommand : Prism.Unity.Windows.SetupUnityCommand
 	{
 		protected override IUnityContainer CreateContainer()
 		{

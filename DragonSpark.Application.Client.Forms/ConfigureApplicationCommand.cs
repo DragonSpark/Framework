@@ -1,40 +1,51 @@
-﻿using DragonSpark.Application.Setup;
+﻿using DragonSpark.Application.Client.Forms.ComponentModel;
+using DragonSpark.Application.Setup;
 using DragonSpark.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism;
 using Prism.Events;
 using Prism.Unity;
 using System;
-using System.Security.Principal;
+using System.Windows.Media;
 using Xamarin.Forms;
+using EventTrigger = System.Windows.EventTrigger;
 
 namespace DragonSpark.Application.Client.Forms
 {
-	[System.Windows.Markup.ContentProperty( "Initializer" )]
-	public class ConfigureApplicationCommand : DragonSpark.Application.Setup.ConfigureApplicationCommand
+	public class SetupApplicationCommand : Client.SetupApplicationCommand
 	{
-		public IInitializer Initializer { get; set; }
+		public SetupApplicationCommand()
+		{
+			Handlers = new[] { typeof(ExportRendererAttribute), typeof(ExportCellAttribute), typeof(ExportImageSourceHandlerAttribute) };
+		}
 
-		// [Default( PrincipalPolicy.WindowsPrincipal )]
-		public PrincipalPolicy? PrincipalPolicy { get; set; }
+		public SolidColorBrush Accent { get; set; }
+
+		public Type[] Handlers { get; set; }
 
 		protected override void Execute( SetupContext context )
 		{
 			base.Execute( context );
 
-			PrincipalPolicy.WithValue( AppDomain.CurrentDomain.SetPrincipalPolicy );
-
-			Initializer.Initialize();
-
-			var container = context.Container();
-
-			System.Windows.Application.Current.With( x =>
+			new EventTrigger();
+			
+			Accent.Transform( brush => Xamarin.Forms.Color.FromRgba( brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A ) ).With( color =>
 			{
-				container.RegisterInstance( System.Windows.Application.Current.Dispatcher );
-				x.Exit += ( s, a ) => container.Resolve<IServiceLocator>().TryDispose();
+				Xamarin.Forms.Color.Accent = color;
 			} );
+				
+			Log.Listeners.Add( new DelegateLogListener( ( c, m ) => Console.WriteLine( @"[{0}] {1}", m, c ) ) );
+			Device.OS = TargetPlatform.Other;
+			Device.PlatformServices = new PlatformServices();
+			Device.Info = new ComponentModel.DeviceInfo();
+			Device.Idiom = TargetIdiom.Desktop;
+			Xamarin.Forms.Ticker.Default = new Xamarin.Forms.Ticker();
+			Xamarin.Forms.ExpressionSearch.Default = new ComponentModel.ExpressionSearch();
 
+			Registrar.RegisterAll( Handlers ?? new Type[0] );
+
+			// TODO: Needs to be done from shell:
+			var container = context.Container();
 			container.Resolve<IEventAggregator>().With( aggregator => aggregator.ExecuteWhenStatusIs( SetupStatus.Configured, async () =>
 			{
 				var navigation = container.Resolve<INavigation>();
@@ -43,54 +54,4 @@ namespace DragonSpark.Application.Client.Forms
 			} ) );
 		}
 	}
-
-	/*[System.Windows.Markup.ContentProperty( "Application" )]
-	public class ConfigureFormsCommand : IContainerConfigurationCommand
-	{
-		public async void Configure( IUnityContainer container )
-		{
-			
-		}
-
-		public Xamarin.Forms.Application Application { get; set; }
-
-		[Activate( typeof(PlatformEngine) )]
-		public IPlatformEngine Engine { get; set; }
-
-		[Activate( typeof(NavigationModel) )]
-		public INavigationModel NavigationModel { get; set; }
-	}*/
-
-	/*public static class ShellProperties
-	{
-		public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached( "Title", typeof(string), typeof(ShellProperties), new PropertyMetadata( OnTitlePropertyChanged ) );
-
-		static void OnTitlePropertyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
-		{}
-
-		public static string GetTitle( FrameworkElement element )
-		{
-			return (string)element.GetValue( TitleProperty );
-		}
-
-		public static void SetTitle( FrameworkElement element, string value )
-		{
-			element.SetValue( TitleProperty, value );
-		}
-
-		public static readonly DependencyProperty DialogProperty = DependencyProperty.RegisterAttached( "Dialog", typeof(UIElement), typeof(ShellProperties), new PropertyMetadata( OnDialogPropertyChanged ) );
-
-		static void OnDialogPropertyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
-		{}
-
-		public static Window GetDialog( UIElement element )
-		{
-			return (Window)element.GetValue( DialogProperty );
-		}
-
-		public static void SetDialog( UIElement element, Window value )
-		{
-			element.SetValue( DialogProperty, value );
-		}
-	}*/
 }

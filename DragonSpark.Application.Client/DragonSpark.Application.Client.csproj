@@ -136,6 +136,7 @@
     <Compile Include="Controls\UIElementCollectionExtensions.cs" />
     <Compile Include="Controls\WriteableBitmapExtensions.cs" />
     <Compile Include="Converters\ShellLinksConverter.cs" />
+    <Compile Include="SetupShellCommand.cs" />
     <Compile Include="Threading\DispatcherExtensions.cs" />
     <Compile Include="Threading\DispatchHandler.cs" />
     <Compile Include="Eventing\FormsEvent.cs" />
@@ -160,10 +161,8 @@
     <Compile Include="Presentation\Converters.cs" />
     <Compile Include="Presentation\Markup.cs" />
     <Compile Include="Threading\Dispatch.cs" />
-    <Compile Include="Setup.cs" />
-    <Compile Include="SetupParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Threading\InitializeThreadingCommand.cs" />
+    <Compile Include="Threading\SetupThreadingCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -186,6 +185,10 @@
     <ProjectReference Include="..\Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj">
       <Project>{398442c7-f1e0-4164-afb7-b1f0d8ddb1ca}</Project>
       <Name>Microsoft.Expression.Interactions.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism.Unity.Windows\Prism.Unity.Windows.csproj">
+      <Project>{D5B22ADB-DC81-47F2-BE32-5C435895C484}</Project>
+      <Name>Prism.Unity.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Prism\Source\Prism.Presentation\Prism.Presentation.csproj">
       <Project>{F46AB4CD-67A3-4D28-8652-0593A0061ED7}</Project>

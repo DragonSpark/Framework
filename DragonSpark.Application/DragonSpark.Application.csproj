@@ -98,6 +98,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeLoggerFacade.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Setup\ConfigureApplicationCommand.cs">
       <SubType>Code</SubType>
@@ -124,7 +125,6 @@
     <Compile Include="Setup\RegisterTypesCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoggerFacade.cs" />
     <Compile Include="Markup\AssemblyVersionExtension.cs" />
     <Compile Include="Markup\ClrMemberMarkupTargetValueSetter.cs" />
     <Compile Include="Markup\DeferredMarkupExtension.cs" />
@@ -160,6 +160,10 @@
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism.Unity.Windows\Prism.Unity.Windows.csproj">
+      <Project>{d5b22adb-dc81-47f2-be32-5c435895c484}</Project>
+      <Name>Prism.Unity.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
       <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>

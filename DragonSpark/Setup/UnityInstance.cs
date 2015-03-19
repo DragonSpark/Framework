@@ -15,7 +15,7 @@ namespace DragonSpark.Setup
 
 		public object Instance { get; set; }
 
-		public Microsoft.Practices.Unity.LifetimeManager Lifetime { get; set; }
+		public LifetimeManager Lifetime { get; set; }
 
 		protected virtual object ResolveInstance( IUnityContainer container )
 		{

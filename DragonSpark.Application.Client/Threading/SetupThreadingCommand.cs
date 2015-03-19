@@ -5,7 +5,7 @@ using Prism.Unity;
 
 namespace DragonSpark.Application.Client.Threading
 {
-	public class InitializeThreadingCommand : SetupCommand
+	public class SetupThreadingCommand : SetupCommand
 	{
 		protected override void Execute( SetupContext context )
 		{

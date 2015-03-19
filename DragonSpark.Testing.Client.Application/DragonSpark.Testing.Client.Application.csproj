@@ -133,6 +133,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalAspects.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
@@ -194,6 +195,14 @@
     <ProjectReference Include="..\Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj">
       <Project>{398442c7-f1e0-4164-afb7-b1f0d8ddb1ca}</Project>
       <Name>Microsoft.Expression.Interactions.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
+      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
+      <Name>Prism</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
+      <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
+      <Name>Prism.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ using System.Windows.Input;
 namespace DragonSpark.Setup
 {
 	// [ContentProperty( "Types" )]
-	public class UnityContainerConfiguration : SetupCommand
+	public class SetupUnityContainer : SetupCommand
 	{
 		public Collection<UnityContainerExtension> Extensions
 		{
