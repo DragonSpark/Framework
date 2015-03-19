@@ -11,7 +11,10 @@ namespace Prism.Logging
     {
         readonly string format;
 
-        public TraceLogger( string format = "[Priority: {0}]: {1}" )
+        public TraceLogger() : this( "[Priority: {0}]: {1}" )
+        {}
+
+        public TraceLogger( string format )
         {
             this.format = format;
         }
