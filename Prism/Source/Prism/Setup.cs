@@ -26,7 +26,7 @@ namespace Prism
     /// <remarks>
     /// This class must be overridden to provide application specific configuration.
     /// </remarks>
-    public class Setup
+    public class Setup : ISetup
     {
         public Collection<ICommand> Commands
         {
@@ -37,10 +37,9 @@ namespace Prism
         /// Run the bootstrapper process.
         /// </summary>
         /// <param name="arguments"></param>
-        /// <param name="runWithDefaultConfiguration">If <see langword="true"/>, registers default Prism Library services in the container. This is the default behavior.</param>
-        public virtual void Run( object arguments = null, bool runWithDefaultConfiguration = true)
+        public virtual void Run(object arguments = null)
         {
-            var context = CreateContext( arguments, runWithDefaultConfiguration );
+            var context = CreateContext( arguments );
 
             foreach ( var command in DetermineCommands( context ) )
             {
@@ -55,9 +54,9 @@ namespace Prism
             return Commands.Where( command => command.CanExecute( context ) );
         }
 
-        protected virtual SetupContext CreateContext( object arguments, bool runWithDefaultConfiguration )
+        protected virtual SetupContext CreateContext( object arguments )
         {
-            var result = new SetupContext( arguments, runWithDefaultConfiguration );
+            var result = new SetupContext( arguments );
             return result;
         }
     }

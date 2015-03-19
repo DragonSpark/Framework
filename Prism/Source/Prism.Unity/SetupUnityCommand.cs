@@ -5,12 +5,20 @@ using Prism.Modularity;
 using Prism.Properties;
 using System;
 using System.Linq;
+using Prism.Events;
 
 namespace Prism.Unity
 {
     public class SetupUnityCommand : SetupCommand
     {
-        protected override void Execute( SetupContext context )
+	    public SetupUnityCommand()
+        {
+            UseDefaultConfiguration = true;
+        }
+
+        public bool UseDefaultConfiguration { get; set; }
+
+	    protected override void Execute( SetupContext context )
         {
             context.Logger.Log(Resources.CreatingUnityContainer, Category.Debug, Priority.Low);
             var container = this.CreateContainer();
@@ -62,6 +70,14 @@ namespace Prism.Unity
             {
                 container.RegisterInstance( item.GetType(), item );
             }
+
+	        if ( UseDefaultConfiguration )
+	        {
+		        context.RegisterTypeIfMissing( typeof(IServiceLocator), typeof(UnityServiceLocatorAdapter), true );
+		        context.RegisterTypeIfMissing( typeof(IModuleInitializer), typeof(ModuleInitializer), true );
+		        context.RegisterTypeIfMissing( typeof(IModuleManager), typeof(ModuleManager), true );
+		        context.RegisterTypeIfMissing( typeof(IEventAggregator), typeof(EventAggregator), true );
+	        }
         }
 
         /// <summary>

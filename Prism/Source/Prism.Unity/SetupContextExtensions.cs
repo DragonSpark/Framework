@@ -35,7 +35,8 @@ namespace Prism.Unity
 			{
 				throw new ArgumentNullException("toType");
 			}
-			if (context.Container().IsTypeRegistered(fromType))
+			var container = context.Container();
+			if (container.IsTypeRegistered(fromType))
 			{
 				var message = string.Format(CultureInfo.CurrentCulture,
 					Properties.Resources.TypeMappingAlreadyRegistered,
@@ -44,7 +45,6 @@ namespace Prism.Unity
 			}
 			else
 			{
-				var container = context.Container();
 				var manager = registerAsSingleton ? (LifetimeManager)new ContainerControlledLifetimeManager() : new TransientLifetimeManager();
 				container.RegisterType(fromType, toType, manager);
 			}

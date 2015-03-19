@@ -23,14 +23,14 @@ namespace Prism.Unity.Windows
                 RegionManager.UpdateRegions();
 
                 context.Logger.Log(Properties.Resources.InitializingShell, Category.Debug, Priority.Low);
-                this.InitializeShell();
+                this.InitializeShell( context );
             }
         }
 
         /// <summary>
         /// Initializes the shell.
         /// </summary>
-        protected virtual void InitializeShell()
+        protected virtual void InitializeShell( SetupContext context )
         {}
     }
 }

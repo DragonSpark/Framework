@@ -10,12 +10,11 @@ namespace Prism
     public class SetupContext
     {
         readonly object arguments;
-        readonly bool useDefaultConfiguration;
         
-        public SetupContext( object arguments, bool useDefaultConfiguration )
+        public SetupContext( object arguments )
         {
             this.arguments = arguments;
-            this.useDefaultConfiguration = useDefaultConfiguration;
+ 	        Register( arguments );
         }
 
         public TItem Register<TItem>( TItem item )
@@ -30,17 +29,17 @@ namespace Prism
             return result;
         }
 
-	    IEnumerable<WeakReference> Update()
-	    {
-		    var remove = items.Where( reference => !reference.IsAlive );
-		    foreach ( var reference in remove )
-		    {
-			    items.Remove( reference );
-		    }
-		    return items;
-	    }
+        IEnumerable<WeakReference> Update()
+        {
+            var remove = items.Where( reference => !reference.IsAlive );
+            foreach ( var reference in remove )
+            {
+                items.Remove( reference );
+            }
+            return items;
+        }
 
-	    public T GetArguments<T>()
+        public T GetArguments<T>()
         {
             if ( arguments == null )
             {
@@ -58,21 +57,16 @@ namespace Prism
 
         public IReadOnlyCollection<object> Items
         {
-	        get
-	        {
-		        var inner = Update().Select( reference => reference.Target ).ToList();
-		        return new ReadOnlyCollection<object>( inner );
-	        }
+            get
+            {
+                var inner = Update().Select( reference => reference.Target ).ToList();
+                return new ReadOnlyCollection<object>( inner );
+            }
         }	readonly IList<WeakReference> items = new Collection<WeakReference>();
 
         public ILoggerFacade Logger
         {
             get { return Item<ILoggerFacade>(); }
-        }
-
-        public bool UseDefaultConfiguration
-        {
-            get { return useDefaultConfiguration; }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Prism.Unity.Windows
         {
             base.ConfigureContainer( context );
 
-            if (context.UseDefaultConfiguration)
+            if (UseDefaultConfiguration)
             {
                 context.RegisterTypeIfMissing(typeof(RegionAdapterMappings), typeof(RegionAdapterMappings), true);
                 context.RegisterTypeIfMissing(typeof(IRegionManager), typeof(RegionManager), true);

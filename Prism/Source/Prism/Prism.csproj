@@ -60,6 +60,7 @@
     <Compile Include="Events\ThreadOption.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="InitializeModulesCommand.cs" />
+    <Compile Include="ISetup.cs" />
     <Compile Include="ListDictionary.cs" />
     <Compile Include="Logging\Category.cs" />
     <Compile Include="Logging\EmptyLogger.cs" />
