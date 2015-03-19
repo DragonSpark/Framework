@@ -149,7 +149,7 @@
     <Compile Include="Runtime\ExceptionHandler.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
-    <Compile Include="Setup\Setup.cs">
+    <Compile Include="Setup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\SetupEvent.cs" />

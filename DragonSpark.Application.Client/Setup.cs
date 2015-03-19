@@ -1,8 +1,8 @@
 
 namespace DragonSpark.Application.Client
 {
-	[System.Windows.Markup.ContentProperty( "Parameters" )]
-	public class Setup : DragonSpark.Application.Setup.Setup<LoggerFacade>
+	//[System.Windows.Markup.ContentProperty( "Parameters" )]
+	public class Setup : Setup<LoggerFacade>
 	{
 		/*public SetupParameters Parameters { get; set; }*/
 

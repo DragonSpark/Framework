@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
+using DragonSpark.Application.Setup;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -13,7 +14,7 @@ using Prism.Modularity;
 using Prism.Unity;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
-namespace DragonSpark.Application.Setup
+namespace DragonSpark.Application
 {
 	public class Setup<TLoggingFacade> : Setup<TLoggingFacade, ModuleCatalog> where TLoggingFacade : ILoggerFacade, new()
 	{}

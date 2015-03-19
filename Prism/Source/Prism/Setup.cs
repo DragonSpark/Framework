@@ -28,10 +28,10 @@ namespace Prism
     /// </remarks>
     public class Setup
     {
-        public ICollection<ICommand> Commands
+        public Collection<ICommand> Commands
         {
             get { return commands; }
-        }	readonly ICollection<ICommand> commands = new Collection<ICommand>();
+        }	readonly Collection<ICommand> commands = new Collection<ICommand>();
 
         /// <summary>
         /// Run the bootstrapper process.

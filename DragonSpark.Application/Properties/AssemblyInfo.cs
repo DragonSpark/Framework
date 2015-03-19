@@ -39,5 +39,6 @@ using Prism;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Application.Markup" )]
+[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Application.Setup" )]
 [assembly: Registration( Priority.BelowLower )]
 [assembly: Include( typeof(Setup) )]
