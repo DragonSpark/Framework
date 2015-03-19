@@ -42,22 +42,6 @@
       <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Practices.Prism.Interactivity">
-      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Prism.PubSubEvents.1.1.2\lib\portable-sl5+windowsphone8+windows8+net40+wpa81\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -251,6 +235,22 @@
     <ProjectReference Include="..\Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj">
       <Project>{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA}</Project>
       <Name>Microsoft.Expression.Interactions.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism.Presentation\Prism.Presentation.csproj">
+      <Project>{F46AB4CD-67A3-4D28-8652-0593A0061ED7}</Project>
+      <Name>Prism.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
+      <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>
+      <Name>Prism.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
+      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
+      <Name>Prism</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
+      <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
+      <Name>Prism.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

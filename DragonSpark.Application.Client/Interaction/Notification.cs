@@ -2,7 +2,7 @@
 using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Extensions;
 using Microsoft.Expression.Interactions.Extensions.DataHelpers;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using Prism.Interactivity.InteractionRequest;
 using System;
 using System.Windows;
 using System.Windows.Data;
@@ -161,7 +161,7 @@ namespace DragonSpark.Application.Client.Interaction
 	}
 
 	[ContentProperty( "WindowStyle" )]
-	public class PopupWindowAction : Microsoft.Practices.Prism.Interactivity.PopupWindowAction
+	public class PopupWindowAction : Prism.Interactivity.PopupWindowAction
 	{
 		public Style WindowStyle
 		{

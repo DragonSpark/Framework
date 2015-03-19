@@ -1,9 +1,8 @@
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
+using PostSharp.Patterns.Threading;
+using Prism.Events;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using PostSharp.Patterns.Threading;
 
 namespace DragonSpark.Application.Client.Eventing
 {
@@ -26,7 +25,7 @@ namespace DragonSpark.Application.Client.Eventing
 		}
 	}
 
-	public abstract class FormsEventBase<TSender> : PubSubEvent<TSender>
+	public abstract class FormsEventBase<TSender> : PrismEvent<TSender>
 	{
 		protected string GetMessageName()
 		{

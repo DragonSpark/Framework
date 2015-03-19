@@ -220,15 +220,14 @@
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
-    <Compile Include="Activation\IoC\Commands\RegisterTypesCommand.cs" />
-    <Compile Include="Activation\IoC\Commands\IUnityContainerTypeConfiguration.cs" />
-    <Compile Include="Activation\IoC\Commands\LifetimeManagerAttribute.cs" />
-    <Compile Include="Activation\IoC\Commands\RegistrationAttribute.cs" />
-    <Compile Include="Activation\IoC\Commands\UnityContainerConfiguration.cs" />
-    <Compile Include="Activation\IoC\Commands\UnityContainerTypeConfiguration.cs" />
-    <Compile Include="Activation\IoC\Commands\UnityInstance.cs" />
-    <Compile Include="Activation\IoC\Commands\UnityType.cs" />
-    <Compile Include="Activation\IoC\IContainerConfigurationCommand.cs" />
+    <Compile Include="Setup\RegisterTypesCommand.cs" />
+    <Compile Include="Setup\IUnityContainerTypeConfiguration.cs" />
+    <Compile Include="Setup\LifetimeManagerAttribute.cs" />
+    <Compile Include="Setup\RegistrationAttribute.cs" />
+    <Compile Include="Setup\UnityContainerConfiguration.cs" />
+    <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
+    <Compile Include="Setup\UnityInstance.cs" />
+    <Compile Include="Setup\UnityType.cs" />
     <Compile Include="Activation\IoC\IoCExtension.cs" />
     <Compile Include="Activation\IoC\LifetimeEntry.cs" />
     <Compile Include="Activation\IoC\ServiceLocator.cs" />
@@ -342,7 +341,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
+      <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>
+      <Name>Prism.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
+      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
+      <Name>Prism</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

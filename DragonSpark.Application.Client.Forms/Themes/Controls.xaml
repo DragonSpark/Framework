@@ -13,7 +13,7 @@
 	xmlns:forms="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
 	mc:Ignorable="d" 
 	xmlns:interaction="clr-namespace:DragonSpark.Application.Client.Forms.Interaction"
-	xmlns:defaultPopupWindows="clr-namespace:Microsoft.Practices.Prism.Interactivity.DefaultPopupWindows;assembly=Microsoft.Practices.Prism.Interactivity">
+	xmlns:defaultPopupWindows="clr-namespace:Prism.Interactivity.DefaultPopupWindows;assembly=Prism.Interactivity">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Generic.xaml" />
 	</ResourceDictionary.MergedDictionaries>

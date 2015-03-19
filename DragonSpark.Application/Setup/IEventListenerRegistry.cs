@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	public interface IEventListenerRegistry
 	{

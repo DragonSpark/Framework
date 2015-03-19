@@ -1,7 +1,7 @@
 using DragonSpark.Application.Client.Eventing;
 using DragonSpark.Application.Client.Interaction;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using Prism.Interactivity.InteractionRequest;
 using System.Diagnostics;
 using Xamarin.Forms;
 

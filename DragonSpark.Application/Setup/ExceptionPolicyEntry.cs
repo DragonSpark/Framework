@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Markup;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	[ContentProperty( "Handlers" )]
 	public class ExceptionPolicyEntry : MarkupExtension

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DragonSpark.Activation.IoC.Commands;
+using DragonSpark.Setup;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Forms.ComponentModel

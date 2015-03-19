@@ -1,15 +1,14 @@
 ﻿using DragonSpark.Activation;
-using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Application.Client.Presentation;
 using DragonSpark.Application.Client.Threading;
+using DragonSpark.Application.Setup;
 using DragonSpark.Client;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Unity;
+using DragonSpark.Setup;
+using Prism.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +22,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
+using Microsoft.Practices.Unity;
+using Prism.Events;
 using IAttachedObject = DragonSpark.Application.Client.Presentation.IAttachedObject;
 
 namespace DragonSpark.Application.Client.Commanding

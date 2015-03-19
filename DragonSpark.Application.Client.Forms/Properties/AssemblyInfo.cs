@@ -1,5 +1,4 @@
 ﻿using DragonSpark;
-using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Application.Client.Forms.ComponentModel;
 using DragonSpark.Application.Client.Forms.Rendering;
 using System.Diagnostics;
@@ -8,6 +7,7 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Setup;
 using Xamarin.Forms;
 using Switch = Xamarin.Forms.Switch;
 using TableView = Xamarin.Forms.TableView;

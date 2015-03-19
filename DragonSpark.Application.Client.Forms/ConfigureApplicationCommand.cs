@@ -1,7 +1,10 @@
-﻿using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
+﻿using DragonSpark.Application.Setup;
+using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
+using Prism;
+using Prism.Events;
+using Prism.Unity;
 using System;
 using System.Security.Principal;
 using Xamarin.Forms;
@@ -9,20 +12,22 @@ using Xamarin.Forms;
 namespace DragonSpark.Application.Client.Forms
 {
 	[System.Windows.Markup.ContentProperty( "Initializer" )]
-	public class ConfigureApplicationCommand : DragonSpark.Application.IoC.Commands.ConfigureApplicationCommand
+	public class ConfigureApplicationCommand : DragonSpark.Application.Setup.ConfigureApplicationCommand
 	{
 		public IInitializer Initializer { get; set; }
 
 		// [Default( PrincipalPolicy.WindowsPrincipal )]
 		public PrincipalPolicy? PrincipalPolicy { get; set; }
 
-		protected override void OnConfigure( IUnityContainer container )
+		protected override void Execute( SetupContext context )
 		{
-			base.OnConfigure( container );
+			base.Execute( context );
 
 			PrincipalPolicy.WithValue( AppDomain.CurrentDomain.SetPrincipalPolicy );
 
 			Initializer.Initialize();
+
+			var container = context.Container();
 
 			System.Windows.Application.Current.With( x =>
 			{

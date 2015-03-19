@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Markup;
 using DragonSpark.Application.Runtime;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using DragonSpark.Setup;
 using Microsoft.Practices.Unity;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Markup;
-using DragonSpark.Activation.IoC.Commands;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 
 	[ContentProperty( "IgnoreNamespacesFromTypes" )]
-	public class ApplyRegistrationsCommand : Activation.IoC.Commands.ApplyRegistrationsCommand
+	public class ApplyRegistrationsCommand : DragonSpark.Setup.ApplyRegistrationsCommand
 	{
 		[Activate( typeof(AssemblyLocator) )]
 		public override IAssemblyLocator Locator

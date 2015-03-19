@@ -1,5 +1,4 @@
 ﻿using DragonSpark;
-using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Application.Client.Presentation;
 using System.Reflection;
 using System.Resources;
@@ -7,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Markup;
+using DragonSpark.Setup;
 
 [assembly: AssemblyTitle("DragonSpark.Client.Windows")]
 [assembly: AssemblyDescription("")]

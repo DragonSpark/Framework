@@ -1,24 +1,29 @@
+using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
+using EventSourceProxy;
+using Microsoft.Practices.Unity;
+using Prism;
+using Prism.Unity;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
-using DragonSpark.Activation.IoC;
-using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
-using EventSourceProxy;
-using Microsoft.Practices.Prism.UnityExtensions;
-using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	[ContentProperty( "Definitions" )]
-	public class LoggingConfiguration : IContainerConfigurationCommand
+	public class LoggingConfiguration : SetupCommand
 	{
 		[Default( true )]
 		public bool EnableAll { get; set; }
 
-		public void Configure( IUnityContainer container )
+		public Collection<EventListenerDefinition> Definitions
 		{
+			get { return definitions; }
+		}	readonly Collection<EventListenerDefinition> definitions = new Collection<EventListenerDefinition>();
+		protected override void Execute( SetupContext context )
+		{
+			var container = context.Container();
 			container.TryResolve<IEventListenerRegistry>().With( x =>
 			{
 				Definitions.Where( y => y.Listener != null ).Apply( y =>
@@ -37,10 +42,5 @@ namespace DragonSpark.Application.IoC.Commands
 				EnableAll.IsTrue( x.EnableAll );
 			} );
 		}
-
-		public Collection<EventListenerDefinition> Definitions
-		{
-			get { return definitions; }
-		}	readonly Collection<EventListenerDefinition> definitions = new Collection<EventListenerDefinition>();
 	}
 }

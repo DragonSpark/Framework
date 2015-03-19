@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	[ContentProperty( "Entries" )]
 	public class ExceptionPolicyDefinition : MarkupExtension

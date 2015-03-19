@@ -1,9 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Interactivity;
-using DragonSpark.Application.Client.Extensions;
+﻿using DragonSpark.Application.Client.Extensions;
+using DragonSpark.Application.Setup;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
+using System.Windows;
+using System.Windows.Interactivity;
 
 namespace DragonSpark.Application.Client.Interaction
 {
@@ -13,7 +14,7 @@ namespace DragonSpark.Application.Client.Interaction
         {
             get { return GetValue( TargetStatusProperty ).To<SetupStatus>(); }
             set { SetValue( TargetStatusProperty, value ); }
-        }	public static readonly DependencyProperty TargetStatusProperty = DependencyProperty.Register( "TargetStatus", typeof(SetupStatus), typeof(SetupEventTrigger), new PropertyMetadata( SetupStatus.Initialized ) );
+        }	public static readonly DependencyProperty TargetStatusProperty = DependencyProperty.Register( "TargetStatus", typeof(SetupStatus), typeof(SetupEventTrigger), new PropertyMetadata( SetupStatus.Configured ) );
 
         [Activate]
         IEventAggregator EventAggregator { get; set; }

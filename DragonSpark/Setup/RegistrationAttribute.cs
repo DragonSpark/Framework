@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public sealed class RegistrationAttribute : Attribute
@@ -35,7 +35,7 @@ namespace DragonSpark.Activation.IoC.Commands
 
 		public IncludeAttribute( params Type[] typesInAssemblies )
 		{
-			this.assemblies = typesInAssemblies.Select( type => type.GetTypeInfo().Assembly ).ToArray();
+			assemblies = typesInAssemblies.Select( type => type.GetTypeInfo().Assembly ).ToArray();
 		}
 
 		public IEnumerable<Assembly> Assemblies

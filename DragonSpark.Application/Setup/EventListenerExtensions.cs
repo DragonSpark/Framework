@@ -3,7 +3,7 @@ using System.Diagnostics.Tracing;
 using DragonSpark.Extensions;
 using EventSourceProxy;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	public static class EventListenerExtensions
 	{

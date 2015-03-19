@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Activation.IoC.Commands;
+using DragonSpark.Setup;
 using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Application.Runtime

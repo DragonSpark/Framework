@@ -1,9 +1,9 @@
-using DragonSpark.Activation.IoC.Commands;
 using DragonSpark.Application.Client.Eventing;
 using DragonSpark.Application.Client.Interaction;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
-using Microsoft.Practices.Prism.Mvvm;
+using DragonSpark.Setup;
+using Prism.Interactivity.InteractionRequest;
+using Prism.Presentation;
 using System;
 using Xamarin.Forms;
 using Size = System.Windows.Size;

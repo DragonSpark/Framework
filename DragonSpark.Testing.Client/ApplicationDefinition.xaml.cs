@@ -1,4 +1,4 @@
-﻿using DragonSpark.Activation.IoC.Commands;
+﻿using DragonSpark.Setup;
 using Xamarin.Forms;
 
 namespace DragonSpark.Testing.Client

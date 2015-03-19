@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	[AttributeUsage( AttributeTargets.Class )]
 	public sealed class LifetimeManagerAttribute : Attribute

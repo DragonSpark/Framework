@@ -5,14 +5,14 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
 	xmlns:xfr="http://framework.dragonspark.us/forms/rendering"
-	xmlns:commands="clr-namespace:DragonSpark.Application.IoC.Commands;assembly=DragonSpark.Application"
-	xmlns:xf="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
-	xmlns:activation="clr-namespace:DragonSpark.Activation.IoC.Commands;assembly=DragonSpark"
-	xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
+			  xmlns:xf="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
+			  xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
 	xmlns:client="clr-namespace:DragonSpark.Application.Client;assembly=DragonSpark.Application.Client"
 	xmlns:local="clr-namespace:DragonSpark.Testing.Client.Application"
 	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application"
-	xmlns:threading="clr-namespace:DragonSpark.Application.Client.Threading;assembly=DragonSpark.Application.Client">
+	xmlns:threading="clr-namespace:DragonSpark.Application.Client.Threading;assembly=DragonSpark.Application.Client"
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:setup1="clr-namespace:DragonSpark.Application.Setup;assembly=DragonSpark.Application">
 	<application:Setup.Configurations>
 		<xfr:ConfigureApplicationCommand>
 			<xfr:ConfigureApplicationCommand.Profile>
@@ -29,14 +29,14 @@
 			</xfr:ConfigureApplicationCommand.Profile>
 			<xfr:FormsInitializer Accent="{ds:StaticResource PhoneAccentBrush}" />
 		</xfr:ConfigureApplicationCommand>
-		<commands:ApplyRegistrationsCommand />
-		<activation:UnityContainerConfiguration>
-			<activation:UnityContainerConfiguration.Extensions>
+		<setup1:ApplyRegistrationsCommand />
+		<setup:UnityContainerConfiguration>
+			<setup:UnityContainerConfiguration.Extensions>
 				<ioC:IoCExtension />
-			</activation:UnityContainerConfiguration.Extensions>
-		</activation:UnityContainerConfiguration>
+			</setup:UnityContainerConfiguration.Extensions>
+		</setup:UnityContainerConfiguration>
 		<threading:InitializeThreadingCommand /> 
-		<commands:InitializeMarkupCommand />
+		<setup1:InitializeMarkupCommand />
 	</application:Setup.Configurations>
 	<client:SetupParameters Shell="{ds:Locate local:Shell}" />
 </client:Setup>

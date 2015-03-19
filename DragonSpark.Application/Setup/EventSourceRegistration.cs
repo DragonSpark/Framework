@@ -1,6 +1,6 @@
 using System.Diagnostics.Tracing;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	public class EventSourceRegistration
 	{

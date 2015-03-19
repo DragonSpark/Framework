@@ -1,12 +1,14 @@
-using DragonSpark.Extensions;
-using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
+using Prism;
+using Prism.Unity;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	[AttributeUsage( AttributeTargets.Class )]
 	public sealed class RegisterAsAttribute : Attribute
@@ -60,7 +62,7 @@ namespace DragonSpark.Activation.IoC.Commands
 		}
 	}
 
-	public abstract class ApplyRegistrationsCommand : IContainerConfigurationCommand
+	public abstract class ApplyRegistrationsCommand : SetupCommand
 	{
 		/*public string AssemblyNamesStartsWith { get; set; }
 
@@ -78,17 +80,17 @@ namespace DragonSpark.Activation.IoC.Commands
 
 		public virtual IAssemblyLocator Locator { get; set; }
 
-		public void Configure( IUnityContainer container )
+		protected override void Execute( SetupContext context )
 		{
 			var assemblies = DetermineAssemblies();
 			
 			var types = DetermineCandidateTypes( assemblies );
 
-			var context = new RegistrationContext( container, assemblies, assemblies.SelectMany( assembly => assembly.FromMetadata<IncludeAttribute, IEnumerable<Assembly>>( attribute => attribute.Assemblies ) ).ToArray(), types );
+			var registrationContext = new RegistrationContext( context.Container(), assemblies, assemblies.SelectMany( assembly => assembly.FromMetadata<IncludeAttribute, IEnumerable<Assembly>>( attribute => attribute.Assemblies ) ).ToArray(), types );
 
-			RegisterBasedOnConvention( context );
+			RegisterBasedOnConvention( registrationContext );
 
-			RegisterBasedOnMetadata( context );
+			RegisterBasedOnMetadata( registrationContext );
 		}
 
 		protected virtual Assembly[] DetermineAssemblies()

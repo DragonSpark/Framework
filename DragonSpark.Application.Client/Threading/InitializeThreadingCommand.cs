@@ -1,13 +1,15 @@
 using DragonSpark.Activation.IoC;
 using Microsoft.Practices.Unity;
+using Prism;
+using Prism.Unity;
 
 namespace DragonSpark.Application.Client.Threading
 {
-	public class InitializeThreadingCommand : IContainerConfigurationCommand
+	public class InitializeThreadingCommand : SetupCommand
 	{
-		public void Configure( IUnityContainer container )
+		protected override void Execute( SetupContext context )
 		{
-			container.Resolve<IDispatchHandler>();
+			context.Container().Resolve<IDispatchHandler>();
 		}
 	}
 }

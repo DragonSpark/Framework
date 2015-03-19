@@ -2,7 +2,7 @@ using System;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	public static class ExceptionHandlerExtensions
 	{

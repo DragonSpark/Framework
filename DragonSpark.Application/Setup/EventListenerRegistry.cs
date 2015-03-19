@@ -4,7 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	public class EventListenerRegistry : IEventListenerRegistry
 	{

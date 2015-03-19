@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Windows.Markup;
 
-namespace DragonSpark.Application.IoC.Commands
+namespace DragonSpark.Application.Setup
 {
 	[ContentProperty( "Listener" )]
 	public class EventListenerDefinition

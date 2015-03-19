@@ -1,10 +1,10 @@
-﻿using DragonSpark.Extensions;
-using Microsoft.Practices.Prism.PubSubEvents;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Extensions;
+using Prism.Events;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application.Setup
 {
 	public static class SetupEventExtensions
 	{
@@ -29,7 +29,7 @@ namespace DragonSpark.Application
 		}
 	}
 
-	public class SetupEvent : PubSubEvent<SetupStatus>
+	public class SetupEvent : PrismEvent<SetupStatus>
 	{
 		readonly IList<SetupStatus> history = new List<SetupStatus>();
 

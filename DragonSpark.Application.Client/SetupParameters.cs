@@ -1,6 +1,6 @@
 using System.Windows;
 using System.Windows.Markup;
-using Microsoft.Practices.Prism.Modularity;
+using Prism.Modularity;
 
 namespace DragonSpark.Application.Client
 {
@@ -13,9 +13,9 @@ namespace DragonSpark.Application.Client
 			RunWithDefaultConfiguration = true;
 		}
 
-		public Window Shell { get; set; }
+		/*public Window Shell { get; set; }
 
-		public IModuleCatalog Catalog { get; set; }
+		public IModuleCatalog Catalog { get; set; }*/
 
 		public bool RunWithDefaultConfiguration { get; set; }
 

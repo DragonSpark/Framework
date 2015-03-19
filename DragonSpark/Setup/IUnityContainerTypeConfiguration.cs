@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	public interface IUnityContainerTypeConfiguration
 	{

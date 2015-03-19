@@ -1,14 +1,16 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Utility;
+using Prism;
+using Prism.Unity;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	// [ContentProperty( "InjectionMembers" )]
-	public class UnityType : IContainerConfigurationCommand
+	public class UnityType : SetupCommand
 	{
 		public string BuildName { get; set; }
 		
@@ -40,6 +42,11 @@ namespace DragonSpark.Activation.IoC.Commands
 			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
 
 			TypeConfigurations.Apply( item => item.Configure( container, this ) );
+		}
+
+		protected override void Execute( SetupContext context )
+		{
+			Configure( context.Container() );
 		}
 	}
 }

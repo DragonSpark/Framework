@@ -1,11 +1,13 @@
 using System;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
+using Prism;
+using Prism.Unity;
 
-namespace DragonSpark.Activation.IoC.Commands
+namespace DragonSpark.Setup
 {
 	// [ContentProperty( "Instance" )]
-	public class UnityInstance : IContainerConfigurationCommand
+	public class UnityInstance : SetupCommand
 	{
 		public string BuildName { get; set; }
 
@@ -20,17 +22,17 @@ namespace DragonSpark.Activation.IoC.Commands
 			return Instance;
 		}
 
-		void IContainerConfigurationCommand.Configure( IUnityContainer container )
-		{
-			Configure( container );
-		}
-
 		protected virtual void Configure( IUnityContainer container )
 		{
 			var instance = ResolveInstance( container );
 			var type = RegistrationType ?? instance.Transform( item => item.GetType() );
 			var registration = instance.ConvertTo( type );
-			container.RegisterInstance( type, BuildName, registration, Lifetime ?? new Microsoft.Practices.Unity.ContainerControlledLifetimeManager() );
+			container.RegisterInstance( type, BuildName, registration, Lifetime ?? new ContainerControlledLifetimeManager() );
+		}
+
+		protected override void Execute( SetupContext context )
+		{
+			Configure( context.Container() );
 		}
 	}
 }

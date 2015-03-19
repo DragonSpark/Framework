@@ -1,10 +1,10 @@
 ﻿using System;
 using DragonSpark;
-using DragonSpark.Activation.IoC.Commands;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using DragonSpark.Setup;
 using Microsoft.Practices.ServiceLocation;
 
 [assembly: CLSCompliant( false )]

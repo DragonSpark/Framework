@@ -1,14 +1,14 @@
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 using Xamarin.Forms;
 
 namespace DragonSpark.Application.Client.Eventing
 {
-	public class ShellPageChangedEvent : PubSubEvent<Page>
+	public class ShellPageChangedEvent : PrismEvent<Page>
 	{}
 
-	public class ShellSizeChangedEvent : PubSubEvent<Size>
+	public class ShellSizeChangedEvent : PrismEvent<Size>
 	{}
 
-	public class ShellScaleFactorChangedEvent : PubSubEvent<double>
+	public class ShellScaleFactorChangedEvent : PrismEvent<double>
 	{}
 }
