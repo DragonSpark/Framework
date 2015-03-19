@@ -1,12 +1,12 @@
 ﻿using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
-using PostSharp.Extensibility;
 using Prism;
 using Prism.Logging;
 using Prism.Unity;
 using System;
 using System.Security.Principal;
 using System.Windows;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Application.Client
 {

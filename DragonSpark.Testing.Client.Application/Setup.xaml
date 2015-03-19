@@ -28,7 +28,7 @@
 		</setup:UnityInstance.Instance>
 	</setup:UnityInstance>
 	<xfr:SetupApplicationCommand Accent="{ds:StaticResource PhoneAccentBrush}" />
-	<ds:ApplyRegistrationsCommand />
+	<ds:SetupRegistrationByConventionCommand />
 	<setup:SetupUnityContainer>
 		<setup:SetupUnityContainer.Extensions>
 			<ioC:IoCExtension />

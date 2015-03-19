@@ -220,12 +220,19 @@
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
-    <Compile Include="Setup\RegisterTypesCommand.cs" />
+    <Compile Include="Setup\ConventionRegistrationProfile.cs" />
+    <Compile Include="Setup\ConventionRegistrationProfileProvider.cs" />
+    <Compile Include="Setup\IConventionRegistrationService.cs" />
+    <Compile Include="Setup\IConventionRegistrationProfileProvider.cs" />
+    <Compile Include="Setup\IncludeAttribute.cs" />
+    <Compile Include="Setup\RegisterAsAttribute.cs" />
+    <Compile Include="Setup\SetupRegistrationByConventionCommand.cs" />
     <Compile Include="Setup\IUnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\RegistrationAttribute.cs" />
     <Compile Include="Setup\SetupUnityContainer.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
+    <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Setup\UnityInstance.cs" />
     <Compile Include="Setup\UnityType.cs" />
     <Compile Include="Activation\IoC\IoCExtension.cs" />

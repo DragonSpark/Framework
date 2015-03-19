@@ -129,4 +129,7 @@
 	<data name="ServiceLocator_Container" xml:space="preserve">
     <value>container</value>
   </data>
+	<data name="UnityConventionRegistrationService_Registering" xml:space="preserve">
+    <value>Registering {0} -&gt; {1}</value>
+  </data>
 </root>

@@ -96,5 +96,14 @@ namespace DragonSpark.Properties {
                 return ResourceManager.GetString("ServiceLocator_NotRegistered", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registering {0} -&gt; {1}.
+        /// </summary>
+        internal static string UnityConventionRegistrationService_Registering {
+            get {
+                return ResourceManager.GetString("UnityConventionRegistrationService_Registering", resourceCulture);
+            }
+        }
     }
 }
