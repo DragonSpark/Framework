@@ -133,7 +133,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalAspects.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>

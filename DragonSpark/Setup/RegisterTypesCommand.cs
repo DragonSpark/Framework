@@ -62,22 +62,13 @@ namespace DragonSpark.Setup
 		}
 	}
 
+	/*public interface IConventionRegister
+	{
+		void 
+	}*/
+
 	public abstract class ApplyRegistrationsCommand : SetupCommand
 	{
-		/*public string AssemblyNamesStartsWith { get; set; }
-
-		public string IgnoreNamespaces { get; set; }
-
-		public Collection<Type> IgnoreNamespacesFromTypes
-		{
-			get { return ignoreNamespacesFromTypes; }
-		}	readonly Collection<Type> ignoreNamespacesFromTypes = new Collection<Type>();
-
-		protected virtual IEnumerable<Type> IgnorableTypes
-		{
-			get { return new[] { typeof(PartialApply), typeof(IUnityContainerTypeConfiguration) }; }
-		}*/
-
 		public virtual IAssemblyLocator Locator { get; set; }
 
 		protected override void Execute( SetupContext context )
@@ -109,25 +100,7 @@ namespace DragonSpark.Setup
 			} ) );
 		}
 
-		/*protected virtual Type[] DetermineTypesForConvention()
-		{
-			/*var ignore = string.Join( ";", IgnoreNamespaces.Prepend( IgnorableTypes.Concat( IgnoreNamespacesFromTypes ).Select( x => x.Namespace ).ToArray() ) ).ToStringArray();
-			var names = AssemblyNamesStartsWith.ToStringArray();
-			var namespaces = ignore.Concat( Locator.GetAllAssemblies().SelectMany( x => x.GetCustomAttributes<IgnoreNamespaceDuringRegistrationAttribute>().Select( y => y.Namespace ) ) ).ToArray();#1#
-			var types = DetermineCandidateTypes()
-				/*.Where( x => !names.Any() || names.Any( y => x.GetTypeInfo().Assembly.GetName().Name.StartsWith( y, StringComparison.CurrentCultureIgnoreCase ) ) )
-				.Where( x => namespaces.All( y => !x.Namespace.StartsWith( y, StringComparison.CurrentCultureIgnoreCase ) ) )#1#
-				// .Where( AdditionalFilter )
-				.ToArray();
-			return types;
-		}*/
-
 		protected abstract void RegisterBasedOnConvention( RegistrationContext context );
-
-		/*protected virtual Func<Type, bool> AdditionalFilter
-		{
-			get { return x => true; }
-		}*/
 
 		protected virtual TypeInfo[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
