@@ -12,7 +12,8 @@
 	xmlns:local="clr-namespace:DragonSpark.Testing.Client.Application"
 	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application"
 	xmlns:client="clr-namespace:DragonSpark.Application.Client;assembly=DragonSpark.Application.Client"
-	xmlns:logging="clr-namespace:Prism.Logging;assembly=Prism.Wpf">
+	xmlns:logging="clr-namespace:Prism.Logging;assembly=Prism.Wpf"
+	xmlns:unity="clr-namespace:Prism.Unity;assembly=Prism.Unity">
 	<setup:UnityInstance>
 		<setup:UnityInstance.Instance>
 			<dragonSpark:ApplicationProfile
@@ -37,4 +38,5 @@
 	<threading:SetupThreadingCommand />
 	<ds:InitializeMarkupCommand />
 	<client:SetupShellCommand Shell="{ds:Locate local:Shell}" />
+	<unity:InitializeModulesCommand />
 </application:Setup>

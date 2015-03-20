@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using Prism.Modularity;
+using Prism.Regions;
 
 namespace Prism.Unity.Windows
 {
@@ -10,6 +11,8 @@ namespace Prism.Unity.Windows
 
             if (UseDefaultConfiguration)
             {
+				context.RegisterTypeIfMissing(typeof(IModuleTypeLoader), typeof(FileModuleTypeLoader), true);
+				context.RegisterTypeIfMissing(typeof(IAssemblyResolver), typeof(AssemblyResolver), true);
                 context.RegisterTypeIfMissing(typeof(RegionAdapterMappings), typeof(RegionAdapterMappings), true);
                 context.RegisterTypeIfMissing(typeof(IRegionManager), typeof(RegionManager), true);
                 context.RegisterTypeIfMissing(typeof(IRegionViewRegistry), typeof(RegionViewRegistry), true);

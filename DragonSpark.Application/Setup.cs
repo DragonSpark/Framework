@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Windows.Input;
-using System.Windows.Markup;
+﻿using DragonSpark.Activation;
 using DragonSpark.Application.Setup;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
@@ -12,12 +8,18 @@ using Prism;
 using Prism.Logging;
 using Prism.Modularity;
 using Prism.Unity;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Windows.Input;
+using System.Windows.Markup;
+using AssemblyProvider = DragonSpark.Application.Runtime.AssemblyProvider;
 using RegisterFrameworkExceptionTypesCommand = Prism.Unity.RegisterFrameworkExceptionTypesCommand;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Application
 {
-	public class Setup<TLoggingFacade> : Setup<TLoggingFacade, ModuleCatalog> where TLoggingFacade : ILoggerFacade, new()
+	public class Setup<TLoggingFacade> : Setup<TLoggingFacade, AssemblyModuleCatalog> where TLoggingFacade : ILoggerFacade, new()
 	{}
 
 	[ContentProperty( "Commands" )]
@@ -47,55 +49,6 @@ namespace DragonSpark.Application
 			var result = base.DetermineCommands( context ).Select( command => command.WithDefaults() );
 			return result;
 		}
-
-		/*class StorageLogger : ILoggerFacade
-		{
-			readonly IList<Tuple<string, Category, Prism.Logging.Priority>> storage = new List<Tuple<string, Category, Prism.Logging.Priority>>();
-
-			public static StorageLogger Instance
-			{
-				get { return InstanceField; }
-			}
-
-			static readonly StorageLogger InstanceField = new StorageLogger();
-
-			void ILoggerFacade.Log( string message, Category category, Prism.Logging.Priority priority )
-			{
-				storage.Add( new Tuple<string, Category, Prism.Logging.Priority>( message, category, priority ) );
-			}
-
-			public ILoggerFacade Purge( ILoggerFacade logger )
-			{
-				storage.ToArray().Apply( x => logger.Log( x.Item1, x.Item2, x.Item3 ) );
-				storage.Clear();
-				return logger;
-			}
-		}*/
-		
-		/*protected override ILoggerFacade CreateLogger()
-		{
-			return StorageLogger.Instance;
-		}*/
-
-		/**/
-
-		/*protected override void ConfigureContainer()
-		{
-			base.ConfigureContainer();
-
-			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configuring );
-
-			Configurations.Apply( x =>
-			{
-				var command = x.WithDefaults();
-				command.Configure( Container );
-			} );
-
-			var logger = Container.TryResolve<ILoggerFacade>() ?? base.CreateLogger();
-			Logger = StorageLogger.Instance.Purge( logger );
-			
-			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configured );
-		}*/
 	}
 
 	public class SetupUnityCommand : Prism.Unity.Windows.SetupUnityCommand
