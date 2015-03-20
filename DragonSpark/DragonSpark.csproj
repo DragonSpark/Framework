@@ -214,12 +214,32 @@
   <ItemGroup>
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
-    <Compile Include="Activation\IAssembliesProvider.cs" />
+    <Compile Include="Activation\IAssemblyProvider.cs" />
     <Compile Include="Activation\IFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
     <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
+    <Compile Include="ComponentModel\ActivateAttribute.cs" />
+    <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
+    <Compile Include="ComponentModel\DefaultAttribute.cs" />
+    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\MemberInfoLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\ExceptionFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\Log.cs" />
+    <Compile Include="Extensions\AttributeProviderExtensions.cs" />
+    <Compile Include="Extensions\BooleanExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Extensions\ServiceLocationExtensions.cs" />
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Setup\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\ConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\IConventionRegistrationService.cs" />
@@ -241,25 +261,15 @@
     <Compile Include="ApplicationProfile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ComponentModel\ActivateAttribute.cs" />
-    <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentModel\CurrentTimeDefaultAttribute.cs" />
-    <Compile Include="ComponentModel\DefaultAttribute.cs" />
-    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
     <Compile Include="ComponentModel\FactoryAttribute.cs" />
     <Compile Include="ComponentModel\IMemberInfoLocator.cs" />
     <Compile Include="ComponentModel\ITypeDefinitionProvider.cs" />
-    <Compile Include="ComponentModel\MemberInfoLocator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ComponentModel\NewGuidDefaultValueAttribute.cs" />
     <Compile Include="ConditionMonitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\ExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostics\ExceptionHandlerExtensions.cs" />
@@ -268,21 +278,11 @@
     <Compile Include="Diagnostics\IExceptionHandler.cs" />
     <Compile Include="Diagnostics\ITracingDispatcher.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\AttributeProviderExtensions.cs" />
-    <Compile Include="Extensions\BooleanExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Extensions\ServiceLocationExtensions.cs" />
-    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\StringReplacementDictionary.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
-    <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />

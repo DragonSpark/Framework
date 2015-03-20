@@ -234,7 +234,7 @@ namespace DragonSpark.Server.Legacy.Entity
 		static IEnumerable<string> DetermineDefaultAssociationPaths( IObjectContextAdapter target, Type type, bool includeOtherPath = true )
 		{
 			var names = GetAssociationPropertyNames( target, type );
-			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).Transform( a => a.Any() ? a : x.Name.Prepend() ) : x.Name.Prepend() ).ToArray();
+			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).Transform( a => a.Any() ? a : x.Name.Append() ) : x.Name.Append() ).ToArray();
 			var result = decorated.Union( names.Where( x => !decorated.Any( y => y.StartsWith( string.Concat( x, "." ) ) ) ) ).ToArray();
 			return result;
 		}
@@ -429,7 +429,7 @@ namespace DragonSpark.Server.Legacy.Entity
 				{
 					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Apply( z =>
 					{
-						var items = TypeExtensions.GetItemType( z.GetType() ) != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Prepend();
+						var items = TypeExtensions.GetItemType( z.GetType() ) != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
 						items.Apply( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;

@@ -1077,7 +1077,7 @@ namespace DragonSpark.Application.Client.Commanding
 			initialized.Apply( () =>
 			{
 				var done = !context.Items.Any();
-				var items = SetupStatus.Loading.Prepend( done ? new[] { SetupStatus.Loaded, SetupStatus.Complete } : Enumerable.Empty<SetupStatus>() );
+				var items = SetupStatus.Loading.Append( done ? new[] { SetupStatus.Loaded, SetupStatus.Complete } : Enumerable.Empty<SetupStatus>() );
 				items.Apply( Publish );
 			} );
 

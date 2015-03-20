@@ -140,7 +140,7 @@
     <Compile Include="Markup\PropertySetter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\AssemblyLocator.cs" />
+    <Compile Include="Runtime\AssemblyProvider.cs" />
     <Compile Include="Runtime\BindingOptions.cs">
       <SubType>Code</SubType>
     </Compile>
