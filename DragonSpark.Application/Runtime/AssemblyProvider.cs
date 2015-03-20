@@ -9,7 +9,10 @@ namespace DragonSpark.Application.Runtime
 {
 	public class AssemblyProvider : Activation.AssemblyProvider
 	{
-		public AssemblyProvider( Func<Assembly, bool> filter = null ) : base( filter )
+		public AssemblyProvider()
+		{}
+
+		public AssemblyProvider( Func<Assembly, bool> filter ) : base( filter )
 		{}
 
 		protected override Assembly[] DetermineAllAssemblies()
