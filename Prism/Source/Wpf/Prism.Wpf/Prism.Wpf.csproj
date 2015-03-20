@@ -76,37 +76,40 @@
     <Compile Include="Interactivity\PopupWindowAction.cs" />
     <Compile Include="Logging\TextLogger.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
-    <Compile Include="Modularity\AssemblyResolver.Desktop.cs">
+    <Compile Include="Modularity\AssemblyResolver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ConfigurationModuleCatalog.Desktop.cs">
+    <Compile Include="Modularity\ConfigurationModuleCatalog.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ConfigurationStore.Desktop.cs">
+    <Compile Include="Modularity\ConfigurationStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\DirectoryModuleCatalog.Desktop.cs">
+    <Compile Include="Modularity\DirectoryModuleCatalog.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\FileModuleTypeLoader.Desktop.cs">
+    <Compile Include="Modularity\DirectoryModuleInfoProvider.cs" />
+    <Compile Include="Modularity\FileModuleTypeLoader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\IConfigurationStore.Desktop.cs">
+    <Compile Include="Modularity\IConfigurationStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleConfigurationElement.Desktop.cs">
+    <Compile Include="Modularity\IModuleInfoProvider.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleConfigurationElementCollection.Desktop.cs">
+    <Compile Include="Modularity\ModuleConfigurationElementCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleDependencyCollection.Desktop.cs">
+    <Compile Include="Modularity\ModuleDependencyCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleDependencyConfigurationElement.Desktop.cs">
+    <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModulesConfigurationSection.Desktop.cs">
+    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\ModulesConfigurationSection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mvvm\ViewModelLocator.cs" />

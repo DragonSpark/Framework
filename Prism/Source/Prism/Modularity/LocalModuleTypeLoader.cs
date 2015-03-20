@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace Prism.Modularity
@@ -11,7 +10,7 @@ namespace Prism.Modularity
     /// <see cref="ModuleInfo"/> classes have a Ref parameter that starts with "file://". 
     /// This class is only used on the Desktop version of the Prism Library.
     /// </summary>
-    public class FileModuleTypeLoader : IModuleTypeLoader, IDisposable
+    public abstract class LocalModuleTypeLoader : IModuleTypeLoader, IDisposable
     {
         private const string RefFilePrefix = "file://";
 
@@ -19,19 +18,10 @@ namespace Prism.Modularity
         private HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileModuleTypeLoader"/> class.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "This is disposed of in the Dispose method.")]
-        public FileModuleTypeLoader()
-            : this(new AssemblyResolver())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileModuleTypeLoader"/> class.
+        /// Initializes a new instance of the <see cref="LocalModuleTypeLoader"/> class.
         /// </summary>
         /// <param name="assemblyResolver">The assembly resolver.</param>
-        public FileModuleTypeLoader(IAssemblyResolver assemblyResolver)
+        protected LocalModuleTypeLoader(IAssemblyResolver assemblyResolver)
         {
             this.assemblyResolver = assemblyResolver;
         }
@@ -116,23 +106,10 @@ namespace Prism.Modularity
                 }
                 else
                 {
-                    string path;
+                    var offset = moduleInfo.Ref.StartsWith(RefFilePrefix + "/", StringComparison.Ordinal ) ? 1 : 0;
+                    var path = moduleInfo.Ref.Substring(RefFilePrefix.Length + offset);
 
-                    if (moduleInfo.Ref.StartsWith(RefFilePrefix + "/", StringComparison.Ordinal))
-                    {
-                        path = moduleInfo.Ref.Substring(RefFilePrefix.Length + 1);
-                    }
-                    else
-                    {
-                        path = moduleInfo.Ref.Substring(RefFilePrefix.Length);
-                    }
-
-                    long fileSize = -1L;
-                    if (File.Exists(path))
-                    {
-                        FileInfo fileInfo = new FileInfo(path);
-                        fileSize = fileInfo.Length;
-                    }
+                    long fileSize = DetermineSize( path );
 
                     // Although this isn't asynchronous, nor expected to take very long, I raise progress changed for consistency.
                     this.RaiseModuleDownloadProgressChanged(moduleInfo, 0, fileSize);
@@ -154,6 +131,8 @@ namespace Prism.Modularity
             }
         }
 
+        protected abstract long DetermineSize( string path );
+        
         private bool IsSuccessfullyDownloaded(Uri uri)
         {
             lock (this.downloadedUris)

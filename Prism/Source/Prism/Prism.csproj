@@ -67,8 +67,12 @@
     <Compile Include="Logging\ILoggerFacade.cs" />
     <Compile Include="Logging\Priority.cs" />
     <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
+    <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
+    <Compile Include="Modularity\IModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\ModuleInfoBuilderBase.cs" />
     <Compile Include="Modularity\DuplicateModuleException.cs" />
-    <Compile Include="Modularity\IAssemblyResolver.Desktop.cs" />
+    <Compile Include="Modularity\LocalModuleTypeLoader.cs" />
+    <Compile Include="Modularity\IAssemblyResolver.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\IModuleCatalog.cs" />
     <Compile Include="Modularity\IModuleCatalogItem.cs" />
@@ -78,9 +82,9 @@
     <Compile Include="Modularity\InitializationMode.cs" />
     <Compile Include="Modularity\LoadModuleCompletedEventArgs.cs" />
     <Compile Include="Modularity\ModularityException.cs" />
-    <Compile Include="Modularity\ModuleAttribute.Desktop.cs" />
+    <Compile Include="Modularity\ModuleAttribute.cs" />
     <Compile Include="Modularity\ModuleCatalog.cs" />
-    <Compile Include="Modularity\ModuleDependencyAttribute.Desktop.cs" />
+    <Compile Include="Modularity\ModuleDependencyAttribute.cs" />
     <Compile Include="Modularity\ModuleDependencySolver.cs" />
     <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgs.cs" />
     <Compile Include="Modularity\ModuleInfo.cs" />
