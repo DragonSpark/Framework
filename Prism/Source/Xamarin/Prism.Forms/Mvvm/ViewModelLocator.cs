@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Prism.Navigation;
+using Prism.Presentation;
 using Xamarin.Forms;
 
 namespace Prism.Mvvm
