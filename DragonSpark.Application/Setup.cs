@@ -1,5 +1,4 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Application.Setup;
+﻿using DragonSpark.Application.Setup;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -13,7 +12,6 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
-using AssemblyProvider = DragonSpark.Application.Runtime.AssemblyProvider;
 using RegisterFrameworkExceptionTypesCommand = Prism.Unity.RegisterFrameworkExceptionTypesCommand;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
@@ -25,14 +23,14 @@ namespace DragonSpark.Application
 	[ContentProperty( "Commands" )]
 	public class Setup<TLoggingFacade, TModuleCatalog> : Prism.Setup<TLoggingFacade, TModuleCatalog> where TLoggingFacade : ILoggerFacade, new() where TModuleCatalog : IModuleCatalog, new()
 	{
-		protected Setup()
+		protected override IList<ICommand> DetermineDefaultCommands()
 		{
-			var commands = new ICommand[]
+			var result = base.DetermineDefaultCommands();
+			result.AddRange( new ICommand[]
 			{
 				new SetupUnityCommand(), new RegisterFrameworkExceptionTypesCommand()
-			};
-
-			Commands.AddRange( commands );
+			} );
+			return result;
 		}
 
 		public override void Run( object arguments = null )
@@ -44,10 +42,9 @@ namespace DragonSpark.Application
 			Events.Publish<SetupEvent, SetupStatus>( SetupStatus.Configured );
 		}
 
-		protected override IEnumerable<ICommand> DetermineCommands( SetupContext context )
+		protected override ICommand Prepare( ICommand command )
 		{
-			var result = base.DetermineCommands( context ).Select( command => command.WithDefaults() );
-			return result;
+			return command.WithDefaults();
 		}
 	}
 
