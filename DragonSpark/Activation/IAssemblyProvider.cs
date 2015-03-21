@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
+using Prism.Modularity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,6 @@ using System.Reflection;
 
 namespace DragonSpark.Activation
 {
-	public interface IAssemblyProvider
-	{
-		Assembly[] GetAssemblies();
-	}
-
 	public abstract class AssemblyProvider : IAssemblyProvider
 	{
 		readonly Func<Assembly, bool> filter;
@@ -38,12 +34,12 @@ namespace DragonSpark.Activation
 
 		protected virtual IEnumerable<Assembly> DetermineCoreAssemblies()
 		{
-			yield return typeof(IAssemblyProvider).GetTypeInfo().Assembly;
+			yield return typeof(AssemblyProvider).GetTypeInfo().Assembly;
 		}
 
 		protected abstract Assembly[] DetermineAllAssemblies();
 		
-		public Assembly[] GetAssemblies()
+		public IEnumerable<Assembly> GetAssemblies()
 		{
 			var result = all.Value.Where( filter ).ToArray();
 			return result;
