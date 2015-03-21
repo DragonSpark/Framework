@@ -8,17 +8,6 @@ using System.Windows.Input;
 
 namespace Prism
 {
-    public class Setup<TLoggingFacade, TModuleCatalog> : Setup
-        where TLoggingFacade : ILoggerFacade, new()
-        where TModuleCatalog : IModuleCatalog, new()
-    {
-        protected Setup()
-        {
-            Commands.Add( new SetupLoggingCommand<TLoggingFacade>() );
-            Commands.Add( new SetupModuleCatalogCommand<TModuleCatalog>() );
-        }
-    }
-
     /// <summary>
     /// Base class that provides a basic bootstrapping sequence and hooks
     /// that specific implementations can override
@@ -58,6 +47,20 @@ namespace Prism
         {
             var result = new SetupContext( arguments );
             return result;
+        }
+    }
+
+    public class Setup<TLoggingFacade, TModuleCatalog> : Setup
+        where TLoggingFacade : ILoggerFacade, new()
+        where TModuleCatalog : IModuleCatalog, new()
+    {
+        protected Setup()
+        {
+            Commands.AddRange(new ICommand[]
+            {
+                new SetupLoggingCommand<TLoggingFacade>(),
+                new SetupModuleCatalogCommand<TModuleCatalog>()
+            });
         }
     }
 }
