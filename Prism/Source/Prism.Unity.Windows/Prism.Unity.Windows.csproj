@@ -83,15 +83,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
+    <ProjectReference Include="..\Prism.Unity\Prism.Unity.csproj">
       <Project>{3388756d-3b64-4f93-9232-ea7e1d224d8a}</Project>
       <Name>Prism.Unity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
+    <ProjectReference Include="..\Prism\Prism.csproj">
       <Project>{e6c50355-d01e-4caa-884d-d7929861315c}</Project>
       <Name>Prism</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
+    <ProjectReference Include="..\Wpf\Prism.Wpf\Prism.Wpf.csproj">
       <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
       <Name>Prism.Wpf</Name>
     </ProjectReference>

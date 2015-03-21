@@ -1,7 +1,7 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using Prism.Logging;
+using System;
+using System.Globalization;
 
 namespace Prism.Unity
 {
@@ -36,7 +36,7 @@ namespace Prism.Unity
 				throw new ArgumentNullException("toType");
 			}
 			var container = context.Container();
-			if (container.IsTypeRegistered(fromType))
+			if (container.IsRegistered(fromType))
 			{
 				var message = string.Format(CultureInfo.CurrentCulture,
 					Properties.Resources.TypeMappingAlreadyRegistered,

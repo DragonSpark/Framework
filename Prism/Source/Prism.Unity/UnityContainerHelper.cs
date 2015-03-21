@@ -11,7 +11,7 @@ namespace Prism.Unity
     [CLSCompliant(false)]
     public static class UnityContainerHelper
     {
-        /// <summary>
+        /*/// <summary>
         /// Returns whether a specified type has a type mapping registered in the container.
         /// </summary>
         /// <param name="container">The <see cref="IUnityContainer"/> to check for the type mapping.</param>
@@ -23,7 +23,7 @@ namespace Prism.Unity
         public static bool IsTypeRegistered(this IUnityContainer container, Type type)
         {
             return UnityBootstrapperExtension.IsTypeRegistered(container, type);
-        }
+        }*/
 
         /// <summary>
         /// Utility method to try to resolve a service from the container avoiding an exception if the container cannot build the type.
