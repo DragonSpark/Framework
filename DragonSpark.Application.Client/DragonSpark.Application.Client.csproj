@@ -190,13 +190,13 @@
       <Project>{398442c7-f1e0-4164-afb7-b1f0d8ddb1ca}</Project>
       <Name>Microsoft.Expression.Interactions.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prism.Unity.Windows\Prism.Unity.Windows.csproj">
-      <Project>{D5B22ADB-DC81-47F2-BE32-5C435895C484}</Project>
-      <Name>Prism.Unity.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Prism\Source\Prism.Presentation\Prism.Presentation.csproj">
       <Project>{F46AB4CD-67A3-4D28-8652-0593A0061ED7}</Project>
       <Name>Prism.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism.Unity.Windows\Prism.Unity.Windows.csproj">
+      <Project>{d5b22adb-dc81-47f2-be32-5c435895c484}</Project>
+      <Name>Prism.Unity.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
       <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>
