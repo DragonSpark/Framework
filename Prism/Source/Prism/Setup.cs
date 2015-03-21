@@ -1,6 +1,7 @@
 ﻿using Prism.Logging;
 using Prism.Modularity;
 using Prism.Properties;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,10 +18,21 @@ namespace Prism
     /// </remarks>
     public class Setup : ISetup
     {
+        public Setup()
+        {
+            commands = new Lazy<Collection<ICommand>>( () => new Collection<ICommand>( DetermineDefaultCommands() ) );
+        }
+
         public Collection<ICommand> Commands
         {
-            get { return commands; }
-        }	readonly Collection<ICommand> commands = new Collection<ICommand>();
+            get { return commands.Value; }
+        }	readonly Lazy<Collection<ICommand>> commands;
+
+        protected virtual IList<ICommand> DetermineDefaultCommands()
+        {
+            var result = new List<ICommand>();
+            return result;
+        }
 
         /// <summary>
         /// Run the bootstrapper process.
@@ -30,7 +42,7 @@ namespace Prism
         {
             var context = CreateContext( arguments );
 
-            foreach ( var command in DetermineCommands( context ) )
+            foreach ( var command in DetermineRunCommands( context ) )
             {
                 command.Execute( context );
             }
@@ -38,9 +50,14 @@ namespace Prism
             context.Logger.Log(Resources.BootstrapperSequenceCompleted, Category.Debug, Priority.Low);
         }
 
-        protected virtual IEnumerable<ICommand> DetermineCommands( SetupContext context )
+        protected virtual IEnumerable<ICommand> DetermineRunCommands( SetupContext context )
         {
-            return Commands.Where( command => command.CanExecute( context ) );
+            return Commands.Where( command => command.CanExecute( context ) ).Select( Prepare );
+        }
+
+        protected virtual ICommand Prepare( ICommand command )
+        {
+            return command;
         }
 
         protected virtual SetupContext CreateContext( object arguments )
@@ -54,13 +71,15 @@ namespace Prism
         where TLoggingFacade : ILoggerFacade, new()
         where TModuleCatalog : IModuleCatalog, new()
     {
-        protected Setup()
+        protected override IList<ICommand> DetermineDefaultCommands()
         {
-            Commands.AddRange(new ICommand[]
+            var result = base.DetermineDefaultCommands();
+            result.AddRange( new ICommand[]
             {
                 new SetupLoggingCommand<TLoggingFacade>(),
                 new SetupModuleCatalogCommand<TModuleCatalog>()
-            });
+            } );
+            return result;
         }
     }
 }
