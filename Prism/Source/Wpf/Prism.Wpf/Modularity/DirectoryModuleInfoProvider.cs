@@ -27,7 +27,7 @@ namespace Prism.Modularity
 			Assembly assembly = FromLoaded( typeof(IModule).Assembly.FullName );
 			Type moduleType = assembly.GetType(typeof(IModule).FullName);
 
-			var result = GetModuleInfos(directory, moduleType).ToArray();
+			var result = GetModuleInfos(moduleType).ToArray();
 			return result;
 		}
 
@@ -70,7 +70,7 @@ namespace Prism.Modularity
 			return null;
 		}
 
-		private IEnumerable<ModuleInfo> GetModuleInfos(DirectoryInfo directory, Type moduleType)
+		private IEnumerable<ModuleInfo> GetModuleInfos(Type moduleType)
 		{
 			var loaded = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().Select( assembly => Path.GetFileName(assembly.Location) ).ToArray();
 

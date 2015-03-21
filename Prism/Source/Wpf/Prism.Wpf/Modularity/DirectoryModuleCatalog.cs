@@ -24,26 +24,16 @@ namespace Prism.Modularity
     /// </remarks>
     public class DirectoryModuleCatalog : AssemblyModuleCatalog
     {
-        public DirectoryModuleCatalog() : base( new ModuleInfoBuilder() )
+        public DirectoryModuleCatalog() : this( new AssemblyProvider(), new ModuleInfoBuilder() )
         {}
 
-        public DirectoryModuleCatalog( IModuleInfoBuilder builder ) : base( builder )
+        public DirectoryModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )
         {}
 
         /// <summary>
         /// Directory containing modules to search for.
         /// </summary>
         public string ModulePath { get; set; }
-
-        protected override IEnumerable<Assembly> GetAssemblies()
-        {
-            var result = from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
-                where !(assembly is System.Reflection.Emit.AssemblyBuilder)
-                      && assembly.GetType().FullName != "System.Reflection.Emit.InternalAssemblyBuilder"
-                      && !string.IsNullOrEmpty(assembly.Location)
-                select assembly;
-            return result;
-        }
 
         protected override IEnumerable<ModuleInfo> GetModuleInfos( IEnumerable<Assembly> assemblies )
         {

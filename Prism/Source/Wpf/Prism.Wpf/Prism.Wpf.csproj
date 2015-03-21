@@ -76,6 +76,7 @@
     <Compile Include="Interactivity\PopupWindowAction.cs" />
     <Compile Include="Logging\TextLogger.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
+    <Compile Include="Modularity\AssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs">
       <SubType>Code</SubType>
     </Compile>

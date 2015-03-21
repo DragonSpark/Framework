@@ -6,10 +6,12 @@ namespace Prism.Modularity
 {
     public abstract class AssemblyModuleCatalog : ModuleCatalog
     {
+        readonly IAssemblyProvider provider;
         readonly IModuleInfoBuilder builder;
 
-        protected AssemblyModuleCatalog( IModuleInfoBuilder builder )
+        protected AssemblyModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder )
         {
+            this.provider = provider;
             this.builder = builder;
         }
 
@@ -39,6 +41,10 @@ namespace Prism.Modularity
             return result;
         }
 
-        protected abstract IEnumerable<Assembly> GetAssemblies();
+        protected virtual IEnumerable<Assembly> GetAssemblies()
+        {
+            var result = provider.GetAssemblies();
+            return result;
+        }
     }
 }

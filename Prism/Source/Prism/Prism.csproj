@@ -68,6 +68,7 @@
     <Compile Include="Logging\Priority.cs" />
     <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
+    <Compile Include="Modularity\IAssemblyProvider.cs" />
     <Compile Include="Modularity\IModuleInfoBuilder.cs" />
     <Compile Include="Modularity\ModuleInfoBuilderBase.cs" />
     <Compile Include="Modularity\DuplicateModuleException.cs" />
