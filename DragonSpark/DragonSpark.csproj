@@ -260,7 +260,7 @@
     <Compile Include="Activation\IoC\IoCExtension.cs" />
     <Compile Include="Activation\IoC\LifetimeEntry.cs" />
     <Compile Include="Activation\IoC\ServiceLocator.cs" />
-    <Compile Include="ApplicationProfile.cs">
+    <Compile Include="ApplicationInformation.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">

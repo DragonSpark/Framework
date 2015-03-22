@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Setup
 	/*[ContentProperty( "Profile" )]
 	public class ConfigureApplicationCommand : SetupCommand
 	{
-		public ApplicationProfile Profile { get; set; }
+		public ApplicationInformation Profile { get; set; }
 
 		protected override void Execute( SetupContext context )
 		{

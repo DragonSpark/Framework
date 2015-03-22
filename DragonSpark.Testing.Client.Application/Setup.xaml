@@ -17,7 +17,7 @@
 	xmlns:modularity="clr-namespace:Prism.Modularity;assembly=Prism.Wpf">
 	<setup:UnityInstance>
 		<setup:UnityInstance.Instance>
-			<dragonSpark:ApplicationProfile
+			<dragonSpark:ApplicationInformation
 				Title="{ds:Metadata reflection:AssemblyTitleAttribute, 'Title'}"
 				Product="{ds:Metadata reflection:AssemblyProductAttribute, 'Product'}"
 				Company="{ds:Metadata reflection:AssemblyCompanyAttribute, 'Company'}"

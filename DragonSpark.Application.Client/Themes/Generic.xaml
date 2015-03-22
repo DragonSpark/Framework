@@ -8,9 +8,9 @@
 	xmlns:presentation="clr-namespace:DragonSpark.Application.Client.Presentation"
 	xmlns:ds="clr-namespace:DragonSpark.Application.Client.Interaction"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-	xmlns:si="clr-namespace:Microsoft.Expression.Interactions.Extensions;assembly=Microsoft.Expression.Interactions.Extensions"
 	xmlns:markup="http://framework.dragonspark.us">
 	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/button.xaml" />
 		<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
 		<ResourceDictionary Source="/DragonSpark.Application.Client;component/Themes/Controls.xaml" />
 	</ResourceDictionary.MergedDictionaries>

@@ -2,7 +2,7 @@ using System;
 
 namespace DragonSpark
 {
-	public class ApplicationProfile
+	public class ApplicationInformation
 	{
 		public string Title { get; set; }
 

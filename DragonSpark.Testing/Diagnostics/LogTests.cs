@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Diagnostics
 	using Xunit;
 	using Xunit.Extensions;
 
-	[Freeze( typeof(ApplicationProfile) )]
+	[Freeze( typeof(ApplicationInformation) )]
 	public class LogTests
 	{
 		/*[Theory, AutoMockData, AssignServiceLocation]

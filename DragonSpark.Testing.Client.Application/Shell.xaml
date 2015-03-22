@@ -24,14 +24,14 @@
 	</i:Interaction.Behaviors>
 	<mui:ModernWindow.Title>
 		<MultiBinding StringFormat="{}{0}: {1}">
-			<Binding Source="{ds:Locate dragonSpark:ApplicationProfile}" Path="Title" />
+			<Binding Source="{ds:Locate dragonSpark:ApplicationInformation}" Path="Title" />
 			<Binding Path="Page.Title" />
 		</MultiBinding>
 	</mui:ModernWindow.Title>
 	<ds:Shell.LogoContentTemplate>
 		<DataTemplate DataType="ImageSource">
 			<Border Width="36" Height="{Binding Width, RelativeSource={RelativeSource Self}}" Padding="2" Margin="8,0" DataContext="{Binding}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
-				<Image Stretch="Uniform" Source="{Binding}" ToolTipService.ToolTip="{Binding Title, Source={ds:Locate dragonSpark:ApplicationProfile}}" />
+				<Image Stretch="Uniform" Source="{Binding}" ToolTipService.ToolTip="{Binding Title, Source={ds:Locate dragonSpark:ApplicationInformation}}" />
 			</Border>
 		</DataTemplate>
 	</ds:Shell.LogoContentTemplate>

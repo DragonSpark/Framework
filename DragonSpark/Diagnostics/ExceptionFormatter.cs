@@ -5,12 +5,12 @@ namespace DragonSpark.Diagnostics
 	public class ExceptionFormatter : IExceptionFormatter
 	{
 		readonly IExceptionFormatter formatter;
-		readonly ApplicationProfile profile;
+		readonly ApplicationInformation information;
 
-		public ExceptionFormatter( IExceptionFormatter formatter,  ApplicationProfile profile )
+		public ExceptionFormatter( IExceptionFormatter formatter,  ApplicationInformation information )
 		{
 			this.formatter = formatter;
-			this.profile = profile;
+			this.information = information;
 		}
 
 		string IExceptionFormatter.FormatMessage( Exception exception, Guid? contextId )
@@ -22,9 +22,9 @@ namespace DragonSpark.Diagnostics
 		{
 			var result = string.Format( "Exception occured in application {1} ({2}).{0}[Version: {3}]{0}{0}{4}{0}{5}{0}Details:{0}=============================================={0}{6}",
 				Environment.NewLine,
-				profile.Title,
-				profile.Product,
-				profile.Version,
+				information.Title,
+				information.Product,
+				information.Version,
 				exception.Message,
 				exception.GetType(),
 				formatter.FormatMessage( exception, contextId ) );
