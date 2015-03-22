@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Runtime
 			get { return InstanceField; }
 		}	static readonly AssemblyProvider InstanceField = new AssemblyProvider();
 
-		public AssemblyProvider() : base( Prism.Modularity.AssemblyProvider.Instance )
+		public AssemblyProvider() : base( Prism.Unity.Windows.AssemblyProvider.Instance )
 		{}
 
 		protected override IEnumerable<Assembly> DetermineCoreAssemblies()

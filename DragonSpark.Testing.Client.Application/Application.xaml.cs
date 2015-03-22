@@ -11,7 +11,6 @@ namespace DragonSpark.Testing.Client.Application
 		{
 			Trace.WriteLine( "Instantiating Application." );
 			InitializeComponent();
-			typeof(ApplicationDefinition).GetType();
 		}
 
 		/*protected override void OnStartup( StartupEventArgs e )
