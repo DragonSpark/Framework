@@ -8,22 +8,27 @@ using System.Reflection;
 
 namespace DragonSpark.Activation
 {
-	public abstract class AssemblyProvider : IAssemblyProvider
+	public abstract class AssemblyProvider : AssemblyProviderBase
 	{
+		readonly IAssemblyProvider provider;
 		readonly Func<Assembly, bool> filter;
 
 		readonly Lazy<string[]> namespaces;
 
-		readonly Lazy<Assembly[]> all;
-
-		protected AssemblyProvider() : this( null )
+		protected AssemblyProvider( IAssemblyProvider provider ) : this( provider, null )
 		{}
 
-		protected AssemblyProvider( Func<Assembly, bool> filter )
+		protected AssemblyProvider( IAssemblyProvider provider, Func<Assembly, bool> filter )
 		{
+			this.provider = provider;
 			namespaces = new Lazy<string[]>( DetermineNamespaces );
 			this.filter = filter ?? ( assembly => assembly.IsDefined( typeof(RegistrationAttribute) ) || namespaces.Value.Any( s => assembly.GetName().Name.StartsWith( s ) ) );
-			all = new Lazy<Assembly[]>( DetermineAllAssemblies );
+		}
+
+		protected override Assembly[] DetermineAll()
+		{
+			var result = provider.GetAssemblies().Where( filter ).ToArray();
+			return result;
 		}
 
 		protected virtual string[] DetermineNamespaces()
@@ -35,14 +40,6 @@ namespace DragonSpark.Activation
 		protected virtual IEnumerable<Assembly> DetermineCoreAssemblies()
 		{
 			yield return typeof(AssemblyProvider).GetTypeInfo().Assembly;
-		}
-
-		protected abstract Assembly[] DetermineAllAssemblies();
-		
-		public IEnumerable<Assembly> GetAssemblies()
-		{
-			var result = all.Value.Where( filter ).ToArray();
-			return result;
 		}
 	}
 }

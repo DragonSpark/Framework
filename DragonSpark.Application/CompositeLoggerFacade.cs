@@ -23,7 +23,7 @@ namespace DragonSpark.Application
 
 	public class AssemblyModuleCatalog : Prism.Modularity.AssemblyModuleCatalog
 	{
-		public AssemblyModuleCatalog() : this( AssemblyProvider.Instance, new ModuleInfoBuilder() )
+		public AssemblyModuleCatalog() : this( AssemblyProvider.Instance, new DynamicModuleInfoBuilder() )
 		{}
 
 		public AssemblyModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )

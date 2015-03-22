@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace DragonSpark.Testing.Client.Application
 {
@@ -12,19 +11,18 @@ namespace DragonSpark.Testing.Client.Application
 		{
 			Trace.WriteLine( "Instantiating Application." );
 			InitializeComponent();
+			typeof(ApplicationDefinition).GetType();
 		}
 
 		/*protected override void OnStartup( StartupEventArgs e )
 		{
-			try
-			{
-				var temp = Resources["PhoneAccentBrush"];
-			}
-			catch ( Exception exception )
-			{
-				Console.WriteLine( exception );
-			}
 			base.OnStartup( e );
+
+			Setup.As<Setup>( setup =>
+			{
+				var commands = setup.Commands;
+				Debugger.Break();
+			} );
 		}*/
 	}
 }

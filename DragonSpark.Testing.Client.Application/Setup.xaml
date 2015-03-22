@@ -1,5 +1,5 @@
 ﻿<application:Setup x:Class="DragonSpark.Testing.Client.Application.Setup"
-	x:TypeArguments="logging:TraceLogger"
+	x:TypeArguments="logging:TraceLogger, modularity:DirectoryModuleCatalog"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
@@ -13,7 +13,8 @@
 	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark.Application"
 	xmlns:client="clr-namespace:DragonSpark.Application.Client;assembly=DragonSpark.Application.Client"
 	xmlns:logging="clr-namespace:Prism.Logging;assembly=Prism.Wpf"
-	xmlns:unity="clr-namespace:Prism.Unity;assembly=Prism.Unity">
+	xmlns:unity="clr-namespace:Prism.Unity;assembly=Prism.Unity"
+	xmlns:modularity="clr-namespace:Prism.Modularity;assembly=Prism.Wpf">
 	<setup:UnityInstance>
 		<setup:UnityInstance.Instance>
 			<dragonSpark:ApplicationProfile

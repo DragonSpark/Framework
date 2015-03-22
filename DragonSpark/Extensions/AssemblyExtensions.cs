@@ -38,7 +38,7 @@ namespace DragonSpark.Extensions
 
 		/*static TypeInfo[] ResolveTypes( IAssemblyLocator target )
 		{
-			var query = from assembly in target.GetAllAssemblies()
+			var query = from assembly in target.GetAll()
 			            from type in assembly.DefinedTypes
 			            select type;
 			var result = query.ToArray();
