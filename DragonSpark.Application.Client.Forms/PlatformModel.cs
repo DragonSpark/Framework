@@ -10,16 +10,6 @@ using Size = System.Windows.Size;
 
 namespace DragonSpark.Application.Client.Forms
 {
-	class Animatable : IAnimatable
-	{
-		public void BatchBegin()
-		{
-		}
-		public void BatchCommit()
-		{
-		}
-	}
-
 	[RegisterAs( typeof(IPlatform) )]
 	public class PlatformModel : BindableBase, IPlatform
 	{
@@ -83,19 +73,6 @@ namespace DragonSpark.Application.Client.Forms
 			} );
 		}
 
-		/*public object Content
-		{
-
-			get { return content; }
-			private set 
-			{
-				if ( SetProperty( ref content, value ) )
-				{
-					Refresh();
-				}
-			}
-		}	object content;*/
-
 		void IPlatform.SetPage( Page current )
 		{
 			Page = current;
@@ -128,18 +105,6 @@ namespace DragonSpark.Application.Client.Forms
 				}
 			}
 		}   double scaleFactor = 1.0d;
-
-		/*object IPlatform.BindingContext
-		{
-			get { return application.BindingContext; }
-			set
-			{
-				if ( application.BindingContext != value )
-				{
-					application.BindingContext = value;
-				}
-			}
-		}*/
 
 		public IPlatformEngine Engine
 		{

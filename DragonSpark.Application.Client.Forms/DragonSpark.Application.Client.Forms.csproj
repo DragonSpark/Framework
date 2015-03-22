@@ -115,6 +115,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animatable.cs" />
     <Compile Include="ComponentModel\DeviceInfo.cs" />
     <Compile Include="ComponentModel\ExportCellAttribute.cs" />
     <Compile Include="ComponentModel\ExportImageSourceHandlerAttribute.cs" />
