@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
 
+// using System.Windows.Markup;
+using Prism.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-// using System.Windows.Markup;
-using Prism.Properties;
 
 namespace Prism.Modularity
 {
@@ -240,20 +239,7 @@ namespace Prism.Modularity
         /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
         public ModuleCatalog AddModule(Type moduleType, params string[] dependsOn)
         {
-            return this.AddModule(moduleType, InitializationMode.WhenAvailable, dependsOn);
-        }
-
-        /// <summary>
-        /// Adds a groupless <see cref="ModuleInfo"/> to the catalog.
-        /// </summary>
-        /// <param name="moduleType"><see cref="Type"/> of the module to be added.</param>
-        /// <param name="initializationMode">Stage on which the module to be added will be initialized.</param>
-        /// <param name="dependsOn">Collection of module names (<see cref="ModuleInfo.ModuleName"/>) of the modules on which the module to be added logically depends on.</param>
-        /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
-        public ModuleCatalog AddModule(Type moduleType, InitializationMode initializationMode, params string[] dependsOn)
-        {
-            if (moduleType == null) throw new System.ArgumentNullException("moduleType");
-            return this.AddModule(moduleType.Name, moduleType.AssemblyQualifiedName, initializationMode, dependsOn);
+            return this.AddModule(moduleType.Name, moduleType.AssemblyQualifiedName, dependsOn);
         }
 
         /// <summary>
@@ -265,49 +251,20 @@ namespace Prism.Modularity
         /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
         public ModuleCatalog AddModule(string moduleName, string moduleType, params string[] dependsOn)
         {
-            return this.AddModule(moduleName, moduleType, InitializationMode.WhenAvailable, dependsOn);
-        }
-
-        /// <summary>
-        /// Adds a groupless <see cref="ModuleInfo"/> to the catalog.
-        /// </summary>
-        /// <param name="moduleName">Name of the module to be added.</param>
-        /// <param name="moduleType"><see cref="Type"/> of the module to be added.</param>
-        /// <param name="initializationMode">Stage on which the module to be added will be initialized.</param>
-        /// <param name="dependsOn">Collection of module names (<see cref="ModuleInfo.ModuleName"/>) of the modules on which the module to be added logically depends on.</param>
-        /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
-        public ModuleCatalog AddModule(string moduleName, string moduleType, InitializationMode initializationMode, params string[] dependsOn)
-        {
-            return this.AddModule(moduleName, moduleType, null, initializationMode, dependsOn);
-        }
-
-        /// <summary>
-        /// Adds a groupless <see cref="ModuleInfo"/> to the catalog.
-        /// </summary>
-        /// <param name="moduleName">Name of the module to be added.</param>
-        /// <param name="moduleType"><see cref="Type"/> of the module to be added.</param>
-        /// <param name="refValue">Reference to the location of the module to be added assembly.</param>
-        /// <param name="initializationMode">Stage on which the module to be added will be initialized.</param>
-        /// <param name="dependsOn">Collection of module names (<see cref="ModuleInfo.ModuleName"/>) of the modules on which the module to be added logically depends on.</param>
-        /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
-        public ModuleCatalog AddModule(string moduleName, string moduleType, string refValue, InitializationMode initializationMode, params string[] dependsOn)
-        {
             if (moduleName == null)
-            {
-                throw new ArgumentNullException("moduleName");
-            }
+			{
+				throw new ArgumentNullException("moduleName");
+			}
 
-            if (moduleType == null)
-            {
-                throw new ArgumentNullException("moduleType");
-            }
+			if (moduleType == null)
+			{
+				throw new ArgumentNullException("moduleType");
+			}
 
-            ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType);
-            moduleInfo.DependsOn.AddRange(dependsOn);
-            moduleInfo.InitializationMode = initializationMode;
-            moduleInfo.Ref = refValue;
-            this.Items.Add(moduleInfo);
-            return this;
+			var moduleInfo = new ModuleInfo(moduleName, moduleType);
+			moduleInfo.DependsOn.AddRange(dependsOn);
+			this.Items.Add(moduleInfo);
+			return this;
         }
 
         /// <summary>
@@ -322,32 +279,6 @@ namespace Prism.Modularity
             }
 
             this.Validate();
-        }
-
-        /// <summary>
-        /// Creates and adds a <see cref="ModuleInfoGroup"/> to the catalog.
-        /// </summary>
-        /// <param name="initializationMode">Stage on which the module group to be added will be initialized.</param>
-        /// <param name="refValue">Reference to the location of the module group to be added.</param>
-        /// <param name="moduleInfos">Collection of <see cref="ModuleInfo"/> included in the group.</param>
-        /// <returns><see cref="ModuleCatalog"/> with the added module group.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
-        public virtual ModuleCatalog AddGroup(InitializationMode initializationMode, string refValue, params ModuleInfo[] moduleInfos)
-        {
-            if (moduleInfos == null) throw new System.ArgumentNullException("moduleInfos");
-
-            ModuleInfoGroup newGroup = new ModuleInfoGroup();
-            newGroup.InitializationMode = initializationMode;
-            newGroup.Ref = refValue;
-
-            foreach (ModuleInfo info in moduleInfos)
-            {
-                newGroup.Add(info);
-            }
-
-            this.items.Add(newGroup);
-
-            return this;
         }
 
         /// <summary>
@@ -478,7 +409,7 @@ namespace Prism.Modularity
         /// </summary>
         protected virtual void ValidateDependenciesInitializationMode()
         {
-            ModuleInfo moduleInfo = this.Modules.FirstOrDefault(
+            /*ModuleInfo moduleInfo = this.Modules.FirstOrDefault(
                 m =>
                 m.InitializationMode == InitializationMode.WhenAvailable &&
                 this.GetDependentModulesInner(m)
@@ -489,7 +420,7 @@ namespace Prism.Modularity
                 throw new ModularityException(
                     moduleInfo.ModuleName,
                     String.Format(CultureInfo.CurrentCulture, Resources.StartupModuleDependsOnAnOnDemandModule, moduleInfo.ModuleName));
-            }
+            }*/
         }
 
         /// <summary>

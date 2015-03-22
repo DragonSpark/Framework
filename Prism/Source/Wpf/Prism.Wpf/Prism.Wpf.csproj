@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Events\WeakDelegatesManager.cs" />
+    <Compile Include="Modularity\CustomAttributeDataProvider.cs" />
+    <Compile Include="Modularity\DynamicModuleInfo.cs" />
+    <Compile Include="Modularity\InitializationMode.cs" />
     <Compile Include="Interactivity\CommandBehaviorBase.cs" />
     <Compile Include="Interactivity\DefaultPopupWindows\DefaultConfirmationWindow.xaml.cs">
       <DependentUpon>DefaultConfirmationWindow.xaml</DependentUpon>
@@ -90,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modularity\DirectoryModuleInfoProvider.cs" />
+    <Compile Include="Modularity\DynamicModuleAttribute.cs" />
     <Compile Include="Modularity\FileModuleTypeLoader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modularity\IModuleInfoProvider.cs" />
+    <Compile Include="Modularity\ModuleCatalogExtensions.cs" />
     <Compile Include="Modularity\ModuleConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -109,10 +114,13 @@
     <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\DynamicModuleInfoBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Modularity\ModulesConfigurationSection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -217,6 +225,7 @@
     <ProjectReference Include="..\..\Prism\Prism.csproj">
       <Project>{e6c50355-d01e-4caa-884d-d7929861315c}</Project>
       <Name>Prism</Name>
+      <Aliases>global</Aliases>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

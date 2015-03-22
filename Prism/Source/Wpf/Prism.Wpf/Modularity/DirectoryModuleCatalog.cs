@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
 
-using Prism.Properties;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
@@ -24,11 +21,13 @@ namespace Prism.Modularity
     /// </remarks>
     public class DirectoryModuleCatalog : AssemblyModuleCatalog
     {
-        public DirectoryModuleCatalog() : this( new AssemblyProvider(), new ModuleInfoBuilder() )
+        public DirectoryModuleCatalog() : this( AssemblyProvider.Instance, new DynamicModuleInfoBuilder() )
         {}
 
         public DirectoryModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )
-        {}
+        {
+            ModulePath = ".";
+        }
 
         /// <summary>
         /// Directory containing modules to search for.
@@ -37,9 +36,9 @@ namespace Prism.Modularity
 
         protected override IEnumerable<ModuleInfo> GetModuleInfos( IEnumerable<Assembly> assemblies )
         {
-            var names = assemblies.Select( assembly => assembly.Location );
+            var loaded = assemblies.Select( assembly => assembly.Location ).ToArray();
 
-            using ( var loader = Create( names ) )
+            using ( var loader = Create( loaded ) )
             {
                 var result = loader.GetModuleInfos();
                 return result;
@@ -48,22 +47,12 @@ namespace Prism.Modularity
 
         protected virtual IModuleInfoProvider Create( IEnumerable<string> assemblies )
         {
-            if (string.IsNullOrEmpty(ModulePath))
-                throw new InvalidOperationException(Resources.ModulePathCannotBeNullOrEmpty);
-
-            if (!Directory.Exists(ModulePath))
-                throw new InvalidOperationException(
-                    string.Format(CultureInfo.CurrentCulture, Resources.DirectoryNotFound, ModulePath));
-            
             AppDomain childDomain = this.BuildChildDomain(AppDomain.CurrentDomain);
-            Type loaderType = typeof(DirectoryModuleInfoProvider);
-            var arguments = new object[] { Builder, assemblies, ModulePath };
-            var loader = (DirectoryModuleInfoProvider)childDomain.CreateInstance( loaderType.Assembly.Location, loaderType.FullName, false
-                    , BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.Instance
-                    , null, arguments, null, null).Unwrap();
-            return loader;
+            var result = new RemotingModuleInfoProvider<DirectoryModuleInfoProvider>( childDomain, Builder, assemblies, ModulePath );
+            return result;
         }
 
+            
         /// <summary>
         /// Creates a new child domain and copies the evidence from a parent domain.
         /// </summary>

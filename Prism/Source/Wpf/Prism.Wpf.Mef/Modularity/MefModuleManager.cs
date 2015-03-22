@@ -66,7 +66,7 @@ namespace Prism.Mef.Modularity
                 if (!registeredModules.TryGetValue(lazyModule.Metadata.ModuleName, out registeredModule))
                 {
                     // If the module is not already in the catalog is it added.
-                    ModuleInfo moduleInfo = new ModuleInfo()
+                    ModuleInfo moduleInfo = new DynamicModuleInfo()
                     {
                         ModuleName = lazyModule.Metadata.ModuleName,
                         ModuleType = moduleType.AssemblyQualifiedName,

@@ -2,13 +2,15 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Prism.Modularity
 {
     /// <summary>
     /// Defines the metadata that describes a module.
     /// </summary>
-    public partial class ModuleInfo : IModuleCatalogItem
+	[Serializable]
+	public class ModuleInfo : IModuleCatalogItem
     {
         /// <summary>
         /// Initializes a new empty instance of <see cref="ModuleInfo"/>.
@@ -31,11 +33,7 @@ namespace Prism.Modularity
 
             this.ModuleName = name;
             this.ModuleType = type;
-            this.DependsOn = new Collection<string>();
-            foreach (string dependency in dependsOn)
-            {
-                this.DependsOn.Add(dependency);
-            }
+            this.DependsOn = new Collection<string>(dependsOn.ToList());
         }
 
         /// <summary>
@@ -44,7 +42,11 @@ namespace Prism.Modularity
         /// <param name="name">The module's name.</param>
         /// <param name="type">The module's type.</param>
         public ModuleInfo(string name, string type) : this(name, type, new string[0])
+        {}
+
+        public virtual bool IsAvailable
         {
+            get { return true; }
         }
 
         /// <summary>
@@ -65,19 +67,6 @@ namespace Prism.Modularity
         /// <value>The list of modules that this module depends upon.</value>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "The setter is here to work around a Silverlight issue with setting properties from within Xaml.")]
         public Collection<string> DependsOn { get; set; }
-
-        /// <summary>
-        /// Specifies on which stage the Module will be initialized.
-        /// </summary>
-        public InitializationMode InitializationMode { get; set; }
-
-        /// <summary>
-        /// Reference to the location of the module assembly.
-        /// <example>The following are examples of valid <see cref="ModuleInfo.Ref"/> values:
-        /// file://c:/MyProject/Modules/MyModule.dll for a loose DLL in WPF.
-        /// </example>
-        /// </summary>
-        public string Ref { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the <see cref="ModuleInfo"/> with regards to the module loading and initialization process.

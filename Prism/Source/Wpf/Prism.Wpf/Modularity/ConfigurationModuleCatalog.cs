@@ -69,7 +69,7 @@ namespace Prism.Modularity
                         }
                     }
 
-                    ModuleInfo moduleInfo = new ModuleInfo(element.ModuleName, element.ModuleType)
+                    ModuleInfo moduleInfo = new DynamicModuleInfo(element.ModuleName, element.ModuleType)
                     {
                         Ref = GetFileAbsoluteUri(element.AssemblyFile),
                         InitializationMode = element.StartupLoaded ? InitializationMode.WhenAvailable : InitializationMode.OnDemand

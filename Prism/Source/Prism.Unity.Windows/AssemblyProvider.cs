@@ -1,14 +1,17 @@
 using Microsoft.Practices.Unity;
-using Prism.Modularity;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace Prism.Unity.Windows
 {
-	public class AssemblyProvider : IAssemblyProvider
+	public class AssemblyProvider : Modularity.AssemblyProviderBase
 	{
-		public IEnumerable<Assembly> GetAssemblies()
+		public static AssemblyProvider Instance
+		{
+			get { return InstanceField; }
+		}	static readonly AssemblyProvider InstanceField = new AssemblyProvider();
+
+		protected override Assembly[] DetermineAll()
 		{
 			var result = AllClasses.FromAssembliesInBasePath( includeUnityAssemblies: true )
 				.Where( x => x.Namespace != null )
