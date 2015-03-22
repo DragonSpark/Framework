@@ -121,7 +121,7 @@
     <Compile Include="ComponentModel\ExportRendererAttribute.cs" />
     <Compile Include="ComponentModel\ExpressionSearch.cs" />
     <Compile Include="ComponentModel\RendererProperties.cs" />
-    <Compile Include="ConfigureApplicationCommand.cs" />
+    <Compile Include="SetupApplicationCommand.cs" />
     <Compile Include="FormsInitializer.cs" />
     <Compile Include="ComponentModel\INavigationModel.cs" />
     <Compile Include="ComponentModel\PlatformServices.cs" />
