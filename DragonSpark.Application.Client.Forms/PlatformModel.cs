@@ -109,9 +109,10 @@ namespace DragonSpark.Application.Client.Forms
 				if ( SetProperty( ref page, value ) )
 				{
 					page.Platform = this;
-					// Content = page.DetermineRenderer();
-
+					
 					this.Event<ShellPageChangedEvent>().Publish( Page );
+
+					Refresh();
 				}
 			}
 		}	Page page;

@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Application.Client.Commanding;
 using DragonSpark.Application.Client.Extensions;
 using DragonSpark.Extensions;
-using Prism;
 using PostSharp.Patterns.Threading;
+using Prism;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
