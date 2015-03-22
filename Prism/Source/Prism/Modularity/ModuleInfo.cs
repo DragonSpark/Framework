@@ -9,8 +9,8 @@ namespace Prism.Modularity
     /// <summary>
     /// Defines the metadata that describes a module.
     /// </summary>
-	[Serializable]
-	public class ModuleInfo : IModuleCatalogItem
+    [Serializable]
+    public class ModuleInfo : IModuleCatalogItem
     {
         /// <summary>
         /// Initializes a new empty instance of <see cref="ModuleInfo"/>.

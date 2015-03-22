@@ -16,7 +16,7 @@ namespace Prism.Modularity
         private const string RefFilePrefix = "file://";
         private readonly HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
-		
+        
         private readonly IAssemblyResolver assemblyResolver;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Prism.Modularity
             : this(new AssemblyResolver())
         {}
 
-		/// <summary>
+        /// <summary>
         /// Initializes a new instance of the <see cref="LocalModuleTypeLoader"/> class.
         /// </summary>
         /// <param name="assemblyResolver">The assembly resolver.</param>
@@ -36,10 +36,10 @@ namespace Prism.Modularity
             this.assemblyResolver = assemblyResolver;
         }
 
-	    protected IAssemblyResolver AssemblyResolver
-	    {
-		    get { return assemblyResolver; }
-	    }
+        protected IAssemblyResolver AssemblyResolver
+        {
+            get { return assemblyResolver; }
+        }
 
 
         protected override bool CanLoad( ModuleInfo moduleInfo )
@@ -51,19 +51,19 @@ namespace Prism.Modularity
 
         protected override void Load( ModuleInfo moduleInfo )
         {
-			var dynamicModuleInfo = moduleInfo as DynamicModuleInfo;
+            var dynamicModuleInfo = moduleInfo as DynamicModuleInfo;
             
             Uri uri = dynamicModuleInfo != null ? new Uri(dynamicModuleInfo.Ref, UriKind.RelativeOrAbsolute) : null;
 
             // If this module has already been downloaded, I fire the completed event.
             if (uri == null || this.IsSuccessfullyDownloaded(uri))
             {
-				base.Load( moduleInfo );
+                base.Load( moduleInfo );
             }
             else
             {
-	            var @ref = dynamicModuleInfo.Ref;
-	            var offset = @ref.StartsWith(RefFilePrefix + "/", StringComparison.Ordinal ) ? 1 : 0;
+                var @ref = dynamicModuleInfo.Ref;
+                var offset = @ref.StartsWith(RefFilePrefix + "/", StringComparison.Ordinal ) ? 1 : 0;
                 var path = @ref.Substring(RefFilePrefix.Length + offset);
 
                 long fileSize = DetermineSize( path );
@@ -106,13 +106,13 @@ namespace Prism.Modularity
             }
         }
 
-	    protected override void Dispose( bool disposing )
-	    {
-			IDisposable disposableResolver = this.assemblyResolver as IDisposable;
-			if (disposableResolver != null)
-			{
-				disposableResolver.Dispose();
-			}
-	    }
+        protected override void Dispose( bool disposing )
+        {
+            IDisposable disposableResolver = this.assemblyResolver as IDisposable;
+            if (disposableResolver != null)
+            {
+                disposableResolver.Dispose();
+            }
+        }
     }
 }

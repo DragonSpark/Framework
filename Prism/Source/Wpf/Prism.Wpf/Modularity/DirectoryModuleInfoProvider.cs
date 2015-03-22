@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Prism.Modularity
 {
-	sealed class DirectoryModuleInfoProvider : MarshalByRefObject, IModuleInfoProvider
+    sealed class DirectoryModuleInfoProvider : MarshalByRefObject, IModuleInfoProvider
     {
         readonly IModuleInfoBuilder builder;
         readonly DirectoryInfo directory;

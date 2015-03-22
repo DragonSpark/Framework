@@ -4,7 +4,7 @@ using System;
 
 namespace Prism.Modularity
 {
-	[Serializable]
+    [Serializable]
     public class ModuleInfoBuilder : IModuleInfoBuilder
     {
         readonly IAttributeDataProvider provider;

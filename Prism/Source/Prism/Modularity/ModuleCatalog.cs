@@ -252,19 +252,19 @@ namespace Prism.Modularity
         public ModuleCatalog AddModule(string moduleName, string moduleType, params string[] dependsOn)
         {
             if (moduleName == null)
-			{
-				throw new ArgumentNullException("moduleName");
-			}
+            {
+                throw new ArgumentNullException("moduleName");
+            }
 
-			if (moduleType == null)
-			{
-				throw new ArgumentNullException("moduleType");
-			}
+            if (moduleType == null)
+            {
+                throw new ArgumentNullException("moduleType");
+            }
 
-			var moduleInfo = new ModuleInfo(moduleName, moduleType);
-			moduleInfo.DependsOn.AddRange(dependsOn);
-			this.Items.Add(moduleInfo);
-			return this;
+            var moduleInfo = new ModuleInfo(moduleName, moduleType);
+            moduleInfo.DependsOn.AddRange(dependsOn);
+            this.Items.Add(moduleInfo);
+            return this;
         }
 
         /// <summary>

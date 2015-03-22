@@ -12,17 +12,17 @@ namespace Prism.Modularity
     /// </summary>
     public class LocalModuleTypeLoader : IModuleTypeLoader, IDisposable
     {
-	    /// <summary>
+        /// <summary>
         /// Raised repeatedly to provide progress as modules are loaded in the background.
         /// </summary>
         public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
 
-	    protected void RaiseModuleDownloadProgressChanged(ModuleInfo moduleInfo, long bytesReceived, long totalBytesToReceive)
+        protected void RaiseModuleDownloadProgressChanged(ModuleInfo moduleInfo, long bytesReceived, long totalBytesToReceive)
         {
             this.RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, bytesReceived, totalBytesToReceive));
         }
 
-	    protected void RaiseModuleDownloadProgressChanged(ModuleDownloadProgressChangedEventArgs e)
+        protected void RaiseModuleDownloadProgressChanged(ModuleDownloadProgressChangedEventArgs e)
         {
             if (this.ModuleDownloadProgressChanged != null)
             {
@@ -35,12 +35,12 @@ namespace Prism.Modularity
         /// </summary>
         public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
 
-	    protected void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
+        protected void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
         {
             this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
         }
 
-	    protected void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
+        protected void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
         {
             if (this.LoadModuleCompleted != null)
             {
@@ -68,12 +68,12 @@ namespace Prism.Modularity
             return CanLoad( moduleInfo );
         }
 
-	    protected virtual bool CanLoad( ModuleInfo moduleInfo )
-	    {
-		    return true;
-	    }
-	    
-	    /// <summary>
+        protected virtual bool CanLoad( ModuleInfo moduleInfo )
+        {
+            return true;
+        }
+        
+        /// <summary>
         /// Retrieves the <paramref name="moduleInfo"/>.
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
@@ -95,12 +95,12 @@ namespace Prism.Modularity
             }
         }
 
-	    protected virtual void Load( ModuleInfo moduleInfo )
-	    {
-		    RaiseLoadModuleCompleted( moduleInfo, null );
-	    }
+        protected virtual void Load( ModuleInfo moduleInfo )
+        {
+            RaiseLoadModuleCompleted( moduleInfo, null );
+        }
 
-		#region Implementation of IDisposable
+        #region Implementation of IDisposable
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
