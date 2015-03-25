@@ -34,3 +34,4 @@ Packages/
 *.pubxml
 Publish.bat
 /TestResults
+-Archive/
