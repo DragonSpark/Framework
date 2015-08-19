@@ -14,10 +14,7 @@ namespace Prism.Modularity
 		public DynamicModuleInfo( string name, string type ) : base( name, type )
 		{}
 
-		public override bool IsAvailable
-		{
-			get { return InitializationMode == InitializationMode.WhenAvailable; }
-		}
+		public override bool IsAvailable => InitializationMode == InitializationMode.WhenAvailable;
 
 		/// <summary>
 		/// Specifies on which stage the Module will be initialized.

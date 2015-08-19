@@ -31,7 +31,7 @@ namespace Prism.Modularity
         /// Initializes a new instance of the <see cref="LocalModuleTypeLoader"/> class.
         /// </summary>
         /// <param name="assemblyResolver">The assembly resolver.</param>
-        protected FileModuleTypeLoader(IAssemblyResolver assemblyResolver)
+        public FileModuleTypeLoader(IAssemblyResolver assemblyResolver)
         {
             this.assemblyResolver = assemblyResolver;
         }
@@ -108,11 +108,8 @@ namespace Prism.Modularity
 
         protected override void Dispose( bool disposing )
         {
-            IDisposable disposableResolver = this.assemblyResolver as IDisposable;
-            if (disposableResolver != null)
-            {
-                disposableResolver.Dispose();
-            }
+            var disposableResolver = this.assemblyResolver as IDisposable;
+	        disposableResolver?.Dispose();
         }
     }
 }

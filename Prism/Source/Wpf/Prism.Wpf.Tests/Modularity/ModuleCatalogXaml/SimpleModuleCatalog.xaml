@@ -1,0 +1,22 @@
+﻿<Modularity:ModuleCatalog xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib"
+               xmlns:Modularity="clr-namespace:Prism.Modularity;assembly=Prism"
+               xmlns:modularity="clr-namespace:Prism.Modularity;assembly=Prism.Wpf">
+    <Modularity:ModuleCatalog.Items>
+        <modularity:DynamicModuleInfoGroup Ref="ModuleGroup1" InitializationMode="OnDemand">
+            <Modularity:ModuleInfo ModuleName="Module1" ModuleType="Module1Type" />
+        </modularity:DynamicModuleInfoGroup>
+        <modularity:DynamicModuleInfoGroup Ref="ModuleGroup2" InitializationMode="WhenAvailable">
+            <Modularity:ModuleInfo ModuleName="Module2InModuleGroup2" ModuleType="Module2Type">
+                <Modularity:ModuleInfo.DependsOn>
+                    <sys:String>ModuleW</sys:String>
+                </Modularity:ModuleInfo.DependsOn>
+            </Modularity:ModuleInfo>
+            <Modularity:ModuleInfo ModuleName="Module3InModuleGroup2" ModuleType="ModuleType">
+            </Modularity:ModuleInfo>
+        </modularity:DynamicModuleInfoGroup>
+        <modularity:DynamicModuleInfo Ref="Module3" ModuleName="Module3" ModuleType="Module3Type" />
+    </Modularity:ModuleCatalog.Items>
+</Modularity:ModuleCatalog>
+

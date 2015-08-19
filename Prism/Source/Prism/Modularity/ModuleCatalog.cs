@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+
 
 // using System.Windows.Markup;
 using Prism.Properties;
@@ -63,12 +63,9 @@ namespace Prism.Modularity
         /// <see cref="ModuleInfo"/>s through XAML. 
         /// </summary>
         /// <value>The items in the catalog.</value>
-        public Collection<IModuleCatalogItem> Items
-        {
-            get { return this.items; }
-        }
+        public Collection<IModuleCatalogItem> Items => this.items;
 
-        /// <summary>
+	    /// <summary>
         /// Gets all the <see cref="ModuleInfo"/> classes that are in the <see cref="ModuleCatalog"/>, regardless 
         /// if they are within a <see cref="ModuleInfoGroup"/> or not. 
         /// </summary>
@@ -409,18 +406,18 @@ namespace Prism.Modularity
         /// </summary>
         protected virtual void ValidateDependenciesInitializationMode()
         {
-            /*ModuleInfo moduleInfo = this.Modules.FirstOrDefault(
+            ModuleInfo moduleInfo = this.Modules.FirstOrDefault(
                 m =>
-                m.InitializationMode == InitializationMode.WhenAvailable &&
+                m.IsAvailable &&
                 this.GetDependentModulesInner(m)
-                    .Any(dependency => dependency.InitializationMode == InitializationMode.OnDemand));
+                    .Any(dependency => !dependency.IsAvailable));
 
             if (moduleInfo != null)
             {
                 throw new ModularityException(
                     moduleInfo.ModuleName,
                     String.Format(CultureInfo.CurrentCulture, Resources.StartupModuleDependsOnAnOnDemandModule, moduleInfo.ModuleName));
-            }*/
+            }
         }
 
         /// <summary>

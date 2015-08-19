@@ -1,7 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
-
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Properties;
@@ -14,10 +15,12 @@ namespace Prism.Presentation
     public abstract class DelegateCommandBase : ICommand, IActiveAware
     {
         private bool _isActive;
-        private List<WeakReference> _canExecuteChangedHandlers;
 
-        readonly Func<object, Task> _executeMethod;
-        readonly Func<object, bool> _canExecuteMethod;
+        readonly HashSet<string> _propertiesToObserve = new HashSet<string>();
+        private INotifyPropertyChanged _inpc;
+
+        protected readonly Func<object, Task> _executeMethod;
+        protected Func<object, bool> _canExecuteMethod;
 
         /// <summary>
         /// Creates a new instance of a <see cref="DelegateCommandBase"/>, specifying both the execute action and the can execute function.
@@ -48,21 +51,29 @@ namespace Prism.Presentation
         }
 
         /// <summary>
+        /// Occurs when changes occur that affect whether or not the command should execute.
+        /// </summary>
+        public virtual event EventHandler CanExecuteChanged;
+
+        /// <summary>
         /// Raises <see cref="ICommand.CanExecuteChanged"/> on the UI thread so every 
         /// command invoker can requery <see cref="ICommand.CanExecute"/>.
         /// </summary>
         protected virtual void OnCanExecuteChanged()
         {
-            WeakEventHandlerManager.CallWeakReferenceHandlers(this, _canExecuteChangedHandlers);
+            var handler = CanExecuteChanged;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
         }
-
+        }
 
         /// <summary>
         /// Raises <see cref="DelegateCommandBase.CanExecuteChanged"/> on the UI thread so every command invoker
         /// can requery to check if the command can execute.
         /// <remarks>Note that this will trigger the execution of <see cref="DelegateCommandBase.CanExecute"/> once for each invoker.</remarks>
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public void RaiseCanExecuteChanged()
         {
             OnCanExecuteChanged();
@@ -94,39 +105,62 @@ namespace Prism.Presentation
         /// <returns>Returns <see langword="true"/> if the command can execute.  <see langword="False"/> otherwise.</returns>
         protected bool CanExecute(object parameter)
         {
-            return _canExecuteMethod == null || _canExecuteMethod(parameter);
+            return _canExecuteMethod(parameter);
         }
 
         /// <summary>
-        /// Occurs when changes occur that affect whether or not the command should execute. You must keep a hard
-        /// reference to the handler to avoid garbage collection and unexpected results. See remarks for more information.
+        /// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
         /// </summary>
-        /// <remarks>
-        /// When subscribing to the <see cref="ICommand.CanExecuteChanged"/> event using 
-        /// code (not when binding using XAML) will need to keep a hard reference to the event handler. This is to prevent 
-        /// garbage collection of the event handler because the command implements the Weak Event pattern so it does not have
-        /// a hard reference to this handler. An example implementation can be seen in the CompositeCommand and CommandBehaviorBase
-        /// classes. In most scenarios, there is no reason to sign up to the CanExecuteChanged event directly, but if you do, you
-        /// are responsible for maintaining the reference.
-        /// </remarks>
-        /// <example>
-        /// The following code holds a reference to the event handler. The myEventHandlerReference value should be stored
-        /// in an instance member to avoid it from being garbage collected.
-        /// <code>
-        /// EventHandler myEventHandlerReference = new EventHandler(this.OnCanExecuteChanged);
-        /// command.CanExecuteChanged += myEventHandlerReference;
-        /// </code>
-        /// </example>
-        public virtual event EventHandler CanExecuteChanged
+        /// <typeparam name="T">The object type containing the property specified in the expression.</typeparam>
+        /// <param name="propertyExpression">The property expression. Example: ObservesProperty(() => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        protected internal void ObservesPropertyInternal<T>(Expression<Func<T>> propertyExpression)
         {
-            add
+            AddPropertyToObserve(PropertySupport.ExtractPropertyName(propertyExpression));
+            HookInpc(propertyExpression.Body as MemberExpression);
+        }
+
+        /// <summary>
+        /// Observes a property that is used to determine if this command can execute, and if it implements INotifyPropertyChanged it will automatically call DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+        /// </summary>
+        /// <param name="canExecuteExpression">The property expression. Example: ObservesCanExecute((o) => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        protected internal void ObservesCanExecuteInternal(Expression<Func<object, bool>> canExecuteExpression)
+        {
+            _canExecuteMethod = canExecuteExpression.Compile();
+            AddPropertyToObserve(PropertySupport.ExtractPropertyNameFromLambda(canExecuteExpression));
+            HookInpc(canExecuteExpression.Body as MemberExpression);
+        }
+
+        protected void HookInpc(MemberExpression expression)
+        {
+            if (expression == null)
+                return;
+
+            if (_inpc == null)
+        {
+                var constantExpression = expression.Expression as ConstantExpression;
+                if (constantExpression != null)
             {
-                WeakEventHandlerManager.AddWeakReferenceHandler(ref _canExecuteChangedHandlers, value, 2);
+                    _inpc = constantExpression.Value as INotifyPropertyChanged;
+                    if (_inpc != null)
+                        _inpc.PropertyChanged += Inpc_PropertyChanged;
+                }
             }
-            remove
+            }
+
+        protected void AddPropertyToObserve(string property)
             {
-                WeakEventHandlerManager.RemoveWeakReferenceHandler(_canExecuteChangedHandlers, value);
+            if (_propertiesToObserve.Contains(property))
+                throw new ArgumentException(String.Format("{0} is already being observed.", property));
+
+            _propertiesToObserve.Add(property);
             }
+
+        void Inpc_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (_propertiesToObserve.Contains(e.PropertyName))
+                RaiseCanExecuteChanged();
         }
 
         #region IsActive
