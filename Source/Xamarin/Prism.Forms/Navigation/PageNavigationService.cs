@@ -5,64 +5,54 @@ using Xamarin.Forms;
 
 namespace Prism.Navigation
 {
-    public class PageNavigationService : INavigationService
+    public class PageNavigationService : INavigationService, IPageAware
     {
-        internal Page Page { get; set; }
-
-        public void GoBack(bool animated = true, bool useModalNavigation = true)
+        private Page _page;
+        Page IPageAware.Page
         {
-            GoBack(new NavigationParameters(), animated, useModalNavigation);
+            get { return _page; }
+            set { _page = value; }
         }
 
-        public void GoBack(NavigationParameters parameters, bool animated = true, bool useModalNavigation = true)
+        public void GoBack(bool useModalNavigation = true, bool animated = true)
         {
+            //TODO: figure out how to reliably pass parameter to the target page after we have popped the current page
             var navigation = GetPageNavigation();
-
-            if (!CanNavigate(Page, parameters))
-                return;
-
-            OnNavigatedFrom(Page, parameters);
-
-            DoPop(navigation, animated, useModalNavigation);
+            DoPop(navigation, useModalNavigation, animated);
         }
 
-        public void Navigate(string name, bool animated = true, bool useModalNavigation = true)
+        public void Navigate<T>(NavigationParameters parameters = null, bool useModalNavigation = true, bool animated = true)
         {
-            Navigate(name, new NavigationParameters(), animated, useModalNavigation);
+            Navigate(typeof(T).FullName, parameters, useModalNavigation, animated);
         }
 
-        public void Navigate(string name, NavigationParameters parameters, bool animated = true, bool useModalNavigation = true)
+        public void Navigate(string name, NavigationParameters parameters = null, bool useModalNavigation = true, bool animated = true)
         {
             var view = ServiceLocator.Current.GetInstance<object>(name) as Page;
             if (view != null)
             {
+                //TODO: I can automatically invoke the VML without the need for the developer to worry about it.
+                //TODO: but this would only work when using the NavigationFramework, and not when declaring Pages in another Page directly (think TabbedPage)
+                //TODO: so I am not sure I should do this.  Community thoughts?
+                //if (view.BindingContext == null)
+                //    ViewModelLocator.SetAutowireViewModel(view, true);
+
                 var navigation = GetPageNavigation();
 
-                if (!CanNavigate(Page, parameters))
+                if (!CanNavigate(_page, parameters))
                     return;
 
-                OnNavigatedFrom(Page, parameters);
+                OnNavigatedFrom(_page, parameters);
 
-                DoPush(navigation, view, animated, useModalNavigation);
+                DoPush(navigation, view, useModalNavigation, animated);
 
-                InvokeOnNavigationAwareElement(view, v => v.OnNavigatedTo(parameters));
+                OnNavigatedTo(view, parameters);
             }
             else
                 Debug.WriteLine("Navigation ERROR: {0} not found. Make sure you have registered {0} for navigation.", name);
         }
 
-        public void Remove(object page)
-        {
-            var currentPage = page as Page;
-            if (currentPage == null) return;
-
-            var navigation = currentPage.Navigation;
-
-            InvokeOnNavigationAwareElement(currentPage, v => v.OnNavigatedFrom(new NavigationParameters()));
-            navigation.RemovePage(currentPage);
-        }
-
-        private async static void DoPush(INavigation navigation, Page view, bool animated, bool useModalNavigation)
+        private async static void DoPush(INavigation navigation, Page view, bool useModalNavigation, bool animated)
         {
             if (useModalNavigation)
                 await navigation.PushModalAsync(view, animated);
@@ -70,7 +60,7 @@ namespace Prism.Navigation
                 await navigation.PushAsync(view, animated);
         }
 
-        private async static void DoPop(INavigation navigation, bool animated, bool useModalNavigation)
+        private async static void DoPop(INavigation navigation, bool useModalNavigation, bool animated)
         {
             if (useModalNavigation)
                 await navigation.PopModalAsync(animated);
@@ -80,7 +70,7 @@ namespace Prism.Navigation
 
         private INavigation GetPageNavigation()
         {
-            return Page.Navigation ?? Application.Current.MainPage.Navigation;
+            return _page != null ? _page.Navigation : Application.Current.MainPage.Navigation;
         }
 
         protected static bool CanNavigate(object item, NavigationParameters parameters)
@@ -109,6 +99,13 @@ namespace Prism.Navigation
             var currentPage = page as Page;
             if (currentPage != null)
                 InvokeOnNavigationAwareElement(currentPage, v => v.OnNavigatedFrom(parameters));
+        }
+
+        protected static void OnNavigatedTo(object page, NavigationParameters parameters)
+        {
+            var currentPage = page as Page;
+            if (currentPage != null)
+                InvokeOnNavigationAwareElement(page, v => v.OnNavigatedTo(parameters));
         }
 
         protected static void InvokeOnNavigationAwareElement(object item, Action<INavigationAware> invocation)

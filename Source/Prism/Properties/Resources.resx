@@ -153,6 +153,9 @@
   <data name="DefaultTextLoggerPattern" xml:space="preserve">
     <value>{1}: {2}. Priority: {3}. Timestamp:{0:u}.</value>
   </data>
+  <data name="DefaultDebugLoggerPattern" xml:space="preserve">
+    <value>{1}: {2}. Priority: {3}. Timestamp:{0:u}.</value>
+  </data>
   <data name="DelegateCommandDelegatesCannotBeNull" xml:space="preserve">
     <value>Neither the executeMethod nor the canExecuteMethod delegates can be null.</value>
   </data>
@@ -339,5 +342,47 @@ Error was: {1}.</value>
   </data>
   <data name="ViewNotInRegionException" xml:space="preserve">
     <value>The region does not contain the specified view.</value>
+  </data>
+	<data name="BootstrapperSequenceCompleted" xml:space="preserve">
+    <value>Bootstrapper sequence completed.</value>
+  </data>
+	<data name="ConfiguringDefaultRegionBehaviors" xml:space="preserve">
+    <value>Configuring default region behaviors.</value>
+  </data>
+	<data name="ConfiguringRegionAdapters" xml:space="preserve">
+    <value>Configuring region adapters.</value>
+  </data>
+	<data name="ConfiguringModuleCatalog" xml:space="preserve">
+    <value>Configuring module catalog.</value>
+  </data>
+	<data name="ConfiguringServiceLocatorSingleton" xml:space="preserve">
+    <value>Configuring ServiceLocator singleton.</value>
+  </data>
+	<data name="ConfiguringUnityContainer" xml:space="preserve">
+    <value>Configuring the Unity container.</value>
+  </data>
+	<data name="CreatingModuleCatalog" xml:space="preserve">
+    <value>Creating module catalog.</value>
+  </data>
+	<data name="CreatingUnityContainer" xml:space="preserve">
+    <value>Creating Unity container.</value>
+  </data>
+	<data name="InitializingModules" xml:space="preserve">
+    <value>Initializing modules.</value>
+  </data>
+	<data name="LoggerCreatedSuccessfully" xml:space="preserve">
+    <value>Logger was created successfully.</value>
+  </data>
+	<data name="NullLoggerFacadeException" xml:space="preserve">
+    <value>The ILoggerFacade is required and cannot be null.</value>
+  </data>
+	<data name="NullModuleCatalogException" xml:space="preserve">
+    <value>The IModuleCatalog is required and cannot be null in order to initialize the modules.</value>
+  </data>
+	<data name="NullUnityContainerException" xml:space="preserve">
+    <value>The IUnityContainer is required and cannot be null.</value>
+  </data>
+	<data name="RegisteringFrameworkExceptionTypes" xml:space="preserve">
+    <value>Registering Framework Exception Types.</value>
   </data>
 </root>

@@ -1,34 +1,28 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Prism.Navigation;
+using Prism.Presentation;
 using Xamarin.Forms;
 
 namespace Prism.Mvvm
 {
     public static class ViewModelLocator
     {
-        public static readonly BindableProperty AutowireViewModelProperty = BindableProperty.CreateAttached<BindableObject, bool>(
-            p => ViewModelLocator.GetAutowireViewModel(p),
-            default(bool),
-            BindingMode.OneWay,
-            null,
-            OnAutowireViewModelChanged,
-            null,
-            null,
-            null);
+        public static readonly BindableProperty AutowireViewModelProperty =
+            BindableProperty.CreateAttached("AutowireViewModel", typeof(bool), typeof(ViewModelLocator), default(bool), propertyChanged: OnAutowireViewModelChanged);
 
-        public static bool GetAutowireViewModel(BindableObject bo)
+        public static bool GetAutowireViewModel(BindableObject bindable)
         {
-            return (bool)bo.GetValue(ViewModelLocator.AutowireViewModelProperty);
+            return (bool)bindable.GetValue(ViewModelLocator.AutowireViewModelProperty);
         }
-        public static void SetAutowireViewModel(BindableObject bo, bool value)
+        public static void SetAutowireViewModel(BindableObject bindable, bool value)
         {
-            bo.SetValue(ViewModelLocator.AutowireViewModelProperty, value);
+            bindable.SetValue(ViewModelLocator.AutowireViewModelProperty, value);
         }
 
-        public static void OnAutowireViewModelChanged(BindableObject bo, bool oldValue, bool newValue)
+        private static void OnAutowireViewModelChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (newValue)
-                ViewModelLocationProvider.AutoWireViewModelChanged(bo, Bind);
+            if ((bool)newValue)
+                ViewModelLocationProvider.AutoWireViewModelChanged(bindable, Bind);
         }
 
         /// <summary>
@@ -41,22 +35,6 @@ namespace Prism.Mvvm
             BindableObject element = view as BindableObject;
             if (element != null)
                 element.BindingContext = viewModel;
-
-            var page = view as Page;
-            if (page != null)
-            {
-                var iNavAware = viewModel as INavigationServiceAware;
-                if (iNavAware != null)
-                {
-                    var navService = ServiceLocator.Current.GetInstance<INavigationService>();
-
-                    var pageNavigationService = navService as PageNavigationService;
-                    if (pageNavigationService != null)
-                        pageNavigationService.Page = page;
-
-                    iNavAware.NavigationService = navService;
-                }
-            }
         }
     }
 }

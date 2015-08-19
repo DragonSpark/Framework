@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+
 
 using System.Diagnostics;
 
@@ -9,6 +9,16 @@ namespace Prism.Logging
     /// </summary>
     public class TraceLogger : ILoggerFacade
     {
+        readonly string format;
+
+        public TraceLogger() : this( "[Priority: {0}]: {1}" )
+        {}
+
+        public TraceLogger( string format )
+        {
+            this.format = format;
+        }
+
         /// <summary>
         /// Write a new log entry with the specified category and priority.
         /// </summary>
@@ -17,13 +27,19 @@ namespace Prism.Logging
         /// <param name="priority">The priority of the entry.</param>
         public void Log(string message, Category category, Priority priority)
         {
-            if (category == Category.Exception)
+            var line = string.Format( format, priority, message, category );
+            switch ( category )
             {
-                Trace.TraceError(message);
-            }
-            else
-            {
-                Trace.TraceInformation(message);
+                case Category.Exception:
+                    Trace.TraceError( line );
+                    break;
+                case Category.Warn:
+                    Trace.TraceWarning( line );
+                    break;
+                default:
+                    Trace.TraceInformation( line );
+                    break;
+
             }
         }
     }

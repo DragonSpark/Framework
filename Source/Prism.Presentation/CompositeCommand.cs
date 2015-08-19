@@ -1,31 +1,26 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
-
+using Prism.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using Prism.Properties;
 
 namespace Prism.Presentation
 {
     /// <summary>
     /// The CompositeCommand composes one or more ICommands.
     /// </summary>
-    public partial class CompositeCommand : ICommand
+    public class CompositeCommand : ICommand
     {
-        private readonly List<ICommand> registeredCommands = new List<ICommand>();
-        private readonly bool monitorCommandActivity;
-        private readonly EventHandler onRegisteredCommandCanExecuteChangedHandler;
-
-        private List<WeakReference> _canExecuteChangedHandlers;
-
+        private readonly List<ICommand> _registeredCommands = new List<ICommand>();
+        private readonly bool _monitorCommandActivity;
+        private readonly EventHandler _onRegisteredCommandCanExecuteChangedHandler;
 
         /// <summary>
         /// Initializes a new instance of <see cref="CompositeCommand"/>.
         /// </summary>
         public CompositeCommand()
         {
-            this.onRegisteredCommandCanExecuteChangedHandler = new EventHandler(this.OnRegisteredCommandCanExecuteChanged);
+            this._onRegisteredCommandCanExecuteChangedHandler = new EventHandler(this.OnRegisteredCommandCanExecuteChanged);
         }
 
         /// <summary>
@@ -35,7 +30,7 @@ namespace Prism.Presentation
         public CompositeCommand(bool monitorCommandActivity)
             : this()
         {
-            this.monitorCommandActivity = monitorCommandActivity;
+            this._monitorCommandActivity = monitorCommandActivity;
         }
 
         /// <summary>
@@ -55,19 +50,19 @@ namespace Prism.Presentation
                 throw new ArgumentException(Resources.CannotRegisterCompositeCommandInItself);
             }
 
-            lock (this.registeredCommands)
+            lock (this._registeredCommands)
             {
-                if (this.registeredCommands.Contains(command))
+                if (this._registeredCommands.Contains(command))
                 {
                     throw new InvalidOperationException(Resources.CannotRegisterSameCommandTwice);
                 }
-                this.registeredCommands.Add(command);
+                this._registeredCommands.Add(command);
             }
 
-            command.CanExecuteChanged += this.onRegisteredCommandCanExecuteChangedHandler;
+            command.CanExecuteChanged += this._onRegisteredCommandCanExecuteChangedHandler;
             this.OnCanExecuteChanged();
 
-            if (this.monitorCommandActivity)
+            if (this._monitorCommandActivity)
             {
                 var activeAwareCommand = command as IActiveAware;
                 if (activeAwareCommand != null)
@@ -85,17 +80,17 @@ namespace Prism.Presentation
         {
             if (command == null) throw new ArgumentNullException("command");
             bool removed;
-            lock (this.registeredCommands)
+            lock (this._registeredCommands)
             {
-                removed = this.registeredCommands.Remove(command);
+                removed = this._registeredCommands.Remove(command);
             }
 
             if (removed)
             {
-                command.CanExecuteChanged -= this.onRegisteredCommandCanExecuteChangedHandler;
+                command.CanExecuteChanged -= this._onRegisteredCommandCanExecuteChangedHandler;
                 this.OnCanExecuteChanged();
 
-                if (this.monitorCommandActivity)
+                if (this._monitorCommandActivity)
                 {
                     var activeAwareCommand = command as IActiveAware;
                     if (activeAwareCommand != null)
@@ -125,9 +120,9 @@ namespace Prism.Presentation
             bool hasEnabledCommandsThatShouldBeExecuted = false;
 
             ICommand[] commandList;
-            lock (this.registeredCommands)
+            lock (this._registeredCommands)
             {
-                commandList = this.registeredCommands.ToArray();
+                commandList = this._registeredCommands.ToArray();
             }
             foreach (ICommand command in commandList)
             {
@@ -146,36 +141,9 @@ namespace Prism.Presentation
         }
 
         /// <summary>
-        /// Occurs when any of the registered commands raise <see cref="ICommand.CanExecuteChanged"/>. You must keep a hard
-        /// reference to the handler to avoid garbage collection and unexpected results. See remarks for more information.
+        /// Occurs when any of the registered commands raise <see cref="ICommand.CanExecuteChanged"/>.
         /// </summary>
-        /// <remarks>
-        /// When subscribing to the <see cref="ICommand.CanExecuteChanged"/> event using 
-        /// code (not when binding using XAML) will need to keep a hard reference to the event handler. This is to prevent 
-        /// garbage collection of the event handler because the command implements the Weak Event pattern so it does not have
-        /// a hard reference to this handler. An example implementation can be seen in the CompositeCommand and CommandBehaviorBase
-        /// classes. In most scenarios, there is no reason to sign up to the CanExecuteChanged event directly, but if you do, you
-        /// are responsible for maintaining the reference.
-        /// </remarks>
-        /// <example>
-        /// The following code holds a reference to the event handler. The myEventHandlerReference value should be stored
-        /// in an instance member to avoid it from being garbage collected.
-        /// <code>
-        /// EventHandler myEventHandlerReference = new EventHandler(this.OnCanExecuteChanged);
-        /// command.CanExecuteChanged += myEventHandlerReference;
-        /// </code>
-        /// </example>
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                WeakEventHandlerManager.AddWeakReferenceHandler(ref _canExecuteChangedHandlers, value, 2);
-            }
-            remove
-            {
-                WeakEventHandlerManager.RemoveWeakReferenceHandler(_canExecuteChangedHandlers, value);
-            }
-        }
+        public virtual event EventHandler CanExecuteChanged;
 
         /// <summary>
         /// Forwards <see cref="ICommand.Execute"/> to the registered commands.
@@ -186,9 +154,9 @@ namespace Prism.Presentation
         public virtual void Execute(object parameter)
         {
             Queue<ICommand> commands;
-            lock (this.registeredCommands)
+            lock (this._registeredCommands)
             {
-                commands = new Queue<ICommand>(this.registeredCommands.Where(this.ShouldExecute).ToList());
+                commands = new Queue<ICommand>(this._registeredCommands.Where(this.ShouldExecute).ToList());
             }
 
             while (commands.Count > 0)
@@ -213,7 +181,7 @@ namespace Prism.Presentation
         {
             var activeAwareCommand = command as IActiveAware;
 
-            if (this.monitorCommandActivity && activeAwareCommand != null)
+            if (this._monitorCommandActivity && activeAwareCommand != null)
             {
                 return activeAwareCommand.IsActive;
             }
@@ -231,9 +199,9 @@ namespace Prism.Presentation
             get
             {
                 IList<ICommand> commandList;
-                lock (this.registeredCommands)
+                lock (this._registeredCommands)
                 {
-                    commandList = this.registeredCommands.ToList();
+                    commandList = this._registeredCommands.ToList();
                 }
 
                 return commandList;
@@ -247,7 +215,11 @@ namespace Prism.Presentation
         /// </summary>
         protected virtual void OnCanExecuteChanged()
         {
-            WeakEventHandlerManager.CallWeakReferenceHandlers(this, _canExecuteChangedHandlers);
+            var handler = CanExecuteChanged;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

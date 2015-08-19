@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+
 
 using Prism.Logging;
 using Prism.Properties;
@@ -19,7 +19,7 @@ namespace Prism.Modularity
         private readonly ILoggerFacade loggerFacade;
         private readonly IModuleTypeLoader loader;
         private IEnumerable<IModuleTypeLoader> typeLoaders;
-        private HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
+        private readonly HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
 
         /// <summary>
         /// Initializes an instance of the <see cref="ModuleManager"/> class.
@@ -151,7 +151,7 @@ namespace Prism.Modularity
 
         private void LoadModulesWhenAvailable()
         {
-            IEnumerable<ModuleInfo> whenAvailableModules = this.moduleCatalog.Modules.Where(m => m.InitializationMode == InitializationMode.WhenAvailable);
+            IEnumerable<ModuleInfo> whenAvailableModules = this.moduleCatalog.Modules.Where(m => m.IsAvailable);
             IEnumerable<ModuleInfo> modulesToLoadTypes = this.moduleCatalog.CompleteListWithDependencies(whenAvailableModules);
             if (modulesToLoadTypes != null)
             {

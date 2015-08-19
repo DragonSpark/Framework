@@ -1,6 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
-
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -68,6 +67,29 @@ namespace Prism.Presentation
                 }
             }
 
+            }
+
+        /// <summary>
+        /// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+        /// </summary>
+        /// <typeparam name="TP">The object type containing the property specified in the expression.</typeparam>
+        /// <param name="propertyExpression">The property expression. Example: ObservesProperty(() => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        public DelegateCommand<T> ObservesProperty<TP>(Expression<Func<TP>> propertyExpression)
+        {
+            ObservesPropertyInternal(propertyExpression);
+            return this;
+        }
+
+        /// <summary>
+        /// Observes a property that is used to determine if this command can execute, and if it implements INotifyPropertyChanged it will automatically call DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+        /// </summary>
+        /// <param name="canExecuteExpression">The property expression. Example: ObservesCanExecute((o) => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        public DelegateCommand<T> ObservesCanExecute(Expression<Func<object, bool>> canExecuteExpression)
+        {
+            ObservesCanExecuteInternal(canExecuteExpression);
+            return this;
         }
 
         /// <summary>
@@ -154,6 +176,29 @@ namespace Prism.Presentation
         {
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod", Resources.DelegateCommandDelegatesCannotBeNull);
+        }
+
+        /// <summary>
+        /// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+        /// </summary>
+        /// <typeparam name="T">The object type containing the property specified in the expression.</typeparam>
+        /// <param name="propertyExpression">The property expression. Example: ObservesProperty(() => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        public DelegateCommand ObservesProperty<T>(Expression<Func<T>> propertyExpression)
+        {
+            ObservesPropertyInternal(propertyExpression);
+            return this;
+        }
+
+        /// <summary>
+        /// Observes a property that is used to determine if this command can execute, and if it implements INotifyPropertyChanged it will automatically call DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+        /// </summary>
+        /// <param name="canExecuteExpression">The property expression. Example: ObservesCanExecute((o) => PropertyName).</param>
+        /// <returns>The current instance of DelegateCommand</returns>
+        public DelegateCommand ObservesCanExecute(Expression<Func<object, bool>> canExecuteExpression)
+        {
+            ObservesCanExecuteInternal(canExecuteExpression);
+            return this;
         }
 
         /// <summary>

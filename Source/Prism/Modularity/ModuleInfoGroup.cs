@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+
 
 using System;
 using System.Collections;
@@ -22,26 +22,6 @@ namespace Prism.Modularity
         private readonly Collection<ModuleInfo> modules = new Collection<ModuleInfo>();
 
         /// <summary>
-        /// Gets or sets the <see cref="ModuleInfo.InitializationMode"/> for the whole group. Any <see cref="ModuleInfo"/> classes that are
-        /// added after setting this value will also get this <see cref="InitializationMode"/>.
-        /// </summary>
-        /// <see cref="ModuleInfo.InitializationMode"/>
-        /// <value>The initialization mode.</value>
-        public InitializationMode InitializationMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ModuleInfo.Ref"/> value for the whole group. Any <see cref="ModuleInfo"/> classes that are
-        /// added after setting this value will also get this <see cref="Ref"/>.
-        /// 
-        /// The ref value will also be used by the <see cref="IModuleManager"/> to determine which  <see cref="IModuleTypeLoader"/> to use. 
-        /// For example, using an "file://" prefix with a valid URL will cause the FileModuleTypeLoader to be used
-        /// (Only available in the desktop version of CAL).
-        /// </summary>
-        /// <see cref="ModuleInfo.Ref"/>
-        /// <value>The ref value that will be used.</value>
-        public string Ref { get; set; }
-
-        /// <summary>
         /// Adds an <see cref="ModuleInfo"/> moduleInfo to the <see cref="ModuleInfoGroup"/>.
         /// </summary>
         /// <param name="item">The <see cref="ModuleInfo"/> to the <see cref="ModuleInfoGroup"/>.</param>
@@ -58,18 +38,9 @@ namespace Prism.Modularity
         /// </summary>
         /// <param name="moduleInfo">The module info to forward values to.</param>
         /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="moduleInfo"/> is <see langword="null"/>.</exception>
-        protected void ForwardValues(ModuleInfo moduleInfo)
+        protected virtual void ForwardValues(ModuleInfo moduleInfo)
         {
             if (moduleInfo == null) throw new System.ArgumentNullException("moduleInfo");
-            if (moduleInfo.Ref == null)
-            {
-                moduleInfo.Ref = this.Ref;
-            }
-
-            if (moduleInfo.InitializationMode == InitializationMode.WhenAvailable && this.InitializationMode != InitializationMode.WhenAvailable)
-            {
-                moduleInfo.InitializationMode = this.InitializationMode;
-            }
         }
 
         /// <summary>

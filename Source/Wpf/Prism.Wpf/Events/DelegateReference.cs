@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Microsoft.Practices.Prism.Events
+namespace Prism.Events
 {
     /// <summary>
     /// Represents a reference to a <see cref="Delegate"/> that may contain a

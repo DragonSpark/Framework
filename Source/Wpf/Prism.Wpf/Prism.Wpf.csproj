@@ -14,7 +14,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,12 +53,26 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.1.4.4.6392\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.1.4.4.6392\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.1.4.4.6392\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Events\DelegateReference.cs" />
+    <Compile Include="Common\MvvmHelpers.cs" />
     <Compile Include="Events\WeakDelegatesManager.cs" />
-    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="Modularity\CustomAttributeDataProvider.cs" />
+    <Compile Include="Modularity\DynamicModuleInfo.cs" />
+    <Compile Include="Modularity\InitializationMode.cs" />
     <Compile Include="Interactivity\CommandBehaviorBase.cs" />
     <Compile Include="Interactivity\DefaultPopupWindows\DefaultConfirmationWindow.xaml.cs">
       <DependentUpon>DefaultConfirmationWindow.xaml</DependentUpon>
@@ -78,41 +93,50 @@
     <Compile Include="Interactivity\PopupWindowAction.cs" />
     <Compile Include="Logging\TextLogger.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
-    <Compile Include="Modularity\AssemblyResolver.Desktop.cs">
+    <Compile Include="Modularity\AssemblyProvider.cs" />
+    <Compile Include="Modularity\AssemblyResolver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ConfigurationModuleCatalog.Desktop.cs">
+    <Compile Include="Modularity\ConfigurationModuleCatalog.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ConfigurationStore.Desktop.cs">
+    <Compile Include="Modularity\ConfigurationStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\DirectoryModuleCatalog.Desktop.cs">
+    <Compile Include="Modularity\DirectoryModuleCatalog.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\FileModuleTypeLoader.Desktop.cs">
+    <Compile Include="Modularity\DirectoryModuleInfoProvider.cs" />
+    <Compile Include="Modularity\DynamicModuleAttribute.cs" />
+    <Compile Include="Modularity\FileModuleTypeLoader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\IConfigurationStore.Desktop.cs">
+    <Compile Include="Modularity\IConfigurationStore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleConfigurationElement.Desktop.cs">
+    <Compile Include="Modularity\IModuleInfoProvider.cs" />
+    <Compile Include="Modularity\ModuleCatalogExtensions.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleConfigurationElementCollection.Desktop.cs">
+    <Compile Include="Modularity\ModuleConfigurationElementCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleDependencyCollection.Desktop.cs">
+    <Compile Include="Modularity\ModuleDependencyCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModuleDependencyConfigurationElement.Desktop.cs">
+    <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modularity\ModulesConfigurationSection.Desktop.cs">
+    <Compile Include="Modularity\DynamicModuleInfoBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modularity\ModulesConfigurationSection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
-    <Compile Include="ObservableObject.cs" />
+    <Compile Include="Common\ObservableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,8 +212,8 @@
     <Compile Include="Regions\ViewsCollection.cs" />
     <Compile Include="Regions\ViewsCollection.Desktop.cs" />
     <Compile Include="Regions\ViewSortHintAttribute.cs" />
-    <Compile Include="ServiceLocatorExtensions.cs" />
-    <Compile Include="UriParsingHelper.cs" />
+    <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
+    <Compile Include="Common\UriParsingHelper.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -215,16 +239,17 @@
     <ProjectReference Include="..\..\Prism\Prism.csproj">
       <Project>{e6c50355-d01e-4caa-884d-d7929861315c}</Project>
       <Name>Prism</Name>
+      <Aliases>global</Aliases>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

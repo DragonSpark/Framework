@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+
 
 using System;
 using System.Windows;
@@ -9,6 +9,8 @@ using Prism.Modularity;
 using Prism.Regions;
 using Prism.Regions.Behaviors;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Mvvm;
+using Prism.Presentation;
 
 namespace Prism
 {
@@ -74,6 +76,14 @@ namespace Prism
         /// </summary>
         protected virtual void ConfigureModuleCatalog()
         {
+        }
+
+        /// <summary>
+        /// Configures the <see cref="ViewModelLocator"/> used by Prism.
+        /// </summary>
+        protected virtual void ConfigureViewModelLocator()
+        {
+            ViewModelLocationProvider.SetDefaultViewModelFactory((type) => ServiceLocator.Current.GetInstance(type));
         }
 
         /// <summary>
