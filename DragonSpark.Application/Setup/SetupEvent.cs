@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Setup
 		}
 	}
 
-	public class SetupEvent : PrismEvent<SetupStatus>
+	public class SetupEvent : PubSubEvent<SetupStatus>
 	{
 		readonly IList<SetupStatus> history = new List<SetupStatus>();
 

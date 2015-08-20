@@ -50,10 +50,6 @@
       <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
       <Name>Prism</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
-      <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
-      <Name>Prism.Wpf</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

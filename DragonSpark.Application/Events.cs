@@ -20,13 +20,13 @@ namespace DragonSpark.Application
 			return result;
 		}
 
-		public static void Publish<TEvent, TPayload>( TPayload payload ) where TEvent : PrismEvent<TPayload>, new()
+		public static void Publish<TEvent, TPayload>( TPayload payload ) where TEvent : PubSubEvent<TPayload>, new()
 		{
 			With<TEvent>( @event => @event.Publish( payload ) );
 		}
 
 		public static SubscriptionToken SubscribeUntil<TEvent, TPayload>( this IEventAggregator target, Func<TEvent, TPayload, bool> until, ThreadOption option = ThreadOption.PublisherThread, bool keepReferenceAlive = true ) 
-			where TEvent : PrismEvent<TPayload>, new()
+			where TEvent : PubSubEvent<TPayload>, new()
 		{
 			var e = target.GetEvent<TEvent>();
 			var context = new SubscriptionContext<TEvent, TPayload>( e, until );
@@ -56,7 +56,7 @@ namespace DragonSpark.Application
 			}
 		}*/
 
-		class SubscriptionContext<TEvent, TPayload> where TEvent : PrismEvent<TPayload>, new()
+		class SubscriptionContext<TEvent, TPayload> where TEvent : PubSubEvent<TPayload>, new()
 		{
 			readonly TEvent @event;
 			readonly Func<TEvent, TPayload, bool> unsubscribeDelegate;
