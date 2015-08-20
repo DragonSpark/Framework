@@ -1,6 +1,5 @@
-using System;
 using DragonSpark.Activation;
-using Object = DragonSpark.Testing.TestObjects.Object;
+using System;
 
 namespace DragonSpark.Testing.TestObjects
 {

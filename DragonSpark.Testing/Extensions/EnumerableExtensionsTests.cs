@@ -1,10 +1,9 @@
-﻿using DragonSpark.Testing.TestObjects;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.TestObjects;
+using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Linq;
-using DragonSpark.Extensions;
-using Ploeh.AutoFixture.Xunit;
 using Xunit;
-using Xunit.Extensions;
 
 namespace DragonSpark.Testing.Extensions
 {

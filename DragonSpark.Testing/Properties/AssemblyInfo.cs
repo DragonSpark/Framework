@@ -6,6 +6,8 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Application.Runtime;
+using DragonSpark.ComponentModel;
 
 [assembly: AssemblyTitle("DragonSpark.Testing")]
 [assembly: AssemblyDescription("")]
@@ -37,6 +39,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // TODO: Registration-by-convention should take care of this:
-/*[assembly: Register( typeof(ITypeDefinitionProvider), typeof(TypeDefinitionProvider) )]
+[assembly: Register( typeof(ITypeDefinitionProvider), typeof(TypeDefinitionProvider) )]
 [assembly: Register( typeof(IMemberInfoLocator), typeof(MemberInfoLocator) )]
-[assembly: Register( typeof(IDefaultValueProvider), typeof(DefaultValueProvider) )]*/
+[assembly: Register( typeof(IDefaultValueProvider), typeof(DefaultValueProvider) )]

@@ -1,8 +1,8 @@
-using System;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -40,9 +40,10 @@ namespace DragonSpark.Activation.IoC
 
 		public TResult Create<TResult>( params object[] parameters )
 		{
+			var passed = parameters ?? new object[0];
 			var result = Determine( 
-				() => container.Create<TResult>( parameters ), 
-				() => SystemActivator.Instance.Create<TResult>( parameters ) 
+				() => container.Create<TResult>( passed ), 
+				() => SystemActivator.Instance.Create<TResult>( passed ) 
 				);
 			return result;
 		}

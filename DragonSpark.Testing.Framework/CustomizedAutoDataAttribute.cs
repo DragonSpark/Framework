@@ -1,12 +1,10 @@
-using System.Diagnostics;
-using Microsoft.Practices.Unity;
+using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Xunit;
+using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Testing.Framework
@@ -26,7 +24,7 @@ namespace DragonSpark.Testing.Framework
 			return result;
 		}
 
-		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest, Type[] parameterTypes )
+		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
 			var type = methodUnderTest.DeclaringType;
 			var customizers = type.Assembly.GetCustomAttributes()
@@ -40,7 +38,7 @@ namespace DragonSpark.Testing.Framework
 			customizations.Apply( x => x.Customizing( methodUnderTest, parameterTypes ) );
 			customizations.Apply( x => x.Customized( methodUnderTest, parameterTypes, result ) );*/
 			
-			var result = base.GetData( methodUnderTest, parameterTypes );
+			var result = base.GetData( methodUnderTest );
 			return result;
 		}
 	}

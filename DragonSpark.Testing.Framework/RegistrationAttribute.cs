@@ -1,11 +1,8 @@
-using Dynamitey;
-using Microsoft.Practices.Unity;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Xunit;
-using System;
-using System.Reflection;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
+using Ploeh.AutoFixture;
+using System;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -58,28 +55,18 @@ namespace DragonSpark.Testing.Framework
 	[AttributeUsage( AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true )]
 	public abstract class RegistrationAttribute : Attribute, ICustomization
 	{
-		readonly Type registrationType;
-		readonly Type mappedTo;
-
 		protected RegistrationAttribute( Type registrationType ) : this( registrationType, registrationType )
 		{}
 
 		protected RegistrationAttribute( Type registrationType, Type mappedTo )
 		{
-			this.registrationType = registrationType;
-			this.mappedTo = mappedTo;
+			RegistrationType = registrationType;
+			MappedTo = mappedTo;
 		}
 
-		public Type RegistrationType
-		{
-			get { return registrationType; }
-		}
-		
-		public Type MappedTo
-		{
-			get { return mappedTo; }
-		}
+		public Type RegistrationType { get; }
 
+		public Type MappedTo { get; }
 
 		void ICustomization.Customize( IFixture fixture )
 		{

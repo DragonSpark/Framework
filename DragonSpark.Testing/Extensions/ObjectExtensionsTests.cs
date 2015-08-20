@@ -1,14 +1,11 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using AutoMapper;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
-using Ploeh.AutoFixture.Xunit;
+using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using DragonSpark.Extensions;
 using Xunit;
-using Xunit.Extensions;
 
 namespace DragonSpark.Testing.Extensions
 {
@@ -49,7 +46,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( "Value cannot be null.\r\nParameter name: class", Assert.Throws<ArgumentNullException>( () => @class.ThrowIfNull( "class" ) ).Message );
 			Assert.Equal( "Value cannot be null.\r\nParameter name: parameter", Assert.Throws<ArgumentNullException>( () => @class.ThrowIfNull() ).Message );
 
-			Assert.DoesNotThrow( () => new Class().ThrowIfNull() );
+			new Class().ThrowIfNull();
 		}
 
 		[Fact]
@@ -59,7 +56,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( "Test message", Assert.Throws<InvalidOperationException>( () => @class.InvalidIfNull( "Test message" ) ).Message );
 			Assert.Equal( "This object is null.", Assert.Throws<InvalidOperationException>( () => @class.InvalidIfNull() ).Message );
 
-			Assert.DoesNotThrow( () => new Class().InvalidIfNull() );
+			new Class().InvalidIfNull();
 		}
 
 		[Theory, AutoData]

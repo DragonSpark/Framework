@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Diagnostics;
+using Ploeh.AutoFixture.Xunit2;
 using ExceptionFormatter = DragonSpark.Application.Runtime.ExceptionFormatter;
 
 namespace DragonSpark.Testing.Diagnostics
 {
-	using System;
 	using Framework;
 	using Moq;
-	using Ploeh.AutoFixture.Xunit;
+	using System;
 	using Xunit;
-	using Xunit.Extensions;
 
 	[Freeze( typeof(ApplicationInformation) )]
 	public class LogTests

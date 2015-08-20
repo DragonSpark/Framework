@@ -1,12 +1,10 @@
 using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
-using Microsoft.Practices.ServiceLocation;
 using Moq;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Xunit;
+using Ploeh.AutoFixture.Xunit2;
 using Xunit;
-using Xunit.Extensions;
 using ServiceLocator = DragonSpark.Testing.Framework.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation

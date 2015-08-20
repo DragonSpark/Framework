@@ -106,10 +106,8 @@ namespace DragonSpark.Activation.IoC
 			Context.ChildContainerCreated -= ContextChildContainerCreated;
 		}
 
-		IUnityContainer Creator
-		{
-			get { return creator.Value; }
-		}	Lazy<IUnityContainer> creator;
+		IUnityContainer Creator => creator.Value;
+		Lazy<IUnityContainer> creator;
 
 		public object Create( Type type, object[] parameters )
 		{

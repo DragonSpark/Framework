@@ -1,17 +1,39 @@
-﻿using System;
-using DragonSpark.Activation;
+﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
+using System;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using Xunit;
-using Xunit.Extensions;
-using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.ComponentModel
 {
 	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class DefaultValueProviderTests
 	{
+		public class Activator : IActivator
+		{
+			readonly IServiceLocator locator;
+
+			public Activator( IServiceLocator locator )
+			{
+				this.locator = locator;
+			}
+
+			public TResult CreateInstance<TResult>( Type type, string name )
+			{
+				var result = (TResult)locator.GetInstance( type, name );
+				return result;
+			}
+
+			public TResult Create<TResult>( params object[] parameters )
+			{
+				var result = (TResult)locator.GetInstance( typeof(TResult) );
+				return result;
+			}
+		}
+
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		void Apply( DefaultValueProvider sut )
 		{

@@ -2,7 +2,6 @@ using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using Xunit;
-using Xunit.Extensions;
 using Activator = DragonSpark.Testing.TestObjects.Activator;
 
 namespace DragonSpark.Testing.Activation
@@ -16,7 +15,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( instance );
 		}
 
-		[Theory, Ploeh.AutoFixture.Xunit.AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void DefaultCreate( string parameter )
 		{
 			var instance = DragonSpark.Activation.Activator.Create<ClassWithParameter>( parameter );

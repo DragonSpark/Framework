@@ -16,10 +16,7 @@ namespace DragonSpark.ComponentModel
 
 	public class DefaultValueProvider : IDefaultValueProvider
 	{
-		public static DefaultValueProvider Instance
-		{
-			get { return InstanceField; }
-		}	static readonly DefaultValueProvider InstanceField = new DefaultValueProvider();
+		public static DefaultValueProvider Instance { get; } = new DefaultValueProvider();
 
 		public void Apply( object target )
 		{

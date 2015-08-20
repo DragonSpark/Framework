@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Activation;
+using DragonSpark.Diagnostics;
+using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
 using System;
 
@@ -51,8 +53,10 @@ namespace DragonSpark.Extensions
 				var result = target.GetInstance( type, name );
 				return result;
 			}
-			catch ( ActivationException )
-			{}
+			catch ( ActivationException e )
+			{
+				// Log.Warning( string.Format( Resources.Activator_CouldNotActivate, type, name ?? Resources.Activator_None, e.GetMessage() ) );
+			}
 			return null;
 		}
 	}
