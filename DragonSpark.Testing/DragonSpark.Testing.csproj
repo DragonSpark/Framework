@@ -170,46 +170,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\ActivatorTests.cs" />
-    <Compile Include="Activation\FactoryTests.cs" />
-    <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
-    <Compile Include="ApplicationDetailsTests.cs" />
-    <Compile Include="Compilation\Class1.cs" />
-    <Compile Include="ComponentModel\AttributeProviderTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ComponentModel\DefaultValueProviderTests.cs" />
-    <Compile Include="ConditionMonitorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
-    <Compile Include="Extensions\BooleanExtensionsTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
-    <Compile Include="Extensions\DictionaryExtensionsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\EnumerableExtensionsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
-    <Compile Include="Extensions\ReflectionExtensionsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\TypeExtensionsTests.cs" />
-    <Compile Include="Extensions\WeakReferenceListExtensionsTests.cs" />
-    <Compile Include="Framework\AutoMoqDataAttributeTests.cs" />
-    <Compile Include="Framework\ServiceLocationCustomizationTests.cs" />
-    <Compile Include="Framework\ThreadLocalStorageTests.cs" />
+    <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Diagnostics\LogTests.cs" />
-    <Compile Include="Activation\ServiceLocationTests.cs" />
     <Compile Include="TestObjects\Activator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -217,8 +184,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestObjects\Class.cs" />
+    <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="TestObjects\ClassWithParameter.cs" />
     <Compile Include="TestObjects\ClassWithProperties.cs" />
+    <Compile Include="TestObjects\CommonChild.cs" />
+    <Compile Include="TestObjects\CommonObject.cs" />
     <Compile Include="TestObjects\Convention.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -240,6 +210,7 @@
     <Compile Include="TestObjects\IItem.cs" />
     <Compile Include="TestObjects\IObject.cs" />
     <Compile Include="TestObjects\Item.cs" />
+    <Compile Include="TestObjects\ListItem.cs" />
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,6 +222,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestObjects\Static.cs" />
+    <Compile Include="TestObjects\TestingException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -293,10 +265,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj">
-      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
-      <Name>DragonSpark.Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
       <Project>{96f63f2b-7d11-4d0f-a932-26c29f8e48bf}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
@@ -306,9 +274,7 @@
       <Name>DragonSpark</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Server\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
