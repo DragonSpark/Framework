@@ -1,16 +1,30 @@
-﻿using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
+using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.TestObjects;
+using Dynamitey;
+using Microsoft.Practices.Unity;
+using Moq;
+using Ploeh.AutoFixture.Xunit2;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.Activation.IoC
 {
-
-	/*[Freeze( typeof(IActivator), typeof(Activator) )]
+	// TODO: Fix StackOverflow:
+	[Freeze( typeof(IActivator), typeof(Activator) )]
 	[Freeze( typeof(IUnityContainer), typeof(UnityContainer) )]
 	[ContainerExtensionFactory( typeof(IoCExtension) )]
 	public class ServiceLocatorTests
 	{
 		[Theory, AutoMockData, AssignServiceLocation]
-		void GetInstance( [Frozen]ILogger logger, [Frozen]ServiceLocator sut )
+		void GetInstance( [Frozen]ILogger logger, [Frozen]DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			var before = sut.GetInstance<IInterface>();
 			Assert.Null( before);
@@ -31,7 +45,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization]
-		void GetAllInstances( [Frozen] ServiceLocator sut )
+		void GetAllInstances( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
 			sut.Register<IInterface, Derived>( "Second" );
@@ -52,7 +66,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization]
-		void Container( [Frozen] ServiceLocator sut )
+		void Container( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			sut.Dispose();
 
@@ -60,7 +74,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void Create(  [Greedy, Frozen] ServiceLocator locator, IActivator sut, string message, int number, Class @item )
+		void Create(  [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator locator, IActivator sut, string message, int number, Class @item )
 		{
 			locator.Register<IDefaultValueProvider, DefaultValueProvider>();
 
@@ -73,7 +87,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 		
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void Dispose( [Greedy, Frozen] ServiceLocator sut, IoCExtension extension )
+		void Dispose( [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
 		{
 			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => sut );
 
@@ -108,7 +122,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void Register( IUnityContainer container, [Greedy, Frozen] ServiceLocator sut )
+		void Register( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.Register<IInterface,Class>();
@@ -117,7 +131,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void RegisterInstance( IUnityContainer container, [Greedy, Frozen] ServiceLocator sut )
+		void RegisterInstance( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			var instance = new Class();
@@ -128,7 +142,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void RegisterFactory( IUnityContainer container, [Greedy, Frozen] ServiceLocator sut )
+		void RegisterFactory( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.RegisterFactory( typeof(IInterface), () => new Class() );
@@ -137,7 +151,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void BuildUp( [Greedy, Frozen( As = typeof(IObjectBuilder) )] ServiceLocator sut, IoCExtension extension )
+		void BuildUp( [Greedy, Frozen( As = typeof(IObjectBuilder) )] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
 		{
 			sut.Register<IDefaultValueProvider, DefaultValueProvider>();
 			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => sut );
@@ -149,5 +163,5 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Equal( "Hello World", item.String );
 			Assert.False( item.BuildUpOnce() );
 		}
-	}*/
+	}
 }
