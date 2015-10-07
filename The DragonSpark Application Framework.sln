@@ -273,7 +273,6 @@ Global
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Build|Mixed Platforms.Build.0 = Release|Any CPU
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Build|x86.ActiveCfg = Release|Any CPU
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{37CB4B8E-4D06-47D1-989F-67091821F96C}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -788,8 +787,8 @@ Global
 		{3F358953-AAA2-4A95-837B-E92F7C6CC7CE} = {3DE4CCC7-DAFD-4E0C-A921-C03F828D56A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.WCF.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.WCF.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.PolicyInjection.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Validation.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.WCF.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DragonSpark.Framework.vsmdi

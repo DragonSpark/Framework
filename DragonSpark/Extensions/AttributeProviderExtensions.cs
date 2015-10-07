@@ -32,7 +32,7 @@ namespace DragonSpark.Extensions
 
 		static Attribute[] ResolveAttributes( Tuple<MemberInfo, Type> key )
 		{
-			var info = ServiceLocation.With<IMemberInfoLocator, MemberInfo>( x => x.Locate( key.Item1 ) ) ?? key.Item1;
+			var info = Services.With<IMemberInfoLocator, MemberInfo>( x => x.Locate( key.Item1 ) ) ?? key.Item1;
 			var result = info.GetCustomAttributes( key.Item2, true ).ToArray();
 			return result;
 		}

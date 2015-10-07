@@ -171,14 +171,14 @@ namespace DragonSpark.Extensions
 
 		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
 		{
-			var provider = ServiceLocation.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
+			var provider = Services.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
 			provider.With( x => x.Apply( target ) );
 			return target;
 		}
 
 		public static object Evaluate( this object container, string expression )
 		{
-			var result = ServiceLocation.With<IExpressionEvaluator, object>( x => x.Evaluate( container, expression ) );
+			var result = Services.With<IExpressionEvaluator, object>( x => x.Evaluate( container, expression ) );
 			return result;
 		}
 

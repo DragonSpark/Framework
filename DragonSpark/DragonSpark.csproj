@@ -307,7 +307,7 @@
     </Compile>
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\IServiceRegistry.cs" />
-    <Compile Include="Activation\ServiceLocation.cs">
+    <Compile Include="Activation\Services.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\SystemActivator.cs" />

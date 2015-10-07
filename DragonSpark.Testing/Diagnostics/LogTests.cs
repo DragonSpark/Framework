@@ -83,8 +83,8 @@ namespace DragonSpark.Testing.Diagnostics
 			Log.Trace( () => called = true, message, id );
 			Assert.True( called );
 
-			Assert.Equal( ServiceLocation.Locate<ITracer>(), ServiceLocation.Locate<ITracer>() );
-			Assert.Equal( ServiceLocation.Locate<ITracer>(), ServiceLocation.Locate<Tracer>() );
+			Assert.Equal( Services.Locate<ITracer>(), Services.Locate<ITracer>() );
+			Assert.Equal( Services.Locate<ITracer>(), Services.Locate<Tracer>() );
 			Mock.Get( logger ).Verify( x => x.StartTrace( message, id ) );
 			Mock.Get( logger ).Verify( x => x.EndTrace( message, id, It.Is<TimeSpan>( y => y > TimeSpan.Zero ) ) );
 		}*/

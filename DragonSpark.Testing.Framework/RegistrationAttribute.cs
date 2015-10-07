@@ -70,7 +70,7 @@ namespace DragonSpark.Testing.Framework
 
 		void ICustomization.Customize( IFixture fixture )
 		{
-			ServiceLocation.With<IServiceRegistry>( registry => Customize( fixture, registry ) );
+			Services.With<IServiceRegistry>( registry => Customize( fixture, registry ) );
 		}
 
 		protected abstract void Customize( IFixture fixture, IServiceRegistry registry );

@@ -864,12 +864,12 @@ namespace DragonSpark.Application.Client.Commanding
 	{
 		public static void Refresh( DependencyObject element )
 		{
-			ServiceLocation.With<ICommandRegistry>( registry => registry.Refresh( registry.GetMonitor( element ) ) );
+			Services.With<ICommandRegistry>( registry => registry.Refresh( registry.GetMonitor( element ) ) );
 		}
 
 		public static void Refresh( ICommandMonitor monitor )
 		{
-			ServiceLocation.With<ICommandRegistry>( registry => registry.Refresh( monitor ) );
+			Services.With<ICommandRegistry>( registry => registry.Refresh( monitor ) );
 		}
 	}
 

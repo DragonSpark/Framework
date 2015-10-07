@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework
 	[Priority( Priority.High )]
 	public class AssignServiceLocationAttribute : BeforeAfterTestAttribute, ICustomization
 	{
-		static readonly List<string> TestsList = new List<string>();
+		// static readonly List<string> TestsList = new List<string>();
 
 		public void Customize( IFixture fixture )
 		{
@@ -23,9 +23,14 @@ namespace DragonSpark.Testing.Framework
 			return new ServiceLocator( fixture );
 		}
 
+		public override void Before( MethodInfo methodUnderTest )
+		{
+			base.Before( methodUnderTest );
+		}
+
 		public override void After( MethodInfo methodUnderTest )
 		{
-			TestsList.Add( methodUnderTest.Name );
+			// TestsList.Add( methodUnderTest.Name );
 
 			base.After( methodUnderTest );
 

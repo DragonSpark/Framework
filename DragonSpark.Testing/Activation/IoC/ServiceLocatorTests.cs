@@ -17,7 +17,6 @@ using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.Activation.IoC
 {
-	// TODO: Fix StackOverflow:
 	[Freeze( typeof(IActivator), typeof(Activator) )]
 	[Freeze( typeof(IUnityContainer), typeof(UnityContainer) )]
 	[ContainerExtensionFactory( typeof(IoCExtension) )]
@@ -31,7 +30,7 @@ namespace DragonSpark.Testing.Activation.IoC
 
 			var mock = Mock.Get( logger );
 
-			// mock.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
+			mock.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
 
 			sut.Register<IInterface, Class>();
 

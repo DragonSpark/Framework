@@ -19,7 +19,7 @@ namespace DragonSpark.Extensions
 
 		/*public static string WithReplacements( this string target, StringReplacementDictionary replacements = null )
 		{
-			var parameter = replacements ?? ServiceLocation.Locate<StringReplacementDictionary>();
+			var parameter = replacements ?? Services.Locate<StringReplacementDictionary>();
 			var result = parameter.Transform( x => string.Format( NamedTokenFormatter.Instance, target, parameter ) ) ?? target;
 			return result;
 		}*/

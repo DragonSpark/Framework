@@ -4,7 +4,10 @@ using System;
 
 namespace DragonSpark.Activation
 {
-	public static class ServiceLocation
+	/*public interface IServiceLocator : Microsoft.Practices.ServiceLocation.IServiceLocator, IServiceRegistry, IObjectBuilder
+	{}*/
+
+	public static class Services
 	{
 		/*public static event EventHandler Assigned = delegate { };
 
@@ -14,6 +17,15 @@ namespace DragonSpark.Activation
 			Assigned( locator, EventArgs.Empty );
 			Assigned = delegate { };
 		}*/
+
+		/*public static IServiceLocator Assign( IServiceLocator locator )
+		{
+			
+			Instance = locator;
+			return null;
+		}
+
+		static IServiceLocator Instance { get; set; }*/
 
 		public static void Register<TFrom, TTo>()
 		{

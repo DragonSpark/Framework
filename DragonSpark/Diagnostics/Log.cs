@@ -8,12 +8,12 @@ namespace DragonSpark.Diagnostics
 	{
 		public static void Information( string message, Priority priority = Priority.Normal )
 		{
-			ServiceLocation.With<ILogger>( x => x.Information( message, priority ) );
+			Services.With<ILogger>( x => x.Information( message, priority ) );
 		}
 
 		public static void Warning( string message, Priority priority = Priority.High )
 		{
-			ServiceLocation.With<ILogger>( x => x.Warning( message, priority ) );
+			Services.With<ILogger>( x => x.Warning( message, priority ) );
 		}
 
 		public static void Error( Exception exception, Guid? contextId = null )
@@ -28,13 +28,13 @@ namespace DragonSpark.Diagnostics
 
 		public static string GetMessage( this Exception exception, Guid? contextId = null )
 		{
-			var result = ServiceLocation.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
+			var result = Services.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
 			return result;
 		}
 
 		/*public static void Trace( this Action action, string message, Guid? guid = null )
 		{
-			ServiceLocation.With<ITracer>( x => x.Trace( action, message, guid ) );
+			Services.With<ITracer>( x => x.Trace( action, message, guid ) );
 		}*/
 
 		public static Exception Try( this Action action )
@@ -54,12 +54,12 @@ namespace DragonSpark.Diagnostics
 		public static void TryAndHandle( this Action action )
 		{
 			var exception = action.Try();
-			exception.NotNull( x => ServiceLocation.With<IExceptionHandler>( y => y.Process( x ) ) );
+			exception.NotNull( x => Services.With<IExceptionHandler>( y => y.Process( x ) ) );
 		}
 
 		static void Handle( Func<ILogger, Action<string, Exception>> determineHandler, Exception exception, Guid? contextId = null )
 		{
-			ServiceLocation.With<ILogger>( x =>
+			Services.With<ILogger>( x =>
 			{
 				var message = exception.GetMessage( contextId );
 				var handler = determineHandler( x );

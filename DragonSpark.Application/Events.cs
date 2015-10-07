@@ -16,7 +16,7 @@ namespace DragonSpark.Application
 
 		public static TEvent With<TEvent>( Action<TEvent> action ) where TEvent : EventBase, new()
 		{
-			var result = ServiceLocation.With<IEventAggregator, TEvent>( aggregator => aggregator.GetEvent<TEvent>().With( action ) );
+			var result = Services.With<IEventAggregator, TEvent>( aggregator => aggregator.GetEvent<TEvent>().With( action ) );
 			return result;
 		}
 

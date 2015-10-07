@@ -17,7 +17,7 @@ namespace DragonSpark.Extensions
 		public static bool BuildUpOnce( this object target )
 		{
 			var result = !BuildCache.Exists( target );
-			result.IsTrue( () => ServiceLocation.With<IObjectBuilder>( x =>
+			result.IsTrue( () => Services.With<IObjectBuilder>( x =>
 			{
 				x.BuildUp( target );
 				BuildCache.Add( new WeakReference<object>( target ) );

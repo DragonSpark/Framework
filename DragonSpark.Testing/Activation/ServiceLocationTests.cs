@@ -1,3 +1,4 @@
+using System.Threading;
 using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
@@ -14,11 +15,11 @@ namespace DragonSpark.Testing.Activation
 		[Fact]
 		public void IsAvailable()
 		{
-			Assert.False( ServiceLocation.IsAvailable() );
+			Assert.False( Services.IsAvailable() );
 
 			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => new ServiceLocator( new Fixture() ) );
 
-			var isAvailable = ServiceLocation.IsAvailable();
+			var isAvailable = Services.IsAvailable();
 			Assert.True( isAvailable );
 		}
 
@@ -26,35 +27,37 @@ namespace DragonSpark.Testing.Activation
 		public void Assign()
 		{
 			var assigned = false;
-			ServiceLocation.Assigned += ( sender, args ) => assigned = true;
-			ServiceLocation.Assign( new ServiceLocator( new Fixture() ) );
+			Services.Assigned += ( sender, args ) => assigned = true;
+			Services.Assign( new ServiceLocator( new Fixture() ) );
 			Assert.True( assigned );
 		}*/
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		public void RegisterGeneric()
 		{
-			ServiceLocation.Register<IInterface, Class>();
+			// ExecutionContext.
 
-			var located = ServiceLocation.Locate<IInterface>();
+			Services.Register<IInterface, Class>();
+
+			var located = Services.Locate<IInterface>();
 			Assert.IsType<Class>( located );
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		public void Register()
 		{
-			ServiceLocation.Register( typeof(IInterface), typeof(Class) );
+			Services.Register( typeof(IInterface), typeof(Class) );
 
-			var located = ServiceLocation.Locate<IInterface>();
+			var located = Services.Locate<IInterface>();
 			Assert.IsType<Class>( located );
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		void RegisterInstanceGeneric( Class instance )
 		{
-			ServiceLocation.Register<IInterface>( instance );
+			Services.Register<IInterface>( instance );
 
-			var located = ServiceLocation.Locate<IInterface>();
+			var located = Services.Locate<IInterface>();
 			Assert.IsType<Class>( located );
 			Assert.Equal( instance, located );
 		}
@@ -62,9 +65,9 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Framework.AutoDataCustomization, AssignServiceLocation]
 		void RegisterInstance( Class instance )
 		{
-			ServiceLocation.Register( typeof(IInterface), instance );
+			Services.Register( typeof(IInterface), instance );
 
-			var located = ServiceLocation.Locate<IInterface>();
+			var located = Services.Locate<IInterface>();
 			Assert.IsType<Class>( located );
 			Assert.Equal( instance, located );
 		}
@@ -72,9 +75,9 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Framework.AutoDataCustomization, AssignServiceLocation]
 		void RegisterFactory( Class instance )
 		{
-			ServiceLocation.Register<IInterface>( () => instance );
+			Services.Register<IInterface>( () => instance );
 
-			var located = ServiceLocation.Locate<IInterface>();
+			var located = Services.Locate<IInterface>();
 			Assert.IsType<Class>( located );
 			Assert.Equal( instance, located );
 		}
@@ -82,16 +85,16 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Framework.AutoDataCustomization, AssignServiceLocation]
 		public void With( [Frozen]ClassWithParameter instance )
 		{
-			var item = ServiceLocation.With<ClassWithParameter, object>( x => x.Parameter );
+			var item = Services.With<ClassWithParameter, object>( x => x.Parameter );
 			Assert.Equal( instance.Parameter, item );
 
-			Assert.Null( ServiceLocation.With<IInterface, object>( x => x ) );
+			Assert.Null( Services.With<IInterface, object>( x => x ) );
 		}
 
 		[Fact]
 		public void WithDefault()
 		{
-			var item = ServiceLocation.With<ClassWithParameter, object>( x => x.Parameter );
+			var item = Services.With<ClassWithParameter, object>( x => x.Parameter );
 			Assert.Null( item );
 		}
 
@@ -100,7 +103,7 @@ namespace DragonSpark.Testing.Activation
 		{
 			registry.Register( typeof(IServiceRegistry), sut.Object );
 
-			ServiceLocation.Register<IInterface, Class>();
+			Services.Register<IInterface, Class>();
 
 			sut.Verify( x => x.Register( typeof(IInterface), typeof(Class), null ) );
 		}

@@ -46,7 +46,6 @@ namespace DragonSpark.Activation.IoC
 			this.container.RegisterInstance<IServiceLocator>( this );
 			this.container.RegisterInstance<IServiceRegistry>( this );
 			this.container.RegisterInstance<IObjectBuilder>( this );
-			this.container.RegisterInstance( container );
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()

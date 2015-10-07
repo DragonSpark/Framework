@@ -19,7 +19,7 @@ namespace DragonSpark.Activation
 
 		static IActivator ResolveActivator()
 		{
-			var result = ServiceLocation.Locate<IActivator>() ?? SystemActivator.Instance;
+			var result = Services.Locate<IActivator>() ?? SystemActivator.Instance;
 			return result;
 		}
 
