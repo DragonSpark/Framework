@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
-using Dynamitey.DynamicObjects;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions

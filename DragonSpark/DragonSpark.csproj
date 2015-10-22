@@ -198,6 +198,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\IoC\Build\EnumerableResolutionStrategy.cs" />
     <Compile Include="Runtime\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
