@@ -1,5 +1,4 @@
-﻿using DragonSpark.Activation.IoC.Build;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;

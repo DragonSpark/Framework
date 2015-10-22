@@ -2,7 +2,7 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 
-namespace DragonSpark.Activation.IoC.Build
+namespace DragonSpark.Activation.IoC
 {
 	public class DefaultValueStrategy : BuilderStrategy
 	{

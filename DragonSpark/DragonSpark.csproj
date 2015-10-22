@@ -198,7 +198,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\IoC\Build\EnumerableResolutionStrategy.cs" />
+    <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
     <Compile Include="Runtime\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
@@ -209,7 +209,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="Activation\IoC\Build\DefaultValueStrategy.cs" />
+    <Compile Include="Activation\IoC\DefaultValueStrategy.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
