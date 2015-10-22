@@ -32,13 +32,15 @@ namespace DragonSpark.Activation.IoC
 
 			// CurrentBuildKeyStrategy = new CurrentBuildKeyStrategy();
 
-			Context.Policies.SetDefault<IConstructorSelectorPolicy>(new DefaultUnityConstructorSelectorPolicy());
+			Context.Policies.SetDefault<IConstructorSelectorPolicy>( new DefaultUnityConstructorSelectorPolicy() );
 
 			//Context.Strategies.Add( CurrentBuildKeyStrategy, UnityBuildStage.Setup );
 			// Context.Strategies.AddNew<CurrentContextStrategy>( UnityBuildStage.Setup );
 
 			// Context.Strategies.AddNew<ApplicationConfigurationStrategy>( UnityBuildStage.PreCreation );
+			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.PreCreation );
 			Context.Strategies.AddNew<DefaultValueStrategy>( UnityBuildStage.Initialization );
+			
 			// Context.Strategies.AddNew<ApplyBehaviorStrategy>( UnityBuildStage.Initialization );
 			
 			/*Context.RegisteringInstance += ContextRegisteringInstance;

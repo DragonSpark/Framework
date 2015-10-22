@@ -15,7 +15,8 @@
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>66b09df0</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
     <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
@@ -191,10 +192,6 @@
       <Project>{eb77a62a-7527-4bbe-a335-28ba901d8fb2}</Project>
       <Name>DragonSpark.Application.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj">
-      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
-      <Name>DragonSpark.Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Application.Client.Forms\DragonSpark.Application.Client.Forms.csproj">
       <Project>{7da5fd28-7e89-459f-9cdc-a2d278a95662}</Project>
       <Name>DragonSpark.Application.Client.Forms</Name>
@@ -218,14 +215,6 @@
     <ProjectReference Include="..\Prism\Source\Prism.Unity.Windows\Prism.Unity.Windows.csproj">
       <Project>{d5b22adb-dc81-47f2-be32-5c435895c484}</Project>
       <Name>Prism.Unity.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
-      <Project>{3388756d-3b64-4f93-9232-ea7e1d224d8a}</Project>
-      <Name>Prism.Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
-      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
-      <Name>Prism</Name>
     </ProjectReference>
     <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
       <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
@@ -267,7 +256,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
-    <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
   </Target>
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <Import Project="..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" />
@@ -276,7 +264,6 @@
     <Error Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
   </Target>
   <Import Project="..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

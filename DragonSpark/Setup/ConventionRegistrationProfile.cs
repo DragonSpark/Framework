@@ -1,34 +1,22 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Dynamitey.DynamicObjects;
 
 namespace DragonSpark.Setup
 {
 	public class ConventionRegistrationProfile
 	{
-		readonly Assembly[] application;
-		readonly Assembly[] include;
-		readonly TypeInfo[] candidates;
-
-		public ConventionRegistrationProfile( Assembly[] application, Assembly[] include, TypeInfo[] candidates )
+		public ConventionRegistrationProfile( ICollection<Assembly> application, ICollection<Assembly> include, ICollection<TypeInfo> candidates )
 		{
-			this.application = application;
-			this.include = include;
-			this.candidates = candidates;
+			Application = application;
+			Include = include;
+			Candidates = candidates;
 		}
 
-		public ICollection<Assembly> Application
-		{
-			get { return application; }
-		}
+		public ICollection<Assembly> Application { get;  }
 
-		public ICollection<Assembly> Include
-		{
-			get { return include; }
-		}
+		public ICollection<Assembly> Include { get; }
 
-		public ICollection<TypeInfo> Candidates
-		{
-			get { return candidates; }
-		}
+		public ICollection<TypeInfo> Candidates { get; }
 	}
 }

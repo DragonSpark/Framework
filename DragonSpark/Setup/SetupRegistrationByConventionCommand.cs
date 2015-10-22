@@ -1,5 +1,3 @@
-using Prism;
-
 namespace DragonSpark.Setup
 {
 	public abstract class SetupRegistrationByConventionCommand : SetupCommand

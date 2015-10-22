@@ -1,35 +1,32 @@
-using System;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
-using Prism.Logging;
+using System;
+using System.Diagnostics.Contracts;
+using DragonSpark.Logging;
 
 namespace DragonSpark.Setup
 {
 	public class UnityConventionRegistrationService : IConventionRegistrationService
 	{
-		readonly IUnityContainer container;
-		readonly ILoggerFacade logger;
-		
-		public UnityConventionRegistrationService( IUnityContainer container, ILoggerFacade logger )
+
+		public UnityConventionRegistrationService( IUnityContainer container, ILoggerFacade logger, ISingletonLocator locator )
 		{
-			this.container = container;
-			this.logger = logger;
+			Container = container;
+			Logger = logger;
+			Locator = locator;
 		}
 
-		protected IUnityContainer Container
-		{
-			get { return container; }
-		}
+		protected IUnityContainer Container { get; }
 
-		protected ILoggerFacade Logger
-		{
-			get { return logger; }
-		}
+		protected ILoggerFacade Logger { get; }
 
-		protected virtual LifetimeManager DetermineLifetimeContainer<T>( Type type ) where T : LifetimeManager, new()
+		public ISingletonLocator Locator { get; }
+
+		protected virtual LifetimeManager DetermineLifetimeContainer<T>( Type type ) where T : LifetimeManager
 		{
-			var result = type.FromMetadata<LifetimeManagerAttribute, LifetimeManager>( x => Activation.Activator.CreateInstance<LifetimeManager>( x.LifetimeManagerType ) ) ?? new T();
+			var result = Activation.Activator.CreateInstance<LifetimeManager>( type.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType ) ?? typeof(T) );
+			Locator.Locate( type ).With( result.SetValue );
 			return result;
 		}
 
@@ -37,8 +34,9 @@ namespace DragonSpark.Setup
 		{
 			profile.Candidates.WhereDecorated<RegisterAsAttribute>().Apply( item => item.Item2.AsType().With( type =>
 			{
-				logger.Log( string.Format( Resources.UnityConventionRegistrationService_Registering, item.Item1.As, type ), Category.Debug, Prism.Logging.Priority.None );
-				container.RegisterType( item.Item1.As, type, DetermineLifetimeContainer<ContainerControlledLifetimeManager>( type ) );
+				Logger.Log( string.Format( Resources.UnityConventionRegistrationService_Registering, item.Item1.As, type ), Category.Debug, Logging.Priority.None );
+
+				Container.RegisterType( item.Item1.As, type, item.Item1.Name, DetermineLifetimeContainer<ContainerControlledLifetimeManager>( type ) );
 			} ) );
 		}
 	}

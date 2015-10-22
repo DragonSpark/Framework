@@ -31,6 +31,36 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        public static T TryResolve<T>(this IUnityContainer container)
+        {
+            object result = TryResolve(container, typeof(T));
+            if (result != null)
+            {
+                return (T)result;
+            }
+            return default(T);
+        }
+
+        /// <summary>
+        /// Utility method to try to resolve a service from the container avoiding an exception if the container cannot build the type.
+        /// </summary>
+        /// <param name="container">The cointainer that will be used to resolve the type.</param>
+        /// <param name="typeToResolve">The type to resolve.</param>
+        /// <returns>The instance of <paramref name="typeToResolve"/> built up by the container.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public static object TryResolve(this IUnityContainer container, Type typeToResolve)
+        {
+            try
+            {
+                return container.Resolve(typeToResolve);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
 		/*public static IUnityContainer FromConfiguration( this IUnityContainer container )
 		{
 			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => container.LoadConfiguration() ) );

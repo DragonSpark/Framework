@@ -5,16 +5,16 @@ namespace DragonSpark.Setup
 	[AttributeUsage( AttributeTargets.Class )]
 	public sealed class RegisterAsAttribute : Attribute
 	{
-		readonly Type @as;
+		public RegisterAsAttribute( Type @as ) : this( @as, null )
+		{}
 
-		public RegisterAsAttribute( Type @as )
+		public RegisterAsAttribute( Type @as, string name )
 		{
-			this.@as = @as;
+			As = @as;
+			Name = name;
 		}
 
-		public Type As
-		{
-			get { return @as; }
-		}
+		public Type As { get; }
+		public string Name { get; }
 	}
 }

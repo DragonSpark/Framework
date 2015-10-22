@@ -46,7 +46,8 @@
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <NuGetPackageImportStamp>15f89dc6</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -190,22 +191,6 @@
       <HintPath>..\packages\Unity.3.5.1404.0\lib\portable-net45+wp80+win8+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Composition.AttributedModel">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Convention">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Hosting">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Runtime">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -213,9 +198,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Runtime\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
-    <Compile Include="Activation\IAssemblyProvider.cs">
+    <Compile Include="Runtime\FilteredAssemblyProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IFactory.cs">
@@ -236,23 +222,75 @@
     <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Extensions\AttributeProviderExtensions.cs" />
     <Compile Include="Extensions\BooleanExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\ServiceLocationExtensions.cs" />
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Runtime\ListDictionary.cs" />
+    <Compile Include="Logging\Category.cs" />
+    <Compile Include="Logging\DebugLogger.cs" />
+    <Compile Include="Logging\EmptyLogger.cs" />
+    <Compile Include="Logging\ILoggerFacade.cs" />
+    <Compile Include="Logging\Priority.cs" />
+    <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
+    <Compile Include="Modularity\AttributeDataProvider.cs" />
+    <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
+    <Compile Include="Modularity\DuplicateModuleException.cs" />
+    <Compile Include="Runtime\IAssemblyProvider.cs" />
+    <Compile Include="Modularity\IAssemblyResolver.cs" />
+    <Compile Include="Modularity\IAttributeDataProvider.cs" />
+    <Compile Include="Modularity\IModule.cs" />
+    <Compile Include="Modularity\IModuleCatalog.cs" />
+    <Compile Include="Modularity\IModuleCatalogItem.cs" />
+    <Compile Include="Modularity\IModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\IModuleInitializer.cs" />
+    <Compile Include="Modularity\IModuleManager.cs" />
+    <Compile Include="Modularity\IModuleTypeLoader.cs" />
+    <Compile Include="Modularity\LoadModuleCompletedEventArgs.cs" />
+    <Compile Include="Modularity\LocalModuleTypeLoader.cs" />
+    <Compile Include="Modularity\ModularityException.cs" />
+    <Compile Include="Modularity\ModuleAttribute.cs" />
+    <Compile Include="Modularity\ModuleCatalog.cs" />
+    <Compile Include="Modularity\ModuleDependencyAttribute.cs" />
+    <Compile Include="Modularity\ModuleDependencySolver.cs" />
+    <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgs.cs" />
+    <Compile Include="Modularity\ModuleInfo.cs" />
+    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\ModuleInfoGroup.cs" />
+    <Compile Include="Modularity\ModuleInfoGroupExtensions.cs" />
+    <Compile Include="Modularity\ModuleInitializeException.cs" />
+    <Compile Include="Modularity\ModuleInitializer.cs" />
+    <Compile Include="Modularity\ModuleManager.cs" />
+    <Compile Include="Modularity\ModuleNotFoundException.cs" />
+    <Compile Include="Modularity\ModuleState.cs" />
+    <Compile Include="Modularity\ModuleTypeLoaderNotFoundException.cs" />
+    <Compile Include="Modularity\ModuleTypeLoadingException.cs" />
     <Compile Include="Setup\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\ConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\IConventionRegistrationService.cs" />
     <Compile Include="Setup\IConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\IncludeAttribute.cs" />
+    <Compile Include="Setup\InitializeModulesCommand.cs" />
+    <Compile Include="Setup\ISetup.cs" />
+    <Compile Include="Setup\ISingletonLocator.cs" />
     <Compile Include="Setup\RegisterAsAttribute.cs" />
+    <Compile Include="Setup\RegisterFrameworkExceptionTypesCommand.cs" />
+    <Compile Include="Setup\Setup.cs" />
+    <Compile Include="Setup\SetupCommand.cs" />
+    <Compile Include="Setup\SetupContext.cs" />
+    <Compile Include="Extensions\SetupContextExtensions.cs" />
+    <Compile Include="Setup\SetupLoggingCommandBase.cs" />
+    <Compile Include="Setup\SetupModuleCatalogCommandBase.cs" />
     <Compile Include="Setup\SetupRegistrationByConventionCommand.cs" />
     <Compile Include="Setup\IUnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\RegistrationAttribute.cs" />
+    <Compile Include="Setup\SetupUnityCommand.cs" />
     <Compile Include="Setup\SetupUnityContainer.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
@@ -352,13 +390,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
-      <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>
-      <Name>Prism.Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
-      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
-      <Name>Prism</Name>
+    <ProjectReference Include="..\DragonSpark.Shim\DragonSpark.Shim.csproj">
+      <Project>{69750ce1-63f1-4ddf-b22e-f8b40d8f16a8}</Project>
+      <Name>DragonSpark.Shim</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -367,13 +401,6 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

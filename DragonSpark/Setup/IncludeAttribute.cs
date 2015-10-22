@@ -8,16 +8,11 @@ namespace DragonSpark.Setup
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public sealed class IncludeAttribute : Attribute
 	{
-		readonly Assembly[] assemblies;
-
 		public IncludeAttribute( params Type[] typesInAssemblies )
 		{
-			assemblies = typesInAssemblies.Select( type => IntrospectionExtensions.GetTypeInfo( type ).Assembly ).ToArray();
+			Assemblies = typesInAssemblies.Select( type => type.GetTypeInfo().Assembly ).ToArray();
 		}
 
-		public IEnumerable<Assembly> Assemblies
-		{
-			get { return assemblies; }
-		}
+		public IEnumerable<Assembly> Assemblies { get; }
 	}
 }

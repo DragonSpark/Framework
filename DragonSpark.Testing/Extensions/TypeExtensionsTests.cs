@@ -26,9 +26,9 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		public void GetItemType()
 		{
-			Assert.Equal( typeof(Class), typeof(List<Class>).GetItemType() );
-			Assert.Equal( typeof(Class), typeof(Class[]).GetItemType() );
-			Assert.Null( typeof(Class).GetItemType() );
+			Assert.Equal( typeof(Class), typeof(List<Class>).GetInnerType() );
+			Assert.Equal( typeof(Class), typeof(Class[]).GetInnerType() );
+			Assert.Null( typeof(Class).GetInnerType() );
 		}
 	}
 }

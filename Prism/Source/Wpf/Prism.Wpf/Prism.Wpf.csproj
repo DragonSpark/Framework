@@ -219,17 +219,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Prism.Presentation\Prism.Presentation.csproj">
-      <Project>{F46AB4CD-67A3-4D28-8652-0593A0061ED7}</Project>
-      <Name>Prism.Presentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism.csproj">
-      <Project>{e6c50355-d01e-4caa-884d-d7929861315c}</Project>
-      <Name>Prism</Name>
-      <Aliases>global</Aliases>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

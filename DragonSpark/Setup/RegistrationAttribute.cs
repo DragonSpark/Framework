@@ -6,23 +6,16 @@ namespace DragonSpark.Setup
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public sealed class RegistrationAttribute : Attribute
 	{
-		readonly Priority priority;
-		readonly Type[] ignoreForRegistration;
-
 		public RegistrationAttribute( Priority priority, params Type[] ignoreForRegistration )
 		{
-			this.priority = priority;
-			this.ignoreForRegistration = ignoreForRegistration;
+			Priority = priority;
+			IgnoreForRegistration = ignoreForRegistration;
 		}
 
-		public Priority Priority
-		{
-			get { return priority; }
-		}
+		public Priority Priority { get; }
 
-		public IEnumerable<Type> IgnoreForRegistration
-		{
-			get { return ignoreForRegistration; }
-		}
+		public string Namespaces { get; set; }
+
+		public IEnumerable<Type> IgnoreForRegistration { get; }
 	}
 }

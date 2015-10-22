@@ -15,14 +15,14 @@ namespace DragonSpark.Testing.Activation
 		[Theory, AutoDataCustomization]
 		void CreateActivation( Factory<Class> sut )
 		{
-			var creation = sut.Create();
+			var creation = sut.Create<Class>();
 			Assert.NotNull( creation );
 		}
 
 		[Theory, AutoDataCustomization]
 		void CreateActivationException( Factory<ClassWithParameter> sut )
 		{
-			Assert.Throws<MissingMethodException>( () => sut.Create() );
+			Assert.Throws<MissingMethodException>( () => sut.Create<ClassWithParameter>() );
 		}
 
 		[Theory, AutoDataCustomization]

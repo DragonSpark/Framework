@@ -5,7 +5,7 @@ namespace DragonSpark.Activation
 {
 	public class Factory<TResult> : FactoryBase<TResult> where TResult : class
 	{
-		protected override TResult CreateFrom( object parameter )
+		protected override TResult CreateFrom( Type resultType, object parameter )
 		{
 			var result = Activator.Create<TResult>( parameter );
 			return result;
@@ -17,18 +17,18 @@ namespace DragonSpark.Activation
 
 	public abstract class FactoryBase<TParameter, TResult> : IFactory where TResult : class
 	{
-		protected abstract TResult CreateFrom( TParameter parameter );
+		protected abstract TResult CreateFrom( Type resultType, TParameter parameter );
 		
-		public TResult Create( TParameter parameter = default(TParameter) )
+		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
 		{
-			var result = CreateFrom( parameter );
+			var result = CreateFrom( resultType, parameter );
 			return result;
 		}
 
 
 		object IFactory.Create( Type resultType, object parameter )
 		{
-			var result = Create( parameter.To<TParameter>() );
+			var result = Create( resultType, parameter.To<TParameter>() );
 			return result;
 		}
 	}

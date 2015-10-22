@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Activator = System.Activator;
 
@@ -33,6 +34,12 @@ namespace DragonSpark.Extensions
 			return expression;
 		}
 
+		public static MemberInfo GetMemberInfo( this Expression expression )
+		{
+			var lambda = (LambdaExpression)expression;
+			var result = ( lambda.Body.AsTo<UnaryExpression, Expression>( unaryExpression => unaryExpression.Operand ) ?? lambda.Body ).To<MemberExpression>().Member;
+			return result;
+		}
 
 		public static TResult MapInto<TResult>( this object source, TResult existing = null ) where TResult : class 
 		{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +22,30 @@ namespace DragonSpark.Extensions
 			return result;
 		}*/
 
+		public static bool IsAssignableFrom( this Type @this, Type other )
+		{
+			var result = @this.GetTypeInfo().IsAssignableFrom( other.GetTypeInfo() );
+			return result;
+		}
+
+		public static Assembly Assembly( this Type @this )
+		{
+			var result = @this.GetTypeInfo().Assembly;
+			return result;
+		}
+
+		public static bool CanActivateFrom<T>( this Type @this )
+		{
+			var result = @this.CanActivateFrom( typeof(T) );
+			return result;
+		}
+
+		public static bool CanActivateFrom( this Type @this, Type other )
+		{
+			var result  = !@this.GetTypeInfo().IsAbstract && other.IsAssignableFrom( @this );
+			return result;
+		}
+
 		public static IEnumerable<Type> GetHierarchy( this Type target, bool includeRoot = true )
 		{
 			var result = new List<Type> { target };
@@ -36,11 +61,21 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static Type GetEnumerableType( this Type @this )
+		{
+			var result = InnerType( @this, info => typeof(IEnumerable).GetTypeInfo().IsAssignableFrom( info ) );
+			return result;
+		}
 
-		public static Type GetItemType( this Type target )
+		public static Type GetInnerType( this Type target )
+		{
+			return InnerType( target );
+		}
+
+		static Type InnerType( Type target, Func<TypeInfo, bool> check = null )
 		{
 			var info = target.GetTypeInfo();
-			var result = info.IsGenericType && /*typeof(IEnumerable).GetTypeInfo().IsAssignableFrom( info )*/ info.GenericTypeArguments.Any() ? info.GenericTypeArguments.FirstOrDefault() : 
+			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.Transform( func => func( info ), () => true ) ? info.GenericTypeArguments.FirstOrDefault() :
 				target.IsArray ? target.GetElementType() : null;
 			return result;
 		}

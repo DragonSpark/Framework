@@ -27,9 +27,9 @@ namespace DragonSpark.Extensions
 			}
 		}
 
-		public static IEnumerable<TItem> Append<TItem>( this IEnumerable<TItem> target, TItem item )
+		public static IEnumerable<TItem> Append<TItem>( this IEnumerable<TItem> target, params TItem[] items )
 		{
-			var result = target.Concat( new[] { item } );
+			var result = target.Concat( items );
 			return result;
 		}
 

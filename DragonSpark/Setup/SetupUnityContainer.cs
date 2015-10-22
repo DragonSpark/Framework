@@ -1,45 +1,26 @@
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
-using Prism;
-using Prism.Unity;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
-	// [ContentProperty( "Types" )]
+	[ContentProperty( "Types" )]
 	public class SetupUnityContainer : SetupCommand
 	{
-		public Collection<UnityContainerExtension> Extensions
-		{
-			get { return extensions; }
-		}	readonly Collection<UnityContainerExtension> extensions = new Collection<UnityContainerExtension>();
+		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();
 
-		public Collection<UnityType> Types
-		{
-			get { return types; }
-		}	readonly Collection<UnityType> types = new Collection<UnityType>();
+		public SetupCommandCollection<UnityType> Types { get; } = new SetupCommandCollection<UnityType>();
 
-		public Collection<UnityInstance> Instances
-		{
-			get { return instances; }
-		}	readonly Collection<UnityInstance> instances = new Collection<UnityInstance>();
+		public SetupCommandCollection<UnityInstance> Instances { get; } = new SetupCommandCollection<UnityInstance>();
 
-		public Collection<ICommand> PreConfigurations
-		{
-			get { return preConfigurations; }
-		}	readonly Collection<ICommand> preConfigurations = new Collection<ICommand>();
+		public SetupCommandCollection<ICommand> PreConfigurations { get; } = new SetupCommandCollection<ICommand>();
 
-		public Collection<ICommand> Configurations
-		{
-			get { return configurations; }
-		}	readonly Collection<ICommand> configurations = new Collection<ICommand>();
+		public SetupCommandCollection<ICommand> Configurations { get; } = new SetupCommandCollection<ICommand>();
 
-		public Collection<ICommand> PostConfigurations
-		{
-			get { return postConfigurations; }
-		}	readonly Collection<ICommand> postConfigurations = new Collection<ICommand>();
+		public SetupCommandCollection<ICommand> PostConfigurations { get; } = new SetupCommandCollection<ICommand>();
 
 		protected override void Execute( SetupContext context )
 		{

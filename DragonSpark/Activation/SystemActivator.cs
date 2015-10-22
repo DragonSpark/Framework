@@ -5,10 +5,7 @@ namespace DragonSpark.Activation
 {
 	class SystemActivator : IActivator
 	{
-		public static SystemActivator Instance
-		{
-			get { return InstanceField; }
-		}	static readonly SystemActivator InstanceField = new SystemActivator();
+		public static SystemActivator Instance { get; } = new SystemActivator();
 
 		public TResult CreateInstance<TResult>( Type type, string name )
 		{

@@ -3,7 +3,8 @@ using DragonSpark.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Prism.Modularity;
+using DragonSpark.Modularity;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Setup
 {
@@ -22,7 +23,7 @@ namespace DragonSpark.Setup
 			
 			var types = DetermineCandidateTypes( assemblies );
 
-			var result = new ConventionRegistrationProfile( assemblies, assemblies.SelectMany( assembly => assembly.FromMetadata<IncludeAttribute, IEnumerable<Assembly>>( attribute => attribute.Assemblies ) ).ToArray(), types );
+			var result = new ConventionRegistrationProfile( assemblies, assemblies.SelectMany( assembly => assembly.FromMetadata<IncludeAttribute, IEnumerable<Assembly>>( attribute => attribute.Assemblies ) ).Except( assemblies ).ToArray(), types );
 			return result;
 		}
 
@@ -37,7 +38,7 @@ namespace DragonSpark.Setup
 		protected virtual TypeInfo[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
 			var result = assemblies
-				.SelectMany( assembly => assembly.DefinedTypes.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<TypeInfo>>( attribute => attribute.IgnoreForRegistration.AsTypeInfos() ) ) ).ToArray();
+				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract ).Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<TypeInfo>>( attribute => attribute.IgnoreForRegistration.AsTypeInfos() ) ) ).ToArray();
 			return result;
 		}
 	}

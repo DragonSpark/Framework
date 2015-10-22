@@ -1,11 +1,13 @@
-﻿using System;
-using DragonSpark;
+﻿using DragonSpark;
+using DragonSpark.Setup;
+using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DragonSpark.Setup;
-using Microsoft.Practices.ServiceLocation;
+using DragonSpark.Modularity;
+using Module = DragonSpark.Modularity.Module;
 
 [assembly: CLSCompliant( false )]
 
@@ -53,4 +55,4 @@ using Microsoft.Practices.ServiceLocation;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.IoC.Configuration")]
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
-[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator) )]
+[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(Module), typeof(ModuleInfoBuilder) )]
