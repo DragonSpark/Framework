@@ -15,6 +15,12 @@ namespace DragonSpark.Activation.IoC
 			this.container = container;
 		}
 
+		public bool CanActivate( Type type, string name )
+		{
+			var result = container.IsRegistered( type, name );
+			return result;
+		}
+
 		public TResult CreateInstance<TResult>( Type type, string name = null )
 		{
 			var result = Determine( 

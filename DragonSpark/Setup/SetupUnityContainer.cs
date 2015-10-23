@@ -12,15 +12,15 @@ namespace DragonSpark.Setup
 	{
 		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();
 
-		public SetupCommandCollection<UnityType> Types { get; } = new SetupCommandCollection<UnityType>();
+		public CommandCollection Types { get; } = new CommandCollection();
 
-		public SetupCommandCollection<UnityInstance> Instances { get; } = new SetupCommandCollection<UnityInstance>();
+		public CommandCollection Instances { get; } = new CommandCollection();
 
-		public SetupCommandCollection<ICommand> PreConfigurations { get; } = new SetupCommandCollection<ICommand>();
+		public CommandCollection PreConfigurations { get; } = new CommandCollection();
 
-		public SetupCommandCollection<ICommand> Configurations { get; } = new SetupCommandCollection<ICommand>();
+		public CommandCollection Configurations { get; } = new CommandCollection();
 
-		public SetupCommandCollection<ICommand> PostConfigurations { get; } = new SetupCommandCollection<ICommand>();
+		public CommandCollection PostConfigurations { get; } = new CommandCollection();
 
 		protected override void Execute( SetupContext context )
 		{

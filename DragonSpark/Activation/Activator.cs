@@ -5,6 +5,12 @@ namespace DragonSpark.Activation
 {
 	public static class Activator
 	{
+		public static bool CanActivate( Type type, string name = null )
+		{
+			var result = ResolveActivator().CanActivate( type, name );
+			return result;
+		}
+
 		public static TResult CreateInstance<TResult>( Type type )
 		{
 			var result = CreateNamedInstance<TResult>( type, null );

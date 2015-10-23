@@ -34,15 +34,15 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static bool CanActivateFrom<T>( this Type @this )
+		public static bool CanActivate<T>( this Type @this )
 		{
-			var result = @this.CanActivateFrom( typeof(T) );
+			var result = @this.CanActivate( typeof(T) );
 			return result;
 		}
 
-		public static bool CanActivateFrom( this Type @this, Type other )
+		public static bool CanActivate( this Type @this, Type other = null )
 		{
-			var result  = !@this.GetTypeInfo().IsAbstract && other.IsAssignableFrom( @this );
+			var result  = !@this.GetTypeInfo().IsAbstract && other.Transform( x => x.IsAssignableFrom( @this ) );
 			return result;
 		}
 

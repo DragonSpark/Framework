@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Linq;
 using Dynamitey;
 
 namespace DragonSpark.Extensions
 {
 	public static class ReflectionExtensions
 	{
+		public static object InvokeGeneric( this object @this, string methodName, params object[] parameters )
+		{
+			var result = InvokeGeneric( @this, methodName, parameters.Select( x => x.GetType() ).ToArray(), parameters );
+			return result;
+		}
+
 		public static object InvokeGeneric( this object @this, string methodName, Type[] types, params object[] parameters )
 		{
 			return Invoke( @this.AsTo<Type, object>( InvokeContext.CreateStatic ) ?? @this, methodName, types, parameters );

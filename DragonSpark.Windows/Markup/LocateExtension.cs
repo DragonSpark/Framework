@@ -1,12 +1,16 @@
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Markup;
-using System.Xaml;
 using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
+using DragonSpark.Windows.Entity;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Markup;
+using System.Xaml;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
@@ -84,17 +88,6 @@ namespace DragonSpark.Windows.Markup
 		}
 
 		public Collection<PropertySetter> Properties { get; } = new Collection<PropertySetter>();
-	}
-
-
-	[MarkupExtensionReturnType( typeof(InjectionMember) )]
-	public class Temp : MarkupExtension
-	{
-		public override object ProvideValue( IServiceProvider serviceProvider )
-		{
-			var temp = serviceProvider.Get<IProvideValueTarget>().TargetObject;
-			return new InjectionConstructor();
-		}
 	}
 
 	[MarkupExtensionReturnType( typeof(InjectionMember) )]
@@ -185,5 +178,62 @@ namespace DragonSpark.Windows.Markup
 		public IFactory Instance { get; set; }
 
 		public object Parameter { get; set; }
+	}
+
+	public interface IIncrementer
+	{
+		int Next( object context );
+	}
+
+	class Incrementer : IIncrementer
+	{
+		readonly IDictionary<WeakReference, int>  items = new Dictionary<WeakReference, int>();
+
+		public int Next( object context )
+		{
+			var key = Items.Keys.SingleOrDefault( reference => reference.Target == context ) ?? new WeakReference( context );
+			var current = items.Ensure( key, reference => 0 ) + 1;
+			var result = items[key] = current;
+			return result;
+		}
+
+		IDictionary<WeakReference, int> Items
+		{
+			get
+			{
+				items.Keys.Where( reference => !reference.IsAlive ).Apply( reference => items.Remove( reference ) );
+				return items;
+			}
+		}
+	}
+
+	[MarkupExtensionReturnType( typeof(int) )]
+	public class NextExtension : MarkupExtension
+	{
+		public NextExtension()
+		{
+			this.WithDefaults();
+		}
+
+		[Activate]
+		public IIncrementer Incrementer { get; set; }
+
+		[Activate]
+		public AllTypesOfFactory Factory { get; set; }
+
+		public override object ProvideValue( IServiceProvider serviceProvider )
+		{
+			var context = DetermineContext( serviceProvider );
+			var result = Incrementer.Next( context );
+			return result;
+		}
+
+		protected virtual object DetermineContext( IServiceProvider serviceProvider )
+		{
+			var xamlSchemaContext = serviceProvider.Get<IXamlSchemaContextProvider>().SchemaContext;
+			var types = new[] { typeof(DragonSpark.Runtime.Collection) }; // TODO: More general/generic implementation.
+			var context = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( types.Select( xamlSchemaContext.GetXamlType ).ToArray() );
+			return context;
+		}
 	}
 }

@@ -7,6 +7,7 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DragonSpark.Modularity;
+using DragonSpark.Runtime;
 using Module = DragonSpark.Modularity.Module;
 
 [assembly: CLSCompliant( false )]
@@ -55,4 +56,4 @@ using Module = DragonSpark.Modularity.Module;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.IoC.Configuration")]
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
-[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(Module), typeof(ModuleInfoBuilder) )]
+[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(Module), typeof(ModuleInfoBuilder), typeof(Collection), typeof(Collection<>) )]

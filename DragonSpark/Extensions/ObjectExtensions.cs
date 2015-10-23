@@ -13,44 +13,16 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		public static TResult Clone<TResult>( this TResult @this ) where TResult : class
+		public static TResult Clone<TResult>( this TResult @this, Action<IMappingExpression> configure = null ) where TResult : class
 		{
-			var result = @this.MapInto<TResult>();
+			var result = @this.MapInto<TResult>( configure: configure );
 			return result;
-		}
-
-		public static IMappingExpression IgnoreUnassignable( this IMappingExpression expression, Type sourceType, Type destinationType )
-		{
-			var existingMaps = Mapper.FindTypeMapFor( sourceType, destinationType );
-			foreach ( var map in existingMaps.GetPropertyMaps() )
-			{
-				var source = map.SourceMember.To<PropertyInfo>().PropertyType.GetTypeInfo();
-				if ( !map.DestinationPropertyType.GetTypeInfo().IsAssignableFrom( source ) )
-				{
-					expression.ForMember( map.SourceMember.Name, opt => opt.Ignore() );
-				}
-				
-			}
-			return expression;
 		}
 
 		public static MemberInfo GetMemberInfo( this Expression expression )
 		{
 			var lambda = (LambdaExpression)expression;
 			var result = ( lambda.Body.AsTo<UnaryExpression, Expression>( unaryExpression => unaryExpression.Operand ) ?? lambda.Body ).To<MemberExpression>().Member;
-			return result;
-		}
-
-		public static TResult MapInto<TResult>( this object source, TResult existing = null ) where TResult : class 
-		{
-			var type = source.GetType();
-				
-			Mapper.FindTypeMapFor( type, typeof(TResult) ).Null( () =>
-			{
-				Mapper.CreateMap( type, typeof(TResult) ).IgnoreUnassignable( type, typeof(TResult) );
-				Mapper.FindTypeMapFor( type, typeof(TResult) ).DestinationCtor = x => existing ?? Activation.Activator.CreateInstance<object>( x.DestinationType );
-			} );
-			var result = Mapper.Map<TResult>( source );
 			return result;
 		}
 

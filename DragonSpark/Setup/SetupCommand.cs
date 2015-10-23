@@ -1,34 +1,19 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
-	public class SetupCommandCollection : SetupCommandCollection<ICommand>
+	public class CommandCollection : Runtime.Collection<ICommand>
 	{}
-
-	public class SetupCommandCollection<TCommand> : Collection<TCommand> where TCommand : class, ICommand
-	{
-		protected override void InsertItem( int index, TCommand item )
-		{
-			var prepared = Prepare( item );
-			base.InsertItem( index, prepared );
-		}
-
-		protected virtual TCommand Prepare( TCommand command )
-		{
-			return command.WithDefaults();
-		}
-	}
 
 	[ContentProperty( "Commands" )]
 	public class CompositeSetupCommand : SetupCommand
 	{
-		public SetupCommandCollection Commands { get; } = new SetupCommandCollection();
+		public CommandCollection Commands { get; } = new CommandCollection();
 
 		public override bool CanExecute( object parameter )
 		{

@@ -278,6 +278,15 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modules Loaded..
+        /// </summary>
+        internal static string ModulesLoaded {
+            get {
+                return ResourceManager.GetString("ModulesLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is currently no moduleTypeLoader in the ModuleManager that can retrieve the specified module..
         /// </summary>
         internal static string NoRetrieverCanRetrieveModule {

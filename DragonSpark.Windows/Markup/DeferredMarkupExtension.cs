@@ -46,10 +46,6 @@ namespace DragonSpark.Windows.Markup
 						return Builders.FirstOrDefault( builder => builder.Handles( service ) )
 							.Transform( builder => BeginProvideValue( Prepare( serviceProvider, service, builder ), builder.Create<IMarkupTargetValueSetter>( serviceProvider ) ) );
 				}
-
-				/*// Save target information for later updates
-				TargetObject = target.TargetObject;
-				TargetProperty = target.TargetProperty;*/
 			}
 
 			return null;
@@ -76,7 +72,7 @@ namespace DragonSpark.Windows.Markup
 		}
 	}
 
-	public class DeferredContext : IServiceProvider
+	public class DeferredContext : IServiceProvider, IProvideValueTarget
 	{
 		readonly IServiceProvider inner;
 
@@ -94,7 +90,7 @@ namespace DragonSpark.Windows.Markup
 
 		public virtual object GetService( Type serviceType )
 		{
-			var result = typeof(DeferredContext).IsAssignableFrom( serviceType ) ? this : inner.GetService( serviceType );
+			var result =  new[] { typeof(DeferredContext), typeof(IProvideValueTarget) }.Any( type => type.IsAssignableFrom( serviceType ) ) ? this : inner.GetService( serviceType );
 			return result;
 		}
 	}

@@ -1,5 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.Reflection;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.ComponentModel
 {
@@ -18,7 +20,8 @@ namespace DragonSpark.ComponentModel
 
 		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
-			var result = Activation.Activator.CreateInstance<object>( activatedType ?? DetermineType( propertyInfo ) );
+			var type = activatedType ?? DetermineType( propertyInfo );
+			var result = Activation.Activator.CreateInstance<object>( type );
 			return result;
 		}
 
@@ -31,5 +34,20 @@ namespace DragonSpark.ComponentModel
 		{
 			get { return activatedType; }
 		}*/
+	}
+
+	public class CollectionAttribute : ActivateAttribute
+	{
+		public CollectionAttribute()
+		{}
+
+		public CollectionAttribute( Type elementType ) : base( typeof(Collection<>).MakeGenericType( elementType ) )
+		{}
+
+		protected override Type DetermineType( PropertyInfo propertyInfo )
+		{
+			var result = typeof(Collection<>).MakeGenericType( propertyInfo.PropertyType.GetInnerType() );
+			return result;
+		}
 	}
 }

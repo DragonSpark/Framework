@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
@@ -16,10 +18,11 @@ namespace DragonSpark.Activation.IoC
 		public override void PreBuildUp( IBuilderContext context )
 		{
 			Guard.ArgumentNotNull( context, nameof(context) );
-			var elementType = context.BuildKey.Type.GetEnumerableType();
-			if ( elementType != null )
+			var type = context.BuildKey.Type;
+			var info = type.GetTypeInfo();
+			if ( info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IEnumerable<>) )
 			{
-				var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( elementType ).CreateDelegate( typeof(Resolver) );
+				var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
 
 				context.Existing = resolver( context );
 				context.BuildComplete = true;

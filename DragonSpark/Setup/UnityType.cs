@@ -42,11 +42,11 @@ namespace DragonSpark.Setup
 	{
 		public Type MapTo { get; set; }
 		
-		public Collection<InjectionMember> InjectionMembers => injectionMembers.Value;
-		readonly Lazy<Collection<InjectionMember>> injectionMembers = new Lazy<Collection<InjectionMember>>( () => new Collection<InjectionMember>() );
+		public System.Collections.ObjectModel.Collection<InjectionMember> InjectionMembers => injectionMembers.Value;
+		readonly Lazy<System.Collections.ObjectModel.Collection<InjectionMember>> injectionMembers = new Lazy<System.Collections.ObjectModel.Collection<InjectionMember>>( () => new System.Collections.ObjectModel.Collection<InjectionMember>() );
 
-		public Collection<IUnityContainerTypeConfiguration> TypeConfigurations => typeConfigurations.Value;
-		readonly Lazy<Collection<IUnityContainerTypeConfiguration>> typeConfigurations = new Lazy<Collection<IUnityContainerTypeConfiguration>>( () => new Collection<IUnityContainerTypeConfiguration>() );
+		public System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration> TypeConfigurations => typeConfigurations.Value;
+		readonly Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>> typeConfigurations = new Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>>( () => new System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>() );
 
 		protected override void Configure( IUnityContainer container )
 		{
@@ -77,6 +77,7 @@ namespace DragonSpark.Setup
 		public Type TargetType { get; }
 	}
 
+	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
 	public class AllTypesOfFactory : FactoryBase<Type, Array>
 	{
 		readonly IAssemblyProvider provider;
@@ -89,7 +90,7 @@ namespace DragonSpark.Setup
 		protected override Array CreateFrom( Type resultType, Type parameter )
 		{
 			var type = parameter ?? resultType.GetInnerType() ?? resultType;
-			var items = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes.Where( t => t.CanActivateFrom( type ) ) ).Select( Activator.CreateInstance<object> ).ToArray();
+			var items = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes.Where( t => t.CanActivate( type ) ) ).Select( Activator.CreateInstance<object> ).ToArray();
 			var result = Array.CreateInstance( type, items.Length );
 			Array.Copy( items, result, items.Length );
 			return result;

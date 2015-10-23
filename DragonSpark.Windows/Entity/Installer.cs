@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Markup;
 
@@ -18,6 +17,6 @@ namespace DragonSpark.Windows.Entity
 
 		IEnumerable<IInstallationStep> IInstaller.Steps => Steps;
 
-		public Collection<IInstallationStep> Steps { get; } = new Collection<IInstallationStep>();
+		public DragonSpark.Runtime.Collection<IInstallationStep> Steps { get; } = new DragonSpark.Runtime.Collection<IInstallationStep>();
 	}
 }

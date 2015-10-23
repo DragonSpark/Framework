@@ -232,4 +232,7 @@ Error was: {1}.</value>
 	<data name="LoadingModules" xml:space="preserve">
     <value>Loading modules.</value>
   </data>
+	<data name="ModulesLoaded" xml:space="preserve">
+    <value>Modules Loaded.</value>
+  </data>
 </root>
