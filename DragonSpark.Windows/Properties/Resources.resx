@@ -111,6 +111,6 @@
     <value>Directory {0} was not found.</value>
   </data>
 	<data name="DefaultTextLoggerPattern" xml:space="preserve">
-    <value>{1}: {2}. Priority: {3}. Timestamp:{0:u}.</value>
+    <value>{1}: {2}. Priority: {3}. Timestamp:{0:o}.</value>
   </data>
 </root>

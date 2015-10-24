@@ -294,7 +294,7 @@
     <Compile Include="Setup\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\RegistrationAttribute.cs" />
     <Compile Include="Setup\SetupUnityCommand.cs" />
-    <Compile Include="Setup\SetupUnityContainer.cs" />
+    <Compile Include="Setup\SetupUnityContainerCommand.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Setup\UnityInstance.cs" />

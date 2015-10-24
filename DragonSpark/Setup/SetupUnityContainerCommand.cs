@@ -8,7 +8,7 @@ using System.Windows.Markup;
 namespace DragonSpark.Setup
 {
 	[ContentProperty( "Types" )]
-	public class SetupUnityContainer : SetupCommand
+	public class SetupUnityContainerCommand : SetupCommand
 	{
 		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();
 

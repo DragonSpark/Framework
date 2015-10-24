@@ -2,8 +2,6 @@ using DragonSpark.Extensions;
 using System;
 using System.Reflection;
 using System.Windows.Markup;
-using DragonSpark.Setup;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Runtime
 {
@@ -26,15 +24,11 @@ namespace DragonSpark.Runtime
 	}
 
 	public class Collection : Collection<object>
-	{ }
+	{}
 
-	[Ambient, LifetimeManager( typeof(TransientLifetimeManager) )]
+	[Ambient]
 	public class Collection<T> : System.Collections.ObjectModel.Collection<T> where T : class
 	{
-		public Collection()
-		{
-		}
-
 		protected override void InsertItem( int index, T item )
 		{
 			var prepared = Prepare( item );

@@ -56,4 +56,4 @@ using Module = DragonSpark.Modularity.Module;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.IoC.Configuration")]
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
-[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(Module), typeof(ModuleInfoBuilder), typeof(Collection), typeof(Collection<>) )]
+[assembly: Registration( Priority.AboveLowest, typeof(UnityContainerTypeConfiguration), typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(IModule), typeof(ModuleInfoBuilder), typeof(Collection), typeof(Collection<>) )]

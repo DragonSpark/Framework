@@ -24,7 +24,7 @@ namespace DragonSpark.Windows.Setup
 		{
 			var ignore = profile.Application.SelectMany( assembly => assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration.Concat( attribute.Namespaces.Transform( s => s.ToStringArray().Transform( ns => assembly.ExportedTypes.Where( type => ns.Contains( type.Namespace ) ) ) ) ) ) ).ToArray();
 			var register = profile.Candidates
-				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => !Container.IsRegistered( found ) && found.IsPublic && !ignore.Contains( found ) ) )
+				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => found.IsPublic && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
 			register.Apply( type => Logger.Log( $"Registering from convention: {type.FullName}", Category.Debug, DragonSpark.Logging.Priority.None ) );
 			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, DetermineLifetimeContainer<ContainerControlledLifetimeManager>, overwriteExistingMappings: true );

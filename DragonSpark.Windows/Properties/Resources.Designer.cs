@@ -70,7 +70,7 @@ namespace DragonSpark.Windows.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}: {2}. Priority: {3}. Timestamp:{0:u}..
+        ///   Looks up a localized string similar to {1}: {2}. Priority: {3}. Timestamp:{0:o}..
         /// </summary>
         internal static string DefaultTextLoggerPattern {
             get {
