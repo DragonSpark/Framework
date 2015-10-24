@@ -21,6 +21,11 @@ namespace DragonSpark.Testing.ComponentModel
 				this.locator = locator;
 			}
 
+			public bool CanActivate( Type type, string name )
+			{
+				return true;
+			}
+
 			public TResult CreateInstance<TResult>( Type type, string name )
 			{
 				var result = (TResult)locator.GetInstance( type, name );
