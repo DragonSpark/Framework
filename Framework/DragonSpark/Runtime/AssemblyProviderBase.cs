@@ -23,9 +23,6 @@ namespace DragonSpark.Runtime
 		}
 	}
 
-	public class Collection : Collection<object>
-	{}
-
 	[Ambient]
 	public class Collection<T> : System.Collections.ObjectModel.Collection<T> where T : class
 	{

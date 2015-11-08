@@ -1,31 +1,9 @@
 using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
 using System;
-using System.Linq;
 using System.Windows.Input;
-using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
-	public class CommandCollection : Runtime.Collection<ICommand>
-	{}
-
-	[ContentProperty( "Commands" )]
-	public class CompositeSetupCommand : SetupCommand
-	{
-		public CommandCollection Commands { get; } = new CommandCollection();
-
-		public override bool CanExecute( object parameter )
-		{
-			return base.CanExecute( parameter ) && Commands.All( command => command.CanExecute( parameter ) );
-		}
-
-		protected override void Execute( SetupContext context )
-		{
-			Commands.Apply( command => command.Execute( context ) );
-		}
-	}
-
 	public abstract class SetupCommand : SetupCommand<SetupContext>
 	{}
 
