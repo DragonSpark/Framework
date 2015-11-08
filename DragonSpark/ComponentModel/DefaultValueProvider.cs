@@ -6,16 +6,6 @@ using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public interface IExpressionEvaluator
-	{
-		object Evaluate( object context, string expression );
-	}
-
-	public interface IDefaultValueProvider
-	{
-		void Apply( object target );
-	}
-
 	public class DefaultValueProvider : IDefaultValueProvider
 	{
 		public static DefaultValueProvider Instance { get; } = new DefaultValueProvider();

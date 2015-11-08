@@ -4,13 +4,6 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark
 {
-	public enum ConditionMonitorState
-	{
-		None,
-		Applying,
-		Applied
-	}
-
 	public class ConditionMonitor
 	{
 

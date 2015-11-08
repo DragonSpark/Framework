@@ -88,8 +88,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyModuleCatalog.cs" />
     <Compile Include="CompositeLoggerFacade.cs" />
+    <Compile Include="DataBuilder.cs" />
+    <Compile Include="DataTransformer.cs" />
+    <Compile Include="DataTransformerExtensions.cs" />
+    <Compile Include="Entity\ActivationSource.cs" />
     <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
+    <Compile Include="Entity\DbMigrationsConfiguration.cs" />
+    <Compile Include="Entity\EntityInstallationStep.cs" />
+    <Compile Include="Entity\IActivationSource.cs" />
     <Compile Include="Entity\InitializeDatabaseCommand.cs" />
     <Compile Include="Entity\DbContextExtensions.cs" />
     <Compile Include="Entity\DbSetExtensions.cs" />
@@ -108,19 +116,40 @@
     <Compile Include="Entity\ObjectContextExtensions.cs" />
     <Compile Include="Entity\PropertyInfoExtensions.cs" />
     <Compile Include="Entity\VersionConverter.cs" />
+    <Compile Include="IDataTransformer.cs" />
     <Compile Include="Logging\TextLogger.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Markup\CollectionExtension.cs" />
     <Compile Include="Markup\CollectionExtensionBase.cs" />
-    <Compile Include="Markup\DirectoryInfoFactory.cs" />
+    <Compile Include="Markup\CollectionSetter.cs" />
+    <Compile Include="Markup\CollectionTargetSetterBuilder.cs" />
+    <Compile Include="Markup\DeferredContext.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\DirectoryInfoExtension.cs" />
     <Compile Include="Markup\EnumerableExtension.cs" />
+    <Compile Include="Markup\FactoryExtension.cs" />
+    <Compile Include="Markup\FieldInfoMarkupTargetValueSetterBuilder.cs" />
     <Compile Include="Markup\GenericTypeExtension.cs" />
+    <Compile Include="Markup\IIncrementer.cs" />
+    <Compile Include="Markup\ImageSourceOperations.cs" />
+    <Compile Include="Markup\IMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\Incrementer.cs" />
+    <Compile Include="Markup\InjectionFactoryExtension.cs" />
+    <Compile Include="Markup\MarkupExtensionMonitor.cs" />
+    <Compile Include="Markup\MarkupTargetValueSetterBase.cs" />
+    <Compile Include="Markup\MarkupTargetValueSetterFactory.cs" />
+    <Compile Include="Markup\MonitoredMarkupExtension.cs" />
+    <Compile Include="Markup\NextExtension.cs" />
+    <Compile Include="Markup\PropertyInfoMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\StaticResourceExtension.cs" />
+    <Compile Include="Modularity\DynamicModuleInfoGroup.cs" />
     <Compile Include="Process.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\AssemblyProvider.cs" />
     <Compile Include="Runtime\CurrentDomainAssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalog.cs" />
@@ -142,7 +171,9 @@
     <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs" />
     <Compile Include="Modularity\ModulesConfigurationSection.cs" />
     <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
-    <Compile Include="Setup\ConfigureApplicationCommand.cs">
+    <Compile Include="Runtime\ExpressionEvaluator.cs" />
+    <Compile Include="SetupUnityFromConfigurationCommand.cs" />
+    <Compile Include="Setup\InitializeMarkupCommand.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\EventListenerDefinition.cs">
@@ -161,7 +192,7 @@
     <Compile Include="Setup\IEventListenerRegistry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setup\ApplyRegistrationsCommand.cs">
+    <Compile Include="Setup\SetupRegistrationByConventionCommand.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Markup\AssemblyVersionExtension.cs" />
