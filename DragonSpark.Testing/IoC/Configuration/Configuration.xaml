@@ -1,0 +1,41 @@
+﻿<markup:ConfigurationDictionary x:Class="DragonSpark.Testing.IoC.Configuration.Configuration"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib" 
+									   x:TypeArguments="IoCConfiguration:ServiceLocatorFactory"
+									   xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark" 
+									   xmlns:IoCConfiguration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark" 
+									   xmlns:TestObjects="clr-namespace:DragonSpark.Testing.TestObjects.IoC"
+                                       xmlns:unity="clr-namespace:Microsoft.Practices.Unity;assembly=Microsoft.Practices.Unity"
+                                       xmlns:markup="clr-namespace:DragonSpark.Markup;assembly=DragonSpark"
+                                       xmlns:commands="clr-namespace:DragonSpark.IoC.Commands;assembly=DragonSpark"
+                                       xmlns:injection="clr-namespace:DragonSpark.IoC.Configuration.Injection;assembly=DragonSpark">
+	<IoC:ServiceLocator x:Key="DefaultContainer">
+		<commands:AssignServiceLocatorCommand />
+		<commands:UnityContainerConfiguration>
+			<IoCConfiguration:UnityType RegistrationType="{x:Type TestObjects:ISpyPolicy}" MapTo="{x:Type TestObjects:SpyPolicy}">
+				<injection:InjectionProperty PropertyName="Enabled">
+					<injection:InstanceValue>
+						<System:Boolean>True</System:Boolean>
+					</injection:InstanceValue>
+				</injection:InjectionProperty>
+			</IoCConfiguration:UnityType>
+
+			<IoCConfiguration:UnityType RegistrationType="{x:Type TestObjects:ISpyTarget}" MapTo="{x:Type TestObjects:SpyTarget}">
+				<injection:PolicyReference BuildType="{x:Type TestObjects:ISpyPolicy}" />
+			</IoCConfiguration:UnityType>
+
+			<commands:UnityContainerConfiguration.Extensions>
+				<IoC:DragonSparkExtension />
+				<IoC:ConfigurationExtension />
+			</commands:UnityContainerConfiguration.Extensions>
+
+			<commands:UnityContainerConfiguration.PostConfigurations>
+				<commands:AdditionalBuilderContextConfigurationCommand>
+					<commands:AdditionalBuilderContextConfigurationCommand.Strategies>
+						<commands:StrategyReference StrategyType="{x:Type TestObjects:SpyStrategy}" Stage="Initialization" />
+					</commands:AdditionalBuilderContextConfigurationCommand.Strategies>
+				</commands:AdditionalBuilderContextConfigurationCommand>
+			</commands:UnityContainerConfiguration.PostConfigurations>
+		</commands:UnityContainerConfiguration>
+	</IoC:ServiceLocator>
+</markup:ConfigurationDictionary>
