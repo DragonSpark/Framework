@@ -42,7 +42,7 @@ namespace DragonSpark.Testing.ComponentModel
 		[Theory, AutoDataCustomization, AssignServiceLocation]
 		void Apply( DefaultValueProvider sut )
 		{
-			var current = DateTime.UtcNow;
+			var current = DateTime.Now;
 			var target = new ClassWithDefaultProperties();
 			sut.Apply( target );
 
