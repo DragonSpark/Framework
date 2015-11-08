@@ -150,7 +150,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, AutoDataCustomization, AssignServiceLocation]
-		void BuildUp( [Greedy, Frozen( As = typeof(IObjectBuilder) )] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
+		void BuildUp( [Greedy, Frozen( Matching.ImplementedInterfaces )] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
 		{
 			sut.Register<IDefaultValueProvider, DefaultValueProvider>();
 			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => sut );
