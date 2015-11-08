@@ -1,0 +1,47 @@
+﻿<application:Setup x:TypeArguments="voteReporter:Logger" x:Class="DevelopersWin.VoteReporter.Application.Program"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:application="clr-namespace:DragonSpark.Windows;assembly=DragonSpark.Windows"
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
+	xmlns:reflection="clr-namespace:System.Reflection;assembly=mscorlib"
+	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
+	xmlns:localEntity="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
+	xmlns:voteReporter="clr-namespace:DevelopersWin.VoteReporter;assembly=DevelopersWin.VoteReporter"
+	xmlns:entity="clr-namespace:DragonSpark.Windows.Entity;assembly=DragonSpark.Windows"
+	xmlns:setupWindows="clr-namespace:DragonSpark.Windows.Setup;assembly=DragonSpark.Windows"
+	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
+	mc:Ignorable="d" 
+>
+	<setupWindows:SetupRegistrationByConventionCommand />
+	<setup:SetupUnityContainerCommand>
+		<setup:UnityType RegistrationType="{x:Type localEntity:VotingContext}" />
+		<setup:SetupUnityContainerCommand.Instances>
+			<setup:UnityInstance Instance="{markup:DirectoryInfo 'Reports'}" />
+			<setup:UnityInstance>
+				<dragonSpark:ApplicationInformation
+					Title="{markup:Metadata reflection:AssemblyTitleAttribute, 'Title'}"
+					Product="{markup:Metadata reflection:AssemblyProductAttribute, 'Product'}"
+					Company="{markup:Metadata reflection:AssemblyCompanyAttribute, 'Company'}"
+					Description="{markup:Metadata reflection:AssemblyDescriptionAttribute, 'Description'}"
+					Configuration="{markup:Metadata reflection:AssemblyConfigurationAttribute, 'Configuration'}"
+					Copyright="{markup:Metadata reflection:AssemblyCopyrightAttribute, 'Copyright'}"
+					Version="{markup:AssemblyVersion}"
+					DeploymentDate="12/1/2015"
+					CompanyUri="http://blog.developers.win/weekly-reports" />
+			</setup:UnityInstance>
+		</setup:SetupUnityContainerCommand.Instances>
+		<setup:SetupUnityContainerCommand.Extensions>
+			<ioC:IoCExtension />
+		</setup:SetupUnityContainerCommand.Extensions>
+	</setup:SetupUnityContainerCommand>
+	<setupWindows:InitializeMarkupCommand />
+	<setup:InitializeModulesCommand />
+	<entity:AssignDataDirectoryCommand />
+	<localEntity:InitializeDatabaseCommand>
+		<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
+	</localEntity:InitializeDatabaseCommand>
+	<setup:RunProgramCommand />
+</application:Setup>

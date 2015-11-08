@@ -1,0 +1,16 @@
+﻿<setup:CompositeSetupCommand x:Class="DevelopersWin.VoteReporter.Configuration.Development.Setup"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:entity="clr-namespace:System.Data.Entity;assembly=EntityFramework"
+	xmlns:voteReporter="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
+	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
+	xmlns:applicationEntity="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
+	xmlns:common="clr-namespace:DevelopersWin.VoteReporter.Configuration.Common;assembly=DevelopersWin.VoteReporter.Configuration.Common"
+	mc:Ignorable="d" 
+>
+	<setup:UnityType RegistrationType="{markup:GenericType entity:IDatabaseInitializer(voteReporter:VotingContext)}" MapTo="{markup:GenericType entity:DropCreateDatabaseIfModelChanges(voteReporter:VotingContext)}" />
+	<common:Setup />
+</setup:CompositeSetupCommand>
