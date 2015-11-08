@@ -11,7 +11,7 @@ using Activator = DragonSpark.Activation.Activator;
 namespace DragonSpark.Windows.Entity
 {
 	[ContentProperty( "Installers" )]
-	public abstract class InitializeDatabaseCommand<TContext> : SetupCommand where TContext : DbContext, IEntityInstallationStorage
+	public abstract class InitializeDatabaseCommand<TContext> : SetupCommand where TContext : DbContext, IEntityInstallationStorage, new()
 	{
 		[Activate]
 		public IDatabaseInitializer<TContext> Initializer { get; set; }
@@ -24,7 +24,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				Database.SetInitializer( initializer );
 
-				using ( var instance = Activator.Create<TContext>() )
+				using ( var instance = new TContext() )
 				{
 					context.Logger.Log( "Initializing Database.", Category.Debug, DragonSpark.Logging.Priority.Low );
 					instance.Database.Initialize( true );

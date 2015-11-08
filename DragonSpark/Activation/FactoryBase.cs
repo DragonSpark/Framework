@@ -17,14 +17,20 @@ namespace DragonSpark.Activation
 
 	public abstract class FactoryBase<TParameter, TResult> : IFactory where TResult : class
 	{
+		protected virtual Type ResultType => typeof(TResult);
+
 		protected abstract TResult CreateFrom( Type resultType, TParameter parameter );
-		
-		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
+
+		public TResult Create( TParameter parameter = default(TParameter) )
 		{
-			var result = CreateFrom( resultType, parameter );
-			return result;
+			return Create( ResultType, parameter );
 		}
 
+		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
+		{
+			var result = CreateFrom( resultType ?? ResultType, parameter );
+			return result;
+		}
 
 		object IFactory.Create( Type resultType, object parameter )
 		{

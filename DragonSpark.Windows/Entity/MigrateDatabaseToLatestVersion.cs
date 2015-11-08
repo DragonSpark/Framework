@@ -1,9 +1,8 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using DragonSpark.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Entity

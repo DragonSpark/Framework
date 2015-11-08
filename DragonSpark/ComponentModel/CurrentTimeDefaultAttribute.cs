@@ -8,7 +8,7 @@ namespace DragonSpark.ComponentModel
 	{
 		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
-			var result = propertyInfo.PropertyType == typeof(DateTime) ? (object)DateTime.UtcNow : DateTimeOffset.UtcNow;
+			var result = propertyInfo.PropertyType == typeof(DateTime) ? (object)DateTime.Now : DateTimeOffset.Now;
 			return result;
 		}
 	}

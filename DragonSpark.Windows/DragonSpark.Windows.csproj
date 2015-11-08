@@ -119,8 +119,10 @@
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Markup\CollectionExtension.cs" />
     <Compile Include="Markup\CollectionExtensionBase.cs" />
+    <Compile Include="Markup\DirectoryInfoFactory.cs" />
     <Compile Include="Markup\EnumerableExtension.cs" />
     <Compile Include="Markup\GenericTypeExtension.cs" />
+    <Compile Include="Process.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
