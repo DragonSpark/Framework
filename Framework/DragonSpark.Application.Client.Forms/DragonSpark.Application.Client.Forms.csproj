@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{7DA5FD28-7E89-459F-9CDC-A2D278A95662}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Xamarin.Forms.Platform.WP8</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>b5cd9be8</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <DontImportPostSharp>True</DontImportPostSharp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <SkipPostSharp>True</SkipPostSharp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>DragonSpark.Application.Client.Forms</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirstFloor.ModernUI">
+      <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp">
+      <HintPath>..\packages\PostSharp.4.1.8-beta\lib\net35-client\PostSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=4.1.8.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PostSharp.Patterns.Common.4.1.8-beta\lib\net40\PostSharp.Patterns.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=4.1.8.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PostSharp.Patterns.Threading.4.1.8-beta\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xamarin.Forms.1.4.0.6341\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xamarin.Forms.1.4.0.6341\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animatable.cs" />
+    <Compile Include="ComponentModel\DeviceInfo.cs" />
+    <Compile Include="ComponentModel\ExportCellAttribute.cs" />
+    <Compile Include="ComponentModel\ExportImageSourceHandlerAttribute.cs" />
+    <Compile Include="ComponentModel\ExportRendererAttribute.cs" />
+    <Compile Include="ComponentModel\ExpressionSearch.cs" />
+    <Compile Include="ComponentModel\RendererProperties.cs" />
+    <Compile Include="SetupApplicationCommand.cs" />
+    <Compile Include="FormsInitializer.cs" />
+    <Compile Include="ComponentModel\INavigationModel.cs" />
+    <Compile Include="ComponentModel\PlatformServices.cs" />
+    <Compile Include="ComponentModel\ApplicationBarModel.cs" />
+    <Compile Include="ComponentModel\Ticker.cs" />
+    <Compile Include="GlobalAspects.cs" />
+    <Compile Include="Interaction\CloseOnReturningBehavior.cs" />
+    <Compile Include="Interaction\FormsEventsBehavior.cs" />
+    <Compile Include="Navigation.cs" />
+    <Compile Include="PlatformEngine.cs" />
+    <Compile Include="PlatformModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\ActivityIndicatorRenderer.cs" />
+    <Compile Include="Rendering\AsyncValue.cs" />
+    <Compile Include="Rendering\BackgroundTracker.cs" />
+    <Compile Include="Rendering\BoxViewRenderer.cs" />
+    <Compile Include="Rendering\ButtonRenderer.cs" />
+    <Compile Include="Rendering\CarouselPagePresenter.cs" />
+    <Compile Include="Rendering\CarouselPageRenderer.cs" />
+    <Compile Include="Rendering\CaseConverter.cs" />
+    <Compile Include="Rendering\CellControl.cs" />
+    <Compile Include="Rendering\CellTemplateSelector.cs" />
+    <Compile Include="Rendering\CollapseWhenEmptyConverter.cs" />
+    <Compile Include="Rendering\ColorConverter.cs" />
+    <Compile Include="Rendering\ConvertExtensions.cs" />
+    <Compile Include="Rendering\CustomContextMenu.cs" />
+    <Compile Include="Rendering\DataTemplateSelector.cs" />
+    <Compile Include="Rendering\DatePickerRenderer.cs" />
+    <Compile Include="Rendering\Deserializer.cs" />
+    <Compile Include="Rendering\EditorRenderer.cs" />
+    <Compile Include="Rendering\ElementChangedEventArgs.cs" />
+    <Compile Include="Rendering\EntryCellPhoneTextBox.cs" />
+    <Compile Include="Rendering\EntryCellRendererCompleted.cs" />
+    <Compile Include="Rendering\EntryRenderer.cs" />
+    <Compile Include="Rendering\EntryTextBox.cs" />
+    <Compile Include="Rendering\FileImageSourceHandler.cs" />
+    <Compile Include="Rendering\FontExtensions.cs" />
+    <Compile Include="Rendering\FormattedStringExtensions.cs" />
+    <Compile Include="Rendering\FrameRenderer.cs" />
+    <Compile Include="Rendering\FrameworkElementExtensions.cs" />
+    <Compile Include="Rendering\HeightConverter.cs" />
+    <Compile Include="Rendering\ICellRenderer.cs" />
+    <Compile Include="Rendering\IImageSourceHandler.cs" />
+    <Compile Include="Rendering\ImageCellRenderer.cs" />
+    <Compile Include="Rendering\ImageConverter.cs" />
+    <Compile Include="Rendering\ImageExtensions.cs" />
+    <Compile Include="Rendering\ImageLoaderSourceHandler.cs" />
+    <Compile Include="Rendering\ImageRenderer.cs" />
+    <Compile Include="Rendering\IVisualElementRenderer.cs" />
+    <Compile Include="Rendering\KeyboardConverter.cs" />
+    <Compile Include="Rendering\KeyboardExtensions.cs" />
+    <Compile Include="Rendering\LabelRenderer.cs" />
+    <Compile Include="Rendering\ListViewRenderer.cs" />
+    <Compile Include="Rendering\MasterDetailRenderer.cs" />
+    <Compile Include="Rendering\MD5.cs" />
+    <Compile Include="Rendering\MD5CryptoServiceProvider.cs" />
+    <Compile Include="Rendering\NavigationMenuRenderer.cs" />
+    <Compile Include="Rendering\NavigationPageRenderer.cs" />
+    <Compile Include="Rendering\PageRenderer.cs" />
+    <Compile Include="Rendering\RenderingConverter.cs" />
+    <Compile Include="Rendering\PickerRenderer.cs" />
+    <Compile Include="Rendering\ProgressBarRenderer.cs" />
+    <Compile Include="Rendering\RendererFactory.cs" />
+    <Compile Include="Rendering\ResourcesProvider.cs" />
+    <Compile Include="Rendering\ScrollViewRenderer.cs" />
+    <Compile Include="Rendering\SearchBarRenderer.cs" />
+    <Compile Include="Rendering\SliderRenderer.cs" />
+    <Compile Include="Rendering\StepperRenderer.cs" />
+    <Compile Include="Rendering\StreamImagesourceHandler.cs" />
+    <Compile Include="Rendering\SwitchRenderer.cs" />
+    <Compile Include="Rendering\TabbedPageRenderer.cs" />
+    <Compile Include="Rendering\TableView.xaml.cs">
+      <DependentUpon>TableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\TableViewRenderer.cs" />
+    <Compile Include="Rendering\TextCellRenderer.cs" />
+    <Compile Include="Rendering\TimePickerRenderer.cs" />
+    <Compile Include="Rendering\ViewProperties.cs" />
+    <Compile Include="Rendering\ViewRenderer.cs" />
+    <Compile Include="Rendering\ViewToRendererConverter.cs" />
+    <Compile Include="Rendering\VisualElementChangedEventArgs.cs" />
+    <Compile Include="Rendering\VisualElementPackager.cs" />
+    <Compile Include="Rendering\VisualElementRenderer.cs" />
+    <Compile Include="Rendering\VisualElementTracker.cs" />
+    <Compile Include="Rendering\WebViewRenderer.cs" />
+    <Compile Include="Rendering\XAlignConverter.cs" />
+    <Compile Include="SystemMessageRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DragonSpark.Application.Client.Forms.psproj" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application.Client\DragonSpark.Application.Client.csproj">
+      <Project>{EB77A62A-7527-4BBE-A335-28BA901D8FB2}</Project>
+      <Name>DragonSpark.Application.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Name>DragonSpark.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Expression.Interactions.Extensions\Microsoft.Expression.Interactions.Extensions.csproj">
+      <Project>{398442C7-F1E0-4164-AFB7-B1F0D8DDB1CA}</Project>
+      <Name>Microsoft.Expression.Interactions.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism.Presentation\Prism.Presentation.csproj">
+      <Project>{F46AB4CD-67A3-4D28-8652-0593A0061ED7}</Project>
+      <Name>Prism.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism.Unity\Prism.Unity.csproj">
+      <Project>{3388756D-3B64-4F93-9232-EA7E1D224D8A}</Project>
+      <Name>Prism.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Prism\Prism.csproj">
+      <Project>{E6C50355-D01E-4CAA-884D-D7929861315C}</Project>
+      <Name>Prism</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Prism\Source\Wpf\Prism.Wpf\Prism.Wpf.csproj">
+      <Project>{5912FF03-C72B-4F56-BAA1-8642FDBFBC26}</Project>
+      <Name>Prism.Wpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Rendering\TableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ThemeResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SmartReferences.0.8.6\build\SmartReferences.targets'))" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.4.1.8-beta\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+  <Import Project="..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\SmartReferences.0.8.6\build\SmartReferences.targets" Condition="Exists('..\packages\SmartReferences.0.8.6\build\SmartReferences.targets')" />
+</Project>

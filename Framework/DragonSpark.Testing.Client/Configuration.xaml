@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<client:Container xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:application="clr-namespace:DragonSpark.Testing.Client;assembly=DragonSpark.Testing.Client"
+	xmlns:client="clr-namespace:DragonSpark.Client;assembly=DragonSpark.Client"
+	x:Class="DragonSpark.Testing.Client.Configuration"
+	x:TypeArguments="application:Class1"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:forms="http://xamarin.com/schemas/2014/forms"
+	mc:Ignorable="d" 
+	d:DesignHeight="300" d:DesignWidth="300"
+	d:DataContext="{d:DesignInstance {x:Type forms:TableRoot}}"
+	>
+	<application:Class1 PropertyName="{client:HelloWorld Message={client:HelloWorld Message='INNER TEST!!!'}}" />
+</client:Container>
