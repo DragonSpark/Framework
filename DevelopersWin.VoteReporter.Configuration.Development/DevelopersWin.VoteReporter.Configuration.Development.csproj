@@ -87,10 +87,6 @@
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\DragonSpark\DragonSpark.csproj">
-      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
-      <Name>DragonSpark</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DevelopersWin.VoteReporter.Configuration.Common\DevelopersWin.VoteReporter.Configuration.Common.csproj">
       <Project>{1f72ab3c-9f4b-4ad8-8a3f-9cebc1c336c2}</Project>
       <Name>DevelopersWin.VoteReporter.Configuration.Common</Name>
@@ -98,6 +94,10 @@
     <ProjectReference Include="..\DevelopersWin.VoteReporter\DevelopersWin.VoteReporter.csproj">
       <Project>{AE7C3390-95D0-4558-B992-F7EF3FAE89DA}</Project>
       <Name>DevelopersWin.VoteReporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
