@@ -1,37 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class CompositeServiceLocator : ServiceLocatorImplBase
-	{
-		readonly IEnumerable<IServiceLocator> locators;
-
-		public CompositeServiceLocator( params IServiceLocator[] locators )
-		{
-			this.locators = locators;
-		}
-
-		protected override object DoGetInstance( Type serviceType, string key )
-		{
-			var result = locators.Select( locator => locator.GetInstance( serviceType, key ) ).FirstOrDefault( x => x != null );
-			return result;
-		}
-
-		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
-		{
-			var result = locators.SelectMany( x => x.GetAllInstances( serviceType ) );
-			return result;
-		}
-	}
-
 	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IObjectBuilder, IDisposable
 	{
 		readonly IUnityContainer container;
@@ -83,7 +60,7 @@ namespace DragonSpark.Activation.IoC
 
 		static void Warn( Type type, string message )
 		{
-			typeof(ILogger).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() ).IsFalse( () => Log.Warning( message ) );
+			typeof(ILogger).IsAssignableFrom( type ).IsFalse( () => Log.Current.Warning( message ) );
 		}
 
 		public IUnityContainer Container
@@ -109,10 +86,13 @@ namespace DragonSpark.Activation.IoC
 		{
 			disposed.Apply( () =>
 			{
-				if ( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet && Microsoft.Practices.ServiceLocation.ServiceLocator.Current == this )
+				Services.Location.With( item =>
 				{
-					Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( null );
-				}
+					if ( item.IsAvailable && item.Locator == this )
+					{
+						item.Assign( null );
+					}
+				} );
 
 				Container.DisposeAll();
 			} );

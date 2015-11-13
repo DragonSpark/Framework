@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using DragonSpark.Activation;
+﻿using DragonSpark.Activation;
 using DragonSpark.Activation.IoC;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
@@ -17,7 +17,7 @@ namespace DragonSpark.Extensions
 		public static bool BuildUpOnce( this object target )
 		{
 			var result = !BuildCache.Exists( target );
-			result.IsTrue( () => Services.With<IObjectBuilder>( x =>
+			result.IsTrue( () => Services.Location.With<IObjectBuilder>( x =>
 			{
 				x.BuildUp( target );
 				BuildCache.Add( new WeakReference<object>( target ) );
@@ -25,41 +25,37 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult With<TResult>( this IUnityContainer @this, Action<TResult> action )
+		/*public static TResult With<TResult>( this IUnityContainer @this, Action<TResult> action )
 		{
-			var result = @this.IsRegistered<TResult>() ? @this.Resolve<TResult>().With( action ) : default(TResult);
+			var result = @this.IsResolvable( typeof(TResult) ) ? @this.Resolve<TResult>().With( action ) : default(TResult);
 			return result;
-		}
+		}*/
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public static T TryResolve<T>(this IUnityContainer container)
-        {
-            object result = TryResolve(container, typeof(T));
-            if (result != null)
-            {
-                return (T)result;
-            }
-            return default(T);
-        }
+		public static T TryResolve<T>(this IUnityContainer container)
+		{
+			var result = TryResolve( container, typeof(T) ) ?? default(T);
+			return (T)result;
+		}
 
-        /// <summary>
-        /// Utility method to try to resolve a service from the container avoiding an exception if the container cannot build the type.
-        /// </summary>
-        /// <param name="container">The cointainer that will be used to resolve the type.</param>
-        /// <param name="typeToResolve">The type to resolve.</param>
-        /// <returns>The instance of <paramref name="typeToResolve"/> built up by the container.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static object TryResolve(this IUnityContainer container, Type typeToResolve)
-        {
-            try
-            {
-                return container.Resolve(typeToResolve);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+		/// <summary>
+		/// Utility method to try to resolve a service from the container avoiding an exception if the container cannot build the type.
+		/// </summary>
+		/// <param name="container">The cointainer that will be used to resolve the type.</param>
+		/// <param name="typeToResolve">The type to resolve.</param>
+		/// <returns>The instance of <paramref name="typeToResolve"/> built up by the container.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+		public static object TryResolve(this IUnityContainer container, Type typeToResolve)
+		{
+			try
+			{
+				return container.Resolve(typeToResolve);
+			}
+			catch
+			{
+				return null;
+			}
+		}
 
 		/*public static IUnityContainer FromConfiguration( this IUnityContainer container )
 		{

@@ -10,9 +10,4 @@ namespace DragonSpark.Activation
 
 		void RegisterFactory( Type type, Func<object> factory );
 	}
-
-	public interface IObjectBuilder
-	{
-		object BuildUp( object item );
-	}
 }

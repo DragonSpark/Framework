@@ -176,8 +176,8 @@
     <CodeAnalysisRuleSet>..\The DragonSpark Application Framework.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\AutoMapper.4.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+Xamarin.iOS10+MonoTouch10\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+Xamarin.iOS10+MonoTouch10\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dynamitey">
@@ -199,11 +199,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\Factory.cs" />
+    <Compile Include="Activation\IObjectBuilder.cs" />
+    <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
+    <Compile Include="ComponentModel\CollectionAttribute.cs" />
+    <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
+    <Compile Include="ConditionMonitorState.cs" />
+    <Compile Include="Extensions\AssemblyLocatorExtensions.cs" />
     <Compile Include="Extensions\Mappings.cs" />
+    <Compile Include="Modularity\IModuleMonitor.cs" />
+    <Compile Include="Modularity\Module.cs" />
+    <Compile Include="Modularity\ModuleInfoExtensions.cs" />
+    <Compile Include="Modularity\ModuleMonitor.cs" />
     <Compile Include="Runtime\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
+    <Compile Include="Runtime\Collection.cs" />
     <Compile Include="Runtime\FilteredAssemblyProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -234,6 +247,7 @@
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Runtime\IAmbientValueRepository.cs" />
     <Compile Include="Runtime\ListDictionary.cs" />
     <Compile Include="Logging\Category.cs" />
     <Compile Include="Logging\DebugLogger.cs" />
@@ -273,21 +287,35 @@
     <Compile Include="Modularity\ModuleState.cs" />
     <Compile Include="Modularity\ModuleTypeLoaderNotFoundException.cs" />
     <Compile Include="Modularity\ModuleTypeLoadingException.cs" />
+    <Compile Include="Setup\ActivatedSetupLoggingCommandBase.cs" />
+    <Compile Include="Setup\ActivatedSetupModuleCatalogCommand.cs" />
+    <Compile Include="Setup\AllTypesOfFactory.cs" />
+    <Compile Include="Setup\CommandCollection.cs" />
+    <Compile Include="Setup\CompositeSetupCommand.cs" />
     <Compile Include="Setup\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\ConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\IConventionRegistrationService.cs" />
     <Compile Include="Setup\IConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\IncludeAttribute.cs" />
     <Compile Include="Setup\InitializeModulesCommand.cs" />
+    <Compile Include="Setup\InjectionFactoryFactory.cs" />
+    <Compile Include="Setup\InjectionMemberContext.cs" />
+    <Compile Include="Setup\InjectionMemberFactory.cs" />
+    <Compile Include="Setup\IProgram.cs" />
+    <Compile Include="Setup\IRegistrationTypeContext.cs" />
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Setup\ISingletonLocator.cs" />
+    <Compile Include="Setup\Program.cs" />
     <Compile Include="Setup\RegisterAsAttribute.cs" />
     <Compile Include="Setup\RegisterFrameworkExceptionTypesCommand.cs" />
+    <Compile Include="Setup\RunProgramCommand.cs" />
     <Compile Include="Setup\Setup.cs" />
     <Compile Include="Setup\SetupCommand.cs" />
     <Compile Include="Setup\SetupContext.cs" />
     <Compile Include="Extensions\SetupContextExtensions.cs" />
+    <Compile Include="Setup\SetupLoggingCommand.cs" />
     <Compile Include="Setup\SetupLoggingCommandBase.cs" />
+    <Compile Include="Setup\SetupModuleCatalogCommand.cs" />
     <Compile Include="Setup\SetupModuleCatalogCommandBase.cs" />
     <Compile Include="Setup\SetupRegistrationByConventionCommand.cs" />
     <Compile Include="Setup\IUnityContainerTypeConfiguration.cs" />
@@ -295,9 +323,13 @@
     <Compile Include="Setup\RegistrationAttribute.cs" />
     <Compile Include="Setup\SetupUnityCommand.cs" />
     <Compile Include="Setup\SetupUnityContainerCommand.cs" />
+    <Compile Include="Setup\SingletonAttribute.cs" />
+    <Compile Include="Setup\SingletonLocator.cs" />
+    <Compile Include="Setup\UnityCommand.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Setup\UnityInstance.cs" />
+    <Compile Include="Setup\UnityRegistrationCommand.cs" />
     <Compile Include="Setup\UnityType.cs" />
     <Compile Include="Activation\IoC\IoCExtension.cs" />
     <Compile Include="Activation\IoC\LifetimeEntry.cs" />
@@ -308,11 +340,11 @@
     <Compile Include="ComponentModel\ConventionBasedTypeDefinitionProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ComponentModel\CurrentTimeDefaultAttribute.cs" />
+    <Compile Include="ComponentModel\CurrentTimeAttribute.cs" />
     <Compile Include="ComponentModel\FactoryAttribute.cs" />
     <Compile Include="ComponentModel\IMemberInfoLocator.cs" />
     <Compile Include="ComponentModel\ITypeDefinitionProvider.cs" />
-    <Compile Include="ComponentModel\NewGuidDefaultValueAttribute.cs" />
+    <Compile Include="ComponentModel\NewGuidAttribute.cs" />
     <Compile Include="ConditionMonitor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -362,7 +394,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -4,38 +4,13 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public static class Log
+	public static class DiagnosticExtensions
 	{
-		public static void Information( string message, Priority priority = Priority.Normal )
-		{
-			Services.With<ILogger>( x => x.Information( message, priority ) );
-		}
-
-		public static void Warning( string message, Priority priority = Priority.High )
-		{
-			Services.With<ILogger>( x => x.Warning( message, priority ) );
-		}
-
-		public static void Error( Exception exception, Guid? contextId = null )
-		{
-			Handle( x => x.Exception, exception, contextId );
-		}
-
-		public static void Fatal( Exception exception, Guid? contextId = null )
-		{
-			Handle( x => x.Fatal, exception, contextId );
-		}
-
 		public static string GetMessage( this Exception exception, Guid? contextId = null )
 		{
-			var result = Services.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
+			var result = Services.Location.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
 			return result;
 		}
-
-		/*public static void Trace( this Action action, string message, Guid? guid = null )
-		{
-			Services.With<ITracer>( x => x.Trace( action, message, guid ) );
-		}*/
 
 		public static Exception Try( this Action action )
 		{
@@ -45,7 +20,7 @@ namespace DragonSpark.Diagnostics
 			}
 			catch ( Exception exception )
 			{
-				Error( exception );
+				Log.Current.Error( exception );
 				return exception;
 			}
 			return null;
@@ -54,17 +29,39 @@ namespace DragonSpark.Diagnostics
 		public static void TryAndHandle( this Action action )
 		{
 			var exception = action.Try();
-			exception.NotNull( x => Services.With<IExceptionHandler>( y => y.Process( x ) ) );
+			exception.With( x => Services.Location.With<IExceptionHandler>( y => y.Process( x ) ) );
+		}
+	}
+
+	public static class Log
+	{
+		public static ILogger Current => Services.Location.Locate<ILogger>();
+
+		static void Handle( ILogger logger, Func<ILogger, Action<string, Exception>> getMethod, Exception exception, Guid? contextId = null )
+		{
+			var message = exception.GetMessage( contextId );
+			var method = getMethod( logger );
+			method( message, exception );
 		}
 
-		static void Handle( Func<ILogger, Action<string, Exception>> determineHandler, Exception exception, Guid? contextId = null )
+		public static void Information( this ILogger @this, string message, Priority priority = Priority.Normal )
 		{
-			Services.With<ILogger>( x =>
-			{
-				var message = exception.GetMessage( contextId );
-				var handler = determineHandler( x );
-				handler( message, exception );
-			} );
+			@this.Information( message, priority );
+		}
+
+		public static void Warning( this ILogger @this, string message, Priority priority = Priority.High )
+		{
+			@this.Warning( message, priority );
+		}
+
+		public static void Error( this ILogger @this, Exception exception, Guid? contextId = null )
+		{
+			Handle( @this, x => x.Exception, exception, contextId );
+		}
+
+		public static void Fatal( this ILogger @this, Exception exception, Guid? contextId = null )
+		{
+			Handle( @this, x => x.Fatal, exception, contextId );
 		}
 	}
 }

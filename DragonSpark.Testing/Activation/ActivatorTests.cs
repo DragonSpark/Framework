@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, AutoDataCustomization, AssignServiceLocation]
+		[Theory, AutoDataCustomization, Services]
 		public void CreateInstance()
 		{
 			var instance = DragonSpark.Activation.Activator.CreateInstance<IObject>( typeof(Object) );
@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, AutoDataCustomization, AssignServiceLocation]
+		[Theory, AutoDataCustomization, Services]
 		public void CreateNamedInstance( string name )
 		{
 			var instance = DragonSpark.Activation.Activator.CreateNamedInstance<IObject>( typeof(Object), name );
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Activation
 		}
 
 		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[Theory, Framework.AutoDataCustomization, AssignServiceLocation]
+		[Theory, AutoDataCustomization, Services]
 		public void CreateItem()
 		{
 			var parameters = new object[] { typeof(Object), "This is Some Name." };

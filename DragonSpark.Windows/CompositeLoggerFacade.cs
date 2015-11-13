@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.Logging;
-using DragonSpark.Modularity;
-using DragonSpark.Runtime;
-using DragonSpark.Windows.Modularity;
-using DragonSpark.Windows.Runtime;
 
 namespace DragonSpark.Windows
 {
@@ -42,14 +38,5 @@ namespace DragonSpark.Windows
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-	}
-
-	public class AssemblyModuleCatalog : DragonSpark.Modularity.AssemblyModuleCatalog
-	{
-		public AssemblyModuleCatalog() : this( FilteredAssemblyProvider.Instance, new DynamicModuleInfoBuilder() )
-		{}
-
-		public AssemblyModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )
-		{}
 	}
 }

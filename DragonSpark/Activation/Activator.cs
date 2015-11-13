@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.Activation
 {
@@ -25,7 +25,7 @@ namespace DragonSpark.Activation
 
 		static IActivator ResolveActivator()
 		{
-			var result = Services.Locate<IActivator>() ?? SystemActivator.Instance;
+			var result = Services.Location.Locate<IActivator>() ?? SystemActivator.Instance;
 			return result;
 		}
 
