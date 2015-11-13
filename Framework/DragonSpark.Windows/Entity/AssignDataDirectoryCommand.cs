@@ -7,25 +7,25 @@ using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Windows.Entity
 {
-    public interface IDataDirectoryContext
-    {
-        void Assign( DirectoryInfo directory );
+	public interface IDataDirectoryContext
+	{
+		void Assign( DirectoryInfo directory );
 
-        DirectoryInfo Value { get; }
-    }
+		DirectoryInfo Value { get; }
+	}
 
-    [LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
-    class DataDirectoryContext : IDataDirectoryContext
-    {
-        public void Assign( DirectoryInfo directory )
-        {
-            Value = directory;
-        }
+	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	class DataDirectoryContext : IDataDirectoryContext
+	{
+		public void Assign( DirectoryInfo directory )
+		{
+			Value = directory;
+		}
 
-        public DirectoryInfo Value { get; private set; }
-    }
+		public DirectoryInfo Value { get; private set; }
+	}
 
-    public class AssignDataDirectoryCommand : SetupCommand
+	public class AssignDataDirectoryCommand : SetupCommand
 	{
 		public const string DataDirectory = "DataDirectory";
 
