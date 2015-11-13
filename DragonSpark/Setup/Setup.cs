@@ -18,6 +18,8 @@ namespace DragonSpark.Setup
 			commands = new Lazy<Collection<ICommand>>( DetermineDefaultCommands );
 		}
 
+	    public Collection<object> Items { get; } = new Collection<object>();
+
 		public Collection<ICommand> Commands => commands.Value;
 		readonly Lazy<Collection<ICommand>> commands;
 

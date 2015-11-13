@@ -1,6 +1,8 @@
 using DragonSpark.Extensions;
 using System;
+using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Markup
@@ -24,17 +26,17 @@ namespace DragonSpark.Windows.Markup
 	[MarkupExtensionReturnType( typeof(DirectoryInfo) )]
 	public class DirectoryInfoExtension : MarkupExtension
 	{
-		readonly string path;
+	    public DirectoryInfoExtension( string path )
+	    {
+	        Path = path;
+	    }
 
-		public DirectoryInfoExtension( string path )
-		{
-			this.path = path;
-		}
+	    public string Path { get; set; }
 
-		public override object ProvideValue( IServiceProvider serviceProvider )
+	    public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var item = Path.IsPathRooted( path ) ? path : Path.GetFullPath( path );
-			var result = Directory.CreateDirectory( item );
+			var result = !DesignerProperties.GetIsInDesignMode( new DependencyObject() ) ? Directory.CreateDirectory( item ) : null;
 			return result;
 		}
 	}
