@@ -165,7 +165,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssignServiceLocationAttribute.cs">
+    <Compile Include="Logger.cs" />
+    <Compile Include="Services.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutoDataCustomizationAttribute.cs">

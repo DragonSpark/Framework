@@ -2,9 +2,8 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
-using System;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
@@ -39,7 +38,7 @@ namespace DragonSpark.Testing.ComponentModel
 			}
 		}
 
-		[Theory, AutoDataCustomization, AssignServiceLocation]
+		[Theory, AutoDataCustomization, Framework.Services]
 		void Apply( DefaultValueProvider sut )
 		{
 			var current = DateTime.Now;

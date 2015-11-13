@@ -6,22 +6,6 @@ using System;
 
 namespace DragonSpark.Testing.Framework
 {
-	/*public class FactoryAttribute : CustomizeAttribute
-	{
-		readonly Type factoryType;
-
-		public FactoryAttribute( Type factoryType )
-		{
-			this.factoryType = factoryType;
-		}
-
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var result = (ICustomization)Dynamic.InvokeConstructor( factoryType, parameter.ParameterType );
-			return result;
-		}
-	}*/
-
 	public class ContainerExtensionFactory : RegisterFactoryAttribute
 	{
 		public ContainerExtensionFactory( Type registrationType ) : base( registrationType )
@@ -33,15 +17,11 @@ namespace DragonSpark.Testing.Framework
 			return result;
 		}
 	}
-
-
+	
 	public abstract class RegisterFactoryAttribute : RegistrationAttribute
 	{
 		protected RegisterFactoryAttribute( Type registrationType ) : base( registrationType )
 		{}
-
-		/*protected RegisterFactoryAttribute( Type registrationType, Type mappedTo ) : base( registrationType, mappedTo )
-		{}*/
 
 		protected override void Customize( IFixture fixture, IServiceRegistry registry )
 		{
@@ -70,7 +50,7 @@ namespace DragonSpark.Testing.Framework
 
 		void ICustomization.Customize( IFixture fixture )
 		{
-			Services.With<IServiceRegistry>( registry => Customize( fixture, registry ) );
+			Services.Location.With<IServiceRegistry>( registry => Customize( fixture, registry ) );
 		}
 
 		protected abstract void Customize( IFixture fixture, IServiceRegistry registry );

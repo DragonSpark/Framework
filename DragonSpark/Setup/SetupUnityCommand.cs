@@ -1,4 +1,5 @@
-﻿using DragonSpark.ComponentModel;
+﻿using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Logging;
 using DragonSpark.Modularity;
@@ -7,8 +8,6 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
-using DragonSpark.Activation.IoC;
-using ServiceLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 
 namespace DragonSpark.Setup
 {
@@ -93,14 +92,11 @@ namespace DragonSpark.Setup
 		/// </summary>
 		protected virtual void ConfigureServiceLocator( SetupContext context )
 		{
-			if ( !ServiceLocator.IsLocationProviderSet )
+			if ( !Services.Location.IsAvailable() )
 			{
-				var container = context.Container();
-				var locator = container.TryResolve<IServiceLocator>();
-				if ( locator != null )
-				{
-					ServiceLocator.SetLocatorProvider( () => locator );   
-				}
+				context.Container()
+					.TryResolve<IServiceLocator>()
+					.With( Services.Location.Assign );
 			}
 		}
 	}

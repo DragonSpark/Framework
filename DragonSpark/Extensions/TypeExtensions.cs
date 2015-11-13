@@ -42,7 +42,8 @@ namespace DragonSpark.Extensions
 
 		public static bool CanActivate( this Type @this, Type other = null )
 		{
-			var result  = !@this.GetTypeInfo().IsAbstract && other.Transform( x => x.IsAssignableFrom( @this ) );
+		    var info = @this.GetTypeInfo();
+		    var result  = ( info.IsInterface || !info.IsAbstract ) && other.Transform( @this.IsAssignableFrom );
 			return result;
 		}
 
