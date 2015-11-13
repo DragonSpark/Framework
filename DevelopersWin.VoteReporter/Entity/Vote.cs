@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
-	public class Vote : VoteBase
+    public class Vote : VoteBase
 	{
 		[Required]
 		public virtual VoteGroup Group { get; set; }
@@ -24,6 +23,8 @@ namespace DevelopersWin.VoteReporter.Entity
 		[Collection]
 		public virtual ICollection<VoteRecord> Records { get; set; }
 
-		public VoteRecord Latest => Records.OrderByDescending( record => record.Created ).First();
+        // public VoteRecord Record( )
+
+		// public VoteRecord Latest => Records.OrderByDescending( record => record.Created ).First();
 	}
 }

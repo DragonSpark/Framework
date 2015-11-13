@@ -23,7 +23,7 @@ namespace DevelopersWin.VoteReporter
 		public Uri Save( object item, string fileName )
 		{
 			var extension = item is string ? "txt" : "xaml";
-			var path = Path.Combine( directory.FullName, fileName ?? $"{DateTime.Now.ToString( "yyyy-dd-M--HH-mm-ss" )}.{extension}" );
+			var path = Path.Combine( directory.FullName, fileName ?? $"{DateTime.Now.ToString( "yyyy-M-dd--HH-mm-ss" )}.{extension}" );
 			var content = item as string ?? serializer.Serialize( item );
 			File.WriteAllText( path, content );
 
