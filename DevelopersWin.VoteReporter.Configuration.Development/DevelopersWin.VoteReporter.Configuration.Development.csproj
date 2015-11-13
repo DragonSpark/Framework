@@ -79,10 +79,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Shim.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Windows</Name>
@@ -94,6 +90,10 @@
     <ProjectReference Include="..\DevelopersWin.VoteReporter\DevelopersWin.VoteReporter.csproj">
       <Project>{AE7C3390-95D0-4558-B992-F7EF3FAE89DA}</Project>
       <Name>DevelopersWin.VoteReporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Shim.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>

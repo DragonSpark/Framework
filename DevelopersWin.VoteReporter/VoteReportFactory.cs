@@ -35,7 +35,7 @@ namespace DevelopersWin.VoteReporter
 		static IEnumerable<VoteGroupView> DetermineGroups( VoteRecording current, VoteReport previous )
 		{
 			var groups = current.Records.GroupBy( record => record.Vote.Group ).OrderBy( grouping => grouping.Key.Order ).Select( records => records.Key );
-			var result = groups.Select( @group => Create( @group, previous.Transform( x => x.Groups.SingleOrDefault( y => y.Id == x.Id ) ) ) ).ToArray();
+			var result = groups.Select( @group => Create( @group, previous.Transform( x => x.Groups.SingleOrDefault( y => y.Id == @group.Id ) ) ) ).ToArray();
 			return result;
 		}
 
@@ -44,7 +44,7 @@ namespace DevelopersWin.VoteReporter
 			var result = current.MapInto<VoteGroupView>();
 			var count = current.Votes.Sum( vote => vote.Latest.Count );
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.WithDefaults();
-			result.Votes.AddRange( current.Votes.OrderBy( vote => vote.Order ).Select( v => CreateVote( v, previous.Transform( x => x.Votes.SingleOrDefault( y => y.Id == x.Id ) ) ) ) );
+			result.Votes.AddRange( current.Votes.OrderBy( vote => vote.Order ).Select( v => CreateVote( v, previous.Transform( x => x.Votes.SingleOrDefault( y => y.Id == v.Id ) ) ) ) );
 			return result;
 		}
 
