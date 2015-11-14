@@ -17,7 +17,6 @@
 >
 	<setupWindows:SetupRegistrationByConventionCommand />
 	<setup:SetupUnityContainerCommand>
-		<setup:UnityType RegistrationType="{x:Type localEntity:VotingContext}" />
 		<setup:SetupUnityContainerCommand.Instances>
 			<setup:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
 			<setup:UnityInstance>
