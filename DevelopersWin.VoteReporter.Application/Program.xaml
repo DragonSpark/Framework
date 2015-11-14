@@ -19,7 +19,6 @@
 	<setup:SetupUnityContainerCommand>
 		<setup:UnityType RegistrationType="{x:Type localEntity:VotingContext}" />
 		<setup:SetupUnityContainerCommand.Instances>
-			<setup:UnityInstance Instance="{markup:DirectoryInfo {x:Static entity:DataDirectory.DefaultPath}}" BuildName="{x:Static entity:DataDirectory.DataDirectoryKey}" />
 			<setup:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
 			<setup:UnityInstance>
 				<dragonSpark:ApplicationInformation

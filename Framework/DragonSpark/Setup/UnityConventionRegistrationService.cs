@@ -1,9 +1,8 @@
 using DragonSpark.Extensions;
+using DragonSpark.Logging;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
 using System;
-using System.Diagnostics.Contracts;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Setup
 {
