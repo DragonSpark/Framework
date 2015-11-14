@@ -61,6 +61,26 @@ namespace DragonSpark.Windows.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Blank {
+            get {
+                object obj = ResourceManager.GetObject("Blank", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Blank_log {
+            get {
+                object obj = ResourceManager.GetObject("Blank_log", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The ConfigurationStore cannot contain a null value. .
         /// </summary>
         internal static string ConfigurationStoreCannotBeNull {
