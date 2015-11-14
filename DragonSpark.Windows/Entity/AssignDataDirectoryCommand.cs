@@ -1,75 +1,58 @@
+using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using DragonSpark.Windows.Io;
+using DragonSpark.Windows.Properties;
+using DragonSpark.Windows.Runtime;
 using Microsoft.Practices.Unity;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using DragonSpark.Activation;
-using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Entity
 {
-	public interface IValue<out T>
+	public static class EntityFiles
 	{
-		T Item { get; }
-	}
+		public static DirectoryInfo DefaultDataDirectory { get; } = new DirectoryInfo( @".\App_Data" );
 
-	public interface IWritableValue<T> : IValue<T>
-	{
-		void Assign( T item );
-	}
-
-	public abstract class Value<T> : IValue<T>
-	{
-		
-		public abstract T Item { get;  }
-	}
-
-	public abstract class WritableValue<T> : Value<T>, IWritableValue<T>
-	{
-		public abstract void Assign( T item );
-	}
-
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
-	public class DataDirectory : WritableValue<string>
-	{
-		public const string DataDirectoryKey = "DataDirectory", DefaultPath = @".\App_Data";
+		public static IEnumerable<FileInfo> WithLog( FileInfo databaseFile )
+		{
+			var result = new[] { databaseFile, GetLog( databaseFile ) };
+			return result;
+		}
 
 		public static FileInfo GetLog( FileInfo database )
 		{
 			var result = new FileInfo( Path.Combine( database.DirectoryName, string.Concat( Path.GetFileNameWithoutExtension( database.Name ), "_log.ldf" ) ) );
 			return result;
 		}
+	}
 
-		public DataDirectory( [Dependency( DataDirectoryKey )] DirectoryInfo directory )
-		{
-			Assign( directory.FullName );
-		}
+	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	public class DataDirectoryPath : AppDomainValue<string>
+	{
+		public const string Key = "DataDirectory";
 
-		public override void Assign( string item )
-		{
-			AppDomain.CurrentDomain.SetData( DataDirectoryKey, item );
-		}
-
-		public override string Item => (string)AppDomain.CurrentDomain.GetData( DataDirectoryKey );
+		public DataDirectoryPath() : base( Key )
+		{}
 	}
 
 	public class AssignDataDirectoryCommand : SetupCommand
 	{
-		[Activate( DataDirectory.DataDirectoryKey )]
+		[ComponentModel.Singleton( typeof(EntityFiles), nameof(EntityFiles.DefaultDataDirectory) )]
 		public DirectoryInfo Directory { get; set; }
 
 		[Activate]
-		public DataDirectory DataDirectory { get; set; }
+		public DataDirectoryPath Path { get; set; }
 
 		protected override void Execute( SetupContext context )
 		{
-			DataDirectory.Item.Null( () => DataDirectory.Assign( Directory.FullName ) );
+			Path.Assign( Directory.FullName );
 		}
 	}
 
@@ -82,12 +65,7 @@ namespace DragonSpark.Windows.Entity
 		{
 			Database.Exists.IsFalse( () =>
 			{
-				var items = new[]
-				{
-					new Tuple<FileInfo, byte[]>( Database, Resources.Blank ),
-					new Tuple<FileInfo, byte[]>( DataDirectory.GetLog( Database ), Resources.Blank_log )
-				};
-
+				var items = EntityFiles.WithLog( Database ).TupleWith( new[] { Resources.Blank, Resources.Blank_log } );
 				items.Apply( tuple => 
 				{
 					using ( var stream = File.Create( tuple.Item1.FullName ) )
@@ -127,7 +105,7 @@ namespace DragonSpark.Windows.Entity
 		{
 			Database.With( file =>
 			{
-				var files = new[] { file, DataDirectory.GetLog( file ) }.Where( info => !info.IsLocked() ).ToArray();
+				var files = EntityFiles.WithLog( Database ).Where( info => !info.IsLocked() ).ToArray();
 				files.Any().IsTrue( () =>
 				{
 					var destination = file.Directory.CreateSubdirectory( FileSystem.GetValidPath() );

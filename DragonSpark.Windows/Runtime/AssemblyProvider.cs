@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using DragonSpark.Runtime;
@@ -17,5 +18,27 @@ namespace DragonSpark.Windows.Runtime
 				.Select( types => types.Key ).ToArray();
 			return result;
 		}
+	}
+
+	public class AppDomainValue<T> : WritableValue<T>
+	{
+		readonly AppDomain domain;
+		readonly string key;
+
+		public AppDomainValue( string key ) : this( AppDomain.CurrentDomain, key )
+		{}
+
+		public AppDomainValue( AppDomain domain, string key )
+		{
+			this.domain = domain;
+			this.key = key;
+		}
+
+		public override void Assign( T item )
+		{
+			AppDomain.CurrentDomain.SetData( key, item );
+		}
+
+		public override T Item => (T)domain.GetData( key );
 	}
 }

@@ -1,10 +1,8 @@
-using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Modularity;
-using DragonSpark.Runtime;
 
 namespace DragonSpark.Setup
 {
