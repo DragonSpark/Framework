@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
@@ -21,10 +22,8 @@ namespace DevelopersWin.VoteReporter.Entity
 		}	string LocationStorage { get; set; }
 
 		[Collection]
-		public virtual ICollection<VoteRecord> Records { get; set; }
+		public virtual ICollection<Record> Records { get; set; }
 
-        // public VoteRecord Record( )
-
-		// public VoteRecord Latest => Records.OrderByDescending( record => record.Created ).First();
+		public Record Latest => Records.OrderByDescending( record => record.Created ).First();
 	}
 }

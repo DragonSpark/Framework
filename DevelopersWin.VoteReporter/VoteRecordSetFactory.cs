@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DevelopersWin.VoteReporter
 {
-	public class VoteRecordSetFactory : Factory<VoteRecording>
+	public class VoteRecordSetFactory : Factory<Recording>
 	{
 		readonly VotingContext context;
 		readonly IVoteProvider provider;
@@ -20,9 +20,9 @@ namespace DevelopersWin.VoteReporter
 			this.updater = updater;
 		}
 
-		protected override VoteRecording CreateFrom( Type resultType, object parameter )
+		protected override Recording CreateFrom( Type resultType, object parameter )
 		{
-			var set = context.Create<VoteRecording>();
+			var set = context.Create<Recording>();
 			var array = provider.Retrieve( set ).ToArray();
 			set.Records = array.Select( vote => vote.With( x => updater.Update( set, vote ) ).Records.OrderByDescending( record => record.Created ).First() ).ToList();
 			return set;

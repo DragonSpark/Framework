@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
-	public class VoteRecording : EntityBase
+	public class Recording : EntityBase
 	{
 		
 		[Collection]
-		public virtual ICollection<VoteRecord> Records { get; set; }
+		public virtual ICollection<Record> Records { get; set; }
 	}
 }

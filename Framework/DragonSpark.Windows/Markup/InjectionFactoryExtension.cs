@@ -22,7 +22,7 @@ namespace DragonSpark.Windows.Markup
 		protected override object DetermineParameter( IServiceProvider serviceProvider )
 		{
 			var targetType = serviceProvider.Get<DeferredContext>().RegistrationType;
-			var result = new InjectionMemberContext( Services.Locate<IUnityContainer>(), targetType );
+			var result = new InjectionMemberContext( Services.Location.Locate<IUnityContainer>(), targetType );
 			return result;
 		}
 

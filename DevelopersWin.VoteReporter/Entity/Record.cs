@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
-	public class VoteRecord : EntityBase
+	public class Record : EntityBase
 	{
 		[Required]
-		public virtual VoteRecording Set { get; set; }
+		public virtual Recording Recording { get; set; }
 		
 		[Required]
 		public virtual Vote Vote { get; set; }

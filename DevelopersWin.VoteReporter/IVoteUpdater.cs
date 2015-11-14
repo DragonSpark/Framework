@@ -5,7 +5,7 @@ namespace DevelopersWin.VoteReporter
 {
 	public interface IVoteUpdater
 	{
-		void Update( VoteRecording set, Vote vote );
+		void Update( Recording set, Vote vote );
 	}
 
 	class VoteUpdater : IVoteUpdater
@@ -19,9 +19,9 @@ namespace DevelopersWin.VoteReporter
 			this.context = context;
 		}
 
-		public void Update( VoteRecording set, Vote vote )
+		public void Update( Recording set, Vote vote )
 		{
-			var record = context.Create<VoteRecord>( x => x.Set = set );
+			var record = context.Create<Record>( x => x.Recording = set );
 			record.Count = locator.Locate( vote );
 			vote.Records.Add( record );
 		}

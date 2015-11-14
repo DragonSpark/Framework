@@ -5,7 +5,7 @@ namespace DevelopersWin.VoteReporter
 {
 	public interface IVoteRecorder
 	{
-		VoteRecording Record();
+		Recording Record();
 	}
 
 	class VoteRecorder : IVoteRecorder
@@ -19,7 +19,7 @@ namespace DevelopersWin.VoteReporter
 			this.factory = factory;
 		}
 
-		public VoteRecording Record()
+		public Recording Record()
 		{
 			var result = factory.Create();
 			context.Save();

@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Framework
 {
 	public class ServiceLocationCustomizationTests
 	{
-		[Theory, AutoDataCustomization, AssignServiceLocation]
+		[Theory, AutoDataCustomization, Services]
 		public void GetAllInstances( IServiceLocator sut )
 		{
 			Assert.True( sut.GetAllInstances<Class>().Any() );

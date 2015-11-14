@@ -26,7 +26,7 @@ namespace DragonSpark.Extensions
 		public static IList<WeakReference<TItem>> AliveOnly<TItem>( this IList<WeakReference<TItem>> target ) where TItem : class
 		{
 			TItem item;
-			var items = target.Where( x => !x.TryGetTarget( out item ) ).ToArray();
+			var items = target.Where( x => x == null || !x.TryGetTarget( out item ) ).ToArray();
 			items.Apply( x => target.Remove( x ) );
 			return target;
 		}

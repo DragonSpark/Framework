@@ -1,8 +1,10 @@
 using DragonSpark.Windows.Entity;
 using System.Data.Entity;
+using DragonSpark.Setup;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
+	[RegisterAs( typeof(DbContext) )]
 	public class VotingContext : EntityContext
 	{
 		public VotingContext()
@@ -25,6 +27,6 @@ namespace DevelopersWin.VoteReporter.Entity
 
 		public DbSet<Vote> Votes { get; set; }
 
-		public DbSet<VoteRecording> Recordings { get; set; }
+		public DbSet<Recording> Recordings { get; set; }
 	}
 }

@@ -15,15 +15,12 @@
 	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
 	mc:Ignorable="d" 
 >
-    <application:Setup.Items>
-        <markup:DirectoryInfo x:Name="ReportsDirectory"  Path="Reports" />
-    </application:Setup.Items>
-    
 	<setupWindows:SetupRegistrationByConventionCommand />
 	<setup:SetupUnityContainerCommand>
 		<setup:UnityType RegistrationType="{x:Type localEntity:VotingContext}" />
 		<setup:SetupUnityContainerCommand.Instances>
-			<setup:UnityInstance Instance="{x:Reference ReportsDirectory}" />
+			<setup:UnityInstance Instance="{markup:DirectoryInfo {x:Static entity:DataDirectory.DefaultPath}}" BuildName="{x:Static entity:DataDirectory.DataDirectoryKey}" />
+			<setup:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
 			<setup:UnityInstance>
 				<dragonSpark:ApplicationInformation
 					Title="{markup:Metadata reflection:AssemblyTitleAttribute, 'Title'}"
@@ -44,6 +41,7 @@
 	<setupWindows:InitializeMarkupCommand />
 	<setup:InitializeModulesCommand />
 	<entity:AssignDataDirectoryCommand />
+	<entity:BackupDatabaseCommand />
 	<localEntity:InitializeDatabaseCommand>
 		<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
 	</localEntity:InitializeDatabaseCommand>

@@ -1,13 +1,13 @@
 ﻿<setup:CompositeSetupCommand x:Class="DevelopersWin.VoteReporter.Configuration.Common.Setup"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:DevelopersWin.VoteReporter.Configuration.Common"
-    xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
-    xmlns:entity="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
-    mc:Ignorable="d" 
-    >
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:local="clr-namespace:DevelopersWin.VoteReporter.Configuration.Common"
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:entity="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
+	mc:Ignorable="d" 
+	>
 	<setup:UnityInstance>
 		<entity:Configuration AutomaticMigrationsEnabled="True" />
 	</setup:UnityInstance>

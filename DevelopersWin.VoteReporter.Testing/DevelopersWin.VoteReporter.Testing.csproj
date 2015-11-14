@@ -83,6 +83,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
+      <Name>DragonSpark.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

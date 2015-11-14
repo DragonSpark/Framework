@@ -39,7 +39,7 @@ namespace DragonSpark.Activation.IoC
 			}
 			catch ( ResolutionFailedException e )
 			{
-				Log.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
+				Log.Current.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
 				return backup();
 			}
 		}

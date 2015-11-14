@@ -22,7 +22,7 @@ namespace DragonSpark.Modularity
 
 		public Task<bool> Load()
 		{
-			var items = catalog.Modules.Where( x => ( x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized ) || loaded.Any( y => Equals( ModuleInfoExtensions.GetAssembly( x ), TypeExtensions.Assembly( y.GetType() ) ) ) ).ToArray();
+			var items = catalog.Modules.Where( x => ( x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized ) || loaded.Any( y => Equals( x.GetAssembly(), y.GetType().Assembly() ) ) ).ToArray();
 			loading.Clear();
 			loading.AddRange( items );
 			Update();

@@ -102,10 +102,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
-      <Name>DragonSpark.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DevelopersWin.VoteReporter.Configuration.Common\DevelopersWin.VoteReporter.Configuration.Common.csproj">
       <Project>{1f72ab3c-9f4b-4ad8-8a3f-9cebc1c336c2}</Project>
       <Name>DevelopersWin.VoteReporter.Configuration.Common</Name>
@@ -125,6 +121,10 @@
     <ProjectReference Include="..\Framework\DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj">
       <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
       <Name>DragonSpark.Shim.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Name>DragonSpark.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
@@ -150,9 +150,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Data\DevelopersWin.VoteReporter.Entity.VotingContext.mdf">
+    <Content Include="App_Data\DevelopersWin.VoteReporter.Entity.VotingContext.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="App_Data\DevelopersWin.VoteReporter.Entity.VotingContext_log.ldf">
       <DependentUpon>DevelopersWin.VoteReporter.Entity.VotingContext.mdf</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

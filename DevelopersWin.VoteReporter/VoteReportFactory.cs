@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DevelopersWin.VoteReporter
 {
-	public class VoteReportFactory : FactoryBase<VoteRecording, VoteReport>
+	public class VoteReportFactory : FactoryBase<Recording, VoteReport>
 	{
 		readonly VotingContext context;
 
@@ -17,7 +17,7 @@ namespace DevelopersWin.VoteReporter
 			this.context = context;
 		}
 
-		protected override VoteReport CreateFrom( Type resultType, VoteRecording parameter )
+		protected override VoteReport CreateFrom( Type resultType, Recording parameter )
 		{
 			var recordings = context.Recordings.OrderByDescending( recording => recording.Created );
 			var current = parameter ?? recordings.First();
@@ -27,32 +27,32 @@ namespace DevelopersWin.VoteReporter
 			return result;
 		}
 
-		static VoteReport Convert( VoteRecording source, VoteReport reference )
+		static VoteReport Convert( Recording source, VoteReport reference )
 		{
 			var result = source.MapInto<VoteReport>().With( report => report.Groups.AddRange( DetermineGroups( source, reference ) ) );
 			return result;
 		}
 
-		static IEnumerable<VoteGroupView> DetermineGroups( VoteRecording current, VoteReport previous )
+		static IEnumerable<VoteGroupView> DetermineGroups( Recording current, VoteReport previous )
 		{
 			var groups = current.Records.GroupBy( record => record.Vote.Group ).OrderBy( grouping => grouping.Key.Order ).Select( records => records.Key );
 			var result = groups.Select( @group => Create( current, @group, previous.Transform( x => x.Groups.SingleOrDefault( y => y.Id == @group.Id ) ) ) ).ToArray();
 			return result;
 		}
 
-		static VoteGroupView Create( VoteRecording recording, VoteGroup current, VoteGroupView previous )
+		static VoteGroupView Create( Recording recording, VoteGroup current, VoteGroupView previous )
 		{
 			var result = current.MapInto<VoteGroupView>();
-			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Set == recording ).Count );
+			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Recording == recording ).Count );
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.WithDefaults();
 			result.Votes.AddRange( current.Votes.OrderBy( vote => vote.Order ).Select( v => CreateVote( recording, v, previous.Transform( x => x.Votes.SingleOrDefault( y => y.Id == v.Id ) ) ) ) );
 			return result;
 		}
 
-		static VoteView CreateVote( VoteRecording recording, Vote current, VoteView previous )
+		static VoteView CreateVote( Recording recording, Vote current, VoteView previous )
 		{
 			var result = current.MapInto<VoteView>();
-			var count = current.Records.SingleOrDefault( record => record.Set == recording ).Count;
+			var count = current.Records.SingleOrDefault( record => record.Recording == recording ).Count;
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.WithDefaults();
 			return result;
 		}

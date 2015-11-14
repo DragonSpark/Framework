@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.0\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -85,8 +85,8 @@
     <Compile Include="Entity\Vote.cs" />
     <Compile Include="Entity\VoteBase.cs" />
     <Compile Include="Entity\VoteGroup.cs" />
-    <Compile Include="Entity\VoteRecord.cs" />
-    <Compile Include="Entity\VoteRecording.cs" />
+    <Compile Include="Entity\Record.cs" />
+    <Compile Include="Entity\Recording.cs" />
     <Compile Include="Entity\VotingContext.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="IVoteCountLocator.cs" />
@@ -111,8 +111,8 @@
     <Compile Include="VoteReportFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
+    <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">

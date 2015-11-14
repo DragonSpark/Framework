@@ -6,7 +6,7 @@ namespace DevelopersWin.VoteReporter
 {
 	public interface IVoteProvider
 	{
-		IEnumerable<Vote> Retrieve( VoteRecording @set );
+		IEnumerable<Vote> Retrieve( Recording @set );
 	}
 
 		class VoteProvider : IVoteProvider
@@ -18,9 +18,9 @@ namespace DevelopersWin.VoteReporter
 			this.context = context;
 		}
 
-		public IEnumerable<Vote> Retrieve( VoteRecording @set )
+		public IEnumerable<Vote> Retrieve( Recording @set )
 		{
-			var result = context.Votes.Where( vote => vote.Records.All( record => record.Set.Id != @set.Id ) );
+			var result = context.Votes.Where( vote => vote.Records.All( record => record.Recording.Id != @set.Id ) );
 			return result;
 		}
 	}

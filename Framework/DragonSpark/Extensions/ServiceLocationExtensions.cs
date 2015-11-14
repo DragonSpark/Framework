@@ -6,13 +6,6 @@ namespace DragonSpark.Extensions
 {
 	public static class ServiceLocationExtensions
 	{
-		public static T Assigned<T>( this T @this, bool force = false ) where T : IServiceLocator
-		{
-			var apply = !ServiceLocator.IsLocationProviderSet || force;
-			apply.IsTrue( () => ServiceLocator.SetLocatorProvider( () => @this ) );
-			return @this;
-		}
-
 		public static void Register<TFrom, TTo>( this IServiceLocator target, string name = null )
 		{
 			Register( target, typeof(TFrom), typeof(TTo), name );

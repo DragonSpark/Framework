@@ -5,8 +5,22 @@
 >
 	<xsl:output method="text" indent="no" />
 
-	<xsl:template match="local:VoteReport">Weekly Vote Report for <xsl:value-of select="msxsl:format-date( @Created, 'dddd, MMMM d, yyyy')" /><xsl:text>&#10;</xsl:text><xsl:text>&#10;</xsl:text><xsl:apply-templates select="local:VoteReport.Groups/local:VoteGroupView" /></xsl:template>
+	<xsl:template match="local:VoteReport">TITLE:
+======
+Weekly Vote Report for <xsl:value-of select="msxsl:format-date( @Created, 'dddd, MMMM d, yyyy')" />
+
+BODY:
+=====
+<xsl:apply-templates select="local:VoteReport.Groups/local:VoteGroupView" />
+
+<xsl:call-template name="Summary" /></xsl:template>
 
 	<xsl:template match="local:VoteGroupView">1. <xsl:value-of select="@Title" /> [Total: **<xsl:value-of select=".//local:VoteCount/@Count" /> Votes** / +_<xsl:value-of select=".//local:VoteCount/@Delta" />_ Since Last Week]<xsl:text>&#10;</xsl:text><xsl:apply-templates select="local:VoteGroupView.Votes/local:VoteView" /><xsl:text>&#10;</xsl:text></xsl:template>
+	
 	<xsl:template match="local:VoteView">	- [<xsl:value-of select="@Title" />](<xsl:value-of select="@Location" />) [Total: **<xsl:value-of select=".//local:VoteCount/@Count" /> Votes** / +_<xsl:value-of select=".//local:VoteCount/@Delta" />_ Since Last Week]<xsl:text>&#10;</xsl:text></xsl:template>
+
+	<xsl:template name="Summary">Summary:
+========<xsl:for-each select="local:VoteReport.Groups/local:VoteGroupView">
+- <xsl:value-of select="@Title" /> [Total: *<xsl:value-of select=".//local:VoteCount/@Count" /> Votes* / +<xsl:value-of select=".//local:VoteCount/@Delta" /> Since Last Week]</xsl:for-each></xsl:template>
+
 </xsl:stylesheet>

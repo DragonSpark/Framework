@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Xaml;
+using DragonSpark.Windows.Io;
 
 namespace DevelopersWin.VoteReporter
 {
@@ -23,7 +24,7 @@ namespace DevelopersWin.VoteReporter
 		public Uri Save( object item, string fileName )
 		{
 			var extension = item is string ? "txt" : "xaml";
-			var path = Path.Combine( directory.FullName, fileName ?? $"{DateTime.Now.ToString( "yyyy-M-dd--HH-mm-ss" )}.{extension}" );
+			var path = Path.Combine( directory.FullName, fileName ?? $"{FileSystem.GetValidPath()}.{extension}" );
 			var content = item as string ?? serializer.Serialize( item );
 			File.WriteAllText( path, content );
 
