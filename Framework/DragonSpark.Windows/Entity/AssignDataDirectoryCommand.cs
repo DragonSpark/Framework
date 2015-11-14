@@ -9,6 +9,8 @@ using System.Data.Entity.Core.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using DragonSpark.Activation;
+using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Entity
 {
@@ -38,6 +40,12 @@ namespace DragonSpark.Windows.Entity
 	{
 		public const string DataDirectoryKey = "DataDirectory", DefaultPath = @".\App_Data";
 
+		public static FileInfo GetLog( FileInfo database )
+		{
+			var result = new FileInfo( Path.Combine( database.DirectoryName, string.Concat( Path.GetFileNameWithoutExtension( database.Name ), "_log.ldf" ) ) );
+			return result;
+		}
+
 		public DataDirectory( [Dependency( DataDirectoryKey )] DirectoryInfo directory )
 		{
 			Assign( directory.FullName );
@@ -65,36 +73,76 @@ namespace DragonSpark.Windows.Entity
 		}
 	}
 
+	public class InstallDatabaseCommand : SetupCommand
+	{
+		[Factory( typeof(AttachedDatabaseFileFactory) )]
+		public FileInfo Database { get; set; }
+
+		protected override void Execute( SetupContext context )
+		{
+			Database.Exists.IsFalse( () =>
+			{
+				var items = new[]
+				{
+					new Tuple<FileInfo, byte[]>( Database, Resources.Blank ),
+					new Tuple<FileInfo, byte[]>( DataDirectory.GetLog( Database ), Resources.Blank_log )
+				};
+
+				items.Apply( tuple => 
+				{
+					using ( var stream = File.Create( tuple.Item1.FullName ) )
+					{
+						stream.Write( tuple.Item2, 0, tuple.Item2.Length );
+					}
+				} );
+			} );
+		}
+	}
+
+	public class AttachedDatabaseFileFactory : Factory<FileInfo>
+	{
+		readonly DbContext context;
+
+		public AttachedDatabaseFileFactory( DbContext context )
+		{
+			this.context = context;
+		}
+
+		protected override FileInfo CreateFrom( Type resultType, object parameter )
+		{
+			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().Transform( DbProviderServices.ExpandDataDirectory ).Transform( s => new FileInfo( s ) );
+			return result;
+		}
+	}
+
 	public class BackupDatabaseCommand : SetupCommand
 	{
-		[Activate]
-		public DbContext Context { get; set; }
+		[Factory( typeof(AttachedDatabaseFileFactory) )]
+		public FileInfo Database { get; set; }
 
 		[Default( 6 )]
 		public int? MaximumBackups { get; set; }
 
 		protected override void Execute( SetupContext context )
 		{
-			new SqlConnectionStringBuilder( Context.Database.Connection.ConnectionString ).AttachDBFilename.With( s => DbProviderServices.ExpandDataDirectory( s ).With( file =>
+			Database.With( file =>
 			{
-				var directory = new DirectoryInfo( Path.GetDirectoryName( file ) );
-				
-				var files = new[] { file, Path.Combine( directory.FullName, string.Concat( Path.GetFileNameWithoutExtension( file ), "_log.ldf" ) ) }.Select( name => new FileInfo( name ) ).Where( info => !info.IsLocked() ).ToArray();
+				var files = new[] { file, DataDirectory.GetLog( file ) }.Where( info => !info.IsLocked() ).ToArray();
 				files.Any().IsTrue( () =>
 				{
-					var destination = directory.CreateSubdirectory( FileSystem.GetValidPath() );
+					var destination = file.Directory.CreateSubdirectory( FileSystem.GetValidPath() );
 					files.Apply( info => info.CopyTo( Path.Combine( destination.FullName, info.Name ) ) );
 				} );
 
 				MaximumBackups.WithValue( i => 
-					directory
+					file.Directory
 						.GetDirectories()
 						.Where( x => FileSystem.IsValidPath( x.Name ) )
 						.OrderByDescending( info => info.CreationTime )
 						.Skip( i )
 						.Apply( info => info.Delete( true ) ) 
 				);
-			} ) );
+			} );
 		}
 	}
 }

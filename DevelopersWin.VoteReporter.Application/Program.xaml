@@ -41,6 +41,7 @@
 	<setupWindows:InitializeMarkupCommand />
 	<setup:InitializeModulesCommand />
 	<entity:AssignDataDirectoryCommand />
+	<entity:InstallDatabaseCommand />
 	<entity:BackupDatabaseCommand />
 	<localEntity:InitializeDatabaseCommand>
 		<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
