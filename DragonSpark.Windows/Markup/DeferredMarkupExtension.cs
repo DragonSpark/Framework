@@ -24,7 +24,7 @@ namespace DragonSpark.Windows.Markup
 			builders = new Lazy<IMarkupTargetValueSetterBuilder[]>( DetermineBuilders );
 		}
 
-		public override sealed object ProvideValue( IServiceProvider serviceProvider )
+		public sealed override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var result = !DesignerProperties.GetIsInDesignMode( new DependencyObject() ) ? Build( serviceProvider ) : null;
 			return result;

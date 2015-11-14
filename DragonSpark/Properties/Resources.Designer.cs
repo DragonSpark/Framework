@@ -23,7 +23,7 @@ namespace DragonSpark.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -37,7 +37,7 @@ namespace DragonSpark.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DragonSpark.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
@@ -52,7 +52,7 @@ namespace DragonSpark.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +64,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Could not resolve type &quot;{0}&quot; with build name &quot;{1}&quot;.  Details: {2}.
         /// </summary>
-        internal static string Activator_CouldNotActivate {
+        public static string Activator_CouldNotActivate {
             get {
                 return ResourceManager.GetString("Activator_CouldNotActivate", resourceCulture);
             }
@@ -73,7 +73,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;None&gt;.
         /// </summary>
-        internal static string Activator_None {
+        public static string Activator_None {
             get {
                 return ResourceManager.GetString("Activator_None", resourceCulture);
             }
@@ -82,7 +82,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Adding UnityBootstrapperExtension to container..
         /// </summary>
-        internal static string AddingUnityBootstrapperExtensionToContainer {
+        public static string AddingUnityBootstrapperExtensionToContainer {
             get {
                 return ResourceManager.GetString("AddingUnityBootstrapperExtensionToContainer", resourceCulture);
             }
@@ -91,7 +91,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Configuring module catalog..
         /// </summary>
-        internal static string ConfiguringModuleCatalog {
+        public static string ConfiguringModuleCatalog {
             get {
                 return ResourceManager.GetString("ConfiguringModuleCatalog", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Configuring ServiceLocator singleton..
         /// </summary>
-        internal static string ConfiguringServiceLocatorSingleton {
+        public static string ConfiguringServiceLocatorSingleton {
             get {
                 return ResourceManager.GetString("ConfiguringServiceLocatorSingleton", resourceCulture);
             }
@@ -109,7 +109,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Configuring the Unity container..
         /// </summary>
-        internal static string ConfiguringUnityContainer {
+        public static string ConfiguringUnityContainer {
             get {
                 return ResourceManager.GetString("ConfiguringUnityContainer", resourceCulture);
             }
@@ -118,7 +118,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Creating module catalog..
         /// </summary>
-        internal static string CreatingModuleCatalog {
+        public static string CreatingModuleCatalog {
             get {
                 return ResourceManager.GetString("CreatingModuleCatalog", resourceCulture);
             }
@@ -127,7 +127,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Creating Unity container..
         /// </summary>
-        internal static string CreatingUnityContainer {
+        public static string CreatingUnityContainer {
             get {
                 return ResourceManager.GetString("CreatingUnityContainer", resourceCulture);
             }
@@ -136,25 +136,25 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to At least one cyclic dependency has been found in the module catalog. Cycles in the module dependencies must be avoided..
         /// </summary>
-        internal static string CyclicDependencyFound {
+        public static string CyclicDependencyFound {
             get {
                 return ResourceManager.GetString("CyclicDependencyFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}: {2}. Priority: {3}. Timestamp:{0:u}..
+        ///   Looks up a localized string similar to [{0:u}] [{1}-{3}] -&gt; {2}..
         /// </summary>
-        internal static string DefaultDebugLoggerPattern {
+        public static string DefaultDebugLoggerPattern {
             get {
                 return ResourceManager.GetString("DefaultDebugLoggerPattern", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}: {2}. Priority: {3}. Timestamp:{0:u}..
+        ///   Looks up a localized string similar to [{0:u}] [{1}-{3}] -&gt; {2}..
         /// </summary>
-        internal static string DefaultTextLoggerPattern {
+        public static string DefaultTextLoggerPattern {
             get {
                 return ResourceManager.GetString("DefaultTextLoggerPattern", resourceCulture);
             }
@@ -163,7 +163,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cannot add dependency for unknown module {0}.
         /// </summary>
-        internal static string DependencyForUnknownModule {
+        public static string DependencyForUnknownModule {
             get {
                 return ResourceManager.GetString("DependencyForUnknownModule", resourceCulture);
             }
@@ -172,7 +172,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A module declared a dependency on another module which is not declared to be loaded. Missing module(s): {0}.
         /// </summary>
-        internal static string DependencyOnMissingModule {
+        public static string DependencyOnMissingModule {
             get {
                 return ResourceManager.GetString("DependencyOnMissingModule", resourceCulture);
             }
@@ -181,7 +181,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A duplicated module with name {0} has been found by the loader..
         /// </summary>
-        internal static string DuplicatedModule {
+        public static string DuplicatedModule {
             get {
                 return ResourceManager.GetString("DuplicatedModule", resourceCulture);
             }
@@ -190,7 +190,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unable to retrieve the module type {0} from the loaded assemblies.  You may need to specify a more fully-qualified type name..
         /// </summary>
-        internal static string FailedToGetType {
+        public static string FailedToGetType {
             get {
                 return ResourceManager.GetString("FailedToGetType", resourceCulture);
             }
@@ -203,7 +203,7 @@ namespace DragonSpark.Properties {
         ///    Check the InnerException property of the exception for more information. If the exception occurred while creating an object in a DI container, you can exception.GetRootException() to help locate the root cause of the problem. 
         ///  .
         /// </summary>
-        internal static string FailedToLoadModule {
+        public static string FailedToLoadModule {
             get {
                 return ResourceManager.GetString("FailedToLoadModule", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace DragonSpark.Properties {
         ///    while creating an object in a DI container, you can exception.GetRootException() to help locate the 
         ///    root cause of the problem. .
         /// </summary>
-        internal static string FailedToLoadModuleNoAssemblyInfo {
+        public static string FailedToLoadModuleNoAssemblyInfo {
             get {
                 return ResourceManager.GetString("FailedToLoadModuleNoAssemblyInfo", resourceCulture);
             }
@@ -226,7 +226,7 @@ namespace DragonSpark.Properties {
         ///   Looks up a localized string similar to Failed to load type for module {0}. 
         ///Error was: {1}..
         /// </summary>
-        internal static string FailedToRetrieveModule {
+        public static string FailedToRetrieveModule {
             get {
                 return ResourceManager.GetString("FailedToRetrieveModule", resourceCulture);
             }
@@ -235,7 +235,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Initializing modules..
         /// </summary>
-        internal static string InitializingModules {
+        public static string InitializingModules {
             get {
                 return ResourceManager.GetString("InitializingModules", resourceCulture);
             }
@@ -244,7 +244,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Loading modules..
         /// </summary>
-        internal static string LoadingModules {
+        public static string LoadingModules {
             get {
                 return ResourceManager.GetString("LoadingModules", resourceCulture);
             }
@@ -253,7 +253,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Logger was created successfully..
         /// </summary>
-        internal static string LoggerCreatedSuccessfully {
+        public static string LoggerCreatedSuccessfully {
             get {
                 return ResourceManager.GetString("LoggerCreatedSuccessfully", resourceCulture);
             }
@@ -262,7 +262,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Module {0} depends on other modules that don&apos;t belong to the same group..
         /// </summary>
-        internal static string ModuleDependenciesNotMetInGroup {
+        public static string ModuleDependenciesNotMetInGroup {
             get {
                 return ResourceManager.GetString("ModuleDependenciesNotMetInGroup", resourceCulture);
             }
@@ -271,7 +271,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Module {0} was not found in the catalog..
         /// </summary>
-        internal static string ModuleNotFound {
+        public static string ModuleNotFound {
             get {
                 return ResourceManager.GetString("ModuleNotFound", resourceCulture);
             }
@@ -280,7 +280,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Modules Loaded..
         /// </summary>
-        internal static string ModulesLoaded {
+        public static string ModulesLoaded {
             get {
                 return ResourceManager.GetString("ModulesLoaded", resourceCulture);
             }
@@ -289,7 +289,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to There is currently no moduleTypeLoader in the ModuleManager that can retrieve the specified module..
         /// </summary>
-        internal static string NoRetrieverCanRetrieveModule {
+        public static string NoRetrieverCanRetrieveModule {
             get {
                 return ResourceManager.GetString("NoRetrieverCanRetrieveModule", resourceCulture);
             }
@@ -298,7 +298,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The ILoggerFacade is required and cannot be null..
         /// </summary>
-        internal static string NullLoggerFacadeException {
+        public static string NullLoggerFacadeException {
             get {
                 return ResourceManager.GetString("NullLoggerFacadeException", resourceCulture);
             }
@@ -307,7 +307,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The IModuleCatalog is required and cannot be null in order to initialize the modules..
         /// </summary>
-        internal static string NullModuleCatalogException {
+        public static string NullModuleCatalogException {
             get {
                 return ResourceManager.GetString("NullModuleCatalogException", resourceCulture);
             }
@@ -316,7 +316,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The IUnityContainer is required and cannot be null..
         /// </summary>
-        internal static string NullUnityContainerException {
+        public static string NullUnityContainerException {
             get {
                 return ResourceManager.GetString("NullUnityContainerException", resourceCulture);
             }
@@ -325,7 +325,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Registering Framework Exception Types..
         /// </summary>
-        internal static string RegisteringFrameworkExceptionTypes {
+        public static string RegisteringFrameworkExceptionTypes {
             get {
                 return ResourceManager.GetString("RegisteringFrameworkExceptionTypes", resourceCulture);
             }
@@ -334,7 +334,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to container.
         /// </summary>
-        internal static string ServiceLocator_Container {
+        public static string ServiceLocator_Container {
             get {
                 return ResourceManager.GetString("ServiceLocator_Container", resourceCulture);
             }
@@ -343,7 +343,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Specified type is not registered: &quot;{0}&quot; with build name &quot;{1}&quot;..
         /// </summary>
-        internal static string ServiceLocator_NotRegistered {
+        public static string ServiceLocator_NotRegistered {
             get {
                 return ResourceManager.GetString("ServiceLocator_NotRegistered", resourceCulture);
             }
@@ -352,7 +352,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Module {0} is marked for automatic initialization when the application starts, but it depends on modules that are marked as OnDemand initialization. To fix this error, mark the dependency modules for InitializationMode=WhenAvailable, or remove this validation by extending the ModuleCatalog class..
         /// </summary>
-        internal static string StartupModuleDependsOnAnOnDemandModule {
+        public static string StartupModuleDependsOnAnOnDemandModule {
             get {
                 return ResourceManager.GetString("StartupModuleDependsOnAnOnDemandModule", resourceCulture);
             }
@@ -361,7 +361,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The provided String argument {0} must not be null or empty..
         /// </summary>
-        internal static string StringCannotBeNullOrEmpty {
+        public static string StringCannotBeNullOrEmpty {
             get {
                 return ResourceManager.GetString("StringCannotBeNullOrEmpty", resourceCulture);
             }
@@ -370,7 +370,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Type &apos;{0}&apos; was already registered by the application. Skipping....
         /// </summary>
-        internal static string TypeMappingAlreadyRegistered {
+        public static string TypeMappingAlreadyRegistered {
             get {
                 return ResourceManager.GetString("TypeMappingAlreadyRegistered", resourceCulture);
             }
@@ -379,7 +379,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Registering {0} -&gt; {1}.
         /// </summary>
-        internal static string UnityConventionRegistrationService_Registering {
+        public static string UnityConventionRegistrationService_Registering {
             get {
                 return ResourceManager.GetString("UnityConventionRegistrationService_Registering", resourceCulture);
             }
@@ -388,7 +388,7 @@ namespace DragonSpark.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The value must be of type ModuleInfo..
         /// </summary>
-        internal static string ValueMustBeOfTypeModuleInfo {
+        public static string ValueMustBeOfTypeModuleInfo {
             get {
                 return ResourceManager.GetString("ValueMustBeOfTypeModuleInfo", resourceCulture);
             }

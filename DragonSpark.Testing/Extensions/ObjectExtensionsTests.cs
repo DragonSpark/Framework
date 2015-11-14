@@ -90,7 +90,7 @@ namespace DragonSpark.Testing.Extensions
 			var expected = new[] { sut.PropertyOne, sut.PropertyFour };
 
 			var values = sut.GetAllPropertyValuesOf<string>();
-			Assert.True( expected.Length == values.Count() && expected.All( values.Contains ) );
+			Assert.True( expected.Length == values.Count() && expected.All( x => values.Contains( x ) ) );
 		}
 
 		[Fact]

@@ -9,37 +9,63 @@ using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class CustomizedAutoDataAttribute : AutoDataAttribute
+	public abstract class CustomizedAutoDataAttribute : AutoDataAttribute
 	{
 		readonly Type[] cutomizationTypes;
 
-		public CustomizedAutoDataAttribute( params Type[] cutomizationTypes )
+		protected CustomizedAutoDataAttribute( params Type[] cutomizationTypes )
 		{
 			this.cutomizationTypes = cutomizationTypes;
 		}
 
-		static IEnumerable<T> Determine<T>( IEnumerable<Type> types )
-		{
-			var result = types.Where( typeof(T).IsAssignableFrom ).Select( Activator.CreateInstance<T> ).ToArray();
-			return result;
-		}
+		Action<ICustomization> Customize => customization => Fixture.Customize( customization );
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
-			var type = methodUnderTest.DeclaringType;
-			var customizers = type.Assembly.GetCustomAttributes()
-				.Concat( type.GetCustomAttributes() )
-				.Concat( methodUnderTest.GetCustomAttributes() ).OfType<ICustomization>();
-			var instances = Determine<ICustomization>( cutomizationTypes ).Concat( customizers ).Prioritize().ToArray();
+			methodUnderTest.DeclaringType.With( type =>
+			{
+				var items = type.Assembly.GetCustomAttributes()
+					.Concat( type.GetCustomAttributes() )
+					.Concat( methodUnderTest.GetCustomAttributes() )
+					.OfType<ICustomization>()
+					.Concat( new MethodContextCustomization( new MethodContext( methodUnderTest ) ).Append( cutomizationTypes.Where( typeof(ICustomization).CanActivate ).Select( Activator.CreateInstance<ICustomization> ) ) )
+					.Prioritize().ToArray();
+				items.Apply( Customize );
+			} );
 
-			instances.Apply( customization => customization.Customize( Fixture ) );
-
-			/*var customizations = instances.OfType<IMethodCustomization>().ToArray();
-			customizations.Apply( x => x.Customizing( methodUnderTest, parameterTypes ) );
-			customizations.Apply( x => x.Customized( methodUnderTest, parameterTypes, result ) );*/
-			
 			var result = base.GetData( methodUnderTest );
 			return result;
+		}
+	}
+
+	public interface IMethodContext
+	{
+		MethodInfo MethodUnderTest { get; }
+	}
+
+	class MethodContext : IMethodContext
+	{
+		public MethodContext( MethodInfo info )
+		{
+			MethodUnderTest = info;
+		}
+
+		public MethodInfo MethodUnderTest { get; }
+	}
+
+	[Priority( Priority.AboveHigh )]
+	public class MethodContextCustomization : ICustomization
+	{
+		readonly IMethodContext context;
+
+		public MethodContextCustomization( IMethodContext context )
+		{
+			this.context = context;
+		}
+
+		public void Customize( IFixture fixture )
+		{
+			fixture.Inject( context );
 		}
 	}
 }
