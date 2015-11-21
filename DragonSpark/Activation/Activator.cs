@@ -22,13 +22,13 @@ namespace DragonSpark.Activation
 
 		public static TResult Activate<TResult>( this IActivator @this, Type type, string name )
 		{
-			var result = (TResult)@this.Activate( type, name );
+			var result = @this.CanActivate( type, name ) ? (TResult)@this.Activate( type, name ) : default(TResult);
 			return result;
 		}
 
 		public static TResult Construct<TResult>( this IActivator @this, params object[] parameters )
 		{
-			var result = (TResult)@this.Construct( typeof(TResult), parameters );
+			var result = @this.CanActivate( typeof(TResult) ) ? (TResult)@this.Construct( typeof(TResult), parameters ) : default(TResult);
 			return result;
 		}
 

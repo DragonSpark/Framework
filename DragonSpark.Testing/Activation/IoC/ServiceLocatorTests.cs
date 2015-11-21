@@ -41,7 +41,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			mock.Verify( x => x.Warning( It.Is<string>( y => y.StartsWith( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".  Details: Microsoft.Practices.Unity.ResolutionFailedException: Resolution of the dependency failed, type = ""DragonSpark.Testing.TestObjects.ClassWithBrokenConstructor"", name = ""(none)""." ) ), Priority.High ) );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Default) )]
+		[Theory, Test, Framework.AutoData]
 		void GetAllInstances( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
@@ -62,7 +62,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Contains( classes.Single(), updated );
 		}
 
-		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
+		[Theory, Test, Framework.AutoData]
 		void Container( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
 		{
 			sut.Dispose();
@@ -70,7 +70,8 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Throws<ObjectDisposedException>( () => sut.Container );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.DefaultMock) )]
+		[Register( typeof(IActivator), typeof(Activator))]
+		[Theory, Test, Framework.AutoData]
 		void Create( IActivator sut, ILogger logger, string message, int number, Class @item )
 		{
 			Assert.IsType<Activator>( sut );

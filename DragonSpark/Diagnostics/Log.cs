@@ -1,10 +1,8 @@
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public class ExceptionMessageContext
+	/*public class ExceptionMessageContext
 	{
 		public ExceptionMessageContext( Exception exception, Guid? contextId )
 		{
@@ -31,7 +29,7 @@ namespace DragonSpark.Diagnostics
 			var result = formatter.FormatMessage( parameter.Exception, parameter.ContextId );
 			return result;
 		}
-	}
+	}*/
 
 	/*public static class ExtensionMethodSupport
 	{
@@ -43,15 +41,15 @@ namespace DragonSpark.Diagnostics
 
 	public static class DiagnosticExtensions
 	{
-		public static string GetMessage( this Exception exception, Guid? contextId = null )
+		/*public static string GetMessage( this Exception exception, Guid? contextId = null )
 		{
 			var context = new ExceptionMessageContext( exception, contextId );
 			var factory = Services.Location.Locate<ExceptionMessageFactory>();
 			var result = factory.Create( context );
 			return result;
-		}
+		}*/
 
-		public static Exception Try( this Action action )
+		/*public static Exception Try( this Action action )
 		{
 			try
 			{
@@ -63,26 +61,17 @@ namespace DragonSpark.Diagnostics
 				return exception;
 			}
 			return null;
-		}
+		}*/
 
-		public static void TryAndHandle( this Action action )
+		/*public static void TryAndHandle( this Action action )
 		{
 			var exception = action.Try();
 			exception.With( x => Services.Location.With<IExceptionHandler>( y => y.Process( x ) ) );
-		}
+		}*/
 	}
 
 	public static class Log
 	{
-		// public static ILogger Current => Services.Location.Locate<ILogger>() ?? NonLogger.Instance;
-
-		static void Handle( ILogger logger, Func<ILogger, Action<string, Exception>> getMethod, Exception exception, Guid? contextId = null )
-		{
-			var message = exception.GetMessage( contextId );
-			var method = getMethod( logger );
-			method( message, exception );
-		}
-
 		public static void Information( this ILogger @this, string message, Priority priority = Priority.Normal )
 		{
 			@this.Information( message, priority );
@@ -102,9 +91,16 @@ namespace DragonSpark.Diagnostics
 		{
 			Handle( @this, x => x.Fatal, exception, contextId );
 		}
+
+		static void Handle( ILogger logger, Func<ILogger, Action<string, Exception>> getMethod, Exception exception, Guid? contextId = null )
+		{
+			var message = exception.GetMessage( contextId );
+			var method = getMethod( logger );
+			method( message, exception );
+		}
 	}
 
-	class NonLogger : ILogger
+	/*class NonLogger : ILogger
 	{
 		public static NonLogger Instance { get; } = new NonLogger();
 
@@ -119,5 +115,5 @@ namespace DragonSpark.Diagnostics
 
 		public void Fatal( string message, Exception exception )
 		{}
-	}
+	}*/
 }

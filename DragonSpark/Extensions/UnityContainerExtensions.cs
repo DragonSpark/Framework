@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
@@ -250,7 +249,7 @@ namespace DragonSpark.Extensions
 
 		public static IUnityContainerExtensionConfigurator EnsureExtension( this IUnityContainer container, Type extensionType )
 		{
-			var extension = container.Configure( extensionType ) ?? container.AddExtension( Activator.Current.Activate<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
+			var extension = container.Configure( extensionType ) ?? container.AddExtension( container.Resolve<IActivator>().Activate<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
 			var result = (IUnityContainerExtensionConfigurator)extension;
 			return result;
 		}
