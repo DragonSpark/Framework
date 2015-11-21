@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Setup
 {
@@ -64,6 +64,6 @@ namespace DragonSpark.Setup
             }
         }	readonly IList<WeakReference> items = new Collection<WeakReference>();
 
-        public ILoggerFacade Logger => Item<ILoggerFacade>();
+        public ILogger Logger => Item<ILogger>();
     }
 }

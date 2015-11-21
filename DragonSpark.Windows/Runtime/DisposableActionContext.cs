@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Testing.Framework
+namespace DragonSpark.Windows.Runtime
 {
 	public sealed class DisposableActionContext : IDisposable
 	{

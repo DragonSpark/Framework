@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using DragonSpark.Modularity;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
+using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Setup
 {
@@ -56,8 +56,8 @@ namespace DragonSpark.Setup
 		}
 	}
 
-	public abstract class Setup<TLoggingFacade, TModuleCatalog> : Setup
-		where TLoggingFacade : ILoggerFacade, new()
+	public abstract class Setup<TLogger, TModuleCatalog> : Setup
+		where TLogger : ILogger, new()
 		where TModuleCatalog : IModuleCatalog, new()
 	{
 		protected override Collection<ICommand> DetermineDefaultCommands()
@@ -65,7 +65,7 @@ namespace DragonSpark.Setup
 			var result = base.DetermineDefaultCommands();
 			result.AddRange( new ICommand[]
 			{
-				new SetupLoggingCommand<TLoggingFacade>(),
+				new SetupLoggingCommand<TLogger>(),
 				new SetupModuleCatalogCommand<TModuleCatalog>(),
 				new SetupUnityCommand(),
 				new RegisterFrameworkExceptionTypesCommand()

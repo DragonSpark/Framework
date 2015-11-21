@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using DragonSpark.Runtime;
+using System;
 using System.Globalization;
 using System.IO;
-using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Io
 {
@@ -12,19 +13,19 @@ namespace DragonSpark.Windows.Io
 
 		public static string GetValidPath()
 		{
-			return GetValidPath( DateTimeOffset.Now );
+			return GetValidPath( CurrentTime.Instance );
 		}
 
-		public static string GetValidPath( DateTimeOffset @this )
+		public static string GetValidPath( ICurrentTime @this )
 		{
-			var result = @this.ToString( FileSystem.ValidPathTimeFormat );
+			var result = @this.Now.ToString( ValidPathTimeFormat );
 			return result;
 		}
 
 		public static bool IsValidPath( string input )
 		{
 			DateTimeOffset item;
-			var result = DateTimeOffset.TryParseExact( input, FileSystem.ValidPathTimeFormat, CultureInfo.CurrentCulture, DateTimeStyles.None, out item );
+			var result = DateTimeOffset.TryParseExact( input, ValidPathTimeFormat, CultureInfo.CurrentCulture, DateTimeStyles.None, out item );
 			return result;
 		}
 

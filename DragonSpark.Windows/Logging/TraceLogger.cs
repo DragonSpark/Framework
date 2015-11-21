@@ -1,45 +1,31 @@
+using DragonSpark.Diagnostics;
+using DragonSpark.Runtime;
 using System.Diagnostics;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Windows.Logging
 {
-    /// <summary>
-    /// Implementation of <see cref="ILoggerFacade"/> that logs to .NET <see cref="Trace"/> class.
-    /// </summary>
-    public class TraceLogger : ILoggerFacade
-    {
-        readonly string format;
+	public class TraceLogger : LoggerBase
+	{
+		public TraceLogger() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
+		{}
 
-        public TraceLogger() : this( "[Priority: {0}]: {1}" )
-        {}
+		public TraceLogger( IExceptionFormatter formatter, ICurrentTime time ) : base( formatter, time )
+		{}
 
-        public TraceLogger( string format )
-        {
-            this.format = format;
-        }
-
-        /// <summary>
-        /// Write a new log entry with the specified category and priority.
-        /// </summary>
-        /// <param name="message">Message body to log.</param>
-        /// <param name="category">Category of the entry.</param>
-        /// <param name="priority">The priority of the entry.</param>
-        public void Log(string message, Category category, DragonSpark.Logging.Priority priority)
-        {
-            var line = string.Format( format, priority, message, category );
-            switch ( category )
-            {
-                case Category.Exception:
-                    Trace.TraceError( line );
-                    break;
-                case Category.Warn:
-                    Trace.TraceWarning( line );
-                    break;
-                default:
-                    Trace.TraceInformation( line );
-                    break;
-
-            }
-        }
-    }
+		protected override void Write( Line line )
+		{
+			switch ( line.Category )
+			{
+				case nameof(Exception):
+					Trace.TraceError( line.Message );
+					break;
+				case nameof(Warning):
+					Trace.TraceWarning( line.Message );
+					break;
+				default:
+					Trace.TraceInformation( line.Message );
+					break;
+			}
+		}
+	}
 }

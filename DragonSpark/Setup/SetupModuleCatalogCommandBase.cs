@@ -1,5 +1,4 @@
 using System;
-using DragonSpark.Logging;
 using DragonSpark.Modularity;
 using DragonSpark.Properties;
 
@@ -9,7 +8,7 @@ namespace DragonSpark.Setup
     {
         protected override void Execute( SetupContext context )
         {
-            context.Logger.Log( Resources.CreatingModuleCatalog, Category.Debug, Logging.Priority.Low );
+            context.Logger.Information( Resources.CreatingModuleCatalog, Priority.Low );
             var catalog = this.CreateModuleCatalog();
             if ( catalog == null )
             {
@@ -18,7 +17,7 @@ namespace DragonSpark.Setup
 
 	        context.Register( catalog );
 
-            context.Logger.Log( Resources.ConfiguringModuleCatalog, Category.Debug, Logging.Priority.Low );
+            context.Logger.Information( Resources.ConfiguringModuleCatalog, Priority.Low );
         }
 
         protected abstract IModuleCatalog CreateModuleCatalog();

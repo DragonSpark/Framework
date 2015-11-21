@@ -27,7 +27,7 @@ namespace DragonSpark.Activation.IoC
 
 		protected override void Initialize()
 		{
-			Context.Container.IsRegistered<IActivator>().IsFalse( () => Context.Container.RegisterInstance<IActivator>( new Activator( Context.Container ) ) );
+			Context.Container.EnsureRegistered<IActivator, Activator>();
 
 			// CurrentBuildKeyStrategy = new CurrentBuildKeyStrategy();
 
@@ -49,7 +49,7 @@ namespace DragonSpark.Activation.IoC
 
 		void ContextChildContainerCreated(object sender, ChildContainerCreatedEventArgs e)
 		{
-			e.ChildContainer.NotNull( child =>
+			e.ChildContainer.With( child =>
 			{
 				Children.Add( child );
 				child.RegisterInstance( Container, new ContainerLifetimeManager() );

@@ -4,27 +4,25 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using System;
 using Xunit;
-using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.Activation
 {
-	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class FactoryTests
 	{
-		[Theory, AutoDataCustomization]
+		[Theory, AutoData( typeof(Customizations.Default) ), Test]
 		void CreateActivation( Factory<Class> sut )
 		{
 			var creation = sut.Create<Class>();
 			Assert.NotNull( creation );
 		}
 
-		[Theory, AutoDataCustomization]
+		[Theory, AutoData( typeof(Customizations.Assigned) )]
 		void CreateActivationException( Factory<ClassWithParameter> sut )
 		{
 			Assert.Throws<MissingMethodException>( () => sut.Create<ClassWithParameter>() );
 		}
 
-		[Theory, AutoDataCustomization]
+		[Theory, AutoData( typeof(Customizations.Assigned) )]
 		void Create( Factory<Class> sut )
 		{
 			var factory = sut.To<IFactory>();

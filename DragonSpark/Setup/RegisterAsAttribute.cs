@@ -8,6 +8,9 @@ namespace DragonSpark.Setup
 		public RegisterAsAttribute( Type @as ) : this( @as, null )
 		{}
 
+		public RegisterAsAttribute( string name ) : this( null, name )
+		{}
+
 		public RegisterAsAttribute( Type @as, string name )
 		{
 			As = @as;

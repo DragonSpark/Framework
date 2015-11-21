@@ -1,3 +1,4 @@
+using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
@@ -39,6 +40,7 @@ namespace DragonSpark.ComponentModel
 
 	public class ActivateAttribute : DefaultAttribute
 	{
+		readonly IActivator activator;
 		readonly Type activatedType;
 		private readonly string name;
 
@@ -51,8 +53,13 @@ namespace DragonSpark.ComponentModel
 		public ActivateAttribute( Type activatedType ) : this( activatedType, null )
 		{}
 
-		public ActivateAttribute( Type activatedType, string name )
+		public ActivateAttribute( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
 		{
+		}
+
+		public ActivateAttribute( IActivator activator, Type activatedType, string name )
+		{
+			this.activator = activator;
 			this.activatedType = activatedType;
 			this.name = name;
 		}
@@ -60,7 +67,7 @@ namespace DragonSpark.ComponentModel
 		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
 			var type = activatedType ?? DetermineType( propertyInfo );
-			var result = name != null ? Activation.Activator.CreateNamedInstance<object>( type, name ) : Activation.Activator.CreateInstance<object>( type );
+			var result = activator.Activate<object>( type, name );
 			return result;
 		}
 

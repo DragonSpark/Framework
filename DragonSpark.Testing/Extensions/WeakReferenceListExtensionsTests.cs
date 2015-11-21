@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Extensions;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions

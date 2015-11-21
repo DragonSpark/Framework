@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using DragonSpark.Logging;
+using DragonSpark.Diagnostics;
 using DragonSpark.Properties;
 
 namespace DragonSpark.Modularity
@@ -10,11 +10,11 @@ namespace DragonSpark.Modularity
     /// <summary>
     /// Component responsible for coordinating the modules' type loading and module initialization process. 
     /// </summary>
-    public partial class ModuleManager : IModuleManager, IDisposable
+    public class ModuleManager : IModuleManager, IDisposable
     {
         private readonly IModuleInitializer moduleInitializer;
         private readonly IModuleCatalog moduleCatalog;
-        private readonly ILoggerFacade loggerFacade;
+        private readonly ILogger loggerFacade;
         private readonly IModuleTypeLoader loader;
         private IEnumerable<IModuleTypeLoader> typeLoaders;
         private readonly HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
@@ -26,7 +26,7 @@ namespace DragonSpark.Modularity
         /// <param name="moduleCatalog">Catalog that enumerates the modules to be loaded and initialized.</param>
         /// <param name="loggerFacade">Logger used during the load and initialization of modules.</param>
         /// <param name="loader"></param>
-        public ModuleManager(IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, ILoggerFacade loggerFacade, IModuleTypeLoader loader)
+        public ModuleManager(IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, ILogger loggerFacade, IModuleTypeLoader loader)
         {
             if (moduleInitializer == null)
             {
@@ -275,7 +275,7 @@ namespace DragonSpark.Modularity
                 moduleTypeLoadingException = new ModuleTypeLoadingException(moduleInfo.ModuleName, exception.Message, exception);
             }
 
-            this.loggerFacade.Log(moduleTypeLoadingException.Message, Category.Exception, Logging.Priority.High);
+            loggerFacade.Exception(moduleTypeLoadingException.Message, moduleTypeLoadingException);
 
             throw moduleTypeLoadingException;
         }

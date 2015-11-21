@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Markup;
+using DragonSpark.Activation;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
@@ -29,7 +30,7 @@ namespace DragonSpark.Windows.Markup
 
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
-			 var result = Type.Transform( x => Activator.CreateNamedInstance<object>( x, BuildName ) );
+			 var result = Type.Transform( x => Activator.Current.Activate<object>( x, BuildName ) );
 			result.As<ISupportInitialize>( x => x.BeginInit() );
 			result.NotNull( x => Properties.Apply( y => x.GetType().GetProperty( y.PropertyName ).NotNull( z => y.Apply( z, x ) ) ) );
 			result.As<ISupportInitialize>( x => x.EndInit() );

@@ -1,16 +1,26 @@
+using DragonSpark.Activation;
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using DragonSpark.Setup;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Extensions;
-using DragonSpark.Logging;
-using DragonSpark.Setup;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Windows.Setup
 {
 	public class UnityConventionRegistrationService : DragonSpark.Setup.UnityConventionRegistrationService
 	{
-		public UnityConventionRegistrationService( IUnityContainer container, ILoggerFacade logger, ISingletonLocator locator ) : base( container, logger, locator )
+		public UnityConventionRegistrationService( IUnityContainer container ) : base( container )
+		{}
+
+		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator ) : base( container, activator )
+		{}
+
+		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger ) : base( container, activator, logger )
+		{}
+
+		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger, ISingletonLocator locator ) : base( container, activator, logger, locator )
 		{}
 
 		public override void Register( ConventionRegistrationProfile profile )
@@ -26,7 +36,7 @@ namespace DragonSpark.Windows.Setup
 			var register = profile.Candidates
 				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => found.IsPublic && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
-			register.Apply( type => Logger.Log( $"Registering from convention: {type.FullName}", Category.Debug, DragonSpark.Logging.Priority.None ) );
+			register.Apply( type => Logger.Information( $"Registering from convention: {type.FullName}" ) );
 			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, DetermineLifetimeContainer<ContainerControlledLifetimeManager>, overwriteExistingMappings: true );
 		}
 	}

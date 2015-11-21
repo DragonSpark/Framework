@@ -1,10 +1,10 @@
-using DragonSpark.Logging;
+using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Setup
 {
-	public class SetupLoggingCommand<TLoggingFacade> : SetupLoggingCommandBase where TLoggingFacade : ILoggerFacade, new()
+	public class SetupLoggingCommand<TLoggingFacade> : SetupLoggingCommandBase where TLoggingFacade : ILogger, new()
 	{
-		protected override ILoggerFacade CreateLogger()
+		protected override ILogger CreateLogger()
 		{
 			var result = new TLoggingFacade();
 			return result;

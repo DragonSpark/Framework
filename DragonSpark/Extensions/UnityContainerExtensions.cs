@@ -10,6 +10,17 @@ using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
+	public static class BuilderContextExtensions
+	{
+		public static bool IsRegistered<T>( this IBuilderContext @this )
+		{
+			IPolicyList list;
+			var policy = @this.Policies.Get<IBuildKeyMappingPolicy>( new NamedTypeBuildKey<T>(), out list );
+			var result = policy != null;
+			return result;
+		}
+	}
+
 	public static class UnityContainerExtensions
 	{
 		static readonly IList<WeakReference<object>> BuildCache = new List<WeakReference<object>>();
@@ -55,6 +66,12 @@ namespace DragonSpark.Extensions
 			{
 				return null;
 			}
+		}
+
+		public static IUnityContainer EnsureRegistered<TInterface, TImplementation>( this IUnityContainer @this, LifetimeManager manager = null ) where TImplementation : TInterface
+		{
+			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterType<TInterface, TImplementation>( manager ?? new ContainerControlledLifetimeManager() ) );
+			return @this;
 		}
 
 		/*public static IUnityContainer FromConfiguration( this IUnityContainer container )
@@ -184,7 +201,13 @@ namespace DragonSpark.Extensions
 
 		public static TResult Create<TResult>( this IUnityContainer target, params object[] parameters )
 		{
-			var result = EnsureExtension<IoCExtension>( target ).Create( typeof(TResult), parameters ).To<TResult>();
+			var result = target.Create( typeof(TResult), parameters ).To<TResult>();
+			return result;
+		}
+
+		public static object Create( this IUnityContainer target, Type instanceType, params object[] parameters )
+		{
+			var result = EnsureExtension<IoCExtension>( target ).Create( instanceType, parameters );
 			return result;
 		}
 
@@ -227,7 +250,7 @@ namespace DragonSpark.Extensions
 
 		public static IUnityContainerExtensionConfigurator EnsureExtension( this IUnityContainer container, Type extensionType )
 		{
-			var extension = container.Configure( extensionType ) ?? container.AddExtension( Activator.CreateInstance<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
+			var extension = container.Configure( extensionType ) ?? container.AddExtension( Activator.Current.Activate<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
 			var result = (IUnityContainerExtensionConfigurator)extension;
 			return result;
 		}

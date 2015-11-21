@@ -1,5 +1,5 @@
-using System;
 using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.Diagnostics
 {
@@ -9,7 +9,7 @@ namespace DragonSpark.Diagnostics
 
 		void Warning( string message, Priority priority );
 
-		void Exception( string message, Exception item );
+		void Exception( string message, Exception exception );
 
 		void Fatal( string message, Exception exception );
 	}
@@ -33,9 +33,9 @@ namespace DragonSpark.Diagnostics
 			loggers.Apply( logger => logger.Warning( message, priority ) );
 		}
 
-		public void Exception( string message, Exception item )
+		public void Exception( string message, Exception exception )
 		{
-			loggers.Apply( logger => logger.Exception( message, item ) );
+			loggers.Apply( logger => logger.Exception( message, exception ) );
 		}
 
 		public void Fatal( string message, Exception exception )

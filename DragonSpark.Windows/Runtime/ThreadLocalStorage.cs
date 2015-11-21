@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace DragonSpark.Testing.Framework
+namespace DragonSpark.Windows.Runtime
 {
 	public static class ThreadLocalStorage
 	{

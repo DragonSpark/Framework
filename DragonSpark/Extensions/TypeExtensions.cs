@@ -1,18 +1,38 @@
-﻿using System;
+﻿using DragonSpark.Activation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
+	public class DefaultValueFactory : FactoryBase<Type, object>
+	{
+		readonly IActivator activator;
+		static readonly IDictionary<Type,object> Cache = new Dictionary<Type, object>();
+
+		public DefaultValueFactory() : this( SystemActivator.Instance )
+		{}
+
+		public DefaultValueFactory( IActivator activator )
+		{
+			this.activator = activator;
+		}
+
+		protected override object CreateFrom( Type resultType, Type parameter )
+		{
+			var result = Cache.Ensure( parameter, x => x.GetTypeInfo().IsValueType ? activator.Activate( x ) : null );
+			return result;
+		}
+	}
+
 	public static class TypeExtensions
 	{
-		readonly static IDictionary<Type,object> Cache = new Dictionary<Type, object>();
-
-		public static object GetDefaultValue( this Type target )
+		public static object GetDefaultValue( this Type @this )
 		{
-			var result = Cache.Ensure( target, x => x.GetTypeInfo().IsValueType ? Activator.CreateInstance( x ) : null );
+			var result = Activator.Current.Activate<DefaultValueFactory>().Create( @this );
 			return result;
 		}
 
@@ -28,6 +48,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static bool IsSubclass( this Type @this, Type other )
+		{
+			var result = @this.GetTypeInfo().IsSubclassOf( other );
+			return result;
+		}
+
 		public static Assembly Assembly( this Type @this )
 		{
 			var result = @this.GetTypeInfo().Assembly;
@@ -36,14 +62,20 @@ namespace DragonSpark.Extensions
 
 		public static bool CanActivate<T>( this Type @this )
 		{
-			var result = @this.CanActivate( typeof(T) );
+			var result = typeof(T).CanActivate( @this );
 			return result;
 		}
 
-		public static bool CanActivate( this Type @this, Type other = null )
+		public static bool CanActivate( this Type @this, Type instanceType )
+		{
+		    var result  = instanceType.CanActivate() && @this.IsAssignableFrom( instanceType );
+			return result;
+		}
+
+		public static bool CanActivate( this Type @this )
 		{
 		    var info = @this.GetTypeInfo();
-		    var result  = ( info.IsInterface || !info.IsAbstract ) && other.Transform( x => x.IsAssignableFrom( @this ) );
+			var result = info.IsInterface || !info.IsAbstract;
 			return result;
 		}
 

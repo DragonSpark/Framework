@@ -4,10 +4,10 @@ namespace DragonSpark.Activation
 {
 	public interface IActivator
 	{
-		bool CanActivate( Type type, string name );
+		bool CanActivate( Type type, string name = null );
 
-		TResult CreateInstance<TResult>( Type type, string name );
+		object Activate( Type type, string name = null );
 
-		TResult Create<TResult>( params object[] parameters );
+		object Construct( Type type, params object[] parameters );
 	}
 }

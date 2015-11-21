@@ -1,28 +1,43 @@
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Extensions;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Windows
 {
-	public class CompositeLoggerFacade : ILoggerFacade, IDisposable
+	public class CompositeLoggerFacade : ILogger, IDisposable
 	{
-		readonly IEnumerable<ILoggerFacade> loggers;
+		readonly IEnumerable<ILogger> loggers;
 
-		public CompositeLoggerFacade( params ILoggerFacade[] loggers )
+		public CompositeLoggerFacade( params ILogger[] loggers )
 		{
 			this.loggers = loggers;
 		}
 
-		public void Log( string message, Category category, DragonSpark.Logging.Priority priority )
+		public void Information( string message, Priority priority )
 		{
-			loggers.Apply( logger => logger.Log( message, category, priority ) );
+			loggers.Apply( logger => logger.Information( message, priority ) );
 		}
 
-		protected virtual void Dispose(bool disposing)
+		public void Warning( string message, Priority priority )
 		{
-			if (disposing)
+			loggers.Apply( logger => logger.Warning( message, priority ) );
+		}
+
+		public void Exception( string message, Exception exception )
+		{
+			loggers.Apply( logger => logger.Exception( message, exception ) );
+		}
+
+		public void Fatal( string message, Exception exception )
+		{
+			loggers.Apply( logger => logger.Fatal( message, exception ) );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( disposing )
 			{
 				loggers.OfType<IDisposable>().Apply( facade => facade.Dispose() );
 			}

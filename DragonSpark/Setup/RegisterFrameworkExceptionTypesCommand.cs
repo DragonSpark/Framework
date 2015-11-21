@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -14,7 +13,7 @@ namespace DragonSpark.Setup
 	{
 		protected override void Execute( SetupContext context )
 		{
-			context.Logger.Log(Resources.RegisteringFrameworkExceptionTypes, Category.Debug, Logging.Priority.Low);
+			context.Logger.Information(Resources.RegisteringFrameworkExceptionTypes, Priority.Low);
 
 			var items = DetermineCoreFrameworkTypes().Concat( Types );
 			foreach ( var type in items )

@@ -1,6 +1,7 @@
 using DragonSpark.Activation;
 using Microsoft.Practices.Unity;
 using System;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Testing.TestObjects
 {
@@ -19,44 +20,34 @@ namespace DragonSpark.Testing.TestObjects
 
 	class ClassCreatedFromDefault
 	{
-		static int count = 0;
-
 		public ClassCreatedFromDefault( string message )
 		{
-			switch ( count++ )
+			var count = AmbientValues.Get<int>( GetType() );
+			switch ( count )
 			{
 				case 0:
+					AmbientValues.RegisterFor( 1, GetType() );
 					throw new ResolutionFailedException( GetType(), null, new InvalidOperationException( message ), null );
+				default:
+					AmbientValues.Remove( GetType() );
+					break;
 			}
 		}
 	}
 
 	class ClassWithManyParameters
 	{
-		readonly string s;
-		readonly int integer;
-		readonly Class @class;
-
 		public ClassWithManyParameters( string @string, int integer, Class @class )
 		{
-			s = @string;
-			this.integer = integer;
-			this.@class = @class;
+			String = @string;
+			Integer = integer;
+			Class = @class;
 		}
 
-		public string String
-		{
-			get { return s; }
-		}
+		public string String { get; }
 
-		public int Integer
-		{
-			get { return integer; }
-		}
+		public int Integer { get; }
 
-		public Class Class
-		{
-			get { return @class; }
-		}
+		public Class Class { get; }
 	}
 }

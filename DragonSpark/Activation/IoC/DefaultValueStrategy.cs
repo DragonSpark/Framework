@@ -6,9 +6,10 @@ namespace DragonSpark.Activation.IoC
 {
 	public class DefaultValueStrategy : BuilderStrategy
 	{
-		public override void PreBuildUp(IBuilderContext context)
+		public override void PreBuildUp( IBuilderContext context )
 		{
-			typeof(IDefaultValueProvider).IsAssignableFrom( context.BuildKey.Type ).IsFalse( () =>
+			var execute = !typeof(IDefaultValueProvider).IsAssignableFrom( context.BuildKey.Type ) && context.IsRegistered<IDefaultValueProvider>();
+			execute.IsTrue( () =>
 			{
 				var item = context.NewBuildUp<IDefaultValueProvider>();
 				context.Existing = context.Existing.With( item.Apply );

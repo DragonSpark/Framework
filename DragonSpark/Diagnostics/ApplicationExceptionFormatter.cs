@@ -2,12 +2,12 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public class ExceptionFormatter : IExceptionFormatter
+	public class ApplicationExceptionFormatter : IExceptionFormatter
 	{
 		readonly IExceptionFormatter formatter;
 		readonly ApplicationInformation information;
 
-		public ExceptionFormatter( IExceptionFormatter formatter,  ApplicationInformation information )
+		public ApplicationExceptionFormatter( IExceptionFormatter formatter,  ApplicationInformation information )
 		{
 			this.formatter = formatter;
 			this.information = information;
@@ -34,6 +34,17 @@ namespace DragonSpark.Diagnostics
 		protected virtual string FormatMessage( Exception exception, Guid? contextId )
 		{
 			var result = CreateMessage( exception, contextId );
+			return result;
+		}
+	}
+
+	public class ExceptionFormatter : IExceptionFormatter
+	{
+		public static ExceptionFormatter Instance { get; } = new ExceptionFormatter();
+
+		public string FormatMessage( Exception exception, Guid? contextId = null )
+		{
+			var result = string.Concat( contextId.HasValue ? $"Context Id: {contextId}{Environment.NewLine}" : string.Empty, exception.ToString() );
 			return result;
 		}
 	}

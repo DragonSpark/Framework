@@ -1,8 +1,7 @@
-using System;
-using System.Windows.Markup;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using Microsoft.Practices.Unity;
+using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
@@ -23,7 +22,7 @@ namespace DragonSpark.Setup
 			var registration = instance.ConvertTo( type );
 			var to = registration.GetType();
 			var mapping = string.Concat( type.FullName, to != type ? $" -> {to.FullName}" : string.Empty );
-			container.Resolve<ILoggerFacade>().Log( $"Registering Unity Instance: {mapping}", Category.Debug, DragonSpark.Logging.Priority.None );
+			container.Resolve<ILogger>().Information( $"Registering Unity Instance: {mapping}" );
 			container.RegisterInstance( type, BuildName, registration, Lifetime );
 		}
 	}

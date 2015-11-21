@@ -14,16 +14,21 @@ namespace DragonSpark.Activation.IoC
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
 
-		public ServiceLocator() : this( new UnityContainer() )
+		public ServiceLocator( ILogger logger ) : this( new UnityContainer(), logger )
 		{}
 
-		public ServiceLocator( IUnityContainer container )
+		public ServiceLocator( IUnityContainer container, ILogger logger )
 		{
 			this.container = container;
+			Logger = logger;
+			this.container.RegisterInstance( logger );
 			this.container.RegisterInstance<IServiceLocator>( this );
 			this.container.RegisterInstance<IServiceRegistry>( this );
 			this.container.RegisterInstance<IObjectBuilder>( this );
+			this.container.EnsureExtension<IoCExtension>();
 		}
+
+		protected ILogger Logger { get; }
 
 		public override IEnumerable<TService> GetAllInstances<TService>()
 		{
@@ -49,18 +54,13 @@ namespace DragonSpark.Activation.IoC
 				}
 				catch ( ResolutionFailedException e )
 				{
-					Warn( serviceType, string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
+					Logger.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
 					return null;
 				}
 			}
 
-			Warn( serviceType, string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
+			Logger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
 			return null;
-		}
-
-		static void Warn( Type type, string message )
-		{
-			typeof(ILogger).IsAssignableFrom( type ).IsFalse( () => Log.Current.Warning( message ) );
 		}
 
 		public IUnityContainer Container

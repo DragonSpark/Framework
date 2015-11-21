@@ -8,26 +8,22 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Moq;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 using Ploeh.AutoFixture.Xunit2;
-using System;
 using System.Linq;
-using DragonSpark.Runtime;
 using Xunit;
 using Xunit.Abstractions;
-using Activator = DragonSpark.Activation.IoC.Activator;
 using ServiceLocation = DragonSpark.Activation.ServiceLocation;
-using ServiceLocator = DragonSpark.Testing.Framework.ServiceLocator;
+using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation
 {
-	public class DefaultServicesTests : IDisposable
+	public class DefaultServicesTests : Tests
 	{
-		public DefaultServicesTests( ITestOutputHelper output )
-		{
-			AmbientValues.Register( GetType(), output );
-		}
+		public DefaultServicesTests( ITestOutputHelper output ) : base( output )
+		{}
 
-		[Theory, AutoDataCustomization, DefaultServices, EnableOutput]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) ), Test]
 		void RegisterInstanceGeneric( ServiceLocation sut, Class instance )
 		{
 			Assert.IsType<ServiceLocation>( Services.Location );
@@ -44,11 +40,13 @@ namespace DragonSpark.Testing.Activation
 		[Fact]
 		public void IsAvailable()
 		{
-			var sut = new ServiceLocation();
+			var sut = Services.Location;
+
+			Assert.Same( sut, ServiceLocation.Instance );
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( new ServiceLocator( new Fixture() ) );
+			sut.Assign( new ServiceLocator( new RecordingLogger() ) );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );
@@ -57,7 +55,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.False( sut.IsAvailable );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		public void RegisterGeneric( ServiceLocation sut )
 		{
 			sut.Register<IInterface, Class>();
@@ -66,7 +64,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		public void Register( ServiceLocation sut )
 		{
 			sut.Register( typeof(IInterface), typeof(Class) );
@@ -75,7 +73,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		void RegisterInstance( ServiceLocation sut, Class instance )
 		{
 			sut.Register( typeof(IInterface), instance );
@@ -85,7 +83,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		void RegisterFactory( ServiceLocation sut, Class instance )
 		{
 			sut.Register<IInterface>( () => instance );
@@ -95,7 +93,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		public void With( ServiceLocation sut, IServiceLocator locator, [Frozen]ClassWithParameter instance )
 		{
 			var item = sut.With<ClassWithParameter, object>( x => x.Parameter );
@@ -104,17 +102,14 @@ namespace DragonSpark.Testing.Activation
 			Assert.Null( sut.With<IInterface, object>( x => x ) );
 		}
 
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		public void WithDefault( ServiceLocation sut )
 		{
 			var item = sut.With<ClassWithParameter, bool>( x => x.Parameter != null );
 			Assert.True( item );
 		}
 
-		[Freeze( typeof(IUnityContainer), typeof(UnityContainer) )]
-		[Freeze( typeof(IActivator), typeof(Activator) )]
-		[ContainerExtensionFactory( typeof(IoCExtension) )]
-		[Theory, AutoDataCustomization, DefaultServices]
+		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
 		void Dispose( [Greedy, Frozen, Assign] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
 		{
 			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
@@ -126,7 +121,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.Equal( sut.Container, child.Resolve<IUnityContainer>() );
 
-			var item = DragonSpark.Activation.Activator.CreateInstance<IInterface>( typeof(Class) );
+			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
 			Assert.NotNull( item );
 
 			var disposable = new Disposable();
@@ -151,21 +146,16 @@ namespace DragonSpark.Testing.Activation
 			Assert.True( disposable.Disposed );
 		}
 
-		[Theory, AutoMockData]
-		public void Registry( ServiceLocation host, Mock<IServiceRegistry> sut )
+		[Theory, Framework.AutoData( typeof(AutoConfiguredMoqCustomization) )]
+		public void Register( ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
-			host.Assign( new ServiceLocator( new Fixture() ) );
+			location.Assign( new ServiceLocator( new RecordingLogger() ) );
 
-			host.Register( typeof(IServiceRegistry), sut.Object );
+			location.Register( typeof(IServiceRegistry), sut.Object );
 
-			host.Register<IInterface, Class>();
+			location.Register<IInterface, Class>();
 
 			sut.Verify( x => x.Register( typeof(IInterface), typeof(Class), null ) );
-		}
-
-		public void Dispose()
-		{
-			AmbientValues.Clear( GetType() );
 		}
 	}
 }

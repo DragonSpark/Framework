@@ -1,4 +1,5 @@
 using System.Data.Entity;
+using DragonSpark.Activation;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Entity
@@ -8,7 +9,7 @@ namespace DragonSpark.Windows.Entity
 		public MigrateDatabaseToLatestVersion() : this( false )
 		{}
 
-		public MigrateDatabaseToLatestVersion( bool useSuppliedContext ) : base( useSuppliedContext, Activator.Create<TConfiguration>() )
+		public MigrateDatabaseToLatestVersion( bool useSuppliedContext ) : base( useSuppliedContext, Activator.Current.Activate<TConfiguration>() )
 		{}
 	}
 }

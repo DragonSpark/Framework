@@ -139,6 +139,9 @@
       <HintPath>..\packages\AutoFixture.Xunit2.3.36.10\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp">
+      <HintPath>..\packages\PostSharp.4.1.8-beta\lib\net35-client\PostSharp.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -165,20 +168,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logger.cs" />
+    <Compile Include="RecordingLogger.cs" />
     <Compile Include="Services.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AutoDataCustomizationAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AutoMockDataAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CustomizedAutoDataAttribute.cs" />
-    <Compile Include="DisposableActionContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="AutoDataAttribute.cs" />
     <Compile Include="FreezeAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,9 +184,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceLocationCustomization.cs" />
-    <Compile Include="ThreadLocalStorage.cs" />
+    <Compile Include="TaskLocalValue.cs" />
+    <Compile Include="Tests.cs" />
+    <Compile Include="Types.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
+      <Name>DragonSpark.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>

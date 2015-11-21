@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using DragonSpark.Modularity;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
@@ -18,8 +17,8 @@ namespace DragonSpark.Setup
 
 		protected override void Execute( SetupContext context )
 		{
-			context.Logger.Log(Resources.CreatingUnityContainer, Category.Debug, Logging.Priority.Low);
-			var container = this.CreateContainer();
+			context.Logger.Information( Resources.CreatingUnityContainer, Priority.Low);
+			var container = this.CreateContainer( context );
 			if (container == null)
 			{
 				throw new InvalidOperationException(Resources.NullUnityContainerException);
@@ -27,10 +26,10 @@ namespace DragonSpark.Setup
 			context.Register( container );
 			container.RegisterInstance( context );
 
-			context.Logger.Log(Resources.ConfiguringUnityContainer, Category.Debug, Logging.Priority.Low);
+			context.Logger.Information(Resources.ConfiguringUnityContainer, Priority.Low);
 			this.ConfigureContainer( context );
 
-			context.Logger.Log(Resources.ConfiguringServiceLocatorSingleton, Category.Debug, Logging.Priority.Low);
+			context.Logger.Information(Resources.ConfiguringServiceLocatorSingleton,Priority.Low);
 			this.ConfigureServiceLocator( context );
 		}
 
@@ -40,17 +39,17 @@ namespace DragonSpark.Setup
 			return result;
 		}
 
-		protected virtual IUnityContainer CreateContainer()
+		protected virtual IUnityContainer CreateContainer( SetupContext context )
 		{
-			var locator = CreateServiceLocator();
+			var locator = CreateServiceLocator( context );
 			var result = locator.GetInstance<IUnityContainer>();
 			return result;
 		}
 
-		protected virtual IServiceLocator CreateServiceLocator()
+		protected virtual IServiceLocator CreateServiceLocator( SetupContext context )
 		{
 			var container = NewContainer();
-			var result = new Activation.IoC.ServiceLocator( container );
+			var result = new Activation.IoC.ServiceLocator( container, context.Logger );
 			return result;
 		}
 
@@ -62,7 +61,7 @@ namespace DragonSpark.Setup
 		{
 			var container = context.Container();
 			
-			context.Logger.Log(Resources.AddingUnityBootstrapperExtensionToContainer, Category.Debug, Logging.Priority.Low);
+			context.Logger.Information(Resources.AddingUnityBootstrapperExtensionToContainer, Priority.Low);
 			
 			container.RegisterInstance(context.Logger);
 

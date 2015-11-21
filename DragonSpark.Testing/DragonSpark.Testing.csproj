@@ -173,12 +173,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\ActivatorTests.cs" />
+    <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
-    <Compile Include="ApplicationDetailsTests.cs" />
-    <Compile Include="Compilation\Class1.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -186,10 +184,12 @@
     <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Customizations.cs" />
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
     <Compile Include="Extensions\BooleanExtensionsTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Framework\TypesFactoryTests.cs" />
     <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
       <SubType>Code</SubType>
@@ -213,7 +213,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\LogTests.cs" />
-    <Compile Include="Activation\ServiceLocatorHostTests.cs" />
     <Compile Include="TestObjects\Activator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -311,6 +310,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Compilation\" />
     <Folder Include="Server\" />
   </ItemGroup>
   <ItemGroup>

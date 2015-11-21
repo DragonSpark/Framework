@@ -6,13 +6,18 @@ using System;
 
 namespace DragonSpark.Activation.IoC
 {
-	class Activator : IActivator
+	public class Activator : IActivator
 	{
 		readonly IUnityContainer container;
+		readonly ILogger logger;
 
-		public Activator( IUnityContainer container )
+		public Activator( IUnityContainer container ) : this( container, container.Resolve<ILogger>() )
+		{}
+
+		public Activator( IUnityContainer container, ILogger logger )
 		{
 			this.container = container;
+			this.logger = logger;
 		}
 
 		public bool CanActivate( Type type, string name )
@@ -21,16 +26,25 @@ namespace DragonSpark.Activation.IoC
 			return result;
 		}
 
-		public TResult CreateInstance<TResult>( Type type, string name = null )
+		public object Activate( Type type, string name = null )
 		{
 			var result = Determine( 
-				() => container.Resolve( type, name ).To<TResult>(), 
-				() => SystemActivator.Instance.CreateInstance<TResult>( type, name )
+				() => container.Resolve( type, name ),
+				() => SystemActivator.Instance.Activate( type, name )
 			);
 			return result;
 		}
 
-		static TResult Determine<TResult>( Func<TResult> method, Func<TResult> backup )
+		public object Construct( Type type, params object[] parameters )
+		{
+			var result = Determine( 
+				() => container.Create( type, parameters ),
+				() => SystemActivator.Instance.Construct( type, parameters )
+			);
+			return result;
+		}
+
+		TResult Determine<TResult>( Func<TResult> method, Func<TResult> backup )
 		{
 			try
 			{
@@ -39,19 +53,9 @@ namespace DragonSpark.Activation.IoC
 			}
 			catch ( ResolutionFailedException e )
 			{
-				Log.Current.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
+				logger.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
 				return backup();
 			}
-		}
-
-		public TResult Create<TResult>( params object[] parameters )
-		{
-			var passed = parameters ?? new object[0];
-			var result = Determine( 
-				() => container.Create<TResult>( passed ), 
-				() => SystemActivator.Instance.Create<TResult>( passed ) 
-				);
-			return result;
 		}
 	}
 }

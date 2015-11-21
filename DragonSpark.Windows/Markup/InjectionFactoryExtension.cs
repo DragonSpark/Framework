@@ -32,7 +32,6 @@ namespace DragonSpark.Windows.Markup
 			var member = xamlType.GetMember( "RegistrationType" );
 			var value = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( new [] { xamlType }, member );
 			var result = (Type)value.Value;
-
 			return result;
 		}
 

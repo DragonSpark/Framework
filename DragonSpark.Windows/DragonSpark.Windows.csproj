@@ -187,6 +187,7 @@
     <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs" />
     <Compile Include="Modularity\ModulesConfigurationSection.cs" />
     <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
+    <Compile Include="Runtime\DisposableActionContext.cs" />
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
     <Compile Include="SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
@@ -231,7 +232,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Runtime\EnterpriseLibraryExceptionFormatter.cs" />
-    <Compile Include="Runtime\ExceptionFormatter.cs" />
+    <Compile Include="Runtime\ApplicationExceptionFormatter.cs" />
     <Compile Include="Runtime\ExceptionHandler.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Setup\SetupStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
+    <Compile Include="Runtime\ThreadLocalStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">

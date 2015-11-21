@@ -1,5 +1,4 @@
 using DragonSpark.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,129 +6,35 @@ namespace DragonSpark.Runtime
 {
 	public interface IAmbientValueRepository
 	{
-		void Add( object key, object instance );
+		void Add( IAmbientKey key, object instance );
 
-		object Get( object key );
+		object Get( IAmbientRequest request );
 
-		void Remove( object key );
+		void Remove( object context );
 	}
 
-	public static class AmbientValues
+	public class AmbientValueRepository : IAmbientValueRepository
 	{
-		public static void Initialize( IAmbientValueRepository repository )
+		public static AmbientValueRepository Instance { get; } = new AmbientValueRepository();
+
+		readonly IDictionary<IAmbientKey, object> items = new Dictionary<IAmbientKey, object>();
+
+		public void Add( IAmbientKey key, object instance )
 		{
-			Repository = repository;
-		}	static IAmbientValueRepository Repository { get; set; } = AmbientValueRepository.Instance;
-		
-		public static T Get<T>( object context = null )
+			Remove( key ); // TODO: Handle this a little better.
+			items.Add( key, instance );
+		}
+
+		public object Get( IAmbientRequest request )
 		{
-			var result = (T)Repository.Get( context );
+			var result = items.Keys.FirstOrDefault( value => value.Handles( request ) ).Transform( key => items[ key ] );
 			return result;
 		}
 
-		public static void Register( object context, object instance )
+		public void Remove( object context )
 		{
-			Repository.Add( context, instance );
-		}
-
-		public static void Clear( object context )
-		{
-			Repository.Remove( context );
+			var request = new AmbientRequest( typeof(object), context );
+			items.Keys.Where( key => key == context || items[key] == context || key.Handles( request ) ).ToArray().Apply( value => items.Remove( value ) );
 		}
 	}
-
-	class AmbientValueRepository : AmbientValueRepository<object, object>
-	{
-		public static IAmbientValueRepository Instance { get; } = new AmbientValueRepository();
-	}
-
-	public class CompositeAmbientValueRepository : IAmbientValueRepository
-	{
-		readonly IAmbientValueRepository[] repositories;
-
-		public CompositeAmbientValueRepository( params IAmbientValueRepository[] repositories )
-		{
-			this.repositories = repositories;
-		}
-
-		public void Add( object key, object instance )
-		{
-			repositories.Apply( repository => repository.Add( key, instance ) );
-		}
-
-		public object Get( object key )
-		{
-			var result = repositories.Select( repository => repository.Get( key ) ).FirstOrDefault( x => x != null );
-			return result;
-		}
-
-		public void Remove( object key )
-		{
-			repositories.Apply( repository => repository.Remove( key ) );
-		}
-	}
-
-	public class AmbientValueRepository<TKey, TValue> : IAmbientValueRepository
-	{
-		protected IDictionary<TKey, TValue> Items { get; } = new Dictionary<TKey, TValue>();
-
-		public object Get( object key )
-		{
-			var result = key == null || key is TKey ? GetValue( (TKey)key ) : default(TValue);
-			return result;
-		}
-
-		protected virtual TValue GetValue( TKey key )
-		{
-			var result = Items.TryGet( key );
-			return result;
-		}
-
-		void IAmbientValueRepository.Add( object key, object instance )
-		{
-			if ( key is TKey && instance is TValue )
-			{
-				var k = (TKey)key;
-				if ( !Items.ContainsKey( k ) )
-				{
-					OnAdd( k, (TValue)instance );
-				}
-				else
-				{
-					throw new InvalidOperationException( $"Key already exists for ambient value: {key} - {Items[k]}" );
-				}
-			}
-		}
-
-		protected virtual void OnAdd( TKey key, TValue instance )
-		{
-			Items.Add( key, instance );
-		}
-
-		void IAmbientValueRepository.Remove( object key )
-		{
-			if ( key is TKey )
-			{
-				var k = (TKey)key;
-				if ( Items.ContainsKey( k ) )
-				{
-					OnRemove( k );
-				}
-				else
-				{
-					throw new InvalidOperationException( $"Ambient value with key does not exist and therefore cannot be removed: {k}" );
-				}
-			}
-		}
-
-		protected virtual void OnRemove( TKey key )
-		{
-			Items.Remove( key );
-		}
-	}
-
-	/*public interface IAmbientValue<out T>
-	{
-		T Current { get; }
-	}*/
 }

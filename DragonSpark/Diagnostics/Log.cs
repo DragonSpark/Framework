@@ -4,11 +4,50 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
+	public class ExceptionMessageContext
+	{
+		public ExceptionMessageContext( Exception exception, Guid? contextId )
+		{
+			Exception = exception;
+			ContextId = contextId;
+		}
+
+		public Exception Exception { get; }
+
+		public Guid? ContextId { get; }
+	}
+
+	public class ExceptionMessageFactory : FactoryBase<ExceptionMessageContext, string>
+	{
+		readonly IExceptionFormatter formatter;
+
+		public ExceptionMessageFactory( IExceptionFormatter formatter )
+		{
+			this.formatter = formatter;
+		}
+
+		protected override string CreateFrom( Type resultType, ExceptionMessageContext parameter )
+		{
+			var result = formatter.FormatMessage( parameter.Exception, parameter.ContextId );
+			return result;
+		}
+	}
+
+	/*public static class ExtensionMethodSupport
+	{
+		public static void Factory<T>() where T : IFactory
+		{
+			var result = Services.Location.Locate<T>().Create( context );
+		}
+	}*/
+
 	public static class DiagnosticExtensions
 	{
 		public static string GetMessage( this Exception exception, Guid? contextId = null )
 		{
-			var result = Services.Location.With<IExceptionFormatter, string>( y => y.FormatMessage( exception, contextId ) ) ?? exception.ToString();
+			var context = new ExceptionMessageContext( exception, contextId );
+			var factory = Services.Location.Locate<ExceptionMessageFactory>();
+			var result = factory.Create( context );
 			return result;
 		}
 
@@ -20,7 +59,7 @@ namespace DragonSpark.Diagnostics
 			}
 			catch ( Exception exception )
 			{
-				Log.Current.Error( exception );
+				// Log.Current.Error( exception );
 				return exception;
 			}
 			return null;
@@ -35,7 +74,7 @@ namespace DragonSpark.Diagnostics
 
 	public static class Log
 	{
-		public static ILogger Current => Services.Location.Locate<ILogger>();
+		// public static ILogger Current => Services.Location.Locate<ILogger>() ?? NonLogger.Instance;
 
 		static void Handle( ILogger logger, Func<ILogger, Action<string, Exception>> getMethod, Exception exception, Guid? contextId = null )
 		{
@@ -63,5 +102,22 @@ namespace DragonSpark.Diagnostics
 		{
 			Handle( @this, x => x.Fatal, exception, contextId );
 		}
+	}
+
+	class NonLogger : ILogger
+	{
+		public static NonLogger Instance { get; } = new NonLogger();
+
+		public void Information( string message, Priority priority )
+		{}
+
+		public void Warning( string message, Priority priority )
+		{}
+
+		public void Exception( string message, Exception exception )
+		{}
+
+		public void Fatal( string message, Exception exception )
+		{}
 	}
 }

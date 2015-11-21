@@ -1,6 +1,6 @@
-using System;
-using DragonSpark.Logging;
+using DragonSpark.Diagnostics;
 using DragonSpark.Properties;
+using System;
 
 namespace DragonSpark.Setup
 {
@@ -16,9 +16,9 @@ namespace DragonSpark.Setup
 
             context.Register( logger );
 
-            logger.Log(Resources.LoggerCreatedSuccessfully, Category.Debug, Logging.Priority.Low);
+            logger.Information(Resources.LoggerCreatedSuccessfully, Priority.Low);
         }
 
-        protected abstract ILoggerFacade CreateLogger();
+        protected abstract ILogger CreateLogger();
     }
 }
