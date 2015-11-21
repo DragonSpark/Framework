@@ -9,26 +9,68 @@ using System.Linq;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class ContainerResolutionContext
+	{
+		readonly IUnityContainer container;
+		readonly ILogger logger;
+		readonly IExceptionFormatter formatter;
+
+		public ContainerResolutionContext( IUnityContainer container ) : this( container, DebugLogger.Instance )
+		{}
+
+		public ContainerResolutionContext( IUnityContainer container, ILogger logger ) : this( container, logger, ExceptionFormatter.Instance )
+		{}
+
+		public ContainerResolutionContext( IUnityContainer container, ILogger logger, IExceptionFormatter formatter )
+		{
+			this.container = container;
+			this.logger = logger;
+			this.formatter = formatter;
+		}
+
+		public object Resolve( Type serviceType, string key )
+		{
+			if ( container.IsResolvable( serviceType, key ) )
+			{
+				try
+				{
+					var result = container.Resolve( serviceType, key );
+					return result;
+				}
+				catch ( ResolutionFailedException e )
+				{
+					logger.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, formatter.FormatMessage( e ) ) );
+					return null;
+				}
+			}
+
+			logger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
+			return null;
+		}
+	}
+
 	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IObjectBuilder, IDisposable
 	{
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
-
-		public ServiceLocator( ILogger logger ) : this( new UnityContainer(), logger )
+	
+		public ServiceLocator() : this( new UnityContainer() )
 		{}
+
+		public ServiceLocator( IUnityContainer container ) : this( container, new RecordingLogger() )
+		{
+		}
 
 		public ServiceLocator( IUnityContainer container, ILogger logger )
 		{
 			this.container = container;
-			Logger = logger;
-			this.container.RegisterInstance( logger );
-			this.container.RegisterInstance<IServiceLocator>( this );
-			this.container.RegisterInstance<IServiceRegistry>( this );
-			this.container.RegisterInstance<IObjectBuilder>( this );
-			this.container.EnsureExtension<IoCExtension>();
+			this.container
+				.RegisterInstance( logger )
+				.RegisterInstance<IServiceLocator>( this )
+				.RegisterInstance<IServiceRegistry>( this )
+				.RegisterInstance<IObjectBuilder>( this )
+				.AddNewExtension<IoCExtension>();
 		}
-
-		protected ILogger Logger { get; }
 
 		public override IEnumerable<TService> GetAllInstances<TService>()
 		{
@@ -45,22 +87,8 @@ namespace DragonSpark.Activation.IoC
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
-			if ( Container.IsResolvable( serviceType, key ) )
-			{
-				try
-				{
-					var result = Container.Resolve( serviceType, key );
-					return result;
-				}
-				catch ( ResolutionFailedException e )
-				{
-					Logger.Warning( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
-					return null;
-				}
-			}
-
-			Logger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
-			return null;
+			var result = container.ResolveWithContext( serviceType, key );
+			return result;
 		}
 
 		public IUnityContainer Container

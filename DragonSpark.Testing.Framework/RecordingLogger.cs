@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework
 	{
 		public static IServiceLocator GetLocator( this IFixture @this )
 		{
-			var result = Get<ServiceLocationCustomization, IServiceLocator>( @this, customization => customization.Locator );
+			var result = Get<ServiceLocatorCustomization, IServiceLocator>( @this, customization => customization.Locator );
 			return result;
 		}
 
@@ -36,11 +36,11 @@ namespace DragonSpark.Testing.Framework
 
 		static TResult Get<TCustomization, TResult>( IFixture fixture, Func<TCustomization, TResult> resolve )
 		{
-			var result = fixture.GetCustomizations().FirstOrDefaultOfType<TCustomization>().Transform( resolve );
+			var result = fixture.GetItems().FirstOrDefaultOfType<TCustomization>().Transform( resolve );
 			return result;
 		}
 
-		public static IList<ICustomization> GetCustomizations( this IFixture @this )
+		public static IList<ICustomization> GetItems( this IFixture @this )
 		{
 			var result = AmbientValues.Get<IList<ICustomization>>( @this );
 			return result;
@@ -99,34 +99,6 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	public interface IRecordingLogger : ILogger
-	{
-		IEnumerable<Line> Lines { get; }
-	}
-
-	public class RecordingLogger : LoggerBase, IRecordingLogger
-	{
-		readonly IList<Line> lines = new List<Line>();
-
-		public RecordingLogger() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
-		{}
-
-		public RecordingLogger( IExceptionFormatter formatter, ICurrentTime time ) : base( formatter, time )
-		{}
-
-		public void Playback( Action<string> write )
-		{
-			lines.OrderBy( x => x.Time ).Apply( tuple => write( tuple.Message ) );
-		}
-
-		protected override void Write( Line line )
-		{
-			lines.Add( line );
-		}
-
-		public IEnumerable<Line> Lines => lines;
-	}
-
 	public class OutputCustomization : ICustomization, IAfterTestAware
 	{
 		public OutputCustomization() : this( new RecordingLogger() )
@@ -141,7 +113,7 @@ namespace DragonSpark.Testing.Framework
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.GetCustomizations().Add( this );
+			fixture.GetItems().Add( this );
 			Logger.Information( "Logger initialized!" );
 		}
 
@@ -174,7 +146,7 @@ namespace DragonSpark.Testing.Framework
 
 			AmbientValues.Get<IFixture>( methodUnderTest ).With( fixture =>
 			{
-				fixture.GetCustomizations().OfType<IAfterTestAware>().Apply( aware => aware.After( fixture, methodUnderTest ) );
+				fixture.GetItems().OfType<IAfterTestAware>().Apply( aware => aware.After( fixture, methodUnderTest ) );
 				AmbientValues.Remove( fixture );
 			} );
 

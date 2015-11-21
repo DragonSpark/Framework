@@ -177,6 +177,7 @@
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
+    <Compile Include="ApplicationInformationTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>

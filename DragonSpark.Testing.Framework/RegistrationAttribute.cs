@@ -70,13 +70,12 @@ namespace DragonSpark.Testing.Framework
 	public class RegisterFromConventionAttribute : ICustomization
 	{
 		readonly IConventionRegistrationProfileProvider provider;
-		readonly UnityConventionRegistrationServiceFactory factory;
-		readonly IConventionRegistrationService registrationService;
-
-		public RegisterFromConventionAttribute() : this( new ConventionRegistrationProfileProvider( FilteredAssemblyProvider.Instance ), UnityConventionRegistrationServiceFactory.Instance )
+		readonly IFactory<IFixture, IConventionRegistrationService> factory;
+		
+		public RegisterFromConventionAttribute() : this( new ConventionRegistrationProfileProvider( AssemblyProvider.Instance ), UnityConventionRegistrationServiceFactory.Instance )
 		{}
 
-		public RegisterFromConventionAttribute( IConventionRegistrationProfileProvider provider, UnityConventionRegistrationServiceFactory factory )
+		public RegisterFromConventionAttribute( IConventionRegistrationProfileProvider provider, IFactory<IFixture, IConventionRegistrationService> factory )
 		{
 			this.provider = provider;
 			this.factory = factory;

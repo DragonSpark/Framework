@@ -8,11 +8,11 @@ namespace DragonSpark.Setup
 {
 	public class ConventionRegistrationProfileProvider : IConventionRegistrationProfileProvider
 	{
-		readonly IAssemblyProvider locator;
+		readonly IAssemblyProvider provider;
 
-		public ConventionRegistrationProfileProvider( IAssemblyProvider locator )
+		public ConventionRegistrationProfileProvider( IAssemblyProvider provider )
 		{
-			this.locator = locator;
+			this.provider = provider;
 		}
 
 		public ConventionRegistrationProfile Retrieve()
@@ -27,7 +27,7 @@ namespace DragonSpark.Setup
 
 		protected virtual Assembly[] DetermineAssemblies()
 		{
-			var assemblies = locator.GetAssemblies().ToArray();
+			var assemblies = provider.GetAssemblies().ToArray();
 			var result = assemblies
 				.OrderBy( x => x.FromMetadata<RegistrationAttribute, Priority>( z => z.Priority, () => Priority.Normal ) ).ToArray();
 			return result;

@@ -1,45 +1,44 @@
 ﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Windows.Runtime;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.ObjectBuilder;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using Ploeh.AutoFixture.Xunit2;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocator : Activation.IoC.ServiceLocator
+	public class ServiceLocatorFactory : FactoryBase<IFixture, IServiceLocator>
 	{
-		public ServiceLocator() : this( FixtureContext.GetCurrent().GetLogger() )
-		{}
+		public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
 
-		public ServiceLocator( IRecordingLogger logger ) : base( logger )
+		protected override IServiceLocator CreateFrom( Type resultType, IFixture parameter )
 		{
-			Container.RegisterInstance( logger );
-			Container.EnsureExtension<FixtureExtension>();
+			var container = new UnityContainer().RegisterInstance( parameter );
+			var logger = parameter.GetLogger().With( rl => container.RegisterInstance( rl ) ) ?? container.EnsureExtension<IoCExtension>().Logger;
+			container.RegisterInstance( logger );
+			var result = new ServiceLocator( container );
+			return result;
 		}
 	}
 
-
-	public class ServiceLocationCustomization : ICustomization
+	public class ServiceLocatorCustomization : ICustomization
 	{
 		readonly ISpecimenBuilder builder;
 
-		public ServiceLocationCustomization() : this( new ServiceLocator() )
+		public ServiceLocatorCustomization() : this( ServiceLocatorFactory.Instance.Create( FixtureContext.GetCurrent() ) )
 		{}
 
-		public ServiceLocationCustomization( IServiceLocator locator ) : this( locator, new ServiceLocationRelay( locator ) )
+		public ServiceLocatorCustomization( IServiceLocator locator ) : this( locator, new ServiceLocationRelay( locator ) )
 		{}
 
-		public ServiceLocationCustomization( IServiceLocator locator, ISpecimenBuilder builder )
+		public ServiceLocatorCustomization( IServiceLocator locator, ISpecimenBuilder builder )
 		{
 			Locator = locator;
 			this.builder = builder;
@@ -47,9 +46,7 @@ namespace DragonSpark.Testing.Framework
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.GetCustomizations().Add( this );
-
-			Locator.Register( fixture );
+			fixture.GetItems().Add( this );
 			fixture.ResidueCollectors.Add( builder );
 		}
 
@@ -59,15 +56,20 @@ namespace DragonSpark.Testing.Framework
 	public class CanLocateSpecification : IRequestSpecification
 	{
 		readonly IServiceLocator locator;
+		readonly Type[] passThrough;
 
-		public CanLocateSpecification( IServiceLocator locator )
+		public CanLocateSpecification( IServiceLocator locator ) : this( locator, typeof(ILogger), typeof(IActivator) )
+		{}
+
+		public CanLocateSpecification( IServiceLocator locator, params Type[] passThrough )
 		{
 			this.locator = locator;
+			this.passThrough = passThrough;
 		}
 
 		public bool IsSatisfiedBy( object request )
 		{
-			var result = request.AsTo<Type, bool>( type => locator.GetInstance<IActivator>().Transform( activator => activator.CanActivate( type ) ) );
+			var result = request.AsTo<Type, bool>( type => !passThrough.Contains( type ) && locator.GetInstance<IActivator>().Transform( activator => activator.CanActivate( type ) ) );
 			return result;
 		}
 	}
@@ -97,7 +99,7 @@ namespace DragonSpark.Testing.Framework
 		}
 	}*/
 
-	class LocationActivator : IActivator
+	/*class LocationActivator : IActivator
 	{
 		readonly IActivator activator;
 		readonly Type[] passthrough;
@@ -139,27 +141,6 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	public class ServiceLocationRelay : ISpecimenBuilder
-	{
-		readonly IServiceLocator locator;
-		readonly IRequestSpecification specification;
-
-		public ServiceLocationRelay( IServiceLocator locator ) : this( locator, new CanLocateSpecification( locator ) )
-		{}
-
-		public ServiceLocationRelay( IServiceLocator locator, IRequestSpecification specification )
-		{
-			this.locator = locator;
-			this.specification = specification;
-		}
-
-		public object Create( object request, ISpecimenContext context )
-		{
-			var result = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : new NoSpecimen( request );
-			return result;
-		}
-	}
-
 	public class FixtureExtension : UnityContainerExtension
 	{
 		public class FixtureStrategy : BuilderStrategy
@@ -181,6 +162,27 @@ namespace DragonSpark.Testing.Framework
 			var activator = new LocationActivator( Container.Resolve<IActivator>(), typeof(ILogger), typeof(IActivator) );
 			Container.RegisterInstance<IActivator>( activator );
 			Context.Strategies.AddNew<FixtureStrategy>( UnityBuildStage.Creation );
+		}
+	}*/
+
+	public class ServiceLocationRelay : ISpecimenBuilder
+	{
+		readonly IServiceLocator locator;
+		readonly IRequestSpecification specification;
+
+		public ServiceLocationRelay( IServiceLocator locator ) : this( locator, new CanLocateSpecification( locator ) )
+		{}
+
+		public ServiceLocationRelay( IServiceLocator locator, IRequestSpecification specification )
+		{
+			this.locator = locator;
+			this.specification = specification;
+		}
+
+		public object Create( object request, ISpecimenContext context )
+		{
+			var result = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : new NoSpecimen( request );
+			return result;
 		}
 	}
 
@@ -235,6 +237,37 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
+	public class RegisteredAttribute : CustomizeAttribute
+	{
+		class Customization : ICustomization
+		{
+			readonly Type serviceLocationType;
+			readonly Type registrationType;
+
+			public Customization( Type serviceLocationType, Type registrationType )
+			{
+				this.serviceLocationType = serviceLocationType;
+				this.registrationType = registrationType;
+			}
+
+			public void Customize( IFixture fixture )
+			{
+				fixture.TryCreate<IServiceLocator>( serviceLocationType ).With( locator =>
+				{
+					fixture.TryCreate<object>( registrationType ).With( o => locator.Register( registrationType, o ) );
+				} );
+			}
+		}
+
+		public override ICustomization GetCustomization( ParameterInfo parameter )
+		{
+			var serviceLocatorType = parameter.Member.AsTo<MethodInfo, Type>( x => x.GetParameters().Select( info => info.ParameterType ).FirstOrDefault( typeof(IServiceLocator).IsAssignableFrom ) ) ?? typeof(IServiceLocator);
+
+			var result = new Customization( serviceLocatorType, parameter.ParameterType );
+			return result;
+		}
+	}
+
 	public class AssignAttribute : CustomizeAttribute
 	{
 		class Customization : ICustomization
@@ -248,9 +281,11 @@ namespace DragonSpark.Testing.Framework
 
 			public void Customize( IFixture fixture )
 			{
-				var locator = (IServiceLocator)new SpecimenContext(fixture).Resolve(type);
-				var location = fixture.Create<IServiceLocation>();
-				location.Assign( locator );
+				fixture.TryCreate<IServiceLocator>( type ).With( locator =>
+				{
+					var location = fixture.Create<IServiceLocation>();
+					location.Assign( locator );
+				});
 			}
 		}
 
@@ -260,13 +295,6 @@ namespace DragonSpark.Testing.Framework
 			return result;
 		}
 	}
-
-	/*public class DefaultAssignLocationAttribute : AssignLocationCustomization
-	{
-		public DefaultAssignLocationAttribute() : base( Activation.ServiceLocation.Instance )
-		{}
-	}*/
-
 
 	/*class FixtureRegistry : IServiceRegistry
 	{

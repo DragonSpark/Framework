@@ -240,7 +240,6 @@
     <Compile Include="Diagnostics\ApplicationExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Extensions\AttributeProviderExtensions.cs" />
     <Compile Include="Extensions\BooleanExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -255,6 +254,7 @@
     <Compile Include="Runtime\IAmbientKey.cs" />
     <Compile Include="Runtime\IAmbientRequest.cs" />
     <Compile Include="Runtime\IAmbientValueRepository.cs" />
+    <Compile Include="Runtime\IApplicationAssemblyLocator.cs" />
     <Compile Include="Runtime\ICurrentTime.cs" />
     <Compile Include="Runtime\ISpecification.cs" />
     <Compile Include="Runtime\IValue.cs" />

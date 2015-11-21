@@ -165,7 +165,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\AssemblyProvider.cs" />
+    <Compile Include="Runtime\FileSystemAssemblyProvider.cs" />
     <Compile Include="Runtime\CurrentDomainAssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalog.cs" />
@@ -227,7 +227,7 @@
     <Compile Include="Markup\PropertySetter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\FilteredAssemblyProvider.cs" />
+    <Compile Include="Runtime\AssemblyProvider.cs" />
     <Compile Include="Runtime\BindingOptions.cs">
       <SubType>Code</SubType>
     </Compile>

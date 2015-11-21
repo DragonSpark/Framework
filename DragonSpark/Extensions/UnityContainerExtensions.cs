@@ -5,17 +5,21 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Extensions
 {
 	public static class BuilderContextExtensions
 	{
+		public static bool IsRegistered( this IBuilderContext @this, NamedTypeBuildKey key )
+		{
+			var policy = @this.Policies.GetNoDefault<IBuildKeyMappingPolicy>( key, false );
+			var result = policy != null;
+			return result;
+		}
+
 		public static bool IsRegistered<T>( this IBuilderContext @this )
 		{
-			IPolicyList list;
-			var policy = @this.Policies.Get<IBuildKeyMappingPolicy>( new NamedTypeBuildKey<T>(), out list );
-			var result = policy != null;
+			var result = @this.IsRegistered( new NamedTypeBuildKey( typeof(T) ) );
 			return result;
 		}
 	}
@@ -35,26 +39,18 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		/*public static TResult With<TResult>( this IUnityContainer @this, Action<TResult> action )
+		public static object ResolveWithContext( this IUnityContainer @this, Type serviceType, string key )
 		{
-			var result = @this.IsResolvable( typeof(TResult) ) ? @this.Resolve<TResult>().With( action ) : default(TResult);
+			var result = @this.EnsureExtension<IoCExtension>().Resolve( serviceType, key );
 			return result;
-		}*/
+		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
 		public static T TryResolve<T>(this IUnityContainer container)
 		{
 			var result = TryResolve( container, typeof(T) ) ?? default(T);
 			return (T)result;
 		}
 
-		/// <summary>
-		/// Utility method to try to resolve a service from the container avoiding an exception if the container cannot build the type.
-		/// </summary>
-		/// <param name="container">The cointainer that will be used to resolve the type.</param>
-		/// <param name="typeToResolve">The type to resolve.</param>
-		/// <returns>The instance of <paramref name="typeToResolve"/> built up by the container.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		public static object TryResolve(this IUnityContainer container, Type typeToResolve)
 		{
 			try
@@ -67,9 +63,27 @@ namespace DragonSpark.Extensions
 			}
 		}
 
+		public static bool IsResolvable<T>( this IUnityContainer container, string name = null )
+		{
+			var result = IsResolvable( container, typeof(T), name );
+			return result;
+		}
+
+		public static bool IsResolvable( this IUnityContainer container, Type type, string name = null )
+		{
+			var result = container.EnsureExtension<IoCExtension>().CanResolve( type, name );
+			return result;
+		}
+
 		public static IUnityContainer EnsureRegistered<TInterface, TImplementation>( this IUnityContainer @this, LifetimeManager manager = null ) where TImplementation : TInterface
 		{
-			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterType<TInterface, TImplementation>( manager ?? new ContainerControlledLifetimeManager() ) );
+			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterType<TInterface, TImplementation>( manager ?? new TransientLifetimeManager() ) );
+			return @this;
+		}
+
+		public static IUnityContainer EnsureRegistered<TInterface>( this IUnityContainer @this, Func<TInterface> instance, LifetimeManager manager = null )
+		{
+			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterInstance( instance() ) );
 			return @this;
 		}
 
@@ -154,14 +168,6 @@ namespace DragonSpark.Extensions
 			var result = container.IsRegistered( type, name );
 			return result;
 		}*/
-
-		public static bool IsResolvable( this IUnityContainer container, Type type, string name = null )
-		{
-			var info = type.GetTypeInfo();
-			var result = !info.IsInterface || container.IsRegistered( type, name );
-			return result;
-		}
-
 
 		/*static bool IsMapped( IUnityContainer container, Type type, string name )
 		{
@@ -249,7 +255,7 @@ namespace DragonSpark.Extensions
 
 		public static IUnityContainerExtensionConfigurator EnsureExtension( this IUnityContainer container, Type extensionType )
 		{
-			var extension = container.Configure( extensionType ) ?? container.AddExtension( container.Resolve<IActivator>().Activate<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
+			var extension = container.Configure( extensionType ) ?? container.AddExtension( container.Create<UnityContainerExtension>( extensionType ) ).Configure( extensionType );
 			var result = (IUnityContainerExtensionConfigurator)extension;
 			return result;
 		}

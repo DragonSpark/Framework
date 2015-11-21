@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Activation.IoC
 	public class ServiceLocatorTests
 	{
 		[Theory, Test, Framework.AutoData]
-		void GetInstance( [Frozen]ILogger logger, [Modest, Frozen]ServiceLocator sut )
+		void GetInstance( [Modest, Frozen]ServiceLocator sut, [Frozen, Registered]ILogger logger )
 		{
 			Assert.NotSame( Services.Location.Locator, sut );
 

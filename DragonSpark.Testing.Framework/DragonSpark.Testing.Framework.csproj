@@ -183,7 +183,7 @@
     <Compile Include="RegistrationAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ServiceLocationCustomization.cs" />
+    <Compile Include="ServiceLocatorCustomization.cs" />
     <Compile Include="TaskLocalValue.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Types.cs" />

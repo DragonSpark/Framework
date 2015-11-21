@@ -1,4 +1,5 @@
-﻿using DragonSpark.Extensions;
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -10,8 +11,33 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class DefaultUnityConstructorSelectorPolicy : Microsoft.Practices.Unity.ObjectBuilder.DefaultUnityConstructorSelectorPolicy
+	{
+		protected override IDependencyResolverPolicy CreateResolver( ParameterInfo parameter )
+		{
+			var isOptional = parameter.IsOptional && !parameter.IsDefined( typeof(OptionalDependencyAttribute) );
+			var dependencyResolverPolicy = base.CreateResolver( parameter );
+			var result = isOptional ? parameter.ParameterType.GetTypeInfo().IsValueType || parameter.ParameterType == typeof(string) ? (IDependencyResolverPolicy)new LiteralValueDependencyResolverPolicy( parameter.DefaultValue ) : new OptionalDependencyResolverPolicy( parameter.ParameterType ) : dependencyResolverPolicy;
+			return result;
+		}
+	}
+
+	/*public class SingletonStrategy : BuilderStrategy
+	{
+		public override void PreBuildUp( IBuilderContext context )
+		{
+			if ( !context.BuildComplete && context.Existing == null && context.BuildKey.Type.GetTypeInfo().IsInterface && !context.IsRegistered( context.BuildKey ) )
+			{
+				var locator = context.IsRegistered<ISingletonLocator>() ? context.NewBuildUp<ISingletonLocator>() : SingletonLocator.Instance;
+				context.Existing = locator.Locate( context.BuildKey.Type );
+				context.BuildComplete = context.Existing != null;
+			}
+		}
+	}*/
+
 	public class IoCExtension : UnityContainerExtension
 	{
+		public ILogger Logger { get; } = new RecordingLogger();
 		// readonly ConditionMonitor initialize = new ConditionMonitor();
 		/*internal IList<IDisposable> Disposables
 		{
@@ -27,7 +53,10 @@ namespace DragonSpark.Activation.IoC
 
 		protected override void Initialize()
 		{
-			Context.Container.EnsureRegistered<IActivator, Activator>();
+			Context.Container.EnsureRegistered<IActivator>( () => new CompositeActivator( new Activator( Container ), SystemActivator.Instance ) );
+
+			/*Container.EnsureRegistered<ILogger, DebugLogger>();
+			Container.EnsureRegistered<IExceptionFormatter, ExceptionFormatter>();*/
 
 			// CurrentBuildKeyStrategy = new CurrentBuildKeyStrategy();
 
@@ -38,6 +67,7 @@ namespace DragonSpark.Activation.IoC
 
 			// Context.Strategies.AddNew<ApplicationConfigurationStrategy>( UnityBuildStage.PreCreation );
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.PreCreation );
+			/*Context.Strategies.AddNew<SingletonStrategy>( UnityBuildStage.PreCreation );*/
 			Context.Strategies.AddNew<DefaultValueStrategy>( UnityBuildStage.Initialization );
 			
 			// Context.Strategies.AddNew<ApplyBehaviorStrategy>( UnityBuildStage.Initialization );
@@ -104,25 +134,6 @@ namespace DragonSpark.Activation.IoC
 
 		public object Create( Type type, object[] parameters )
 		{
-			/*var values = parameters.NotNull().Select( x => 
-			{
-				/*var parameterValue = x.As<TypedInjectionValue>();
-				if ( parameterValue != null )
-				{
-					var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
-					Creator.RegisterInstance( parameterValue.ParameterType, instance );
-					return instance;
-				}#1#
-				x.GetType().GetAllInterfaces().Union( x.GetType().GetHierarchy( false ) ).Distinct().Apply( y => Creator.RegisterInstance( y, x ) );
-				return x;
-			} ).ToArray();
-
-			var result = Creator.Resolve( type );
-			var lifetime = Creator.GetLifetimeContainer();
-			var entries = Creator.GetLifetimeEntries().Where( x => values.Contains( x.Value ) ).ToArray();
-			entries.Apply( x => lifetime.Remove( x.Key ) );
-			return result;*/
-
 			using ( var container = Context.Container.CreateChildContainer() )
 			{
 				using ( new CreationContext( container, parameters ) )
@@ -195,5 +206,73 @@ namespace DragonSpark.Activation.IoC
 				/* Context.Container.AddExtension( ConfigurationExtension.Extension ) #1#
 			} );
 		}*/
+
+		readonly IList<NamedTypeBuildKey> resolvable = new List<NamedTypeBuildKey>();
+
+		bool CheckInstance( NamedTypeBuildKey key )
+		{
+			var result = Context.Policies.Get<ILifetimePolicy>( key ).Transform( policy => policy.GetValue() ) != null;
+			return result;
+		}
+
+		bool CheckRegistered( NamedTypeBuildKey key )
+		{
+			var result = Container.IsRegistered( key.Type, key.Name ) && GetConstructor( key ) != null;
+			return result;
+		}
+
+		ConstructorInfo GetConstructor( NamedTypeBuildKey key )
+		{
+			var mapped = Context.Policies.Get<IBuildKeyMappingPolicy>( key ).Transform( policy => policy.Map( key, null ) ) ?? key;
+			return Context.Policies.Get<IConstructorSelectorPolicy>( mapped ).Transform( policy =>
+			{
+				var context = new BuilderContext( Context.BuildPlanStrategies.MakeStrategyChain(), Context.Lifetime, Context.Policies, mapped, null );
+				var constructor = policy.SelectConstructor( context, Context.Policies );
+				var result = constructor.Transform( selected => selected.Constructor ); 
+				return result;
+			} );
+		}
+
+		bool IsRegistered( NamedTypeBuildKey key )
+		{
+			var result = CheckInstance( key ) || CheckRegistered( key );
+			return result;
+		}
+
+		bool Validate( NamedTypeBuildKey key )
+		{
+			var result = CheckInstance( key ) || GetConstructor( key ).Transform( Validate );
+			result.IsTrue( () => resolvable.Add( key ) );
+			return result;
+		}
+
+		bool Validate( ConstructorInfo constructor )
+		{
+			var result = constructor
+				.GetParameters()
+				.Select( parameterInfo => new NamedTypeBuildKey( parameterInfo.ParameterType ) )
+				.All( IsRegistered );
+			return result;
+		}
+
+		public bool CanResolve( Type type, string name )
+		{
+			var key = new NamedTypeBuildKey( type, name );
+			var result = resolvable.Contains( key ) || Validate( key );
+			return result;
+		}
+
+		public object Resolve( Type serviceType, string key )
+		{
+			var context = Container.IsResolvable<ContainerResolutionContext>() ? Container.Resolve<ContainerResolutionContext>() : new ContainerResolutionContext( Container, DetermineLogger() );
+			var result = context.Resolve( serviceType, key );
+			return result;
+		}
+
+		ILogger DetermineLogger()
+		{
+			var result = Container.IsRegistered<ILogger>() ? Container.Resolve<ILogger>() : Logger;
+			return result;
+		}
 	}
 }

@@ -8,7 +8,7 @@ namespace DragonSpark.Windows.Setup
 {
 	public class SetupRegistrationByConventionCommand : DragonSpark.Setup.SetupRegistrationByConventionCommand
 	{
-		[ComponentModel.Singleton( typeof(FilteredAssemblyProvider) )]
+		[ComponentModel.Singleton( typeof(AssemblyProvider) )]
 		public IAssemblyProvider AssemblyLocator { get; set; }
 
 		[ComponentModel.Singleton( typeof(SingletonLocator) )]

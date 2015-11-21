@@ -1,21 +1,30 @@
-using System;
-using System.IO;
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
+using System;
+using System.IO;
 
 namespace DragonSpark.Windows.Runtime
 {
 	public class EnterpriseLibraryExceptionFormatter : IExceptionFormatter
 	{
-		public string FormatMessage( Exception exception, Guid? contextId = null )
+		public static EnterpriseLibraryExceptionFormatter Instance { get; } = new EnterpriseLibraryExceptionFormatter();
+
+		readonly Guid? context;
+
+		public EnterpriseLibraryExceptionFormatter() : this( null )
+		{}
+
+		public EnterpriseLibraryExceptionFormatter( Guid? context )
+		{
+			this.context = context;
+		}
+
+		public string FormatMessage( Exception exception )
 		{
 			var writer = new StringWriter();
-			new TextExceptionFormatter( writer, exception, contextId.GetValueOrDefault() ).Format();
+			var formatter = context.HasValue ? new TextExceptionFormatter( writer, exception, context.Value ) : new TextExceptionFormatter( writer, exception );
+			formatter.Format();
 			var result = writer.GetStringBuilder().ToString();
-
-			/*var listener = new ObservableEventListener();
-			listener.LogToConsole()*/
-
 			return result;
 		}
 	}

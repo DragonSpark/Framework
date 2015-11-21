@@ -3,10 +3,15 @@ using System;
 
 namespace DragonSpark.Activation
 {
+	public interface IFactory<in TParameter, out TResult>
+	{
+		TResult Create( TParameter parameter );
+	}
+
 	public abstract class FactoryBase<TResult> : FactoryBase<object, TResult> where TResult : class
 	{}
 
-	public abstract class FactoryBase<TParameter, TResult> : IFactory where TResult : class
+	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult>, IFactory where TResult : class
 	{
 		protected virtual Type ResultType => typeof(TResult);
 

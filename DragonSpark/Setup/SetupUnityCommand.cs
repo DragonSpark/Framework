@@ -49,7 +49,7 @@ namespace DragonSpark.Setup
 		protected virtual IServiceLocator CreateServiceLocator( SetupContext context )
 		{
 			var container = NewContainer();
-			var result = new Activation.IoC.ServiceLocator( container, context.Logger );
+			var result = new Activation.IoC.ServiceLocator( container );
 			return result;
 		}
 
@@ -91,7 +91,7 @@ namespace DragonSpark.Setup
 		/// </summary>
 		protected virtual void ConfigureServiceLocator( SetupContext context )
 		{
-			if ( !Services.Location.IsAvailable() )
+			if ( !Services.Location.IsAvailable )
 			{
 				context.Container()
 					.TryResolve<IServiceLocator>()

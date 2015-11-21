@@ -18,9 +18,25 @@ namespace DragonSpark.Setup
 
 		public object Locate( Type type )
 		{
-			var property = type.GetTypeInfo().DeclaredProperties.FirstOrDefault( info => /*info.PropertyType == type &&*/ info.GetMethod.IsStatic && ( info.Name == this.property || info.IsDecoratedWith<SingletonAttribute>() ) );
+			var typeInfo = type.GetTypeInfo();
+			var mapped = typeInfo.IsInterface ? DetermineType( typeInfo ) : typeInfo;
+			var property = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && ( info.Name == this.property || info.IsDecoratedWith<SingletonAttribute>() ) );
 			var result = property.Transform( info => info.GetValue( null ) );
 			return result;
+		}
+
+		static TypeInfo DetermineType( TypeInfo type )
+		{
+			try
+			{
+				var name = string.Concat( type.Namespace, ".asdf", type.Name.Substring(1) );
+				var result = type.Assembly.GetType( name ).GetTypeInfo();
+				return result;
+			}
+			catch ( Exception e )
+			{
+				return null;
+			}
 		}
 	}
 }

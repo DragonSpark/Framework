@@ -1,6 +1,4 @@
-using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
@@ -9,12 +7,10 @@ namespace DragonSpark.Activation.IoC
 {
 	public class CompositeActivator : IActivator
 	{
-		readonly ILogger logger;
 		readonly IActivator[] activators;
 
-		public CompositeActivator( ILogger logger, params IActivator[] activators )
+		public CompositeActivator( params IActivator[] activators )
 		{
-			this.logger = logger;
 			this.activators = activators;
 		}
 
@@ -26,35 +22,14 @@ namespace DragonSpark.Activation.IoC
 
 		public object Activate( Type type, string name = null )
 		{
-			var result = activators.Select( activator => Determine( () => activator.Activate( type, name ), type, name ) ).NotNull().FirstOrDefault();
+			var result = activators.Select( activator => activator.Activate( type, name ) ).NotNull().FirstOrDefault();
 			return result;
 		}
 
 		public object Construct( Type type, params object[] parameters )
 		{
-			var result = activators.Select( activator => Determine( () => activator.Construct( type, parameters ), type ) ).NotNull().FirstOrDefault();
+			var result = activators.Select( activator => activator.Construct( type, parameters ) ).NotNull().FirstOrDefault();
 			return result;
-		}
-
-		object Determine<TResult>( Func<TResult> method, Type type, string name = null )
-		{
-			try
-			{
-				var result = method();
-				return result;
-			}
-			catch ( Exception e )
-			{
-				if ( ExceptionExtensions.IsFrameworkExceptionRegistered( e.GetType() ) )
-				{
-					logger.Warning( string.Format( Resources.Activator_CouldNotActivate, type, name ?? Resources.Activator_None, e.GetMessage() ) );
-				}
-				else
-				{
-					throw;
-				}
-			}
-			return null;
 		}
 	}
 
@@ -75,7 +50,7 @@ namespace DragonSpark.Activation.IoC
 
 		public object Activate( Type type, string name = null )
 		{
-			var result = container.Resolve( type, name );
+			var result = container.ResolveWithContext( type, name );
 			return result;
 		}
 

@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( new ServiceLocator( new RecordingLogger() ) );
+			sut.Assign( new ServiceLocator() );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );
@@ -149,7 +149,7 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Framework.AutoData( typeof(AutoConfiguredMoqCustomization) )]
 		public void Register( ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
-			location.Assign( new ServiceLocator( new RecordingLogger() ) );
+			location.Assign( new ServiceLocator() );
 
 			location.Register( typeof(IServiceRegistry), sut.Object );
 

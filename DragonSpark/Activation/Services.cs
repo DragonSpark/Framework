@@ -12,26 +12,26 @@ namespace DragonSpark.Activation
 
 	public static class ServiceLocatorExtensions
 	{
-		public static bool IsAvailable( this IServiceLocation @this )
+		/*public static bool IsAvailable( this IServiceLocation @this )
 		{
 			var result = @this.Transform( x => x.IsAvailable );
 			return result;
-		}
+		}*/
 
 		public static void With<TService>( this IServiceLocation @this, Action<TService> action )
 		{
-			@this.IsAvailable().IsTrue( () => @this.Locate<TService>().With( action ) );
+			@this.IsAvailable.IsTrue( () => @this.Locate<TService>().With( action ) );
 		}
 
 		public static TResult With<TService, TResult>( this IServiceLocation @this, Func<TService, TResult> action )
 		{
-			var result = @this.IsAvailable() ? @this.Locate<TService>().Transform( action ) : default(TResult);
+			var result = @this.IsAvailable ? @this.Locate<TService>().Transform( action ) : default(TResult);
 			return result;
 		}
 
 		public static TService Locate<TService>( this IServiceLocation @this, string name = null )
 		{
-			var result = @this.IsAvailable() ? @this.Locator.TryGetInstance<TService>( name ) : default(TService);
+			var result = @this.IsAvailable ? @this.Locator.GetInstance<TService>( name ) : default(TService);
 			return result;
 		}
 
@@ -110,7 +110,7 @@ namespace DragonSpark.Activation
 
 		public IAmbientKey Locate( IServiceLocator context )
 		{
-			var result = context.TryGetInstance<IAmbientKey>();
+			var result = context.GetInstance<IAmbientKey>();
 			return result;
 		}
 	}
