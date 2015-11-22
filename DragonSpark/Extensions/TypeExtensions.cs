@@ -4,26 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
 	public class DefaultValueFactory : FactoryBase<Type, object>
 	{
-		readonly IActivator activator;
 		static readonly IDictionary<Type,object> Cache = new Dictionary<Type, object>();
 
-		public DefaultValueFactory() : this( SystemActivator.Instance )
-		{}
-
-		public DefaultValueFactory( IActivator activator )
-		{
-			this.activator = activator;
-		}
+		public static DefaultValueFactory Instance { get; } = new DefaultValueFactory();
 
 		protected override object CreateFrom( Type resultType, Type parameter )
 		{
-			var result = Cache.Ensure( parameter, x => x.GetTypeInfo().IsValueType ? activator.Activate( x ) : null );
+			var result = Cache.Ensure( parameter, x => x.GetTypeInfo().IsValueType ? SystemActivator.Instance.Activate( x ) : null );
 			return result;
 		}
 	}
@@ -32,7 +24,7 @@ namespace DragonSpark.Extensions
 	{
 		public static object GetDefaultValue( this Type @this )
 		{
-			var result = Activator.Current.Activate<DefaultValueFactory>().Create( @this );
+			var result = DefaultValueFactory.Instance.Create( @this );
 			return result;
 		}
 

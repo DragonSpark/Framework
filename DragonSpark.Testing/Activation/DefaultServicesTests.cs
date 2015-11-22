@@ -109,43 +109,6 @@ namespace DragonSpark.Testing.Activation
 			Assert.True( item );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
-		void Dispose( [Greedy, Frozen, Assign] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
-		{
-			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
-
-			Assert.Same( sut, Services.Location.Locator );
-
-			var child = sut.Container.CreateChildContainer();
-			child.Registrations.First( x => x.RegisteredType == typeof(IUnityContainer) ).LifetimeManager.RemoveValue();
-
-			Assert.Equal( sut.Container, child.Resolve<IUnityContainer>() );
-
-			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
-			Assert.NotNull( item );
-
-			var disposable = new Disposable();
-			
-			sut.Register( disposable );
-
-			Assert.Equal( 1, extension.Children.Count );
-
-			Assert.False( disposable.Disposed );
-			
-			Assert.True( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet );
-
-			sut.Dispose();
-
-			var temp = Dynamic.InvokeGet( child, "lifetimeContainer" );
-			Assert.Null( temp );
-
-			Assert.Equal( 0, extension.Children.Count );
-
-			Assert.False( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet );
-
-			Assert.True( disposable.Disposed );
-		}
-
 		[Theory, Framework.AutoData( typeof(AutoConfiguredMoqCustomization) )]
 		public void Register( ServiceLocation location, Mock<IServiceRegistry> sut )
 		{

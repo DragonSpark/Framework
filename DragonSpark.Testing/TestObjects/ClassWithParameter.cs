@@ -27,12 +27,14 @@ namespace DragonSpark.Testing.TestObjects
 			{
 				case 0:
 					AmbientValues.RegisterFor( 1, GetType() );
-					throw new ResolutionFailedException( GetType(), null, new InvalidOperationException( message ), null );
+					throw new InvalidOperationException( message );
 				default:
+					Message = message;
 					AmbientValues.Remove( GetType() );
 					break;
 			}
 		}
+		public string Message { get; private set; }
 	}
 
 	class ClassWithManyParameters

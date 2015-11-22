@@ -1,5 +1,8 @@
 using DragonSpark.Extensions;
 using System;
+using System.Linq;
+using System.Reflection;
+using Microsoft.Practices.Unity.Utility;
 
 namespace DragonSpark.Activation
 {
@@ -9,13 +12,20 @@ namespace DragonSpark.Activation
 
 		public bool CanActivate( Type type, string name )
 		{
-			var result = type.CanActivate();
+			var result = CanConstruct( type );
 			return result;
 		}
 
 		public object Activate( Type type, string name = null )
 		{
-			var result = System.Activator.CreateInstance( type ).WithDefaults();
+			var result = Construct( type );
+			return result;
+		}
+
+		public bool CanConstruct( Type type, params object[] parameters )
+		{
+			var info = type.GetTypeInfo();
+			var result = info.IsValueType || ( !info.IsInterface && parameters.NotNull().Select( o => o.GetType() ).ToArray().Transform( types => info.DeclaredConstructors.Any( c => !c.IsStatic && TypeReflectionExtensions.ParametersMatch( c.GetParameters(), types ) )  ) );
 			return result;
 		}
 

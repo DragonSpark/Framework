@@ -1,6 +1,5 @@
 using DragonSpark.Activation;
 using System;
-using System.Linq;
 
 namespace DragonSpark.Testing.TestObjects
 {
@@ -15,6 +14,11 @@ namespace DragonSpark.Testing.TestObjects
 		{
 			object result = type == typeof(Object) ? new Object { Name = name ?? "DefaultActivation" } : null;
 			return result;
+		}
+
+		public bool CanConstruct( Type type, params object[] parameters )
+		{
+			return true;
 		}
 
 		public object Construct( Type type, params object[] parameters )

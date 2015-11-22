@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Activator = DragonSpark.Activation.IoC.Activator;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation.IoC
@@ -19,15 +17,15 @@ namespace DragonSpark.Testing.Activation.IoC
 	public class ServiceLocatorTests
 	{
 		[Theory, Test, Framework.AutoData]
-		void GetInstance( [Modest, Frozen]ServiceLocator sut, [Frozen, Registered]ILogger logger )
+		void GetInstance( [Modest, Frozen]ServiceLocator sut, [Frozen, Registered, SkipLocation]ILogger logger )
 		{
 			Assert.NotSame( Services.Location.Locator, sut );
+			Assert.Same( sut.Get<ILogger>(), logger );
 
 			var before = sut.GetInstance<IInterface>();
 			Assert.Null( before );
 
 			var mock = Mock.Get( logger );
-
 			mock.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
 
 			sut.Register<IInterface, Class>();
@@ -38,11 +36,11 @@ namespace DragonSpark.Testing.Activation.IoC
 			var broken = sut.GetInstance<ClassWithBrokenConstructor>();
 			Assert.Null( broken );
 
-			mock.Verify( x => x.Warning( It.Is<string>( y => y.StartsWith( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".  Details: Microsoft.Practices.Unity.ResolutionFailedException: Resolution of the dependency failed, type = ""DragonSpark.Testing.TestObjects.ClassWithBrokenConstructor"", name = ""(none)""." ) ), Priority.High ) );
+			mock.Verify( x => x.Exception( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".", It.IsAny<ResolutionFailedException>() ) );
 		}
 
 		[Theory, Test, Framework.AutoData]
-		void GetAllInstances( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		void GetAllInstances( [Modest, Frozen] ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
 			sut.Register<IInterface, Derived>( "Second" );
@@ -63,28 +61,30 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, Test, Framework.AutoData]
-		void Container( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		void Container( [Modest, Frozen] ServiceLocator sut )
 		{
 			sut.Dispose();
 
 			Assert.Throws<ObjectDisposedException>( () => sut.Container );
 		}
 
-		[Register( typeof(IActivator), typeof(Activator))]
 		[Theory, Test, Framework.AutoData]
-		void Create( IActivator sut, ILogger logger, string message, int number, Class @item )
+		void Create( IActivator sut, string message, int number, Class @item )
 		{
-			Assert.IsType<Activator>( sut );
+			Assert.IsType<CompositeActivator>( sut );
 
 			var created = sut.Construct<ClassWithManyParameters>( number, message, item );
 			Assert.Equal( message, created.String );
 			Assert.Equal( number, created.Integer );
 			Assert.Equal( item, created.Class );
 
-			Assert.NotNull( sut.Construct<ClassCreatedFromDefault>( "Create from default" ) );
+			var systemMessage = "Create from system";
+			var systemCreated = sut.Construct<ClassCreatedFromDefault>( systemMessage );
+			Assert.NotNull( systemCreated );
+			Assert.Equal( systemMessage, systemCreated.Message );
 		}
 		
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		void Register( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -93,7 +93,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		void RegisterInstance( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -104,7 +104,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Equal( instance, container.Resolve<IInterface>() );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		void RegisterFactory( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -113,10 +113,10 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
-		void BuildUp( [Frozen( Matching.ImplementedInterfaces )]ServiceLocator sut )
+		[Theory, Test, Framework.AutoData]
+		void BuildUp( ServiceLocator sut )
 		{
-			sut.Register<IDefaultValueProvider, DefaultValueProvider>();
+			// sut.Register<IDefaultValueProvider, DefaultValueProvider>();
 
 			var item = new ClassWithDefaultProperties();
 
@@ -125,6 +125,44 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.True( item.BuildUpOnce() );
 			Assert.Equal( "Hello World", item.String );
 			Assert.False( item.BuildUpOnce() );
+		}
+
+
+		[Theory, Test, Framework.AutoData]
+		void Dispose( [Greedy, Frozen, Assign] ServiceLocator sut )
+		{
+			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
+
+			Assert.Same( sut, Services.Location.Locator );
+
+			/*var child = sut.Container.CreateChildContainer();
+			child.Registrations.First( x => x.RegisteredType == typeof(IUnityContainer) ).LifetimeManager.RemoveValue();
+
+			Assert.Equal( sut.Container, child.Resolve<IUnityContainer>() );*/
+
+			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
+			Assert.NotNull( item );
+
+			var disposable = new Disposable();
+			
+			sut.Register( disposable );
+
+			// Assert.Equal( 1, extension.Children.Count );
+
+			Assert.False( disposable.Disposed );
+			
+			Assert.Same( Services.Location.Locator, sut );
+
+			sut.Dispose();
+
+			/*var temp = Dynamic.InvokeGet( child, "lifetimeContainer" );
+			Assert.Null( temp );
+
+			Assert.Equal( 0, extension.Children.Count );*/
+
+			Assert.NotSame( Services.Location.Locator, sut );
+
+			Assert.True( disposable.Disposed );
 		}
 	}
 }

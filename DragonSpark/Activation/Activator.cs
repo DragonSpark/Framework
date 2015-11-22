@@ -28,7 +28,7 @@ namespace DragonSpark.Activation
 
 		public static TResult Construct<TResult>( this IActivator @this, params object[] parameters )
 		{
-			var result = @this.CanActivate( typeof(TResult) ) ? (TResult)@this.Construct( typeof(TResult), parameters ) : default(TResult);
+			var result = @this.CanConstruct( typeof(TResult), parameters ) ? (TResult)@this.Construct( typeof(TResult), parameters ) : default(TResult);
 			return result;
 		}
 

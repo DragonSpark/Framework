@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Framework
 		protected override IServiceLocator CreateFrom( Type resultType, IFixture parameter )
 		{
 			var container = new UnityContainer().RegisterInstance( parameter );
-			var logger = parameter.GetLogger().With( rl => container.RegisterInstance( rl ) ) ?? container.EnsureExtension<IoCExtension>().Logger;
+			var logger = parameter.GetLogger().With( rl => container.RegisterInstance( rl ) ) ?? container.Extension<IoCExtension>().Logger;
 			container.RegisterInstance( logger );
 			var result = new ServiceLocator( container );
 			return result;
@@ -46,19 +46,31 @@ namespace DragonSpark.Testing.Framework
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.GetItems().Add( this );
+			var items = fixture.GetItems();
+			items.Add( this );
 			fixture.ResidueCollectors.Add( builder );
+
+			items.OfType<OutputCustomization>().SingleOrDefault().With( customization =>
+			{
+				customization.Register( Locator.GetInstance<IRecordingLogger> );
+				customization.Register( () => Locator.GetInstance<ILogger>() as IRecordingLogger );
+				customization.Register( () => Locator.GetInstance<IUnityContainer>().Transform( container => container.Extension<IoCExtension>().Logger ) as IRecordingLogger );
+			} );
 		}
 
 		public IServiceLocator Locator { get; }
 	}
+
+	[AttributeUsage( AttributeTargets.Parameter )]
+	public class SkipLocationAttribute : Attribute
+	{ }
 
 	public class CanLocateSpecification : IRequestSpecification
 	{
 		readonly IServiceLocator locator;
 		readonly Type[] passThrough;
 
-		public CanLocateSpecification( IServiceLocator locator ) : this( locator, typeof(ILogger), typeof(IActivator) )
+		public CanLocateSpecification( IServiceLocator locator ) : this( locator, FixtureContext.GetCurrent().GetCurrentMethod().GetParameters().Where( info => info.IsDefined( typeof(SkipLocationAttribute) ) ).Select( info => info.ParameterType ).ToArray() )
 		{}
 
 		public CanLocateSpecification( IServiceLocator locator, params Type[] passThrough )
@@ -139,9 +151,9 @@ namespace DragonSpark.Testing.Framework
 			var result = Execute( type, () => activator.Construct( type, parameters ) );
 			return result;
 		}
-	}
+	}*/
 
-	public class FixtureExtension : UnityContainerExtension
+	/*public class FixtureExtension : UnityContainerExtension
 	{
 		public class FixtureStrategy : BuilderStrategy
 		{
@@ -149,7 +161,7 @@ namespace DragonSpark.Testing.Framework
 			{
 				if ( !context.BuildComplete && context.Existing == null )
 				{
-					var fixture = context.NewBuildUp<IFixture>();
+					var fixture = context.NewBuildUp<IFixture>().Create();
 					context.Existing = fixture.TryCreate<object>( context.BuildKey.Type );
 					context.BuildComplete = context.Existing != null;
 				}
@@ -157,10 +169,25 @@ namespace DragonSpark.Testing.Framework
 			}
 		}
 
+		public class FixturePolicy : IBuildPlanPolicy
+		{
+			readonly IFixture fixture;
+
+			public FixturePolicy( IFixture fixture )
+			{
+				this.fixture = fixture;
+			}
+
+			public void BuildUp( IBuilderContext context )
+			{
+				context.
+			}
+		}
+
+		public void Apply(  )
+
 		protected override void Initialize()
 		{
-			var activator = new LocationActivator( Container.Resolve<IActivator>(), typeof(ILogger), typeof(IActivator) );
-			Container.RegisterInstance<IActivator>( activator );
 			Context.Strategies.AddNew<FixtureStrategy>( UnityBuildStage.Creation );
 		}
 	}*/

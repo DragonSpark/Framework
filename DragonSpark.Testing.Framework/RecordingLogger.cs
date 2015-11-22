@@ -101,6 +101,8 @@ namespace DragonSpark.Testing.Framework
 
 	public class OutputCustomization : ICustomization, IAfterTestAware
 	{
+		readonly IList<Func<IRecordingLogger>> loggers = new List<Func<IRecordingLogger>>();
+
 		public OutputCustomization() : this( new RecordingLogger() )
 		{}
 
@@ -115,19 +117,20 @@ namespace DragonSpark.Testing.Framework
 		{
 			fixture.GetItems().Add( this );
 			Logger.Information( "Logger initialized!" );
+			Register( () => Logger );
+			Register( fixture.TryCreate<IRecordingLogger> );
+		}
+
+		public void Register( Func<IRecordingLogger> resolve )
+		{
+			loggers.Add( resolve );
 		}
 
 		public void After( IFixture fixture, MethodInfo methodUnderTest )
 		{
 			AmbientValues.Get<ITestOutputHelper>( methodUnderTest.DeclaringType ).With( output =>
 			{
-				var lines = new[]
-				{
-					Logger,
-					fixture.TryCreate<IRecordingLogger>(),
-					fixture.GetLocator().Transform( location => location.GetInstance<IRecordingLogger>() )
-				}.NotNull().Distinct().SelectMany( aware => aware.Lines ).OrderBy( line => line.Time ).Select( line => line.Message ).ToArray();
-
+				var lines = loggers.Select( func => func() ).NotNull().Distinct().SelectMany( aware => aware.Lines ).OrderBy( line => line.Time ).Select( line => line.Message ).ToArray();
 				lines.Apply( output.WriteLine );
 			} );
 		}

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 	<data name="Activator_CouldNotActivate" xml:space="preserve">
-    <value>Could not resolve type "{0}" with build name "{1}".  Details: {2}</value>
+    <value>Could not resolve type "{0}" with build name "{1}".</value>
   </data>
 	<data name="Activator_None" xml:space="preserve">
     <value>&lt;None&gt;</value>

@@ -5,15 +5,16 @@ using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
+using DragonSpark.Activation.IoC;
 
 namespace DragonSpark.Setup
 {
 	public class UnityConventionRegistrationService : IConventionRegistrationService
 	{
-		public UnityConventionRegistrationService( IUnityContainer container ) : this( container, container.Resolve<IActivator>() )
+		public UnityConventionRegistrationService( IUnityContainer container ) : this( container, container.Resolve( container.Extension<IoCExtension>().CreateActivator ) )
 		{}
 
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator ) : this( container, activator, container.Resolve<ILogger>() )
+		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator ) : this( container, activator, container.Resolve( () => container.Extension<IoCExtension>().Logger ) )
 		{}
 
 		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger ) : this( container, activator, logger, SingletonLocator.Instance )

@@ -6,6 +6,7 @@ using DragonSpark.Windows.Runtime;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using System;
+using DragonSpark.Activation.IoC;
 using UnityConventionRegistrationService = DragonSpark.Windows.Setup.UnityConventionRegistrationService;
 
 namespace DragonSpark.Testing.Framework
@@ -17,7 +18,7 @@ namespace DragonSpark.Testing.Framework
 
 		protected override Func<object> GetFactory( IFixture fixture, IServiceRegistry registry )
 		{
-			Func<object> result = () => fixture.Create<IUnityContainer>().EnsureExtension( MappedTo );
+			Func<object> result = () => fixture.Create<IUnityContainer>().Extension( MappedTo );
 			return result;
 		}
 	}
@@ -100,7 +101,7 @@ namespace DragonSpark.Testing.Framework
 				return locator.Transform( x => x.GetInstance<IUnityContainer>(), parameter.TryCreate<IUnityContainer> ).Transform( container =>
 				{
 					var logger = parameter.GetLogger() ?? container.Resolve<ILogger>() ?? DebugLogger.Instance;
-					var activator = locator.GetInstance<IActivator>() ?? parameter.TryCreate<IActivator>() ?? new Activation.IoC.Activator( container );
+					var activator = locator.GetInstance<IActivator>() ?? parameter.TryCreate<IActivator>() ?? container.Extension<IoCExtension>().CreateActivator();
 					var result = new UnityConventionRegistrationService( container, activator, logger );
 					return result;
 				});

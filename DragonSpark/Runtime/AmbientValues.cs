@@ -17,7 +17,8 @@ namespace DragonSpark.Runtime
 
 		public static T Get<T>( object context )
 		{
-			var result = (T)Get( typeof(T), context );
+			var got = Get( typeof(T), context );
+			var result = got != null ? (T)got : default(T);
 			return result;
 		}
 

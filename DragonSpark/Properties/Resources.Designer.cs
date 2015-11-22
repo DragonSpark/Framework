@@ -62,7 +62,7 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not resolve type &quot;{0}&quot; with build name &quot;{1}&quot;.  Details: {2}.
+        ///   Looks up a localized string similar to Could not resolve type &quot;{0}&quot; with build name &quot;{1}&quot;..
         /// </summary>
         public static string Activator_CouldNotActivate {
             get {

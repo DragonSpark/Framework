@@ -30,6 +30,11 @@ namespace DragonSpark.Testing.ComponentModel
 				return result;
 			}
 
+			public bool CanConstruct( Type type, params object[] parameters )
+			{
+				return true;
+			}
+
 			public object Construct( Type type, params object[] parameters )
 			{
 				var result = locator.GetInstance( type );
