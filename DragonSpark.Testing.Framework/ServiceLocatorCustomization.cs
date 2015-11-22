@@ -10,6 +10,7 @@ using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Runtime;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Framework
@@ -215,7 +216,7 @@ namespace DragonSpark.Testing.Framework
 
 	public class AssignLocationCustomization : ICustomization, IAfterTestAware
 	{
-		readonly AmbientLocatorKeyFactory factory;
+		readonly IFactory<MethodInfo, IAmbientKey> factory;
 		readonly IServiceLocation location;
 
 		public AssignLocationCustomization() : this( ServiceLocation.Instance )
@@ -224,7 +225,7 @@ namespace DragonSpark.Testing.Framework
 		public AssignLocationCustomization( IServiceLocation location ) : this( location, AmbientLocatorKeyFactory.Instance )
 		{}
 
-		public AssignLocationCustomization( IServiceLocation location, AmbientLocatorKeyFactory factory )
+		public AssignLocationCustomization( IServiceLocation location, IFactory<MethodInfo, IAmbientKey> factory )
 		{
 			this.factory = factory;
 			this.location = location;
@@ -235,8 +236,10 @@ namespace DragonSpark.Testing.Framework
 			var locator = fixture.GetLocator();
 			var key = factory.Create( fixture.GetCurrentMethod() );
 			locator.Register( key );
-			locator.Register( location );
 			location.Assign( locator );
+
+			locator.Register( location );
+			
 		}
 
 		public void After( IFixture fixture, MethodInfo methodUnderTest )
@@ -295,7 +298,7 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	public class AssignAttribute : CustomizeAttribute
+	public class AssignedAttribute : CustomizeAttribute
 	{
 		class Customization : ICustomization
 		{

@@ -130,7 +130,7 @@ namespace DragonSpark.Testing.Activation.IoC
 
 
 		[Theory, Test, Framework.AutoData]
-		void Dispose( [Greedy, Frozen, Assign] ServiceLocator sut )
+		void Dispose( [Greedy, Frozen, Assigned] ServiceLocator sut )
 		{
 			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
 

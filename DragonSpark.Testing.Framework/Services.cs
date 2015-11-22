@@ -4,6 +4,7 @@ using Ploeh.AutoFixture;
 using System;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Testing.Framework
@@ -45,6 +46,16 @@ namespace DragonSpark.Testing.Framework
 			var specification = new CurrentMethodSpecification( parameter );
 			var result = new AmbientKey<IServiceLocator>( specification );
 			return result;
+		}
+	}
+
+	public static class ServiceLocatorExtensions
+	{
+		public static IServiceLocator Prepared( this IServiceLocator @this, MethodBase method )
+		{
+			var key = method.AsTo<MethodInfo, IAmbientKey>( AmbientLocatorKeyFactory.Instance.Create );
+			@this.Register( key );
+			return @this;
 		}
 	}
 }

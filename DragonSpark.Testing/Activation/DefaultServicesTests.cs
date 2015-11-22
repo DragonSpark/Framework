@@ -1,16 +1,10 @@
 using DragonSpark.Activation;
-using DragonSpark.Activation.IoC;
-using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
-using Dynamitey;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
 using Ploeh.AutoFixture.Xunit2;
-using System.Linq;
+using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 using ServiceLocation = DragonSpark.Activation.ServiceLocation;
@@ -23,12 +17,12 @@ namespace DragonSpark.Testing.Activation
 		public DefaultServicesTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) ), Test]
+		[Theory, Test, Framework.AutoData]
 		void RegisterInstanceGeneric( ServiceLocation sut, Class instance )
 		{
 			Assert.IsType<ServiceLocation>( Services.Location );
 
-			Assert.Same( sut, Services.Location );
+			Assert.Same( Services.Location, sut );
 
 			sut.Register<IInterface>( instance );
 
@@ -46,7 +40,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( new ServiceLocator() );
+			sut.Assign( new ServiceLocator().Prepared( MethodBase.GetCurrentMethod() ) );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );
@@ -55,7 +49,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.False( sut.IsAvailable );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		public void RegisterGeneric( ServiceLocation sut )
 		{
 			sut.Register<IInterface, Class>();
@@ -64,7 +58,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		public void Register( ServiceLocation sut )
 		{
 			sut.Register( typeof(IInterface), typeof(Class) );
@@ -73,7 +67,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		void RegisterInstance( ServiceLocation sut, Class instance )
 		{
 			sut.Register( typeof(IInterface), instance );
@@ -83,7 +77,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		void RegisterFactory( ServiceLocation sut, Class instance )
 		{
 			sut.Register<IInterface>( () => instance );
@@ -93,26 +87,30 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
-		public void With( ServiceLocation sut, IServiceLocator locator, [Frozen]ClassWithParameter instance )
+		[Theory, Test, Framework.AutoData]
+		public void With( ServiceLocation sut, IServiceLocator locator, [Frozen, Registered]ClassWithParameter instance )
 		{
+			Assert.Same( Services.Location, sut );
+			Assert.Same( sut.Locator, locator );
 			var item = sut.With<ClassWithParameter, object>( x => x.Parameter );
 			Assert.Equal( instance.Parameter, item );
 
 			Assert.Null( sut.With<IInterface, object>( x => x ) );
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, Framework.AutoData]
 		public void WithDefault( ServiceLocation sut )
 		{
 			var item = sut.With<ClassWithParameter, bool>( x => x.Parameter != null );
 			Assert.True( item );
 		}
 
-		[Theory, Framework.AutoData( typeof(AutoConfiguredMoqCustomization) )]
-		public void Register( ServiceLocation location, Mock<IServiceRegistry> sut )
+		[Theory, Test, Framework.AutoData]
+		public void RegisterWithRegistry( ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
-			location.Assign( new ServiceLocator() );
+			Assert.Same( ServiceLocation.Instance, location );
+
+			location.Assign( new ServiceLocator().Prepared( MethodBase.GetCurrentMethod() ) );
 
 			location.Register( typeof(IServiceRegistry), sut.Object );
 
