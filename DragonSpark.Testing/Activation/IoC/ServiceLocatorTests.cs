@@ -26,6 +26,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Null( before );
 
 			var mock = Mock.Get( logger );
+			Assert.NotNull( mock );
 			mock.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
 
 			sut.Register<IInterface, Class>();
