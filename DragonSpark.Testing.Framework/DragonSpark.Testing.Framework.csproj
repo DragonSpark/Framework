@@ -168,8 +168,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmbientCustomizationsCustomization.cs" />
+    <Compile Include="AmbientLocatorKeyFactory.cs" />
+    <Compile Include="AssignedAttribute.cs" />
+    <Compile Include="AssignLocationCustomization.cs" />
+    <Compile Include="CanLocateSpecification.cs" />
+    <Compile Include="ContainerExtensionFactory.cs" />
+    <Compile Include="CurrentMethodCustomization.cs" />
+    <Compile Include="CurrentMethodSpecification.cs" />
+    <Compile Include="CurrentTestCustomizer.cs" />
+    <Compile Include="Customizations.cs" />
+    <Compile Include="FixtureExtensions.cs" />
+    <Compile Include="FromCustomization.cs" />
+    <Compile Include="GreedyEngineParts.cs" />
+    <Compile Include="IAfterTestAware.cs" />
+    <Compile Include="OutputCustomization.cs" />
     <Compile Include="RecordingLogger.cs" />
-    <Compile Include="Services.cs">
+    <Compile Include="RegisteredAttribute.cs" />
+    <Compile Include="RegisterFactoryAttribute.cs" />
+    <Compile Include="RegisterFromConventionAttribute.cs" />
+    <Compile Include="ServiceLocationRelay.cs" />
+    <Compile Include="ServiceLocatorExtensions.cs" />
+    <Compile Include="ServiceLocatorFactory.cs" />
+    <Compile Include="MethodInStackTraceSpecification.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutoDataAttribute.cs" />
@@ -184,9 +205,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceLocatorCustomization.cs" />
+    <Compile Include="SkipLocationAttribute.cs" />
     <Compile Include="TaskLocalValue.cs" />
+    <Compile Include="TestAttribute.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="TypesAttribute.cs" />
+    <Compile Include="TypesCustomization.cs" />
+    <Compile Include="TypesFactory.cs" />
+    <Compile Include="UnityConventionRegistrationServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">

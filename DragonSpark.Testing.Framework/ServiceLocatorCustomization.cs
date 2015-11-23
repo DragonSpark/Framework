@@ -1,34 +1,14 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
-using Ploeh.AutoFixture.Xunit2;
-using System;
 using System.Linq;
-using System.Reflection;
-using DragonSpark.Runtime;
-using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocatorFactory : FactoryBase<IFixture, IServiceLocator>
-	{
-		public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
-
-		protected override IServiceLocator CreateFrom( Type resultType, IFixture parameter )
-		{
-			var container = new UnityContainer().RegisterInstance( parameter );
-			var logger = parameter.GetLogger().With( rl => container.RegisterInstance( rl ) ) ?? container.Extension<IoCExtension>().Logger;
-			container.RegisterInstance( logger );
-			var result = new ServiceLocator( container );
-			return result;
-		}
-	}
-
 	public class ServiceLocatorCustomization : ICustomization
 	{
 		readonly ISpecimenBuilder builder;
@@ -60,31 +40,6 @@ namespace DragonSpark.Testing.Framework
 		}
 
 		public IServiceLocator Locator { get; }
-	}
-
-	[AttributeUsage( AttributeTargets.Parameter )]
-	public class SkipLocationAttribute : Attribute
-	{ }
-
-	public class CanLocateSpecification : IRequestSpecification
-	{
-		readonly IServiceLocator locator;
-		readonly Type[] passThrough;
-
-		public CanLocateSpecification( IServiceLocator locator ) : this( locator, FixtureContext.GetCurrent().GetCurrentMethod().GetParameters().Where( info => info.IsDefined( typeof(SkipLocationAttribute) ) ).Select( info => info.ParameterType ).ToArray() )
-		{}
-
-		public CanLocateSpecification( IServiceLocator locator, params Type[] passThrough )
-		{
-			this.locator = locator;
-			this.passThrough = passThrough;
-		}
-
-		public bool IsSatisfiedBy( object request )
-		{
-			var result = request.AsTo<Type, bool>( type => !passThrough.Contains( type ) && locator.GetInstance<IActivator>().Transform( activator => activator.CanActivate( type ) ) );
-			return result;
-		}
 	}
 
 /*	class FixtureActivator : IActivator
@@ -192,139 +147,6 @@ namespace DragonSpark.Testing.Framework
 			Context.Strategies.AddNew<FixtureStrategy>( UnityBuildStage.Creation );
 		}
 	}*/
-
-	public class ServiceLocationRelay : ISpecimenBuilder
-	{
-		readonly IServiceLocator locator;
-		readonly IRequestSpecification specification;
-
-		public ServiceLocationRelay( IServiceLocator locator ) : this( locator, new CanLocateSpecification( locator ) )
-		{}
-
-		public ServiceLocationRelay( IServiceLocator locator, IRequestSpecification specification )
-		{
-			this.locator = locator;
-			this.specification = specification;
-		}
-
-		public object Create( object request, ISpecimenContext context )
-		{
-			var result = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : new NoSpecimen( request );
-			return result;
-		}
-	}
-
-	public class AssignLocationCustomization : ICustomization, IAfterTestAware
-	{
-		readonly IFactory<MethodInfo, IAmbientKey> factory;
-		readonly IServiceLocation location;
-
-		public AssignLocationCustomization() : this( ServiceLocation.Instance )
-		{}
-
-		public AssignLocationCustomization( IServiceLocation location ) : this( location, AmbientLocatorKeyFactory.Instance )
-		{}
-
-		public AssignLocationCustomization( IServiceLocation location, IFactory<MethodInfo, IAmbientKey> factory )
-		{
-			this.factory = factory;
-			this.location = location;
-		}
-
-		public void Customize( IFixture fixture )
-		{
-			var locator = fixture.GetLocator();
-			var key = factory.Create( fixture.GetCurrentMethod() );
-			locator.Register( key );
-			location.Assign( locator );
-
-			locator.Register( location );
-			
-		}
-
-		public void After( IFixture fixture, MethodInfo methodUnderTest )
-		{
-			location.Assign( null );
-		}
-	}
-
-	public class FromCustomization : CustomizeAttribute
-	{
-		class Customization : ICustomization
-		{
-			public static Customization Instance { get; } = new Customization();
-
-			public void Customize( IFixture fixture )
-			{
-				fixture.Freeze( Services.Location.Locator );
-			}
-		}
-
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var result = Customization.Instance;
-			return result;
-		}
-	}
-
-	public class RegisteredAttribute : CustomizeAttribute
-	{
-		class Customization : ICustomization
-		{
-			readonly Type serviceLocationType;
-			readonly Type registrationType;
-
-			public Customization( Type serviceLocationType, Type registrationType )
-			{
-				this.serviceLocationType = serviceLocationType;
-				this.registrationType = registrationType;
-			}
-
-			public void Customize( IFixture fixture )
-			{
-				fixture.TryCreate<IServiceLocator>( serviceLocationType ).With( locator =>
-				{
-					fixture.TryCreate<object>( registrationType ).With( o => locator.Register( registrationType, o ) );
-				} );
-			}
-		}
-
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var serviceLocatorType = parameter.Member.AsTo<MethodInfo, Type>( x => x.GetParameters().Select( info => info.ParameterType ).FirstOrDefault( typeof(IServiceLocator).IsAssignableFrom ) ) ?? typeof(IServiceLocator);
-
-			var result = new Customization( serviceLocatorType, parameter.ParameterType );
-			return result;
-		}
-	}
-
-	public class AssignedAttribute : CustomizeAttribute
-	{
-		class Customization : ICustomization
-		{
-			readonly Type type;
-
-			public Customization( Type type )
-			{
-				this.type = type;
-			}
-
-			public void Customize( IFixture fixture )
-			{
-				fixture.TryCreate<IServiceLocator>( type ).With( locator =>
-				{
-					var location = fixture.Create<IServiceLocation>();
-					location.Assign( locator );
-				});
-			}
-		}
-
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var result = new Customization( parameter.ParameterType );
-			return result;
-		}
-	}
 
 	/*class FixtureRegistry : IServiceRegistry
 	{

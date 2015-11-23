@@ -1,42 +1,9 @@
 using DragonSpark.Activation;
-using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using DragonSpark.Setup;
-using DragonSpark.Windows.Runtime;
-using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using System;
-using DragonSpark.Activation.IoC;
-using UnityConventionRegistrationService = DragonSpark.Windows.Setup.UnityConventionRegistrationService;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ContainerExtensionFactory : RegisterFactoryAttribute
-	{
-		public ContainerExtensionFactory( Type registrationType ) : base( registrationType )
-		{}
-
-		protected override Func<object> GetFactory( IFixture fixture, IServiceRegistry registry )
-		{
-			Func<object> result = () => fixture.Create<IUnityContainer>().Extension( MappedTo );
-			return result;
-		}
-	}
-	
-	public abstract class RegisterFactoryAttribute : RegistrationAttribute
-	{
-		protected RegisterFactoryAttribute( Type registrationType ) : base( registrationType )
-		{}
-
-		protected override void Customize( IFixture fixture, IServiceRegistry registry )
-		{
-			var factory = GetFactory( fixture, registry );
-			registry.RegisterFactory( MappedTo, factory );
-		}
-
-		protected abstract Func<object> GetFactory( IFixture fixture, IServiceRegistry registry );
-	}
-
 	[AttributeUsage( AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true )]
 	public abstract class RegistrationAttribute : Attribute, ICustomization
 	{
@@ -66,46 +33,5 @@ namespace DragonSpark.Testing.Framework
 		}
 
 		protected abstract void Customize( IFixture fixture, IServiceRegistry registry );
-	}
-
-	public class RegisterFromConventionAttribute : ICustomization
-	{
-		readonly IConventionRegistrationProfileProvider provider;
-		readonly IFactory<IFixture, IConventionRegistrationService> factory;
-		
-		public RegisterFromConventionAttribute() : this( new ConventionRegistrationProfileProvider( AssemblyProvider.Instance ), UnityConventionRegistrationServiceFactory.Instance )
-		{}
-
-		public RegisterFromConventionAttribute( IConventionRegistrationProfileProvider provider, IFactory<IFixture, IConventionRegistrationService> factory )
-		{
-			this.provider = provider;
-			this.factory = factory;
-		}
-
-		public void Customize( IFixture fixture )
-		{
-			var service = factory.Create( fixture );
-			var profile = provider.Retrieve();
-			service.Register( profile );
-		}
-	}
-
-	public class UnityConventionRegistrationServiceFactory : FactoryBase<IFixture, IConventionRegistrationService>
-	{
-		public static UnityConventionRegistrationServiceFactory Instance { get; } = new UnityConventionRegistrationServiceFactory();
-
-		protected override IConventionRegistrationService CreateFrom( Type resultType, IFixture parameter )
-		{
-			return parameter.GetLocator().Transform( locator =>
-			{
-				return locator.Transform( x => x.GetInstance<IUnityContainer>(), parameter.TryCreate<IUnityContainer> ).Transform( container =>
-				{
-					var logger = parameter.GetLogger() ?? container.Resolve<ILogger>() ?? DebugLogger.Instance;
-					var activator = locator.GetInstance<IActivator>() ?? parameter.TryCreate<IActivator>() ?? container.Extension<IoCExtension>().CreateActivator();
-					var result = new UnityConventionRegistrationService( container, activator, logger );
-					return result;
-				});
-			} );
-		}
 	}
 }
