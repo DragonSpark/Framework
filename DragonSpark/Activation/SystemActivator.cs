@@ -26,7 +26,7 @@ namespace DragonSpark.Activation
 		public bool CanConstruct( Type type, params object[] parameters )
 		{
 			var info = type.GetTypeInfo();
-			var result = info.IsValueType || new TypeSupport( info ).FindConstructor( parameters ) != null;
+			var result = info.IsValueType || new TypeExtension( info ).FindConstructor( parameters ) != null;
 			return result;
 		}
 
@@ -37,17 +37,17 @@ namespace DragonSpark.Activation
 		}
 	}
 
-	public class TypeSupport
+	public class TypeExtension
 	{
 		readonly Type type;
 		readonly TypeInfo info;
 
-		public TypeSupport( Type type ) : this( type.GetTypeInfo() )
+		public TypeExtension( Type type ) : this( type.GetTypeInfo() )
 		{
 			this.type = type;
 		}
 
-		public TypeSupport( TypeInfo info )
+		public TypeExtension( TypeInfo info )
 		{
 			this.info = info;
 		}
