@@ -15,7 +15,7 @@ namespace DragonSpark.ComponentModel
 
 		protected override Type DetermineType( PropertyInfo propertyInfo )
 		{
-			var result = typeof(Collection<>).MakeGenericType( propertyInfo.PropertyType.GetInnerType() );
+			var result = typeof(Collection<>).MakeGenericType( propertyInfo.PropertyType.Extend().GetInnerType() );
 			return result;
 		}
 	}

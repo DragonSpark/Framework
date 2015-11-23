@@ -22,7 +22,7 @@ namespace DragonSpark.Activation.IoC
 			var info = type.GetTypeInfo();
 			if ( info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IEnumerable<>) )
 			{
-				var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
+				var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.Extend().GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
 
 				context.Existing = resolver( context );
 				context.BuildComplete = true;

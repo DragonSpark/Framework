@@ -34,7 +34,7 @@ namespace DragonSpark.Testing.Framework
 
 		static IEnumerable<Type> Expand( Type type )
 		{
-			var hierarchy = type.GetHierarchy( false );
+			var hierarchy = type.Extend().GetHierarchy( false );
 			var result = hierarchy.SelectMany( t => t.IsGenericType ? t.GenericTypeArguments.SelectMany( Select	) : t.Append() );
 			return result;
 		}

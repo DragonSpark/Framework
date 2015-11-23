@@ -26,6 +26,6 @@ namespace DragonSpark.Extensions
 				}
 			}
 			return target[ key ];
-		}	readonly static object Locker = new object();
+		}	static readonly object Locker = new object();
 	}
 }

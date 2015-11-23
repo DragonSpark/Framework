@@ -110,7 +110,7 @@ namespace DragonSpark.Runtime
 
 		protected override bool IsSatisfiedByContext( Type context )
 		{
-			var result = Context.IsAssignableFrom( context );
+			var result = Context.Extend().IsAssignableFrom( context );
 			return result;
 		}
 	}

@@ -33,7 +33,7 @@ namespace DragonSpark.Modularity
 		protected virtual IEnumerable<ModuleInfo> GetModuleInfos( IEnumerable<Assembly> assemblies )
 		{
 			var info = typeof(IModule);
-			var result = assemblies.Except( info.Assembly().Append() ).SelectMany( assembly => assembly.ExportedTypes.Where( info.CanActivate ) )
+			var result = assemblies.Except( info.Assembly().Append() ).SelectMany( assembly => assembly.ExportedTypes.Where( info.Extend().CanLocate ) )
 				.Select( Builder.CreateModuleInfo )
 				.ToArray();
 			return result;

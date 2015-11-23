@@ -1,12 +1,8 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
@@ -48,6 +44,8 @@ namespace DragonSpark.Activation.IoC
 
 		protected override void Initialize()
 		{
+			Context.Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
+
 			Context.Container.EnsureRegistered( CreateActivator );
 
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( new DefaultUnityConstructorSelectorPolicy() );
@@ -65,7 +63,7 @@ namespace DragonSpark.Activation.IoC
 
 		public IActivator CreateActivator()
 		{
-			var result = new CompositeActivator( new Activator( Context ), SystemActivator.Instance );
+			var result = new CompositeActivator( Container.Resolve<Activator>(), SystemActivator.Instance );
 			return result;
 		}
 
@@ -143,135 +141,5 @@ namespace DragonSpark.Activation.IoC
 			var result = x.AsTo<ILifetimePolicy, LifetimeEntry>( y => new LifetimeEntry( y, y.GetValue() ), () => new LifetimeEntry( x ) );
 			return result;
 		}*/
-	}
-
-	class Activator : IActivator
-	{
-		readonly ExtensionContext context;
-		readonly IList<NamedTypeBuildKey> resolvable = new List<NamedTypeBuildKey>();
-
-		public Activator( ExtensionContext context )
-		{
-			this.context = context;
-		}
-
-		bool CheckInstance( NamedTypeBuildKey key )
-		{
-			var result = context.Policies.Get<ILifetimePolicy>( key ).Transform( policy => policy.GetValue() ) != null;
-			return result;
-		}
-
-		bool CheckRegistered( NamedTypeBuildKey key )
-		{
-			var result = context.Container.IsRegistered( key.Type, key.Name ) && GetConstructor( key ) != null;
-			return result;
-		}
-
-		ConstructorInfo GetConstructor( NamedTypeBuildKey key )
-		{
-			var mapped = context.Policies.Get<IBuildKeyMappingPolicy>( key ).Transform( policy => policy.Map( key, null ) ) ?? key;
-			return context.Policies.Get<IConstructorSelectorPolicy>( mapped ).Transform( policy =>
-			{
-				var builder = new BuilderContext( context.BuildPlanStrategies.MakeStrategyChain(), context.Lifetime, context.Policies, mapped, null );
-				try
-				{
-					var constructor = policy.SelectConstructor( builder, context.Policies );
-					var result = constructor.Transform( selected => selected.Constructor ); 
-					return result;
-				}
-				catch ( InvalidOperationException )
-				{
-					return null;
-				}
-			} );
-		}
-
-		bool IsRegistered( NamedTypeBuildKey key )
-		{
-			var result = CheckInstance( key ) || CheckRegistered( key );
-			return result;
-		}
-
-		bool Validate( NamedTypeBuildKey key, IEnumerable<Type> parameters )
-		{
-			var result = CheckInstance( key ) || GetConstructor( key ).Transform( x => Validate( x, parameters ) );
-			result.IsTrue( () => resolvable.Add( key ) );
-			return result;
-		}
-
-		bool Validate( MethodBase constructor, IEnumerable<Type> parameters )
-		{
-			var result = constructor
-				.GetParameters()
-				.Select( parameterInfo => new NamedTypeBuildKey( parameterInfo.ParameterType ) )
-				.All( key => parameters.Any( key.Type.IsAssignableFrom ) || IsRegistered( key ) );
-			return result;
-		}
-
-		public bool CanActivate( Type type, string name = null )
-		{
-			return Check( type, name );
-		}
-
-		bool Check( Type type, string name, params object[] parameters )
-		{
-			var key = new NamedTypeBuildKey( type, name );
-			var result = resolvable.Contains( key ) || Validate( key, parameters.NotNull().Select( o => o.GetType() ).ToArray() );
-			return result;
-		}
-
-		public object Activate( Type type, string name = null )
-		{
-			var result = context.Container.Resolve( type, name );
-			return result;
-		}
-
-		public bool CanConstruct( Type type, params object[] parameters )
-		{
-			var result = Check( type, null, parameters );
-			return result;
-		}
-
-		public object Construct( Type type, params object[] parameters )
-		{
-			using ( var container = context.Container.CreateChildContainer() )
-			{
-				parameters.NotNull().Apply( x => 
-				{
-					x.As<TypedInjectionValue>( parameterValue =>
-					{
-						container.RegisterInstance( parameterValue.ParameterType, parameterValue.GetResolverPolicy( null ).Resolve( null ) );
-					});
-					x.GetType().GetTypeInfo().ImplementedInterfaces.Union( x.GetType().GetHierarchy( false ) ).Distinct().Apply( y => container.RegisterInstance( y, x ) );
-				} );
-
-				var result = new ResolutionContext( container.DetermineLogger() ).Execute( () => container.Resolve( type ) );
-				return result;
-			}
-		}
-	}
-
-	class ResolutionContext
-	{
-		readonly ILogger logger;
-
-		public ResolutionContext( ILogger logger )
-		{
-			this.logger = logger;
-		}
-
-		public object Execute( Func<object> resolve )
-		{
-			try
-			{
-				var result = resolve();
-				return result;
-			}
-			catch ( ResolutionFailedException e )
-			{
-				logger.Exception( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None ), e );
-				return null;
-			}
-		}
 	}
 }

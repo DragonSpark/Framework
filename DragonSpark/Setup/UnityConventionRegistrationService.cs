@@ -49,7 +49,7 @@ namespace DragonSpark.Setup
 			{
 				Logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, item.Item1.As, type ) );
 
-				Container.RegisterType( item.Item1.As ?? type.GetAllInterfaces().First(), type, item.Item1.Name, DetermineLifetimeContainer<ContainerControlledLifetimeManager>( type ) );
+				Container.RegisterType( item.Item1.As ?? type.Extend().GetAllInterfaces().First(), type, item.Item1.Name, DetermineLifetimeContainer<ContainerControlledLifetimeManager>( type ) );
 			} ) );
 		}
 	}

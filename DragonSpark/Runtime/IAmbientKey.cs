@@ -27,7 +27,7 @@ namespace DragonSpark.Runtime
 
 		public bool Handles( IAmbientRequest request )
 		{
-			var result = request.RequestedType.IsAssignableFrom( targetType ) && specification.IsSatisfiedBy( request.Context );
+			var result = request.RequestedType.Extend().IsAssignableFrom( targetType ) && specification.IsSatisfiedBy( request.Context );
 			return result;
 		}
 	}

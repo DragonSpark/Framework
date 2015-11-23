@@ -18,7 +18,7 @@ namespace DragonSpark.Extensions
 		{
 			Mapper.FindTypeMapFor( sourceType, destinationType )
 				.GetPropertyMaps()
-				.Where( map => !map.DestinationPropertyType.IsAssignableFrom( map.SourceMember.To<PropertyInfo>().PropertyType ) )
+				.Where( map => !map.DestinationPropertyType.Extend().IsAssignableFrom( map.SourceMember.To<PropertyInfo>().PropertyType ) )
 				.Apply( map =>
 				{
 					expression.ForMember( map.SourceMember.Name, opt => opt.Ignore() );

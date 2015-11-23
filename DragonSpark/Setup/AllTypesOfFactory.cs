@@ -21,8 +21,8 @@ namespace DragonSpark.Setup
 
 		protected override Array CreateFrom( Type resultType, Type parameter )
 		{
-			var type = parameter ?? resultType.GetInnerType() ?? resultType;
-			var items = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes.Where( type.CanActivate ) ).Select( activator.Activate<object> ).ToArray();
+			var type = parameter ?? resultType.Extend().GetInnerType() ?? resultType;
+			var items = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes.Where( type.Extend().CanLocate ) ).Select( activator.Activate<object> ).ToArray();
 			var result = Array.CreateInstance( type, items.Length );
 			Array.Copy( items, result, items.Length );
 			return result;

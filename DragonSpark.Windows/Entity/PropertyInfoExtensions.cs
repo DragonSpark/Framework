@@ -10,13 +10,13 @@ namespace DragonSpark.Windows.Entity
 	{
 		public static Type ResolveEntityType( this PropertyInfo propertyInfo )
 		{
-			var result = propertyInfo.PropertyType.GetInnerType() ?? propertyInfo.PropertyType;
+			var result = propertyInfo.PropertyType.Extend().GetInnerType() ?? propertyInfo.PropertyType;
 			return result;
 		}
 
 		public static Type GetCollectionType( this PropertyInfo propertyInfo )
 		{
-			var result = propertyInfo.PropertyType.GetInnerType();
+			var result = propertyInfo.PropertyType.Extend().GetInnerType();
 			return result;
 		}
 

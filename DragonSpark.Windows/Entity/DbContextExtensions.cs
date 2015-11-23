@@ -401,7 +401,7 @@ namespace DragonSpark.Windows.Entity
 				{
 					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Apply( z =>
 					{
-						var items = z.GetType().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
+						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
 						items.Apply( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;
