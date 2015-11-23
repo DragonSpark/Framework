@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.Markup
 	{
 		public NextExtension()
 		{
-			this.WithDefaults();
+			this.BuildUp();
 		}
 
 		[Activate]

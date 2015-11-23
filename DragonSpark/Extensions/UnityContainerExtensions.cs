@@ -27,7 +27,7 @@ namespace DragonSpark.Extensions
 
 	public static class UnityContainerExtensions
 	{
-		static readonly IList<WeakReference<object>> BuildCache = new List<WeakReference<object>>();
+		/*static readonly IList<WeakReference<object>> BuildCache = new List<WeakReference<object>>();
 
 		public static bool BuildUpOnce( this object target )
 		{
@@ -38,7 +38,7 @@ namespace DragonSpark.Extensions
 				BuildCache.Add( new WeakReference<object>( target ) );
 			} ) );
 			return result;
-		}
+		}*/
 
 		public static ILogger DetermineLogger( this IUnityContainer @this )
 		{

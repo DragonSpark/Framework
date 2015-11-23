@@ -37,7 +37,7 @@ namespace DragonSpark.Activation
 
 		public object Construct( Type type, params object[] parameters )
 		{
-			var result = System.Activator.CreateInstance( type, parameters ).WithDefaults();
+			var result = System.Activator.CreateInstance( type, parameters ).BuildUp();
 			return result;
 		}
 	}

@@ -165,10 +165,10 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
+		public static TItem BuildUp<TItem>( this TItem target ) where TItem : class
 		{
-			var provider = Services.Location.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
-			provider.With( x => x.Apply( target ) );
+			var builder = Services.Location.Locate<IObjectBuilder>() ?? ObjectBuilder.Instance;
+			builder.With( x => x.BuildUp( target ) );
 			return target;
 		}
 

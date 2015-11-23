@@ -207,7 +207,6 @@
     <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
-    <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
     <Compile Include="ConditionMonitorState.cs" />
     <Compile Include="Extensions\AssemblyLocatorExtensions.cs" />
@@ -229,11 +228,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="Activation\IoC\DefaultValueStrategy.cs" />
+    <Compile Include="Activation\IoC\ObjectBuilderStrategy.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
-    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\ObjectBuilder.cs" />
     <Compile Include="ComponentModel\MemberInfoLocator.cs">
       <SubType>Code</SubType>
     </Compile>

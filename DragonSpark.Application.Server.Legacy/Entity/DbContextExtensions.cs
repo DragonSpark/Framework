@@ -287,7 +287,7 @@ namespace DragonSpark.Server.Legacy.Entity
 
 		public static TItem Create<TItem>( this DbContext target, Action<TItem> with = null, Action<TItem> initialize = null ) where TItem : class, new()
 		{
-			var item = new TItem().With( initialize ).WithDefaults().With( with );
+			var item = new TItem().With( initialize ).BuildUp().With( with );
 			var result = target.Set<TItem>().Add( item );
 			return result;
 		}

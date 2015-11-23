@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IObjectBuilder, IDisposable
+	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IDisposable
 	{
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
@@ -24,7 +24,7 @@ namespace DragonSpark.Activation.IoC
 			this.container
 				.RegisterInstance<IServiceLocator>( this )
 				.RegisterInstance<IServiceRegistry>( this )
-				.RegisterInstance<IObjectBuilder>( this )
+				// .RegisterInstance<IObjectBuilder>( this )
 				.Extension<IoCExtension>();
 		}
 
@@ -109,10 +109,10 @@ namespace DragonSpark.Activation.IoC
 			} ) );
 		}
 
-		public object BuildUp( object item )
+		/*public object BuildUp( object item )
 		{
 			var result = Container.BuildUp( item.GetType(), item );
 			return result;
-		}
+		}*/
 	}
 }

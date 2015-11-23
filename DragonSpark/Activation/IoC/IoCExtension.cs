@@ -58,7 +58,7 @@ namespace DragonSpark.Activation.IoC
 			/*Context.Strategies.AddNew<SingletonStrategy>( UnityBuildStage.PreCreation );*/
 			// Context.Strategies.AddNew<ApplyBehaviorStrategy>( UnityBuildStage.Initialization );
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.PreCreation );
-			Context.Strategies.AddNew<DefaultValueStrategy>( UnityBuildStage.Initialization );
+			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
 			
 			// Context.ChildContainerCreated += ContextChildContainerCreated;
 		}

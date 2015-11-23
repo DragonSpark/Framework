@@ -123,9 +123,10 @@ namespace DragonSpark.Testing.Activation.IoC
 
 			Assert.Null( item.String );
 
-			Assert.True( item.BuildUpOnce() );
+			item.BuildUp();
+			// Assert.True( item.BuildUp() );
 			Assert.Equal( "Hello World", item.String );
-			Assert.False( item.BuildUpOnce() );
+			// Assert.False( item.BuildUp() );
 		}
 
 

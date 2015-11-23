@@ -31,7 +31,7 @@ namespace DragonSpark.Setup
 
 		protected virtual ICommand Prepare( ICommand command )
 		{
-			return command.WithDefaults();
+			return command.BuildUp();
 		}
 
 		public virtual void Run(object arguments = null)

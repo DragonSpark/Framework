@@ -34,7 +34,7 @@ namespace DragonSpark.Runtime
 
 		protected virtual T Prepare( T command )
 		{
-			return command.WithDefaults();
+			return command.BuildUp();
 		}
 	}
 }
