@@ -1,5 +1,4 @@
 using DragonSpark.Extensions;
-using Microsoft.Practices.Unity.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +25,15 @@ namespace DragonSpark.Activation
 		public bool CanConstruct( Type type, params object[] parameters )
 		{
 			var info = type.GetTypeInfo();
-			var result = info.IsValueType || ( !info.IsInterface && parameters.NotNull().Select( o => o.GetType() ).ToArray().Transform( types => info.DeclaredConstructors.Any( c => !c.IsStatic && Match( c.GetParameters(), types ) ) ) );
+			var result = info.IsValueType || ( !info.IsInterface && parameters.Select( o => o.Transform( o1 => o1.GetType() ) ).ToArray().Transform( types => info.DeclaredConstructors.Any( c => !c.IsStatic && Match( c.GetParameters(), types ) ) ) );
 			return result;
 		}
 
-		static bool Match(IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyList<Type> closedConstructorParameterTypes)
-        {
-            var result = parameters.Count == closedConstructorParameterTypes.Count && !parameters.Where( ( t, i ) => !t.ParameterType.IsAssignableFrom( closedConstructorParameterTypes[i] ) ).Any();
+		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyList<Type> parameterTypes )
+		{
+			var result = parameters.Count == parameterTypes.Count && !parameters.Where( ( t, i ) => !parameterTypes[i].Transform( t.ParameterType.IsAssignableFrom, () => true ) ).Any();
 			return result;
-        }
+		}
 
 		public object Construct( Type type, params object[] parameters )
 		{

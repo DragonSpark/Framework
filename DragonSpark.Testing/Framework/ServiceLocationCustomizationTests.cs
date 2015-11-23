@@ -7,10 +7,10 @@ namespace DragonSpark.Testing.Framework
 {
 	public class ServiceLocationCustomizationTests
 	{
-		[Theory, AutoData( typeof(Testing.Customizations.Assigned) )]
+		[Theory, Test, AutoData]
 		public void GetAllInstances( IServiceLocator sut )
 		{
-			Assert.True( sut.GetAllInstances<Class>().Any() );
+			Assert.False( sut.GetAllInstances<Class>().Any() );
 		}
 	}
 }

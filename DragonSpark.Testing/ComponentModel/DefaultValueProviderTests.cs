@@ -42,7 +42,7 @@ namespace DragonSpark.Testing.ComponentModel
 			}
 		}
 
-		[Theory, Framework.AutoData( typeof(Customizations.Assigned) )]
+		[Theory, Test, AutoData]
 		void Apply( DefaultValueProvider sut )
 		{
 			var current = DateTime.Now;

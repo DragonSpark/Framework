@@ -1,68 +1,71 @@
-﻿namespace DragonSpark.Testing.Diagnostics
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Testing.Framework;
+using Moq;
+using Ploeh.AutoFixture.Xunit2;
+using System;
+using Xunit;
+
+namespace DragonSpark.Testing.Diagnostics
 {
 
-	/*[Freeze( typeof(ApplicationInformation) )]
+	// [Freeze( typeof(ApplicationInformation) )]
 	public class LogTests
 	{
-		[Theory, AutoMockData, Services]
-		public void Information( [Frozen]ILogger logger, string message )
+		[Theory, Test, Framework.AutoData]
+		public void Information( [Frozen, SkipLocation]ILogger logger, string message )
 		{
-			Log.Current.Information( message );
-			Log.Current.Information( message, Priority.High );
+			logger.Information( message );
+			logger.Information( message, Priority.High );
 
 			Mock.Get( logger ).Verify( x => x.Information( message, Priority.Normal ) );
 			Mock.Get( logger ).Verify( x => x.Information( message, Priority.High ) );
 		}
 
-		[Theory, AutoMockData, Services]
-		public void Warning( [Frozen]ILogger logger, string message )
+		[Theory, Test, Framework.AutoData]
+		public void Warning( [Frozen, SkipLocation]ILogger logger, string message )
 		{
-			Log.Warning( message );
-			Log.Warning( message, Priority.Low );
+			logger.Warning( message );
+			logger.Warning( message, Priority.Low );
 
 			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.High ) );
 			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.Low ) );
 		}
 
-		[Theory, AutoMockData, Services]
+		[Theory, Test, Framework.AutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void Error( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error, Guid id )
+		public void Error( [Frozen, SkipLocation]ILogger logger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
-			Assert.Same( logger, Log.Current );
+			// Assert.Same( logger, Log.Current );
 
-			Log.Current.Error( error, id );
-
-			var message = formatter.FormatMessage( error, id );
+			logger.Exception( message, error );
 
 			Mock.Get( logger ).Verify( x => x.Exception( message, error ) );
 		}
 
-		[Theory, AutoMockData, Services]
-		public void DefaultError( [Frozen]ILogger logger, InvalidOperationException error, Guid id )
+		[Theory, Test, Framework.AutoData]
+		public void DefaultError( [Frozen, SkipLocation]ILogger logger, [Modest]InvalidOperationException error, string message )
 		{
-			Assert.Same( logger, Log.Current );
+			logger.Exception( message, error );
 
-			Log.Current.Error( error, id );
-
-			var message = error.ToString();
+			// var message = error.ToString();
 
 			Mock.Get( logger ).Verify( x => x.Exception( message, error ) );
 		}
 
-		[Theory, AutoMockData, Services]
+		[Theory, Test, Framework.AutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void Fatal( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error, Guid id )
+		public void Fatal( [Frozen, SkipLocation]ILogger logger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
-			Assert.Same( logger, Log.Current );
+			// Assert.Same( logger, Log.Current );
 
-			Log.Current.Fatal( error, id );
+			logger.Fatal( message, error );
 
-			var message = formatter.FormatMessage( error, id );
+			// var message = formatter.FormatMessage( error, id );
 
 			Mock.Get( logger ).Verify( x => x.Fatal( message, error ) );
 		}
 
-		[Theory, AutoDataCustomization, Services]
+		[Theory, Test, Framework.AutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void Try()
 		{
@@ -70,20 +73,20 @@
 			Assert.Null( exception );
 		}
 
-		[Theory, AutoMockData, Services]
+		[Theory, Test, Framework.AutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void TryException( [Frozen]ILogger logger, IExceptionFormatter formatter, InvalidOperationException error )
+		public void TryException( [Frozen, SkipLocation, Registered]ILogger logger, [Modest]InvalidOperationException error )
 		{
 			var exception = DiagnosticExtensions.Try( () => { throw error; } );
 			Assert.NotNull( exception );
 			Assert.Equal( error, exception );
 
-			var message = formatter.FormatMessage( error );
+			// var message = formatter.FormatMessage( error );
 
-			Mock.Get( logger ).Verify( x => x.Exception( message, exception ) );
+			Mock.Get( logger ).Verify( x => x.Exception( "An exception has occurred while executing an application delegate.", exception ) );
 		}
 
-		[Theory, AutoMockData, Services, Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
+		/*[Theory, Test, Framework.AutoData, Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void TryAndHandleWithThrow( [Frozen]ILogger logger, [Frozen]IExceptionHandler handler, InvalidOperationException error, AggregateException thrown )
 		{
 			Mock.Get( handler ).Setup( x => x.Handle( error ) ).Returns( () => new ExceptionHandlingResult( true, thrown ) );
@@ -93,7 +96,7 @@
 			Mock.Get( logger ).Verify( x => x.Exception( It.IsAny<string>(), error ) );
 		}
 
-		[Theory, AutoMockData, Services, Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
+		[Theory, Test, Framework.AutoData, Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void TryAndHandle( [Frozen]ILogger logger, [Frozen]IExceptionHandler handler, InvalidOperationException error, AggregateException thrown )
 		{
 			var mock = Mock.Get( handler );
@@ -103,6 +106,6 @@
 
 			mock.VerifyAll();
 			Mock.Get( logger ).Verify( x => x.Exception( It.IsAny<string>(), error ) );
-		}
-	}*/
+		}*/
+	}
 }

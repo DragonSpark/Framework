@@ -24,7 +24,8 @@ namespace DragonSpark.Activation
 
 		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
 		{
-			var result = CreateFrom( resultType ?? ResultType, parameter );
+			var type = resultType == typeof(object) || resultType == null ? ResultType : resultType;
+			var result = CreateFrom( type, parameter );
 			return result;
 		}
 
