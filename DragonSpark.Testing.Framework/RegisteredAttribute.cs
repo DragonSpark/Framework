@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit2;
 
@@ -25,8 +26,15 @@ namespace DragonSpark.Testing.Framework
 			{
 				fixture.TryCreate<IServiceLocator>( serviceLocationType ).With( locator =>
 				{
-					fixture.TryCreate<object>( registrationType ).With( o => locator.Register( registrationType, o ) );
+					fixture.TryCreate<object>( registrationType ).With( x => Register( locator, x ) );
 				} );
+			}
+
+			void Register( IServiceLocator locator, object instance )
+			{
+				var item = instance.AsTo<Mock, object>( mock => mock.Object ) ?? instance;
+				var type = instance is Mock ? registrationType.Extend().GetInnerType() : registrationType;
+				locator.Register( type, item );
 			}
 		}
 

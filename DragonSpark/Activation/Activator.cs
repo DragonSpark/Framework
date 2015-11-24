@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Activation
 {
@@ -28,7 +29,12 @@ namespace DragonSpark.Activation
 
 		public static TResult Construct<TResult>( this IActivator @this, params object[] parameters )
 		{
-			var result = @this.CanConstruct( typeof(TResult), parameters ) ? (TResult)@this.Construct( typeof(TResult), parameters ) : default(TResult);
+			return Construct<TResult>( @this, typeof(TResult), parameters );
+		}
+
+		public static TResult Construct<TResult>( this IActivator @this, Type type, params object[] parameters )
+		{
+			var result = @this.CanConstruct( type, parameters ) ? (TResult)@this.Construct( type, parameters ) : default(TResult);
 			return result;
 		}
 
@@ -38,9 +44,9 @@ namespace DragonSpark.Activation
 			return result;
 		}
 
-		public static IEnumerable<object> ActivateMany( this IActivator @this, Type objectType, IEnumerable<Type> types )
+		public static IEnumerable<object> ActivateMany( this IActivator @this, TypeExtension objectType, IEnumerable<Type> types )
 		{
-			var result = types.Where( objectType.Extend().CanLocate ).Select( @this.Activate<object> );
+			var result = types.Where( objectType.CanLocate ).Select( @this.Activate<object> );
 			return result;
 		}
 	} 

@@ -20,8 +20,8 @@ namespace DragonSpark.Setup
 		{
 			var typeInfo = type.GetTypeInfo();
 			var mapped = typeInfo.IsInterface ? DetermineType( typeInfo ) : typeInfo;
-			var property = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && ( info.Name == this.property || info.IsDecoratedWith<SingletonAttribute>() ) );
-			var result = property.Transform( info => info.GetValue( null ) );
+			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && ( info.Name == property || info.IsDecoratedWith<SingletonAttribute>() ) );
+			var result = declared.Transform( info => info.GetValue( null ) );
 			return result;
 		}
 
@@ -35,7 +35,7 @@ namespace DragonSpark.Setup
 			}
 			catch ( Exception e )
 			{
-				return null;
+				return type;
 			}
 		}
 	}

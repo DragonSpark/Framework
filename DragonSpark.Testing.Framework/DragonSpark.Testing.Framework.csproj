@@ -171,12 +171,15 @@
     <Compile Include="AmbientCustomizationsCustomization.cs" />
     <Compile Include="AmbientLocatorKeyFactory.cs" />
     <Compile Include="AssignedAttribute.cs" />
-    <Compile Include="AssignLocationCustomization.cs" />
+    <Compile Include="AssignLocationComand.cs" />
     <Compile Include="CanLocateSpecification.cs" />
     <Compile Include="ContainerExtensionFactory.cs" />
     <Compile Include="CurrentMethodCustomization.cs" />
     <Compile Include="CurrentMethodSpecification.cs" />
-    <Compile Include="CurrentTestCustomizer.cs" />
+    <Compile Include="DefaultSetup.xaml.cs">
+      <DependentUpon>DefaultSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MetadataCustomization.cs" />
     <Compile Include="Customizations.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="FromCustomization.cs" />
@@ -186,14 +189,12 @@
     <Compile Include="RecordingLogger.cs" />
     <Compile Include="RegisteredAttribute.cs" />
     <Compile Include="RegisterFactoryAttribute.cs" />
-    <Compile Include="RegisterFromConventionAttribute.cs" />
     <Compile Include="ServiceLocationRelay.cs" />
     <Compile Include="ServiceLocatorExtensions.cs" />
-    <Compile Include="ServiceLocatorFactory.cs" />
     <Compile Include="MethodInStackTraceSpecification.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AutoDataAttribute.cs" />
+    <Compile Include="SetupAutoDataAttribute.cs" />
     <Compile Include="FreezeAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,17 +206,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceLocatorCustomization.cs" />
-    <Compile Include="SkipLocationAttribute.cs" />
     <Compile Include="TaskLocalValue.cs" />
     <Compile Include="TestAttribute.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="TypesAttribute.cs" />
-    <Compile Include="TypesCustomization.cs" />
     <Compile Include="TypesFactory.cs" />
-    <Compile Include="UnityConventionRegistrationServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Shim.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Windows</Name>
@@ -250,6 +252,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DefaultSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

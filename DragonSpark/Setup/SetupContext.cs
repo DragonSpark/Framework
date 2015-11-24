@@ -1,69 +1,55 @@
 ﻿using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Setup
 {
-    public class SetupContext
-    {
-        readonly object arguments;
-        
-        public SetupContext( object arguments )
-        {
-            this.arguments = arguments;
- 	        Register( arguments );
-        }
+	public class SetupContext : IDisposable
+	{
+		readonly object arguments;
+		
+		public SetupContext( object arguments )
+		{
+			this.arguments = arguments ?? Enumerable.Empty<object>();
+			Register( arguments );
+		}
 
-        public TItem Register<TItem>( TItem item )
-        {
-            items.Add( new WeakReference( item ) );
-            return item;
-        }
+		public TItem Register<TItem>( TItem item )
+		{
+			items.Add( item );
+			return item;
+		}
 
-        public virtual TItem Item<TItem>()
-        {
-            var result = Items.OfType<TItem>().SingleOrDefault();
-            return result;
-        }
+		public virtual TItem Item<TItem>()
+		{
+			var result = Items.OfType<TItem>().SingleOrDefault();
+			return result;
+		}
 
-        IEnumerable<WeakReference> Update()
-        {
-            var remove = items.Where( reference => !reference.IsAlive );
-            foreach ( var reference in remove )
-            {
-                items.Remove( reference );
-            }
-            return items;
-        }
+		public object GetArguments()
+		{
+			var result = GetArguments<object>();
+			return result;
+		}
 
-        public T GetArguments<T>()
-        {
-            if ( arguments == null )
-            {
-                throw new InvalidOperationException( "Arguments are not defined." );
-            }
+		public T GetArguments<T>()
+		{
+			arguments.GetType().Extend().GuardAsAssignable<T>( "arguments" );
+			
+			var result = (T)arguments;
+			return result;
+		}
 
-            if ( !typeof(T).GetTypeInfo().IsAssignableFrom( arguments.GetType().GetTypeInfo() ) )
-            {
-                throw new InvalidOperationException( $"Arguments are not of type '{typeof(T).Name}'" );
-            }
+		public IReadOnlyCollection<object> Items => new ReadOnlyCollection<object>( items );
+		readonly IList<object> items = new Collection<object>();
 
-            var result = (T)arguments;
-            return result;
-        }
-
-        public IReadOnlyCollection<object> Items
-        {
-            get
-            {
-                var inner = Update().Select( reference => reference.Target ).ToList();
-                return new ReadOnlyCollection<object>( inner );
-            }
-        }	readonly IList<WeakReference> items = new Collection<WeakReference>();
-
-        public ILogger Logger => Item<ILogger>();
-    }
+		public ILogger Logger => Item<ILogger>();
+		public void Dispose()
+		{
+			items.Clear();
+		}
+	}
 }

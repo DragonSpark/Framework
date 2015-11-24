@@ -21,7 +21,8 @@ namespace DragonSpark.Testing.Framework
 
 		public object Create( object request, ISpecimenContext context )
 		{
-			var result = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : new NoSpecimen( request );
+			var item = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : null;
+			var result = item ?? new NoSpecimen( request );
 			return result;
 		}
 	}

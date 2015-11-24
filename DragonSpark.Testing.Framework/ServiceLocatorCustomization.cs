@@ -1,45 +1,49 @@
-﻿using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
-using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocatorCustomization : ICustomization
+	public class ServiceLocatorCustomization : ICustomization, IAfterTestAware
 	{
-		readonly ISpecimenBuilder builder;
+		[Activate]
+		public IServiceLocator Locator { get; set; }
 
-		public ServiceLocatorCustomization() : this( ServiceLocatorFactory.Instance.Create( FixtureContext.GetCurrent() ) )
-		{}
-
-		public ServiceLocatorCustomization( IServiceLocator locator ) : this( locator, new ServiceLocationRelay( locator ) )
-		{}
-
-		public ServiceLocatorCustomization( IServiceLocator locator, ISpecimenBuilder builder )
-		{
-			Locator = locator;
-			this.builder = builder;
-		}
+		[Activate]
+		public IServiceLocation Location { get; set; }
 
 		public void Customize( IFixture fixture )
 		{
-			var items = fixture.GetItems();
-			items.Add( this );
-			fixture.ResidueCollectors.Add( builder );
+			fixture.Items().Add( this );
 
-			items.OfType<OutputCustomization>().SingleOrDefault().With( customization =>
-			{
-				customization.Register( Locator.GetInstance<IRecordingLogger> );
-				customization.Register( () => Locator.GetInstance<ILogger>() as IRecordingLogger );
-				customization.Register( () => Locator.GetInstance<IUnityContainer>().Transform( container => container.Extension<IoCExtension>().Logger ) as IRecordingLogger );
-			} );
+			fixture.ResidueCollectors.Add( new ServiceLocationRelay( Locator ) );
 		}
 
-		public IServiceLocator Locator { get; }
+		public void After( IFixture fixture, MethodInfo methodUnderTest )
+		{
+			Location.Assign( null );
+		}
+	}
+
+	public class LoggingRegistrationCustomization : ICustomization
+	{
+		[Activate]
+		public IUnityContainer Container { get; set; }
+
+		public void Customize( IFixture fixture )
+		{
+			fixture.Item<OutputCustomization>().With( customization =>
+			{
+				customization.Register( Container.TryResolve<IRecordingLogger> );
+				customization.Register( () => Container.TryResolve<ILogger>() as IRecordingLogger );
+				customization.Register( () => Container.DetermineLogger() as IRecordingLogger );
+			} );
+		}
 	}
 
 /*	class FixtureActivator : IActivator

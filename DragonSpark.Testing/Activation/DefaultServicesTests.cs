@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Activation
 		public DefaultServicesTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		void RegisterInstanceGeneric( ServiceLocation sut, Class instance )
 		{
 			Assert.IsType<ServiceLocation>( Services.Location );
@@ -49,7 +49,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.False( sut.IsAvailable );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		public void RegisterGeneric( ServiceLocation sut )
 		{
 			sut.Register<IInterface, Class>();
@@ -58,7 +58,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		public void Register( ServiceLocation sut )
 		{
 			sut.Register( typeof(IInterface), typeof(Class) );
@@ -67,7 +67,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		void RegisterInstance( ServiceLocation sut, Class instance )
 		{
 			sut.Register( typeof(IInterface), instance );
@@ -77,7 +77,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		void RegisterFactory( ServiceLocation sut, Class instance )
 		{
 			sut.Register<IInterface>( () => instance );
@@ -87,7 +87,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		public void With( ServiceLocation sut, IServiceLocator locator, [Frozen, Registered]ClassWithParameter instance )
 		{
 			Assert.Same( Services.Location, sut );
@@ -98,14 +98,14 @@ namespace DragonSpark.Testing.Activation
 			Assert.Null( sut.With<IInterface, object>( x => x ) );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		public void WithDefault( ServiceLocation sut )
 		{
 			var item = sut.With<ClassWithParameter, bool>( x => x.Parameter != null );
 			Assert.True( item );
 		}
 
-		[Theory, Test, Framework.AutoData]
+		[Theory, Test, SetupAutoData]
 		public void RegisterWithRegistry( ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
 			Assert.Same( ServiceLocation.Instance, location );

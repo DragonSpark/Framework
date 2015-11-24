@@ -3,6 +3,6 @@ using DragonSpark.Setup;
 
 namespace DragonSpark.Windows
 {
-	public class Setup<TLoggingFacade> : Setup<TLoggingFacade, AssemblyModuleCatalog> where TLoggingFacade : ILogger, new()
+	public class Setup<TLogging> : Setup<TLogging, AssemblyModuleCatalog> where TLogging : ILogger, new()
 	{}
 }

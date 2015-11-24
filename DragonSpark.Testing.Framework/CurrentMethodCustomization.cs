@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Framework
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.GetItems().Add( this );
+			fixture.Items().Add( this );
 			AmbientValues.RegisterFor( fixture, Method );
 		}
 	}

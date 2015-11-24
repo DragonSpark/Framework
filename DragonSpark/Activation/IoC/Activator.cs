@@ -48,7 +48,8 @@ namespace DragonSpark.Activation.IoC
 					{
 						child.RegisterInstance( parameterValue.ParameterType, parameterValue.GetResolverPolicy( null ).Resolve( null ) );
 					});
-					x.GetType().GetTypeInfo().ImplementedInterfaces.Union( x.GetType().Extend().GetHierarchy( false ) ).Distinct().Apply( y => child.RegisterInstance( y, x ) );
+
+					child.RegisterAllClasses( x );
 				} );
 
 				var result = new ResolutionContext( child.DetermineLogger() ).Execute( () => child.Resolve( type ) );

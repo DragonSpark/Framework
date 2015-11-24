@@ -16,18 +16,18 @@ namespace DragonSpark.Runtime
 
 	public class AmbientKey : IAmbientKey
 	{
-		readonly Type targetType;
+		public Type TargetType { get; set; }
 		readonly ISpecification specification;
 
 		public AmbientKey( Type targetType, ISpecification specification )
 		{
-			this.targetType = targetType;
+			TargetType = targetType;
 			this.specification = specification;
 		}
 
 		public bool Handles( IAmbientRequest request )
 		{
-			var result = request.RequestedType.Extend().IsAssignableFrom( targetType ) && specification.IsSatisfiedBy( request.Context );
+			var result = request.RequestedType.Extend().IsAssignableFrom( TargetType ) && specification.IsSatisfiedBy( request.Context );
 			return result;
 		}
 	}

@@ -206,6 +206,7 @@
     <Compile Include="Activation\IObjectBuilder.cs" />
     <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
+    <Compile Include="Runtime\TypeExtension.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
     <Compile Include="ConditionMonitorState.cs" />

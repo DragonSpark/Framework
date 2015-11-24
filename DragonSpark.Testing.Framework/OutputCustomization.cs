@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
@@ -14,19 +15,20 @@ namespace DragonSpark.Testing.Framework
 	{
 		readonly IList<Func<IRecordingLogger>> loggers = new List<Func<IRecordingLogger>>();
 
-		public OutputCustomization() : this( new RecordingLogger() )
+		/*public OutputCustomization() : this( new RecordingLogger() )
 		{}
 
 		public OutputCustomization( IRecordingLogger logger )
 		{
 			Logger = logger;
-		}
+		}*/
 
-		public IRecordingLogger Logger { get; }
+		[Activate]
+		public IRecordingLogger Logger { get; set; }
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.GetItems().Add( this );
+			fixture.Items().Add( this );
 			Logger.Information( "Logger initialized!" );
 			Register( () => Logger );
 			Register( fixture.TryCreate<IRecordingLogger> );

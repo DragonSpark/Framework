@@ -8,14 +8,14 @@ namespace DragonSpark.Testing.Activation
 {
 	public class FactoryTests
 	{
-		[Theory, Test, AutoData]
+		[Theory, Test, SetupAutoData]
 		void CreateActivation( Factory<Class> sut )
 		{
 			var creation = sut.Create<Class>();
 			Assert.NotNull( creation );
 		}
 
-		[Theory, Test, AutoData]
+		[Theory, Test, SetupAutoData]
 		void Create( Factory<Class> sut )
 		{
 			var factory = sut.To<IFactory>();

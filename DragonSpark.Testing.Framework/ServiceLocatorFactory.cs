@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Framework
 		protected override IServiceLocator CreateFrom( Type resultType, IFixture parameter )
 		{
 			var container = new UnityContainer().RegisterInstance( parameter );
-			var logger = parameter.GetLogger().With( rl => container.RegisterInstance<IRecordingLogger>( rl ) ) ?? container.Extension<IoCExtension>().Logger;
+			var logger = parameter.GetLogger().With( rl => container.RegisterInstance( rl ) ) ?? container.Extension<IoCExtension>().Logger;
 			container.RegisterInstance( logger );
 			var result = new ServiceLocator( container );
 			return result;

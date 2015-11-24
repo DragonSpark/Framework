@@ -22,10 +22,10 @@ namespace DragonSpark.ComponentModel
 		readonly Type hostType;
 		readonly string propertyName;
 
-		public SingletonAttribute( Type hostType ) : this( hostType, null )
+		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
 		{}
 
-		public SingletonAttribute( Type hostType, string propertyName = "Instance" )
+		public SingletonAttribute( Type hostType, string propertyName )
 		{
 			this.hostType = hostType;
 			this.propertyName = propertyName;

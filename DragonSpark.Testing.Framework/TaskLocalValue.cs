@@ -3,7 +3,7 @@ using DragonSpark.Runtime;
 
 namespace DragonSpark.Testing.Framework
 {
-	class TaskLocalValue : Value<object>
+	public class TaskLocalValue : Value<object>
 	{
 		readonly AsyncLocal<object> local = new AsyncLocal<object>();
 

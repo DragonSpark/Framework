@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( parameter, instance.Parameter );
 		}
 
-		[Theory, Test, AutoData]
+		[Theory, Test, SetupAutoData]
 		public void CreateInstance( [Registered]IActivator activator )
 		{
 			Assert.Same( DragonSpark.Activation.Activator.Current, activator );
@@ -41,7 +41,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( "DefaultActivation", instance.Name );
 		}
 
-		[Theory, Test, AutoData]
+		[Theory, Test, SetupAutoData]
 		public void CreateNamedInstance( [Registered]IActivator activator, string name )
 		{
 			Assert.Same( DragonSpark.Activation.Activator.Current, activator );
@@ -53,7 +53,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.Equal( name, instance.Name );
 		}
 
-		[Theory, Test, AutoData]
+		[Theory, Test, SetupAutoData]
 		public void CreateItem( [Registered]IActivator activator )
 		{
 			var parameters = new object[] { typeof(Object), "This is Some Name." };

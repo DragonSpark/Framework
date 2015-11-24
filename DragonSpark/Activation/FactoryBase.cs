@@ -17,15 +17,20 @@ namespace DragonSpark.Activation
 
 		protected abstract TResult CreateFrom( Type resultType, TParameter parameter );
 
-		public TResult Create( TParameter parameter = default(TParameter) )
+		public TResult Create()
+		{
+			return Create( default(TParameter) );
+		}
+
+		public TResult Create( TParameter parameter )
 		{
 			return Create( ResultType, parameter );
 		}
 
-		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
+		public TResult Create( Type resultType, TParameter parameter )
 		{
-			var type = resultType == typeof(object) || resultType == null ? ResultType : resultType;
-			var result = CreateFrom( type, parameter );
+			// var type = resultType == typeof(object) || resultType == null ? ResultType : resultType;
+			var result = CreateFrom( resultType, parameter );
 			return result;
 		}
 

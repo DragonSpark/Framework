@@ -1,10 +1,9 @@
-using System;
-using System.Linq;
-using System.Reflection;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture.Kernel;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -13,8 +12,8 @@ namespace DragonSpark.Testing.Framework
 		readonly IServiceLocator locator;
 		readonly Type[] passThrough;
 
-		public CanLocateSpecification( IServiceLocator locator ) : this( locator, FixtureContext.GetCurrent().GetCurrentMethod().GetParameters().Where( info => CustomAttributeExtensions.IsDefined( (ParameterInfo)info, typeof(SkipLocationAttribute) ) ).Select( info => info.ParameterType ).ToArray() )
-		{}
+		/*public CanLocateSpecification( IServiceLocator locator ) : this( locator, FixtureContext.GetCurrent().GetCurrentMethod().GetParameters().Where( info => info.IsDefined( typeof(SkipLocationAttribute) ) ).Select( info => info.ParameterType ).ToArray() )
+		{}*/
 
 		public CanLocateSpecification( IServiceLocator locator, params Type[] passThrough )
 		{
