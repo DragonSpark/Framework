@@ -1,9 +1,11 @@
-﻿using DragonSpark.Extensions;
-using System;
-
-namespace DragonSpark.Activation
+﻿namespace DragonSpark.Activation
 {
-	public interface IFactory<in TParameter, out TResult>
+	public interface IFactory<out T> : IFactory
+	{
+		T Create();
+	}
+
+	public interface IFactory<in TParameter, out TResult> : IFactory<TResult>
 	{
 		TResult Create( TParameter parameter );
 	}
@@ -11,11 +13,9 @@ namespace DragonSpark.Activation
 	public abstract class FactoryBase<TResult> : FactoryBase<object, TResult> where TResult : class
 	{}
 
-	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult>, IFactory where TResult : class
+	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
 	{
-		protected virtual Type ResultType => typeof(TResult);
-
-		protected abstract TResult CreateFrom( Type resultType, TParameter parameter );
+		protected abstract TResult CreateFrom( TParameter parameter );
 
 		public TResult Create()
 		{
@@ -24,19 +24,13 @@ namespace DragonSpark.Activation
 
 		public TResult Create( TParameter parameter )
 		{
-			return Create( ResultType, parameter );
-		}
-
-		public TResult Create( Type resultType, TParameter parameter )
-		{
-			// var type = resultType == typeof(object) || resultType == null ? ResultType : resultType;
-			var result = CreateFrom( resultType, parameter );
+			var result = CreateFrom( parameter );
 			return result;
 		}
 
-		object IFactory.Create( Type resultType, object parameter )
+		object IFactory.Create( object parameter )
 		{
-			var result = Create( resultType, parameter.To<TParameter>() );
+			var result = Create( parameter is TParameter ? (TParameter)parameter : default(TParameter) );
 			return result;
 		}
 	}

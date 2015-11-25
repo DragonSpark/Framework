@@ -1,4 +1,3 @@
-using DragonSpark.Activation;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
@@ -11,16 +10,7 @@ namespace DragonSpark.Windows.Setup
 {
 	public class UnityConventionRegistrationService : DragonSpark.Setup.UnityConventionRegistrationService
 	{
-		public UnityConventionRegistrationService( IUnityContainer container ) : base( container )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator ) : base( container, activator )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger ) : base( container, activator, logger )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger, ISingletonLocator locator ) : base( container, activator, logger, locator )
+		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger ) : base( container, logger )
 		{}
 
 		public override void Register( ConventionRegistrationProfile profile )
@@ -37,7 +27,7 @@ namespace DragonSpark.Windows.Setup
 				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => found.IsPublic && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
 			register.Apply( type => Logger.Information( $"Registering from convention: {type.FullName}" ) );
-			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, DetermineLifetimeContainer<ContainerControlledLifetimeManager>, overwriteExistingMappings: true );
+			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, Factory.Create, overwriteExistingMappings: true );
 		}
 	}
 }

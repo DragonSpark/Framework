@@ -36,7 +36,7 @@ namespace DragonSpark
 	{
 		static readonly Type[] Attributes = { typeof(AssemblyTitleAttribute), typeof(AssemblyProductAttribute), typeof(AssemblyCompanyAttribute), typeof(AssemblyDescriptionAttribute), typeof(AssemblyConfigurationAttribute), typeof(AssemblyCompanyAttribute) };
 
-		protected override AssemblyInformation CreateFrom( Type resultType, Assembly parameter )
+		protected override AssemblyInformation CreateFrom( Assembly parameter )
 		{
 			var result = new AssemblyInformation { Version = new Version( parameter.GetCustomAttribute<AssemblyVersionAttribute>().Transform( attribute => attribute.Version ) ?? "1.0.0.0" ) };
 

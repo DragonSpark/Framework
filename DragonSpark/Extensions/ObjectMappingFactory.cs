@@ -32,7 +32,7 @@ namespace DragonSpark.Extensions
 			this.activator = activator;
 		}
 
-		protected override T CreateFrom( Type resultType, ObjectMappingContext<T> parameter )
+		protected override T CreateFrom( ObjectMappingContext<T> parameter )
 		{
 			var sourceType = parameter.Source.GetType();
 			var destinationType = parameter.Existing?.GetType() ?? ( typeof(T) == typeof(object) ? sourceType : typeof(T) );

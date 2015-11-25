@@ -33,6 +33,12 @@ namespace DragonSpark.Runtime
 			return result;
 		}
 
+		public static implicit operator Type( TypeExtension extension )
+		{
+			var result = extension.type;
+			return result;
+		}
+
 		public object GetDefaultValue()
 		{
 			var result = info.IsValueType && Nullable.GetUnderlyingType( type ) == null ? Activator.CreateInstance( type ) : null;

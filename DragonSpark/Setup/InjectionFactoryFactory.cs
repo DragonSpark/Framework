@@ -17,7 +17,7 @@ namespace DragonSpark.Setup
 			this.parameter = parameter;
 		}
 
-		protected override InjectionFactory CreateFrom( Type resultType, InjectionMemberContext context )
+		protected override InjectionFactory CreateFrom( InjectionMemberContext context )
 		{
 			var previous = context.Container.Registrations.FirstOrDefault( x => x.RegisteredType == context.TargetType && x.MappedToType != x.RegisteredType ).Transform( x => x.MappedToType );
 
@@ -31,7 +31,7 @@ namespace DragonSpark.Setup
 
 		protected virtual object Create( IUnityContainer container, Type type, string buildName )
 		{
-			var result = factory.Create( type, parameter );
+			var result = factory.Create( parameter ?? type );
 			return result;
 		}
 	}

@@ -11,8 +11,9 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Test, SetupAutoData]
 		void CreateActivation( Factory<Class> sut )
 		{
-			var creation = sut.Create<Class>();
+			var creation = sut.Create();
 			Assert.NotNull( creation );
+			Assert.IsType<Class>( creation );
 		}
 
 		[Theory, Test, SetupAutoData]
@@ -22,7 +23,7 @@ namespace DragonSpark.Testing.Activation
 			var result = factory.Create( typeof(object) );
 			Assert.IsType<Class>( result );
 
-			var @class = factory.Create<Class>();
+			var @class = factory.Create( null );
 			Assert.NotNull( @class );
 		}
 	}

@@ -7,10 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Setup;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IDisposable
+	public class ServiceLocator : ServiceLocatorImplBase, IDisposable
 	{
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
@@ -23,8 +24,6 @@ namespace DragonSpark.Activation.IoC
 			this.container = container;
 			this.container
 				.RegisterInstance<IServiceLocator>( this )
-				.RegisterInstance<IServiceRegistry>( this )
-				// .RegisterInstance<IObjectBuilder>( this )
 				.Extension<IoCExtension>();
 		}
 
@@ -89,30 +88,5 @@ namespace DragonSpark.Activation.IoC
 				Container.Dispose();
 			} );
 		}
-
-		public void Register( Type @from, Type mappedTo, string name = null )
-		{
-			container.RegisterType( from, mappedTo, name );
-		}
-
-		public void Register( Type type, object instance )
-		{
-			container.RegisterInstance( type, instance );
-		}
-
-		public void RegisterFactory( Type type, Func<object> factory )
-		{
-			container.RegisterType( type, new InjectionFactory( x =>
-			{
-				var item = factory();
-				return item;
-			} ) );
-		}
-
-		/*public object BuildUp( object item )
-		{
-			var result = Container.BuildUp( item.GetType(), item );
-			return result;
-		}*/
 	}
 }

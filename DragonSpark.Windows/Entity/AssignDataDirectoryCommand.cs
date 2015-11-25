@@ -6,7 +6,6 @@ using DragonSpark.Windows.Io;
 using DragonSpark.Windows.Properties;
 using DragonSpark.Windows.Runtime;
 using Microsoft.Practices.Unity;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
@@ -86,7 +85,7 @@ namespace DragonSpark.Windows.Entity
 			this.context = context;
 		}
 
-		protected override FileInfo CreateFrom( Type resultType, object parameter )
+		protected override FileInfo CreateFrom( object parameter )
 		{
 			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().Transform( DbProviderServices.ExpandDataDirectory ).Transform( s => new FileInfo( s ) );
 			return result;

@@ -12,13 +12,13 @@ namespace DragonSpark.Testing.Framework
 	public class ServiceLocationCustomization : ICustomization, IAfterTestAware
 	{
 		[Activate]
-		public IServiceLocator Locator { get; private set; }
+		public IServiceLocator Locator { get; set; }
 
 		[Activate]
-		public IServiceLocation Location { get; private set; }
+		public IServiceLocation Location { get; set; }
 
 		[Activate]
-		public IServiceLocationAuthority Authority { get; private set; }
+		public IServiceLocationAuthority Authority { get; set; }
 
 		public void Customize( IFixture fixture )
 		{

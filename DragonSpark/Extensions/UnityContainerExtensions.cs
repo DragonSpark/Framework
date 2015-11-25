@@ -63,6 +63,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		/*public static T Construct<T>( this IUnityContainer @this, params object[] parameters )
+		{
+			var result = @this.Resolve<IActivator>().Construct<T>( parameters );
+			return result;
+		}*/
+
 		public static T Resolve<T, TDefault>( this IUnityContainer @this ) where TDefault : T
 		{
 			var result = (T)@this.ResolveFirst( typeof(T), typeof(TDefault) );

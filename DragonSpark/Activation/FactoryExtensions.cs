@@ -2,10 +2,10 @@ namespace DragonSpark.Activation
 {
 	public static class FactoryExtensions
 	{
-		public static T Create<T>( this IFactory @this, object parameter = null )
+		/*public static T Create<T>( this IFactory @this, object parameter = null )
 		{
-			var result = (T)@this.Create( typeof(T), parameter );
+			var result = (T)@this.Create( parameter );
 			return result;
-		}
+		}*/
 	}
 }

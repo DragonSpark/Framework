@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,10 +34,13 @@ namespace DragonSpark.Setup
 			return result;
 		}
 
-		protected virtual TypeInfo[] DetermineCandidateTypes( Assembly[] assemblies )
+		protected virtual Type[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
 			var result = assemblies
-				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract ).Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<TypeInfo>>( attribute => attribute.IgnoreForRegistration.AsTypeInfos() ) ) ).ToArray();
+				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract )
+				.AsTypes()
+				.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) ) )
+				.ToArray();
 			return result;
 		}
 	}

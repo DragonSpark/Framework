@@ -1,56 +1,108 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
+using DragonSpark.Runtime;
 using Microsoft.Practices.Unity;
 using System;
-using System.Linq;
-using DragonSpark.Activation.IoC;
 
 namespace DragonSpark.Setup
 {
-	public class UnityConventionRegistrationService : IConventionRegistrationService
+	/*public class ConventionRegistrationContext
 	{
-		public UnityConventionRegistrationService( IUnityContainer container ) : this( container, container.Resolve( container.Extension<IoCExtension>().CreateActivator ) )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator ) : this( container, activator, container.Resolve( () => container.Extension<IoCExtension>().Logger ) )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger ) : this( container, activator, logger, SingletonLocator.Instance )
-		{}
-
-		public UnityConventionRegistrationService( IUnityContainer container, IActivator activator, ILogger logger, ISingletonLocator locator )
+		public ConventionRegistrationContext( IUnityContainer container ) : this( container,  )
 		{
-			Activator = activator;
-			Container = container;
-			Logger = logger;
-			Locator = locator;
 		}
 
-		protected IUnityContainer Container { get; }
+		public ConventionRegistrationContext( IUnityContainer container, IServiceRegistry registry ) : this( container, registry, container.DetermineLogger() )
+		{}
 
-		protected IActivator Activator { get; }
-
-		protected ILogger Logger { get; }
-
-		protected ISingletonLocator Locator { get; }
-
-		protected virtual LifetimeManager DetermineLifetimeContainer<T>( Type type ) where T : LifetimeManager
+		public ConventionRegistrationContext( IUnityContainer container, IServiceRegistry registry, ILogger logger )
 		{
-			var result = Activator.Activate<LifetimeManager>( type.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType ) ?? typeof(T) );
-			Locator.Locate( type ).With( result.SetValue );
+			Container = container;
+			Registry = registry;
+			Logger = logger;
+		}
+
+		public IUnityContainer Container { get; }
+
+		public IServiceRegistry Registry { get; set; }
+
+		public ILogger Logger { get; }
+	}*/
+
+	public class LifetimeManagerFactory<T> : LifetimeManagerFactory where T : LifetimeManager
+	{
+		public LifetimeManagerFactory()
+		{}
+
+		public LifetimeManagerFactory( IActivator activator ) : base( activator )
+		{}
+
+		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, locator )
+		{}
+
+		protected override Type DetermineType( Type parameter )
+		{
+			return base.DetermineType( parameter ) ?? typeof(T);
+		}
+	}
+
+	public class LifetimeManagerFactory : ActivateFactory<LifetimeManager>
+	{
+		readonly ISingletonLocator locator;
+
+		public LifetimeManagerFactory() : this( Activation.Activator.Current )
+		{}
+
+		public LifetimeManagerFactory( IActivator activator ) : this( activator, SingletonLocator.Instance )
+		{}
+
+		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator )
+		{
+			this.locator = locator;
+		}
+
+		protected sealed override LifetimeManager CreateFrom( Type parameter )
+		{
+			var result = DetermineType( parameter ).Transform( Activator.Activate<LifetimeManager> ).With( manager =>
+			{
+				locator.Locate( parameter ).With( manager.SetValue );
+			} );;
 			return result;
 		}
 
+		protected virtual Type DetermineType( Type parameter )
+		{
+			var result = parameter.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
+			return result;
+		}
+	}
+
+	public class UnityConventionRegistrationService : IConventionRegistrationService
+	{
+		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger  ) : this( container, logger, new LifetimeManagerFactory<ContainerControlledLifetimeManager>( container.Resolve<IActivator>() ) )
+		{}
+
+		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger, IFactory<Type, LifetimeManager> factory  )
+		{
+			Container = container;
+			Logger = logger;
+			Factory = factory;
+		}
+
+		protected IUnityContainer Container { get; }
+		protected ILogger Logger { get; }
+		protected IFactory<Type, LifetimeManager> Factory { get; }
+
 		public virtual void Register( ConventionRegistrationProfile profile )
 		{
-			profile.Candidates.WhereDecorated<RegisterAsAttribute>().Apply( item => item.Item2.AsType().With( type =>
-			{
-				Logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, item.Item1.As, type ) );
-
-				Container.RegisterType( item.Item1.As ?? type.Extend().GetAllInterfaces().First(), type, item.Item1.Name, DetermineLifetimeContainer<ContainerControlledLifetimeManager>( type ) );
-			} ) );
+			var registry = new ServiceRegistry( Container, Logger, Factory );
+			
+			profile.Candidates
+				.AsTypeInfos()
+				.WhereDecorated<RegistrationBaseAttribute>()
+				.Apply( item => item.Item1.Register( registry, item.Item2.AsType() ) );
 		}
 	}
 }

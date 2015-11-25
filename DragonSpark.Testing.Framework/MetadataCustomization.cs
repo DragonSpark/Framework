@@ -1,7 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
-using System;
 using System.Linq;
 using System.Reflection;
 
@@ -11,7 +10,7 @@ namespace DragonSpark.Testing.Framework
 	{
 		public static MetadataCustomizationFactory Instance { get; } = new MetadataCustomizationFactory();
 
-		protected override ICustomization[] CreateFrom( Type resultType, MethodInfo parameter )
+		protected override ICustomization[] CreateFrom( MethodInfo parameter )
 		{
 			var type = parameter.DeclaringType;
 			var items = type.Transform( t => t.Assembly.GetCustomAttributes() )

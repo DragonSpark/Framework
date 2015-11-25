@@ -1,10 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Extensions;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
 
 // Based on/Credit: http://blogs.msdn.com/b/ifeanyie/archive/2010/03/27/9986217.aspx
 namespace DragonSpark.Windows.Markup
@@ -43,8 +42,15 @@ namespace DragonSpark.Windows.Markup
 					case "System.Windows.SharedDp":
 						return this;
 					default:
-						return Builders.FirstOrDefault( builder => builder.Handles( service ) )
-							.Transform( builder => BeginProvideValue( Prepare( serviceProvider, service, builder ), builder.Create<IMarkupTargetValueSetter>( serviceProvider ) ) );
+						return Builders
+							.FirstOrDefault( builder => builder.Handles( service ) )
+							.Transform( builder =>
+							{
+								var provider = Prepare( serviceProvider, service, builder );
+								var setter = builder.Create( service );
+								var value = BeginProvideValue( provider, setter );
+								return value;
+							} );
 				}
 			}
 

@@ -1,7 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Runtime;
 using Microsoft.Practices.ServiceLocation;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
@@ -10,7 +9,7 @@ namespace DragonSpark.Testing.Framework
 	{
 		public static AmbientLocatorKeyFactory Instance { get; } = new AmbientLocatorKeyFactory();
 
-		protected override IAmbientKey CreateFrom( Type resultType, MethodInfo parameter )
+		protected override IAmbientKey CreateFrom( MethodInfo parameter )
 		{
 			var specification = new CurrentMethodSpecification( parameter ).Or( new CurrentTaskSpecification() );
 			var result = new AmbientKey<IServiceLocator>( specification );

@@ -1,5 +1,4 @@
 using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using Microsoft.Practices.Unity;
 using System;
@@ -19,11 +18,12 @@ namespace DragonSpark.Setup
 			this.activator = activator;
 		}
 
-		protected override Array CreateFrom( Type resultType, Type parameter )
+		protected override Array CreateFrom( Type parameter )
 		{
-			var type = parameter ?? resultType.Extend().GetInnerType() ?? resultType;
-			var items = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes.Where( type.Extend().CanLocate ) ).Select( activator.Activate<object> ).ToArray();
-			var result = Array.CreateInstance( type, items.Length );
+			// var type = parameter ?? resultType.Extend().GetInnerType() ?? resultType;
+			var types = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes );
+			var items = activator.ActivateMany( parameter, types ).ToArray();
+			var result = Array.CreateInstance( parameter, items.Length );
 			Array.Copy( items, result, items.Length );
 			return result;
 		}

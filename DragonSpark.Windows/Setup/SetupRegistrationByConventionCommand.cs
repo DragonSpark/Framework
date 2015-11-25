@@ -1,4 +1,3 @@
-using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
@@ -11,12 +10,6 @@ namespace DragonSpark.Windows.Setup
 		[ComponentModel.Singleton( typeof(AssemblyProvider) )]
 		public IAssemblyProvider AssemblyLocator { get; set; }
 
-		[ComponentModel.Singleton( typeof(SingletonLocator) )]
-		public ISingletonLocator SingletonLocator { get; set; }
-
-		[ComponentModel.Singleton( typeof(SystemActivator) )]
-		public IActivator Activator { get; set; }
-
 		protected override IConventionRegistrationProfileProvider DetermineProfileProvider( SetupContext context )
 		{
 			var result = new ConventionRegistrationProfileProvider( AssemblyLocator );
@@ -25,7 +18,7 @@ namespace DragonSpark.Windows.Setup
 
 		protected override IConventionRegistrationService DetermineService( SetupContext context )
 		{
-			var result = new UnityConventionRegistrationService( context.Container(), Activator, context.Logger, SingletonLocator );
+			var result = new UnityConventionRegistrationService( context.Container(), context.Logger );
 			return result;
 		}
 	}

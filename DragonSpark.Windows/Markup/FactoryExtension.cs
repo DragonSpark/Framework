@@ -1,6 +1,6 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -29,7 +29,7 @@ namespace DragonSpark.Windows.Markup
 		protected virtual object Create( IFactory factory, IServiceProvider serviceProvider )
 		{
 			var type = serviceProvider.Get<DeferredContext>().PropertyType;
-			var result = factory.Create( type, DetermineParameter( serviceProvider ) );
+			var result = factory.Create( DetermineParameter( serviceProvider ) ?? type );
 			return result;
 		}
 

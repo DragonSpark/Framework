@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Setup
+namespace DragonSpark.Runtime
 {
 	public interface ISingletonLocator
 	{

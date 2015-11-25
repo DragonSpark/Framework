@@ -311,7 +311,7 @@
     <Compile Include="Setup\IProgram.cs" />
     <Compile Include="Setup\IRegistrationTypeContext.cs" />
     <Compile Include="Setup\ISetup.cs" />
-    <Compile Include="Setup\ISingletonLocator.cs" />
+    <Compile Include="Runtime\ISingletonLocator.cs" />
     <Compile Include="Setup\Program.cs" />
     <Compile Include="Setup\RegisterAsAttribute.cs" />
     <Compile Include="Setup\RegisterFrameworkExceptionTypesCommand.cs" />
@@ -330,8 +330,8 @@
     <Compile Include="Setup\RegistrationAttribute.cs" />
     <Compile Include="Setup\SetupUnityCommand.cs" />
     <Compile Include="Setup\SetupUnityContainerCommand.cs" />
-    <Compile Include="Setup\SingletonAttribute.cs" />
-    <Compile Include="Setup\SingletonLocator.cs" />
+    <Compile Include="Runtime\SingletonInstanceAttribute.cs" />
+    <Compile Include="Runtime\SingletonLocator.cs" />
     <Compile Include="Setup\UnityCommand.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
