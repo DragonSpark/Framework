@@ -9,19 +9,23 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocatorCustomization : ICustomization, IAfterTestAware
+	public class ServiceLocationCustomization : ICustomization, IAfterTestAware
 	{
 		[Activate]
-		public IServiceLocator Locator { get; set; }
+		public IServiceLocator Locator { get; private set; }
 
 		[Activate]
-		public IServiceLocation Location { get; set; }
+		public IServiceLocation Location { get; private set; }
+
+		[Activate]
+		public IServiceLocationAuthority Authority { get; private set; }
 
 		public void Customize( IFixture fixture )
 		{
 			fixture.Items().Add( this );
 
-			fixture.ResidueCollectors.Add( new ServiceLocationRelay( Locator ) );
+			var relay = new ServiceLocationRelay( Locator, new AuthorizedLocationSpecification( Locator, Authority ) );
+			fixture.ResidueCollectors.Add( relay );
 		}
 
 		public void After( IFixture fixture, MethodInfo methodUnderTest )

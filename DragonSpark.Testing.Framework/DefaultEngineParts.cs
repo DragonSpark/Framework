@@ -1,14 +1,13 @@
-using System.Collections.Generic;
-using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
+using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class GreedyEngineParts : DefaultEngineParts
+	public class DefaultEngineParts : Ploeh.AutoFixture.DefaultEngineParts
 	{
 		readonly MethodInvoker invoker = new MethodInvoker( new CompositeMethodQuery( new GreedyConstructorQuery(), new FactoryMethodQuery() ) );
 
-		public static GreedyEngineParts Instance { get; } = new GreedyEngineParts();
+		public static DefaultEngineParts Instance { get; } = new DefaultEngineParts();
 
 		public override IEnumerator<ISpecimenBuilder> GetEnumerator()
 		{

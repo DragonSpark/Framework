@@ -21,7 +21,7 @@
 	</setup:SetupUnityContainerCommand>
 	<!--<setupPlatform:InitializeMarkupCommand />-->
 	<local:CustomizeFixtureCommand>
-		<local:ServiceLocatorCustomization />
+		<local:ServiceLocationCustomization />
 		<local:OutputCustomization />
 		<local:LoggingRegistrationCustomization />
 		<autoMoq:AutoConfiguredMoqCustomization />

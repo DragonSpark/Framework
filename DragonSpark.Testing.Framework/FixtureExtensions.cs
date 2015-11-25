@@ -1,15 +1,29 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
 	public static class FixtureExtensions
 	{
-		static TResult Get<T, TResult>( IFixture fixture, Func<T, TResult> resolve )
+		public static MethodInfo GetCurrentMethod( this IFixture @this )
+		{
+			var result = Get<CurrentMethodCustomization, MethodInfo>( @this, customization => customization.Method );
+			return result;
+		}
+
+		public static IServiceLocator GetLocator( this IFixture @this )
+		{
+			var result = Get<ServiceLocationCustomization, IServiceLocator>( @this, customization => customization.Locator );
+			return result;
+		}
+
+		static TResult Get<T, TResult>( IFixture fixture, Func<T, TResult> resolve ) where T : ICustomization
 		{
 			var result = fixture.Items().FirstOrDefaultOfType<T>().Transform( resolve );
 			return result;
@@ -21,7 +35,7 @@ namespace DragonSpark.Testing.Framework
 			return result;
 		}
 
-		public static T Item<T>( this IFixture @this )
+		public static T Item<T>( this IFixture @this ) where T : ICustomization
 		{
 			var result = Get<T, T>( @this, item => item );
 			return result;

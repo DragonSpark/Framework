@@ -179,11 +179,12 @@
     <Compile Include="DefaultSetup.xaml.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IServiceLocationAuthority.cs" />
     <Compile Include="MetadataCustomization.cs" />
     <Compile Include="Customizations.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="FromCustomization.cs" />
-    <Compile Include="GreedyEngineParts.cs" />
+    <Compile Include="DefaultEngineParts.cs" />
     <Compile Include="IAfterTestAware.cs" />
     <Compile Include="OutputCustomization.cs" />
     <Compile Include="RecordingLogger.cs" />
@@ -205,7 +206,8 @@
     <Compile Include="RegistrationAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ServiceLocatorCustomization.cs" />
+    <Compile Include="ServiceLocationCustomization.cs" />
+    <Compile Include="LocatedAttribute.cs" />
     <Compile Include="TaskLocalValue.cs" />
     <Compile Include="TestAttribute.cs" />
     <Compile Include="Tests.cs" />
