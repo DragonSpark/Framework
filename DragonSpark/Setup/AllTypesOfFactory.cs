@@ -18,7 +18,7 @@ namespace DragonSpark.Setup
 			this.activator = activator;
 		}
 
-		protected override Array CreateFrom( Type parameter )
+		protected override Array CreateItem( Type parameter )
 		{
 			// var type = parameter ?? resultType.Extend().GetInnerType() ?? resultType;
 			var types = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes );

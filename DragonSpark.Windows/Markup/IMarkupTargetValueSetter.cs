@@ -29,7 +29,7 @@ namespace DragonSpark.Windows.Markup
 			return result;
 		}
 
-		protected sealed override IMarkupTargetValueSetter CreateFrom( IProvideValueTarget parameter )
+		protected sealed override IMarkupTargetValueSetter CreateItem( IProvideValueTarget parameter )
 		{
 			var result = Create( (TTarget)parameter.TargetObject, (TProperty)parameter.TargetProperty );
 			return result;

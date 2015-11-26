@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "DragonSpark.Testing" )]
 [assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
+// [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "The DragonSpark Framework" )]
 [assembly: AssemblyProduct( "DragonSpark.Testing" )]
 [assembly: AssemblyCopyright( "Copyright © The DragonSpark Framework 2011" )]

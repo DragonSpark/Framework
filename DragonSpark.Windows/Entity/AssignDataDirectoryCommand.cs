@@ -76,7 +76,7 @@ namespace DragonSpark.Windows.Entity
 		}
 	}
 
-	public class AttachedDatabaseFileFactory : Factory<FileInfo>
+	public class AttachedDatabaseFileFactory : FactoryBase<FileInfo>
 	{
 		readonly DbContext context;
 
@@ -85,7 +85,7 @@ namespace DragonSpark.Windows.Entity
 			this.context = context;
 		}
 
-		protected override FileInfo CreateFrom( object parameter )
+		protected override FileInfo CreateItem()
 		{
 			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().Transform( DbProviderServices.ExpandDataDirectory ).Transform( s => new FileInfo( s ) );
 			return result;

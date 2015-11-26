@@ -1,14 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Utility;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class ArrayResolutionStrategy : Microsoft.Practices.Unity.ArrayResolutionStrategy
+	{
+		public override void PreBuildUp( IBuilderContext context )
+		{
+			if ( !context.HasBuildPlan() )
+			{
+				base.PreBuildUp( context );
+			}
+		}
+	}
+
 	public class EnumerableResolutionStrategy : BuilderStrategy
 	{
 		delegate object Resolver( IBuilderContext context );
@@ -18,14 +28,17 @@ namespace DragonSpark.Activation.IoC
 		public override void PreBuildUp( IBuilderContext context )
 		{
 			Guard.ArgumentNotNull( context, nameof(context) );
-			var type = context.BuildKey.Type;
-			var info = type.GetTypeInfo();
-			if ( info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IEnumerable<>) )
+			if ( !context.HasBuildPlan() )
 			{
-				var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.Extend().GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
+				var type = context.BuildKey.Type;
+				var info = type.GetTypeInfo();
+				if ( info.IsGenericType && info.GetGenericTypeDefinition() == typeof(IEnumerable<>) )
+				{
+					var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.Extend().GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
 
-				context.Existing = resolver( context );
-				context.BuildComplete = true;
+					context.Existing = resolver( context );
+					context.BuildComplete = true;
+				}
 			}
 		}
 

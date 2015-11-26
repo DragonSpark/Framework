@@ -10,6 +10,12 @@ namespace DragonSpark.Extensions
 {
 	public static class BuilderContextExtensions
 	{
+		public static bool HasBuildPlan( this IBuilderContext @this )
+		{
+			var result = @this.Policies.GetNoDefault<IBuildPlanPolicy>( @this.BuildKey, false ) != null;
+			return result;
+		}
+
 		public static bool IsRegistered( this IBuilderContext @this, NamedTypeBuildKey key )
 		{
 			var policy = @this.Policies.GetNoDefault<IBuildKeyMappingPolicy>( key, false );

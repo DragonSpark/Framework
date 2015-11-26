@@ -9,9 +9,9 @@ namespace DragonSpark.Testing.Activation
 	public class FactoryTests
 	{
 		[Theory, Test, SetupAutoData]
-		void CreateActivation( Factory<Class> sut )
+		void CreateActivation( ActivateFactory<Class> sut )
 		{
-			var creation = sut.Create();
+			var creation = sut.Create( null );
 			Assert.NotNull( creation );
 			Assert.IsType<Class>( creation );
 		}
@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Test, SetupAutoData]
 		void Create( Factory<Class> sut )
 		{
-			var factory = sut.To<IFactory>();
+			var factory = sut.To<IFactoryWithParameter>();
 			var result = factory.Create( typeof(object) );
 			Assert.IsType<Class>( result );
 

@@ -18,7 +18,7 @@ namespace DragonSpark.ComponentModel
 
 	class AttributeProviderFactory : Factory<Type, IAttributeProvider>, IAttributeProviderFactory
 	{
-		protected override IAttributeProvider CreateFrom( Type parameter )
+		protected override IAttributeProvider CreateItem( Type parameter )
 		{
 			return new AttributeProvider( parameter.GetTypeInfo() );
 		}

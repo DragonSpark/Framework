@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Framework
 	{
 		public static AmbientLocatorKeyFactory Instance { get; } = new AmbientLocatorKeyFactory();
 
-		protected override IAmbientKey CreateFrom( MethodInfo parameter )
+		protected override IAmbientKey CreateItem( MethodInfo parameter )
 		{
 			var specification = new CurrentMethodSpecification( parameter ).Or( new CurrentTaskSpecification() );
 			var result = new AmbientKey<IServiceLocator>( specification );

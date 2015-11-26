@@ -32,7 +32,7 @@ namespace DragonSpark.Windows.Markup
 			this.baseDirectory = baseDirectory ?? ;
 		}
 
-		protected override DirectoryInfo CreateFrom( Type resultType, string parameter )
+		protected override DirectoryInfo CreateItem( Type resultType, string parameter )
 		{
 			// var directory = Directory.CreateDirectory( Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "Reports" ) );
 			

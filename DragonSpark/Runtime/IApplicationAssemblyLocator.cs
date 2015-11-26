@@ -1,41 +1,35 @@
+using DragonSpark.Activation;
+using DragonSpark.Setup;
 using System;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Activation;
-using DragonSpark.Setup;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Runtime
 {
-	public interface IApplicationAssemblyLocator
-	{
-		Assembly Locate();
-	}
+	public interface IApplicationAssemblyLocator : IFactory<Assembly>
+	{}
 
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public class ApplicationAttribute : Attribute
 	{}
 
-	[RegisterResultType]
-	public class AssembliesFactory : Factory<Assembly[]>
+	[RegisterFactoryForResult]
+	public class AssembliesFactory : FactoryBase<Assembly[]>
 	{
 		readonly IAssemblyProvider provider;
 
-		public AssembliesFactory( IAssemblyProvider provider ) : this( provider, Activator.Current )
-		{}
-
-		public AssembliesFactory( IAssemblyProvider provider, IActivator activator ) : base( activator )
+		public AssembliesFactory( IAssemblyProvider provider )
 		{
 			this.provider = provider;
 		}
 
-		protected override Assembly[] CreateFrom( object parameter )
+		protected override Assembly[] CreateItem()
 		{
 			return provider.GetAssemblies();
 		}
 	}
 
-	public class ApplicationAssemblyLocator : IApplicationAssemblyLocator
+	public class ApplicationAssemblyLocator : FactoryBase<Assembly>, IApplicationAssemblyLocator
 	{
 		readonly Assembly[] assemblies;
 
@@ -44,7 +38,7 @@ namespace DragonSpark.Runtime
 			this.assemblies = assemblies;
 		}
 
-		public Assembly Locate()
+		protected override Assembly CreateItem()
 		{
 			var result = assemblies.SingleOrDefault( assembly => assembly.GetCustomAttribute<ApplicationAttribute>() != null );
 			return result;

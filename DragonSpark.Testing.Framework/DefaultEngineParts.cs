@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Framework
 			builder = new FilteringSpecimenBuilder( greedy, new InverseRequestSpecification( any ) );
 		}
 
-		protected override ISpecimenBuilder CreateFrom( ISpecimenBuilder parameter )
+		protected override ISpecimenBuilder CreateItem( ISpecimenBuilder parameter )
 		{
 			var result = new CompositeSpecimenBuilder( builder, new FilteringSpecimenBuilder( parameter, any ) );
 			return result;

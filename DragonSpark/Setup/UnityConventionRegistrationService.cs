@@ -63,7 +63,7 @@ namespace DragonSpark.Setup
 			this.locator = locator;
 		}
 
-		protected sealed override LifetimeManager CreateFrom( Type parameter )
+		protected sealed override LifetimeManager CreateItem( Type parameter )
 		{
 			var result = DetermineType( parameter ).Transform( Activator.Activate<LifetimeManager> ).With( manager =>
 			{

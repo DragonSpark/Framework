@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Framework
 			this.activator = activator;
 		}
 
-		protected override IEnumerable<T> CreateFrom( Type[] parameter )
+		protected override IEnumerable<T> CreateItem( Type[] parameter )
 		{
 			var types = DetermineTypes( parameter );
 			var result = activator.ActivateMany<T>( types );

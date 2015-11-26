@@ -5,7 +5,11 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Microsoft.Practices.Unity.Utility;
 using LifetimeManagerFactory = DragonSpark.Setup.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
@@ -17,8 +21,21 @@ namespace DragonSpark.Activation.IoC
 		protected override IDependencyResolverPolicy CreateResolver( ParameterInfo parameter )
 		{
 			var isOptional = parameter.IsOptional && !parameter.IsDefined( typeof(OptionalDependencyAttribute) );
-			var dependencyResolverPolicy = base.CreateResolver( parameter );
-			var result = isOptional ? parameter.ParameterType.GetTypeInfo().IsValueType || parameter.ParameterType == typeof(string) ? (IDependencyResolverPolicy)new LiteralValueDependencyResolverPolicy( parameter.DefaultValue ) : new OptionalDependencyResolverPolicy( parameter.ParameterType ) : dependencyResolverPolicy;
+			var result = isOptional ? 
+							parameter.ParameterType.GetTypeInfo().IsValueType || parameter.ParameterType == typeof(string) 
+							?
+							(IDependencyResolverPolicy)new LiteralValueDependencyResolverPolicy( parameter.DefaultValue ) 
+							: 
+							new OptionalDependencyResolverPolicy( parameter.ParameterType ) 
+						: CreateResolverOverride( parameter );
+			return result;
+		}
+
+		static IDependencyResolverPolicy CreateResolverOverride( ParameterInfo parameter )
+		{
+			var attributes = parameter.GetCustomAttributes( false ) ?? Enumerable.Empty<Attribute>();
+			var list = attributes.OfType<DependencyResolutionAttribute>().ToList();
+			var result = list.Any() ? list.First().CreateResolver( parameter.ParameterType ) : new NamedTypeDependencyResolverPolicy( parameter.ParameterType, null );
 			return result;
 		}
 	}
@@ -85,7 +102,14 @@ namespace DragonSpark.Activation.IoC
 		protected override void Initialize()
 		{
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
-			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.PreCreation );
+
+			Context.Strategies.Clear();
+			Context.Strategies.AddNew<BuildKeyMappingStrategy>( UnityBuildStage.TypeMapping );
+			Context.Strategies.AddNew<HierarchicalLifetimeStrategy>( UnityBuildStage.Lifetime );
+			Context.Strategies.AddNew<LifetimeStrategy>( UnityBuildStage.Lifetime );
+			Context.Strategies.AddNew<ArrayResolutionStrategy>( UnityBuildStage.Creation );
+			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
+			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
 
 			//Context.Strategies.Add( CurrentBuildKeyStrategy, UnityBuildStage.Setup );

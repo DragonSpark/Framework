@@ -99,7 +99,7 @@ namespace DragonSpark.Diagnostics
 			this.formatter = formatter;
 		}
 
-		protected override string CreateFrom( Type resultType, ExceptionMessageContext parameter )
+		protected override string CreateItem( Type resultType, ExceptionMessageContext parameter )
 		{
 			var result = formatter.FormatMessage( parameter.Exception, parameter.ContextId );
 			return result;

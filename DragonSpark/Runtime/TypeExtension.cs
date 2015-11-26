@@ -1,12 +1,11 @@
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity.Utility;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.Setup;
-using Microsoft.Practices.Unity.Utility;
 
 namespace DragonSpark.Runtime
 {
@@ -147,6 +146,12 @@ namespace DragonSpark.Runtime
 		public Type[] GetAllHierarchy()
 		{
 			var result = ExpandInterfaces( type ).Union( GetHierarchy( false ) ).Distinct().ToArray();
+			return result;
+		}
+
+		public bool IsInstanceOfType( object context )
+		{
+			var result = context.Transform( o => IsAssignableFrom( o.GetType() ) );
 			return result;
 		}
 	}

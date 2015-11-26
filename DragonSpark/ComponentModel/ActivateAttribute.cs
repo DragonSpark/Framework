@@ -1,7 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using DragonSpark.Setup;
 using System;
 using System.Reflection;
 
@@ -9,9 +8,9 @@ namespace DragonSpark.ComponentModel
 {
 	public class ValueAttribute : ActivateAttribute
 	{
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
 		{
-			var item = base.GetValue( instance, propertyInfo );
+			var item = base.Activate( instance, info, type, s );
 			var result = item.AsTo<IValue, object>( value => value.Item );
 			return result;
 		}
@@ -64,10 +63,16 @@ namespace DragonSpark.ComponentModel
 			this.name = name;
 		}
 
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		protected internal sealed override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
 			var type = activatedType ?? DetermineType( propertyInfo );
-			var result = activator.Activate<object>( type, name );
+			var result = Activate( instance, propertyInfo, type, name );
+			return result;
+		}
+
+		protected virtual object Activate( object instance, PropertyInfo info, Type type, string s )
+		{
+			var result = activator.Activate<object>( type, s );
 			return result;
 		}
 
