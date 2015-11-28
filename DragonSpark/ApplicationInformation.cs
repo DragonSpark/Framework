@@ -1,4 +1,5 @@
 using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using System;
@@ -10,6 +11,7 @@ namespace DragonSpark
 {
 	public class ApplicationInformation
 	{
+		[Activate]
 		public AssemblyInformation AssemblyInformation { get; set; }
 
 		public Uri CompanyUri { get; set; }
@@ -50,7 +52,7 @@ namespace DragonSpark
 		protected override AssemblyInformation CreateItem( Assembly parameter )
 		{
 			var result = new AssemblyInformation();
-			parameter.GetName().Append(  Attributes.Select( parameter.GetCustomAttribute ).Cast<object>() ).NotNull().Apply( attribute => attribute.MapInto( result ) );
+			parameter.GetName().Append( Attributes.Select( parameter.GetCustomAttribute ).Cast<object>().NotNull() ).Apply( item => item.MapInto( result ) );
 			result.Configuration = result.Configuration.NullIfEmpty() ?? parameter.FromMetadata<DebuggableAttribute, string>( attribute => "DEBUG" );
 			return result;
 		}

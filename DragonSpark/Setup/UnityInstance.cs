@@ -2,6 +2,9 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System.Windows.Markup;
+using DragonSpark.Activation;
+using DragonSpark.Runtime;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Setup
 {
@@ -17,7 +20,11 @@ namespace DragonSpark.Setup
 
 		protected override void Configure( IUnityContainer container )
 		{
-			var instance = ResolveInstance( container );
+			var tempasdf = container.GetHashCode();
+			var uiasdf = Services.Location.Locator.GetHashCode();
+			var also = container.Resolve<IServiceLocator>() == Services.Location.Locator;
+			var temp = Services.Location.Locator == AmbientValues.Get<IServiceLocator>();
+			var instance = ResolveInstance( container ).BuildUp();
 			var type = RegistrationType ?? instance.Transform( item => item.GetType() );
 			var registration = instance.ConvertTo( type );
 			var to = registration.GetType();

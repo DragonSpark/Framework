@@ -2,6 +2,7 @@ using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using System;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -21,7 +22,7 @@ namespace DragonSpark.Windows.Markup
 
 		protected override IFactory<ObjectFactoryParameter, object> DetermineFactory( IServiceProvider serviceProvider )
 		{
-			return FactoryBuiltObjectFactory.Instance;
+			return Activator.Current.Activate<FactoryBuiltObjectFactory>();
 		}
 
 		protected override ObjectFactoryParameter DetermineParameter( IServiceProvider serviceProvider )

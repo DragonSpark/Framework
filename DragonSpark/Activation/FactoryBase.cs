@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
+using System.Linq;
 
 namespace DragonSpark.Activation
 {
@@ -10,11 +10,19 @@ namespace DragonSpark.Activation
 
 	public class FactoryParameterQualifier<TParameter> : IFactoryParameterQualifier<TParameter>
 	{
-		public static FactoryParameterQualifier<TParameter> Instance { get; } = new FactoryParameterQualifier<TParameter>();
+		readonly IActivator activator;
+		
+		public FactoryParameterQualifier() : this( Activator.Current )
+		{}
+
+		public FactoryParameterQualifier( IActivator activator )
+		{
+			this.activator = activator;
+		}
 
 		public TParameter Qualify( object context )
 		{
-			var result = context is TParameter ? (TParameter)context : context.Transform( Construct );
+			var result = context is TParameter ? (TParameter)context : context.Transform( Construct, activator.Activate<TParameter> );
 			return result;
 		}
 
@@ -29,7 +37,7 @@ namespace DragonSpark.Activation
 	{
 		readonly IFactoryParameterQualifier<TParameter> qualifier;
 
-		protected FactoryBase() : this( FactoryParameterQualifier<TParameter>.Instance )
+		protected FactoryBase() : this( new FactoryParameterQualifier<TParameter>() )
 		{}
 
 		protected FactoryBase( IFactoryParameterQualifier<TParameter> qualifier )

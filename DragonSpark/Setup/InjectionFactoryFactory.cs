@@ -2,6 +2,8 @@ using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
+using DragonSpark.Activation;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup
 {
@@ -31,7 +33,7 @@ namespace DragonSpark.Setup
 		protected virtual object Create( IUnityContainer container, Type type, string buildName )
 		{
 			var context = new ObjectFactoryParameter( factoryType, parameter ?? type );
-			var result = FactoryBuiltObjectFactory.Instance.Create( context );
+			var result = Activator.Current.Activate<FactoryBuiltObjectFactory>().Create( context );
 			return result;
 		}
 	}

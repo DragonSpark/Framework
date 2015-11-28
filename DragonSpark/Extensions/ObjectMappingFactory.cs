@@ -37,12 +37,14 @@ namespace DragonSpark.Extensions
 			var sourceType = parameter.Source.GetType();
 			var destinationType = parameter.Existing?.GetType() ?? ( typeof(T) == typeof(object) ? sourceType : typeof(T) );
 				
-			Mapper.FindTypeMapFor( sourceType, destinationType ).Null( () =>
+			/*Mapper.FindTypeMapFor( sourceType, destinationType ).Null( () =>
 			{
-				var expression = Mapper.CreateMap( sourceType, destinationType ).IgnoreUnassignable( sourceType, destinationType );
-				expression.TypeMap.DestinationCtor = x => parameter.Existing ?? activator.Activate( x.DestinationType );
-				parameter.Configuration.With( x => x( expression ) );
-			} );
+				
+			} );*/
+			var expression = Mapper.CreateMap( sourceType, destinationType ).IgnoreUnassignable( sourceType, destinationType );
+			expression.TypeMap.DestinationCtor = x => parameter.Existing ?? activator.Activate( x.DestinationType );
+			parameter.Configuration.With( x => x( expression ) );
+
 			var result = Mapper.DynamicMap( parameter.Source, sourceType, destinationType );
 			return (T)result;
 		}

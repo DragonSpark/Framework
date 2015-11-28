@@ -105,7 +105,7 @@ namespace DragonSpark.Activation.IoC
 
 		bool CheckRegistered( NamedTypeBuildKey key )
 		{
-			var result = context.Container.IsRegistered( key.Type, key.Name ) && GetConstructor( key ) != null;
+			var result = context.Container.IsRegistered( key.Type, key.Name ) && !( context.Policies.GetNoDefault<IBuildPlanPolicy>( key, false ) is DynamicMethodBuildPlan );
 			return result;
 		}
 
@@ -129,7 +129,7 @@ namespace DragonSpark.Activation.IoC
 
 		bool Validate( NamedTypeBuildKey key, IEnumerable<Type> parameters )
 		{
-			var result = CheckInstance( key ) || GetConstructor( key ).Transform( x => Validate( x, parameters ) );
+			var result = IsRegistered( key ) || GetConstructor( key ).Transform( x => Validate( x, parameters ) );
 			result.IsTrue( () => resolvable.Add( key ) );
 			return result;
 		}

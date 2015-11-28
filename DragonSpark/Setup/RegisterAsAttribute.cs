@@ -3,6 +3,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System;
 using System.Linq;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup
 {
@@ -49,11 +50,6 @@ namespace DragonSpark.Setup
 
 	public class FactoryBuiltObjectFactory : ActivateFactory<ObjectFactoryParameter, object>
 	{
-		public static FactoryBuiltObjectFactory Instance { get; } = new FactoryBuiltObjectFactory();
-
-		public FactoryBuiltObjectFactory()
-		{}
-
 		public FactoryBuiltObjectFactory( IActivator activator ) : base( activator )
 		{}
 
@@ -123,11 +119,13 @@ namespace DragonSpark.Setup
 	{
 		protected override void PerformRegistration( IServiceRegistry registry, Type subject )
 		{
-			FactoryReflectionSupport.Instance.GetResultType( subject ).With( type =>
+			var typeExtension = FactoryReflectionSupport.Instance.GetResultType( subject );
+			typeExtension.With( type =>
 			{
 				registry.RegisterFactory( type, () =>
 				{
-					var result = FactoryBuiltObjectFactory.Instance.Create( new ObjectFactoryParameter( subject ) );
+					var factory = Activator.Current.Activate<FactoryBuiltObjectFactory>();
+					var result = factory.Create( new ObjectFactoryParameter( subject ) );
 					return result;
 				} );
 			} );

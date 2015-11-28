@@ -6,7 +6,11 @@ namespace DragonSpark.Activation
 {
 	public class ConstructFactoryParameterQualifier<TResult> : FactoryParameterQualifier<ConstructParameter>
 	{
-		public new static ConstructFactoryParameterQualifier<TResult> Instance { get; } = new ConstructFactoryParameterQualifier<TResult>();
+		public ConstructFactoryParameterQualifier()
+		{}
+
+		public ConstructFactoryParameterQualifier( IActivator activator ) : base( activator )
+		{}
 
 		protected override ConstructParameter Construct( object parameter )
 		{
@@ -20,7 +24,7 @@ namespace DragonSpark.Activation
 		public ConstructFactory() : this( SystemActivator.Instance )
 		{}
 
-		public ConstructFactory( IActivator activator ) : this( activator, ConstructFactoryParameterQualifier<TResult>.Instance )
+		public ConstructFactory( IActivator activator ) : this( activator, new ConstructFactoryParameterQualifier<TResult>( activator ) )
 		{}
 
 		public ConstructFactory( IActivator activator, IFactoryParameterQualifier<ConstructParameter> qualifier ) : base( activator, qualifier )
@@ -118,12 +122,11 @@ namespace DragonSpark.Activation
 
 	public abstract class ActivationFactory<TParameter, TResult> : FactoryBase<TParameter, TResult> where TParameter : ActivationParameter where TResult : class
 	{
-		protected ActivationFactory() : this( Activation.Activator.Current )
+		protected ActivationFactory() : this( SystemActivator.Instance )
 		{}
 
-		protected ActivationFactory( IActivator activator ) : this( activator, FactoryParameterQualifier<TParameter>.Instance )
-		{
-		}
+		protected ActivationFactory( IActivator activator ) : this( activator, new FactoryParameterQualifier<TParameter>( activator ) )
+		{}
 
 		protected ActivationFactory( IActivator activator, IFactoryParameterQualifier<TParameter> qualifier ) : base( qualifier )
 		{
