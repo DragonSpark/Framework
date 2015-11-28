@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Windows.Markup
 {
-	public class FactoryExtension : FactoryExtension<ObjectFactoryContext, object>
+	public class FactoryExtension : FactoryExtension<ObjectFactoryParameter, object>
 	{
 		public FactoryExtension()
 		{}
@@ -19,15 +19,15 @@ namespace DragonSpark.Windows.Markup
 		public FactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName, parameter )
 		{}
 
-		protected override IFactory<ObjectFactoryContext, object> DetermineFactory( IServiceProvider serviceProvider )
+		protected override IFactory<ObjectFactoryParameter, object> DetermineFactory( IServiceProvider serviceProvider )
 		{
 			return FactoryBuiltObjectFactory.Instance;
 		}
 
-		protected override ObjectFactoryContext DetermineParameter( IServiceProvider serviceProvider )
+		protected override ObjectFactoryParameter DetermineParameter( IServiceProvider serviceProvider )
 		{
 			var type = serviceProvider.Get<DeferredContext>().PropertyType;
-			var context = new ObjectFactoryContext( Type, Parameter ?? type );
+			var context = new ObjectFactoryParameter( Type, Parameter ?? type );
 			return context;
 		}
 	}

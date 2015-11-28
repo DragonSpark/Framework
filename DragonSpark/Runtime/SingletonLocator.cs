@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Runtime
 {
@@ -20,7 +20,7 @@ namespace DragonSpark.Runtime
 		{
 			var typeInfo = type.GetTypeInfo();
 			var mapped = typeInfo.IsInterface ? DetermineType( typeInfo ) : typeInfo;
-			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && ( info.Name == property || info.IsDecoratedWith<SingletonInstanceAttribute>() ) );
+			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.IsDecoratedWith<SingletonInstanceAttribute>() ) );
 			var result = declared.Transform( info => info.GetValue( null ) );
 			return result;
 		}

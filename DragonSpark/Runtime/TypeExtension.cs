@@ -28,7 +28,7 @@ namespace DragonSpark.Runtime
 
 		public static implicit operator TypeExtension( Type type )
 		{
-			var result = Extensions.GetOrAdd( type, t => new TypeExtension( t ) );
+			var result = type.Transform( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 			return result;
 		}
 
@@ -38,16 +38,34 @@ namespace DragonSpark.Runtime
 			return result;
 		}
 
+		public static explicit operator TypeExtension( TypeInfo type )
+		{
+			var result = type.AsType().Transform( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
+			return result;
+		}
+
+		public static explicit operator TypeInfo( TypeExtension extension )
+		{
+			var result = extension.info;
+			return result;
+		}
+
 		public object GetDefaultValue()
 		{
 			var result = info.IsValueType && Nullable.GetUnderlyingType( type ) == null ? Activator.CreateInstance( type ) : null;
 			return result;
 		}
 
-		public ConstructorInfo FindConstructor( object[] parameters )
+		public ConstructorInfo FindConstructor( params object[] parameters )
 		{
-			var types = parameters.Select( o => o.Transform( o1 => o1.GetType() ) ).ToArray();
-			var result = info.DeclaredConstructors.SingleOrDefault( c => !c.IsStatic && Match( c.GetParameters(), types ) );
+			var types = parameters.Select( o => o?.GetType() ).ToArray();
+			var result = FindConstructor( types );
+			return result;
+		}
+
+		public ConstructorInfo FindConstructor( params Type[] parameterTypes )
+		{
+			var result = info.DeclaredConstructors.SingleOrDefault( c => !c.IsStatic && Match( c.GetParameters(), parameterTypes ) );
 			return result;
 		}
 
@@ -82,10 +100,27 @@ namespace DragonSpark.Runtime
 			return result;
 		}
 
+		public object Qualify( object instance )
+		{
+			var result = instance.Transform( o => info.IsAssignableFrom( o.GetType().GetTypeInfo() ) ? o : GetCaster( o.GetType() ).Transform( caster => caster.Invoke( null, new []{ o } ) ) );
+			return result;
+		}
+
 		public bool IsAssignableFrom( Type other )
 		{
-			var result = info.IsAssignableFrom( other.GetTypeInfo() );
+			var result = info.IsAssignableFrom( other.GetTypeInfo() ) || GetCaster( other ) != null;
 			return result;
+		}
+
+		public bool IsInstanceOfType( object context )
+		{
+			var result = context.Transform( o => IsAssignableFrom( o.GetType() ) );
+			return result;
+		}
+
+		MethodInfo GetCaster( Type other )
+		{
+			return info.DeclaredMethods.SingleOrDefault( method => method.Name == "op_Implicit" && method.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom( other.GetTypeInfo() ) );
 		}
 
 		public bool IsSubclass( Type other )
@@ -146,12 +181,6 @@ namespace DragonSpark.Runtime
 		public Type[] GetAllHierarchy()
 		{
 			var result = ExpandInterfaces( type ).Union( GetHierarchy( false ) ).Distinct().ToArray();
-			return result;
-		}
-
-		public bool IsInstanceOfType( object context )
-		{
-			var result = context.Transform( o => IsAssignableFrom( o.GetType() ) );
 			return result;
 		}
 	}

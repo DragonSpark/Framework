@@ -11,7 +11,7 @@ namespace DragonSpark.ComponentModel
 
 		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
 		{
-			var result = FactoryBuiltObjectFactory.Instance.Create( new ObjectFactoryContext( type, info.PropertyType ) );
+			var result = FactoryBuiltObjectFactory.Instance.Create( new ObjectFactoryParameter( type, info.PropertyType ) );
 			return result;
 		}
 	}

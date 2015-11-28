@@ -30,7 +30,7 @@ namespace DragonSpark.Setup
 
 		protected virtual object Create( IUnityContainer container, Type type, string buildName )
 		{
-			var context = new ObjectFactoryContext( factoryType, parameter ?? type );
+			var context = new ObjectFactoryParameter( factoryType, parameter ?? type );
 			var result = FactoryBuiltObjectFactory.Instance.Create( context );
 			return result;
 		}

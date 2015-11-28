@@ -31,46 +31,68 @@ namespace DragonSpark.Setup
 		}
 	}
 
-	public class FactoryBuiltObjectFactory : ActivateFactoryBase<ObjectFactoryContext, object>
+	/*public class ParameterFactory : FactoryBase<object, object>
+	{
+		protected override object CreateItem( object parameter )
+		{
+			var parameterType = FactoryReflectionSupport.Instance.GetParameterType( factory.GetType() );
+			var activated = parameterType.IsInstanceOfType( parameter.Context ) ? parameter.Context : Activate( parameter, parameterType );
+		}
+
+		object Activate( ObjectFactoryParameter parameter, TypeExtension parameterType )
+		{
+			var type = parameter.Context.AsTo<Type, Type>( t => parameterType.IsAssignableFrom( t ) ? t : null ) ?? parameterType;
+			var result = Activator.Activate<object>( type );
+			return result;
+		}
+	}*/
+
+	public class FactoryBuiltObjectFactory : ActivateFactory<ObjectFactoryParameter, object>
 	{
 		public static FactoryBuiltObjectFactory Instance { get; } = new FactoryBuiltObjectFactory();
 
-		public FactoryBuiltObjectFactory() : base( item => item.FactoryType )
+		public FactoryBuiltObjectFactory()
 		{}
 
-		protected override object CreateItem( ObjectFactoryContext parameter )
+		public FactoryBuiltObjectFactory( IActivator activator ) : base( activator )
+		{}
+
+		protected override object Activate( Type qualified, ObjectFactoryParameter parameter )
 		{
-			var item = base.CreateItem( parameter );
-			var result = item.AsTo<IFactory, object>( factory => factory.Create() ) ?? item.AsTo<IFactoryWithParameter, object>( factory => DetermineResultFromContext( factory, parameter ) );
+			var item = base.Activate( qualified, parameter );
+			var result = item.AsTo<IFactory, object>( factory => factory.Create() ) ?? item.AsTo<IFactoryWithParameter, object>( factory => factory.Create( parameter.Context ) );
 			return result;
 		}
 
-		object DetermineResultFromContext( IFactoryWithParameter factory, ObjectFactoryContext context )
+		/*object DetermineResultFromContext( IFactoryWithParameter factory, ObjectFactoryParameter parameter )
 		{
-			var parameterType = FactoryReflectionSupport.Instance.GetParameterType( factory.GetType() );
-			var parameter = parameterType.IsInstanceOfType( context.Context ) ? context.Context : Activate( context, parameterType );
-			var result = parameter.Transform( factory.Create );
+			var result = activated.Transform( factory.Create );
 			return result;
-		}
-
-		object Activate( ObjectFactoryContext context, TypeExtension parameterType )
+		}*/
+		
+		/*protected override ObjectFactoryParameter QualifyParameter( object parameter )
 		{
-			var type = context.Context.AsTo<Type, Type>( t => parameterType.IsAssignableFrom( t ) ? t : null ) ?? parameterType;
-			var result = Activate<object>( type );
-			return result;
-		}
+			return base.QualifyParameter( parameter ) ?? parameter.AsTo<Type, ObjectFactoryParameter>( type => type );
+		}*/
 	}
 
-	public class ObjectFactoryContext
+	public class ObjectFactoryParameter : ActivateParameter
 	{
-		public ObjectFactoryContext( Type factoryType, object context = null )
+		public ObjectFactoryParameter( Type factoryType ) : this( factoryType, null )
+		{}
+
+		public ObjectFactoryParameter( Type factoryType, object context ) : base( factoryType )
 		{
-			FactoryType = factoryType;
 			Context = context;
 		}
 
-		public Type FactoryType { get;}
 		public object Context { get; }
+
+		public static implicit operator ObjectFactoryParameter( Type type )
+		{
+			var result = new ObjectFactoryParameter( type );
+			return result;
+		}
 	}
 
 	class FactoryReflectionSupport
@@ -105,7 +127,7 @@ namespace DragonSpark.Setup
 			{
 				registry.RegisterFactory( type, () =>
 				{
-					var result = FactoryBuiltObjectFactory.Instance.Create( new ObjectFactoryContext( subject ) );
+					var result = FactoryBuiltObjectFactory.Instance.Create( new ObjectFactoryParameter( subject ) );
 					return result;
 				} );
 			} );

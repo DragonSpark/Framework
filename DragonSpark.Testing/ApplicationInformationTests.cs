@@ -1,9 +1,10 @@
-using System.Diagnostics;
+using System;
+using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework;
 using Microsoft.Practices.Unity;
+using System.Diagnostics;
 using System.Reflection;
-using DragonSpark.Extensions;
 using Xunit;
 
 namespace DragonSpark.Testing
@@ -55,12 +56,12 @@ namespace DragonSpark.Testing
 			
 			var fromFactory = factory.Create();
 			var fromContainer = container.Resolve<Assembly[]>();
-			Assert.Same( fromFactory, fromContainer );
+			Assert.Equal( fromFactory, fromContainer );
 
 			var fromProvider = provider.GetAssemblies();
-			Assert.Same( fromContainer, fromProvider );
+			Assert.Equal( fromContainer, fromProvider );
 
-			Assert.Same( fromContainer, sut );
+			Assert.Equal( fromContainer, sut );
 		}
 	}
 }

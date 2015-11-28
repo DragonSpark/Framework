@@ -202,7 +202,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\Factory.cs" />
+    <Compile Include="Activation\ConstructFactory.cs" />
     <Compile Include="Activation\IObjectBuilder.cs" />
     <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />

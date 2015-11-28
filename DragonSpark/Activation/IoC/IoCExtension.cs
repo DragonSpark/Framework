@@ -5,11 +5,8 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Practices.Unity.Utility;
 using LifetimeManagerFactory = DragonSpark.Setup.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
@@ -57,7 +54,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly IUnityContainer container;
 		readonly ILogger logger;
-		readonly IFactory<Type, LifetimeManager> lifetimeFactory;
+		readonly IFactory<ActivateParameter, LifetimeManager> lifetimeFactory;
 
 		/*public ServiceRegistry( IUnityContainer container ) : this( container, LifetimeManagerFactory.Instance )
 		{}
@@ -66,7 +63,7 @@ namespace DragonSpark.Activation.IoC
 		{
 		}*/
 
-		public ServiceRegistry( IUnityContainer container, ILogger logger, IFactory<Type, LifetimeManager> lifetimeFactory )
+		public ServiceRegistry( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
 		{
 			this.container = container;
 			this.logger = logger;
@@ -75,7 +72,7 @@ namespace DragonSpark.Activation.IoC
 
 		public void Register( Type @from, Type mappedTo, string name = null )
 		{
-			var lifetimeManager = lifetimeFactory.Create( mappedTo );
+			var lifetimeManager = lifetimeFactory.CreateUsing( mappedTo );
 			logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, @from, mappedTo ) );
 			container.RegisterType( from, mappedTo, name, lifetimeManager );
 		}

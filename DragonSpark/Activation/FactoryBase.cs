@@ -1,9 +1,42 @@
-﻿using System;
+﻿using System.Linq;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Activation
 {
+	public interface IFactoryParameterQualifier<out TParameter>
+	{
+		TParameter Qualify( object context );
+	}
+
+	public class FactoryParameterQualifier<TParameter> : IFactoryParameterQualifier<TParameter>
+	{
+		public static FactoryParameterQualifier<TParameter> Instance { get; } = new FactoryParameterQualifier<TParameter>();
+
+		public TParameter Qualify( object context )
+		{
+			var result = context is TParameter ? (TParameter)context : context.Transform( Construct );
+			return result;
+		}
+
+		protected virtual TParameter Construct( object parameter )
+		{
+			var result = (TParameter)typeof(TParameter).Extend().FindConstructor( parameter.GetType() ).Transform( info => info.Invoke( new[] { info.GetParameters().First().ParameterType.Extend().Qualify( parameter ) } ) );
+			return result;
+		}
+	}
+
 	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
 	{
+		readonly IFactoryParameterQualifier<TParameter> qualifier;
+
+		protected FactoryBase() : this( FactoryParameterQualifier<TParameter>.Instance )
+		{}
+
+		protected FactoryBase( IFactoryParameterQualifier<TParameter> qualifier )
+		{
+			this.qualifier = qualifier;
+		}
+
 		protected abstract TResult CreateItem( TParameter parameter );
 
 		public TResult Create( TParameter parameter )
@@ -14,11 +47,10 @@ namespace DragonSpark.Activation
 
 		object IFactoryWithParameter.Create( object parameter )
 		{
-			var result = Create( parameter is TParameter ? (TParameter)parameter : default(TParameter) );
+			var qualified = qualifier.Qualify( parameter );
+			var result = Create( qualified );
 			return result;
 		}
-
-		// Type IFactoryWithParameter.ParameterType => typeof(TParameter);
 	}
 
 	public abstract class FactoryBase<TResult> : IFactory<TResult> where TResult : class

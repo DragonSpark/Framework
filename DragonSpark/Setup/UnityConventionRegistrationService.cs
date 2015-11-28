@@ -42,9 +42,10 @@ namespace DragonSpark.Setup
 		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, locator )
 		{}
 
-		protected override Type DetermineType( Type parameter )
+		protected override TypeExtension DetermineType( ActivateParameter parameter )
 		{
-			return base.DetermineType( parameter ) ?? typeof(T);
+			var determineType = base.DetermineType( parameter );
+			return determineType ?? typeof(T).Extend();
 		}
 	}
 
@@ -63,19 +64,18 @@ namespace DragonSpark.Setup
 			this.locator = locator;
 		}
 
-		protected sealed override LifetimeManager CreateItem( Type parameter )
+		protected override LifetimeManager Activate( Type qualified, ActivateParameter parameter )
 		{
-			var result = DetermineType( parameter ).Transform( Activator.Activate<LifetimeManager> ).With( manager =>
+			var result = base.Activate( qualified, parameter ).With( manager =>
 			{
-				locator.Locate( parameter ).With( manager.SetValue );
+				locator.Locate( parameter.Type ).With( manager.SetValue );
 			} );;
 			return result;
 		}
 
-		protected virtual Type DetermineType( Type parameter )
+		protected override TypeExtension DetermineType( ActivateParameter parameter )
 		{
-			var result = parameter.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
-			return result;
+			return base.DetermineType( parameter ).FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
 		}
 	}
 
@@ -84,7 +84,7 @@ namespace DragonSpark.Setup
 		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger  ) : this( container, logger, new LifetimeManagerFactory<ContainerControlledLifetimeManager>( container.Resolve<IActivator>() ) )
 		{}
 
-		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger, IFactory<Type, LifetimeManager> factory  )
+		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> factory  )
 		{
 			Container = container;
 			Logger = logger;
@@ -93,7 +93,7 @@ namespace DragonSpark.Setup
 
 		protected IUnityContainer Container { get; }
 		protected ILogger Logger { get; }
-		protected IFactory<Type, LifetimeManager> Factory { get; }
+		protected IFactory<ActivateParameter, LifetimeManager> Factory { get; }
 
 		public virtual void Register( ConventionRegistrationProfile profile )
 		{

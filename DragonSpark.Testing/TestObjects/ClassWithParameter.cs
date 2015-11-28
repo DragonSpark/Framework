@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Testing.TestObjects
 {
-	class Factory : Factory<ClassWithParameter>
+	class ConstructFactory : ConstructFactory<ClassWithParameter>
 	{}
 
 	public class ClassWithParameter : IClassWithParameter, IInterface

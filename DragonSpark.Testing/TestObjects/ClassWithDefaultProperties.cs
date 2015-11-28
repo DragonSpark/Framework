@@ -54,7 +54,7 @@ namespace DragonSpark.Testing.TestObjects
 		[Activate]
 		public Class Activated { get; set; }
 
-		[Factory( typeof(Factory) )]
+		[Factory( typeof(ConstructFactory) )]
 		public object Factory { get; set; }
 		
 		[NewGuid]

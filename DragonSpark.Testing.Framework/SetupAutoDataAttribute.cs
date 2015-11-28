@@ -68,7 +68,7 @@ namespace DragonSpark.Testing.Framework
 		public SetupAutoDataAttribute( IFixture fixture ) : this( fixture, typeof(DefaultSetup) )
 		{}
 
-		public SetupAutoDataAttribute( IFixture fixture, Type setupType ) : this( fixture, ActivateFactory<ISetup>.Instance.Locked( factory => factory.Create( setupType ) ) )
+		public SetupAutoDataAttribute( IFixture fixture, Type setupType ) : this( fixture, ActivateFactory<ISetup>.Instance.Locked( factory => factory.CreateUsing( setupType ) ) )
 		{}
 
 		public SetupAutoDataAttribute( IFixture fixture, ISetup setup ) : base( fixture )
