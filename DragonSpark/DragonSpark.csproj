@@ -432,7 +432,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Shim\DragonSpark.Shim.csproj">
+    <ProjectReference Include="..\DragonSpark.Types\DragonSpark.Types.csproj">
       <Project>{69750ce1-63f1-4ddf-b22e-f8b40d8f16a8}</Project>
       <Name>DragonSpark.Shim</Name>
     </ProjectReference>

@@ -52,11 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Testing.Client.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Windows", "DragonSpark.Windows\DragonSpark.Windows.csproj", "{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shim", "Shim", "{0BD08EBD-4F8A-4351-AFAA-EAD1677AD282}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Types", "Types", "{0BD08EBD-4F8A-4351-AFAA-EAD1677AD282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Shim", "DragonSpark.Shim\DragonSpark.Shim.csproj", "{69750CE1-63F1-4DDF-B22E-F8B40D8F16A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Types", "DragonSpark.Types\DragonSpark.Types.csproj", "{69750CE1-63F1-4DDF-B22E-F8B40D8F16A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Shim.Windows", "DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj", "{82E56091-DD33-4F8D-A9D9-8948F3D6F820}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Types.Windows", "DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj", "{82E56091-DD33-4F8D-A9D9-8948F3D6F820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
