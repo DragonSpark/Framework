@@ -127,41 +127,47 @@
       <HintPath>$(SolutionDir)\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.extensions, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)\packages\xunit.extensions.1.9.2\lib\net20\xunit.extensions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmbientCustomizationsCustomization.cs" />
-    <Compile Include="AmbientLocatorKeyFactory.cs" />
-    <Compile Include="AssignedAttribute.cs" />
-    <Compile Include="AssignLocationComand.cs" />
-    <Compile Include="CanLocateSpecification.cs" />
-    <Compile Include="ContainerExtensionFactory.cs" />
-    <Compile Include="CurrentMethodCustomization.cs" />
-    <Compile Include="CurrentMethodSpecification.cs" />
-    <Compile Include="DefaultSetup.xaml.cs">
+    <Compile Include="Setup\AmbientCustomizationsCustomization.cs" />
+    <Compile Include="Setup\AmbientLocatorKeyFactory.cs" />
+    <Compile Include="Parameters\AssignedAttribute.cs" />
+    <Compile Include="Extensions\SetupContextExtensions.cs" />
+    <Compile Include="Setup\AssignServiceLocatorCommand.cs" />
+    <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
+    <Compile Include="Setup\CanLocateSpecification.cs" />
+    <Compile Include="Setup\ConfigureLocationCustomization.cs" />
+    <Compile Include="Setup\Location\ContainerExtensionFactory.cs" />
+    <Compile Include="Setup\CurrentMethodCustomization.cs" />
+    <Compile Include="Setup\CurrentMethodSpecification.cs" />
+    <Compile Include="Setup\CurrentTaskSpecification.cs" />
+    <Compile Include="Setup\CustomizeFixtureCommand.cs" />
+    <Compile Include="Setup\DefaultSetup.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IServiceLocationAuthority.cs" />
-    <Compile Include="MetadataCustomization.cs" />
-    <Compile Include="Customizations.cs" />
-    <Compile Include="FixtureExtensions.cs" />
-    <Compile Include="FromCustomization.cs" />
-    <Compile Include="DefaultEngineParts.cs" />
+    <Compile Include="Setup\GreedyMethodBuilderFactory.cs" />
+    <Compile Include="Setup\Location\IServiceLocationAuthority.cs" />
+    <Compile Include="Setup\LocateTypeSpecification.cs" />
+    <Compile Include="Setup\LoggingRegistrationCustomization.cs" />
+    <Compile Include="Setup\MetadataCustomization.cs" />
+    <Compile Include="Extensions\FixtureExtensions.cs" />
+    <Compile Include="Parameters\FromCustomization.cs" />
+    <Compile Include="Setup\DefaultEngineParts.cs" />
     <Compile Include="IAfterTestAware.cs" />
-    <Compile Include="OutputCustomization.cs" />
+    <Compile Include="Setup\MetadataCustomizationFactory.cs" />
+    <Compile Include="Setup\OutputCustomization.cs" />
     <Compile Include="RecordingLogger.cs" />
     <Compile Include="RegisteredAttribute.cs" />
     <Compile Include="RegisterFactoryAttribute.cs" />
-    <Compile Include="ServiceLocationRelay.cs" />
-    <Compile Include="ServiceLocatorExtensions.cs" />
-    <Compile Include="MethodInStackTraceSpecification.cs">
+    <Compile Include="Setup\Location\ServiceLocationAuthority.cs" />
+    <Compile Include="Setup\Location\ServiceLocationRelay.cs" />
+    <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
+    <Compile Include="Setup\MethodInStackTraceSpecification.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SetupAutoDataAttribute.cs" />
-    <Compile Include="FreezeAttribute.cs">
+    <Compile Include="Setup\Setup.cs" />
+    <Compile Include="Setup\SetupAutoDataAttribute.cs" />
+    <Compile Include="Parameters\FreezeAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -171,14 +177,12 @@
     <Compile Include="RegistrationAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ServiceLocationCustomization.cs" />
-    <Compile Include="LocatedAttribute.cs" />
-    <Compile Include="TaskLocalValue.cs" />
+    <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />
+    <Compile Include="Parameters\LocatedAttribute.cs" />
+    <Compile Include="Setup\SetupAutoDataCommandBase.cs" />
+    <Compile Include="Setup\SetupAutoDataContext.cs" />
     <Compile Include="TestAttribute.cs" />
     <Compile Include="Tests.cs" />
-    <Compile Include="Types.cs" />
-    <Compile Include="TypesAttribute.cs" />
-    <Compile Include="TypesFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
@@ -221,11 +225,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="DefaultSetup.xaml">
+    <Page Include="Setup\DefaultSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

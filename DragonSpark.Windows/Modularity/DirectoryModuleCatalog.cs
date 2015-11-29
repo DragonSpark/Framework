@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security.Policy;
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
+using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 
 namespace DragonSpark.Windows.Modularity

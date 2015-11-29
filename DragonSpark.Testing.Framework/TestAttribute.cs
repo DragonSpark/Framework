@@ -1,8 +1,9 @@
+using DragonSpark.Extensions;
+using DragonSpark.Runtime.Values;
+using Ploeh.AutoFixture;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.Runtime;
-using Ploeh.AutoFixture;
+using DragonSpark.Testing.Framework.Extensions;
 using Xunit.Sdk;
 
 namespace DragonSpark.Testing.Framework

@@ -1,5 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Xunit;
 using Activator = DragonSpark.Testing.TestObjects.Activator;

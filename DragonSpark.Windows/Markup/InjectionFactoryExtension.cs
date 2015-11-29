@@ -5,6 +5,9 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Windows.Markup;
 using System.Xaml;
+using DragonSpark.Activation.Build;
+using DragonSpark.Activation.IoC;
+using DragonSpark.Setup.Commands;
 
 namespace DragonSpark.Windows.Markup
 {

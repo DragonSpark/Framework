@@ -1,4 +1,5 @@
-﻿using DragonSpark.Testing.TestObjects;
+﻿using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Testing.TestObjects;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;

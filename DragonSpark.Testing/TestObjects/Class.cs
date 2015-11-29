@@ -1,6 +1,7 @@
 using DragonSpark.Setup;
 using Microsoft.Practices.Unity;
 using System;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Testing.TestObjects
 {

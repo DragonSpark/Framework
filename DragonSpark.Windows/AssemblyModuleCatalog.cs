@@ -1,5 +1,6 @@
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
+using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Modularity;
 using DragonSpark.Windows.Runtime;
 

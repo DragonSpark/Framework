@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Runtime;
 using System;
 using System.Reflection;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Extensions
 {

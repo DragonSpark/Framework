@@ -3,6 +3,7 @@ using DragonSpark.Runtime;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Modularity
 {

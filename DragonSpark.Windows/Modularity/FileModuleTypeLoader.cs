@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DragonSpark.Modularity;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Windows.Modularity
 {

@@ -1,25 +1,9 @@
 using AutoMapper;
 using DragonSpark.Activation;
-using System;
+using DragonSpark.Activation.Build;
 
 namespace DragonSpark.Extensions
 {
-	public class ObjectMappingContext<T>
-	{
-		public ObjectMappingContext( object source, T existing, Action<IMappingExpression> configuration )
-		{
-			Source = source;
-			Existing = existing;
-			Configuration = configuration;
-		}
-
-		public object Source { get; }
-
-		public T Existing { get; }
-
-		public Action<IMappingExpression> Configuration { get; }
-	}
-
 	public class ObjectMappingFactory<T> : FactoryBase<ObjectMappingContext<T>, T> where T : class
 	{
 		readonly IActivator activator;

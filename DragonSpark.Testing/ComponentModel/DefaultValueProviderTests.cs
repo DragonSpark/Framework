@@ -4,6 +4,7 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel

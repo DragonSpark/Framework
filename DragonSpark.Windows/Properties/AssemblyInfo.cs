@@ -3,6 +3,8 @@ using DragonSpark.Setup;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
+using DragonSpark.Setup.Registration;
+
 // using AmbientAttribute = hello::System.Windows.Markup.AmbientAttribute;
 
 // General Information about an assembly is controlled through the following 

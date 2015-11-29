@@ -156,7 +156,6 @@
     <Compile Include="Extensions\BooleanExtensionsTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Framework\TypesFactoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">

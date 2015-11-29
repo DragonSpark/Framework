@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DragonSpark.Runtime;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Windows.Runtime
 {
