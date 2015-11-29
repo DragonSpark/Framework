@@ -377,7 +377,7 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registering {0} -&gt; {1}.
+        ///   Looks up a localized string similar to Registering {0} -&gt; {1} ({2}).
         /// </summary>
         public static string UnityConventionRegistrationService_Registering {
             get {

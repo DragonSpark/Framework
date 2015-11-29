@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace DragonSpark.Testing.Client
 {
-	[RegisterAs( typeof(Application) )]
+	[Register( typeof(Application) )]
 	public partial class ApplicationDefinition
 	{
 		public ApplicationDefinition()

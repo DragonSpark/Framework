@@ -37,7 +37,7 @@ namespace DragonSpark.Setup
 		protected virtual Type[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
 			var result = assemblies
-				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract )
+				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract && ( info.DeclaringType == null || info.IsPublic ) )
 				.AsTypes()
 				.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) ) )
 				.ToArray();

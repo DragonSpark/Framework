@@ -7,15 +7,18 @@ using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup
 {
-	public sealed class RegisterAsAttribute : RegistrationBaseAttribute
+	public sealed class RegisterAttribute : RegistrationBaseAttribute
 	{
-		public RegisterAsAttribute( Type @as ) : this( @as, null )
+		public RegisterAttribute() : this( null, null )
 		{}
 
-		public RegisterAsAttribute( string name ) : this( null, name )
+		public RegisterAttribute( Type @as ) : this( @as, null )
 		{}
 
-		public RegisterAsAttribute( Type @as, string name )
+		public RegisterAttribute( string name ) : this( null, name )
+		{}
+
+		public RegisterAttribute( Type @as, string name )
 		{
 			As = @as;
 			Name = name;
@@ -27,7 +30,7 @@ namespace DragonSpark.Setup
 
 		protected override void PerformRegistration( IServiceRegistry registry, Type subject )
 		{
-			var from = As ?? subject.Extend().GetAllInterfaces().First( type => subject.Name.Contains( type.Name.Substring( 1 ) ) );
+			var from = As ?? subject.Extend().GetAllInterfaces().FirstOrDefault( type => subject.Name.Contains( type.Name.Substring( 1 ) ) ) ?? subject;
 			registry.Register( from, subject, Name );
 		}
 	}

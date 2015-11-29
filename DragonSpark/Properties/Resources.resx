@@ -212,7 +212,7 @@ Error was: {1}.</value>
     <value>container</value>
   </data>
 	<data name="UnityConventionRegistrationService_Registering" xml:space="preserve">
-    <value>Registering {0} -&gt; {1}</value>
+    <value>Registering {0} -&gt; {1} ({2})</value>
   </data>
 	<data name="CreatingUnityContainer" xml:space="preserve">
     <value>Creating Unity container.</value>

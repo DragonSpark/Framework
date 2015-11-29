@@ -5,7 +5,6 @@ using DragonSpark.Setup;
 using DragonSpark.Windows.Io;
 using DragonSpark.Windows.Properties;
 using DragonSpark.Windows.Runtime;
-using Microsoft.Practices.Unity;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
@@ -32,7 +31,7 @@ namespace DragonSpark.Windows.Entity
 		}
 	}
 
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	[Register]
 	public class DataDirectoryPath : AppDomainValue<string>
 	{
 		public const string Key = "DataDirectory";

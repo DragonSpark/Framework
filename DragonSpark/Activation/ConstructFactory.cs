@@ -137,12 +137,12 @@ namespace DragonSpark.Activation
 
 		protected override TResult CreateItem( TParameter parameter )
 		{
-			var qualified = DetermineType( parameter ).Transform( extension => extension.GuardAsAssignable<TResult>( nameof(parameter) ) );
+			var qualified = DetermineType( parameter ).Transform( extension => extension.Extend().GuardAsAssignable<TResult>( nameof(parameter) ) );
 			var result = qualified.Transform( type => Activate( type, parameter ) );
 			return result;
 		}
 
-		protected virtual TypeExtension DetermineType( TParameter parameter )
+		protected virtual Type DetermineType( TParameter parameter )
 		{
 			return parameter.Type;
 		}

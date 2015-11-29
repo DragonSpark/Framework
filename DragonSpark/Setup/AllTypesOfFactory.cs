@@ -1,12 +1,11 @@
 using DragonSpark.Activation;
 using DragonSpark.Runtime;
-using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
 
 namespace DragonSpark.Setup
 {
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	[Register]
 	public class AllTypesOfFactory : FactoryBase<Type, Array>
 	{
 		readonly IAssemblyProvider provider;

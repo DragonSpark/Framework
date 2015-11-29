@@ -1,11 +1,14 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using DragonSpark.Setup;
 using DragonSpark.Testing.Framework;
 using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using DragonSpark.Testing.TestObjects;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DragonSpark.Testing
 {
@@ -25,6 +28,28 @@ namespace DragonSpark.Testing
 			Assert.Equal( assembly.FromMetadata<AssemblyDescriptionAttribute, string>( attribute => attribute.Description ), sut.AssemblyInformation.Description );
 			Assert.Equal( assembly.FromMetadata<AssemblyProductAttribute, string>( attribute => attribute.Product ), sut.AssemblyInformation.Product );
 			Assert.Equal( assembly.GetName().Version, sut.AssemblyInformation.Version );
+		}
+	}
+
+	public class RegistrationTests : Tests
+	{
+		public RegistrationTests( ITestOutputHelper output ) : base( output )
+		{}
+
+		[Theory, Test, SetupAutoData]
+		public void Singleton( [Located] IUnityContainer sut )
+		{
+			var once = sut.Resolve<RegisterAsSingleton>();
+			var twice = sut.Resolve<RegisterAsSingleton>();
+			Assert.Same( once, twice );
+		}
+
+		[Theory, Test, SetupAutoData]
+		public void Many( [Located] IUnityContainer sut )
+		{
+			var once = sut.Resolve<RegisterAsMany>();
+			var twice = sut.Resolve<RegisterAsMany>();
+			Assert.NotSame( once, twice );
 		}
 	}
 

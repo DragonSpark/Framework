@@ -73,7 +73,7 @@ namespace DragonSpark.Activation.IoC
 		public void Register( Type @from, Type mappedTo, string name = null )
 		{
 			var lifetimeManager = lifetimeFactory.CreateUsing( mappedTo );
-			logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, @from, mappedTo ) );
+			logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, @from, mappedTo, lifetimeManager?.GetType().Name ?? "Transient" ) );
 			container.RegisterType( from, mappedTo, name, lifetimeManager );
 		}
 

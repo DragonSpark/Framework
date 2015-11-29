@@ -8,29 +8,6 @@ using System;
 
 namespace DragonSpark.Setup
 {
-	/*public class ConventionRegistrationContext
-	{
-		public ConventionRegistrationContext( IUnityContainer container ) : this( container,  )
-		{
-		}
-
-		public ConventionRegistrationContext( IUnityContainer container, IServiceRegistry registry ) : this( container, registry, container.DetermineLogger() )
-		{}
-
-		public ConventionRegistrationContext( IUnityContainer container, IServiceRegistry registry, ILogger logger )
-		{
-			Container = container;
-			Registry = registry;
-			Logger = logger;
-		}
-
-		public IUnityContainer Container { get; }
-
-		public IServiceRegistry Registry { get; set; }
-
-		public ILogger Logger { get; }
-	}*/
-
 	public class LifetimeManagerFactory<T> : LifetimeManagerFactory where T : LifetimeManager
 	{
 		public LifetimeManagerFactory()
@@ -42,10 +19,10 @@ namespace DragonSpark.Setup
 		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, locator )
 		{}
 
-		protected override TypeExtension DetermineType( ActivateParameter parameter )
+		protected override Type DetermineType( ActivateParameter parameter )
 		{
 			var determineType = base.DetermineType( parameter );
-			return determineType ?? typeof(T).Extend();
+			return determineType ?? typeof(T);
 		}
 	}
 
@@ -73,7 +50,7 @@ namespace DragonSpark.Setup
 			return result;
 		}
 
-		protected override TypeExtension DetermineType( ActivateParameter parameter )
+		protected override Type DetermineType( ActivateParameter parameter )
 		{
 			return base.DetermineType( parameter ).FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
 		}

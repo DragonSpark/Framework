@@ -313,7 +313,7 @@
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Runtime\ISingletonLocator.cs" />
     <Compile Include="Setup\Program.cs" />
-    <Compile Include="Setup\RegisterAsAttribute.cs" />
+    <Compile Include="Setup\RegisterAttribute.cs" />
     <Compile Include="Setup\RegisterFrameworkExceptionTypesCommand.cs" />
     <Compile Include="Setup\RunProgramCommand.cs" />
     <Compile Include="Setup\Setup.cs" />
