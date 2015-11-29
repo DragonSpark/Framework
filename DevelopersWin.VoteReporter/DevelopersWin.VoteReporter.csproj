@@ -107,7 +107,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewBase.cs" />
-    <Compile Include="VoteRecordSetFactory.cs" />
+    <Compile Include="RecordingFactory.cs" />
     <Compile Include="VoteReportFactory.cs" />
   </ItemGroup>
   <ItemGroup>

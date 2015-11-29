@@ -1,10 +1,13 @@
-﻿namespace DevelopersWin.VoteReporter.Application
+﻿using DragonSpark.Setup;
+
+namespace DevelopersWin.VoteReporter.Application
 {
 	public partial class Program
 	{
 		public Program()
 		{
 			InitializeComponent();
+			Commands.Add( new AssignServiceLocatorCommand() );
 		}
 
 		static void Main( string[] args )

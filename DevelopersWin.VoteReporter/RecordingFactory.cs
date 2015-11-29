@@ -2,25 +2,24 @@ using DevelopersWin.VoteReporter.Entity;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Windows.Entity;
-using System;
 using System.Linq;
 
 namespace DevelopersWin.VoteReporter
 {
-	public class VoteRecordSetFactory : Factory<Recording>
+	public class RecordingFactory : FactoryBase<Recording>
 	{
 		readonly VotingContext context;
 		readonly IVoteProvider provider;
 		readonly IVoteUpdater updater;
 
-		public VoteRecordSetFactory( VotingContext context, IVoteProvider provider, IVoteUpdater updater )
+		public RecordingFactory( VotingContext context, IVoteProvider provider, IVoteUpdater updater )
 		{
 			this.context = context;
 			this.provider = provider;
 			this.updater = updater;
 		}
 
-		protected override Recording CreateFrom( Type resultType, object parameter )
+		protected override Recording CreateItem()
 		{
 			var set = context.Create<Recording>();
 			var array = provider.Retrieve( set ).ToArray();

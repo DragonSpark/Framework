@@ -11,9 +11,9 @@ namespace DevelopersWin.VoteReporter
 	class VoteRecorder : IVoteRecorder
 	{
 		readonly VotingContext context;
-		readonly VoteRecordSetFactory factory;
+		readonly RecordingFactory factory;
 
-		public VoteRecorder( VotingContext context, VoteRecordSetFactory factory )
+		public VoteRecorder( VotingContext context, RecordingFactory factory )
 		{
 			this.context = context;
 			this.factory = factory;

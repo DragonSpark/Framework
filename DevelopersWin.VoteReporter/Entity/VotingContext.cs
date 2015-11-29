@@ -4,12 +4,11 @@ using DragonSpark.Setup;
 
 namespace DevelopersWin.VoteReporter.Entity
 {
-	[RegisterAs( typeof(DbContext) )]
+	[Register( typeof(DbContext) )]
 	public class VotingContext : EntityContext
 	{
 		public VotingContext()
-		{
-		}
+		{}
 
 		protected override void Dispose( bool disposing )
 		{

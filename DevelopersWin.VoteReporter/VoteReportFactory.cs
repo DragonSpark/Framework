@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DevelopersWin.VoteReporter
 {
-	public class VoteReportFactory : FactoryBase<Recording, VoteReport>
+	public class VoteReportFactory : FactoryBase<VoteReport>
 	{
 		readonly VotingContext context;
 
@@ -17,10 +17,10 @@ namespace DevelopersWin.VoteReporter
 			this.context = context;
 		}
 
-		protected override VoteReport CreateFrom( Type resultType, Recording parameter )
+		protected override VoteReport CreateItem()
 		{
 			var recordings = context.Recordings.OrderByDescending( recording => recording.Created );
-			var current = parameter ?? recordings.First();
+			var current = recordings.First();
 		    var firstOrDefault = recordings.FirstOrDefault( recording => recording.Created < current.Created );
 		    var previous = firstOrDefault.Transform( recording => Convert( recording, null ) );
 			var result = Convert( current, previous );
@@ -44,7 +44,7 @@ namespace DevelopersWin.VoteReporter
 		{
 			var result = current.MapInto<VoteGroupView>();
 			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Recording == recording ).Count );
-			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.WithDefaults();
+			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.BuildUp();
 			result.Votes.AddRange( current.Votes.OrderBy( vote => vote.Order ).Select( v => CreateVote( recording, v, previous.Transform( x => x.Votes.SingleOrDefault( y => y.Id == v.Id ) ) ) ) );
 			return result;
 		}
@@ -53,7 +53,7 @@ namespace DevelopersWin.VoteReporter
 		{
 			var result = current.MapInto<VoteView>();
 			var count = current.Records.SingleOrDefault( record => record.Recording == recording ).Count;
-			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.WithDefaults();
+			result.Counts = new VoteCount { Count = count, Delta = count - previous.Transform( view => view.Counts.Count ) }.BuildUp();
 			return result;
 		}
 	}
