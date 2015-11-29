@@ -120,7 +120,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
       <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Shim.Windows</Name>
+      <Name>DragonSpark.Types.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
