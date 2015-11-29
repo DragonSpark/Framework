@@ -1,18 +1,11 @@
 using DragonSpark.Runtime;
 using Ploeh.AutoFixture;
 using System;
+using DragonSpark.Runtime.Values;
+using DragonSpark.Testing.Framework.Setup;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class CurrentTaskSpecification : ProvidedSpecification
-	{
-		public CurrentTaskSpecification() : this( new TaskLocalValue( new object() ) )
-		{}
-
-		public CurrentTaskSpecification( TaskLocalValue local ) : base( () => local.Item != null )
-		{}
-	}
-
 	public static class FixtureContext
 	{
 		public static IDisposable Create( IFixture item )

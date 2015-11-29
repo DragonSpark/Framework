@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Moq;
 using Ploeh.AutoFixture;

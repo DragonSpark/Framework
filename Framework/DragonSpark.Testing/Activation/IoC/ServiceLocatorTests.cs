@@ -9,6 +9,8 @@ using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 

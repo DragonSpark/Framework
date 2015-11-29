@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Markup;
 using DragonSpark.Activation;
+using DragonSpark.Activation.Build;
 
 namespace DragonSpark.Windows.Markup
 {

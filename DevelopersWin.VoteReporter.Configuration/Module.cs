@@ -1,4 +1,5 @@
 ﻿using DevelopersWin.VoteReporter.Entity;
+using DragonSpark.Activation;
 using DragonSpark.Modularity;
 using DragonSpark.Setup;
 using System.Globalization;
@@ -7,7 +8,7 @@ namespace DevelopersWin.VoteReporter.Configuration
 {
 	public class Module : Module<Setup>
 	{
-		public Module( IModuleMonitor moduleMonitor, SetupContext context ) : base( moduleMonitor, context )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context ) : base( activator, moduleMonitor, context )
 		{}
 	}
 

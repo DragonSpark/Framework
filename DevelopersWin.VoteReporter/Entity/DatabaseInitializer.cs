@@ -1,5 +1,6 @@
 using System.Data.Entity;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 
 namespace DevelopersWin.VoteReporter.Entity
 {

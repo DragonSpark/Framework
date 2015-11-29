@@ -1,42 +1,9 @@
 using DragonSpark.Activation;
-using DragonSpark.Extensions;
-using DragonSpark.Runtime;
 using System;
 using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ValueAttribute : ActivateAttribute
-	{
-		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
-		{
-			var item = base.Activate( instance, info, type, s );
-			var result = item.AsTo<IValue, object>( value => value.Item );
-			return result;
-		}
-	}
-
-	public class SingletonAttribute : DefaultAttribute
-	{
-		readonly Type hostType;
-		readonly string propertyName;
-
-		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
-		{}
-
-		public SingletonAttribute( Type hostType, string propertyName )
-		{
-			this.hostType = hostType;
-			this.propertyName = propertyName;
-		}
-
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
-		{
-			var result = new SingletonLocator( propertyName ).Locate( hostType );
-			return result;
-		}
-	}
-
 	public class ActivateAttribute : DefaultAttribute
 	{
 		readonly IActivator activator;

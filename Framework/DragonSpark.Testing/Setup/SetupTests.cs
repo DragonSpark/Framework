@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Setup;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
+using DefaultSetup = DragonSpark.Testing.Framework.Setup.DefaultSetup;
 
 namespace DragonSpark.Testing.Setup
 {

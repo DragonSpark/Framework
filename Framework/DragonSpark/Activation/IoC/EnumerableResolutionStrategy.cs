@@ -8,17 +8,6 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ArrayResolutionStrategy : Microsoft.Practices.Unity.ArrayResolutionStrategy
-	{
-		public override void PreBuildUp( IBuilderContext context )
-		{
-			if ( !context.HasBuildPlan() )
-			{
-				base.PreBuildUp( context );
-			}
-		}
-	}
-
 	public class EnumerableResolutionStrategy : BuilderStrategy
 	{
 		delegate object Resolver( IBuilderContext context );

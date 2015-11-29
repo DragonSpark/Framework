@@ -6,10 +6,11 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Windows.Setup
 {
-	public class UnityConventionRegistrationService : DragonSpark.Setup.UnityConventionRegistrationService
+	public class UnityConventionRegistrationService : DragonSpark.Setup.Registration.UnityConventionRegistrationService
 	{
 		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger ) : base( container, logger )
 		{}

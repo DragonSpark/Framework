@@ -1,8 +1,3 @@
-using DragonSpark.Extensions;
-using System.IO;
-using System.Linq;
-using System.Xaml;
-
 namespace DevelopersWin.VoteReporter
 {
 	public interface IVoteReportRepository
@@ -15,12 +10,10 @@ namespace DevelopersWin.VoteReporter
 	class VoteReportRepository : IVoteReportRepository
 	{
 		readonly IStorage storage;
-		readonly DirectoryInfo directory;
 
-		public VoteReportRepository( IStorage storage, DirectoryInfo directory )
+		public VoteReportRepository( IStorage storage )
 		{
 			this.storage = storage;
-			this.directory = directory;
 		}
 
 		/*public VoteReport GetLatest()

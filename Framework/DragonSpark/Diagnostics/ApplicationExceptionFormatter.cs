@@ -1,4 +1,5 @@
 using System;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Diagnostics
 {

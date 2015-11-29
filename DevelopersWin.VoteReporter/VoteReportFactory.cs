@@ -5,6 +5,7 @@ using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Activation.Build;
 
 namespace DevelopersWin.VoteReporter
 {

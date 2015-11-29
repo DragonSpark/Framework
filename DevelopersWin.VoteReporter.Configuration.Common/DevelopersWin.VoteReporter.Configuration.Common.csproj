@@ -83,6 +83,24 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevelopersWin.VoteReporter\DevelopersWin.VoteReporter.csproj">
+      <Project>{AE7C3390-95D0-4558-B992-F7EF3FAE89DA}</Project>
+      <Name>DevelopersWin.VoteReporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Types.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Name>DragonSpark.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
+      <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="Installer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,24 +109,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
-      <Name>DragonSpark.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DevelopersWin.VoteReporter\DevelopersWin.VoteReporter.csproj">
-      <Project>{ae7c3390-95d0-4558-b992-f7ef3fae89da}</Project>
-      <Name>DevelopersWin.VoteReporter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Framework\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Types.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
-      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
-      <Name>DragonSpark</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,30 +12,32 @@
 	xmlns:entity="clr-namespace:DragonSpark.Windows.Entity;assembly=DragonSpark.Windows"
 	xmlns:setupWindows="clr-namespace:DragonSpark.Windows.Setup;assembly=DragonSpark.Windows"
 	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
+	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
+	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
 	mc:Ignorable="d" 
 >
 	<setup:Setup.Commands>
-		<setup:AssignServiceLocatorCommand />
+		<commands:AssignServiceLocatorCommand />
 		<setupWindows:SetupRegistrationByConventionCommand />
-		<setup:SetupUnityContainerCommand>
-			<setup:SetupUnityContainerCommand.Instances>
-				<setup:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
-				<setup:UnityInstance>
-					<dragonSpark:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
-				</setup:UnityInstance>
-			</setup:SetupUnityContainerCommand.Instances>
-			<setup:SetupUnityContainerCommand.Extensions>
+		<commands:SetupUnityContainerCommand>
+			<commands:SetupUnityContainerCommand.Instances>
+				<commands:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
+				<commands:UnityInstance>
+					<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
+				</commands:UnityInstance>
+			</commands:SetupUnityContainerCommand.Instances>
+			<commands:SetupUnityContainerCommand.Extensions>
 				<ioC:IoCExtension />
-			</setup:SetupUnityContainerCommand.Extensions>
-		</setup:SetupUnityContainerCommand>
+			</commands:SetupUnityContainerCommand.Extensions>
+		</commands:SetupUnityContainerCommand>
 		<setupWindows:InitializeMarkupCommand />
-		<setup:InitializeModulesCommand />
+		<commands:InitializeModulesCommand />
 		<entity:AssignDataDirectoryCommand />
 		<entity:InstallDatabaseCommand />
 		<entity:BackupDatabaseCommand />
 		<localEntity:InitializeDatabaseCommand>
 			<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
 		</localEntity:InitializeDatabaseCommand>
-		<setup:RunProgramCommand />
+		<commands:RunProgramCommand />
 	</setup:Setup.Commands>
 </application:Setup>

@@ -2,6 +2,7 @@ using DragonSpark.Extensions;
 using System;
 using System.Reflection;
 using DragonSpark.Runtime;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Activation
 {

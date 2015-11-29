@@ -3,6 +3,8 @@ using DragonSpark.Testing.Framework;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
 using System;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics

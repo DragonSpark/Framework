@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Windows;
-using DragonSpark.Windows.Logging;
+using DragonSpark.Windows.Diagnostics;
 
 namespace DevelopersWin.VoteReporter
 {

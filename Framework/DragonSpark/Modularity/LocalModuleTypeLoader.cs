@@ -2,6 +2,7 @@
 
 using System;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Modularity
 {

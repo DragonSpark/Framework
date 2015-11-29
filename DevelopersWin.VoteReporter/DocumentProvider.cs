@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 using HtmlAgilityPack;
 using Microsoft.Practices.Unity;
 

@@ -120,13 +120,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyModuleCatalog.cs" />
-    <Compile Include="CompositeLoggerFacade.cs" />
+    <Compile Include="Diagnostics\CompositeLoggerFacade.cs" />
     <Compile Include="DataBuilder.cs" />
     <Compile Include="DataTransformer.cs" />
     <Compile Include="DataTransformerExtensions.cs" />
     <Compile Include="Entity\ActivationSource.cs" />
     <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
+    <Compile Include="Entity\AttachedDatabaseFileFactory.cs" />
+    <Compile Include="Entity\BackupDatabaseCommand.cs" />
+    <Compile Include="Entity\DataDirectoryPath.cs" />
     <Compile Include="Entity\DbMigrationsConfiguration.cs" />
+    <Compile Include="Entity\EntityFiles.cs" />
     <Compile Include="Entity\EntityInstallationStep.cs" />
     <Compile Include="Entity\IActivationSource.cs" />
     <Compile Include="Entity\InitializeDatabaseCommand.cs" />
@@ -139,6 +143,7 @@
     <Compile Include="Entity\IInstallationStep.cs" />
     <Compile Include="Entity\IInstaller.cs" />
     <Compile Include="Entity\InstallationEntry.cs" />
+    <Compile Include="Entity\InstallDatabaseCommand.cs" />
     <Compile Include="Entity\Installer.cs" />
     <Compile Include="Entity\LocalStorageAttribute.cs" />
     <Compile Include="Entity\LocalStoragePropertyProcessor.cs" />
@@ -149,8 +154,8 @@
     <Compile Include="Entity\VersionConverter.cs" />
     <Compile Include="IDataTransformer.cs" />
     <Compile Include="Io\FileSystem.cs" />
-    <Compile Include="Logging\TextLogger.cs" />
-    <Compile Include="Logging\TraceLogger.cs" />
+    <Compile Include="Diagnostics\TextLogger.cs" />
+    <Compile Include="Diagnostics\TraceLogger.cs" />
     <Compile Include="Markup\CollectionExtension.cs" />
     <Compile Include="Markup\CollectionExtensionBase.cs" />
     <Compile Include="Markup\CollectionSetter.cs" />
@@ -171,8 +176,10 @@
     <Compile Include="Markup\MarkupTargetValueSetterBase.cs" />
     <Compile Include="Markup\MarkupTargetValueSetterFactory.cs" />
     <Compile Include="Markup\MonitoredMarkupExtension.cs" />
+    <Compile Include="Markup\NameExtension.cs" />
     <Compile Include="Markup\NextExtension.cs" />
     <Compile Include="Markup\PropertyInfoMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\ReferenceExtension.cs" />
     <Compile Include="Markup\StaticResourceExtension.cs" />
     <Compile Include="Modularity\DynamicModuleInfoGroup.cs" />
     <Compile Include="Process.cs" />
@@ -181,6 +188,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\AppDomainValue.cs" />
+    <Compile Include="Runtime\ApplicationAssemblyLocator.cs" />
     <Compile Include="Runtime\FileSystemAssemblyProvider.cs" />
     <Compile Include="Runtime\CurrentDomainAssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs" />
@@ -260,6 +269,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />
+    <Compile Include="TaskLocalValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">

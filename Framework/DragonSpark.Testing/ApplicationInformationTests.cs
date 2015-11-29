@@ -6,7 +6,10 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
+using DragonSpark.TypeSystem;
 using Xunit;
 using Xunit.Abstractions;
 

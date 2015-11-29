@@ -5,6 +5,8 @@ using DragonSpark.Runtime;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
+using DragonSpark.Setup.Commands;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Setup
 {

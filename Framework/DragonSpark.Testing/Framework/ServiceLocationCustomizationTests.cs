@@ -1,6 +1,7 @@
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using System.Linq;
+using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.Framework
