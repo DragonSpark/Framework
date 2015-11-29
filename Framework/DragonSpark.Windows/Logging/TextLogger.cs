@@ -1,73 +1,45 @@
+using DragonSpark.Diagnostics;
+using DragonSpark.Runtime;
 using System;
-using System.Globalization;
 using System.IO;
-using DragonSpark.Logging;
-using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Logging
 {
-    /// <summary>
-    /// Implementation of <see cref="ILoggerFacade"/> that logs into a <see cref="TextWriter"/>.
-    /// </summary>
-    public class TextLogger : ILoggerFacade, IDisposable
-    {
-        private readonly TextWriter writer;
+	public class TextLogger : LoggerBase, IDisposable
+	{
+		readonly TextWriter writer;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TextLogger"/> that writes to
-        /// the console output.
-        /// </summary>
-        public TextLogger()
-            : this(Console.Out)
-        {
-        }
+		public TextLogger() : this( ExceptionFormatter.Instance )
+		{}
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="TextLogger"/>.
-        /// </summary>
-        /// <param name="writer">The writer to use for writing log entries.</param>
-        public TextLogger(TextWriter writer)
-        {
-            if (writer == null)
-                throw new ArgumentNullException("writer");
+		public TextLogger( IExceptionFormatter formatter ) : this( formatter, CurrentTime.Instance, Console.Out )
+		{}
 
-            this.writer = writer;
-        }
+		public TextLogger( IExceptionFormatter formatter, ICurrentTime time, TextWriter writer) : base( formatter, time )
+		{
+			if (writer == null)
+				throw new ArgumentNullException(nameof(writer));
 
-        /// <summary>
-        /// Write a new log entry with the specified category and priority.
-        /// </summary>
-        /// <param name="message">Message body to log.</param>
-        /// <param name="category">Category of the entry.</param>
-        /// <param name="priority">The priority of the entry.</param>
-        public void Log(string message, Category category, DragonSpark.Logging.Priority priority)
-        {
-            var messageToLog = string.Format(CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, DateTime.Now, category.ToString().ToUpper(CultureInfo.InvariantCulture), message, priority );
+			this.writer = writer;
+		}
 
-            writer.WriteLine(messageToLog);
-        }
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-        /// <summary>
-        /// Disposes the associated <see cref="TextWriter"/>.
-        /// </summary>
-        /// <param name="disposing">When <see langword="true"/>, disposes the associated <see cref="TextWriter"/>.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-	            writer?.Dispose();
-            }
-        }
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				writer?.Dispose();
+			}
+		}
 
-        ///<summary>
-        ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        ///</summary>
-        /// <remarks>Calls <see cref="Dispose(bool)"/></remarks>.
-        ///<filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-    }
+		protected override void Write( Line line )
+		{
+			writer.WriteLine( line.Message );
+		}
+	}
 }

@@ -1,4 +1,5 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using Microsoft.Practices.ServiceLocation;
 using System;
 
@@ -6,36 +7,31 @@ namespace DragonSpark.Activation
 {
 	public static class Services
 	{
-		public static void Initialize( IServiceLocationHost host )
-		{
-			Host = host;
-		}	static IServiceLocationHost Host { get; set; } = ServiceLocationHost.Instance;
-
-		public static IServiceLocation Location => Host.Location;
+		public static IServiceLocation Location => AmbientValues.Get<IServiceLocation>() ?? ServiceLocation.Instance;
 	}
 
-	public static class ServiceLocatorHostExtensions
+	public static class ServiceLocatorExtensions
 	{
-		public static bool IsAvailable( this IServiceLocation @this )
+		/*public static bool IsAvailable( this IServiceLocation @this )
 		{
 			var result = @this.Transform( x => x.IsAvailable );
 			return result;
-		}
+		}*/
 
 		public static void With<TService>( this IServiceLocation @this, Action<TService> action )
 		{
-			@this.IsAvailable().IsTrue( () => @this.Locate<TService>().With( action ) );
+			@this.IsAvailable.IsTrue( () => @this.Locate<TService>().With( action ) );
 		}
 
 		public static TResult With<TService, TResult>( this IServiceLocation @this, Func<TService, TResult> action )
 		{
-			var result = @this.IsAvailable() ? @this.Locate<TService>().Transform( action ) : default(TResult);
+			var result = @this.IsAvailable ? @this.Locate<TService>().Transform( action ) : default(TResult);
 			return result;
 		}
 
 		public static TService Locate<TService>( this IServiceLocation @this, string name = null )
 		{
-			var result = @this.IsAvailable() ? @this.Locator.TryGetInstance<TService>( name ) : default(TService);
+			var result = @this.IsAvailable ? @this.Locator.GetInstance<TService>( name ) : default(TService);
 			return result;
 		}
 
@@ -71,24 +67,55 @@ namespace DragonSpark.Activation
 
 		IServiceLocator Locator { get; }
 
-		void Assign( IServiceLocator instance );
+		void Assign( IServiceLocator locator );
 	}
 
 	public class ServiceLocation : IServiceLocation
 	{
 		public static ServiceLocation Instance { get; } = new ServiceLocation();
 
-		public bool IsAvailable => ServiceLocator.IsLocationProviderSet;
-
-	    public IServiceLocator Locator => ServiceLocator.Current;
-
-		public void Assign( IServiceLocator instance )
+		ServiceLocation()
 		{
-			ServiceLocator.SetLocatorProvider( instance != null ? () => instance : (ServiceLocatorProvider)null );
+			ServiceLocator.SetLocatorProvider( AmbientValues.Get<IServiceLocator> );
+		}
+
+		public void Assign( IServiceLocator locator )
+		{
+			if ( IsAvailable )
+			{
+				AmbientValues.Remove( Locator );
+			}
+
+			locator.With( context =>
+			{
+				var keyLocator = context.GetInstance<IAmbientKeyLocator>() ?? AmbientKeyLocator.Instance;
+				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( new EqualitySpecification( context ) );
+				AmbientValues.Register( key, context );
+			} );
+		}
+
+		public bool IsAvailable => ServiceLocator.IsLocationProviderSet && Locator != null;
+
+		public IServiceLocator Locator => ServiceLocator.Current;
+	}
+
+	public interface IAmbientKeyLocator
+	{
+		IAmbientKey Locate( IServiceLocator context );
+	}
+
+	class AmbientKeyLocator : IAmbientKeyLocator
+	{
+		public static AmbientKeyLocator Instance { get; } = new AmbientKeyLocator();
+
+		public IAmbientKey Locate( IServiceLocator context )
+		{
+			var result = context.GetInstance<IAmbientKey>();
+			return result;
 		}
 	}
 
-	public interface IServiceLocationHost
+	/*public interface IServiceLocationHost
 	{
 		IServiceLocation Location { get; }
 	}
@@ -98,7 +125,7 @@ namespace DragonSpark.Activation
 		public static ServiceLocationHost Instance { get; } = new ServiceLocationHost();
 
 		public IServiceLocation Location => ServiceLocation.Instance;
-	}
+	}*/
 
 
 }

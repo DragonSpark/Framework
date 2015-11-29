@@ -1,6 +1,6 @@
+using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using DragonSpark.Setup;
 using System;
 using System.Reflection;
 
@@ -8,9 +8,9 @@ namespace DragonSpark.ComponentModel
 {
 	public class ValueAttribute : ActivateAttribute
 	{
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
 		{
-			var item = base.GetValue( instance, propertyInfo );
+			var item = base.Activate( instance, info, type, s );
 			var result = item.AsTo<IValue, object>( value => value.Item );
 			return result;
 		}
@@ -21,10 +21,10 @@ namespace DragonSpark.ComponentModel
 		readonly Type hostType;
 		readonly string propertyName;
 
-		public SingletonAttribute( Type hostType ) : this( hostType, null )
+		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
 		{}
 
-		public SingletonAttribute( Type hostType, string propertyName = "Instance" )
+		public SingletonAttribute( Type hostType, string propertyName )
 		{
 			this.hostType = hostType;
 			this.propertyName = propertyName;
@@ -39,6 +39,7 @@ namespace DragonSpark.ComponentModel
 
 	public class ActivateAttribute : DefaultAttribute
 	{
+		readonly IActivator activator;
 		readonly Type activatedType;
 		private readonly string name;
 
@@ -51,16 +52,27 @@ namespace DragonSpark.ComponentModel
 		public ActivateAttribute( Type activatedType ) : this( activatedType, null )
 		{}
 
-		public ActivateAttribute( Type activatedType, string name )
+		public ActivateAttribute( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
 		{
+		}
+
+		public ActivateAttribute( IActivator activator, Type activatedType, string name )
+		{
+			this.activator = activator;
 			this.activatedType = activatedType;
 			this.name = name;
 		}
 
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		protected internal sealed override object GetValue( object instance, PropertyInfo propertyInfo )
 		{
 			var type = activatedType ?? DetermineType( propertyInfo );
-			var result = name != null ? Activation.Activator.CreateNamedInstance<object>( type, name ) : Activation.Activator.CreateInstance<object>( type );
+			var result = Activate( instance, propertyInfo, type, name );
+			return result;
+		}
+
+		protected virtual object Activate( object instance, PropertyInfo info, Type type, string s )
+		{
+			var result = activator.Activate<object>( type, s );
 			return result;
 		}
 

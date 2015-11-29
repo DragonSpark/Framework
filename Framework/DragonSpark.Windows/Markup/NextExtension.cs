@@ -1,10 +1,9 @@
+using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
-using DragonSpark.Setup;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -13,15 +12,12 @@ namespace DragonSpark.Windows.Markup
 	{
 		public NextExtension()
 		{
-			this.WithDefaults();
+			this.BuildUp();
 		}
 
 		[Activate]
 		public IIncrementer Incrementer { get; set; }
-
-		[Activate]
-		public AllTypesOfFactory Factory { get; set; }
-
+		
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var context = DetermineContext( serviceProvider );

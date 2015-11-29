@@ -10,7 +10,7 @@ namespace DragonSpark.Modularity
 	/// <see cref="ModuleInfo"/> classes have a Ref parameter that starts with "file://". 
 	/// This class is only used on the Desktop version of the Prism Library.
 	/// </summary>
-	[RegisterAs( typeof(IModuleTypeLoader) )]
+	[Register( typeof(IModuleTypeLoader) )]
 	public class LocalModuleTypeLoader : IModuleTypeLoader, IDisposable
     {
         /// <summary>

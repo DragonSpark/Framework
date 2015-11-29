@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Activation;
-using DragonSpark.Activation.IoC;
-using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
@@ -12,24 +10,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Activator = DragonSpark.Activation.IoC.Activator;
+using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation.IoC
 {
-	[Freeze( typeof(IUnityContainer), typeof(UnityContainer) )]
-	[Freeze( typeof(IActivator), typeof(Activator) )]
-	[ContainerExtensionFactory( typeof(IoCExtension) )]
 	public class ServiceLocatorTests
 	{
-		[Theory, Services, AutoMockData]
-		void GetInstance( [Frozen]ILogger logger, [Frozen]DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void GetInstance( [Modest, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<ILogger> logger )
 		{
+			Assert.NotSame( Services.Location.Locator, sut );
+			Assert.Same( sut.Get<ILogger>(), logger.Object );
+
 			var before = sut.GetInstance<IInterface>();
-			Assert.Null( before);
+			Assert.Null( before );
 
-			var mock = Mock.Get( logger );
-
-			mock.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
+			logger.Verify( x => x.Warning( @"Specified type is not registered: ""DragonSpark.Testing.TestObjects.IInterface"" with build name ""<None>"".", Priority.High ) );
 
 			sut.Register<IInterface, Class>();
 
@@ -39,11 +35,11 @@ namespace DragonSpark.Testing.Activation.IoC
 			var broken = sut.GetInstance<ClassWithBrokenConstructor>();
 			Assert.Null( broken );
 
-			mock.Verify( x => x.Warning( It.Is<string>( y => y.StartsWith( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".  Details: Microsoft.Practices.Unity.ResolutionFailedException: Resolution of the dependency failed, type = ""DragonSpark.Testing.TestObjects.ClassWithBrokenConstructor"", name = ""(none)""." ) ), Priority.High ) );
+			logger.Verify( x => x.Exception( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".", It.IsAny<ResolutionFailedException>() ) );
 		}
 
-		[Theory, AutoDataCustomization]
-		void GetAllInstances( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void GetAllInstances( [Modest, Frozen] ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
 			sut.Register<IInterface, Derived>( "Second" );
@@ -63,29 +59,32 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Contains( classes.Single(), updated );
 		}
 
-		[Theory, AutoDataCustomization]
-		void Container( [Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void Container( [Modest, Frozen] ServiceLocator sut )
 		{
 			sut.Dispose();
 
 			Assert.Throws<ObjectDisposedException>( () => sut.Container );
 		}
 
-		[Theory, AutoDataCustomization, Services]
-		void Create(  [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator locator, IActivator sut, string message, int number, Class @item )
+		[Theory, Test, SetupAutoData]
+		void Create( IActivator sut, string message, int number, Class @item )
 		{
-			locator.Register<IDefaultValueProvider, DefaultValueProvider>();
+			Assert.IsType<CompositeActivator>( sut );
 
-			var created = sut.Create<ClassWithManyParameters>( number, message, item );
+			var created = sut.Construct<ClassWithManyParameters>( number, message, item );
 			Assert.Equal( message, created.String );
 			Assert.Equal( number, created.Integer );
 			Assert.Equal( item, created.Class );
 
-			Assert.NotNull( sut.Create<ClassCreatedFromDefault>( "Create from default" ) );
+			var systemMessage = "Create from system";
+			var systemCreated = sut.Construct<ClassCreatedFromDefault>( systemMessage );
+			Assert.NotNull( systemCreated );
+			Assert.Equal( systemMessage, systemCreated.Message );
 		}
 		
-		[Theory, AutoDataCustomization, Services]
-		void Register( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void Register( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.Register<IInterface,Class>();
@@ -93,8 +92,8 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, AutoDataCustomization, Services]
-		void RegisterInstance( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void RegisterInstance( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			var instance = new Class();
@@ -104,8 +103,8 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Equal( instance, container.Resolve<IInterface>() );
 		}
 
-		[Theory, AutoDataCustomization, Services]
-		void RegisterFactory( IUnityContainer container, [Greedy, Frozen] DragonSpark.Activation.IoC.ServiceLocator sut )
+		[Theory, Test, SetupAutoData]
+		void RegisterFactory( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.RegisterFactory( typeof(IInterface), () => new Class() );
@@ -113,18 +112,57 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, AutoDataCustomization, Services]
-		void BuildUp( [Greedy, Frozen( Matching.ImplementedInterfaces )] DragonSpark.Activation.IoC.ServiceLocator sut, IoCExtension extension )
+		[Theory, Test, SetupAutoData]
+		void BuildUp( ServiceLocator sut )
 		{
-			sut.Register<IDefaultValueProvider, DefaultValueProvider>();
-			Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => sut );
+			// sut.Register<IDefaultValueProvider, DefaultValueProvider>();
+
 			var item = new ClassWithDefaultProperties();
 
 			Assert.Null( item.String );
 
-			Assert.True( item.BuildUpOnce() );
+			item.BuildUp();
+			// Assert.True( item.BuildUp() );
 			Assert.Equal( "Hello World", item.String );
-			Assert.False( item.BuildUpOnce() );
+			// Assert.False( item.BuildUp() );
+		}
+
+
+		[Theory, Test, SetupAutoData]
+		void Dispose( [Greedy, Frozen, Assigned] ServiceLocator sut )
+		{
+			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
+
+			Assert.Same( sut, Services.Location.Locator );
+
+			/*var child = sut.Container.CreateChildContainer();
+			child.Registrations.First( x => x.RegisteredType == typeof(IUnityContainer) ).LifetimeManager.RemoveValue();
+
+			Assert.Equal( sut.Container, child.Resolve<IUnityContainer>() );*/
+
+			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
+			Assert.NotNull( item );
+
+			var disposable = new Disposable();
+			
+			sut.Register( disposable );
+
+			// Assert.Equal( 1, extension.Children.Count );
+
+			Assert.False( disposable.Disposed );
+			
+			Assert.Same( Services.Location.Locator, sut );
+
+			sut.Dispose();
+
+			/*var temp = Dynamic.InvokeGet( child, "lifetimeContainer" );
+			Assert.Null( temp );
+
+			Assert.Equal( 0, extension.Children.Count );*/
+
+			Assert.NotSame( Services.Location.Locator, sut );
+
+			Assert.True( disposable.Disposed );
 		}
 	}
 }

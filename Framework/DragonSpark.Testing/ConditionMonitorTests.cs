@@ -1,23 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
 using Xunit;
-using Xunit.Extensions;
-using Xunit.Sdk;
 
 namespace DragonSpark.Testing
 {
-	/*public class TheoryAttribute : Xunit.Extensions.TheoryAttribute
-	{
-		protected override IEnumerable<ITestCommand> EnumerateTestCommands( IMethodInfo method )
-		{
-			return base.EnumerateTestCommands( method ).Concat( this.Prepend() );
-		}
-	}*/
-
 	public class ConditionMonitorTests
 	{
-		[Theory, Framework.AutoMockData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Apply( ConditionMonitor sut )
 		{
 			Assert.False( sut.State == ConditionMonitorState.Applied );
@@ -35,7 +22,7 @@ namespace DragonSpark.Testing
 			Assert.False( sut.State == ConditionMonitorState.Applied );
 		}
 
-		[Theory, Framework.AutoMockData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void ApplyWithAction( ConditionMonitor sut )
 		{
 			var count = 0;
@@ -49,7 +36,7 @@ namespace DragonSpark.Testing
 			Assert.Equal( 1, count );
 		}
 
-		[Theory, Framework.AutoMockData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void ApplyIf( ConditionMonitor sut )
 		{
 			var count = 0;

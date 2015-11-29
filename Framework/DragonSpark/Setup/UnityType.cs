@@ -1,5 +1,5 @@
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace DragonSpark.Setup
 			InjectionMembers.Any().IsFalse( () => InjectionMembers.Add( new InjectionConstructor() ) );
 
 			var mapping = string.Concat( RegistrationType.ToString(), RegistrationType != type ? $" -> {type}" : string.Empty );
-			container.Resolve<ILoggerFacade>().Log( $"Registering Unity Type: {mapping}", Category.Debug, DragonSpark.Logging.Priority.None );
+			container.Resolve<ILogger>().Information( $"Registering Unity Type: {mapping}" );
 			var members = InjectionMembers.ToArray();
 			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
 

@@ -8,7 +8,6 @@ using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
 {
-	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class DefaultValueProviderTests
 	{
 		public class Activator : IActivator
@@ -25,25 +24,30 @@ namespace DragonSpark.Testing.ComponentModel
 				return true;
 			}
 
-			public TResult CreateInstance<TResult>( Type type, string name )
+			public object Activate( Type type, string name = null )
 			{
-				var result = (TResult)locator.GetInstance( type, name );
+				var result = locator.GetInstance( type, name );
 				return result;
 			}
 
-			public TResult Create<TResult>( params object[] parameters )
+			public bool CanConstruct( Type type, params object[] parameters )
 			{
-				var result = (TResult)locator.GetInstance( typeof(TResult) );
+				return true;
+			}
+
+			public object Construct( Type type, params object[] parameters )
+			{
+				var result = locator.GetInstance( type );
 				return result;
 			}
 		}
 
-		[Theory, AutoDataCustomization, Framework.Services]
-		void Apply( DefaultValueProvider sut )
+		[Theory, Test, SetupAutoData]
+		void Apply( ObjectBuilder sut )
 		{
 			var current = DateTime.Now;
 			var target = new ClassWithDefaultProperties();
-			sut.Apply( target );
+			sut.BuildUp( target );
 
 			Assert.Equal( 'd', target.Char );
 			Assert.Equal( 7, target.Byte );

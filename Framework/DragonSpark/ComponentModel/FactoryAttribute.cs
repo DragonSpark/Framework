@@ -1,7 +1,8 @@
+using DragonSpark.Activation;
+using DragonSpark.Setup;
 using System;
 using System.Reflection;
-using DragonSpark.Activation;
-using DragonSpark.Extensions;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel
 {
@@ -10,10 +11,10 @@ namespace DragonSpark.ComponentModel
 		public FactoryAttribute( Type activatedType ) : base( activatedType )
 		{}
 
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
 		{
-			var value = base.GetValue( instance, propertyInfo ).AsTo<IFactory, object>( x => x.Create( propertyInfo.PropertyType ) );
-			return value;
+			var result = Activator.Current.Activate<FactoryBuiltObjectFactory>().Create( new ObjectFactoryParameter( type, info.PropertyType ) );
+			return result;
 		}
 	}
 }

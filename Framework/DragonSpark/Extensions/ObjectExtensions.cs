@@ -13,6 +13,23 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
+		public static TResult Locked<T, TResult>( this T @this, Func<T, TResult> with ) where T : class
+		{
+			lock ( @this )
+			{
+				return @this.Transform( with );
+			}
+		}
+
+		public static T Locked<T>( this T @this, Action<T> with ) where T : class
+		{
+			lock ( @this )
+			{
+				with( @this );
+			}
+			return @this;
+		}
+
 		public static TResult Clone<TResult>( this TResult @this, Action<IMappingExpression> configure = null ) where TResult : class
 		{
 			var result = @this.MapInto<TResult>( configure: configure );
@@ -148,10 +165,10 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TItem WithDefaults<TItem>( this TItem target ) where TItem : class
+		public static TItem BuildUp<TItem>( this TItem target ) where TItem : class
 		{
-			var provider = Services.Location.Locate<IDefaultValueProvider>() ?? DefaultValueProvider.Instance;
-			provider.With( x => x.Apply( target ) );
+			var builder = Services.Location.Locate<IObjectBuilder>() ?? ObjectBuilder.Instance;
+			builder.With( x => x.BuildUp( target ) );
 			return target;
 		}
 

@@ -2,12 +2,11 @@ using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
-	[ContentProperty( "Types" )]
+	[ContentProperty( nameof(Types) )]
 	public class SetupUnityContainerCommand : SetupCommand
 	{
 		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();

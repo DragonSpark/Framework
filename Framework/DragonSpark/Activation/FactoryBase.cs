@@ -1,31 +1,78 @@
 ﻿using DragonSpark.Extensions;
-using System;
+using System.Linq;
 
 namespace DragonSpark.Activation
 {
-	public abstract class FactoryBase<TResult> : FactoryBase<object, TResult> where TResult : class
-	{}
-
-	public abstract class FactoryBase<TParameter, TResult> : IFactory where TResult : class
+	public interface IFactoryParameterQualifier<out TParameter>
 	{
-		protected virtual Type ResultType => typeof(TResult);
+		TParameter Qualify( object context );
+	}
 
-		protected abstract TResult CreateFrom( Type resultType, TParameter parameter );
+	public class FactoryParameterQualifier<TParameter> : IFactoryParameterQualifier<TParameter>
+	{
+		readonly IActivator activator;
+		
+		public FactoryParameterQualifier() : this( Activator.Current )
+		{}
 
-		public TResult Create( TParameter parameter = default(TParameter) )
+		public FactoryParameterQualifier( IActivator activator )
 		{
-			return Create( ResultType, parameter );
+			this.activator = activator;
 		}
 
-		public TResult Create( Type resultType, TParameter parameter = default(TParameter) )
+		public TParameter Qualify( object context )
 		{
-			var result = CreateFrom( resultType ?? ResultType, parameter );
+			var result = context is TParameter ? (TParameter)context : context.Transform( Construct, activator.Activate<TParameter> );
 			return result;
 		}
 
-		object IFactory.Create( Type resultType, object parameter )
+		protected virtual TParameter Construct( object parameter )
 		{
-			var result = Create( resultType, parameter.To<TParameter>() );
+			var result = (TParameter)typeof(TParameter).Extend().FindConstructor( parameter.GetType() ).Transform( info => info.Invoke( new[] { info.GetParameters().First().ParameterType.Extend().Qualify( parameter ) } ) );
+			return result;
+		}
+	}
+
+	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
+	{
+		readonly IFactoryParameterQualifier<TParameter> qualifier;
+
+		protected FactoryBase() : this( new FactoryParameterQualifier<TParameter>() )
+		{}
+
+		protected FactoryBase( IFactoryParameterQualifier<TParameter> qualifier )
+		{
+			this.qualifier = qualifier;
+		}
+
+		protected abstract TResult CreateItem( TParameter parameter );
+
+		public TResult Create( TParameter parameter )
+		{
+			var result = CreateItem( parameter );
+			return result;
+		}
+
+		object IFactoryWithParameter.Create( object parameter )
+		{
+			var qualified = qualifier.Qualify( parameter );
+			var result = Create( qualified );
+			return result;
+		}
+	}
+
+	public abstract class FactoryBase<TResult> : IFactory<TResult> where TResult : class
+	{
+		protected abstract TResult CreateItem();
+
+		public TResult Create()
+		{
+			return CreateItem();
+		}
+
+		object IFactory.Create()
+		{
+			var result = CreateItem();
 			return result;
 		}
 	}

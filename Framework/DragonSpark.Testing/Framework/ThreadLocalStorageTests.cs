@@ -1,12 +1,12 @@
 using DragonSpark.Testing.TestObjects;
+using DragonSpark.Windows.Runtime;
 using Xunit;
-using Xunit.Extensions;
 
-namespace DragonSpark.Testing.Framework.Testing
+namespace DragonSpark.Testing.Framework
 {
 	public class ThreadLocalStorageTests
 	{
-		[Theory, AutoDataCustomization]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void Push( Class sut )
 		{
 			using ( ThreadLocalStorage.Push( sut ) )

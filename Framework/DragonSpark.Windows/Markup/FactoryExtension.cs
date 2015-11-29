@@ -1,50 +1,64 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using DragonSpark.Setup;
+using System;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
 {
-	public class FactoryExtension : LocateExtension
+	public class FactoryExtension : FactoryExtension<ObjectFactoryParameter, object>
 	{
 		public FactoryExtension()
 		{}
 
-		public FactoryExtension( Type type ) : this( type, null ) 
+		public FactoryExtension( Type type ) : base( type )
 		{}
 
-		public FactoryExtension( Type type, object parameter ) : this( type, null, parameter )
+		public FactoryExtension( Type type, object parameter ) : base( type, parameter )
 		{}
 
-		public FactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName )
+		public FactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName, parameter )
+		{}
+
+		protected override IFactory<ObjectFactoryParameter, object> DetermineFactory( IServiceProvider serviceProvider )
+		{
+			return Activator.Current.Activate<FactoryBuiltObjectFactory>();
+		}
+
+		protected override ObjectFactoryParameter DetermineParameter( IServiceProvider serviceProvider )
+		{
+			var type = serviceProvider.Get<DeferredContext>().PropertyType;
+			var context = new ObjectFactoryParameter( Type, Parameter ?? type );
+			return context;
+		}
+	}
+
+	public abstract class FactoryExtension<TParameter, TResult> : LocateExtension
+	{
+		protected FactoryExtension()
+		{}
+
+		protected FactoryExtension( Type type ) : this( type, null ) 
+		{}
+
+		protected FactoryExtension( Type type, object parameter ) : this( type, null, parameter )
+		{}
+
+		protected FactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName )
 		{
 			Parameter = parameter;
 		}
 
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
-			var result = DetermineFactory( serviceProvider ).Transform( x => Create( x, serviceProvider ) );
+			var parameter = DetermineParameter( serviceProvider );
+			var result = DetermineFactory( serviceProvider ).Create( parameter );
 			return result;
 		}
 
-		protected virtual object Create( IFactory factory, IServiceProvider serviceProvider )
-		{
-			var type = serviceProvider.Get<DeferredContext>().PropertyType;
-			var result = factory.Create( type, DetermineParameter( serviceProvider ) );
-			return result;
-		}
+		protected abstract IFactory<TParameter, TResult> DetermineFactory( IServiceProvider serviceProvider );
 
-		protected virtual IFactory DetermineFactory( IServiceProvider serviceProvider )
-		{
-			var result = Instance ?? base.GetValue( serviceProvider ) as IFactory;
-			return result;
-		}
-
-		protected virtual object DetermineParameter( IServiceProvider serviceProvider )
-		{
-			return Parameter;
-		}
-
-		public IFactory Instance { get; set; }
+		protected abstract TParameter DetermineParameter( IServiceProvider serviceProvider );
 
 		public object Parameter { get; set; }
 	}

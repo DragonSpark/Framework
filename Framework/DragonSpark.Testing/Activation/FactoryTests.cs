@@ -2,37 +2,30 @@ using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.TestObjects;
-using System;
+using Ploeh.AutoFixture.Xunit2;
 using Xunit;
-using Activator = DragonSpark.Activation.IoC.Activator;
 
 namespace DragonSpark.Testing.Activation
 {
-	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class FactoryTests
 	{
-		[Theory, AutoDataCustomization]
-		void CreateActivation( Factory<Class> sut )
+		[Theory, Test, SetupAutoData]
+		void CreateActivation( ActivateFactory<Class> sut )
 		{
-			var creation = sut.Create<Class>();
+			var creation = sut.CreateUsing( typeof(Class) );
 			Assert.NotNull( creation );
+			Assert.IsType<Class>( creation );
 		}
 
-		[Theory, AutoDataCustomization]
-		void CreateActivationException( Factory<ClassWithParameter> sut )
+		[Theory, Test, SetupAutoData]
+		void Create( [Modest]ConstructFactory<IInterface> sut )
 		{
-			Assert.Throws<MissingMethodException>( () => sut.Create<ClassWithParameter>() );
-		}
-
-		[Theory, AutoDataCustomization]
-		void Create( Factory<Class> sut )
-		{
-			var factory = sut.To<IFactory>();
-			var result = factory.Create( typeof(object) );
+			var factory = sut.To<IFactoryWithParameter>();
+			var result = factory.Create( typeof(Class) );
 			Assert.IsType<Class>( result );
 
-			var @class = factory.Create<Class>();
-			Assert.NotNull( @class );
+			/*var @class = factory.Create( null );
+			Assert.NotNull( @class );*/
 		}
-	}
+	}																	        
 }

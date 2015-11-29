@@ -2,7 +2,6 @@
 using Microsoft.Practices.Unity;
 using System;
 using System.Globalization;
-using DragonSpark.Logging;
 using DragonSpark.Properties;
 
 namespace DragonSpark.Extensions
@@ -41,7 +40,7 @@ namespace DragonSpark.Extensions
 			if (container.IsRegistered(fromType))
 			{
 				var message = string.Format(CultureInfo.CurrentCulture, Resources.TypeMappingAlreadyRegistered, fromType.Name );
-				context.Logger.Log(message, Category.Debug, Logging.Priority.Low );
+				context.Logger.Information(message, Priority.Low );
 			}
 			else
 			{

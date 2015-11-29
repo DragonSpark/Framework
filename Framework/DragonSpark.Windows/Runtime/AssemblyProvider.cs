@@ -1,44 +1,37 @@
 using System;
-using System.Linq;
-using System.Reflection;
+using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using Microsoft.Practices.Unity;
+using DragonSpark.Setup;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public class AssemblyProvider : AssemblyProviderBase
+	public class AssemblyProvider : FilteredAssemblyProviderBase
 	{
 		public static AssemblyProvider Instance { get; } = new AssemblyProvider();
 
-		protected override Assembly[] DetermineAll()
+		public AssemblyProvider() : base( FileSystemAssemblyProvider.Instance )
+		{}
+
+		protected override IEnumerable<Assembly> DetermineCoreAssemblies()
 		{
-			var result = AllClasses.FromAssembliesInBasePath( includeUnityAssemblies: true )
-				.Where( x => x.Namespace != null )
-				.GroupBy( type => type.Assembly )
-				.Select( types => types.Key ).ToArray();
+			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+			var result = base.DetermineCoreAssemblies().Append( assembly, typeof(AssemblyProvider).Assembly );
 			return result;
 		}
 	}
 
-	public class AppDomainValue<T> : WritableValue<T>
+	[RegisterFactoryForResult]
+	public class ApplicationAssemblyLocator : DragonSpark.Runtime.ApplicationAssemblyLocator
 	{
-		readonly AppDomain domain;
-		readonly string key;
-
-		public AppDomainValue( string key ) : this( AppDomain.CurrentDomain, key )
+		public ApplicationAssemblyLocator( Assembly[] assemblies ) : base( assemblies )
 		{}
 
-		public AppDomainValue( AppDomain domain, string key )
+		protected override Assembly CreateItem()
 		{
-			this.domain = domain;
-			this.key = key;
+			var result = Assembly.Load( AppDomain.CurrentDomain.FriendlyName ) ?? base.CreateItem();
+			return result;
 		}
-
-		public override void Assign( T item )
-		{
-			AppDomain.CurrentDomain.SetData( key, item );
-		}
-
-		public override T Item => (T)domain.GetData( key );
 	}
 }

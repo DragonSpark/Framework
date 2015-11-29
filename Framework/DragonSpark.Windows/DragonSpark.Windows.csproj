@@ -101,6 +101,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyModuleCatalog.cs" />
@@ -165,7 +181,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\AssemblyProvider.cs" />
+    <Compile Include="Runtime\FileSystemAssemblyProvider.cs" />
     <Compile Include="Runtime\CurrentDomainAssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalog.cs" />
@@ -187,6 +203,7 @@
     <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs" />
     <Compile Include="Modularity\ModulesConfigurationSection.cs" />
     <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
+    <Compile Include="Runtime\DisposableActionContext.cs" />
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
     <Compile Include="SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
@@ -226,12 +243,12 @@
     <Compile Include="Markup\PropertySetter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\FilteredAssemblyProvider.cs" />
+    <Compile Include="Runtime\AssemblyProvider.cs" />
     <Compile Include="Runtime\BindingOptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Runtime\EnterpriseLibraryExceptionFormatter.cs" />
-    <Compile Include="Runtime\ExceptionFormatter.cs" />
+    <Compile Include="Runtime\ApplicationExceptionFormatter.cs" />
     <Compile Include="Runtime\ExceptionHandler.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
@@ -242,6 +259,7 @@
     <Compile Include="Setup\SetupStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
+    <Compile Include="Runtime\ThreadLocalStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">

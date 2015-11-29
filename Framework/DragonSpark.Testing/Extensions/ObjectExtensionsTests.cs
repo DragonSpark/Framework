@@ -77,14 +77,14 @@ namespace DragonSpark.Testing.Extensions
 			Assert.True( called );
 		}
 
-		[Theory, Framework.AutoDataCustomization]
+		[Theory, AutoData]
 		void Enumerate( List<object> sut )
 		{
 			var items = sut.GetEnumerator().Enumerate().ToList();
 			Assert.True( items.Any() && items.All( x => sut.Contains( x ) && sut.ToList().IndexOf( x ) == items.IndexOf( x ) ) );
 		}
 
-		[Theory, Framework.AutoDataCustomization]
+		[Theory, AutoData]
 		void GetAllPropertyValuesOf( ClassWithProperties sut )
 		{
 			var expected = new[] { sut.PropertyOne, sut.PropertyFour };
@@ -104,7 +104,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Null( ObjectExtensions.DetermineDefault<Generic<object>>() );
 		}
 
-		[Theory, Framework.AutoDataCustomization]
+		[Theory, AutoData]
 		void Transform( ClassWithParameter sut, string message )
 		{
 			Assert.Equal( sut.Parameter, sut.Transform( x => x.Parameter, () => message, parameter => true ) );

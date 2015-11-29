@@ -192,6 +192,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -199,20 +202,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\Factory.cs" />
+    <Compile Include="Activation\ConstructFactory.cs" />
     <Compile Include="Activation\IObjectBuilder.cs" />
     <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
+    <Compile Include="Runtime\TypeExtension.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
-    <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
     <Compile Include="ConditionMonitorState.cs" />
     <Compile Include="Extensions\AssemblyLocatorExtensions.cs" />
     <Compile Include="Extensions\Mappings.cs" />
+    <Compile Include="Extensions\ObjectMappingFactory.cs" />
     <Compile Include="Modularity\IModuleMonitor.cs" />
     <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\ModuleInfoExtensions.cs" />
     <Compile Include="Modularity\ModuleMonitor.cs" />
+    <Compile Include="Runtime\AmbientValues.cs" />
     <Compile Include="Runtime\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryBase.cs" />
     <Compile Include="Activation\FactoryExtensions.cs" />
@@ -224,18 +229,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="Activation\IoC\DefaultValueStrategy.cs" />
+    <Compile Include="Activation\IoC\ObjectBuilderStrategy.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
-    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\ObjectBuilder.cs" />
     <Compile Include="ComponentModel\MemberInfoLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\ExceptionFormatter.cs">
+    <Compile Include="Diagnostics\ApplicationExceptionFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Extensions\AttributeProviderExtensions.cs" />
     <Compile Include="Extensions\BooleanExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -247,13 +251,16 @@
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Runtime\IAmbientKey.cs" />
+    <Compile Include="Runtime\IAmbientRequest.cs" />
     <Compile Include="Runtime\IAmbientValueRepository.cs" />
+    <Compile Include="Runtime\IApplicationAssemblyLocator.cs" />
+    <Compile Include="Runtime\ICurrentTime.cs" />
+    <Compile Include="Runtime\ISpecification.cs" />
+    <Compile Include="Runtime\IValue.cs" />
     <Compile Include="Runtime\ListDictionary.cs" />
-    <Compile Include="Logging\Category.cs" />
-    <Compile Include="Logging\DebugLogger.cs" />
-    <Compile Include="Logging\EmptyLogger.cs" />
-    <Compile Include="Logging\ILoggerFacade.cs" />
-    <Compile Include="Logging\Priority.cs" />
+    <Compile Include="Diagnostics\DebugLogger.cs" />
+    <Compile Include="Diagnostics\EmptyLogger.cs" />
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
     <Compile Include="Modularity\AttributeDataProvider.cs" />
     <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
@@ -304,9 +311,9 @@
     <Compile Include="Setup\IProgram.cs" />
     <Compile Include="Setup\IRegistrationTypeContext.cs" />
     <Compile Include="Setup\ISetup.cs" />
-    <Compile Include="Setup\ISingletonLocator.cs" />
+    <Compile Include="Runtime\ISingletonLocator.cs" />
     <Compile Include="Setup\Program.cs" />
-    <Compile Include="Setup\RegisterAsAttribute.cs" />
+    <Compile Include="Setup\RegisterAttribute.cs" />
     <Compile Include="Setup\RegisterFrameworkExceptionTypesCommand.cs" />
     <Compile Include="Setup\RunProgramCommand.cs" />
     <Compile Include="Setup\Setup.cs" />
@@ -323,8 +330,8 @@
     <Compile Include="Setup\RegistrationAttribute.cs" />
     <Compile Include="Setup\SetupUnityCommand.cs" />
     <Compile Include="Setup\SetupUnityContainerCommand.cs" />
-    <Compile Include="Setup\SingletonAttribute.cs" />
-    <Compile Include="Setup\SingletonLocator.cs" />
+    <Compile Include="Runtime\SingletonInstanceAttribute.cs" />
+    <Compile Include="Runtime\SingletonLocator.cs" />
     <Compile Include="Setup\UnityCommand.cs" />
     <Compile Include="Setup\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />

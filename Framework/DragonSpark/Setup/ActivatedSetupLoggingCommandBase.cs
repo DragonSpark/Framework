@@ -1,6 +1,6 @@
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 using System;
-using System.Reflection;
-using DragonSpark.Logging;
 
 namespace DragonSpark.Setup
 {
@@ -8,19 +8,19 @@ namespace DragonSpark.Setup
 	{
 		public Type LoggerType { get; set; }
 
-		protected override ILoggerFacade CreateLogger()
+		protected override ILogger CreateLogger()
 		{
 			if ( LoggerType == null )
 			{
 				throw new InvalidOperationException( "LoggerType is null." );
 			}
 
-			if ( !typeof(ILoggerFacade).GetTypeInfo().IsAssignableFrom( LoggerType.GetTypeInfo() ) )
+			if ( !typeof(ILogger).Extend().IsAssignableFrom( LoggerType ) )
 			{
-				throw new InvalidOperationException( string.Format( "{0} is not of type ILoggerFacade.", LoggerType.Name ) );
+				throw new InvalidOperationException( $"{LoggerType.Name} is not of type ILogger." );
 			}
 
-			var result = Activator.CreateInstance( LoggerType ) as ILoggerFacade;
+			var result = Activator.CreateInstance( LoggerType ) as ILogger;
 			return result;
 		}
 	}

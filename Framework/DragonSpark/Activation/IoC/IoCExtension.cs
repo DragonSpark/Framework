@@ -1,55 +1,122 @@
-﻿using DragonSpark.Extensions;
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using DragonSpark.Properties;
 using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LifetimeManagerFactory = DragonSpark.Setup.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class DefaultUnityConstructorSelectorPolicy : Microsoft.Practices.Unity.ObjectBuilder.DefaultUnityConstructorSelectorPolicy
+	{
+		public static DefaultUnityConstructorSelectorPolicy Instance { get; } = new DefaultUnityConstructorSelectorPolicy();
+
+		protected override IDependencyResolverPolicy CreateResolver( ParameterInfo parameter )
+		{
+			var isOptional = parameter.IsOptional && !parameter.IsDefined( typeof(OptionalDependencyAttribute) );
+			var result = isOptional ? 
+							parameter.ParameterType.GetTypeInfo().IsValueType || parameter.ParameterType == typeof(string) 
+							?
+							(IDependencyResolverPolicy)new LiteralValueDependencyResolverPolicy( parameter.DefaultValue ) 
+							: 
+							new OptionalDependencyResolverPolicy( parameter.ParameterType ) 
+						: CreateResolverOverride( parameter );
+			return result;
+		}
+
+		static IDependencyResolverPolicy CreateResolverOverride( ParameterInfo parameter )
+		{
+			var attributes = parameter.GetCustomAttributes( false ) ?? Enumerable.Empty<Attribute>();
+			var list = attributes.OfType<DependencyResolutionAttribute>().ToList();
+			var result = list.Any() ? list.First().CreateResolver( parameter.ParameterType ) : new NamedTypeDependencyResolverPolicy( parameter.ParameterType, null );
+			return result;
+		}
+	}
+
+	public class ServiceRegistry : IServiceRegistry
+	{
+		readonly IUnityContainer container;
+		readonly ILogger logger;
+		readonly IFactory<ActivateParameter, LifetimeManager> lifetimeFactory;
+
+		public ServiceRegistry( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
+		{
+			this.container = container;
+			this.logger = logger;
+			this.lifetimeFactory = lifetimeFactory;
+		}
+
+		public void Register( Type @from, Type mappedTo, string name = null )
+		{
+			var lifetimeManager = lifetimeFactory.CreateUsing( mappedTo );
+			logger.Information( string.Format( Resources.UnityConventionRegistrationService_Registering, @from, mappedTo, lifetimeManager?.GetType().Name ?? "Transient" ) );
+			container.RegisterType( from, mappedTo, name, lifetimeManager );
+		}
+
+		public void Register( Type type, object instance )
+		{
+			container.RegisterInstance( type, instance );
+		}
+
+		public void RegisterFactory( Type type, Func<object> factory )
+		{
+			container.RegisterType( type, new InjectionFactory( x =>
+			{
+				var item = factory();
+				return item;
+			} ) );
+		}
+	}
+
 	public class IoCExtension : UnityContainerExtension
 	{
-		// readonly ConditionMonitor initialize = new ConditionMonitor();
-		/*internal IList<IDisposable> Disposables
-		{
-			get { return disposables.Value; }
-		}	readonly Lazy<IList<IDisposable>> disposables = new Lazy<IList<IDisposable>>( () => new List<IDisposable>() );*/
-
-		internal IList<IUnityContainer> Children => children.Value;
-		readonly Lazy<IList<IUnityContainer>> children = new Lazy<IList<IUnityContainer>>( () => new List<IUnityContainer>() );
-
-		internal ILifetimeContainer LifetimeContainer => Context.Lifetime;
-
-		// CurrentBuildKeyStrategy CurrentBuildKeyStrategy { get; set; }
-
+		public ILogger Logger { get; } = new RecordingLogger();
+		
 		protected override void Initialize()
 		{
-			Context.Container.IsRegistered<IActivator>().IsFalse( () => Context.Container.RegisterInstance<IActivator>( new Activator( Context.Container ) ) );
+			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
 
-			// CurrentBuildKeyStrategy = new CurrentBuildKeyStrategy();
-
-			Context.Policies.SetDefault<IConstructorSelectorPolicy>( new DefaultUnityConstructorSelectorPolicy() );
+			Context.Strategies.Clear();
+			Context.Strategies.AddNew<BuildKeyMappingStrategy>( UnityBuildStage.TypeMapping );
+			Context.Strategies.AddNew<HierarchicalLifetimeStrategy>( UnityBuildStage.Lifetime );
+			Context.Strategies.AddNew<LifetimeStrategy>( UnityBuildStage.Lifetime );
+			Context.Strategies.AddNew<ArrayResolutionStrategy>( UnityBuildStage.Creation );
+			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
+			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
+			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
 
 			//Context.Strategies.Add( CurrentBuildKeyStrategy, UnityBuildStage.Setup );
 			// Context.Strategies.AddNew<CurrentContextStrategy>( UnityBuildStage.Setup );
-
 			// Context.Strategies.AddNew<ApplicationConfigurationStrategy>( UnityBuildStage.PreCreation );
-			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.PreCreation );
-			Context.Strategies.AddNew<DefaultValueStrategy>( UnityBuildStage.Initialization );
-			
+			/*Context.Strategies.AddNew<SingletonStrategy>( UnityBuildStage.PreCreation );*/
 			// Context.Strategies.AddNew<ApplyBehaviorStrategy>( UnityBuildStage.Initialization );
-			
-			/*Context.RegisteringInstance += ContextRegisteringInstance;
-			Context.Registering += ContextRegistering;*/
-			Context.ChildContainerCreated += ContextChildContainerCreated;
+			// Context.ChildContainerCreated += ContextChildContainerCreated;
+
+			Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
+			Container.EnsureRegistered( CreateActivator );
+			Container.EnsureRegistered( CreateRegistry  );
 		}
 
-		void ContextChildContainerCreated(object sender, ChildContainerCreatedEventArgs e)
+		IServiceRegistry CreateRegistry()
 		{
-			e.ChildContainer.NotNull( child =>
+			var factory = new LifetimeManagerFactory( Container.Resolve<IActivator>() );
+			var result = new ServiceRegistry( Container, Container.DetermineLogger(), factory );
+			return result;
+		}
+
+		public IActivator CreateActivator()
+		{
+			var result = new CompositeActivator( Container.Resolve<Activator>(), SystemActivator.Instance );
+			return result;
+		}
+
+		/*void ContextChildContainerCreated(object sender, ChildContainerCreatedEventArgs e)
+		{
+			e.ChildContainer.With( child =>
 			{
 				Children.Add( child );
 				child.RegisterInstance( Container, new ContainerLifetimeManager() );
@@ -90,110 +157,36 @@ namespace DragonSpark.Activation.IoC
 			{
 				extension.Children.Remove( child );
 				var container = extension.Context.Container.GetLifetimeContainer();
-				var lifetimeEntries = child.GetLifetimeEntries().Where( x => x.Value == this );
+				var lifetimeEntries = child.GetLifetimeEntries().Where( x => x.Value == child );
 				lifetimeEntries.Apply( container.Remove );
 			}
 		}
 
 		public override void Remove()
 		{
-			/*Context.RegisteringInstance -= ContextRegisteringInstance;
-			Context.Registering -= ContextRegistering;*/
 			Context.ChildContainerCreated -= ContextChildContainerCreated;
-		}
-
-		public object Create( Type type, object[] parameters )
-		{
-			/*var values = parameters.NotNull().Select( x => 
-			{
-				/*var parameterValue = x.As<TypedInjectionValue>();
-				if ( parameterValue != null )
-				{
-					var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
-					Creator.RegisterInstance( parameterValue.ParameterType, instance );
-					return instance;
-				}#1#
-				x.GetType().GetAllInterfaces().Union( x.GetType().GetHierarchy( false ) ).Distinct().Apply( y => Creator.RegisterInstance( y, x ) );
-				return x;
-			} ).ToArray();
-
-			var result = Creator.Resolve( type );
-			var lifetime = Creator.GetLifetimeContainer();
-			var entries = Creator.GetLifetimeEntries().Where( x => values.Contains( x.Value ) ).ToArray();
-			entries.Apply( x => lifetime.Remove( x.Key ) );
-			return result;*/
-
-			using ( var container = Context.Container.CreateChildContainer() )
-			{
-				using ( new CreationContext( container, parameters ) )
-				{
-					var result = container.Resolve( type );
-					return result;	
-				}
-			}
-		}
-
-		class CreationContext : IDisposable
-		{
-			readonly IUnityContainer container;
-			readonly IServiceLocator current;
-			readonly object[] values;
-
-			readonly IList<LifetimeManager> managers = new List<LifetimeManager>(); 
-
-			public CreationContext( IUnityContainer container, IEnumerable<object> parameters )
-			{
-				this.container = container;
-
-				values = parameters.NotNull().Select( x => 
-				{
-					var parameterValue = x.As<TypedInjectionValue>();
-					if ( parameterValue != null )
-					{
-						var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
-						Register( parameterValue.ParameterType, instance );
-						return instance;
-					}
-					x.GetType().GetTypeInfo().ImplementedInterfaces.Union( x.GetType().GetHierarchy( false ) ).Distinct().Apply( y => Register( y, x ) );
-					return x;
-				} ).ToArray();
-
-				current = Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet ? Microsoft.Practices.ServiceLocation.ServiceLocator.Current : null;
-
-				var locator = new UnityServiceLocator( container );
-				Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => locator );
-			}
-
-			IUnityContainer Register( Type type, object instance )
-			{
-				var manager = new ContainerControlledLifetimeManager().With( managers.Add );
-				return container.RegisterInstance( type, instance, manager );
-			}
-
-			public void Dispose()
-			{
-				current.With( x => Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider( () => x ) );
-				
-				var lifetime = container.GetLifetimeContainer();
-				var entries = container.GetLifetimeEntries().Where( x => values.Contains( x.Value ) ).ToArray();
-				entries.Apply( x => lifetime.Remove( x.Key ) );
-				managers.Apply( x => x.RemoveValue() );
-				managers.Clear();
-			}
-		}
-
-		/*internal TResult Create<TResult>( object[] parameters )
-		{
-			var result = Create( typeof(TResult), parameters ).To<TResult>();
-			return result;
 		}*/
 
-		/*public void Complete()
+		/*public IUnityContainer Dispose()
 		{
-			initialize.Apply( () =>
-			{
-				/* Context.Container.AddExtension( ConfigurationExtension.Extension ) #1#
-			} );
+			var entries = GetLifetimeEntries().Where( x => x.Value == Container ).Select( x => x.Key ).ToArray();
+			entries.Apply( Context.Lifetime.Remove );
+			//Children.ToArray().Apply( y => y.DisposeAll() );
+			Container.Dispose();
+			Container.RemoveAllExtensions();
+			return Container;
+		}*/
+
+		/*public IEnumerable<LifetimeEntry> GetLifetimeEntries()
+		{
+			var result = Context.Lifetime.Select( ResolveLifetimeEntry ).ToArray();
+			return result;
+		}
+
+		static LifetimeEntry ResolveLifetimeEntry( object x )
+		{
+			var result = x.AsTo<ILifetimePolicy, LifetimeEntry>( y => new LifetimeEntry( y, y.GetValue() ), () => new LifetimeEntry( x ) );
+			return result;
 		}*/
 	}
 }

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using DragonSpark;
+using DragonSpark.Setup;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
 
@@ -36,3 +38,4 @@ using System.Windows.Markup;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Testing.Framework")]
+[assembly: Registration( Priority.Lower ) ]

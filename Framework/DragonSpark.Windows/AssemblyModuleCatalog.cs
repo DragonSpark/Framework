@@ -7,7 +7,7 @@ namespace DragonSpark.Windows
 {
 	public class AssemblyModuleCatalog : DragonSpark.Modularity.AssemblyModuleCatalog
 	{
-		public AssemblyModuleCatalog() : this( FilteredAssemblyProvider.Instance, new DynamicModuleInfoBuilder() )
+		public AssemblyModuleCatalog() : this( AssemblyProvider.Instance, new DynamicModuleInfoBuilder() )
 		{}
 
 		public AssemblyModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )

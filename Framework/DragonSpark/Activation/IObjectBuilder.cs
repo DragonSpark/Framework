@@ -2,6 +2,6 @@ namespace DragonSpark.Activation
 {
 	public interface IObjectBuilder
 	{
-		object BuildUp( object item );
+		object BuildUp( object target );
 	}
 }

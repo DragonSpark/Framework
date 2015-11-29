@@ -1,25 +1,34 @@
-using System;
-using System.Windows.Markup;
-using System.Xaml;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using Microsoft.Practices.Unity;
+using System;
+using System.Windows.Markup;
+using System.Xaml;
 
 namespace DragonSpark.Windows.Markup
 {
 	[MarkupExtensionReturnType( typeof(InjectionMember) )]
-	public class InjectionFactoryExtension : FactoryExtension
+	public class InjectionFactoryExtension : FactoryExtension<InjectionMemberContext, InjectionMember>
 	{
-		public InjectionFactoryExtension() : base( typeof(InjectionMember) )
+		public InjectionFactoryExtension()
 		{}
 
-		protected override IFactory DetermineFactory( IServiceProvider serviceProvider )
+		public InjectionFactoryExtension( Type type ) : base( type )
+		{}
+
+		public InjectionFactoryExtension( Type type, object parameter ) : base( type, parameter )
+		{}
+
+		public InjectionFactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName, parameter )
+		{}
+
+		protected override IFactory<InjectionMemberContext, InjectionMember> DetermineFactory( IServiceProvider serviceProvider )
 		{
-			return new InjectionFactoryFactory( Instance, Parameter );
+			return new InjectionFactoryFactory( Type, Parameter );
 		}
 
-		protected override object DetermineParameter( IServiceProvider serviceProvider )
+		protected override InjectionMemberContext DetermineParameter( IServiceProvider serviceProvider )
 		{
 			var targetType = serviceProvider.Get<DeferredContext>().RegistrationType;
 			var result = new InjectionMemberContext( Services.Location.Locate<IUnityContainer>(), targetType );
@@ -32,7 +41,6 @@ namespace DragonSpark.Windows.Markup
 			var member = xamlType.GetMember( "RegistrationType" );
 			var value = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( new [] { xamlType }, member );
 			var result = (Type)value.Value;
-
 			return result;
 		}
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Logging;
 using DragonSpark.Modularity;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
@@ -18,12 +17,12 @@ namespace DragonSpark.Setup
 			var manager = DetermineManager( context );
 			if ( manager != null )
 			{
-				context.Logger.Log( Resources.InitializingModules, Category.Debug, Logging.Priority.Low);
+				context.Logger.Information( Resources.InitializingModules, Priority.Low);
 				InitializeModules( context, manager );
 
-				context.Logger.Log( Resources.LoadingModules, Category.Debug, Logging.Priority.Low);
+				context.Logger.Information( Resources.LoadingModules, Priority.Low);
 				await Monitor.Load();
-				context.Logger.Log( Resources.ModulesLoaded, Category.Debug, Logging.Priority.Low);
+				context.Logger.Information( Resources.ModulesLoaded, Priority.Low);
 			}
 		}
 

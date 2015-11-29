@@ -3,11 +3,11 @@ using Moq;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
-namespace DragonSpark.Testing.Framework.Testing
+namespace DragonSpark.Testing.Framework
 {
 	public class AutoMoqDataAttributeTests
 	{
-		[Theory, AutoMockData]
+		[Theory, SetupAutoData, Test]
 		public void Mocked( [Frozen]Mock<IInterface> sut, IInterface item )
 		{
 			Assert.Equal( sut.Object, item );

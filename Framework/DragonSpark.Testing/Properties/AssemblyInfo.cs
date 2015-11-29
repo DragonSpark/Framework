@@ -2,18 +2,15 @@
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-using DragonSpark.ComponentModel;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Windows.Runtime;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "DragonSpark.Testing" )]
 [assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "The DragonSpark Framework" )]
+// [assembly: AssemblyConfiguration( "" )]
+[assembly: AssemblyCompany( "DragonSpark Technologies Incorporated" )]
 [assembly: AssemblyProduct( "DragonSpark.Testing" )]
-[assembly: AssemblyCopyright( "Copyright © The DragonSpark Framework 2011" )]
+[assembly: AssemblyCopyright( "Copyright © The DragonSpark Framework 2015" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -36,8 +33,3 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "1.0.0.0" )]
-
-// TODO: Registration-by-convention should take care of this:
-[assembly: Register( typeof( ITypeDefinitionProvider ), typeof( TypeDefinitionProvider ) )]
-[assembly: Register( typeof( IMemberInfoLocator ), typeof( MemberInfoLocator ) )]
-[assembly: Register( typeof( IDefaultValueProvider ), typeof( DefaultValueProvider ) )]

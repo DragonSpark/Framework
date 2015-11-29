@@ -6,23 +6,25 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using DragonSpark.Setup;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ServiceLocator : ServiceLocatorImplBase, IServiceRegistry, IObjectBuilder, IDisposable
+	public class ServiceLocator : ServiceLocatorImplBase, IDisposable
 	{
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
-
+	
 		public ServiceLocator() : this( new UnityContainer() )
 		{}
 
 		public ServiceLocator( IUnityContainer container )
 		{
 			this.container = container;
-			this.container.RegisterInstance<IServiceLocator>( this );
-			this.container.RegisterInstance<IServiceRegistry>( this );
-			this.container.RegisterInstance<IObjectBuilder>( this );
+			this.container
+				.RegisterInstance<IServiceLocator>( this )
+				.Extension<IoCExtension>();
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()
@@ -40,28 +42,17 @@ namespace DragonSpark.Activation.IoC
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
-			if ( Container.IsResolvable( serviceType, key ) )
+			var basic = key == null && !serviceType.GetTypeInfo().IsInterface;
+			if ( basic || Container.IsRegistered( serviceType, key ) )
 			{
-				try
-				{
-					var result = Container.Resolve( serviceType, key );
-					return result;
-				}
-				catch ( ResolutionFailedException e )
-				{
-					Warn( serviceType, string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None, e.GetMessage() ) );
-					return null;
-				}
+				return new ResolutionContext( Logger ).Execute( () => Container.Resolve( serviceType, key ) );
 			}
 
-			Warn( serviceType, string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
+			Logger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
 			return null;
 		}
 
-		static void Warn( Type type, string message )
-		{
-			typeof(ILogger).IsAssignableFrom( type ).IsFalse( () => Log.Current.Warning( message ) );
-		}
+		ILogger Logger => Container.DetermineLogger();
 
 		public IUnityContainer Container
 		{
@@ -94,33 +85,8 @@ namespace DragonSpark.Activation.IoC
 					}
 				} );
 
-				Container.DisposeAll();
+				Container.Dispose();
 			} );
-		}
-
-		public void Register( Type @from, Type mappedTo, string name = null )
-		{
-			container.RegisterType( from, mappedTo, name );
-		}
-
-		public void Register( Type type, object instance )
-		{
-			container.RegisterInstance( type, instance );
-		}
-
-		public void RegisterFactory( Type type, Func<object> factory )
-		{
-			container.RegisterType( type, new InjectionFactory( x =>
-			{
-				var item = factory();
-				return item;
-			} ) );
-		}
-
-		public object BuildUp( object item )
-		{
-			var result = Container.BuildUp( item.GetType(), item );
-			return result;
 		}
 	}
 }

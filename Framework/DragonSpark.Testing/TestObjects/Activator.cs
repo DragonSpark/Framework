@@ -10,17 +10,20 @@ namespace DragonSpark.Testing.TestObjects
 			return true;
 		}
 
-		public TResult CreateInstance<TResult>( Type type, string name )
+		public object Activate( Type type, string name = null )
 		{
-			object item = type == typeof(Object) ? new Object { Name = name ?? "DefaultActivation" } : null;
-			var result = item != null ? (TResult)item : default( TResult );
+			object result = type == typeof(Object) ? new Object { Name = name ?? "DefaultActivation" } : null;
 			return result;
 		}
 
-		public TResult Create<TResult>( params object[] parameters )
+		public bool CanConstruct( Type type, params object[] parameters )
 		{
-			object item = typeof(TResult) == typeof(Item) ? new Item { Parameters = parameters } : null;
-			var result = item != null ? (TResult)item : default( TResult );
+			return true;
+		}
+
+		public object Construct( Type type, params object[] parameters )
+		{
+			var result = type == typeof(Item) ? new Item { Parameters = parameters } : null;
 			return result;
 		}
 	}

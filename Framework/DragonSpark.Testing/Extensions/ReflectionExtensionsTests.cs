@@ -1,13 +1,13 @@
 using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
+using Ploeh.AutoFixture.Xunit2;
 using Xunit;
-using Xunit.Extensions;
 
 namespace DragonSpark.Testing.Extensions
 {
 	public class ReflectionExtensionsTests
 	{
-		[Theory, Framework.AutoDataCustomization]
+		[Theory, AutoData]
 		void GenericInvoke( Class @class )
 		{
 			typeof(Static).InvokeGenericAction( "Assign", new []{ typeof(Class) }, null );

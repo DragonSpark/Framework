@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Setup
 {
@@ -16,6 +15,6 @@ namespace DragonSpark.Setup
 
 		public string Namespaces { get; set; }
 
-		public IEnumerable<Type> IgnoreForRegistration { get; }
+		public Type[] IgnoreForRegistration { get; }
 	}
 }

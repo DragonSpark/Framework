@@ -1,27 +1,36 @@
-using System;
 using DragonSpark.Extensions;
+using System;
+using System.Reflection;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Activation
 {
-	class SystemActivator : IActivator
+	public class SystemActivator : IActivator
 	{
 		public static SystemActivator Instance { get; } = new SystemActivator();
 
 		public bool CanActivate( Type type, string name )
 		{
-			var result = type.CanActivate();
+			var result = CanConstruct( type );
 			return result;
 		}
 
-		public TResult CreateInstance<TResult>( Type type, string name )
+		public object Activate( Type type, string name = null )
 		{
-			var result = System.Activator.CreateInstance( type ).WithDefaults().To<TResult>();
+			var result = Construct( type );
 			return result;
 		}
 
-		public TResult Create<TResult>( params object[] parameters )
+		public bool CanConstruct( Type type, params object[] parameters )
 		{
-			var result = System.Activator.CreateInstance( typeof(TResult), parameters ).WithDefaults().To<TResult>();
+			var info = type.GetTypeInfo();
+			var result = info.IsValueType || new TypeExtension( info ).FindConstructor( parameters ) != null;
+			return result;
+		}
+
+		public object Construct( Type type, params object[] parameters )
+		{
+			var result = System.Activator.CreateInstance( type, parameters ).BuildUp();
 			return result;
 		}
 	}

@@ -9,7 +9,7 @@ namespace DragonSpark.Setup
 
 		protected override void Execute( SetupContext context )
 		{
-			Program.Run( context.GetArguments<object>() );
+			Program.Run( context.GetArguments() );
 		}
 	}
 }

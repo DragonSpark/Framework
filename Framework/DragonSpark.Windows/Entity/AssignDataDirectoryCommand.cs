@@ -5,8 +5,6 @@ using DragonSpark.Setup;
 using DragonSpark.Windows.Io;
 using DragonSpark.Windows.Properties;
 using DragonSpark.Windows.Runtime;
-using Microsoft.Practices.Unity;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
@@ -33,7 +31,7 @@ namespace DragonSpark.Windows.Entity
 		}
 	}
 
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	[Register]
 	public class DataDirectoryPath : AppDomainValue<string>
 	{
 		public const string Key = "DataDirectory";
@@ -77,7 +75,7 @@ namespace DragonSpark.Windows.Entity
 		}
 	}
 
-	public class AttachedDatabaseFileFactory : Factory<FileInfo>
+	public class AttachedDatabaseFileFactory : FactoryBase<FileInfo>
 	{
 		readonly DbContext context;
 
@@ -86,7 +84,7 @@ namespace DragonSpark.Windows.Entity
 			this.context = context;
 		}
 
-		protected override FileInfo CreateFrom( Type resultType, object parameter )
+		protected override FileInfo CreateItem()
 		{
 			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().Transform( DbProviderServices.ExpandDataDirectory ).Transform( s => new FileInfo( s ) );
 			return result;

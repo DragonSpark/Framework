@@ -257,7 +257,7 @@ namespace DragonSpark.Windows.Entity
 
 		public static TItem Create<TItem>( this DbContext target, Action<TItem> with = null, Action<TItem> initialize = null ) where TItem : class, new()
 		{
-			var item = new TItem().With( initialize ).WithDefaults().With( with );
+			var item = new TItem().With( initialize ).BuildUp().With( with );
 			var result = target.Set<TItem>().Add( item );
 			return result;
 		}
@@ -401,7 +401,7 @@ namespace DragonSpark.Windows.Entity
 				{
 					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Apply( z =>
 					{
-						var items = z.GetType().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
+						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
 						items.Apply( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;

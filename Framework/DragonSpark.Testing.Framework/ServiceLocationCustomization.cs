@@ -1,47 +1,166 @@
 ﻿using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
-	public class ServiceLocator : ServiceLocatorImplBase
+	public class ServiceLocationCustomization : ICustomization, IAfterTestAware
 	{
-		readonly SpecimenContext context;
+		[Activate]
+		public IServiceLocator Locator { get; set; }
 
-		public ServiceLocator( IFixture fixture )
+		[Activate]
+		public IServiceLocation Location { get; set; }
+
+		[Activate]
+		public IServiceLocationAuthority Authority { get; set; }
+
+		public void Customize( IFixture fixture )
 		{
-			context = new SpecimenContext( fixture );
+			fixture.Items().Add( this );
 
-			var support = new FixtureSupport( fixture );
-			support.RegisterInstance<IServiceLocator>( this );
-			support.RegisterInstance<IServiceRegistry>( support );
-			support.RegisterInstance( fixture );
+			var relay = new ServiceLocationRelay( Locator, new AuthorizedLocationSpecification( Locator, Authority ) );
+			fixture.ResidueCollectors.Add( relay );
 		}
 
-		protected override object DoGetInstance( Type serviceType, string key )
+		public void After( IFixture fixture, MethodInfo methodUnderTest )
 		{
-			var result = context.Resolve( serviceType );
-			return result;
-		}
-
-		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
-		{
-			var result = context.Resolve( new MultipleRequest( serviceType ) ).To<IEnumerable>().Cast<object>().ToArray();
-			return result;
+			Location.Assign( null );
 		}
 	}
 
-	class FixtureSupport : IServiceRegistry
+	public class LoggingRegistrationCustomization : ICustomization
+	{
+		[Activate]
+		public IUnityContainer Container { get; set; }
+
+		public void Customize( IFixture fixture )
+		{
+			fixture.Item<OutputCustomization>().With( customization =>
+			{
+				customization.Register( Container.TryResolve<IRecordingLogger> );
+				customization.Register( () => Container.TryResolve<ILogger>() as IRecordingLogger );
+				customization.Register( () => Container.DetermineLogger() as IRecordingLogger );
+			} );
+		}
+	}
+
+/*	class FixtureActivator : IActivator
 	{
 		readonly IFixture fixture;
 
-		public FixtureSupport( IFixture fixture )
+		public FixtureActivator( IFixture fixture )
+		{
+			this.fixture = fixture;
+		}
+
+		public bool CanActivate( Type type, string name = null )
+		{
+			return true;
+		}
+
+		public object Activate( Type type, string name = null )
+		{
+			return new SpecimenContext( fixture ).Resolve( type );
+		}
+
+		public object Construct( Type type, params object[] parameters )
+		{
+			return Activate( type );
+		}
+	}*/
+
+	/*class LocationActivator : IActivator
+	{
+		readonly IActivator activator;
+		readonly Type[] passthrough;
+
+		readonly IList<Type> activating = new List<Type>();
+
+		public LocationActivator( IActivator activator, params Type[] passthrough )
+		{
+			this.activator = activator;
+			this.passthrough = passthrough;
+		}
+
+		public bool CanActivate( Type type, string name = null )
+		{
+			var result = !activating.Concat( passthrough ).Contains( type ) && activator.CanActivate( type, name );
+			return result;
+		}
+
+		public object Activate( Type type, string name = null )
+		{
+			var result = Execute( type, () => activator.Activate( type, name ) );
+			return result;
+		}
+
+		object Execute( Type type, Func<object> factory )
+		{
+			activating.Add( type );
+			using ( new DisposableActionContext( () => activating.Remove( type ) ) )
+			{
+				var result = factory();
+				return result;
+			}
+		}
+
+		public object Construct( Type type, params object[] parameters )
+		{
+			var result = Execute( type, () => activator.Construct( type, parameters ) );
+			return result;
+		}
+	}*/
+
+	/*public class FixtureExtension : UnityContainerExtension
+	{
+		public class FixtureStrategy : BuilderStrategy
+		{
+			public override void PreBuildUp( IBuilderContext context )
+			{
+				if ( !context.BuildComplete && context.Existing == null )
+				{
+					var fixture = context.NewBuildUp<IFixture>().Create();
+					context.Existing = fixture.TryCreate<object>( context.BuildKey.Type );
+					context.BuildComplete = context.Existing != null;
+				}
+				base.PreBuildUp( context );
+			}
+		}
+
+		public class FixturePolicy : IBuildPlanPolicy
+		{
+			readonly IFixture fixture;
+
+			public FixturePolicy( IFixture fixture )
+			{
+				this.fixture = fixture;
+			}
+
+			public void BuildUp( IBuilderContext context )
+			{
+				context.
+			}
+		}
+
+		public void Apply(  )
+
+		protected override void Initialize()
+		{
+			Context.Strategies.AddNew<FixtureStrategy>( UnityBuildStage.Creation );
+		}
+	}*/
+
+	/*class FixtureRegistry : IServiceRegistry
+	{
+		readonly IFixture fixture;
+
+		public FixtureRegistry( IFixture fixture )
 		{
 			this.fixture = fixture;
 		}
@@ -53,7 +172,7 @@ namespace DragonSpark.Testing.Framework
 
 		public void Register( Type type, object instance )
 		{
-			this.InvokeGenericAction( "RegisterInstance", new[] { type }, instance );
+			this.InvokeGenericAction( nameof(RegisterInstance), new[] { type }, instance );
 		}
 
 		public void RegisterInstance<T>( T instance )
@@ -63,12 +182,12 @@ namespace DragonSpark.Testing.Framework
 
 		public void RegisterFactory( Type type, Func<object> factory )
 		{
-			this.InvokeGenericAction( "RegisterFactory", new[] { type }, factory );
+			this.InvokeGenericAction( nameof(RegisterFactory), new[] { type }, factory );
 		}
 
 		public void RegisterFactory<T>( Func<object> factory )
 		{
 			fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
 		}
-	}
+	}*/
 }

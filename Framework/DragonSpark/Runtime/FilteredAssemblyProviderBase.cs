@@ -1,9 +1,9 @@
+using DragonSpark.Extensions;
+using DragonSpark.Setup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.Setup;
 
 namespace DragonSpark.Runtime
 {
@@ -32,13 +32,13 @@ namespace DragonSpark.Runtime
 
 		protected virtual string[] DetermineNamespaces()
 		{
-			var result = DetermineCoreAssemblies().Distinct().Select( assembly => assembly.GetRootNamespace() ).Distinct().ToArray();
+			var result = DetermineCoreAssemblies().NotNull().Distinct().Select( assembly => assembly.GetRootNamespace() ).Distinct().ToArray();
 			return result;
 		}
 
 		protected virtual IEnumerable<Assembly> DetermineCoreAssemblies()
 		{
-			yield return typeof(FilteredAssemblyProviderBase).GetTypeInfo().Assembly;
+			yield return typeof(FilteredAssemblyProviderBase).Assembly();
 		}
 	}
 }

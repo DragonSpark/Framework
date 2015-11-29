@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,11 +9,11 @@ namespace DragonSpark.Setup
 {
 	public class ConventionRegistrationProfileProvider : IConventionRegistrationProfileProvider
 	{
-		readonly IAssemblyProvider locator;
+		readonly IAssemblyProvider provider;
 
-		public ConventionRegistrationProfileProvider( IAssemblyProvider locator )
+		public ConventionRegistrationProfileProvider( IAssemblyProvider provider )
 		{
-			this.locator = locator;
+			this.provider = provider;
 		}
 
 		public ConventionRegistrationProfile Retrieve()
@@ -27,16 +28,19 @@ namespace DragonSpark.Setup
 
 		protected virtual Assembly[] DetermineAssemblies()
 		{
-			var assemblies = locator.GetAssemblies().ToArray();
+			var assemblies = provider.GetAssemblies().ToArray();
 			var result = assemblies
 				.OrderBy( x => x.FromMetadata<RegistrationAttribute, Priority>( z => z.Priority, () => Priority.Normal ) ).ToArray();
 			return result;
 		}
 
-		protected virtual TypeInfo[] DetermineCandidateTypes( Assembly[] assemblies )
+		protected virtual Type[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
 			var result = assemblies
-				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract ).Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<TypeInfo>>( attribute => attribute.IgnoreForRegistration.AsTypeInfos() ) ) ).ToArray();
+				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract && ( info.DeclaringType == null || info.IsPublic ) )
+				.AsTypes()
+				.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) ) )
+				.ToArray();
 			return result;
 		}
 	}

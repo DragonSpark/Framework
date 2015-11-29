@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
+using DragonSpark.Activation;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Modularity
@@ -20,20 +21,22 @@ namespace DragonSpark.Modularity
 
 	public class Module : IModule
 	{
-		readonly IModuleMonitor moduleMonitor;
-		readonly SetupContext context;
-
-		public Module( IModuleMonitor moduleMonitor, SetupContext context )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context )
 		{
-			this.moduleMonitor = moduleMonitor;
-			this.context = context;
+			Activator = activator;
+			ModuleMonitor = moduleMonitor;
+			Context = context;
 		}
+
+		protected IActivator Activator { get; }
+		protected IModuleMonitor ModuleMonitor { get; }
+		protected SetupContext Context { get; }
 
 		void IModule.Initialize()
 		{
 			Initialize();
 
-			moduleMonitor.MarkAsLoaded( this );
+			ModuleMonitor.MarkAsLoaded( this );
 		}
 
 		protected virtual void Initialize()
@@ -47,12 +50,12 @@ namespace DragonSpark.Modularity
 		protected virtual void Load()
 		{
 			var commands = DetermineCommands();
-			commands.Where( command => command.CanExecute( context ) ).Apply( x => x.Execute( context ) );
+			commands.Where( command => command.CanExecute( Context ) ).Apply( x => x.Execute( Context ) );
 		}
 
 		protected virtual IEnumerable<ICommand> DetermineCommands()
 		{
-			var result = GetType().GetTypeInfo().Assembly.ExportedTypes.Where( typeof(ICommand).IsAssignableFrom ).Select( Activator.CreateInstance<ICommand> ).ToArray();
+			var result = Activator.ActivateMany<ICommand>( GetType().Assembly().ExportedTypes ).ToArray();
 			return result;
 		}
 	}

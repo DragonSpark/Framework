@@ -136,7 +136,7 @@ namespace DragonSpark.Application.Client.Commanding
 
 		public CommandMonitorContext( IEnumerable<ICommandModel> items, CommandMonitorOptions options = null )
 		{
-			this.items = items.Select( x => x.WithDefaults() ).ToArray();
+			this.items = items.Select( x => x.BuildUp() ).ToArray();
 			this.options = options;
 		}
 
@@ -639,7 +639,7 @@ namespace DragonSpark.Application.Client.Commanding
 		public static CommandMonitorOptions Default
 		{
 			get { return DefaultField; }
-		}	static readonly CommandMonitorOptions DefaultField = new CommandMonitorOptions().WithDefaults();
+		}	static readonly CommandMonitorOptions DefaultField = new CommandMonitorOptions().BuildUp();
 
 		public string Title
 		{

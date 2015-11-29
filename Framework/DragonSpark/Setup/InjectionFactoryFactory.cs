@@ -1,23 +1,24 @@
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
 using DragonSpark.Activation;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Unity;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup
 {
 	public class InjectionFactoryFactory : InjectionMemberFactory<InjectionFactory>
 	{
-		readonly IFactory factory;
+		readonly Type factoryType;
 		readonly object parameter;
 
-		public InjectionFactoryFactory( IFactory factory, object parameter )
+		public InjectionFactoryFactory( Type factoryType, object parameter )
 		{
-			this.factory = factory;
+			this.factoryType = factoryType;
 			this.parameter = parameter;
 		}
 
-		protected override InjectionFactory CreateFrom( Type resultType, InjectionMemberContext context )
+		protected override InjectionFactory CreateItem( InjectionMemberContext context )
 		{
 			var previous = context.Container.Registrations.FirstOrDefault( x => x.RegisteredType == context.TargetType && x.MappedToType != x.RegisteredType ).Transform( x => x.MappedToType );
 
@@ -31,7 +32,8 @@ namespace DragonSpark.Setup
 
 		protected virtual object Create( IUnityContainer container, Type type, string buildName )
 		{
-			var result = factory.Create( type, parameter );
+			var context = new ObjectFactoryParameter( factoryType, parameter ?? type );
+			var result = Activator.Current.Activate<FactoryBuiltObjectFactory>().Create( context );
 			return result;
 		}
 	}

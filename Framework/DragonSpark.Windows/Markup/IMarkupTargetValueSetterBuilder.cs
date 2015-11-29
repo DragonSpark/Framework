@@ -4,7 +4,7 @@ using DragonSpark.Activation;
 
 namespace DragonSpark.Windows.Markup
 {
-	public interface IMarkupTargetValueSetterBuilder : IFactory
+	public interface IMarkupTargetValueSetterBuilder : IFactory<IProvideValueTarget, IMarkupTargetValueSetter>
 	{
 		bool Handles( IProvideValueTarget service );
 
