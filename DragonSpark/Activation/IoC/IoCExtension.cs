@@ -37,31 +37,11 @@ namespace DragonSpark.Activation.IoC
 		}
 	}
 
-	/*public class SingletonStrategy : BuilderStrategy
-	{
-		public override void PreBuildUp( IBuilderContext context )
-		{
-			if ( !context.BuildComplete && context.Existing == null && context.BuildKey.Type.GetTypeInfo().IsInterface && !context.IsRegistered( context.BuildKey ) )
-			{
-				var locator = context.IsRegistered<ISingletonLocator>() ? context.NewBuildUp<ISingletonLocator>() : SingletonLocator.Instance;
-				context.Existing = locator.Locate( context.BuildKey.Type );
-				context.BuildComplete = context.Existing != null;
-			}
-		}
-	}*/
-
 	public class ServiceRegistry : IServiceRegistry
 	{
 		readonly IUnityContainer container;
 		readonly ILogger logger;
 		readonly IFactory<ActivateParameter, LifetimeManager> lifetimeFactory;
-
-		/*public ServiceRegistry( IUnityContainer container ) : this( container, LifetimeManagerFactory.Instance )
-		{}
-
-		public ServiceRegistry( IUnityContainer container, IFactory<Type, LifetimeManager> lifetimeFactory ) : this( container, container.DetermineLogger(), lifetimeFactory )
-		{
-		}*/
 
 		public ServiceRegistry( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
 		{
