@@ -118,7 +118,6 @@
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\AutoMapper.4.1.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+Xamarin.iOS10+MonoTouch10\AutoMapper.dll</HintPath>
@@ -378,7 +377,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Types\DragonSpark.Types.csproj">
       <Project>{69750ce1-63f1-4ddf-b22e-f8b40d8f16a8}</Project>
-      <Name>DragonSpark.Shim</Name>
+      <Name>DragonSpark.Types</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
