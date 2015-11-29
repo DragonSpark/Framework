@@ -1,0 +1,21 @@
+﻿<Framework:TestingContext x:TypeArguments="ServiceModel:ServiceHost" x:Class="DragonSpark.Testing.Communications.Configuration.ServiceLocatorInstanceElementTests"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Framework="clr-namespace:DragonSpark.Testing.Framework;assembly=DragonSpark.Testing.Framework" xmlns:Unity="clr-namespace:Microsoft.Practices.Unity;assembly=Microsoft.Practices.Unity" mc:Ignorable="d"
+				xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark" xmlns:ServiceModel="clr-namespace:System.ServiceModel;assembly=System.ServiceModel" xmlns:Communication="clr-namespace:DragonSpark.Testing.TestObjects.Communication" xmlns:System="clr-namespace:System;assembly=System">
+	<Configuration:AssignServiceLocatorCommand />
+	<Configuration:UnityContainerConfiguration>
+		<Configuration:UnityType RegistrationType="{x:Type ServiceModel:ServiceHost}">
+			<Configuration:InjectionConstructor>
+				<Configuration:InstanceValue Instance="{x:Type Communication:TestingService}" />
+				<Configuration:InstanceValue>
+					<x:Array Type="System:Uri" />
+				</Configuration:InstanceValue>
+			</Configuration:InjectionConstructor>
+			<Configuration:UnityType.Lifetime>
+				<Configuration:TypedLifetimeManager LifetimeManagerType="{x:Type Unity:ContainerControlledLifetimeManager}" />
+			</Configuration:UnityType.Lifetime>
+		</Configuration:UnityType>
+	</Configuration:UnityContainerConfiguration>
+</Framework:TestingContext>
