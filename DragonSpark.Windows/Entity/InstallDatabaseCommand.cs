@@ -16,7 +16,7 @@ namespace DragonSpark.Windows.Entity
 			Database.Exists.IsFalse( () =>
 			{
 				var items = EntityFiles.WithLog( Database ).TupleWith( new[] { Resources.Blank, Resources.Blank_log } );
-				items.Apply( tuple => 
+				items.Each( tuple => 
 				{
 					using ( var stream = File.Create( tuple.Item1.FullName ) )
 					{

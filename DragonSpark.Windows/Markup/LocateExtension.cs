@@ -32,7 +32,7 @@ namespace DragonSpark.Windows.Markup
 		{
 			 var result = Type.Transform( x => Activator.Current.Activate<object>( x, BuildName ) );
 			result.As<ISupportInitialize>( x => x.BeginInit() );
-			result.NotNull( x => Properties.Apply( y => x.GetType().GetProperty( y.PropertyName ).NotNull( z => y.Apply( z, x ) ) ) );
+			result.NotNull( x => Properties.Each( y => x.GetType().GetProperty( y.PropertyName ).NotNull( z => y.Apply( z, x ) ) ) );
 			result.As<ISupportInitialize>( x => x.EndInit() );
 			return result;
 		}

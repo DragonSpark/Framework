@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Framework
 
 			AmbientValues.Get<IFixture>( methodUnderTest ).With( fixture =>
 			{
-				fixture.Items().OfType<IAfterTestAware>().Apply( aware => aware.After( fixture, methodUnderTest ) );
+				fixture.Items().OfType<IAfterTestAware>().Each( aware => aware.After( fixture, methodUnderTest ) );
 				AmbientValues.Remove( fixture );
 			} );
 

@@ -25,7 +25,7 @@ namespace DragonSpark.ComponentModel
 							return result;
 						} )
 					.NotNull()
-					.Apply( item => item.Property.SetValue( target, item.Value, null ) );
+					.Each( item => item.Property.SetValue( target, item.Value, null ) );
 			return target;
 		}
 	}

@@ -23,10 +23,10 @@ namespace DragonSpark.Windows.Entity
 			Type = type;
 		}
 
-		protected internal virtual void Apply( object instance, PropertyInfo info, object current )
+		protected internal virtual void Each( object instance, PropertyInfo info, object current )
 		{
 			var provider = Activator.Create<IApplyValue>( Type, Parameters );
-			provider.Apply( instance, info, current );
+			provider.Each( instance, info, current );
 		}
 
 		protected virtual object[] Parameters => new object[0];

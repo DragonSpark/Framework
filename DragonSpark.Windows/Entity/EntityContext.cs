@@ -59,7 +59,7 @@ namespace DragonSpark.Windows.Entity
 
 			var method = modelBuilder.GetType().GetMethod( "ComplexType" );
 
-			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( x => x.IsDecoratedWith<ComplexTypeAttribute>() ).Apply( x =>
+			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( x => x.IsDecoratedWith<ComplexTypeAttribute>() ).Each( x =>
 			{
 				var info = method.MakeGenericMethod( x );
 				info.Invoke( modelBuilder, null );

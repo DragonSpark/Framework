@@ -24,13 +24,13 @@ namespace DragonSpark.Extensions
 
 		public static IUnityContainer RegisterInterfaces( this IUnityContainer @this, object instance )
 		{
-			instance.Extend().GetAllInterfaces().Apply( y => @this.RegisterInstance( y, instance ) );
+			instance.Extend().GetAllInterfaces().Each( y => @this.RegisterInstance( y, instance ) );
 			return @this;
 		}
 
 		public static IUnityContainer RegisterAllClasses( this IUnityContainer @this, object instance )
 		{
-			instance.Extend().GetAllHierarchy().Apply( y => @this.RegisterInstance( y, instance ) );
+			instance.Extend().GetAllHierarchy().Each( y => @this.RegisterInstance( y, instance ) );
 			return @this;
 		}
 

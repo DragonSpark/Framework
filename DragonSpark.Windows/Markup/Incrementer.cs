@@ -21,7 +21,7 @@ namespace DragonSpark.Windows.Markup
 		{
 			get
 			{
-				items.Keys.Where( reference => !reference.IsAlive ).ToArray().Apply( reference => items.Remove( reference ) );
+				items.Keys.Where( reference => !reference.IsAlive ).ToArray().Each( reference => items.Remove( reference ) );
 				return items;
 			}
 		}

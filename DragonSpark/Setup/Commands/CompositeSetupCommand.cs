@@ -16,7 +16,7 @@ namespace DragonSpark.Setup.Commands
 
 		protected override void Execute( SetupContext context )
 		{
-			Commands.Apply( command => command.Execute( context ) );
+			Commands.Each( command => command.Execute( context ) );
 		}
 	}
 }

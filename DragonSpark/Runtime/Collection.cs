@@ -32,7 +32,7 @@ namespace DragonSpark.Runtime
 
 		List<T> Built()
 		{
-			built.Apply( () => items.Apply( obj => obj.BuildUp() ) );
+			built.Apply( () => items.Each( obj => obj.BuildUp() ) );
 			return items;
 		}
 		

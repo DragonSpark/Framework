@@ -36,7 +36,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			using ( var child = container.CreateChildContainer() )
 			{
-				parameters.NotNull().Apply( x => 
+				parameters.NotNull().Each( x => 
 				{
 					x.As<TypedInjectionValue>( parameterValue =>
 					{

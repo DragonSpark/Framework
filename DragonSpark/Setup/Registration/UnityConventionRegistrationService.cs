@@ -61,7 +61,7 @@ namespace DragonSpark.Setup.Registration
 			profile.Candidates
 				.AsTypeInfos()
 				.WhereDecorated<RegistrationBaseAttribute>()
-				.Apply( item => item.Item1.Register( registry, item.Item2.AsType() ) );
+				.Each( item => item.Item1.Register( registry, item.Item2.AsType() ) );
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace DragonSpark.Windows.Setup
 			var register = profile.Candidates
 				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => found.IsPublic && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
-			register.Apply( type => Logger.Information( $"Registering from convention: {type.FullName}" ) );
+			register.Each( type => Logger.Information( $"Registering from convention: {type.FullName}" ) );
 			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, Factory.CreateUsing, overwriteExistingMappings: true );
 		}
 	}

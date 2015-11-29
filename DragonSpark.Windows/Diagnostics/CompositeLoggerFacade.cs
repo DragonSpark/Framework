@@ -17,29 +17,29 @@ namespace DragonSpark.Windows.Diagnostics
 
 		public void Information( string message, Priority priority )
 		{
-			loggers.Apply( logger => logger.Information( message, priority ) );
+			loggers.Each( logger => logger.Information( message, priority ) );
 		}
 
 		public void Warning( string message, Priority priority )
 		{
-			loggers.Apply( logger => logger.Warning( message, priority ) );
+			loggers.Each( logger => logger.Warning( message, priority ) );
 		}
 
 		public void Exception( string message, Exception exception )
 		{
-			loggers.Apply( logger => logger.Exception( message, exception ) );
+			loggers.Each( logger => logger.Exception( message, exception ) );
 		}
 
 		public void Fatal( string message, Exception exception )
 		{
-			loggers.Apply( logger => logger.Fatal( message, exception ) );
+			loggers.Each( logger => logger.Fatal( message, exception ) );
 		}
 
 		protected virtual void Dispose( bool disposing )
 		{
 			if ( disposing )
 			{
-				loggers.OfType<IDisposable>().Apply( facade => facade.Dispose() );
+				loggers.OfType<IDisposable>().Each( facade => facade.Dispose() );
 			}
 		}
 
