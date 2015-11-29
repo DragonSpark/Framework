@@ -18,7 +18,7 @@ namespace DragonSpark.Diagnostics
 
 		public void Playback( Action<string> write )
 		{
-			lines.OrderBy( x => x.Time ).Apply( tuple => write( tuple.Message ) );
+			lines.OrderBy( x => x.Time ).Each( tuple => write( tuple.Message ) );
 		}
 
 		protected override void Write( Line line )

@@ -210,7 +210,7 @@ namespace DragonSpark.Extensions
 		{
 			var result = (TResult)Activator.CreateInstance( source.GetType() );
 			var properties = source.GetType().GetRuntimeProperties().Where( x => x.CanRead && x.CanWrite ).NotNull();
-			properties.Apply( x =>
+			properties.Each( x =>
 			{
 			    if ( typeof(IList).IsAssignableFrom( x.PropertyType ) )
 			    {
@@ -263,7 +263,7 @@ namespace DragonSpark.Extensions
 		{
 			var result = target as TResult;
 
-			// Apply for exception:
+			// Each for exception:
 			if ( result == null && resolveException != null )
 			{
 				throw resolveException();

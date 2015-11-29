@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Framework.Setup
 			AmbientValues.Get<ITestOutputHelper>( methodUnderTest.DeclaringType ).With( output =>
 			{
 				var lines = loggers.Select( func => func() ).NotNull().Distinct().SelectMany( aware => aware.Lines ).OrderBy( line => line.Time ).Select( line => line.Message ).ToArray();
-				lines.Apply( output.WriteLine );
+				lines.Each( output.WriteLine );
 			} );
 		}
 	}

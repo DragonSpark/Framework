@@ -19,12 +19,15 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static void Apply<T>( this IEnumerable<T> enumerable, Action<T> action )
+		public static void Each<T>( this IEnumerable<T> enumerable, Action<T> action )
 		{
-			foreach ( var item in enumerable )
-			{
-				action( item );
-			}
+			AutoMapper.Internal.EnumerableExtensions.Each( enumerable, action );
+		}
+
+		public static IEnumerable<TResult> Each<T, TResult>( this IEnumerable<T> enumerable, Func<T, TResult> action )
+		{
+			var result = enumerable.Select( action ).ToArray();
+			return result;
 		}
 
 		public static IEnumerable<TItem> Append<TItem>( this IEnumerable<TItem> target, params TItem[] items )
@@ -33,9 +36,14 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static IEnumerable<TItem> Append<TItem>( this TItem target, IEnumerable<TItem> second = null )
+		public static IEnumerable<TItem> AsItem<TItem>( this TItem target )
 		{
-			var first =  target.Transform( x => new[] { x }, Enumerable.Empty<TItem> );
+			return Append( target, null );
+		}
+
+		public static IEnumerable<TItem> Append<TItem>( this TItem target, IEnumerable<TItem> second )
+		{
+			var first =  (TItem[])target.Transform( x => new[] { x }, Enumerable.Empty<TItem> );
 			var result = second != null ? first.Concat( second ) : first;
 			return result;
 		}

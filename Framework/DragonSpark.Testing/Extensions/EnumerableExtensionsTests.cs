@@ -1,7 +1,10 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -9,6 +12,24 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class EnumerableExtensionsTests
 	{
+		[Theory, Test, SetupAutoData]
+		public void Each( IEnumerable<object> sut )
+		{
+			var count = 0;
+			Action<object> action = o => count++;
+			sut.Each( action );
+			Assert.Equal( sut.Count(), count );
+		}
+
+		[Theory, Test, SetupAutoData]
+		public void EachWithFunc( IEnumerable<object> sut )
+		{
+			var copy = sut.ToList();
+			Func<object, bool> action = copy.Remove;
+			var results = sut.Each( action );
+			Assert.All( results,  b => b.IsFalse( () => { throw new InvalidOperationException( "was not true." ); } ) );
+		}
+
 		[Fact]
 		void Prioritize()
 		{
@@ -40,7 +61,8 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( item, items.First() );
 			Assert.Equal( sut.Last(), items.Last() );
 
-			Assert.Single( item.Append(), item );
+			var asItem = item.AsItem();
+			Assert.Single( asItem, item );
 		}
 
 		[Theory, AutoData]
@@ -58,7 +80,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( tuple.Count, types.Length );
 			Assert.Equal( tuple.Count, strings.Length );
 
-			tuple.Apply( x =>
+			tuple.Each( x =>
 			{
 				var index = tuple.IndexOf( x );
 				Assert.Equal( types[index], x.Item1 );

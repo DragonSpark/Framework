@@ -1,3 +1,4 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Entity
 {
@@ -89,7 +89,7 @@ namespace DragonSpark.Windows.Entity
 			} ) )
 			{
 				var entries = @this.ChangeTracker.Entries().Where( CanApply ).ToArray();
-				// entries.Apply( y => y.Entity.ApplyValues() );
+				// entries.Each( y => y.Entity.ApplyValues() );
 			}
 		}
 
@@ -204,7 +204,7 @@ namespace DragonSpark.Windows.Entity
 		static IEnumerable<string> DetermineDefaultAssociationPaths( IObjectContextAdapter target, Type type, bool includeOtherPath = true )
 		{
 			var names = GetAssociationPropertyNames( target, type );
-			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).Transform( a => a.Any() ? a : x.Name.Append() ) : x.Name.Append() ).ToArray();
+			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).Transform( a => a.Any() ? a : x.Name.AsItem() ) : x.Name.AsItem() ).ToArray();
 			var result = decorated.Union( names.Where( x => !decorated.Any( y => y.StartsWith( string.Concat( x, "." ) ) ) ) ).ToArray();
 			return result;
 		}
@@ -235,7 +235,7 @@ namespace DragonSpark.Windows.Entity
 		static TItem Add<TItem>( DbContext target, TItem item ) where TItem : class
 		{
 			var properties = GetAssociationPropertyNames( target, typeof(TItem) );
-			properties.Apply( x =>
+			properties.Each( x =>
 			{
 				var property = typeof(TItem).GetProperty( x );
 				var current = property.GetValue( item );
@@ -270,12 +270,12 @@ namespace DragonSpark.Windows.Entity
 				var properties = context.GetEntityProperties( type ).Where( x => x.FromEndMember.DeleteBehavior == OperationAction.Cascade ).Select( x => x.Name ).ToArray();
 				Load( context, entity, properties );
 
-				properties.Apply( x =>
+				properties.Each( x =>
 				{
 					var property = type.GetProperty( x );
 					var raw = property.GetValue( entity );
 					var items = property.GetCollectionType() != null ? raw.To<IEnumerable>().Cast<object>().ToArray() : new[] { raw };
-					items.Apply( y => context.Set( y.GetType() ).Remove( y ) );
+					items.Each( y => context.Set( y.GetType() ).Remove( y ) );
 					context.Save();
 				} );
 			}
@@ -399,10 +399,10 @@ namespace DragonSpark.Windows.Entity
 
 				if ( !levels.HasValue || ++count < levels.Value )
 				{
-					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Apply( z =>
+					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Each( z =>
 					{
-						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.Append();
-						items.Apply( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
+						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.AsItem();
+						items.Each( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;
 				}
@@ -463,7 +463,7 @@ namespace DragonSpark.Windows.Entity
 
 			public void Dispose()
 			{
-				saved.Apply( x => x.Item2( x.Item1 ) );
+				saved.Each( x => x.Item2( x.Item1 ) );
 			}
 		}
 

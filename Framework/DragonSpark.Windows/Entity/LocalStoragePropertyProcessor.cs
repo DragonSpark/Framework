@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Entity
 {
 	public class LocalStoragePropertyProcessor
 	{
-		static readonly MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( "Apply", BindingOptions.AllProperties );
+		static readonly MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( "Each", BindingOptions.AllProperties );
 
 		public static LocalStoragePropertyProcessor Instance { get; } = new LocalStoragePropertyProcessor();
 
@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Entity
 		{
 			var types = context.GetDeclaredEntityTypes().Select( x => x.Extend().GetHierarchy( false ).Last() ).Distinct().SelectMany( x => x.Assembly.GetTypes().Where( y => x.Namespace == y.Namespace ) ).Distinct().ToArray();
 
-			types.SelectMany( y => y.GetProperties( BindingOptions.AllProperties ).Where( z => z.IsDecoratedWith<LocalStorageAttribute>() || ( useConvention && FollowsConvention( z ) )  ) ).Apply( x =>
+			types.SelectMany( y => y.GetProperties( BindingOptions.AllProperties ).Where( z => z.IsDecoratedWith<LocalStorageAttribute>() || ( useConvention && FollowsConvention( z ) )  ) ).Each( x =>
 			{
 				ApplyMethod.MakeGenericMethod( x.DeclaringType, x.PropertyType ).Invoke( this, new object[] { modelBuilder, x } );
 			} );

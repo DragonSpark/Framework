@@ -53,8 +53,8 @@ namespace DragonSpark.Windows.Io
 		{
 			target.Exists.IsTrue( () =>
 			{
-				target.GetDirectories().Apply( TryDeleteDirectory );
-				target.GetFiles().Apply( x => x.Delete() );
+				target.GetDirectories().Each( TryDeleteDirectory );
+				target.GetFiles().Each( x => x.Delete() );
 			} );
 			return target;
 		}
@@ -68,7 +68,7 @@ namespace DragonSpark.Windows.Io
 			catch ( IOException )
 			{
 				var files = target.GetAllFiles();
-				files.Apply( x => DiagnosticExtensions.Try( x.Delete ) );
+				files.Each( x => DiagnosticExtensions.Try( x.Delete ) );
 			}
 		}
 

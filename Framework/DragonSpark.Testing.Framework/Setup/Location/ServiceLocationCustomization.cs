@@ -130,7 +130,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 			}
 		}
 
-		public void Apply(  )
+		public void Each(  )
 
 		protected override void Initialize()
 		{

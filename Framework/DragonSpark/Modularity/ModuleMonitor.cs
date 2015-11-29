@@ -45,7 +45,7 @@ namespace DragonSpark.Modularity
 		protected virtual void OnComplete()
 		{
 			var load = loading.Select( x => x.GetAssembly() ).Select( x => loaded.FirstOrDefault( y => Equals( y.GetType().Assembly(), x ) ) ).ToArray();
-			load.Apply( x => x.Load() );
+			load.Each( x => x.Load() );
 
 			source.TrySetResult( true );
 		}

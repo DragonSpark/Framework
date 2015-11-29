@@ -24,10 +24,10 @@ namespace DragonSpark.Setup.Commands
 		protected override void Execute( SetupContext context )
 		{
 			var container = context.Container();
-			Extensions.Apply( x => container.AddExtension( x ) );
+			Extensions.Each( x => container.AddExtension( x ) );
 
 			var commands = PreConfigurations.Concat( Instances ).Concat( Configurations ).Concat( Types ).Concat( PostConfigurations ).ToArray();
-			commands.Where( command => command.CanExecute( context ) ).Apply( item => item.Execute( context ) );
+			commands.Where( command => command.CanExecute( context ) ).Each( item => item.Execute( context ) );
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace DragonSpark.Runtime.Values
 			var type = context.AsTo<AmbientKey, Type>( key => key.TargetType ) ?? typeof(object); // TODO: Need to fix how repository behaves.  Very brittle ATM.
 			var request = new AmbientRequest( type, context );
 			var remove = items.Keys.Where( key => key == context || items[key] == context || key.Handles( request ) ).ToArray();
-			remove.Apply( value => items.Remove( value ) );
+			remove.Each( value => items.Remove( value ) );
 		}
 	}
 }

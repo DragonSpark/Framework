@@ -27,7 +27,7 @@ namespace DragonSpark.Extensions
 		{
 			TItem item;
 			var items = target.Where( x => x == null || !x.TryGetTarget( out item ) ).ToArray();
-			items.Apply( x => target.Remove( x ) );
+			items.Each( x => target.Remove( x ) );
 			return target;
 		}
 

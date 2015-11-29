@@ -48,7 +48,7 @@ namespace DragonSpark.Windows.Markup
 
 		protected virtual void CopyItems( object oldItems )
 		{
-			Items.As<IList>( x => oldItems.As<IList>().Cast<object>().Apply( y => x.Add( y ) ) );
+			Items.As<IList>( x => oldItems.As<IList>().Cast<object>().Each( y => x.Add( y ) ) );
 		}
 
 		protected abstract Type GetCollectionType( Type type );

@@ -23,7 +23,7 @@ namespace DragonSpark.Windows.Entity
 				files.Any().IsTrue( () =>
 				{
 					var destination = file.Directory.CreateSubdirectory( FileSystem.GetValidPath() );
-					files.Apply( info => info.CopyTo( Path.Combine( destination.FullName, info.Name ) ) );
+					files.Each( info => info.CopyTo( Path.Combine( destination.FullName, info.Name ) ) );
 				} );
 
 				MaximumBackups.WithValue( i => 
@@ -32,7 +32,7 @@ namespace DragonSpark.Windows.Entity
 						.Where( x => FileSystem.IsValidPath( x.Name ) )
 						.OrderByDescending( info => info.CreationTime )
 						.Skip( i )
-						.Apply( info => info.Delete( true ) ) 
+						.Each( info => info.Delete( true ) ) 
 					);
 			} );
 		}

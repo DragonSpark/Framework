@@ -30,7 +30,7 @@ namespace DragonSpark.Setup.Commands
 			var members = InjectionMembers.ToArray();
 			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
 
-			TypeConfigurations.Apply( item => item.Configure( container, this ) );
+			TypeConfigurations.Each( item => item.Configure( container, this ) );
 		}
 	}
 }

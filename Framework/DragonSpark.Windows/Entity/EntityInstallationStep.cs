@@ -10,9 +10,9 @@ namespace DragonSpark.Windows.Entity
 	{
 		public void Execute( DbContext context )
 		{
-			Remove.Apply( y => context.Get( y ).NotNull( x => context.Remove<object>( x ) ) );
+			Remove.Each( y => context.Get( y ).NotNull( x => context.Remove<object>( x ) ) );
 
-			Attach.Apply( y => context.ApplyChanges( y ) );
+			Attach.Each( y => context.ApplyChanges( y ) );
 		}
 
 		public Collection Attach { get; } = new Collection();

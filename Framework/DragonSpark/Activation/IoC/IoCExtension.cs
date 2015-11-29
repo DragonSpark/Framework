@@ -93,7 +93,7 @@ namespace DragonSpark.Activation.IoC
 				extension.Children.Remove( child );
 				var container = extension.Context.Container.GetLifetimeContainer();
 				var lifetimeEntries = child.GetLifetimeEntries().Where( x => x.Value == child );
-				lifetimeEntries.Apply( container.Remove );
+				lifetimeEntries.Each( container.Remove );
 			}
 		}
 
@@ -105,8 +105,8 @@ namespace DragonSpark.Activation.IoC
 		/*public IUnityContainer Dispose()
 		{
 			var entries = GetLifetimeEntries().Where( x => x.Value == Container ).Select( x => x.Key ).ToArray();
-			entries.Apply( Context.Lifetime.Remove );
-			//Children.ToArray().Apply( y => y.DisposeAll() );
+			entries.Each( Context.Lifetime.Remove );
+			//Children.ToArray().Each( y => y.DisposeAll() );
 			Container.Dispose();
 			Container.RemoveAllExtensions();
 			return Container;

@@ -31,11 +31,11 @@ namespace DragonSpark.Windows.Entity
 
 					context.Logger.Information( $"Performing entity installation on {items.Length} installers.", Priority.Low );
 
-					items.Apply( x =>
+					items.Each( x =>
 					{
 						context.Logger.Information( $"Installing Entity Installer with ID of '{x.Id}' and version '{x.Version}'.", Priority.Low );
 
-						x.Steps.Apply( y =>
+						x.Steps.Each( y =>
 						{
 							y.Execute( instance );
 							instance.Save();

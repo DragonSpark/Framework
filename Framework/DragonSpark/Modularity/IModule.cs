@@ -50,7 +50,7 @@ namespace DragonSpark.Modularity
 		protected virtual void Load()
 		{
 			var commands = DetermineCommands();
-			commands.Where( command => command.CanExecute( Context ) ).Apply( x => x.Execute( Context ) );
+			commands.Where( command => command.CanExecute( Context ) ).Each( x => x.Execute( Context ) );
 		}
 
 		protected virtual IEnumerable<ICommand> DetermineCommands()

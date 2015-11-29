@@ -26,7 +26,7 @@ namespace DragonSpark.Windows.Markup
 			var result = DetermineCollection( serviceProvider ).With( o =>
 			{
 				var type = o.GetType().Extend().GetEnumerableType();
-				Items.Where( type.IsInstanceOfType ).Apply( item =>
+				Items.Where( type.IsInstanceOfType ).Each( item =>
 				{
 					o.Add( item );
 				} );
