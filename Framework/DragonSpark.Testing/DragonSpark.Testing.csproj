@@ -302,6 +302,10 @@
       <Project>{96f63f2b-7d11-4d0f-a932-26c29f8e48bf}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Types.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Windows</Name>

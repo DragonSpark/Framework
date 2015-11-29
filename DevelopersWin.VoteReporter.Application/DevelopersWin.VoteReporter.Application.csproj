@@ -118,7 +118,7 @@
       <Project>{AE7C3390-95D0-4558-B992-F7EF3FAE89DA}</Project>
       <Name>DevelopersWin.VoteReporter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Framework\DragonSpark.Shim.Windows\DragonSpark.Shim.Windows.csproj">
+    <ProjectReference Include="..\Framework\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
       <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
       <Name>DragonSpark.Shim.Windows</Name>
     </ProjectReference>
