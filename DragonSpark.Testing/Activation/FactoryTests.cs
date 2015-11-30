@@ -1,5 +1,5 @@
 using DragonSpark.Activation;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Setup;

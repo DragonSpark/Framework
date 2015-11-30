@@ -2,7 +2,7 @@ using DragonSpark.Activation;
 using DragonSpark.Setup;
 using System;
 using System.Reflection;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel

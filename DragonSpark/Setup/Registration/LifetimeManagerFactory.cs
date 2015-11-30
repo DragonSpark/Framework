@@ -1,6 +1,6 @@
 using System;
 using DragonSpark.Activation;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
 using Microsoft.Practices.Unity;
 
