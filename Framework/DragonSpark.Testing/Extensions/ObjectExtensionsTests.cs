@@ -105,19 +105,34 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Theory, AutoData]
-		void Transform( ClassWithParameter sut, string message )
+		void With( ClassWithParameter sut, string message )
 		{
-			Assert.Equal( sut.Parameter, sut.Transform( x => x.Parameter, () => message, parameter => true ) );
-			Assert.Equal( message, sut.Transform( x => x.Parameter, () => message, parameter => false ) );
+			Assert.Equal( sut.Parameter, sut.With( x => x.Parameter, () => message ) );
+		}
+
+		[Theory, AutoData]
+		void WithNullable( int supplied )
+		{
+			var item = new int?( supplied );
+			var value = 0;
+			var result = item.With( i => value = i );
+			Assert.Equal( supplied, result );
+			Assert.Equal( supplied, value );
+		}
+
+		[Theory, AutoData]
+		void WithSelf( int supplied, string message )
+		{
+			string item = null;
+			Func<int, string> with = i => item = message;
+			var result = supplied.WithSelf( with );
+			Assert.Equal( message, item );
+			Assert.Equal( supplied, result );
 		}
 
 		[Fact]
 		public void As()
 		{
-			Assert.Throws<InvalidOperationException>( () =>
-				new Class().As<string, InvalidOperationException>( x => {}, () => new InvalidOperationException( "Not a String" ) )
-			);
-
 			var called = false;
 			Assert.NotNull( new Class().As<IInterface>( x => called = true ) );
 			Assert.True( called );

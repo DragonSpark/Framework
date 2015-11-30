@@ -17,8 +17,8 @@ namespace DevelopersWin.VoteReporter.Entity
 		[LocalStorage, NotMapped]
 		public Uri Location
 		{
-			get { return LocationStorage.Transform( s => new Uri( s ) ); }
-			set { LocationStorage = value.Transform( uri => uri.ToString() ); }
+			get { return LocationStorage.With( s => new Uri( s ) ); }
+			set { LocationStorage = value.With( uri => uri.ToString() ); }
 		}	string LocationStorage { get; set; }
 
 		[Collection]

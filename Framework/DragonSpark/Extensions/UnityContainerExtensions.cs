@@ -60,7 +60,7 @@ namespace DragonSpark.Extensions
 
 		public static object ResolveFirst( this IUnityContainer @this, params Type[] types )
 		{
-			var result = types.FirstOrDefault( @this.IsRegistered ).Transform( x => @this.Resolve( x ) );
+			var result = types.FirstOrDefault( @this.IsRegistered ).With( x => @this.Resolve( x ) );
 			return result;
 		}
 
@@ -115,7 +115,7 @@ namespace DragonSpark.Extensions
 
 		public static IUnityContainerExtensionConfigurator Extension( this IUnityContainer container, Type extensionType )
 		{
-			var extension = container.Configure( extensionType ) ?? container.Resolve( () => SystemActivator.Instance ).Activate<UnityContainerExtension>( extensionType ).With( x => container.AddExtension( x ) );  // TODO: Account for this With.
+			var extension = container.Configure( extensionType ) ?? container.Resolve( () => SystemActivator.Instance ).Activate<UnityContainerExtension>( extensionType ).WithSelf( container.AddExtension );
 			var result = (IUnityContainerExtensionConfigurator)extension;
 			return result;
 		}

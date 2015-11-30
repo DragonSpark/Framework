@@ -14,7 +14,7 @@ namespace DragonSpark.Modularity
 
 		protected override IEnumerable<ICommand> DetermineCommands()
 		{
-			var result = Activator.Activate<TCommand>().AsItem().Cast<ICommand>().ToArray();
+			var result = Activator.Activate<TCommand>().ToItem().Cast<ICommand>().ToArray();
 			return result;
 		}
 	}

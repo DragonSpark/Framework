@@ -19,7 +19,7 @@ namespace DevelopersWin.VoteReporter.Configuration.Development
 	{
 		public int Locate( Vote vote )
 		{
-			var minimum = vote.Records.OrderByDescending( record => record.Created ).FirstOrDefault().Transform( x => x.Count );
+			var minimum = vote.Records.OrderByDescending( record => record.Created ).FirstOrDefault().With( x => x.Count );
 			var result = new Random().Next( minimum + 5, minimum + 150 );
 			return result;
 		}

@@ -17,7 +17,7 @@ namespace DragonSpark.Extensions
 		{
 			lock ( @this )
 			{
-				return @this.Transform( with );
+				return @this.With( with );
 			}
 		}
 
@@ -66,32 +66,6 @@ namespace DragonSpark.Extensions
 			target.As<IDisposable>( x => x.Dispose() );
 		}
 
-		public static TItem With<TItem>( this TItem target, Action<TItem> action )
-		{
-			if ( action != null )
-			{
-				target.NotNull( action );
-			}
-			return target;
-		}
-
-		public static TItem WithValue<TItem>( this TItem? target, Action<TItem> action ) where TItem : struct 
-		{
-			if ( action != null && target.HasValue )
-			{
-				target.Value.With( action );
-			}
-			return target.GetValueOrDefault();
-		}
-
-		public static void NotNull<TItem>( this TItem target, Action<TItem> action )
-		{
-			if ( !Equals( target, default(TItem) ) )
-			{
-				action( target );
-			}
-		}
-
 		public static void Null<TItem>( this TItem target, Action action )
 		{
 			if ( Equals( target, default(TItem) ) )
@@ -120,8 +94,6 @@ namespace DragonSpark.Extensions
 
 		public static TResult Loop<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem, bool> condition, Func<TItem, TResult> extract = null, TResult defaultValue = default(TResult) )
 		{
-			// extract = extract ?? ( x => x is TResult ? x.To<TResult>() : default(TResult) );
-
 			do
 			{
 				if ( condition( current ) )
@@ -131,7 +103,7 @@ namespace DragonSpark.Extensions
 				}
 				current = resolveParent( current );
 			}
-			while ( !Equals( current, default( TItem ) ) );
+			while ( current != null );
 			return defaultValue;
 		}
 
@@ -147,28 +119,63 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult FromMetadata<TAttribute,TResult>( this object target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
+		public static TResult With<TItem, TResult>( this TItem target, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
 		{
-			var result = target.Transform( x => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault, condition ) );
+			var getDefault = defaultFunction ?? DetermineDefault<TResult>;
+			var result = target != null ? function( target ) : getDefault();
 			return result;
 		}
 
-		public static TResult FromMetadata<TAttribute,TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
+		public static TItem With<TItem>( this TItem @this, Action<TItem> action )
 		{
-			var result = target.GetCustomAttribute<TAttribute>().Transform( resolveValue, resolveDefault ?? DetermineDefault<TResult>, condition );
+			var result = @this.With( item =>
+			{
+				action( item );
+				return item;
+			} );
 			return result;
 		}
 
-		public static TResult FromMetadata<TAttribute,TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TAttribute,bool> condition = null ) where TAttribute : Attribute
+		public static TItem WithSelf<TItem>( this TItem @this, Func<TItem, object> action )
 		{
-			var result = target.GetCustomAttribute<TAttribute>().Transform( resolveValue, resolveDefault ?? DetermineDefault<TResult>, condition );
+			@this.With( action );
+			return @this;
+		}
+
+		public static TItem With<TItem>( this TItem? @this, Action<TItem> action ) where TItem : struct
+		{
+			var result = @this?.With( action ) ?? default(TItem);
+			return result;
+		}
+
+		public static TResult With<TItem, TResult>( this TItem? @this, Func<TItem, TResult> action ) where TItem : struct 
+		{
+			var result = @this != null ? @this.Value.With( action ) : default(TResult);
+			return result;
+		}
+
+		public static TResult FromMetadata<TAttribute, TResult>( this object target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		{
+			var result = target.With( x => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault ) );
+			return result;
+		}
+
+		public static TResult FromMetadata<TAttribute, TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		{
+			var result = target.GetCustomAttribute<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
+			return result;
+		}
+
+		public static TResult FromMetadata<TAttribute, TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		{
+			var result = target.GetCustomAttribute<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
 			return result;
 		}
 
 		public static TItem BuildUp<TItem>( this TItem target ) where TItem : class
 		{
 			var builder = Services.Location.Locate<IObjectBuilder>() ?? ObjectBuilder.Instance;
-			builder.With( x => x.BuildUp( target ) );
+			builder.With<IObjectBuilder>( x => x.BuildUp( target ) );
 			return target;
 		}
 
@@ -192,18 +199,11 @@ namespace DragonSpark.Extensions
 				var genericType = typeof(IEnumerable<>).MakeGenericType( typeArguments ).GetTypeInfo();
 				if ( genericType.IsAssignableFrom( type ) )
 				{
-					var result = typeArguments.Transform( x => Activator.CreateInstance( x.MakeArrayType(), 0 ) ).To<TResult>();
+					var result = typeArguments.With( x => Activator.CreateInstance( x.MakeArrayType(), 0 ) ).To<TResult>();
 					return result;
 				}
 			}
 			return default(TResult);
-		}
-
-		public static TResult Transform<TItem,TResult>( this TItem target, Func<TItem,TResult> resolveValue, Func<TResult> resolveDefault = null, Func<TItem,bool> condition = null )
-		{
-			resolveDefault = resolveDefault ?? DetermineDefault<TResult>;
-			var result = !Equals( target, default(TItem) ) && ( condition == null || condition( target ) ) ? resolveValue( target ) : resolveDefault();
-			return result;
 		}
 
 		/*public static TResult Clone<TResult>( this TResult source )
@@ -251,23 +251,18 @@ namespace DragonSpark.Extensions
 
 		public static TResult As<TResult>( this object target ) where TResult : class
 		{
-			return As<TResult, Exception>( target, null );
+			return As<TResult>( target, null );
 		}
 
 		public static TResult As<TResult>( this object target, Action<TResult> action ) where TResult : class
 		{
-			return As<TResult, Exception>( target, action );
-		}
-
-		public static TResult As<TResult, TException>( this object target, Action<TResult> action, Func<TException> resolveException = null ) where TResult : class where TException : Exception
-		{
 			var result = target as TResult;
 
-			// Each for exception:
+			/*// Each for exception:
 			if ( result == null && resolveException != null )
 			{
 				throw resolveException();
-			}
+			}*/
 
 			if ( action != null && result != null )
 			{
@@ -278,8 +273,8 @@ namespace DragonSpark.Extensions
 
 		public static TResult AsTo<TSource, TResult>( this object target, Func<TSource,TResult> transform, Func<TResult> resolve = null )
 		{
-			resolve = resolve ?? DetermineDefault<TResult>;
-			var result = target is TSource ? transform( target.To<TSource>() ) : resolve();
+			var @default = resolve ?? DetermineDefault<TResult>;
+			var result = target is TSource ? transform( (TSource)target ) : @default();
 			return result;
 		}
 
@@ -292,7 +287,7 @@ namespace DragonSpark.Extensions
 
 		public static T ConvertTo<T>( this object @this )
 		{
-			var result = @this.Transform( x => (T)ConvertTo( @this, typeof(T) ) );
+			var result = @this.With( x => (T)ConvertTo( @this, typeof(T) ) );
 			return result;
 		}
 

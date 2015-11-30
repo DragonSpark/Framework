@@ -27,7 +27,7 @@ namespace DragonSpark.Windows.Entity
 
 		static bool FollowsConvention( PropertyInfo propertyInfo )
 		{
-			var result = propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).Transform( x => x.IsDecoratedWith<NotMappedAttribute>() );
+			var result = propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).With( x => x.IsDecoratedWith<NotMappedAttribute>() );
 			return result;
 		}
 
@@ -40,7 +40,7 @@ namespace DragonSpark.Windows.Entity
 
 			var configuration = builder.Entity<TEntity>();
 			
-			configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ).NotNull( y => y.Invoke( configuration, new object[] { result } ) );
+			configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ).With( y => y.Invoke( configuration, new object[] { result } ) );
 		}
 	}
 }

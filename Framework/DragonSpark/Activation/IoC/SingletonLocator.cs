@@ -21,7 +21,7 @@ namespace DragonSpark.Activation.IoC
 			var typeInfo = type.GetTypeInfo();
 			var mapped = typeInfo.IsInterface ? DetermineType( typeInfo ) : typeInfo;
 			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.IsDecoratedWith<SingletonInstanceAttribute>() ) );
-			var result = declared.Transform( info => info.GetValue( null ) );
+			var result = declared.With( info => info.GetValue( null ) );
 			return result;
 		}
 

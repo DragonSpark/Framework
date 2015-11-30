@@ -20,7 +20,7 @@ namespace DragonSpark.Activation.IoC
 
 		bool CheckInstance( NamedTypeBuildKey key )
 		{
-			var result = context.Policies.Get<ILifetimePolicy>( key ).Transform( policy => policy.GetValue() ) != null;
+			var result = context.Policies.Get<ILifetimePolicy>( key ).With( policy => policy.GetValue() ) != null;
 			return result;
 		}
 
@@ -32,12 +32,12 @@ namespace DragonSpark.Activation.IoC
 
 		ConstructorInfo GetConstructor( NamedTypeBuildKey key )
 		{
-			var mapped = context.Policies.Get<IBuildKeyMappingPolicy>( key ).Transform( policy => policy.Map( key, null ) ) ?? key;
-			return context.Policies.Get<IConstructorSelectorPolicy>( mapped ).Transform( policy =>
+			var mapped = context.Policies.Get<IBuildKeyMappingPolicy>( key ).With( policy => policy.Map( key, null ) ) ?? key;
+			return context.Policies.Get<IConstructorSelectorPolicy>( mapped ).With( policy =>
 			{
 				var builder = new BuilderContext( context.BuildPlanStrategies.MakeStrategyChain(), context.Lifetime, context.Policies, mapped, null );
 				var constructor = policy.SelectConstructor( builder, context.Policies );
-				var result = constructor.Transform( selected => selected.Constructor ); 
+				var result = constructor.With( selected => selected.Constructor ); 
 				return result;
 			} );
 		}
@@ -50,7 +50,7 @@ namespace DragonSpark.Activation.IoC
 
 		bool Validate( NamedTypeBuildKey key, IEnumerable<Type> parameters )
 		{
-			var result = IsRegistered( key ) || GetConstructor( key ).Transform( x => Validate( x, parameters ) );
+			var result = IsRegistered( key ) || GetConstructor( key ).With( x => Validate( x, parameters ) );
 			result.IsTrue( () => resolvable.Add( key ) );
 			return result;
 		}

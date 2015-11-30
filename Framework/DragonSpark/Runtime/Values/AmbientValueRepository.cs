@@ -19,7 +19,7 @@ namespace DragonSpark.Runtime.Values
 
 		public object Get( IAmbientRequest request )
 		{
-			var result = items.Keys.FirstOrDefault( key => key.Handles( request ) ).Transform( key => items[ key ] );
+			var result = items.Keys.FirstOrDefault( key => key.Handles( request ) ).With( key => items[ key ] );
 			return result;
 		}
 

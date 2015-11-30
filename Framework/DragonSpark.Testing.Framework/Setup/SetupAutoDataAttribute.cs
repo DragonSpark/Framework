@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using Ploeh.AutoFixture;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {

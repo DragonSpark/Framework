@@ -26,7 +26,7 @@ namespace DragonSpark.Windows.Entity
 					files.Each( info => info.CopyTo( Path.Combine( destination.FullName, info.Name ) ) );
 				} );
 
-				MaximumBackups.WithValue( i => 
+				MaximumBackups.With( i => 
 					file.Directory
 						.GetDirectories()
 						.Where( x => FileSystem.IsValidPath( x.Name ) )

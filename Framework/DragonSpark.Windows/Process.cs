@@ -15,7 +15,7 @@ namespace DragonSpark.Windows
 		public static System.Diagnostics.Process Create( string file )
 		{
 			var target = System.Diagnostics.Process.Start( file );
-			target.NotNull( x =>
+			target.With( x =>
 			{
 				x.Exited += ResultExited;
 				Source.Add( x );

@@ -30,9 +30,9 @@ namespace DragonSpark.Windows.Markup
 
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
-			 var result = Type.Transform( x => Activator.Current.Activate<object>( x, BuildName ) );
+			 var result = Type.With( x => Activator.Current.Activate<object>( x, BuildName ) );
 			result.As<ISupportInitialize>( x => x.BeginInit() );
-			result.NotNull( x => Properties.Each( y => x.GetType().GetProperty( y.PropertyName ).NotNull( z => y.Apply( z, x ) ) ) );
+			result.With( x => Properties.Each( y => x.GetType().GetProperty( y.PropertyName ).With( z => y.Apply( z, x ) ) ) );
 			result.As<ISupportInitialize>( x => x.EndInit() );
 			return result;
 		}

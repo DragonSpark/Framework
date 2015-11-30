@@ -1,7 +1,7 @@
+using DragonSpark.Activation.FactoryModel;
+using Ploeh.AutoFixture.Kernel;
 using System;
 using System.Linq;
-using DragonSpark.Activation.Build;
-using Ploeh.AutoFixture.Kernel;
 
 namespace DragonSpark.Testing.Framework.Setup
 {

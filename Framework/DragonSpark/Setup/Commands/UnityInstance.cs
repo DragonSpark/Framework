@@ -25,7 +25,7 @@ namespace DragonSpark.Setup.Commands
 			var also = container.Resolve<IServiceLocator>() == Services.Location.Locator;
 			var temp = Services.Location.Locator == AmbientValues.Get<IServiceLocator>();
 			var instance = ResolveInstance( container ).BuildUp();
-			var type = RegistrationType ?? instance.Transform( item => item.GetType() );
+			var type = RegistrationType ?? instance.With( item => item.GetType() );
 			var registration = instance.ConvertTo( type );
 			var to = registration.GetType();
 			var mapping = string.Concat( type.FullName, to != type ? $" -> {to.FullName}" : string.Empty );

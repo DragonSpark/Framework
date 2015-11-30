@@ -57,8 +57,8 @@ namespace DragonSpark.Setup.Commands
 
 			container.RegisterInterfaces( context.Logger );
 
-			var setup = context.Item<ISetup>().With( x => container.RegisterInstance( x ) );
-			var catalog = context.Item<IModuleCatalog>().With( x => container.RegisterInstance( x ) );
+			var setup = context.Item<ISetup>().With<ISetup>( x => container.RegisterInstance( x ) );
+			var catalog = context.Item<IModuleCatalog>().With<IModuleCatalog>( x => container.RegisterInstance( x ) );
 			
 			var instances = context.Items.Except( new object[] { context.Logger, catalog, container, setup } ).NotNull().ToArray();
 			foreach ( var item in instances )
