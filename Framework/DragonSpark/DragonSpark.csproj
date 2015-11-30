@@ -145,21 +145,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activation\Build\ActivateFactory.cs" />
+    <Compile Include="Activation\FactoryModel\ActivateFactory.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
-    <Compile Include="Activation\Build\ActivateParameter.cs" />
-    <Compile Include="Activation\Build\ActivationFactory.cs" />
-    <Compile Include="Activation\Build\ActivationParameter.cs" />
+    <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
+    <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
+    <Compile Include="Activation\FactoryModel\ActivationParameter.cs" />
     <Compile Include="Extensions\ActivatorExtensions.cs" />
     <Compile Include="Runtime\Values\AmbientKeyLocator.cs" />
     <Compile Include="Activation\CompositeActivator.cs" />
-    <Compile Include="Activation\Build\ConstructFactory.cs" />
-    <Compile Include="Activation\Build\ConstructFactoryParameterQualifier.cs" />
-    <Compile Include="Activation\Build\ConstructParameter.cs" />
-    <Compile Include="Activation\Build\FactoryParameterQualifier.cs" />
+    <Compile Include="Activation\FactoryModel\ConstructFactory.cs" />
+    <Compile Include="Activation\FactoryModel\ConstructFactoryParameterQualifier.cs" />
+    <Compile Include="Activation\FactoryModel\ConstructParameter.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryParameterQualifier.cs" />
     <Compile Include="Runtime\Values\IAmbientKeyLocator.cs" />
-    <Compile Include="Activation\Build\IFactoryParameterQualifier.cs" />
-    <Compile Include="Activation\Build\IFactoryWithParameter.cs" />
+    <Compile Include="Activation\FactoryModel\IFactoryParameterQualifier.cs" />
+    <Compile Include="Activation\FactoryModel\IFactoryWithParameter.cs" />
     <Compile Include="Activation\IObjectBuilder.cs" />
     <Compile Include="Activation\IoC\ArrayResolutionStrategy.cs" />
     <Compile Include="Activation\IoC\CompositeServiceLocator.cs" />
@@ -218,12 +218,12 @@
     <Compile Include="Modularity\ModuleMonitor.cs" />
     <Compile Include="Runtime\Values\AmbientValues.cs" />
     <Compile Include="TypeSystem\AssemblyProviderBase.cs" />
-    <Compile Include="Activation\Build\FactoryBase.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryBase.cs" />
     <Compile Include="Runtime\Collection.cs" />
     <Compile Include="TypeSystem\FilteredAssemblyProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Activation\Build\IFactory.cs">
+    <Compile Include="Activation\FactoryModel\IFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
@@ -303,8 +303,8 @@
     <Compile Include="Setup\Commands\CompositeSetupCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfileProvider.cs" />
-    <Compile Include="Activation\Build\FactoryBuiltObjectFactory.cs" />
-    <Compile Include="Activation\Build\FactoryReflectionSupport.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryBuiltObjectFactory.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryReflectionSupport.cs" />
     <Compile Include="Setup\Registration\IConventionRegistration.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationService.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationProfileProvider.cs" />
@@ -318,7 +318,7 @@
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Activation\IoC\ISingletonLocator.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
-    <Compile Include="Activation\Build\ObjectFactoryParameter.cs" />
+    <Compile Include="Activation\FactoryModel\ObjectFactoryParameter.cs" />
     <Compile Include="Runtime\Program.cs" />
     <Compile Include="Setup\Registration\RegisterAttribute.cs" />
     <Compile Include="Setup\Registration\RegisterFactoryForResultAttribute.cs" />

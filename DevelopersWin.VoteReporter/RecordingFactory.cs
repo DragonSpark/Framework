@@ -3,7 +3,7 @@ using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Windows.Entity;
 using System.Linq;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DevelopersWin.VoteReporter
 {

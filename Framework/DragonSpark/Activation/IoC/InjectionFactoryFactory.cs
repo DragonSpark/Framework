@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 

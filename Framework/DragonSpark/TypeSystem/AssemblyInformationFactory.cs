@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
 

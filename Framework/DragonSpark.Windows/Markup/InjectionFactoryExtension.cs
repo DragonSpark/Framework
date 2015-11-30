@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
 using DragonSpark.Setup.Commands;
 

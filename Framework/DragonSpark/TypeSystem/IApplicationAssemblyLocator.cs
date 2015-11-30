@@ -1,5 +1,5 @@
 using System.Reflection;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.TypeSystem
 {

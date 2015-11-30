@@ -1,6 +1,6 @@
 using AutoMapper;
 using DragonSpark.Activation;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Extensions
 {

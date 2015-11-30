@@ -1,5 +1,5 @@
 using System;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;

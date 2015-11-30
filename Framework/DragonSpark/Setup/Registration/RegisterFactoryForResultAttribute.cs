@@ -1,6 +1,6 @@
 using System;
 using DragonSpark.Activation;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using Activator = DragonSpark.Activation.Activator;
 
