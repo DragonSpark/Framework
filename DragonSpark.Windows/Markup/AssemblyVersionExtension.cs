@@ -9,7 +9,7 @@ namespace DragonSpark.Windows.Markup
 	{
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
-			var result = serviceProvider.Get<IRootObjectProvider>().Transform( x => x.RootObject.GetType().Assembly.GetName().Version );
+			var result = serviceProvider.Get<IRootObjectProvider>().With( x => x.RootObject.GetType().Assembly.GetName().Version );
 			return result;
 		}
 	}

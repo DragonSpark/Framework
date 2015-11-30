@@ -30,9 +30,9 @@ namespace DragonSpark.Windows.Markup
 
 		protected override object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
 		{
-			var baseUri = serviceProvider.Get<IUriContext>().Transform( context => context.BaseUri );
+			var baseUri = serviceProvider.Get<IUriContext>().With( context => context.BaseUri );
 			
-			var targetObject = serviceProvider.Get<IProvideValueTarget>().Transform( target => target.TargetObject as DependencyObject );
+			var targetObject = serviceProvider.Get<IProvideValueTarget>().With( target => target.TargetObject as DependencyObject );
 			
 			var imageUri = ResolveUri( targetObject, baseUri, Source );
 

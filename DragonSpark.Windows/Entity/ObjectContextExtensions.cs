@@ -425,8 +425,6 @@ namespace DragonSpark.Windows.Entity
 			// Copy original values from the sourceStateEntry to the targetStateEntry.  This will
 			// cause the corresponding properties on the object to be set.
 			for ( int i = 0; i < sourceStateEntry.OriginalValues.FieldCount; i++ ) {
-				// TODO: For best perf we should have a switch on the type here so that we could call 
-				// the type-specific methods and avoid boxing.
 				targetStateEntry.CurrentValues.SetValue( i, sourceStateEntry.OriginalValues[ i ] );
 			}
 

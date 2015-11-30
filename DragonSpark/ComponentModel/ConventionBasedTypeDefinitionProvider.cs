@@ -48,7 +48,7 @@ namespace DragonSpark.ComponentModel
 
 			public Context CreateFromBaseType()
 			{
-				var result =  Current.BaseType.Transform( x => new Context( IntrospectionExtensions.GetTypeInfo( x ) ) );
+				var result =  Current.BaseType.With( x => new Context( IntrospectionExtensions.GetTypeInfo( x ) ) );
 				return result;
 			}
 
@@ -62,7 +62,7 @@ namespace DragonSpark.ComponentModel
 			TypeInfo ResolveMetadata()
 			{
 				var name = string.Format( "{0}Metadata, {1}", Current.FullName, Current.Assembly.FullName );
-				var result = Type.GetType( name, false ).Transform( x => x.GetTypeInfo() );
+				var result = Type.GetType( name, false ).With( x => x.GetTypeInfo() );
 				return result;
 			}
 		}

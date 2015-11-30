@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				throw new InvalidOperationException( "This converter expects strings." );
 			}
-			var result = value.As<string>().Transform( x => new Version( x ) );
+			var result = value.As<string>().With( x => new Version( x ) );
 			return result;
 		}
 
@@ -29,7 +29,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				throw new InvalidOperationException( );
 			}
-			var result = value.As<Version>().Transform( x => x.ToString() );
+			var result = value.As<Version>().With( x => x.ToString() );
 			return result;
 		}
 	}

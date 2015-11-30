@@ -19,11 +19,11 @@ namespace DragonSpark.Activation.IoC
 
 		protected override InjectionFactory CreateItem( InjectionMemberContext context )
 		{
-			var previous = context.Container.Registrations.FirstOrDefault( x => x.RegisteredType == context.TargetType && x.MappedToType != x.RegisteredType ).Transform( x => x.MappedToType );
+			var previous = context.Container.Registrations.FirstOrDefault( x => x.RegisteredType == context.TargetType && x.MappedToType != x.RegisteredType ).With( x => x.MappedToType );
 
 			var result = new InjectionFactory( ( unityContainer, type, buildName ) =>
 			{
-				var item = Create( unityContainer, type, buildName ) ?? previous.Transform( x => context.Container.Resolve( x ) );
+				var item = Create( unityContainer, type, buildName ) ?? previous.With( x => context.Container.Resolve( x ) );
 				return item;
 			} );
 			return result;

@@ -20,8 +20,8 @@ namespace DragonSpark.Activation.FactoryModel
 
 		protected override TResult CreateItem( TParameter parameter )
 		{
-			var qualified = DetermineType( parameter ).Transform( extension => extension.Extend().GuardAsAssignable<TResult>( nameof(parameter) ) );
-			var result = qualified.Transform( type => Activate( type, parameter ) );
+			var qualified = DetermineType( parameter ).With( extension => extension.Extend().GuardAsAssignable<TResult>( nameof(parameter) ) );
+			var result = qualified.With( type => Activate( type, parameter ) );
 			return result;
 		}
 

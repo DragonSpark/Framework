@@ -36,14 +36,14 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static IEnumerable<TItem> AsItem<TItem>( this TItem target )
+		public static IEnumerable<TItem> ToItem<TItem>( this TItem target )
 		{
 			return Append( target, null );
 		}
 
 		public static IEnumerable<TItem> Append<TItem>( this TItem target, IEnumerable<TItem> second )
 		{
-			var first =  (TItem[])target.Transform( x => new[] { x }, Enumerable.Empty<TItem> );
+			var first =  (TItem[])target.With( x => new[] { x }, Enumerable.Empty<TItem> );
 			var result = second != null ? first.Concat( second ) : first;
 			return result;
 		}

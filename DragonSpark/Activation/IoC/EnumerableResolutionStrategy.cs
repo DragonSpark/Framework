@@ -34,7 +34,7 @@ namespace DragonSpark.Activation.IoC
 		static object Resolve<T>( IBuilderContext context )
 		{
 			var result = context.Policies.Get<IRegisteredNamesPolicy>( null )
-				.Transform( policy => policy.GetRegisteredNames( typeof(T) )
+				.With( policy => policy.GetRegisteredNames( typeof(T) )
 					.Concat( new string[] { null } ).Concat( typeof(T).GetTypeInfo().IsGenericType ? policy.GetRegisteredNames( typeof(T).GetGenericTypeDefinition() ) : Enumerable.Empty<string>() )
 					.Distinct()
 					.Select( context.NewBuildUp<T> )

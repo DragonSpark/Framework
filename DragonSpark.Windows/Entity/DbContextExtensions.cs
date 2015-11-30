@@ -26,7 +26,7 @@ namespace DragonSpark.Windows.Entity
 		public static TEntity Find<TEntity>( this DbContext @this, Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IQueryable<TEntity>> with = null ) where TEntity : class
 		{
 			var entity = DbSetExtensions.Find( @this.Set<TEntity>(), @where, with );
-			var result = entity.Transform( x => @this.Load<TEntity>( x, loadAllProperties: false ) );
+			var result = entity.With( x => @this.Load( x, loadAllProperties: false ) );
 			return result;
 		}
 
@@ -141,7 +141,7 @@ namespace DragonSpark.Windows.Entity
 					
 				var current = target.Set<TItem>().Find( key.Values.ToArray() );
 				
-				var result = current.Transform( x => target.Include( x, levels ) );
+				var result = current.With( x => target.Include( x, levels ) );
 
 				return result;
 			}
@@ -204,7 +204,7 @@ namespace DragonSpark.Windows.Entity
 		static IEnumerable<string> DetermineDefaultAssociationPaths( IObjectContextAdapter target, Type type, bool includeOtherPath = true )
 		{
 			var names = GetAssociationPropertyNames( target, type );
-			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).Transform( a => a.Any() ? a : x.Name.AsItem() ) : x.Name.AsItem() ).ToArray();
+			var decorated = type.GetProperties().Where( x => x.IsDecoratedWith<DefaultIncludeAttribute>() ).SelectMany( x => includeOtherPath ? x.FromMetadata<DefaultIncludeAttribute, IEnumerable<string>>( y => y.AlsoInclude == "*" ? DetermineDefaultAssociationPaths( target, x.PropertyType, false ) : y.AlsoInclude.ToStringArray() ).Select( z => string.Concat( x.Name, ".", z ) ).With( a => a.Any() ? a : x.Name.ToItem() ) : x.Name.ToItem() ).ToArray();
 			var result = decorated.Union( names.Where( x => !decorated.Any( y => y.StartsWith( string.Concat( x, "." ) ) ) ) ).ToArray();
 			return result;
 		}
@@ -239,7 +239,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				var property = typeof(TItem).GetProperty( x );
 				var current = property.GetValue( item );
-				current.NotNull( y =>
+				current.With( y =>
 				{
 					switch ( target.Entry( y ).State )
 					{
@@ -315,7 +315,7 @@ namespace DragonSpark.Windows.Entity
 				{
 					var propertyInfo = container.GetType().GetProperty( y.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy );
 					var o = propertyInfo.GetValue( container );
-					return o.Transform( z =>
+					return o.With( z =>
 					{
 						var objectStateEntry = target.AsTo<IObjectContextAdapter, ObjectContext>( x => x.ObjectContext ).ObjectStateManager.GetObjectStateEntry( z );
 						return objectStateEntry.EntityKey.EntityKeyValues.First().Value;
@@ -335,7 +335,7 @@ namespace DragonSpark.Windows.Entity
 		public static string[] DetermineKeyNames( this IObjectContextAdapter target, Type type )
 		{
 			var entitySet = target.ObjectContext.DetermineEntitySet( type );
-			var result = entitySet.Transform( x => x.ElementType.KeyMembers.Select( y => y.Name ).ToArray() );
+			var result = entitySet.With( x => x.ElementType.KeyMembers.Select( y => y.Name ).ToArray() );
 			return result;
 		}
 
@@ -401,7 +401,7 @@ namespace DragonSpark.Windows.Entity
 				{
 					associationNames.Select( y => type.GetProperty( y ).GetValue( entity ) ).NotNull().Each( z =>
 					{
-						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.AsItem();
+						var items = z.GetType().Extend().GetInnerType() != null ? z.AsTo<IEnumerable, object[]>( a => a.Cast<object>().ToArray() ) : z.ToItem();
 						items.Each( a => LoadAll( target, a, list, null, loadAllProperties, levels, count ) );
 					} );
 					count--;

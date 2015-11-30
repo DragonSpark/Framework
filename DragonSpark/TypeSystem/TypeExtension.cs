@@ -28,7 +28,7 @@ namespace DragonSpark.TypeSystem
 
 		public static implicit operator TypeExtension( Type type )
 		{
-			var result = type.Transform( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
+			var result = type.With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 			return result;
 		}
 
@@ -40,7 +40,7 @@ namespace DragonSpark.TypeSystem
 
 		public static explicit operator TypeExtension( TypeInfo type )
 		{
-			var result = type.AsType().Transform( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
+			var result = type.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 			return result;
 		}
 
@@ -71,7 +71,7 @@ namespace DragonSpark.TypeSystem
 
 		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyList<Type> parameterTypes )
 		{
-			var result = parameters.Count == parameterTypes.Count && !parameters.Where( ( t, i ) => !parameterTypes[i].Transform( t.ParameterType.Extend().IsAssignableFrom, () => true ) ).Any();
+			var result = parameters.Count == parameterTypes.Count && !parameters.Where( ( t, i ) => !parameterTypes[i].With( t.ParameterType.Extend().IsAssignableFrom, () => true ) ).Any();
 			return result;
 		}
 
@@ -102,7 +102,7 @@ namespace DragonSpark.TypeSystem
 
 		public object Qualify( object instance )
 		{
-			var result = instance.Transform( o => info.IsAssignableFrom( o.GetType().GetTypeInfo() ) ? o : GetCaster( o.GetType() ).Transform( caster => caster.Invoke( null, new []{ o } ) ) );
+			var result = instance.With( o => info.IsAssignableFrom( o.GetType().GetTypeInfo() ) ? o : GetCaster( o.GetType() ).With( caster => caster.Invoke( null, new []{ o } ) ) );
 			return result;
 		}
 
@@ -114,7 +114,7 @@ namespace DragonSpark.TypeSystem
 
 		public bool IsInstanceOfType( object context )
 		{
-			var result = context.Transform( o => IsAssignableFrom( o.GetType() ) );
+			var result = context.With( o => IsAssignableFrom( o.GetType() ) );
 			return result;
 		}
 
@@ -160,7 +160,7 @@ namespace DragonSpark.TypeSystem
 		static Type InnerType( Type target, Func<TypeInfo, bool> check = null )
 		{
 			var info = target.GetTypeInfo();
-			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.Transform( func => func( info ), () => true ) ? info.GenericTypeArguments.FirstOrDefault() :
+			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.With( func => func( info ), () => true ) ? info.GenericTypeArguments.FirstOrDefault() :
 				target.IsArray ? target.GetElementType() : null;
 			return result;
 		}

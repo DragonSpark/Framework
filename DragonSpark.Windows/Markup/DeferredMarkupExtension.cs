@@ -44,7 +44,7 @@ namespace DragonSpark.Windows.Markup
 					default:
 						return Builders
 							.FirstOrDefault( builder => builder.Handles( service ) )
-							.Transform( builder =>
+							.With( builder =>
 							{
 								var provider = Prepare( serviceProvider, service, builder );
 								var setter = builder.Create( service );

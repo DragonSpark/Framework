@@ -19,7 +19,7 @@ namespace DragonSpark.Extensions
 
 		public static TResult With<TService, TResult>( this IServiceLocation @this, Func<TService, TResult> action )
 		{
-			var result = @this.IsAvailable ? @this.Locate<TService>().Transform( action ) : default(TResult);
+			var result = @this.IsAvailable ? @this.Locate<TService>().With( action ) : default(TResult);
 			return result;
 		}
 

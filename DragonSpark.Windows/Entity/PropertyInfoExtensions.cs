@@ -23,7 +23,7 @@ namespace DragonSpark.Windows.Entity
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Yes, ugly.  Will attend to in a later version." )]
 		public static IEnumerable<Tuple<string, string>> DetermineAssociationProperties( this PropertyInfo target )
 		{
-			var result = target.Transform( y => y.FromMetadata<AssociationAttribute, IEnumerable<Tuple<string,string>>>( z => z.ThisKeyMembers.TupleWith( z.OtherKeyMembers ) ) );
+			var result = target.With( y => y.FromMetadata<AssociationAttribute, IEnumerable<Tuple<string,string>>>( z => z.ThisKeyMembers.TupleWith( z.OtherKeyMembers ) ) );
 			return result;
 		}
 	}

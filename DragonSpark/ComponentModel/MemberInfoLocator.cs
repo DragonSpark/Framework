@@ -16,7 +16,7 @@ namespace DragonSpark.ComponentModel
 		{
 			var typeInfo = info as TypeInfo;
 			var key = typeInfo ?? info.DeclaringType.GetTypeInfo();
-			var result = provider.GetDefinition( key ).Transform( x => typeInfo != null ? x : info.AsTo<PropertyInfo, MemberInfo>( y => x.GetDeclaredProperty( info.Name ) ) );
+			var result = provider.GetDefinition( key ).With( x => typeInfo != null ? x : info.AsTo<PropertyInfo, MemberInfo>( y => x.GetDeclaredProperty( info.Name ) ) );
 			return result;
 		}
 	}

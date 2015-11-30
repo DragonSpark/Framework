@@ -25,7 +25,7 @@ namespace DragonSpark.Windows.Setup
 			ExceptionPolicy.SetExceptionManager( manager );
 
 			var exceptionHandler = container.TryResolve<IExceptionHandler>();
-			exceptionHandler.NotNull( ConfigureExceptionHandling );
+			exceptionHandler.With( ConfigureExceptionHandling );
 		}
 		
 		protected virtual void ConfigureExceptionHandling( IExceptionHandler handler )

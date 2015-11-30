@@ -19,9 +19,9 @@ namespace DragonSpark.ComponentModel
 							var defaultValue = x.PropertyType.Extend().GetDefaultValue();
 							var current = x.GetValue( target, null );
 
-							var equalsDefault = current.As<string>().Transform( string.IsNullOrEmpty, () => Equals( current , defaultValue ) );
+							var equalsDefault = current.As<string>().With( string.IsNullOrEmpty, () => Equals( current , defaultValue ) );
 							var value = equalsDefault ? x.FromMetadata<System.ComponentModel.DefaultValueAttribute, object>( y => y.AsTo<DefaultAttribute, object>( z => z.GetValue( target, x ), () => y.Value  ) ) : null;
-							var result = value.Transform( y => new { Property = x, Value = y } );
+							var result = value.With( y => new { Property = x, Value = y } );
 							return result;
 						} )
 					.NotNull()

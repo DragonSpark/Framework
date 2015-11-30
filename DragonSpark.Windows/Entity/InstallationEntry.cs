@@ -17,8 +17,8 @@ namespace DragonSpark.Windows.Entity
 		[NotMapped]
 		public Version Version
 		{
-			get { return VersionStorage.Transform( x => new Version( x ) ); }
-			set { VersionStorage = value.Transform( x => x.ToString() ); }
+			get { return VersionStorage.With( x => new Version( x ) ); }
+			set { VersionStorage = value.With( x => x.ToString() ); }
 		}
 
 		[Key, Column( Order = 1 ), LocalStorage]

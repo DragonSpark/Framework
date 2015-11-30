@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Entity
 
 		protected override FileInfo CreateItem()
 		{
-			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().Transform( DbProviderServices.ExpandDataDirectory ).Transform( s => new FileInfo( s ) );
+			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().With( DbProviderServices.ExpandDataDirectory ).With( s => new FileInfo( s ) );
 			return result;
 		}
 	}

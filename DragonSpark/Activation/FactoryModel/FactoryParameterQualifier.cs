@@ -17,13 +17,13 @@ namespace DragonSpark.Activation.FactoryModel
 
 		public TParameter Qualify( object context )
 		{
-			var result = context is TParameter ? (TParameter)context : context.Transform( Construct, activator.Activate<TParameter> );
+			var result = context is TParameter ? (TParameter)context : context.With( Construct, activator.Activate<TParameter> );
 			return result;
 		}
 
 		protected virtual TParameter Construct( object parameter )
 		{
-			var result = (TParameter)typeof(TParameter).Extend().FindConstructor( parameter.GetType() ).Transform( info => info.Invoke( new[] { info.GetParameters().First().ParameterType.Extend().Qualify( parameter ) } ) );
+			var result = (TParameter)typeof(TParameter).Extend().FindConstructor( parameter.GetType() ).With( info => info.Invoke( new[] { info.GetParameters().First().ParameterType.Extend().Qualify( parameter ) } ) );
 			return result;
 		}
 	}

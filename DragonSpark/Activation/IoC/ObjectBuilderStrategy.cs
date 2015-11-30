@@ -11,7 +11,7 @@ namespace DragonSpark.Activation.IoC
 			execute.IsTrue( () =>
 			{
 				var item = context.NewBuildUp<IObjectBuilder>();
-				context.Existing = context.Existing.Transform( item.BuildUp );
+				context.Existing = context.Existing.With( item.BuildUp );
 			});
 		}
 	}

@@ -37,7 +37,7 @@ namespace DragonSpark
 			{
 				case ConditionMonitorState.None:
 					State = ConditionMonitorState.Applying;
-					var updated = condition.Transform( item => item(), () => true );
+					var updated = condition.With( item => item(), () => true );
 					updated.IsTrue( action );
 					State = updated ? ConditionMonitorState.Applied : ConditionMonitorState.None;
 					return updated;

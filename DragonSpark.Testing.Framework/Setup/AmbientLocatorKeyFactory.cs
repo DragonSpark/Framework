@@ -1,8 +1,8 @@
-using System.Reflection;
-using DragonSpark.Activation.Build;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Runtime.Specifications;
 using DragonSpark.Runtime.Values;
 using Microsoft.Practices.ServiceLocation;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {

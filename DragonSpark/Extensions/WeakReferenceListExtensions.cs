@@ -19,7 +19,7 @@ namespace DragonSpark.Extensions
 		public static TItem[] Targets<TItem>( this IList<WeakReference<TItem>> target ) where TItem : class
 		{
 			TItem item;
-			var result = target.AliveOnly().Select( x => x.TryGetTarget( out item ).Transform( y => item ) ).ToArray();
+			var result = target.AliveOnly().Select( x => x.TryGetTarget( out item ).With( y => item ) ).ToArray();
 			return result;
 		}
 

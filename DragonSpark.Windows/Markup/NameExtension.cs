@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Markup
 
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
-			var result = Type.Transform( x => x.Name );
+			var result = Type.With( x => x.Name );
 			return result;
 		}
 	}
