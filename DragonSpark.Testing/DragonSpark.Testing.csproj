@@ -165,7 +165,7 @@
     <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
-    <Compile Include="Modularity\FileModuleTypeLoaderFixture.cs" />
+    <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="Modularity\ModuleAttributeFixture.cs" />
