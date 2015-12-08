@@ -1,16 +1,12 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark
 {
 	public class ConditionMonitor
 	{
 
-		public bool IsApplied
-		{
-			get { return State > ConditionMonitorState.None; }
-		}
+		public bool IsApplied => State > ConditionMonitorState.None;
 
 		public ConditionMonitorState State { get; private set; }
 

@@ -56,3 +56,6 @@ using System.Runtime.InteropServices;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
 [assembly: Registration( Priority.AboveLowest, typeof( UnityContainerTypeConfiguration ), typeof( IServiceLocator ), typeof( AttributeDataProvider ), typeof( IModule ), typeof( ModuleInfoBuilder ), typeof( Collection ), typeof( Collection<> ) )]
+[assembly: InternalsVisibleTo( "DragonSpark.Testing1" )]
+[assembly: InternalsVisibleTo( "DragonSpark.Explorables" )]
+

@@ -117,11 +117,16 @@
       <HintPath>$(SolutionDir)\packages\AutoFixture.Xunit2.3.37.0\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -144,7 +149,6 @@
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
-    <Compile Include="ApplicationInformationTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,9 +157,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
-    <Compile Include="Extensions\BooleanExtensionsTest.cs">
+    <Compile Include="Extensions\BooleanExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modularity\AssemblyResolverTests.cs" />
+    <Compile Include="Modularity\CompilerHelper.cs" />
+    <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
+    <Compile Include="Modularity\ConfigurationStoreTests.cs" />
+    <Compile Include="Modularity\DirectoryModuleCatalogFixture.cs" />
+    <Compile Include="Modularity\FileModuleTypeLoaderFixture.cs" />
+    <Compile Include="TestObjects\Modules\DummyClass.cs" />
+    <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
+    <Compile Include="Modularity\ModuleAttributeFixture.cs" />
+    <Compile Include="Modularity\ModuleCatalogFixture.cs" />
+    <Compile Include="Modularity\ModuleDependencySolverFixture.cs" />
+    <Compile Include="Modularity\ModuleInfoGroupExtensionsFixture.cs" />
+    <Compile Include="Modularity\ModuleInfoGroupFixture.cs" />
+    <Compile Include="Modularity\ModuleInitializerFixture.cs" />
+    <Compile Include="Modularity\ModuleManagerFixture.cs" />
+    <Compile Include="RegistrationTests.cs" />
+    <Compile Include="Runtime\ApplicationInformationTests.cs" />
+    <Compile Include="Runtime\AssembliesFactoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
@@ -213,6 +235,22 @@
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestObjects\Modules\MockAbstractModule.cs" />
+    <Compile Include="TestObjects\Modules\MockAttributedModule.cs" />
+    <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
+    <Compile Include="TestObjects\Modules\DependantModule.cs" />
+    <Compile Include="TestObjects\Modules\DependencyModule.cs" />
+    <Compile Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
+    <Compile Include="TestObjects\Modules\MockInheritingModule.cs" />
+    <Compile Include="TestObjects\Modules\MockLogger.cs" />
+    <Compile Include="TestObjects\Modules\MockModuleA.cs" />
+    <Compile Include="TestObjects\Modules\MockReferencedModule.cs" />
+    <Compile Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
+    <Compile Include="TestObjects\Modules\MockModuleReferencingOtherModule.cs" />
+    <Compile Include="TestObjects\Modules\MockModuleThrowingException.cs" />
+    <Compile Include="TestObjects\Modules\MockModuleTypeLoader.cs" />
+    <Compile Include="TestObjects\Modules\MyDummyClass.cs" />
+    <Compile Include="TestObjects\Modules\SomeContractReferencingTransactionsAssembly.cs" />
     <Compile Include="TestObjects\NormalPriority.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -221,6 +259,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestObjects\Static.cs" />
+    <Compile Include="TypeSystem\AssemblyInformationFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -286,6 +325,17 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Modularity\NotAValidDotNetDll.txt.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Modularity\ModuleCatalogXaml\SimpleModuleCatalog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Extensions
 {
-	public class BooleanExtensionsTest
+	public class BooleanExtensionsTests
 	{
 		[Fact]
 		public void IsTrue()

@@ -1,7 +1,6 @@
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
-using System;
 using DragonSpark.Runtime.Values;
+using System;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework
@@ -19,9 +18,14 @@ namespace DragonSpark.Testing.Framework
 			GC.SuppressFinalize( this );
 		}
 
-		protected virtual void Dispose( bool disposing )
+		void Dispose( bool disposing )
 		{
-			disposing.IsTrue( () => AmbientValues.Remove( GetType() ) );
+			disposing.IsTrue( OnDispose );
+		}
+
+		protected virtual void OnDispose()
+		{
+			AmbientValues.Remove( GetType() );
 		}
 	}
 }

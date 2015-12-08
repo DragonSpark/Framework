@@ -1,15 +1,14 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
 using System;
-using DragonSpark.Testing.Framework.Parameters;
-using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics
 {
-	// [Freeze( typeof(ApplicationInformation) )]
 	public class LogTests
 	{
 		[Theory, Test, SetupAutoData]
