@@ -9,23 +9,27 @@ using Xunit;
 
 namespace DragonSpark.Testing.Modularity
 {
-	public class ModuleManagerFixture
+	public class ModuleManagerTests
 	{
+		[Fact]
 		public void NullLoaderThrows()
 		{
 			Assert.Throws<ArgumentNullException>( () => new ModuleManager( null, new MockModuleCatalog(), new MockLogger(), new MockModuleTypeLoader() ) );
 		}
 
+		[Fact]
 		public void NullCatalogThrows()
 		{
 			Assert.Throws<ArgumentNullException>( () => new ModuleManager(new MockModuleInitializer(), null, new MockLogger(), new MockModuleTypeLoader() ) );
 		}
 
+		[Fact]
 		public void NullLoggerThrows()
 		{
 			Assert.Throws<ArgumentNullException>( () => new ModuleManager(new MockModuleInitializer(), new MockModuleCatalog(), null, new MockModuleTypeLoader()) );
 		}       
 
+		[Fact]
 		public void ShouldInvokeRetrieverForModules()
 		{
 			var loader = new MockModuleInitializer();
@@ -42,6 +46,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(moduleTypeLoader.LoadedModules.Contains(moduleInfo));
 		}
 
+		[Fact]
 		public void ShouldInitializeModulesOnRetrievalCompleted()
 		{
 			var loader = new MockModuleInitializer();
@@ -59,6 +64,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(backgroungModuleInfo, loader.InitializedModules[0]);
 		}
 
+		[Fact]
 		public void ShouldInitializeModuleOnDemand()
 		{
 			var loader = new MockModuleInitializer();
@@ -79,6 +85,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(onDemandModule, loader.InitializedModules[0]);
 		}
 
+		[Fact]
 		public void InvalidOnDemandModuleNameThrows()
 		{
 			var loader = new MockModuleInitializer();
@@ -93,6 +100,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<ModuleNotFoundException>( () => manager.LoadModule("NonExistent") );
 		}
 
+		[Fact]
 		public void EmptyOnDemandModuleReturnedThrows()
 		{
 			var loader = new MockModuleInitializer();
@@ -105,6 +113,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<ModuleNotFoundException>( () => manager.LoadModule("NullModule") );
 		}
 
+		[Fact]
 		public void ShouldNotLoadTypeIfModuleInitialized()
 		{
 			var loader = new MockModuleInitializer();
@@ -122,6 +131,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(alreadyPresentModule, loader.InitializedModules[0]);
 		}
 
+		[Fact]
 		public void ShouldNotLoadSameModuleTwice()
 		{
 			var loader = new MockModuleInitializer();
@@ -136,6 +146,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.False(loader.InitializeCalled);
 		}
 
+		[Fact]
 		public void ShouldNotLoadModuleThatNeedsRetrievalTwice()
 		{
 			var loader = new MockModuleInitializer();
@@ -153,6 +164,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.False(loader.InitializeCalled);
 		}
 
+		[Fact]
 		public void ShouldCallValidateCatalogBeforeGettingGroupsFromCatalog()
 		{
 			var loader = new MockModuleInitializer();
@@ -177,6 +189,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.False(getModulesCalledBeforeValidate);
 		}
 
+		[Fact]
 		public void ShouldNotInitializeIfDependenciesAreNotMet()
 		{
 			var loader = new MockModuleInitializer();
@@ -201,6 +214,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(0, loader.InitializedModules.Count);
 		}
 
+		[Fact]
 		public void ShouldInitializeIfDependenciesAreMet()
 		{
 			var initializer = new MockModuleInitializer();
@@ -226,6 +240,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(2, initializer.InitializedModules.Count);
 		}
 
+		[Fact]
 		public void ShouldThrowOnRetrieverErrorAndWrapException()
 		{
 			var loader = new MockModuleInitializer();
@@ -256,6 +271,7 @@ namespace DragonSpark.Testing.Modularity
 			throw new InvalidOperationException("Exception not thrown.");
 		}
 
+		[Fact]
 		public void ShouldThrowIfNoRetrieverCanRetrieveModule()
 		{
 			var loader = new MockModuleInitializer();
@@ -265,6 +281,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<ModuleTypeLoaderNotFoundException>( () => manager.Run() );
 		}
 
+		[Fact]
 		public void ShouldLogMessageOnModuleRetrievalError()
 		{
 			var loader = new MockModuleInitializer();
@@ -290,6 +307,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal("Exception", logger.LastMessageCategory);
 		}
 
+		[Fact]
 		public void ShouldWorkIfModuleLoadsAnotherOnDemandModuleWhenInitializing()
 		{
 			var initializer = new StubModuleInitializer();
@@ -316,6 +334,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(onDemandModuleWasInitialized);
 		}
 
+		[Fact]
 		public void ModuleManagerIsDisposable()
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>(); 
@@ -327,6 +346,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.NotNull(disposableManager);
 		}
 
+		[Fact]
 		public void DisposeDoesNotThrowWithNonDisposableTypeLoaders()
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
@@ -340,6 +360,7 @@ namespace DragonSpark.Testing.Modularity
 			manager.Dispose();
 		}
 
+		[Fact]
 		public void DisposeCleansUpDisposableTypeLoaders()
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
@@ -357,6 +378,7 @@ namespace DragonSpark.Testing.Modularity
 			disposableMockTypeLoader.Verify(loader => loader.Dispose(), Times.Once());
 		}
 
+		[Fact]
 		public void DisposeDoesNotThrowWithMixedTypeLoaders()
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
@@ -375,14 +397,14 @@ namespace DragonSpark.Testing.Modularity
 
 			disposableMockTypeLoader.Verify(loader => loader.Dispose(), Times.Once());
 		}
-		private static ModuleInfo CreateModuleInfo(string name, InitializationMode initializationMode, params string[] dependsOn)
+		static ModuleInfo CreateModuleInfo(string name, InitializationMode initializationMode, params string[] dependsOn)
 		{
 			var moduleInfo = new DynamicModuleInfo( name, name ) { InitializationMode = initializationMode };
 			moduleInfo.DependsOn.AddRange(dependsOn);
 			return moduleInfo;
 		}
 
-		private static ModuleInfo CreateModuleInfo(Type type, InitializationMode initializationMode, params string[] dependsOn)
+		static ModuleInfo CreateModuleInfo(Type type, InitializationMode initializationMode, params string[] dependsOn)
 		{
 			var moduleInfo = new DynamicModuleInfo( type.Name, type.AssemblyQualifiedName ) { InitializationMode = initializationMode };
 			moduleInfo.DependsOn.AddRange(dependsOn);
