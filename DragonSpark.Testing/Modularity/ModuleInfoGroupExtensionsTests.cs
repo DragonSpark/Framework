@@ -6,10 +6,11 @@ using Xunit;
 namespace DragonSpark.Testing.Modularity
 {
 	/// <summary>
-	/// Summary description for ModuleInfoGroupExtensionsFixture
+	/// Summary description for ModuleInfoGroupExtensionsTests
 	/// </summary>
-	public class ModuleInfoGroupExtensionsFixture
+	public class ModuleInfoGroupExtensionsTests
 	{
+		[Fact]
 		public void ShouldAddModuleToModuleInfoGroup()
 		{
 			string moduleName = "MockModule";
@@ -20,6 +21,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal<string>(moduleName, groupInfo.ElementAt(0).ModuleName);
 		}
 
+		[Fact]
 		public void ShouldSetModuleTypeCorrectly()
 		{
 			ModuleInfoGroup groupInfo = new ModuleInfoGroup();
@@ -29,12 +31,14 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal<string>(typeof(MockModule).AssemblyQualifiedName, groupInfo.ElementAt(0).ModuleType);
 		}
 
+		[Fact]
 		public void NullTypeThrows()
 		{
 			var groupInfo = new ModuleInfoGroup();
 			Assert.Throws<ArgumentNullException>( () => groupInfo.AddModule("NullModule", null) );
 		}
 
+		[Fact]
 		public void ShouldSetDependencies()
 		{
 			string dependency1 = "ModuleA";
@@ -50,6 +54,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(dependsOn.Contains(dependency2));
 		}
 
+		[Fact]
 		public void ShouldUseTypeNameIfNoNameSpecified()
 		{
 			ModuleInfoGroup groupInfo = new ModuleInfoGroup();
@@ -58,8 +63,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal<int>(1, groupInfo.Count);
 			Assert.Equal<string>(typeof(MockModule).Name, groupInfo.ElementAt(0).ModuleName);
 		}
-
-
+		
 		class MockModule : IModule
 		{
 			public void Initialize()
