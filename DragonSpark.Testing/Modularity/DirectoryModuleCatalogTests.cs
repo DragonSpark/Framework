@@ -41,27 +41,31 @@ namespace DragonSpark.Testing.Modularity
 			CleanUp();
 		}
 
+		[Fact]
 		public void NullPathThrows()
 		{
-			var catalog = new DirectoryModuleCatalog();
+			var catalog = new DirectoryModuleCatalog { ModulePath = null };
 			Assert.Throws<InvalidOperationException>( new Action( catalog.Load ) );
 		}
 
+		[Fact]
 		public void EmptyPathThrows()
 		{
 			var catalog = new DirectoryModuleCatalog { ModulePath = string.Empty };
 			Assert.Throws<InvalidOperationException>( new Action( catalog.Load ) );
 		}
 
+		[Fact]
 		public void NonExistentPathThrows()
 		{
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog { ModulePath = "NonExistentPath" };
 			Assert.Throws<InvalidOperationException>( new Action( catalog.Load ) );
 		}
 
+		[Fact]
 		public void ShouldReturnAListOfModuleInfo()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory1 + @"\MockModuleA.dll");
 
 
@@ -77,9 +81,10 @@ namespace DragonSpark.Testing.Modularity
 			Assert.StartsWith(Uri.UriSchemeFile, info.Ref);
 			Assert.True(info.Ref.Contains(@"MockModuleA.dll"));
 			Assert.NotNull(info.ModuleType);
-			Assert.Contains(info.ModuleType, "Prism.Wpf.Tests.Mocks.Modules.MockModuleA");
+			Assert.Contains("DragonSpark.Testing.TestObjects.Modules.MockModuleA", info.ModuleType);
 		}
 
+		[Fact]
 		public void ShouldNotThrowWithNonValidDotNetAssembly()
 		{
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -98,10 +103,11 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(0, modules.Length);
 		}
 
+		[Fact]
 		// [DeploymentItem(@"Modularity\NotAValidDotNetDll.txt.dll", InvalidModulesDirectory)]
 		public void LoadsValidAssembliesWhenInvalidDllsArePresent()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   InvalidModulesDirectory + @"\MockModuleA.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -124,17 +130,18 @@ namespace DragonSpark.Testing.Modularity
 			Assert.StartsWith(Uri.UriSchemeFile, info.Ref);
 			Assert.True(info.Ref.Contains(@"MockModuleA.dll"));
 			Assert.NotNull(info.ModuleType);
-			Assert.Contains(info.ModuleType, "Prism.Wpf.Tests.Mocks.Modules.MockModuleA");
+			Assert.Contains("DragonSpark.Testing.TestObjects.Modules.MockModuleA", info.ModuleType);
 		}
 
+		[Fact]
 		public void ShouldNotThrowWithLoadFromByteAssemblies()
 		{
 			CompilerHelper.CleanUpDirectory(@".\CompileOutput\");
 			CompilerHelper.CleanUpDirectory(@".\IgnoreLoadFromByteAssembliesTestDir\");
-			var results = CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			var results = CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 													 @".\CompileOutput\MockModuleA.dll");
 
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockAttributedModule.cs",
 									   @".\IgnoreLoadFromByteAssembliesTestDir\MockAttributedModule.dll");
 
 			string path = @".\IgnoreLoadFromByteAssembliesTestDir";
@@ -153,7 +160,7 @@ namespace DragonSpark.Testing.Modularity
 
 
 				Assert.NotNull(
-					infos.FirstOrDefault(x => x.ModuleType.IndexOf("Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule") >= 0)
+					infos.FirstOrDefault(x => x.ModuleType.IndexOf("DragonSpark.Testing.TestObjects.Modules.MockAttributedModule") >= 0)
 					);
 			}
 			finally
@@ -163,9 +170,10 @@ namespace DragonSpark.Testing.Modularity
 			}
 		}
 
+		[Fact]
 		public void ShouldGetModuleNameFromAttribute()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockAttributedModule.cs",
 									   ModulesDirectory2 + @"\MockAttributedModule.dll");
 
 
@@ -179,12 +187,13 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal("TestModule", modules[0].ModuleName);
 		}
 
+		[Fact]
 		public void ShouldGetDependantModulesFromAttribute()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockDependencyModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockDependencyModule.cs",
 									   ModulesDirectory3 + @"\DependencyModule.dll");
 
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockDependantModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockDependantModule.cs",
 									   ModulesDirectory3 + @"\DependantModule.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -203,9 +212,10 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(dependencyModule.ModuleName, dependantModule.DependsOn[0]);
 		}
 
+		[Fact]
 		public void UseClassNameAsModuleNameWhenNotSpecifiedInAttribute()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory1 + @"\MockModuleA.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -218,9 +228,10 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal("MockModuleA", modules[0].ModuleName);
 		}
 
+		[Fact]
 		public void ShouldDefaultInitializationModeToWhenAvailable()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory1 + @"\MockModuleA.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog { ModulePath = ModulesDirectory1 };
@@ -232,9 +243,10 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(InitializationMode.WhenAvailable, modules.OfType<DynamicModuleInfo>().First().InitializationMode);
 		}
 
+		[Fact]
 		public void ShouldGetOnDemandFromAttribute()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockAttributedModule.cs",
 									   ModulesDirectory3 + @"\MockAttributedModule.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -248,9 +260,10 @@ namespace DragonSpark.Testing.Modularity
 
 		}
 
+		[Fact]
 		public void ShouldNotLoadAssembliesInCurrentAppDomain()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory4 + @"\MockModuleA.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -266,6 +279,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Null(loadedAssembly);
 		}
 
+		[Fact]
 		public void ShouldNotGetModuleInfoForAnAssemblyAlreadyLoadedInTheMainDomain()
 		{
 			var assemblyPath = Assembly.GetCallingAssembly().Location;
@@ -278,12 +292,13 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(0, modules.Length);
 		}
 
+		[Fact]
 		public void ShouldLoadAssemblyEvenIfTheyAreReferencingEachOther()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory4 + @"\MockModuleZZZ.dll");
 
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleReferencingOtherModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleReferencingOtherModule.cs",
 									   ModulesDirectory4 + @"\MockModuleReferencingOtherModule.dll", ModulesDirectory4 + @"\MockModuleZZZ.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -301,6 +316,7 @@ namespace DragonSpark.Testing.Modularity
 		// iterate over the evidence to collect a count."'
 #pragma warning disable 0618
 
+		[Fact]
 		public void CreateChildAppDomainHasParentEvidenceAndSetup()
 		{
 			TestableDirectoryModuleCatalog catalog = new TestableDirectoryModuleCatalog { ModulePath = ModulesDirectory4 };
@@ -317,11 +333,12 @@ namespace DragonSpark.Testing.Modularity
 		}
 #pragma warning restore 0618
 
+		[Fact]
 		public void ShouldLoadFilesEvenIfDynamicAssemblyExists()
 		{
 			CompilerHelper.CleanUpDirectory(@".\CompileOutput\");
 			CompilerHelper.CleanUpDirectory(@".\IgnoreDynamicGeneratedFilesTestDir\");
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockAttributedModule.cs",
 									   @".\IgnoreDynamicGeneratedFilesTestDir\MockAttributedModule.dll");
 
 			string path = @".\IgnoreDynamicGeneratedFilesTestDir";
@@ -337,7 +354,7 @@ namespace DragonSpark.Testing.Modularity
 				IEnumerable<ModuleInfo> infos = remoteEnum.DoEnumeration(path);
 
 				Assert.NotNull(
-					infos.FirstOrDefault(x => x.ModuleType.IndexOf("Prism.Wpf.Tests.Mocks.Modules.MockAttributedModule", StringComparison.Ordinal) >= 0)
+					infos.FirstOrDefault(x => x.ModuleType.IndexOf("DragonSpark.Testing.TestObjects.Modules.MockAttributedModule", StringComparison.Ordinal) >= 0)
 					);
 			}
 			finally
@@ -347,9 +364,10 @@ namespace DragonSpark.Testing.Modularity
 			}
 		}
 
+		[Fact]
 		public void ShouldLoadAssemblyEvenIfIsExposingTypesFromAnAssemblyInTheGac()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockExposingTypeFromGacAssemblyModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockExposingTypeFromGacAssemblyModule.cs",
 									   ModulesDirectory4 + @"\MockExposingTypeFromGacAssemblyModule.dll", @"System.Transactions.dll");
 
 			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
@@ -361,9 +379,10 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(1, modules.Length);
 		}
 
+		[Fact]
 		public void ShouldNotFailWhenAlreadyLoadedAssembliesAreAlsoFoundOnTargetDirectory()
 		{
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockModuleA.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory1 + @"\MockModuleA.dll");
 
 			string filename = typeof(DirectoryModuleCatalog).Assembly.Location;
@@ -378,10 +397,11 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(1, modules.Length);
 		}
 
+		[Fact]
 		public void ShouldIgnoreAbstractClassesThatImplementIModule()
 		{
 			CompilerHelper.CleanUpDirectory(ModulesDirectory1);
-			CompilerHelper.CompileFile(@"Prism.Wpf.Tests.Mocks.Modules.MockAbstractModule.cs",
+			CompilerHelper.CompileFile(@"DragonSpark.Testing.TestObjects.Modules.MockAbstractModule.cs",
 									 ModulesDirectory1 + @"\MockAbstractModule.dll");
 
 			string filename = typeof(DirectoryModuleCatalog).Assembly.Location;
@@ -399,7 +419,7 @@ namespace DragonSpark.Testing.Modularity
 			CompilerHelper.CleanUpDirectory(ModulesDirectory1);
 		}
 
-		AppDomain CreateAppDomain()
+		static AppDomain CreateAppDomain()
 		{
 			Evidence evidence = AppDomain.CurrentDomain.Evidence;
 			AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
@@ -426,7 +446,6 @@ namespace DragonSpark.Testing.Modularity
 
 		class RemoteDirectoryLookupCatalog : MarshalByRefObject
 		{
-
 			public void LoadAssembliesByByte(string assemblyPath)
 			{
 				byte[] assemblyBytes = File.ReadAllBytes(assemblyPath);

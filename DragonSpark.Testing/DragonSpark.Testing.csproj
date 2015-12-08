@@ -164,7 +164,7 @@
     <Compile Include="Modularity\CompilerHelper.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
-    <Compile Include="Modularity\DirectoryModuleCatalogFixture.cs" />
+    <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderFixture.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
@@ -235,19 +235,18 @@
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestObjects\Modules\MockAbstractModule.cs" />
-    <Compile Include="TestObjects\Modules\MockAttributedModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />
     <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
-    <Compile Include="TestObjects\Modules\DependantModule.cs" />
-    <Compile Include="TestObjects\Modules\DependencyModule.cs" />
-    <Compile Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
-    <Compile Include="TestObjects\Modules\MockInheritingModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockDependantModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockDependencyModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
     <Compile Include="TestObjects\Modules\MockLogger.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleA.cs" />
-    <Compile Include="TestObjects\Modules\MockReferencedModule.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleReferencingOtherModule.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleThrowingException.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockModuleA.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencedAssembly.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingOtherModule.cs" />
+    <EmbeddedResource Include="TestObjects\Modules\MockModuleThrowingException.cs" />
     <Compile Include="TestObjects\Modules\MockModuleTypeLoader.cs" />
     <Compile Include="TestObjects\Modules\MyDummyClass.cs" />
     <Compile Include="TestObjects\Modules\SomeContractReferencingTransactionsAssembly.cs" />

@@ -15,4 +15,7 @@ namespace DragonSpark.Testing.TestObjects.Modules
 			throw new System.NotImplementedException();
 		}
 	}
+
+	public class MockInheritingModule : MockAbstractModule
+	{}
 }

@@ -72,7 +72,7 @@ namespace DragonSpark.Testing.Modularity
 			}
 
 			Assert.NotNull(logger.LastMessage);
-			Assert.Contains(logger.LastMessage, "ExceptionThrowingModule");
+			Assert.Contains("ExceptionThrowingModule", logger.LastMessage);
 		}
 
 		public void ShouldThrowExceptionIfBogusType()

@@ -1,9 +1,9 @@
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
+using DragonSpark.Windows.Modularity;
 using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,6 +33,8 @@ namespace DragonSpark.Testing.Modularity
 					}}
 				}}
 			}}";
+
+		static readonly string[] References = new[] { typeof(object), typeof(IModule), typeof(DynamicModuleInfo) }.Select( type => type.Assembly.CodeBase.Replace( @"file:///", string.Empty ) ).Concat( "System.Runtime.dll".ToItem() ).ToArray();
 		
 
 		/*public static Assembly CompileFileAndLoadAssembly(string input, string output, params string[] references)
@@ -44,26 +46,19 @@ namespace DragonSpark.Testing.Modularity
 		{
 			CreateOutput(output);
 
-			List<string> referencedAssemblies = new List<string>(references.Length + 3);
+			var codeProvider = new CSharpCodeProvider();
+			var cp = new CompilerParameters(References.Concat( references ).ToArray(), output);
 
-			referencedAssemblies.AddRange(references);
-			referencedAssemblies.Add("System.dll");
-			referencedAssemblies.Add(typeof(IModule).Assembly.CodeBase.Replace(@"file:///", ""));
-			referencedAssemblies.Add(typeof(ModuleAttribute).Assembly.CodeBase.Replace(@"file:///", ""));
-
-			CSharpCodeProvider codeProvider = new CSharpCodeProvider();
-			CompilerParameters cp = new CompilerParameters(referencedAssemblies.ToArray(), output);
-
-			using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(input))
+			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(input))
 			{
 				if (stream == null)
 				{
 					throw new ArgumentException("input");
 				}
 
-				StreamReader reader = new StreamReader(stream);
-				string source = reader.ReadToEnd();
-				CompilerResults results = codeProvider.CompileAssemblyFromSource(cp, source);
+				var reader = new StreamReader(stream);
+				var source = reader.ReadToEnd();
+				var results = codeProvider.CompileAssemblyFromSource(cp, source);
 				ThrowIfCompilerError(results);
 				return results;
 			}
@@ -100,9 +95,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			CreateOutput(output);
 
-			var assemblies = new[] { typeof(object), typeof(IModule) }.Select( type => type.Assembly.CodeBase.Replace( @"file:///", string.Empty ) ).Concat( "System.Runtime.dll".ToItem() ).ToArray();
-
-			var results = new CSharpCodeProvider().CompileAssemblyFromSource( new CompilerParameters( assemblies, output ), code );
+			var results = new CSharpCodeProvider().CompileAssemblyFromSource( new CompilerParameters( References, output ), code );
 
 			ThrowIfCompilerError(results);
 

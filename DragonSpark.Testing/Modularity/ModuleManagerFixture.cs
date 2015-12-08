@@ -1,10 +1,10 @@
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
+using DragonSpark.Testing.TestObjects.Modules;
 using DragonSpark.Windows.Modularity;
 using Moq;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Testing.TestObjects.Modules;
 using Xunit;
 
 namespace DragonSpark.Testing.Modularity
@@ -248,7 +248,7 @@ namespace DragonSpark.Testing.Modularity
 			{
 				Assert.IsType<ModuleTypeLoadingException>(ex);
 				Assert.Equal(moduleInfo.ModuleName, ((ModularityException)ex).ModuleName);
-				Assert.Contains(ex.Message, moduleInfo.ModuleName);
+				Assert.Contains(moduleInfo.ModuleName, ex.Message);
 				Assert.Same(retrieverException, ex.InnerException);
 				return;
 			}
@@ -286,7 +286,7 @@ namespace DragonSpark.Testing.Modularity
 			}
 
 			Assert.NotNull(logger.LastMessage);
-			Assert.Contains(logger.LastMessage, "ModuleThatNeedsRetrieval");
+			Assert.Contains("ModuleThatNeedsRetrieval", logger.LastMessage);
 			Assert.Equal("Exception", logger.LastMessageCategory);
 		}
 
