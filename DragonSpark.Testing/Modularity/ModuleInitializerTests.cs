@@ -1,29 +1,32 @@
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
+using DragonSpark.Testing.TestObjects.Modules;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Testing.TestObjects.Modules;
 using Xunit;
 
 namespace DragonSpark.Testing.Modularity
 {
 	/// <summary>
-	/// Summary description for ModuleInitializerFixture
+	/// Summary description for ModuleInitializerTests
 	/// </summary>
-	public class ModuleInitializerFixture
+	public class ModuleInitializerTests
 	{
+		[Fact]
 		public void NullContainerThrows()
 		{
 			Assert.Throws<ArgumentNullException>( () => new ModuleInitializer( null, new MockLogger() ) );
 		}
 
+		[Fact]
 		public void NullLoggerThrows()
 		{
 			Assert.Throws<ArgumentNullException>( () => new ModuleInitializer(new MockContainerAdapter(), null ) );
 		}
 
+		[Fact]
 		public void InitializationExceptionsAreWrapped()
 		{
 			var moduleInfo = CreateModuleInfo( typeof(ExceptionThrowingModule) );
@@ -33,6 +36,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<ModuleInitializeException>( () => loader.Initialize( moduleInfo ) );
 		}
 
+		[Fact]
 		public void ShouldResolveModuleAndInitializeSingleModule()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
@@ -43,6 +47,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(FirstTestModule.wasInitializedOnce);
 		}
 
+		[Fact]
 		public void ShouldLogModuleInitializeErrorsAndContinueLoading()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
@@ -55,6 +60,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(service.HandleModuleInitializeErrorCalled);
 		}
 
+		[Fact]
 		public void ShouldLogModuleInitializationError()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
@@ -75,6 +81,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Contains("ExceptionThrowingModule", logger.LastMessage);
 		}
 
+		[Fact]
 		public void ShouldThrowExceptionIfBogusType()
 		{
 			var moduleInfo = new ModuleInfo("TestModule", "BadAssembly.BadType");
@@ -88,7 +95,7 @@ namespace DragonSpark.Testing.Modularity
 			}
 			catch (ModuleInitializeException ex)
 			{
-				Assert.Contains(ex.Message, "BadAssembly.BadType");
+				Assert.Contains("BadAssembly.BadType", ex.Message);
 			}
 		}
 

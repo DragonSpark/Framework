@@ -173,7 +173,7 @@
     <Compile Include="Modularity\ModuleDependencySolverTests.cs" />
     <Compile Include="Modularity\ModuleInfoGroupExtensionsTests.cs" />
     <Compile Include="Modularity\ModuleInfoGroupTests.cs" />
-    <Compile Include="Modularity\ModuleInitializerFixture.cs" />
+    <Compile Include="Modularity\ModuleInitializerTests.cs" />
     <Compile Include="Modularity\ModuleManagerFixture.cs" />
     <Compile Include="RegistrationTests.cs" />
     <Compile Include="Runtime\ApplicationInformationTests.cs" />
