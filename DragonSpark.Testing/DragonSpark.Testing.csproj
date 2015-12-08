@@ -170,7 +170,7 @@
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="Modularity\ModuleAttributeTests.cs" />
     <Compile Include="Modularity\ModuleCatalogTests.cs" />
-    <Compile Include="Modularity\ModuleDependencySolverFixture.cs" />
+    <Compile Include="Modularity\ModuleDependencySolverTests.cs" />
     <Compile Include="Modularity\ModuleInfoGroupExtensionsFixture.cs" />
     <Compile Include="Modularity\ModuleInfoGroupFixture.cs" />
     <Compile Include="Modularity\ModuleInitializerFixture.cs" />

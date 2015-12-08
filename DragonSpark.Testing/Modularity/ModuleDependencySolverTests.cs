@@ -5,37 +5,43 @@ using Xunit;
 
 namespace DragonSpark.Testing.Modularity
 {
-	public class ModuleDependencySolverFixture
+	public class ModuleDependencySolverTests
 	{
 		readonly ModuleDependencySolver solver = new ModuleDependencySolver();
 
+		[Fact]
 		public void ModuleDependencySolverIsAvailable()
 		{
 			Assert.NotNull(solver);
 		}
 
+		[Fact]
 		public void CanAddModuleName()
 		{
 			solver.AddModule("ModuleA");
 			Assert.Equal(1, solver.ModuleCount);
 		}
 
+		[Fact]
 		public void CannotAddNullModuleName()
 		{
 			Assert.Throws<ArgumentException>( () => solver.AddModule(null) );
 		}
 
+		[Fact]
 		public void CannotAddEmptyModuleName()
 		{
 			Assert.Throws<ArgumentException>( () => solver.AddModule(string.Empty) );
 		}
 
+		[Fact]
 		public void CannotAddDependencyWithoutAddingModule()
 		{
 			Assert.Throws<ArgumentException>( () => solver.AddDependency("ModuleA", "ModuleB") );
 			;
 		}
 
+		[Fact]
 		public void CanAddModuleDependency()
 		{
 			solver.AddModule("ModuleA");
@@ -44,6 +50,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(2, solver.ModuleCount);
 		}
 
+		[Fact]
 		public void CanSolveAcyclicDependencies()
 		{
 			solver.AddModule("ModuleA");
@@ -55,6 +62,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal("ModuleB", result[1]);
 		}
 
+		[Fact]
 		public void FailsWithSimpleCycle()
 		{
 			solver.AddModule("ModuleB");
@@ -62,6 +70,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<CyclicDependencyFoundException>( () => solver.Solve() );
 		}
 
+		[Fact]
 		public void CanSolveForest()
 		{
 			solver.AddModule("ModuleA");
@@ -81,6 +90,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(test.IndexOf("ModuleD") < test.IndexOf("ModuleE"));
 		}
 
+		[Fact]
 		public void FailsWithComplexCycle()
 		{
 			solver.AddModule("ModuleA");
@@ -99,6 +109,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Throws<CyclicDependencyFoundException>( () => solver.Solve() );
 		}
 
+		[Fact]
 		public void FailsWithMissingModule()
 		{
 			solver.AddModule("ModuleA");
