@@ -3,8 +3,9 @@ using Xunit;
 
 namespace DragonSpark.Testing.Modularity
 {
-	public class ModuleInfoGroupFixture
+	public class ModuleInfoGroupTests
 	{
+		[Fact]
 		public void ShouldForwardValuesToModuleInfo()
 		{
 			var group = new DynamicModuleInfoGroup();
