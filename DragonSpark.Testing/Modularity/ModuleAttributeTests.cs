@@ -4,8 +4,9 @@ using Xunit;
 
 namespace DragonSpark.Testing.Modularity
 {
-	public class ModuleAttributeFixture
+	public class ModuleAttributeTests
 	{
+		[Fact]
 		public void StartupLoadedDefaultsToTrue()
 		{
 			var moduleAttribute = new DynamicModuleAttribute();
@@ -13,6 +14,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(false, moduleAttribute.OnDemand);
 		}
 
+		[Fact]
 		public void CanGetAndSetProperties()
 		{
 			var moduleAttribute = new DynamicModuleAttribute
@@ -25,6 +27,7 @@ namespace DragonSpark.Testing.Modularity
 			Assert.Equal(true, moduleAttribute.OnDemand);
 		}
 
+		[Fact]
 		public void ModuleDependencyAttributeStoresModuleName()
 		{
 			var moduleDependencyAttribute = new ModuleDependencyAttribute("Test");
