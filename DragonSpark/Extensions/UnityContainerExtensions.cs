@@ -4,6 +4,7 @@ using DragonSpark.Diagnostics;
 using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Extensions
 {
@@ -21,6 +22,11 @@ namespace DragonSpark.Extensions
 			} ) );
 			return result;
 		}*/
+
+		public static IUnityContainer Register( this IUnityContainer @this, IServiceLocator locator )
+		{
+			return @this.Extension<IoCExtension>().Register( locator );
+		}
 
 		public static IUnityContainer RegisterInterfaces( this IUnityContainer @this, object instance )
 		{

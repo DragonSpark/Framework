@@ -1,9 +1,9 @@
-﻿using System;
-using DragonSpark.ComponentModel;
+﻿using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Setup.Commands
 {

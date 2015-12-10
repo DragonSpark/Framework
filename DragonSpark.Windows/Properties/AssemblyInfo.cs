@@ -43,6 +43,6 @@ using DragonSpark.Setup.Registration;
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Markup" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Setup" )]
 [assembly: Registration( Priority.BelowLower, Namespaces = "DragonSpark.Windows.Modularity" )]
-[assembly: Include( typeof( Setup ) )]
+// [assembly: Include( typeof( Setup ) )]
 
 // [assembly: TypeForwardedTo( typeof(AmbientAttribute) )]

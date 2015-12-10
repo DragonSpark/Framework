@@ -1,18 +1,15 @@
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity.Utility;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Unity.Utility;
 
 namespace DragonSpark.TypeSystem
 {
 	public class TypeExtension
 	{
-		static readonly ConcurrentDictionary<Type, TypeExtension> Extensions = new ConcurrentDictionary<Type, TypeExtension>();
-
 		readonly Type type;
 		readonly TypeInfo info;
 
@@ -26,7 +23,7 @@ namespace DragonSpark.TypeSystem
 			this.info = info;
 		}
 
-		public static implicit operator TypeExtension( Type type )
+		/*public static implicit operator TypeExtension( Type type )
 		{
 			var result = type.With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 			return result;
@@ -48,7 +45,7 @@ namespace DragonSpark.TypeSystem
 		{
 			var result = extension.info;
 			return result;
-		}
+		}*/
 
 		public object GetDefaultValue()
 		{
@@ -75,17 +72,17 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public bool CanLocate<T>()
-		{
-			var result = typeof(T).Extend().CanLocate( type );
-			return result;
-		}
-
 		public Type GuardAsAssignable<T>( string name )
 		{
 			Guard.TypeIsAssignable( typeof(T), type, name );
 			return type;
 		}
+
+		/*public bool CanLocate<T>()
+		{
+			var result = typeof(T).Extend().CanLocate( type );
+			return result;
+		}*/
 
 		public bool CanLocate( Type instanceType )
 		{

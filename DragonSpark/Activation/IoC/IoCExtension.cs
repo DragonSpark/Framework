@@ -1,6 +1,8 @@
-﻿using DragonSpark.Diagnostics;
+﻿using System;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using LifetimeManagerFactory = DragonSpark.Setup.Registration.LifetimeManagerFactory;
@@ -24,16 +26,45 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
 
-			//Context.Strategies.Add( CurrentBuildKeyStrategy, UnityBuildStage.Setup );
-			// Context.Strategies.AddNew<CurrentContextStrategy>( UnityBuildStage.Setup );
-			// Context.Strategies.AddNew<ApplicationConfigurationStrategy>( UnityBuildStage.PreCreation );
-			/*Context.Strategies.AddNew<SingletonStrategy>( UnityBuildStage.PreCreation );*/
-			// Context.Strategies.AddNew<ApplyBehaviorStrategy>( UnityBuildStage.Initialization );
-			// Context.ChildContainerCreated += ContextChildContainerCreated;
-
 			Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
 			Container.EnsureRegistered( CreateActivator );
 			Container.EnsureRegistered( CreateRegistry  );
+		}
+
+		public IUnityContainer Register( IServiceLocator locator )
+		{
+			Container.RegisterInstance( locator );
+			Container.RegisterInstance( new ServiceLocationMonitor( locator ) );
+			return Container;
+		}
+
+		class ServiceLocationMonitor : IDisposable
+		{
+			readonly IServiceLocator locator;
+
+			public ServiceLocationMonitor( IServiceLocator locator )
+			{
+				this.locator = locator;
+			}
+
+			public void Dispose()
+			{
+				Services.Location.With( item =>
+				{
+					if ( item.IsAvailable && item.Locator == locator )
+					{
+						item.Assign( null );
+					}
+				} );
+			}
+		}
+
+		public override void Remove()
+		{
+			base.Remove();
+
+			
+
 		}
 
 		IServiceRegistry CreateRegistry()

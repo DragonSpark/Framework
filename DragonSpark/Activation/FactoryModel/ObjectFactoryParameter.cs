@@ -13,11 +13,5 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 
 		public object Context { get; }
-
-		public static implicit operator ObjectFactoryParameter( Type type )
-		{
-			var result = new ObjectFactoryParameter( type );
-			return result;
-		}
 	}
 }

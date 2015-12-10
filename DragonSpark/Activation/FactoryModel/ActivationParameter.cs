@@ -1,15 +1,15 @@
-using DragonSpark.TypeSystem;
+using System;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	public abstract class ActivationParameter
 	{
-		protected ActivationParameter( TypeExtension type )
+		protected ActivationParameter( Type type )
 		{
 			Type = type;
 		}
 
-		public TypeExtension Type { get; }
+		public Type Type { get; }
 
 	}
 }

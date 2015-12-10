@@ -1,14 +1,13 @@
+using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
 using System.Windows.Markup;
-using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
-using DragonSpark.Setup.Registration;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Setup.Commands
 {
-	[ContentProperty( "InjectionMembers" )]
+	[ContentProperty( nameof(InjectionMembers) )]
 	public class UnityType : UnityRegistrationCommand
 	{
 		public Type MapTo { get; set; }
@@ -16,8 +15,8 @@ namespace DragonSpark.Setup.Commands
 		public System.Collections.ObjectModel.Collection<InjectionMember> InjectionMembers => injectionMembers.Value;
 		readonly Lazy<System.Collections.ObjectModel.Collection<InjectionMember>> injectionMembers = new Lazy<System.Collections.ObjectModel.Collection<InjectionMember>>( () => new System.Collections.ObjectModel.Collection<InjectionMember>() );
 
-		public System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration> TypeConfigurations => typeConfigurations.Value;
-		readonly Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>> typeConfigurations = new Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>>( () => new System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>() );
+		/*public System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration> TypeConfigurations => typeConfigurations.Value;
+		readonly Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>> typeConfigurations = new Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>>( () => new System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>() );*/
 
 		protected override void Configure( IUnityContainer container )
 		{
@@ -30,7 +29,7 @@ namespace DragonSpark.Setup.Commands
 			var members = InjectionMembers.ToArray();
 			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
 
-			TypeConfigurations.Each( item => item.Configure( container, this ) );
+			/*TypeConfigurations.Each( item => item.Configure( container, this ) );*/
 		}
 	}
 }

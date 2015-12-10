@@ -1,25 +1,27 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.TypeSystem;
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
+		static readonly ConcurrentDictionary<Type, TypeExtension> Extensions = new ConcurrentDictionary<Type, TypeExtension>();
+
 		public static TypeExtension Extend( this object @this )
 		{
-			return @this.GetType();
+			return @this.GetType().Extend();
 		}
 
 		public static TypeExtension Extend( this Type @this )
 		{
-			return @this;
+			return @this.With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 		}
 
 		public static TypeExtension Extend( this TypeInfo @this )
 		{
-			return @this.AsType();
+			return @this.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
 		}
 
 		public static Assembly Assembly( this Type @this )

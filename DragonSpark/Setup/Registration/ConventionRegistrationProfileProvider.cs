@@ -1,9 +1,9 @@
+using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -22,7 +22,7 @@ namespace DragonSpark.Setup.Registration
 			
 			var types = DetermineCandidateTypes( assemblies );
 
-			var result = new ConventionRegistrationProfile( assemblies, assemblies.SelectMany( assembly => assembly.FromMetadata<IncludeAttribute, IEnumerable<Assembly>>( attribute => attribute.Assemblies ) ).Except( assemblies ).ToArray(), types );
+			var result = new ConventionRegistrationProfile( assemblies, types );
 			return result;
 		}
 

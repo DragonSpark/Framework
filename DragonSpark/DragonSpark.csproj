@@ -308,7 +308,6 @@
     <Compile Include="Setup\Registration\IConventionRegistration.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationService.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationProfileProvider.cs" />
-    <Compile Include="Setup\Registration\IncludeAttribute.cs" />
     <Compile Include="Setup\Commands\InitializeModulesCommand.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactory.cs" />
     <Compile Include="Activation\IoC\InjectionMemberContext.cs" />
@@ -334,7 +333,6 @@
     <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
     <Compile Include="Setup\Commands\SetupModuleCatalogCommandBase.cs" />
     <Compile Include="Setup\Commands\SetupRegistrationByConventionCommand.cs" />
-    <Compile Include="Setup\Registration\IUnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\Registration\RegistrationAttribute.cs" />
     <Compile Include="Setup\Commands\SetupUnityCommand.cs" />
@@ -342,7 +340,6 @@
     <Compile Include="Activation\IoC\SingletonInstanceAttribute.cs" />
     <Compile Include="Activation\IoC\SingletonLocator.cs" />
     <Compile Include="Setup\Commands\UnityCommand.cs" />
-    <Compile Include="Setup\Registration\UnityContainerTypeConfiguration.cs" />
     <Compile Include="Setup\Registration\UnityConventionRegistrationService.cs" />
     <Compile Include="Setup\Commands\UnityInstance.cs" />
     <Compile Include="Setup\Commands\UnityRegistrationCommand.cs" />

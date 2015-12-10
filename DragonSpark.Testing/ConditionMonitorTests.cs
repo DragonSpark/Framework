@@ -42,7 +42,7 @@ namespace DragonSpark.Testing
 			var count = 0;
 
 			Assert.False( sut.ApplyIf( () => false, () => count++ ) );
-
+			
 			Assert.Equal( 0, count );
 
 			Assert.True( sut.ApplyIf( () => true, () => count++ ) );
@@ -50,6 +50,16 @@ namespace DragonSpark.Testing
 			Assert.Equal( 1, count );
 
 			Assert.False( sut.ApplyIf( () => true, () => count++ ) );
+		}
+
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
+		public void ApplyIfNull( ConditionMonitor sut )
+		{
+			var count = 0;
+
+			Assert.True( sut.ApplyIf( null, () => count++ ) );
+
+			Assert.Equal( 1, count );
 		}
 	}
 }

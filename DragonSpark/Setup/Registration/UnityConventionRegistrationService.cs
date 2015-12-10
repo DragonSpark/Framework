@@ -1,10 +1,10 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -12,8 +12,8 @@ namespace DragonSpark.Setup.Registration
 	{
 		readonly ISingletonLocator locator;
 
-		public LifetimeManagerFactory() : this( Activation.Activator.Current )
-		{}
+		/*public LifetimeManagerFactory() : this( Activation.Activator.Current )
+		{}*/
 
 		public LifetimeManagerFactory( IActivator activator ) : this( activator, SingletonLocator.Instance )
 		{}

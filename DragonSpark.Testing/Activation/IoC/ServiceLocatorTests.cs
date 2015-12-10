@@ -137,11 +137,6 @@ namespace DragonSpark.Testing.Activation.IoC
 
 			Assert.Same( sut, Services.Location.Locator );
 
-			/*var child = sut.Container.CreateChildContainer();
-			child.Registrations.First( x => x.RegisteredType == typeof(IUnityContainer) ).LifetimeManager.RemoveValue();
-
-			Assert.Equal( sut.Container, child.Resolve<IUnityContainer>() );*/
-
 			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
 			Assert.NotNull( item );
 
@@ -149,18 +144,11 @@ namespace DragonSpark.Testing.Activation.IoC
 			
 			sut.Register( disposable );
 
-			// Assert.Equal( 1, extension.Children.Count );
-
 			Assert.False( disposable.Disposed );
 			
 			Assert.Same( Services.Location.Locator, sut );
 
 			sut.Dispose();
-
-			/*var temp = Dynamic.InvokeGet( child, "lifetimeContainer" );
-			Assert.Null( temp );
-
-			Assert.Equal( 0, extension.Children.Count );*/
 
 			Assert.NotSame( Services.Location.Locator, sut );
 

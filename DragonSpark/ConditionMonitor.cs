@@ -5,7 +5,6 @@ namespace DragonSpark
 {
 	public class ConditionMonitor
 	{
-
 		public bool IsApplied => State > ConditionMonitorState.None;
 
 		public ConditionMonitorState State { get; private set; }

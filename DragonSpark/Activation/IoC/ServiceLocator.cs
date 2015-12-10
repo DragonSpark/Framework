@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Setup;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -15,16 +14,13 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly IUnityContainer container;
 		readonly ConditionMonitor disposed = new ConditionMonitor();
-	
+
 		public ServiceLocator() : this( new UnityContainer() )
 		{}
 
 		public ServiceLocator( IUnityContainer container )
 		{
-			this.container = container;
-			this.container
-				.RegisterInstance<IServiceLocator>( this )
-				.Extension<IoCExtension>();
+			this.container = container.Register( this );
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()
@@ -75,18 +71,7 @@ namespace DragonSpark.Activation.IoC
 
 		protected virtual void Dispose( bool disposing )
 		{
-			disposed.Apply( () =>
-			{
-				Services.Location.With( item =>
-				{
-					if ( item.IsAvailable && item.Locator == this )
-					{
-						item.Assign( null );
-					}
-				} );
-
-				Container.Dispose();
-			} );
+			disposed.Apply( Container.Dispose );
 		}
 	}
 }

@@ -1,31 +1,37 @@
-using System;
-using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	class FactoryReflectionSupport
 	{
 		public static FactoryReflectionSupport Instance { get; } = new FactoryReflectionSupport();
-		static TypeExtension[] Types { get; } = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => TypeExtensions.Extend( (Type)type ) ).ToArray();
+		static TypeExtension[] Types { get; } = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Extend() ).ToArray();
 
-		public TypeExtension GetResultType( TypeExtension factoryType )
+		public Type GetResultType( Type factoryType )
 		{
 			var result = Get( factoryType, types => types.Last(), Types );
 			return result;
 		}
 
-		Type Get( TypeExtension factoryType, Func<Type[],Type> selector, params TypeExtension[] typesToCheck )
+		static Type Get( Type factoryType, Func<Type[],Type> selector, params TypeExtension[] typesToCheck )
 		{
-			var result = factoryType.GetAllInterfaces().AsTypeInfos().Where( type => type.IsGenericType && typesToCheck.Any( extension => extension.IsAssignableFrom( type.GetGenericTypeDefinition() ) ) ).Select( type => selector( type.GenericTypeArguments ) ).FirstOrDefault();
+			var result = factoryType
+				.Extend()
+				.GetAllInterfaces()
+				.AsTypeInfos()
+				.Where( type => type.IsGenericType && typesToCheck.Any( extension => extension.IsAssignableFrom( type.GetGenericTypeDefinition() ) ) )
+				.Select( type => selector( type.GenericTypeArguments ) )
+				.FirstOrDefault();
 			return result;
 		}
 
-		public TypeExtension GetParameterType( TypeExtension factoryType )
+		/*public TypeExtension GetParameterType( TypeExtension factoryType )
 		{
 			var result = Get( factoryType, types => types.First(), Types.Last() );
 			return result;
-		}
+		}*/
 	}
 }

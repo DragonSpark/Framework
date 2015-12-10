@@ -1,13 +1,10 @@
-using DragonSpark.TypeSystem;
+using System;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	public class ActivateParameter : ActivationParameter
 	{
-		public ActivateParameter( TypeExtension type ) : this( type, null )
-		{}
-
-		public ActivateParameter( TypeExtension type, string name ) : base( type )
+		public ActivateParameter( Type type, string name = null ) : base( type )
 		{
 			Name = name;
 		}

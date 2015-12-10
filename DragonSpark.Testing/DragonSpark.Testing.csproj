@@ -147,6 +147,8 @@
   <ItemGroup>
     <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
+    <Compile Include="Activation\FactoryModel\ConstructFactoryParameterQualifierTests.cs" />
+    <Compile Include="Activation\FactoryModel\ObjectFactoryParameterTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
@@ -166,6 +168,7 @@
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="Modularity\ModuleAttributeTests.cs" />

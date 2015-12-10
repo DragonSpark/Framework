@@ -1,12 +1,15 @@
-using System;
-using System.Linq;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Setup.Registration
 {
 	public sealed class RegisterAttribute : RegistrationBaseAttribute
 	{
+		readonly Type @as;
+		readonly string name;
+
 		public RegisterAttribute() : this( null, null )
 		{}
 
@@ -16,20 +19,16 @@ namespace DragonSpark.Setup.Registration
 		public RegisterAttribute( string name ) : this( null, name )
 		{}
 
-		public RegisterAttribute( Type @as, string name )
+		RegisterAttribute( Type @as, string name )
 		{
-			As = @as;
-			Name = name;
+			this.@as = @as;
+			this.name = name;
 		}
-
-		public Type As { get; }
-
-		public string Name { get; }
 
 		protected override void PerformRegistration( IServiceRegistry registry, Type subject )
 		{
-			var from = As ?? subject.Extend().GetAllInterfaces().FirstOrDefault( type => subject.Name.Contains( type.Name.Substring( 1 ) ) ) ?? subject;
-			registry.Register( from, subject, Name );
+			var from = @as ?? subject.Extend().GetAllInterfaces().With( types => types.FirstOrDefault( type => subject.Name.Contains( type.Name.Substring( 1 ) ) ) ?? types.FirstOrDefault() ) ?? subject;
+			registry.Register( from, subject, @name );
 		}
 	}
 

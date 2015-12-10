@@ -1,5 +1,5 @@
-using System.Linq;
 using DragonSpark.Extensions;
+using System.Linq;
 
 namespace DragonSpark.Activation.FactoryModel
 {

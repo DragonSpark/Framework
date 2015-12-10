@@ -5,16 +5,13 @@ namespace DragonSpark.Setup.Registration
 {
 	public class ConventionRegistrationProfile
 	{
-		public ConventionRegistrationProfile( Assembly[] application, Assembly[] include, Type[] candidates )
+		public ConventionRegistrationProfile( Assembly[] application, Type[] candidates )
 		{
 			Application = application;
-			Include = include;
 			Candidates = candidates;
 		}
 
 		public Assembly[] Application { get;  }
-
-		public Assembly[] Include { get; }
 
 		public Type[] Candidates { get; }
 	}

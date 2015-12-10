@@ -1,16 +1,13 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class LifetimeManagerFactory<T> : LifetimeManagerFactory where T : LifetimeManager
 	{
-		public LifetimeManagerFactory()
-		{}
-
 		public LifetimeManagerFactory( IActivator activator ) : base( activator )
 		{}
 
