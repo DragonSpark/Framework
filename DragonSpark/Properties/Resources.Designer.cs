@@ -350,6 +350,15 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registering {0} -&gt; {1} ({2}).
+        /// </summary>
+        public static string ServiceRegistry_Registering {
+            get {
+                return ResourceManager.GetString("ServiceRegistry_Registering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module {0} is marked for automatic initialization when the application starts, but it depends on modules that are marked as OnDemand initialization. To fix this error, mark the dependency modules for InitializationMode=WhenAvailable, or remove this validation by extending the ModuleCatalog class..
         /// </summary>
         public static string StartupModuleDependsOnAnOnDemandModule {
@@ -373,15 +382,6 @@ namespace DragonSpark.Properties {
         public static string TypeMappingAlreadyRegistered {
             get {
                 return ResourceManager.GetString("TypeMappingAlreadyRegistered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Registering {0} -&gt; {1} ({2}).
-        /// </summary>
-        public static string UnityConventionRegistrationService_Registering {
-            get {
-                return ResourceManager.GetString("UnityConventionRegistrationService_Registering", resourceCulture);
             }
         }
         

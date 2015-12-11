@@ -1,11 +1,9 @@
+using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Input;
-using DragonSpark.Activation;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Modularity
 {

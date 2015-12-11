@@ -19,6 +19,13 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static T Only<T>( this IEnumerable<T> @this )
+		{
+			var enumerable = @this as T[] ?? @this.ToArray();
+			var result = enumerable.Count() == 1 ? enumerable.Single() : default(T);
+			return result;
+		}
+
 		public static void Each<T>( this IEnumerable<T> enumerable, Action<T> action )
 		{
 			AutoMapper.Internal.EnumerableExtensions.Each( enumerable, action );

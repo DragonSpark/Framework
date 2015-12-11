@@ -133,7 +133,7 @@
     <Compile Include="Setup\AmbientLocatorKeyFactory.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Extensions\SetupContextExtensions.cs" />
-    <Compile Include="Setup\AssignServiceLocatorCommand.cs" />
+    <Compile Include="Setup\SetupServiceLocationCommand.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
     <Compile Include="Setup\CanLocateSpecification.cs" />
     <Compile Include="Setup\ConfigureLocationCustomization.cs" />
@@ -162,7 +162,7 @@
     <Compile Include="Setup\Location\ServiceLocationAuthority.cs" />
     <Compile Include="Setup\Location\ServiceLocationRelay.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
-    <Compile Include="Setup\MethodInStackTraceSpecification.cs">
+    <Compile Include="Setup\MethodInStackTraceContextAwareSpecification.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\Setup.cs" />

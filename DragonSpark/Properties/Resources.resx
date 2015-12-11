@@ -211,7 +211,7 @@ Error was: {1}.</value>
 	<data name="ServiceLocator_Container" xml:space="preserve">
     <value>container</value>
   </data>
-	<data name="UnityConventionRegistrationService_Registering" xml:space="preserve">
+	<data name="ServiceRegistry_Registering" xml:space="preserve">
     <value>Registering {0} -&gt; {1} ({2})</value>
   </data>
 	<data name="CreatingUnityContainer" xml:space="preserve">

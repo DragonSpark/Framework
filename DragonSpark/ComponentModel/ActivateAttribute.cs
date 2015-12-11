@@ -10,18 +10,14 @@ namespace DragonSpark.ComponentModel
 		readonly Type activatedType;
 		private readonly string name;
 
-		public ActivateAttribute() : this( null, null )
+		public ActivateAttribute() : this( null )
 		{}
 
 		public ActivateAttribute( string name ) : this( null, name )
 		{}
 
-		public ActivateAttribute( Type activatedType ) : this( activatedType, null )
+		public ActivateAttribute( Type activatedType, string name = null ) : this( Activation.Activator.Current, activatedType, name )
 		{}
-
-		public ActivateAttribute( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
-		{
-		}
 
 		public ActivateAttribute( IActivator activator, Type activatedType, string name )
 		{

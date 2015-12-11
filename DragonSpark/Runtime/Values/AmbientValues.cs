@@ -31,7 +31,7 @@ namespace DragonSpark.Runtime.Values
 
 		public static void RegisterFor<TRequest>( TRequest instance, object context )
 		{
-			Register( new AmbientKey<TRequest>( new EqualitySpecification( context ) ), instance );
+			Register( new AmbientKey<TRequest>( new EqualityContextAwareSpecification( context ) ), instance );
 		}
 
 		public static void Register( IAmbientKey key, object instance )

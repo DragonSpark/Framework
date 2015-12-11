@@ -11,12 +11,12 @@ namespace DragonSpark.Testing.Framework.Setup
 		public IServiceLocator Locator => Item;
 	}*/
 
-	class MethodInStackTraceSpecification : SpecificationBase<MethodInfo>
+	class MethodInStackTraceContextAwareSpecification : ContextAwareSpecificationBase<MethodInfo>
 	{
-		public MethodInStackTraceSpecification( MethodInfo context ) : base( context )
+		public MethodInStackTraceContextAwareSpecification( MethodInfo context ) : base( context )
 		{}
 
-		protected override bool IsSatisfiedBy( object context )
+		protected override bool IsSatisfiedByContext( MethodInfo methodInfo )
 		{
 			var result = new System.Diagnostics.StackTrace().GetFrames()
 				.Select( x => x.GetMethod() )

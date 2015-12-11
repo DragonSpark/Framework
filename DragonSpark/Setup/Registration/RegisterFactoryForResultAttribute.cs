@@ -8,7 +8,18 @@ namespace DragonSpark.Setup.Registration
 {
 	public class RegisterFactoryForResultAttribute : RegistrationBaseAttribute
 	{
-		protected override void PerformRegistration( IServiceRegistry registry, Type subject )
+		public RegisterFactoryForResultAttribute() : base( FactoryResultTypeRegistration.Instance )
+		{}
+	}
+
+	public class FactoryResultTypeRegistration : IConventionRegistration
+	{
+		public static FactoryResultTypeRegistration Instance { get; } = new FactoryResultTypeRegistration();
+
+		FactoryResultTypeRegistration()
+		{}
+
+		public void Register( IServiceRegistry registry, Type subject )
 		{
 			var typeExtension = FactoryReflectionSupport.Instance.GetResultType( subject );
 			typeExtension.With( type =>

@@ -168,6 +168,9 @@
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Setup\Setup.cs">
+      <DependentUpon>Setup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
@@ -338,6 +341,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Setup\Setup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

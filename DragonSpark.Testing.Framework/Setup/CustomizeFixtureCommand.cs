@@ -1,8 +1,9 @@
-using System.Windows.Markup;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using Ploeh.AutoFixture;
+using System.Windows.Markup;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -13,7 +14,8 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override void OnSetup( SetupContext context, SetupAutoDataContext setup )
 		{
-			context.Container().EnsureRegistered( () => setup.Fixture );
+			var registration = context.Container().Registration<EnsuredRegistrationSupport>();
+			registration.Instance( () => setup.Fixture );
 			var customizations = new ICustomization[]
 			{
 				AmbientCustomizationsCustomization.Instance,

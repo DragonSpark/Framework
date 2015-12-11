@@ -26,7 +26,7 @@ namespace DragonSpark.ComponentModel
 
 	/*public interface ISpecification
 	{
-		bool IsSatisfiedBy( object payload );
+		bool IsSatisfiedByItem( object payload );
 	}*/
 
 	/*public interface IAttributeMetadataProvider

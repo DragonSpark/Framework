@@ -14,14 +14,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		/// <summary>
-		/// Registers a type in the container only if that type was not already registered.
-		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="fromType">The interface type to register.</param>
-		/// <param name="toType">The type implementing the interface.</param>
-		/// <param name="registerAsSingleton">Registers the type as a singleton.</param>
-		public static void RegisterTypeIfMissing( this SetupContext context, Type fromType, Type toType, bool registerAsSingleton)
+		/*public static void RegisterTypeIfMissing<TFrom, TTo>( this SetupContext context, bool registerAsSingleton = true ) where TTo : TFrom
+		{
+			context.RegisterTypeIfMissing( typeof(TFrom), typeof(TTo), registerAsSingleton );
+		}
+
+		public static void RegisterTypeIfMissing( this SetupContext context, Type fromType, Type toType, bool registerAsSingleton )
 		{
 			if ( context == null )
 			{
@@ -47,6 +45,6 @@ namespace DragonSpark.Extensions
 				var manager = registerAsSingleton ? (LifetimeManager)new ContainerControlledLifetimeManager() : new TransientLifetimeManager();
 				container.RegisterType(fromType, toType, manager);
 			}
-		}
+		}*/
 	}
 }

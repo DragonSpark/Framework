@@ -25,7 +25,7 @@ namespace DragonSpark.Activation
 			locator.With( context =>
 			{
 				var keyLocator = context.GetInstance<IAmbientKeyLocator>() ?? AmbientKeyLocator.Instance;
-				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( new EqualitySpecification( context ) );
+				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( new EqualityContextAwareSpecification( context ) );
 				AmbientValues.Register( key, context );
 			} );
 		}

@@ -1,10 +1,12 @@
-﻿using System;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Specifications;
+using DragonSpark.Setup.Registration;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
+using System;
 using LifetimeManagerFactory = DragonSpark.Setup.Registration.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
@@ -12,7 +14,7 @@ namespace DragonSpark.Activation.IoC
 	public class IoCExtension : UnityContainerExtension
 	{
 		public ILogger Logger { get; } = new RecordingLogger();
-		
+
 		protected override void Initialize()
 		{
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
@@ -27,44 +29,12 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
 
 			Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
-			Container.EnsureRegistered( CreateActivator );
-			Container.EnsureRegistered( CreateRegistry  );
-		}
 
-		public IUnityContainer Register( IServiceLocator locator )
-		{
-			Container.RegisterInstance( locator );
-			Container.RegisterInstance( new ServiceLocationMonitor( locator ) );
-			return Container;
-		}
-
-		class ServiceLocationMonitor : IDisposable
-		{
-			readonly IServiceLocator locator;
-
-			public ServiceLocationMonitor( IServiceLocator locator )
+			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
-				this.locator = locator;
-			}
-
-			public void Dispose()
-			{
-				Services.Location.With( item =>
-				{
-					if ( item.IsAvailable && item.Locator == locator )
-					{
-						item.Assign( null );
-					}
-				} );
-			}
-		}
-
-		public override void Remove()
-		{
-			base.Remove();
-
-			
-
+				support.Instance( CreateActivator );
+				support.Instance( CreateRegistry );
+			});
 		}
 
 		IServiceRegistry CreateRegistry()
@@ -74,7 +44,7 @@ namespace DragonSpark.Activation.IoC
 			return result;
 		}
 
-		public IActivator CreateActivator()
+		IActivator CreateActivator()
 		{
 			var result = new CompositeActivator( Container.Resolve<Activator>(), SystemActivator.Instance );
 			return result;
@@ -154,5 +124,125 @@ namespace DragonSpark.Activation.IoC
 			var result = x.AsTo<ILifetimePolicy, LifetimeEntry>( y => new LifetimeEntry( y, y.GetValue() ), () => new LifetimeEntry( x ) );
 			return result;
 		}*/
+
+		public IUnityContainer Register( IServiceLocator locator )
+		{
+			return Container.Registration().Instance( locator );
+		}
+	}
+
+	class ServiceLocationMonitor : IDisposable
+	{
+		readonly IServiceLocation location;
+		readonly IServiceLocator locator;
+
+		/*public ServiceLocationMonitor( IServiceLocator locator ) : this( Services.Location, locator )
+		{}*/
+
+		public ServiceLocationMonitor( IServiceLocation location, IServiceLocator locator )
+		{
+			this.location = location;
+			this.locator = locator;
+		}
+
+		public void Dispose()
+		{
+			if ( location.IsAvailable && location.Locator == locator )
+			{
+				location.Assign( null );
+			}
+		}
+	}
+
+	public class RegistrationSpecificationParameter
+	{
+		public RegistrationSpecificationParameter( IUnityContainer container, Type type )
+		{
+			Container = container;
+			Type = type;
+		}
+
+		public IUnityContainer Container { get; }
+		public Type Type { get; }
+	}
+
+	public class NotRegisteredSpecification : SpecificationBase<RegistrationSpecificationParameter>
+	{
+		public static NotRegisteredSpecification Instance { get; } = new NotRegisteredSpecification();
+
+		protected override bool IsSatisfiedByContext( RegistrationSpecificationParameter context )
+		{
+			var result = base.IsSatisfiedByContext( context) && !context.Container.IsRegistered( context.Type );
+			return result;
+		}
+	}
+
+	
+	public class EnsuredRegistrationSupport : RegistrationSupport
+	{
+		public EnsuredRegistrationSupport( IUnityContainer container ) : base( container, NotRegisteredSpecification.Instance )
+		{}
+	}
+
+	[Register]
+	public class RegistrationSupport
+	{
+		readonly IUnityContainer container;
+		readonly ISpecification<RegistrationSpecificationParameter> specification;
+
+		public RegistrationSupport( IUnityContainer container ) : this( container, AlwaysSpecification<RegistrationSpecificationParameter>.Instance )
+		{}
+
+		protected RegistrationSupport( IUnityContainer container, ISpecification<RegistrationSpecificationParameter> specification )
+		{
+			this.container = container;
+			this.specification = specification;
+		}
+
+		public IUnityContainer Convention( object instance )
+		{
+			return Check( instance.GetType(), () => container.RegisterInstance( instance.Extend().GetConventionCandidate(), instance ) );
+		}
+
+		IUnityContainer Check( Type type, Action apply )
+		{
+			specification.IsSatisfiedBy( new RegistrationSpecificationParameter( container, type ) ).IsTrue( apply );
+			return container;
+		}
+
+		public IUnityContainer AllInterfaces( object instance )
+		{
+			return Check( instance.GetType(), () => instance.Extend().GetAllInterfaces().Each( y => container.RegisterInstance( y, instance ) ) );
+		}
+
+		public IUnityContainer AllClasses( object instance )
+		{
+			return Check( instance.GetType(), () => instance.Extend().GetAllHierarchy().Each( y => container.RegisterInstance( y, instance ) ) );
+		}
+
+		public IUnityContainer Mapping<TInterface, TImplementation>( LifetimeManager manager = null ) where TImplementation : TInterface
+		{
+			return Check( typeof(TInterface), () => container.RegisterType<TInterface, TImplementation>( manager ?? new TransientLifetimeManager() ) );
+		}
+
+		public IUnityContainer Instance( Type type, object instance, LifetimeManager manager = null )
+		{
+			return Instance( type, () => instance, manager );
+		}
+
+		public IUnityContainer Instance( Type type, Func<object> instance, LifetimeManager manager = null )
+		{
+			return Check( type, () => container.RegisterInstance( type, instance(), manager ?? new ContainerControlledLifetimeManager() ) );
+		}
+
+		public IUnityContainer Instance<TInterface>( TInterface instance, LifetimeManager manager = null )
+		{
+			return Instance( () => instance, manager );
+		}
+
+		public IUnityContainer Instance<TInterface>( Func<TInterface> instance, LifetimeManager manager = null )
+		{
+			return Check( typeof(TInterface), () => container.RegisterInstance( typeof(TInterface), instance(), manager ?? new ContainerControlledLifetimeManager() ) );
+		}
 	}
 }

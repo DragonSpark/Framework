@@ -4,13 +4,17 @@ using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Xunit;
+using Xunit.Abstractions;
 using Activator = DragonSpark.Testing.TestObjects.Activator;
 
 namespace DragonSpark.Testing.Activation
 {
 	[Freeze( typeof(IActivator), typeof(Activator) )]
-	public class CurrentActivatorTests
+	public class CurrentActivatorTests : Tests
 	{
+		public CurrentActivatorTests( ITestOutputHelper output ) : base( output )
+		{}
+
 		[Fact]
 		public void Default()
 		{

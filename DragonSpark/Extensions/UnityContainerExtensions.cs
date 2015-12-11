@@ -3,46 +3,14 @@ using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.Unity;
 using System;
-using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		/*static readonly IList<WeakReference<object>> BuildCache = new List<WeakReference<object>>();
-
-		public static bool BuildUpOnce( this object target )
-		{
-			var result = !BuildCache.Exists( target );
-			result.IsTrue( () => Services.Location.With<IObjectBuilder>( x =>
-			{
-				x.BuildUp( target );
-				BuildCache.Add( new WeakReference<object>( target ) );
-			} ) );
-			return result;
-		}*/
-
-		public static IUnityContainer Register( this IUnityContainer @this, IServiceLocator locator )
-		{
-			return @this.Extension<IoCExtension>().Register( locator );
-		}
-
-		public static IUnityContainer RegisterInterfaces( this IUnityContainer @this, object instance )
-		{
-			instance.Extend().GetAllInterfaces().Each( y => @this.RegisterInstance( y, instance ) );
-			return @this;
-		}
-
-		public static IUnityContainer RegisterAllClasses( this IUnityContainer @this, object instance )
-		{
-			instance.Extend().GetAllHierarchy().Each( y => @this.RegisterInstance( y, instance ) );
-			return @this;
-		}
-
 		public static ILogger DetermineLogger( this IUnityContainer @this )
 		{
-			var result = @this.Resolve( () => @this.Extension<IoCExtension>().Logger );
+			var result = @this.Resolve( () => @this.Extend().Logger );
 			return result;
 		}
 
@@ -58,7 +26,7 @@ namespace DragonSpark.Extensions
 			return result;
 		}*/
 
-		public static T Resolve<T, TDefault>( this IUnityContainer @this ) where TDefault : T
+		/*public static T Resolve<T, TDefault>( this IUnityContainer @this ) where TDefault : T
 		{
 			var result = (T)@this.ResolveFirst( typeof(T), typeof(TDefault) );
 			return result;
@@ -68,7 +36,7 @@ namespace DragonSpark.Extensions
 		{
 			var result = types.FirstOrDefault( @this.IsRegistered ).With( x => @this.Resolve( x ) );
 			return result;
-		}
+		}*/
 
 		public static T TryResolve<T>(this IUnityContainer container)
 		{
@@ -80,18 +48,6 @@ namespace DragonSpark.Extensions
 		{
 			var result = new ResolutionContext( container.DetermineLogger() ).Execute( () => container.Resolve( typeToResolve ) );
 			return result;
-		}
-
-		public static IUnityContainer EnsureRegistered<TInterface, TImplementation>( this IUnityContainer @this, LifetimeManager manager = null ) where TImplementation : TInterface
-		{
-			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterType<TInterface, TImplementation>( manager ?? new TransientLifetimeManager() ) );
-			return @this;
-		}
-
-		public static IUnityContainer EnsureRegistered<TInterface>( this IUnityContainer @this, Func<TInterface> instance, LifetimeManager manager = null )
-		{
-			@this.IsRegistered<TInterface>().IsFalse( () => @this.RegisterInstance( instance() ) );
-			return @this;
 		}
 
 		/*public static TContainer GetRootContainer<TContainer>( this TContainer target ) where TContainer : class, IUnityContainer
@@ -112,6 +68,24 @@ namespace DragonSpark.Extensions
 			var result = extension.Transform( x => with( x ) );
 			return result;
 		}*/
+
+		public static RegistrationSupport Registration( this IUnityContainer @this )
+		{
+			var result = @this.Registration<RegistrationSupport>();
+			return result;
+		}
+
+		public static T Registration<T>( this IUnityContainer @this ) where T : RegistrationSupport
+		{
+			var result = @this.Resolve<T>();
+			return result;
+		}
+
+		public static IoCExtension Extend( this IUnityContainer @this )
+		{
+			var result = @this.Extension<IoCExtension>();
+			return result;
+		}
 
 		public static TExtension Extension<TExtension>( this IUnityContainer container ) where TExtension : UnityContainerExtension
 		{

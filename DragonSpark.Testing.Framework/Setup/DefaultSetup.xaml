@@ -1,4 +1,4 @@
-﻿<setup1:Setup x:Class="DragonSpark.Testing.Framework.Setup.DefaultSetup"
+﻿<setup:Setup x:Class="DragonSpark.Testing.Framework.Setup.DefaultSetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,15 @@
 	xmlns:local="clr-namespace:DragonSpark.Testing.Framework"
 	xmlns:autoMoq="clr-namespace:Ploeh.AutoFixture.AutoMoq;assembly=Ploeh.AutoFixture.AutoMoq"
 	xmlns:setupPlatform="clr-namespace:DragonSpark.Windows.Setup;assembly=DragonSpark.Windows"
-	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
-	xmlns:setup1="clr-namespace:DragonSpark.Testing.Framework.Setup"
+	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location"
 	mc:Ignorable="d" 
 >
-	<setup1:AssignServiceLocatorCommand />
+	<setup:SetupServiceLocationCommand />
+	<commands:SetupUnityCommand />
 	<setupPlatform:SetupRegistrationByConventionCommand />
 	<commands:SetupUnityContainerCommand>
 		<commands:SetupUnityContainerCommand.Instances>
@@ -24,10 +24,10 @@
 		</commands:SetupUnityContainerCommand.Instances>
 	</commands:SetupUnityContainerCommand>
 	<!--<setupPlatform:InitializeMarkupCommand />-->
-	<setup1:CustomizeFixtureCommand>
+	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
-		<setup1:OutputCustomization />
-		<setup1:LoggingRegistrationCustomization />
+		<setup:OutputCustomization />
+		<setup:LoggingRegistrationCustomization />
 		<autoMoq:AutoConfiguredMoqCustomization />
-	</setup1:CustomizeFixtureCommand>
-</setup1:Setup>
+	</setup:CustomizeFixtureCommand>
+</setup:Setup>

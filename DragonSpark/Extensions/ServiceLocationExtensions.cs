@@ -34,7 +34,8 @@ namespace DragonSpark.Extensions
 
 		static void With( IServiceLocator locator, Action<IServiceRegistry> action )
 		{
-			locator.GetInstance<IServiceRegistry>().With( action );
+			var serviceRegistry = locator.GetInstance<IServiceRegistry>();
+			serviceRegistry.With( action );
 		}
 
 		/*public static TItem TryGetInstance<TItem>( this IServiceLocator target, string name = null )

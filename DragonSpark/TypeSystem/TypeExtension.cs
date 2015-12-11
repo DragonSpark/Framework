@@ -91,7 +91,7 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public bool CanLocate()
+		bool CanLocate()
 		{
 			var result = info.IsInterface || !info.IsAbstract;
 			return result;
@@ -159,6 +159,12 @@ namespace DragonSpark.TypeSystem
 			var info = target.GetTypeInfo();
 			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.With( func => func( info ), () => true ) ? info.GenericTypeArguments.FirstOrDefault() :
 				target.IsArray ? target.GetElementType() : null;
+			return result;
+		}
+
+		public Type GetConventionCandidate()
+		{
+			var result = type.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => interfaces.FirstOrDefault( t => type.Name.Contains( t.Name.Substring( 1 ) ) ) ?? interfaces.Only() ) ?? type;
 			return result;
 		}
 

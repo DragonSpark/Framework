@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	class CurrentMethodSpecification : AnySpecification
 	{
-		public CurrentMethodSpecification( MethodInfo method  ) : base( new MemberInfoSpecification( method ), new MethodInStackTraceSpecification( method ) )
+		public CurrentMethodSpecification( MethodInfo method  ) : base( new MemberInfoSpecification( method ), new MethodInStackTraceContextAwareSpecification( method ) )
 		{}
 	}
 }

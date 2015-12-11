@@ -20,7 +20,7 @@ namespace DragonSpark.Activation.IoC
 
 		public ServiceLocator( IUnityContainer container )
 		{
-			this.container = container.Register( this );
+			this.container = container.Extend().Register( this );
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()

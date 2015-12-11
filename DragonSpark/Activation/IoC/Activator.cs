@@ -8,11 +8,13 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly IUnityContainer container;
 		readonly IResolutionSupport support;
+		readonly RegistrationSupport registration;
 
 		public Activator( IUnityContainer container, IResolutionSupport support )
 		{
 			this.container = container;
 			this.support = support;
+			registration = new RegistrationSupport( container );
 		}
 
 		public bool CanActivate( Type type, string name = null )
@@ -40,10 +42,11 @@ namespace DragonSpark.Activation.IoC
 				{
 					x.As<TypedInjectionValue>( parameterValue =>
 					{
-						child.RegisterInstance( parameterValue.ParameterType, parameterValue.GetResolverPolicy( null ).Resolve( null ) );
-					});
+						var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
+						child.RegisterInstance( parameterValue.ParameterType, instance );
+					} );
 
-					child.RegisterAllClasses( x );
+					registration.AllClasses( x );
 				} );
 
 				var result = new ResolutionContext( child.DetermineLogger() ).Execute( () => child.Resolve( type ) );

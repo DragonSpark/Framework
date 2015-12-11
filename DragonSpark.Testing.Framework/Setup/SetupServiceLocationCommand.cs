@@ -3,22 +3,21 @@ using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using DragonSpark.Setup;
 using DragonSpark.Testing.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class AssignServiceLocatorCommand : DragonSpark.Setup.Commands.AssignServiceLocatorCommand
+	public class SetupServiceLocationCommand : DragonSpark.Setup.Commands.SetupServiceLocationCommand
 	{
 		[ComponentModel.Singleton( typeof(AmbientLocatorKeyFactory) )]
 		public IFactory<MethodInfo, IAmbientKey> Factory { get; set; }
 
-		protected override void Assign( SetupContext context, IServiceLocator locator )
+		protected override void Execute( SetupContext context )
 		{
 			var key = Factory.Create( context.Method() );
-			locator.Register( key );
+			Locator.Register( key );
 
-			base.Assign( context, locator );
+			base.Execute( context );
 		}
 	}
 }

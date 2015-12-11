@@ -1,7 +1,10 @@
 ﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Parameters;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.Unity;
 using Moq;
@@ -9,8 +12,6 @@ using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Testing.Framework.Parameters;
-using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
@@ -135,7 +136,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		{
 			Assert.IsAssignableFrom<ServiceLocation>( Services.Location );
 
-			Assert.Same( sut, Services.Location.Locator );
+			Assert.Same( Services.Location.Locator, sut );
 
 			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
 			Assert.NotNull( item );
@@ -143,6 +144,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			var disposable = new Disposable();
 			
 			sut.Register( disposable );
+			sut.Register( new ServiceLocationMonitor( Services.Location, sut ) );
 
 			Assert.False( disposable.Disposed );
 			

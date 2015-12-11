@@ -1,16 +1,15 @@
 using System;
-using DragonSpark.Activation;
 
 namespace DragonSpark.Setup.Registration
 {
 	[AttributeUsage( AttributeTargets.Class )]
-	public abstract class RegistrationBaseAttribute : Attribute, IConventionRegistration
+	public abstract class RegistrationBaseAttribute : Attribute
 	{
-		protected abstract void PerformRegistration( IServiceRegistry registry, Type subject );
-
-		public void Register( IServiceRegistry registry, Type subject )
+		protected RegistrationBaseAttribute( IConventionRegistration registration )
 		{
-			PerformRegistration( registry, subject );
+			Registration = registration;
 		}
+
+		public IConventionRegistration Registration { get; }
 	}
 }

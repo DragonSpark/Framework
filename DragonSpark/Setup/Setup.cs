@@ -1,12 +1,12 @@
-﻿using AutoMapper.Internal;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
+using DragonSpark.Setup.Commands;
+using DragonSpark.Setup.Registration;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
-using DragonSpark.Setup.Commands;
-using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Setup
 {
@@ -17,9 +17,9 @@ namespace DragonSpark.Setup
 
 		public virtual CommandCollection Commands { get; } = new CommandCollection();
 		
-		public virtual void Run( object arguments = null )
+		public virtual void Run( object argument = null )
 		{
-			using ( var context = CreateContext( arguments ) )
+			using ( var context = CreateContext( argument ) )
 			{
 				Commands
 					.Where( command => command.CanExecute( context ) )
@@ -43,7 +43,6 @@ namespace DragonSpark.Setup
 			{
 				new SetupLoggingCommand<TLogger>(),
 				new SetupModuleCatalogCommand<TModuleCatalog>(),
-				new SetupUnityCommand(),
 				new RegisterFrameworkExceptionTypesCommand()
 			} );
 	}

@@ -2,6 +2,8 @@ using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Markup;
 
 namespace DragonSpark.Runtime
@@ -24,18 +26,14 @@ namespace DragonSpark.Runtime
 			items = new List<T>( collection );
 		}
 
+		IEnumerable<T> Items => built.Apply() ? items.Select( arg => arg.BuildUp() ) : items;
+
 		public virtual IEnumerator<T> GetEnumerator()
 		{
-			var result = Built().GetEnumerator();
+			var result = Items.GetEnumerator();
 			return result;
 		}
 
-		List<T> Built()
-		{
-			built.Apply( () => items.Each( obj => obj.BuildUp() ) );
-			return items;
-		}
-		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
@@ -98,7 +96,7 @@ namespace DragonSpark.Runtime
 
 		public void CopyTo( T[] array, int arrayIndex )
 		{
-			Built().CopyTo( array, arrayIndex );
+			Items.ToArray().CopyTo( array, arrayIndex );
 		}
 
 		public bool Remove( T item )
