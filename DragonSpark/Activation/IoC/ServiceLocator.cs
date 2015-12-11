@@ -71,7 +71,7 @@ namespace DragonSpark.Activation.IoC
 
 		protected virtual void Dispose( bool disposing )
 		{
-			disposed.Apply( Container.Dispose );
+			disposed.Apply( container.Dispose );
 		}
 	}
 }
