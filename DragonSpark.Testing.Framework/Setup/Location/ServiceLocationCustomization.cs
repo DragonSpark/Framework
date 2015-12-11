@@ -1,13 +1,13 @@
-﻿using System.Reflection;
-using DragonSpark.Activation;
+﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
-	public class ServiceLocationCustomization : ICustomization, IAfterTestAware
+	public class ServiceLocationCustomization : ICustomization, ITestExecutionAware
 	{
 		[Activate]
 		public IServiceLocator Locator { get; set; }
@@ -25,6 +25,9 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 			var relay = new ServiceLocationRelay( Locator, new AuthorizedLocationSpecification( Locator, Authority ) );
 			fixture.ResidueCollectors.Add( relay );
 		}
+
+		void ITestExecutionAware.Before( IFixture fixture, MethodInfo methodUnderTest )
+		{}
 
 		public void After( IFixture fixture, MethodInfo methodUnderTest )
 		{

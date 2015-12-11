@@ -153,7 +153,7 @@
     <Compile Include="Extensions\FixtureExtensions.cs" />
     <Compile Include="Parameters\FromCustomization.cs" />
     <Compile Include="Setup\DefaultEngineParts.cs" />
-    <Compile Include="IAfterTestAware.cs" />
+    <Compile Include="ITestExecutionAware.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\OutputCustomization.cs" />
     <Compile Include="RecordingLogger.cs" />

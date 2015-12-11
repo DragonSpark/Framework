@@ -19,6 +19,7 @@ namespace DragonSpark.Testing.Framework.Setup
 				customization.Register( Container.TryResolve<IRecordingLogger> );
 				customization.Register( () => Container.TryResolve<ILogger>() as IRecordingLogger );
 				customization.Register( () => Container.DetermineLogger() as IRecordingLogger );
+				customization.Register( () => Container.Extend().Logger as IRecordingLogger );
 			} );
 		}
 	}
