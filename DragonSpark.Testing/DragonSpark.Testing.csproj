@@ -145,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\ActivatorTests.cs" />
     <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerQualifierTests.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\Setup.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>

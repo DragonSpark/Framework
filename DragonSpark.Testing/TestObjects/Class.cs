@@ -15,6 +15,10 @@ namespace DragonSpark.Testing.TestObjects
 
 	class Class : IInterface
 	{}
+	class AnotherClass : IInterface
+	{}
+	class YetAnotherClass : IInterface
+	{}
 
 	class ClassWithBrokenConstructor : IInterface
 	{

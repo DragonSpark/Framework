@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
+using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using System;
-using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
@@ -72,6 +73,13 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.NotNull( target.Activated );
 
 			Assert.IsType<ClassWithParameter>( target.Factory );
+
+			Assert.NotNull( target.Collection );
+			Assert.IsType<Collection<object>>( target.Collection );
+			Assert.NotNull( target.Classes );
+			Assert.IsType<Collection<Class>>( target.Classes );
+
+			Assert.Equal( 6776, target.ValuedInt );
 
 			Assert.NotEqual( Guid.Empty, target.Guid );
 

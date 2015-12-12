@@ -1,7 +1,8 @@
-using System;
-using System.ComponentModel;
-using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
+using DragonSpark.Runtime.Values;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DragonSpark.Testing.TestObjects
 {
@@ -56,7 +57,24 @@ namespace DragonSpark.Testing.TestObjects
 
 		[Factory( typeof(ConstructFactory) )]
 		public object Factory { get; set; }
+
+		[Collection]
+		public IEnumerable<object> Collection { get; set; }
+
+		[Collection( typeof(Class) )]
+		public IEnumerable<Class> Classes { get; set; }
 		
+		[Value( typeof(Value) )]
+		public int ValuedInt { get; set; }
+
+		internal class Value : FixedValue<int>
+		{
+			public Value()
+			{
+				Assign( 6776 );
+			}
+		}
+
 		[NewGuid]
 		public Guid Guid { get; set; }
 

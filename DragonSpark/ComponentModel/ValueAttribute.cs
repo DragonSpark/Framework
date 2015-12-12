@@ -8,6 +8,9 @@ namespace DragonSpark.ComponentModel
 {
 	public class ValueAttribute : ActivateAttribute
 	{
+		public ValueAttribute( Type activatedType, string name = null ) : base( activatedType, name )
+		{}
+
 		protected override object Activate( object instance, PropertyInfo info, Type type, string s )
 		{
 			var item = base.Activate( instance, info, type, s );

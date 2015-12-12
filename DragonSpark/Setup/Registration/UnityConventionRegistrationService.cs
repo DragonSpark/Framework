@@ -4,14 +4,12 @@ using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
-using System;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class LifetimeManagerFactory : LifetimeManagerFactory<TransientLifetimeManager>
 	{
-		public LifetimeManagerFactory( IActivator activator ) : base( activator )
+		public LifetimeManagerFactory( IActivator activator ) : this( activator, SingletonLocator.Instance )
 		{}
 
 		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, locator )
@@ -39,26 +37,6 @@ namespace DragonSpark.Setup.Registration
 			{
 				locator.Locate( parameter.Type ).With( manager.SetValue );
 			} );;
-			return result;
-		}
-	}
-
-	public class LifetimeFactoryParameterCoercer : ActivateFactoryParameterCoercer<LifetimeManager>
-	{
-		readonly Type defaultLifetimeType;
-
-		public LifetimeFactoryParameterCoercer( Type defaultLifetimeType ) : this( Activator.Current, defaultLifetimeType )
-		{}
-
-		public LifetimeFactoryParameterCoercer( IActivator activator, Type defaultLifetimeType ) : base( activator )
-		{
-			this.defaultLifetimeType = defaultLifetimeType.Extend().GuardAsAssignable<LifetimeManager>( nameof(defaultLifetimeType) );
-		}
-
-		protected override ActivateParameter Create( Type type, object parameter )
-		{
-			var lifetimeManagerType = type.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType ) ?? defaultLifetimeType;
-			var result = base.Create( lifetimeManagerType, parameter );
 			return result;
 		}
 	}
