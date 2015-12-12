@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DragonSpark.Activation.FactoryModel
 {
-	class FactoryReflectionSupport
+	public class FactoryReflectionSupport
 	{
 		public static FactoryReflectionSupport Instance { get; } = new FactoryReflectionSupport();
 		static TypeExtension[] Types { get; } = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Extend() ).ToArray();
@@ -13,6 +13,13 @@ namespace DragonSpark.Activation.FactoryModel
 		public Type GetResultType( Type factoryType )
 		{
 			var result = Get( factoryType, types => types.Last(), Types );
+			return result;
+		}
+
+		public Type GetFactoryType( Type itemType )
+		{
+			var name = $"{itemType.Name}Factory";
+			var result = itemType.Assembly().DefinedTypes.AsTypes().With( types => types.Where( info => info.Name == name ).Only() ?? types.Where( typeof(IFactory).Extend().IsAssignableFrom ).Where( type => GetResultType( type ) == itemType ).Only() );
 			return result;
 		}
 

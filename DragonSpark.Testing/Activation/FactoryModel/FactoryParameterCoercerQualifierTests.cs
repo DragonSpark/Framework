@@ -7,12 +7,12 @@ using Xunit;
 
 namespace DragonSpark.Testing.Activation.FactoryModel
 {
-	public class ConstructFactoryParameterQualifierTests
+	public class FactoryParameterCoercerQualifierTests
 	{
 		[Theory, Test, SetupAutoData]
-		public void Construct( [Modest]ConstructFactoryParameterQualifier<object> sut )
+		public void Construct( [Modest]ConstructFactoryParameterCoercer<object> sut )
 		{
-			var parameter = sut.Qualify( typeof(Class) );
+			var parameter = sut.Coerce( typeof(Class) );
 			Assert.Equal( parameter.Type, typeof(Class) );
 		} 
 	}

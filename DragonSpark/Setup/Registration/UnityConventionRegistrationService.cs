@@ -5,10 +5,20 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Registration
 {
-	public class LifetimeManagerFactory : ActivateFactory<LifetimeManager>
+	public class LifetimeManagerFactory : LifetimeManagerFactory<TransientLifetimeManager>
+	{
+		public LifetimeManagerFactory( IActivator activator ) : base( activator )
+		{}
+
+		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, locator )
+		{}
+	}
+
+	public class LifetimeManagerFactory<T> : ActivateFactory<LifetimeManager> where T : LifetimeManager
 	{
 		readonly ISingletonLocator locator;
 
@@ -18,23 +28,38 @@ namespace DragonSpark.Setup.Registration
 		public LifetimeManagerFactory( IActivator activator ) : this( activator, SingletonLocator.Instance )
 		{}
 
-		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator )
+		public LifetimeManagerFactory( IActivator activator, ISingletonLocator locator ) : base( activator, new LifetimeFactoryParameterCoercer( activator, typeof(T) ) )
 		{
 			this.locator = locator;
 		}
 
-		protected override LifetimeManager Activate( Type qualified, ActivateParameter parameter )
+		protected override LifetimeManager Activate( ActivateParameter parameter )
 		{
-			var result = base.Activate( qualified, parameter ).With( manager =>
+			var result = base.Activate( parameter ).With( manager =>
 			{
 				locator.Locate( parameter.Type ).With( manager.SetValue );
 			} );;
 			return result;
 		}
+	}
 
-		protected override Type DetermineType( ActivateParameter parameter )
+	public class LifetimeFactoryParameterCoercer : ActivateFactoryParameterCoercer<LifetimeManager>
+	{
+		readonly Type defaultLifetimeType;
+
+		public LifetimeFactoryParameterCoercer( Type defaultLifetimeType ) : this( Activator.Current, defaultLifetimeType )
+		{}
+
+		public LifetimeFactoryParameterCoercer( IActivator activator, Type defaultLifetimeType ) : base( activator )
 		{
-			return base.DetermineType( parameter ).FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
+			this.defaultLifetimeType = defaultLifetimeType.Extend().GuardAsAssignable<LifetimeManager>( nameof(defaultLifetimeType) );
+		}
+
+		protected override ActivateParameter Create( Type type, object parameter )
+		{
+			var lifetimeManagerType = type.FromMetadata<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType ) ?? defaultLifetimeType;
+			var result = base.Create( lifetimeManagerType, parameter );
+			return result;
 		}
 	}
 

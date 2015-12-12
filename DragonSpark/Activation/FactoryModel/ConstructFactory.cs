@@ -7,30 +7,33 @@ namespace DragonSpark.Activation.FactoryModel
 		public ConstructFactory() : this( SystemActivator.Instance )
 		{}
 
-		public ConstructFactory( IActivator activator ) : this( activator, new ConstructFactoryParameterQualifier<TResult>( activator ) )
+		public ConstructFactory( IActivator activator ) : this( activator, new ConstructFactoryParameterCoercer<TResult>( activator ) )
 		{}
 
-		public ConstructFactory( IActivator activator, IFactoryParameterQualifier<ConstructParameter> qualifier ) : base( activator, qualifier )
+		public ConstructFactory( IActivator activator, IFactoryParameterCoercer<ConstructParameter> coercer ) : base( activator, coercer )
 		{}
 
-		protected override TResult Activate( Type qualified, ConstructParameter parameter )
+		protected override TResult Activate( ConstructParameter parameter )
 		{
-			var result = Activator.Construct<TResult>( qualified, parameter.Arguments );
+			var result = Activator.Construct<TResult>( parameter.Type, parameter.Arguments );
 			return result;
 		}
 	}
 
-	public class ActivateFactory<TParameter, TResult> : ActivationFactory<TParameter, TResult> where TResult : class where TParameter : ActivateParameter
+	public abstract class ActivateFactory<TParameter, TResult> : ActivationFactory<TParameter, TResult> where TResult : class where TParameter : ActivateParameter
 	{
-		public ActivateFactory()
+		protected ActivateFactory()
 		{}
 
-		public ActivateFactory( IActivator activator ) : base( activator )
+		protected ActivateFactory( IActivator activator ) : base( activator )
 		{}
 
-		protected override TResult Activate( Type qualified, TParameter parameter )
+		protected ActivateFactory( IActivator activator, IFactoryParameterCoercer<TParameter> coercer ) : base( activator, coercer )
+		{}
+
+		protected override TResult Activate( TParameter parameter )
 		{
-			var result = Activator.Activate<TResult>( qualified, parameter.Name );
+			var result = Activator.Activate<TResult>( parameter.Type, parameter.Name );
 			return result;
 		}
 	}

@@ -147,7 +147,7 @@
   <ItemGroup>
     <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
-    <Compile Include="Activation\FactoryModel\ConstructFactoryParameterQualifierTests.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryParameterCoercerQualifierTests.cs" />
     <Compile Include="Activation\FactoryModel\ObjectFactoryParameterTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />

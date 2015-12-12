@@ -21,8 +21,8 @@ namespace DragonSpark.Setup.Registration
 
 		public void Register( IServiceRegistry registry, Type subject )
 		{
-			var typeExtension = FactoryReflectionSupport.Instance.GetResultType( subject );
-			typeExtension.With( type =>
+			var resultType = FactoryReflectionSupport.Instance.GetResultType( subject );
+			resultType.With( type =>
 			{
 				registry.RegisterFactory( type, () =>
 				{

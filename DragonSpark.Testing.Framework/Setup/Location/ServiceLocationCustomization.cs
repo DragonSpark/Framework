@@ -1,9 +1,12 @@
-﻿using DragonSpark.Activation;
+﻿using System;
+using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using System.Reflection;
+using DragonSpark.Extensions;
+using Ploeh.AutoFixture.Kernel;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -141,7 +144,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		}
 	}*/
 
-	/*class FixtureRegistry : IServiceRegistry
+	class FixtureRegistry : IServiceRegistry
 	{
 		readonly IFixture fixture;
 
@@ -174,5 +177,5 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		{
 			fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
 		}
-	}*/
+	}
 }

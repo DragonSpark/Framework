@@ -66,9 +66,12 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyList<Type> parameterTypes )
+		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyCollection<Type> provided )
 		{
-			var result = parameters.Count == parameterTypes.Count && !parameters.Where( ( t, i ) => !parameterTypes[i].With( t.ParameterType.Extend().IsAssignableFrom, () => true ) ).Any();
+			var result = 
+				provided.Count >= parameters.Count( info => !info.IsOptional ) && 
+				provided.Count <= parameters.Count && 
+				parameters.Select( ( t, i ) => provided.ElementAtOrDefault( i ).With( t.ParameterType.Extend().IsAssignableFrom, () => i < provided.Count || t.IsOptional ) ).All( b => b );
 			return result;
 		}
 

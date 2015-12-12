@@ -1,8 +1,7 @@
 using DragonSpark.Extensions;
 using System;
+using System.Linq;
 using System.Reflection;
-using DragonSpark.Runtime;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Activation
 {
@@ -25,13 +24,21 @@ namespace DragonSpark.Activation
 		public bool CanConstruct( Type type, params object[] parameters )
 		{
 			var info = type.GetTypeInfo();
-			var result = info.IsValueType || new TypeExtension( info ).FindConstructor( parameters ) != null;
+			var result = info.IsValueType || Coerce( type, parameters ) != null;
+			return result;
+		}
+
+		static object[] Coerce( Type type, object[] parameters )
+		{
+			var candidates = new[] { parameters, parameters.NotNull() };
+			var extended = type.Extend();
+			var result = candidates.Select( objects => objects as object[] ?? objects.ToArray() ).FirstOrDefault( x => extended.FindConstructor( x ) != null );
 			return result;
 		}
 
 		public object Construct( Type type, params object[] parameters )
 		{
-			var result = System.Activator.CreateInstance( type, parameters ).BuildUp();
+			var result = System.Activator.CreateInstance( type, Coerce( type, parameters ) ).BuildUp();
 			return result;
 		}
 	}

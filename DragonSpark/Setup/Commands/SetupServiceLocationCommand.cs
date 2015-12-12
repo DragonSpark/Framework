@@ -1,10 +1,9 @@
-using System.Diagnostics;
 using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
-using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Setup.Commands
 {
@@ -13,7 +12,7 @@ namespace DragonSpark.Setup.Commands
 		[Singleton( typeof(ServiceLocation) )]
 		public IServiceLocation Location { get; set; }
 
-		[Activate( typeof(ServiceLocator) )]
+		[Factory( typeof(ServiceLocatorFactory) )]
 		public IServiceLocator Locator { get; set; }
 
 		protected override void Execute( SetupContext context )

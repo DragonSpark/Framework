@@ -1,4 +1,5 @@
-﻿using DragonSpark.Diagnostics;
+﻿using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
@@ -10,6 +11,21 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class ServiceLocatorFactory : ActivateFactory<ServiceLocator>
+	{
+		public ServiceLocatorFactory()
+		{}
+
+		public ServiceLocatorFactory( IActivator activator ) : base( activator )
+		{}
+
+		protected override ServiceLocator Activate( ActivateParameter parameter )
+		{
+			var result = base.Activate( parameter ).WithSelf( locator => locator.Container.Extend().Register( locator ) );
+			return result;
+		}
+	}
+
 	public class ServiceLocator : ServiceLocatorImplBase, IDisposable
 	{
 		readonly IUnityContainer container;
@@ -20,7 +36,7 @@ namespace DragonSpark.Activation.IoC
 
 		public ServiceLocator( IUnityContainer container )
 		{
-			this.container = container.Extend().Register( this );
+			this.container = container;
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()

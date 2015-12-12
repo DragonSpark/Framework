@@ -137,7 +137,6 @@
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
     <Compile Include="Setup\CanLocateSpecification.cs" />
     <Compile Include="Setup\ConfigureLocationCustomization.cs" />
-    <Compile Include="Setup\Location\ContainerExtensionFactory.cs" />
     <Compile Include="Setup\CurrentMethodCustomization.cs" />
     <Compile Include="Setup\CurrentMethodSpecification.cs" />
     <Compile Include="Setup\CurrentTaskSpecification.cs" />

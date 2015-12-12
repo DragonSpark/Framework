@@ -1,4 +1,5 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Extensions;
@@ -43,7 +44,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( new ServiceLocator().Prepared( MethodBase.GetCurrentMethod() ) );
+			sut.Assign( Factory.Create<ServiceLocator>().Prepared( MethodBase.GetCurrentMethod() ) );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );
@@ -113,7 +114,7 @@ namespace DragonSpark.Testing.Activation
 		{
 			Assert.Same( ServiceLocation.Instance, location );
 
-			location.Assign( new ServiceLocator().Prepared( MethodBase.GetCurrentMethod() ) );
+			location.Assign( Factory.Create<ServiceLocator>().Prepared( MethodBase.GetCurrentMethod() ) );
 
 			location.Register( typeof(IServiceRegistry), sut.Object );
 

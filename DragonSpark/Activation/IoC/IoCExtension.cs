@@ -7,7 +7,6 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using System;
-using LifetimeManagerFactory = DragonSpark.Setup.Registration.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -39,7 +38,7 @@ namespace DragonSpark.Activation.IoC
 
 		IServiceRegistry CreateRegistry()
 		{
-			var factory = new LifetimeManagerFactory( Container.Resolve<IActivator>() );
+			var factory = new Setup.Registration.LifetimeManagerFactory( Container.Resolve<IActivator>() );
 			var result = new ServiceRegistry( Container, Container.DetermineLogger(), factory );
 			return result;
 		}

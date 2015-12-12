@@ -1,9 +1,9 @@
-using System;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Activation.IoC
 {

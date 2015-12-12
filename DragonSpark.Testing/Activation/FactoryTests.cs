@@ -1,4 +1,3 @@
-using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
@@ -12,7 +11,7 @@ namespace DragonSpark.Testing.Activation
 	public class FactoryTests
 	{
 		[Theory, Test, SetupAutoData]
-		void CreateActivation( ActivateFactory<Class> sut )
+		void CreateActivation( [Modest]ActivateFactory<Class> sut )
 		{
 			var creation = sut.CreateUsing( typeof(Class) );
 			Assert.NotNull( creation );

@@ -2,14 +2,14 @@
 {
 	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
 	{
-		readonly IFactoryParameterQualifier<TParameter> qualifier;
+		readonly IFactoryParameterCoercer<TParameter> coercer;
 
-		protected FactoryBase() : this( new FactoryParameterQualifier<TParameter>() )
+		protected FactoryBase() : this( new FactoryParameterCoercer<TParameter>() )
 		{}
 
-		protected FactoryBase( IFactoryParameterQualifier<TParameter> qualifier )
+		protected FactoryBase( IFactoryParameterCoercer<TParameter> coercer )
 		{
-			this.qualifier = qualifier;
+			this.coercer = coercer;
 		}
 
 		protected abstract TResult CreateItem( TParameter parameter );
@@ -22,7 +22,7 @@
 
 		object IFactoryWithParameter.Create( object parameter )
 		{
-			var qualified = qualifier.Qualify( parameter );
+			var qualified = coercer.Coerce( parameter );
 			var result = Create( qualified );
 			return result;
 		}

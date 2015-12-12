@@ -4,15 +4,28 @@ namespace DragonSpark.Activation.FactoryModel
 	{
 		public static ActivateFactory<TResult> Instance { get; } = new ActivateFactory<TResult>();
 
-		public ActivateFactory()
+		public ActivateFactory() : this( SystemActivator.Instance )
 		{}
 
-		public ActivateFactory( IActivator activator ) : base( activator )
+		public ActivateFactory( IActivator activator ) : this( activator, new ActivateFactoryParameterCoercer<TResult>( activator ) )
 		{}
 
-		/*protected override ActivateParameter QualifyParameter( object parameter )
-		{
-			return base.QualifyParameter( parameter ) ?? new ActivateParameter( typeof(TResult) );
-		}*/
+		public ActivateFactory( IActivator activator, IFactoryParameterCoercer<ActivateParameter> coercer ) : base( activator, coercer )
+		{}
 	}
+
+	/*public class ConventionActivateFactory<TResult> : ActivateFactory<ActivateParameter, TResult> where TResult : class
+	{
+		public ConventionActivateFactory()
+		{}
+
+		public ConventionActivateFactory( IActivator activator ) : base( activator )
+		{}
+
+		protected override Type DetermineType( ActivateParameter parameter )
+		{
+			var result = base.DetermineType( parameter ).Extend().GetConventionCandidate();
+			return result;
+		}
+	}*/
 }

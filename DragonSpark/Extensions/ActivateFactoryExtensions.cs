@@ -7,7 +7,7 @@ namespace DragonSpark.Extensions
 	{
 		public static T CreateUsing<T>( this IFactory<ActivateParameter, T> @this, Type type )
 		{
-			var result = @this.Create( new ActivateParameter( type ) );
+			var result = (T)@this.Create( type );
 			return result;
 		}
 	}

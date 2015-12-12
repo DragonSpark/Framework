@@ -1,15 +1,47 @@
-using System;
-using System.Linq;
-using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework.Extensions;
+using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.ServiceLocation;
 using Moq;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit2;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework
 {
+	public class FactoryAttribute : CustomizeAttribute
+	{
+		class Customization : ICustomization
+		{
+			readonly Type itemType;
+
+			public Customization( Type itemType )
+			{
+				this.itemType = itemType;
+			}
+
+			public void Customize( IFixture fixture )
+			{
+				new FixtureRegistry( fixture ).RegisterFactory( itemType, Create );
+			}
+
+			object Create()
+			{
+				var factoryType = FactoryReflectionSupport.Instance.GetFactoryType( itemType );
+				var result = new FactoryBuiltObjectFactory().Create( new ObjectFactoryParameter( factoryType ) );
+				return result;
+			}
+		}
+
+		public override ICustomization GetCustomization( ParameterInfo parameter )
+		{
+			return new Customization( parameter.ParameterType );
+		}
+	}
+
 	public class RegisteredAttribute : CustomizeAttribute
 	{
 		class Customization : ICustomization
