@@ -25,9 +25,10 @@ https://github.com/PrismLibrary/Prism
 
 The code here is borrowed as Prism owners did not want to change the 
 intent/concern/location of its modularity, logging, eventing and bootstrapping
-functionality.  This project has does this and has adapted this features here.
+functionality.  This project has does this and has adapted these features here
+accordingly.
 
-More information can be found at these locations:
+More information about this can be found at these locations:
 https://github.com/PrismLibrary/Prism/issues/3
 https://github.com/PrismLibrary/Prism/issues/4
 https://github.com/PrismLibrary/Prism/issues/1
