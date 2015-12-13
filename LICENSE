@@ -23,6 +23,10 @@ Some code found within this project does originate from a great external project
 known as Prism.  You can find this project here:
 https://github.com/PrismLibrary/Prism
 
+All code in this project that makes use of this originating code is subject to
+and copyrighted under the conditions of the license found here:
+https://github.com/PrismLibrary/Prism/blob/master/LICENSE
+
 The code here is borrowed as Prism owners did not want to change the 
 intent/concern/location of its modularity, logging, eventing and bootstrapping
 functionality.  This project has does this and has adapted these features here
