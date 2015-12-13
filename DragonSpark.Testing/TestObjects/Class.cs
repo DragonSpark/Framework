@@ -1,6 +1,7 @@
 using DragonSpark.Setup;
 using Microsoft.Practices.Unity;
 using System;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Testing.TestObjects
@@ -17,7 +18,11 @@ namespace DragonSpark.Testing.TestObjects
 	{}
 	class AnotherClass : IInterface
 	{}
-	class YetAnotherClass : IInterface
+
+	public class YetAnotherClass : IInterface
+	{}
+
+	public class FactoryOfYAC : ActivateFactory<YetAnotherClass>
 	{}
 
 	class ClassWithBrokenConstructor : IInterface

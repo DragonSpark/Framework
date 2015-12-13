@@ -8,7 +8,9 @@ namespace DragonSpark.Activation.FactoryModel
 	public class FactoryReflectionSupport
 	{
 		public static FactoryReflectionSupport Instance { get; } = new FactoryReflectionSupport();
-		static TypeExtension[] Types { get; } = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Extend() ).ToArray();
+		static readonly TypeExtension[] 
+			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Extend() ).ToArray(),
+			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Extend() ).ToArray();
 
 		public Type GetResultType( Type factoryType )
 		{
@@ -19,7 +21,11 @@ namespace DragonSpark.Activation.FactoryModel
 		public Type GetFactoryType( Type itemType )
 		{
 			var name = $"{itemType.Name}Factory";
-			var result = itemType.Assembly().DefinedTypes.AsTypes().With( types => types.Where( info => info.Name == name ).Only() ?? types.Where( typeof(IFactory).Extend().IsAssignableFrom ).Where( type => GetResultType( type ) == itemType ).Only() );
+			var result = itemType.Assembly().DefinedTypes.AsTypes().ToArray().With( types => types.Where( info => info.Name == name ).Only() 
+				??
+				types
+					.Where( x => BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) )
+					.Where( type => GetResultType( type ) == itemType ).Only() );
 			return result;
 		}
 
