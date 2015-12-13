@@ -99,11 +99,11 @@ namespace DragonSpark.TypeSystem
 			return info.DeclaredMethods.SingleOrDefault( method => method.Name == "op_Implicit" && method.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom( other.GetTypeInfo() ) );
 		}
 
-		public bool IsSubclass( Type other )
+		/*public bool IsSubclass( Type other )
 		{
 			var result = info.IsSubclassOf( other );
 			return result;
-		}
+		}*/
 
 		public Assembly Assembly => info.Assembly;
 

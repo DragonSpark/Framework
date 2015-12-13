@@ -21,6 +21,13 @@ namespace DragonSpark.Testing.TypeSystem
 			Assert.Equal( item, Assert.IsType<Casted>( qualified ).Item );
 		}
 
+		[Fact]
+		public void IsInstanceOfType()
+		{
+			var adapter = new TypeAdapter( typeof(Casted) );
+			Assert.True( adapter.IsInstanceOfType( new Casted( 6776 ) ) );
+		}
+
 		class Casted
 		{
 			public Casted( int item )
