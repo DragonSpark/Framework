@@ -28,7 +28,6 @@ namespace DragonSpark.Extensions
 
 		public static void RegisterFactory( this IServiceLocator target, Type type, Func<object> factory )
 		{
-
 			With( target, x => x.RegisterFactory( type, factory ) );
 		}
 

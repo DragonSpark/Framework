@@ -162,9 +162,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
+    <Compile Include="Extensions\AssemblyLocatorExtensionsTests.cs" />
     <Compile Include="Extensions\BooleanExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\CollectionExtensionsTests.cs" />
+    <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />

@@ -1,15 +1,20 @@
-using System;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Specifications;
+using System;
 
 namespace DragonSpark.Runtime.Values
 {
 	public static class AmbientValues
 	{
+		static AmbientValues()
+		{
+			Initialize( AmbientValueRepository.Instance );
+		}
+
 		public static void Initialize( IAmbientValueRepository repository )
 		{
 			Repository = repository;
-		}	static IAmbientValueRepository Repository { get; set; } = AmbientValueRepository.Instance;
+		}	static IAmbientValueRepository Repository { get; set; }
 
 		public static T Get<T>()
 		{

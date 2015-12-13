@@ -5,25 +5,6 @@ namespace DragonSpark.Extensions
 {
 	public static class StringExtensions
 	{
-		/*public static string GenerateSlug( this string phrase )
-		{
-			var result = Regex.Replace( phrase.Trim().RemoveAccent().ToLower(), @"[^a-zA-Z0-9]", "-" ).Transform( x => x.Substring( 0, x.Length ) );
-			return result;
-		}
-
-		public static string RemoveAccent( this string txt )
-		{
-			var bytes = Encoding.GetEncoding( "Cyrillic" ).GetBytes( txt );
-			return Encoding.ASCII.GetString( bytes );
-		}*/
-
-		/*public static string WithReplacements( this string target, StringReplacementDictionary replacements = null )
-		{
-			var parameter = replacements ?? Services.Locate<StringReplacementDictionary>();
-			var result = parameter.Transform( x => string.Format( NamedTokenFormatter.Instance, target, parameter ) ) ?? target;
-			return result;
-		}*/
-
 		public static string Capitalized( this string target )
 		{
 			var result = string.IsNullOrEmpty( target ) ? string.Empty : char.ToUpper( target[ 0 ] ) + target.Substring( 1 );

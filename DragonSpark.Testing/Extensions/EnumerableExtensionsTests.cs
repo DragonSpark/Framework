@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
@@ -12,7 +10,7 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class EnumerableExtensionsTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		public void Each( IEnumerable<object> sut )
 		{
 			var count = 0;
@@ -21,7 +19,25 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.Count(), count );
 		}
 
-		[Theory, Test, SetupAutoData]
+
+		[Theory, AutoData]
+		public void Prepend( IEnumerable<object> sut, object[] items )
+		{
+			var prepended = sut.Prepend( items );
+			Assert.Equal( sut.Count() + items.Length, prepended.Count() );
+			Assert.True( sut.All( x => prepended.Contains( x ) ) );
+			Assert.True( items.All( x => prepended.Contains( x ) ) );
+		}
+
+		[Theory, AutoData]
+		public void Prepend( object sut, IEnumerable<object> items )
+		{
+			var prepended = sut.Prepend( items );
+			Assert.Equal( items.Count() + 1, prepended.Count() );
+			Assert.Same( prepended.Last(), sut );
+		}
+
+		[Theory, AutoData]
 		public void EachWithFunc( IEnumerable<object> sut )
 		{
 			var copy = sut.ToList();
