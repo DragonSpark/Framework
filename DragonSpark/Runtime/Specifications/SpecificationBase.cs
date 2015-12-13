@@ -20,24 +20,4 @@ namespace DragonSpark.Runtime.Specifications
 			return result;
 		}
 	}
-
-	public class AlwaysSpecification : ISpecification
-	{
-		public static AlwaysSpecification Instance { get; } = new AlwaysSpecification();
-
-		public bool IsSatisfiedBy( object context )
-		{
-			return true;
-		}
-	}
-
-	public class NeverSpecification : ISpecification
-	{
-		public static NeverSpecification Instance { get; } = new NeverSpecification();
-
-		public bool IsSatisfiedBy( object context )
-		{
-			return false;
-		}
-	}
 }

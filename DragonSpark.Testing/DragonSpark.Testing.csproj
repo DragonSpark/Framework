@@ -171,6 +171,9 @@
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Runtime\Specifications\AllSpecificationTests.cs" />
+    <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
+    <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Values\AmbientContextTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\Setup.cs">
