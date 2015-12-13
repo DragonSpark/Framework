@@ -12,8 +12,8 @@ namespace DragonSpark.Activation.FactoryModel
 
 	public abstract class ActivationFactory<TParameter, TResult> : FactoryBase<TParameter, TResult> where TParameter : ActivationParameter where TResult : class
 	{
-		protected ActivationFactory() : this( SystemActivator.Instance )
-		{}
+		/*protected ActivationFactory() : this( SystemActivator.Instance )
+		{}*/
 
 		protected ActivationFactory( IActivator activator ) : this( activator, new FactoryParameterCoercer<TParameter>( activator ) )
 		{}

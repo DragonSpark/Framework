@@ -5,9 +5,6 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public class ConstructFactoryParameterCoercer<TResult> : ActivationFactoryParameterCoercer<ConstructParameter, TResult>
 	{
-		public ConstructFactoryParameterCoercer()
-		{}
-
 		public ConstructFactoryParameterCoercer( IActivator activator ) : base( activator )
 		{}
 
@@ -19,9 +16,6 @@ namespace DragonSpark.Activation.FactoryModel
 
 	public class ActivateFactoryParameterCoercer<TResult> : ActivationFactoryParameterCoercer<ActivateParameter, TResult>
 	{
-		public ActivateFactoryParameterCoercer()
-		{}
-
 		public ActivateFactoryParameterCoercer( IActivator activator ) : base( activator )
 		{}
 

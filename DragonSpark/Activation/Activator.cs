@@ -45,7 +45,7 @@ namespace DragonSpark.Activation
 
 		public static IEnumerable<object> ActivateMany( this IActivator @this, Type objectType, IEnumerable<Type> types )
 		{
-			var result = types.Where( objectType.Extend().CanLocate ).Select( @this.Activate<object> );
+			var result = types.Where( objectType.Adapt().CanLocate ).Select( @this.Activate<object> );
 			return result;
 		}
 	} 

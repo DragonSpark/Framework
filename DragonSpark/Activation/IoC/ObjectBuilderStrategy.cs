@@ -7,7 +7,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		public override void PreBuildUp( IBuilderContext context )
 		{
-			var execute = !typeof(IObjectBuilder).Extend().IsAssignableFrom( context.BuildKey.Type ) && context.IsRegistered<IObjectBuilder>();
+			var execute = !typeof(IObjectBuilder).Adapt().IsAssignableFrom( context.BuildKey.Type ) && context.IsRegistered<IObjectBuilder>();
 			execute.IsTrue( () =>
 			{
 				var item = context.NewBuildUp<IObjectBuilder>();

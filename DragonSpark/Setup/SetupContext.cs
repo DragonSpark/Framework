@@ -37,7 +37,7 @@ namespace DragonSpark.Setup
 
 		public T GetArguments<T>()
 		{
-			arguments.GetType().Extend().GuardAsAssignable<T>( "arguments" );
+			arguments.GetType().Adapt().GuardAsAssignable<T>( "arguments" );
 			
 			var result = (T)arguments;
 			return result;

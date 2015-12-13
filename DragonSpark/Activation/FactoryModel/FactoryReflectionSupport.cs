@@ -8,9 +8,9 @@ namespace DragonSpark.Activation.FactoryModel
 	public class FactoryReflectionSupport
 	{
 		public static FactoryReflectionSupport Instance { get; } = new FactoryReflectionSupport();
-		static readonly TypeExtension[] 
-			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Extend() ).ToArray(),
-			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Extend() ).ToArray();
+		static readonly TypeAdapter[] 
+			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
+			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
 
 		public Type GetResultType( Type factoryType )
 		{
@@ -29,10 +29,10 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		static Type Get( Type factoryType, Func<Type[],Type> selector, params TypeExtension[] typesToCheck )
+		static Type Get( Type factoryType, Func<Type[],Type> selector, params TypeAdapter[] typesToCheck )
 		{
 			var result = factoryType
-				.Extend()
+				.Adapt()
 				.GetAllInterfaces()
 				.AsTypeInfos()
 				.Where( type => type.IsGenericType && typesToCheck.Any( extension => extension.IsAssignableFrom( type.GetGenericTypeDefinition() ) ) )
@@ -41,7 +41,7 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		/*public TypeExtension GetParameterType( TypeExtension factoryType )
+		/*public TypeAdapter GetParameterType( TypeAdapter factoryType )
 		{
 			var result = Get( factoryType, types => types.First(), Types.Last() );
 			return result;

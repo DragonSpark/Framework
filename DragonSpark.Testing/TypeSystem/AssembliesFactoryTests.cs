@@ -6,7 +6,7 @@ using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime
+namespace DragonSpark.Testing.TypeSystem
 {
 	public class AssembliesFactoryTests
 	{
@@ -25,5 +25,11 @@ namespace DragonSpark.Testing.Runtime
 
 			Assert.Equal( fromContainer, sut );
 		}
+
+		/*[Theory, Test, SetupAutoData]
+		public void Create( AssembliesFactory factory )
+		{
+			var items = factory.Create();
+		}*/
 	}
 }

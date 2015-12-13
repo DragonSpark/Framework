@@ -7,26 +7,26 @@ namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
-		static readonly ConcurrentDictionary<Type, TypeExtension> Extensions = new ConcurrentDictionary<Type, TypeExtension>();
+		static readonly ConcurrentDictionary<Type, TypeAdapter> Extensions = new ConcurrentDictionary<Type, TypeAdapter>();
 
-		public static TypeExtension Extend( this object @this )
+		public static TypeAdapter Adapt( this object @this )
 		{
-			return @this.GetType().Extend();
+			return @this.GetType().Adapt();
 		}
 
-		public static TypeExtension Extend( this Type @this )
+		public static TypeAdapter Adapt( this Type @this )
 		{
-			return @this.With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
+			return @this.With( item => Extensions.GetOrAdd( item, t => new TypeAdapter( t ) ) );
 		}
 
-		public static TypeExtension Extend( this TypeInfo @this )
+		public static TypeAdapter Adapt( this TypeInfo @this )
 		{
-			return @this.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
+			return @this.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeAdapter( t ) ) );
 		}
 
 		public static Assembly Assembly( this Type @this )
 		{
-			return Extend( @this ).Assembly;
+			return Adapt( @this ).Assembly;
 		}
 
 		/*

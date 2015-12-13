@@ -22,7 +22,7 @@ namespace DragonSpark.Setup
 
 		protected override Array CreateItem( Type parameter )
 		{
-			// var type = parameter ?? resultType.Extend().GetInnerType() ?? resultType;
+			// var type = parameter ?? resultType.Adapt().GetInnerType() ?? resultType;
 			var types = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes );
 			var items = activator.ActivateMany( parameter, types ).ToArray();
 			var result = Array.CreateInstance( parameter, items.Length );

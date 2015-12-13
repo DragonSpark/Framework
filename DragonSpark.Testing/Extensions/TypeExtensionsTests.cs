@@ -11,23 +11,23 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		public void GetHierarchy()
 		{
-			Assert.Equal( new[]{ typeof(Derived), typeof(Class), typeof(object) }, typeof(Derived).Extend().GetHierarchy().ToArray() );
-			Assert.Equal( new[]{ typeof(Derived), typeof(Class) }, typeof(Derived).Extend().GetHierarchy( false ).ToArray() );
+			Assert.Equal( new[]{ typeof(Derived), typeof(Class), typeof(object) }, typeof(Derived).Adapt().GetHierarchy().ToArray() );
+			Assert.Equal( new[]{ typeof(Derived), typeof(Class) }, typeof(Derived).Adapt().GetHierarchy( false ).ToArray() );
 		}
 
 		[Fact]
 		public void GetAllInterfaces()
 		{
-			var interfaces = typeof(Derived).Extend().GetAllInterfaces().OrderBy( x => x.Name ).ToArray();
+			var interfaces = typeof(Derived).Adapt().GetAllInterfaces().OrderBy( x => x.Name ).ToArray();
 			Assert.Equal( new[]{ typeof(IAnotherInterface), typeof(IInterface) }, interfaces );
 		}
 
 		[Fact]
 		public void GetItemType()
 		{
-			Assert.Equal( typeof(Class), typeof(List<Class>).Extend().GetInnerType() );
-			Assert.Equal( typeof(Class), typeof(Class[]).Extend().GetInnerType() );
-			Assert.Null( typeof(Class).Extend().GetInnerType() );
+			Assert.Equal( typeof(Class), typeof(List<Class>).Adapt().GetInnerType() );
+			Assert.Equal( typeof(Class), typeof(Class[]).Adapt().GetInnerType() );
+			Assert.Null( typeof(Class).Adapt().GetInnerType() );
 		}
 	}
 }

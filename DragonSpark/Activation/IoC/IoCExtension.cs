@@ -200,7 +200,7 @@ namespace DragonSpark.Activation.IoC
 
 		public IUnityContainer Convention( object instance )
 		{
-			return Check( instance.GetType(), () => container.RegisterInstance( instance.Extend().GetConventionCandidate(), instance ) );
+			return Check( instance.GetType(), () => container.RegisterInstance( instance.Adapt().GetConventionCandidate(), instance ) );
 		}
 
 		IUnityContainer Check( Type type, Action apply )
@@ -211,12 +211,12 @@ namespace DragonSpark.Activation.IoC
 
 		public IUnityContainer AllInterfaces( object instance )
 		{
-			return Check( instance.GetType(), () => instance.Extend().GetAllInterfaces().Each( y => container.RegisterInstance( y, instance ) ) );
+			return Check( instance.GetType(), () => instance.Adapt().GetAllInterfaces().Each( y => container.RegisterInstance( y, instance ) ) );
 		}
 
 		public IUnityContainer AllClasses( object instance )
 		{
-			return Check( instance.GetType(), () => instance.Extend().GetAllHierarchy().Each( y => container.RegisterInstance( y, instance ) ) );
+			return Check( instance.GetType(), () => instance.Adapt().GetAllHierarchy().Each( y => container.RegisterInstance( y, instance ) ) );
 		}
 
 		public IUnityContainer Mapping<TInterface, TImplementation>( LifetimeManager manager = null ) where TImplementation : TInterface

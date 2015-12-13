@@ -16,7 +16,7 @@ namespace DragonSpark.Setup.Registration
 
 		public LifetimeFactoryParameterCoercer( IActivator activator, Type defaultLifetimeType ) : base( activator )
 		{
-			this.defaultLifetimeType = defaultLifetimeType.Extend().GuardAsAssignable<LifetimeManager>( nameof(defaultLifetimeType) );
+			this.defaultLifetimeType = defaultLifetimeType.Adapt().GuardAsAssignable<LifetimeManager>( nameof(defaultLifetimeType) );
 		}
 
 		protected override ActivateParameter Create( Type type, object parameter )

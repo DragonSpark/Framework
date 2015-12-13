@@ -8,7 +8,7 @@ namespace DragonSpark.Activation.FactoryModel
 		public FactoryBuiltObjectFactory() : this( Activation.Activator.Current )
 		{}
 
-		public FactoryBuiltObjectFactory( IActivator activator ) : base( activator )
+		public FactoryBuiltObjectFactory( IActivator activator ) :	base( activator )
 		{}
 
 		protected override object Activate( ObjectFactoryParameter parameter )

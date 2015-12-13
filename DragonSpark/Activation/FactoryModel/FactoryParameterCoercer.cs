@@ -28,12 +28,12 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		protected virtual TParameter Construct( object parameter )
+		protected TParameter Construct( object parameter )
 		{
-			var constructor = typeof(TParameter).Extend().FindConstructor( parameter.GetType() );
+			var constructor = typeof(TParameter).Adapt().FindConstructor( parameter.GetType() );
 			var result = (TParameter)constructor.With( info =>
 			{
-				var parameters = info.GetParameters().First().ParameterType.Extend().Qualify( parameter ).Append( Enumerable.Repeat( Type.Missing, Math.Max( 0, constructor.GetParameters().Length - 1 ) ) ).ToArray();
+				var parameters = info.GetParameters().First().ParameterType.Adapt().Qualify( parameter ).Append( Enumerable.Repeat( Type.Missing, Math.Max( 0, constructor.GetParameters().Length - 1 ) ) ).ToArray();
 				return info.Invoke( parameters );
 			} );
 			// var result = construct != null ? construct : parameter.AsTo<Type, TParameter>( activator.Activate<TParameter> );

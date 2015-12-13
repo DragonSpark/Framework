@@ -34,7 +34,7 @@ namespace DragonSpark.ComponentModel
 				.Where( x => x.IsDecoratedWith<System.ComponentModel.DefaultValueAttribute>() )
 				.Select( x =>
 				{
-					var defaultValue = x.PropertyType.Extend().GetDefaultValue();
+					var defaultValue = x.PropertyType.Adapt().GetDefaultValue();
 					var current = x.GetValue( target, null );
 
 					// var equalsDefault = current.As<string>().With( string.IsNullOrEmpty, () => Equals( current, defaultValue ) );

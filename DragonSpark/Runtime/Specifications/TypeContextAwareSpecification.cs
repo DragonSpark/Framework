@@ -10,7 +10,7 @@ namespace DragonSpark.Runtime.Specifications
 
 		protected override bool IsSatisfiedByContext( Type context )
 		{
-			var result = base.IsSatisfiedByContext( context) && Context.Extend().IsAssignableFrom( context );
+			var result = base.IsSatisfiedByContext( context) && Context.Adapt().IsAssignableFrom( context );
 			return result;
 		}
 	}

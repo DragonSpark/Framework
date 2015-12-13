@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Markup
 
 		protected override bool Handles( IProvideValueTarget service )
 		{
-			return base.Handles( service ) && service.TargetObject.GetType().Extend().GetInnerType() != null;
+			return base.Handles( service ) && service.TargetObject.GetType().Adapt().GetInnerType() != null;
 		}
 
 		protected override IMarkupTargetValueSetter Create( IList targetObject, object targetProperty )

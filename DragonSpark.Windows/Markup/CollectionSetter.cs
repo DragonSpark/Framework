@@ -19,8 +19,8 @@ namespace DragonSpark.Windows.Markup
 			var index = collection.IndexOf( item );
 			collection.RemoveAt( index );
 
-			var itemType = collection.GetType().Extend().GetInnerType();
-			var items = itemType.IsInstanceOfType( value ) ? value.ToItem() : value is IEnumerable && itemType.IsAssignableFrom( value.GetType().Extend().GetInnerType() ) ? value.To<IEnumerable>().Cast<object>().Reverse() : Enumerable.Empty<object>();
+			var itemType = collection.GetType().Adapt().GetInnerType();
+			var items = itemType.IsInstanceOfType( value ) ? value.ToItem() : value is IEnumerable && itemType.IsAssignableFrom( value.GetType().Adapt().GetInnerType() ) ? value.To<IEnumerable>().Cast<object>().Reverse() : Enumerable.Empty<object>();
 			items.Each( o => collection.Insert( index, o ) );
 		}
 	}

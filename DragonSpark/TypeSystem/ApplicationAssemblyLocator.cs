@@ -1,6 +1,6 @@
+using DragonSpark.Activation.FactoryModel;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.TypeSystem
 {
@@ -15,7 +15,7 @@ namespace DragonSpark.TypeSystem
 
 		protected override Assembly CreateItem()
 		{
-			var result = assemblies.SingleOrDefault( assembly => CustomAttributeExtensions.GetCustomAttribute<ApplicationAttribute>( (Assembly)assembly ) != null );
+			var result = assemblies.SingleOrDefault( assembly => assembly.GetCustomAttribute<ApplicationAttribute>() != null );
 			return result;
 		}
 	}

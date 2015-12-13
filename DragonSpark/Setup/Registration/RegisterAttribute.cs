@@ -32,7 +32,7 @@ namespace DragonSpark.Setup.Registration
 
 		public void Register( IServiceRegistry registry, Type subject )
 		{
-			var from = @as ?? subject.Extend().GetConventionCandidate();
+			var from = @as ?? subject.Adapt().GetConventionCandidate();
 			registry.Register( from, subject, @name );
 		}
 	}

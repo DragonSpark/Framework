@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Activation.FactoryModel
 {
 	public class ConstructFactory<TResult> : ActivationFactory<ConstructParameter, TResult> where TResult : class
@@ -22,9 +20,6 @@ namespace DragonSpark.Activation.FactoryModel
 
 	public abstract class ActivateFactory<TParameter, TResult> : ActivationFactory<TParameter, TResult> where TResult : class where TParameter : ActivateParameter
 	{
-		protected ActivateFactory()
-		{}
-
 		protected ActivateFactory( IActivator activator ) : base( activator )
 		{}
 

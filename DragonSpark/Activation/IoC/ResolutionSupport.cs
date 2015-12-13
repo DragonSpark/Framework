@@ -61,7 +61,7 @@ namespace DragonSpark.Activation.IoC
 				.GetParameters()
 				.Where( x => !IntrospectionExtensions.GetTypeInfo( x.ParameterType ).IsValueType )
 				.Select( parameterInfo => new NamedTypeBuildKey( parameterInfo.ParameterType ) )
-				.All( key => parameters.Any( key.Type.Extend().IsAssignableFrom ) || IsRegistered( key ) );
+				.All( key => parameters.Any( key.Type.Adapt().IsAssignableFrom ) || IsRegistered( key ) );
 			return result;
 		}
 

@@ -24,7 +24,7 @@ namespace DragonSpark.Activation.FactoryModel
 
 		protected override Type DetermineType( ActivateParameter parameter )
 		{
-			var result = base.DetermineType( parameter ).Extend().GetConventionCandidate();
+			var result = base.DetermineType( parameter ).Adapt().GetConventionCandidate();
 			return result;
 		}
 	}*/

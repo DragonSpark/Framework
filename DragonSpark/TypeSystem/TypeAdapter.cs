@@ -8,44 +8,20 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public class TypeExtension
+	public class TypeAdapter
 	{
 		readonly Type type;
 		readonly TypeInfo info;
 
-		public TypeExtension( Type type ) : this( type.GetTypeInfo() )
+		public TypeAdapter( Type type ) : this( type.GetTypeInfo() )
 		{
 			this.type = type;
 		}
 
-		public TypeExtension( TypeInfo info )
+		public TypeAdapter( TypeInfo info )
 		{
 			this.info = info;
 		}
-
-		/*public static implicit operator TypeExtension( Type type )
-		{
-			var result = type.With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
-			return result;
-		}
-
-		public static implicit operator Type( TypeExtension extension )
-		{
-			var result = extension.type;
-			return result;
-		}
-
-		public static explicit operator TypeExtension( TypeInfo type )
-		{
-			var result = type.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeExtension( t ) ) );
-			return result;
-		}
-
-		public static explicit operator TypeInfo( TypeExtension extension )
-		{
-			var result = extension.info;
-			return result;
-		}*/
 
 		public object GetDefaultValue()
 		{
@@ -71,7 +47,7 @@ namespace DragonSpark.TypeSystem
 			var result = 
 				provided.Count >= parameters.Count( info => !info.IsOptional ) && 
 				provided.Count <= parameters.Count && 
-				parameters.Select( ( t, i ) => provided.ElementAtOrDefault( i ).With( t.ParameterType.Extend().IsAssignableFrom, () => i < provided.Count || t.IsOptional ) ).All( b => b );
+				parameters.Select( ( t, i ) => provided.ElementAtOrDefault( i ).With( t.ParameterType.Adapt().IsAssignableFrom, () => i < provided.Count || t.IsOptional ) ).All( b => b );
 			return result;
 		}
 
@@ -83,13 +59,13 @@ namespace DragonSpark.TypeSystem
 
 		/*public bool CanLocate<T>()
 		{
-			var result = typeof(T).Extend().CanLocate( type );
+			var result = typeof(T).Adapt().CanLocate( type );
 			return result;
 		}*/
 
 		public bool CanLocate( Type instanceType )
 		{
-			var extend = instanceType.Extend();
+			var extend = instanceType.Adapt();
 			var result  = extend.CanLocate() && info.IsAssignableFrom( extend.info );
 			return result;
 		}
@@ -102,7 +78,7 @@ namespace DragonSpark.TypeSystem
 
 		public object Qualify( object instance )
 		{
-			var result = instance.With( o => info.IsAssignableFrom( o.GetType().GetTypeInfo() ) ? o : GetCaster( o.GetType() ).With( caster => caster.Invoke( null, new []{ o } ) ) );
+			var result = instance.With( o => info.IsAssignableFrom( o.GetType().GetTypeInfo() ) ? o : GetCaster( o.GetType() ).With( caster => caster.Invoke( null, new [] { o } ) ) );
 			return result;
 		}
 

@@ -4,10 +4,7 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public class ObjectFactoryParameter : ActivateParameter
 	{
-		public ObjectFactoryParameter( Type factoryType ) : this( factoryType, null )
-		{}
-
-		public ObjectFactoryParameter( Type factoryType, object context ) : base( factoryType )
+		public ObjectFactoryParameter( Type factoryType, object context = null ) : base( factoryType )
 		{
 			Context = context;
 		}

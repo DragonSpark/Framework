@@ -15,7 +15,7 @@ namespace DragonSpark.Setup.Commands
 				throw new InvalidOperationException( "LoggerType is null." );
 			}
 
-			if ( !typeof(ILogger).Extend().IsAssignableFrom( LoggerType ) )
+			if ( !typeof(ILogger).Adapt().IsAssignableFrom( LoggerType ) )
 			{
 				throw new InvalidOperationException( $"{LoggerType.Name} is not of type ILogger." );
 			}

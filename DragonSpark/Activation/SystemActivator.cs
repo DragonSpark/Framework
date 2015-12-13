@@ -31,7 +31,7 @@ namespace DragonSpark.Activation
 		static object[] Coerce( Type type, object[] parameters )
 		{
 			var candidates = new[] { parameters, parameters.NotNull() };
-			var extended = type.Extend();
+			var extended = type.Adapt();
 			var result = candidates.Select( objects => objects as object[] ?? objects.ToArray() ).FirstOrDefault( x => extended.FindConstructor( x ) != null );
 			return result;
 		}

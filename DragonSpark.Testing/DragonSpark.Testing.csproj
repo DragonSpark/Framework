@@ -149,6 +149,7 @@
     <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerQualifierTests.cs" />
+    <Compile Include="Activation\FactoryModel\FactoryParameterCoercerTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupportTests.cs" />
     <Compile Include="Activation\FactoryModel\ObjectFactoryParameterTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
@@ -186,7 +187,6 @@
     <Compile Include="Modularity\ModuleManagerTests.cs" />
     <Compile Include="RegistrationTests.cs" />
     <Compile Include="Runtime\ApplicationInformationTests.cs" />
-    <Compile Include="Runtime\AssembliesFactoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
@@ -244,6 +244,8 @@
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypeSystem\ApplicationAssemblyLocatorTests.cs" />
+    <Compile Include="TypeSystem\TypeAdapterTests.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />
     <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
@@ -267,6 +269,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestObjects\Static.cs" />
+    <Compile Include="TypeSystem\AssembliesFactoryTests.cs" />
     <Compile Include="TypeSystem\AssemblyInformationFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
