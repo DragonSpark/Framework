@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
@@ -11,6 +13,52 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class ObjectExtensionsTests
 	{
+		[Theory, Test, SetupAutoData]
+		public void Evaluate( ClassWithParameter sut )
+		{
+			Assert.Equal( sut.Parameter, sut.Evaluate<object>( nameof(sut.Parameter) ) );
+		}
+
+		[Theory, Test, SetupAutoData]
+		void ProvidedValues( ClassWithProperties sut )
+		{
+			sut.PropertyOne = null;
+			var cloned = sut.Clone( Mappings.OnlyProvidedValues() );
+			Assert.Null( cloned.PropertyOne );
+		}
+
+		[Theory, Test, SetupAutoData]
+		void Ignored( ClassWithProperties sut )
+		{
+			var other = sut.MapInto<ClassWithDifferentProperties>();
+			Assert.Equal( 0, other.PropertyOne );
+			Assert.Null( other.PropertyTwo );
+			Assert.Equal( sut.PropertyThree, other.PropertyThree );
+			Assert.Equal( sut.PropertyFour, other.PropertyFour );
+		}
+
+		[Theory, Test, SetupAutoData]
+		void Clone( ClassWithProperties sut )
+		{
+			var cloned = sut.Clone();
+			Assert.NotSame( sut, cloned );
+			Assert.Equal( sut.PropertyOne, cloned.PropertyOne );
+			Assert.Equal( sut.PropertyTwo, cloned.PropertyTwo );
+			Assert.Equal( sut.PropertyThree, cloned.PropertyThree );
+			Assert.Equal( sut.PropertyFour, cloned.PropertyFour );
+		}
+
+		[Theory, AutoData]
+		public void WithNull( int number )
+		{
+			var item = new int?( number );
+			var count = 0;
+			item.With( new Action<int>( i => count++ ) );
+			Assert.Equal( 1, count );
+			new int?().With( new Action<int>( i => count++ ) );
+			Assert.Equal( 1, count );
+		}
+
 		[Theory, AutoData]
 		void Mapper( TestObjects.ClassWithProperties instance )
 		{
@@ -37,6 +85,17 @@ namespace DragonSpark.Testing.Extensions
 				set { }
 			}
 
+		}
+
+		class ClassWithDifferentProperties
+		{
+			public int PropertyOne { get; set; }
+
+			public string PropertyTwo { get; set; }
+
+			public object PropertyThree { get; set; }
+
+			public string PropertyFour { get; set; }
 		}
 
 		[Fact]

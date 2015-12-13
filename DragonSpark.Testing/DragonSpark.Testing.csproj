@@ -167,6 +167,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
+    <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />

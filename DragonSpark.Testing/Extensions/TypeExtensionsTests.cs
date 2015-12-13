@@ -2,12 +2,19 @@ using DragonSpark.Extensions;
 using DragonSpark.Testing.TestObjects;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
 {
 	public class TypeExtensionsTests
 	{
+		[Fact]
+		public void Adapt()
+		{
+			Assert.NotNull( typeof(object).GetTypeInfo().Adapt() );
+		}
+
 		[Fact]
 		public void GetHierarchy()
 		{
