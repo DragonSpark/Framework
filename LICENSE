@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2013 DragonSpark Technologies Inc.
+Copyright (c) 2013-2016 DragonSpark Technologies Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -18,3 +18,16 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Some code found within this project does originate from a great external project
+known as Prism.  You can find this project here:
+https://github.com/PrismLibrary/Prism
+
+The code here is borrowed as Prism owners did not want to change the 
+intent/concern/location of its modularity, logging, eventing and bootstrapping
+functionality.  This project has does this and has adapted this features here.
+
+More information can be found at these locations:
+https://github.com/PrismLibrary/Prism/issues/3
+https://github.com/PrismLibrary/Prism/issues/4
+https://github.com/PrismLibrary/Prism/issues/1
