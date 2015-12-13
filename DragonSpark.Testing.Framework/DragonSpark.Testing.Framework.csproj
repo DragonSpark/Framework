@@ -155,7 +155,6 @@
     <Compile Include="ITestExecutionAware.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\OutputCustomization.cs" />
-    <Compile Include="RecordingLogger.cs" />
     <Compile Include="RegisteredAttribute.cs" />
     <Compile Include="RegisterFactoryAttribute.cs" />
     <Compile Include="Setup\Location\ServiceLocationAuthority.cs" />

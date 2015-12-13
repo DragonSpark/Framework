@@ -187,12 +187,12 @@ namespace DragonSpark.Activation.IoC
 	public class RegistrationSupport
 	{
 		readonly IUnityContainer container;
-		readonly ISpecification<RegistrationSpecificationParameter> specification;
+		readonly ISpecification specification;
 
-		public RegistrationSupport( IUnityContainer container ) : this( container, AlwaysSpecification<RegistrationSpecificationParameter>.Instance )
+		public RegistrationSupport( IUnityContainer container ) : this( container, AlwaysSpecification.Instance )
 		{}
 
-		protected RegistrationSupport( IUnityContainer container, ISpecification<RegistrationSpecificationParameter> specification )
+		protected RegistrationSupport( IUnityContainer container, ISpecification specification )
 		{
 			this.container = container;
 			this.specification = specification;

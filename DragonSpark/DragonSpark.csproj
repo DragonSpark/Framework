@@ -156,7 +156,6 @@
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
     <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
     <Compile Include="Activation\FactoryModel\ActivationParameter.cs" />
-    <Compile Include="Extensions\ActivatorExtensions.cs" />
     <Compile Include="Runtime\Values\AmbientKeyLocator.cs" />
     <Compile Include="Activation\CompositeActivator.cs" />
     <Compile Include="Activation\FactoryModel\ConstructFactory.cs" />

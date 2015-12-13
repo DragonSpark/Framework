@@ -21,21 +21,21 @@ namespace DragonSpark.Runtime.Specifications
 		}
 	}
 
-	public class AlwaysSpecification<TContext> : SpecificationBase<TContext>
+	public class AlwaysSpecification : ISpecification
 	{
-		public static AlwaysSpecification<TContext> Instance { get; } = new AlwaysSpecification<TContext>();
+		public static AlwaysSpecification Instance { get; } = new AlwaysSpecification();
 
-		protected override bool IsSatisfiedByContext( TContext context )
+		public bool IsSatisfiedBy( object context )
 		{
 			return true;
 		}
 	}
 
-	public class NeverSpecification<TContext> : SpecificationBase<TContext>
+	public class NeverSpecification : ISpecification
 	{
-		public static NeverSpecification<TContext> Instance { get; } = new NeverSpecification<TContext>();
+		public static NeverSpecification Instance { get; } = new NeverSpecification();
 
-		protected override bool IsSatisfiedByContext( TContext context )
+		public bool IsSatisfiedBy( object context )
 		{
 			return false;
 		}
