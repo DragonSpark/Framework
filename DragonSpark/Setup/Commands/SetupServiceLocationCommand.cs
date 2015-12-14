@@ -9,7 +9,7 @@ namespace DragonSpark.Setup.Commands
 {
 	public class SetupServiceLocationCommand : SetupCommand
 	{
-		[Singleton( typeof(ServiceLocation) )]
+		[ComponentModel.Singleton( typeof(ServiceLocation) )]
 		public IServiceLocation Location { get; set; }
 
 		[Factory( typeof(ServiceLocatorFactory) )]

@@ -3,6 +3,6 @@ using DragonSpark.Windows;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class Setup : Setup<RecordingLogger>
+	public abstract class Setup : Setup<RecordingLogger>
 	{}
 }

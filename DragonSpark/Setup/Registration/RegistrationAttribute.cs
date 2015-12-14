@@ -3,7 +3,7 @@ using System;
 namespace DragonSpark.Setup.Registration
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
-	public sealed class RegistrationAttribute : Attribute
+	public sealed class RegistrationAttribute : Attribute, IAllowsPriority
 	{
 		public RegistrationAttribute( Priority priority, params Type[] ignoreForRegistration )
 		{

@@ -40,11 +40,11 @@ namespace DragonSpark.Activation.IoC
 			{
 				parameters.NotNull().Each( x => 
 				{
-					x.As<TypedInjectionValue>( parameterValue =>
+					/*x.As<TypedInjectionValue>( parameterValue =>
 					{
 						var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
 						child.RegisterInstance( parameterValue.ParameterType, instance );
-					} );
+					} );*/
 
 					registration.AllClasses( x );
 				} );

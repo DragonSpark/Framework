@@ -20,27 +20,27 @@ namespace DragonSpark.Setup.Registration
 		{
 			var assemblies = DetermineAssemblies();
 			
-			var types = DetermineCandidateTypes( assemblies );
+			var candidates = DetermineCandidateTypes( assemblies );
 
-			var result = new ConventionRegistrationProfile( assemblies, types );
+			var result = new ConventionRegistrationProfile( assemblies, candidates );
 			return result;
 		}
 
 		protected virtual Assembly[] DetermineAssemblies()
 		{
-			var assemblies = provider.GetAssemblies().ToArray();
-			var result = assemblies
-				.OrderBy( x => x.FromMetadata<RegistrationAttribute, Priority>( z => z.Priority, () => Priority.Normal ) ).ToArray();
+			var result = provider.GetAssemblies().Prioritize().ToArray();
 			return result;
 		}
 
 		protected virtual Type[] DetermineCandidateTypes( Assembly[] assemblies )
 		{
-			var result = assemblies
-				.SelectMany( assembly => assembly.DefinedTypes.Where( info => !info.IsAbstract && ( info.DeclaringType == null || info.IsPublic ) )
-				.AsTypes()
-				.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) ) )
-				.ToArray();
+			var result = assemblies.SelectMany( assembly =>
+				{
+					var types = assembly.DefinedTypes.Where( info => !info.IsAbstract && ( !info.IsNested || info.IsNestedPublic ) )
+						.AsTypes()
+						.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) );
+					return types;
+				} ).ToArray();
 			return result;
 		}
 	}

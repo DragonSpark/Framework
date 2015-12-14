@@ -3,9 +3,9 @@ using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class InjectionMemberContext
+	public class InjectionMemberParameter
 	{
-		public InjectionMemberContext( IUnityContainer container, Type targetType )
+		public InjectionMemberParameter( IUnityContainer container, Type targetType )
 		{
 			Container = container;
 			TargetType = targetType;

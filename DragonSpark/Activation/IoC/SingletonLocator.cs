@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -19,24 +19,16 @@ namespace DragonSpark.Activation.IoC
 		public object Locate( Type type )
 		{
 			var typeInfo = type.GetTypeInfo();
-			var mapped = typeInfo.IsInterface ? DetermineType( typeInfo ) : typeInfo;
-			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.IsDecoratedWith<SingletonInstanceAttribute>() ) );
+			var mapped = typeInfo.IsInterface ? DetermineImplementor( typeInfo ) : typeInfo;
+			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.IsDecoratedWith<SingletonAttribute>() ) );
 			var result = declared.With( info => info.GetValue( null ) );
 			return result;
 		}
 
-		static TypeInfo DetermineType( TypeInfo type )
+		static TypeInfo DetermineImplementor( TypeInfo type )
 		{
-			try
-			{
-				var name = string.Concat( type.Namespace, ".asdf", type.Name.Substring(1) );
-				var result = type.Assembly.GetType( name ).GetTypeInfo();
-				return result;
-			}
-			catch ( Exception e )
-			{
-				return type;
-			}
+			var result = type.Assembly.DefinedTypes.Where( type.Adapt().IsAssignableFrom ).FirstOrDefault( i => i.Name.StartsWith( type.Name.TrimStart( 'I' ) ) );
+			return result;
 		}
 	}
 }

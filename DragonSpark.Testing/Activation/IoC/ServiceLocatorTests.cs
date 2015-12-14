@@ -118,16 +118,12 @@ namespace DragonSpark.Testing.Activation.IoC
 		[Theory, Test, SetupAutoData]
 		void BuildUp( ServiceLocator sut )
 		{
-			// sut.Register<IDefaultValueProvider, DefaultValueProvider>();
-
 			var item = new ClassWithDefaultProperties();
 
 			Assert.Null( item.String );
 
 			item.BuildUp();
-			// Assert.True( item.BuildUp() );
 			Assert.Equal( "Hello World", item.String );
-			// Assert.False( item.BuildUp() );
 		}
 
 

@@ -1,18 +1,17 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
-using DragonSpark.Setup;
+using DragonSpark.Setup.Commands;
 using Microsoft.Practices.Unity;
 using System;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Activation.IoC;
-using DragonSpark.Setup.Commands;
 
 namespace DragonSpark.Windows.Markup
 {
 	[MarkupExtensionReturnType( typeof(InjectionMember) )]
-	public class InjectionFactoryExtension : FactoryExtension<InjectionMemberContext, InjectionMember>
+	public class InjectionFactoryExtension : FactoryExtension<InjectionMemberParameter, InjectionMember>
 	{
 		public InjectionFactoryExtension()
 		{}
@@ -26,22 +25,22 @@ namespace DragonSpark.Windows.Markup
 		public InjectionFactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName, parameter )
 		{}
 
-		protected override IFactory<InjectionMemberContext, InjectionMember> DetermineFactory( IServiceProvider serviceProvider )
+		protected override IFactory<InjectionMemberParameter, InjectionMember> DetermineFactory( IServiceProvider serviceProvider )
 		{
 			return new InjectionFactoryFactory( Type, Parameter );
 		}
 
-		protected override InjectionMemberContext DetermineParameter( IServiceProvider serviceProvider )
+		protected override InjectionMemberParameter DetermineParameter( IServiceProvider serviceProvider )
 		{
 			var targetType = serviceProvider.Get<DeferredContext>().RegistrationType;
-			var result = new InjectionMemberContext( Services.Location.Locate<IUnityContainer>(), targetType );
+			var result = new InjectionMemberParameter( Services.Location.Locate<IUnityContainer>(), targetType );
 			return result;
 		}
 
 		static Type Resolve( IServiceProvider serviceProvider )
 		{
 			var xamlType = serviceProvider.Get<IXamlSchemaContextProvider>().SchemaContext.GetXamlType( typeof(UnityRegistrationCommand) );
-			var member = xamlType.GetMember( "RegistrationType" );
+			var member = xamlType.GetMember( nameof(UnityRegistrationCommand.RegistrationType) );
 			var value = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( new [] { xamlType }, member );
 			var result = (Type)value.Value;
 			return result;

@@ -11,12 +11,12 @@ namespace DragonSpark.Runtime.Specifications
 
 		public bool IsSatisfiedBy( TContext context )
 		{
-			return IsSatisfiedByContext( context );
+			return IsSatisfiedByParameter( context );
 		}
 
-		protected virtual bool IsSatisfiedByContext( TContext context )
+		protected virtual bool IsSatisfiedByParameter( TContext parameter )
 		{
-			var result = context != null;
+			var result = parameter != null;
 			return result;
 		}
 	}

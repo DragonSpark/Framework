@@ -16,13 +16,13 @@
 	<setup:SetupServiceLocationCommand />
 	<commands:SetupUnityCommand />
 	<setupPlatform:SetupRegistrationByConventionCommand />
-	<commands:SetupUnityContainerCommand>
-		<commands:SetupUnityContainerCommand.Instances>
+	<commands:ConfigureUnityCommand>
+		<commands:ConfigureUnityCommand.Instances>
 			<commands:UnityInstance>
 				<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 			</commands:UnityInstance>
-		</commands:SetupUnityContainerCommand.Instances>
-	</commands:SetupUnityContainerCommand>
+		</commands:ConfigureUnityCommand.Instances>
+	</commands:ConfigureUnityCommand>
 	<!--<setupPlatform:InitializeMarkupCommand />-->
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />

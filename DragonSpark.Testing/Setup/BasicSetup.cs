@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Testing.Setup
 {
-	public partial class Setup
+	public partial class BasicSetup
 	{
-		public Setup()
+		public BasicSetup()
 		{
 			InitializeComponent();
 		}

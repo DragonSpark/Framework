@@ -82,6 +82,12 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
+		public bool IsAssignableFrom( TypeInfo other )
+		{
+			var result = IsAssignableFrom( other.AsType() );
+			return result;
+		}
+
 		public bool IsAssignableFrom( Type other )
 		{
 			var result = info.IsAssignableFrom( other.GetTypeInfo() ) || GetCaster( other ) != null;
@@ -141,9 +147,20 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
+		public bool IsGenericOf<T>()
+		{
+			return IsGenericOf( typeof(T).GetGenericTypeDefinition() );
+		}
+
+		public bool IsGenericOf( Type genericDefinition )
+		{
+			var result = info.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && info.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition();
+			return result;
+		}
+
 		public Type GetConventionCandidate()
 		{
-			var result = type.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => interfaces.FirstOrDefault( t => type.Name.Contains( t.Name.Substring( 1 ) ) ) ?? interfaces.Only() ) ?? type;
+			var result = type.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => interfaces.FirstOrDefault( i => type.Name.Contains( i.Name.TrimStart( 'I' ) ) ) ?? interfaces.Only() ) ?? type;
 			return result;
 		}
 

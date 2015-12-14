@@ -4,9 +4,9 @@ namespace DragonSpark.Runtime.Specifications
 	{
 		public EqualityContextAwareSpecification( object context ) : base( context )
 		{}
-		protected override bool IsSatisfiedByContext( object context )
+		protected override bool IsSatisfiedByParameter( object parameter )
 		{
-			var result = Equals( Context, context );
+			var result = Equals( Context, parameter );
 			return result;
 		}
 	}

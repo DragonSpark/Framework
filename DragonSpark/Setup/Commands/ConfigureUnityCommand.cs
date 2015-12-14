@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 namespace DragonSpark.Setup.Commands
 {
 	[ContentProperty( nameof(Types) )]
-	public class SetupUnityContainerCommand : SetupCommand
+	public class ConfigureUnityCommand : SetupCommand
 	{
 		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();
 

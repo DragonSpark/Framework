@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		public MethodInStackTraceContextAwareSpecification( MethodInfo context ) : base( context )
 		{}
 
-		protected override bool IsSatisfiedByContext( MethodInfo methodInfo )
+		protected override bool IsSatisfiedByParameter( MethodInfo parameter )
 		{
 			var result = new System.Diagnostics.StackTrace().GetFrames()
 				.Select( x => x.GetMethod() )

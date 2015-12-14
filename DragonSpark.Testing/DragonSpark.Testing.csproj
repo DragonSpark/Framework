@@ -153,7 +153,10 @@
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupportTests.cs" />
     <Compile Include="Activation\FactoryModel\ObjectFactoryParameterTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
+    <Compile Include="Activation\IoC\EnumerableResolutionStrategyTests.cs" />
+    <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
+    <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -180,8 +183,8 @@
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Values\AmbientContextTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
-    <Compile Include="Setup\Setup.cs">
-      <DependentUpon>Setup.xaml</DependentUpon>
+    <Compile Include="Setup\BasicSetup.cs">
+      <DependentUpon>BasicSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
@@ -357,7 +360,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Setup\Setup.xaml">
+    <Page Include="Setup\BasicSetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

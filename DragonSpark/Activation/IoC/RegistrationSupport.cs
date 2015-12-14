@@ -47,7 +47,7 @@ namespace DragonSpark.Activation.IoC
 			return Check( typeof(TInterface), () => container.RegisterType<TInterface, TImplementation>( manager ?? new TransientLifetimeManager() ) );
 		}
 
-		public IUnityContainer Instance( Type type, object instance, LifetimeManager manager = null )
+		/*public IUnityContainer Instance( Type type, object instance, LifetimeManager manager = null )
 		{
 			return Instance( type, () => instance, manager );
 		}
@@ -55,7 +55,7 @@ namespace DragonSpark.Activation.IoC
 		public IUnityContainer Instance( Type type, Func<object> instance, LifetimeManager manager = null )
 		{
 			return Check( type, () => container.RegisterInstance( type, instance(), manager ?? new ContainerControlledLifetimeManager() ) );
-		}
+		}*/
 
 		public IUnityContainer Instance<TInterface>( TInterface instance, LifetimeManager manager = null )
 		{
