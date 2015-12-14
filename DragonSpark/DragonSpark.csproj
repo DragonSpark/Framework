@@ -191,6 +191,7 @@
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
     <Compile Include="Setup\Registration\RegistrationByConvention.cs" />
+    <Compile Include="Setup\SetupCommandCollection.cs" />
     <Compile Include="TypeSystem\AssemblyInformation.cs" />
     <Compile Include="TypeSystem\AssemblyInformationFactory.cs" />
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
@@ -387,7 +388,6 @@
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringReplacementDictionary.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />

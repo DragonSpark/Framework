@@ -182,11 +182,13 @@
     <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Values\AmbientContextTests.cs" />
+    <Compile Include="Setup\AllTypesOfFactoryTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\BasicSetup.cs">
       <DependentUpon>BasicSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
+    <Compile Include="Setup\SetupCommandTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="Modularity\ModuleAttributeTests.cs" />

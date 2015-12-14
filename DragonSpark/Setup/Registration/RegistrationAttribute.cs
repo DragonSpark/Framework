@@ -3,15 +3,12 @@ using System;
 namespace DragonSpark.Setup.Registration
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
-	public sealed class RegistrationAttribute : Attribute, IAllowsPriority
+	public sealed class RegistrationAttribute : PriorityAttribute
 	{
-		public RegistrationAttribute( Priority priority, params Type[] ignoreForRegistration )
+		public RegistrationAttribute( Priority priority, params Type[] ignoreForRegistration ) : base( priority )
 		{
-			Priority = priority;
 			IgnoreForRegistration = ignoreForRegistration;
 		}
-
-		public Priority Priority { get; }
 
 		public string Namespaces { get; set; }
 

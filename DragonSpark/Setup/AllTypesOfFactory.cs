@@ -1,10 +1,9 @@
 using DragonSpark.Activation;
-using DragonSpark.Runtime;
-using System;
-using System.Linq;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Setup
 {
@@ -20,13 +19,16 @@ namespace DragonSpark.Setup
 			this.activator = activator;
 		}
 
+		public T[] Create<T>()
+		{
+			var result = Create( typeof(T) ).Cast<T>().ToArray();
+			return result;
+		}
+
 		protected override Array CreateItem( Type parameter )
 		{
-			// var type = parameter ?? resultType.Adapt().GetInnerType() ?? resultType;
 			var types = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes );
-			var items = activator.ActivateMany( parameter, types ).ToArray();
-			var result = Array.CreateInstance( parameter, items.Length );
-			Array.Copy( items, result, items.Length );
+			var result = activator.ActivateMany( parameter, types ).ToArray();
 			return result;
 		}
 	}

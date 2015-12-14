@@ -7,6 +7,12 @@ namespace DragonSpark.Extensions
 {
 	public static class EnumerableExtensions
 	{
+		public static T[] Fixed<T>( this IEnumerable<T> @this )
+		{
+			var result = @this as T[] ?? @this.ToArray();
+			return result;
+		}
+
 		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, IAllowsPriority> determine )
 		{
 			var result = @this.Prioritize( x => determine( x ).Priority );

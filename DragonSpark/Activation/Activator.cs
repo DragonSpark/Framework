@@ -39,13 +39,14 @@ namespace DragonSpark.Activation
 
 		public static IEnumerable<T> ActivateMany<T>( this IActivator @this, IEnumerable<Type> types )
 		{
-			var result = @this.ActivateMany( typeof(T), types ).OfType<T>();
+			var result = @this.ActivateMany( typeof(T), types ).Cast<T>();
 			return result;
 		}
 
 		public static IEnumerable<object> ActivateMany( this IActivator @this, Type objectType, IEnumerable<Type> types )
 		{
-			var result = types.Where( objectType.Adapt().CanLocate ).Select( @this.Activate<object> );
+			var enumerable = types.Where( @objectType.Adapt().IsAssignableFrom );
+			var result = enumerable.Select( @this.Activate<object> ).NotNull();
 			return result;
 		}
 	} 

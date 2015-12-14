@@ -156,7 +156,9 @@ namespace DragonSpark.Extensions
 
 		public static TResult FromMetadata<TAttribute, TResult>( this object target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
 		{
-			var result = target.With( x => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault ) );
+			var result = target.With( x => 
+				target.AsTo<Assembly, TResult>( assembly => assembly.FromMetadata( resolveValue, resolveDefault ), () => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault ) ) 
+			);
 			return result;
 		}
 

@@ -1,15 +1,99 @@
-﻿using System;
-using DragonSpark.Activation;
+﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
-using System.Reflection;
-using DragonSpark.Extensions;
 using Ploeh.AutoFixture.Kernel;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using DragonSpark.Runtime.Specifications;
+using Moq;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
+	public class ObjectBuilderCustomization : ICustomization
+	{
+		public void Customize( IFixture fixture )
+		{
+			var specification = new BuilderSpecification( fixture.GetCurrentMethod().GetParameters().Select( info => info.ParameterType ).ToArray() );
+			fixture.Behaviors.Add( new ObjectBuilderBehavior( specification ) );
+		}
+
+		class BuilderSpecification : SpecificationBase<Type>
+		{
+			readonly Type[] typesToBuild;
+
+			public BuilderSpecification( Type[] typesToBuild )
+			{
+				this.typesToBuild = typesToBuild;
+			}
+
+			protected override bool IsSatisfiedByParameter( Type parameter )
+			{
+				return base.IsSatisfiedByParameter( parameter ) /*&& !parameter.IsInterface*/ && !typeof(Mock).Adapt().IsAssignableFrom( parameter ) && typesToBuild.Contains( parameter );
+			}
+		}
+
+		class ObjectBuilderBehavior : ISpecimenBuilderTransformation
+		{
+			readonly ISpecification<Type> specification;
+			
+			public ObjectBuilderBehavior( ISpecification<Type> specification )
+			{
+				this.specification = specification;
+			}
+
+			public ISpecimenBuilder Transform( ISpecimenBuilder builder )
+			{
+				var result = new Builder( builder, specification );
+				return result;
+			}
+
+			class Builder : ISpecimenBuilderNode
+			{
+				readonly ISpecimenBuilder inner;
+				readonly ISpecification<Type> specification;
+				
+				public Builder( ISpecimenBuilder inner, ISpecification<Type> specification )
+				{
+					this.inner = inner;
+					this.specification = specification;
+				}
+
+				public ISpecimenBuilderNode Compose( IEnumerable<ISpecimenBuilder> builders )
+				{
+					var builder = builders.Fixed().With( b => b.Only() ?? new CompositeSpecimenBuilder( b ) );
+					var result = new Builder( builder, specification );
+					return result;
+				}
+
+				public object Create( object request, ISpecimenContext context )
+				{
+					var item = inner.Create( request, context );
+					var result = request.AsTo<Type, object>( type => specification.IsSatisfiedBy( type ) ? item.BuildUp() : null ) ?? item;
+					return result;
+				}
+
+				
+
+				public IEnumerator<ISpecimenBuilder> GetEnumerator()
+				{
+					yield return inner;
+				}
+
+				IEnumerator IEnumerable.GetEnumerator()
+				{
+					return GetEnumerator();
+				}
+			}
+		}
+		
+	}
+
 	public class ServiceLocationCustomization : ICustomization, ITestExecutionAware
 	{
 		[Activate]

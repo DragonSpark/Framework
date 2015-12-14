@@ -12,4 +12,13 @@ namespace DragonSpark.Activation
 		
 		object Construct( Type type, params object[] parameters );
 	}
+
+	public static class ActivatorExtensions
+	{
+		public static bool CanActivate( this IActivator @this, Type type )
+		{
+			var result = @this.CanActivate( type );
+			return result;
+		}
+	}
 }

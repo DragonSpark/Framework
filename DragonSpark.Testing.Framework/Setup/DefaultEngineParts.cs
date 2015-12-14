@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using DragonSpark.Extensions;
 using Ploeh.AutoFixture.Kernel;
+using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -9,10 +10,10 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		public override IEnumerator<ISpecimenBuilder> GetEnumerator()
 		{
-			var iter = base.GetEnumerator();
-			while ( iter.MoveNext() )
+			var enumerator = base.GetEnumerator();
+			while ( enumerator.MoveNext() )
 			{
-				var builder = iter.Current is MethodInvoker ? GreedyMethodBuilderFactory.Instance.Create( iter.Current ) : iter.Current;
+				var builder = enumerator.Current.AsTo<MethodInvoker, ISpecimenBuilder>( GreedyMethodBuilderFactory.Instance.Create ) ?? enumerator.Current;
 				yield return builder;
 			}
 		}

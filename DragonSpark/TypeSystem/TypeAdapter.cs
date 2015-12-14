@@ -57,24 +57,11 @@ namespace DragonSpark.TypeSystem
 			return type;
 		}
 
-		/*public bool CanLocate<T>()
+		/*public bool CanInstantiate( Type instanceType )
 		{
-			var result = typeof(T).Adapt().CanLocate( type );
+			var result  = info.IsAssignableFrom( instanceType.GetTypeInfo() );
 			return result;
 		}*/
-
-		public bool CanLocate( Type instanceType )
-		{
-			var extend = instanceType.Adapt();
-			var result  = extend.CanLocate() && info.IsAssignableFrom( extend.info );
-			return result;
-		}
-
-		bool CanLocate()
-		{
-			var result = info.IsInterface || !info.IsAbstract;
-			return result;
-		}
 
 		public object Qualify( object instance )
 		{

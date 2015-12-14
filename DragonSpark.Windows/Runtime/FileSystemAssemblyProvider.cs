@@ -1,8 +1,7 @@
-using System.Linq;
-using System.Reflection;
-using DragonSpark.Runtime;
 using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
+using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {

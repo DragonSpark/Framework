@@ -1,21 +1,20 @@
-﻿using DragonSpark.Diagnostics;
+﻿using System.Collections.Generic;
 using DragonSpark.Extensions;
-using DragonSpark.Modularity;
 using DragonSpark.Runtime;
-using DragonSpark.Setup.Commands;
-using DragonSpark.Setup.Registration;
 using System.Linq;
-using System.Windows.Input;
 using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
+	public abstract class Setup : Setup<CommandCollection>
+	{}
+
 	[ContentProperty( nameof(Commands) )]
-	public abstract class Setup : ISetup
+	public abstract class Setup<TCollection> : ISetup where TCollection : CommandCollection, new()
 	{
 	    public Collection<object> Items { get; } = new Collection<object>();
 
-		public virtual CommandCollection Commands { get; } = new CommandCollection();
+		public CommandCollection Commands { get; } = new TCollection();
 		
 		public virtual void Run( object argument = null )
 		{
@@ -33,17 +32,5 @@ namespace DragonSpark.Setup
 			result.Register<ISetup>( this );
 			return result;
 		}
-	}
-
-	public abstract class Setup<TLogger, TModuleCatalog> : Setup
-		where TLogger : ILogger, new()
-		where TModuleCatalog : IModuleCatalog, new()
-	{
-		public override CommandCollection Commands { get; } = new CommandCollection( new ICommand[]
-			{
-				new SetupLoggingCommand<TLogger>(),
-				new SetupModuleCatalogCommand<TModuleCatalog>(),
-				new RegisterFrameworkExceptionTypesCommand()
-			} );
 	}
 }

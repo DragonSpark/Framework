@@ -3,10 +3,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-	xmlns:local="clr-namespace:DragonSpark.Testing.Framework"
 	xmlns:autoMoq="clr-namespace:Ploeh.AutoFixture.AutoMoq;assembly=Ploeh.AutoFixture.AutoMoq"
 	xmlns:setupPlatform="clr-namespace:DragonSpark.Windows.Setup;assembly=DragonSpark.Windows"
-	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
 	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup"
@@ -23,8 +21,8 @@
 			</commands:UnityInstance>
 		</commands:ConfigureUnityCommand.Instances>
 	</commands:ConfigureUnityCommand>
-	<!--<setupPlatform:InitializeMarkupCommand />-->
 	<setup:CustomizeFixtureCommand>
+		<location:ObjectBuilderCustomization />
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />
 		<setup:LoggingRegistrationCustomization />

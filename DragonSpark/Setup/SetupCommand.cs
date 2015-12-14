@@ -13,6 +13,11 @@ namespace DragonSpark.Setup
 
 		public event EventHandler CanExecuteChanged = delegate {};
 
+		public void Update()
+		{
+			CanExecuteChanged( this, EventArgs.Empty );
+		}
+
 		[Default( true )]
 		public bool Enabled { get; set; }
 
