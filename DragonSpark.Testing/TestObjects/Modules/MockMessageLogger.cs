@@ -3,7 +3,7 @@ using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Testing.TestObjects.Modules
 {
-	class MockLogger : ILogger
+	class MockMessageLogger : IMessageLogger
 	{
 		public string LastMessage { get; private set; }
 		public string LastMessageCategory;

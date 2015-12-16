@@ -1,49 +1,120 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using System;
-using System.Collections.Concurrent;
+using DragonSpark.Runtime;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
+using PostSharp.Patterns.Threading;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.ComponentModel
 {
+	public interface IBuildPropertyRepository
+	{
+		IEnumerable<DefaultValueParameter> GetProperties( object target );
+
+		void MarkBuilt( DefaultValueParameter property );
+	}
+
+	public class DefaultPropertyValueFactory : FactoryBase<DefaultValueParameter, object>
+	{
+		public static DefaultPropertyValueFactory Instance { get; } = new DefaultPropertyValueFactory();
+
+		protected override object CreateItem( DefaultValueParameter parameter )
+		{
+			var result = parameter.Metadata.From<IDefaultValueProvider>( parameter.Instance ).With( provider => provider.GetValue( parameter ) ) 
+				??
+				parameter.Metadata.FromMetadata<DefaultValueAttribute, object>( attribute => attribute.Value );
+			return result;
+		}
+	}
+
+	public class DefaultValueParameter
+	{
+		public DefaultValueParameter( [Required]object instance, [Required]PropertyInfo metadata )
+		{
+			Instance = instance;
+			Metadata = metadata;
+		}
+
+		public object Instance { get; }
+
+		public PropertyInfo Metadata { get; }
+
+		public DefaultValueParameter Assign( object value )
+		{
+			Metadata.SetValue( Instance, value );
+			return this;
+		}
+	}
+
 	public class ObjectBuilder : IObjectBuilder
 	{
+		readonly IBuildPropertyRepository repository;
+		readonly IFactory<DefaultValueParameter, object> factory;
 		public static ObjectBuilder Instance { get; } = new ObjectBuilder();
 
-		readonly ConcurrentDictionary<string, WeakReference> cache = new ConcurrentDictionary<string, WeakReference>();
-		
+		public ObjectBuilder() : this( BuildPropertyRepository.Instance )
+		{}
+
+		public ObjectBuilder( IBuildPropertyRepository repository ) : this( repository, DefaultPropertyValueFactory.Instance )
+		{}
+
+		public ObjectBuilder( [Required]IBuildPropertyRepository repository, [Required]IFactory<DefaultValueParameter, object> factory )
+		{
+			this.repository = repository;
+			this.factory = factory;
+		}
+
 		public object BuildUp( object target )
 		{
-			WeakReference value;
-			cache.Where( pair => !pair.Value.IsAlive ).Each( pair => cache.TryRemove( pair.Key, out value ) );
-
-			var result = cache.GetOrAdd( target.GetHashCode().ToString(), s =>
+			repository.GetProperties( target ).Each( property => factory.Create( property ).With( o =>
 			{
-				Build( target );
-				return new WeakReference( target );
-			} ).Target;
-			
+				repository.MarkBuilt( property.Assign( o ) );
+			} ) );
+			return target;
+		}
+	}
+
+	[Synchronized]
+	class BuildPropertyRepository : IBuildPropertyRepository
+	{
+		public static BuildPropertyRepository Instance { get; } = new BuildPropertyRepository();
+
+		[Reference]
+		readonly WeakCollection<object> built = new WeakCollection<object>();
+
+		[Reference]
+		readonly ConditionalWeakTable<object, ICollection<PropertyInfo>> properties = new ConditionalWeakTable<object, ICollection<PropertyInfo>>();
+
+		public IEnumerable<DefaultValueParameter> GetProperties( object target )
+		{
+			var result = !built.Contains( target ) ? properties.GetValue( target, BuildablePropertyCollectionFactory.Instance.Create ).Select( info => new DefaultValueParameter( target, info ) ).ToArray() : Enumerable.Empty<DefaultValueParameter>();
 			return result;
 		}
 
-		static void Build( object target )
+		public void MarkBuilt( DefaultValueParameter property )
 		{
-			var properties = target.GetType().GetRuntimeProperties();
-			properties
-				.Where( x => x.IsDecoratedWith<System.ComponentModel.DefaultValueAttribute>() )
-				.Select( x =>
-				{
-					var defaultValue = x.PropertyType.Adapt().GetDefaultValue();
-					var current = x.GetValue( target, null );
+			var collection = properties.GetValue( property.Instance, BuildablePropertyCollectionFactory.Instance.Create );
+			collection.Remove( property.Metadata );
+			collection.Any().IsFalse( () => built.Add( property.Instance ) );
+		}
+	}
 
-					// var equalsDefault = current.As<string>().With( string.IsNullOrEmpty, () => Equals( current, defaultValue ) );
-					var value = Equals( current, defaultValue ) ? x.FromMetadata<System.ComponentModel.DefaultValueAttribute, object>( y => y.AsTo<DefaultAttribute, object>( z => z.GetValue( target, x ), () => y.Value ) ) : null;
-					var result = value.With( y => new { Property = x, Value = y } );
-					return result;
-				} )
-				.NotNull()
-				.Each( item => item.Property.SetValue( target, item.Value, null ) );
+	public class BuildablePropertyCollectionFactory : FactoryBase<object, ICollection<PropertyInfo>>
+	{
+		public static BuildablePropertyCollectionFactory Instance { get; } = new BuildablePropertyCollectionFactory();
+
+		protected override ICollection<PropertyInfo> CreateItem( object parameter )
+		{
+			var result = parameter.GetType().GetRuntimeProperties()
+				.Where( x => x.IsDecoratedWith<DefaultValueAttribute>() || x.IsDecoratedWith<DefaultValueBase>() )
+				.ToList();
+			return result;
 		}
 	}
 }

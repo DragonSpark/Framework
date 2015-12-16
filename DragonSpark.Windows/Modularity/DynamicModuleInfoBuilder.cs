@@ -1,35 +1,29 @@
-using System;
 using DragonSpark.Modularity;
+using System;
 
 namespace DragonSpark.Windows.Modularity
 {
-    [Serializable]
-    public class DynamicModuleInfoBuilder : ModuleInfoBuilder
-    {
-        public DynamicModuleInfoBuilder() : this( new CustomAttributeDataProvider() )
-        {}
+	[Serializable]
+	public class DynamicModuleInfoBuilder : ModuleInfoBuilder
+	{
+		public static DynamicModuleInfoBuilder Instance { get; } = new DynamicModuleInfoBuilder();
 
-        public DynamicModuleInfoBuilder( IAttributeDataProvider provider ) : base( provider )
-        {}
+		public DynamicModuleInfoBuilder() : this( CustomAttributeDataProvider.Instance )
+		{}
 
-        /*protected DynamicModuleInfoBuilder( SerializationInfo info, StreamingContext context ) : this( (IAttributeDataProvider)info.GetValue( "provider", typeof(object) ) )
-        {}
+		public DynamicModuleInfoBuilder( IAttributeDataProvider provider ) : base( provider )
+		{}
 
-        void ISerializable.GetObjectData( SerializationInfo info, StreamingContext context )
-        {
-            info.AddValue( "provider", Provider );
-        }*/
-
-        protected override ModuleInfo Create( Type host, string moduleName, string assemblyQualifiedName )
-        {
-            var result = new DynamicModuleInfo( moduleName, assemblyQualifiedName )
-            {
-                InitializationMode = Provider.Get<bool>( typeof(DynamicModuleAttribute), host, "OnDemand" )
-                    ? InitializationMode.OnDemand
-                    : InitializationMode.WhenAvailable,
-                Ref = host.Assembly.CodeBase
-            };
-            return result;
-        }
-    }
+		protected override ModuleInfo Create( Type host, string moduleName, string assemblyQualifiedName )
+		{
+			var result = new DynamicModuleInfo( moduleName, assemblyQualifiedName )
+			{
+				InitializationMode = Provider.Get<bool>( typeof(DynamicModuleAttribute), host, "OnDemand" )
+					? InitializationMode.OnDemand
+					: InitializationMode.WhenAvailable,
+				Ref = host.Assembly.CodeBase
+			};
+			return result;
+		}
+	}
 }

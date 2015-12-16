@@ -45,6 +45,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -101,20 +103,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(SolutionDir)\packages\Albedo.1.0.2\lib\net35\Ploeh.Albedo.dll</HintPath>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\AutoFixture.3.37.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture, Version=3.37.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.3.37.3\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\AutoFixture.AutoMoq.3.37.0\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.37.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.AutoMoq.3.37.3\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.Idioms, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\AutoFixture.Idioms.3.37.0\lib\net40\Ploeh.AutoFixture.Idioms.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture.Idioms, Version=3.37.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.Idioms.3.37.3\lib\net40\Ploeh.AutoFixture.Idioms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.Xunit2, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\AutoFixture.Xunit2.3.37.0\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture.Xunit2, Version=3.37.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.Xunit2.3.37.3\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp, Version=4.2.15.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.4.2.15\lib\net35-client\PostSharp.dll</HintPath>
+      <Private>True</Private>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -160,6 +167,7 @@
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ComponentModel\BuildUpTests.cs" />
     <Compile Include="ComponentModel\DefaultValueProviderTests.cs" />
     <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
@@ -183,6 +191,11 @@
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Values\AmbientContextTests.cs" />
     <Compile Include="Setup\AllTypesOfFactoryTests.cs" />
+    <Compile Include="Setup\TestExtension.cs" />
+    <Compile Include="Setup\UnitySetup.xaml.cs">
+      <DependentUpon>UnitySetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Commands\ConfigureUnityCommandTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\BasicSetup.cs">
       <DependentUpon>BasicSetup.xaml</DependentUpon>
@@ -265,7 +278,7 @@
     <EmbeddedResource Include="TestObjects\Modules\MockDependantModule.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockDependencyModule.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
-    <Compile Include="TestObjects\Modules\MockLogger.cs" />
+    <Compile Include="TestObjects\Modules\MockMessageLogger.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockModuleA.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencedAssembly.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
@@ -344,7 +357,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Compilation\" />
     <Folder Include="Server\" />
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +374,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Setup\UnitySetup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Setup\BasicSetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -374,6 +390,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
+  </Target>
+  <Import Project="..\packages\PostSharp.4.2.15\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.2.15\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.4.2.15\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.4.2.15\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -29,7 +29,7 @@ namespace DragonSpark.Setup.Commands
 			var registration = instance.ConvertTo( type );
 			var to = registration.GetType();
 			var mapping = string.Concat( type.FullName, to != type ? $" -> {to.FullName}" : string.Empty );
-			container.Resolve<ILogger>().Information( $"Registering Unity Instance: {mapping}" );
+			container.Resolve<IMessageLogger>().Information( $"Registering Unity Instance: {mapping}" );
 			container.RegisterInstance( type, BuildName, registration, Lifetime );
 		}
 	}

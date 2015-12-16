@@ -4,11 +4,11 @@ namespace DragonSpark.Diagnostics
 {
 	public class TryContext
 	{
-		readonly ILogger logger;
+		readonly IMessageLogger messageLogger;
 
-		public TryContext( ILogger logger )
+		public TryContext( IMessageLogger messageLogger )
 		{
-			this.logger = logger;
+			this.messageLogger = messageLogger;
 		}
 
 		public Exception Try( Action action )
@@ -19,7 +19,7 @@ namespace DragonSpark.Diagnostics
 			}
 			catch ( Exception exception )
 			{
-				logger.Exception( "An exception has occurred while executing an application delegate.", exception );
+				messageLogger.Exception( "An exception has occurred while executing an application delegate.", exception );
 				return exception;
 			}
 			return null;

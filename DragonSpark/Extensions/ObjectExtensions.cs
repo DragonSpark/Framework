@@ -162,15 +162,15 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult FromMetadata<TAttribute, TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		public static TResult FromMetadata<TAttribute, TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null )
 		{
-			var result = target.GetCustomAttribute<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
+			var result = target.CustomAttributes.FirstOrDefaultOfType<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
 			return result;
 		}
 
-		public static TResult FromMetadata<TAttribute, TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		public static TResult FromMetadata<TAttribute, TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null )
 		{
-			var result = target.GetCustomAttribute<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
+			var result = target.CustomAttributes.FirstOrDefaultOfType<TAttribute>().With( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
 			return result;
 		}
 

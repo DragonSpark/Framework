@@ -1,20 +1,31 @@
-﻿using System.Collections.Generic;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System.Linq;
 using System.Windows.Markup;
+using DragonSpark.ComponentModel;
 
 namespace DragonSpark.Setup
 {
-	public abstract class Setup : Setup<CommandCollection>
-	{}
-
-	[ContentProperty( nameof(Commands) )]
-	public abstract class Setup<TCollection> : ISetup where TCollection : CommandCollection, new()
+	/*public class Setup<TLogging> : DragonSpark.Setup.Setup where TLogging : ILogger, new()
 	{
-	    public Collection<object> Items { get; } = new Collection<object>();
+		public Setup() : base( new CommandCollection<TLogging, AssemblyModuleCatalog>() )
+		{}
+	}*/
 
-		public CommandCollection Commands { get; } = new TCollection();
+	[ContentProperty( nameof(Commands) ), BuildUp]
+	public class Setup : ISetup
+	{
+		/*protected Setup() : this( new ICommand[0] )
+		{}
+
+		protected Setup( IEnumerable<ICommand> commands )
+		{
+			Commands.AddRange( commands );
+		}*/
+
+		public Collection<object> Items { get; } = new Collection<object>();
+
+		public CommandCollection Commands { get; } = new CommandCollection();
 		
 		public virtual void Run( object argument = null )
 		{

@@ -20,7 +20,7 @@ namespace DragonSpark.Windows.Setup
 
 		protected override IConventionRegistrationService DetermineService( SetupContext context )
 		{
-			var result = new UnityConventionRegistrationService( context.Container(), context.Logger );
+			var result = new UnityConventionRegistrationService( context.Container(), context.MessageLogger );
 			return result;
 		}
 	}

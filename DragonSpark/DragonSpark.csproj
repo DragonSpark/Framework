@@ -84,7 +84,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <Prefer32Bit>false</Prefer32Bit>
-    <SkipPostSharp>True</SkipPostSharp>
+    <SkipPostSharp>False</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -139,6 +139,18 @@
       <HintPath>..\packages\PostSharp.4.2.15\lib\portable-net4+sl5+netcore45+wpa81+wp8\PostSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Common.4.2.15\lib\portable-net45+netcore45+wpa81+wp8\PostSharp.Patterns.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Model, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Model.4.2.15\lib\portable-net45+netcore45+wpa81+wp8\PostSharp.Patterns.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.4.2.15\lib\portable-net45+netcore45+wpa81+wp8\PostSharp.Patterns.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Concurrent">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
@@ -160,10 +172,12 @@
     <Compile Include="Activation\IoC\RegistrationSupport.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
+    <Compile Include="ComponentModel\BuildUp.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
     <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
     <Compile Include="Activation\FactoryModel\ActivationParameter.cs" />
+    <Compile Include="Runtime\IWeakCollection.cs" />
     <Compile Include="Runtime\Specifications\AlwaysSpecification.cs" />
     <Compile Include="Runtime\Specifications\FixedSpecification.cs" />
     <Compile Include="Runtime\Specifications\NeverSpecification.cs" />
@@ -191,18 +205,17 @@
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
     <Compile Include="Setup\Registration\RegistrationByConvention.cs" />
-    <Compile Include="Setup\SetupCommandCollection.cs" />
     <Compile Include="TypeSystem\AssemblyInformation.cs" />
     <Compile Include="TypeSystem\AssemblyInformationFactory.cs" />
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
     <Compile Include="ComponentModel\ValueAttribute.cs" />
-    <Compile Include="Diagnostics\CompositeLogger.cs" />
+    <Compile Include="Diagnostics\CompositeMessageLogger.cs" />
     <Compile Include="Diagnostics\DiagnosticExtensions.cs" />
     <Compile Include="Diagnostics\ExceptionFormatter.cs" />
-    <Compile Include="Diagnostics\IRecordingLogger.cs" />
-    <Compile Include="Diagnostics\Line.cs" />
-    <Compile Include="Diagnostics\LoggerBase.cs" />
-    <Compile Include="Diagnostics\RecordingLogger.cs" />
+    <Compile Include="Diagnostics\IMessageRecorder.cs" />
+    <Compile Include="Diagnostics\Message.cs" />
+    <Compile Include="Diagnostics\MessageLoggerBase.cs" />
+    <Compile Include="Diagnostics\MessageRecorder.cs" />
     <Compile Include="Diagnostics\TryContext.cs" />
     <Compile Include="Extensions\BuilderContextExtensions.cs" />
     <Compile Include="Extensions\ObjectMappingContext.cs" />
@@ -277,8 +290,8 @@
     <Compile Include="Runtime\Specifications\ISpecification.cs" />
     <Compile Include="Runtime\Values\IValue.cs" />
     <Compile Include="Runtime\ListDictionary.cs" />
-    <Compile Include="Diagnostics\DebugLogger.cs" />
-    <Compile Include="Diagnostics\EmptyLogger.cs" />
+    <Compile Include="Diagnostics\MessageLogger.cs" />
+    <Compile Include="Diagnostics\EmptyMessageLogger.cs" />
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
     <Compile Include="Modularity\AttributeDataProvider.cs" />
     <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
@@ -315,8 +328,6 @@
     <Compile Include="Runtime\Specifications\TypeContextAwareSpecification.cs" />
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
-    <Compile Include="Setup\Commands\ActivatedSetupLoggingCommandBase.cs" />
-    <Compile Include="Setup\Commands\ActivatedSetupModuleCatalogCommand.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
     <Compile Include="Setup\Commands\SetupServiceLocationCommand.cs" />
     <Compile Include="Setup\CommandCollection.cs" />
@@ -347,10 +358,8 @@
     <Compile Include="Setup\SetupCommand.cs" />
     <Compile Include="Setup\SetupContext.cs" />
     <Compile Include="Extensions\SetupContextExtensions.cs" />
-    <Compile Include="Setup\Commands\SetupLoggingCommand.cs" />
     <Compile Include="Setup\Commands\SetupLoggingCommandBase.cs" />
     <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
-    <Compile Include="Setup\Commands\SetupModuleCatalogCommandBase.cs" />
     <Compile Include="Setup\Commands\SetupRegistrationByConventionCommand.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\Registration\RegistrationAttribute.cs" />
@@ -388,7 +397,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\ILogger.cs" />
+    <Compile Include="Diagnostics\IMessageLogger.cs" />
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -418,6 +427,7 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="DragonSpark.pfx" />
+    <None Include="DragonSpark.psproj" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

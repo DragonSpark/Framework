@@ -12,57 +12,57 @@ namespace DragonSpark.Testing.Diagnostics
 	public class LogTests
 	{
 		[Theory, Test, SetupAutoData]
-		public void Information( [Located(false), Frozen]ILogger logger, string message )
+		public void Information( [Located(false), Frozen]IMessageLogger messageLogger, string message )
 		{
-			logger.Information( message );
-			logger.Information( message, Priority.High );
+			messageLogger.Information( message );
+			messageLogger.Information( message, Priority.High );
 
-			Mock.Get( logger ).Verify( x => x.Information( message, Priority.Normal ) );
-			Mock.Get( logger ).Verify( x => x.Information( message, Priority.High ) );
+			Mock.Get( messageLogger ).Verify( x => x.Information( message, Priority.Normal ) );
+			Mock.Get( messageLogger ).Verify( x => x.Information( message, Priority.High ) );
 		}
 
 		[Theory, Test, SetupAutoData]
-		public void Warning( [Located(false), Frozen]ILogger logger, string message )
+		public void Warning( [Located(false), Frozen]IMessageLogger messageLogger, string message )
 		{
-			logger.Warning( message );
-			logger.Warning( message, Priority.Low );
+			messageLogger.Warning( message );
+			messageLogger.Warning( message, Priority.Low );
 
-			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.High ) );
-			Mock.Get( logger ).Verify( x => x.Warning( message, Priority.Low ) );
+			Mock.Get( messageLogger ).Verify( x => x.Warning( message, Priority.High ) );
+			Mock.Get( messageLogger ).Verify( x => x.Warning( message, Priority.Low ) );
 		}
 
 		[Theory, Test, SetupAutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void Error( [Located(false), Frozen]ILogger logger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
+		public void Error( [Located(false), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
 
-			logger.Exception( message, error );
+			messageLogger.Exception( message, error );
 
-			Mock.Get( logger ).Verify( x => x.Exception( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
 		}
 
 		[Theory, Test, SetupAutoData]
-		public void DefaultError( [Located(false), Frozen]ILogger logger, [Modest]InvalidOperationException error, string message )
+		public void DefaultError( [Located(false), Frozen]IMessageLogger messageLogger, [Modest]InvalidOperationException error, string message )
 		{
-			logger.Exception( message, error );
+			messageLogger.Exception( message, error );
 
 			// var message = error.ToString();
 
-			Mock.Get( logger ).Verify( x => x.Exception( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
 		}
 
 		[Theory, Test, SetupAutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void Fatal( [Located(false), Frozen]ILogger logger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
+		public void Fatal( [Located(false), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
 
-			logger.Fatal( message, error );
+			messageLogger.Fatal( message, error );
 
 			// var message = formatter.FormatMessage( error, id );
 
-			Mock.Get( logger ).Verify( x => x.Fatal( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Fatal( message, error ) );
 		}
 
 		[Theory, Test, SetupAutoData]
@@ -75,7 +75,7 @@ namespace DragonSpark.Testing.Diagnostics
 
 		[Theory, Test, SetupAutoData]
 		[Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
-		public void TryException( [Located(false), Frozen, Registered]ILogger logger, [Modest]InvalidOperationException error )
+		public void TryException( [Located(false), Frozen, Registered]IMessageLogger messageLogger, [Modest]InvalidOperationException error )
 		{
 			var exception = DiagnosticExtensions.Try( () => { throw error; } );
 			Assert.NotNull( exception );
@@ -83,7 +83,7 @@ namespace DragonSpark.Testing.Diagnostics
 
 			// var message = formatter.FormatMessage( error );
 
-			Mock.Get( logger ).Verify( x => x.Exception( "An exception has occurred while executing an application delegate.", exception ) );
+			Mock.Get( messageLogger ).Verify( x => x.Exception( "An exception has occurred while executing an application delegate.", exception ) );
 		}
 
 		/*[Theory, Test, Framework.AutoData, Register( typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]

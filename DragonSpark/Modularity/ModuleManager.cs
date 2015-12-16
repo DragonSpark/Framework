@@ -14,7 +14,7 @@ namespace DragonSpark.Modularity
     {
         private readonly IModuleInitializer moduleInitializer;
         private readonly IModuleCatalog moduleCatalog;
-        private readonly ILogger loggerFacade;
+        private readonly IMessageLogger messageLoggerFacade;
         private readonly IModuleTypeLoader loader;
         private IEnumerable<IModuleTypeLoader> typeLoaders;
         private readonly HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
@@ -24,9 +24,9 @@ namespace DragonSpark.Modularity
         /// </summary>
         /// <param name="moduleInitializer">Service used for initialization of modules.</param>
         /// <param name="moduleCatalog">Catalog that enumerates the modules to be loaded and initialized.</param>
-        /// <param name="loggerFacade">Logger used during the load and initialization of modules.</param>
+        /// <param name="messageLoggerFacade">Logger used during the load and initialization of modules.</param>
         /// <param name="loader"></param>
-        public ModuleManager(IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, ILogger loggerFacade, IModuleTypeLoader loader)
+        public ModuleManager(IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, IMessageLogger messageLoggerFacade, IModuleTypeLoader loader)
         {
             if (moduleInitializer == null)
             {
@@ -38,9 +38,9 @@ namespace DragonSpark.Modularity
                 throw new ArgumentNullException("moduleCatalog");
             }
 
-            if (loggerFacade == null)
+            if (messageLoggerFacade == null)
             {
-                throw new ArgumentNullException("loggerFacade");
+                throw new ArgumentNullException("messageLoggerFacade");
             }
 
             if (loader == null)
@@ -50,7 +50,7 @@ namespace DragonSpark.Modularity
 
             this.moduleInitializer = moduleInitializer;
             this.moduleCatalog = moduleCatalog;
-            this.loggerFacade = loggerFacade;
+            this.messageLoggerFacade = messageLoggerFacade;
             this.loader = loader;
         }
 
@@ -275,7 +275,7 @@ namespace DragonSpark.Modularity
                 moduleTypeLoadingException = new ModuleTypeLoadingException(moduleInfo.ModuleName, exception.Message, exception);
             }
 
-            loggerFacade.Exception(moduleTypeLoadingException.Message, moduleTypeLoadingException);
+            messageLoggerFacade.Exception(moduleTypeLoadingException.Message, moduleTypeLoadingException);
 
             throw moduleTypeLoadingException;
         }

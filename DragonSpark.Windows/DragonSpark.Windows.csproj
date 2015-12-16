@@ -120,7 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyModuleCatalog.cs" />
-    <Compile Include="Diagnostics\CompositeLoggerFacade.cs" />
     <Compile Include="DataBuilder.cs" />
     <Compile Include="DataTransformer.cs" />
     <Compile Include="DataTransformerExtensions.cs" />
@@ -154,8 +153,8 @@
     <Compile Include="Entity\VersionConverter.cs" />
     <Compile Include="IDataTransformer.cs" />
     <Compile Include="Io\FileSystem.cs" />
-    <Compile Include="Diagnostics\TextLogger.cs" />
-    <Compile Include="Diagnostics\TraceLogger.cs" />
+    <Compile Include="Diagnostics\TextMessageLogger.cs" />
+    <Compile Include="Diagnostics\TraceMessageLogger.cs" />
     <Compile Include="Markup\CollectionExtension.cs" />
     <Compile Include="Markup\CollectionExtensionBase.cs" />
     <Compile Include="Markup\CollectionSetter.cs" />
@@ -261,9 +260,6 @@
     <Compile Include="Runtime\ExceptionHandler.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
-    <Compile Include="Setup.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Setup\SetupEvent.cs" />
     <Compile Include="Setup\SetupStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

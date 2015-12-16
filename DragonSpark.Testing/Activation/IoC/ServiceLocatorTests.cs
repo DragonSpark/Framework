@@ -20,10 +20,10 @@ namespace DragonSpark.Testing.Activation.IoC
 	public class ServiceLocatorTests
 	{
 		[Theory, Test, SetupAutoData]
-		void GetInstance( [Factory, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<ILogger> logger )
+		void GetInstance( [Factory, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<IMessageLogger> logger )
 		{
 			Assert.NotSame( Services.Location.Locator, sut );
-			Assert.Same( sut.Get<ILogger>(), logger.Object );
+			Assert.Same( sut.Get<IMessageLogger>(), logger.Object );
 
 			var before = sut.GetInstance<IInterface>();
 			Assert.Null( before );

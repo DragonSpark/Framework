@@ -543,7 +543,7 @@ namespace DragonSpark.Diagnostics
 		}
 
 		/// <summary>
-		/// Total number of items in the collection.
+		/// All number of items in the collection.
 		/// </summary>
 		/// <value>The count.</value>
 		public int Count

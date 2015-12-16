@@ -16,10 +16,10 @@ namespace DragonSpark.Testing.Framework.Setup
 		{
 			fixture.Item<OutputCustomization>().With( customization =>
 			{
-				customization.Register( Container.TryResolve<IRecordingLogger> );
-				customization.Register( () => Container.TryResolve<ILogger>() as IRecordingLogger );
-				customization.Register( () => Container.DetermineLogger() as IRecordingLogger );
-				customization.Register( () => Container.Extend().Logger as IRecordingLogger );
+				customization.Register( Container.TryResolve<IMessageRecorder> );
+				customization.Register( () => Container.TryResolve<IMessageLogger>() as IMessageRecorder );
+				customization.Register( () => Container.DetermineLogger() as IMessageRecorder );
+				customization.Register( () => Container.Extend().MessageLogger as IMessageRecorder );
 			} );
 		}
 	}

@@ -25,7 +25,7 @@ namespace DragonSpark.Setup.Commands
 			InjectionMembers.Any().IsFalse( () => InjectionMembers.Add( new InjectionConstructor() ) );
 
 			var mapping = string.Concat( RegistrationType.ToString(), RegistrationType != type ? $" -> {type}" : string.Empty );
-			container.Resolve<ILogger>().Information( $"Registering Unity Type: {mapping}" );
+			container.Resolve<IMessageLogger>().Information( $"Registering Unity Type: {mapping}" );
 			var members = InjectionMembers.ToArray();
 			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
 

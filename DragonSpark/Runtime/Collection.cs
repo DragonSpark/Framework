@@ -1,19 +1,24 @@
-using DragonSpark.Extensions;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Markup;
 
 namespace DragonSpark.Runtime
 {
 	public class Collection : Collection<object>
-	{}
+	{
+	}
 
 	[Ambient]
-	public class Collection<T> : ICollection<T>, IList where T : class
+	public class Collection<T> : System.Collections.ObjectModel.Collection<T>
 	{
-		readonly List<T> items;
+		public Collection()
+		{
+		}
+
+		public Collection( IList<T> list ) : base( list )
+		{
+		}
+
+		/*readonly List<T> items;
 
 		readonly ConditionMonitor built = new ConditionMonitor();
 
@@ -120,6 +125,6 @@ namespace DragonSpark.Runtime
 		{
 			get { return items[index]; }
 			set { items[index] = (T)value; }
-		}
+		}*/
 	}
 }

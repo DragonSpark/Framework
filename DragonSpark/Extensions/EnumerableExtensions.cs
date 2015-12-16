@@ -25,6 +25,17 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, U> with )
+		{
+			return WithFirst<T, U>( @this, t => true, with );
+		}
+
+		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, bool> where, Func<T, U> with )
+		{
+			var result = @this.NotNull().FirstOrDefault( where ).With( with );
+			return result;
+		}
+
 		public static T Only<T>( this IEnumerable<T> @this )
 		{
 			var enumerable = @this as T[] ?? @this.ToArray();

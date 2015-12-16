@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Activation.FactoryModel
+﻿using PostSharp.Patterns.Contracts;
+
+namespace DragonSpark.Activation.FactoryModel
 {
 	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
 	{
@@ -7,12 +9,12 @@
 		protected FactoryBase() : this( new FactoryParameterCoercer<TParameter>() )
 		{}
 
-		protected FactoryBase( IFactoryParameterCoercer<TParameter> coercer )
+		protected FactoryBase( [Required]IFactoryParameterCoercer<TParameter> coercer )
 		{
 			this.coercer = coercer;
 		}
 
-		protected abstract TResult CreateItem( TParameter parameter );
+		protected abstract TResult CreateItem( [Required]TParameter parameter );
 
 		public TResult Create( TParameter parameter )
 		{

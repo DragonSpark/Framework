@@ -41,14 +41,14 @@ namespace DragonSpark.Activation.IoC
 			var basic = key == null && !serviceType.GetTypeInfo().IsInterface;
 			if ( basic || Container.IsRegistered( serviceType, key ) )
 			{
-				return new ResolutionContext( Logger ).Execute( () => Container.Resolve( serviceType, key ) );
+				return new ResolutionContext( MessageLogger ).Execute( () => Container.Resolve( serviceType, key ) );
 			}
 
-			Logger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
+			MessageLogger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
 			return null;
 		}
 
-		ILogger Logger => Container.DetermineLogger();
+		IMessageLogger MessageLogger => Container.DetermineLogger();
 
 		public IUnityContainer Container
 		{

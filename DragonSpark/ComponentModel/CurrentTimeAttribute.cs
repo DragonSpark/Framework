@@ -1,25 +1,29 @@
 using DragonSpark.Runtime;
 using System;
-using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	[AttributeUsage( AttributeTargets.Property )]
-	public sealed class CurrentTimeAttribute : DefaultAttribute
+	public sealed class CurrentTimeAttribute : DefaultValueBase
+	{
+		public CurrentTimeAttribute() : base( typeof(CurrentTimeValueProvider) )
+		{}
+	}
+
+	public class CurrentTimeValueProvider : IDefaultValueProvider
 	{
 		readonly ICurrentTime currentTime;
 
-		public CurrentTimeAttribute() : this( CurrentTime.Instance )
+		public CurrentTimeValueProvider() : this( CurrentTime.Instance )
 		{}
 
-		public CurrentTimeAttribute( ICurrentTime currentTime )
+		public CurrentTimeValueProvider( ICurrentTime currentTime )
 		{
 			this.currentTime = currentTime;
 		}
 
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		public object GetValue( DefaultValueParameter parameter )
 		{
-			var result = propertyInfo.PropertyType == typeof(DateTime) ? (object)currentTime.Now.DateTime : currentTime.Now;
+			var result = parameter.Metadata.PropertyType == typeof(DateTime) ? (object)currentTime.Now.DateTime : currentTime.Now;
 			return result;
 		}
 	}

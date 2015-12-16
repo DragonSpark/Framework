@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Modularity
 		[Fact]
 		public void NullContainerThrows()
 		{
-			Assert.Throws<ArgumentNullException>( () => new ModuleInitializer( null, new MockLogger() ) );
+			Assert.Throws<ArgumentNullException>( () => new ModuleInitializer( null, new MockMessageLogger() ) );
 		}
 
 		[Fact]
@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			var moduleInfo = CreateModuleInfo( typeof(ExceptionThrowingModule) );
 
-			var loader = new ModuleInitializer( new MockContainerAdapter(), new MockLogger() );
+			var loader = new ModuleInitializer( new MockContainerAdapter(), new MockMessageLogger() );
 
 			Assert.Throws<ModuleInitializeException>( () => loader.Initialize( moduleInfo ) );
 		}
@@ -40,7 +40,7 @@ namespace DragonSpark.Testing.Modularity
 		public void ShouldResolveModuleAndInitializeSingleModule()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
-			var service = new ModuleInitializer(containerFacade, new MockLogger());
+			var service = new ModuleInitializer(containerFacade, new MockMessageLogger());
 			FirstTestModule.wasInitializedOnce = false;
 			var info = CreateModuleInfo(typeof(FirstTestModule));
 			service.Initialize(info);
@@ -51,7 +51,7 @@ namespace DragonSpark.Testing.Modularity
 		public void ShouldLogModuleInitializeErrorsAndContinueLoading()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
-			var logger = new MockLogger();
+			var logger = new MockMessageLogger();
 			var service = new CustomModuleInitializerService(containerFacade, logger);
 			var invalidModule = CreateModuleInfo(typeof(InvalidModule));
 
@@ -64,7 +64,7 @@ namespace DragonSpark.Testing.Modularity
 		public void ShouldLogModuleInitializationError()
 		{
 			IServiceLocator containerFacade = new MockContainerAdapter();
-			var logger = new MockLogger();
+			var logger = new MockMessageLogger();
 			var service = new ModuleInitializer(containerFacade, logger);
 			ExceptionThrowingModule.wasInitializedOnce = false;
 			var exceptionModule = CreateModuleInfo(typeof(ExceptionThrowingModule));
@@ -86,7 +86,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			var moduleInfo = new ModuleInfo("TestModule", "BadAssembly.BadType");
 
-			ModuleInitializer loader = new ModuleInitializer(new MockContainerAdapter(), new MockLogger());
+			ModuleInitializer loader = new ModuleInitializer(new MockContainerAdapter(), new MockMessageLogger());
 
 			try
 			{
@@ -178,7 +178,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			public bool HandleModuleInitializeErrorCalled;
 
-			public CustomModuleInitializerService(IServiceLocator containerFacade, ILogger logger) : base(containerFacade, logger)
+			public CustomModuleInitializerService(IServiceLocator containerFacade, IMessageLogger messageLogger) : base(containerFacade, messageLogger)
 			{}
 
 			public override void HandleModuleInitializationError(ModuleInfo moduleInfo, string assemblyName, Exception exception)

@@ -10,7 +10,7 @@ namespace DragonSpark.Windows.Setup
 {
 	public class UnityConventionRegistrationService : DragonSpark.Setup.Registration.UnityConventionRegistrationService
 	{
-		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger ) : base( container, logger )
+		public UnityConventionRegistrationService( IUnityContainer container, IMessageLogger messageLogger ) : base( container, messageLogger )
 		{}
 
 		public override void Register( ConventionRegistrationProfile profile )
@@ -26,7 +26,7 @@ namespace DragonSpark.Windows.Setup
 			var register = profile.Candidates
 				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => ( found.IsPublic || found.IsNestedPublic ) && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
-			register.Each( type => Logger.Information( $"Registering from convention: {type.FullName}" ) );
+			register.Each( type => MessageLogger.Information( $"Registering from convention: {type.FullName}" ) );
 			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, Factory.CreateUsing, overwriteExistingMappings: true );
 		}
 	}

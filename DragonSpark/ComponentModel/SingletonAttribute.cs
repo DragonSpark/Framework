@@ -1,11 +1,9 @@
-using System;
-using System.Reflection;
 using DragonSpark.Activation.IoC;
-using DragonSpark.Runtime;
+using System;
 
 namespace DragonSpark.ComponentModel
 {
-	public class SingletonAttribute : DefaultAttribute
+	public class SingletonAttribute : DefaultValueBase
 	{
 		readonly Type hostType;
 		readonly string propertyName;
@@ -13,13 +11,25 @@ namespace DragonSpark.ComponentModel
 		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
 		{}
 
-		public SingletonAttribute( Type hostType, string propertyName )
+		public SingletonAttribute( Type hostType, string propertyName ) : base( typeof(SingletonDefaultValueProvider) )
+		{
+			this.hostType = hostType;
+			this.propertyName = propertyName;
+		}
+	}
+
+	public class SingletonDefaultValueProvider : IDefaultValueProvider
+	{
+		readonly Type hostType;
+		readonly string propertyName;
+
+		public SingletonDefaultValueProvider( Type hostType, string propertyName )
 		{
 			this.hostType = hostType;
 			this.propertyName = propertyName;
 		}
 
-		protected internal override object GetValue( object instance, PropertyInfo propertyInfo )
+		public object GetValue( DefaultValueParameter parameter )
 		{
 			var result = new SingletonLocator( propertyName ).Locate( hostType );
 			return result;

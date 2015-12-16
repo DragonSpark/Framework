@@ -8,14 +8,27 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
+	public class FixtureFactory : FactoryBase<IFixture>
+	{
+		public static FixtureFactory Instance { get; } = new FixtureFactory();
+
+		protected override IFixture CreateItem()
+		{
+			return new Fixture( DefaultEngineParts.Instance );
+		}
+	}
+
 	public class SetupAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
 		readonly ISetup setup;
 
-		public SetupAutoDataAttribute() : this( new Fixture( DefaultEngineParts.Instance ) )
+		public SetupAutoDataAttribute() : this( FixtureFactory.Instance.Create() )
 		{}
 
 		public SetupAutoDataAttribute( IFixture fixture ) : this( fixture, typeof(DefaultSetup) )
+		{}
+
+		public SetupAutoDataAttribute( Type setupType ) : this( FixtureFactory.Instance.Create(), setupType )
 		{}
 
 		public SetupAutoDataAttribute( IFixture fixture, Type setupType ) : this( fixture, ActivateFactory<ISetup>.Instance.Locked( factory => factory.CreateUsing( setupType ) ) )

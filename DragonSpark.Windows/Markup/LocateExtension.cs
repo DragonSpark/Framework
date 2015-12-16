@@ -1,10 +1,9 @@
+using DragonSpark.Activation;
 using DragonSpark.Extensions;
-using DragonSpark.Windows.Entity;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Markup;
-using DragonSpark.Activation;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup

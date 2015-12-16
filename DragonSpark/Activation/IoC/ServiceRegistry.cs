@@ -10,20 +10,20 @@ namespace DragonSpark.Activation.IoC
 	public class ServiceRegistry : IServiceRegistry
 	{
 		readonly IUnityContainer container;
-		readonly ILogger logger;
+		readonly IMessageLogger messageLogger;
 		readonly IFactory<ActivateParameter, LifetimeManager> lifetimeFactory;
 
-		public ServiceRegistry( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
+		public ServiceRegistry( IUnityContainer container, IMessageLogger messageLogger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
 		{
 			this.container = container;
-			this.logger = logger;
+			this.messageLogger = messageLogger;
 			this.lifetimeFactory = lifetimeFactory;
 		}
 
 		public void Register( Type @from, Type mappedTo, string name = null )
 		{
 			var lifetimeManager = lifetimeFactory.CreateUsing( mappedTo );
-			logger.Information( string.Format( Resources.ServiceRegistry_Registering, @from, mappedTo, lifetimeManager?.GetType().Name ?? "Transient" ) );
+			messageLogger.Information( string.Format( Resources.ServiceRegistry_Registering, @from, mappedTo, lifetimeManager?.GetType().Name ?? "Transient" ) );
 			container.RegisterType( from, mappedTo, name, lifetimeManager );
 		}
 

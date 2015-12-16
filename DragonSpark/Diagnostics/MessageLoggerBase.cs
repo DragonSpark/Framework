@@ -5,12 +5,12 @@ using DragonSpark.Runtime;
 
 namespace DragonSpark.Diagnostics
 {
-	public abstract class  LoggerBase : ILogger
+	public abstract class  MessageLoggerBase : IMessageLogger
 	{
-		protected LoggerBase() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
+		protected MessageLoggerBase() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
 		{}
 
-		protected LoggerBase( IExceptionFormatter formatter, ICurrentTime time )
+		protected MessageLoggerBase( IExceptionFormatter formatter, ICurrentTime time )
 		{
 			Formatter = formatter;
 			Time = time;
@@ -49,10 +49,10 @@ namespace DragonSpark.Diagnostics
 		{
 			var time = Time.Now;
 			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, time, category.ToUpper(), message, priority );
-			var line = new Line( priority, time, category, formatted );
+			var line = new Message( priority, time, category, formatted );
 			Write( line );
 		}
 
-		protected abstract void Write( Line line );
+		protected abstract void Write( Message message );
 	}
 }

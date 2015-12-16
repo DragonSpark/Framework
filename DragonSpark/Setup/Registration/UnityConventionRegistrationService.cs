@@ -9,23 +9,23 @@ namespace DragonSpark.Setup.Registration
 {
 	public class UnityConventionRegistrationService : IConventionRegistrationService
 	{
-		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger  ) : this( container, logger, new LifetimeManagerFactory<ContainerControlledLifetimeManager>( container.Resolve<IActivator>() ) )
+		public UnityConventionRegistrationService( IUnityContainer container, IMessageLogger messageLogger  ) : this( container, messageLogger, new LifetimeManagerFactory<ContainerControlledLifetimeManager>( container.Resolve<IActivator>() ) )
 		{}
 
-		public UnityConventionRegistrationService( IUnityContainer container, ILogger logger, IFactory<ActivateParameter, LifetimeManager> factory  )
+		public UnityConventionRegistrationService( IUnityContainer container, IMessageLogger messageLogger, IFactory<ActivateParameter, LifetimeManager> factory  )
 		{
 			Container = container;
-			Logger = logger;
+			MessageLogger = messageLogger;
 			Factory = factory;
 		}
 
 		protected IUnityContainer Container { get; }
-		protected ILogger Logger { get; }
+		protected IMessageLogger MessageLogger { get; }
 		protected IFactory<ActivateParameter, LifetimeManager> Factory { get; }
 
 		public virtual void Register( ConventionRegistrationProfile profile )
 		{
-			var registry = new ServiceRegistry( Container, Logger, Factory );
+			var registry = new ServiceRegistry( Container, MessageLogger, Factory );
 			
 			profile.Candidates
 				.AsTypeInfos()

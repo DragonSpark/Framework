@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using System;
+using System.Linq;
 
-namespace DragonSpark.Windows.Diagnostics
+namespace DragonSpark.Diagnostics
 {
-	public class CompositeLoggerFacade : ILogger, IDisposable
+	public class CompositeMessageLogger : IMessageLogger, IDisposable
 	{
-		readonly IEnumerable<ILogger> loggers;
+		readonly IMessageLogger[] loggers;
 
-		public CompositeLoggerFacade( params ILogger[] loggers )
+		public CompositeMessageLogger( params IMessageLogger[] loggers )
 		{
 			this.loggers = loggers;
 		}

@@ -2,7 +2,7 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public interface ILogger
+	public interface IMessageLogger
 	{
 		void Information( string message, Priority priority = Priority.Normal );
 

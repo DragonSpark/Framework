@@ -15,22 +15,22 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public class OutputCustomization : ICustomization, ITestExecutionAware
 	{
-		readonly ICollection<Func<IRecordingLogger>> register = new List<Func<IRecordingLogger>>();
+		readonly ICollection<Func<IMessageRecorder>> register = new List<Func<IMessageRecorder>>();
 
-		readonly ICollection<IRecordingLogger> loggers = new Collection<IRecordingLogger>();
+		readonly ICollection<IMessageRecorder> loggers = new Collection<IMessageRecorder>();
 
 		[Activate]
-		public IRecordingLogger Logger { get; set; }
+		public IMessageRecorder MessageRecorder { get; set; }
 
 		public void Customize( IFixture fixture )
 		{
 			fixture.Items().Add( this );
-			Logger.Information( "Logger initialized!" );
-			Register( () => Logger );
-			Register( fixture.TryCreate<IRecordingLogger> );
+			MessageRecorder.Information( "Logger initialized!" );
+			Register( () => MessageRecorder );
+			Register( fixture.TryCreate<IMessageRecorder> );
 		}
 
-		public void Register( Func<IRecordingLogger> resolve )
+		public void Register( Func<IMessageRecorder> resolve )
 		{
 			register.Add( resolve );
 		}
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		{
 			AmbientValues.Get<ITestOutputHelper>( methodUnderTest.DeclaringType ).With( output =>
 			{
-				var lines = loggers.SelectMany( aware => aware.Lines ).OrderBy( line => line.Time ).Select( line => line.Message ).ToArray();
+				var lines = loggers.SelectMany( aware => aware.Messages ).OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
 				lines.Each( output.WriteLine );
 			} );
 		}

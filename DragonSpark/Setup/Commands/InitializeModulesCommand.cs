@@ -17,12 +17,12 @@ namespace DragonSpark.Setup.Commands
 			var manager = DetermineManager( context );
 			if ( manager != null )
 			{
-				context.Logger.Information( Resources.InitializingModules, Priority.Low);
+				context.MessageLogger.Information( Resources.InitializingModules, Priority.Low);
 				InitializeModules( context, manager );
 
-				context.Logger.Information( Resources.LoadingModules, Priority.Low);
+				context.MessageLogger.Information( Resources.LoadingModules, Priority.Low);
 				await Monitor.Load();
-				context.Logger.Information( Resources.ModulesLoaded, Priority.Low);
+				context.MessageLogger.Information( Resources.ModulesLoaded, Priority.Low);
 			}
 		}
 

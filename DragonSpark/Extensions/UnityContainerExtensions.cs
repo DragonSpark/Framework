@@ -8,9 +8,9 @@ namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		public static ILogger DetermineLogger( this IUnityContainer @this )
+		public static IMessageLogger DetermineLogger( this IUnityContainer @this )
 		{
-			var result = @this.Resolve( () => @this.Extend().Logger );
+			var result = @this.Resolve( () => @this.Extend().MessageLogger );
 			return result;
 		}
 

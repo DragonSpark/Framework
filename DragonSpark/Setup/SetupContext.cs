@@ -46,7 +46,7 @@ namespace DragonSpark.Setup
 		public IReadOnlyCollection<object> Items => new ReadOnlyCollection<object>( items );
 		readonly IList<object> items = new Collection<object>();
 
-		public ILogger Logger => Item<ILogger>();
+		public IMessageLogger MessageLogger => Item<IMessageLogger>();
 		public void Dispose()
 		{
 			items.Clear();

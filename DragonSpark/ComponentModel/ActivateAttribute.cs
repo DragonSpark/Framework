@@ -4,38 +4,53 @@ using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ActivateAttribute : DefaultAttribute
+	public class ActivateAttribute : DefaultValueBase
 	{
-		readonly IActivator activator;
-		readonly Type activatedType;
-		private readonly string name;
-
 		public ActivateAttribute() : this( null )
 		{}
 
 		public ActivateAttribute( string name ) : this( null, name )
 		{}
 
-		public ActivateAttribute( Type activatedType, string name = null ) : this( Activation.Activator.Current, activatedType, name )
+		public ActivateAttribute( Type activatedType, string name = null ) : this( typeof(ActivatedValueProvider), activatedType, name )
 		{}
 
-		public ActivateAttribute( IActivator activator, Type activatedType, string name )
+		public ActivateAttribute( [OfType( typeof(ActivatedValueProvider) )]Type surrogateType, Type activatedType, string name = null ) : base( surrogateType )
 		{
-			this.activator = activator;
-			this.activatedType = activatedType;
-			this.name = name;
+			ActivatedType = activatedType;
+			Name = name;
 		}
 
-		protected internal sealed override object GetValue( object instance, PropertyInfo propertyInfo )
+		public Type ActivatedType { get; }
+		public string Name { get; }
+	}
+
+	public class ActivatedValueProvider : IDefaultValueProvider
+	{
+		public ActivatedValueProvider( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
+		{}
+
+		public ActivatedValueProvider(IActivator activator, Type activatedType, string name )
 		{
-			var type = activatedType ?? DetermineType( propertyInfo );
-			var result = Activate( instance, propertyInfo, type, name );
+			Activator = activator;
+			ActivatedType = activatedType;
+			Name = name;
+		}
+
+		protected IActivator Activator { get; }
+		protected Type ActivatedType { get; }
+		protected string Name { get; }
+
+		public object GetValue( DefaultValueParameter parameter )
+		{
+			var type = ActivatedType ?? DetermineType( parameter.Metadata );
+			var result = Activate( parameter, type );
 			return result;
 		}
 
-		protected virtual object Activate( object instance, PropertyInfo info, Type type, string s )
+		protected virtual object Activate( DefaultValueParameter parameter, Type qualified )
 		{
-			var result = activator.Activate<object>( type, s );
+			var result = Activator.Activate<object>( qualified, Name );
 			return result;
 		}
 

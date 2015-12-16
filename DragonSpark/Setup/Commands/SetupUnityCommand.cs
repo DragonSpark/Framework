@@ -28,7 +28,7 @@ namespace DragonSpark.Setup.Commands
 		{
 			context.Register( Container.InvalidIfNull( Resources.NullUnityContainerException ) );
 
-			context.Logger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
+			context.MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
 			ConfigureContainer( context, Container );
 		}
 
@@ -38,7 +38,7 @@ namespace DragonSpark.Setup.Commands
 			{
 				support.Instance( new ServiceLocationMonitor( Location, Locator ) );
 
-				support.AllInterfaces( context.Logger );
+				support.AllInterfaces( context.MessageLogger );
 
 				var objects = context.Items.Except( container.ToItem() );
 				objects.Each( support.Convention );

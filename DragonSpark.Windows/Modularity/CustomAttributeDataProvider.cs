@@ -9,6 +9,8 @@ namespace DragonSpark.Windows.Modularity
 	[Serializable]
 	public class CustomAttributeDataProvider : IAttributeDataProvider
 	{
+		public static CustomAttributeDataProvider Instance { get; } = new CustomAttributeDataProvider();
+
 		public T Get<T>( Type attributeType, Type type, string name )
 		{
 			var item = Candidates<T>( attributeType, type ).FirstOrDefault();

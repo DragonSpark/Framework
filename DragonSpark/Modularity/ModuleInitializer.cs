@@ -12,27 +12,27 @@ namespace DragonSpark.Modularity
 	public class ModuleInitializer : IModuleInitializer
 	{
 		private readonly IServiceLocator serviceLocator;
-		private readonly ILogger loggerFacade;
+		private readonly IMessageLogger messageLoggerFacade;
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="ModuleInitializer"/>.
 		/// </summary>
 		/// <param name="serviceLocator">The container that will be used to resolve the modules by specifying its type.</param>
-		/// <param name="loggerFacade">The logger to use.</param>
-		public ModuleInitializer(IServiceLocator serviceLocator, ILogger loggerFacade)
+		/// <param name="messageLoggerFacade">The logger to use.</param>
+		public ModuleInitializer(IServiceLocator serviceLocator, IMessageLogger messageLoggerFacade)
 		{
 			if (serviceLocator == null)
 			{
 				throw new ArgumentNullException("serviceLocator");
 			}
 
-			if (loggerFacade == null)
+			if (messageLoggerFacade == null)
 			{
-				throw new ArgumentNullException("loggerFacade");
+				throw new ArgumentNullException("messageLoggerFacade");
 			}
 
 			this.serviceLocator = serviceLocator;
-			this.loggerFacade = loggerFacade;
+			this.messageLoggerFacade = messageLoggerFacade;
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace DragonSpark.Modularity
 
 			var moduleException = exception is ModuleInitializeException ? exception : ( !string.IsNullOrEmpty( assemblyName ) ? new ModuleInitializeException( moduleInfo.ModuleName, assemblyName, exception.Message, exception ) : new ModuleInitializeException( moduleInfo.ModuleName, exception.Message, exception ) );
 
-			loggerFacade.Exception(moduleException.ToString(), moduleException);
+			messageLoggerFacade.Exception(moduleException.ToString(), moduleException);
 
 			throw moduleException;
 		}

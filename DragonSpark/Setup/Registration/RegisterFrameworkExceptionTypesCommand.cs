@@ -13,7 +13,7 @@ namespace DragonSpark.Setup.Registration
 	{
 		protected override void Execute( SetupContext context )
 		{
-			context.Logger.Information(Resources.RegisteringFrameworkExceptionTypes, Priority.Low);
+			context.MessageLogger.Information(Resources.RegisteringFrameworkExceptionTypes, Priority.Low);
 			DetermineCoreFrameworkTypes().Concat( Types ).Each( ExceptionExtensions.RegisterFrameworkExceptionType );
 		}
 

@@ -2,14 +2,14 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public class Line
+	public class Message
 	{
-		public Line( Priority priority, DateTimeOffset time, string category, string message )
+		public Message( Priority priority, DateTimeOffset time, string category, string text )
 		{
 			Priority = priority;
 			Time = time;
 			Category = category;
-			Message = message;
+			Text = text;
 		}
 
 		public Priority Priority { get; }
@@ -18,6 +18,6 @@ namespace DragonSpark.Diagnostics
 
 		public string Category { get; }
 
-		public string Message { get; }
+		public string Text { get; }
 	}
 }

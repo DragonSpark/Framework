@@ -42,15 +42,13 @@ namespace DragonSpark.Windows.Markup
 					case "System.Windows.SharedDp":
 						return this;
 					default:
-						return Builders
-							.FirstOrDefault( builder => builder.Handles( service ) )
-							.With( builder =>
-							{
-								var provider = Prepare( serviceProvider, service, builder );
-								var setter = builder.Create( service );
-								var value = BeginProvideValue( provider, setter );
-								return value;
-							} );
+						return Builders.FirstOrDefault( builder => builder.Handles( service ) ).With( builder =>
+						{
+							var provider = Prepare( serviceProvider, service, builder );
+							var setter = builder.Create( service );
+							var value = BeginProvideValue( provider, setter );
+							return value;
+						} );
 				}
 			}
 
@@ -62,10 +60,6 @@ namespace DragonSpark.Windows.Markup
 			var result = new DeferredContext( serviceProvider, target.TargetObject, target.TargetProperty, builder.GetPropertyType( target ) );
 			return result;
 		}
-
-		/*protected object TargetObject { get; set; }
-
-		protected object TargetProperty { get; set; }*/
 
 		protected abstract object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter );
 

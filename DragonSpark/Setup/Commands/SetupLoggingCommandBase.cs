@@ -1,24 +1,18 @@
-using System;
+using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Properties;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-    public abstract class SetupLoggingCommandBase : SetupCommand
-    {
-        protected override void Execute( SetupContext context )
-        {
-            var logger = this.CreateLogger();
-            if ( logger == null)
-            {
-                throw new InvalidOperationException(Resources.NullLoggerFacadeException);
-            }
-
-            context.Register( logger );
-
-            logger.Information(Resources.LoggerCreatedSuccessfully, Priority.Low);
-        }
-
-        protected abstract ILogger CreateLogger();
-    }
+	public class SetupLoggingCommand : SetupCommand
+	{
+		[Required( /*ErrorMessage = Resources.NullLoggerFacadeException*/ ), Activate( typeof(MessageLogger) )]
+		public IMessageLogger MessageLogger { [return: NotNull] get; set; }
+		
+		protected override void Execute( SetupContext context )
+		{
+			context.Register( MessageLogger ).Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
+		}
+	}
 }

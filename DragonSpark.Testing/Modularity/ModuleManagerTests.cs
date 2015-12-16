@@ -14,13 +14,13 @@ namespace DragonSpark.Testing.Modularity
 		[Fact]
 		public void NullLoaderThrows()
 		{
-			Assert.Throws<ArgumentNullException>( () => new ModuleManager( null, new MockModuleCatalog(), new MockLogger(), new MockModuleTypeLoader() ) );
+			Assert.Throws<ArgumentNullException>( () => new ModuleManager( null, new MockModuleCatalog(), new MockMessageLogger(), new MockModuleTypeLoader() ) );
 		}
 
 		[Fact]
 		public void NullCatalogThrows()
 		{
-			Assert.Throws<ArgumentNullException>( () => new ModuleManager(new MockModuleInitializer(), null, new MockLogger(), new MockModuleTypeLoader() ) );
+			Assert.Throws<ArgumentNullException>( () => new ModuleManager(new MockModuleInitializer(), null, new MockMessageLogger(), new MockModuleTypeLoader() ) );
 		}
 
 		[Fact]
@@ -37,7 +37,7 @@ namespace DragonSpark.Testing.Modularity
 			var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
 
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 
 
 
@@ -52,7 +52,7 @@ namespace DragonSpark.Testing.Modularity
 			var loader = new MockModuleInitializer();
 			var backgroungModuleInfo = CreateModuleInfo("NeedsRetrieval", InitializationMode.WhenAvailable);
 			var catalog = new MockModuleCatalog { Modules = { backgroungModuleInfo } };
-			ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(loader, catalog, new MockMessageLogger(), new MockModuleTypeLoader());
 			var moduleTypeLoader = new MockModuleTypeLoader();
 			manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };            
 			Assert.False(loader.InitializeCalled);
@@ -71,7 +71,7 @@ namespace DragonSpark.Testing.Modularity
 			var onDemandModule = CreateModuleInfo("NeedsRetrieval", InitializationMode.OnDemand);
 			var catalog = new MockModuleCatalog { Modules = { onDemandModule } };
 			var moduleRetriever = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleRetriever ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleRetriever } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleRetriever ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleRetriever } };
 			manager.Run();
 
 			Assert.False(loader.InitializeCalled);
@@ -93,7 +93,7 @@ namespace DragonSpark.Testing.Modularity
 			var catalog = new MockModuleCatalog { Modules = new List<ModuleInfo> { CreateModuleInfo("Missing", InitializationMode.OnDemand) } };
 
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			ModuleManager manager = new ModuleManager( loader, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			ModuleManager manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 
 			manager.Run();
 
@@ -107,7 +107,7 @@ namespace DragonSpark.Testing.Modularity
 
 			var catalog = new MockModuleCatalog { CompleteListWithDependencies = modules => new List<ModuleInfo>() };
 			var moduleRetriever = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleRetriever ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleRetriever } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleRetriever ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleRetriever } };
 			manager.Run();
 
 			Assert.Throws<ModuleNotFoundException>( () => manager.LoadModule("NullModule") );
@@ -121,7 +121,7 @@ namespace DragonSpark.Testing.Modularity
 			alreadyPresentModule.State = ModuleState.ReadyForInitialization;
 			var catalog = new MockModuleCatalog { Modules = { alreadyPresentModule } };
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 
 			manager.Run();
 
@@ -137,7 +137,7 @@ namespace DragonSpark.Testing.Modularity
 			var loader = new MockModuleInitializer();
 			var onDemandModule = CreateModuleInfo(typeof(MockModule), InitializationMode.OnDemand);
 			var catalog = new MockModuleCatalog { Modules = { onDemandModule } };
-			var manager = new ModuleManager(loader, catalog, new MockLogger(), new MockModuleTypeLoader());
+			var manager = new ModuleManager(loader, catalog, new MockMessageLogger(), new MockModuleTypeLoader());
 			manager.Run();
 			manager.LoadModule("MockModule");
 			loader.InitializeCalled = false;
@@ -153,7 +153,7 @@ namespace DragonSpark.Testing.Modularity
 			var onDemandModule = CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.OnDemand);
 			var catalog = new MockModuleCatalog { Modules = { onDemandModule } };
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 			manager.Run();
 			manager.LoadModule("ModuleThatNeedsRetrieval");
 			moduleTypeLoader.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(onDemandModule, null));
@@ -169,7 +169,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			var loader = new MockModuleInitializer();
 			var catalog = new MockModuleCatalog();
-			var manager = new ModuleManager(loader, catalog, new MockLogger(), new MockModuleTypeLoader());
+			var manager = new ModuleManager(loader, catalog, new MockMessageLogger(), new MockModuleTypeLoader());
 			bool validateCatalogCalled = false;
 			bool getModulesCalledBeforeValidate = false;
 
@@ -204,7 +204,7 @@ namespace DragonSpark.Testing.Modularity
 			};
 
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 
 			manager.Run();
 
@@ -232,7 +232,7 @@ namespace DragonSpark.Testing.Modularity
 											  };
 
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager( initializer, catalog, new MockLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
+			var manager = new ModuleManager( initializer, catalog, new MockMessageLogger(), moduleTypeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader } };
 
 			manager.Run();
 
@@ -247,7 +247,7 @@ namespace DragonSpark.Testing.Modularity
 			var moduleInfo = CreateModuleInfo("NeedsRetrieval", InitializationMode.WhenAvailable);
 			var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
 			var moduleTypeLoader = new MockModuleTypeLoader();
-			var manager = new ModuleManager(loader, catalog, new MockLogger(), moduleTypeLoader);
+			var manager = new ModuleManager(loader, catalog, new MockMessageLogger(), moduleTypeLoader);
 			
 			var retrieverException = new Exception();
 			moduleTypeLoader.LoadCompletedError = retrieverException;
@@ -277,7 +277,7 @@ namespace DragonSpark.Testing.Modularity
 			var loader = new MockModuleInitializer();
 			var catalog = new MockModuleCatalog { Modules = { CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.WhenAvailable) } };
 			var typeLoader = new MockModuleTypeLoader() { CanLoadModuleTypeReturnValue = false };
-			var manager = new ModuleManager( loader, catalog, new MockLogger(), typeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { typeLoader } };
+			var manager = new ModuleManager( loader, catalog, new MockMessageLogger(), typeLoader ) { ModuleTypeLoaders = new List<IModuleTypeLoader> { typeLoader } };
 			Assert.Throws<ModuleTypeLoaderNotFoundException>( () => manager.Run() );
 		}
 
@@ -287,7 +287,7 @@ namespace DragonSpark.Testing.Modularity
 			var loader = new MockModuleInitializer();
 			var moduleInfo = CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.WhenAvailable);
 			var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
-			var logger = new MockLogger();
+			var logger = new MockMessageLogger();
 			var moduleTypeLoader = new MockModuleTypeLoader();
 			ModuleManager manager = new ModuleManager(loader, catalog, logger, moduleTypeLoader);
 			moduleTypeLoader.LoadCompletedError = new Exception();
@@ -315,7 +315,7 @@ namespace DragonSpark.Testing.Modularity
 			onDemandModule.ModuleName = "OnDemandModule";
 			var moduleThatLoadsOtherModule = CreateModuleInfo(typeof(MockModule), InitializationMode.WhenAvailable);
 			var catalog = new MockModuleCatalog { Modules = { moduleThatLoadsOtherModule, onDemandModule } };
-			ModuleManager manager = new ModuleManager(initializer, catalog, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(initializer, catalog, new MockMessageLogger(), new MockModuleTypeLoader());
 			bool onDemandModuleWasInitialized = false;
 			initializer.Initialize = m =>
 									 {
@@ -340,7 +340,7 @@ namespace DragonSpark.Testing.Modularity
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>(); 
 			var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
 			var catalog = new Mock<IModuleCatalog>();
-			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockMessageLogger(), new MockModuleTypeLoader());
 
 			IDisposable disposableManager = manager as IDisposable;
 			Assert.NotNull(disposableManager);
@@ -352,7 +352,7 @@ namespace DragonSpark.Testing.Modularity
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
 			var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
 			var catalog = new Mock<IModuleCatalog>();
-			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockMessageLogger(), new MockModuleTypeLoader());
 
 			var mockTypeLoader = new Mock<IModuleTypeLoader>();
 			manager.ModuleTypeLoaders = new List<IModuleTypeLoader> {mockTypeLoader.Object};
@@ -365,7 +365,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
 			var catalog = new Mock<IModuleCatalog>();
-			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockMessageLogger(), new MockModuleTypeLoader());
 
 			var mockTypeLoader = new Mock<IModuleTypeLoader>();
 			var disposableMockTypeLoader = mockTypeLoader.As<IDisposable>();
@@ -383,7 +383,7 @@ namespace DragonSpark.Testing.Modularity
 		{
 			Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
 			var catalog = new Mock<IModuleCatalog>();
-			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger(), new MockModuleTypeLoader());
+			ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockMessageLogger(), new MockModuleTypeLoader());
 
 			var mockTypeLoader1 = new Mock<IModuleTypeLoader>();
 

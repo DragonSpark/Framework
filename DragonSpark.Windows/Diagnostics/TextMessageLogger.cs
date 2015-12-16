@@ -5,17 +5,17 @@ using DragonSpark.Runtime;
 
 namespace DragonSpark.Windows.Diagnostics
 {
-	public class TextLogger : LoggerBase, IDisposable
+	public class TextMessageLogger : MessageLoggerBase, IDisposable
 	{
 		readonly TextWriter writer;
 
-		public TextLogger() : this( ExceptionFormatter.Instance )
+		public TextMessageLogger() : this( ExceptionFormatter.Instance )
 		{}
 
-		public TextLogger( IExceptionFormatter formatter ) : this( formatter, CurrentTime.Instance, Console.Out )
+		public TextMessageLogger( IExceptionFormatter formatter ) : this( formatter, CurrentTime.Instance, Console.Out )
 		{}
 
-		public TextLogger( IExceptionFormatter formatter, ICurrentTime time, TextWriter writer) : base( formatter, time )
+		public TextMessageLogger( IExceptionFormatter formatter, ICurrentTime time, TextWriter writer) : base( formatter, time )
 		{
 			if (writer == null)
 				throw new ArgumentNullException(nameof(writer));
@@ -37,9 +37,9 @@ namespace DragonSpark.Windows.Diagnostics
 			}
 		}
 
-		protected override void Write( Line line )
+		protected override void Write( Message message )
 		{
-			writer.WriteLine( line.Message );
+			writer.WriteLine( message.Text );
 		}
 	}
 }

@@ -7,11 +7,11 @@ namespace DragonSpark.Activation.IoC
 {
 	class ResolutionContext
 	{
-		readonly ILogger logger;
+		readonly IMessageLogger messageLogger;
 
-		public ResolutionContext( ILogger logger )
+		public ResolutionContext( IMessageLogger messageLogger )
 		{
-			this.logger = logger;
+			this.messageLogger = messageLogger;
 		}
 
 		public object Execute( Func<object> resolve )
@@ -23,7 +23,7 @@ namespace DragonSpark.Activation.IoC
 			}
 			catch ( ResolutionFailedException e )
 			{
-				logger.Exception( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None ), e );
+				messageLogger.Exception( string.Format( Resources.Activator_CouldNotActivate, e.TypeRequested, e.NameRequested ?? Resources.Activator_None ), e );
 				return null;
 			}
 		}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Setup
 {
@@ -8,7 +9,7 @@ namespace DragonSpark.Setup
 		public CommandCollection()
 		{}
 
-		public CommandCollection( IEnumerable<ICommand> collection ) : base( collection )
+		public CommandCollection( IEnumerable<ICommand> collection ) : base( collection.Fixed() )
 		{}
 	}
 }
