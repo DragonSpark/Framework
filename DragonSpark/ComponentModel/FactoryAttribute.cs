@@ -1,6 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.ComponentModel
 {
@@ -14,21 +15,21 @@ namespace DragonSpark.ComponentModel
 	{
 		readonly IFactory<ObjectFactoryParameter, object> factory;
 
-		public FactoryValueProvider( Type activatedType, string name ) : base( activatedType, name )
+		public FactoryValueProvider( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
 		{}
 
 		public FactoryValueProvider( IActivator activator, Type activatedType, string name ) : this( activator, activator.Activate<FactoryBuiltObjectFactory>(), activatedType, name )
 		{
 		}
 
-		public FactoryValueProvider( IActivator activator, IFactory<ObjectFactoryParameter, object> factory, Type activatedType, string name ) : base( activator, activatedType, name )
+		public FactoryValueProvider( [Required]IActivator activator, [Required]IFactory<ObjectFactoryParameter, object> factory, [Required]Type activatedType, string name ) : base( activator, activatedType, name )
 		{
 			this.factory = factory;
 		}
 
-		protected override object Activate( DefaultValueParameter parameter, Type qualified )
+		protected override object Activate( Parameter parameter )
 		{
-			var result = factory.Create( new ObjectFactoryParameter( qualified, FactoryReflectionSupport.Instance.GetResultType( qualified ) ?? parameter.Metadata.PropertyType ) );
+			var result = factory.Create( new ObjectFactoryParameter( parameter.ActivatedType, FactoryReflectionSupport.Instance.GetResultType( parameter.ActivatedType ) ?? parameter.Metadata.PropertyType ) );
 			return result;
 		}
 	}

@@ -9,7 +9,7 @@ namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		static readonly Dictionary<Tuple<MemberInfo, Type>, Attribute[]> Cache = new Dictionary<Tuple<MemberInfo,Type>, Attribute[]>();
+		readonly static Dictionary<Tuple<MemberInfo, Type>, Attribute[]> Cache = new Dictionary<Tuple<MemberInfo,Type>, Attribute[]>();
 
 		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target ) where TAttribute : Attribute
 		{

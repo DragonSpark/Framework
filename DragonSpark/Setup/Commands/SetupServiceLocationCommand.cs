@@ -4,7 +4,6 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Commands
 {
@@ -21,10 +20,6 @@ namespace DragonSpark.Setup.Commands
 			context.MessageLogger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
 			Locator.Register( Location );
 			Location.Assign( Locator );
-
-			var temp = Services.Location.Locator;
-			var asdf = temp == Locator;
-			var asdfasd = Activator.Current;
 		}
 	}
 }

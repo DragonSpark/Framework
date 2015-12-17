@@ -4,8 +4,7 @@
 	{
 		public UnitySetup()
 		{
-
-			// InitializeComponent();
+			InitializeComponent();
 		}
 	}
 }

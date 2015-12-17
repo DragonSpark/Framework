@@ -39,7 +39,7 @@ namespace DragonSpark.Activation.IoC
 
 		public IUnityContainer AllClasses( object instance )
 		{
-			return Check( instance.GetType(), () => instance.Adapt().GetAllHierarchy().Each( y => container.RegisterInstance( y, instance ) ) );
+			return Check( instance.GetType(), () => instance.Adapt().GetEntireHierarchy().Each( y => container.RegisterInstance( y, instance ) ) );
 		}
 
 		public IUnityContainer Mapping<TInterface, TImplementation>( LifetimeManager manager = null ) where TImplementation : TInterface

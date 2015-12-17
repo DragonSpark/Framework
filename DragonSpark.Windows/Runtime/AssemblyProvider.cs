@@ -1,9 +1,7 @@
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
-using DragonSpark.Setup;
+using DragonSpark.TypeSystem;
 using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Windows.Runtime
 {

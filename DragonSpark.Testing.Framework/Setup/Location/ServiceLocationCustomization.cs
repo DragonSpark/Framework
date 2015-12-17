@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Specifications;
 using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
@@ -10,8 +12,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Runtime.Specifications;
-using Moq;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -94,7 +94,19 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		
 	}
 
-	public class ServiceLocationCustomization : ICustomization, ITestExecutionAware
+	public abstract class CustomizationBase : ICustomization
+	{
+		[Aspects.BuildOnEntry( ApplyToStateMachine = true )]
+		void ICustomization.Customize( IFixture fixture )
+		{
+			Customize( fixture );
+		}
+		
+		protected virtual void Customize( IFixture fixture )
+		{}
+	}
+
+	public class ServiceLocationCustomization : CustomizationBase, ITestExecutionAware
 	{
 		[Activate]
 		public IServiceLocator Locator { get; set; }
@@ -105,7 +117,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		[Activate]
 		public IServiceLocationAuthority Authority { get; set; }
 
-		public void Customize( IFixture fixture )
+		protected override void Customize( IFixture fixture )
 		{
 			fixture.Items().Add( this );
 

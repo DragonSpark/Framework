@@ -2,17 +2,18 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework.Extensions;
+using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class LoggingRegistrationCustomization : ICustomization
+	public class LoggingRegistrationCustomization : CustomizationBase
 	{
 		[Activate]
 		public IUnityContainer Container { get; set; }
 
-		public void Customize( IFixture fixture )
+		protected override void Customize( IFixture fixture )
 		{
 			fixture.Item<OutputCustomization>().With( customization =>
 			{

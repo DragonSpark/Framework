@@ -7,10 +7,10 @@ namespace DragonSpark.ComponentModel
 		public NewGuidAttribute() : this( Guid.NewGuid() )
 		{}
 
-		public NewGuidAttribute( string value ) : base( Guid.Parse( value ) )
+		public NewGuidAttribute( string value ) : this( Guid.Parse( value ) )
 		{}
 
-		public NewGuidAttribute( Guid guid ) : base( guid )
+		public NewGuidAttribute( Guid value ) : base( value )
 		{}
 	}
 }

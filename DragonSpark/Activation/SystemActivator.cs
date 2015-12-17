@@ -32,13 +32,14 @@ namespace DragonSpark.Activation
 		{
 			var candidates = new[] { parameters, parameters.NotNull() };
 			var extended = type.Adapt();
-			var result = candidates.Select( objects => objects as object[] ?? objects.ToArray() ).FirstOrDefault( x => extended.FindConstructor( x ) != null );
+			var result = candidates.Select( objects => objects.Fixed() ).FirstOrDefault( x => extended.FindConstructor( x ) != null );
 			return result;
 		}
 
 		public object Construct( Type type, params object[] parameters )
 		{
-			var result = System.Activator.CreateInstance( type, Coerce( type, parameters ) ).BuildUp();
+			var args = Coerce( type, parameters );
+			var result = System.Activator.CreateInstance( type, args ).BuildUp();
 			return result;
 		}
 	}

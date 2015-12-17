@@ -18,16 +18,9 @@ namespace DragonSpark.Activation.IoC
 
 		public object Locate( Type type )
 		{
-			var typeInfo = type.GetTypeInfo();
-			var mapped = typeInfo.IsInterface ? DetermineImplementor( typeInfo ) : typeInfo;
+			var mapped = type.Adapt().DetermineImplementor() ?? type.GetTypeInfo();
 			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.IsDecoratedWith<SingletonAttribute>() ) );
 			var result = declared.With( info => info.GetValue( null ) );
-			return result;
-		}
-
-		static TypeInfo DetermineImplementor( TypeInfo type )
-		{
-			var result = type.Assembly.DefinedTypes.Where( type.Adapt().IsAssignableFrom ).FirstOrDefault( i => i.Name.StartsWith( type.Name.TrimStart( 'I' ) ) );
 			return result;
 		}
 	}

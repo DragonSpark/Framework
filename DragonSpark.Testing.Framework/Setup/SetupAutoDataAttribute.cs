@@ -5,6 +5,7 @@ using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DragonSpark.Aspects;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -20,7 +21,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 	public class SetupAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
-		readonly ISetup setup;
+		readonly Type setupType;
 
 		public SetupAutoDataAttribute() : this( FixtureFactory.Instance.Create() )
 		{}
@@ -31,16 +32,14 @@ namespace DragonSpark.Testing.Framework.Setup
 		public SetupAutoDataAttribute( Type setupType ) : this( FixtureFactory.Instance.Create(), setupType )
 		{}
 
-		public SetupAutoDataAttribute( IFixture fixture, Type setupType ) : this( fixture, ActivateFactory<ISetup>.Instance.Locked( factory => factory.CreateUsing( setupType ) ) )
-		{}
-
-		public SetupAutoDataAttribute( IFixture fixture, ISetup setup ) : base( fixture )
+		public SetupAutoDataAttribute( IFixture fixture, [OfType( typeof(ISetup) )]Type setupType ) : base( fixture )
 		{
-			this.setup = setup;
+			this.setupType = setupType;
 		}
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
+			var setup = ActivateFactory<ISetup>.Instance.CreateUsing( setupType );
 			setup.Run( new SetupAutoDataContext( Fixture, methodUnderTest ) );
 
 			var result = base.GetData( methodUnderTest );

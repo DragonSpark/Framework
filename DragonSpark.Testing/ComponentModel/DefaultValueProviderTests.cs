@@ -6,6 +6,7 @@ using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
@@ -45,7 +46,7 @@ namespace DragonSpark.Testing.ComponentModel
 		}
 
 		[Theory, Test, SetupAutoData]
-		void Apply( ObjectBuilder sut )
+		void Apply( [Modest]ObjectBuilder sut )
 		{
 			var current = DateTime.Now;
 			var target = new ClassWithDefaultProperties();

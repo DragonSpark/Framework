@@ -180,9 +180,13 @@
     <Compile Include="Aspects\BuildUp.cs" />
     <Compile Include="Aspects\CacheAttribute.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
+    <Compile Include="ComponentModel\BuildablePropertyCollectionFactory.cs" />
+    <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />
     <Compile Include="ComponentModel\DefaultValueBase.cs" />
     <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\IBuildPropertyRepository.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
+    <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="TypeSystem\ISurrogate.cs" />
     <Compile Include="TypeSystem\ReflectionSurrogateFactory.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />

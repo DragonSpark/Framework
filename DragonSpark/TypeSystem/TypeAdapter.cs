@@ -29,6 +29,19 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
+		public PropertyInfo GetProperty( string name )
+		{
+			var result = type.GetPropertiesHierarchical().FirstOrDefault( propertyInfo => propertyInfo.Name == name );
+			return result;
+		}
+
+		public FieldInfo GetField( string name )
+		{
+			var candidates = GetHierarchy( false ).SelectMany( t => new Func<string, FieldInfo>[] { t.GetTypeInfo().GetDeclaredField, t.GetRuntimeField } );
+			var result = candidates.Select( func => func( name ) ).NotNull().FirstOrDefault();
+			return result;
+		}
+
 		public ConstructorInfo FindConstructor( params object[] parameters )
 		{
 			var types = parameters.Select( o => o?.GetType() ).ToArray();
@@ -38,7 +51,7 @@ namespace DragonSpark.TypeSystem
 
 		public ConstructorInfo FindConstructor( params Type[] parameterTypes )
 		{
-			var result = info.DeclaredConstructors.SingleOrDefault( c => !c.IsStatic && Match( c.GetParameters(), parameterTypes ) );
+			var result = info.DeclaredConstructors.SingleOrDefault( c => c.IsPublic && !c.IsStatic && Match( c.GetParameters(), parameterTypes ) );
 			return result;
 		}
 
@@ -100,7 +113,7 @@ namespace DragonSpark.TypeSystem
 
 		public Assembly Assembly => info.Assembly;
 
-		public IEnumerable<Type> GetHierarchy( bool includeRoot = true )
+		public Type[] GetHierarchy( bool includeRoot = true )
 		{
 			var result = new List<Type> { type };
 			var current = info.BaseType;
@@ -112,7 +125,7 @@ namespace DragonSpark.TypeSystem
 				}
 				current = current.GetTypeInfo().BaseType;
 			}
-			return result;
+			return result.ToArray();
 		}
 
 		public Type GetEnumerableType()
@@ -151,6 +164,12 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
+		public TypeInfo DetermineImplementor()
+		{
+			var result = info.IsInterface ? type.Assembly().DefinedTypes.Where( IsAssignableFrom ).FirstOrDefault( i => !i.IsAbstract && i.Name.StartsWith( type.Name.TrimStart( 'I' ) ) ) : null;
+			return result;
+		}
+
 		public Type[] GetAllInterfaces()
 		{
 			var result = ExpandInterfaces( type ).ToArray();
@@ -164,7 +183,7 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public Type[] GetAllHierarchy()
+		public Type[] GetEntireHierarchy()
 		{
 			var result = ExpandInterfaces( type ).Union( GetHierarchy( false ) ).Distinct().ToArray();
 			return result;

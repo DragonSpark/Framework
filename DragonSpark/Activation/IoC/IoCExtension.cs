@@ -1,4 +1,5 @@
-﻿using DragonSpark.Diagnostics;
+﻿using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
@@ -7,6 +8,24 @@ using Microsoft.Practices.Unity.ObjectBuilder;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class ObjectBuilderExtension : UnityContainerExtension
+	{
+		protected override void Initialize()
+		{
+			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
+			Context.Policies.Set<IObjectBuilderPolicy>( new ObjectBuilderPolicy( false ), typeof(IObjectBuilder) );
+			Container.Registration<EnsuredRegistrationSupport>().With( support =>
+			{
+				support.Instance<IObjectBuilder>( ObjectBuilder.Instance );
+			});
+		}
+
+		public void Enable( bool on )
+		{
+			Context.Policies.SetDefault<IObjectBuilderPolicy>( new ObjectBuilderPolicy( on ) );
+		}
+	}
+
 	public class IoCExtension : UnityContainerExtension
 	{
 		public IMessageLogger MessageLogger { get; } = new MessageRecorder();
@@ -22,8 +41,7 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<ArrayResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
-			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
-
+			
 			Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
 
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>

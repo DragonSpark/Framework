@@ -19,9 +19,9 @@ namespace DragonSpark.ComponentModel
 		public ValueDefaultProvider( IActivator activator, Type activatedType, string name ) : base( activator, activatedType, name )
 		{}
 
-		protected override object Activate( DefaultValueParameter parameter, Type qualified )
+		protected override object Activate( Parameter parameter )
 		{
-			var item = base.Activate( parameter, qualified );
+			var item = base.Activate( parameter );
 			var result = item.AsTo<IValue, object>( value => value.Item );
 			return result;
 		}

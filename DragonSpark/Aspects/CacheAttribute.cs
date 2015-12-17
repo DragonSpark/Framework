@@ -1,5 +1,5 @@
-using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
 using PostSharp.Serialization;
 using System;

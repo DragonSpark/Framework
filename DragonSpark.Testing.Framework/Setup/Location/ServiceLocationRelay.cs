@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		public object Create( object request, ISpecimenContext context )
 		{
 			var item = specification.IsSatisfiedBy( request ) ? request.AsTo<Type, object>( locator.GetService ) : null;
-			var result = item ?? new NoSpecimen( request );
+			var result = item ?? new NoSpecimen();
 			return result;
 		}
 	}

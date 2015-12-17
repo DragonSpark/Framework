@@ -1,8 +1,8 @@
-using System;
 using DragonSpark.Extensions;
 using PostSharp.Aspects;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Reflection;
+using System;
 
 namespace DragonSpark.Aspects
 {
@@ -17,7 +17,7 @@ namespace DragonSpark.Aspects
 
 		protected override string GetErrorMessage()
 		{
-			return ContractLocalizedTextProvider.Current.GetMessage( nameof(OfTypeAttribute) );
+			return /*ContractLocalizedTextProvider.Current.GetMessage( nameof(OfTypeAttribute) )*/ $"The specified type is not of type (or cannot be cast to) {type.FullName}";
 		}
 
 		public Exception ValidateValue( Type value, string locationName, LocationKind locationKind )

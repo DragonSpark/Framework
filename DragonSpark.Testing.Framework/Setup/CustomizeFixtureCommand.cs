@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		protected override void OnSetup( SetupContext context, SetupAutoDataContext setup )
 		{
 			var registration = context.Container().Registration<EnsuredRegistrationSupport>();
-			registration.Instance( () => setup.Fixture );
+			registration.Instance( setup.Fixture );
 			var customizations = new ICustomization[]
 			{
 				AmbientCustomizationsCustomization.Instance,
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Framework.Setup
 				new CompositeCustomization( Customizations ),
 				new MetadataCustomization( setup.Method )
 			};
-			customizations.Each( customization => setup.Fixture.Customize( customization ) );
+			customizations.Each( setup.Fixture.Customize );
 		}
 	}
 }

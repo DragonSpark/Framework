@@ -1,3 +1,4 @@
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
@@ -9,11 +10,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Testing.Framework.Setup.Location;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class OutputCustomization : ICustomization, ITestExecutionAware
+	public class OutputCustomization : CustomizationBase, ITestExecutionAware
 	{
 		readonly ICollection<Func<IMessageRecorder>> register = new List<Func<IMessageRecorder>>();
 
@@ -22,7 +24,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		[Activate]
 		public IMessageRecorder MessageRecorder { get; set; }
 
-		public void Customize( IFixture fixture )
+		protected override void Customize( IFixture fixture )
 		{
 			fixture.Items().Add( this );
 			MessageRecorder.Information( "Logger initialized!" );

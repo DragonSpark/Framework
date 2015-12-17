@@ -13,7 +13,7 @@ namespace DragonSpark.Activation.IoC
 
 		protected override ServiceLocator Activate( ActivateParameter parameter )
 		{
-			var result = base.Activate( parameter ).WithSelf( locator => locator.Container.Extend().Register( locator ) );
+			var result = base.Activate( parameter ).WithSelf( locator => locator.Container.Extend().Register( locator ).Extension<ObjectBuilderExtension>() );
 			return result;
 		}
 	}

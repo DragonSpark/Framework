@@ -1,13 +1,40 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Aspects;
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
+	public class ExtensionAttribute : ActivateAttribute
+	{
+		public ExtensionAttribute() : base( typeof(ExtensionProvider) )
+		{}
+	}
+
+	public class ExtensionProvider : ActivatedValueProvider
+	{
+		public ExtensionProvider( string name = null ) : base( null, name )
+		{}
+
+		protected override object Activate( Parameter parameter )
+		{
+			var result = base.Activate( parameter ).AsTo<IUnityContainer, IUnityContainerExtensionConfigurator>( container => container.Extension( parameter.Metadata.PropertyType ) );
+			return result;
+		}
+
+		protected override Type DetermineType( PropertyInfo propertyInfo )
+		{
+			return typeof(IUnityContainer);
+		}
+	}
+
 	public class ActivateAttribute : DefaultValueBase
 	{
-		public ActivateAttribute() : this( null )
+		public ActivateAttribute() : this( (string)null )
 		{}
 
 		public ActivateAttribute( string name ) : this( null, name )
@@ -16,7 +43,10 @@ namespace DragonSpark.ComponentModel
 		public ActivateAttribute( Type activatedType, string name = null ) : this( typeof(ActivatedValueProvider), activatedType, name )
 		{}
 
-		public ActivateAttribute( [OfType( typeof(ActivatedValueProvider) )]Type surrogateType, Type activatedType, string name = null ) : base( surrogateType )
+		protected ActivateAttribute( Type surrogateType ) : this( surrogateType, null, null )
+		{}
+
+		protected ActivateAttribute( [OfType( typeof(ActivatedValueProvider) )]Type surrogateType, Type activatedType, string name = null ) : base( surrogateType )
 		{
 			ActivatedType = activatedType;
 			Name = name;
@@ -31,7 +61,7 @@ namespace DragonSpark.ComponentModel
 		public ActivatedValueProvider( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
 		{}
 
-		public ActivatedValueProvider(IActivator activator, Type activatedType, string name )
+		public ActivatedValueProvider( [Required]IActivator activator, Type activatedType, string name )
 		{
 			Activator = activator;
 			ActivatedType = activatedType;
@@ -45,19 +75,34 @@ namespace DragonSpark.ComponentModel
 		public object GetValue( DefaultValueParameter parameter )
 		{
 			var type = ActivatedType ?? DetermineType( parameter.Metadata );
-			var result = Activate( parameter, type );
+			var adapted = new Parameter( type, parameter.Instance, parameter.Metadata );
+			var result = Activate( adapted );
 			return result;
 		}
 
-		protected virtual object Activate( DefaultValueParameter parameter, Type qualified )
+		protected virtual object Activate( Parameter parameter )
 		{
-			var result = Activator.Activate<object>( qualified, Name );
+			var result = Activator.Activate<object>( parameter.ActivatedType, Name )
+				/*?? 
+				parameter.ActivatedType.Adapt().DetermineImplementor().With( info => Activator.Activate<object>( info.AsType() ) )
+				?? 
+				SingletonLocator.Instance.Locate( parameter.ActivatedType )*/;
 			return result;
 		}
 
 		protected virtual Type DetermineType( PropertyInfo propertyInfo )
 		{
 			return propertyInfo.PropertyType;
+		}
+
+		public class Parameter : DefaultValueParameter
+		{
+			public Parameter( Type activatedType, object instance, PropertyInfo metadata ) : base( instance, metadata )
+			{
+				ActivatedType = activatedType;
+			}
+
+			public Type ActivatedType { get; }
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using System;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ namespace DragonSpark.Setup
 	public abstract class SetupCommand : SetupCommand<SetupContext>
 	{}
 
+	[BuildUp]
 	public abstract class SetupCommand<TContext> : ICommand where TContext : SetupContext
 	{
 		readonly ConditionMonitor executed = new ConditionMonitor();
@@ -26,6 +28,7 @@ namespace DragonSpark.Setup
 			return parameter is TContext && Enabled && !executed.IsApplied;
 		}
 
+		[BuildOnEntry]
 		public void Execute( object parameter )
 		{
 			var context = parameter as TContext;

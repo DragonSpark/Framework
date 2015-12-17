@@ -20,6 +20,7 @@
 	<setup:SetupServiceLocationCommand />
 	<commands:SetupUnityCommand />
 	<ds:SetupRegistrationByConventionCommand />
+	<commands:SetupObjectBuilderCommand />
 	<commands:ConfigureUnityCommand>
 		<commands:ConfigureUnityCommand.Instances>
 			<commands:UnityInstance>
