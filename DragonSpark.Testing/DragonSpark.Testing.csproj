@@ -46,6 +46,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +59,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
-    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -164,10 +164,11 @@
     <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
+    <Compile Include="Aspects\CacheAttributeTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ComponentModel\BuildUpTests.cs" />
+    <Compile Include="Aspects\BuildUpTests.cs" />
     <Compile Include="ComponentModel\DefaultValueProviderTests.cs" />
     <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
@@ -271,6 +272,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TypeSystem\ApplicationAssemblyLocatorTests.cs" />
+    <Compile Include="TypeSystem\SurrogateFactoryTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />

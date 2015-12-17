@@ -124,6 +124,10 @@
       <HintPath>$(SolutionDir)packages\AutoMapper.4.1.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+Xamarin.iOS10+MonoTouch10\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.ConnectedProperties.3.0.0\lib\portable-net40+win8+sl4+wp8\ConnectedProperties.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dynamitey">
       <HintPath>$(SolutionDir)packages\Dynamitey.1.0.2.0\lib\portable-win+net45+sl40+wp80\Dynamitey.dll</HintPath>
     </Reference>
@@ -172,12 +176,19 @@
     <Compile Include="Activation\IoC\RegistrationSupport.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
-    <Compile Include="ComponentModel\BuildUp.cs" />
+    <Compile Include="Aspects\BuildOnEntry.cs" />
+    <Compile Include="Aspects\BuildUp.cs" />
+    <Compile Include="Aspects\CacheAttribute.cs" />
+    <Compile Include="Aspects\OfTypeAttribute.cs" />
+    <Compile Include="ComponentModel\DefaultValueBase.cs" />
+    <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
+    <Compile Include="TypeSystem\ISurrogate.cs" />
+    <Compile Include="TypeSystem\ReflectionSurrogateFactory.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
     <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
     <Compile Include="Activation\FactoryModel\ActivationParameter.cs" />
-    <Compile Include="Runtime\IWeakCollection.cs" />
     <Compile Include="Runtime\Specifications\AlwaysSpecification.cs" />
     <Compile Include="Runtime\Specifications\FixedSpecification.cs" />
     <Compile Include="Runtime\Specifications\NeverSpecification.cs" />
@@ -238,6 +249,10 @@
     <Compile Include="Runtime\Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Runtime\Specifications\SpecificationBase.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensions.cs" />
+    <Compile Include="TypeSystem\SurrogateAttribute.cs" />
+    <Compile Include="TypeSystem\SurrogateFactory.cs" />
+    <Compile Include="TypeSystem\SurrogateForAttribute.cs" />
+    <Compile Include="TypeSystem\SurrogateTypeLocator.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />

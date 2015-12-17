@@ -2,6 +2,7 @@
 using DragonSpark.Runtime;
 using System.Linq;
 using System.Windows.Markup;
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 
 namespace DragonSpark.Setup

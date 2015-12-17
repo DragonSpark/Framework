@@ -42,7 +42,7 @@ namespace DragonSpark.Testing.Activation.IoC
 
 		class Factory : FactoryBase<IItem>
 		{
-			// public static IItem Result { get; } = new Item();
+			// public static IItem Result { get; } = new Target();
 
 			protected override IItem CreateItem()
 			{

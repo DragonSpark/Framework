@@ -1,21 +1,23 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
+using DragonSpark.Runtime.Values;
+using DragonSpark.TypeSystem;
+using Nito.ConnectedProperties;
 using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Threading;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace DragonSpark.ComponentModel
 {
 	public interface IBuildPropertyRepository
 	{
-		IEnumerable<DefaultValueParameter> GetProperties( object target );
+		IEnumerable<DefaultValueParameter> GetProperties( object instance );
 
 		void MarkBuilt( DefaultValueParameter property );
 	}
@@ -24,12 +26,28 @@ namespace DragonSpark.ComponentModel
 	{
 		public static DefaultPropertyValueFactory Instance { get; } = new DefaultPropertyValueFactory();
 
+		readonly IFactory<MemberInfo, IDefaultValueProvider> factory;
+
+		public DefaultPropertyValueFactory() : this( ReflectionSurrogateFactory<IDefaultValueProvider>.Instance )
+		{}
+
+		public DefaultPropertyValueFactory( IFactory<MemberInfo, IDefaultValueProvider> factory )
+		{
+			this.factory = factory;
+		}
+
 		protected override object CreateItem( DefaultValueParameter parameter )
 		{
-			var result = parameter.Metadata.From<IDefaultValueProvider>( parameter.Instance ).With( provider => provider.GetValue( parameter ) ) 
+			var result = FromFactory( parameter ).With( provider => provider.GetValue( parameter ) )
 				??
 				parameter.Metadata.FromMetadata<DefaultValueAttribute, object>( attribute => attribute.Value );
 			return result;
+		}
+
+		[Cache]
+		IDefaultValueProvider FromFactory( DefaultValueParameter parameter )
+		{
+			return factory.Create( parameter.Metadata );
 		}
 	}
 
@@ -49,6 +67,25 @@ namespace DragonSpark.ComponentModel
 		{
 			Metadata.SetValue( Instance, value );
 			return this;
+		}
+
+		protected bool Equals( DefaultValueParameter other )
+		{
+			return Equals( Instance, other.Instance ) && Equals( Metadata, other.Metadata );
+		}
+
+		public override bool Equals( object obj )
+		{
+			return !ReferenceEquals( null, obj ) && ( ReferenceEquals( this, obj ) || obj.GetType() == this.GetType() && Equals( (DefaultValueParameter)obj ) );
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var result = Instance.GetHashCode() * 397 ^ Metadata.GetHashCode();
+				return result;
+			}
 		}
 	}
 
@@ -80,28 +117,77 @@ namespace DragonSpark.ComponentModel
 		}
 	}
 
+	public abstract class ConnectedValue<T> : WritableValue<T>
+	{
+		/*public static T Property<TProperty>( [Required]object @this ) where TProperty : ConnectedValue<T>
+		{
+			var value = (ConnectedValue<T>)typeof(TProperty).GetConstructor( typeof(object) ).Invoke( new[] { @this } );
+			var result = value.Item;
+			return result;
+		}*/
+
+		readonly Func<T> create;
+
+		protected ConnectedValue( object instance, Type type, Func<T> create = null ) : this( instance, type.AssemblyQualifiedName, create )
+		{}
+
+		protected ConnectedValue( object instance, string name, Func<T> create = null ) : this( PropertyConnector.Default.Get( instance, name ).Cast<T>(), create )
+		{}
+
+		protected ConnectedValue( ConnectibleProperty<T> property, Func<T> create )
+		{
+			Property = property;
+			this.create = create ?? ( () => default(T) );
+		}
+
+		public override void Assign( T item )
+		{
+			Property.Set( item );
+		}
+
+		public override T Item => Property.GetOrCreate( create );
+
+		protected ConnectibleProperty<T> Property { get; }
+	}
+
+	/*public static class Properties
+	{
+		public static T Property<T>( [Required]object @this ) where T : IValue
+		{
+			var value = (T)typeof(T).GetConstructor( typeof(object) ).Invoke( new[] { @this } );
+			var result = value.Item;
+			return result;
+		}
+	}*/
+
 	[Synchronized]
 	class BuildPropertyRepository : IBuildPropertyRepository
 	{
 		public static BuildPropertyRepository Instance { get; } = new BuildPropertyRepository();
 
-		[Reference]
-		readonly WeakCollection<object> built = new WeakCollection<object>();
-
-		[Reference]
-		readonly ConditionalWeakTable<object, ICollection<PropertyInfo>> properties = new ConditionalWeakTable<object, ICollection<PropertyInfo>>();
-
-		public IEnumerable<DefaultValueParameter> GetProperties( object target )
+		class IsBuilt : ConnectedValue<bool>
 		{
-			var result = !built.Contains( target ) ? properties.GetValue( target, BuildablePropertyCollectionFactory.Instance.Create ).Select( info => new DefaultValueParameter( target, info ) ).ToArray() : Enumerable.Empty<DefaultValueParameter>();
+			public IsBuilt( object instance ) : base( instance, typeof(IsBuilt) )
+			{}
+		}
+
+		class Properties : ConnectedValue<ICollection<PropertyInfo>>
+		{
+			public Properties( object instance ) : base( instance, typeof(Properties), () => BuildablePropertyCollectionFactory.Instance.Create( instance ) )
+			{}
+		}
+
+		public IEnumerable<DefaultValueParameter> GetProperties( object instance )
+		{
+			var result = !new IsBuilt( instance ).Item ? new Properties( instance ).Item.Select( info => new DefaultValueParameter( instance, info ) ).ToArray() : Enumerable.Empty<DefaultValueParameter>();
 			return result;
 		}
 
 		public void MarkBuilt( DefaultValueParameter property )
 		{
-			var collection = properties.GetValue( property.Instance, BuildablePropertyCollectionFactory.Instance.Create );
+			var collection = new Properties( property.Instance ).Item;
 			collection.Remove( property.Metadata );
-			collection.Any().IsFalse( () => built.Add( property.Instance ) );
+			collection.Any().IsFalse( () => new IsBuilt( property.Instance ).Assign( true ) );
 		}
 	}
 
