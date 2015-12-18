@@ -1,0 +1,15 @@
+﻿<Configuration:SynchronizationConfigurationDictionary x:Class="DragonSpark.Testing.Resources.ExpressionMappings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Configuration="clr-namespace:DragonSpark.Objects.Synchronization.Configuration;assembly=DragonSpark" xmlns:Synchronization="clr-namespace:DragonSpark.Testing.TestObjects.Synchronization">
+	<Configuration:SynchronizationKey x:Key="KeyEntityViewEntity" First="{x:Type Synchronization:EntityView}" Second="{x:Type Synchronization:Entity}" />
+	<Configuration:SynchronizationContainer x:Key="DefaultContainer">
+		<Configuration:SynchronizationContainer.Policies>
+			<Configuration:SynchronizationPolicy Key="{StaticResource KeyEntityViewEntity}">
+				<Configuration:SynchronizationContexts>
+					<Configuration:SynchronizationContext FirstExpression="CommentsField" SecondExpression="Comments" />
+				</Configuration:SynchronizationContexts>
+			</Configuration:SynchronizationPolicy>
+		</Configuration:SynchronizationContainer.Policies>
+	</Configuration:SynchronizationContainer>
+</Configuration:SynchronizationConfigurationDictionary>
