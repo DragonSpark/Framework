@@ -1,0 +1,45 @@
+﻿<Configuration:UnityContainerConfiguration x:Class="DragonSpark.Testing.Logging.LoggingConfiguration"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:StaticFactory="clr-namespace:Microsoft.Practices.Unity.StaticFactory;assembly=Microsoft.Practices.Unity"
+                                           xmlns:IoC="clr-namespace:DragonSpark.IoC;assembly=DragonSpark" 
+	xmlns:Configuration="clr-namespace:DragonSpark.IoC.Configuration;assembly=DragonSpark"
+	                                       xmlns:Logging="clr-namespace:DragonSpark.Logging;assembly=DragonSpark"
+                                           mc:Ignorable="d"
+>
+	<Configuration:UnityContainerConfiguration.PreConfigurations>
+		<Configuration:AssignServiceLocatorCommand />
+		<Configuration:RegisterFromMetadataCommand />
+		<Configuration:UnityContainerConfiguration>
+			<Configuration:UnityType RegistrationType="{x:Type Logging:ILogger}" MapTo="{x:Type Logging:EnterpriseLibraryLogger}" />
+						
+			<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}">
+				<Logging:TraceListenerFactory />
+			</Configuration:UnityType>
+
+			<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Information">
+				<Logging:TraceListenerFactory ListenerName="InformationLoggingListener" />
+			</Configuration:UnityType>
+			<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Warning">
+				<Logging:TraceListenerFactory ListenerName="WarningLoggingListener" />
+			</Configuration:UnityType>
+			<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Error">
+				<Logging:TraceListenerFactory ListenerName="ErrorLoggingListener" />
+			</Configuration:UnityType>
+
+			<Configuration:UnityType RegistrationType="{x:Type Logging:TraceListener}" BuildName="Tracer">
+				<Logging:TraceListenerFactory ListenerName="Tracing Custom Listener" />
+			</Configuration:UnityType>
+			<Configuration:UnityContainerConfiguration.Extensions>
+				<IoC:DragonSparkExtension />
+				<Configuration:ConfigurationExtension />
+				<StaticFactory:StaticFactoryExtension />
+			</Configuration:UnityContainerConfiguration.Extensions>
+			<Configuration:UnityContainerConfiguration.PostConfigurations>
+				<Configuration:ConfigureContainerFromConfigurationCommand />
+			</Configuration:UnityContainerConfiguration.PostConfigurations>
+		</Configuration:UnityContainerConfiguration>
+	</Configuration:UnityContainerConfiguration.PreConfigurations>
+</Configuration:UnityContainerConfiguration>
