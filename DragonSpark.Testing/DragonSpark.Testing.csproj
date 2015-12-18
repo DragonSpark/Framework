@@ -124,6 +124,14 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Common.4.2.15\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.4.2.15\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -272,7 +280,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TypeSystem\ApplicationAssemblyLocatorTests.cs" />
-    <Compile Include="TypeSystem\SurrogateFactoryTests.cs" />
+    <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />
@@ -311,6 +319,7 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="DragonSpark.Testing.psproj" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

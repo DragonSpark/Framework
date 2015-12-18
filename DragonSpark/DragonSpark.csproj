@@ -184,11 +184,10 @@
     <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />
     <Compile Include="ComponentModel\DefaultValueBase.cs" />
     <Compile Include="ComponentModel\DefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\HostedValueLocator.cs" />
     <Compile Include="ComponentModel\IBuildPropertyRepository.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
-    <Compile Include="TypeSystem\ISurrogate.cs" />
-    <Compile Include="TypeSystem\ReflectionSurrogateFactory.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
     <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
@@ -253,10 +252,7 @@
     <Compile Include="Runtime\Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Runtime\Specifications\SpecificationBase.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensions.cs" />
-    <Compile Include="TypeSystem\SurrogateAttribute.cs" />
-    <Compile Include="TypeSystem\SurrogateFactory.cs" />
-    <Compile Include="TypeSystem\SurrogateForAttribute.cs" />
-    <Compile Include="TypeSystem\SurrogateTypeLocator.cs" />
+    <Compile Include="TypeSystem\HostingAttribute.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />

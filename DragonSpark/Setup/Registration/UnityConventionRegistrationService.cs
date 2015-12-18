@@ -1,6 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
+using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
@@ -30,7 +31,7 @@ namespace DragonSpark.Setup.Registration
 			profile.Candidates
 				.AsTypeInfos()
 				.WhereDecorated<RegistrationBaseAttribute>()
-				.Each( item => item.Item1.Registration.Register( registry, item.Item2.AsType() ) );
+				.Each( item => HostedValueLocator<IConventionRegistration>.Instance.Create( item.Item2 ).Register( registry, item.Item2.AsType() ) );
 		}
 	}
 }

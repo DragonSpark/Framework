@@ -1,6 +1,5 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
 using System.ComponentModel;
 using System.Reflection;
@@ -13,7 +12,7 @@ namespace DragonSpark.ComponentModel
 
 		readonly IFactory<MemberInfo, IDefaultValueProvider> factory;
 
-		public DefaultPropertyValueFactory() : this( ReflectionSurrogateFactory<IDefaultValueProvider>.Instance )
+		public DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Instance )
 		{}
 
 		public DefaultPropertyValueFactory( [Required]IFactory<MemberInfo, IDefaultValueProvider> factory )

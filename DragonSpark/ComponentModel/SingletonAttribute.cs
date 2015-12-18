@@ -5,17 +5,11 @@ namespace DragonSpark.ComponentModel
 {
 	public class SingletonAttribute : DefaultValueBase
 	{
-		readonly Type hostType;
-		readonly string propertyName;
-
 		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
 		{}
 
-		public SingletonAttribute( Type hostType, string propertyName ) : base( typeof(SingletonDefaultValueProvider) )
-		{
-			this.hostType = hostType;
-			this.propertyName = propertyName;
-		}
+		public SingletonAttribute( Type hostType, string propertyName ) : base( () => new SingletonDefaultValueProvider( hostType, propertyName ) )
+		{}
 	}
 
 	public class SingletonDefaultValueProvider : IDefaultValueProvider

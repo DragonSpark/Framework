@@ -1,13 +1,12 @@
-using System;
-using DragonSpark.Aspects;
 using DragonSpark.TypeSystem;
+using System;
 
 namespace DragonSpark.ComponentModel
 {
 	[AttributeUsage( AttributeTargets.Property )]
-	public abstract class DefaultValueBase : SurrogateAttribute
+	public abstract class DefaultValueBase : HostingAttribute
 	{
-		protected DefaultValueBase( [OfType( typeof(IDefaultValueProvider) )]Type @for ) : base( @for )
+		protected DefaultValueBase( Func<IDefaultValueProvider> provider ) : base( provider )
 		{}
 	}
 }

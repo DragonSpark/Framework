@@ -1,13 +1,13 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
-using System;
 using PostSharp.Patterns.Contracts;
+using System;
 
 namespace DragonSpark.ComponentModel
 {
 	public sealed class FactoryAttribute : ActivateAttribute
 	{
-		public FactoryAttribute( Type factoryType ) : base( typeof(FactoryValueProvider), factoryType )
+		public FactoryAttribute( Type factoryType, string name = null ) : base( () => new FactoryValueProvider( factoryType, name ) )
 		{}
 	}
 
@@ -19,8 +19,7 @@ namespace DragonSpark.ComponentModel
 		{}
 
 		public FactoryValueProvider( IActivator activator, Type activatedType, string name ) : this( activator, activator.Activate<FactoryBuiltObjectFactory>(), activatedType, name )
-		{
-		}
+		{}
 
 		public FactoryValueProvider( [Required]IActivator activator, [Required]IFactory<ObjectFactoryParameter, object> factory, [Required]Type activatedType, string name ) : base( activator, activatedType, name )
 		{

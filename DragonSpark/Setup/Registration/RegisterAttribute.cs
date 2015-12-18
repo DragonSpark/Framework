@@ -13,7 +13,7 @@ namespace DragonSpark.Setup.Registration
 		public RegisterAttribute( string name ) : this( null, name )
 		{}
 
-		RegisterAttribute( Type @as, string name ) : base( new RegistrationByConvention( @as, name ) )
+		RegisterAttribute( Type @as, string name ) : base( () => new RegistrationByConvention( @as, name ) )
 		{}
 	}
 }

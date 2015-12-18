@@ -5,7 +5,7 @@ namespace DragonSpark.ComponentModel
 {
 	public sealed class CurrentTimeAttribute : DefaultValueBase
 	{
-		public CurrentTimeAttribute() : base( typeof(CurrentTimeValueProvider) )
+		public CurrentTimeAttribute() : base( () => new CurrentTimeValueProvider() )
 		{}
 	}
 

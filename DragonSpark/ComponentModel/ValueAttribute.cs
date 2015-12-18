@@ -7,7 +7,7 @@ namespace DragonSpark.ComponentModel
 {
 	public class ValueAttribute : ActivateAttribute
 	{
-		public ValueAttribute( Type activatedType, string name = null ) : base( typeof(ValueDefaultProvider), activatedType, name )
+		public ValueAttribute( Type activatedType, string name = null ) : base( () => new ValueDefaultProvider( activatedType, name ) )
 		{}
 	}
 

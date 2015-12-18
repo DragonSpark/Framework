@@ -5,14 +5,7 @@ namespace DragonSpark.ComponentModel
 {
 	public class DefaultAttribute : DefaultValueBase
 	{
-		readonly object value;
-
-		public DefaultAttribute( object value ) : this( typeof(DefaultValueProvider), value )
+		public DefaultAttribute( object value ) : base( () => new DefaultValueProvider( value ) )
 		{}
-
-		protected DefaultAttribute( [OfType( typeof(DefaultValueProvider) )]Type surrogateFor, object value ) : base( surrogateFor )
-		{
-			this.value = value;
-		}
 	}
 }

@@ -1,6 +1,4 @@
 using DragonSpark.Activation;
-using DragonSpark.Activation.IoC;
-using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
@@ -11,7 +9,7 @@ namespace DragonSpark.ComponentModel
 {
 	public class ExtensionAttribute : ActivateAttribute
 	{
-		public ExtensionAttribute() : base( typeof(ExtensionProvider) )
+		public ExtensionAttribute(string name = null ) : base( () => new ExtensionProvider( name ) )
 		{}
 	}
 
@@ -40,20 +38,11 @@ namespace DragonSpark.ComponentModel
 		public ActivateAttribute( string name ) : this( null, name )
 		{}
 
-		public ActivateAttribute( Type activatedType, string name = null ) : this( typeof(ActivatedValueProvider), activatedType, name )
+		public ActivateAttribute( Type activatedType, string name = null ) : this( () => new ActivatedValueProvider( activatedType, name ) )
 		{}
 
-		protected ActivateAttribute( Type surrogateType ) : this( surrogateType, null, null )
+		public ActivateAttribute( Func<IDefaultValueProvider> provider ) : base( provider )
 		{}
-
-		protected ActivateAttribute( [OfType( typeof(ActivatedValueProvider) )]Type surrogateType, Type activatedType, string name = null ) : base( surrogateType )
-		{
-			ActivatedType = activatedType;
-			Name = name;
-		}
-
-		public Type ActivatedType { get; }
-		public string Name { get; }
 	}
 
 	public class ActivatedValueProvider : IDefaultValueProvider

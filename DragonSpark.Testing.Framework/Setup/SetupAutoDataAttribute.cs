@@ -1,11 +1,11 @@
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.Aspects;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -19,8 +19,10 @@ namespace DragonSpark.Testing.Framework.Setup
 		}
 	}
 
+	// [Synchronized]
 	public class SetupAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
+		// [Reference]
 		readonly Type setupType;
 
 		public SetupAutoDataAttribute() : this( FixtureFactory.Instance.Create() )

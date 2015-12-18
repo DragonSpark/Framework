@@ -14,7 +14,7 @@ namespace DragonSpark.ComponentModel
 		void MarkBuilt( DefaultValueParameter property );
 	}
 
-	[Synchronized]
+	// [Synchronized]
 	class BuildPropertyRepository : IBuildPropertyRepository
 	{
 		public static BuildPropertyRepository Instance { get; } = new BuildPropertyRepository();

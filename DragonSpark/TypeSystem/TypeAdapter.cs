@@ -130,19 +130,24 @@ namespace DragonSpark.TypeSystem
 
 		public Type GetEnumerableType()
 		{
-			var result = InnerType( type, typeof(IEnumerable).GetTypeInfo().IsAssignableFrom );
+			var result = InnerType( type, types => types.FirstOrDefault(), typeof(IEnumerable).GetTypeInfo().IsAssignableFrom );
 			return result;
+		}
+
+		public Type GetResultType()
+		{
+			return InnerType( type, types => types.LastOrDefault() );
 		}
 
 		public Type GetInnerType()
 		{
-			return InnerType( type );
+			return InnerType( type, types => types.Only() );
 		}
 
-		static Type InnerType( Type target, Func<TypeInfo, bool> check = null )
+		static Type InnerType( Type target, Func<Type[], Type> fromGenerics, Func<TypeInfo, bool> check = null )
 		{
 			var info = target.GetTypeInfo();
-			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.With( func => func( info ), () => true ) ? info.GenericTypeArguments.FirstOrDefault() :
+			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.With( func => func( info ), () => true ) ? fromGenerics( info.GenericTypeArguments ) :
 				target.IsArray ? target.GetElementType() : null;
 			return result;
 		}

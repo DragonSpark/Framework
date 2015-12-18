@@ -1,5 +1,8 @@
+using PostSharp.Patterns.Threading;
+
 namespace DragonSpark.Activation.FactoryModel
 {
+	// [Synchronized]
 	public class ActivateFactory<TResult> : ActivateFactory<ActivateParameter, TResult> where TResult : class
 	{
 		public static ActivateFactory<TResult> Instance { get; } = new ActivateFactory<TResult>();

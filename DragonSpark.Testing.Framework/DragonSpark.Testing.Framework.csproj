@@ -125,6 +125,10 @@
       <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Model.4.2.15\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.15.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.4.2.15\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -240,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DragonSpark.Testing.Framework.psproj" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

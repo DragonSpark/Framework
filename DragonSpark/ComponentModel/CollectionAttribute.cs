@@ -7,7 +7,7 @@ namespace DragonSpark.ComponentModel
 {
 	public class CollectionAttribute : ActivateAttribute
 	{
-		public CollectionAttribute( Type elementType = null ) : base( typeof(CollectionProvider), elementType.With( type => typeof(Collection<>).MakeGenericType( type ) ) )
+		public CollectionAttribute( Type elementType = null, string name = null ) : base( () => new CollectionProvider( elementType.With( type => typeof( Collection<> ).MakeGenericType( type ) ), name ) )
 		{}
 	}
 
