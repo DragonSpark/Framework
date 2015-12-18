@@ -19,7 +19,7 @@ Summary:
 <xsl:for-each select="local:VoteReport.Groups/local:VoteGroupView">- <xsl:value-of select="@Title" />: *<xsl:value-of select=".//local:VoteCount/@Count" /> Total Votes* (+<xsl:value-of select=".//local:VoteCount/@Delta" /> New)<xsl:text>&#10;</xsl:text></xsl:for-each>
 Message:
 ========
-Weekly Vote Report for <xsl:value-of select="$Date" />: <xsl:value-of select="$TotalUbiquitous" /> Cumulative Votes for a Ubiquitious .NET Client Model. 
+Weekly Vote Report for <xsl:value-of select="$Date" />: <xsl:value-of select="$TotalUbiquitous" /> Cumulative Votes for a Ubiquitous .NET Client Model. 
 
 Dark O' Thirty:
 ===============

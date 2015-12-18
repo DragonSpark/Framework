@@ -1,11 +1,10 @@
 using DevelopersWin.VoteReporter.Entity;
-using DragonSpark.Activation;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DevelopersWin.VoteReporter
 {
@@ -46,7 +45,12 @@ namespace DevelopersWin.VoteReporter
 			var result = current.MapInto<VoteGroupView>();
 			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Recording == recording ).Count );
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.With( view => view.Counts.Count ) }.BuildUp();
-			result.Votes.AddRange( current.Votes.OrderBy( vote => vote.Order ).Select( v => CreateVote( recording, v, previous.With( x => x.Votes.SingleOrDefault( y => y.Id == v.Id ) ) ) ) );
+			result.Votes.AddRange( 
+				current.Votes
+					.OrderBy( vote => vote.Order )
+					.Select( v => CreateVote( recording, v, previous.With( x => x.Votes.SingleOrDefault( y => y.Id == v.Id ) ) ) )
+					.OrderByDescending( view => view.Counts.Delta )
+				);
 			return result;
 		}
 

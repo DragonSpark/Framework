@@ -9,13 +9,15 @@
 	mc:Ignorable="d"
 	Id="59ED8E8C-3078-4737-8F8B-679C736A74A2"
 	ContextType="{x:Type voteReporter:VotingContext}"
-	Version="1.0.0.0"
+	Version="1.0.0.1"
 	>
 	<entity:EntityInstallationStep>
 		<voteReporter:VoteGroup Id="BC7C5B60-6187-453A-88F4-7B58CC2B4453" Title="Ubiquitous / Cross-Platform Client .NET" Order="{markup:Next}">
 			<markup:Collection>
 				<voteReporter:Vote Id="0DBDB0E3-35D2-4E72-B1C3-FF26A70C52FE" Title="Create a Ubiquitous .NET Client Application Development Model" Location="http://visualstudio.uservoice.com/forums/121579-visual-studio/suggestions/10027638-create-a-ubiquitous-net-client-application-develo" Order="{markup:Next}" />
 				<voteReporter:Vote Id="4C7F4FFB-368E-4AB8-B39E-8CB2D4442859" Title="Bring Windows 10 Universal Apps to Android and iOS" Location="https://visualstudio.uservoice.com/forums/121579-visual-studio-2015/suggestions/8912350-bring-windows-10-universal-apps-to-android-and-ios" Order="{markup:Next}" />
+				<voteReporter:Vote Id="5af5d665-c1c2-4ce6-9d04-a30d69d3ec22" Title="One .NET Framework for One Microsoft" Location="http://visualstudio.uservoice.com/forums/121579-visual-studio-2015/suggestions/4249140-one-net-framework-for-one-microsoft" Order="{markup:Next}" />
+				<voteReporter:Vote Id="1c98f6e5-7a9e-47bd-a610-8a84646868d5" Title="Silverlight 6 [Closed -- Carrying the Torch]" Location="http://visualstudio.uservoice.com/forums/121579-visual-studio/suggestions/3556619-silverlight-6" Order="{markup:Next}" />
 				<voteReporter:Vote Id="6FF2260C-700E-4312-8F98-542E130CFB84" Title="Make Universal Windows Platform Open Source and Cross-Platform" Location="https://wpdev.uservoice.com/forums/110705-dev-platform/suggestions/7989744-make-universal-windows-platform-open-source-and-cr" Order="{markup:Next}" />
 				<voteReporter:Vote Id="D17F1A40-6857-4B1E-BFBF-CFDAC59D3141" Title="Expand/Enable Universal Windows Platform to Transpile to JavaScript (iOS/Droid Compatibility)" Location="https://wpdev.uservoice.com/forums/110705-dev-platform/suggestions/7897380-expand-enable-universal-windows-platform-to-transp" Order="{markup:Next}" />
 			</markup:Collection>
