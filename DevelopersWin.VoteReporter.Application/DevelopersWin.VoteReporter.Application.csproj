@@ -119,15 +119,15 @@
       <Name>DevelopersWin.VoteReporter</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Project>{82E56091-DD33-4F8D-A9D9-8948F3D6F820}</Project>
       <Name>DragonSpark.Types.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
       <Name>DragonSpark.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\DragonSpark\DragonSpark.csproj">
-      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Project>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
   </ItemGroup>

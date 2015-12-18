@@ -8,7 +8,6 @@ namespace DevelopersWin.VoteReporter.Application
 		public Program()
 		{
 			InitializeComponent();
-			Commands.Add( new AssignServiceLocatorCommand() );
 		}
 
 		static void Main( string[] args )

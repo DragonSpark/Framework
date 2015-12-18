@@ -1,35 +1,36 @@
-﻿<application:Setup x:TypeArguments="voteReporter:Logger" x:Class="DevelopersWin.VoteReporter.Application.Program"
+﻿<setup:Setup x:Class="DevelopersWin.VoteReporter.Application.Program"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:application="clr-namespace:DragonSpark.Windows;assembly=DragonSpark.Windows"
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
-	xmlns:ioC="clr-namespace:DragonSpark.Activation.IoC;assembly=DragonSpark"
-	xmlns:dragonSpark="clr-namespace:DragonSpark;assembly=DragonSpark"
 	xmlns:localEntity="clr-namespace:DevelopersWin.VoteReporter.Entity;assembly=DevelopersWin.VoteReporter"
-	xmlns:voteReporter="clr-namespace:DevelopersWin.VoteReporter;assembly=DevelopersWin.VoteReporter"
 	xmlns:entity="clr-namespace:DragonSpark.Windows.Entity;assembly=DragonSpark.Windows"
 	xmlns:setupWindows="clr-namespace:DragonSpark.Windows.Setup;assembly=DragonSpark.Windows"
 	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
+	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
+	xmlns:registration="clr-namespace:DragonSpark.Setup.Registration;assembly=DragonSpark"
 	mc:Ignorable="d" 
 >
 	<setup:Setup.Commands>
-		<commands:AssignServiceLocatorCommand />
+		<commands:SetupLoggingCommand MessageLogger="{markup:Activate {x:Type diagnostics:MessageRecorder}}" />
+		<commands:SetupModuleCatalogCommand ModuleCatalog="{markup:Activate {x:Type application:AssemblyModuleCatalog}}" />
+		<registration:RegisterFrameworkExceptionTypesCommand />
+		<commands:SetupServiceLocationCommand />
+		<commands:SetupUnityCommand />
 		<setupWindows:SetupRegistrationByConventionCommand />
-		<commands:SetupUnityContainerCommand>
-			<commands:SetupUnityContainerCommand.Instances>
-				<commands:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
+		<commands:SetupObjectBuilderCommand />
+		<commands:ConfigureUnityCommand>
+			<commands:ConfigureUnityCommand.Instances>
 				<commands:UnityInstance>
 					<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
 				</commands:UnityInstance>
-			</commands:SetupUnityContainerCommand.Instances>
-			<commands:SetupUnityContainerCommand.Extensions>
-				<ioC:IoCExtension />
-			</commands:SetupUnityContainerCommand.Extensions>
-		</commands:SetupUnityContainerCommand>
+			</commands:ConfigureUnityCommand.Instances>
+		</commands:ConfigureUnityCommand>
+
 		<setupWindows:InitializeMarkupCommand />
 		<commands:InitializeModulesCommand />
 		<entity:AssignDataDirectoryCommand />
@@ -40,4 +41,4 @@
 		</localEntity:InitializeDatabaseCommand>
 		<commands:RunProgramCommand />
 	</setup:Setup.Commands>
-</application:Setup>
+</setup:Setup>

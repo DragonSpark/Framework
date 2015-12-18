@@ -1,11 +1,12 @@
-﻿using DragonSpark.Windows;
+﻿using DragonSpark.Diagnostics;
+using DragonSpark.Windows;
 using DragonSpark.Windows.Diagnostics;
 
 namespace DevelopersWin.VoteReporter
 {
-	public class Logger : CompositeLoggerFacade
+	public class Logger : CompositeMessageLogger
 	{
-		public Logger() : base( new TextLogger(), new TraceLogger() )
+		public Logger() : base( new TextMessageLogger(), new TraceMessageLogger() )
 		{}
 	}
 }
