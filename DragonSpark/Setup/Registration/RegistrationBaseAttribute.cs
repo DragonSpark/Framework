@@ -1,15 +1,13 @@
+using DragonSpark.TypeSystem;
 using System;
 
 namespace DragonSpark.Setup.Registration
 {
 	[AttributeUsage( AttributeTargets.Class )]
-	public abstract class RegistrationBaseAttribute : Attribute
+	public abstract class RegistrationBaseAttribute : HostingAttribute
 	{
-		protected RegistrationBaseAttribute( IConventionRegistration registration )
+		protected RegistrationBaseAttribute( Func<IConventionRegistration> factory ) : base( factory )
 		{
-			Registration = registration;
 		}
-
-		public IConventionRegistration Registration { get; }
 	}
 }
