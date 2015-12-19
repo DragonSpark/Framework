@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Entity
 {
 	public static class DbContextExtensions
 	{
-		static readonly MethodInfo
+		readonly static MethodInfo
 			GetMethod = typeof(DbContextExtensions).GetMethod( "Get", new[] { typeof(DbContext), typeof(object), typeof(int) } ),
 			ApplyChangesMethod = typeof(DbContextExtensions).GetMethods().FirstOrDefault( x => x.IsGenericMethod && x.Name == "ApplyChanges" );
 
@@ -30,7 +30,7 @@ namespace DragonSpark.Windows.Entity
 			return result;
 		}
 
-		static readonly IList<DbContext> Saving = new List<DbContext>();
+		readonly static IList<DbContext> Saving = new List<DbContext>();
 
 		public static int EnsureSaved( this DbContext target )
 		{
@@ -107,21 +107,24 @@ namespace DragonSpark.Windows.Entity
 
 		public static object ApplyChanges( this DbContext target, object entity )
 		{
-			var result = ApplyChangesMethod.MakeGenericMethod( entity.GetType() ).Invoke( null, new[] { target, entity } );
-			return result;
+			var type = entity.GetType();
+			var items = target.GetEntityProperties( type ).SelectMany( x => type.GetProperty( x.Name ).GetValue( entity ).With( o => o.AsTo<IEnumerable, IEnumerable<object>>( enumerable => enumerable.Cast<object>().Select( target.ApplyChanges ), o.ToItem ) ) );
+			var all = entity.Prepend( items ).Distinct();
+			all.Each( o =>
+			{
+				ApplyChangesMethod.MakeGenericMethod( o.GetType() ).Invoke( null, new[] { target, o } );
+			} );
+			return entity;
 		}
 
 		public static TEntity ApplyChanges<TEntity>( this DbContext target, TEntity entity ) where TEntity : class
 		{
-			switch ( target.Entry( entity ).State )
+			var entityState = target.Entry( entity ).State;
+			switch ( entityState )
 			{
 				case EntityState.Detached:
-					target.Set<TEntity>().AddOrUpdate( entity );
-					switch ( target.Entry( entity ).State )
-					{
-						case EntityState.Detached:
-							return target.Get<TEntity>( entity );
-					}
+					var dbSet = target.Set<TEntity>();
+					dbSet.AddOrUpdate( dbSet.Attach( entity ) );
 					break;
 			}
 			return entity;
