@@ -13,13 +13,11 @@ namespace DragonSpark.Aspects
 	{
 		class Stored : ConnectedValue<WeakReference>
 		{
-			static string DetermineKey( MethodInterceptionArgs args )
-			{
-				var result = string.Join( "_",  new object[] { args.Instance?.GetType(), args.Method }.Concat( args.Arguments ).Select( o => o?.GetHashCode() ?? -1 ) );
-				return result;
-			}
+			static string DetermineKey( MethodInterceptionArgs args ) => string.Join( "_", new[] { DetermineHost( args ), args.Method }.Concat( args.Arguments ).Select( o => o?.GetHashCode() ?? -1 ) );
 
-			public Stored( MethodInterceptionArgs args ) : base( args.Instance ?? args.Method.DeclaringType, DetermineKey( args ), () => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) ) )
+			static object DetermineHost( MethodInterceptionArgs args ) => args.Instance ?? args.Method.DeclaringType;
+
+			public Stored( MethodInterceptionArgs args ) : base( DetermineHost( args ), DetermineKey( args ), () => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) ) )
 			{}
 
 			public override WeakReference Item => base.Item.With( x => x.IsAlive ? x : Clear() );
