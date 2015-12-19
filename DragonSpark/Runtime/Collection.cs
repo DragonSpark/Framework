@@ -1,3 +1,6 @@
+using DragonSpark.Extensions;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Markup;
 
@@ -8,19 +11,19 @@ namespace DragonSpark.Runtime
 	}
 
 	[Ambient]
-	public class Collection<T> : System.Collections.ObjectModel.Collection<T>
+	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IEnumerable<T>, IList where T : class
 	{
-		public Collection()
+		/*public Collection()
 		{
 		}
 
-		public Collection( IList<T> list ) : base( list )
+		public Collection( IList<T> list ) // : base( list )
 		{
-		}
+		}*/
 
-		/*readonly List<T> items;
+		readonly List<T> items;
 
-		readonly ConditionMonitor built = new ConditionMonitor();
+		// readonly ConditionMonitor built = new ConditionMonitor();
 
 		public Collection() : this( new T[0] )
 		{}
@@ -30,11 +33,11 @@ namespace DragonSpark.Runtime
 			items = new List<T>( collection );
 		}
 
-		IEnumerable<T> Items => built.Apply() ? items.Select( arg => arg.BuildUp() ) : items;
+		// IEnumerable<T> Items => built.Apply() ? items.Select( arg => arg.BuildUp() ) : items;
 
 		public virtual IEnumerator<T> GetEnumerator()
 		{
-			var result = Items.GetEnumerator();
+			var result = items.GetEnumerator();
 			return result;
 		}
 
@@ -46,12 +49,18 @@ namespace DragonSpark.Runtime
 		public void Add( T item )
 		{
 			items.Add( item );
-			built.Reset();
 		}
 
 		int IList.Add( object value )
 		{
-			var result = value.AsTo<T, int>( AddItem, () => -1 );
+			var item = OnAdd( value );
+			var result =  item.With( AddItem, () => -1 );
+			return result;
+		}
+
+		protected virtual T OnAdd( object item )
+		{
+			var result = item as T;
 			return result;
 		}
 
@@ -100,7 +109,7 @@ namespace DragonSpark.Runtime
 
 		public void CopyTo( T[] array, int arrayIndex )
 		{
-			Items.ToArray().CopyTo( array, arrayIndex );
+			items.ToArray().CopyTo( array, arrayIndex );
 		}
 
 		public bool Remove( T item )
@@ -125,6 +134,6 @@ namespace DragonSpark.Runtime
 		{
 			get { return items[index]; }
 			set { items[index] = (T)value; }
-		}*/
+		}
 	}
 }

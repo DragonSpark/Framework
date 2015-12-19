@@ -28,5 +28,19 @@ namespace DragonSpark.Testing
 			var twice = sut.Resolve<RegisterAsMany>();
 			Assert.NotSame( once, twice );
 		}
+
+		/*[Fact]
+		public void Sandbox()
+		{
+			var temp = typeof(IList).GetMethod( "Add" );
+			
+			IList sut = new UnityInstanceCollection();
+
+			sut.Add( new Object() );
+
+			// temp.Invoke( sut, new [] { new UnityInstance() } );
+
+			Debugger.Break();
+		}*/
 	}
 }

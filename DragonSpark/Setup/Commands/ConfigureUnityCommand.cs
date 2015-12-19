@@ -13,7 +13,7 @@ namespace DragonSpark.Setup.Commands
 
 		public CommandCollection<UnityType> Types { get; } = new CommandCollection<UnityType>();
 
-		public CommandCollection<UnityInstance> Instances { get; } = new CommandCollection<UnityInstance>();
+		public UnityInstanceCollection Instances { get; } = new UnityInstanceCollection();
 
 		public CommandCollection PreConfigurations { get; } = new CommandCollection();
 
@@ -29,4 +29,44 @@ namespace DragonSpark.Setup.Commands
 			commands.Where( command => command.CanExecute( context ) ).Each( item => item.Execute( context ) );
 		}
 	}
+
+	// [ConvertItem]
+	public class UnityInstanceCollection : CommandCollection<UnityInstance>
+	{
+		protected override UnityInstance OnAdd( object item )
+		{
+			var result = base.OnAdd( item ) ?? new UnityInstance { Instance = item, RegistrationType = item.GetType() };
+			return result;
+		}
+	}
+
+	/*[Serializable]
+	public class AddAspect : MethodLevelAspect, IAspectProvider
+	{
+		[SelfPointcut]
+		[OnMethodSuccessAdvice]
+		public void OnEntry( MethodExecutionArgs args )
+		{}
+
+		public IEnumerable<AspectInstance> ProvideAspects( object targetElement )
+		{
+			throw new NotImplementedException();
+		}
+	}*/
+
+
+	/*[PSerializable]
+	public class ConvertItem : InstanceLevelAspect
+	{
+		[OnMethodEntryAdvice, MethodPointcut( nameof( Select ) )]
+		public void OnEntry( MethodExecutionArgs args )
+		{
+			
+		}
+
+		IEnumerable<MethodInfo> Select( Type type )
+		{
+			yield return typeof(IList).GetRuntimeMethod( nameof(IList.Add), new [] { typeof(object) } );
+		}
+	}*/
 }
