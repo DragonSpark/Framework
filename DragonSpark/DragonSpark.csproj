@@ -176,7 +176,6 @@
     <Compile Include="Activation\IoC\RegistrationSupport.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
-    <Compile Include="Aspects\BuildOnEntry.cs" />
     <Compile Include="Aspects\BuildUp.cs" />
     <Compile Include="Aspects\CacheAttribute.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />

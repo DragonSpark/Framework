@@ -23,13 +23,16 @@ namespace DragonSpark.Testing.Aspects
 		[BuildUp]
 		public class BuildTarget
 		{
+			public BuildTarget()
+			{}
+
 			[DefaultValue( true )]
 			public bool Boolean { get; set; }
 
 			[SkipFirstCallValue]
 			public object Value { get; set; }
 
-			[BuildOnEntry]
+			[BuildUp]
 			public void Call()
 			{}
 		}

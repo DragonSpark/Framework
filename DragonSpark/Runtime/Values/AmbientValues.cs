@@ -1,4 +1,3 @@
-using DragonSpark.Extensions;
 using DragonSpark.Runtime.Specifications;
 using System;
 
@@ -30,7 +29,7 @@ namespace DragonSpark.Runtime.Values
 
 		public static object Get( Type type, object context )
 		{
-			var result = Repository.Locked( repository => repository.Get( new AmbientRequest( type, context ) ) );
+			var result = Repository.Get( new AmbientRequest( type, context ) );
 			return result;
 		}
 
@@ -41,12 +40,12 @@ namespace DragonSpark.Runtime.Values
 
 		public static void Register( IAmbientKey key, object instance )
 		{
-			Repository.Locked( repository => repository.Add( key, instance ) );
+			Repository.Add( key, instance );
 		}
 
 		public static void Remove( object context )
 		{
-			Repository.Locked( repository => repository.Remove( context ) );
+			Repository.Remove( context );
 		}
 
 		/*public static IDisposable CreateContext( IAmbientKey key, object item )

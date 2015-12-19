@@ -27,7 +27,8 @@ namespace DragonSpark.Testing.Framework.Extensions
 
 		static TResult Get<T, TResult>( IFixture fixture, Func<T, TResult> resolve ) where T : ICustomization
 		{
-			var result = fixture.Items().FirstOrDefaultOfType<T>().With( resolve );
+			var items = fixture.Items();
+			var result = items.FirstOrDefaultOfType<T>().With( resolve );
 			return result;
 		}
 

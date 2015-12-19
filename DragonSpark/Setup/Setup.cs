@@ -1,12 +1,8 @@
-﻿using DragonSpark.Extensions;
+﻿using DragonSpark.Aspects;
+using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System.Linq;
 using System.Windows.Markup;
-using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
-using DragonSpark.Diagnostics;
-using DragonSpark.Properties;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup
 {

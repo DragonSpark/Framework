@@ -15,6 +15,9 @@ namespace DragonSpark.Setup
 
 		public event EventHandler CanExecuteChanged = delegate {};
 
+		protected SetupCommand()
+		{}
+
 		public void Update()
 		{
 			CanExecuteChanged( this, EventArgs.Empty );
@@ -28,7 +31,7 @@ namespace DragonSpark.Setup
 			return parameter is TContext && Enabled && !executed.IsApplied;
 		}
 
-		[BuildOnEntry( ApplyToStateMachine = true )]
+		[BuildUp]
 		public void Execute( object parameter )
 		{
 			var context = parameter as TContext;

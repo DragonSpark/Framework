@@ -11,8 +11,6 @@ namespace DragonSpark.Aspects
 	[LinesOfCodeAvoided( 6 )]
 	public class Cache : MethodInterceptionAspect
 	{
-		readonly static object Instance = new object();
-
 		class Stored : ConnectedValue<WeakReference>
 		{
 			static string DetermineKey( MethodInterceptionArgs args )
@@ -21,7 +19,7 @@ namespace DragonSpark.Aspects
 				return result;
 			}
 
-			public Stored( MethodInterceptionArgs args ) : base( args.Instance ?? Instance, DetermineKey( args ), () => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) ) )
+			public Stored( MethodInterceptionArgs args ) : base( args.Instance ?? args.Method.DeclaringType, DetermineKey( args ), () => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) ) )
 			{}
 
 			public override WeakReference Item => base.Item.With( x => x.IsAlive ? x : Clear() );

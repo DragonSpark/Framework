@@ -5,11 +5,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:DragonSpark.Testing.Framework.Setup"
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
-	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
-	xmlns:typeSystem="clr-namespace:DragonSpark.TypeSystem;assembly=DragonSpark"
-	xmlns:runtimeWindows="clr-namespace:DragonSpark.Windows.Runtime;assembly=DragonSpark.Windows"
 	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
 	xmlns:windows="clr-namespace:DragonSpark.Windows;assembly=DragonSpark.Windows"
 	xmlns:registration="clr-namespace:DragonSpark.Setup.Registration;assembly=DragonSpark"
@@ -27,11 +24,9 @@
 
 	<commands:SetupObjectBuilderCommand />
 	<commands:ConfigureUnityCommand>
-		<commands:ConfigureUnityCommand.Instances>
-			<commands:UnityInstance>
-				<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
-			</commands:UnityInstance>
-		</commands:ConfigureUnityCommand.Instances>
+		<commands:UnityInstance>
+			<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
+		</commands:UnityInstance>
 	</commands:ConfigureUnityCommand>
 	<local:CustomizeFixtureCommand>
 		<location:ObjectBuilderCustomization />

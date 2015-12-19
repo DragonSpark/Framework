@@ -96,7 +96,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 
 	public abstract class CustomizationBase : ICustomization
 	{
-		[Aspects.BuildOnEntry( ApplyToStateMachine = true )]
+		[Aspects.BuildUp]
 		void ICustomization.Customize( IFixture fixture )
 		{
 			Customize( fixture );

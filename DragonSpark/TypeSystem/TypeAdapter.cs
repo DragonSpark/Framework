@@ -29,7 +29,7 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public PropertyInfo GetProperty( string name )
+		/*public PropertyInfo GetProperty( string name )
 		{
 			var result = type.GetPropertiesHierarchical().FirstOrDefault( propertyInfo => propertyInfo.Name == name );
 			return result;
@@ -39,6 +39,12 @@ namespace DragonSpark.TypeSystem
 		{
 			var candidates = GetHierarchy( false ).SelectMany( t => new Func<string, FieldInfo>[] { t.GetTypeInfo().GetDeclaredField, t.GetRuntimeField } );
 			var result = candidates.Select( func => func( name ) ).NotNull().FirstOrDefault();
+			return result;
+		}*/
+
+		public ConstructorInfo[] GetConstructors()
+		{
+			var result = GetHierarchy().SelectMany( t => t.GetTypeInfo().DeclaredConstructors ).ToArray();
 			return result;
 		}
 

@@ -13,6 +13,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static IEnumerable<T> NullIfEmpty<T>( this IEnumerable<T> @this )
+		{
+			var result = @this.With( x => x.Any() ) ? @this : null;
+			return result;
+		}
+
 		public static IEnumerable<T> Built<T>( this IEnumerable<T> @this ) where T : class
 		{
 			var result = @this.Select( item => item.BuildUp() );
