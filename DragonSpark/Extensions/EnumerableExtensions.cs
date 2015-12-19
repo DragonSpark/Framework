@@ -42,10 +42,11 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static T Only<T>( this IEnumerable<T> @this )
+		public static T Only<T>( this IEnumerable<T> @this, Func<T, bool> where = null )
 		{
-			var enumerable = @this as T[] ?? @this.ToArray();
-			var result = enumerable.Count() == 1 ? enumerable.Single() : default(T);
+			var items = where.With( @this.Where, () => @this );
+			var enumerable = items.Fixed();
+			var result = enumerable.Length == 1 ? enumerable.Single() : default(T);
 			return result;
 		}
 

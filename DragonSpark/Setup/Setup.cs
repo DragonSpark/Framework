@@ -4,26 +4,15 @@ using System.Linq;
 using System.Windows.Markup;
 using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
+using DragonSpark.Properties;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup
 {
-	/*public class Setup<TLogging> : DragonSpark.Setup.Setup where TLogging : ILogger, new()
-	{
-		public Setup() : base( new CommandCollection<TLogging, AssemblyModuleCatalog>() )
-		{}
-	}*/
-
 	[ContentProperty( nameof(Commands) ), BuildUp]
 	public class Setup : ISetup
 	{
-		/*protected Setup() : this( new ICommand[0] )
-		{}
-
-		protected Setup( IEnumerable<ICommand> commands )
-		{
-			Commands.AddRange( commands );
-		}*/
-
 		public Collection<object> Items { get; } = new Collection<object>();
 
 		public CommandCollection Commands { get; } = new CommandCollection();

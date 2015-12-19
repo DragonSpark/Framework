@@ -1,19 +1,19 @@
+using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Markup;
-using DragonSpark.Extensions;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Setup.Commands
 {
-	[ContentProperty( nameof(Types) )]
-	public class ConfigureUnityCommand : SetupCommand
+	[ContentProperty( nameof(Instances) )]
+	public class ConfigureUnityCommand : UnityCommand
 	{
 		public Collection<UnityContainerExtension> Extensions { get; } = new Collection<UnityContainerExtension>();
 
-		public CommandCollection Types { get; } = new CommandCollection();
+		public CommandCollection<UnityType> Types { get; } = new CommandCollection<UnityType>();
 
-		public CommandCollection Instances { get; } = new CommandCollection();
+		public CommandCollection<UnityInstance> Instances { get; } = new CommandCollection<UnityInstance>();
 
 		public CommandCollection PreConfigurations { get; } = new CommandCollection();
 
@@ -23,8 +23,7 @@ namespace DragonSpark.Setup.Commands
 
 		protected override void Execute( SetupContext context )
 		{
-			var container = context.Container();
-			Extensions.Each( x => container.AddExtension( x ) );
+			Extensions.Each( x => Container.AddExtension( x ) );
 
 			var commands = PreConfigurations.Concat( Instances ).Concat( Configurations ).Concat( Types ).Concat( PostConfigurations ).ToArray();
 			commands.Where( command => command.CanExecute( context ) ).Each( item => item.Execute( context ) );

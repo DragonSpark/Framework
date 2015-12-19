@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Entity
 {
 	public class LocalStoragePropertyProcessor
 	{
-		static readonly MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( "Each", BindingOptions.AllProperties );
+		readonly static MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( nameof(Apply), BindingOptions.AllProperties );
 
 		public static LocalStoragePropertyProcessor Instance { get; } = new LocalStoragePropertyProcessor();
 
@@ -31,7 +31,7 @@ namespace DragonSpark.Windows.Entity
 			return result;
 		}
 
-		void Apply<TEntity, TProperty>( DbModelBuilder builder, PropertyInfo property ) where TEntity : class
+		static void Apply<TEntity, TProperty>( DbModelBuilder builder, PropertyInfo property ) where TEntity : class
 		{
 			var parameter = Expression.Parameter( typeof(TEntity), "x" );
 			var expression = Expression.Property( parameter, property.Name );

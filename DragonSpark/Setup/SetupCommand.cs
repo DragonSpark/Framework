@@ -28,7 +28,7 @@ namespace DragonSpark.Setup
 			return parameter is TContext && Enabled && !executed.IsApplied;
 		}
 
-		[BuildOnEntry]
+		[BuildOnEntry( ApplyToStateMachine = true )]
 		public void Execute( object parameter )
 		{
 			var context = parameter as TContext;

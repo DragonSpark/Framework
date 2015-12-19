@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Entity
 		{
 			Database.With( file =>
 			{
-				var files = EntityFiles.WithLog( Database ).Where( info => !FileSystem.IsLocked( info ) ).ToArray();
+				var files = EntityFiles.WithLog( Database ).Where( info => !info.IsLocked() ).ToArray();
 				files.Any().IsTrue( () =>
 				{
 					var destination = file.Directory.CreateSubdirectory( FileSystem.GetValidPath() );

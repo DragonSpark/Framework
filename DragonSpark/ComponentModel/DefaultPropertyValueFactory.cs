@@ -2,6 +2,7 @@ using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace DragonSpark.ComponentModel
@@ -10,19 +11,19 @@ namespace DragonSpark.ComponentModel
 	{
 		public static DefaultPropertyValueFactory Instance { get; } = new DefaultPropertyValueFactory();
 
-		readonly IFactory<MemberInfo, IDefaultValueProvider> factory;
+		readonly IFactory<MemberInfo, IDefaultValueProvider[]> factory;
 
 		public DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Instance )
 		{}
 
-		public DefaultPropertyValueFactory( [Required]IFactory<MemberInfo, IDefaultValueProvider> factory )
+		public DefaultPropertyValueFactory( [Required]IFactory<MemberInfo, IDefaultValueProvider[]> factory )
 		{
 			this.factory = factory;
 		}
 
 		protected override object CreateItem( DefaultValueParameter parameter )
 		{
-			var result = factory.Create( parameter.Metadata ).With( provider => provider.GetValue( parameter ) )
+			var result = factory.Create( parameter.Metadata ).Select( provider => provider.GetValue( parameter ) ).NotNull().FirstOrDefault()
 						 ??
 						 parameter.Metadata.FromMetadata<DefaultValueAttribute, object>( attribute => attribute.Value );
 			return result;

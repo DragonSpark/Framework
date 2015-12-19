@@ -26,13 +26,10 @@ namespace DragonSpark.Setup.Commands
 		}
 	}
 
-	public class SetupUnityCommand : SetupCommand
+	public class SetupUnityCommand : ConfigureUnityCommand
 	{
 		[Default( true )]
 		public bool UseDefaultConfiguration { get; set; }
-
-		[Activate]
-		public IUnityContainer Container { [return: NotNull]get; set; } // .InvalidIfNull( Resources.NullUnityContainerException )
 
 		[Activate]
 		public IServiceLocation Location { get; set; }
@@ -42,10 +39,10 @@ namespace DragonSpark.Setup.Commands
 
 		protected override void Execute( SetupContext context )
 		{
-			context.Register( Container );
-
-			context.MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
+			MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
 			ConfigureContainer( context, Container );
+
+			base.Execute( context );
 		}
 
 		protected virtual void ConfigureContainer( SetupContext context, IUnityContainer container )
@@ -54,9 +51,7 @@ namespace DragonSpark.Setup.Commands
 			{
 				support.Instance( new ServiceLocationMonitor( Location, Locator ) );
 
-				support.AllInterfaces( context.MessageLogger );
-
-				var objects = context.Items.Except( container.ToItem() );
+				var objects = context.Append( context.Items ).Except( container.ToItem() );
 				objects.Each( support.Convention );
 
 				if ( UseDefaultConfiguration )

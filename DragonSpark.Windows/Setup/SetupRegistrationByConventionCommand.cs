@@ -1,4 +1,4 @@
-using DragonSpark.Extensions;
+using DragonSpark.ComponentModel;
 using DragonSpark.Setup;
 using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
@@ -8,7 +8,7 @@ namespace DragonSpark.Windows.Setup
 {
 	public class SetupRegistrationByConventionCommand : DragonSpark.Setup.Commands.SetupRegistrationByConventionCommand
 	{
-		[ComponentModel.Singleton( typeof(AssemblyProvider) )]
+		[Activate]
 		public IAssemblyProvider AssemblyLocator { get; set; }
 
 		protected override IConventionRegistrationProfileProvider DetermineProfileProvider( SetupContext context )
@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Setup
 
 		protected override IConventionRegistrationService DetermineService( SetupContext context )
 		{
-			var result = new UnityConventionRegistrationService( context.Container(), context.MessageLogger );
+			var result = new UnityConventionRegistrationService( Container, MessageLogger );
 			return result;
 		}
 	}

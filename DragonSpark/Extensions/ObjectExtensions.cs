@@ -130,7 +130,7 @@ namespace DragonSpark.Extensions
 		{
 			var result = @this.With( item =>
 			{
-				action( item );
+				action?.Invoke( item );
 				return item;
 			} );
 			return result;

@@ -2,7 +2,7 @@ using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class SetupRegistrationByConventionCommand : SetupCommand
+	public abstract class SetupRegistrationByConventionCommand : UnityRegistrationCommand
 	{
 		protected override void Execute( SetupContext context )
 		{

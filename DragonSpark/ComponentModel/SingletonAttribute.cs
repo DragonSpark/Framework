@@ -5,6 +5,10 @@ namespace DragonSpark.ComponentModel
 {
 	public class SingletonAttribute : DefaultValueBase
 	{
+		public SingletonAttribute() : this( null )
+		{
+		}
+
 		public SingletonAttribute( Type hostType ) : this( hostType, "Instance" )
 		{}
 
@@ -25,7 +29,7 @@ namespace DragonSpark.ComponentModel
 
 		public object GetValue( DefaultValueParameter parameter )
 		{
-			var result = new SingletonLocator( propertyName ).Locate( hostType );
+			var result = new SingletonLocator( propertyName ).Locate( hostType ?? parameter.Metadata.PropertyType );
 			return result;
 		}
 	}
