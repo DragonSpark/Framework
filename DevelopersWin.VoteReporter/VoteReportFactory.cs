@@ -43,7 +43,7 @@ namespace DevelopersWin.VoteReporter
 		static VoteGroupView Create( Recording recording, VoteGroup current, VoteGroupView previous )
 		{
 			var result = current.MapInto<VoteGroupView>();
-			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Recording == recording ).Count );
+			var count = current.Votes.Sum( vote => vote.Records.SingleOrDefault( record => record.Recording == recording ).With( record => record.Count ) );
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.With( view => view.Counts.Count ) }.BuildUp();
 			result.Votes.AddRange( 
 				current.Votes
@@ -57,7 +57,7 @@ namespace DevelopersWin.VoteReporter
 		static VoteView CreateVote( Recording recording, Vote current, VoteView previous )
 		{
 			var result = current.MapInto<VoteView>();
-			var count = current.Records.SingleOrDefault( record => record.Recording == recording ).Count;
+			var count = current.Records.SingleOrDefault( record => record.Recording == recording ).With( record => record.Count );
 			result.Counts = new VoteCount { Count = count, Delta = count - previous.With( view => view.Counts.Count ) }.BuildUp();
 			return result;
 		}

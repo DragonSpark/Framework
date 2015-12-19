@@ -16,30 +16,28 @@
 	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<setup:Setup.Commands>
-		<voteReporter:SetupApplicationCommand />
-		<commands:SetupUnityCommand>
-			<commands:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
-			<commands:UnityInstance RegistrationType="{x:Type modularity:IModuleCatalog}" Instance="{x:Static application:AssemblyModuleCatalog.Instance}" />
-		</commands:SetupUnityCommand>
-		<registration:RegisterFrameworkExceptionTypesCommand />
-		<setupWindows:SetupRegistrationByConventionCommand />
-		
-		<commands:SetupObjectBuilderCommand />
-		<commands:ConfigureUnityCommand>
-			<commands:UnityInstance>
-				<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
-			</commands:UnityInstance>
-		</commands:ConfigureUnityCommand>
+	<voteReporter:SetupApplicationCommand />
+	<commands:SetupUnityCommand>
+		<commands:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
+		<commands:UnityInstance RegistrationType="{x:Type modularity:IModuleCatalog}" Instance="{x:Static application:AssemblyModuleCatalog.Instance}" />
+	</commands:SetupUnityCommand>
+	<registration:RegisterFrameworkExceptionTypesCommand />
+	<setupWindows:SetupRegistrationByConventionCommand />
 
-		<setupWindows:InitializeMarkupCommand />
-		<commands:InitializeModulesCommand />
-		<entity:AssignDataDirectoryCommand />
-		<entity:InstallDatabaseCommand />
-		<entity:BackupDatabaseCommand />
-		<localEntity:InitializeDatabaseCommand>
-			<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
-		</localEntity:InitializeDatabaseCommand>
-		<commands:RunProgramCommand />
-	</setup:Setup.Commands>
+	<commands:SetupObjectBuilderCommand />
+	<commands:ConfigureUnityCommand>
+		<commands:UnityInstance>
+			<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
+		</commands:UnityInstance>
+	</commands:ConfigureUnityCommand>
+
+	<setupWindows:InitializeMarkupCommand />
+	<commands:InitializeModulesCommand />
+	<entity:AssignDataDirectoryCommand />
+	<entity:InstallDatabaseCommand />
+	<entity:BackupDatabaseCommand />
+	<localEntity:InitializeDatabaseCommand>
+		<markup:Locate Type="{markup:Enumerable {x:Type entity:IInstaller}}" />
+	</localEntity:InitializeDatabaseCommand>
+	<commands:RunProgramCommand />
 </setup:Setup>
