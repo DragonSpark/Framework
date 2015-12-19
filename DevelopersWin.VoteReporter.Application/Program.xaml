@@ -11,24 +11,25 @@
 	xmlns:markup="clr-namespace:DragonSpark.Windows.Markup;assembly=DragonSpark.Windows"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
-	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
 	xmlns:registration="clr-namespace:DragonSpark.Setup.Registration;assembly=DragonSpark"
-	mc:Ignorable="d" 
+	xmlns:voteReporter="clr-namespace:DevelopersWin.VoteReporter;assembly=DevelopersWin.VoteReporter"
+	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
+	mc:Ignorable="d"
 >
 	<setup:Setup.Commands>
-		<commands:SetupLoggingCommand MessageLogger="{markup:Activate {x:Type diagnostics:MessageRecorder}}" />
-		<commands:SetupModuleCatalogCommand ModuleCatalog="{markup:Activate {x:Type application:AssemblyModuleCatalog}}" />
+		<voteReporter:SetupApplicationCommand />
+		<commands:SetupUnityCommand>
+			<commands:UnityInstance Instance="{markup:DirectoryInfo Reports}" />
+			<commands:UnityInstance RegistrationType="{x:Type modularity:IModuleCatalog}" Instance="{x:Static application:AssemblyModuleCatalog.Instance}" />
+		</commands:SetupUnityCommand>
 		<registration:RegisterFrameworkExceptionTypesCommand />
-		<commands:SetupServiceLocationCommand />
-		<commands:SetupUnityCommand />
 		<setupWindows:SetupRegistrationByConventionCommand />
+		
 		<commands:SetupObjectBuilderCommand />
 		<commands:ConfigureUnityCommand>
-			<commands:ConfigureUnityCommand.Instances>
-				<commands:UnityInstance>
-					<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
-				</commands:UnityInstance>
-			</commands:ConfigureUnityCommand.Instances>
+			<commands:UnityInstance>
+				<runtime:ApplicationInformation DeploymentDate="12/1/2015" CompanyUri="http://blog.developers.win/weekly-reports" />
+			</commands:UnityInstance>
 		</commands:ConfigureUnityCommand>
 
 		<setupWindows:InitializeMarkupCommand />

@@ -28,7 +28,7 @@ namespace DragonSpark.Activation.IoC
 
 	public class IoCExtension : UnityContainerExtension
 	{
-		public IMessageLogger MessageLogger { get; } = new MessageRecorder();
+		public IMessageLogger MessageLogger { get; } = new RecordingMessageLogger();
 
 		protected override void Initialize()
 		{

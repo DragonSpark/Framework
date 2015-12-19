@@ -1,4 +1,3 @@
-using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System;
@@ -18,16 +17,15 @@ namespace DragonSpark.Setup.Commands
 		/*public System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration> TypeConfigurations => typeConfigurations.Value;
 		readonly Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>> typeConfigurations = new Lazy<System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>>( () => new System.Collections.ObjectModel.Collection<IUnityContainerTypeConfiguration>() );*/
 
-		protected override void Configure( IUnityContainer container )
+		protected override void Execute( SetupContext context )
 		{
 			var type = MapTo ?? RegistrationType;
 
 			InjectionMembers.Any().IsFalse( () => InjectionMembers.Add( new InjectionConstructor() ) );
 
 			var mapping = string.Concat( RegistrationType.ToString(), RegistrationType != type ? $" -> {type}" : string.Empty );
-			container.Resolve<IMessageLogger>().Information( $"Registering Unity Type: {mapping}" );
-			var members = InjectionMembers.ToArray();
-			container.RegisterType( RegistrationType, type, BuildName, Lifetime, members );
+			MessageLogger.Information( $"Registering Unity Type: {mapping}" );
+			Container.RegisterType( RegistrationType, type, BuildName, Lifetime, InjectionMembers.ToArray() );
 
 			/*TypeConfigurations.Each( item => item.Configure( container, this ) );*/
 		}

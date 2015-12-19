@@ -1,6 +1,8 @@
 ﻿using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
+using PostSharp.Patterns.Contracts;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -16,6 +18,9 @@ namespace DragonSpark.Windows.Entity
 
 		public Collection<IInstaller> Installers { get; } = new Collection<IInstaller>();
 
+		[Activate, Required]
+		public IMessageLogger MessageLogger { [return: Required]get; set; }
+
 		protected override void Execute( SetupContext context )
 		{
 			Initializer.With( initializer =>
@@ -24,16 +29,16 @@ namespace DragonSpark.Windows.Entity
 
 				using ( var instance = new TContext() )
 				{
-					context.MessageLogger.Information( "Initializing Database.", Priority.Low );
+					MessageLogger.Information( "Initializing Database.", Priority.Low );
 					instance.Database.Initialize( true );
 
 					var items = Installers.OrderBy( x => x.Version ).Where( x => x.ContextType == typeof(TContext) && instance.Installations.Find( x.Id, x.Version.ToString() ) == null ).ToArray();
 
-					context.MessageLogger.Information( $"Performing entity installation on {items.Length} installers.", Priority.Low );
+					MessageLogger.Information( $"Performing entity installation on {items.Length} installers.", Priority.Low );
 
 					items.Each( x =>
 					{
-						context.MessageLogger.Information( $"Installing Entity Installer with ID of '{x.Id}' and version '{x.Version}'.", Priority.Low );
+						MessageLogger.Information( $"Installing Entity Installer with ID of '{x.Id}' and version '{x.Version}'.", Priority.Low );
 
 						x.Steps.Each( y =>
 						{
@@ -43,7 +48,7 @@ namespace DragonSpark.Windows.Entity
 						instance.Create<InstallationEntry>( y => x.MapInto( y ) );
 						instance.Save();
 					} );
-					context.MessageLogger.Information( "Database Initialized.", Priority.Low );
+					MessageLogger.Information( "Database Initialized.", Priority.Low );
 				}
 			} );
 		}

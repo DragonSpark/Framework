@@ -1,16 +1,17 @@
-using System.Configuration;
-using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Commands;
 using Microsoft.Practices.Unity.Configuration;
+using System.Configuration;
+using System.Linq;
 
 namespace DragonSpark.Windows
 {
-	public class SetupUnityFromConfigurationCommand : SetupCommand
+	public class SetupUnityFromConfigurationCommand : UnityCommand
 	{
 		protected override void Execute( SetupContext context )
 		{
-			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => Enumerable.Any<ContainerElement>( x.Containers ).IsTrue( () => context.Container().LoadConfiguration() ) );
+			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => Container.LoadConfiguration() ) );
 		}
 	}
 }

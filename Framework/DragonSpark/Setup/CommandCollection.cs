@@ -4,12 +4,15 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Setup
 {
-	public class CommandCollection : Runtime.Collection<ICommand>
+	public class CommandCollection : CommandCollection<ICommand>
+	{}
+
+	public class CommandCollection<T> : Runtime.Collection<T> where T : ICommand
 	{
 		public CommandCollection()
 		{}
 
-		public CommandCollection( IEnumerable<ICommand> collection ) : base( collection.Fixed() )
+		public CommandCollection( IEnumerable<T> collection ) : base( collection.Fixed() )
 		{}
 	}
 }

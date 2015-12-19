@@ -1,7 +1,4 @@
-﻿using DragonSpark.Setup;
-using DragonSpark.Setup.Commands;
-
-namespace DevelopersWin.VoteReporter.Application
+﻿namespace DevelopersWin.VoteReporter.Application
 {
 	public partial class Program
 	{

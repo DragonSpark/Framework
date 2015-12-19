@@ -11,20 +11,23 @@
 	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	xmlns:testObjects="clr-namespace:DragonSpark.Testing.TestObjects"
-	mc:Ignorable="d" 
+	xmlns:typeSystem="clr-namespace:DragonSpark.TypeSystem;assembly=DragonSpark"
+	xmlns:runtimeWindows="clr-namespace:DragonSpark.Windows.Runtime;assembly=DragonSpark.Windows"
+	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
+	xmlns:windows="clr-namespace:DragonSpark.Windows;assembly=DragonSpark.Windows"
+	mc:Ignorable="d"
 >
-	<commands:SetupLoggingCommand MessageLogger="{ds:Activate {x:Type diagnostics:MessageRecorder}}" />
-	<setup:SetupServiceLocationCommand />
-	<commands:SetupUnityCommand />
-	<ds:SetupRegistrationByConventionCommand AssemblyLocator="{x:Static testObjects:AssemblyProvider.Instance}" />
-	<commands:ConfigureUnityCommand>
+	<setup:SetupApplicationCommand MessageLogger="{ds:Activate {x:Type diagnostics:RecordingMessageLogger}}" />
+	<commands:SetupUnityCommand>
+		<commands:UnityInstance RegistrationType="{x:Type typeSystem:IAssemblyProvider}" Instance="{x:Static runtimeWindows:AssemblyProvider.Instance}" />
+		<commands:UnityInstance RegistrationType="{x:Type modularity:IModuleCatalog}" Instance="{x:Static windows:AssemblyModuleCatalog.Instance}" />
 		<commands:ConfigureUnityCommand.Extensions>
 			<local:TestExtension />
 		</commands:ConfigureUnityCommand.Extensions>
-	</commands:ConfigureUnityCommand>
+	</commands:SetupUnityCommand>
+	<ds:SetupRegistrationByConventionCommand AssemblyLocator="{x:Static testObjects:AssemblyProvider.Instance}" />
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />
-		<setup:LoggingRegistrationCustomization />
 	</setup:CustomizeFixtureCommand>
 </setupCore:Setup>

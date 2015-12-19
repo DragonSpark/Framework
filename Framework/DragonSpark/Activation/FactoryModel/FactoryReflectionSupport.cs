@@ -8,7 +8,7 @@ namespace DragonSpark.Activation.FactoryModel
 	public class FactoryReflectionSupport
 	{
 		public static FactoryReflectionSupport Instance { get; } = new FactoryReflectionSupport();
-		static readonly TypeAdapter[] 
+		readonly static TypeAdapter[] 
 			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
 			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
 

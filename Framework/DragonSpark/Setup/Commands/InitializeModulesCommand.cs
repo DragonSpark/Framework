@@ -1,44 +1,33 @@
 ﻿using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
+using DragonSpark.Diagnostics;
 using DragonSpark.Modularity;
 using DragonSpark.Properties;
-using Microsoft.Practices.Unity;
-using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
 	public class InitializeModulesCommand : SetupCommand
 	{
-		[Activate]
-		public IModuleMonitor Monitor { get; set; }
+		[Activate, Required]
+		public IModuleMonitor Monitor { [return: Required]get; set; }
+
+		[Activate, Required]
+		public IMessageLogger MessageLogger { [return: Required]get; set; }
+
+		[Activate, Required]
+		public IModuleManager Manager { [return: Required]get; set; }
 
 		protected override async void Execute( SetupContext context )
 		{
-			var manager = DetermineManager( context );
-			if ( manager != null )
-			{
-				context.MessageLogger.Information( Resources.InitializingModules, Priority.Low);
-				InitializeModules( context, manager );
+			MessageLogger.Information( Resources.InitializingModules, Priority.Low );
+			Manager.Run();
 
-				context.MessageLogger.Information( Resources.LoadingModules, Priority.Low);
-				await Monitor.Load();
-				context.MessageLogger.Information( Resources.ModulesLoaded, Priority.Low);
-			}
+			MessageLogger.Information( Resources.LoadingModules, Priority.Low );
+			await Monitor.Load();
+			MessageLogger.Information( Resources.ModulesLoaded, Priority.Low );
 		}
 
-		protected virtual void InitializeModules( SetupContext context, IModuleManager manager )
-		{
-			manager.Run();
-		}
-
-		protected virtual IModuleManager DetermineManager( SetupContext context )
-		{
-			var container = context.Container();
-			var result = container.IsRegistered<IModuleManager>() ? Resolve( container ) : null;
-			return result;
-		}
-
-		static IModuleManager Resolve( IUnityContainer container )
+		/*static IModuleManager Resolve( IUnityContainer container )
 		{
 			try
 			{
@@ -53,6 +42,6 @@ namespace DragonSpark.Setup.Commands
 
 				throw;
 			}
-		}
+		}*/
 	}
 }

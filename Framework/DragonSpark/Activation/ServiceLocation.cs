@@ -1,3 +1,4 @@
+using System.Linq;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Specifications;
@@ -25,9 +26,16 @@ namespace DragonSpark.Activation
 			locator.With( context =>
 			{
 				var keyLocator = context.GetInstance<IAmbientKeyLocator>() ?? AmbientKeyLocator.Instance;
-				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( new EqualityContextAwareSpecification( context ) );
+				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( EqualsOrNull( context ) );
 				AmbientValues.Register( key, context );
 			} );
+		}
+
+		static ISpecification EqualsOrNull( IServiceLocator context )
+		{
+			var items = new[] { context, null }.Select( item => new EqualityContextAwareSpecification( item ) ).Cast<ISpecification>();
+			var result = new AnySpecification( items.ToArray() );
+			return result;
 		}
 
 		public bool IsAvailable => ServiceLocator.IsLocationProviderSet && Locator != null;
