@@ -1,19 +1,23 @@
+using DragonSpark.ComponentModel;
 using DragonSpark.Setup.Registration;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class SetupRegistrationByConventionCommand : UnityRegistrationCommand
+	public abstract class SetupRegistrationByConventionCommand<TProvider, TService> : UnityRegistrationCommand 
+		where TProvider : IConventionRegistrationProfileProvider
+		where TService : IConventionRegistrationService
 	{
 		protected override void Execute( SetupContext context )
 		{
-			var service = DetermineService( context );
-			var provider = DetermineProfileProvider( context );
-			var profile = provider.Retrieve();
-			service.Register( profile );
+			var profile = Provider.Retrieve();
+			Service.Register( profile );
 		}
+		
+		[Required, Activate]
+		public TProvider Provider { [return: Required]get; set; }
 
-		protected abstract IConventionRegistrationProfileProvider DetermineProfileProvider( SetupContext context );
-
-		protected abstract IConventionRegistrationService DetermineService( SetupContext context );
+		[Required, Activate]
+		public TService Service { [return: Required]get; set; }
 	}
 }

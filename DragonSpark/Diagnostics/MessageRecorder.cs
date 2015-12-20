@@ -24,7 +24,7 @@ namespace DragonSpark.Diagnostics
 
 		protected override Message[] CreateItem()
 		{
-			var result = DetermineLoggers().NotNull().Select( messageLogger => logger.Recorder ).Distinct().SelectMany( recorder => recorder.Messages ).ToArray();
+			var result = DetermineLoggers().NotNull().Select( messageLogger => messageLogger.Recorder ).Distinct().SelectMany( recorder => recorder.Messages ).ToArray();
 			return result;
 		}
 

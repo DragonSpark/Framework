@@ -28,7 +28,7 @@ namespace DragonSpark.Activation.IoC
 
 		public IUnityContainer Convention( object instance )
 		{
-			new[] { instance.Adapt().GetConventionCandidate( applicationAssemblies ), instance.GetType() }.Distinct().Each( type =>
+			new[] { instance.Adapt().GetConventionCandidate( applicationAssemblies )/*, instance.GetType()*/ }.Distinct().Each( type =>
 			{
 				container.RegisterInstance( type, instance );
 			} );

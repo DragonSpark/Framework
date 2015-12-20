@@ -21,7 +21,6 @@ namespace DragonSpark.Testing.Framework.Setup
 		protected override void Customize( IFixture fixture )
 		{
 			fixture.Items().Add( this );
-			
 		}
 
 		void ITestExecutionAware.Before( IFixture fixture, MethodInfo methodUnderTest )
@@ -48,7 +47,8 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override IEnumerable<RecordingMessageLogger> DetermineLoggers()
 		{
-			return fixture.TryCreate<RecordingMessageLogger>().Append( base.DetermineLoggers() );
+			var result = fixture.TryCreate<RecordingMessageLogger>().Append( base.DetermineLoggers() );
+			return result;
 		}
 	}
 }

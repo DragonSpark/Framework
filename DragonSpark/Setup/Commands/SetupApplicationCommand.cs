@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using DragonSpark.Activation;
 using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
@@ -6,6 +8,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 

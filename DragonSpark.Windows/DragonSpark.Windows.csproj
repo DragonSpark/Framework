@@ -225,7 +225,7 @@
     <Compile Include="Setup\ExceptionHandlerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setup\ExceptionHandlingConfiguration.cs" />
+    <Compile Include="Setup\SetupExceptionHandling.cs" />
     <Compile Include="Setup\ExceptionPolicyDefinition.cs" />
     <Compile Include="Setup\ExceptionPolicyEntry.cs" />
     <Compile Include="Setup\IEventListenerRegistry.cs">

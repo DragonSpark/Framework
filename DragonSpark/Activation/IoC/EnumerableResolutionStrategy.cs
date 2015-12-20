@@ -1,4 +1,5 @@
-﻿using DragonSpark.Extensions;
+﻿using System;
+using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Utility;
@@ -8,11 +9,44 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
+	public class BuildPlanStrategy : Microsoft.Practices.ObjectBuilder2.BuildPlanStrategy
+	{
+		readonly ISingletonLocator locator;
+
+		public BuildPlanStrategy() : this( SingletonLocator.Instance )
+		{}
+
+		public BuildPlanStrategy( ISingletonLocator locator )
+		{
+			this.locator = locator;
+		}
+
+		public override void PreBuildUp( IBuilderContext context )
+		{
+			try
+			{
+				base.PreBuildUp( context );
+			}
+			catch ( InvalidOperationException )
+			{
+				var singleton = locator.Locate( context.BuildKey.Type );
+				if ( singleton != null )
+				{
+					context.Existing = singleton;
+				}
+				else
+				{
+					throw;
+				}
+			}
+		}
+	}
+
 	public class EnumerableResolutionStrategy : BuilderStrategy
 	{
 		delegate object Resolver( IBuilderContext context );
 
-		static readonly MethodInfo GenericResolveArrayMethod = typeof(EnumerableResolutionStrategy).GetTypeInfo().DeclaredMethods.First( m => m.Name == nameof(Resolve) && !m.IsPublic && m.IsStatic );
+		readonly static MethodInfo GenericResolveArrayMethod = typeof(EnumerableResolutionStrategy).GetTypeInfo().DeclaredMethods.First( m => m.Name == nameof(Resolve) && !m.IsPublic && m.IsStatic );
 
 		public override void PreBuildUp( IBuilderContext context )
 		{

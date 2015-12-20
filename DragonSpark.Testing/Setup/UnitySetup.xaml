@@ -10,7 +10,6 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
-	xmlns:testObjects="clr-namespace:DragonSpark.Testing.TestObjects"
 	xmlns:typeSystem="clr-namespace:DragonSpark.TypeSystem;assembly=DragonSpark"
 	xmlns:runtimeWindows="clr-namespace:DragonSpark.Windows.Runtime;assembly=DragonSpark.Windows"
 	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
@@ -25,7 +24,7 @@
 			<local:TestExtension />
 		</commands:ConfigureUnityCommand.Extensions>
 	</commands:SetupUnityCommand>
-	<ds:SetupRegistrationByConventionCommand AssemblyLocator="{x:Static testObjects:AssemblyProvider.Instance}" />
+	<ds:SetupRegistrationByConventionCommand />
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />

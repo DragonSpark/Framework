@@ -12,7 +12,7 @@ using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 namespace DragonSpark.Windows.Setup
 {
 	[ContentProperty( "Policies" )]
-	public class ExceptionHandlingConfiguration : UnityCommand
+	public class SetupExceptionHandling : UnityCommand
 	{
 		protected override void Execute( SetupContext context )
 		{

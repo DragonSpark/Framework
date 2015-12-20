@@ -11,7 +11,7 @@ _ReSharper.*/
 *.resharper
 resharper.settings.xml
 *.user
-[Bb]uild*/
+[Bb]uild*
 [Dd]ist
 junit-report
 junit
@@ -35,4 +35,3 @@ Packages/
 Publish.bat
 /TestResults
 -Archive/
-Pull.bat

@@ -28,7 +28,7 @@ namespace DragonSpark.Setup.Registration
 
 		protected virtual Assembly[] DetermineAssemblies()
 		{
-			var result = provider.GetAssemblies().Prioritize().Reverse().ToArray();
+			var result = provider.GetAssemblies().Prioritize().ToArray();
 			return result;
 		}
 
@@ -40,7 +40,7 @@ namespace DragonSpark.Setup.Registration
 						.AsTypes()
 						.Except( assembly.FromMetadata<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) );
 					return types;
-				} ).ToArray();
+				} ).Prioritize().ToArray();
 			return result;
 		}
 	}
