@@ -35,3 +35,4 @@ Packages/
 Publish.bat
 /TestResults
 -Archive/
+/Pull.bat

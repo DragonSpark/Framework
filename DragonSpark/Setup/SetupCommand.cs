@@ -15,9 +15,6 @@ namespace DragonSpark.Setup
 
 		public event EventHandler CanExecuteChanged = delegate {};
 
-		protected SetupCommand()
-		{}
-
 		public void Update()
 		{
 			CanExecuteChanged( this, EventArgs.Empty );
