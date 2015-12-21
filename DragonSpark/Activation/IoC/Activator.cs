@@ -10,8 +10,8 @@ namespace DragonSpark.Activation.IoC
 		readonly IResolutionSupport support;
 		readonly RegistrationSupport registration;
 
-		public Activator( IUnityContainer container, IResolutionSupport support ) : this( container, support, container.Resolve<RegistrationSupport>() )
-		{}
+		/*public Activator( IUnityContainer container, IResolutionSupport support ) : this( container, support, container.Resolve<RegistrationSupport>() )
+		{}*/
 
 		public Activator( IUnityContainer container, IResolutionSupport support, RegistrationSupport registration )
 		{

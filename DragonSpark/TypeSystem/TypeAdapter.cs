@@ -42,11 +42,11 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}*/
 
-		public ConstructorInfo[] GetConstructors()
+		/*public ConstructorInfo[] GetConstructors()
 		{
 			var result = GetHierarchy().SelectMany( t => t.GetTypeInfo().DeclaredConstructors ).ToArray();
 			return result;
-		}
+		}*/
 
 		public ConstructorInfo FindConstructor( params object[] parameters )
 		{

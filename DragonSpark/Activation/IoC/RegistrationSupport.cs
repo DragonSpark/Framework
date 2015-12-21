@@ -42,7 +42,7 @@ namespace DragonSpark.Activation.IoC
 			return container;
 		}
 
-		public IUnityContainer AllInterfaces( object instance )
+		/*public IUnityContainer AllInterfaces( object instance )
 		{
 			return Check( instance.GetType(), () => ApplicationInterfaces( instance ).Each( y => container.RegisterInstance( y, instance ) ) );
 		}
@@ -51,7 +51,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			var result = instance.Adapt().GetAllInterfaces().Where( x => applicationAssemblies.Contains( x.Assembly() ) ).ToArray();
 			return result;
-		}
+		}*/
 
 		public IUnityContainer AllClasses( object instance )
 		{

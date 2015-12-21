@@ -10,21 +10,19 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:diagnostics="clr-namespace:DragonSpark.Diagnostics;assembly=DragonSpark"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
-	xmlns:typeSystem="clr-namespace:DragonSpark.TypeSystem;assembly=DragonSpark"
 	xmlns:runtimeWindows="clr-namespace:DragonSpark.Windows.Runtime;assembly=DragonSpark.Windows"
-	xmlns:modularity="clr-namespace:DragonSpark.Modularity;assembly=DragonSpark"
-	xmlns:windows="clr-namespace:DragonSpark.Windows;assembly=DragonSpark.Windows"
+	xmlns:testObjects="clr-namespace:DragonSpark.Testing.TestObjects"
 	mc:Ignorable="d"
 >
-	<setup:SetupApplicationCommand MessageLogger="{ds:Activate {x:Type diagnostics:RecordingMessageLogger}}" />
+	<setup:SetupApplicationCommand MessageLogger="{ds:Activate {x:Type diagnostics:RecordingMessageLogger}}" AssemblyProvider="{x:Static runtimeWindows:AssemblyProvider.Instance}" />
 	<commands:SetupUnityCommand>
-		<commands:UnityInstance RegistrationType="{x:Type typeSystem:IAssemblyProvider}" Instance="{x:Static runtimeWindows:AssemblyProvider.Instance}" />
-		<commands:UnityInstance RegistrationType="{x:Type modularity:IModuleCatalog}" Instance="{x:Static windows:AssemblyModuleCatalog.Instance}" />
+		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
 		<commands:ConfigureUnityCommand.Extensions>
 			<local:TestExtension />
 		</commands:ConfigureUnityCommand.Extensions>
 	</commands:SetupUnityCommand>
 	<ds:SetupRegistrationByConventionCommand />
+	
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />

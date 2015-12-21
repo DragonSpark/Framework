@@ -12,7 +12,7 @@ namespace DragonSpark.Setup
 		public CommandCollection()
 		{}
 
-		public CommandCollection( IEnumerable<T> collection ) : base( collection.Fixed() )
-		{}
+		/*public CommandCollection( IEnumerable<T> collection ) : base( collection.Fixed() )
+		{}*/
 	}
 }

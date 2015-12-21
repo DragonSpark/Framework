@@ -48,7 +48,7 @@ namespace DragonSpark.ComponentModel
 			return this;
 		}
 
-		protected bool Equals( DefaultValueParameter other )
+		/*protected bool Equals( DefaultValueParameter other )
 		{
 			return Equals( Instance, other.Instance ) && Equals( Metadata, other.Metadata );
 		}
@@ -65,7 +65,7 @@ namespace DragonSpark.ComponentModel
 				var result = Instance.GetHashCode() * 397 ^ Metadata.GetHashCode();
 				return result;
 			}
-		}
+		}*/
 	}
 
 }

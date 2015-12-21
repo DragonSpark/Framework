@@ -14,6 +14,11 @@ namespace DragonSpark.Testing.TestObjects
 	class RegisterAsMany
 	{}
 
+	public class Singleton
+	{
+		public static Singleton Instance { get; } = new Singleton();
+	}
+
 	class Class : IInterface
 	{}
 	class AnotherClass : IInterface

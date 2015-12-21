@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Activation;
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -9,31 +10,29 @@ namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		readonly static Dictionary<Tuple<MemberInfo, Type>, Attribute[]> Cache = new Dictionary<Tuple<MemberInfo,Type>, Attribute[]>();
-
-		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target ) where TAttribute : Attribute
+		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
 		{
-			var result = target.GetAttribute<TAttribute>() != null;
+			var result = target.GetAttribute<TAttribute>( inherit ) != null;
 			return result;
 		}
 
-		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target ) where TAttribute : Attribute
+		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
 		{
-			var result = target.GetAttributes<TAttribute>().FirstOrDefault();
+			var result = target.GetAttributes<TAttribute>( inherit ).FirstOrDefault();
 			return result;
 		}
 
-		public static TAttribute[] GetAttributes<TAttribute>( this MemberInfo target ) where TAttribute : Attribute
+		public static TAttribute[] GetAttributes<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
 		{
-			var key = new Tuple<MemberInfo, Type>( target, typeof(TAttribute) );
-			var result = Cache.Ensure( key, ResolveAttributes ).OfType<TAttribute>().ToArray();
+			var result = ResolveAttributes( typeof(TAttribute), target, inherit ).OfType<TAttribute>().ToArray();
 			return result;
 		}
 
-		static Attribute[] ResolveAttributes( Tuple<MemberInfo, Type> key )
+		[Cache]
+		static IEnumerable<Attribute> ResolveAttributes( Type attributeType, MemberInfo member, bool inherit )
 		{
-			var info = Services.Location.With<IMemberInfoLocator, MemberInfo>( x => x.Locate( key.Item1 ) ) ?? key.Item1;
-			var result = info.GetCustomAttributes( key.Item2, true ).ToArray();
+			var info = Services.Location.With<IMemberInfoLocator, MemberInfo>( x => x.Locate( member ) ) ?? member;
+			var result = info.GetCustomAttributes( attributeType, inherit ).ToArray();
 			return result;
 		}
 	}

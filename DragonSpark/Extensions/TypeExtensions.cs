@@ -7,7 +7,7 @@ namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
-		static readonly ConcurrentDictionary<Type, TypeAdapter> Extensions = new ConcurrentDictionary<Type, TypeAdapter>();
+		readonly static ConcurrentDictionary<Type, TypeAdapter> Extensions = new ConcurrentDictionary<Type, TypeAdapter>();
 
 		public static TypeAdapter Adapt( this object @this )
 		{

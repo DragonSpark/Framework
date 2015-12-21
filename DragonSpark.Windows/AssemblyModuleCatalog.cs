@@ -1,10 +1,12 @@
 using DragonSpark.Modularity;
+using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Modularity;
 using DragonSpark.Windows.Runtime;
 
 namespace DragonSpark.Windows
 {
+	[Register]
 	public class AssemblyModuleCatalog : DragonSpark.Modularity.AssemblyModuleCatalog
 	{
 		public static AssemblyModuleCatalog Instance { get; } = new AssemblyModuleCatalog();

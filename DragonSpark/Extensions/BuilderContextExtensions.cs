@@ -10,7 +10,7 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static bool IsRegistered( this IBuilderContext @this, NamedTypeBuildKey key )
+		/*public static bool IsRegistered( this IBuilderContext @this, NamedTypeBuildKey key )
 		{
 			var policy = @this.Policies.GetNoDefault<IBuildKeyMappingPolicy>( key, false );
 			var result = policy != null;
@@ -21,6 +21,6 @@ namespace DragonSpark.Extensions
 		{
 			var result = @this.IsRegistered( new NamedTypeBuildKey( typeof(T) ) );
 			return result;
-		}
+		}*/
 	}
 }

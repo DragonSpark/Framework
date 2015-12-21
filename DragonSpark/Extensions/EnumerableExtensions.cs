@@ -19,11 +19,11 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static IEnumerable<T> Built<T>( this IEnumerable<T> @this ) where T : class
+		/*public static IEnumerable<T> Built<T>( this IEnumerable<T> @this ) where T : class
 		{
 			var result = @this.Select( item => item.BuildUp() );
 			return result;
-		}
+		}*/
 
 		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, IAllowsPriority> determine )
 		{

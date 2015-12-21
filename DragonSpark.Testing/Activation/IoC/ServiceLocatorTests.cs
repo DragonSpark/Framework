@@ -42,6 +42,16 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, Test, SetupAutoData]
+		public void Assign( ServiceLocation sut, [Modest] ServiceLocator locator )
+		{
+			sut.Assign( locator );
+
+
+			Assert.Same( sut.Locator, locator );
+			
+		}
+
+		[Theory, Test, SetupAutoData]
 		void GetAllInstances( [Modest, Factory] ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
