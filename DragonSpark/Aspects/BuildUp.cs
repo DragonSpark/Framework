@@ -13,9 +13,9 @@ namespace DragonSpark.Aspects
 	{
 		public IEnumerable<AspectInstance> ProvideAspects( object targetElement )
 		{
-			var items = targetElement.AsTo<TypeInfo, IEnumerable<object>> ( info => info.DeclaredConstructors ).NullIfEmpty()
-						 ??
-						 targetElement.AsTo<MethodInfo, IEnumerable<object>>( info => info.ToItem() );
+			var items = targetElement.AsTo<TypeInfo, IEnumerable<object>>( info => info.DeclaredConstructors ).NullIfEmpty()
+						??
+						targetElement.AsTo<MethodInfo, IEnumerable<object>>( info => info.ToItem() );
 
 			var result = items.Select( o => new AspectInstance( o, new BuildUpMethodBoundaryAspect() ) ).ToArray();
 			return result;
