@@ -13,23 +13,6 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		/*public static TResult Locked<T, TResult>( this T @this, Func<T, TResult> with ) where T : class
-		{
-			lock ( @this )
-			{
-				return @this.With( with );
-			}
-		}*/
-
-		/*public static T Locked<T>( this T @this, Action<T> with ) where T : class
-		{
-			lock ( @this )
-			{
-				with( @this );
-			}
-			return @this;
-		}*/
-
 		public static TResult Clone<TResult>( this TResult @this, Action<IMappingExpression> configure = null ) where TResult : class
 		{
 			var result = @this.MapInto<TResult>( configure: configure );
@@ -68,10 +51,7 @@ namespace DragonSpark.Extensions
 
 		public static void Null<TItem>( this TItem target, Action action )
 		{
-			if ( Equals( target, default(TItem) ) )
-			{
-				action();
-			}
+			Equals( target, default(TItem) ).IsTrue( action );
 		}
 
 		/*public static IEnumerable<TItem> ToEnumerable<TItem>( this TItem target, IEnumerable<TItem> others = null )

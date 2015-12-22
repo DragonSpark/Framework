@@ -1,7 +1,7 @@
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using Microsoft.Practices.ServiceLocation;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Activation
 {

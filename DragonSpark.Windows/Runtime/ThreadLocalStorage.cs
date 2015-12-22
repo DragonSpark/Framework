@@ -33,7 +33,7 @@ namespace DragonSpark.Windows.Runtime
 		public static T Peek<T>()
 		{
 			var stack = GetStack<T>();
-			return stack.Any() ? (T)stack.Peek() : default( T );
+			return stack.Any() ? (T)stack.Peek() : default(T);
 		}
 
 		static Dictionary<Type, Stack<object>> GetItems()

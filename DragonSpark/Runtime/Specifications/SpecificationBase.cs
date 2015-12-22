@@ -1,20 +1,20 @@
 namespace DragonSpark.Runtime.Specifications
 {
-	public abstract class SpecificationBase<TContext> : ISpecification<TContext>
+	public abstract class SpecificationBase<TParameter> : ISpecification<TParameter>
 	{
-		bool ISpecification.IsSatisfiedBy( object context )
+		bool ISpecification.IsSatisfiedBy( object parameter )
 		{
-			var item = context is TContext ? (TContext)context : default(TContext);
+			var item = parameter is TParameter ? (TParameter)parameter : default(TParameter);
 			var result = IsSatisfiedBy( item );
 			return result;
 		}
 
-		public bool IsSatisfiedBy( TContext context )
+		public bool IsSatisfiedBy( TParameter parameter )
 		{
-			return IsSatisfiedByParameter( context );
+			return IsSatisfiedByParameter( parameter );
 		}
 
-		protected virtual bool IsSatisfiedByParameter( TContext parameter )
+		protected virtual bool IsSatisfiedByParameter( TParameter parameter )
 		{
 			var result = parameter != null;
 			return result;

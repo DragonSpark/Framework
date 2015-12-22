@@ -7,6 +7,6 @@ namespace DragonSpark.Runtime.Specifications
 
 	public interface ISpecification<in TContext> : ISpecification
 	{
-		bool IsSatisfiedBy( TContext context );
+		bool IsSatisfiedBy( TContext parameter );
 	}
 }

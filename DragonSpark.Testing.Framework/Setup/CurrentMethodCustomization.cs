@@ -5,7 +5,7 @@ using Ploeh.AutoFixture;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class CurrentMethodCustomization : ICustomization
+	public class CurrentMethodCustomization : ICustomization, ITestExecutionAware
 	{
 		public CurrentMethodCustomization( MethodInfo method )
 		{
@@ -18,6 +18,16 @@ namespace DragonSpark.Testing.Framework.Setup
 		{
 			fixture.Items().Add( this );
 			AmbientValues.RegisterFor( fixture, Method );
+		}
+
+		void ITestExecutionAware.Before( IFixture fixture, MethodInfo methodUnderTest )
+		{
+			new CurrentMethodValue().Assign( methodUnderTest );
+		}
+
+		void ITestExecutionAware.After( IFixture fixture, MethodInfo methodUnderTest )
+		{
+			new CurrentMethodValue().Assign( null );
 		}
 	}
 }

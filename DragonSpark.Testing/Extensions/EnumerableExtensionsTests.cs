@@ -30,7 +30,7 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Theory, AutoData]
-		public void Prepend( object sut, IEnumerable<object> items )
+		public void PrependItem( object sut, IEnumerable<object> items )
 		{
 			var prepended = sut.Prepend( items );
 			Assert.Equal( items.Count() + 1, prepended.Count() );
