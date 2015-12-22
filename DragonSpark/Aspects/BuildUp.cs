@@ -25,7 +25,7 @@ namespace DragonSpark.Aspects
 	[PSerializable, AttributeUsage( AttributeTargets.Method )]
 	public class BuildUpMethodBoundaryAspect : OnMethodBoundaryAspect
 	{
-		public override void OnEntry( MethodExecutionArgs args )
+		public sealed override void OnEntry( MethodExecutionArgs args )
 		{
 			base.OnEntry( args );
 

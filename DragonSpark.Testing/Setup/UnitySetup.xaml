@@ -22,7 +22,7 @@
 		</commands:ConfigureUnityCommand.Extensions>
 	</commands:SetupUnityCommand>
 	<ds:SetupRegistrationByConventionCommand />
-	
+	<!--<commands:InitializeModulesCommand />-->
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />

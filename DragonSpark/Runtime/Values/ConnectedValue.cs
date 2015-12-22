@@ -33,6 +33,6 @@ namespace DragonSpark.Runtime.Values
 
 		public override T Item => Property.GetOrCreate( create );
 
-		protected ConnectibleProperty<T> Property { get; }
+		public ConnectibleProperty<T> Property { get; }
 	}
 }

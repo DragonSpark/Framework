@@ -1,9 +1,8 @@
-using System.Linq;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
 using DragonSpark.Runtime.Specifications;
 using DragonSpark.Runtime.Values;
 using Microsoft.Practices.ServiceLocation;
+using System.Linq;
 
 namespace DragonSpark.Activation
 {
@@ -11,10 +10,13 @@ namespace DragonSpark.Activation
 	{
 		public static ServiceLocation Instance { get; } = new ServiceLocation();
 
-		ServiceLocation()
+		static ServiceLocation()
 		{
 			ServiceLocator.SetLocatorProvider( AmbientValues.Get<IServiceLocator> );
 		}
+
+		internal ServiceLocation()
+		{}
 
 		public void Assign( IServiceLocator locator )
 		{

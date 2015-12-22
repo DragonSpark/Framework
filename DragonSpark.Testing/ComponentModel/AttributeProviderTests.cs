@@ -1,12 +1,7 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
-using DragonSpark.Testing.TestObjects;
-using Xunit;
-
-namespace DragonSpark.Testing.ComponentModel
+﻿namespace DragonSpark.Testing.ComponentModel
 {
-	public class AttributeProviderTests
+	// TODO: Uncomment.
+	/*public class AttributeProviderTests
 	{
 		[Theory, Test, SetupAutoData]
 		void ClassAttribute()
@@ -58,5 +53,5 @@ namespace DragonSpark.Testing.ComponentModel
 			var attribute = typeof(Relayed).GetAttribute<Attribute>();
 			Assert.Equal( "This is a relayed class attribute.", attribute.PropertyName );
 		}
-	}
+	}*/
 }	

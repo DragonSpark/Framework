@@ -1,10 +1,14 @@
+using DragonSpark.Aspects;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Threading;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DragonSpark.Activation
 {
+	// [Synchronized]
 	public class SystemActivator : IActivator
 	{
 		public static SystemActivator Instance { get; } = new SystemActivator();
@@ -31,16 +35,43 @@ namespace DragonSpark.Activation
 		static object[] Coerce( Type type, object[] parameters )
 		{
 			var candidates = new[] { parameters, parameters.NotNull() };
-			var extended = type.Adapt();
-			var result = candidates.Select( objects => objects.Fixed() ).FirstOrDefault( x => extended.FindConstructor( x ) != null );
+			var adapter = type.Adapt();
+			var result = candidates.Select( objects => objects.Fixed() ).FirstOrDefault( x => adapter.FindConstructor( x ) != null );
 			return result;
 		}
 
 		public object Construct( Type type, params object[] parameters )
 		{
 			var args = Coerce( type, parameters );
-			var result = System.Activator.CreateInstance( type, args ).BuildUp();
+
+			var activator = type.Adapt().FindConstructor( args ).With( GetActivator );
+
+			var result = activator( args ).BuildUp();
 			return result;
+		}
+
+		delegate object ObjectActivator( params object[] args );
+
+		[Cache]
+		static ObjectActivator GetActivator( ConstructorInfo ctor )
+		{
+			var paramsInfo = ctor.GetParameters();
+			var param = Expression.Parameter( typeof(object[]), "args" );
+
+			var argsExp = new Expression[paramsInfo.Length];
+			for ( var i = 0; i < paramsInfo.Length; i++ )
+			{
+				var paramAccessorExp = Expression.ArrayIndex( param, Expression.Constant( i ) );
+				argsExp[i] = Expression.Convert( paramAccessorExp, paramsInfo[i].ParameterType );
+			}
+
+			var newExp = Expression.New( ctor, argsExp );
+
+			var lambda = Expression.Lambda( typeof(ObjectActivator), newExp, param );
+
+			//compile it
+			var compiled = (ObjectActivator)lambda.Compile();
+			return compiled;
 		}
 	}
 }

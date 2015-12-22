@@ -6,7 +6,12 @@ namespace DragonSpark.ComponentModel
 {
 	public class MemberInfoLocator : IMemberInfoLocator
 	{
+		public static MemberInfoLocator Instance { get; } = new MemberInfoLocator();
+
 		readonly ITypeDefinitionProvider provider;
+
+		public MemberInfoLocator() : this( ConventionBasedTypeDefinitionProvider.Instance )
+		{}
 
 		public MemberInfoLocator( ITypeDefinitionProvider provider )
 		{

@@ -36,32 +36,30 @@ namespace DragonSpark.ComponentModel
 
 	public class ConventionBasedTypeDefinitionProvider : ITypeDefinitionProvider
 	{
+		public static ConventionBasedTypeDefinitionProvider Instance { get; } = new ConventionBasedTypeDefinitionProvider();
+
 		class Context
 		{
+			readonly TypeInfo current;
 			readonly Lazy<TypeInfo> metadata;
 
 			public Context( TypeInfo current )
 			{
-				Current = current;
+				this.current = current;
 				metadata = new Lazy<TypeInfo>( ResolveMetadata );
 			}
 
 			public Context CreateFromBaseType()
 			{
-				var result =  Current.BaseType.With( x => new Context( IntrospectionExtensions.GetTypeInfo( x ) ) );
+				var result = current.BaseType.With( x => new Context( x.GetTypeInfo() ) );
 				return result;
 			}
-
-			TypeInfo Current { get; set; }
-
-			public TypeInfo Metadata
-			{
-				get { return metadata.Value; }
-			}
+			
+			public TypeInfo Metadata => metadata.Value;
 
 			TypeInfo ResolveMetadata()
 			{
-				var name = string.Format( "{0}Metadata, {1}", Current.FullName, Current.Assembly.FullName );
+				var name = $"{current.FullName}Metadata, {current.Assembly.FullName}";
 				var result = Type.GetType( name, false ).With( x => x.GetTypeInfo() );
 				return result;
 			}

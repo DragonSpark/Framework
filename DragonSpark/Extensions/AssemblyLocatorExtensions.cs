@@ -15,7 +15,7 @@ namespace DragonSpark.Extensions
 
 		public static Tuple<TAttribute, TypeInfo>[] WhereDecorated<TAttribute>( this IEnumerable<TypeInfo> target, bool inherit = true ) where TAttribute : Attribute
 		{
-			var result = target.Where( info => info.IsDecoratedWith<TAttribute>( inherit ) ).Select( info => new Tuple<TAttribute, TypeInfo>( info.GetAttribute<TAttribute>(), info ) ).ToArray();
+			var result = target.Where( info => info.IsDecoratedWith<TAttribute>() ).Select( info => new Tuple<TAttribute, TypeInfo>( info.GetAttribute<TAttribute>(), info ) ).ToArray();
 			return result;
 		}
 

@@ -29,6 +29,7 @@ namespace DragonSpark.Setup.Registration
 			var registry = new ServiceRegistry( Container, MessageLogger, Factory );
 			
 			profile.Candidates
+				//.Where( item => !Container.IsRegistered( item ) )
 				.AsTypeInfos()
 				.WhereDecorated<RegistrationBaseAttribute>( false )
 				.Each( item => HostedValueLocator<IConventionRegistration>.Instance.Create( item.Item2 ).Each( registration =>

@@ -1,12 +1,10 @@
-﻿using DragonSpark.Modularity;
-using DragonSpark.Testing.Framework;
+﻿using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.Unity;
 using Xunit;
 using Xunit.Abstractions;
-using AssemblyModuleCatalog = DragonSpark.Windows.AssemblyModuleCatalog;
 
 namespace DragonSpark.Testing.Setup.Commands
 {
@@ -27,10 +25,10 @@ namespace DragonSpark.Testing.Setup.Commands
 			Assert.NotNull( sut.Resolve<Singleton>( "SomeName" ) );
 		}
 
-		[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
+		/*[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
 		public void EnsureCatalog( [Located]IModuleCatalog sut )
 		{
 			Assert.IsType<AssemblyModuleCatalog>( sut );
-		}
+		}*/
 	}
 }

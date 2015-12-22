@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
+using PostSharp.Aspects.Dependencies;
 using PostSharp.Serialization;
 using System;
 using System.Linq;
@@ -9,15 +10,21 @@ namespace DragonSpark.Aspects
 {
 	[PSerializable]
 	[LinesOfCodeAvoided( 6 )]
-	public class Cache : MethodInterceptionAspect
+	[ProvideAspectRole( StandardRoles.Caching )]
+	[AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading )]
+	public sealed class Cache : MethodInterceptionAspect
 	{
+		/*public object On { get; set; }*/
+
 		class Stored : ConnectedValue<WeakReference>
 		{
 			static string DetermineKey( MethodInterceptionArgs args ) => string.Join( "_", new[] { DetermineHost( args ), args.Method }.Concat( args.Arguments ).Select( o => o?.GetHashCode() ?? -1 ) );
 
 			static object DetermineHost( MethodInterceptionArgs args ) => args.Instance ?? args.Method.DeclaringType;
 
-			public Stored( MethodInterceptionArgs args ) : base( DetermineHost( args ), DetermineKey( args ), () => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) ) )
+			static WeakReference FromArgs( MethodInterceptionArgs args ) => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) );
+
+			public Stored( MethodInterceptionArgs args ) : base( DetermineHost( args ), DetermineKey( args ), () => FromArgs( args ) )
 			{}
 
 			public override WeakReference Item => base.Item.With( x => x.IsAlive ? x : Clear() );
@@ -31,7 +38,11 @@ namespace DragonSpark.Aspects
 
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
-			args.ReturnValue = new Stored( args ).Item?.Target;
+			var stored = new Stored( args );
+			stored.Item?.Target.With( o =>
+			{
+				args.ReturnValue = o;
+			} );
 		}
 	}
 }
