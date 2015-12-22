@@ -12,6 +12,7 @@ using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Runtime.Values;
 using Xunit;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
@@ -40,18 +41,6 @@ namespace DragonSpark.Testing.Activation.IoC
 
 			logger.Verify( x => x.Exception( @"Could not resolve type ""ClassWithBrokenConstructor"" with build name ""<None>"".", It.IsAny<ResolutionFailedException>() ) );
 		}
-
-		[Theory, AutoData]
-		public void Assign( ServiceLocation sut, [Modest] ServiceLocator locator )
-		{
-			Assert.NotSame( DragonSpark.Activation.ServiceLocation.Instance, sut );
-			sut.Assign( locator );
-
-			Assert.Same( sut.Locator, locator );
-		}
-
-		public class ServiceLocation : DragonSpark.Activation.ServiceLocation
-		{}
 
 		[Theory, Test, SetupAutoData]
 		void GetAllInstances( [Modest, Factory] ServiceLocator sut )

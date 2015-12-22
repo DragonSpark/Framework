@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation\ActivatorTests.cs" />
+    <Compile Include="Activation\AmbientKeyFactoryTests.cs" />
     <Compile Include="Activation\CurrentActivatorTests.cs" />
     <Compile Include="Activation\DefaultServicesTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerQualifierTests.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
     <Compile Include="Aspects\CacheAttributeTests.cs" />
+    <Compile Include="Aspects\CacheKeyFactoryTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>

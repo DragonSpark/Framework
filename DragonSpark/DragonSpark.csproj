@@ -166,6 +166,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\AmbientKeyFactory.cs" />
     <Compile Include="Activation\FactoryModel\ActivateFactory.cs" />
     <Compile Include="Activation\FactoryModel\ActivateFactoryParameterCoercer.cs" />
     <Compile Include="Activation\FactoryModel\ActivationFactoryParameterCoercer.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
     <Compile Include="Aspects\BuildUp.cs" />
     <Compile Include="Aspects\CacheAttribute.cs" />
+    <Compile Include="Aspects\CacheKeyFactory.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
     <Compile Include="ComponentModel\BuildablePropertyCollectionFactory.cs" />
     <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />

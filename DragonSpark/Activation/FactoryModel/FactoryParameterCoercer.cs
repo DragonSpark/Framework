@@ -4,6 +4,25 @@ using System.Linq;
 
 namespace DragonSpark.Activation.FactoryModel
 {
+	class FixedFactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
+	{
+		readonly TParameter item;
+		public static FixedFactoryParameterCoercer<TParameter> Instance { get; } = new FixedFactoryParameterCoercer<TParameter>();
+
+		public FixedFactoryParameterCoercer() : this( default(TParameter) )
+		{}
+
+		public FixedFactoryParameterCoercer( TParameter item )
+		{
+			this.item = item;
+		}
+
+		public TParameter Coerce( object context )
+		{
+			return item;
+		}
+	}
+
 	public class FactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
 	{
 		readonly IActivator activator;

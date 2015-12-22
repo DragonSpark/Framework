@@ -7,16 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 
 namespace DragonSpark.Activation.IoC
 {
-	[ThreadAffine]
 	public class ServiceLocator : ServiceLocatorImplBase, IDisposable
 	{
-		[Reference]readonly IUnityContainer container;
-		[Reference]readonly ConditionMonitor disposed = new ConditionMonitor();
+		readonly IUnityContainer container;
+		readonly ConditionMonitor disposed = new ConditionMonitor();
 
 		public ServiceLocator() : this( new UnityContainer() )
 		{}

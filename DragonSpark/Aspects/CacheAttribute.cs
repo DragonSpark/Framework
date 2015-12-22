@@ -18,7 +18,7 @@ namespace DragonSpark.Aspects
 
 		class Stored : ConnectedValue<WeakReference>
 		{
-			static string DetermineKey( MethodInterceptionArgs args ) => string.Join( "_", new[] { DetermineHost( args ), args.Method }.Concat( args.Arguments ).Select( o => o?.GetHashCode() ?? -1 ) );
+			static string DetermineKey( MethodInterceptionArgs args ) => CacheKeyFactory.Instance.Create( new [] { DetermineHost( args ), args.Method }.Concat( args.Arguments )  );
 
 			static object DetermineHost( MethodInterceptionArgs args ) => args.Instance ?? args.Method.DeclaringType;
 

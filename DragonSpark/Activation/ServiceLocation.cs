@@ -1,8 +1,7 @@
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Specifications;
 using DragonSpark.Runtime.Values;
 using Microsoft.Practices.ServiceLocation;
-using System.Linq;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Activation
 {
@@ -15,29 +14,33 @@ namespace DragonSpark.Activation
 			ServiceLocator.SetLocatorProvider( AmbientValues.Get<IServiceLocator> );
 		}
 
-		internal ServiceLocation()
+		readonly IAmbientValueRepository repository;
+		readonly IAmbientKeyLocator defaultLocator;
+		readonly IFactory<IServiceLocator, IAmbientKey> factory;
+
+		ServiceLocation() : this( AmbientValueRepository.Instance, AmbientKeyLocator.Instance, AmbientKeyFactory.Instance )
 		{}
+
+		protected ServiceLocation( IAmbientValueRepository repository, IAmbientKeyLocator defaultLocator, IFactory<IServiceLocator, IAmbientKey> factory )
+		{
+			this.repository = repository;
+			this.defaultLocator = defaultLocator;
+			this.factory = factory;
+		}
 
 		public void Assign( IServiceLocator locator )
 		{
 			if ( IsAvailable )
 			{
-				AmbientValues.Remove( Locator );
+				repository.Remove( Locator );
 			}
 
 			locator.With( context =>
 			{
-				var keyLocator = context.GetInstance<IAmbientKeyLocator>() ?? AmbientKeyLocator.Instance;
-				var key = keyLocator.Locate( context ) ?? new AmbientKey<IServiceLocator>( EqualsOrNull( context ) );
-				AmbientValues.Register( key, context );
+				var keyLocator = context.GetInstance<IAmbientKeyLocator>() ?? defaultLocator;
+				var key = keyLocator.Locate( context ) ?? factory.Create( context );
+				repository.Add( key, context );
 			} );
-		}
-
-		static ISpecification EqualsOrNull( IServiceLocator context )
-		{
-			var items = new[] { context, null }.Select( item => new EqualityContextAwareSpecification( item ) ).Cast<ISpecification>();
-			var result = new AnySpecification( items.ToArray() );
-			return result;
 		}
 
 		public bool IsAvailable => ServiceLocator.IsLocationProviderSet && Locator != null;
