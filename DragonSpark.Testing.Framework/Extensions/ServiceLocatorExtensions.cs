@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.Extensions
 	{
 		public static IServiceLocator Prepared( this IServiceLocator @this, MethodBase method )
 		{
-			var key = method.AsTo<MethodInfo, IAmbientKey>( AmbientLocatorKeyFactory.Instance.Create );
+			var key = method.AsTo<MethodInfo, IAmbientKey>( AmbientKeyFactory<IServiceLocator>.Instance.Create );
 			@this.Register( key );
 			return @this;
 		}

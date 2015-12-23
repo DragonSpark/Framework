@@ -14,7 +14,7 @@ namespace DragonSpark.ComponentModel
 	}
 
 	// [Synchronized]
-	class BuildPropertyRepository : IBuildPropertyRepository
+	public class BuildPropertyRepository : IBuildPropertyRepository
 	{
 		public static BuildPropertyRepository Instance { get; } = new BuildPropertyRepository();
 
@@ -29,6 +29,12 @@ namespace DragonSpark.ComponentModel
 			public Properties( object instance ) : base( instance, typeof(Properties), () => BuildablePropertyCollectionFactory.Instance.Create( instance ) )
 			{}
 		}
+
+		/*public static void Reset( object instance )
+		{
+			new IsBuilt( instance ).Property.TryDisconnect();
+			new Properties( instance ).Property.TryDisconnect();
+		}*/
 
 		public IEnumerable<DefaultValueParameter> GetProperties( object instance )
 		{

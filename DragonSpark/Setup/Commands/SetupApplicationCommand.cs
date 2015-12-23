@@ -39,7 +39,7 @@ namespace DragonSpark.Setup.Commands
 		where TLogger : IMessageLogger
 		where TAssemblyProvider : IAssemblyProvider
 	{
-		[Factory( typeof( ServiceLocatorFactory ) )]
+		[Factory( typeof(ServiceLocatorFactory) )]
 		public override ServiceLocator Locator { get; set; }
 
 		[Required, ComponentModel.Singleton, Activate]

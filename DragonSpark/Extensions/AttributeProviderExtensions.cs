@@ -5,7 +5,6 @@ using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Threading;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Activator = DragonSpark.Activation.Activator;
@@ -14,17 +13,15 @@ namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		readonly static Dictionary<Tuple<MemberInfo, Type>, Attribute[]> Cache = new Dictionary<Tuple<MemberInfo,Type>, Attribute[]>();
-
 		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
 		{
-			var result = target.GetAttribute<TAttribute>() != null;
+			var result = target.GetAttribute<TAttribute>( inherit ) != null;
 			return result;
 		}
 
 		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
 		{
-			var result = target.GetAttributes<TAttribute>().FirstOrDefault();
+			var result = target.GetAttributes<TAttribute>( inherit ).FirstOrDefault();
 			return result;
 		}
 
@@ -32,17 +29,6 @@ namespace DragonSpark.Extensions
 		{
 			var provider = Activator.Current.Activate<IAttributeProvider>() ?? AttributeProvider.Instance;
 			var result = provider.GetAttributes( target, typeof(TAttribute), inherit ).Cast<TAttribute>().ToArray();
-			return result;
-
-			/*var key = new Tuple<MemberInfo, Type>( target, typeof(TAttribute) );
-			var result = Cache.Ensure( key, ResolveAttributes ).OfType<TAttribute>().ToArray();
-			return result;*/
-		}
-
-		static Attribute[] ResolveAttributes( Tuple<MemberInfo, Type> key )
-		{
-			var info = /*Services.Location.With<IMemberInfoLocator, MemberInfo>( x => x.Locate( key.Item1 ) ) ??*/ key.Item1;
-			var result = info.GetCustomAttributes( key.Item2, true ).ToArray();
 			return result;
 		}
 	}

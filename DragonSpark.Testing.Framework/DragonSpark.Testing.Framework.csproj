@@ -147,7 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Setup\AmbientCustomizationsCustomization.cs" />
-    <Compile Include="Setup\AmbientLocatorKeyFactory.cs" />
+    <Compile Include="Setup\AmbientKeyFactory.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Extensions\SetupContextExtensions.cs" />
     <Compile Include="Setup\SetupApplicationCommand.cs" />
@@ -190,7 +190,7 @@
     <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />
     <Compile Include="Parameters\LocatedAttribute.cs" />
     <Compile Include="Setup\SetupAutoDataCommandBase.cs" />
-    <Compile Include="Setup\SetupAutoDataContext.cs" />
+    <Compile Include="Setup\SetupAutoDataParameter.cs" />
     <Compile Include="TestAttribute.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>

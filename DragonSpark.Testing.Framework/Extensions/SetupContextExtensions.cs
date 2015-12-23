@@ -9,13 +9,13 @@ namespace DragonSpark.Testing.Framework.Extensions
 	{
 		public static IFixture Fixture( this SetupContext @this )
 		{
-			var result = @this.Item<SetupAutoDataContext>().Fixture;
+			var result = @this.Item<SetupAutoDataParameter>().Fixture;
 			return result;
 		}
 
 		public static MethodInfo Method( this SetupContext @this )
 		{
-			var result = @this.Item<SetupAutoDataContext>().Method;
+			var result = @this.Item<SetupAutoDataParameter>().Method;
 			return result;
 		}
 	}

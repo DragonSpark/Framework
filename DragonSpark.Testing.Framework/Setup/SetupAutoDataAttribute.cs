@@ -15,7 +15,8 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override IFixture CreateItem()
 		{
-			return new Fixture( DefaultEngineParts.Instance );
+			var result = new Fixture( DefaultEngineParts.Instance );
+			return result;
 		}
 	}
 
@@ -33,14 +34,12 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
-			var setup = CreateSetup( setupType );
-			setup.Run( new SetupAutoDataContext( Fixture, methodUnderTest ) );
+			var setup = ActivateFactory<ISetup>.Instance.CreateUsing( setupType );
+			setup.Run( new SetupAutoDataParameter( Fixture, methodUnderTest ) );
+			// setup.Commands.Each( BuildPropertyRepository.Reset );
 
 			var result = base.GetData( methodUnderTest );
 			return result;
 		}
-
-		// [Cache]
-		static ISetup CreateSetup( Type type ) => ActivateFactory<ISetup>.Instance.CreateUsing( type );
 	}
 }
