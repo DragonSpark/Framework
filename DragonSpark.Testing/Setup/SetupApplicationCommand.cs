@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Testing.Framework.Setup;
-using DragonSpark.Windows.Runtime;
+using AssemblyProvider = DragonSpark.Testing.TestObjects.AssemblyProvider;
 
 namespace DragonSpark.Testing.Setup
 {

@@ -111,7 +111,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		public void Register( ServiceLocation sut )
+		public void RegisterLocation( ServiceLocation sut )
 		{
 			sut.Register( typeof( IInterface ), typeof( Class ) );
 
@@ -120,7 +120,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		void RegisterInstance( ServiceLocation sut, Class instance )
+		void RegisterInstanceClass( ServiceLocation sut, Class instance )
 		{
 			sut.Register( typeof( IInterface ), instance );
 
@@ -130,7 +130,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		void RegisterFactory( ServiceLocation sut, Class instance )
+		void RegisterFactoryClass( ServiceLocation sut, Class instance )
 		{
 			sut.Register<IInterface>( () => instance );
 
@@ -202,7 +202,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		void GetAllInstances( [Modest, Factory] ServiceLocator sut )
+		void GetAllInstancesLocator( [Modest, Factory] ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
 			sut.Register<IInterface, Derived>( "Second" );
@@ -223,7 +223,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		void Create( IActivator sut, string message, int number, Class @item )
+		void CreateActivator( IActivator sut, string message, int number, Class @item )
 		{
 			Assert.IsType<CompositeActivator>( sut );
 
@@ -460,7 +460,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		public void Create( AssembliesFactory factory, IUnityContainer container, IAssemblyProvider provider, [Located]Assembly[] sut )
+		public void CreateAssemblies( AssembliesFactory factory, IUnityContainer container, IAssemblyProvider provider, [Located]Assembly[] sut )
 		{
 			var registered = container.IsRegistered<Assembly[]>();
 			Assert.True( registered );
