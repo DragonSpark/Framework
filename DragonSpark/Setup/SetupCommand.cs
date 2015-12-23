@@ -25,7 +25,7 @@ namespace DragonSpark.Setup
 
 		public virtual bool CanExecute( object parameter )
 		{
-			return parameter is TContext && Enabled && !executed.IsApplied;
+			return parameter is TContext && Enabled /*&& !executed.IsApplied*/;
 		}
 
 		[BuildUp]
@@ -34,7 +34,8 @@ namespace DragonSpark.Setup
 			var context = parameter as TContext;
 			if ( context != null )
 			{
-				executed.Apply( () => Execute( context ) );
+				Execute( context );
+				// executed.Apply( () =>  );
 			}
 			else
 			{

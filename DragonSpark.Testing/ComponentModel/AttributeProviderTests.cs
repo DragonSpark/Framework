@@ -1,23 +1,28 @@
-﻿namespace DragonSpark.Testing.ComponentModel
+﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Testing.TestObjects;
+using Xunit;
+
+namespace DragonSpark.Testing.ComponentModel
 {
-	// TODO: Uncomment.
-	/*public class AttributeProviderTests
+	public class AttributeProviderTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		void ClassAttribute()
 		{
 			var attribute = typeof(Decorated).GetAttribute<Attribute>();
 			Assert.Equal( "This is a class attribute.", attribute.PropertyName );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		void Decorated()
 		{
 			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
 			Assert.False( typeof(Class).IsDecoratedWith<Attribute>() );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		void Convention()
 		{
 			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
@@ -25,14 +30,14 @@
 			Assert.Equal( "This is a class attribute through convention.", attribute.PropertyName );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		void ConventionProperty()
 		{
 			var attribute = typeof(Convention).GetProperty( "Property" ).GetAttribute<Attribute>();
 			Assert.Equal( "This is a property attribute through convention.", attribute.PropertyName );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		void PropertyAttribute()
 		{
 			var attribute = typeof(Decorated).GetProperty( "Property" ).GetAttribute<Attribute>();
@@ -53,5 +58,5 @@
 			var attribute = typeof(Relayed).GetAttribute<Attribute>();
 			Assert.Equal( "This is a relayed class attribute.", attribute.PropertyName );
 		}
-	}*/
+	}
 }	

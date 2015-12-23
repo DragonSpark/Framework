@@ -19,10 +19,8 @@ namespace DragonSpark.Testing.Framework.Setup
 		}
 	}
 
-	// [Synchronized]
 	public class SetupAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
-		// [Reference]
 		readonly Type setupType;
 
 		public SetupAutoDataAttribute() : this( FixtureFactory.Instance.Create() )

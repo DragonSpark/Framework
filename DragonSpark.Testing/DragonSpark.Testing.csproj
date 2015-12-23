@@ -76,7 +76,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.dotMemoryUnit.2.1.20150828.125449\Lib\dotMemory.Unit.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\JetBrains.dotMemoryUnit.2.1.20150828.125449\Lib\dotMemory.Unit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dynamitey">
@@ -124,15 +124,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PostSharp, Version=4.2.17.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.4.2.17\lib\net35-client\PostSharp.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\PostSharp.4.2.17\lib\net35-client\PostSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PostSharp.Patterns.Common, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Common.4.2.17\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Common.4.2.17\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PostSharp.Patterns.Threading, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Threading.4.2.17\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Threading.4.2.17\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -170,7 +170,6 @@
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerQualifierTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupportTests.cs" />
-    <Compile Include="Activation\FactoryModel\ObjectFactoryParameterTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategyTests.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />

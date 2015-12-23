@@ -1,12 +1,11 @@
-﻿using DragonSpark.Aspects;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System.Linq;
 using System.Windows.Markup;
 
 namespace DragonSpark.Setup
 {
-	[ContentProperty( nameof(Commands) ), BuildUp]
+	[ContentProperty( nameof(Commands) )]
 	public class Setup : ISetup
 	{
 		public Collection<object> Items { get; } = new Collection<object>();

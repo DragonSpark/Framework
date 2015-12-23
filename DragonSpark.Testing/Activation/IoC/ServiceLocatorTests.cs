@@ -63,7 +63,7 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.Contains( classes.Single(), updated );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void Container( [Modest, Frozen] ServiceLocator sut )
 		{
 			sut.Dispose();
@@ -115,18 +115,6 @@ namespace DragonSpark.Testing.Activation.IoC
 			Assert.True( container.IsRegistered<IInterface>() );
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
-
-		[Theory, Test, SetupAutoData]
-		void BuildUp( ServiceLocator sut )
-		{
-			var item = new ClassWithDefaultProperties();
-
-			Assert.Null( item.String );
-
-			item.BuildUp();
-			Assert.Equal( "Hello World", item.String );
-		}
-
 
 		[Theory, Test, SetupAutoData]
 		void Dispose( [Greedy, Frozen, Assigned] ServiceLocator sut )

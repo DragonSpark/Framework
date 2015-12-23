@@ -1,5 +1,6 @@
 using DragonSpark.Aspects;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Threading;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,6 +8,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation
 {
+	[Synchronized]
 	public class SystemActivator : IActivator
 	{
 		public static SystemActivator Instance { get; } = new SystemActivator();

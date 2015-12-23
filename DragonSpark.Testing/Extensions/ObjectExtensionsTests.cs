@@ -13,13 +13,13 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class ObjectExtensionsTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Theory, SetupAutoData, Test]
 		public void Evaluate( ClassWithParameter sut )
 		{
 			Assert.Equal( sut.Parameter, sut.Evaluate<object>( nameof(sut.Parameter) ) );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void ProvidedValues( ClassWithProperties sut )
 		{
 			sut.PropertyOne = null;
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Null( cloned.PropertyOne );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void Ignored( ClassWithProperties sut )
 		{
 			var other = sut.MapInto<ClassWithDifferentProperties>();
@@ -37,7 +37,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.PropertyFour, other.PropertyFour );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void Clone( ClassWithProperties sut )
 		{
 			var cloned = sut.Clone();

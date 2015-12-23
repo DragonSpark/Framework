@@ -16,27 +16,27 @@ namespace DragonSpark.Extensions
 	{
 		readonly static Dictionary<Tuple<MemberInfo, Type>, Attribute[]> Cache = new Dictionary<Tuple<MemberInfo,Type>, Attribute[]>();
 
-		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
+		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
 		{
 			var result = target.GetAttribute<TAttribute>() != null;
 			return result;
 		}
 
-		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
+		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
 		{
 			var result = target.GetAttributes<TAttribute>().FirstOrDefault();
 			return result;
 		}
 
-		public static TAttribute[] GetAttributes<TAttribute>( this MemberInfo target, bool inherit = true ) where TAttribute : Attribute
+		public static TAttribute[] GetAttributes<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
 		{
-			/*var provider = Activator.Current.Activate<IAttributeProvider>() ?? AttributeProvider.Instance;
-			var result = provider.GetAttributes( target, typeof(TAttribute), false ).Cast<TAttribute>().ToArray();
-			return result;*/
-
-			var key = new Tuple<MemberInfo, Type>( target, typeof(TAttribute) );
-			var result = Cache.Ensure( key, ResolveAttributes ).OfType<TAttribute>().ToArray();
+			var provider = Activator.Current.Activate<IAttributeProvider>() ?? AttributeProvider.Instance;
+			var result = provider.GetAttributes( target, typeof(TAttribute), inherit ).Cast<TAttribute>().ToArray();
 			return result;
+
+			/*var key = new Tuple<MemberInfo, Type>( target, typeof(TAttribute) );
+			var result = Cache.Ensure( key, ResolveAttributes ).OfType<TAttribute>().ToArray();
+			return result;*/
 		}
 
 		static Attribute[] ResolveAttributes( Tuple<MemberInfo, Type> key )
@@ -61,7 +61,7 @@ namespace DragonSpark.Extensions
 
 		[Reference]readonly IMemberInfoLocator locator;
 
-		AttributeProvider() : this( new MemberInfoLocator() )
+		AttributeProvider() : this( MemberInfoLocator.Instance )
 		{}
 
 		public AttributeProvider( IMemberInfoLocator locator )

@@ -31,7 +31,7 @@ namespace DragonSpark.Setup.Registration
 			profile.Candidates
 				//.Where( item => !Container.IsRegistered( item ) )
 				.AsTypeInfos()
-				.WhereDecorated<RegistrationBaseAttribute>( false )
+				.WhereDecorated<RegistrationBaseAttribute>()
 				.Each( item => HostedValueLocator<IConventionRegistration>.Instance.Create( item.Item2 ).Each( registration =>
 				{
 					registration.Register( registry, item.Item2.AsType() );

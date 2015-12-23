@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.ComponentModel
 			}
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void Apply( [Modest]ObjectBuilder sut )
 		{
 			var current = DateTime.Now;

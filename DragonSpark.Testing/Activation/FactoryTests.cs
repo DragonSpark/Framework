@@ -1,7 +1,5 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
@@ -10,7 +8,7 @@ namespace DragonSpark.Testing.Activation
 {
 	public class FactoryTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void CreateActivation( [Modest]ActivateFactory<Class> sut )
 		{
 			var creation = sut.CreateUsing( typeof(Class) );
@@ -18,7 +16,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.IsType<Class>( creation );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Theory, AutoData]
 		void Create( [Modest]ConstructFactory<IInterface> sut )
 		{
 			var factory = sut.To<IFactoryWithParameter>();

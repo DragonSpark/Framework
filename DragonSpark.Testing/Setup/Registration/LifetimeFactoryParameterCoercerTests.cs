@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Setup.Registration;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Microsoft.Practices.Unity;
 using Xunit;
@@ -9,7 +7,7 @@ namespace DragonSpark.Testing.Setup.Registration
 {
 	public class LifetimeFactoryParameterCoercerTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		public void ConstructorDefault()
 		{
 			var type = typeof(TransientLifetimeManager);
@@ -18,7 +16,7 @@ namespace DragonSpark.Testing.Setup.Registration
 			Assert.Equal( type, parameter.Type );
 		}
 
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		public void Constructor()
 		{
 			var type = typeof(TransientLifetimeManager);

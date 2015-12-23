@@ -4,6 +4,9 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public class ConstructFactoryParameterCoercer<TResult> : ActivationFactoryParameterCoercer<ConstructParameter, TResult>
 	{
+		public ConstructFactoryParameterCoercer() : this( SystemActivator.Instance )
+		{}
+
 		public ConstructFactoryParameterCoercer( IActivator activator ) : base( activator )
 		{}
 

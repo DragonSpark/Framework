@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Xunit;
 
@@ -8,7 +6,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 {
 	public class FactoryReflectionSupportTests
 	{
-		[Theory, Test, SetupAutoData]
+		[Fact]
 		public void GetResultType()
 		{
 			var type = FactoryReflectionSupport.Instance.GetFactoryType( typeof(YetAnotherClass) );
