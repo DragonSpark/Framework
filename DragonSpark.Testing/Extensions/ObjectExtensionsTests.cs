@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
@@ -13,12 +11,6 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class ObjectExtensionsTests
 	{
-		[Theory, SetupAutoData, Test]
-		public void Evaluate( ClassWithParameter sut )
-		{
-			Assert.Equal( sut.Parameter, sut.Evaluate<object>( nameof(sut.Parameter) ) );
-		}
-
 		[Theory, AutoData]
 		void ProvidedValues( ClassWithProperties sut )
 		{

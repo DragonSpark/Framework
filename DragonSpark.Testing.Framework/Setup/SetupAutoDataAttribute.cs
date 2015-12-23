@@ -23,12 +23,6 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		readonly Type setupType;
 
-		public SetupAutoDataAttribute() : this( FixtureFactory.Instance.Create() )
-		{}
-
-		public SetupAutoDataAttribute( IFixture fixture ) : this( fixture, typeof(DefaultSetup) )
-		{}
-
 		public SetupAutoDataAttribute( Type setupType ) : this( FixtureFactory.Instance.Create(), setupType )
 		{}
 
@@ -39,11 +33,14 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
-			var setup = ActivateFactory<ISetup>.Instance.CreateUsing( setupType );
+			var setup = CreateSetup( setupType );
 			setup.Run( new SetupAutoDataContext( Fixture, methodUnderTest ) );
 
 			var result = base.GetData( methodUnderTest );
 			return result;
 		}
+
+		// [Cache]
+		static ISetup CreateSetup( Type type ) => ActivateFactory<ISetup>.Instance.CreateUsing( type );
 	}
 }

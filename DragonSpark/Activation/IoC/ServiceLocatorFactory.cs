@@ -5,11 +5,11 @@ namespace DragonSpark.Activation.IoC
 {
 	public class ServiceLocatorFactory : ActivateFactory<ServiceLocator>
 	{
-		public ServiceLocatorFactory()
+		public ServiceLocatorFactory() : base( SystemActivator.Instance )
 		{}
 
-		public ServiceLocatorFactory( IActivator activator ) : base( activator )
-		{}
+		/*public ServiceLocatorFactory( IActivator activator ) : base( activator )
+		{}*/
 
 		protected override ServiceLocator Activate( ActivateParameter parameter )
 		{

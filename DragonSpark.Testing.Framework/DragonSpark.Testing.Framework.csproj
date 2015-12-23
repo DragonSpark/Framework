@@ -158,9 +158,6 @@
     <Compile Include="Setup\CurrentMethodSpecification.cs" />
     <Compile Include="Setup\CurrentTaskSpecification.cs" />
     <Compile Include="Setup\CustomizeFixtureCommand.cs" />
-    <Compile Include="Setup\DefaultSetup.cs">
-      <DependentUpon>DefaultSetup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Setup\GreedyMethodBuilderFactory.cs" />
     <Compile Include="Setup\Location\IServiceLocationAuthority.cs" />
     <Compile Include="Setup\LocateTypeSpecification.cs" />
@@ -237,12 +234,6 @@
     <None Include="App.config" />
     <None Include="DragonSpark.Testing.Framework.psproj" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Setup\DefaultSetup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

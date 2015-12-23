@@ -14,7 +14,7 @@
 	xmlns:testObjects="clr-namespace:DragonSpark.Testing.TestObjects"
 	mc:Ignorable="d"
 >
-	<setup:SetupApplicationCommand MessageLogger="{ds:Activate {x:Type diagnostics:RecordingMessageLogger}}" AssemblyProvider="{x:Static runtimeWindows:AssemblyProvider.Instance}" />
+	<local:SetupApplicationCommand MessageLogger="{ds:Activate {x:Type diagnostics:RecordingMessageLogger}}" AssemblyProvider="{x:Static runtimeWindows:AssemblyProvider.Instance}" />
 	<commands:SetupUnityCommand>
 		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
 		<commands:ConfigureUnityCommand.Extensions>

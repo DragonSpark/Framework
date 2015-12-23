@@ -59,29 +59,5 @@ namespace DragonSpark.Testing.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ISO	ISO3	ISO-Numeric	fips	Country	Capital	Area(in sq km)	Population	Continent	tld	CurrencyCode	CurrencyName	Phone	Postal Code Format	Postal Code Regex	Languages	geonameid	neighbours	EquivalentFipsCode
-        ///AD	AND	20	AN	Andorra	Andorra la Vella	468	72000	EU	.ad	EUR	Euro	376	AD###	^(?:AD)*(\d{3})$	ca,fr-AD,pt	3041565	ES,FR	
-        ///AE	ARE	784	AE	United Arab Emirates	Abu Dhabi	82880	4621000	AS	.ae	AED	Dirham	971			ar-AE,fa,en,hi,ur	290557	SA,OM	
-        ///AF	AFG	4	AF	Afghanistan	Kabul	647500	32738000	AS	.af	AFN	Afghani	93			fa-AF [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string CountryInfo {
-            get {
-                return ResourceManager.GetString("CountryInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;NamedObject&gt;
-        ///	&lt;Name&gt;Named Object from Type-based Resource&lt;/Name&gt;
-        ///&lt;/NamedObject&gt;.
-        /// </summary>
-        internal static string NamedObjectType {
-            get {
-                return ResourceManager.GetString("NamedObjectType", resourceCulture);
-            }
-        }
     }
 }

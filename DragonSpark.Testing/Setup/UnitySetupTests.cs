@@ -1,4 +1,4 @@
-﻿using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
@@ -6,14 +6,14 @@ using Microsoft.Practices.Unity;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace DragonSpark.Testing.Setup.Commands
+namespace DragonSpark.Testing.Setup
 {
-	public class ConfigureUnityCommandTests : Tests
+	public class UnitySetupTests : Tests
 	{
-		public ConfigureUnityCommandTests( ITestOutputHelper output ) : base( output )
+		public UnitySetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Theory, Test, SetupAutoData( typeof(UnitySetup) )]
+		[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
 		public void Extension( [Located]IUnityContainer sut )
 		{
 			Assert.NotNull( sut.Configure<TestExtension>() );
@@ -24,11 +24,5 @@ namespace DragonSpark.Testing.Setup.Commands
 		{
 			Assert.NotNull( sut.Resolve<Singleton>( "SomeName" ) );
 		}
-
-		/*[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
-		public void EnsureCatalog( [Located]IModuleCatalog sut )
-		{
-			Assert.IsType<AssemblyModuleCatalog>( sut );
-		}*/
 	}
 }

@@ -171,7 +171,6 @@
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupportTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
-    <Compile Include="Activation\IoC\EnumerableResolutionStrategyTests.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
@@ -186,7 +185,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
-    <Compile Include="Extensions\AssemblyLocatorExtensionsTests.cs" />
     <Compile Include="Extensions\BooleanExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -203,18 +201,20 @@
     <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Values\AmbientContextTests.cs" />
-    <Compile Include="Setup\AllTypesOfFactoryTests.cs" />
+    <Compile Include="Setup\DefaultSetup.cs">
+      <DependentUpon>DefaultSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\SetupApplicationCommand.cs" />
     <Compile Include="Setup\TestExtension.cs" />
     <Compile Include="Setup\UnitySetup.xaml.cs">
       <DependentUpon>UnitySetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setup\Commands\ConfigureUnityCommandTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\BasicSetup.cs">
       <DependentUpon>BasicSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
+    <Compile Include="Setup\UnitySetupTests.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="Modularity\ModuleAttributeTests.cs" />
@@ -224,8 +224,6 @@
     <Compile Include="Modularity\ModuleInfoGroupTests.cs" />
     <Compile Include="Modularity\ModuleInitializerTests.cs" />
     <Compile Include="Modularity\ModuleManagerTests.cs" />
-    <Compile Include="RegistrationTests.cs" />
-    <Compile Include="Runtime\ApplicationInformationTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
@@ -240,8 +238,6 @@
     </Compile>
     <Compile Include="Extensions\TypeExtensionsTests.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensionsTests.cs" />
-    <Compile Include="Framework\AutoMoqDataAttributeTests.cs" />
-    <Compile Include="Framework\ServiceLocationCustomizationTests.cs" />
     <Compile Include="Framework\ThreadLocalStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -249,7 +245,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Diagnostics\LogTests.cs" />
     <Compile Include="TestObjects\Activator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -283,7 +278,6 @@
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TypeSystem\ApplicationAssemblyLocatorTests.cs" />
     <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
@@ -309,8 +303,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestObjects\Static.cs" />
-    <Compile Include="TypeSystem\AssembliesFactoryTests.cs" />
-    <Compile Include="TypeSystem\AssemblyInformationFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -372,6 +364,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Diagnostics\" />
     <Folder Include="Server\" />
   </ItemGroup>
   <ItemGroup>
@@ -389,6 +382,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Setup\DefaultSetup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Setup\UnitySetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
