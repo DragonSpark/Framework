@@ -27,9 +27,8 @@ namespace DragonSpark.Setup.Registration
 		public virtual void Register( ConventionRegistrationProfile profile )
 		{
 			var registry = new ServiceRegistry( Container, MessageLogger, Factory );
-			
+
 			profile.Candidates
-				//.Where( item => !Container.IsRegistered( item ) )
 				.AsTypeInfos()
 				.WhereDecorated<RegistrationBaseAttribute>()
 				.Each( item => HostedValueLocator<IConventionRegistration>.Instance.Create( item.Item2 ).Each( registration =>

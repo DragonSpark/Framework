@@ -28,9 +28,6 @@ namespace DragonSpark.Setup.Commands
 
 	public class SetupUnityCommand : ConfigureUnityCommand
 	{
-		[Default( true )]
-		public bool UseDefaultConfiguration { get; set; }
-
 		[Activate]
 		public IServiceLocation Location { get; set; }
 
@@ -53,12 +50,6 @@ namespace DragonSpark.Setup.Commands
 
 				var objects = context.Append( context.Items ).Except( container.ToItem() );
 				objects.Each( support.Convention );
-
-				if ( UseDefaultConfiguration )
-				{
-					support.Mapping<IModuleInitializer, ModuleInitializer>( new ContainerControlledLifetimeManager() );
-					support.Mapping<IModuleManager, ModuleManager>( new ContainerControlledLifetimeManager() );
-				}
 			} );
 		}
 	}

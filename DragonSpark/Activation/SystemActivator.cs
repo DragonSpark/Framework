@@ -42,7 +42,7 @@ namespace DragonSpark.Activation
 
 		public object Construct( Type type, params object[] parameters )
 		{
-			var args = Coerce( type, parameters );
+			var args = Coerce( type, parameters ) ?? new object[0];
 
 			var activator = type.Adapt().FindConstructor( args ).With( GetActivator );
 

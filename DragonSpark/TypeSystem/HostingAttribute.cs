@@ -17,9 +17,7 @@ namespace DragonSpark.TypeSystem
 			this.inner = inner;
 		}
 
-		public object HostedValue => inner.Item;
-
-		object IValue.Item => HostedValue;
+		public object Item => inner.Item;
 	}
 
 	public class AttributeValueAdapter<T> : Value<T>

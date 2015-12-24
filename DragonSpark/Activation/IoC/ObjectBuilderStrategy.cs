@@ -21,9 +21,10 @@ namespace DragonSpark.Activation.IoC
 
 	public class ObjectBuilderStrategy : BuilderStrategy
 	{
-		public override void PostBuildUp( IBuilderContext context )
+		public override void PreBuildUp( IBuilderContext context )
 		{
-			context.Policies.Get<IObjectBuilderPolicy>( context.BuildKey ).With( policy => policy.Enabled ).IsTrue( () =>
+			var all = context.GetBuildChain().All( key => context.Policies.Get<IObjectBuilderPolicy>( key ).With( policy => policy.Enabled ) );
+			all.IsTrue( () =>
 			{
 				var item = context.NewBuildUp<IObjectBuilder>();
 				context.Existing = context.Existing.With( item.BuildUp );

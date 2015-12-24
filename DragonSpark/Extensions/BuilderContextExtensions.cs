@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using DragonSpark.Activation.IoC;
 using Microsoft.Practices.ObjectBuilder2;
 
 namespace DragonSpark.Extensions
@@ -7,6 +9,12 @@ namespace DragonSpark.Extensions
 		public static bool HasBuildPlan( this IBuilderContext @this )
 		{
 			var result = @this.Policies.GetNoDefault<IBuildPlanPolicy>( @this.BuildKey, false ) != null;
+			return result;
+		}
+
+		public static NamedTypeBuildKey[] GetBuildChain( this IBuilderContext @this )
+		{
+			var result = new Chain( @this.Strategies ).Item.ToArray();
 			return result;
 		}
 

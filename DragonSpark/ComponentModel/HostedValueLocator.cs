@@ -11,7 +11,7 @@ namespace DragonSpark.ComponentModel
 
 		protected override T[] CreateItem( MemberInfo parameter )
 		{
-			var result = parameter.GetCustomAttributes<HostingAttribute>().Select( attribute => attribute.HostedValue ).OfType<T>().ToArray();
+			var result = parameter.GetCustomAttributes<HostingAttribute>().Select( attribute => attribute.Item ).OfType<T>().ToArray();
 			return result;
 		}
 	}

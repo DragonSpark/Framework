@@ -476,7 +476,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		public void Create( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut )
+		public void CreateAssembly( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut )
 		{
 			var registered = container.IsRegistered<Assembly>();
 			Assert.True( registered );

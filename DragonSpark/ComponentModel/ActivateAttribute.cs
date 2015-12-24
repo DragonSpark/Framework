@@ -67,6 +67,14 @@ namespace DragonSpark.ComponentModel
 			var adapted = new Parameter( type, parameter.Instance, parameter.Metadata );
 			var result = Activate( adapted );
 			return result;
+
+			/*var result = new[] { DetermineType( parameter.Metadata ), ActivatedType }
+				.NotNull()
+				.Select( t => new Parameter( t, parameter.Instance, parameter.Metadata ) )
+				.Select( Activate )
+				.NotNull()
+				.FirstOrDefault();
+			return result;*/
 		}
 
 		protected virtual object Activate( Parameter parameter )

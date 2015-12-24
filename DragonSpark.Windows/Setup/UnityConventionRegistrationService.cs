@@ -16,9 +16,8 @@ namespace DragonSpark.Windows.Setup
 
 		public override void Register( ConventionRegistrationProfile profile )
 		{
-			RegisterTypes( profile );
-
 			base.Register( profile );
+			RegisterTypes( profile );
 		}
 
 		protected virtual void RegisterTypes( ConventionRegistrationProfile profile )

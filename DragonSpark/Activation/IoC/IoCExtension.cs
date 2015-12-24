@@ -1,5 +1,4 @@
-﻿using DragonSpark.ComponentModel;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
@@ -8,24 +7,6 @@ using Microsoft.Practices.Unity.ObjectBuilder;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ObjectBuilderExtension : UnityContainerExtension
-	{
-		protected override void Initialize()
-		{
-			Context.Strategies.AddNew<ObjectBuilderStrategy>( UnityBuildStage.Initialization );
-			Context.Policies.Set<IObjectBuilderPolicy>( new ObjectBuilderPolicy( false ), typeof(IObjectBuilder) );
-			Container.Registration<EnsuredRegistrationSupport>().With( support =>
-			{
-				support.Instance<IObjectBuilder>( ObjectBuilder.Instance );
-			});
-		}
-
-		public void Enable( bool on )
-		{
-			Context.Policies.SetDefault<IObjectBuilderPolicy>( new ObjectBuilderPolicy( on ) );
-		}
-	}
-
 	public class IoCExtension : UnityContainerExtension
 	{
 		public IMessageLogger MessageLogger { get; } = new RecordingMessageLogger();
@@ -35,6 +16,7 @@ namespace DragonSpark.Activation.IoC
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
 
 			Context.Strategies.Clear();
+			Context.Strategies.AddNew<BuildChainMonitorStrategy>( UnityBuildStage.Setup );
 			Context.Strategies.AddNew<BuildKeyMappingStrategy>( UnityBuildStage.TypeMapping );
 			Context.Strategies.AddNew<HierarchicalLifetimeStrategy>( UnityBuildStage.Lifetime );
 			Context.Strategies.AddNew<LifetimeStrategy>( UnityBuildStage.Lifetime );

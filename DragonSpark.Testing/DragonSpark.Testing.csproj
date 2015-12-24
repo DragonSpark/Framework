@@ -131,6 +131,10 @@
       <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Common.4.2.17\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp.Patterns.Model, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Model.4.2.17\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PostSharp.Patterns.Threading, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Threading.4.2.17\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
       <Private>True</Private>
@@ -176,6 +180,7 @@
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
     <Compile Include="Aspects\CacheAttributeTests.cs" />
     <Compile Include="Aspects\CacheKeyFactoryTests.cs" />
+    <Compile Include="Aspects\OfTypeAttributeTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -204,8 +209,12 @@
     <Compile Include="Setup\DefaultSetup.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setup\ProgramSetupTests.cs" />
     <Compile Include="Setup\SetupApplicationCommand.cs" />
     <Compile Include="Setup\TestExtension.cs" />
+    <Compile Include="Setup\ProgramSetup.xaml.cs">
+      <DependentUpon>ProgramSetup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setup\UnitySetup.xaml.cs">
       <DependentUpon>UnitySetup.xaml</DependentUpon>
     </Compile>
@@ -383,6 +392,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Setup\DefaultSetup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setup\ProgramSetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

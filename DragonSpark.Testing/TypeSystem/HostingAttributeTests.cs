@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.TypeSystem
 		[Theory, AutoData]
 		public void Field( object item, int number )
 		{
-			var parameter = new FieldSurrogateAttribute( item, number ).HostedValue;
+			var parameter = new FieldHostedAttribute( item, number ).Item;
 			var target = Assert.IsType<Target>( parameter );
 			Assert.Equal( item, target.Item );
 			Assert.Equal( number, target.Number );
@@ -28,12 +28,12 @@ namespace DragonSpark.Testing.TypeSystem
 			public int Number { get; }
 		}
 
-		class FieldSurrogateAttribute : HostingAttribute
+		class FieldHostedAttribute : HostingAttribute
 		{
-			public FieldSurrogateAttribute(object item, int number) : this( () => new Target( item, number ) )
+			public FieldHostedAttribute(object item, int number) : this( () => new Target( item, number ) )
 			{}
 
-			FieldSurrogateAttribute( Func<object> p ) : base( p )
+			FieldHostedAttribute( Func<object> p ) : base( p )
 			{}
 		}
 	}

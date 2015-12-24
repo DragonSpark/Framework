@@ -1,9 +1,9 @@
+using DragonSpark.Extensions;
+using DragonSpark.Modularity;
+using DragonSpark.Setup.Registration;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DragonSpark.Modularity;
-using DragonSpark.Setup;
-using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Windows.Modularity
 {
@@ -16,14 +16,13 @@ namespace DragonSpark.Windows.Modularity
 	public class FileModuleTypeLoader : LocalModuleTypeLoader
 	{
 		private const string RefFilePrefix = "file://";
-		private readonly HashSet<Uri> downloadedUris = new HashSet<Uri>();
+		readonly private HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FileModuleTypeLoader"/> class.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "This is disposed of in the Dispose method.")]
-		public FileModuleTypeLoader()
-			: this(new AssemblyResolver())
+		public FileModuleTypeLoader() : this(new AssemblyResolver())
 		{}
 
 		/// <summary>
@@ -103,8 +102,7 @@ namespace DragonSpark.Windows.Modularity
 
 		protected override void Dispose( bool disposing )
 		{
-			var disposableResolver = this.AssemblyResolver as IDisposable;
-			disposableResolver?.Dispose();
+			AssemblyResolver.TryDispose();
 		}
 	}
 }
