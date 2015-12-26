@@ -2,14 +2,14 @@ using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Activation
 {
-	public interface IExecutionContext : IWritableValue<object>
+	public interface IExecutionContext : IValue
 	{}
 
 	public static class Execution
 	{
 		static Execution()
 		{
-			Initialize( DefaultExecutionContext.Instance );
+			Initialize( ExecutionContext.Instance );
 		}
 
 		public static void Initialize( IExecutionContext current )
@@ -18,16 +18,11 @@ namespace DragonSpark.Activation
 		}	static IExecutionContext Context { get; set; }
 
 		public static object Current => Context.Item;
-
-		public static void Assign( object current )
-		{
-			Context.Assign( current );
-		}
 	}
 
-	class DefaultExecutionContext : FixedValue<object>, IExecutionContext
+	class ExecutionContext : FixedValue<object>, IExecutionContext
 	{
-		public static DefaultExecutionContext Instance { get; } = new DefaultExecutionContext();
+		public static ExecutionContext Instance { get; } = new ExecutionContext();
 
 		readonly object defaultContext = new object();
 

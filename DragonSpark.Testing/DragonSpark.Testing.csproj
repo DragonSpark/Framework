@@ -199,6 +199,7 @@
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Initialize.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />

@@ -11,15 +11,6 @@ using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework
 {
-	public static class Initialize
-	{
-		[ModuleInitializer( 0 )]
-		public static void Execution()
-		{
-			Activation.Execution.Initialize( CurrentExecution.Instance );
-		}
-	}
-
 	public class OutputValue : AssociatedValue<Type, ITestOutputHelper>
 	{
 		public OutputValue( Type instance ) : base( instance )
