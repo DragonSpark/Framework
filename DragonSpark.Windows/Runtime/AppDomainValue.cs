@@ -1,7 +1,7 @@
+using DragonSpark.Runtime.Values;
 using System;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
-using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Windows.Runtime
 {

@@ -7,14 +7,16 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Setup
 {
-	public class ProgramSetupTests : Tests
+	public class ProgramSetupTests
 	{
-		public ProgramSetupTests( ITestOutputHelper output ) : base( output )
-		{}
+		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		public void Testing()
+		{
+			Assert.True( true );
+		}
 
 		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
 		public void Extension( [Located]SetupContext sut )
