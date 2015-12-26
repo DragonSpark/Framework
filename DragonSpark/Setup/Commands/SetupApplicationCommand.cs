@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using DragonSpark.Activation;
 using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
@@ -8,7 +6,6 @@ using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
@@ -18,7 +15,7 @@ namespace DragonSpark.Setup.Commands
 		where TLocator : IServiceLocator
 		where TLogger : IMessageLogger
 	{
-		[ComponentModel.Singleton( typeof( ServiceLocation ) )]
+		[ComponentModel.Singleton( typeof(ServiceLocation) )]
 		public IServiceLocation Location { get; set; }
 
 		public abstract TLocator Locator { get; set; }
@@ -31,6 +28,7 @@ namespace DragonSpark.Setup.Commands
 			MessageLogger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 
 			MessageLogger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
+			
 			Location.Assign( Locator );
 		}
 	}

@@ -61,6 +61,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.ConnectedProperties.3.0.0\lib\net40\ConnectedProperties.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ConnectedProperties.Enlightenment, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.ConnectedProperties.3.0.0\lib\net40\ConnectedProperties.Enlightenment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dynamitey">
       <HintPath>$(SolutionDir)\packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
     </Reference>
@@ -146,17 +154,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Setup\AmbientCustomizationsCustomization.cs" />
-    <Compile Include="Setup\AmbientKeyFactory.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Extensions\SetupContextExtensions.cs" />
+    <Compile Include="Setup\CurrentMethodCustomization.cs" />
+    <Compile Include="Setup\Execution.cs" />
     <Compile Include="Setup\SetupApplicationCommand.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
     <Compile Include="Setup\CanLocateSpecification.cs" />
     <Compile Include="Setup\ConfigureLocationCustomization.cs" />
-    <Compile Include="Setup\CurrentMethodCustomization.cs" />
-    <Compile Include="Setup\CurrentMethodSpecification.cs" />
-    <Compile Include="Setup\CurrentTaskSpecification.cs" />
     <Compile Include="Setup\CustomizeFixtureCommand.cs" />
     <Compile Include="Setup\GreedyMethodBuilderFactory.cs" />
     <Compile Include="Setup\Location\IServiceLocationAuthority.cs" />
@@ -172,8 +177,7 @@
     <Compile Include="RegisterFactoryAttribute.cs" />
     <Compile Include="Setup\Location\ServiceLocationAuthority.cs" />
     <Compile Include="Setup\Location\ServiceLocationRelay.cs" />
-    <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
-    <Compile Include="Setup\MethodInStackTraceContextAwareSpecification.cs">
+    <Compile Include="Setup\AssignedLogical.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\SetupAutoDataAttribute.cs" />

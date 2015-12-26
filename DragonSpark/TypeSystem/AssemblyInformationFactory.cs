@@ -11,7 +11,7 @@ namespace DragonSpark.TypeSystem
 	[RegisterFactoryForResult]
 	public class AssemblyInformationFactory : FactoryBase<Assembly, AssemblyInformation>
 	{
-		static readonly Type[] Attributes =
+		readonly static Type[] Attributes =
 		{
 			typeof(AssemblyTitleAttribute),
 			typeof(AssemblyProductAttribute),
@@ -20,6 +20,9 @@ namespace DragonSpark.TypeSystem
 			typeof(AssemblyConfigurationAttribute),
 			typeof(AssemblyCopyrightAttribute)
 		};
+
+		public AssemblyInformationFactory() : base( new FactoryParameterCoercer<Assembly>() )
+		{}
 
 		protected override AssemblyInformation CreateItem( Assembly parameter )
 		{

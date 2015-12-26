@@ -17,7 +17,7 @@ namespace DragonSpark.Windows.Modularity
 		/// added after setting this value will also get this <see cref="Ref"/>.
 		/// 
 		/// The ref value will also be used by the <see cref="IModuleManager"/> to determine which  <see cref="IModuleTypeLoader"/> to use. 
-		/// For example, using an "file://" prefix with a valid URL will cause the FileModuleTypeLoader to be used
+		/// For example, using an "file://" prefix with a valid URL will cause the ModuleTypeLoader to be used
 		/// (Only available in the desktop version of CAL).
 		/// </summary>
 		/// <see cref="DynamicModuleInfo.Ref"/>

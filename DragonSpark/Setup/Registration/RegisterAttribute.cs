@@ -2,6 +2,12 @@ using System;
 
 namespace DragonSpark.Setup.Registration
 {
+	public class RegisterTypeAttribute : RegistrationBaseAttribute
+	{
+		public RegisterTypeAttribute() : base( () => RegisterByConventionType.Instance )
+		{}
+	}
+
 	public sealed class RegisterAttribute : RegistrationBaseAttribute
 	{
 		public RegisterAttribute() : this( null, null )

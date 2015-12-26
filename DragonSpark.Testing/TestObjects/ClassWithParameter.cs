@@ -1,8 +1,6 @@
-using DragonSpark.Activation;
-using DragonSpark.Runtime;
-using System;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Runtime.Values;
+using System;
 
 namespace DragonSpark.Testing.TestObjects
 {
@@ -11,27 +9,28 @@ namespace DragonSpark.Testing.TestObjects
 
 	public class ClassWithParameter : IClassWithParameter, IInterface
 	{
-		public object Parameter { get; set; }
-
 		public ClassWithParameter( object parameter )
 		{
 			Parameter = parameter;
 		}
+
+		public object Parameter { get; }
 	}
 
 	class ClassCreatedFromDefault
 	{
 		public ClassCreatedFromDefault( string message )
 		{
-			var count = AmbientValues.Get<int>( GetType() );
+			var associated = new AssociatedValue<Type, int>( GetType() );
+			var count = associated.Item;
 			switch ( count )
 			{
 				case 0:
-					AmbientValues.RegisterFor( 1, GetType() );
+					associated.Assign( 1 );
 					throw new InvalidOperationException( message );
 				default:
 					Message = message;
-					AmbientValues.Remove( GetType() );
+					associated.Property.TryDisconnect();
 					break;
 			}
 		}

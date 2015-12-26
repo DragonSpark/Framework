@@ -1,8 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Extensions;
-using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 using ServiceLocation = DragonSpark.Activation.ServiceLocation;
@@ -10,6 +8,7 @@ using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation
 {
+	[AssignExecution]
 	public class DefaultServicesTests : Tests
 	{
 		public DefaultServicesTests( ITestOutputHelper output ) : base( output )
@@ -24,7 +23,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( Factory.Create<ServiceLocator>().Prepared( MethodBase.GetCurrentMethod() ) );
+			sut.Assign( Factory.Create<ServiceLocator>() );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );

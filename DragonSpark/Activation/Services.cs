@@ -1,24 +1,23 @@
-using DragonSpark.Runtime;
-using DragonSpark.Runtime.Values;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Activation
 {
 	public static class Services
 	{
-		public static IServiceLocation Location => AmbientValues.Get<IServiceLocation>() ?? ServiceLocation.Instance;
+		static Services()
+		{
+			Initialize( ServiceLocation.Instance );
+		}
+
+		public static void Initialize( IServiceLocation location )
+		{
+			Location = location;
+
+			ServiceLocator.SetLocatorProvider( GetLocator );
+		}
+
+		static IServiceLocator GetLocator() => Location.Item;
+
+		public static IServiceLocation Location { get; private set; }
 	}
-
-	/*public interface IServiceLocationHost
-	{
-		IServiceLocation Location { get; }
-	}
-
-	public class ServiceLocationHost : IServiceLocationHost
-	{
-		public static ServiceLocationHost Instance { get; } = new ServiceLocationHost();
-
-		public IServiceLocation Location => ServiceLocation.Instance;
-	}*/
-
-
 }

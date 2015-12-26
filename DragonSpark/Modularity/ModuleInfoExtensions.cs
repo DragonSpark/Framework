@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Modularity
 {
@@ -7,7 +8,13 @@ namespace DragonSpark.Modularity
 	{
 		public static Assembly GetAssembly( this ModuleInfo target )
 		{
-			var result = Type.GetType( target.ModuleType, true )?.GetTypeInfo().Assembly;
+			var result = target.ResolveType()?.Assembly();
+			return result;
+		}
+
+		public static Type ResolveType( this ModuleInfo target )
+		{
+			var result = Type.GetType( target.ModuleType, true );
 			return result;
 		}
 	}

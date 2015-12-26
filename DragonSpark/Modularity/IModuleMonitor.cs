@@ -6,6 +6,6 @@ namespace DragonSpark.Modularity
 	{
 		Task<bool> Load();
 
-		void MarkAsLoaded( IModule target );
+		void MarkAsLoaded( IMonitoredModule target );
 	}
 }

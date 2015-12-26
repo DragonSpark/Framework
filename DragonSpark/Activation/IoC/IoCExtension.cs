@@ -1,4 +1,6 @@
-﻿using DragonSpark.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
@@ -13,6 +15,8 @@ namespace DragonSpark.Activation.IoC
 
 		protected override void Initialize()
 		{
+			Context.RegisteringInstance += ContextOnRegisteringInstance;
+
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
 
 			Context.Strategies.Clear();
@@ -23,14 +27,31 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<ArrayResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
-			
-			Container.RegisterInstance<IResolutionSupport>( new ResolutionSupport( Context ) );
+
+			var resolutionSupport = new ResolutionSupport( Context );
+			Container.RegisterInstance<IResolutionSupport>( resolutionSupport );
 
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
 			});
+		}
+
+		public override void Remove()
+		{
+			base.Remove();
+
+			Context.RegisteringInstance -= ContextOnRegisteringInstance;
+		}
+
+		void ContextOnRegisteringInstance( object sender, RegisterInstanceEventArgs args )
+		{
+			var type = args.Instance.GetType();
+			if ( args.RegisteredType != type && !Container.IsRegistered( type, args.Name ) )
+			{
+				Container.RegisterInstance( type, args.Name, args.Instance, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
+			}
 		}
 
 		IServiceRegistry CreateRegistry()

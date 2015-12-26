@@ -4,21 +4,41 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Setup.Registration
 {
-	public class RegistrationByConvention : IConventionRegistration
+	public class RegistrationByConvention : ConventionRegistration
 	{
 		readonly Type @as;
-		readonly string name;
 
-		public RegistrationByConvention( Type @as = null, string name = null )
+		public RegistrationByConvention( Type @as, string name )
 		{
 			this.@as = @as;
-			this.name = name;
+			Name = name;
 		}
 
+		protected override string Name { get; }
+
+		protected override Type DetermineFromMapping( IServiceRegistry registry, Type subject ) => @as ?? subject.Adapt().GetConventionCandidate();
+	}
+
+	public class RegisterByConventionType : ConventionRegistration
+	{
+		public static RegisterByConventionType Instance { get; } = new RegisterByConventionType();
+
+		RegisterByConventionType()
+		{}
+
+		protected override Type DetermineFromMapping( IServiceRegistry registry, Type subject ) => subject;
+	}
+
+	public abstract class ConventionRegistration : IConventionRegistration
+	{
 		public void Register( IServiceRegistry registry, Type subject )
 		{
-			var from = @as ?? subject.Adapt().GetConventionCandidate();
-			registry.Register( from, subject, @name );
+			var from = DetermineFromMapping( registry, subject );
+			registry.Register( from, subject, Name );
 		}
+
+		protected abstract Type DetermineFromMapping( IServiceRegistry registry, Type subject );
+
+		protected virtual string Name => null;
 	}
 }

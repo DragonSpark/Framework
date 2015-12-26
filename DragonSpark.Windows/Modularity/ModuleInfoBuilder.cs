@@ -4,14 +4,14 @@ using System;
 namespace DragonSpark.Windows.Modularity
 {
 	[Serializable]
-	public class DynamicModuleInfoBuilder : ModuleInfoBuilder
+	public class ModuleInfoBuilder : DragonSpark.Modularity.ModuleInfoBuilder
 	{
-		public static DynamicModuleInfoBuilder Instance { get; } = new DynamicModuleInfoBuilder();
+		public static ModuleInfoBuilder Instance { get; } = new ModuleInfoBuilder();
 
-		public DynamicModuleInfoBuilder() : this( CustomAttributeDataProvider.Instance )
+		public ModuleInfoBuilder() : this( CustomAttributeDataProvider.Instance )
 		{}
 
-		public DynamicModuleInfoBuilder( IAttributeDataProvider provider ) : base( provider )
+		public ModuleInfoBuilder( IAttributeDataProvider provider ) : base( provider )
 		{}
 
 		protected override ModuleInfo Create( Type host, string moduleName, string assemblyQualifiedName )

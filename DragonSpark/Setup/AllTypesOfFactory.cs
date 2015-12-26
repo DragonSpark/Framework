@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.Setup
 {
-	[Register]
+	[RegisterType]
 	public class AllTypesOfFactory : FactoryBase<Type, Array>
 	{
 		readonly IAssemblyProvider provider;
@@ -19,11 +19,7 @@ namespace DragonSpark.Setup
 			this.activator = activator;
 		}
 
-		public T[] Create<T>()
-		{
-			var result = Create( typeof(T) ).Cast<T>().ToArray();
-			return result;
-		}
+		public T[] Create<T>() => Create( typeof(T) ).Cast<T>().ToArray();
 
 		protected override Array CreateItem( Type parameter )
 		{

@@ -131,9 +131,6 @@ namespace DragonSpark.Testing.Modularity
 			{
 				ModuleLoadTracker.ModuleLoadStack.Push(GetType());
 			}
-
-			void IModule.Load()
-			{}
 		}
 
 		public class DependantModule : IModule
@@ -142,21 +139,14 @@ namespace DragonSpark.Testing.Modularity
 			{
 				ModuleLoadTracker.ModuleLoadStack.Push(GetType());
 			}
-
-			public void Load()
-			{}
 		}
 
 		public class DependencyModule : IModule
 		{
-			
 			public void Initialize()
 			{
 				ModuleLoadTracker.ModuleLoadStack.Push(GetType());
 			}
-
-			public void Load()
-			{}
 		}
 
 		class ExceptionThrowingModule : IModule
@@ -167,9 +157,6 @@ namespace DragonSpark.Testing.Modularity
 			{
 				throw new InvalidOperationException("Intialization can't be performed");
 			}
-
-			public void Load()
-			{}
 		}
 
 		class InvalidModule { }
@@ -187,9 +174,9 @@ namespace DragonSpark.Testing.Modularity
 			}
 		}
 
-		public class Module1 : IModule { void IModule.Initialize() { } void IModule.Load() { } }
-		public class Module2 : IModule { void IModule.Initialize() { } void IModule.Load() { } }
-		public class Module3 : IModule { void IModule.Initialize() { } void IModule.Load() { } }
-		public class Module4 : IModule { void IModule.Initialize() { } void IModule.Load() { } }
+		public class Module1 : IModule { void IModule.Initialize() {} }
+		public class Module2 : IModule { void IModule.Initialize() {} }
+		public class Module3 : IModule { void IModule.Initialize() {} }
+		public class Module4 : IModule { void IModule.Initialize() {} }
 	}
 }

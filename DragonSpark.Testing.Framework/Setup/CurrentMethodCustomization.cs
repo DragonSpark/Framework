@@ -1,11 +1,9 @@
-using System.Reflection;
-using DragonSpark.Runtime.Values;
-using DragonSpark.Testing.Framework.Extensions;
 using Ploeh.AutoFixture;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class CurrentMethodCustomization : ICustomization, ITestExecutionAware
+	public class CurrentMethodCustomization : ICustomization
 	{
 		public CurrentMethodCustomization( MethodInfo method )
 		{
@@ -16,18 +14,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		public void Customize( IFixture fixture )
 		{
-			fixture.Items().Add( this );
-			AmbientValues.RegisterFor( fixture, Method );
-		}
-
-		void ITestExecutionAware.Before( IFixture fixture, MethodInfo methodUnderTest )
-		{
-			new CurrentMethodValue().Assign( methodUnderTest );
-		}
-
-		void ITestExecutionAware.After( IFixture fixture, MethodInfo methodUnderTest )
-		{
-			new CurrentMethodValue().Assign( null );
+			new AssociatedFixture( Method ).Assign( fixture );
 		}
 	}
 }

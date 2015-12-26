@@ -11,8 +11,6 @@ namespace DragonSpark.Setup
 	[BuildUp]
 	public abstract class SetupCommand<TContext> : ICommand where TContext : SetupContext
 	{
-		readonly ConditionMonitor executed = new ConditionMonitor();
-
 		public event EventHandler CanExecuteChanged = delegate {};
 
 		public void Update()
@@ -25,7 +23,7 @@ namespace DragonSpark.Setup
 
 		public virtual bool CanExecute( object parameter )
 		{
-			return parameter is TContext && Enabled /*&& !executed.IsApplied*/;
+			return parameter is TContext && Enabled;
 		}
 
 		[BuildUp]
@@ -35,7 +33,6 @@ namespace DragonSpark.Setup
 			if ( context != null )
 			{
 				Execute( context );
-				// executed.Apply( () =>  );
 			}
 			else
 			{

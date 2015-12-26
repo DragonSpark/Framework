@@ -8,7 +8,9 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Commands
 {

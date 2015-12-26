@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Modularity
 {
@@ -11,9 +11,9 @@ namespace DragonSpark.Modularity
 	
 		readonly IList<ModuleInfo> loading = new List<ModuleInfo>();
 
-		readonly IList<IModule> loaded = new List<IModule>();
-
 		readonly TaskCompletionSource<bool> source = new TaskCompletionSource<bool>( false );
+
+		readonly IList<IMonitoredModule> loaded = new List<IMonitoredModule>();
 
 		public ModuleMonitor( IModuleCatalog catalog )
 		{
@@ -22,14 +22,17 @@ namespace DragonSpark.Modularity
 
 		public Task<bool> Load()
 		{
-			var items = catalog.Modules.Where( x => ( x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized ) || loaded.Any( y => Equals( x.GetAssembly(), y.GetType().Assembly() ) ) ).ToArray();
+			var items = catalog.Modules
+				.Where( x => typeof(IMonitoredModule).Adapt().IsAssignableFrom( x.ResolveType() ) )
+				.Where( x => ( x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized ) || loaded.Any( y => Equals( x.GetAssembly(), y.GetType().Assembly() ) ) )
+				.ToArray();
 			loading.Clear();
 			loading.AddRange( items );
 			Update();
 			return source.Task;
 		}
 
-		public void MarkAsLoaded( IModule target )
+		public void MarkAsLoaded( IMonitoredModule target )
 		{
 			loaded.Add( target );
 
@@ -46,8 +49,9 @@ namespace DragonSpark.Modularity
 		{
 			var load = loading.Select( x => x.GetAssembly() ).Select( x => loaded.FirstOrDefault( y => Equals( y.GetType().Assembly(), x ) ) ).ToArray();
 			load.Each( x => x.Load() );
-
 			source.TrySetResult( true );
+			loading.Clear();
+			loaded.Clear();
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace DragonSpark.Extensions
 
 		public static TService Locate<TService>( this IServiceLocation @this, string name = null )
 		{
-			var result = @this.IsAvailable ? @this.Locator.GetInstance<TService>( name ) : default(TService);
+			var result = @this.IsAvailable ? @this.Item.GetInstance<TService>( name ) : default(TService);
 			return result;
 		}
 

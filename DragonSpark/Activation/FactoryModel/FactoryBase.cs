@@ -6,7 +6,7 @@ namespace DragonSpark.Activation.FactoryModel
 	{
 		readonly IFactoryParameterCoercer<TParameter> coercer;
 
-		protected FactoryBase() : this( new FactoryParameterCoercer<TParameter>() )
+		protected FactoryBase() : this( FixedFactoryParameterCoercer<TParameter>.Instance )
 		{}
 
 		protected FactoryBase( [Required]IFactoryParameterCoercer<TParameter> coercer )

@@ -88,7 +88,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		void RegisterInstanceGeneric( ServiceLocation sut, Class instance )
+		void RegisterInstanceGeneric( [Located]ServiceLocation sut, Class instance )
 		{
 			Assert.IsType<ServiceLocation>( Services.Location );
 
@@ -140,10 +140,10 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		public void With( ServiceLocation sut, IServiceLocator locator, [Frozen, Registered]ClassWithParameter instance )
+		public void With( [Located]ServiceLocation sut, IServiceLocator locator, [Frozen, Registered]ClassWithParameter instance )
 		{
 			Assert.Same( Services.Location, sut );
-			Assert.Same( sut.Locator, locator );
+			Assert.Same( sut.Item, locator );
 			var item = sut.With<ClassWithParameter, object>( x => x.Parameter );
 			Assert.Equal( instance.Parameter, item );
 
@@ -158,13 +158,13 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		public void RegisterWithRegistry( ServiceLocation location, Mock<IServiceRegistry> sut )
+		public void RegisterWithRegistry( [Located]ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
 			Assert.Same( ServiceLocation.Instance, location );
 
-			location.Assign( DragonSpark.Activation.FactoryModel.Factory.Create<ServiceLocator>().Prepared( MethodBase.GetCurrentMethod() ) );
+			location.Assign( DragonSpark.Activation.FactoryModel.Factory.Create<ServiceLocator>() );
 
-			location.Register( typeof( IServiceRegistry ), sut.Object );
+			location.Register( typeof(IServiceRegistry), sut.Object );
 
 			location.Register<IInterface, Class>();
 
@@ -182,7 +182,7 @@ namespace DragonSpark.Testing.Setup
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
 		void GetInstance( [Factory, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<IMessageLogger> logger )
 		{
-			Assert.NotSame( Services.Location.Locator, sut );
+			Assert.NotSame( Services.Location.Item, sut );
 			Assert.Same( sut.Get<IMessageLogger>(), logger.Object );
 
 			var before = sut.GetInstance<IInterface>();
@@ -280,11 +280,11 @@ namespace DragonSpark.Testing.Setup
 
 			Assert.False( disposable.Disposed );
 
-			Assert.Same( Services.Location.Locator, sut );
+			Assert.Same( Services.Location.Item, sut );
 
 			sut.Dispose();
 
-			Assert.NotSame( Services.Location.Locator, sut );
+			Assert.NotSame( Services.Location.Item, sut );
 
 			Assert.True( disposable.Disposed );
 		}

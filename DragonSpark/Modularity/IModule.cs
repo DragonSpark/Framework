@@ -13,11 +13,14 @@ namespace DragonSpark.Modularity
 	public interface IModule
 	{
 		void Initialize();
+	}
 
+	public interface IMonitoredModule : IModule
+	{
 		void Load();
 	}
 
-	public class Module : IModule
+	public class Module : IMonitoredModule
 	{
 		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context )
 		{
@@ -40,7 +43,7 @@ namespace DragonSpark.Modularity
 		protected virtual void Initialize()
 		{}
 
-		void IModule.Load()
+		void IMonitoredModule.Load()
 		{
 			Load();
 		}

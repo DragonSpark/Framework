@@ -200,8 +200,8 @@
     <Compile Include="Modularity\DirectoryModuleInfoProvider.cs" />
     <Compile Include="Modularity\DynamicModuleAttribute.cs" />
     <Compile Include="Modularity\DynamicModuleInfo.cs" />
-    <Compile Include="Modularity\DynamicModuleInfoBuilder.cs" />
-    <Compile Include="Modularity\FileModuleTypeLoader.cs" />
+    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\ModuleTypeLoader.cs" />
     <Compile Include="Modularity\IConfigurationStore.cs" />
     <Compile Include="Modularity\IModuleInfoProvider.cs" />
     <Compile Include="Modularity\InitializationMode.cs" />

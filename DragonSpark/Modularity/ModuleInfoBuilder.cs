@@ -18,13 +18,13 @@ namespace DragonSpark.Modularity
 
 		void Apply( ModuleInfo result, Type type )
 		{
-			var dependsOn = Provider.GetAll<string>( typeof(ModuleDependencyAttribute), type, "ModuleName" );
+			var dependsOn = Provider.GetAll<string>( typeof(ModuleDependencyAttribute), type, nameof(ModuleDependencyAttribute.ModuleName) );
 			result.DependsOn.AddRange( dependsOn );
 		}
 
 		public ModuleInfo CreateModuleInfo(Type type)
 		{
-			string moduleName = Provider.Get<string>( typeof(ModuleAttribute), type, "ModuleName" ) ?? type.Name;
+			string moduleName = Provider.Get<string>( typeof(ModuleAttribute), type, nameof(ModuleDependencyAttribute.ModuleName) ) ?? type.Name;
 			var result = Create( type, moduleName, type.AssemblyQualifiedName );
 			Apply( result, type );
 			return result;

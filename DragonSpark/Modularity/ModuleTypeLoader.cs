@@ -1,13 +1,8 @@
-
-
 using System;
-using DragonSpark.Setup;
-using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Modularity
 {
-	[Register( typeof(IModuleTypeLoader) )]
-	public class LocalModuleTypeLoader : IModuleTypeLoader, IDisposable
+	public class ModuleTypeLoader : IModuleTypeLoader, IDisposable
 	{
 		/// <summary>
 		/// Raised repeatedly to provide progress as modules are loaded in the background.

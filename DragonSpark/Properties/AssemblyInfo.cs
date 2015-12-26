@@ -38,5 +38,5 @@ using Microsoft.Practices.ServiceLocation;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
 
-[assembly: Registration( Priority.AboveLowest, typeof(IServiceLocator), typeof(AttributeDataProvider), typeof(IModule), typeof(ModuleInfoBuilder), typeof(Collection), typeof(Collection<>), typeof(ObjectBuilderPolicy), typeof(ConventionRegistrationProfileProvider), typeof(FactoryParameterCoercer<>), Namespaces = "DragonSpark.Aspects" )]
+[assembly: Registration( Priority.AboveLowest, typeof(IServiceLocator), typeof(IModule), typeof(IConventionRegistrationService), typeof(IConventionRegistrationProfileProvider), typeof(Collection), typeof(Collection<>), typeof(ObjectBuilderPolicy), typeof(FactoryParameterCoercer<>), Namespaces = "DragonSpark.Aspects" )]
 // [assembly: AddAspect( AttributeTargetAssemblies = "regex:^mscorlib", AttributeTargetTypes = "System.Collections.Collection`1", AttributeTargetMembers = "Add" )]

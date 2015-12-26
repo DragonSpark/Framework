@@ -4,13 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Setup
 {
 	public class SetupContext : IDisposable
 	{
 		readonly object arguments;
-		
+		readonly ICollection<Task> tasks = new List<Task>();
+
 		public SetupContext( object arguments )
 		{
 			this.arguments = arguments ?? Enumerable.Empty<object>();
@@ -43,12 +45,21 @@ namespace DragonSpark.Setup
 			return result;
 		}
 
+		public T Monitor<T>( T task ) where T : Task
+		{
+			tasks.Add( task );
+			return task;
+		}
+
 		public IReadOnlyCollection<object> Items => new ReadOnlyCollection<object>( items );
 		readonly IList<object> items = new Collection<object>();
+		
 
 		// public IMessageLogger MessageLogger => Item<IMessageLogger>();
 		public void Dispose()
 		{
+			Task.WhenAll( tasks ).Wait();
+			tasks.Clear();
 			items.Clear();
 		}
 	}

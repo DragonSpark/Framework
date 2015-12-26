@@ -22,7 +22,7 @@ namespace DragonSpark.Windows.Modularity
 	/// </remarks>
 	public class DirectoryModuleCatalog : AssemblyModuleCatalog
 	{
-		public DirectoryModuleCatalog() : this( FileSystemAssemblyProvider.Instance, DynamicModuleInfoBuilder.Instance )
+		public DirectoryModuleCatalog() : this( FileSystemAssemblyProvider.Instance, ModuleInfoBuilder.Instance )
 		{}
 
 		public DirectoryModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )

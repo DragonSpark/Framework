@@ -4,6 +4,7 @@ using DragonSpark.Windows.Modularity;
 using Moq;
 using System;
 using Xunit;
+using ModuleTypeLoader = DragonSpark.Windows.Modularity.ModuleTypeLoader;
 
 namespace DragonSpark.Testing.Modularity
 {
@@ -13,7 +14,7 @@ namespace DragonSpark.Testing.Modularity
 		public void CanRetrieveModule()
 		{
 			var assemblyResolver = new MockAssemblyResolver();
-			var retriever = new FileModuleTypeLoader(assemblyResolver);
+			var retriever = new ModuleTypeLoader(assemblyResolver);
 			string assembly = CompilerHelper.GenerateDynamicModule("FileModuleA", null);
 			string assemblyRef = "file://" + assembly;
 			var fileModuleInfo = CreateModuleInfo(assemblyRef, "TestModules.FileModuleAClass", "ModuleA", true, null);
@@ -31,7 +32,7 @@ namespace DragonSpark.Testing.Modularity
 		public void ShouldReturnErrorToCallback()
 		{
 			var assemblyResolver = new MockAssemblyResolver();
-			var retriever = new FileModuleTypeLoader(assemblyResolver);
+			var retriever = new ModuleTypeLoader(assemblyResolver);
 			var fileModuleInfo = CreateModuleInfo("NonExistentFile.dll", "NonExistentModule", "NonExistent", true, null);
 
 			assemblyResolver.ThrowOnLoadAssemblyFrom = true;
@@ -53,7 +54,7 @@ namespace DragonSpark.Testing.Modularity
 		[Fact]
 		public void CanRetrieveWithCorrectRef()
 		{
-			var retriever = new FileModuleTypeLoader();
+			var retriever = new ModuleTypeLoader();
 			var moduleInfo = new DynamicModuleInfo { Ref = "file://somefile" };
 			Assert.True(retriever.CanLoadModuleType(moduleInfo));
 		}
@@ -61,7 +62,7 @@ namespace DragonSpark.Testing.Modularity
 		[Fact]
 		public void CannotRetrieveWithIncorrectRef()
 		{
-			var retriever = new FileModuleTypeLoader();
+			var retriever = new ModuleTypeLoader();
 			var moduleInfo = new DynamicModuleInfo { Ref = "NotForLocalRetrieval" };
 
 			Assert.False(retriever.CanLoadModuleType(moduleInfo));
@@ -70,7 +71,7 @@ namespace DragonSpark.Testing.Modularity
 		[Fact]
 		public void FileModuleTypeLoaderCanBeDisposed()
 		{
-			var typeLoader = new FileModuleTypeLoader();
+			var typeLoader = new ModuleTypeLoader();
 			Assert.IsAssignableFrom<IDisposable>(typeLoader );
 		}
 
@@ -81,7 +82,7 @@ namespace DragonSpark.Testing.Modularity
 			var disposableMockResolver = mockResolver.As<IDisposable>();
 			disposableMockResolver.Setup(resolver => resolver.Dispose());
 
-			var typeLoader = new FileModuleTypeLoader(mockResolver.Object);
+			var typeLoader = new ModuleTypeLoader(mockResolver.Object);
 			
 			typeLoader.Dispose();
 
@@ -92,7 +93,7 @@ namespace DragonSpark.Testing.Modularity
 		public void FileModuleTypeLoaderDisposeDoesNotThrowWithNonDisposableAssemblyResolver()
 		{
 			var mockResolver = new Mock<IAssemblyResolver>();
-			var typeLoader = new FileModuleTypeLoader(mockResolver.Object);
+			var typeLoader = new ModuleTypeLoader(mockResolver.Object);
 			typeLoader.Dispose();
 		}
 

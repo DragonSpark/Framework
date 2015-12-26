@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Framework.Parameters
 
 			public void Customize( IFixture fixture )
 			{
-				fixture.Freeze( Services.Location.Locator );
+				fixture.Freeze( Services.Location.Item );
 			}
 		}
 

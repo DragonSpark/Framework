@@ -9,7 +9,10 @@ namespace DragonSpark.Windows.Runtime
 	{
 		public static AssemblyProvider Instance { get; } = new AssemblyProvider();
 
-		public AssemblyProvider() : base( FileSystemAssemblyProvider.Instance )
+		public AssemblyProvider() : this( FileSystemAssemblyProvider.Instance )
+		{}
+
+		public AssemblyProvider( IAssemblyProvider provider ) : base( provider )
 		{}
 
 		protected override IEnumerable<Assembly> DetermineCoreAssemblies()

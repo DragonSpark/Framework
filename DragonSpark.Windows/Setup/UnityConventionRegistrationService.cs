@@ -4,8 +4,10 @@ using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Modularity;
 
 namespace DragonSpark.Windows.Setup
 {
@@ -27,7 +29,7 @@ namespace DragonSpark.Windows.Setup
 				.Where( x => WithMappings.FromMatchingInterface( x ).Any( found => ( found.IsPublic || found.IsNestedPublic ) && !ignore.Contains( found ) && !Container.IsRegistered( found ) ) )
 				.ToArray();
 			register.Each( type => MessageLogger.Information( $"Registering from convention: {type.FullName}" ) );
-			Container.RegisterTypes( register, WithMappings.FromMatchingInterface, WithName.Default, Factory.CreateUsing, overwriteExistingMappings: true );
+			Container.RegisterTypes( register.Reverse(), WithMappings.FromMatchingInterface, WithName.Default, Factory.CreateUsing, overwriteExistingMappings: true );
 		}
 
 		static IEnumerable<TypeInfo> Ignore( RegistrationAttribute attribute, Assembly assembly )

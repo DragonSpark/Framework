@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using DragonSpark.Runtime.Values;
 
@@ -22,6 +23,23 @@ namespace DragonSpark.Windows.Runtime
 		}
 
 		public override T Item => (T)Thread.GetData( slot );
+	}
+
+	public class LogicalValue<T> : WritableValue<T>
+	{
+		readonly string slot;
+
+		public LogicalValue( string slot )
+		{
+			this.slot = slot;
+		}
+
+		public override void Assign( T item )
+		{
+			CallContext.LogicalSetData( slot, item );
+		}
+
+		public override T Item => (T)CallContext.LogicalGetData( slot );
 	}
 
 	public class AppDomainValue<T> : WritableValue<T>

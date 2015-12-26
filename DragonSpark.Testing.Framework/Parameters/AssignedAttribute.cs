@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;

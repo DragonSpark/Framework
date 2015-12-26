@@ -14,7 +14,9 @@ namespace DragonSpark.Windows.Modularity
     /// </summary>
     public class AssemblyResolver : IAssemblyResolver, IDisposable
     {
-        private readonly List<AssemblyInfo> registeredAssemblies = new List<AssemblyInfo>();
+	    public static AssemblyResolver Instance { get; } = new AssemblyResolver();
+
+	    readonly private List<AssemblyInfo> registeredAssemblies = new List<AssemblyInfo>();
 
         private bool handlesAssemblyResolve;
 

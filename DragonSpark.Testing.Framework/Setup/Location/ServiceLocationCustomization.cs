@@ -17,9 +17,19 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 {
 	public class ObjectBuilderCustomization : ICustomization
 	{
+		readonly CurrentExecution execution;
+
+		public ObjectBuilderCustomization() : this( CurrentExecution.Instance )
+		{}
+
+		public ObjectBuilderCustomization( CurrentExecution execution )
+		{
+			this.execution = execution;
+		}
+
 		public void Customize( IFixture fixture )
 		{
-			var specification = new BuilderSpecification( fixture.GetCurrentMethod().GetParameters().Select( info => info.ParameterType ).ToArray() );
+			var specification = new BuilderSpecification( execution.Item.GetParameters().Select( info => info.ParameterType ).ToArray() );
 			fixture.Behaviors.Add( new ObjectBuilderBehavior( specification ) );
 		}
 

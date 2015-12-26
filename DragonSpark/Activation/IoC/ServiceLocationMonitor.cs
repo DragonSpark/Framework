@@ -19,7 +19,7 @@ namespace DragonSpark.Activation.IoC
 
 		public void Dispose()
 		{
-			if ( location.IsAvailable && location.Locator == locator )
+			if ( location.IsAvailable && location.Item == locator )
 			{
 				location.Assign( null );
 			}

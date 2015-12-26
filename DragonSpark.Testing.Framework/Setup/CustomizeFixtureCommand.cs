@@ -24,7 +24,6 @@ namespace DragonSpark.Testing.Framework.Setup
 			registration.Instance( setup.Fixture );
 			var customizations = new ICustomization[]
 			{
-				AmbientCustomizationsCustomization.Instance,
 				new CurrentMethodCustomization( setup.Method ),
 				new CompositeCustomization( Customizations ),
 				new MetadataCustomization( setup.Method )

@@ -1,17 +1,11 @@
 using Nito.ConnectedProperties;
 using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Runtime.Values
 {
 	public abstract class ConnectedValue<T> : WritableValue<T>
 	{
-		/*public static T Property<TProperty>( [Required]object @this ) where TProperty : ConnectedValue<T>
-		{
-			var value = (ConnectedValue<T>)typeof(TProperty).GetConstructor( typeof(object) ).Invoke( new[] { @this } );
-			var result = value.Item;
-			return result;
-		}*/
-
 		readonly Func<T> create;
 
 		protected ConnectedValue( object instance, Type type, Func<T> create = null ) : this( instance, type.AssemblyQualifiedName, create )
@@ -34,5 +28,23 @@ namespace DragonSpark.Runtime.Values
 		public override T Item => Property.GetOrCreate( create );
 
 		public ConnectibleProperty<T> Property { get; }
+	}
+
+	public class AssociatedValue<T, U> : ConnectedValue<U>
+	{
+		public AssociatedValue( T instance ) : base( instance, typeof( AssociatedValue<T, U> ) )
+		{ }
+	}
+
+	public class Items : Items<object>
+	{
+		public Items( object instance ) : base( instance )
+		{ }
+	}
+
+	public class Items<T> : ConnectedValue<IList<T>>
+	{
+		public Items( object instance ) : base( instance, typeof( Items<T> ), () => new List<T>() )
+		{ }
 	}
 }

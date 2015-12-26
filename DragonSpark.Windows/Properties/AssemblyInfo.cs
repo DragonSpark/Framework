@@ -1,9 +1,8 @@
 ﻿using DragonSpark;
-using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
-using DragonSpark.Setup.Registration;
 
 // using AmbientAttribute = hello::System.Windows.Markup.AmbientAttribute;
 
@@ -42,7 +41,7 @@ using DragonSpark.Setup.Registration;
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Markup" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Setup" )]
-[assembly: Registration( Priority.BelowLower, Namespaces = "DragonSpark.Windows.Modularity" )]
+[assembly: Registration( Priority.BelowLower )]
 // [assembly: Include( typeof( Setup ) )]
 
 // [assembly: TypeForwardedTo( typeof(AmbientAttribute) )]

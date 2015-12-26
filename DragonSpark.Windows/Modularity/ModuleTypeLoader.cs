@@ -1,6 +1,5 @@
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
-using DragonSpark.Setup.Registration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,24 +11,23 @@ namespace DragonSpark.Windows.Modularity
 	/// <see cref="ModuleInfo"/> classes have a Ref parameter that starts with "file://". 
 	/// This class is only used on the Desktop version of the Prism Library.
 	/// </summary>
-	[Register( typeof(IModuleTypeLoader) )]
-	public class FileModuleTypeLoader : LocalModuleTypeLoader
+	public class ModuleTypeLoader : DragonSpark.Modularity.ModuleTypeLoader
 	{
 		private const string RefFilePrefix = "file://";
 		readonly private HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="FileModuleTypeLoader"/> class.
+		/// Initializes a new instance of the <see cref="ModuleTypeLoader"/> class.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "This is disposed of in the Dispose method.")]
-		public FileModuleTypeLoader() : this(new AssemblyResolver())
+		public ModuleTypeLoader() : this( Modularity.AssemblyResolver.Instance )
 		{}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="LocalModuleTypeLoader"/> class.
+		/// Initializes a new instance of the <see cref="DragonSpark.Modularity.ModuleTypeLoader"/> class.
 		/// </summary>
 		/// <param name="assemblyResolver">The assembly resolver.</param>
-		public FileModuleTypeLoader(IAssemblyResolver assemblyResolver)
+		public ModuleTypeLoader(IAssemblyResolver assemblyResolver)
 		{
 			AssemblyResolver = assemblyResolver;
 		}

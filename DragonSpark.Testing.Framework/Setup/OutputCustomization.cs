@@ -1,7 +1,6 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Extensions;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.Unity;
@@ -9,7 +8,6 @@ using Ploeh.AutoFixture;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -28,7 +26,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		public void After( IFixture fixture, MethodInfo methodUnderTest )
 		{
-			AmbientValues.Get<ITestOutputHelper>( methodUnderTest.DeclaringType ).With( output =>
+			new OutputValue( methodUnderTest.DeclaringType ).Item.With( output =>
 			{
 				var messages = Locator.Create().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
 				messages.Each( output.WriteLine );

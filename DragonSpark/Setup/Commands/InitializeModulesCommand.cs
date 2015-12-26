@@ -17,14 +17,17 @@ namespace DragonSpark.Setup.Commands
 		[Activate, Required]
 		public IModuleManager Manager { [return: Required]get; set; }
 
-		protected override async void Execute( SetupContext context )
+		protected override void Execute( SetupContext context )
 		{
 			MessageLogger.Information( Resources.InitializingModules, Priority.Low );
 			Manager.Run();
 
 			MessageLogger.Information( Resources.LoadingModules, Priority.Low );
-			await Monitor.Load();
-			MessageLogger.Information( Resources.ModulesLoaded, Priority.Low );
+			context.Monitor( Monitor.Load().ContinueWith( task =>
+			{
+				var temp = context;
+				MessageLogger.Information( Resources.ModulesLoaded, Priority.Low );
+			} ) );
 		}
 
 		/*static IModuleManager Resolve( IUnityContainer container )
