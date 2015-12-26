@@ -5,7 +5,9 @@ using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using DragonSpark.Runtime.Values;
+using DragonSpark.Testing.Framework.Setup;
 
 namespace DragonSpark.Testing.Framework.Extensions
 {
@@ -14,6 +16,12 @@ namespace DragonSpark.Testing.Framework.Extensions
 		public static IServiceLocator GetLocator( this IFixture @this )
 		{
 			var result = Get<ServiceLocationCustomization, IServiceLocator>( @this, customization => customization.Locator );
+			return result;
+		}
+
+		public static MethodInfo GetMethod( this IFixture @this )
+		{
+			var result = Get<CurrentMethodCustomization, MethodInfo>( @this, customization => customization.Method );
 			return result;
 		}
 

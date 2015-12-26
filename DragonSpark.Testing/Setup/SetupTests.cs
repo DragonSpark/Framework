@@ -5,7 +5,6 @@ using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Extensions;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
@@ -31,6 +30,7 @@ namespace DragonSpark.Testing.Setup
 	/// <summary>
 	/// This file can be seen as a bucket for all the testing done around setup.  It also can be seen as a huge learning bucket for xUnit and AutoFixture.  This does not contain best practices.  Always be learning. :)
 	/// </summary>
+	[AssignExecution]
 	public class SetupTests : Tests
 	{
 		public SetupTests( ITestOutputHelper output ) : base( output )

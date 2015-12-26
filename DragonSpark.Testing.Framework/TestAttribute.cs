@@ -21,26 +21,28 @@ namespace DragonSpark.Testing.Framework
 
 		public override void Before( MethodInfo methodUnderTest )
 		{
-			execution.Assign( methodUnderTest );
-
-			base.Before( methodUnderTest );
-
-			new AssociatedFixture( methodUnderTest ).Item.With( fixture =>
+			using ( new ExecutionContext( execution, methodUnderTest ) )
 			{
-				fixture.Items().OfType<ITestExecutionAware>().Each( aware => aware.Before( fixture, methodUnderTest ) );
-			} );
+				base.Before( methodUnderTest );
+
+				new AssociatedFixture( methodUnderTest ).Item.With( fixture =>
+				{
+					fixture.Items().OfType<ITestExecutionAware>().Each( aware => aware.Before( fixture, methodUnderTest ) );
+				} );
+			}
 		}
 
 		public override void After( MethodInfo methodUnderTest )
 		{
-			execution.Assign( methodUnderTest );
-
-			base.After( methodUnderTest );
-
-			new AssociatedFixture( methodUnderTest ).Item.With( fixture =>
+			using ( new ExecutionContext( execution, methodUnderTest ) )
 			{
-				fixture.Items().OfType<ITestExecutionAware>().Each( aware => aware.After( fixture, methodUnderTest ) );
-			} );
+				base.After( methodUnderTest );
+
+				new AssociatedFixture( methodUnderTest ).Item.With( fixture =>
+				{
+					fixture.Items().OfType<ITestExecutionAware>().Each( aware => aware.After( fixture, methodUnderTest ) );
+				} );
+			}
 		}
 	}
 }

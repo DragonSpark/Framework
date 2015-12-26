@@ -36,7 +36,14 @@ namespace DragonSpark.Windows.Runtime
 
 		public override void Assign( T item )
 		{
-			CallContext.LogicalSetData( slot, item );
+			if ( item == null )
+			{
+				CallContext.FreeNamedDataSlot( slot );
+			}
+			else
+			{
+				CallContext.LogicalSetData( slot, item );
+			}
 		}
 
 		public override T Item => (T)CallContext.LogicalGetData( slot );

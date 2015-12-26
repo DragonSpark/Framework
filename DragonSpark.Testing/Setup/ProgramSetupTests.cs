@@ -10,14 +10,9 @@ using Xunit;
 
 namespace DragonSpark.Testing.Setup
 {
+	[AssignExecution]
 	public class ProgramSetupTests
 	{
-		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
-		public void Testing()
-		{
-			Assert.True( true );
-		}
-
 		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
 		public void Extension( [Located]SetupContext sut )
 		{

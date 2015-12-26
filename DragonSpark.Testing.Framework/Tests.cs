@@ -17,9 +17,9 @@ namespace DragonSpark.Testing.Framework
 		{}
 	}
 
-	public class AssociatedFixture : AssociatedValue<MethodInfo, IFixture>
+	public class AssociatedFixture : AssociatedValue<MethodBase, IFixture>
 	{
-		public AssociatedFixture( MethodInfo instance ) : base( instance )
+		public AssociatedFixture( MethodBase instance ) : base( instance )
 		{}
 	}
 
@@ -29,8 +29,29 @@ namespace DragonSpark.Testing.Framework
 		[OnMethodInvokeAdvice, MulticastPointcut( Attributes = MulticastAttributes.Instance, Targets = MulticastTargets.Method )]
 		public void OnInvoke( MethodInterceptionArgs args )
 		{
-			CurrentExecution.Instance.Assign( args.Method );
-			args.Proceed();
+			using ( new ExecutionContext( args.Method ) )
+			{
+				args.Proceed();
+			}
+		}
+	}
+
+	public class ExecutionContext : IDisposable
+	{
+		readonly IWritableValue<MethodBase> context;
+
+		public ExecutionContext( MethodBase info ) : this( CurrentExecution.Instance, info )
+		{}
+
+		public ExecutionContext( IWritableValue<MethodBase> context, MethodBase info )
+		{
+			this.context = context;
+			context.Assign( info );
+		}
+
+		public void Dispose()
+		{
+			context.Assign( null );
 		}
 	}
 
