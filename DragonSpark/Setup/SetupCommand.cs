@@ -5,11 +5,11 @@ using System.Windows.Input;
 
 namespace DragonSpark.Setup
 {
-	public abstract class SetupCommand : SetupCommand<SetupContext>
+	public abstract class SetupCommand : SetupCommand<ISetupParameter>
 	{}
 
 	[BuildUp]
-	public abstract class SetupCommand<TContext> : ICommand where TContext : SetupContext
+	public abstract class SetupCommand<TContext> : ICommand where TContext : class, ISetupParameter 
 	{
 		public event EventHandler CanExecuteChanged = delegate {};
 

@@ -9,7 +9,7 @@ namespace DragonSpark.Modularity
 {
 	public class Module<TCommand> : Module where TCommand : ICommand
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context ) : base( activator, moduleMonitor, context )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupParameter parameter ) : base( activator, moduleMonitor, parameter )
 		{}
 
 		protected override IEnumerable<ICommand> DetermineCommands()

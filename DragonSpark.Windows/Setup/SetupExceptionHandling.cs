@@ -14,7 +14,7 @@ namespace DragonSpark.Windows.Setup
 	[ContentProperty( "Policies" )]
 	public class SetupExceptionHandling : UnityCommand
 	{
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			ExceptionPolicy.Reset();
 

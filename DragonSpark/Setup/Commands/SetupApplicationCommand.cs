@@ -23,7 +23,7 @@ namespace DragonSpark.Setup.Commands
 		[Required( /*ErrorMessage = Resources.NullLoggerFacadeException*/ ), ComponentModel.Singleton, Activate]
 		public TLogger MessageLogger { [return: NotNull] get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			MessageLogger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 
@@ -43,7 +43,7 @@ namespace DragonSpark.Setup.Commands
 		[Required, ComponentModel.Singleton, Activate]
 		public TAssemblyProvider AssemblyProvider { [return: NotNull] get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			Locator.Container.With( container =>
 			{
@@ -53,7 +53,7 @@ namespace DragonSpark.Setup.Commands
 				new object[] { AssemblyProvider, MessageLogger, Location }.Each( support.Convention );
 			} );
 			
-			base.Execute( context );
+			base.Execute( parameter );
 		}
 	}
 }

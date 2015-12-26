@@ -4,12 +4,12 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public abstract class SetupAutoDataCommandBase : SetupCommand
 	{
-		protected override void Execute( SetupContext context )	
+		protected override void Execute( ISetupParameter parameter )	
 		{
-			var setup = context.GetArguments<SetupAutoDataParameter>();
-			OnSetup( context, setup );
+			var setup = parameter.GetArguments<SetupAutoDataParameter>();
+			OnSetup( parameter, setup );
 		}
 
-		protected abstract void OnSetup( SetupContext context, SetupAutoDataParameter setup );
+		protected abstract void OnSetup( ISetupParameter parameter, SetupAutoDataParameter setup );
 	}
 }

@@ -2,6 +2,6 @@
 {
 	public interface ISetup
 	{
-		void Run( object argument = null );
+		void Run( ISetupParameter parameter );
 	}
 }

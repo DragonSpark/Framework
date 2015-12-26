@@ -1,4 +1,3 @@
-using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Setup;
 using System.IO;
@@ -13,7 +12,7 @@ namespace DragonSpark.Windows.Entity
 		[Activate]
 		public DataDirectoryPath Path { get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			Path.Assign( Directory.FullName );
 		}

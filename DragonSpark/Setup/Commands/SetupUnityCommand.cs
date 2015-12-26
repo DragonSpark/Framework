@@ -2,15 +2,12 @@
 using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Modularity;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Commands
 {
@@ -22,7 +19,7 @@ namespace DragonSpark.Setup.Commands
 		[DefaultValue( true )]
 		public bool SetAsEnabled { get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			Extension.Enable( SetAsEnabled );
 		}
@@ -36,21 +33,21 @@ namespace DragonSpark.Setup.Commands
 		[Activate]
 		public IServiceLocator Locator { get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
-			ConfigureContainer( context, Container );
+			ConfigureContainer( parameter, Container );
 
-			base.Execute( context );
+			base.Execute( parameter );
 		}
 
-		protected virtual void ConfigureContainer( SetupContext context, IUnityContainer container )
+		protected virtual void ConfigureContainer( ISetupParameter parameter, IUnityContainer container )
 		{
 			container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
 				support.Instance( new ServiceLocationMonitor( Location, Locator ) );
 
-				var objects = context.Append( context.Items ).Except( container.ToItem() );
+				var objects = parameter.Append( parameter.Items ).Except( container.ToItem() );
 				objects.Each( support.Convention );
 			} );
 		}

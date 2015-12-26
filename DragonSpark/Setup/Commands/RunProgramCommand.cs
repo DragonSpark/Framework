@@ -8,9 +8,9 @@ namespace DragonSpark.Setup.Commands
 		[Activate]
 		public IProgram Program { get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
-			Program.Run( context.GetArguments() );
+			Program.Run( parameter.GetArguments() );
 		}
 	}
 }

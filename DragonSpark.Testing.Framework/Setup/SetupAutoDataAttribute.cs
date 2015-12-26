@@ -35,11 +35,13 @@ namespace DragonSpark.Testing.Framework.Setup
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
 			var setup = ActivateFactory<ISetup>.Instance.CreateUsing( setupType );
-			setup.Run( new SetupAutoDataParameter( Fixture, methodUnderTest ) );
-			// setup.Commands.Each( BuildPropertyRepository.Reset );
-
-			var result = base.GetData( methodUnderTest );
-			return result;
+			var argument = new SetupAutoDataParameter( Fixture, methodUnderTest );
+			using ( var parameter = new SetupParameter( argument ) )
+			{
+				setup.Run( parameter );
+				var result = base.GetData( methodUnderTest );
+				return result;
+			}
 		}
 	}
 }

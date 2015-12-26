@@ -13,11 +13,11 @@ namespace DragonSpark.Testing.Framework.Setup
 		[Singleton]
 		public CurrentExecution Current { get; set; }
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
-			Current.Assign( context.Method() );
+			parameter.RegisterForDispose( new ExecutionContext( Current, parameter.Method() ) );
 
-			base.Execute( context );
+			base.Execute( parameter );
 		}
 	}
 }

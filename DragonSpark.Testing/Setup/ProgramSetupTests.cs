@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Setup
 	public class ProgramSetupTests
 	{
 		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
-		public void Extension( [Located]SetupContext sut )
+		public void Extension( [Located]SetupParameter sut )
 		{
 			var collection = new Items( sut ).Item;
 			var module = collection.FirstOrDefaultOfType<Module>();
@@ -29,9 +29,9 @@ namespace DragonSpark.Testing.Setup
 
 	public class Module : Module<Module.Command>
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context ) : base( activator, moduleMonitor, context )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupParameter parameter ) : base( activator, moduleMonitor, parameter )
 		{
-			new Items( context ).Item.Add( this );
+			new Items( parameter ).Item.Add( this );
 		}
 
 		public bool Initialized { get; private set; }
@@ -53,9 +53,9 @@ namespace DragonSpark.Testing.Setup
 
 		public class Command : SetupCommand
 		{
-			protected override void Execute( SetupContext context )
+			protected override void Execute( ISetupParameter parameter )
 			{
-				new Items( context ).Item.Add( this );
+				new Items( parameter ).Item.Add( this );
 			}
 		}
 	}

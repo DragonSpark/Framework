@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		[Activate, Required]
 		public IUnityContainer Container { [return: Required]get; set; }
 		
-		protected override void OnSetup( SetupContext context, SetupAutoDataParameter setup )
+		protected override void OnSetup( ISetupParameter parameter, SetupAutoDataParameter setup )
 		{
 			var registration = Container.Registration<EnsuredRegistrationSupport>();
 			registration.Instance( setup.Fixture );

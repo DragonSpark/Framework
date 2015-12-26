@@ -14,9 +14,9 @@ namespace DragonSpark.Setup.Commands
 			return base.CanExecute( parameter ) && Commands.All( command => command.CanExecute( parameter ) );
 		}
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
-			Commands.Each( command => command.Execute( context ) );
+			Commands.Each( command => command.Execute( parameter ) );
 		}
 	}
 }

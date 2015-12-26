@@ -8,7 +8,7 @@ namespace DragonSpark.Setup.Commands
 		where TProvider : IConventionRegistrationProfileProvider
 		where TService : IConventionRegistrationService
 	{
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			var profile = Provider.Retrieve();
 			Service.Register( profile );

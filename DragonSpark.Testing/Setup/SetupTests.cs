@@ -36,6 +36,13 @@ namespace DragonSpark.Testing.Setup
 		public SetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
+		/*[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
+		public void CoreLocation( IServiceLocator sut )
+		{
+			Assert.True( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet );
+			Assert.Same( sut, Microsoft.Practices.ServiceLocation.ServiceLocator.Current );
+		}*/
+
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) ) ]
 		public void MockAsExpected( [Located(false)]ISetup sut )
 		{

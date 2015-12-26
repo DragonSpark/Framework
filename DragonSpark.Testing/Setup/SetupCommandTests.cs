@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Setup
 		[Theory, AutoData]
 		public void Execute( Command sut )
 		{
-			sut.Execute( new Context( new object() ) );
+			sut.Execute( new Parameter( new object() ) );
 			Assert.True( sut.Executed, "Didn't call" );
 		}
 
@@ -31,19 +31,19 @@ namespace DragonSpark.Testing.Setup
 		}
 	}
 
-	public class Command : SetupCommand<Context>
+	public class Command : SetupCommand<Parameter>
 	{
 		public bool Executed { get; private set; }
 		
-		protected override void Execute( Context context )
+		protected override void Execute( Parameter parameter )
 		{
 			Executed = true;
 		}
 	}
 
-	public class Context : SetupContext
+	public class Parameter : SetupParameter
 	{
-		public Context( object arguments ) : base( arguments )
+		public Parameter( object arguments ) : base( arguments )
 		{}
 	}
 }

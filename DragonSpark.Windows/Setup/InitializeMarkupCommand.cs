@@ -5,7 +5,7 @@ namespace DragonSpark.Windows.Setup
 {
 	public class InitializeMarkupCommand : SetupCommand
 	{
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			MarkupExtensionMonitor.Instance.Initialize();
 		}

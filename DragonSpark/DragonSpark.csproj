@@ -365,7 +365,7 @@
     <Compile Include="Setup\Commands\RunProgramCommand.cs" />
     <Compile Include="Setup\Setup.cs" />
     <Compile Include="Setup\SetupCommand.cs" />
-    <Compile Include="Setup\SetupContext.cs" />
+    <Compile Include="Setup\SetupParameter.cs" />
     <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
     <Compile Include="Setup\Commands\SetupRegistrationByConventionCommand.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />

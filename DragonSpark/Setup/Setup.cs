@@ -12,21 +12,13 @@ namespace DragonSpark.Setup
 
 		public CommandCollection Commands { get; } = new CommandCollection();
 		
-		public virtual void Run( object argument = null )
+		public virtual void Run( ISetupParameter parameter )
 		{
-			using ( var context = CreateContext( argument ) )
-			{
-				Commands
-					.Where( command => command.CanExecute( context ) )
-					.Each( command => command.Execute( context ) );
-			}
-		}
+			parameter.Register<ISetup>( this );
 
-		protected virtual SetupContext CreateContext( object arguments )
-		{
-			var result = new SetupContext( arguments );
-			result.Register<ISetup>( this );
-			return result;
+			Commands
+				.Where( command => command.CanExecute( parameter ) )
+				.Each( command => command.Execute( parameter ) );
 		}
 	}
 }

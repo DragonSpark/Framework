@@ -21,12 +21,12 @@ namespace DragonSpark.Setup.Commands
 
 		public CommandCollection PostConfigurations { get; } = new CommandCollection();
 
-		protected override void Execute( SetupContext context )
+		protected override void Execute( ISetupParameter parameter )
 		{
 			Extensions.Each( x => Container.AddExtension( x ) );
 
 			var commands = PreConfigurations.Concat( Instances ).Concat( Configurations ).Concat( Types ).Concat( PostConfigurations ).ToArray();
-			commands.Where( command => command.CanExecute( context ) ).Each( item => item.Execute( context ) );
+			commands.Where( command => command.CanExecute( parameter ) ).Each( item => item.Execute( parameter ) );
 		}
 	}
 

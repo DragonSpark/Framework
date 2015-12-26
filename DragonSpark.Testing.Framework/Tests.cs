@@ -38,15 +38,15 @@ namespace DragonSpark.Testing.Framework
 
 	public class ExecutionContext : IDisposable
 	{
-		readonly IWritableValue<MethodBase> context;
+		readonly IWritableValue<Tuple<string>> context;
 
 		public ExecutionContext( MethodBase info ) : this( CurrentExecution.Instance, info )
 		{}
 
-		public ExecutionContext( IWritableValue<MethodBase> context, MethodBase info )
+		public ExecutionContext( IWritableValue<Tuple<string>> context, MethodBase info )
 		{
 			this.context = context;
-			context.Assign( info );
+			context.Assign( MethodContext.Get( info ) );
 		}
 
 		public void Dispose()

@@ -22,16 +22,16 @@ namespace DragonSpark.Modularity
 
 	public class Module : IMonitoredModule
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupContext context )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupParameter parameter )
 		{
 			Activator = activator;
 			ModuleMonitor = moduleMonitor;
-			Context = context;
+			Parameter = parameter;
 		}
 
 		protected IActivator Activator { get; }
 		protected IModuleMonitor ModuleMonitor { get; }
-		protected SetupContext Context { get; }
+		protected SetupParameter Parameter { get; }
 
 		void IModule.Initialize()
 		{
@@ -51,7 +51,7 @@ namespace DragonSpark.Modularity
 		protected virtual void Load()
 		{
 			var commands = DetermineCommands();
-			commands.Where( command => command.CanExecute( Context ) ).Each( x => x.Execute( Context ) );
+			commands.Where( command => command.CanExecute( Parameter ) ).Each( x => x.Execute( Parameter ) );
 		}
 
 		protected virtual IEnumerable<ICommand> DetermineCommands()
