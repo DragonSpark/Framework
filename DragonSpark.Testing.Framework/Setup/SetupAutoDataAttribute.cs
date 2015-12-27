@@ -6,9 +6,16 @@ using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
+	public class MoqAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
+	{
+		public MoqAutoDataAttribute() : base( new Fixture().Customize( new AutoMoqCustomization() ) )
+		{}
+	}
+
 	public class FixtureFactory : FactoryBase<IFixture>
 	{
 		public static FixtureFactory Instance { get; } = new FixtureFactory();
@@ -43,5 +50,11 @@ namespace DragonSpark.Testing.Framework.Setup
 				return result;
 			}
 		}
+	}
+
+	public class SetupParameter : SetupParameter<SetupAutoDataParameter>
+	{
+		public SetupParameter( SetupAutoDataParameter arguments ) : base( arguments )
+		{}
 	}
 }

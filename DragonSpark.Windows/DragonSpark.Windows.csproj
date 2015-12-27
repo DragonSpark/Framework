@@ -214,6 +214,7 @@
     <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
     <Compile Include="Runtime\DisposableActionContext.cs" />
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
+    <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
     <Compile Include="SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
       <SubType>Code</SubType>

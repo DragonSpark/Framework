@@ -75,6 +75,9 @@ namespace DragonSpark.Testing.TestObjects
 			}
 		}
 
+		[NewGuid( "66570344-BA99-4C90-A7BE-AEC903441F97" )]
+		public Guid ProvidedGuid { get; set; }
+
 		[NewGuid]
 		public Guid Guid { get; set; }
 

@@ -21,7 +21,7 @@ namespace DragonSpark.Extensions
 
 		public static TypeAdapter Adapt( this TypeInfo @this )
 		{
-			return @this.AsType().With( item => Extensions.GetOrAdd( item, t => new TypeAdapter( t ) ) );
+			return @this.With( item => Extensions.GetOrAdd( item.AsType(), t => new TypeAdapter( @this ) ) );
 		}
 
 		public static Assembly Assembly( this Type @this )

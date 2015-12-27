@@ -57,7 +57,7 @@ namespace DragonSpark.Diagnostics
 
 	public class MessageRecorder : IMessageRecorder
 	{
-		readonly IList<Message> source = new List<Message>();
+		readonly IList<Message> source = new System.Collections.ObjectModel.Collection<Message>();
 		readonly IReadOnlyCollection<Message> messages;
 
 		public MessageRecorder()

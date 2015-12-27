@@ -80,24 +80,6 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding UnityBootstrapperExtension to container..
-        /// </summary>
-        public static string AddingUnityBootstrapperExtensionToContainer {
-            get {
-                return ResourceManager.GetString("AddingUnityBootstrapperExtensionToContainer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Configuring module catalog..
-        /// </summary>
-        public static string ConfiguringModuleCatalog {
-            get {
-                return ResourceManager.GetString("ConfiguringModuleCatalog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Configuring ServiceLocator singleton..
         /// </summary>
         public static string ConfiguringServiceLocatorSingleton {
@@ -116,38 +98,11 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating module catalog..
-        /// </summary>
-        public static string CreatingModuleCatalog {
-            get {
-                return ResourceManager.GetString("CreatingModuleCatalog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creating Unity container..
-        /// </summary>
-        public static string CreatingUnityContainer {
-            get {
-                return ResourceManager.GetString("CreatingUnityContainer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to At least one cyclic dependency has been found in the module catalog. Cycles in the module dependencies must be avoided..
         /// </summary>
         public static string CyclicDependencyFound {
             get {
                 return ResourceManager.GetString("CyclicDependencyFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{0:u}] [{1}-{3}] -&gt; {2}..
-        /// </summary>
-        public static string DefaultDebugLoggerPattern {
-            get {
-                return ResourceManager.GetString("DefaultDebugLoggerPattern", resourceCulture);
             }
         }
         
@@ -296,33 +251,6 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ILoggerFacade is required and cannot be null..
-        /// </summary>
-        public static string NullLoggerFacadeException {
-            get {
-                return ResourceManager.GetString("NullLoggerFacadeException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IModuleCatalog is required and cannot be null in order to initialize the modules..
-        /// </summary>
-        public static string NullModuleCatalogException {
-            get {
-                return ResourceManager.GetString("NullModuleCatalogException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IUnityContainer is required and cannot be null..
-        /// </summary>
-        public static string NullUnityContainerException {
-            get {
-                return ResourceManager.GetString("NullUnityContainerException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Registering Framework Exception Types..
         /// </summary>
         public static string RegisteringFrameworkExceptionTypes {
@@ -373,15 +301,6 @@ namespace DragonSpark.Properties {
         public static string StringCannotBeNullOrEmpty {
             get {
                 return ResourceManager.GetString("StringCannotBeNullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type &apos;{0}&apos; was already registered by the application. Skipping....
-        /// </summary>
-        public static string TypeMappingAlreadyRegistered {
-            get {
-                return ResourceManager.GetString("TypeMappingAlreadyRegistered", resourceCulture);
             }
         }
         

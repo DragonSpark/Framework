@@ -175,7 +175,9 @@
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercerTests.cs" />
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupportTests.cs" />
     <Compile Include="Activation\FactoryTests.cs" />
+    <Compile Include="Activation\IExecutionContextTests.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />
+    <Compile Include="Activation\IoC\RegistrationSupportTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
     <Compile Include="Aspects\CacheAttributeTests.cs" />
@@ -189,6 +191,12 @@
     <Compile Include="ConditionMonitorTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Diagnostics\ApplicationExceptionFormatterTests.cs" />
+    <Compile Include="Diagnostics\CompositeMessageLoggerTests.cs" />
+    <Compile Include="Diagnostics\EmptyMessageLogger.cs" />
+    <Compile Include="Diagnostics\ExceptionHandlerTests.cs" />
+    <Compile Include="Diagnostics\MessageLoggerTests.cs" />
+    <Compile Include="Diagnostics\MessageRecorderTests.cs" />
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
     <Compile Include="Extensions\BooleanExtensionsTests.cs">
       <SubType>Code</SubType>
@@ -196,6 +204,7 @@
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Extensions\UnityContainerExtensionsTests.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />
@@ -203,14 +212,19 @@
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Runtime\CollectionTests.cs" />
     <Compile Include="Runtime\Specifications\AllSpecificationTests.cs" />
+    <Compile Include="Runtime\Specifications\EqualityContextAwareSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
+    <Compile Include="Runtime\Specifications\TypeContextAwareSpecificationTests.cs" />
     <Compile Include="Setup\DefaultSetup.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup\ProgramSetupTests.cs" />
+    <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="Setup\SetupApplicationCommand.cs" />
+    <Compile Include="Setup\SetupParameterTests.cs" />
     <Compile Include="Setup\TestExtension.cs" />
     <Compile Include="Setup\ProgramSetup.xaml.cs">
       <DependentUpon>ProgramSetup.xaml</DependentUpon>
@@ -287,6 +301,7 @@
     <Compile Include="TestObjects\LowPriority.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypeSystem\FilteredAssemblyProviderBaseTests.cs" />
     <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
     <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />

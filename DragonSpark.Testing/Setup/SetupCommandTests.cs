@@ -41,7 +41,7 @@ namespace DragonSpark.Testing.Setup
 		}
 	}
 
-	public class Parameter : SetupParameter
+	public class Parameter : SetupParameter<object>
 	{
 		public Parameter( object arguments ) : base( arguments )
 		{}

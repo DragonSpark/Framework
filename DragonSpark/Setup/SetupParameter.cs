@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Setup
@@ -20,52 +19,16 @@ namespace DragonSpark.Setup
 		void RegisterForDispose( IDisposable disposable );
 	}
 
-	public static class SetupParameterExtensions
+	public class SetupParameter<TArgument> : ISetupParameter
 	{
-		public static TItem Register<TItem>( this ISetupParameter @this, TItem item )
-		{
-			@this.Register( item );
-			return item;
-		}
-
-		public static TItem RegisterForDispose<TItem>( this ISetupParameter @this, TItem item ) where TItem : IDisposable
-		{
-			@this.RegisterForDispose( item );
-			return item;
-		}
-
-		public static TItem Item<TItem>( this ISetupParameter @this )
-		{
-			var result = @this.Items.OfType<TItem>().SingleOrDefault();
-			return result;
-		}
-
-		public static T GetArguments<T>( this ISetupParameter @this )
-		{
-			var arguments = @this.GetArguments();
-			arguments.GetType().Adapt().GuardAsAssignable<T>( nameof(arguments) );
-
-			var result = (T)arguments;
-			return result;
-		}
-
-		public static T Monitor<T>( this ISetupParameter @this, T task ) where T : Task
-		{
-			@this.Monitor( task );
-			return task;
-		}
-	}
-
-	public class SetupParameter : ISetupParameter
-	{
-		readonly object arguments;
+		readonly TArgument arguments;
 		readonly ICollection<Task> tasks = new List<Task>();
 		readonly ICollection<IDisposable> disposables = new List<IDisposable>();
 
-		public SetupParameter() : this( Enumerable.Empty<object>() )
+		public SetupParameter() : this( default(TArgument) )
 		{}
 
-		public SetupParameter( object arguments )
+		public SetupParameter( TArgument arguments )
 		{
 			this.arguments = arguments;
 			Items = new ReadOnlyCollection<object>( items );

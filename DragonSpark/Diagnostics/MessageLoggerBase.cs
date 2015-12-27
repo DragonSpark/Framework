@@ -41,14 +41,14 @@ namespace DragonSpark.Diagnostics
 
 		protected virtual string FormatException( string message, Exception exception )
 		{
-			var result = $"{message} - {Formatter.FormatMessage( exception )}";
+			var result = $"{message} - {Formatter.Format( exception )}";
 			return result;
 		}
 
 		void Log( string message, string category, Priority priority )
 		{
 			var time = Time.Now;
-			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, time, category.ToUpper(), message, priority );
+			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, time, category, message, priority );
 			var line = new Message( priority, time, category, formatted );
 			Write( line );
 		}

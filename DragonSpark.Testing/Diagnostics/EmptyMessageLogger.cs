@@ -1,4 +1,6 @@
-namespace DragonSpark.Diagnostics
+using DragonSpark.Diagnostics;
+
+namespace DragonSpark.Testing.Diagnostics
 {
 	public class EmptyMessageLogger : MessageLoggerBase
 	{

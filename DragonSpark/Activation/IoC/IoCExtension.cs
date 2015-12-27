@@ -1,15 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
+using System;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class IoCExtension : UnityContainerExtension
+	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
 		public IMessageLogger MessageLogger { get; } = new RecordingMessageLogger();
 
@@ -145,6 +144,11 @@ namespace DragonSpark.Activation.IoC
 		public IUnityContainer Register( IServiceLocator locator )
 		{
 			return Container.Registration().Instance( locator );
+		}
+
+		void IDisposable.Dispose()
+		{
+			Remove();
 		}
 	}
 }

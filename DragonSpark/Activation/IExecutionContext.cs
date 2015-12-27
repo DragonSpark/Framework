@@ -20,7 +20,7 @@ namespace DragonSpark.Activation
 		public static object Current => Context.Item;
 	}
 
-	class ExecutionContext : FixedValue<object>, IExecutionContext
+	public class ExecutionContext : FixedValue<object>, IExecutionContext
 	{
 		public static ExecutionContext Instance { get; } = new ExecutionContext();
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DragonSpark.Activation.FactoryModel
 {
-	class FixedFactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
+	public class FixedFactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
 	{
 		readonly TParameter item;
 		public static FixedFactoryParameterCoercer<TParameter> Instance { get; } = new FixedFactoryParameterCoercer<TParameter>();

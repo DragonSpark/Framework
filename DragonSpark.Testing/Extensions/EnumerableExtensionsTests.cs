@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.TestObjects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
@@ -17,6 +18,14 @@ namespace DragonSpark.Testing.Extensions
 			Action<object> action = o => count++;
 			sut.Each( action );
 			Assert.Equal( sut.Count(), count );
+		}
+
+		[Theory, MoqAutoData]
+		public void NullIfEmpty( IEnumerable<object> sut )
+		{
+			Assert.NotNull( sut.NullIfEmpty() );
+
+			Assert.Null( Enumerable.Empty<object>().NullIfEmpty() );
 		}
 
 

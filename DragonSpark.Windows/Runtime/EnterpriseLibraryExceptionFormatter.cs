@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Runtime
 			this.context = context;
 		}
 
-		public string FormatMessage( Exception exception )
+		public string Format( Exception exception )
 		{
 			var writer = new StringWriter();
 			var formatter = context.HasValue ? new TextExceptionFormatter( writer, exception, context.Value ) : new TextExceptionFormatter( writer, exception );

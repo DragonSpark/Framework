@@ -4,6 +4,6 @@ namespace DragonSpark.Diagnostics
 {
 	public interface IExceptionFormatter
 	{
-		string FormatMessage( Exception exception );
+		string Format( Exception exception );
 	}
 }

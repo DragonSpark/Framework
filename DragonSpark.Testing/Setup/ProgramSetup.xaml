@@ -13,10 +13,18 @@
 >
 	<local:SetupApplicationCommand />
 	<commands:SetupUnityCommand />
+	<commands:CompositeSetupCommand>
+		<commands:ConfigureUnityCommand>
+			<commands:ConfigureUnityCommand.Types>
+				<commands:UnityType RegistrationType="{x:Type local:ITyper}" MapTo="{x:Type local:SomeTypeist}" />
+			</commands:ConfigureUnityCommand.Types>
+		</commands:ConfigureUnityCommand>
+	</commands:CompositeSetupCommand>
 	<ds:SetupRegistrationByConventionCommand />
 	<commands:InitializeModulesCommand />
 	<setup:CustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />
 	</setup:CustomizeFixtureCommand>
+	<commands:RunProgramCommand />
 </setupCore:Setup>

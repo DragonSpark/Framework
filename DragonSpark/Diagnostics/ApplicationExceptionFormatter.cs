@@ -17,9 +17,15 @@ namespace DragonSpark.Diagnostics
 			this.information = information;
 		}
 
-		string IExceptionFormatter.FormatMessage( Exception exception )
+		public string Format( Exception exception )
 		{
-			return FormatMessage( exception );
+			return PerformFormat( exception );
+		}
+
+		protected virtual string PerformFormat( Exception exception )
+		{
+			var result = CreateMessage( exception );
+			return result;
 		}
 
 		protected virtual string CreateMessage( Exception exception )
@@ -31,13 +37,7 @@ namespace DragonSpark.Diagnostics
 				information.Version,
 				exception.Message,
 				exception.GetType(),
-				formatter.FormatMessage( exception ) );
-			return result;
-		}
-
-		protected virtual string FormatMessage( Exception exception )
-		{
-			var result = CreateMessage( exception );
+				formatter.Format( exception ) );
 			return result;
 		}
 	}

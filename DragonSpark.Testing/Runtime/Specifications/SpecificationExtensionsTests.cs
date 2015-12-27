@@ -17,6 +17,13 @@ namespace DragonSpark.Testing.Runtime.Specifications
 		{
 			var sut = new FixedSpecification( true ).And( new FixedSpecification( false ) );
 			Assert.False( sut.IsSatisfiedBy( null ) );
-		} 
+		}
+
+		[Fact]
+		public void Or()
+		{
+			var sut = new FixedSpecification( true ).Or( new FixedSpecification( false ) );
+			Assert.True( sut.IsSatisfiedBy( null ) );
+		}
 	}
 }

@@ -36,12 +36,12 @@ namespace DragonSpark.Testing.Setup
 		public SetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		/*[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
+		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
 		public void CoreLocation( IServiceLocator sut )
 		{
 			Assert.True( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet );
 			Assert.Same( sut, Microsoft.Practices.ServiceLocation.ServiceLocator.Current );
-		}*/
+		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) ) ]
 		public void MockAsExpected( [Located(false)]ISetup sut )
@@ -55,7 +55,7 @@ namespace DragonSpark.Testing.Setup
 			Assert.IsType<DefaultSetup>( sut );
 		}
 
-		[Register( typeof(IActivator), typeof(Activator))]
+		[Framework.Register( typeof(IActivator), typeof(Activator))]
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
 		public void CreateInstance( [Registered]IActivator activator )
 		{
@@ -68,7 +68,7 @@ namespace DragonSpark.Testing.Setup
 			Assert.Equal( "DefaultActivation", instance.Name );
 		}
 
-		[Register( typeof( IActivator ), typeof( Activator ) )]
+		[Framework.Register( typeof( IActivator ), typeof( Activator ) )]
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
 		public void CreateNamedInstance( [Registered]IActivator activator, string name )
 		{
@@ -81,7 +81,7 @@ namespace DragonSpark.Testing.Setup
 			Assert.Equal( name, instance.Name );
 		}
 
-		[Register( typeof( IActivator ), typeof( Activator ) )]
+		[Framework.Register( typeof( IActivator ), typeof( Activator ) )]
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
 		public void CreateItem( [Registered]IActivator activator )
 		{
@@ -332,7 +332,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		[Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Error( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
@@ -353,7 +353,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		[Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Fatal( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
@@ -366,7 +366,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		[Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Try()
 		{
 			var exception = DiagnosticExtensions.Try( () => {} );
@@ -374,7 +374,7 @@ namespace DragonSpark.Testing.Setup
 		}
 
 		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
-		[Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void TryException( [Located( false ), Frozen, Registered]IMessageLogger messageLogger, [Modest]InvalidOperationException error )
 		{
 			var exception = DiagnosticExtensions.Try( () => { throw error; } );
@@ -510,6 +510,20 @@ namespace DragonSpark.Testing.Setup
 		public interface IRegisteredWithName
 		{ }
 
+		[Theory, Test, SetupAutoData( typeof(DefaultSetup) )]
+		void Register( IAnotherInterface sut )
+		{
+			Assert.IsType<MultipleInterfaces>( sut );
+		}
+
+		[DragonSpark.Setup.Registration.Register( typeof(IAnotherInterface) )]
+		public class MultipleInterfaces : IInterface, IAnotherInterface, IItem
+		{
+			
+		}
+
+		interface IAnotherInterface
+		{ }
 
 		[DragonSpark.Setup.Registration.Register( "Registered" )]
 		public class RegisteredWithNameClass : IRegisteredWithName

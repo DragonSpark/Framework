@@ -11,7 +11,7 @@ namespace DragonSpark.Runtime
 	}
 
 	[Ambient]
-	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IEnumerable<T>, IList where T : class
+	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IEnumerable<T>, IList
 	{
 		/*public Collection()
 		{
@@ -60,7 +60,7 @@ namespace DragonSpark.Runtime
 
 		protected virtual T OnAdd( object item )
 		{
-			var result = item as T;
+			var result = item.As<T>();
 			return result;
 		}
 

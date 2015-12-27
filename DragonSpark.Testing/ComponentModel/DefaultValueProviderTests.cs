@@ -82,6 +82,8 @@ namespace DragonSpark.Testing.ComponentModel
 
 			Assert.NotEqual( Guid.Empty, target.Guid );
 
+			Assert.Equal( new Guid( "66570344-BA99-4C90-A7BE-AEC903441F97" ), target.ProvidedGuid );
+
 			Assert.Equal( "Already Set", target.AlreadySet );
 		}
 	}

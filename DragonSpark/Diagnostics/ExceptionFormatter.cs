@@ -6,7 +6,7 @@ namespace DragonSpark.Diagnostics
 	{
 		public static ExceptionFormatter Instance { get; } = new ExceptionFormatter();
 
-		public string FormatMessage( Exception exception )
+		public string Format( Exception exception )
 		{
 			var result = exception.ToString();
 			return result;

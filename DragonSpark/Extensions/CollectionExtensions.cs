@@ -1,6 +1,7 @@
 
 
 using System.Collections.Generic;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Extensions
 {
@@ -17,11 +18,8 @@ namespace DragonSpark.Extensions
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
         /// <exception cref="System.ArgumentNullException">An <see cref="System.ArgumentNullException"/> is thrown if <paramref name="collection"/> or <paramref name="items"/> is <see langword="null"/>.</exception>
-        public static ICollection<T> AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        public static ICollection<T> AddRange<T>( [Required]this ICollection<T> collection, [Required]IEnumerable<T> items)
         {
-            if (collection == null) throw new System.ArgumentNullException("collection");
-            if (items == null) throw new System.ArgumentNullException("items");
-
             foreach (var each in items)
             {
                 collection.Add(each);

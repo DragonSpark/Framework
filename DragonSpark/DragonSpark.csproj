@@ -221,6 +221,7 @@
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
     <Compile Include="Setup\Registration\RegistrationByConvention.cs" />
+    <Compile Include="Setup\SetupParameterExtensions.cs" />
     <Compile Include="TypeSystem\AssemblyInformation.cs" />
     <Compile Include="TypeSystem\AssemblyInformationFactory.cs" />
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
@@ -244,8 +245,6 @@
     <Compile Include="Runtime\CurrentTime.cs" />
     <Compile Include="Runtime\Specifications\EqualityContextAwareSpecification.cs" />
     <Compile Include="Runtime\Values\IWritableValue.cs" />
-    <Compile Include="Runtime\Specifications\MemberInfoSpecification.cs" />
-    <Compile Include="Runtime\Specifications\ProvidedSpecification.cs" />
     <Compile Include="Runtime\Values\FixedValue.cs" />
     <Compile Include="Runtime\Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Runtime\Specifications\SpecificationBase.cs" />
@@ -300,7 +299,6 @@
     <Compile Include="Runtime\Values\IValue.cs" />
     <Compile Include="Runtime\ListDictionary.cs" />
     <Compile Include="Diagnostics\MessageLogger.cs" />
-    <Compile Include="Diagnostics\EmptyMessageLogger.cs" />
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
     <Compile Include="Modularity\AttributeDataProvider.cs" />
     <Compile Include="Modularity\CyclicDependencyFoundException.cs" />

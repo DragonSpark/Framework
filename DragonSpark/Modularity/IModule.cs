@@ -22,7 +22,7 @@ namespace DragonSpark.Modularity
 
 	public class Module : IMonitoredModule
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupParameter parameter )
+		public Module( IActivator activator, IModuleMonitor moduleMonitor, ISetupParameter parameter )
 		{
 			Activator = activator;
 			ModuleMonitor = moduleMonitor;
@@ -31,7 +31,7 @@ namespace DragonSpark.Modularity
 
 		protected IActivator Activator { get; }
 		protected IModuleMonitor ModuleMonitor { get; }
-		protected SetupParameter Parameter { get; }
+		protected ISetupParameter Parameter { get; }
 
 		void IModule.Initialize()
 		{

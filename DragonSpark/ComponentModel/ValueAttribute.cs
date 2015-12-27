@@ -16,8 +16,8 @@ namespace DragonSpark.ComponentModel
 		public ValueDefaultProvider( Type activatedType, string name ) : base( activatedType, name )
 		{}
 
-		public ValueDefaultProvider( IActivator activator, Type activatedType, string name ) : base( activator, activatedType, name )
-		{}
+		/*public ValueDefaultProvider( IActivator activator, Type activatedType, string name ) : base( activator, activatedType, name )
+		{}*/
 
 		protected override object Activate( Parameter parameter )
 		{

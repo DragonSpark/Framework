@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
@@ -18,6 +20,15 @@ namespace DragonSpark.Testing.Extensions
 			var cloned = sut.Clone( Mappings.OnlyProvidedValues() );
 			Assert.Null( cloned.PropertyOne );
 		}
+
+		[Fact]
+		public void GetMemberInfo()
+		{
+			var info = Check( parameter => parameter.Parameter );
+			Assert.Equal( nameof(ClassWithParameter.Parameter), info.Name );
+		}
+
+		static MemberInfo Check( Expression<Func<ClassWithParameter, object>> expression ) => expression.GetMemberInfo();
 
 		[Theory, AutoData]
 		void Ignored( ClassWithProperties sut )

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Testing.Framework.Setup;
 using Ploeh.AutoFixture.Xunit2;
 using System;
 using Xunit;
@@ -22,7 +23,13 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 			var parameter = sut.Coerce( item );
 			Assert.NotNull( parameter );
 			Assert.Equal( parameter.Type, item );
-			
+		}
+
+		[Theory, MoqAutoData]
+		public void Fixed( [Frozen]Guid guid, [Greedy]FixedFactoryParameterCoercer<Guid> sut, object parameter )
+		{
+			var result = sut.Coerce( parameter );
+			Assert.Equal( guid, result );
 		}
 
 		class IntegerParameter

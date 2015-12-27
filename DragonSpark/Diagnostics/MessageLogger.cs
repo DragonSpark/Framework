@@ -5,7 +5,7 @@ namespace DragonSpark.Diagnostics
 {
 	public class MessageLogger : MessageLoggerBase
 	{
-		public MessageLogger() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
+		public MessageLogger()
 		{}
 
 		public MessageLogger( IExceptionFormatter formatter, ICurrentTime time ) : base( formatter, time )

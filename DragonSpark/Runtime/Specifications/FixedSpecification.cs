@@ -1,17 +1,22 @@
+using System;
+
 namespace DragonSpark.Runtime.Specifications
 {
 	public class FixedSpecification : ISpecification
 	{
-		readonly bool satisfied;
+		readonly Func<bool> resolver;
 
-		public FixedSpecification( bool satisfied )
+		public FixedSpecification( bool satisfied ) : this( () => satisfied )
+		{}
+
+		public FixedSpecification( Func<bool> resolver )
 		{
-			this.satisfied = satisfied;
+			this.resolver = resolver;
 		}
 
 		public bool IsSatisfiedBy( object context )
 		{
-			return satisfied;
+			return resolver();
 		}
 	}
 }
