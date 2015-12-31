@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Runtime
 {
@@ -18,11 +19,8 @@ namespace DragonSpark.Runtime
 		/// If a list does not already exist, it will be created automatically.
 		/// </summary>
 		/// <param name="key">The key of the list that will hold the value.</param>
-		public void Add(TKey key)
+		public void Add([Required]TKey key)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof(key));
-
 			CreateNewList(key);
 		}
 
@@ -32,16 +30,8 @@ namespace DragonSpark.Runtime
 		/// </summary>
 		/// <param name="key">The key of the list that will hold the value.</param>
 		/// <param name="value">The value to add to the list under the given key.</param>
-		public void Add(TKey key, TValue value)
+		public void Add([Required]TKey key, [Required]TValue value)
 		{
-			if ( key == null )
-			{
-				throw new ArgumentNullException( nameof( key ) );
-			}
-			if ( value == null )
-			{
-				throw new ArgumentNullException( nameof( value ) );}
-
 			if (innerValues.ContainsKey(key))
 			{
 				innerValues[key].Add(value);
@@ -84,11 +74,8 @@ namespace DragonSpark.Runtime
 		/// </summary>
 		/// <param name="key">The key to locate.</param>
 		/// <returns>true if the dictionary contains the given key; otherwise, false.</returns>
-		public bool ContainsKey(TKey key)
+		public bool ContainsKey([Required]TKey key)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof( key ));
-
 			return innerValues.ContainsKey(key);
 		}
 
@@ -122,11 +109,8 @@ namespace DragonSpark.Runtime
 		/// </summary>
 		/// <param name="key">The key of the list to remove.</param>
 		/// <returns><see langword="true" /> if the element was removed.</returns>
-		public bool Remove(TKey key)
+		public bool Remove([Required]TKey key)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof( key ));
-
 			return innerValues.Remove(key);
 		}
 
@@ -219,14 +203,8 @@ namespace DragonSpark.Runtime
 		/// <summary>
 		/// See <see cref="IDictionary{TKey,TValue}.Add"/> for more information.
 		/// </summary>
-		void IDictionary<TKey, IList<TValue>>.Add(TKey key, IList<TValue> value)
+		void IDictionary<TKey, IList<TValue>>.Add([Required]TKey key, [Required]IList<TValue> value)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof( key ));
-
-			if (value == null)
-				throw new ArgumentNullException(nameof( value ));
-
 			innerValues.Add(key, value);
 		}
 
@@ -288,7 +266,7 @@ namespace DragonSpark.Runtime
 		/// <summary>
 		/// See <see cref="IEnumerable{TValue}.GetEnumerator"/> for more information.
 		/// </summary>
-		IEnumerator<KeyValuePair<TKey, IList<TValue>>> IEnumerable<KeyValuePair<TKey, IList<TValue>>>.GetEnumerator()
+		public IEnumerator<KeyValuePair<TKey, IList<TValue>>> GetEnumerator()
 		{
 			return innerValues.GetEnumerator();
 		}

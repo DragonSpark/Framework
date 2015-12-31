@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Entity
 		[Factory( typeof(AttachedDatabaseFileFactory) )]
 		public FileInfo Database { get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			Database.Exists.IsFalse( () =>
 			{

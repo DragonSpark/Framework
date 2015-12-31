@@ -14,7 +14,7 @@ namespace DragonSpark.Windows.Setup
 	[ContentProperty( nameof(Policies) )]
 	public class SetupExceptionHandling : UnityCommand
 	{
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			var manager = new ExceptionManager( Policies );
 			Container.RegisterInstance( manager );

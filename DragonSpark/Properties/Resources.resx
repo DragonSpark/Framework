@@ -194,13 +194,6 @@ Error was: {1}.</value>
   <data name="ModulesLoaded" xml:space="preserve">
     <value>Modules Loaded.</value>
   </data>
-  <data name="FailedToLoadModuleNoAssemblyInfo" xml:space="preserve">
-    <value>An exception occurred while initializing module '{0}'. 
-    - The exception message was: {1}
-    Check the InnerException property of the exception for more information. If the exception occurred 
-    while creating an object in a DI container, you can exception.GetRootException() to help locate the 
-    root cause of the problem. </value>
-  </data>
   <data name="ValueMustBeOfTypeModuleInfo" xml:space="preserve">
     <value>The value must be of type ModuleInfo.</value>
   </data>

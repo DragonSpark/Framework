@@ -19,7 +19,7 @@ namespace DragonSpark.Setup.Commands
 		[DefaultValue( true )]
 		public bool SetAsEnabled { get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			Extension.Enable( SetAsEnabled );
 		}
@@ -33,12 +33,12 @@ namespace DragonSpark.Setup.Commands
 		[Activate]
 		public IServiceLocator Locator { get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
 			ConfigureContainer( parameter, Container );
 
-			base.Execute( parameter );
+			base.OnExecute( parameter );
 		}
 
 		protected virtual void ConfigureContainer( ISetupParameter parameter, IUnityContainer container )

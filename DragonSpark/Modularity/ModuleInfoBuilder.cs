@@ -6,7 +6,9 @@ namespace DragonSpark.Modularity
 	[Serializable]
 	public class ModuleInfoBuilder : IModuleInfoBuilder
 	{
-		public ModuleInfoBuilder() : this( new AttributeDataProvider() )
+		/*public static ModuleInfoBuilder Instance { get; } = new ModuleInfoBuilder();*/
+
+		public ModuleInfoBuilder() : this( AttributeDataProvider.Instance )
 		{}
 
 		public ModuleInfoBuilder( IAttributeDataProvider provider )

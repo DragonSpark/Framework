@@ -17,7 +17,7 @@ namespace DragonSpark.Setup.Commands
 		[Activate, Required]
 		public IModuleManager Manager { [return: Required]get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			MessageLogger.Information( Resources.InitializingModules, Priority.Low );
 			Manager.Run();

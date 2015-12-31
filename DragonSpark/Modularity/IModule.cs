@@ -1,9 +1,8 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Setup;
-using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 
 namespace DragonSpark.Modularity
 {
@@ -20,44 +19,60 @@ namespace DragonSpark.Modularity
 		void Load();
 	}
 
-	public class Module : IMonitoredModule
+	public class SetupModuleCommand : ModuleCommand
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, ISetupParameter parameter )
+		readonly IActivator activator;
+		readonly ISetupParameter setup;
+
+		public SetupModuleCommand( IActivator activator, ISetupParameter setup )
 		{
-			Activator = activator;
-			ModuleMonitor = moduleMonitor;
-			Parameter = parameter;
+			this.activator = activator;
+			this.setup = setup;
 		}
 
-		protected IActivator Activator { get; }
+		protected override void OnExecute( IMonitoredModule parameter )
+		{
+			var commands = activator.ActivateMany<IModuleCommand>( parameter.GetType().Assembly().ExportedTypes ).ToArray();
+			commands.Apply<IModuleCommand>( parameter );
+		}
+	}
+
+	public interface IModuleCommand : ICommand<IMonitoredModule>
+	{}
+
+	public abstract class ModuleCommand : Command<IMonitoredModule>, IModuleCommand
+	{}
+
+	public abstract class MonitoredModule<TCommand> : IMonitoredModule where TCommand : IModuleCommand
+	{
+		readonly TCommand command;
+
+		protected MonitoredModule( IModuleMonitor moduleMonitor, TCommand command )
+		{
+			this.command = command;
+			ModuleMonitor = moduleMonitor;
+		}
+
 		protected IModuleMonitor ModuleMonitor { get; }
-		protected ISetupParameter Parameter { get; }
 
 		void IModule.Initialize()
 		{
-			Initialize();
+			OnInitialize();
+		}
 
+		protected virtual void OnInitialize()
+		{
 			ModuleMonitor.MarkAsLoaded( this );
 		}
 
-		protected virtual void Initialize()
-		{}
-
 		void IMonitoredModule.Load()
 		{
-			Load();
+			OnLoad();
 		}
 
-		protected virtual void Load()
+		protected virtual void OnLoad()
 		{
-			var commands = DetermineCommands();
-			commands.Where( command => command.CanExecute( Parameter ) ).Each( x => x.Execute( Parameter ) );
-		}
-
-		protected virtual IEnumerable<ICommand> DetermineCommands()
-		{
-			var result = Activator.ActivateMany<ICommand>( GetType().Assembly().ExportedTypes ).ToArray();
-			return result;
+			command.Apply( this );
 		}
 	}
 }

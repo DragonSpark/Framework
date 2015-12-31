@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Setup
 			using ( parameter )
 			{
 				parameter.Register( Tuple.Create( number ) );
-				Assert.Null( parameter.GetArguments() );
+				Assert.Null( parameter.Arguments );
 				Assert.Equal( number, parameter.Item<Tuple<int>>().Item1 );
 				Assert.Same( disposable,  parameter.RegisterFor( disposable ) );
 				Assert.Same( task, parameter.Monitor<Task>( task ) );
@@ -32,7 +32,7 @@ namespace DragonSpark.Testing.Setup
 		[Theory, MoqAutoData]
 		public void New( [Frozen]int number, [Greedy]SetupParameter<int> sut )
 		{
-			Assert.Equal( number, sut.GetArguments() );
+			Assert.Equal( number, sut.Arguments );
 		}
 	}
 }

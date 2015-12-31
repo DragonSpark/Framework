@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parameters\AssignedAttribute.cs" />
-    <Compile Include="Extensions\SetupContextExtensions.cs" />
     <Compile Include="Setup\CurrentMethodCustomization.cs" />
     <Compile Include="Setup\Execution.cs" />
     <Compile Include="Setup\SetupApplicationCommand.cs" />

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
@@ -20,12 +19,12 @@ namespace DragonSpark.Testing.Setup
 		public void Extension( [Located] SetupParameter sut )
 		{
 			var collection = new Items( sut ).Item;
-			var module = collection.FirstOrDefaultOfType<Module>();
+			var module = collection.FirstOrDefaultOfType<MonitoredModule>();
 			Assert.NotNull( module );
 			Assert.True( module.Initialized );
 			Assert.True( module.Loaded );
 
-			var command = collection.FirstOrDefaultOfType<Module.Command>();
+			var command = collection.FirstOrDefaultOfType<MonitoredModule.Command>();
 			Assert.NotNull( command );
 		}
 
@@ -41,7 +40,19 @@ namespace DragonSpark.Testing.Setup
 			Assert.True( sut.Ran, "Didn't Run" );
 			Assert.Equal( GetType().GetMethod( nameof(Run) ), sut.Arguments.Method );
 		}
+
+		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		public void SetupModuleCommand( [Located] SetupParameter parameter, [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
+		{
+			var added = new Items( module ).Item.FirstOrDefaultOfType<SomeCommand>();
+			Assert.Null( added );
+			sut.Execute( module );
+
+			Assert.NotNull( new Items( module ).Item.FirstOrDefaultOfType<SomeCommand>() );
+		}
 	}
+
+
 
 	public class Program : Program<SetupAutoDataParameter>
 	{
@@ -61,9 +72,17 @@ namespace DragonSpark.Testing.Setup
 	public interface ITyper
 	{}
 
-	public class Module : Module<Module.Command>
+	public class SomeCommand : ModuleCommand
 	{
-		public Module( IActivator activator, IModuleMonitor moduleMonitor, SetupParameter parameter ) : base( activator, moduleMonitor, parameter )
+		protected override void OnExecute( IMonitoredModule parameter )
+		{
+			new Items( parameter ).Item.Add( this );
+		}
+	}
+
+	public class MonitoredModule : MonitoredModule<MonitoredModule.Command>
+	{
+		public MonitoredModule( IModuleMonitor moduleMonitor, ISetupParameter parameter, Command command ) : base( moduleMonitor, command )
 		{
 			new Items( parameter ).Item.Add( this );
 		}
@@ -73,23 +92,30 @@ namespace DragonSpark.Testing.Setup
 		public bool Loaded { get; private set; }
 		
 
-		protected override void Initialize()
+		protected override void OnInitialize()
 		{
 			Initialized = true;
-			base.Initialize();
+			base.OnInitialize();
 		}
 
-		protected override void Load()
+		protected override void OnLoad()
 		{
 			Loaded = true;
-			base.Load();
+			base.OnLoad();
 		}
 
-		public class Command : SetupCommand
+		public class Command : ModuleCommand
 		{
-			protected override void Execute( ISetupParameter parameter )
+			readonly ISetupParameter setup;
+
+			public Command( ISetupParameter setup )
 			{
-				new Items( parameter ).Item.Add( this );
+				this.setup = setup;
+			}
+
+			protected override void OnExecute( IMonitoredModule parameter )
+			{
+				new Items( setup ).Item.Add( this );
 			}
 		}
 	}

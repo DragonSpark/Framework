@@ -107,7 +107,7 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target )
 		{
-			var result = target.Where( x => !Equals( x, default( TItem ) ) );
+			var result = target.Where( x => !x.IsNull() );
 			return result;
 		}
 

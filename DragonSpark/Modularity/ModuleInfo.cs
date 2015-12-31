@@ -1,3 +1,4 @@
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -25,10 +26,8 @@ namespace DragonSpark.Modularity
 		/// <param name="type">The module <see cref="Type"/>'s AssemblyQualifiedName.</param>
 		/// <param name="dependsOn">The modules this instance depends on.</param>
 		/// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="dependsOn"/> is <see langword="null"/>.</exception>
-		public ModuleInfo(string name, string type, params string[] dependsOn)
+		public ModuleInfo(string name, string type, [Required]params string[] dependsOn)
 		{
-			if (dependsOn == null) throw new System.ArgumentNullException("dependsOn");
-
 			this.ModuleName = name;
 			this.ModuleType = type;
 			this.DependsOn = new Collection<string>(dependsOn.ToList());

@@ -25,14 +25,14 @@ namespace DragonSpark.Setup
 			return result;
 		}
 
-		public static T GetArguments<T>( this ISetupParameter @this )
+		/*public static T GetArguments<T>( this ISetupParameter @this )
 		{
 			var arguments = @this.GetArguments();
 			arguments.GetType().Adapt().GuardAsAssignable<T>( nameof(arguments) );
 
 			var result = (T)arguments;
 			return result;
-		}
+		}*/
 
 		public static T Monitor<T>( this ISetupParameter @this, T task ) where T : Task
 		{

@@ -12,27 +12,9 @@ namespace DragonSpark.Modularity
         /// <summary>
         /// Initializes a new instance of the <see cref="ModularityException"/> class.
         /// </summary>
-        public ModularityException()
-            : this(null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModularityException"/> class.
-        /// </summary>
         /// <param name="message">The exception message.</param>
         public ModularityException(string message)
             : this(null, message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModularityException"/> class.
-        /// </summary>
-        /// <param name="message">The exception message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public ModularityException(string message, Exception innerException)
-            : this(null, message, innerException)
         {
         }
 

@@ -9,17 +9,18 @@
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
+	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
 	<local:SetupApplicationCommand />
 	<commands:SetupUnityCommand />
-	<commands:CompositeSetupCommand>
+	<runtime:CompositeCommand>
 		<commands:ConfigureUnityCommand>
 			<commands:ConfigureUnityCommand.Types>
 				<commands:UnityType RegistrationType="{x:Type local:ITyper}" MapTo="{x:Type local:SomeTypeist}" />
 			</commands:ConfigureUnityCommand.Types>
 		</commands:ConfigureUnityCommand>
-	</commands:CompositeSetupCommand>
+	</runtime:CompositeCommand>
 	<ds:SetupRegistrationByConventionCommand />
 	<commands:InitializeModulesCommand />
 	<setup:CustomizeFixtureCommand>

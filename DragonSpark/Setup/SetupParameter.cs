@@ -8,12 +8,12 @@ namespace DragonSpark.Setup
 {
 	public interface ISetupParameter<out TArguments> : ISetupParameter
 	{
-		new TArguments GetArguments();
+		new TArguments Arguments { get; }
 	}
 
 	public interface ISetupParameter : IDisposable
 	{
-		object GetArguments();
+		object Arguments { get; }
 
 		IReadOnlyCollection<object> Items { get; }
 
@@ -35,16 +35,17 @@ namespace DragonSpark.Setup
 
 	public class SetupParameter<TArgument> : ISetupParameter<TArgument>
 	{
-		readonly TArgument arguments;
 		readonly ICollection<Task> tasks = new List<Task>();
 		readonly ICollection<IDisposable> disposables = new List<IDisposable>();
 
 		public SetupParameter( TArgument arguments )
 		{
-			this.arguments = arguments;
+			Arguments = arguments;
 			Items = new ReadOnlyCollection<object>( items );
 			Register( arguments );
 		}
+
+		public TArgument Arguments { get; }
 
 		public void Register( object item )
 		{
@@ -56,19 +57,11 @@ namespace DragonSpark.Setup
 			disposables.Add( item );
 		}
 
-		object ISetupParameter.GetArguments()
-		{
-			return GetArguments();
-		}
+		object ISetupParameter.Arguments => Arguments;
 
 		public void Monitor( Task task )
 		{
 			tasks.Add( task );
-		}
-
-		public TArgument GetArguments()
-		{
-			return arguments;
 		}
 
 		public IReadOnlyCollection<object> Items { get; }

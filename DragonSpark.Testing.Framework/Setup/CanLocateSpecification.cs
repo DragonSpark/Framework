@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
 using Microsoft.Practices.ServiceLocation;
@@ -10,10 +11,10 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		readonly IActivator activator;
 
-		public CanLocateSpecification( IServiceLocator locator ) : this( locator.GetInstance<IActivator>().InvalidIfNull( "Specified ServiceLocator does not have an Activator." ) )
+		public CanLocateSpecification( IServiceLocator locator ) : this( locator.GetInstance<IActivator>() )
 		{}
 
-		public CanLocateSpecification( IActivator activator )
+		public CanLocateSpecification( [Required]IActivator activator )
 		{
 			this.activator = activator;
 		}

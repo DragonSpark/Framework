@@ -193,6 +193,8 @@
     <Compile Include="ComponentModel\HostedValueLocator.cs" />
     <Compile Include="ComponentModel\IBuildPropertyRepository.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
+    <Compile Include="Extensions\CommandExtensions.cs" />
+    <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
@@ -260,7 +262,6 @@
     <Compile Include="Extensions\Mappings.cs" />
     <Compile Include="Extensions\ObjectMappingFactory.cs" />
     <Compile Include="Modularity\IModuleMonitor.cs" />
-    <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\ModuleInfoExtensions.cs" />
     <Compile Include="Modularity\ModuleMonitor.cs" />
     <Compile Include="TypeSystem\AssemblyProviderBase.cs" />
@@ -339,8 +340,8 @@
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
     <Compile Include="Setup\Commands\SetupApplicationCommand.cs" />
-    <Compile Include="Setup\CommandCollection.cs" />
-    <Compile Include="Setup\Commands\CompositeSetupCommand.cs" />
+    <Compile Include="Runtime\CommandCollection.cs" />
+    <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfileProvider.cs" />
     <Compile Include="Activation\FactoryModel\FactoryBuiltObjectFactory.cs" />

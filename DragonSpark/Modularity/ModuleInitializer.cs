@@ -1,5 +1,6 @@
 using DragonSpark.Diagnostics;
 using Microsoft.Practices.ServiceLocation;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -40,10 +41,8 @@ namespace DragonSpark.Modularity
 		/// </summary>
 		/// <param name="moduleInfo">The module to initialize</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Catches Exception to handle any exception thrown during the initialization process with the HandleModuleInitializationError method.")]
-		public void Initialize(ModuleInfo moduleInfo)
+		public void Initialize([Required]ModuleInfo moduleInfo)
 		{
-			if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
-
 			IModule moduleInstance = null;
 			try
 			{
@@ -68,16 +67,13 @@ namespace DragonSpark.Modularity
 		/// <param name="assemblyName">The assembly name.</param>
 		/// <param name="exception">The exception thrown that is the cause of the current error.</param>
 		/// <exception cref="ModuleInitializeException"></exception>
-		public virtual void HandleModuleInitializationError(ModuleInfo moduleInfo, string assemblyName, Exception exception)
+		public virtual void HandleModuleInitializationError([Required]ModuleInfo moduleInfo, string assemblyName, [Required]Exception exception)
 		{
-			if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
-			if (exception == null) throw new ArgumentNullException("exception");
+			var result = exception is ModuleInitializeException ? exception : new ModuleInitializeException( moduleInfo.ModuleName, assemblyName, exception.Message, exception );
 
-			var moduleException = exception is ModuleInitializeException ? exception : ( !string.IsNullOrEmpty( assemblyName ) ? new ModuleInitializeException( moduleInfo.ModuleName, assemblyName, exception.Message, exception ) : new ModuleInitializeException( moduleInfo.ModuleName, exception.Message, exception ) );
+			messageLoggerFacade.Exception(result.ToString(), result);
 
-			messageLoggerFacade.Exception(moduleException.ToString(), moduleException);
-
-			throw moduleException;
+			throw result;
 		}
 
 		/// <summary>
@@ -85,9 +81,8 @@ namespace DragonSpark.Modularity
 		/// </summary>
 		/// <param name="moduleInfo">The module to create.</param>
 		/// <returns>A new instance of the module specified by <paramref name="moduleInfo"/>.</returns>
-		protected virtual IModule CreateModule(ModuleInfo moduleInfo)
+		protected virtual IModule CreateModule([Required]ModuleInfo moduleInfo)
 		{
-			if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
 			return this.CreateModule(moduleInfo.ModuleType);
 		}
 

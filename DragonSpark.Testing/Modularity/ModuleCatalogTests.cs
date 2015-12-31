@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Windows.Modularity;
 using System;
 using System.Collections.Generic;
@@ -282,6 +283,13 @@ namespace DragonSpark.Testing.Modularity
 			Assert.True(dependantModules.IndexOf(moduleB) < dependantModules.IndexOf(moduleC));
 			Assert.True(dependantModules.IndexOf(moduleC) < dependantModules.IndexOf(moduleD));
 			Assert.True(dependantModules.IndexOf(moduleC) < dependantModules.IndexOf(moduleX));
+		}
+
+		[Theory, MoqAutoData]
+		public void Load( ModuleCatalog sut )
+		{
+			sut.Load();
+			sut.Initialize();
 		}
 
 		/*public void CanLoadCatalogFromXaml()

@@ -26,24 +26,6 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TItem ThrowIfNull<TItem>( this TItem @this, string parameterName = null ) where TItem : class 
-		{
-			if ( @this == null )
-			{
-				throw new ArgumentNullException( parameterName ?? "parameter" );
-			}
-			return @this;
-		}
-
-		public static TItem InvalidIfNull<TItem>( this TItem @this, string message = null ) where TItem : class 
-		{
-			if ( @this == null )
-			{
-				throw new InvalidOperationException( message ?? "This object is null." );
-			}
-			return @this;
-		}
-
 		public static void TryDispose( this object target )
 		{
 			target.As<IDisposable>( x => x.Dispose() );
@@ -51,7 +33,13 @@ namespace DragonSpark.Extensions
 
 		public static void Null<TItem>( this TItem target, Action action )
 		{
-			Equals( target, default(TItem) ).IsTrue( action );
+			target.IsNull().IsTrue( action );
+		}
+
+		public static bool IsNull<T>( this T @this )
+		{
+			var result = Equals( @this, default(T) );
+			return result;
 		}
 
 		/*public static IEnumerable<TItem> ToEnumerable<TItem>( this TItem target, IEnumerable<TItem> others = null )
@@ -230,6 +218,22 @@ namespace DragonSpark.Extensions
 			var result = current.As<DependencyObject>().Transform( Clone, () => current );
 			return result;
 		}*/
+
+		public static TItem AsValid<TItem>( this object @this, Action<TItem> with )
+		{
+			var result = AsValid( @this, with, null );
+			return result;
+		}
+
+		public static TItem AsValid<TItem>( this object @this, Action<TItem> with, string message )
+		{
+			var result = @this.As( with );
+			result.Null( () =>
+			{
+				throw new InvalidOperationException( message ?? $"This object is not of type {typeof(TItem).FullName}." );
+			} );
+			return result;
+		}
 
 		public static TResult As<TResult>( this object target )
 		{

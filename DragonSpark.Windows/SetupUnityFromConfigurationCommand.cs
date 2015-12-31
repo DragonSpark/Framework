@@ -9,7 +9,7 @@ namespace DragonSpark.Windows
 {
 	public class SetupUnityFromConfigurationCommand : UnityCommand
 	{
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			ConfigurationManager.GetSection( "unity" ).As<UnityConfigurationSection>( x => x.Containers.Any().IsTrue( () => Container.LoadConfiguration() ) );
 		}

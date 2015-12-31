@@ -2,6 +2,9 @@
 
 // using System.Windows.Markup;
 
+using DragonSpark.Extensions;
+using DragonSpark.Properties;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,8 +12,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Markup;
-using DragonSpark.Extensions;
-using DragonSpark.Properties;
 
 namespace DragonSpark.Modularity
 {
@@ -34,15 +35,14 @@ namespace DragonSpark.Modularity
 	[ContentProperty( nameof(Items) )]
 	public class ModuleCatalog : IModuleCatalog
 	{
-		private readonly ModuleCatalogItemCollection items;
-		private bool isLoaded;
+		readonly ModuleCatalogItemCollection items = new ModuleCatalogItemCollection();
+		bool isLoaded;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ModuleCatalog"/> class.
 		/// </summary>
 		public ModuleCatalog()
 		{
-			this.items = new ModuleCatalogItemCollection();
 			this.items.CollectionChanged += this.ItemsCollectionChanged;
 		}
 
@@ -51,10 +51,9 @@ namespace DragonSpark.Modularity
 		/// initial list of <see cref="ModuleInfo"/>s.
 		/// </summary>
 		/// <param name="modules">The initial list of modules.</param>
-		public ModuleCatalog(IEnumerable<ModuleInfo> modules)
+		public ModuleCatalog([Required]IEnumerable<ModuleInfo> modules)
 			: this()
 		{
-			if (modules == null) throw new System.ArgumentNullException("modules");
 			foreach (ModuleInfo moduleInfo in modules)
 			{
 				this.Items.Add(moduleInfo);
@@ -232,18 +231,8 @@ namespace DragonSpark.Modularity
 		/// <param name="moduleType"><see cref="Type"/> of the module to be added.</param>
 		/// <param name="dependsOn">Collection of module names (<see cref="ModuleInfo.ModuleName"/>) of the modules on which the module to be added logically depends on.</param>
 		/// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
-		public ModuleCatalog AddModule(string moduleName, string moduleType, params string[] dependsOn)
+		public ModuleCatalog AddModule([Required]string moduleName, [Required]string moduleType, params string[] dependsOn)
 		{
-			if (moduleName == null)
-			{
-				throw new ArgumentNullException("moduleName");
-			}
-
-			if (moduleType == null)
-			{
-				throw new ArgumentNullException("moduleType");
-			}
-
 			var moduleInfo = new ModuleInfo(moduleName, moduleType);
 			moduleInfo.DependsOn.AddRange(dependsOn);
 			this.Items.Add(moduleInfo);
@@ -269,10 +258,8 @@ namespace DragonSpark.Modularity
 		/// </summary>
 		/// <param name="modules">the.</param>
 		/// <returns></returns>
-		protected static string[] SolveDependencies(IEnumerable<ModuleInfo> modules)
+		protected static string[] SolveDependencies([Required]IEnumerable<ModuleInfo> modules)
 		{
-			if (modules == null) throw new System.ArgumentNullException("modules");
-
 			ModuleDependencySolver solver = new ModuleDependencySolver();
 
 			foreach (ModuleInfo data in modules)
@@ -306,10 +293,8 @@ namespace DragonSpark.Modularity
 		/// not in <paramref name="modules"/>.
 		/// </exception>
 		/// <exception cref="System.ArgumentNullException">Throws if <paramref name="modules"/> is <see langword="null"/>.</exception>
-		protected static void ValidateDependencies(IEnumerable<ModuleInfo> modules)
+		protected static void ValidateDependencies([Required]IEnumerable<ModuleInfo> modules)
 		{
-			if (modules == null) throw new System.ArgumentNullException("modules");
-
 			var moduleNames = modules.Select(m => m.ModuleName).ToList();
 			foreach (ModuleInfo moduleInfo in modules)
 			{

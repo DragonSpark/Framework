@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Modularity
 {
 	class AttributeDataProvider : IAttributeDataProvider
 	{
+		public static AttributeDataProvider Instance { get; } = new AttributeDataProvider();
+
 		public T Get<T>( Type attributeType, Type type, string name )
 		{
 			var attribute = Get( attributeType, type );
@@ -29,7 +32,7 @@ namespace DragonSpark.Modularity
 		public IEnumerable<T> GetAll<T>( Type attributeType, Type type, string name )
 		{
 			var attributes = type.GetTypeInfo().GetCustomAttributes( attributeType );
-			var result = attributes.Select( attribute => GetDeclaredProperty<T>( attribute, attributeType, name ) ).Where( arg => !Equals( default(T), arg ) ).ToArray();
+			var result = attributes.Select( attribute => GetDeclaredProperty<T>( attribute, attributeType, name ) ).NotNull().ToArray();
 			return result;
 		}
 	}

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" />
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6AA926EF-572C-46A3-93F5-10363748F148}</ProjectGuid>
@@ -180,12 +180,19 @@
     <Compile Include="Extensions\UnityContainerExtensionsTests.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
+    <Compile Include="Modularity\AttributeDataProviderTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
     <Compile Include="Modularity\ConfigurationStoreTests.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
     <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
+    <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgsTests.cs" />
+    <Compile Include="Modularity\ModuleInfoBuilderTests.cs" />
+    <Compile Include="Modularity\ModuleTypeLoaderTests.cs" />
+    <Compile Include="Properties\ResourcesTests.cs" />
     <Compile Include="Runtime\CollectionTests.cs" />
+    <Compile Include="Runtime\CompositeCommandTests.cs" />
+    <Compile Include="Runtime\ListDictionaryTests.cs" />
     <Compile Include="Runtime\Specifications\AllSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\EqualityContextAwareSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
@@ -364,6 +371,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Modularity\NotAValidDotNetDll.txt.dll">

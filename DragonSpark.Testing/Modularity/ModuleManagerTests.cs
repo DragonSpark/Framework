@@ -1,3 +1,4 @@
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Testing.TestObjects.Modules;
@@ -305,6 +306,68 @@ namespace DragonSpark.Testing.Modularity
 			Assert.NotNull(logger.LastMessage);
 			Assert.Contains("ModuleThatNeedsRetrieval", logger.LastMessage);
 			Assert.Equal("Exception", logger.LastMessageCategory);
+		}
+
+		[Fact]
+		public void OnModuleRetrievalErrorDoesNotThrow()
+		{
+			var loader = new MockModuleInitializer();
+			var moduleInfo = CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.WhenAvailable);
+			var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
+			var logger = new MockMessageLogger();
+			var moduleTypeLoader = new MockModuleTypeLoader();
+			var manager = new ModuleManagerExtended(loader, catalog, logger, moduleTypeLoader);
+			moduleTypeLoader.LoadCompletedError = new Exception();
+			manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
+
+			Assert.Null( manager.Handled );
+			manager.Run();
+
+			Assert.NotNull( logger.LastMessage );
+			Assert.Contains( "ModuleThatNeedsRetrieval", logger.LastMessage );
+			Assert.Equal( "Exception", logger.LastMessageCategory );
+			Assert.NotNull( manager.Handled );
+		}
+
+		class ModuleManagerExtended : ModuleManager
+		{
+			public Exception Handled { get; private set; }
+			
+
+			public ModuleManagerExtended( IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, IMessageLogger messageLoggerFacade, IModuleTypeLoader loader ) : base( moduleInitializer, moduleCatalog, messageLoggerFacade, loader )
+			{}
+
+			protected override void HandleModuleTypeLoadingError( ModuleInfo moduleInfo, Exception exception )
+			{
+				try
+				{
+					base.HandleModuleTypeLoadingError( moduleInfo, exception );
+				}
+				catch ( Exception e )
+				{
+					Handled = e;
+				}
+			}
+		}
+
+		[Fact]
+		public void ShouldNotLogMessageOnModuleRetrievalErrorOnHandled()
+		{
+			var loader = new MockModuleInitializer();
+			var moduleInfo = CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.WhenAvailable);
+			var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
+			var logger = new MockMessageLogger();
+			var moduleTypeLoader = new MockModuleTypeLoader();
+			var manager = new ModuleManager(loader, catalog, logger, moduleTypeLoader);
+			manager.LoadModuleCompleted += ( sender, args ) => args.IsErrorHandled = true;
+			moduleTypeLoader.LoadCompletedError = new Exception();
+			manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
+
+			manager.Run();
+
+			Assert.Null( logger.LastMessage );
+			Assert.DoesNotContain( "ModuleThatNeedsRetrieval", logger.LastMessage );
+			Assert.NotEqual( "Exception", logger.LastMessageCategory );
 		}
 
 		[Fact]

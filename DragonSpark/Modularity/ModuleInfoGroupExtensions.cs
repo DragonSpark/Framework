@@ -1,12 +1,13 @@
-using System;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
+using System;
 
 namespace DragonSpark.Modularity
 {
-    /// <summary>
-    /// Defines extension methods for the <see cref="ModuleInfoGroup"/> class.
-    /// </summary>
-    public static class ModuleInfoGroupExtensions
+	/// <summary>
+	/// Defines extension methods for the <see cref="ModuleInfoGroup"/> class.
+	/// </summary>
+	public static class ModuleInfoGroupExtensions
     {
         /// <summary>
         /// Adds a new module that is statically referenced to the specified module info group.
@@ -17,14 +18,13 @@ namespace DragonSpark.Modularity
         /// <param name="dependsOn">The names for the modules that this module depends on.</param>
         /// <returns>Returns the instance of the passed in module info group, to provide a fluid interface.</returns>
         public static ModuleInfoGroup AddModule(
-                    this ModuleInfoGroup moduleInfoGroup,
+                    [Required]this ModuleInfoGroup moduleInfoGroup,
                     string moduleName,
                     Type moduleType,
                     params string[] dependsOn)
         {
             if (moduleType == null) throw new ArgumentNullException("moduleType");
-            if (moduleInfoGroup == null) throw new ArgumentNullException("moduleInfoGroup");
-
+            
             ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType.AssemblyQualifiedName);
             moduleInfo.DependsOn.AddRange(dependsOn);
             moduleInfoGroup.Add(moduleInfo);
@@ -41,10 +41,9 @@ namespace DragonSpark.Modularity
         /// <remarks>The name of the module will be the type name.</remarks>
         public static ModuleInfoGroup AddModule(
                     this ModuleInfoGroup moduleInfoGroup,
-                    Type moduleType,
+                    [Required]Type moduleType,
                     params string[] dependsOn)
         {
-            if (moduleType == null) throw new ArgumentNullException("moduleType");
             return AddModule(moduleInfoGroup, moduleType.Name, moduleType, dependsOn);
         }
     }

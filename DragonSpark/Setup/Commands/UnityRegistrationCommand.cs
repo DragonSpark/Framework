@@ -1,8 +1,8 @@
-using System;
-using System.Windows.Markup;
 using DragonSpark.ComponentModel;
 using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity;
+using System;
+using System.Windows.Markup;
 
 namespace DragonSpark.Setup.Commands
 {

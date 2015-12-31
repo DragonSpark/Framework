@@ -1,6 +1,8 @@
-﻿using DragonSpark.Setup;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Setup;
 using Ploeh.AutoFixture.Xunit2;
 using System;
+using System.Windows.Input;
 using Xunit;
 
 namespace DragonSpark.Testing.Setup
@@ -27,15 +29,15 @@ namespace DragonSpark.Testing.Setup
 		public void CallWithNonContext( Command sut )
 		{
 			var context = new object();
-			Assert.Throws<InvalidOperationException>( () => sut.Execute( context ) );
+			Assert.Throws<InvalidOperationException>( () => sut.To<ICommand>().Execute( context ) );
 		}
 	}
 
-	public class Command : SetupCommand<Parameter>
+	public class Command : SetupCommand<object>
 	{
 		public bool Executed { get; private set; }
 		
-		protected override void Execute( Parameter parameter )
+		protected override void OnExecute( ISetupParameter<object> parameter )
 		{
 			Executed = true;
 		}

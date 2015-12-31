@@ -165,19 +165,6 @@ namespace DragonSpark.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An exception occurred while initializing module &apos;{0}&apos;. 
-        ///    - The exception message was: {1}
-        ///    Check the InnerException property of the exception for more information. If the exception occurred 
-        ///    while creating an object in a DI container, you can exception.GetRootException() to help locate the 
-        ///    root cause of the problem. .
-        /// </summary>
-        public static string FailedToLoadModuleNoAssemblyInfo {
-            get {
-                return ResourceManager.GetString("FailedToLoadModuleNoAssemblyInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Failed to load type for module {0}. 
         ///Error was: {1}..
         /// </summary>

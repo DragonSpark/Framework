@@ -9,7 +9,7 @@ namespace DragonSpark.Windows.Setup
 		[Singleton]
 		public MarkupExtensionMonitor Monitor { get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			Monitor.Initialize();
 		}

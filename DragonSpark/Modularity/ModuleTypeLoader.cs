@@ -1,3 +1,4 @@
+using PostSharp.Patterns.Contracts;
 using System;
 
 namespace DragonSpark.Modularity
@@ -7,7 +8,7 @@ namespace DragonSpark.Modularity
 		/// <summary>
 		/// Raised repeatedly to provide progress as modules are loaded in the background.
 		/// </summary>
-		public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+		public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged = delegate {};
 
 		protected void RaiseModuleDownloadProgressChanged(ModuleInfo moduleInfo, long bytesReceived, long totalBytesToReceive)
 		{
@@ -16,13 +17,13 @@ namespace DragonSpark.Modularity
 
 		protected void RaiseModuleDownloadProgressChanged(ModuleDownloadProgressChangedEventArgs e)
 		{
-			ModuleDownloadProgressChanged?.Invoke(this, e);
+			ModuleDownloadProgressChanged(this, e);
 		}
 
 		/// <summary>
 		/// Raised when a module is loaded or fails to load.
 		/// </summary>
-		public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+		public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted = delegate {};
 
 		protected void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
 		{
@@ -31,7 +32,7 @@ namespace DragonSpark.Modularity
 
 		protected void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
 		{
-			this.LoadModuleCompleted?.Invoke(this, e);
+			LoadModuleCompleted(this, e);
 		}
 
 		/// <summary>
@@ -44,13 +45,8 @@ namespace DragonSpark.Modularity
 		/// 	<see langword="true"/> if the current typeloader is able to retrieve the module, otherwise <see langword="false"/>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="moduleInfo"/> is null.</exception>
-		public virtual bool CanLoadModuleType(ModuleInfo moduleInfo)
+		public virtual bool CanLoadModuleType([Required]ModuleInfo moduleInfo)
 		{
-			if (moduleInfo == null)
-			{
-				throw new System.ArgumentNullException("moduleInfo");
-			}
-
 			return CanLoad( moduleInfo );
 		}
 
@@ -64,13 +60,8 @@ namespace DragonSpark.Modularity
 		/// </summary>
 		/// <param name="moduleInfo">Module that should have it's type loaded.</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception is rethrown as part of a completion event")]
-		public virtual void LoadModuleType(ModuleInfo moduleInfo)
+		public virtual void LoadModuleType([Required]ModuleInfo moduleInfo)
 		{
-			if (moduleInfo == null)
-			{
-				throw new System.ArgumentNullException("moduleInfo");
-			}
-
 			try
 			{
 				Load( moduleInfo );

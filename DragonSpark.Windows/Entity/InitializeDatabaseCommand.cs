@@ -21,7 +21,7 @@ namespace DragonSpark.Windows.Entity
 		[Activate, Required]
 		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			Initializer.With( initializer =>
 			{

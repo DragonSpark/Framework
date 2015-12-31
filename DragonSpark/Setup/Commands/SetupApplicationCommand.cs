@@ -11,9 +11,9 @@ using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class SetupApplicationCommandBase<TLocator, TLogger> : SetupCommand
+	public abstract class SetupApplicationCommandBase<TLocator, TLogger, TArguments> : SetupCommand<TArguments>
 		where TLocator : IServiceLocator
-		where TLogger : IMessageLogger
+		where TLogger : IMessageLogger 
 	{
 		[ComponentModel.Singleton( typeof(ServiceLocation) )]
 		public IServiceLocation Location { get; set; }
@@ -23,7 +23,7 @@ namespace DragonSpark.Setup.Commands
 		[Required( /*ErrorMessage = Resources.NullLoggerFacadeException*/ ), ComponentModel.Singleton, Activate]
 		public TLogger MessageLogger { [return: NotNull] get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter<TArguments> parameter )
 		{
 			MessageLogger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 
@@ -33,7 +33,7 @@ namespace DragonSpark.Setup.Commands
 		}
 	}
 
-	public class SetupApplicationCommand<TLogger, TAssemblyProvider> : SetupApplicationCommandBase<ServiceLocator, TLogger> 
+	public class SetupApplicationCommand<TLogger, TAssemblyProvider, TArguments> : SetupApplicationCommandBase<ServiceLocator, TLogger, TArguments> 
 		where TLogger : IMessageLogger
 		where TAssemblyProvider : IAssemblyProvider
 	{
@@ -43,7 +43,7 @@ namespace DragonSpark.Setup.Commands
 		[Required, ComponentModel.Singleton, Activate]
 		public TAssemblyProvider AssemblyProvider { [return: NotNull] get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter<TArguments> parameter )
 		{
 			Locator.Container.With( container =>
 			{
@@ -53,7 +53,7 @@ namespace DragonSpark.Setup.Commands
 				new object[] { AssemblyProvider, MessageLogger, Location }.Each( support.Convention );
 			} );
 			
-			base.Execute( parameter );
+			base.OnExecute( parameter );
 		}
 	}
 }

@@ -22,6 +22,14 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Fact]
+		public void Convert()
+		{
+			var temp = "123";
+			var converted = temp.ConvertTo<int>();
+			Assert.Equal( 123, converted );
+		}
+
+		[Fact]
 		public void GetMemberInfo()
 		{
 			var info = Check( parameter => parameter.Parameter );
@@ -101,26 +109,6 @@ namespace DragonSpark.Testing.Extensions
 			public string PropertyFour { get; set; }
 		}
 
-		[Fact]
-		void ThrowIfNull()
-		{
-			Class @class = null;
-			Assert.Equal( "Value cannot be null.\r\nParameter name: class", Assert.Throws<ArgumentNullException>( () => @class.ThrowIfNull( "class" ) ).Message );
-			Assert.Equal( "Value cannot be null.\r\nParameter name: parameter", Assert.Throws<ArgumentNullException>( () => @class.ThrowIfNull() ).Message );
-
-			new Class().ThrowIfNull();
-		}
-
-		[Fact]
-		void InvalidIfNull()
-		{
-			Class @class = null;
-			Assert.Equal( "Test message", Assert.Throws<InvalidOperationException>( () => @class.InvalidIfNull( "Test message" ) ).Message );
-			Assert.Equal( "This object is null.", Assert.Throws<InvalidOperationException>( () => @class.InvalidIfNull() ).Message );
-
-			new Class().InvalidIfNull();
-		}
-
 		[Theory, AutoData]
 		void TryDispose( Disposable sut )
 		{
@@ -153,6 +141,21 @@ namespace DragonSpark.Testing.Extensions
 
 			var values = sut.GetAllPropertyValuesOf<string>();
 			Assert.True( expected.Length == values.Count() && expected.All( x => values.Contains( x ) ) );
+		}
+
+		[Theory, AutoData]
+		void AsValid( Class sut )
+		{
+			var applied = false;
+			var valid = sut.AsValid<IInterface>( i => applied = true );
+			Assert.True( applied );
+			Assert.IsType<Class>( valid );
+		}
+
+		[Theory, AutoData]
+		public void AsInvalid( string sut )
+		{
+			Assert.Throws<InvalidOperationException>( () => sut.AsValid<int>( i => Assert.True( false ) ) );
 		}
 
 		[Fact]

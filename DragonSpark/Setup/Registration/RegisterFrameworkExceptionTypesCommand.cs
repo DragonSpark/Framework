@@ -17,7 +17,7 @@ namespace DragonSpark.Setup.Registration
 		[Activate, Required]
 		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
-		protected override void Execute( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
 			MessageLogger.Information(Resources.RegisteringFrameworkExceptionTypes, Priority.Low);
 			DetermineCoreFrameworkTypes().Concat( Types ).Each( ExceptionExtensions.RegisterFrameworkExceptionType );
