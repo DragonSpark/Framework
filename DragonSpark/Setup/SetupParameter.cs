@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Setup
 {
+	public interface ISetupParameter<out TArguments> : ISetupParameter
+	{
+		new TArguments GetArguments();
+	}
+
 	public interface ISetupParameter : IDisposable
 	{
 		object GetArguments();
@@ -19,14 +24,20 @@ namespace DragonSpark.Setup
 		void RegisterForDispose( IDisposable disposable );
 	}
 
-	public class SetupParameter<TArgument> : ISetupParameter
+	public class SetupParameter : SetupParameter<object>
+	{
+		public SetupParameter() : this( null )
+		{}
+
+		public SetupParameter( object arguments ) : base( arguments )
+		{}
+	}
+
+	public class SetupParameter<TArgument> : ISetupParameter<TArgument>
 	{
 		readonly TArgument arguments;
 		readonly ICollection<Task> tasks = new List<Task>();
 		readonly ICollection<IDisposable> disposables = new List<IDisposable>();
-
-		public SetupParameter() : this( default(TArgument) )
-		{}
 
 		public SetupParameter( TArgument arguments )
 		{
@@ -45,14 +56,19 @@ namespace DragonSpark.Setup
 			disposables.Add( item );
 		}
 
-		public object GetArguments()
+		object ISetupParameter.GetArguments()
 		{
-			return arguments;
+			return GetArguments();
 		}
 
 		public void Monitor( Task task )
 		{
 			tasks.Add( task );
+		}
+
+		public TArgument GetArguments()
+		{
+			return arguments;
 		}
 
 		public IReadOnlyCollection<object> Items { get; }

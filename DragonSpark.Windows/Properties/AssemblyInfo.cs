@@ -12,9 +12,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle( "DragonSpark.Windows" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "DragonSpark Technologies Incorporated" )]
 [assembly: AssemblyProduct( "DragonSpark.Windows" )]
-[assembly: AssemblyCopyright( "Copyright © 2015" )]
+[assembly: AssemblyCopyright( "Copyright © The DragonSpark Framework 2016" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -36,8 +36,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "1.0.0.0" )]
-[assembly: AssemblyFileVersion( "1.0.0.0" )]
+[assembly: AssemblyVersion( "2016.2.1.1" )]
+[assembly: AssemblyFileVersion( "2016.2.1.1" )]
 [assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Markup" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Setup" )]

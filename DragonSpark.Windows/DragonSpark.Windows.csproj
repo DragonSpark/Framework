@@ -224,26 +224,18 @@
     <Compile Include="Runtime\DisposableActionContext.cs" />
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
     <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
+    <Compile Include="Runtime\LogicalValue.cs" />
+    <Compile Include="Runtime\ThreadLocalValue.cs" />
     <Compile Include="SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setup\EventListenerDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Setup\EventListenerRegistry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Setup\EventSourceRegistration.cs" />
     <Compile Include="Setup\ExceptionHandlerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\SetupExceptionHandling.cs" />
     <Compile Include="Setup\ExceptionPolicyDefinition.cs" />
     <Compile Include="Setup\ExceptionPolicyEntry.cs" />
-    <Compile Include="Setup\IEventListenerRegistry.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Setup\SetupRegistrationByConventionCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,13 +258,11 @@
     <Compile Include="Runtime\BindingOptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\EnterpriseLibraryExceptionFormatter.cs" />
+    <Compile Include="Runtime\ExceptionFormatter.cs" />
     <Compile Include="Runtime\ApplicationExceptionFormatter.cs" />
     <Compile Include="Runtime\ExceptionHandler.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
-    <Compile Include="Setup\SetupEvent.cs" />
-    <Compile Include="Setup\SetupStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />

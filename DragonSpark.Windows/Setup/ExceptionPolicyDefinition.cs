@@ -4,15 +4,12 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Setup
 {
-	[ContentProperty( "Entries" )]
+	[ContentProperty( nameof(Entries) )]
 	public class ExceptionPolicyDefinition : MarkupExtension
 	{
 		public string PolicyName { get; set; }
 
-		public Collection<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicyEntry> Entries
-		{
-			get { return entries; }
-		}	readonly Collection<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicyEntry> entries = new Collection<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicyEntry>();
+		public Collection<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicyEntry> Entries { get; } = new Collection<Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicyEntry>();
 
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{

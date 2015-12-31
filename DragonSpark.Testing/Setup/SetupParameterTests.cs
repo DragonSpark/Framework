@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Setup;
 using DragonSpark.Testing.Framework.Setup;
 using Moq;
+using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using SetupParameter = DragonSpark.Setup.SetupParameter;
 
 namespace DragonSpark.Testing.Setup
 {
@@ -13,7 +15,7 @@ namespace DragonSpark.Testing.Setup
 		[Theory, MoqAutoData]
 		public void Constructor( int number, Task task, IDisposable disposable )
 		{
-			var parameter = new SetupParameter<object>();
+			var parameter = new SetupParameter();
 			using ( parameter )
 			{
 				parameter.Register( Tuple.Create( number ) );
@@ -25,6 +27,12 @@ namespace DragonSpark.Testing.Setup
 			Mock.Get( disposable ).Verify( d => d.Dispose() );
 			Assert.True( task.IsCompleted );
 			Assert.False( parameter.Items.Any() );
-		} 
+		}
+
+		[Theory, MoqAutoData]
+		public void New( [Frozen]int number, [Greedy]SetupParameter<int> sut )
+		{
+			Assert.Equal( number, sut.GetArguments() );
+		}
 	}
 }

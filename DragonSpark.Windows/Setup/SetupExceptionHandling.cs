@@ -1,27 +1,23 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using DragonSpark.Setup.Commands;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using Microsoft.Practices.Unity;
 using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 
 namespace DragonSpark.Windows.Setup
 {
-	[ContentProperty( "Policies" )]
+	[ContentProperty( nameof(Policies) )]
 	public class SetupExceptionHandling : UnityCommand
 	{
 		protected override void Execute( ISetupParameter parameter )
 		{
-			ExceptionPolicy.Reset();
-
 			var manager = new ExceptionManager( Policies );
 			Container.RegisterInstance( manager );
-
-			ExceptionPolicy.SetExceptionManager( manager );
 
 			Container.TryResolve<IExceptionHandler>().With( ConfigureExceptionHandling );
 		}

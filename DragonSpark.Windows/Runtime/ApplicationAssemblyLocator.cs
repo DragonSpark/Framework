@@ -1,15 +1,24 @@
+using DragonSpark.Setup.Registration;
+using Microsoft.Practices.Unity;
 using System;
 using System.IO;
 using System.Reflection;
-using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Windows.Runtime
 {
 	[RegisterFactoryForResult]
 	public class ApplicationAssemblyLocator : TypeSystem.ApplicationAssemblyLocator
 	{
-		public ApplicationAssemblyLocator( Assembly[] assemblies ) : base( assemblies )
+		readonly AppDomain primary;
+
+		[InjectionConstructor]
+		public ApplicationAssemblyLocator( Assembly[] assemblies ) : this( assemblies, AppDomain.CurrentDomain )
 		{}
+
+		public ApplicationAssemblyLocator( Assembly[] assemblies, AppDomain primary ) : base( assemblies )
+		{
+			this.primary = primary;
+		}
 
 		protected override Assembly CreateItem()
 		{
@@ -17,11 +26,11 @@ namespace DragonSpark.Windows.Runtime
 			return result;
 		}
 
-		static Assembly DeterminePrimaryAssembly()
+		Assembly DeterminePrimaryAssembly()
 		{
 			try
 			{
-				return Assembly.Load( AppDomain.CurrentDomain.FriendlyName );
+				return Assembly.Load( primary.FriendlyName );
 			}
 			catch ( FileNotFoundException )
 			{

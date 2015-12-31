@@ -9,6 +9,7 @@ using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using Microsoft.Practices.Unity;
 using Xunit;
+using SetupParameter = DragonSpark.Testing.Framework.Setup.SetupParameter;
 
 namespace DragonSpark.Testing.Setup
 {

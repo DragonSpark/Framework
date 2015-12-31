@@ -1,54 +1,8 @@
 using DragonSpark.Runtime.Values;
 using System;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public class ThreadLocalValue<T> : WritableValue<T>
-	{
-		readonly LocalDataStoreSlot slot;
-
-		public ThreadLocalValue( string key ) : this( Thread.GetNamedDataSlot( key ) )
-		{}
-
-		public ThreadLocalValue( LocalDataStoreSlot slot )
-		{
-			this.slot = slot;
-		}
-
-		public override void Assign( T item )
-		{
-			Thread.SetData( slot, item );
-		}
-
-		public override T Item => (T)Thread.GetData( slot );
-	}
-
-	public class LogicalValue<T> : WritableValue<T>
-	{
-		readonly string slot;
-
-		public LogicalValue( string slot )
-		{
-			this.slot = slot;
-		}
-
-		public override void Assign( T item )
-		{
-			if ( item == null )
-			{
-				CallContext.FreeNamedDataSlot( slot );
-			}
-			else
-			{
-				CallContext.LogicalSetData( slot, item );
-			}
-		}
-
-		public override T Item => (T)CallContext.LogicalGetData( slot );
-	}
-
 	public class AppDomainValue<T> : WritableValue<T>
 	{
 		readonly AppDomain domain;

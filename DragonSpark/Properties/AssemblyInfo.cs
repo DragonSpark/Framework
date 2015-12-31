@@ -19,7 +19,7 @@ using Microsoft.Practices.ServiceLocation;
 
 [assembly: AssemblyProduct( "The DragonSpark Framework" )]
 [assembly: AssemblyCompany( "DragonSpark Technologies Inc." )]
-[assembly: AssemblyCopyright( "Copyright © DragonSpark Technologies Inc. 2015" )]
+[assembly: AssemblyCopyright( "Copyright © DragonSpark Technologies Inc. 2016" )]
 [assembly: NeutralResourcesLanguage( "en-US" )]
 [assembly: InternalsVisibleTo( "DragonSpark.Testing" )]
 
