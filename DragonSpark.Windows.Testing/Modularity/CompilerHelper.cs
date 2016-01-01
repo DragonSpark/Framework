@@ -14,7 +14,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public static class CompilerHelper
 	{
-		static readonly string ModuleTemplate = $@"using System;
+		readonly static string ModuleTemplate = $@"using System;
 			using {typeof(IModule).Namespace};
 
 			namespace TestModules
@@ -34,7 +34,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 				}}
 			}}";
 
-		static readonly string[] References = new[] { typeof(object), typeof(IModule), typeof(DynamicModuleInfo) }.Select( type => type.Assembly.CodeBase.Replace( @"file:///", string.Empty ) ).Concat( "System.Runtime.dll".ToItem() ).ToArray();
+		readonly static string[] References = new[] { typeof(object), typeof(IModule), typeof(DynamicModuleInfo) }.Select( type => type.Assembly.CodeBase.Replace( @"file:///", string.Empty ) ).Concat( "System.Runtime.dll".ToItem() ).ToArray();
 		
 
 		/*public static Assembly CompileFileAndLoadAssembly(string input, string output, params string[] references)
@@ -142,13 +142,15 @@ namespace DragonSpark.Windows.Testing.Modularity
 
 		public static void CleanUpDirectory(string path)
 		{
+			var skip = new[] { "NotAValidDotNetDll.txt.dll", "Prism.StructureMap.Wpf.dll" };
+
 			if (!Directory.Exists(path))
 			{
 				Directory.CreateDirectory(path);
 			}
 			else
 			{
-				foreach (string file in Directory.GetFiles(path))
+				foreach (var file in Directory.GetFiles(path).Where( s => !skip.Contains( Path.GetFileName( s ) ) ) )
 				{
 					try
 					{

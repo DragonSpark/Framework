@@ -4,7 +4,7 @@ namespace DragonSpark.Windows.Testing.TestObjects.Modules
 {
 	public class MockConfigurationStore : IConfigurationStore
 	{
-		private readonly ModulesConfigurationSection section = new ModulesConfigurationSection();
+		readonly private ModulesConfigurationSection section = new ModulesConfigurationSection();
 
 		public ModuleConfigurationElement[] Modules
 		{

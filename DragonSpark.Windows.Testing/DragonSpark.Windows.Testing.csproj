@@ -117,11 +117,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -142,7 +138,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\ThreadLocalStorageTests.cs" />
+    <Compile Include="Modularity\DirectoryModuleInfoProviderTests.cs" />
+    <Compile Include="Runtime\ModuleConfigurationTests.cs" />
+    <Compile Include="Runtime\ThreadLocalStorageTests.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\AttributeDataProviderTests.cs" />
     <Compile Include="Modularity\CompilerHelper.cs" />
@@ -189,6 +187,7 @@
     <Compile Include="TestObjects\Activator.cs" />
     <Compile Include="TestObjects\AssemblyProvider.cs" />
     <Compile Include="TestObjects\ClassWithBrokenConstructor.cs" />
+    <Compile Include="TestObjects\ModulesConfiguration.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />
     <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
     <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
@@ -211,6 +210,13 @@
     <None Include="app.config" />
     <None Include="DragonSpark.Windows.Testing.psproj" />
     <None Include="packages.config" />
+    <Content Include="Modularity\Invalid\Prism.StructureMap.Wpf.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Modules.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
@@ -244,8 +250,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Modularity\NotAValidDotNetDll.txt.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Modularity\Invalid\NotAValidDotNetDll.txt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +272,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets" Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets')" />
   <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">

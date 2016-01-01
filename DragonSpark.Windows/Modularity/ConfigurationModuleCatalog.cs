@@ -1,18 +1,18 @@
+using DragonSpark.Extensions;
+using DragonSpark.Modularity;
+using DragonSpark.Windows.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DragonSpark.Extensions;
-using DragonSpark.Modularity;
-using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Modularity
 {
 
-    /// <summary>
-    /// A catalog built from a configuration file.
-    /// </summary>
-    public class ConfigurationModuleCatalog : ModuleCatalog
+	/// <summary>
+	/// A catalog built from a configuration file.
+	/// </summary>
+	public class ConfigurationModuleCatalog : ModuleCatalog
     {
         /// <summary>
         /// Builds an instance of ConfigurationModuleCatalog with a <see cref="ConfigurationStore"/> as the default store.
@@ -60,15 +60,7 @@ namespace DragonSpark.Windows.Modularity
             {
                 foreach (ModuleConfigurationElement element in section.Modules)
                 {
-                    IList<string> dependencies = new List<string>();
-
-                    if (element.Dependencies.Count > 0)
-                    {
-                        foreach (ModuleDependencyConfigurationElement dependency in element.Dependencies)
-                        {
-                            dependencies.Add(dependency.ModuleName);
-                        }
-                    }
+                    IList<string> dependencies = new List<string>( element.Dependencies.Cast<ModuleDependencyConfigurationElement>().Select( x => x.ModuleName ) );
 
                     ModuleInfo moduleInfo = new DynamicModuleInfo(element.ModuleName, element.ModuleType)
                     {

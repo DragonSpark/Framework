@@ -1,7 +1,7 @@
-using System.Threading;
 using DragonSpark.Runtime.Values;
+using System.Threading;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.Runtime
 {
 	public class TaskLocalValue<T> : WritableValue<T>
 	{

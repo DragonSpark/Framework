@@ -1,18 +1,19 @@
+using DragonSpark.Extensions;
+using DragonSpark.Modularity;
+using DragonSpark.Windows.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Modularity;
-using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Modularity
 {
-    /// <summary>
-    /// Handles AppDomain's AssemblyResolve event to be able to load assemblies dynamically in 
-    /// the LoadFrom context, but be able to reference the type from assemblies loaded in the Load context.
-    /// </summary>
-    public class AssemblyResolver : IAssemblyResolver, IDisposable
+	/// <summary>
+	/// Handles AppDomain's AssemblyResolve event to be able to load assemblies dynamically in 
+	/// the LoadFrom context, but be able to reference the type from assemblies loaded in the Load context.
+	/// </summary>
+	public class AssemblyResolver : IAssemblyResolver, IDisposable
     {
 	    public static AssemblyResolver Instance { get; } = new AssemblyResolver();
 
@@ -47,15 +48,7 @@ namespace DragonSpark.Windows.Modularity
             }
 
             AssemblyName assemblyName = AssemblyName.GetAssemblyName(assemblyUri.LocalPath);
-            AssemblyInfo assemblyInfo = this.registeredAssemblies.FirstOrDefault(a => assemblyName == a.AssemblyName);
-
-            if (assemblyInfo != null)
-            {
-                return;
-            }
-
-            assemblyInfo = new AssemblyInfo() { AssemblyName = assemblyName, AssemblyUri = assemblyUri };
-            this.registeredAssemblies.Add(assemblyInfo);
+            registeredAssemblies.Any(a => assemblyName == a.AssemblyName).IsFalse( () => new AssemblyInfo { AssemblyName = assemblyName, AssemblyUri = assemblyUri }.With( registeredAssemblies.Add ) );
         }
 
         private static Uri GetFileUri(string filePath)
@@ -71,32 +64,16 @@ namespace DragonSpark.Windows.Modularity
                 return null;
             }
 
-            if (!uri.IsFile)
-            {
-                return null;
-            }
-
             return uri;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom")]
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            AssemblyName assemblyName = new AssemblyName(args.Name);
+            var assemblyName = new AssemblyName(args.Name);
 
-            AssemblyInfo assemblyInfo = this.registeredAssemblies.FirstOrDefault(a => AssemblyName.ReferenceMatchesDefinition(assemblyName, a.AssemblyName));
-
-            if (assemblyInfo != null)
-            {
-                if (assemblyInfo.Assembly == null)
-                {
-                    assemblyInfo.Assembly = Assembly.LoadFrom(assemblyInfo.AssemblyUri.LocalPath);
-                }
-
-                return assemblyInfo.Assembly;
-            }
-
-            return null;
+            var result = this.registeredAssemblies.FirstOrDefault(a => AssemblyName.ReferenceMatchesDefinition(assemblyName, a.AssemblyName) ).With( info => info.Assembly ?? ( info.Assembly = Assembly.LoadFrom( info.AssemblyUri.LocalPath ) ) );
+			return result;
         }
 
         private class AssemblyInfo

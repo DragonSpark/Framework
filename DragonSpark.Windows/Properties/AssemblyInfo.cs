@@ -1,6 +1,7 @@
 ﻿using DragonSpark;
 using DragonSpark.Setup.Registration;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
 
@@ -42,6 +43,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Markup" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Setup" )]
 [assembly: Registration( Priority.BelowLower )]
+[assembly: InternalsVisibleTo( "DragonSpark.Windows.Testing" )]
 // [assembly: Include( typeof( Setup ) )]
 
 // [assembly: TypeForwardedTo( typeof(AmbientAttribute) )]

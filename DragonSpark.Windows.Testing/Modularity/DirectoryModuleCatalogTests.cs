@@ -1,3 +1,7 @@
+using DragonSpark.Extensions;
+using DragonSpark.Modularity;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Windows.Modularity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,10 +10,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Security.Policy;
 using System.Threading;
-using DragonSpark.Extensions;
-using DragonSpark.Modularity;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Windows.Modularity;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,12 +17,12 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public class DirectoryModuleCatalogTests : Tests
 	{
-		const string ModulesDirectory1 = @".\DynamicModules\MocksModules1",
+		internal const string ModulesDirectory1 = @".\DynamicModules\MocksModules1",
 			ModulesDirectory2 = @".\DynamicModules\AttributedModules",
 			ModulesDirectory3 = @".\DynamicModules\DependantModules",
 			ModulesDirectory4 = @".\DynamicModules\MocksModules2",
 			ModulesDirectory5 = @".\DynamicModules\ModulesMainDomain\",
-			InvalidModulesDirectory = @".\Modularity";
+			InvalidModulesDirectory = @".\Modularity\Invalid";
 
 		public DirectoryModuleCatalogTests( ITestOutputHelper output ) : base( output )
 		{
@@ -87,8 +87,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 		[Fact]
 		public void ShouldNotThrowWithNonValidDotNetAssembly()
 		{
-			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
-			catalog.ModulePath = InvalidModulesDirectory;
+			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog { ModulePath = InvalidModulesDirectory };
 			try
 			{
 				catalog.Load();
@@ -110,8 +109,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 			CompilerHelper.CompileFile(@"DragonSpark.Windows.Testing.TestObjects.Modules.MockModuleA.cs",
 									   InvalidModulesDirectory + @"\MockModuleA.dll");
 
-			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
-			catalog.ModulePath = InvalidModulesDirectory;
+			var catalog = new DirectoryModuleCatalog { ModulePath = InvalidModulesDirectory };
 			try
 			{
 				catalog.Load();
@@ -266,8 +264,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 			CompilerHelper.CompileFile(@"DragonSpark.Windows.Testing.TestObjects.Modules.MockModuleA.cs",
 									   ModulesDirectory4 + @"\MockModuleA.dll");
 
-			DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
-			catalog.ModulePath = ModulesDirectory4;
+			var catalog = new DirectoryModuleCatalog() { ModulePath = ModulesDirectory4 };
 			catalog.Load();
 
 			ModuleInfo[] modules = catalog.Modules.ToArray();
@@ -319,12 +316,12 @@ namespace DragonSpark.Windows.Testing.Modularity
 		[Fact]
 		public void CreateChildAppDomainHasParentEvidenceAndSetup()
 		{
-			TestableDirectoryModuleCatalog catalog = new TestableDirectoryModuleCatalog { ModulePath = ModulesDirectory4 };
-			catalog.Load();
-			Evidence parentEvidence = new Evidence();
-			AppDomainSetup parentSetup = new AppDomainSetup { ApplicationName = "Test Parent" };
-			AppDomain parentAppDomain = AppDomain.CreateDomain("Parent", parentEvidence, parentSetup);
-			AppDomain childDomain = catalog.BuildChildDomain(parentAppDomain);
+			/*TestableDirectoryModuleCatalog catalog = new TestableDirectoryModuleCatalog { ModulePath = ModulesDirectory4 };
+			catalog.Load();*/
+			var parentEvidence = new Evidence();
+			var parentSetup = new AppDomainSetup { ApplicationName = "Test Parent" };
+			var parentAppDomain = AppDomain.CreateDomain( "Parent", parentEvidence, parentSetup );
+			var childDomain = ChildDomainFactory.Instance.Create( parentAppDomain );
 
 			Assert.Equal(parentEvidence.Count, childDomain.Evidence.Count);
 			Assert.Equal("Test Parent", childDomain.SetupInformation.ApplicationName);
@@ -436,13 +433,13 @@ namespace DragonSpark.Windows.Testing.Modularity
 			return remoteEnum;
 		}
 
-		class TestableDirectoryModuleCatalog : DirectoryModuleCatalog
+		/*class TestableDirectoryModuleCatalog : DirectoryModuleCatalog
 		{
 			public new AppDomain BuildChildDomain(AppDomain currentDomain)
 			{
 				return base.BuildChildDomain(currentDomain);
 			}
-		}
+		}*/
 
 		class RemoteDirectoryLookupCatalog : MarshalByRefObject
 		{

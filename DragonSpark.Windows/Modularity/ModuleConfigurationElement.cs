@@ -4,17 +4,16 @@ using System.Configuration;
 
 namespace DragonSpark.Windows.Modularity
 {
-    /// <summary>
-    /// A configuration element to declare module metadata.
-    /// </summary>
-    public class ModuleConfigurationElement : ConfigurationElement
+	/// <summary>
+	/// A configuration element to declare module metadata.
+	/// </summary>
+	public class ModuleConfigurationElement : ConfigurationElement
     {
         /// <summary>
         /// Initializes a new instance of <see cref="ModuleConfigurationElement"/>.
         /// </summary>
         public ModuleConfigurationElement()
-        {
-        }
+        {}
 
         /// <summary>
         /// Initializes a new instance of <see cref="ModuleConfigurationElement"/>.
@@ -25,10 +24,10 @@ namespace DragonSpark.Windows.Modularity
         /// <param name="startupLoaded">This attribute specifies whether the module is loaded at startup.</param>
         public ModuleConfigurationElement(string assemblyFile, string moduleType, string moduleName, bool startupLoaded)
         {
-            base["assemblyFile"] = assemblyFile;
-            base["moduleType"] = moduleType;
-            base["moduleName"] = moduleName;
-            base["startupLoaded"] = startupLoaded;
+            AssemblyFile = assemblyFile;
+            ModuleType = moduleType;
+            ModuleName = moduleName;
+            StartupLoaded = startupLoaded;
         }
 
         /// <summary>

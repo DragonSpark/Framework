@@ -1,11 +1,14 @@
 using DragonSpark.Modularity;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Modularity
 {
@@ -22,11 +25,14 @@ namespace DragonSpark.Windows.Modularity
 	/// </remarks>
 	public class DirectoryModuleCatalog : AssemblyModuleCatalog
 	{
-		public DirectoryModuleCatalog() : this( FileSystemAssemblyProvider.Instance, ModuleInfoBuilder.Instance )
+		readonly IFactory<LoadRemoteModuleInfoParameter, ModuleInfo[]> factory;
+
+		public DirectoryModuleCatalog() : this( FileSystemAssemblyProvider.Instance, ModuleInfoBuilder.Instance, LoadRemoteModuleInfoFactory.Instance )
 		{}
 
-		public DirectoryModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )
+		public DirectoryModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder, IFactory<LoadRemoteModuleInfoParameter, ModuleInfo[]> factory ) : base( provider, builder )
 		{
+			this.factory = factory;
 			ModulePath = ".";
 		}
 
@@ -37,45 +43,90 @@ namespace DragonSpark.Windows.Modularity
 
 		protected override IEnumerable<ModuleInfo> GetModuleInfos( IEnumerable<Assembly> assemblies )
 		{
-			var loaded = assemblies.Select( assembly => assembly.Location ).ToArray();
+			var parameter = new LoadRemoteModuleInfoParameter( assemblies.Select( assembly => assembly.Location ), ModulePath );
+			var result = factory.Create( parameter );
+			return result;
+		}
+	}
 
-			using ( var loader = Create( loaded ) )
+	public class LoadRemoteModuleInfoFactory : FactoryBase<LoadRemoteModuleInfoParameter, ModuleInfo[]>
+	{
+		public static LoadRemoteModuleInfoFactory Instance { get; } = new LoadRemoteModuleInfoFactory();
+
+		readonly IFactory<LoadRemoteModuleInfoParameter, IModuleInfoProvider> factory;
+
+		public LoadRemoteModuleInfoFactory() : this( RemoteModuleInfoProviderFactory.Instance )
+		{}
+
+		public LoadRemoteModuleInfoFactory( IFactory<LoadRemoteModuleInfoParameter, IModuleInfoProvider> factory )
+		{
+			this.factory = factory;
+		}
+
+		protected override ModuleInfo[] CreateItem( LoadRemoteModuleInfoParameter parameter )
+		{
+			using ( var loader = factory.Create( parameter ) )
 			{
-				var result = loader.GetModuleInfos();
+				var result = loader.GetModuleInfos().Fixed();
 				return result;
 			}
 		}
+	}
 
-		protected virtual IModuleInfoProvider Create( IEnumerable<string> assemblies )
+	public class LoadRemoteModuleInfoParameter
+	{
+		public LoadRemoteModuleInfoParameter( IEnumerable<string> assemblyLocations, string path )
 		{
-			AppDomain childDomain = this.BuildChildDomain(AppDomain.CurrentDomain);
-			var result = new RemotingModuleInfoProvider<DirectoryModuleInfoProvider>( childDomain, Builder, assemblies, ModulePath );
-			return result;
+			Locations = assemblyLocations.Fixed();
+			Path = path;
 		}
 
-			
-		/// <summary>
-		/// Creates a new child domain and copies the evidence from a parent domain.
-		/// </summary>
-		/// <param name="parentDomain">The parent domain.</param>
-		/// <returns>The new child domain.</returns>
-		/// <remarks>
-		/// Grabs the <paramref name="parentDomain"/> evidence and uses it to construct the new
-		/// <see cref="AppDomain"/> because in a ClickOnce execution environment, creating an
-		/// <see cref="AppDomain"/> will by default pick up the partial trust environment of 
-		/// the AppLaunch.exe, which was the root executable. The AppLaunch.exe does a 
-		/// create domain and applies the evidence from the ClickOnce manifests to 
-		/// create the domain that the application is actually executing in. This will 
-		/// need to be Full Trust for Prism applications.
-		/// </remarks>
-		/// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="parentDomain"/> is null.</exception>
-		protected virtual AppDomain BuildChildDomain(AppDomain parentDomain)
-		{
-			if (parentDomain == null) throw new ArgumentNullException(nameof( parentDomain ));
+		public string[] Locations { get; }
+		public string Path { get; }
+	}
 
-			Evidence evidence = new Evidence(parentDomain.Evidence);
-			AppDomainSetup setup = parentDomain.SetupInformation;
-			return AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
+	public class RemoteModuleInfoProviderFactory : FactoryBase<LoadRemoteModuleInfoParameter, IModuleInfoProvider>
+	{
+		public static RemoteModuleInfoProviderFactory Instance { get; } = new RemoteModuleInfoProviderFactory();
+
+		readonly IModuleInfoBuilder builder;
+		readonly IFactory<AppDomain, AppDomain> factory;
+
+		public RemoteModuleInfoProviderFactory() : this( ModuleInfoBuilder.Instance, ChildDomainFactory.Instance )
+		{}
+
+		public RemoteModuleInfoProviderFactory( IModuleInfoBuilder builder, IFactory<AppDomain, AppDomain> factory )
+		{
+			this.builder = builder;
+			this.factory = factory;
+		}
+
+		protected override IModuleInfoProvider CreateItem( LoadRemoteModuleInfoParameter parameter )
+		{
+			var loaded = parameter.Locations.ToArray();
+			var child = factory.Create( AppDomain.CurrentDomain );
+			var result = new RemotingModuleInfoProvider<DirectoryModuleInfoProvider>( child, builder, loaded, parameter.Path );
+			return result;
+		}
+	}
+
+	public class ChildDomainFactory : FactoryBase<AppDomain, AppDomain>
+	{
+		public static ChildDomainFactory Instance { get; } = new ChildDomainFactory();
+
+		readonly string name;
+
+		public ChildDomainFactory( string name = "DiscoveryRegion" )
+		{
+			this.name = name;
+		}
+
+		protected override AppDomain CreateItem( AppDomain parameter )
+		{
+			var evidence = new Evidence(parameter.Evidence);
+			var setup = parameter.SetupInformation;
+			var result = AppDomain.CreateDomain( name, evidence, setup );
+			return result;
 		}
 	}
 }

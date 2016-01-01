@@ -48,32 +48,31 @@ namespace DragonSpark.Windows.Modularity
 			Uri uri = dynamicModuleInfo != null ? new Uri(dynamicModuleInfo.Ref, UriKind.RelativeOrAbsolute) : null;
 
 			// If this module has already been downloaded, I fire the completed event.
-			if (uri == null || this.IsSuccessfullyDownloaded(uri))
-			{
-				base.Load( moduleInfo );
-			}
-			else
+			if ( uri != null && !this.IsSuccessfullyDownloaded( uri ) )
 			{
 				var @ref = dynamicModuleInfo.Ref;
-				var offset = @ref.StartsWith(RefFilePrefix + "/", StringComparison.Ordinal ) ? 1 : 0;
-				var path = @ref.Substring(RefFilePrefix.Length + offset);
+				var offset = @ref.StartsWith( RefFilePrefix + "/", StringComparison.Ordinal ) ? 1 : 0;
+				var path = @ref.Substring( RefFilePrefix.Length + offset );
 
 				long fileSize = DetermineSize( path );
 
 				// Although this isn't asynchronous, nor expected to take very long, I raise progress changed for consistency.
-				this.RaiseModuleDownloadProgressChanged(moduleInfo, 0, fileSize);
+				this.RaiseModuleDownloadProgressChanged( moduleInfo, 0, fileSize );
 
-				AssemblyResolver.LoadAssemblyFrom(@ref);
+				AssemblyResolver.LoadAssemblyFrom( @ref );
 
 				// Although this isn't asynchronous, nor expected to take very long, I raise progress changed for consistency.
-				this.RaiseModuleDownloadProgressChanged(moduleInfo, fileSize, fileSize);
+				this.RaiseModuleDownloadProgressChanged( moduleInfo, fileSize, fileSize );
 
 				// I remember the downloaded URI.
-				this.RecordDownloadSuccess(uri);
+				this.RecordDownloadSuccess( uri );
 
-				this.RaiseLoadModuleCompleted(moduleInfo, null);
+				this.RaiseLoadModuleCompleted( moduleInfo, null );
 			}
-		  
+			/*else
+			{
+				base.Load( moduleInfo );
+			}*/
 		}
 
 		protected virtual long DetermineSize( string path )

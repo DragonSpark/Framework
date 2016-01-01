@@ -2,7 +2,7 @@ using DragonSpark.Testing.Objects;
 using DragonSpark.Windows.Runtime;
 using Xunit;
 
-namespace DragonSpark.Windows.Testing.Framework
+namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ThreadLocalStorageTests
 	{

@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyModuleCatalog.cs" />
+    <Compile Include="ConfigurationSectionFactory.cs" />
     <Compile Include="DataBuilder.cs" />
     <Compile Include="DataTransformer.cs" />
     <Compile Include="DataTransformerExtensions.cs" />
@@ -200,7 +201,7 @@
     <Compile Include="Runtime\AppDomainValue.cs" />
     <Compile Include="Runtime\ApplicationAssemblyLocator.cs" />
     <Compile Include="Runtime\FileSystemAssemblyProvider.cs" />
-    <Compile Include="Runtime\CurrentDomainAssemblyProvider.cs" />
+    <Compile Include="Runtime\DomainAssemblyProvider.cs" />
     <Compile Include="Modularity\AssemblyResolver.cs" />
     <Compile Include="Modularity\ConfigurationModuleCatalog.cs" />
     <Compile Include="Modularity\ConfigurationStore.cs" />
@@ -226,7 +227,7 @@
     <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
     <Compile Include="Runtime\LogicalValue.cs" />
     <Compile Include="Runtime\ThreadLocalValue.cs" />
-    <Compile Include="SetupUnityFromConfigurationCommand.cs" />
+    <Compile Include="Setup\SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,7 +267,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\UnityConventionRegistrationService.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />
-    <Compile Include="TaskLocalValue.cs" />
+    <Compile Include="Runtime\TaskLocalValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">

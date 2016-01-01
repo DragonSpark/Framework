@@ -11,6 +11,6 @@ namespace DragonSpark.Windows.Testing.Runtime
 		{
 			sut.Assign( number );
 			Assert.Equal( number, sut.Item );
-		} 
+		}
 	}
 }

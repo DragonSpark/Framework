@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Windows.Modularity;
+using System;
+using System.IO;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -113,6 +113,8 @@ namespace DragonSpark.Windows.Testing.Modularity
 				resolvedType = Type.GetType("TestModules.ModuleInLoadedFromContext2Class, ModuleInLoadedFromContext2, Version=0.0.0.0, Culture=neutral");
 
 				Assert.NotNull(resolvedType);
+
+				resolver.LoadAssemblyFrom( assemblyUri.ToString() );
 			}
 		}
 
