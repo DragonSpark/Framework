@@ -53,6 +53,14 @@
       <HintPath>$(SolutionDir)packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -139,7 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modularity\DirectoryModuleInfoProviderTests.cs" />
+    <Compile Include="Runtime\ApplicationExceptionFormatterTests.cs" />
+    <Compile Include="Runtime\AssemblyProviderTests.cs" />
+    <Compile Include="Runtime\DomainAssemblyProviderTests.cs" />
+    <Compile Include="Runtime\ExceptionHandlerTests.cs" />
     <Compile Include="Runtime\ModuleConfigurationTests.cs" />
+    <Compile Include="Runtime\TaskLocalValueTests.cs" />
     <Compile Include="Runtime\ThreadLocalStorageTests.cs" />
     <Compile Include="Modularity\AssemblyResolverTests.cs" />
     <Compile Include="Modularity\AttributeDataProviderTests.cs" />

@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public class MoqAutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
-		public MoqAutoDataAttribute() : base( new Fixture().Customize( new AutoMoqCustomization() ) )
+		public MoqAutoDataAttribute() : base( new Fixture( DefaultEngineParts.Instance ).Customize( new AutoMoqCustomization() ) )
 		{}
 	}
 
@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override IFixture CreateItem()
 		{
-			var result = new Fixture( DefaultEngineParts.Instance );
+			var result = new Fixture( SetupEngineParts.Instance );
 			return result;
 		}
 	}

@@ -1,10 +1,11 @@
 using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	public abstract class ActivationParameter
 	{
-		protected ActivationParameter( Type type )
+		protected ActivationParameter( [Required]Type type )
 		{
 			Type = type;
 		}

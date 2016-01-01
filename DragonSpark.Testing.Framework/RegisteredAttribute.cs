@@ -16,21 +16,21 @@ namespace DragonSpark.Testing.Framework
 	{
 		class Customization : ICustomization
 		{
-			readonly Type itemType;
+			readonly ParameterInfo parameter;
 
-			public Customization( Type itemType )
+			public Customization( ParameterInfo parameter )
 			{
-				this.itemType = itemType;
+				this.parameter = parameter;
 			}
 
 			public void Customize( IFixture fixture )
 			{
-				new FixtureRegistry( fixture ).RegisterFactory( itemType, Create );
+				new FixtureRegistry( fixture ).RegisterFactory( parameter.ParameterType, Create );
 			}
 
 			object Create()
 			{
-				var factoryType = FactoryReflectionSupport.Instance.GetFactoryType( itemType );
+				var factoryType = FactoryReflectionSupport.Instance.GetFactoryType( parameter.ParameterType, parameter.Member.DeclaringType );
 				var result = new FactoryBuiltObjectFactory().Create( new ObjectFactoryParameter( factoryType ) );
 				return result;
 			}
@@ -38,7 +38,7 @@ namespace DragonSpark.Testing.Framework
 
 		public override ICustomization GetCustomization( ParameterInfo parameter )
 		{
-			return new Customization( parameter.ParameterType );
+			return new Customization( parameter );
 		}
 	}
 

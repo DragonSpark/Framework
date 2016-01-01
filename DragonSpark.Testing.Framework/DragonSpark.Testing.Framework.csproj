@@ -169,7 +169,7 @@
     <Compile Include="Setup\MetadataCustomization.cs" />
     <Compile Include="Extensions\FixtureExtensions.cs" />
     <Compile Include="Parameters\FromCustomization.cs" />
-    <Compile Include="Setup\DefaultEngineParts.cs" />
+    <Compile Include="Setup\SetupEngineParts.cs" />
     <Compile Include="ITestExecutionAware.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\OutputCustomization.cs" />

@@ -105,6 +105,12 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
+		public static U FirstWhere<T, U>( this IEnumerable<T> @this, Func<T, U> where )
+		{
+			var result = @this.Select( where ).NotNull().FirstOrDefault();
+			return result;
+		}
+
 		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target )
 		{
 			var result = target.Where( x => !x.IsNull() );

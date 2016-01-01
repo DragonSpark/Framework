@@ -10,8 +10,8 @@ namespace DragonSpark.Diagnostics
 			Exception = exception;
 		}
 
-		public bool RethrowRecommended { get; private set; }
+		public bool RethrowRecommended { get; }
 
-		public Exception Exception { get; private set; }
+		public Exception Exception { get; }
 	}
 }

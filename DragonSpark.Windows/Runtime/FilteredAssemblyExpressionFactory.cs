@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.Runtime
 		protected override IEnumerable<Assembly> DetermineCoreAssemblies()
 		{
 			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-			var result = base.DetermineCoreAssemblies().Append( assembly, typeof(AssemblyProvider).Assembly );
+			var result = base.DetermineCoreAssemblies().Append( assembly, GetType().Assembly );
 			return result;
 		}
 	}

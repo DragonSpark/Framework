@@ -2,6 +2,7 @@ using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -18,14 +19,26 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		public Type GetFactoryType( Type itemType )
+		public Type GetFactoryType( Type itemType, Type referenceType = null )
 		{
 			var name = $"{itemType.Name}Factory";
-			var result = itemType.Assembly().DefinedTypes.AsTypes().ToArray().With( types => types.Where( info => info.Name == name ).Only() 
+			var reference = referenceType ?? itemType;
+			var result = new[] { reference, itemType }.Distinct().FirstWhere( candidate => LocateFactoryType( name, itemType, candidate ) );
+			return result;
+		}
+
+		Type LocateFactoryType( string name, Type itemType, Type candidate )
+		{
+			var result =
+				candidate.GetTypeInfo().DeclaredNestedTypes.AsTypes().Where( info => info.Name == name ).Only()
 				??
-				types
-					.Where( x => BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) )
-					.Where( type => GetResultType( type ) == itemType ).Only() );
+				candidate.Assembly().DefinedTypes.AsTypes().ToArray().With( types =>
+					types.Where( info => info.Name == name ).Only()
+					??
+					types
+						.Where( x => BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) )
+						.Where( type => GetResultType( type ) == itemType ).Only()
+					);
 			return result;
 		}
 
