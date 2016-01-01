@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Theory, AutoData]
-		void Mapper( TestObjects.ClassWithProperties instance )
+		void Mapper( Objects.ClassWithProperties instance )
 		{
 			var mapped = instance.MapInto<ClassWithProperties>();
 			Assert.Equal( instance.PropertyOne, mapped.PropertyOne );

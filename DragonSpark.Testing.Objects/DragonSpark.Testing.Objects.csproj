@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{65CCD995-C347-48B1-B017-D09E917BD252}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark.Testing.Objects</RootNamespace>
+    <AssemblyName>DragonSpark.Testing.Objects</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AnotherClass.cs" />
+    <Compile Include="Attribute.cs" />
+    <Compile Include="Class.cs" />
+    <Compile Include="ClassCreatedFromDefault.cs" />
+    <Compile Include="ClassWithDefaultProperties.cs" />
+    <Compile Include="ClassWithManyParameters.cs" />
+    <Compile Include="ClassWithParameter.cs" />
+    <Compile Include="ClassWithProperties.cs" />
+    <Compile Include="ConstructFactory.cs" />
+    <Compile Include="Convention.cs" />
+    <Compile Include="ConventionMetadata.cs" />
+    <Compile Include="Decorated.cs" />
+    <Compile Include="Derived.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="FactoryOfYAC.cs" />
+    <Compile Include="Generic.cs" />
+    <Compile Include="HighPriority.cs" />
+    <Compile Include="IAnotherInterface.cs" />
+    <Compile Include="IClassWithParameter.cs" />
+    <Compile Include="IInterface.cs" />
+    <Compile Include="IItem.cs" />
+    <Compile Include="IObject.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="LowPriority.cs" />
+    <Compile Include="NormalPriority.cs" />
+    <Compile Include="Object.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAsMany.cs" />
+    <Compile Include="RegisterAsSingleton.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Static.cs" />
+    <Compile Include="YetAnotherClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.ConnectedProperties.3.0.0\lib\portable-net40+win8+sl4+wp8\ConnectedProperties.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\portable-net45+wp80+win8+wpa81+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

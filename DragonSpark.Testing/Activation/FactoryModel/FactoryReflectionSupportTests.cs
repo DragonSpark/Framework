@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Xunit;
 
 namespace DragonSpark.Testing.Activation.FactoryModel

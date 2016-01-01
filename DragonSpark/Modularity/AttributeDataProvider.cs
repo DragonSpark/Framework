@@ -6,7 +6,7 @@ using DragonSpark.Extensions;
 
 namespace DragonSpark.Modularity
 {
-	class AttributeDataProvider : IAttributeDataProvider
+	public class AttributeDataProvider : IAttributeDataProvider
 	{
 		public static AttributeDataProvider Instance { get; } = new AttributeDataProvider();
 

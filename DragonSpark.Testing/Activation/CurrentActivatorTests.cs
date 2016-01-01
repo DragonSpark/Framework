@@ -1,14 +1,11 @@
 using DragonSpark.Activation;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Parameters;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Xunit;
 using Xunit.Abstractions;
-using Activator = DragonSpark.Testing.TestObjects.Activator;
 
 namespace DragonSpark.Testing.Activation
 {
-	[Freeze( typeof(IActivator), typeof(Activator) )]
 	public class CurrentActivatorTests : Tests
 	{
 		public CurrentActivatorTests( ITestOutputHelper output ) : base( output )

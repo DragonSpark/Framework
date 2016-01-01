@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Aspects;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 

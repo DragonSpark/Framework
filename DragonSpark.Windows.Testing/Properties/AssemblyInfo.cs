@@ -2,6 +2,7 @@
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Windows.Testing.Setup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -36,4 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion( "2016.2.1.1" )]
 [assembly: AssemblyFileVersion( "2016.2.1.1" )]
 [assembly: Application]
-[assembly: Registration]
+[assembly: Registration( typeof(Command) )]

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DragonSpark.Diagnostics;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture.Xunit2;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions

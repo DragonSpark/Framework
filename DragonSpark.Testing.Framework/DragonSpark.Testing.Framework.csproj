@@ -153,6 +153,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Initialize.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Setup\CurrentMethodCustomization.cs" />
     <Compile Include="Setup\Execution.cs" />
@@ -197,12 +198,8 @@
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Types.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">

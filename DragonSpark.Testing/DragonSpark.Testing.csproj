@@ -116,13 +116,7 @@
       <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Threading.4.2.17\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -178,17 +172,6 @@
     <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Extensions\UnityContainerExtensionsTests.cs" />
-    <Compile Include="Initialize.cs" />
-    <Compile Include="Modularity\AssemblyResolverTests.cs" />
-    <Compile Include="Modularity\AttributeDataProviderTests.cs" />
-    <Compile Include="Modularity\CompilerHelper.cs" />
-    <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
-    <Compile Include="Modularity\ConfigurationStoreTests.cs" />
-    <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
-    <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
-    <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgsTests.cs" />
-    <Compile Include="Modularity\ModuleInfoBuilderTests.cs" />
-    <Compile Include="Modularity\ModuleTypeLoaderTests.cs" />
     <Compile Include="Properties\ResourcesTests.cs" />
     <Compile Include="Runtime\CollectionTests.cs" />
     <Compile Include="Runtime\CompositeCommandTests.cs" />
@@ -198,37 +181,6 @@
     <Compile Include="Runtime\Specifications\NeverSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensionsTests.cs" />
     <Compile Include="Runtime\Specifications\TypeContextAwareSpecificationTests.cs" />
-    <Compile Include="Setup\DefaultSetup.cs">
-      <DependentUpon>DefaultSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\ProgramSetupTests.cs" />
-    <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
-    <Compile Include="Setup\SetupApplicationCommand.cs" />
-    <Compile Include="Setup\SetupParameterTests.cs" />
-    <Compile Include="Setup\TestExtension.cs" />
-    <Compile Include="Setup\ProgramSetup.xaml.cs">
-      <DependentUpon>ProgramSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\UnitySetup.xaml.cs">
-      <DependentUpon>UnitySetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
-    <Compile Include="Setup\BasicSetup.cs">
-      <DependentUpon>BasicSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\SetupCommandTests.cs" />
-    <Compile Include="Setup\UnitySetupTests.cs" />
-    <Compile Include="TestObjects\Modules\DummyClass.cs" />
-    <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
-    <Compile Include="Modularity\ModuleAttributeTests.cs" />
-    <Compile Include="Modularity\ModuleCatalogTests.cs" />
-    <Compile Include="Modularity\ModuleDependencySolverTests.cs" />
-    <Compile Include="Modularity\ModuleInfoGroupExtensionsTests.cs" />
-    <Compile Include="Modularity\ModuleInfoGroupTests.cs" />
-    <Compile Include="Modularity\ModuleInitializerTests.cs" />
-    <Compile Include="Modularity\ModuleManagerTests.cs" />
-    <Compile Include="Setup\SetupTests.cs" />
-    <Compile Include="TestObjects\ClassWithDefaultProperties.cs" />
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -241,71 +193,15 @@
     </Compile>
     <Compile Include="Extensions\TypeExtensionsTests.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensionsTests.cs" />
-    <Compile Include="Framework\ThreadLocalStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestObjects\Activator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Attribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Class.cs" />
-    <Compile Include="TestObjects\ClassWithParameter.cs" />
-    <Compile Include="TestObjects\ClassWithProperties.cs" />
-    <Compile Include="TestObjects\Convention.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\ConventionMetadata.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Decorated.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Derived.cs" />
-    <Compile Include="TestObjects\Disposable.cs" />
-    <Compile Include="TestObjects\Generic.cs" />
-    <Compile Include="TestObjects\HighPriority.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\IAnotherInterface.cs" />
-    <Compile Include="TestObjects\IClassWithParameter.cs" />
-    <Compile Include="TestObjects\IInterface.cs" />
-    <Compile Include="TestObjects\IItem.cs" />
-    <Compile Include="TestObjects\IObject.cs" />
-    <Compile Include="TestObjects\Item.cs" />
-    <Compile Include="TestObjects\LowPriority.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TypeSystem\FilteredAssemblyProviderBaseTests.cs" />
     <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />
-    <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockDependantModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockDependencyModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
-    <Compile Include="TestObjects\Modules\MockMessageLogger.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleA.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencedAssembly.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingOtherModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleThrowingException.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleTypeLoader.cs" />
-    <Compile Include="TestObjects\Modules\MyDummyClass.cs" />
-    <Compile Include="TestObjects\NormalPriority.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Object.cs" />
-    <Compile Include="TestObjects\Relayed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestObjects\Static.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -353,13 +249,13 @@
       <Project>{96f63f2b-7d11-4d0f-a932-26c29f8e48bf}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj">
+      <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
+      <Name>DragonSpark.Testing.Objects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
       <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
       <Name>DragonSpark.Types.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
-      <Project>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</Project>
-      <Name>DragonSpark.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
@@ -372,35 +268,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Modularity\NotAValidDotNetDll.txt.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Modularity\ModuleCatalogXaml\SimpleModuleCatalog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Setup\DefaultSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Setup\ProgramSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Setup\UnitySetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Setup\BasicSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets" Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets')" />

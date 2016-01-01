@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;

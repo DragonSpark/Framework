@@ -3,7 +3,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Activation.IoC
 {
-	class ServiceLocationMonitor : IDisposable
+	public class ServiceLocationMonitor : IDisposable
 	{
 		readonly IServiceLocation location;
 		readonly IServiceLocator locator;

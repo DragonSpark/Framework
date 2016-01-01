@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Runtime;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture.Xunit2;
 using System;

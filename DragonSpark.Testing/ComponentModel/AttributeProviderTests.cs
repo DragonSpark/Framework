@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.TestObjects;
+using DragonSpark.Testing.Objects;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
