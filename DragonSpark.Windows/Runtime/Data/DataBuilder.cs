@@ -2,8 +2,10 @@ using System;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.Runtime.Data
 {
+	
+
 	public static class DataBuilder
 	{
 		public static IXPathNavigable Create( string data )

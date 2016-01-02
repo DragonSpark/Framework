@@ -1,4 +1,5 @@
 using DragonSpark.Setup.Registration;
+using DragonSpark.Windows.Setup;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Modularity

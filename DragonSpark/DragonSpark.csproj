@@ -396,11 +396,9 @@
     <Compile Include="ConditionMonitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\ExceptionHandlerExtensions.cs" />
     <Compile Include="Diagnostics\ExceptionHandlingResult.cs" />
     <Compile Include="Diagnostics\IExceptionFormatter.cs" />
     <Compile Include="Diagnostics\IExceptionHandler.cs" />
-    <Compile Include="Diagnostics\ITracingDispatcher.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>

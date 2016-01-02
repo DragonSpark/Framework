@@ -129,11 +129,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyModuleCatalog.cs" />
-    <Compile Include="ConfigurationSectionFactory.cs" />
-    <Compile Include="DataBuilder.cs" />
-    <Compile Include="DataTransformer.cs" />
-    <Compile Include="DataTransformerExtensions.cs" />
+    <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
+    <Compile Include="Setup\ConfigurationFactory.cs" />
+    <Compile Include="Setup\ConfigurationSectionFactory.cs" />
+    <Compile Include="Runtime\Data\DataBuilder.cs" />
+    <Compile Include="Runtime\Data\DataTransformer.cs" />
+    <Compile Include="Runtime\Data\DataTransformerExtensions.cs" />
     <Compile Include="Entity\ActivationSource.cs" />
     <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
     <Compile Include="Entity\AttachedDatabaseFileFactory.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="Entity\ObjectContextExtensions.cs" />
     <Compile Include="Entity\PropertyInfoExtensions.cs" />
     <Compile Include="Entity\VersionConverter.cs" />
-    <Compile Include="IDataTransformer.cs" />
+    <Compile Include="Runtime\Data\IDataTransformer.cs" />
     <Compile Include="Io\FileSystem.cs" />
     <Compile Include="Diagnostics\TextMessageLogger.cs" />
     <Compile Include="Diagnostics\TraceMessageLogger.cs" />
@@ -192,7 +193,6 @@
     <Compile Include="Markup\ReferenceExtension.cs" />
     <Compile Include="Markup\StaticResourceExtension.cs" />
     <Compile Include="Modularity\DynamicModuleInfoGroup.cs" />
-    <Compile Include="Process.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -227,11 +227,9 @@
     <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
     <Compile Include="Runtime\LogicalValue.cs" />
     <Compile Include="Runtime\ThreadLocalValue.cs" />
+    <Compile Include="Setup\FileConfigurationFactory.cs" />
     <Compile Include="Setup\SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Setup\ExceptionHandlerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\SetupExceptionHandling.cs" />

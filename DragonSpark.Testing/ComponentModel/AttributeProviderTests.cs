@@ -14,6 +14,15 @@ namespace DragonSpark.Testing.ComponentModel
 		}
 
 		[Fact]
+		public void InstanceAttribute()
+		{
+			var sut = new Decorated { Property = "Hello" };
+			Assert.Equal( "Hello", sut.Property );
+			var attribute = sut.GetType().GetAttribute<Attribute>();
+			Assert.Equal( "This is a class attribute.", attribute.PropertyName );
+		}
+
+		[Fact]
 		void Decorated()
 		{
 			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
@@ -26,6 +35,20 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
 			var attribute = typeof(Convention).GetAttribute<Attribute>();
 			Assert.Equal( "This is a class attribute through convention.", attribute.PropertyName );
+		}
+
+		[Fact]
+		public void ConventionInstance()
+		{
+			var sut = new Convention { Property = "Hello" };
+			Assert.Equal( "Hello", sut.Property );
+		}
+
+		[Fact]
+		public void ConventionMetadataInstance()
+		{
+			var sut = new ConventionMetadata { Property = "Hello" };
+			Assert.Equal( "Hello", sut.Property );
 		}
 
 		[Fact]

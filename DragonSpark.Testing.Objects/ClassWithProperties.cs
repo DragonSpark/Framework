@@ -9,12 +9,5 @@ namespace DragonSpark.Testing.Objects
 		public object PropertyThree { get; set; }
 
 		public string PropertyFour { get; set; }
-
-		public string this[ int index ]
-		{
-			get { return null; }
-			set { }
-		}
-
 	}
 }

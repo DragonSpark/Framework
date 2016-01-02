@@ -2,6 +2,7 @@
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
+using DragonSpark.Windows.Runtime;
 using System.Linq;
 using System.Reflection;
 
@@ -13,7 +14,7 @@ namespace DragonSpark.Windows.Testing.TestObjects
 
 		protected override Assembly[] DetermineAll()
 		{
-			var result = Assembly.GetExecutingAssembly().Append( new[] { typeof(AssemblyProviderBase), typeof(Class), typeof(Tests), typeof(Process) }.Select( type => type.Assembly ) ).ToArray();
+			var result = Assembly.GetExecutingAssembly().Append( new[] { typeof(AssemblyProviderBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).ToArray();
 			return result;
 		}
 	}

@@ -1,7 +1,7 @@
 using System.Xml.XPath;
 using DragonSpark.Extensions;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.Runtime.Data
 {
 	public static class DataTransformerExtensions
 	{

@@ -1,13 +1,14 @@
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xaml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.Runtime.Data
 {
 	public class DataTransformer : IDataTransformer
 	{
+		public static DataTransformer Instance { get; } = new DataTransformer();
+
 		public object Transform( IXPathNavigable stylesheet, IXPathNavigable source )
 		{
 			var transform = new XslCompiledTransform();
@@ -21,7 +22,6 @@ namespace DragonSpark.Windows
 			return result;
 		}
 
-		[SuppressMessage( "Microsoft.Reliability", "CA2000:Dispose objects before losing scope" )]
 		public string ToString( IXPathNavigable stylesheet, IXPathNavigable source )
 		{
 			var transform = new XslCompiledTransform();

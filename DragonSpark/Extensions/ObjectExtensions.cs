@@ -235,17 +235,16 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static TResult As<TResult>( this object target )
-		{
-			return As<TResult>( target, null );
-		}
+		public static TResult As<TResult>( this object target ) => As( target, (Action<TResult>)null );
+
+		/*public static TResult As<TResult, TReturn>( this object target, Func<TResult, TReturn> action ) => target.As<TResult>( x => { action( x ); } );*/
 
 		public static TResult As<TResult>( this object target, Action<TResult> action )
 		{
 			if ( target is TResult )
 			{
 				var result = (TResult)target;
-				action?.Invoke( result );
+				result.With( action );
 				return result;
 			}
 			return default(TResult);

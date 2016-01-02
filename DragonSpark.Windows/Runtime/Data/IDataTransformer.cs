@@ -1,6 +1,6 @@
 using System.Xml.XPath;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.Runtime.Data
 {
 	public interface IDataTransformer
 	{
