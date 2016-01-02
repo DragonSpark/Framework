@@ -33,6 +33,11 @@ namespace DragonSpark.Setup.Commands
 		}
 	}
 
+	public class SetupApplicationCommand<TLogger, TAssemblyProvider> : SetupApplicationCommand<TLogger, TAssemblyProvider, object>
+		where TLogger : IMessageLogger
+		where TAssemblyProvider : IAssemblyProvider
+	{}
+
 	public class SetupApplicationCommand<TLogger, TAssemblyProvider, TArguments> : SetupApplicationCommandBase<ServiceLocator, TLogger, TArguments> 
 		where TLogger : IMessageLogger
 		where TAssemblyProvider : IAssemblyProvider

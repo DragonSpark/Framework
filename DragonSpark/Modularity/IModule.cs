@@ -3,6 +3,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DragonSpark.Modularity
 {
@@ -43,7 +44,7 @@ namespace DragonSpark.Modularity
 	public abstract class ModuleCommand : Command<IMonitoredModule>, IModuleCommand
 	{}
 
-	public abstract class MonitoredModule<TCommand> : IMonitoredModule where TCommand : IModuleCommand
+	public abstract class MonitoredModule<TCommand> : IMonitoredModule where TCommand : ICommand
 	{
 		readonly TCommand command;
 
