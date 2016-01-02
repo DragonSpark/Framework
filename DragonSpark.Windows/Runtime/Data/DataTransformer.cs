@@ -11,18 +11,13 @@ namespace DragonSpark.Windows.Runtime.Data
 
 		public object Transform( IXPathNavigable stylesheet, IXPathNavigable source )
 		{
-			var transform = new XslCompiledTransform();
-			transform.Load( stylesheet );
-
-			var stream = new MemoryStream();
-			transform.Transform( source, null, stream );
-			stream.Seek( 0, SeekOrigin.Begin );
+			var stream = DetermineStream( stylesheet, source );
 
 			var result = XamlServices.Load( stream );
 			return result;
 		}
 
-		public string ToString( IXPathNavigable stylesheet, IXPathNavigable source )
+		static MemoryStream DetermineStream( IXPathNavigable stylesheet, IXPathNavigable source )
 		{
 			var transform = new XslCompiledTransform();
 			transform.Load( stylesheet );
@@ -30,6 +25,12 @@ namespace DragonSpark.Windows.Runtime.Data
 			var stream = new MemoryStream();
 			transform.Transform( source, null, stream );
 			stream.Seek( 0, SeekOrigin.Begin );
+			return stream;
+		}
+
+		public string ToString( IXPathNavigable stylesheet, IXPathNavigable source )
+		{
+			var stream = DetermineStream( stylesheet, source );
 
 			var result = new StreamReader( stream ).ReadToEnd();
 			return result;
