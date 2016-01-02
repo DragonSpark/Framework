@@ -1,0 +1,31 @@
+﻿<setupCore:Setup x:Class="DragonSpark.Windows.Testing.Setup.ProgramSetup"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				 xmlns:setupCore="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
+	xmlns:ds="http://framework.dragonspark.us"
+	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
+	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
+	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
+	xmlns:setup1="clr-namespace:DragonSpark.Windows.Testing.Setup"
+	mc:Ignorable="d"
+>
+	<setup1:SetupApplicationCommand />
+	<commands:SetupUnityCommand />
+	<runtime:CompositeCommand>
+		<commands:ConfigureUnityCommand>
+			<commands:ConfigureUnityCommand.Types>
+				<commands:UnityType RegistrationType="{x:Type setup1:ITyper}" MapTo="{x:Type setup1:SomeTypeist}" />
+			</commands:ConfigureUnityCommand.Types>
+		</commands:ConfigureUnityCommand>
+	</runtime:CompositeCommand>
+	<ds:SetupRegistrationByConventionCommand />
+	<commands:InitializeModulesCommand />
+	<setup:CustomizeFixtureCommand>
+		<location:ServiceLocationCustomization />
+		<setup:OutputCustomization />
+	</setup:CustomizeFixtureCommand>
+	<commands:RunProgramCommand />
+</setupCore:Setup>

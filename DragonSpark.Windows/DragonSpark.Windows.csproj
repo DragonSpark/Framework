@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B51D28D3-BC96-41EA-885F-F7BE1543D6F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark.Windows</RootNamespace>
+    <AssemblyName>DragonSpark.Windows</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <DontImportPostSharp>True</DontImportPostSharp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DynamicExpresso.Core, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\DynamicExpresso.Core.1.3.1.0\lib\net40\DynamicExpresso.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dynamitey, Version=1.0.2.0, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp, Version=4.2.17.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\PostSharp.4.2.17\lib\net35-client\PostSharp.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Common.4.2.17\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Model, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Model.4.2.17\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.17.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\PostSharp.Patterns.Threading.4.2.17\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xaml">
+      <Aliases>global</Aliases>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
+    <Compile Include="Setup\ConfigurationFactory.cs" />
+    <Compile Include="Setup\ConfigurationSectionFactory.cs" />
+    <Compile Include="Runtime\Data\DataBuilder.cs" />
+    <Compile Include="Runtime\Data\DataTransformer.cs" />
+    <Compile Include="Runtime\Data\DataTransformerExtensions.cs" />
+    <Compile Include="Entity\ActivationSource.cs" />
+    <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
+    <Compile Include="Entity\AttachedDatabaseFileFactory.cs" />
+    <Compile Include="Entity\BackupDatabaseCommand.cs" />
+    <Compile Include="Entity\DataDirectoryPath.cs" />
+    <Compile Include="Entity\DbMigrationsConfiguration.cs" />
+    <Compile Include="Entity\EntityFiles.cs" />
+    <Compile Include="Entity\EntityInstallationStep.cs" />
+    <Compile Include="Entity\IActivationSource.cs" />
+    <Compile Include="Entity\InitializeDatabaseCommand.cs" />
+    <Compile Include="Entity\DbContextExtensions.cs" />
+    <Compile Include="Entity\DbSetExtensions.cs" />
+    <Compile Include="Entity\DefaultIncludeAttribute.cs" />
+    <Compile Include="Entity\EntityContext.cs" />
+    <Compile Include="Entity\EntityValidationException.cs" />
+    <Compile Include="Entity\IEntityInstallationStorage.cs" />
+    <Compile Include="Entity\IInstallationStep.cs" />
+    <Compile Include="Entity\IInstaller.cs" />
+    <Compile Include="Entity\InstallationEntry.cs" />
+    <Compile Include="Entity\InstallDatabaseCommand.cs" />
+    <Compile Include="Entity\Installer.cs" />
+    <Compile Include="Entity\LocalStorageAttribute.cs" />
+    <Compile Include="Entity\LocalStoragePropertyProcessor.cs" />
+    <Compile Include="Entity\MetadataHelper.cs" />
+    <Compile Include="Entity\MigrateDatabaseToLatestVersion.cs" />
+    <Compile Include="Entity\ObjectContextExtensions.cs" />
+    <Compile Include="Entity\PropertyInfoExtensions.cs" />
+    <Compile Include="Entity\VersionConverter.cs" />
+    <Compile Include="Runtime\Data\IDataTransformer.cs" />
+    <Compile Include="Io\FileSystem.cs" />
+    <Compile Include="Diagnostics\TextMessageLogger.cs" />
+    <Compile Include="Diagnostics\TraceMessageLogger.cs" />
+    <Compile Include="Markup\CollectionExtension.cs" />
+    <Compile Include="Markup\CollectionExtensionBase.cs" />
+    <Compile Include="Markup\CollectionSetter.cs" />
+    <Compile Include="Markup\CollectionTargetSetterBuilder.cs" />
+    <Compile Include="Markup\DeferredContext.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\DirectoryInfoExtension.cs" />
+    <Compile Include="Markup\EnumerableExtension.cs" />
+    <Compile Include="Markup\FactoryExtension.cs" />
+    <Compile Include="Markup\FieldInfoMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\GenericTypeExtension.cs" />
+    <Compile Include="Markup\IIncrementer.cs" />
+    <Compile Include="Markup\ImageSourceOperations.cs" />
+    <Compile Include="Markup\IMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\Incrementer.cs" />
+    <Compile Include="Markup\InjectionFactoryExtension.cs" />
+    <Compile Include="Markup\MarkupExtensionMonitor.cs" />
+    <Compile Include="Markup\MarkupTargetValueSetterBase.cs" />
+    <Compile Include="Markup\MarkupTargetValueSetterFactory.cs" />
+    <Compile Include="Markup\MonitoredMarkupExtension.cs" />
+    <Compile Include="Markup\NameExtension.cs" />
+    <Compile Include="Markup\NextExtension.cs" />
+    <Compile Include="Markup\PropertyInfoMarkupTargetValueSetterBuilder.cs" />
+    <Compile Include="Markup\ReferenceExtension.cs" />
+    <Compile Include="Markup\StaticResourceExtension.cs" />
+    <Compile Include="Modularity\DynamicModuleInfoGroup.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\AppDomainValue.cs" />
+    <Compile Include="Runtime\ApplicationAssemblyLocator.cs" />
+    <Compile Include="Runtime\FileSystemAssemblyProvider.cs" />
+    <Compile Include="Runtime\DomainAssemblyProvider.cs" />
+    <Compile Include="Modularity\AssemblyResolver.cs" />
+    <Compile Include="Modularity\ConfigurationModuleCatalog.cs" />
+    <Compile Include="Modularity\ConfigurationStore.cs" />
+    <Compile Include="Modularity\CustomAttributeDataProvider.cs" />
+    <Compile Include="Modularity\DirectoryModuleCatalog.cs" />
+    <Compile Include="Modularity\DirectoryModuleInfoProvider.cs" />
+    <Compile Include="Modularity\DynamicModuleAttribute.cs" />
+    <Compile Include="Modularity\DynamicModuleInfo.cs" />
+    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
+    <Compile Include="Modularity\ModuleTypeLoader.cs" />
+    <Compile Include="Modularity\IConfigurationStore.cs" />
+    <Compile Include="Modularity\IModuleInfoProvider.cs" />
+    <Compile Include="Modularity\InitializationMode.cs" />
+    <Compile Include="Modularity\ModuleCatalogExtensions.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElement.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElementCollection.cs" />
+    <Compile Include="Modularity\ModuleDependencyCollection.cs" />
+    <Compile Include="Modularity\ModuleDependencyConfigurationElement.cs" />
+    <Compile Include="Modularity\ModulesConfigurationSection.cs" />
+    <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
+    <Compile Include="Runtime\DisposableActionContext.cs" />
+    <Compile Include="Runtime\ExpressionEvaluator.cs" />
+    <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
+    <Compile Include="Runtime\LogicalValue.cs" />
+    <Compile Include="Runtime\ThreadLocalValue.cs" />
+    <Compile Include="Setup\FileConfigurationFactory.cs" />
+    <Compile Include="Setup\SetupUnityFromConfigurationCommand.cs" />
+    <Compile Include="Setup\InitializeMarkupCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Setup\SetupExceptionHandling.cs" />
+    <Compile Include="Setup\ExceptionPolicyDefinition.cs" />
+    <Compile Include="Setup\ExceptionPolicyEntry.cs" />
+    <Compile Include="Setup\SetupRegistrationByConventionCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Markup\AssemblyVersionExtension.cs" />
+    <Compile Include="Markup\ClrMemberMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\DeferredMarkupExtension.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\ImageSourceExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Markup\IMarkupTargetValueSetter.cs" />
+    <Compile Include="Markup\LocateExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Markup\MetadataExtension.cs" />
+    <Compile Include="Markup\PropertySetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Runtime\AssemblyProvider.cs" />
+    <Compile Include="Runtime\BindingOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Runtime\ExceptionFormatter.cs" />
+    <Compile Include="Runtime\ApplicationExceptionFormatter.cs" />
+    <Compile Include="Runtime\ExceptionHandler.cs" />
+    <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
+    <Compile Include="Runtime\TypeDefinitionProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\UnityConventionRegistrationService.cs" />
+    <Compile Include="Runtime\ThreadLocalStorage.cs" />
+    <Compile Include="Runtime\TaskLocalValue.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
+      <Aliases>global</Aliases>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DragonSpark.Windows.psproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\Blank.mdf" />
+    <Content Include="Resources\Blank_log.ldf">
+      <DependentUpon>Blank.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets" Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.17\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
