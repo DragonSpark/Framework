@@ -133,8 +133,7 @@
     <Compile Include="Setup\ConfigurationFactory.cs" />
     <Compile Include="Setup\ConfigurationSectionFactory.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
-    <Compile Include="Runtime\Data\DataTransformer.cs" />
-    <Compile Include="Runtime\Data\DataTransformerExtensions.cs" />
+    <Compile Include="Runtime\Data\DataSerializer.cs" />
     <Compile Include="Entity\ActivationSource.cs" />
     <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
     <Compile Include="Entity\AttachedDatabaseFileFactory.cs" />
@@ -224,7 +223,7 @@
     <Compile Include="Modularity\RemotingModuleInfoProvider.cs" />
     <Compile Include="Runtime\DisposableActionContext.cs" />
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
-    <Compile Include="Runtime\FilteredAssemblyExpressionFactory.cs" />
+    <Compile Include="Runtime\ApplicationAssemblyTransformer.cs" />
     <Compile Include="Runtime\LogicalValue.cs" />
     <Compile Include="Runtime\ThreadLocalValue.cs" />
     <Compile Include="Setup\FileConfigurationFactory.cs" />

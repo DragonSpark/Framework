@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		public void Assemblies( AssemblyProvider sut )
 		{
 			Assert.NotEqual( sut, AssemblyProvider.Instance );
-			Assert.True( sut.GetAssemblies().All( assembly => assembly.IsDefined( typeof(RegistrationAttribute), false ) ) );
+			Assert.True( sut.Create().All( assembly => assembly.IsDefined( typeof(RegistrationAttribute), false ) ) );
 		} 
 	}
 }

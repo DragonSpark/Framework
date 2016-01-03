@@ -1,9 +1,8 @@
 using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.TypeSystem
 {
-	public interface IAssemblyProvider
-	{
-		Assembly[] GetAssemblies();
-	}
+	public interface IAssemblyProvider : IFactory<Assembly[]>
+	{}
 }

@@ -169,14 +169,14 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public Type GetConventionCandidate( Assembly[] applicationAssemblies = null )
+		public Type GetConventionCandidate( Assembly[] applicationAssemblies = null )  // TODO: Replace with Assemblies.Current.
 		{
 			var result = 
 				DetermineImplementor().With( typeInfo => typeInfo.AsType() )
 				??
 				type.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => interfaces.FirstOrDefault( i => type.Name.Contains( i.Name.TrimStart( 'I' ) ) ) 
 					??
-					type.Assembly().Append( applicationAssemblies ).Distinct().With( assemblies => interfaces.FirstOrDefault( t => assemblies.Contains( t.Assembly() ) ) )
+					type.Assembly().Append( applicationAssemblies.Fixed() ).Distinct().With( assemblies => interfaces.FirstOrDefault( t => assemblies.Contains( t.Assembly() ) ) )
 				) ?? type;
 			return result;
 		}

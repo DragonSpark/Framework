@@ -30,6 +30,15 @@ namespace DragonSpark.Runtime.Values
 		public ConnectibleProperty<T> Property { get; }
 	}
 
+	public class Reference<T> : ConnectedValue<T>
+	{
+		public Reference( T key, object instance ) : base( instance, Key( key ), () => key )
+		{ }
+
+		public static string Key( object item ) => $"{typeof( T )}-{item.GetHashCode()}";
+	}
+
+
 	public class AssociatedValue<T, U> : ConnectedValue<U>
 	{
 		public AssociatedValue( T instance ) : base( instance, typeof( AssociatedValue<T, U> ) )

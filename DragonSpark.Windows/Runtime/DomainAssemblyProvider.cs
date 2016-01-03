@@ -1,3 +1,4 @@
+using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
 using System;
@@ -20,13 +21,13 @@ namespace DragonSpark.Windows.Runtime
 		{
 			this.domain = domain;
 		}
-
-		protected override Assembly[] DetermineAll()
+		
+		protected override Assembly[] CreateItem()
 		{
 			var query = from assembly in domain.GetAssemblies()
-				where !( assembly is AssemblyBuilder )
-					  && assembly.GetType().FullName != "System.Reflection.Emit.InternalAssemblyBuilder"
-					  && !string.IsNullOrEmpty( assembly.Location )
+						where assembly.Not<AssemblyBuilder>()
+								&& assembly.GetType().FullName != "System.Reflection.Emit.InternalAssemblyBuilder"
+								&& !string.IsNullOrEmpty( assembly.Location )
 				orderby assembly.GetName().Name
 				select assembly;
 			var result = query.ToArray();

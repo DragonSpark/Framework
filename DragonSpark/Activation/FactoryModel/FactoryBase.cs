@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Activation.FactoryModel
 {
-	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult> where TResult : class
+	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult>
 	{
 		readonly IFactoryParameterCoercer<TParameter> coercer;
 
@@ -30,19 +30,12 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
-	public abstract class FactoryBase<TResult> : IFactory<TResult> where TResult : class
+	public abstract class FactoryBase<TResult> : IFactory<TResult>
 	{
 		protected abstract TResult CreateItem();
 
-		public TResult Create()
-		{
-			return CreateItem();
-		}
+		public TResult Create() => CreateItem();
 
-		object IFactory.Create()
-		{
-			var result = CreateItem();
-			return result;
-		}
+		object IFactory.Create() => Create();
 	}
 }

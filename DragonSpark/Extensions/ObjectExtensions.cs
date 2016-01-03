@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
+using DragonSpark.TypeSystem;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Activator = System.Activator;
 
 namespace DragonSpark.Extensions
 {
@@ -89,7 +90,7 @@ namespace DragonSpark.Extensions
 
 		public static TResult With<TItem, TResult>( this TItem target, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
 		{
-			var getDefault = defaultFunction ?? DetermineDefault<TResult>;
+			var getDefault = defaultFunction ?? DefaultFactory<TResult>.Instance.Create;
 			var result = target != null ? function( target ) : getDefault();
 			return result;
 		}
@@ -103,6 +104,9 @@ namespace DragonSpark.Extensions
 			} );
 			return result;
 		}
+
+		public static bool Is<T>( [Required] this object @this ) => @this is T;
+		public static bool Not<T>( [Required] this object @this ) => !@this.Is<T>();
 
 		public static TItem WithSelf<TItem>( this TItem @this, Func<TItem, object> action )
 		{
@@ -132,13 +136,13 @@ namespace DragonSpark.Extensions
 
 		public static TResult FromMetadata<TAttribute, TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
 		{
-			var result = target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
+			var result = target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DefaultFactory<TResult>.Instance.Create );
 			return result;
 		}
 
 		public static TResult FromMetadata<TAttribute, TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
 		{
-			var result = target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DetermineDefault<TResult> );
+			var result = target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DefaultFactory<TResult>.Instance.Create );
 			return result;
 		}
 
@@ -158,22 +162,6 @@ namespace DragonSpark.Extensions
 		public static TResult Evaluate<TResult>( this object container, string expression )
 		{
 			return (TResult)container.Evaluate( expression );
-		}
-
-		public static TResult DetermineDefault<TResult>()
-		{
-			var type = typeof(TResult).GetTypeInfo();
-			if ( type.IsGenericType )
-			{
-				var typeArguments = type.GenericTypeArguments.First();
-				var genericType = typeof(IEnumerable<>).MakeGenericType( typeArguments ).GetTypeInfo();
-				if ( genericType.IsAssignableFrom( type ) )
-				{
-					var result = typeArguments.With( x => Activator.CreateInstance( x.MakeArrayType(), 0 ) ).To<TResult>();
-					return result;
-				}
-			}
-			return default(TResult);
 		}
 
 		/*public static TResult Clone<TResult>( this TResult source )
@@ -252,7 +240,7 @@ namespace DragonSpark.Extensions
 
 		public static TResult AsTo<TSource, TResult>( this object target, Func<TSource,TResult> transform, Func<TResult> resolve = null )
 		{
-			var @default = resolve ?? DetermineDefault<TResult>;
+			var @default = resolve ?? DefaultFactory<TResult>.Instance.Create;
 			var result = target is TSource ? transform( (TSource)target ) : @default();
 			return result;
 		}

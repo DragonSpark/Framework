@@ -1,33 +1,35 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
 using PostSharp.Serialization;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Aspects
 {
-	[PSerializable]
-	[LinesOfCodeAvoided( 6 )]
-	[ProvideAspectRole( StandardRoles.Caching )]
-	[AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading )]
+	public static class MethodInterceptionArgsExtensions
+	{
+		public static object GetReturnValue( this MethodInterceptionArgs @this ) => @this.With( x => x.Proceed() ).ReturnValue;
+	}
+
+	[PSerializable, ProvideAspectRole( StandardRoles.Caching ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading ), LinesOfCodeAvoided( 6 )]
 	public sealed class Cache : MethodInterceptionAspect
 	{
-		/*public object On { get; set; }*/
-
 		class Stored : ConnectedValue<WeakReference>
 		{
-			static string DetermineKey( MethodInterceptionArgs args ) => CacheKeyFactory.Instance.Create( new [] { DetermineHost( args ), args.Method }.Concat( args.Arguments )  );
+			readonly static object Placeholder = new object();
 
-			static object DetermineHost( MethodInterceptionArgs args ) => args.Instance ?? args.Method.DeclaringType;
-
-			static WeakReference FromArgs( MethodInterceptionArgs args ) => args.With( x => x.Proceed() ).ReturnValue.With( item => new WeakReference( item ) );
-
-			public Stored( MethodInterceptionArgs args ) : base( DetermineHost( args ), DetermineKey( args ), () => FromArgs( args ) )
+			public Stored( Invocation instance, Func<object> factory ) : base( instance.Item1, Reference<Stored>.Key( instance ), () => new WeakReference( factory() ?? Placeholder ) )
 			{}
 
-			public override WeakReference Item => base.Item.With( x => x.IsAlive ? x : Clear() );
+			public override WeakReference Item => base.Item.With( reference => reference.IsAlive ? reference : Clear() );
+
+			public object GetTarget() => Item.Target == Placeholder ? null : Item.Target;
 
 			WeakReference Clear()
 			{
@@ -36,13 +38,53 @@ namespace DragonSpark.Aspects
 			}
 		}
 
+		class InvocationCount : ConnectedValue<int>
+		{
+			public InvocationCount( [Required]object instance ) : base( instance, typeof(InvocationCount), () => -1 )
+			{}
+		}
+
+		class InvocationFrame : IDisposable
+		{
+			readonly InvocationCount count;
+
+			public InvocationFrame( object instance ) : this( new InvocationCount( instance ) )
+			{}
+
+			InvocationFrame( [Required]InvocationCount count )
+			{
+				this.count = count;
+				Set( true );
+			}
+
+			void Set( bool increase ) => count.Assign( count.Item + ( increase ? 1 : -1 ) );
+
+			public object GetValue( IEnumerable<Func<object>> factories ) => factories.ElementAtOrDefault( count.Item )?.Invoke();
+
+			public void Dispose() => Set( false );
+		}
+
+		class Invocation : Tuple<object, MethodBase, EqualityList>
+		{
+			public Invocation( MethodInterceptionArgs args ) : base( args.Instance ?? args.Method.DeclaringType, args.Method, new EqualityList( args.Arguments ) )
+			{}
+		}
+
+		class InvocationReference : Reference<Invocation>
+		{
+			public InvocationReference( Invocation invocation ) : base( invocation, invocation.Item1 )
+			{}
+		}
+
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
-			var stored = new Stored( args );
-			stored.Item?.Target.With( o =>
+			var invocation = new Invocation( args );
+			var reference = new InvocationReference( invocation ).Item;
+			using ( var context = new InvocationFrame( reference ) )
 			{
-				args.ReturnValue = o;
-			} );
+				var returnValue = context.GetValue( new Func<object>[] { new Stored( reference, args.GetReturnValue ).GetTarget, args.GetReturnValue } );
+				args.ReturnValue = returnValue ?? args.ReturnValue;
+			}
 		}
 	}
 }

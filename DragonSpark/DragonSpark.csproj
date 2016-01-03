@@ -157,6 +157,7 @@
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Runtime\ICommand.cs" />
+    <Compile Include="Runtime\ISerializer.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
@@ -229,7 +230,7 @@
     <Compile Include="TypeSystem\AssemblyProviderBase.cs" />
     <Compile Include="Activation\FactoryModel\FactoryBase.cs" />
     <Compile Include="Runtime\Collection.cs" />
-    <Compile Include="TypeSystem\FilteredAssemblyProviderBase.cs">
+    <Compile Include="TypeSystem\ApplicationAssemblyTransformer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\FactoryModel\IFactory.cs">
@@ -406,6 +407,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Types\DragonSpark.Types.csproj">

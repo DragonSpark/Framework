@@ -23,7 +23,7 @@ namespace DragonSpark.Setup
 
 		protected override Array CreateItem( Type parameter )
 		{
-			var types = provider.GetAssemblies().SelectMany( assembly => assembly.ExportedTypes );
+			var types = provider.Create().SelectMany( assembly => assembly.ExportedTypes );
 			var result = activator.ActivateMany( parameter, types ).ToArray();
 			return result;
 		}

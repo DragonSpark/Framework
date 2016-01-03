@@ -1,3 +1,4 @@
+using DragonSpark.Runtime.Values;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,46 +8,17 @@ namespace DragonSpark.Extensions
 {
 	public static class EnumerableExtensions
 	{
-		public static T[] Fixed<T>( this IEnumerable<T> @this )
-		{
-			var result = @this as T[] ?? @this.ToArray();
-			return result;
-		}
+		public static T[] Fixed<T>( this IEnumerable<T> @this ) => @this as T[] ?? @this.With( x => x.ToArray() );
 
-		public static IEnumerable<T> NullIfEmpty<T>( this IEnumerable<T> @this )
-		{
-			var result = @this.With( x => x.Any() ) ? @this : null;
-			return result;
-		}
+		public static IEnumerable<T> NullIfEmpty<T>( this IEnumerable<T> @this ) => @this.With( x => x.Any() ) ? @this : null;
 
-		/*public static IEnumerable<T> Built<T>( this IEnumerable<T> @this ) where T : class
-		{
-			var result = @this.Select( item => item.BuildUp() );
-			return result;
-		}*/
+		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, IAllowsPriority> determine ) => @this.Prioritize( x => determine( x ).Priority );
 
-		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, IAllowsPriority> determine )
-		{
-			var result = @this.Prioritize( x => determine( x ).Priority );
-			return result;
-		}
+		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, Priority> determine = null ) => @this.OrderByDescending( determine ?? ( x => x.FromMetadata<PriorityAttribute, Priority>( y => y.Priority, () => Priority.Normal ) ) );
 
-		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, Priority> determine = null )
-		{
-			var result = @this.OrderByDescending( determine ?? ( x => x.FromMetadata<PriorityAttribute, Priority>( y => y.Priority, () => Priority.Normal ) ) );
-			return result;
-		}
+		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, U> with, Func<U> defaultFunction = null ) => WithFirst( @this, t => true, with, defaultFunction );
 
-		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, U> with, Func<U> defaultFunction = null )
-		{
-			return WithFirst( @this, t => true, with, defaultFunction );
-		}
-
-		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, bool> where, Func<T, U> with, Func<U> defaultFunction = null )
-		{
-			var result = @this.NotNull().FirstOrDefault( where ).With( with, defaultFunction );
-			return result;
-		}
+		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, bool> where, Func<T, U> with, Func<U> defaultFunction = null ) => @this.NotNull().FirstOrDefault( @where ).With( with, defaultFunction );
 
 		public static T Only<T>( this IEnumerable<T> @this, Func<T, bool> where = null )
 		{
@@ -56,70 +28,34 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static void Each<T>( this IEnumerable<T> enumerable, Action<T> action )
+		public static void Each<T>( this IEnumerable<T> enumerable, Action<T> action ) => AutoMapper.Internal.EnumerableExtensions.Each( enumerable, action );
+
+		public static IEnumerable<TResult> Each<T, TResult>( this IEnumerable<T> enumerable, Func<T, TResult> action ) => enumerable.Select( action ).ToArray();
+
+		class Array<T> : ConnectedValue<T[]>
 		{
-			AutoMapper.Internal.EnumerableExtensions.Each( enumerable, action );
+			public Array( T instance ) : base( instance, typeof(Array<T>), () => new[] { instance } )
+			{}
 		}
 
-		public static IEnumerable<TResult> Each<T, TResult>( this IEnumerable<T> enumerable, Func<T, TResult> action )
-		{
-			var result = enumerable.Select( action ).ToArray();
-			return result;
-		}
+		public static TItem[] ToItem<TItem>( this TItem target ) => new Array<TItem>( target ).Item;
 
-		public static IEnumerable<TItem> ToItem<TItem>( this TItem target )
-		{
-			return new[] { target };
-		}
+		public static IEnumerable<TItem> Append<TItem>( this TItem target, IEnumerable<TItem> second ) => target.Append( second.Fixed() );
+		public static IEnumerable<TItem> Append<TItem>( this TItem target, params TItem[] second ) => target.ToItem().Concat( second );
 
-		public static IEnumerable<TItem> Append<TItem>( this TItem target, IEnumerable<TItem> second )
-		{
-			var items = second ?? Enumerable.Empty<TItem>();
-			var result = target.ToItem().Concat( items  );
-			return result;
-		}
+		public static IEnumerable<TItem> Prepend<TItem>( this TItem target, IEnumerable<TItem> second ) => target.Prepend( second.Fixed() );
+		public static IEnumerable<TItem> Prepend<TItem>( this TItem target, params TItem[] second ) => second.Concat( target.ToItem() );
 
-		public static IEnumerable<TItem> Prepend<TItem>( this TItem target, IEnumerable<TItem> second )
-		{
-			var items = second ?? Enumerable.Empty<TItem>();
-			var result = items.Concat( target.ToItem() );
-			return result;
-		}
+		public static IEnumerable<TItem> Append<TItem>( this IEnumerable<TItem> target, params TItem[] items ) => target.Concat( items );
 
-		public static IEnumerable<TItem> Append<TItem>( this IEnumerable<TItem> target, params TItem[] items )
-		{
-			var result = target.Concat( items );
-			return result;
-		}
+		public static IEnumerable<TItem> Prepend<TItem>( this IEnumerable<TItem> target, params TItem[] items ) => items.Concat( target );
 
-		public static IEnumerable<TItem> Prepend<TItem>( this IEnumerable<TItem> target, params TItem[] items )
-		{
-			var result = items.Concat( target );
-			return result;
-		}
+		public static IEnumerable<Tuple<TFirst, TLast>> TupleWith<TFirst, TLast>( this IEnumerable<TFirst> target, IEnumerable<TLast> other ) => target.Select( ( first, i ) => new Tuple<TFirst, TLast>( first, other.ElementAtOrDefault( i ) ) ).ToArray();
 
-		public static IEnumerable<Tuple<TFirst, TLast>> TupleWith<TFirst, TLast>( this IEnumerable<TFirst> target, IEnumerable<TLast> other )
-		{
-			var first = target.ToList();
-			var result = first.Select( x => new Tuple<TFirst, TLast>( x, other.ElementAtOrDefault( first.IndexOf( x ) ) ) ).ToArray();
-			return result;
-		}
+		public static U FirstWhere<T, U>( this IEnumerable<T> @this, Func<T, U> where ) => @this.Select( @where ).NotNull().FirstOrDefault();
 
-		public static U FirstWhere<T, U>( this IEnumerable<T> @this, Func<T, U> where )
-		{
-			var result = @this.Select( where ).NotNull().FirstOrDefault();
-			return result;
-		}
+		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target ) => target.Where( x => !x.IsNull() );
 
-		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target )
-		{
-			var result = target.Where( x => !x.IsNull() );
-			return result;
-		}
-
-		public static T FirstOrDefaultOfType<T>(this IEnumerable enumerable)
-		{
-			return enumerable.OfType<T>().FirstOrDefault();
-		}
+		public static T FirstOrDefaultOfType<T>(this IEnumerable enumerable) => enumerable.OfType<T>().FirstOrDefault();
 	}
 }

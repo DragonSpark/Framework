@@ -52,7 +52,7 @@ namespace DragonSpark.Setup.Commands
 		{
 			Locator.Container.With( container =>
 			{
-				var assemblies = AssemblyProvider.GetAssemblies();
+				var assemblies = AssemblyProvider.Create();
 				var support = new EnsuredRegistrationSupport( container, assemblies );
 
 				new object[] { AssemblyProvider, MessageLogger, Location }.Each( support.Convention );

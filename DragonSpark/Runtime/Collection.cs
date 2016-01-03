@@ -2,10 +2,41 @@ using DragonSpark.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Markup;
 
 namespace DragonSpark.Runtime
 {
+	/// <summary>
+	/// ATTRIBUTION: http://stackoverflow.com/questions/2907372/why-does-c-sharp-not-implement-gethashcode-for-collections
+	/// </summary>
+	public class EqualityList : List<object>, IEquatable<EqualityList>
+	{
+		public EqualityList()
+		{}
+
+		public EqualityList( IEnumerable<object> collection ) : base( collection )
+		{}
+
+		/*.. most methods left out ..*/
+		public bool Equals( EqualityList other )//optional but a good idea almost always when we redefine equality
+		{
+			if ( other == null )
+				return false;
+			if ( ReferenceEquals( this, other ) )//identity still entails equality, so this is a good shortcut
+				return true;
+			if ( Count != other.Count )
+				return false;
+			for ( int i = 0; i != Count; ++i )
+				if ( this[i] != other[i] )
+					return false;
+			return true;
+		}
+		public override bool Equals( object other ) => Equals( other as EqualityList );
+
+		public override int GetHashCode() => this.Aggregate( 0x2D2816FE, ( current, item ) => current * 31 + ( item?.GetHashCode() ?? 0 ) );
+	}
+
 	public class Collection : Collection<object>
 	{
 	}

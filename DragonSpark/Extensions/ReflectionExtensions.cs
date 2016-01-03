@@ -1,11 +1,12 @@
 ﻿using Dynamitey;
 using System;
+using System.Linq;
 
 namespace DragonSpark.Extensions
 {
 	public static class ReflectionExtensions
 	{
-		/*public static object InvokeGeneric( this object @this, string methodName, params object[] parameters )
+		public static object InvokeGeneric( this object @this, string methodName, params object[] parameters )
 		{
 			var result = InvokeGeneric( @this, methodName, parameters.Select( x => x.GetType() ).ToArray(), parameters );
 			return result;
@@ -19,7 +20,7 @@ namespace DragonSpark.Extensions
 		static object Invoke( object @this, string methodName, Type[] types, object[] parameters )
 		{
 			return Dynamic.InvokeMember( @this, InvokeMemberName.Create( methodName, types ), parameters );
-		}*/
+		}
 
 		public static void InvokeGenericAction( this object @this, string methodName, Type[] types, params object[] parameters )
 		{

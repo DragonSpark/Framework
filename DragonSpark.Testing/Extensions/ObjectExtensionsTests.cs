@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using DragonSpark.TypeSystem;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
@@ -161,12 +162,20 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		void DetermineDefault()
 		{
-			var item = ObjectExtensions.DetermineDefault<IEnumerable<object>>();
+			var item = Default<IEnumerable<object>>.Item;
 			Assert.IsType<object[]>( item );
 			Assert.Empty( item );
+			Assert.Same( item, Default<IEnumerable<object>>.Item );
+			Assert.Same( Enumerable.Empty<object>(), Enumerable.Empty<object>() );
+			var objects = Default<object>.Items;
+			Assert.Same( item, objects );
 
-			Assert.Null( ObjectExtensions.DetermineDefault<object>() );
-			Assert.Null( ObjectExtensions.DetermineDefault<Generic<object>>() );
+			var ints = Default<int>.Items;
+			Assert.Empty( ints );
+			Assert.Same( ints, Default<int>.Items );
+
+			Assert.Null( Default<object>.Item );
+			Assert.Null( Default<Generic<object>>.Item );
 		}
 
 		[Theory, AutoData]

@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Testing.TestObjects
 	{
 		public static AssemblyProvider Instance { get; } = new AssemblyProvider();
 
-		protected override Assembly[] DetermineAll()
+		protected override Assembly[] CreateItem()
 		{
 			var result = Assembly.GetExecutingAssembly().Append( new[] { typeof(AssemblyProviderBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).ToArray();
 			return result;

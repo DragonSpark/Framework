@@ -49,7 +49,7 @@ namespace DragonSpark.Modularity
 
 		protected virtual IEnumerable<Assembly> GetAssemblies()
 		{
-			var result = provider.GetAssemblies();
+			var result = provider.Create();
 			return result;
 		}
 	}

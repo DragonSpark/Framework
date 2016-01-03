@@ -175,6 +175,7 @@
     <Compile Include="Properties\ResourcesTests.cs" />
     <Compile Include="Runtime\CollectionTests.cs" />
     <Compile Include="Runtime\CompositeCommandTests.cs" />
+    <Compile Include="Runtime\SerializerTests.cs" />
     <Compile Include="Runtime\ListDictionaryTests.cs" />
     <Compile Include="Runtime\Specifications\AllSpecificationTests.cs" />
     <Compile Include="Runtime\Specifications\EqualityContextAwareSpecificationTests.cs" />
@@ -199,7 +200,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TypeSystem\FilteredAssemblyProviderBaseTests.cs" />
+    <Compile Include="TypeSystem\ApplicationAssemblyTransformerTests.cs" />
     <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
   </ItemGroup>

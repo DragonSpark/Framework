@@ -1,13 +1,18 @@
 ﻿using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
 		readonly static ConcurrentDictionary<Type, TypeAdapter> Extensions = new ConcurrentDictionary<Type, TypeAdapter>();
+
+		public static Assembly[] Assemblies( [Required] this IEnumerable<Type> @this ) => @this.Select( x => x.Assembly() ).ToArray();
 
 		public static TypeAdapter Adapt( this object @this )
 		{
@@ -28,13 +33,5 @@ namespace DragonSpark.Extensions
 		{
 			return Adapt( @this ).Assembly;
 		}
-
-		/*
-		static readonly IDictionary<Type,Type[]> KnownTypeCache = new Dictionary<Type, Type[]>();
-		public static Type[] GetKnownTypes( this Type target )
-		{
-			var result = KnownTypeCache.Ensure( target, x => Services.With<IAssembliesProvider, Type[]>( y => y.GetAssemblies().SelectMany( z => z.DefinedTypes ).Where( z => z.IsSubclassOf( x ) && x.Namespace != "System.Data.Entity.DynamicProxies" ).ToArray() ) );
-			return result;
-		}*/
 	}
 }

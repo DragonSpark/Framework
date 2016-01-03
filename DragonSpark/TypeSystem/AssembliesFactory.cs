@@ -16,7 +16,7 @@ namespace DragonSpark.TypeSystem
 
 		protected override Assembly[] CreateItem()
 		{
-			return provider.GetAssemblies();
+			return provider.Create();
 		}
 	}
 }

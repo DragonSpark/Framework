@@ -10,6 +10,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		public static CurrentExecution Instance { get; } = new CurrentExecution();
 	}
 
+	// TODO: See if this is fixed with Shadow Copying.
 	[Serializable]
 	public class MethodContext
 	{

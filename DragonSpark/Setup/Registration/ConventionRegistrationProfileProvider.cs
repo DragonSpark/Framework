@@ -28,7 +28,7 @@ namespace DragonSpark.Setup.Registration
 
 		protected virtual Assembly[] DetermineAssemblies()
 		{
-			var result = provider.GetAssemblies().Prioritize().ToArray();
+			var result = provider.Create().Prioritize().ToArray();
 			return result;
 		}
 
