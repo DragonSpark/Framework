@@ -5,9 +5,9 @@ using DragonSpark.Testing.Framework.Setup;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Advices;
 using PostSharp.Extensibility;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
-using PostSharp.Patterns.Contracts;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework
@@ -59,10 +59,7 @@ namespace DragonSpark.Testing.Framework
 			parameter();
 		}
 
-		public void Dispose()
-		{
-			data.Items.Each( aware => aware.After( data ) );
-		}
+		public void Dispose() => data.Items.Each( aware => aware.After( data ) );
 	}
 
 	public class AssignExecutionContextCommand : Command<MethodBase>, IDisposable
@@ -77,15 +74,9 @@ namespace DragonSpark.Testing.Framework
 			this.context = context;
 		}
 
-		protected override void OnExecute( MethodBase parameter )
-		{
-			context.Assign( MethodContext.Get( parameter ) );
-		}
+		protected override void OnExecute( MethodBase parameter ) => context.Assign( MethodContext.Get( parameter ) );
 
-		public void Dispose()
-		{
-			context.Assign( null );
-		}
+		public void Dispose() => context.Assign( null );
 	}
 
 	// [AssignExecution( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]

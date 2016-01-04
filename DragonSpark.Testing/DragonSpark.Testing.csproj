@@ -150,6 +150,7 @@
     <Compile Include="Aspects\CacheAttributeTests.cs" />
     <Compile Include="Aspects\CacheKeyFactoryTests.cs" />
     <Compile Include="Aspects\OfTypeAttributeTests.cs" />
+    <Compile Include="Aspects\SimpleAspectTests.cs" />
     <Compile Include="ComponentModel\AttributeProviderTests.cs">
       <SubType>Code</SubType>
     </Compile>

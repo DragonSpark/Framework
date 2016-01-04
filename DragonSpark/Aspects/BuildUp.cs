@@ -9,7 +9,7 @@ using System.Reflection;
 namespace DragonSpark.Aspects
 {
 	[PSerializable, AttributeUsage( AttributeTargets.Method | AttributeTargets.Class ), LinesOfCodeAvoided( 1 )]
-	public class BuildUp : Attribute, IAspectProvider
+	public sealed class BuildUp : Attribute, IAspectProvider
 	{
 		public IEnumerable<AspectInstance> ProvideAspects( object targetElement )
 		{
@@ -23,9 +23,9 @@ namespace DragonSpark.Aspects
 	}
 
 	[PSerializable, AttributeUsage( AttributeTargets.Method )]
-	public class BuildUpMethodBoundaryAspect : OnMethodBoundaryAspect
+	public sealed class BuildUpMethodBoundaryAspect : OnMethodBoundaryAspect
 	{
-		public sealed override void OnEntry( MethodExecutionArgs args )
+		public override void OnEntry( MethodExecutionArgs args )
 		{
 			base.OnEntry( args );
 

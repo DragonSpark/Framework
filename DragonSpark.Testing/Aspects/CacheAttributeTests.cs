@@ -1,11 +1,42 @@
-﻿using DragonSpark.Aspects;
+﻿using System;
+using DragonSpark.Aspects;
+using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture.Xunit2;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects
 {
 	public class CacheAttributeTests
 	{
+		[Fact]
+		public void ProviderCached()
+		{
+			var sut = new Provider();
+
+			sut.Create();
+			Assert.Equal( 1, sut.Count );
+			sut.Create();
+			Assert.Equal( 1, sut.Count );
+
+			Assert.Equal( 2, sut.Cached );
+			Assert.Equal( 2, sut.Cached );
+		}
+
+		public class Provider : AssemblyProviderBase
+		{
+			public int Count { get; private set; }
+
+			[Cache]
+			public int Cached => ++Count;
+
+			protected override Assembly[] CreateItem()
+			{
+				Count++;
+				return new Assembly[0];
+			}
+		}
+
 		[Theory, AutoData]
 		public void BasicCache( CacheItem sut )
 		{
