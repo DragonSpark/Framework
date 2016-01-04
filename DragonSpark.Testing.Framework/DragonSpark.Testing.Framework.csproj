@@ -39,6 +39,9 @@
     <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
     <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
+	<PropertyGroup>
+		<PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
+	</PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>

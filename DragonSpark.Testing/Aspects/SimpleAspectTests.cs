@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Aspects
 			{}
 		}
 
-		[Serializable]
+		[Serializable, LinesOfCodeAvoided( 1 )]
 		public class MethodInterceptor : MethodInterceptionAspect
 		{
 			class InvocationFactory
