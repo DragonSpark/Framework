@@ -1,5 +1,4 @@
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
 using System.Collections.Generic;
@@ -9,28 +8,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public static class Default<T>
-	{
-		public static T Item => DefaultFactory<T>.Instance.Create();
-		public static T[] Items => DefaultFactory<T[]>.Instance.Create();
-	}
-
-	public class DefaultFactory<T> : FactoryBase<T>
-	{
-		public static DefaultFactory<T> Instance { get; } = new DefaultFactory<T>();
-
-		[Cache]
-		protected override T CreateItem()
-		{
-			var adapter = typeof(T).Adapt();
-			var type = adapter.GetEnumerableType();
-			var value = type != null ? typeof(Enumerable).InvokeGeneric( nameof(Enumerable.Empty), type.ToItem() ) : adapter.GetDefaultValue();
-			var result = value.To<T>();
-			return result;
-		}
-	}
-
-	public class ApplicationAssemblyTransformer : FactoryBase<Assembly[], Assembly[]>
+	public class ApplicationAssemblyTransformer : TransformerBase<Assembly[]>
 	{
 		public static ApplicationAssemblyTransformer Instance { get; } = new ApplicationAssemblyTransformer();
 

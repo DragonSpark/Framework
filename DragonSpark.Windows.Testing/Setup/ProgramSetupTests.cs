@@ -15,7 +15,7 @@ namespace DragonSpark.Windows.Testing.Setup
 	[AssignExecution]
 	public class ProgramSetupTests
 	{
-		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		[Theory, ProgramSetup.AutoData]
 		public void Extension( [Located] SetupParameter sut )
 		{
 			var collection = new Items( sut ).Item;
@@ -28,20 +28,20 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.NotNull( command );
 		}
 
-		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		[Theory, ProgramSetup.AutoData]
 		public void Type( IUnityContainer sut )
 		{
 			Assert.IsType<SomeTypeist>( sut.Resolve<ITyper>() );
 		}
 
-		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		[Theory, ProgramSetup.AutoData]
 		public void Run( [Located]Program sut )
 		{
 			Assert.True( sut.Ran, "Didn't Run" );
 			Assert.Equal( GetType().GetMethod( nameof(Run) ), sut.Arguments.Method );
 		}
 
-		[Theory, Test, SetupAutoData( typeof(ProgramSetup) )]
+		[Theory, ProgramSetup.AutoData]
 		public void SetupModuleCommand( [Located] SetupParameter parameter, [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
 		{
 			var added = new Items( module ).Item.FirstOrDefaultOfType<SomeCommand>();
@@ -52,15 +52,13 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 	}
 
-
-
-	public class Program : Program<SetupAutoDataParameter>
+	public class Program : Program<SetupAutoData>
 	{
 		public bool Ran { get; private set; }
 
-		public SetupAutoDataParameter Arguments { get; private set; }
+		public SetupAutoData Arguments { get; private set; }
 
-		protected override void Run( SetupAutoDataParameter arguments )
+		protected override void Run( SetupAutoData arguments )
 		{
 			Ran = true;
 			Arguments = arguments;
@@ -74,10 +72,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 	public class SomeCommand : ModuleCommand
 	{
-		protected override void OnExecute( IMonitoredModule parameter )
-		{
-			new Items( parameter ).Item.Add( this );
-		}
+		protected override void OnExecute( IMonitoredModule parameter ) => new Items( parameter ).Item.Add( this );
 	}
 
 	public class MonitoredModule : MonitoredModule<MonitoredModule.Command>
@@ -113,10 +108,7 @@ namespace DragonSpark.Windows.Testing.Setup
 				this.setup = setup;
 			}
 
-			protected override void OnExecute( IMonitoredModule parameter )
-			{
-				new Items( setup ).Item.Add( this );
-			}
+			protected override void OnExecute( IMonitoredModule parameter ) => new Items( setup ).Item.Add( this );
 		}
 	}
 }

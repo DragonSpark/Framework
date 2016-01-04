@@ -13,13 +13,13 @@ namespace DragonSpark.Windows.Testing.Setup
 		public UnitySetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
+		[Theory, UnitySetup.AutoData]
 		public void Extension( [Located]IUnityContainer sut )
 		{
 			Assert.NotNull( sut.Configure<TestExtension>() );
 		}
 
-		[Theory, Test, SetupAutoData( typeof( UnitySetup ) )]
+		[Theory, UnitySetup.AutoData]
 		public void RegisteredName( [Located]IUnityContainer sut )
 		{
 			Assert.NotNull( sut.Resolve<Singleton>( "SomeName" ) );

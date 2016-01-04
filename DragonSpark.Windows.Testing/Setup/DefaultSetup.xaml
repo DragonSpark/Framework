@@ -1,20 +1,18 @@
-﻿<setupCore:Setup x:Class="DragonSpark.Windows.Testing.Setup.DefaultSetup"
+﻿<localSetup:ApplicationSetup x:Class="DragonSpark.Windows.Testing.Setup.DefaultSetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:setupCore="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:registration="clr-namespace:DragonSpark.Setup.Registration;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
 	xmlns:autoMoq="clr-namespace:Ploeh.AutoFixture.AutoMoq;assembly=Ploeh.AutoFixture.AutoMoq"
-				 xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
+	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
-	xmlns:setup1="clr-namespace:DragonSpark.Windows.Testing.Setup"
+	xmlns:localSetup="clr-namespace:DragonSpark.Windows.Testing.Setup"
 	mc:Ignorable="d"
 >
-	<setup1:SetupApplicationCommand />
 	<commands:SetupUnityCommand />
 	<registration:RegisterFrameworkExceptionTypesCommand />
 	<ds:SetupRegistrationByConventionCommand />
@@ -24,9 +22,8 @@
 		<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 	</commands:ConfigureUnityCommand>
 	<setup:CustomizeFixtureCommand>
-		<location:ObjectBuilderCustomization />
 		<location:ServiceLocationCustomization />
 		<setup:OutputCustomization />
 		<autoMoq:AutoConfiguredMoqCustomization />
 	</setup:CustomizeFixtureCommand>
-</setupCore:Setup>
+</localSetup:ApplicationSetup>

@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class AppDomainValueTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Assign( AppDomainValue<int> sut, int number )
 		{
 			sut.Assign( number );

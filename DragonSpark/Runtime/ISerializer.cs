@@ -1,11 +1,5 @@
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
-using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
-using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Runtime
 {
@@ -56,23 +50,6 @@ namespace DragonSpark.Runtime
 												.With( stream => serializer.WriteObject( stream, item ) )
 												.With( stream => new StreamReader( stream ).ReadToEnd() );
 	}*/
-
-	public class KnownTypeFactory : FactoryBase<Type,Type[]>
-	{
-		readonly Assembly[] assemblies;
-
-		public KnownTypeFactory( Assembly[] assemblies )
-		{
-			this.assemblies = assemblies;
-		}
-
-		[Cache]
-		protected override Type[] CreateItem( Type parameter )
-		{
-			var result = assemblies.SelectMany( z => z.DefinedTypes ).Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" ).AsTypes().Fixed();
-			return result;
-		}
-	}
 
 	public static class SerializerExtensions
 	{

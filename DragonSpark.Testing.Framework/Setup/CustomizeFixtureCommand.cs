@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
@@ -7,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using PostSharp.Patterns.Contracts;
 using System.Windows.Markup;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -16,16 +18,15 @@ namespace DragonSpark.Testing.Framework.Setup
 		public Collection<ICustomization> Customizations { get; } = new Collection<ICustomization>();
 
 		[Activate, Required]
-		public IUnityContainer Container { [return: Required]get; set; }
+		public IUnityContainer Container { get; set; }
 		
-		protected override void OnExecute( ISetupParameter<SetupAutoDataParameter> parameter )
+		protected override void OnExecute( ISetupParameter<SetupAutoData> parameter )
 		{
 			var registration = Container.Registration<EnsuredRegistrationSupport>();
 			var setup = parameter.Arguments;
 			registration.Instance( setup.Fixture );
 			var customizations = new ICustomization[]
 			{
-				new CurrentMethodCustomization( setup.Method ),
 				new CompositeCustomization( Customizations ),
 				new MetadataCustomization( setup.Method )
 			};

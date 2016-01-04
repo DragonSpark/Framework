@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class EnumerableExtensionsTests
 	{
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Each( IEnumerable<object> sut )
 		{
 			var count = 0;
@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.Count(), count );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, Framework.Setup.ConfiguredMoqAutoData]
 		public void NullIfEmpty( IEnumerable<object> sut )
 		{
 			Assert.NotNull( sut.NullIfEmpty() );
@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Prepend( IEnumerable<object> sut, object[] items )
 		{
 			var prepended = sut.Prepend( items );
@@ -38,7 +38,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.True( items.All( x => prepended.Contains( x ) ) );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void PrependItem( object sut, IEnumerable<object> items )
 		{
 			var prepended = sut.Prepend( items );
@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Same( prepended.Last(), sut );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void EachWithFunc( IEnumerable<object> sut )
 		{
 			var copy = sut.ToList();
@@ -79,7 +79,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.IsType<LowPriority>( items.Last() );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void AsItem( object[] sut, object item )
 		{
 			var items = item.Append( sut );
@@ -90,7 +90,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Single( asItem, item );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void Adding( object[] sut, object item )
 		{
 			var items = sut.Append( item );
@@ -98,7 +98,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.First(), items.First() );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void TupleWith( Type[] types, string[] strings )
 		{
 			var tuple = types.TupleWith( strings ).ToList();
@@ -113,7 +113,7 @@ namespace DragonSpark.Testing.Extensions
 			} );
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void FirstOrDefaultOfType( Class first, ClassWithParameter second, string third, Derived fourth )
 		{
 			var items = new object[] { first, second, third, fourth };

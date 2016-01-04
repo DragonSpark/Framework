@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class ExceptionHandlerTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		void Process( ExceptionHandler sut, Exception error )
 		{
 			Assert.Throws<Exception>( () => sut.Process( error ) );

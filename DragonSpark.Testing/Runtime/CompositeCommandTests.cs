@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Runtime
 {
 	public class CompositeCommandTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		void Execute( Command command )
 		{
 			

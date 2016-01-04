@@ -177,9 +177,6 @@
     <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
     <Compile Include="Runtime\ExceptionFormatterTests.cs" />
     <Compile Include="Runtime\ThreadLocalValueTests.cs" />
-    <Compile Include="Setup\BasicSetup.cs">
-      <DependentUpon>BasicSetup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Setup\DefaultSetup.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
@@ -189,7 +186,7 @@
     <Compile Include="Setup\ProgramSetupTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
-    <Compile Include="Setup\SetupApplicationCommand.cs" />
+    <Compile Include="Setup\ApplicationSetup.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
     <Compile Include="Setup\SetupParameterTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
@@ -269,10 +266,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Setup\BasicSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Setup\DefaultSetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

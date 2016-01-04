@@ -6,7 +6,10 @@ namespace DragonSpark.Windows.Runtime
 	{
 		public static AssemblyProvider Instance { get; } = new AssemblyProvider();
 
-		public AssemblyProvider() : base( FileSystemAssemblyProvider.Instance.Create, ApplicationAssemblyTransformer.Instance.Create )
+		public AssemblyProvider() : this( FileSystemAssemblyProvider.Instance )
+		{}
+
+		public AssemblyProvider( IAssemblyProvider provider ) : base( provider.Create, ApplicationAssemblyTransformer.Instance.Create )
 		{}
 	}
 }

@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public class ModuleTypeLoaderTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Cover( ModuleInfo info, ModuleTypeLoaderExtended sut )
 		{
 			Assert.True( sut.CanLoadModuleType(info) );

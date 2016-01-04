@@ -2,6 +2,6 @@ using DragonSpark.Setup;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public abstract class SetupAutoDataCommandBase : SetupCommand<SetupAutoDataParameter>
+	public abstract class SetupAutoDataCommandBase : SetupCommand<SetupAutoData>
 	{}
 }

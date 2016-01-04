@@ -11,26 +11,23 @@ namespace DragonSpark.Runtime
 		public CompositeCommand()
 		{}
 
-		public CompositeCommand( IEnumerable<System.Windows.Input.ICommand> commands ) : base( commands )
+		public CompositeCommand( IEnumerable<ICommand> commands ) : base( commands )
 		{}
 	}
 
 	[ContentProperty( nameof(Commands) )]
 	public class CompositeCommand<TParameter> : Command<TParameter>
 	{
-		public CompositeCommand() : this( Enumerable.Empty<System.Windows.Input.ICommand>() )
+		public CompositeCommand() : this( Enumerable.Empty<ICommand>() )
 		{}
 
-		public CompositeCommand( IEnumerable<System.Windows.Input.ICommand> commands )
+		public CompositeCommand( IEnumerable<ICommand> commands )
 		{
 			Commands = new CommandCollection( commands );
 		}
 
 		public CommandCollection Commands { get; }
 
-		protected override void OnExecute( TParameter parameter )
-		{
-			 Commands.Apply<ICommand>( parameter );
-		}
+		protected override void OnExecute( TParameter parameter ) => Commands.Apply<ICommand>( parameter );
 	}
 }

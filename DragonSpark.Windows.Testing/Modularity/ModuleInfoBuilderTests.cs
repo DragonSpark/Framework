@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public class ModuleInfoBuilderTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Create( ModuleInfoBuilder sut )
 		{
 			var module = sut.CreateModuleInfo( typeof(Module) );

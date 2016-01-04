@@ -11,10 +11,7 @@ namespace DragonSpark.Windows.Runtime
 
 		readonly Guid? context;
 
-		public ExceptionFormatter() : this( null )
-		{}
-
-		public ExceptionFormatter( Guid? context )
+		public ExceptionFormatter( Guid? context = null )
 		{
 			this.context = context;
 		}

@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Runtime.Specifications
 {
 	public class EqualityContextAwareSpecificationTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, Framework.Setup.ConfiguredMoqAutoData]
 		public void Equal( [Frozen]object item, EqualityContextAwareSpecification sut )
 		{
 			Assert.True( sut.IsSatisfiedBy( item ) );

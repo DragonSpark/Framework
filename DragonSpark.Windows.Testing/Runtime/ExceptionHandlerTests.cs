@@ -13,8 +13,8 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ExceptionHandlerTests
 	{
-		[Theory, MoqAutoData]
-		public void Handle( [Factory, Frozen]ExceptionManager manager, [Modest]ExceptionHandler sut, Exception plain, InvalidOperationException invalid, ArgumentException argument, ArgumentOutOfRangeException outOfRange, ArgumentNullException argumentNull )
+		[Theory, ConfiguredMoqAutoData]
+		public void Handle( [Factory, Frozen]ExceptionManager manager, ExceptionHandler sut, Exception plain, InvalidOperationException invalid, ArgumentException argument, ArgumentOutOfRangeException outOfRange, ArgumentNullException argumentNull )
 		{
 			var first = sut.Handle( plain );
 			Assert.Same( plain, first.Exception );

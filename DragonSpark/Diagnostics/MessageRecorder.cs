@@ -13,25 +13,20 @@ namespace DragonSpark.Diagnostics
 
 	public class MessageLocator : FactoryBase<Message[]>, IMessageLocator
 	{
-		readonly IUnityContainer container;
-		readonly RecordingMessageLogger logger;
+		readonly IMessageRecorder[] recorders;
 
-		public MessageLocator( IUnityContainer container, RecordingMessageLogger logger )
+		public MessageLocator( IUnityContainer container, RecordingMessageLogger logger ) : this( container.DetermineLogger() as RecordingMessageLogger, logger )
+		{}
+
+		MessageLocator( params RecordingMessageLogger[] loggers ) : this( loggers.NotNull().Select( messageLogger => messageLogger.Recorder ).Distinct().ToArray() )
+		{}
+
+		MessageLocator( params IMessageRecorder[] recorders )
 		{
-			this.container = container;
-			this.logger = logger;
+			this.recorders = recorders;
 		}
 
-		protected override Message[] CreateItem()
-		{
-			var result = DetermineLoggers().NotNull().Select( messageLogger => messageLogger.Recorder ).Distinct().SelectMany( recorder => recorder.Messages ).ToArray();
-			return result;
-		}
-
-		protected virtual IEnumerable<RecordingMessageLogger> DetermineLoggers()
-		{
-			return new[] { container.DetermineLogger() as RecordingMessageLogger, logger };
-		}
+		protected override Message[] CreateItem() => recorders.SelectMany( recorder => recorder.Messages ).ToArray();
 	}
 
 	public class RecordingMessageLogger : MessageLoggerBase
@@ -49,10 +44,7 @@ namespace DragonSpark.Diagnostics
 
 		public IMessageRecorder Recorder { get; }
 
-		protected override void Write( Message message )
-		{
-			Recorder.Record( message );
-		}
+		protected override void Write( Message message ) => Recorder.Record( message );
 	}
 
 	public class MessageRecorder : IMessageRecorder
@@ -65,10 +57,7 @@ namespace DragonSpark.Diagnostics
 			messages = new ReadOnlyCollection<Message>( source );
 		}
 
-		public void Record( Message message )
-		{
-			source.Add( message );
-		}
+		public void Record( Message message ) => source.Add( message );
 
 		public IEnumerable<Message> Messages => messages;
 	}

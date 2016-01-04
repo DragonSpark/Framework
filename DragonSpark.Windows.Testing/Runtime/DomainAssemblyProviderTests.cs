@@ -8,7 +8,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class DomainAssemblyProviderTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void GetAssemblies( DomainAssemblyProvider sut )
 		{
 			var assemblies = sut.Create();

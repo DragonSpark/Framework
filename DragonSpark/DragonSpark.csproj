@@ -216,7 +216,10 @@
     <Compile Include="Runtime\Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Runtime\Specifications\SpecificationBase.cs" />
     <Compile Include="Runtime\Specifications\SpecificationExtensions.cs" />
+    <Compile Include="TypeSystem\Default.cs" />
+    <Compile Include="TypeSystem\DefaultFactory.cs" />
     <Compile Include="TypeSystem\HostingAttribute.cs" />
+    <Compile Include="TypeSystem\KnownTypeFactory.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
@@ -302,7 +305,7 @@
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
-    <Compile Include="Setup\Commands\SetupApplicationCommand.cs" />
+    <Compile Include="Setup\Commands\ApplicationSetup.cs" />
     <Compile Include="Runtime\CommandCollection.cs" />
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />

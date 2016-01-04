@@ -1,18 +1,18 @@
-using System;
-using System.Reflection;
 using DragonSpark.Activation;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Values;
-using DragonSpark.Testing.Framework.Extensions;
+using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit2;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Parameters
 {
 	public class AssignedAttribute : CustomizeAttribute
 	{
-		class Customization : ICustomization
+		class Customization : CustomizationBase
 		{
 			readonly Type type;
 
@@ -21,20 +21,16 @@ namespace DragonSpark.Testing.Framework.Parameters
 				this.type = type;
 			}
 
-			public void Customize( IFixture fixture )
+			[Activate]
+			IServiceLocation Location { get; set; }
+
+			protected override void Customize( IFixture fixture )
 			{
-				fixture.TryCreate<IServiceLocator>( type ).With( locator =>
-				{
-					var location = fixture.Create<IServiceLocation>();
-					location.Assign( locator );
-				});
+				var serviceLocator = fixture.Create<IServiceLocator>( type );
+				serviceLocator.With( Location.Assign );
 			}
 		}
 
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var result = new Customization( parameter.ParameterType );
-			return result;
-		}
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new Customization( parameter.ParameterType );
 	}
 }

@@ -1,11 +1,11 @@
-using System;
-using DragonSpark.Testing.Framework.Extensions;
+using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Ploeh.AutoFixture;
+using System;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class ConfigureLocationCustomization : ICustomization
+	public class ConfigureLocationCustomization : CustomizationBase
 	{
 		readonly Type locationType;
 		readonly bool enabled;
@@ -16,9 +16,12 @@ namespace DragonSpark.Testing.Framework.Setup
 			this.enabled = enabled;
 		}
 
-		public void Customize( IFixture fixture )
+		[Activate]
+		IServiceLocationAuthority Authority { get; set; }
+
+		protected override void Customize( IFixture fixture )
 		{
-			fixture.Item<ServiceLocationCustomization>().Authority.Register( locationType, enabled );
+			Authority.Register( locationType, enabled );
 		}
 	}
 }

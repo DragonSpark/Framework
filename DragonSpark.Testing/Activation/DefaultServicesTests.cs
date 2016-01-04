@@ -1,6 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 using Xunit.Abstractions;
 using ServiceLocation = DragonSpark.Activation.ServiceLocation;
@@ -14,7 +15,7 @@ namespace DragonSpark.Testing.Activation
 		public DefaultServicesTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Fact]
+		[Theory, AutoData]
 		public void IsAvailable()
 		{
 			var sut = Services.Location;

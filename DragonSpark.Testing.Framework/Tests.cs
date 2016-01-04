@@ -1,12 +1,13 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup;
-using Ploeh.AutoFixture;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Advices;
 using PostSharp.Extensibility;
 using System;
 using System.Reflection;
+using PostSharp.Patterns.Contracts;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework
@@ -17,9 +18,9 @@ namespace DragonSpark.Testing.Framework
 		{}
 	}
 
-	public class AssociatedFixture : AssociatedValue<MethodBase, IFixture>
+	public class AssociatedSetup : AssociatedValue<object, SetupAutoData>
 	{
-		public AssociatedFixture( MethodBase instance ) : base( instance )
+		public AssociatedSetup( object instance ) : base( instance )
 		{}
 	}
 
@@ -29,24 +30,56 @@ namespace DragonSpark.Testing.Framework
 		[OnMethodInvokeAdvice, MulticastPointcut( Attributes = MulticastAttributes.Instance, Targets = MulticastTargets.Method )]
 		public void OnInvoke( MethodInterceptionArgs args )
 		{
-			using ( new ExecutionContext( args.Method ) )
+			using ( var command = new AssignExecutionContextCommand() )
 			{
-				args.Proceed();
+				command.Execute( args.Method );
+				using ( var setup = new SetupExecution( args.Method ) )
+				{
+					setup.Execute( args.Proceed );
+				}
 			}
 		}
 	}
 
-	public class ExecutionContext : IDisposable
+	public class SetupExecution : Command<Action>, IDisposable
+	{
+		readonly SetupAutoData data;
+
+		public SetupExecution( MethodBase method ) : this( new AssociatedSetup( method ).Item )
+		{}
+
+		public SetupExecution( [Required]SetupAutoData data )
+		{
+			this.data = data;
+		}
+
+		protected override void OnExecute( Action parameter )
+		{
+			data.Items.Each( aware => aware.Before( data ) );
+			parameter();
+		}
+
+		public void Dispose()
+		{
+			data.Items.Each( aware => aware.After( data ) );
+		}
+	}
+
+	public class AssignExecutionContextCommand : Command<MethodBase>, IDisposable
 	{
 		readonly IWritableValue<Tuple<string>> context;
 
-		public ExecutionContext( MethodBase info ) : this( CurrentExecution.Instance, info )
+		public AssignExecutionContextCommand() : this( CurrentExecution.Instance )
 		{}
 
-		public ExecutionContext( IWritableValue<Tuple<string>> context, MethodBase info )
+		public AssignExecutionContextCommand( IWritableValue<Tuple<string>> context )
 		{
 			this.context = context;
-			context.Assign( MethodContext.Get( info ) );
+		}
+
+		protected override void OnExecute( MethodBase parameter )
+		{
+			context.Assign( MethodContext.Get( parameter ) );
 		}
 
 		public void Dispose()
@@ -55,6 +88,7 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
+	// [AssignExecution( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
 	public abstract class Tests : IDisposable
 	{
 		protected Tests( ITestOutputHelper output )

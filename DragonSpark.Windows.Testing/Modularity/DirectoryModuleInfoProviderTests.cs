@@ -10,7 +10,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public class DirectoryModuleInfoProviderTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Cover()
 		{
 			using ( new DirectoryModuleInfoProvider( ModuleInfoBuilder.Instance, new[] { "Notexists.dll" }, "." ) )
@@ -20,7 +20,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 			}
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void NotExist( RemoteModuleInfoProviderFactory sut )
 		{
 			using ( var provider = sut.Create( new LoadRemoteModuleInfoParameter( new[] { typeof( IModule ).Assembly.Location }, DirectoryModuleCatalogTests.InvalidModulesDirectory ) ) )

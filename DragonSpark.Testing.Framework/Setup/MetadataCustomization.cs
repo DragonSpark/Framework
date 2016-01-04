@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public class MetadataCustomization : CompositeCustomization
 	{
-		public MetadataCustomization( MethodInfo methodUnderTest ) : base( MetadataCustomizationFactory.Instance.Create( methodUnderTest ) )
+		public MetadataCustomization( MethodBase methodUnderTest ) : base( MetadataCustomizationFactory.Instance.Create( methodUnderTest ) )
 		{}
 	}
 }

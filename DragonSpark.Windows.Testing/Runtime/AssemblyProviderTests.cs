@@ -8,7 +8,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class AssemblyProviderTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Assemblies( AssemblyProvider sut )
 		{
 			Assert.NotEqual( sut, AssemblyProvider.Instance );

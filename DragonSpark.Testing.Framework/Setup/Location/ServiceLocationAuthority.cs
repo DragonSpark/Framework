@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-using DragonSpark.Testing.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -11,9 +10,6 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		readonly IFixture fixture;
 		readonly IServiceLocator locator;
 		readonly ICollection<Type> blacklist = new List<Type>();
-
-		public ServiceLocationAuthority( IFixture fixture ) : this( fixture, fixture.GetLocator() )
-		{}
 
 		public ServiceLocationAuthority( IFixture fixture, IServiceLocator locator )
 		{
@@ -33,10 +29,6 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 			}
 		}
 
-		public bool IsAllowed( Type type )
-		{
-			var result = !blacklist.Contains( type );
-			return result;
-		}
+		public bool IsAllowed( Type type ) => !blacklist.Contains( type );
 	}
 }

@@ -1,11 +1,15 @@
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Extensions;
+using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.ServiceLocation;
 using Moq;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Kernel;
 using Ploeh.AutoFixture.Xunit2;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -23,10 +27,7 @@ namespace DragonSpark.Testing.Framework
 				this.parameter = parameter;
 			}
 
-			public void Customize( IFixture fixture )
-			{
-				new FixtureRegistry( fixture ).RegisterFactory( parameter.ParameterType, Create );
-			}
+			public void Customize( IFixture fixture ) => new FixtureRegistry( fixture ).RegisterFactory( parameter.ParameterType, Create );
 
 			object Create()
 			{
@@ -36,35 +37,33 @@ namespace DragonSpark.Testing.Framework
 			}
 		}
 
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			return new Customization( parameter );
-		}
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new Customization( parameter );
+	}
+
+	public static class FixtureExtensions
+	{
+		public static T Create<T>( this IFixture @this, Type type ) => (T)new SpecimenContext( @this ).Resolve( type );
 	}
 
 	public class RegisteredAttribute : CustomizeAttribute
 	{
-		class Customization : ICustomization
+		class Customization : CustomizationBase
 		{
-			readonly Type serviceLocationType;
+			readonly Type serviceLocatorType;
 			readonly Type registrationType;
 
-			public Customization( Type serviceLocationType, Type registrationType )
+			public Customization( [Required, OfType( typeof(IServiceLocator) )]Type serviceLocatorType, [Required]Type registrationType )
 			{
-				this.serviceLocationType = serviceLocationType;
+				this.serviceLocatorType = serviceLocatorType;
 				this.registrationType = registrationType;
 			}
 
-			public void Customize( IFixture fixture )
+			protected override void Customize( IFixture fixture )
 			{
-				fixture.TryCreate<IServiceLocator>( serviceLocationType ).With( locator =>
-				{
-					fixture.TryCreate<object>( registrationType ).With( x => Register( locator, x ) );
-				} );
-			}
+				new FreezingCustomization( registrationType ).Customize( fixture );
 
-			void Register( IServiceLocator locator, object instance )
-			{
+				var locator = fixture.Create<IServiceLocator>( serviceLocatorType );
+				var instance = fixture.Create<object>( registrationType );
 				var item = instance.AsTo<Mock, object>( mock => mock.Object ) ?? instance;
 				var type = instance is Mock ? registrationType.Adapt().GetInnerType() : registrationType;
 				locator.Register( type, item );
@@ -74,7 +73,6 @@ namespace DragonSpark.Testing.Framework
 		public override ICustomization GetCustomization( ParameterInfo parameter )
 		{
 			var serviceLocatorType = parameter.Member.AsTo<MethodInfo, Type>( x => x.GetParameters().Select( info => info.ParameterType ).FirstOrDefault( typeof(IServiceLocator).IsAssignableFrom ) ) ?? typeof(IServiceLocator);
-
 			var result = new Customization( serviceLocatorType, parameter.ParameterType );
 			return result;
 		}

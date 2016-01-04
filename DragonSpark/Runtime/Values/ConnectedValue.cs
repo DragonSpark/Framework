@@ -38,6 +38,11 @@ namespace DragonSpark.Runtime.Values
 		public static string Key( object item ) => $"{typeof( T )}-{item.GetHashCode()}";
 	}
 
+	public class AssociatedValue<T> : AssociatedValue<object, T>
+	{
+		public AssociatedValue( object instance ) : base( instance )
+		{}
+	}
 
 	public class AssociatedValue<T, U> : ConnectedValue<U>
 	{
@@ -53,7 +58,7 @@ namespace DragonSpark.Runtime.Values
 
 	public class Items<T> : ConnectedValue<IList<T>>
 	{
-		public Items( object instance ) : base( instance, typeof( Items<T> ), () => new List<T>() )
+		public Items( object instance ) : base( instance, typeof(Items<T>), () => new List<T>() )
 		{ }
 	}
 }

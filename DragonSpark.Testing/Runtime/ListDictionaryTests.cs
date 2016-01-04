@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Runtime
 {
 	public class ListDictionaryTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Cover( Guid key, string one, string two, ListDictionary<Guid, string> sut )
 		{
 			sut.Add( key, one );

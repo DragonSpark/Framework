@@ -25,26 +25,8 @@ namespace DragonSpark.Setup.Commands
 			MessageLogger.Information( Resources.LoadingModules, Priority.Low );
 			parameter.Monitor( Monitor.Load().ContinueWith( task =>
 			{
-				var temp = parameter;
 				MessageLogger.Information( Resources.ModulesLoaded, Priority.Low );
 			} ) );
 		}
-
-		/*static IModuleManager Resolve( IUnityContainer container )
-		{
-			try
-			{
-				return container.Resolve<IModuleManager>();
-			}
-			catch ( ResolutionFailedException ex )
-			{
-				if ( ex.Message.Contains( nameof(IModuleCatalog) ) )
-				{
-					throw new InvalidOperationException( Resources.NullModuleCatalogException );
-				}
-
-				throw;
-			}
-		}*/
 	}
 }

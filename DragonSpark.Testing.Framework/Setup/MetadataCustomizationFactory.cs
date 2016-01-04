@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class MetadataCustomizationFactory : FactoryBase<MethodInfo, ICustomization[]>
+	public class MetadataCustomizationFactory : FactoryBase<MethodBase, ICustomization[]>
 	{
 		public static MetadataCustomizationFactory Instance { get; } = new MetadataCustomizationFactory();
 
-		protected override ICustomization[] CreateItem( MethodInfo parameter )
+		protected override ICustomization[] CreateItem( MethodBase parameter )
 		{
 			var type = parameter.DeclaringType;
 			var items = type.With( t => t.Assembly.GetCustomAttributes() )

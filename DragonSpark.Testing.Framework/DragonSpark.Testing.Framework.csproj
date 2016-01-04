@@ -155,10 +155,10 @@
   <ItemGroup>
     <Compile Include="Initialize.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
-    <Compile Include="Setup\CurrentMethodCustomization.cs" />
     <Compile Include="Setup\Execution.cs" />
+    <Compile Include="Setup\ConfiguredMoqAutoDataAttribute.cs" />
     <Compile Include="Setup\ResourceConfigurationFactory.cs" />
-    <Compile Include="Setup\SetupApplicationCommand.cs" />
+    <Compile Include="Setup\ApplicationSetup.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
     <Compile Include="Setup\CanLocateSpecification.cs" />
     <Compile Include="Setup\ConfigureLocationCustomization.cs" />
@@ -167,7 +167,6 @@
     <Compile Include="Setup\Location\IServiceLocationAuthority.cs" />
     <Compile Include="Setup\LocateTypeSpecification.cs" />
     <Compile Include="Setup\MetadataCustomization.cs" />
-    <Compile Include="Extensions\FixtureExtensions.cs" />
     <Compile Include="Parameters\FromCustomization.cs" />
     <Compile Include="Setup\SetupEngineParts.cs" />
     <Compile Include="ITestExecutionAware.cs" />
@@ -180,7 +179,7 @@
     <Compile Include="Setup\AssignedLogical.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setup\SetupAutoDataAttribute.cs" />
+    <Compile Include="Setup\AutoDataAttribute.cs" />
     <Compile Include="Parameters\FreezeAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -194,8 +193,7 @@
     <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />
     <Compile Include="Parameters\LocatedAttribute.cs" />
     <Compile Include="Setup\SetupAutoDataCommandBase.cs" />
-    <Compile Include="Setup\SetupAutoDataParameter.cs" />
-    <Compile Include="TestAttribute.cs" />
+    <Compile Include="Setup\SetupAutoData.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>

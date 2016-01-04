@@ -1,12 +1,13 @@
 using System.Reflection;
+using DragonSpark.Testing.Framework.Setup;
 using Ploeh.AutoFixture;
 
 namespace DragonSpark.Testing.Framework
 {
 	public interface ITestExecutionAware
 	{
-		void Before( IFixture fixture, MethodInfo methodUnderTest );
+		void Before( SetupAutoData context );
 
-		void After( IFixture fixture, MethodInfo methodUnderTest );
+		void After( SetupAutoData context );
 	}
 }

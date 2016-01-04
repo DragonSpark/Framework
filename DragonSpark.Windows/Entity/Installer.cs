@@ -5,7 +5,7 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Entity
 {
-	[ContentProperty( "Steps" )]
+	[ContentProperty( nameof(Steps) )]
 	public abstract class Installer : IInstaller
 	{
 		public Guid Id { get; set; }

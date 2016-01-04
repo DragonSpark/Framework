@@ -11,17 +11,17 @@ using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class SetupApplicationCommandBase<TLocator, TLogger, TArguments> : SetupCommand<TArguments>
+	public abstract class ApplicationSetupBase<TLocator, TLogger, TArguments> : Setup<ISetupParameter<TArguments>>
 		where TLocator : IServiceLocator
 		where TLogger : IMessageLogger 
 	{
-		[ComponentModel.Singleton( typeof(ServiceLocation) )]
+		[ComponentModel.Singleton]
 		public IServiceLocation Location { get; set; }
 
 		public abstract TLocator Locator { get; set; }
 
-		[Required( /*ErrorMessage = Resources.NullLoggerFacadeException*/ ), ComponentModel.Singleton, Activate]
-		public TLogger MessageLogger { [return: NotNull] get; set; }
+		[Required, ComponentModel.Singleton, Activate]
+		public TLogger MessageLogger { get; set; }
 
 		protected override void OnExecute( ISetupParameter<TArguments> parameter )
 		{
@@ -30,15 +30,17 @@ namespace DragonSpark.Setup.Commands
 			MessageLogger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
 			
 			Location.Assign( Locator );
+
+			base.OnExecute( parameter );
 		}
 	}
 
-	public class SetupApplicationCommand<TLogger, TAssemblyProvider> : SetupApplicationCommand<TLogger, TAssemblyProvider, object>
+	public class ApplicationSetup<TLogger, TAssemblyProvider> : ApplicationSetup<TLogger, TAssemblyProvider, object>
 		where TLogger : IMessageLogger
 		where TAssemblyProvider : IAssemblyProvider
 	{}
 
-	public class SetupApplicationCommand<TLogger, TAssemblyProvider, TArguments> : SetupApplicationCommandBase<ServiceLocator, TLogger, TArguments> 
+	public class ApplicationSetup<TLogger, TAssemblyProvider, TArguments> : ApplicationSetupBase<ServiceLocator, TLogger, TArguments> 
 		where TLogger : IMessageLogger
 		where TAssemblyProvider : IAssemblyProvider
 	{
@@ -46,7 +48,7 @@ namespace DragonSpark.Setup.Commands
 		public override ServiceLocator Locator { get; set; }
 
 		[Required, ComponentModel.Singleton, Activate]
-		public TAssemblyProvider AssemblyProvider { [return: NotNull] get; set; }
+		public TAssemblyProvider AssemblyProvider { get; set; }
 
 		protected override void OnExecute( ISetupParameter<TArguments> parameter )
 		{

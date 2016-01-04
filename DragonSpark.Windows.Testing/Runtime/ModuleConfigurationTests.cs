@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ModuleConfigurationTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Load( ModulesConfiguration sut )
 		{
 			var section = new ModulesConfigurationSectionFactory( sut ).Create();

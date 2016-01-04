@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Extensions
 {
 	public class UnityContainerExtensionsTests
 	{
-		[Theory, Test, AutoData]
+		[Theory, AutoData]
 		public void TryResolve( UnityContainer sut )
 		{
 			var messages = sut.DetermineLogger().AsTo<RecordingMessageLogger, IEnumerable<Message>>( logger => logger.Recorder.Messages );

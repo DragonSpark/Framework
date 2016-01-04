@@ -1,6 +1,7 @@
 using DragonSpark.Activation;
 using Ploeh.AutoFixture;
 using System;
+using DragonSpark.Testing.Framework.Setup.Location;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -22,14 +23,8 @@ namespace DragonSpark.Testing.Framework
 
 		void ICustomization.Customize( IFixture fixture )
 		{
-			var registry = DetermineRegistry( fixture );
+			var registry = new FixtureRegistry( fixture );
 			Customize( fixture, registry );
-		}
-
-		protected virtual IServiceRegistry DetermineRegistry( IFixture fixture )
-		{
-			var result = fixture.Create<IServiceRegistry>();
-			return result;
 		}
 
 		protected abstract void Customize( IFixture fixture, IServiceRegistry registry );

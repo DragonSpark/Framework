@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class CompositeMessageLoggerTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Information( IMessageLogger sut, IMessageLogger other, string message, Priority priority )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Information( message, priority ) ) );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Warning( IMessageLogger sut, IMessageLogger other, string message, Priority priority )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Warning( message, priority ) ) );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Exception( IMessageLogger sut, IMessageLogger other, string message, Exception error )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Exception( message, error ) ) );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Fatal( IMessageLogger sut, IMessageLogger other, string message, Exception error )
 		{
 			var composite = new CompositeMessageLogger( sut, other );

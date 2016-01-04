@@ -285,7 +285,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 			Assert.True(dependantModules.IndexOf(moduleC) < dependantModules.IndexOf(moduleX));
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Load( ModuleCatalog sut )
 		{
 			sut.Load();

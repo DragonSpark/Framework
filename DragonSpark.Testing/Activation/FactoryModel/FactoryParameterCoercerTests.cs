@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 {
 	public class FactoryParameterCoercerTests
 	{
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void Parameter( FactoryParameterCoercer<IntegerParameter> sut, int item )
 		{
 			var parameter = sut.Coerce( item );
@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 			
 		}
 
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void ConstructParameter( FactoryParameterCoercer<ConstructParameter> sut, Type item )
 		{
 			var parameter = sut.Coerce( item );
@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 			Assert.Equal( parameter.Type, item );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, Framework.Setup.ConfiguredMoqAutoData]
 		public void Fixed( [Frozen]Guid guid, [Greedy]FixedFactoryParameterCoercer<Guid> sut, object parameter )
 		{
 			var result = sut.Coerce( parameter );

@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class TaskLocalValueTests
 	{
-		[Theory, MoqAutoData]
+		[Theory, ConfiguredMoqAutoData]
 		public void Assign( int number, TaskLocalValue<int> sut )
 		{
 			sut.Assign( number );

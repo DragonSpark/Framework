@@ -4,6 +4,6 @@ using DragonSpark.Windows.Testing.TestObjects;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	public class SetupApplicationCommand : SetupApplicationCommand<RecordingMessageLogger, AssemblyProvider>
+	public class ApplicationSetup : ApplicationSetup<RecordingMessageLogger, AssemblyProvider>
 	{}
 }
