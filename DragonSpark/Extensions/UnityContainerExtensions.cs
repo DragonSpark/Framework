@@ -8,13 +8,13 @@ namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		public static IMessageLogger DetermineLogger( this IUnityContainer @this ) => @this.Resolve( () => @this.Extend().MessageLogger );
+		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>();
 
 		public static T Resolve<T>( this IUnityContainer @this, Func<T> @default ) => @this.IsRegistered<T>() ? @this.Resolve<T>() : @default();
 
 		public static T TryResolve<T>(this IUnityContainer container) => (T)TryResolve( container, typeof( T ) );
 
-		public static object TryResolve(this IUnityContainer container, Type typeToResolve) => new ResolutionContext( container.DetermineLogger() ).Execute( () => container.Resolve( typeToResolve ) );
+		public static object TryResolve(this IUnityContainer container, Type typeToResolve) => new ResolutionContext( container.Logger() ).Execute( () => container.Resolve( typeToResolve ) );
 
 		public static RegistrationSupport Registration( this IUnityContainer @this ) => @this.Registration<RegistrationSupport>();
 

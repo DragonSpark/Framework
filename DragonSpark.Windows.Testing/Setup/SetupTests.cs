@@ -6,7 +6,6 @@ using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Testing.TestObjects;
@@ -354,7 +353,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 		[Theory, LocationSetup.AutoData]
 		[DragonSpark.Testing.Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
-		public void Fatal( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
+		public void Fatal( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]FatalApplicationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
 

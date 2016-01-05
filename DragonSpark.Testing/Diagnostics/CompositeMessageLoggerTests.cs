@@ -3,6 +3,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework.Setup;
 using Moq;
 using System;
+using DragonSpark.Runtime;
 using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics
@@ -37,7 +38,7 @@ namespace DragonSpark.Testing.Diagnostics
 		}
 
 		[Theory, AutoData]
-		public void Fatal( IMessageLogger sut, IMessageLogger other, string message, Exception error )
+		public void Fatal( IMessageLogger sut, IMessageLogger other, string message, FatalApplicationException error )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
 			composite.Fatal( message, error );

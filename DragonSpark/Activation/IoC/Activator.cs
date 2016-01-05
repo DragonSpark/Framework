@@ -52,7 +52,7 @@ namespace DragonSpark.Activation.IoC
 					registration.AllClasses( x );
 				} );
 
-				var result = new ResolutionContext( child.DetermineLogger() ).Execute( () => child.Resolve( type ) );
+				var result = new ResolutionContext( child.Logger() ).Execute( () => child.Resolve( type ) );
 				return result;
 			}
 		}

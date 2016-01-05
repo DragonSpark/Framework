@@ -92,7 +92,7 @@ namespace DragonSpark.Activation.IoC
 		IServiceRegistry CreateRegistry()
 		{
 			var factory = new Setup.Registration.LifetimeManagerFactory( Container.Resolve<IActivator>() );
-			var result = new ServiceRegistry( Container, Container.DetermineLogger(), factory );
+			var result = new ServiceRegistry( Container, Container.Logger(), factory );
 			return result;
 		}
 

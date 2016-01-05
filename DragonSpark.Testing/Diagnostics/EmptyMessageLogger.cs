@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Diagnostics
 	{
 		public static EmptyMessageLogger Instance { get; } = new EmptyMessageLogger();
 
-		protected override void Write( Message message )
+		protected override void OnLog( Message message )
 		{}
 	}
 }

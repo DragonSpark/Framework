@@ -1,7 +1,7 @@
+using DragonSpark.Diagnostics;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.IO;
-using DragonSpark.Diagnostics;
-using DragonSpark.Runtime;
 
 namespace DragonSpark.Windows.Diagnostics
 {
@@ -9,19 +9,15 @@ namespace DragonSpark.Windows.Diagnostics
 	{
 		readonly TextWriter writer;
 
-		public TextMessageLogger() : this( ExceptionFormatter.Instance )
+		public TextMessageLogger() : this( Console.Out )
 		{}
 
-		public TextMessageLogger( IExceptionFormatter formatter ) : this( formatter, CurrentTime.Instance, Console.Out )
-		{}
-
-		public TextMessageLogger( IExceptionFormatter formatter, ICurrentTime time, TextWriter writer) : base( formatter, time )
+		public TextMessageLogger( [Required]TextWriter writer )
 		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
 			this.writer = writer;
 		}
+
+		protected override void OnLog( Message message ) => writer.WriteLine( message.Text );
 
 		public void Dispose()
 		{
@@ -33,13 +29,8 @@ namespace DragonSpark.Windows.Diagnostics
 		{
 			if (disposing)
 			{
-				writer?.Dispose();
+				writer.Dispose();
 			}
-		}
-
-		protected override void Write( Message message )
-		{
-			writer.WriteLine( message.Text );
 		}
 	}
 }

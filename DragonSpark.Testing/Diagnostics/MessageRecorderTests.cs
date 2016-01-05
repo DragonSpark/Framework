@@ -1,8 +1,7 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Testing.Framework.Setup;
-using System;
-using Moq;
 using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics
@@ -14,22 +13,22 @@ namespace DragonSpark.Testing.Diagnostics
 		{
 			sut.Information( message, priority );
 
-			var item = sut.Recorder.Messages.Only();
+			var item = sut.Messages.Only();
 			Assert.NotNull( item );
 
-			Assert.Equal( nameof(sut.Information), item.Category );
+			Assert.Equal( nameof(MessageLoggerExtensions.Information), item.Category );
 			Assert.Equal( priority, item.Priority );
 		}
 
 		[Theory, AutoData]
-		public void Fatal( RecordingMessageLogger sut, string message, Exception error )
+		public void Fatal( RecordingMessageLogger sut, string message, FatalApplicationException error )
 		{
 			sut.Fatal( message, error );
 
-			var item = sut.Recorder.Messages.Only();
+			var item = sut.Messages.Only();
 			Assert.NotNull( item );
 
-			Assert.Equal( nameof(sut.Fatal), item.Category );
+			Assert.Equal( nameof(Fatal), item.Category );
 			Assert.Contains( error.GetType().Name, item.Text );
 		}
 	}

@@ -1,3 +1,4 @@
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using System.Windows.Markup;
 

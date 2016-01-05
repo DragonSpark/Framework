@@ -159,6 +159,7 @@
     <Compile Include="ComponentModel\IBuildPropertyRepository.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
+    <Compile Include="Runtime\FatalApplicationException.cs" />
     <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />

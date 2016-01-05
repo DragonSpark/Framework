@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Properties;
 using DragonSpark.Runtime;
 
@@ -7,15 +8,7 @@ namespace DragonSpark.Diagnostics
 {
 	public abstract class MessageLoggerBase : IMessageLogger
 	{
-		protected MessageLoggerBase() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
-		{}
-
-		protected MessageLoggerBase( IExceptionFormatter formatter, ICurrentTime time )
-		{
-			Formatter = formatter;
-			Time = time;
-		}
-
+		/*
 		protected IExceptionFormatter Formatter { get; }
 		protected ICurrentTime Time { get; }
 
@@ -38,9 +31,11 @@ namespace DragonSpark.Diagnostics
 			var time = Time.Now;
 			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, time, category, message, priority );
 			var line = new Message( priority, time, category, formatted );
-			Write( line );
-		}
+			OnLog( line );
+		}*/
 
-		protected abstract void Write( Message message );
+		public void Log( Message message ) => OnLog( message );
+
+		protected abstract void OnLog( Message message );
 	}
 }

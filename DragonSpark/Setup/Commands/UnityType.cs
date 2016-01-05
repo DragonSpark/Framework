@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
 using System.Windows.Markup;
+using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Setup.Commands
 {

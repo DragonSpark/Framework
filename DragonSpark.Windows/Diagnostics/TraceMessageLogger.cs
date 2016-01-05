@@ -1,25 +1,18 @@
-using System.Diagnostics;
 using DragonSpark.Diagnostics;
-using DragonSpark.Runtime;
+using System.Diagnostics;
 
 namespace DragonSpark.Windows.Diagnostics
 {
 	public class TraceMessageLogger : MessageLoggerBase
 	{
-		public TraceMessageLogger() : this( ExceptionFormatter.Instance, CurrentTime.Instance )
-		{}
-
-		public TraceMessageLogger( IExceptionFormatter formatter, ICurrentTime time ) : base( formatter, time )
-		{}
-
-		protected override void Write( Message message )
+		protected override void OnLog( Message message )
 		{
 			switch ( message.Category )
 			{
-				case nameof(Exception):
+				case ExceptionMessageFactory.Category:
 					Trace.TraceError( message.Text );
 					break;
-				case nameof(Warning):
+				case WarningMessageFactory.Category:
 					Trace.TraceWarning( message.Text );
 					break;
 				default:
