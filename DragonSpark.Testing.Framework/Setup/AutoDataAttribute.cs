@@ -11,46 +11,40 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	[LinesOfCodeAvoided( 10 )]
+	[LinesOfCodeAvoided( 5 )]
 	public class AutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute, IAspectProvider
 	{
-		readonly Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory;
+		readonly Func<Tuple<IFixture, MethodInfo>, IDisposable> factory;
 
 		public AutoDataAttribute() : this( FixtureFactory<AutoConfiguredMoqCustomization>.Instance.Create )
 		{}
 
-		public AutoDataAttribute( Func<IFixture> fixture ) : this( fixture, DelegatedAutoDataFactory.Instance.Create )
+		public AutoDataAttribute( Func<IFixture> fixture ) : this( fixture, AutoDataFactory.Instance.Create )
 		{}
 
-		protected AutoDataAttribute( Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory ) : this( FixtureFactory<AutoConfiguredMoqCustomization>.Instance.Create, factory )
-		{}
-
-		protected AutoDataAttribute( [Required]Func<IFixture> fixture, Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory ) : base( fixture() )
+		protected AutoDataAttribute( [Required]Func<IFixture> fixture, Func<Tuple<IFixture, MethodInfo>, IDisposable> factory ) : base( fixture() )
 		{
 			this.factory = factory;
 		}
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
-			using ( var command = new AssignExecutionContextCommand() )
+			using ( var command = new AssignExecutionCommand() )
 			{
 				command.Execute( MethodContext.Get( methodUnderTest ) );
 
-				var data = AutoData.Create( Fixture, methodUnderTest );
-
-				data.Items.Each( aware => aware.Initialize( data ) );
-
-				var parameter = new DelegatedAutoDataParameter( data, base.GetData );
-
-				var result = factory( parameter );
-				return result;
+				using ( factory( Tuple.Create( Fixture, methodUnderTest ) ) )
+				{
+					var result = base.GetData( methodUnderTest );
+					return result;
+				}
 			}
 		}
 
 		public IEnumerable<AspectInstance> ProvideAspects( object targetElement ) => targetElement.AsTo<MethodInfo, AspectInstance>( info => new AspectInstance( info, new AssignExecutionAttribute() ) ).ToItem();
 	}
 
-	public class DelegatedAutoDataParameter
+	/*public class DelegatedAutoDataParameter
 	{
 		readonly Func<MethodInfo, IEnumerable<object[]>> @delegate;
 
@@ -63,9 +57,9 @@ namespace DragonSpark.Testing.Framework.Setup
 		public AutoData Data { get; }
 
 		public IEnumerable<object[]> GetResult() => Data.Method.AsValid( @delegate );
-	}
+	}*/
 
-	public class DelegatedAutoDataFactory : FactoryBase<DelegatedAutoDataParameter, IEnumerable<object[]>>
+	/*public class DelegatedAutoDataFactory : FactoryBase<DelegatedAutoDataParameter, IEnumerable<object[]>>
 	{
 		public static DelegatedAutoDataFactory Instance { get; } = new DelegatedAutoDataFactory();
 
@@ -95,7 +89,7 @@ namespace DragonSpark.Testing.Framework.Setup
 				return base.CreateItem( parameter );
 			}
 		}
-	}
+	}*/
 
 	public class SetupParameter : SetupParameter<AutoData>
 	{

@@ -20,11 +20,11 @@ namespace DragonSpark.Runtime
 	public abstract class Command : Command<object>
 	{}
 
-	public abstract class ValueContextCommand<T> : DisposingCommand<T>
+	public abstract class AssignValueCommand<T> : DisposingCommand<T>
 	{
 		readonly IWritableValue<T> value;
 
-		protected ValueContextCommand( [Required]IWritableValue<T> value )
+		protected AssignValueCommand( [Required]IWritableValue<T> value )
 		{
 			this.value = value;
 		}

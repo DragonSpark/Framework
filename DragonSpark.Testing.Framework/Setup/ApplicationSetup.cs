@@ -13,9 +13,9 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		protected override void OnExecute( ISetupParameter<AutoData> parameter )
 		{
-			using ( var command = new SetupContextCommand() )
+			using ( var command = new AssignSetupCommand() )
 			{
-				command.Apply( parameter.Arguments );
+				CommandExtensions.Apply( command, (object)parameter.Arguments );
 
 				base.OnExecute( parameter );
 			}
@@ -25,12 +25,12 @@ namespace DragonSpark.Testing.Framework.Setup
 	public class SetupAutoDataContext : ExecutionContextValue<AutoData>
 	{}
 
-	public class SetupContextCommand : ValueContextCommand<AutoData>
+	public class AssignSetupCommand : AssignValueCommand<AutoData>
 	{
-		public SetupContextCommand() : this( new SetupAutoDataContext() )
+		public AssignSetupCommand() : this( new SetupAutoDataContext() )
 		{}
 
-		public SetupContextCommand( IWritableValue<AutoData> value ) : base( value )
+		public AssignSetupCommand( IWritableValue<AutoData> value ) : base( value )
 		{}
 	}
 }

@@ -13,7 +13,7 @@ namespace DragonSpark.Setup
 		{
 			parameter.Register<ISetup>( this );
 
-			this.Apply( parameter );
+			CommandExtensions.Apply( this, (object)parameter );
 		}
 	}
 }

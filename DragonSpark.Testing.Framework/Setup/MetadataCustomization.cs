@@ -2,6 +2,8 @@ using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
 using System;
 using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Setup;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -19,6 +21,28 @@ namespace DragonSpark.Testing.Framework.Setup
 			this.factory = factory;
 		}
 
-		protected override void OnInitialize( AutoData context ) => factory( context.Method ).Each( customization => customization.Customize( context.Fixture ) );
+		protected override void OnInitializing( AutoData context ) => factory( context.Method ).Each( customization => customization.Customize( context.Fixture ) );
+	}
+
+	public class SetupCustomization<T> : AutoDataCustomization where T : class, ISetup
+	{
+		readonly Func<T> factory;
+
+		public SetupCustomization() : this( ActivateFactory<T>.Instance.CreateUsing )
+		{ }
+
+		public SetupCustomization( Func<T> factory )
+		{
+			this.factory = factory;
+		}
+
+		protected override void OnInitializing( AutoData context )
+		{
+			using ( var arguments = new SetupParameter( context ) )
+			{
+				var setup = factory();
+				setup.Run( arguments );
+			}
+		}
 	}
 }

@@ -19,25 +19,13 @@ namespace DragonSpark.Diagnostics
 		protected IExceptionFormatter Formatter { get; }
 		protected ICurrentTime Time { get; }
 
-		public void Information( string message, Priority priority )
-		{
-			Log( message, nameof(Information), priority );
-		}
+		public void Information( string message, Priority priority ) => Log( message, nameof(Information), priority );
 
-		public void Warning( string message, Priority priority )
-		{
-			Log( message, nameof(Warning), priority );
-		}
+		public void Warning( string message, Priority priority ) => Log( message, nameof(Warning), priority );
 
-		public void Exception( string message, Exception exception )
-		{
-			Log( FormatException( message, exception ), nameof(Exception), Priority.High );
-		}
+		public void Exception( string message, Exception exception ) => Log( FormatException( message, exception ), nameof(Exception), Priority.High );
 
-		public void Fatal( string message, Exception exception )
-		{
-			Log( FormatException( message, exception ), nameof(Fatal), Priority.Highest );
-		}
+		public void Fatal( string message, Exception exception ) => Log( FormatException( message, exception ), nameof(Fatal), Priority.Highest );
 
 		protected virtual string FormatException( string message, Exception exception )
 		{

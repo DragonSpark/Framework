@@ -6,12 +6,18 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
 using System;
 using System.Collections.Generic;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.IoC
 {
+	[BuildUp]
 	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
-		public IMessageLogger MessageLogger { get; } = new RecordingMessageLogger();
+		[Activate( typeof(RecordingMessageLogger) )]
+		public IMessageLogger Logger { get; set; }
 
 		protected override void Initialize()
 		{
@@ -28,8 +34,6 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
 
-			Context.Policies.SetDefault<IBuildPlanCreatorPolicy>( new BuildPlanCreatorPolicy( Policies, Context.Policies.Get<IBuildPlanCreatorPolicy>( null ) ) );
-
 			var resolutionSupport = new ResolutionSupport( Context );
 			Container.RegisterInstance<IResolutionSupport>( resolutionSupport );
 
@@ -37,7 +41,34 @@ namespace DragonSpark.Activation.IoC
 			{
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
-			});
+				support.Instance( Logger );
+			} );
+
+			var policy = Context.Policies.Get<IBuildPlanCreatorPolicy>( null );
+			var builder = new Builder<TryContext>( Context.Strategies, policy.CreatePlan );
+			Context.Policies.SetDefault<IBuildPlanCreatorPolicy>( new BuildPlanCreatorPolicy( builder.Create, Policies, policy ) );
+		}
+
+		public class Builder<T> : FactoryBase<IBuilderContext, T>
+		{
+			readonly NamedTypeBuildKey key = NamedTypeBuildKey.Make<T>();
+			readonly IStagedStrategyChain strategies;
+			readonly Func<IBuilderContext, NamedTypeBuildKey, IBuildPlanPolicy> creator;
+
+			public Builder( [Required]IStagedStrategyChain strategies, [Required]Func<IBuilderContext, NamedTypeBuildKey, IBuildPlanPolicy> creator )
+			{
+				this.strategies = strategies;
+				this.creator = creator;
+			}
+
+			protected override T CreateItem( IBuilderContext parameter )
+			{
+				var context = new BuilderContext( strategies.MakeStrategyChain(), parameter.Lifetime, parameter.PersistentPolicies, parameter.Policies, key, null );
+				var plan = creator( context, key );
+				plan.BuildUp( context );
+				var result = context.Existing.To<T>();
+				return result;
+			}
 		}
 
 		public IList<IBuildPlanPolicy> Policies { get; } = new List<IBuildPlanPolicy> { new SingletonBuildPlanPolicy() };

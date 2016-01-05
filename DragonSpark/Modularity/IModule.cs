@@ -73,7 +73,7 @@ namespace DragonSpark.Modularity
 
 		protected virtual void OnLoad()
 		{
-			command.Apply( this );
+			CommandExtensions.Apply( command, (object)this );
 		}
 	}
 }

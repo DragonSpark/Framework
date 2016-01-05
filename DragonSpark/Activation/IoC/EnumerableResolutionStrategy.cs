@@ -7,43 +7,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DragonSpark.Diagnostics;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.IoC
 {
 	public class BuildPlanCreatorPolicy : IBuildPlanCreatorPolicy
 	{
+		readonly Func<IBuilderContext, TryContext> builder;
 		readonly IList<IBuildPlanPolicy> policies;
 		readonly IBuildPlanCreatorPolicy[] creators;
 
-		public BuildPlanCreatorPolicy( IList<IBuildPlanPolicy> policies,  params IBuildPlanCreatorPolicy[] creators )
+		public BuildPlanCreatorPolicy( [Required]Func<IBuilderContext, TryContext> builder, [Required]IList<IBuildPlanPolicy> policies, [Required]params IBuildPlanCreatorPolicy[] creators )
 		{
+			this.builder = builder;
 			this.policies = policies;
 			this.creators = creators;
 		}
 
 		public IBuildPlanPolicy CreatePlan( IBuilderContext context, NamedTypeBuildKey buildKey ) => 
-			new CompositeBuildPlanPolicy( creators.Select( policy => policy.CreatePlan( context, buildKey ) ).Concat( policies ).ToArray() );
+			new CompositeBuildPlanPolicy( builder, creators.Select( policy => policy.CreatePlan( context, buildKey ) ).Concat( policies ).ToArray() );
 	}
 
 	public class CompositeBuildPlanPolicy : IBuildPlanPolicy
 	{
+		readonly Func<IBuilderContext, TryContext> builder;
 		readonly IBuildPlanPolicy[] policies;
 
-		public CompositeBuildPlanPolicy( params IBuildPlanPolicy[] policies )
+		public CompositeBuildPlanPolicy( [Required]Func<IBuilderContext, TryContext> builder, params IBuildPlanPolicy[] policies )
 		{
+			this.builder = builder;
 			this.policies = policies;
 		}
 
 		public void BuildUp( IBuilderContext context )
 		{
+			var @try = new Func<Action, Exception>( builder( context ).Try );
 			Exception first = null;
-			foreach ( var exception in policies.Select( policy => ExceptionSupport.Try( () => policy.BuildUp( context ) ) ) )
+			foreach ( var exception in policies.Select( policy => @try( () => policy.BuildUp( context ) ) ) )
 			{
-				if ( exception == null )
+				if ( exception == null && context.Existing != null )
 				{
 					return;
 				}
-				first = exception;
+				first = first ?? exception;
 			}
 			throw first;
 		}

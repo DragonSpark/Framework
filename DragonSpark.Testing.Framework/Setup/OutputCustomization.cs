@@ -13,21 +13,15 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		protected override void Customize( IFixture fixture ) => new Items<IAutoDataCustomization>( fixture ).Item.Add( this );
 
-		public void Initialize( AutoData data ) => OnInitialize( data );
+		void IAutoDataCustomization.Initializing( AutoData data ) => OnInitializing( data );
 
 		[BuildUp]
-		protected virtual void OnInitialize( AutoData data )
-		{}
+		protected virtual void OnInitializing( AutoData context ) {}
 
-		void IAutoDataCustomization.Before( AutoData data ) => OnBefore( data );
-
-		[BuildUp]
-		protected virtual void OnBefore( AutoData context ) {}
-
-		void IAutoDataCustomization.After( AutoData data ) => OnAfter( data );
+		void IAutoDataCustomization.Initialized( AutoData data ) => OnInitialized( data );
 
 		[BuildUp]
-		protected virtual void OnAfter( AutoData context ) {}
+		protected virtual void OnInitialized( AutoData context ) {}
 	}
 
 	public class OutputCustomization : AutoDataCustomization
@@ -35,10 +29,10 @@ namespace DragonSpark.Testing.Framework.Setup
 		[Activate]
 		public IMessageLocator Locator { get; set; }
 
-		protected override void OnAfter( AutoData context ) => new OutputValue( context.Method.DeclaringType ).Item.With( output =>
+		protected override void OnInitialized( AutoData context )
 		{
-			var messages = Locator.Create().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
-			messages.Each( output.WriteLine );
-		} );
+			var item = Locator.Create().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
+			new OutputValue( context.Method.DeclaringType ).Assign( item );
+		}
 	}
 }
