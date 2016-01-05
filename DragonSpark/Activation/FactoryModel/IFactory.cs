@@ -29,6 +29,14 @@ namespace DragonSpark.Activation.FactoryModel
 			{}
 		}
 
+		class Delegate<T> : ConnectedValue<Func<T>>
+		{
+			public Delegate( IFactory<T> instance ) : base( instance, typeof( Delegate<T> ), () => instance.Create )
+			{ }
+		}
+
+		public static Func<T> ToDelegate<T>( this IFactory<T> @this ) => new Delegate<T>( @this ).Item;
+
 		public static Func<T, U> ToDelegate<T, U>( this IFactory<T, U> @this ) => new Delegate<T,U>( @this ).Item;
 	}
 }

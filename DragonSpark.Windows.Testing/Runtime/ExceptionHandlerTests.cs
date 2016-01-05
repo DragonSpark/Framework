@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Windows.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using Ploeh.AutoFixture.Xunit2;
@@ -13,7 +12,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ExceptionHandlerTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, DragonSpark.Testing.Framework.Setup.AutoData]
 		public void Handle( [Factory, Frozen]ExceptionManager manager, ExceptionHandler sut, Exception plain, InvalidOperationException invalid, ArgumentException argument, ArgumentOutOfRangeException outOfRange, ArgumentNullException argumentNull )
 		{
 			var first = sut.Handle( plain );

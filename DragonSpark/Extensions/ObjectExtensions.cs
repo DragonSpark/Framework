@@ -111,6 +111,8 @@ namespace DragonSpark.Extensions
 
 		public static TResult Evaluate<TResult>( this object container, string expression ) => (TResult)container.Evaluate( expression );
 
+		public static TResult AsValid<TItem, TResult>( this object @this, Func<TItem, TResult> with ) => @this.AsValid<TItem>( _ => { } ).With( with );
+
 		public static TItem AsValid<TItem>( this object @this, Action<TItem> with ) => AsValid( @this, with, null );
 
 		public static TItem AsValid<TItem>( this object @this, Action<TItem> with, string message )
@@ -118,7 +120,7 @@ namespace DragonSpark.Extensions
 			var result = @this.As( with );
 			result.Null( () =>
 			{
-				throw new InvalidOperationException( message ?? $"This object is not of type {typeof(TItem).FullName}." );
+				throw new InvalidOperationException( message ?? $"'{@this.GetType().FullName}' is not of type {typeof(TItem).FullName}." );
 			} );
 			return result;
 		}

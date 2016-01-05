@@ -9,7 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Extensions
 {
-	public class EnumerableExtensionsTests
+	public class ContinuationExceptionTests
 	{
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Each( IEnumerable<object> sut )
@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.Count(), count );
 		}
 
-		[Theory, Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void NullIfEmpty( IEnumerable<object> sut )
 		{
 			Assert.NotNull( sut.NullIfEmpty() );

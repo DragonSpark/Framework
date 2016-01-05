@@ -12,7 +12,6 @@ using SetupParameter = DragonSpark.Testing.Framework.Setup.SetupParameter;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	[AssignExecution]
 	public class ProgramSetupTests
 	{
 		[Theory, ProgramSetup.AutoData]
@@ -52,13 +51,13 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 	}
 
-	public class Program : Program<SetupAutoData>
+	public class Program : Program<AutoData>
 	{
 		public bool Ran { get; private set; }
 
-		public SetupAutoData Arguments { get; private set; }
+		public AutoData Arguments { get; private set; }
 
-		protected override void Run( SetupAutoData arguments )
+		protected override void Run( AutoData arguments )
 		{
 			Ran = true;
 			Arguments = arguments;

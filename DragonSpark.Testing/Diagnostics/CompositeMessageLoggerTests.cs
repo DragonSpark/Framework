@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class CompositeMessageLoggerTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Information( IMessageLogger sut, IMessageLogger other, string message, Priority priority )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Information( message, priority ) ) );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Warning( IMessageLogger sut, IMessageLogger other, string message, Priority priority )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Warning( message, priority ) ) );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Exception( IMessageLogger sut, IMessageLogger other, string message, Exception error )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Exception( message, error ) ) );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Fatal( IMessageLogger sut, IMessageLogger other, string message, Exception error )
 		{
 			var composite = new CompositeMessageLogger( sut, other );
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Diagnostics
 			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Fatal( message, error ) ) );
 		}
 
-		[Theory, MoqAutoData]
+		[Theory, AutoDataMoq]
 		public void Dispose( Mock<IMessageLogger> sut )
 		{
 			var disposable = sut.As<IDisposable>();

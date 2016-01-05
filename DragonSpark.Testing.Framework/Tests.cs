@@ -18,21 +18,20 @@ namespace DragonSpark.Testing.Framework
 		{}
 	}
 
-	public class AssociatedSetup : AssociatedValue<object, SetupAutoData>
+	public class AssociatedAutoData : AssociatedValue<object, AutoData>
 	{
-		public AssociatedSetup( object instance ) : base( instance )
+		public AssociatedAutoData( object instance ) : base( instance )
 		{}
 	}
 
-	[LinesOfCodeAvoided( 1 ), Serializable]
-	public class AssignExecutionAttribute : InstanceLevelAspect
+	[LinesOfCodeAvoided( 8 ), Serializable]
+	public class AssignExecutionAttribute : MethodInterceptionAspect
 	{
-		[OnMethodInvokeAdvice, MulticastPointcut( Attributes = MulticastAttributes.Instance, Targets = MulticastTargets.Method )]
-		public void OnInvoke( MethodInterceptionArgs args )
+		public override void OnInvoke( MethodInterceptionArgs args )
 		{
 			using ( var command = new AssignExecutionContextCommand() )
 			{
-				command.Execute( args.Method );
+				command.Execute( MethodContext.Get( args.Method ) );
 				using ( var setup = new SetupExecution( args.Method ) )
 				{
 					setup.Execute( args.Proceed );
@@ -41,14 +40,14 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	public class SetupExecution : Command<Action>, IDisposable
+	public class SetupExecution : DisposingCommand<Action>
 	{
-		readonly SetupAutoData data;
+		readonly AutoData data;
 
-		public SetupExecution( MethodBase method ) : this( new AssociatedSetup( method ).Item )
+		public SetupExecution( MethodBase method ) : this( new AssociatedAutoData( method ).Item )
 		{}
 
-		public SetupExecution( [Required]SetupAutoData data )
+		public SetupExecution( [Required]AutoData data )
 		{
 			this.data = data;
 		}
@@ -59,24 +58,16 @@ namespace DragonSpark.Testing.Framework
 			parameter();
 		}
 
-		public void Dispose() => data.Items.Each( aware => aware.After( data ) );
+		protected override void OnDispose() => data.Items.Each( aware => aware.After( data ) );
 	}
 
-	public class AssignExecutionContextCommand : Command<MethodBase>, IDisposable
+	public class AssignExecutionContextCommand : ValueContextCommand<Tuple<string>>
 	{
-		readonly IWritableValue<Tuple<string>> context;
-
 		public AssignExecutionContextCommand() : this( CurrentExecution.Instance )
 		{}
 
-		public AssignExecutionContextCommand( IWritableValue<Tuple<string>> context )
-		{
-			this.context = context;
-		}
-
-		protected override void OnExecute( MethodBase parameter ) => context.Assign( MethodContext.Get( parameter ) );
-
-		public void Dispose() => context.Assign( null );
+		public AssignExecutionContextCommand( IWritableValue<Tuple<string>> value ) : base( value )
+		{}
 	}
 
 	// [AssignExecution( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]

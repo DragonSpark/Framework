@@ -17,10 +17,10 @@ namespace DragonSpark.TypeSystem
 		}
 
 		[Cache]
-		protected override Type[] CreateItem( Type parameter )
-		{
-			var result = assemblies.SelectMany( z => z.DefinedTypes ).Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" ).AsTypes().Fixed();
-			return result;
-		}
+		protected override Type[] CreateItem( Type parameter ) => assemblies
+																	.SelectMany( z => z.DefinedTypes )
+																	.Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" )
+																	.AsTypes()
+																	.Fixed();
 	}
 }

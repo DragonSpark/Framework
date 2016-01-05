@@ -5,6 +5,13 @@ using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Input;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Runtime;
+using PostSharp.Patterns.Contracts;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -87,9 +94,8 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		{
 			Customize( fixture );
 		}
-		
-		protected virtual void Customize( IFixture fixture )
-		{}
+
+		protected abstract void Customize( IFixture fixture );
 	}
 
 	public class ServiceLocationCustomization : CustomizationBase
@@ -116,10 +122,50 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 
 		public void Register( Type type, object instance ) => this.InvokeGenericAction( nameof(RegisterInstance), new[] { type }, instance );
 
-		public void RegisterInstance<T>( T instance ) => fixture.Customize<T>( c => c.FromFactory( () => instance ).OmitAutoProperties() );
+		void RegisterInstance<T>( T instance ) => fixture.Freeze( instance );
 
 		public void RegisterFactory( Type type, Func<object> factory ) => this.InvokeGenericAction( nameof(RegisterFactory), type.ToItem(), factory );
 
-		public void RegisterFactory<T>( Func<object> factory ) => fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
+		void RegisterFactory<T>( Func<object> factory ) => fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
+	}
+
+	public class RegisterFactoryCommand<T> : Command<T> where T : IFactory
+	{
+		public RegisterFactoryCommand( [Required]IServiceRegistry registry )
+		{
+			Registry = registry;
+		}
+
+		public IServiceRegistry Registry { get; }
+
+		protected override void OnExecute( T parameter )
+		{
+			var type = FactoryReflectionSupport.GetResultType( typeof(T) );
+			Registry.RegisterFactory( type, parameter.Create );
+		}
+	}
+
+	public class RegisterFactoryGenericCommand<T> : RegisterFactoryCommand<IFactory<T>>
+	{
+		public RegisterFactoryGenericCommand( IServiceRegistry registry ) : base( registry )
+		{}
+
+		protected override void OnExecute( IFactory<T> parameter )
+		{
+			base.OnExecute( parameter );
+			Registry.Register( typeof(Func<T>), parameter.ToDelegate() );
+		}
+	}
+
+	public static class ServiceRegistryExtensions
+	{
+		public static void RegisterFactory( this IServiceRegistry @this, Type type, IFactory factory )
+		{
+			var commands = new[] { Activator.Current.Construct<ICommand>( typeof(RegisterFactoryGenericCommand<>).MakeGenericType( type ), @this ), new RegisterFactoryCommand<IFactory>( @this ) };
+			commands.FirstOrDefault( command => command.CanExecute( factory ) ).With( x =>
+			{
+				x.Execute( factory );
+			} );
+		}
 	}
 }

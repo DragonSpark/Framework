@@ -19,9 +19,9 @@
     <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
     <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
-	<PropertyGroup>
-		<PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
-	</PropertyGroup>
+  <PropertyGroup>
+    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -189,7 +189,7 @@
     <Compile Include="Extensions\DictionaryExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\EnumerableExtensionsTests.cs">
+    <Compile Include="Extensions\ContinuationExceptionTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
@@ -207,6 +207,7 @@
     <Compile Include="TypeSystem\ApplicationAssemblyTransformerTests.cs" />
     <Compile Include="TypeSystem\HostingAttributeTests.cs" />
     <Compile Include="TypeSystem\KnownTypeFactoryTests.cs" />
+    <Compile Include="TypeSystem\RegistrationTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>

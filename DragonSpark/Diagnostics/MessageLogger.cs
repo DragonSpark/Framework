@@ -5,6 +5,8 @@ namespace DragonSpark.Diagnostics
 {
 	public class MessageLogger : MessageLoggerBase
 	{
+		public static MessageLogger Instance { get; } = new MessageLogger();
+
 		public MessageLogger()
 		{}
 

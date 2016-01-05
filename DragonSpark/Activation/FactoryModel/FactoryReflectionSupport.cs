@@ -13,11 +13,7 @@ namespace DragonSpark.Activation.FactoryModel
 			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
 			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
 
-		public Type GetResultType( Type factoryType )
-		{
-			var result = Get( factoryType, types => types.Last(), Types );
-			return result;
-		}
+		public static Type GetResultType( Type factoryType ) => Get( factoryType, types => types.Last(), Types );
 
 		public Type GetFactoryType( Type itemType, Type referenceType = null )
 		{
@@ -44,9 +40,7 @@ namespace DragonSpark.Activation.FactoryModel
 
 		static Type Get( Type factoryType, Func<Type[],Type> selector, params TypeAdapter[] typesToCheck )
 		{
-			var result = factoryType
-				.Adapt()
-				.GetAllInterfaces()
+			var result = factoryType.Append( factoryType.Adapt().GetAllInterfaces() )
 				.AsTypeInfos()
 				.Where( type => type.IsGenericType && typesToCheck.Any( extension => extension.IsAssignableFrom( type.GetGenericTypeDefinition() ) ) )
 				.Select( type => selector( type.GenericTypeArguments ) )

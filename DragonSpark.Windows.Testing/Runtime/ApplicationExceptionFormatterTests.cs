@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ApplicationExceptionFormatterTests
 	{
-		[Theory, DragonSpark.Testing.Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, DragonSpark.Testing.Framework.Setup.AutoData]
 		public void FormatException( [Frozen]AssemblyInformation information, Exception error, ApplicationExceptionFormatter sut )
 		{
 			var message = sut.Format( error );

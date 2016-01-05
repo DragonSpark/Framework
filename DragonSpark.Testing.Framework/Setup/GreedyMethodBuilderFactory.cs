@@ -34,7 +34,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		static bool ShouldDefault( ParameterInfo info, ISpecimenContext context )
 		{
-			var result = info.IsOptional && !FixtureLocator.Instance.Create( context ).With( fixture => new AssociatedSetup( fixture ).Item.Method.GetParameters().Select( pi => pi.ParameterType ).Any( info.ParameterType.Adapt().IsAssignableFrom ) );
+			var result = info.IsOptional && !FixtureLocator.Instance.Create( context ).With( fixture => new AssociatedAutoData( fixture ).Item.Method.GetParameters().Select( pi => pi.ParameterType ).Any( info.ParameterType.Adapt().IsAssignableFrom ) );
 			return result;
 		}
 	}

@@ -8,14 +8,14 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ApplicationAssemblyLocatorTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Create( ApplicationAssemblyLocator sut )
 		{
 			var assembly = sut.Create();
 			Assert.Equal( GetType().Assembly, assembly );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Other( Assembly[] assemblies )
 		{
 			var sut = new ApplicationAssemblyLocator( assemblies, AppDomain.CreateDomain( "NotAnAssembly" ) );

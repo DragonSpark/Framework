@@ -68,7 +68,7 @@ namespace DragonSpark.Windows.Io
 			catch ( IOException )
 			{
 				var files = target.GetAllFiles();
-				files.Each( x => DiagnosticExtensions.Try( x.Delete ) );
+				files.Each( x => ExceptionSupport.Try( x.Delete ) );
 			}
 		}
 

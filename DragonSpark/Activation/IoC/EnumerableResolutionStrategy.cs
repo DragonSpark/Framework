@@ -6,38 +6,68 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class BuildPlanStrategy : Microsoft.Practices.ObjectBuilder2.BuildPlanStrategy
+	public class BuildPlanCreatorPolicy : IBuildPlanCreatorPolicy
+	{
+		readonly IList<IBuildPlanPolicy> policies;
+		readonly IBuildPlanCreatorPolicy[] creators;
+
+		public BuildPlanCreatorPolicy( IList<IBuildPlanPolicy> policies,  params IBuildPlanCreatorPolicy[] creators )
+		{
+			this.policies = policies;
+			this.creators = creators;
+		}
+
+		public IBuildPlanPolicy CreatePlan( IBuilderContext context, NamedTypeBuildKey buildKey ) => 
+			new CompositeBuildPlanPolicy( creators.Select( policy => policy.CreatePlan( context, buildKey ) ).Concat( policies ).ToArray() );
+	}
+
+	public class CompositeBuildPlanPolicy : IBuildPlanPolicy
+	{
+		readonly IBuildPlanPolicy[] policies;
+
+		public CompositeBuildPlanPolicy( params IBuildPlanPolicy[] policies )
+		{
+			this.policies = policies;
+		}
+
+		public void BuildUp( IBuilderContext context )
+		{
+			Exception first = null;
+			foreach ( var exception in policies.Select( policy => ExceptionSupport.Try( () => policy.BuildUp( context ) ) ) )
+			{
+				if ( exception == null )
+				{
+					return;
+				}
+				first = exception;
+			}
+			throw first;
+		}
+	}
+
+	class SingletonBuildPlanPolicy : IBuildPlanPolicy
 	{
 		readonly ISingletonLocator locator;
 
-		public BuildPlanStrategy() : this( SingletonLocator.Instance )
-		{}
+		public SingletonBuildPlanPolicy() : this( SingletonLocator.Instance )
+		{ }
 
-		public BuildPlanStrategy( ISingletonLocator locator )
+		public SingletonBuildPlanPolicy( ISingletonLocator locator )
 		{
 			this.locator = locator;
 		}
 
-		public override void PreBuildUp( IBuilderContext context )
+
+		public void BuildUp( IBuilderContext context )
 		{
-			try
+			var singleton = locator.Locate( context.BuildKey.Type );
+			if ( singleton != null )
 			{
-				base.PreBuildUp( context );
-			}
-			catch ( InvalidOperationException )
-			{
-				var singleton = locator.Locate( context.BuildKey.Type );
-				if ( singleton != null )
-				{
-					context.Existing = singleton;
-				}
-				else
-				{
-					throw;
-				}
+				context.Existing = singleton;
 			}
 		}
 	}

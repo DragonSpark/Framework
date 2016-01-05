@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class ApplicationExceptionFormatterTests
 	{
-		[Theory, Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void Format( [Frozen]AssemblyInformation information, ApplicationExceptionFormatter sut, Exception exception )
 		{
 			var message = sut.Format( exception );

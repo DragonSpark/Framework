@@ -19,10 +19,7 @@ namespace DragonSpark.Setup.Commands
 		[DefaultValue( true )]
 		public bool SetAsEnabled { get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
-		{
-			Extension.Enable( SetAsEnabled );
-		}
+		protected override void OnExecute( ISetupParameter parameter ) => Extension.Enable( SetAsEnabled );
 	}
 
 	public class SetupUnityCommand : ConfigureUnityCommand

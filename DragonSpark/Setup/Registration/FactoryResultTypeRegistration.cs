@@ -15,7 +15,7 @@ namespace DragonSpark.Setup.Registration
 
 		public void Register( IServiceRegistry registry, Type subject )
 		{
-			var resultType = FactoryReflectionSupport.Instance.GetResultType( subject );
+			var resultType = FactoryReflectionSupport.GetResultType( subject );
 			resultType.With( type =>
 			{
 				registry.RegisterFactory( type, () =>

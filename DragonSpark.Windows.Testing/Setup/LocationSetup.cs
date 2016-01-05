@@ -2,15 +2,15 @@
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	public partial class ProgramSetup
+	public partial class LocationSetup
 	{
 		public class AutoDataAttribute : DragonSpark.Testing.Framework.Setup.AutoDataAttribute
 		{
-			public AutoDataAttribute() : base( DelegatedSetupAutoDataFactory<ProgramSetup>.Instance.Create )
+			public AutoDataAttribute() : base( DelegatedSetupAutoDataFactory<LocationSetup>.Instance.Create )
 			{ }
 		}
 
-		public ProgramSetup()
+		public LocationSetup()
 		{
 			InitializeComponent();
 		}

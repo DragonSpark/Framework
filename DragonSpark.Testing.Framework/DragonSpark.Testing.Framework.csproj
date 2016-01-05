@@ -39,9 +39,9 @@
     <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
     <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
-	<PropertyGroup>
-		<PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
-	</PropertyGroup>
+  <PropertyGroup>
+    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -159,7 +159,7 @@
     <Compile Include="Initialize.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Setup\Execution.cs" />
-    <Compile Include="Setup\ConfiguredMoqAutoDataAttribute.cs" />
+    <Compile Include="Setup\AutoDataMoqConfiguredAttribute.cs" />
     <Compile Include="Setup\ResourceConfigurationFactory.cs" />
     <Compile Include="Setup\ApplicationSetup.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Setup\MetadataCustomization.cs" />
     <Compile Include="Parameters\FromCustomization.cs" />
     <Compile Include="Setup\SetupEngineParts.cs" />
-    <Compile Include="ITestExecutionAware.cs" />
+    <Compile Include="IAutoDataCustomization.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\OutputCustomization.cs" />
     <Compile Include="RegisteredAttribute.cs" />
@@ -196,7 +196,7 @@
     <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />
     <Compile Include="Parameters\LocatedAttribute.cs" />
     <Compile Include="Setup\SetupAutoDataCommandBase.cs" />
-    <Compile Include="Setup\SetupAutoData.cs" />
+    <Compile Include="Setup\AutoData.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ExceptionFormatterTests
 	{
-		[Theory, DragonSpark.Testing.Framework.Setup.MoqAutoData]
+		[Theory, DragonSpark.Testing.Framework.Setup.AutoDataMoq]
 		public void Format( [Frozen]Guid id, ExceptionFormatter sut, Exception exception )
 		{
 			var formatted = sut.Format( exception );

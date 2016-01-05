@@ -1,36 +1,20 @@
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
+using PostSharp.Aspects;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.Runtime;
-using Ploeh.AutoFixture.AutoMoq;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class SetupFixtureFactory : FactoryBase<IFixture>
+	[LinesOfCodeAvoided( 10 )]
+	public class AutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute, IAspectProvider
 	{
-		public static SetupFixtureFactory Instance { get; } = new SetupFixtureFactory();
-
-		protected override IFixture CreateItem() => new Fixture( SetupEngineParts.Instance );
-	}
-
-	public class SetupAutoDataAttribute : AutoDataAttribute
-	{
-		protected SetupAutoDataAttribute( Func<AutoDataParameter, IEnumerable<object[]>> factory ) : this( SetupFixtureFactory.Instance.Create, factory )
-		{}
-
-		protected SetupAutoDataAttribute( Func<IFixture> fixture, Func<AutoDataParameter, IEnumerable<object[]>> factory ) : base( fixture, factory )
-		{}
-	}
-
-	public class AutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
-	{
-		readonly Func<AutoDataParameter, IEnumerable<object[]>> factory;
+		readonly Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory;
 
 		public AutoDataAttribute() : this( FixtureFactory<AutoConfiguredMoqCustomization>.Instance.Create )
 		{}
@@ -38,45 +22,54 @@ namespace DragonSpark.Testing.Framework.Setup
 		public AutoDataAttribute( Func<IFixture> fixture ) : this( fixture, DelegatedAutoDataFactory.Instance.Create )
 		{}
 
-		protected AutoDataAttribute( Func<IFixture> fixture, Func<AutoDataParameter, IEnumerable<object[]>> factory ) : base( fixture() )
+		protected AutoDataAttribute( Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory ) : this( FixtureFactory<AutoConfiguredMoqCustomization>.Instance.Create, factory )
+		{}
+
+		protected AutoDataAttribute( [Required]Func<IFixture> fixture, Func<DelegatedAutoDataParameter, IEnumerable<object[]>> factory ) : base( fixture() )
 		{
 			this.factory = factory;
 		}
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{
-			var data = SetupAutoData.Create( Fixture, methodUnderTest );
-			var parameter = new AutoDataParameter( data, () => base.GetData( methodUnderTest ) );
 			using ( var command = new AssignExecutionContextCommand() )
 			{
-				command.Execute( methodUnderTest );
+				command.Execute( MethodContext.Get( methodUnderTest ) );
+
+				var data = AutoData.Create( Fixture, methodUnderTest );
+
+				data.Items.Each( aware => aware.Initialize( data ) );
+
+				var parameter = new DelegatedAutoDataParameter( data, base.GetData );
 
 				var result = factory( parameter );
 				return result;
 			}
 		}
+
+		public IEnumerable<AspectInstance> ProvideAspects( object targetElement ) => targetElement.AsTo<MethodInfo, AspectInstance>( info => new AspectInstance( info, new AssignExecutionAttribute() ) ).ToItem();
 	}
 
-	public class AutoDataParameter
+	public class DelegatedAutoDataParameter
 	{
-		readonly Func<IEnumerable<object[]>> @delegate;
+		readonly Func<MethodInfo, IEnumerable<object[]>> @delegate;
 
-		public AutoDataParameter( [Required]SetupAutoData data, [Required]Func<IEnumerable<object[]>> @delegate )
+		public DelegatedAutoDataParameter( [Required]AutoData data, [Required]Func<MethodInfo, IEnumerable<object[]>> @delegate )
 		{
 			this.@delegate = @delegate;
 			Data = data;
 		}
 
-		public SetupAutoData Data { get; }
+		public AutoData Data { get; }
 
-		public IEnumerable<object[]> GetResult() => @delegate();
+		public IEnumerable<object[]> GetResult() => Data.Method.AsValid( @delegate );
 	}
 
-	public class DelegatedAutoDataFactory : FactoryBase<AutoDataParameter, IEnumerable<object[]>>
+	public class DelegatedAutoDataFactory : FactoryBase<DelegatedAutoDataParameter, IEnumerable<object[]>>
 	{
 		public static DelegatedAutoDataFactory Instance { get; } = new DelegatedAutoDataFactory();
 
-		protected override IEnumerable<object[]> CreateItem( AutoDataParameter parameter ) => parameter.GetResult();
+		protected override IEnumerable<object[]> CreateItem( DelegatedAutoDataParameter parameter ) => parameter.GetResult();
 	}
 
 	public class DelegatedSetupAutoDataFactory<T> : DelegatedAutoDataFactory where T : class, ISetup
@@ -93,7 +86,7 @@ namespace DragonSpark.Testing.Framework.Setup
 			this.factory = factory;
 		}
 
-		protected override IEnumerable<object[]> CreateItem( AutoDataParameter parameter )
+		protected override IEnumerable<object[]> CreateItem( DelegatedAutoDataParameter parameter )
 		{
 			using ( var arguments = new SetupParameter( parameter.Data ) )
 			{
@@ -104,9 +97,9 @@ namespace DragonSpark.Testing.Framework.Setup
 		}
 	}
 
-	public class SetupParameter : SetupParameter<SetupAutoData>
+	public class SetupParameter : SetupParameter<AutoData>
 	{
-		public SetupParameter( SetupAutoData arguments ) : base( arguments )
+		public SetupParameter( AutoData arguments ) : base( arguments )
 		{}
 	}
 }

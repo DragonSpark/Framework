@@ -9,7 +9,6 @@ using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
 namespace DragonSpark.Testing.Activation
 {
-	[AssignExecution]
 	public class DefaultServicesTests : Tests
 	{
 		public DefaultServicesTests( ITestOutputHelper output ) : base( output )

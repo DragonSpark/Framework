@@ -19,9 +19,9 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
-	<PropertyGroup>
-		<PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
-	</PropertyGroup>
+  <PropertyGroup>
+    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -197,7 +197,7 @@
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
     <Compile Include="ComponentModel\ValueAttribute.cs" />
     <Compile Include="Diagnostics\CompositeMessageLogger.cs" />
-    <Compile Include="Diagnostics\DiagnosticExtensions.cs" />
+    <Compile Include="Diagnostics\Diagnostics.cs" />
     <Compile Include="Diagnostics\ExceptionFormatter.cs" />
     <Compile Include="Diagnostics\IMessageRecorder.cs" />
     <Compile Include="Diagnostics\Message.cs" />

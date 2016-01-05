@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class ThreadLocalValueTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Assign( ThreadLocalValue<int> sut, int number )
 		{
 			sut.Assign( number );

@@ -7,13 +7,13 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class MessageLoggerTests
 	{
-		[Theory, Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void Log( MessageLogger sut, string message, Priority priority )
 		{
 			sut.Information( message, priority );
 		}
 
-		[Theory, Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void Greedy( [Greedy]MessageLogger sut, string message, Priority priority )
 		{
 			sut.Information( message, priority );

@@ -2,6 +2,7 @@ using DragonSpark.Activation;
 using Ploeh.AutoFixture;
 using System;
 using DragonSpark.Testing.Framework.Setup.Location;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -11,7 +12,7 @@ namespace DragonSpark.Testing.Framework
 		protected RegistrationAttribute( Type registrationType ) : this( registrationType, registrationType )
 		{}
 
-		protected RegistrationAttribute( Type registrationType, Type mappedTo )
+		protected RegistrationAttribute( [Required]Type registrationType, [Required]Type mappedTo )
 		{
 			RegistrationType = registrationType;
 			MappedTo = mappedTo;

@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Diagnostics
 {
 	public class MessageRecorderTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Message( RecordingMessageLogger sut, string message, Priority priority )
 		{
 			sut.Information( message, priority );
@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Diagnostics
 			Assert.Equal( priority, item.Priority );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Fatal( RecordingMessageLogger sut, string message, Exception error )
 		{
 			sut.Fatal( message, error );

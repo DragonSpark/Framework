@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using System.Linq;
 using System.Windows.Markup;
 
 namespace DragonSpark.Setup

@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.Aspects
 			Assert.Same( SkipFirstCallProvider.Instance.Item, sut.Value );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Constructor( BuildUp sut )
 		{
 			var aspects = sut.ProvideAspects( typeof(BuildTarget) ).Fixed();
@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Aspects
 			Assert.IsAssignableFrom<ConstructorInfo>( constructor );
 		}
 
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		public void Method( BuildUp sut )
 		{
 			var aspects = sut.ProvideAspects( typeof(BuildTarget).GetMethod( nameof(BuildTarget.Call) ) ).Fixed();

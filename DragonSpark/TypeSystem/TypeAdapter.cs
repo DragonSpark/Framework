@@ -66,7 +66,7 @@ namespace DragonSpark.TypeSystem
 
 		public Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), typeof( IEnumerable ).GetTypeInfo().IsAssignableFrom );
 
-		public Type GetResultType() => InnerType( type, types => types.LastOrDefault() );
+		public Type GetResultType() => type.Append( ExpandInterfaces( type ) ).FirstWhere( t => InnerType( t, types => types.LastOrDefault() ) );
 
 		public Type GetInnerType() => InnerType( type, types => types.Only() );
 

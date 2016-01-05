@@ -31,33 +31,32 @@ namespace DragonSpark.Windows.Testing.Setup
 	/// <summary>
 	/// This file can be seen as a bucket for all the testing done around setup.  It also can be seen as a huge learning bucket for xUnit and AutoFixture.  This does not contain best practices.  Always be learning. :)
 	/// </summary>
-	[AssignExecution]
 	public class SetupTests : Tests
 	{
 		public SetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CoreLocation( IServiceLocator sut )
 		{
 			Assert.True( Microsoft.Practices.ServiceLocation.ServiceLocator.IsLocationProviderSet );
 			Assert.Same( sut, Microsoft.Practices.ServiceLocation.ServiceLocator.Current );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void MockAsExpected( [Located(false)]ISetup sut )
 		{
 			Assert.NotNull( Mock.Get( sut ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void SetupRegistered( ISetup sut )
 		{
-			Assert.IsType<DefaultSetup>( sut );
+			Assert.IsType<LocationSetup>( sut );
 		}
 
 		[DragonSpark.Testing.Framework.Register( typeof(IActivator), typeof(Activator))]
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CreateInstance( [Registered]IActivator activator )
 		{
 			Assert.Same( DragonSpark.Activation.Activator.Current, activator );
@@ -70,7 +69,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[DragonSpark.Testing.Framework.Register( typeof( IActivator ), typeof( Activator ) )]
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CreateNamedInstance( [Registered]IActivator activator, string name )
 		{
 			Assert.Same( DragonSpark.Activation.Activator.Current, activator );
@@ -83,7 +82,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Register( typeof(IActivator), typeof(Activator) )]
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CreateItem( [Registered]IActivator activator )
 		{
 			var parameters = new object[] { typeof(Object), "This is Some Name." };
@@ -95,7 +94,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( parameters, instance.Parameters );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RegisterInstanceGeneric( [Located]ServiceLocation sut, Class instance )
 		{
 			Assert.IsType<ServiceLocation>( Services.Location );
@@ -109,7 +108,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void RegisterGeneric( ServiceLocation sut )
 		{
 			sut.Register<IInterface, Class>();
@@ -118,7 +117,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void RegisterLocation( ServiceLocation sut )
 		{
 			sut.Register( typeof( IInterface ), typeof( Class ) );
@@ -127,7 +126,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<Class>( located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RegisterInstanceClass( ServiceLocation sut, Class instance )
 		{
 			sut.Register( typeof( IInterface ), instance );
@@ -137,7 +136,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RegisterFactoryClass( ServiceLocation sut, Class instance )
 		{
 			sut.Register<IInterface>( () => instance );
@@ -147,7 +146,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( instance, located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void With( [Located]ServiceLocation sut, IServiceLocator locator, [Frozen, Registered]ClassWithParameter instance )
 		{
 			Assert.Same( Services.Location, sut );
@@ -158,14 +157,14 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Null( sut.With<IInterface, object>( x => x ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void WithDefault( ServiceLocation sut )
 		{
 			var item = sut.With<ClassWithParameter, bool>( x => x.Parameter != null );
 			Assert.True( item );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void RegisterWithRegistry( [Located]ServiceLocation location, Mock<IServiceRegistry> sut )
 		{
 			Assert.Same( ServiceLocation.Instance, location );
@@ -179,7 +178,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			sut.Verify( x => x.Register( typeof( IInterface ), typeof( Class ), null ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void Resolve( [Located]Interfaces sut )
 		{
 			Assert.NotNull( sut.Items.FirstOrDefaultOfType<Item>() );
@@ -187,7 +186,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.NotNull( sut.Items.FirstOrDefaultOfType<YetAnotherItem>() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void GetInstance( [Factory, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<IMessageLogger> logger )
 		{
 			Assert.NotSame( Services.Location.Item, sut );
@@ -209,7 +208,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			logger.Verify( x => x.Exception( $@"Could not resolve type ""{typeof(ClassWithBrokenConstructor).Name}"" with build name ""<None>"".", It.IsAny<ResolutionFailedException>() ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void GetAllInstancesLocator( [Modest, Factory] ServiceLocator sut )
 		{
 			sut.Register<IInterface, Class>( "First" );
@@ -230,7 +229,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Contains( classes.Single(), updated );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void CreateActivator( IActivator sut, string message, int number, Class @item )
 		{
 			Assert.IsType<CompositeActivator>( sut );
@@ -246,7 +245,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( systemMessage, systemCreated.Message );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void Register( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -255,7 +254,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RegisterInstance( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -266,7 +265,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( instance, container.Resolve<IInterface>() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RegisterFactory( IUnityContainer container, [Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
@@ -275,7 +274,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void Dispose( [Factory, Frozen, Assigned] ServiceLocator sut )
 		{
 			var item = DragonSpark.Activation.Activator.Current.Activate<IInterface>( typeof(Class) );
@@ -297,7 +296,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.True( disposable.Disposed );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RelayedPropertyAttribute()
 		{
 			var attribute = typeof(Relayed).GetProperty( "Property" ).GetAttribute<Attribute>();
@@ -305,14 +304,14 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void RelayedAttribute()
 		{
 			var attribute = typeof(Relayed).GetAttribute<Attribute>();
 			Assert.Equal( "This is a relayed class attribute.", attribute.PropertyName );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Information( [Located( false ), Frozen]IMessageLogger messageLogger, string message )
 		{
 			messageLogger.Information( message );
@@ -322,7 +321,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Information( message, Priority.High ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Warning( [Located( false ), Frozen]IMessageLogger messageLogger, string message )
 		{
 			messageLogger.Warning( message );
@@ -332,7 +331,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Warning( message, Priority.Low ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		[DragonSpark.Testing.Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Error( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
@@ -343,7 +342,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void DefaultError( [Located( false ), Frozen]IMessageLogger messageLogger, [Modest]InvalidOperationException error, string message )
 		{
 			messageLogger.Exception( message, error );
@@ -353,7 +352,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		[DragonSpark.Testing.Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Fatal( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
@@ -366,19 +365,19 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Fatal( message, error ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		[DragonSpark.Testing.Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void Try()
 		{
-			var exception = DiagnosticExtensions.Try( () => {} );
+			var exception = ExceptionSupport.Try( () => {} );
 			Assert.Null( exception );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		[DragonSpark.Testing.Framework.Register( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
 		public void TryException( [Located( false ), Frozen, Registered]IMessageLogger messageLogger, [Modest]InvalidOperationException error )
 		{
-			var exception = DiagnosticExtensions.Try( () => { throw error; } );
+			var exception = ExceptionSupport.Try( () => { throw error; } );
 			Assert.NotNull( exception );
 			Assert.Equal( error, exception );
 
@@ -387,32 +386,32 @@ namespace DragonSpark.Windows.Testing.Setup
 			Mock.Get( messageLogger ).Verify( x => x.Exception( "An exception has occurred while executing an application delegate.", exception ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void GetAllTypesWith( [Located]AssembliesFactory sut )
 		{
 			var items = sut.Create().GetAllTypesWith<PriorityAttribute>();
 			Assert.True( items.Select( tuple => tuple.Item2 ).AsTypes().Contains( typeof(NormalPriority) ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Evaluate( ClassWithParameter sut )
 		{
 			Assert.Equal( sut.Parameter, sut.Evaluate<object>( nameof( sut.Parameter ) ) );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Mocked( [Frozen]Mock<IInterface> sut, IInterface item )
 		{
 			Assert.Equal( sut.Object, item );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void GetAllInstances( IServiceLocator sut )
 		{
 			Assert.False( sut.GetAllInstances<Class>().Any() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Singleton( [Located] IUnityContainer sut )
 		{
 			var once = sut.Resolve<RegisterAsSingleton>();
@@ -420,7 +419,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Same( once, twice );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Many( [Located] IUnityContainer sut )
 		{
 			var once = sut.Resolve<RegisterAsMany>();
@@ -428,7 +427,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.NotSame( once, twice );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Create( [Located]ApplicationInformation sut )
 		{
 			Assert.NotNull( sut.AssemblyInformation );
@@ -444,7 +443,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( assembly.GetName().Version, sut.AssemblyInformation.Version );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Factory( AllTypesOfFactory sut )
 		{
 			var items = sut.Create<IInterface>();
@@ -452,13 +451,13 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.NotNull( items.FirstOrDefaultOfType<YetAnotherClass>() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void Locate( [Located]ApplicationAssemblyLocator sut )
 		{
 			Assert.Same( GetType().Assembly, sut.Create() );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void RegisterWithName( IServiceLocator locator )
 		{
 			Assert.Null( locator.GetInstance<IRegisteredWithName>() );
@@ -467,7 +466,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<RegisteredWithNameClass>( located );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CreateAssemblies( AssembliesFactory factory, IUnityContainer container, IAssemblyProvider provider, [Located]Assembly[] sut )
 		{
 			var registered = container.IsRegistered<Assembly[]>();
@@ -483,7 +482,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( fromContainer, sut );
 		}
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		public void CreateAssembly( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut )
 		{
 			var registered = container.IsRegistered<Assembly>();
@@ -511,7 +510,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		public interface IRegisteredWithName
 		{ }
 
-		[Theory, DefaultSetup.AutoData]
+		[Theory, LocationSetup.AutoData]
 		void Register( IAnotherInterface sut )
 		{
 			Assert.IsType<MultipleInterfaces>( sut );

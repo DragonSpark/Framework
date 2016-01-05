@@ -4,7 +4,7 @@ namespace DragonSpark.Windows.Testing.Setup
 {
 	public partial class DefaultSetup
 	{
-		public class AutoDataAttribute : SetupAutoDataAttribute
+		public class AutoDataAttribute : DragonSpark.Testing.Framework.Setup.AutoDataAttribute
 		{
 			public AutoDataAttribute() : base( DelegatedSetupAutoDataFactory<DefaultSetup>.Instance.Create )
 			{ }

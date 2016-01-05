@@ -1,6 +1,7 @@
 
 
 using System.Collections.Generic;
+using System.Linq;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Extensions
@@ -27,5 +28,12 @@ namespace DragonSpark.Extensions
 
             return collection;
         }
+
+	    public static T[] Purge<T>( this ICollection<T> @this )
+	    {
+		    var result = @this.ToArray();
+			@this.Clear();
+		    return result;
+	    }
     }
 }

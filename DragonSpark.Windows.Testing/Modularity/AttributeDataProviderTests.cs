@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.Testing.Modularity
 {
 	public class AttributeDataProviderTests
 	{
-		[Theory, ConfiguredMoqAutoData]
+		[Theory, AutoData]
 		void GetAll( AttributeDataProvider sut )
 		{
 			var all = sut.GetAll<string>( typeof(ModuleAttribute), typeof(Module), nameof(ModuleAttribute.ModuleName) );

@@ -28,7 +28,7 @@ namespace DragonSpark.ComponentModel
 
 		protected override object Activate( Parameter parameter )
 		{
-			var result = factory.Create( new ObjectFactoryParameter( parameter.ActivatedType, FactoryReflectionSupport.Instance.GetResultType( parameter.ActivatedType ) ?? parameter.Metadata.PropertyType ) );
+			var result = factory.Create( new ObjectFactoryParameter( parameter.ActivatedType, FactoryReflectionSupport.GetResultType( parameter.ActivatedType ) ?? parameter.Metadata.PropertyType ) );
 			return result;
 		}
 	}

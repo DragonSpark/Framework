@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Testing.Setup
 {
 	public class SetupParameterTests
 	{
-		[Theory, DragonSpark.Testing.Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, DragonSpark.Testing.Framework.Setup.AutoData]
 		public void Constructor( int number, Task task, IDisposable disposable )
 		{
 			var parameter = new SetupParameter();
@@ -29,7 +29,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.False( parameter.Items.Any() );
 		}
 
-		[Theory, DragonSpark.Testing.Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, DragonSpark.Testing.Framework.Setup.AutoData]
 		public void New( [Frozen]int number, [Greedy]SetupParameter<int> sut )
 		{
 			Assert.Equal( number, sut.Arguments );

@@ -1,4 +1,5 @@
 using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Diagnostics
 {
@@ -6,7 +7,10 @@ namespace DragonSpark.Diagnostics
 	{
 		readonly IMessageLogger messageLogger;
 
-		public TryContext( IMessageLogger messageLogger )
+		public TryContext() : this( MessageLogger.Instance )
+		{}
+
+		public TryContext( [Required]IMessageLogger messageLogger )
 		{
 			this.messageLogger = messageLogger;
 		}

@@ -143,7 +143,7 @@ namespace DragonSpark.Activation.IoC
 			return result;
 		}
 
-		public ConstructorInfo GetConstructor( NamedTypeBuildKey key )
+		ConstructorInfo GetConstructor( NamedTypeBuildKey key )
 		{
 			var mapped = context.Policies.Get<IBuildKeyMappingPolicy>( key ).With( policy => policy.Map( key, null ) ) ?? key;
 			return context.Policies.Get<IConstructorSelectorPolicy>( mapped ).With( policy =>

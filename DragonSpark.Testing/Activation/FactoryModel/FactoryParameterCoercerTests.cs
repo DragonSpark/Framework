@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 			Assert.Equal( parameter.Type, item );
 		}
 
-		[Theory, Framework.Setup.ConfiguredMoqAutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void Fixed( [Frozen]Guid guid, [Greedy]FixedFactoryParameterCoercer<Guid> sut, object parameter )
 		{
 			var result = sut.Coerce( parameter );

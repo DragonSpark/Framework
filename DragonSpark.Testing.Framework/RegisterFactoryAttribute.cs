@@ -1,20 +1,30 @@
 using DragonSpark.Activation;
 using Ploeh.AutoFixture;
 using System;
+using System.Linq;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
+using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework.Setup.Location;
 
 namespace DragonSpark.Testing.Framework
 {
-	public abstract class RegisterFactoryAttribute : RegistrationAttribute
+	public class RegisterFactoryAttribute : RegistrationAttribute
 	{
-		protected RegisterFactoryAttribute( Type registrationType ) : base( registrationType )
-		{}
+		readonly Type factoryType;
+
+		public RegisterFactoryAttribute( [OfType( typeof(IFactory) )]Type factoryType ) : base( factoryType.Adapt().GetResultType() )
+		{
+			this.factoryType = factoryType;
+		}
 
 		protected override void Customize( IFixture fixture, IServiceRegistry registry )
 		{
-			var factory = GetFactory( fixture, registry );
-			registry.RegisterFactory( MappedTo, factory );
-		}
+			var factory = fixture.Create<IFactory>( factoryType );
+			var types = new[] { MappedTo, RegistrationType }.Distinct();
+			types.Each( type => registry.RegisterFactory( type, factory ) );
 
-		protected abstract Func<object> GetFactory( IFixture fixture, IServiceRegistry registry );
+			var temp = fixture.Create<object>( MappedTo );
+		}
 	}
 }
