@@ -26,8 +26,6 @@
 		<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 	</commands:ConfigureUnityCommand>
 	<commands:InitializeModulesCommand />
-	<setup:DefaultCustomizeFixtureCommand>
-		<location:ServiceLocationCustomization />
-	</setup:DefaultCustomizeFixtureCommand>
+	<setup:DefaultCustomizeFixtureCommand />
 	<commands:RunProgramCommand />
 </setup:ApplicationSetup>

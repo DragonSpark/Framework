@@ -5,9 +5,11 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
 	xmlns:autoMoq="clr-namespace:Ploeh.AutoFixture.AutoMoq;assembly=Ploeh.AutoFixture.AutoMoq"
+	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	mc:Ignorable="d" 
 >
-	<autoMoq:AutoConfiguredMoqCustomization />
 	<x:Static Member="setup:MetadataCustomization.Instance" />
 	<setup:OutputCustomization />
+	<location:ServiceLocationCustomization />
+	<autoMoq:AutoConfiguredMoqCustomization />
 </setup:CustomizeFixtureCommand>

@@ -21,8 +21,5 @@
 	</commands:SetupUnityCommand>
 	<ds:SetupRegistrationByConventionCommand />
 	<commands:InitializeModulesCommand />
-	<setup:CustomizeFixtureCommand>
-		<location:ServiceLocationCustomization />
-		<setup:OutputCustomization />
-	</setup:CustomizeFixtureCommand>
+	<setup1:DefaultCustomizeFixtureCommand />
 </setup1:ApplicationSetup>

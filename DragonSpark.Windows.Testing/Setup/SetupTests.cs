@@ -54,7 +54,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<LocationSetup>( sut );
 		}
 
-		[DragonSpark.Testing.Framework.Register( typeof(IActivator), typeof(Activator))]
+		[Register( typeof(IActivator), typeof(Activator))]
 		[Theory, LocationSetup.AutoData]
 		public void CreateInstance( [Registered]IActivator activator )
 		{

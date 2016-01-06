@@ -106,7 +106,10 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		[Activate]
 		public IServiceLocationAuthority Authority { get; set; }
 
-		protected override void Customize( IFixture fixture ) => new ServiceLocationRelay( Locator, new AuthorizedLocationSpecification( Locator, Authority ) ).With( fixture.ResidueCollectors.Add );
+		protected override void Customize( IFixture fixture ) => Locator.With( locator =>
+		{
+			new ServiceLocationRelay( locator, new AuthorizedLocationSpecification( locator, Authority ) ).With( fixture.ResidueCollectors.Add );
+		} );
 	}
 	
 	class FixtureRegistry : IServiceRegistry

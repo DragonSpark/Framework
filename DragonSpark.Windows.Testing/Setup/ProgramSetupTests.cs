@@ -30,7 +30,8 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, ProgramSetup.AutoData]
 		public void Type( IUnityContainer sut )
 		{
-			Assert.IsType<SomeTypeist>( sut.Resolve<ITyper>() );
+			var resolve = sut.Resolve<ITyper>();
+			Assert.IsType<SomeTypeist>( resolve );
 		}
 
 		[Theory, ProgramSetup.AutoData]
