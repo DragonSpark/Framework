@@ -8,16 +8,16 @@ using System.Reflection.Emit;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public class DomainAssemblyProvider : AssemblyProviderBase
+	public class DomainAssemblySource : AssemblySourceBase
 	{
-		public static DomainAssemblyProvider Instance { get; } = new DomainAssemblyProvider();
+		public static DomainAssemblySource Instance { get; } = new DomainAssemblySource();
 
 		readonly AppDomain domain;
 
-		public DomainAssemblyProvider() : this( AppDomain.CurrentDomain )
+		public DomainAssemblySource() : this( AppDomain.CurrentDomain )
 		{}
 
-		public DomainAssemblyProvider( [Required]AppDomain domain )
+		public DomainAssemblySource( [Required]AppDomain domain )
 		{
 			this.domain = domain;
 		}

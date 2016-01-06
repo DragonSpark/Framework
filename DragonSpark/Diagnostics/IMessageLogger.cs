@@ -188,7 +188,7 @@ namespace DragonSpark.Diagnostics
 		protected override Message CreateItem( T parameter )
 		{
 			var current = time();
-			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, current, category, parameter.Message, parameter.Priority );
+			var formatted = string.Format( CultureInfo.InvariantCulture, Resources.DefaultTextLoggerPattern, current, category, message( parameter ), parameter.Priority );
 			var result = new Message( parameter.Priority, current, category, formatted );
 			return result;
 		}

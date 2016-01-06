@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Aspects
 		[Fact]
 		public void ProviderCached()
 		{
-			var sut = new Provider();
+			var sut = new Source();
 
 			sut.Create();
 			Assert.Equal( 1, sut.Count );
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Aspects
 			Assert.Equal( 2, sut.Cached );
 		}
 
-		public class Provider : AssemblyProviderBase
+		public class Source : AssemblySourceBase
 		{
 			public int Count { get; private set; }
 

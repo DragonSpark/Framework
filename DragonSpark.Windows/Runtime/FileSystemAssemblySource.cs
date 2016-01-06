@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public class FileSystemAssemblyProvider : AssemblyProviderBase
+	public class FileSystemAssemblySource : AssemblySourceBase
 	{
-		public static FileSystemAssemblyProvider Instance { get; } = new FileSystemAssemblyProvider();
+		public static FileSystemAssemblySource Instance { get; } = new FileSystemAssemblySource();
 
 		protected override Assembly[] CreateItem()
 		{

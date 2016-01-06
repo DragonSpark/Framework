@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var composite = new CompositeMessageLogger( sut, other );
 			composite.Information( message, priority );
 
-			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Information( message, priority ) ) );
+			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Log( It.Is<Message>( m => m.Category == InformationMessageFactory.Category && m.Text.Contains( message ) && m.Priority == priority ) ) ) );
 		}
 
 		[Theory, AutoData]
@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var composite = new CompositeMessageLogger( sut, other );
 			composite.Warning( message, priority );
 
-			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Warning( message, priority ) ) );
+			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Text.Contains( message ) && m.Priority == priority ) ) ) );
 		}
 
 		[Theory, AutoData]
@@ -34,7 +34,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var composite = new CompositeMessageLogger( sut, other );
 			composite.Exception( message, error );
 
-			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Exception( message, error ) ) );
+			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Text.Contains( message ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.High ) ) ) );
 		}
 
 		[Theory, AutoData]
@@ -43,7 +43,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var composite = new CompositeMessageLogger( sut, other );
 			composite.Fatal( message, error );
 
-			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Fatal( message, error ) ) );
+			new[] { sut, other }.Each( x => Mock.Get( x ).Verify( logger => logger.Log( It.Is<Message>( m => m.Category == FatalExceptionMessageFactory.Category && m.Text.Contains( message ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.Highest ) ) ) );
 		}
 
 		[Theory, AutoDataMoq]

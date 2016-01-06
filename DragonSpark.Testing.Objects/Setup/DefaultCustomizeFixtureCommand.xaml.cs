@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Windows.Testing.Setup
+﻿namespace DragonSpark.Testing.Objects.Setup
 {
 	public partial class DefaultCustomizeFixtureCommand
 	{

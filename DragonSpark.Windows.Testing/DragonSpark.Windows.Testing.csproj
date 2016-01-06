@@ -153,7 +153,7 @@
     <Compile Include="Modularity\DirectoryModuleInfoProviderTests.cs" />
     <Compile Include="Runtime\ApplicationExceptionFormatterTests.cs" />
     <Compile Include="Runtime\AssemblyProviderTests.cs" />
-    <Compile Include="Runtime\DomainAssemblyProviderTests.cs" />
+    <Compile Include="Runtime\DomainAssemblySourceTests.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests.cs" />
     <Compile Include="Runtime\ModuleConfigurationTests.cs" />
     <Compile Include="Runtime\TaskLocalValueTests.cs" />
@@ -180,12 +180,6 @@
     <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
     <Compile Include="Runtime\ExceptionFormatterTests.cs" />
     <Compile Include="Runtime\ThreadLocalValueTests.cs" />
-    <Compile Include="Setup\DefaultCustomizeFixtureCommand.xaml.cs">
-      <DependentUpon>DefaultCustomizeFixtureCommand.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\DefaultSetup.xaml.cs">
-      <DependentUpon>DefaultSetup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Setup\LocationSetup.cs">
       <DependentUpon>LocationSetup.xaml</DependentUpon>
     </Compile>
@@ -195,7 +189,6 @@
     <Compile Include="Setup\ProgramSetupTests.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
-    <Compile Include="Setup\ApplicationSetup.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
     <Compile Include="Setup\SetupParameterTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
@@ -275,14 +268,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Setup\DefaultCustomizeFixtureCommand.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setup\DefaultSetup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Setup\LocationSetup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

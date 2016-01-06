@@ -8,7 +8,7 @@ namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>();
+		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Extend().Container.Resolve<IMessageLogger>();
 
 		public static T Resolve<T>( this IUnityContainer @this, Func<T> @default ) => @this.IsRegistered<T>() ? @this.Resolve<T>() : @default();
 

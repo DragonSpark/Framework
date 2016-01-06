@@ -6,10 +6,10 @@ using Xunit;
 
 namespace DragonSpark.Windows.Testing.Runtime
 {
-	public class DomainAssemblyProviderTests
+	public class DomainAssemblySourceTests
 	{
 		[Theory, AutoData]
-		public void GetAssemblies( DomainAssemblyProvider sut )
+		public void GetAssemblies( DomainAssemblySource sut )
 		{
 			var assemblies = sut.Create();
 			var loaded = AppDomain.CurrentDomain.GetAssemblies();
@@ -20,7 +20,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Fact]
 		public void Instance()
 		{
-			Assert.NotNull( DomainAssemblyProvider.Instance );
+			Assert.NotNull( DomainAssemblySource.Instance );
 		}
 	}
 }

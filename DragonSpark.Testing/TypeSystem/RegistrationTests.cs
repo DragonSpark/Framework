@@ -8,14 +8,14 @@ namespace DragonSpark.Testing.TypeSystem
 {
 	public class RegistrationTests
 	{
-		[RegisterFactory( typeof(AssemblyProvider) )]
+		[RegisterFactory( typeof(AssemblySource) )]
 		[Theory, AutoDataRegistration]
 		public void Testing( Assembly[] sut )
 		{
-			Assert.Same( sut, AssemblyProvider.Result );
+			Assert.Same( sut, AssemblySource.Result );
 		}
 
-		public class AssemblyProvider : AssemblyProviderBase
+		public class AssemblySource : AssemblySourceBase
 		{
 			readonly internal static Assembly[] Result = new Assembly[0];
 

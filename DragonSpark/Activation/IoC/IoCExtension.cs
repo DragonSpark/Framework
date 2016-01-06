@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
+using DragonSpark.Properties;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.IoC
@@ -16,8 +17,8 @@ namespace DragonSpark.Activation.IoC
 	[BuildUp]
 	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
-		[Activate( typeof(RecordingMessageLogger) )]
-		public IMessageLogger Logger { get; set; }
+		[Activate]
+		public RecordingMessageLogger Logger { get; set; }
 
 		protected override void Initialize()
 		{
@@ -39,9 +40,10 @@ namespace DragonSpark.Activation.IoC
 
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
+				support.Instance<IMessageLogger>( Logger );
+				Logger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
-				support.Instance( Logger );
 			} );
 
 			var policy = Context.Policies.Get<IBuildPlanCreatorPolicy>( null );
@@ -87,6 +89,14 @@ namespace DragonSpark.Activation.IoC
 			{
 				Container.RegisterInstance( type, args.Name, args.Instance, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
 			}
+
+			args.Instance.As<IMessageLogger>( logger =>
+			{
+				if ( logger != Logger )
+				{
+					Logger.Purge().Each( logger.Log );
+				}
+			} );
 		}
 
 		IServiceRegistry CreateRegistry()

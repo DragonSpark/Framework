@@ -234,7 +234,7 @@
     <Compile Include="Modularity\IModuleMonitor.cs" />
     <Compile Include="Modularity\ModuleInfoExtensions.cs" />
     <Compile Include="Modularity\ModuleMonitor.cs" />
-    <Compile Include="TypeSystem\AssemblyProviderBase.cs" />
+    <Compile Include="TypeSystem\AssemblySourceBase.cs" />
     <Compile Include="Activation\FactoryModel\FactoryBase.cs" />
     <Compile Include="Runtime\Collection.cs" />
     <Compile Include="TypeSystem\ApplicationAssemblyTransformer.cs">

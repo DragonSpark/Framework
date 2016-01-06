@@ -1,13 +1,11 @@
-using System;
 using DragonSpark.Runtime.Values;
+using System;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	public interface IFactory
 	{
 		object Create();
-
-		Type ResultType { get; }
 	}
 
 	public interface IFactory<out T> : IFactory

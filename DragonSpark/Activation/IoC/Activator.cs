@@ -10,9 +10,6 @@ namespace DragonSpark.Activation.IoC
 		readonly IResolutionSupport support;
 		readonly RegistrationSupport registration;
 
-		/*public Activator( IUnityContainer container, IResolutionSupport support ) : this( container, support, container.Resolve<RegistrationSupport>() )
-		{}*/
-
 		public Activator( IUnityContainer container, IResolutionSupport support, RegistrationSupport registration )
 		{
 			this.container = container;
@@ -20,37 +17,17 @@ namespace DragonSpark.Activation.IoC
 			this.registration = registration;
 		}
 
-		public bool CanActivate( Type type, string name = null )
-		{
-			return support.CanResolve( type, name );
-		}
+		public bool CanActivate( Type type, string name = null ) => support.CanResolve( type, name );
 
-		public object Activate( Type type, string name = null )
-		{
-			var result = container.Resolve( type, name );
-			return result;
-		}
+		public object Activate( Type type, string name = null ) => container.Resolve( type, name );
 
-		public bool CanConstruct( Type type, params object[] parameters )
-		{
-			var result = support.CanResolve( type, null, parameters );
-			return result;
-		}
+		public bool CanConstruct( Type type, params object[] parameters ) => support.CanResolve( type, null, parameters );
 
 		public object Construct( Type type, params object[] parameters )
 		{
 			using ( var child = container.CreateChildContainer() )
 			{
-				parameters.NotNull().Each( x => 
-				{
-					/*x.As<TypedInjectionValue>( parameterValue =>
-					{
-						var instance = parameterValue.GetResolverPolicy( null ).Resolve( null );
-						child.RegisterInstance( parameterValue.ParameterType, instance );
-					} );*/
-
-					registration.AllClasses( x );
-				} );
+				parameters.NotNull().Each( x => registration.AllClasses( x ) );
 
 				var result = new ResolutionContext( child.Logger() ).Execute( () => child.Resolve( type ) );
 				return result;

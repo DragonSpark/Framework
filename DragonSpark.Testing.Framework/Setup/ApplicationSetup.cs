@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		{
 			using ( var command = new AssignSetupCommand() )
 			{
-				CommandExtensions.Apply( command, (object)parameter.Arguments );
+				command.Apply( (object)parameter.Arguments );
 
 				base.OnExecute( parameter );
 			}

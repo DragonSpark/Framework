@@ -1,4 +1,4 @@
-﻿<localSetup:ApplicationSetup x:Class="DragonSpark.Windows.Testing.Setup.ProgramSetup"
+﻿<setup:ApplicationSetup x:Class="DragonSpark.Windows.Testing.Setup.ProgramSetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,6 +8,7 @@
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:runtime="clr-namespace:DragonSpark.Runtime;assembly=DragonSpark"
 	xmlns:localSetup="clr-namespace:DragonSpark.Windows.Testing.Setup"
+	xmlns:setup="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
 	mc:Ignorable="d"
 >
 	<commands:SetupUnityCommand>
@@ -15,7 +16,7 @@
 			<commands:UnityType RegistrationType="{x:Type localSetup:ITyper}" MapTo="{x:Type localSetup:SomeTypeist}" />
 		</commands:ConfigureUnityCommand.Types>
 		<commands:SetupUnityCommand.Extensions>
-			<localSetup:FixtureExtension />
+			<location:FixtureExtension />
 		</commands:SetupUnityCommand.Extensions>
 	</commands:SetupUnityCommand>
 	
@@ -25,8 +26,8 @@
 		<runtime:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 	</commands:ConfigureUnityCommand>
 	<commands:InitializeModulesCommand />
-	<localSetup:DefaultCustomizeFixtureCommand>
+	<setup:DefaultCustomizeFixtureCommand>
 		<location:ServiceLocationCustomization />
-	</localSetup:DefaultCustomizeFixtureCommand>
+	</setup:DefaultCustomizeFixtureCommand>
 	<commands:RunProgramCommand />
-</localSetup:ApplicationSetup>
+</setup:ApplicationSetup>

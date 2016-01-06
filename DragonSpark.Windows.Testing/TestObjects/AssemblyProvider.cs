@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace DragonSpark.Windows.Testing.TestObjects
 {
-	public class AssemblyProvider : AssemblyProviderBase
+	public class AssemblyProvider : AssemblySourceBase, IAssemblyProvider
 	{
 		public static AssemblyProvider Instance { get; } = new AssemblyProvider();
 
 		protected override Assembly[] CreateItem()
 		{
-			var result = Assembly.GetExecutingAssembly().Append( new[] { typeof(AssemblyProviderBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).ToArray();
+			var result = Assembly.GetExecutingAssembly().Append( new[] { typeof(AssemblySourceBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).ToArray();
 			return result;
 		}
 	}

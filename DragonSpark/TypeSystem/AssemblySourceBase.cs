@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public abstract class AssemblyProviderBase : FactoryBase<Assembly[]>, IAssemblyProvider
+	public abstract class AssemblySourceBase : FactoryBase<Assembly[]>
 	{
 		[Cache( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
 		protected abstract override Assembly[] CreateItem();
@@ -14,7 +14,7 @@ namespace DragonSpark.TypeSystem
 
 	public class AggregateAssemblyFactory : AggregateFactory<Assembly[]>, IAssemblyProvider
 	{
-		public AggregateAssemblyFactory( IAssemblyProvider primary, params ITransformer<Assembly[]>[] transformers ) : base( primary, transformers )
+		public AggregateAssemblyFactory( IFactory<Assembly[]> primary, params ITransformer<Assembly[]>[] transformers ) : base( primary, transformers )
 		{}
 
 		public AggregateAssemblyFactory( Func<Assembly[]> primary, params Func<Assembly[], Assembly[]>[] transformers ) : base( primary, transformers )

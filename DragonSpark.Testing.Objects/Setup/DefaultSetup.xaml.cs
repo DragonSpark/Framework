@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Testing.Framework.Setup;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Testing.Objects.Setup
 {
 	public partial class DefaultSetup
 	{
-		public class AutoDataAttribute : DragonSpark.Testing.Framework.Setup.AutoDataAttribute
+		public class AutoDataAttribute : Framework.Setup.AutoDataAttribute
 		{
 			public AutoDataAttribute() : base( SetupFixtureFactory<DefaultSetup>.Instance.Create )
 			{ }

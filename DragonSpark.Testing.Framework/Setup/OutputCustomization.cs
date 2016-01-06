@@ -27,11 +27,11 @@ namespace DragonSpark.Testing.Framework.Setup
 	public class OutputCustomization : AutoDataCustomization
 	{
 		[Activate]
-		public IMessageLocator Locator { get; set; }
+		public RecordingMessageLogger Logger { get; set; }
 
 		protected override void OnInitialized( AutoData context )
 		{
-			var item = Locator.Create().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
+			var item = Logger.Purge().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
 			new OutputValue( context.Method.DeclaringType ).Assign( item );
 		}
 	}

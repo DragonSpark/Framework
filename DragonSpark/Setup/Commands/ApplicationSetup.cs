@@ -25,8 +25,6 @@ namespace DragonSpark.Setup.Commands
 
 		protected override void OnExecute( ISetupParameter<TArguments> parameter )
 		{
-			MessageLogger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
-
 			MessageLogger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
 			
 			Location.Assign( Locator );
@@ -55,7 +53,7 @@ namespace DragonSpark.Setup.Commands
 			Locator.Container.With( container =>
 			{
 				var assemblies = AssemblyProvider.Create();
-				var support = new EnsuredRegistrationSupport( container, assemblies );
+				var support = new RegistrationSupport( container, assemblies );
 
 				new object[] { AssemblyProvider, MessageLogger, Location }.Each( support.Convention );
 			} );
