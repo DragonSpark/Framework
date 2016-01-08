@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.TypeSystem
 {
@@ -12,12 +13,12 @@ namespace DragonSpark.TypeSystem
 		readonly Type type;
 		readonly TypeInfo info;
 
-		public TypeAdapter( Type type ) : this( type.GetTypeInfo() )
+		public TypeAdapter( [Required]Type type ) : this( type.GetTypeInfo() )
 		{
 			this.type = type;
 		}
 
-		public TypeAdapter( TypeInfo info )
+		public TypeAdapter( [Required]TypeInfo info )
 		{
 			this.info = info;
 		}

@@ -56,7 +56,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <Prefer32Bit>false</Prefer32Bit>
-    <SkipPostSharp>False</SkipPostSharp>
+    <PostSharpProperties>SolutionDir=C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\DevelopersWin.VoteReporter\;</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -138,8 +138,6 @@
     <Compile Include="Activation\FactoryModel\ActivationFactoryParameterCoercer.cs" />
     <Compile Include="Activation\FactoryModel\Factory.cs" />
     <Compile Include="Activation\IExecutionContext.cs" />
-    <Compile Include="Activation\IoC\BuildChainMonitorStrategy.cs" />
-    <Compile Include="Activation\IoC\Chain.cs" />
     <Compile Include="Activation\IoC\EnsuredRegistrationSupport.cs" />
     <Compile Include="Activation\IoC\NotRegisteredSpecification.cs" />
     <Compile Include="Activation\IoC\ObjectBuilderExtension.cs" />
@@ -162,6 +160,7 @@
     <Compile Include="Runtime\FatalApplicationException.cs" />
     <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
+    <Compile Include="Runtime\Values\AmbientContextCommand.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
     <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
@@ -188,6 +187,7 @@
     <Compile Include="Activation\IServiceLocation.cs" />
     <Compile Include="Activation\ServiceLocation.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
+    <Compile Include="Runtime\Values\ThreadAmbientValue.cs" />
     <Compile Include="Setup\Registration\FactoryResultTypeRegistration.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />

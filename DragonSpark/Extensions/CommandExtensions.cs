@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Runtime;
+using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Runtime;
 using ICommand = System.Windows.Input.ICommand;
 
 namespace DragonSpark.Extensions
@@ -13,7 +13,9 @@ namespace DragonSpark.Extensions
 			return result;
 		}
 
-		public static void Apply<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> => Apply<T>( @this, parameter );
+		public static void Run<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> => Apply<T>( @this, parameter );
+
+		public static T Apply<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> => Apply<T>( @this, parameter );
 
 		public static T Apply<T>( this T @this, object parameter ) where T : ICommand
 		{

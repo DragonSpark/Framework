@@ -106,7 +106,7 @@ namespace DragonSpark.Activation.IoC
 				.With( policy => policy.GetRegisteredNames( typeof(T) )
 					.Concat( new string[] { null } ).Concat( typeof(T).GetTypeInfo().IsGenericType ? policy.GetRegisteredNames( typeof(T).GetGenericTypeDefinition() ) : Enumerable.Empty<string>() )
 					.Distinct()
-					.Select( context.NewBuildUp<T> )
+					.Select( context.New<T> )
 					.ToArray() 
 				) ?? new T[0];
 			return result;

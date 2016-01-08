@@ -1,37 +1,23 @@
-﻿using DragonSpark.TypeSystem;
+﻿using DragonSpark.Runtime.Values;
+using DragonSpark.TypeSystem;
+using PostSharp.Patterns.Contracts;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Extensions
 {
 	public static class TypeExtensions
 	{
-		readonly static ConcurrentDictionary<Type, TypeAdapter> Extensions = new ConcurrentDictionary<Type, TypeAdapter>();
-
 		public static Assembly[] Assemblies( [Required] this IEnumerable<Type> @this ) => @this.Select( x => x.Assembly() ).ToArray();
 
-		public static TypeAdapter Adapt( this object @this )
-		{
-			return @this.GetType().Adapt();
-		}
+		public static TypeAdapter Adapt( [Required]this Type @this ) => new AssociatedValue<TypeAdapter>( @this, () => new TypeAdapter( @this ) ).Item;
 
-		public static TypeAdapter Adapt( this Type @this )
-		{
-			return @this.With( item => Extensions.GetOrAdd( item, t => new TypeAdapter( t ) ) );
-		}
+		public static TypeAdapter Adapt( this object @this ) => @this.GetType().Adapt();
 
-		public static TypeAdapter Adapt( this TypeInfo @this )
-		{
-			return @this.With( item => Extensions.GetOrAdd( item.AsType(), t => new TypeAdapter( @this ) ) );
-		}
+		public static TypeAdapter Adapt( [Required]this TypeInfo @this ) => Adapt( @this.AsType() );
 
-		public static Assembly Assembly( this Type @this )
-		{
-			return Adapt( @this ).Assembly;
-		}
+		public static Assembly Assembly( [Required]this Type @this ) => Adapt( @this ).Assembly;
 	}
 }

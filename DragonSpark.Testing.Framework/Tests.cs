@@ -25,7 +25,8 @@ namespace DragonSpark.Testing.Framework
 
 		protected override void OnExecute( Type parameter )
 		{
-			new OutputValue( parameter ).Item.With( lines => lines.Each( helper.WriteLine ) );
+			var item = new OutputValue( parameter ).Item;
+			item.With( lines => lines.Each( helper.WriteLine ) );
 		}
 	}
 
@@ -38,7 +39,7 @@ namespace DragonSpark.Testing.Framework
 	[LinesOfCodeAvoided( 8 ), Serializable]
 	public class AssignExecutionAttribute : MethodInterceptionAspect
 	{
-		public override void OnInvoke( MethodInterceptionArgs args )
+		public sealed override void OnInvoke( MethodInterceptionArgs args )
 		{
 			using ( var command = new AssignExecutionCommand() )
 			{
@@ -61,7 +62,7 @@ namespace DragonSpark.Testing.Framework
 	// [AssignExecution( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
 	public abstract class Tests : IDisposable
 	{
-		protected Tests( ITestOutputHelper output ) : this( output, new InitializeOutputCommand( output ).Apply )
+		protected Tests( ITestOutputHelper output ) : this( output, new InitializeOutputCommand( output ).Run )
 		{}
 
 		protected Tests( ITestOutputHelper output, Action<Type> command )

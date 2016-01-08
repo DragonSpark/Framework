@@ -179,7 +179,7 @@
     <Compile Include="Runtime\AppDomainValueTests.cs" />
     <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
     <Compile Include="Runtime\ExceptionFormatterTests.cs" />
-    <Compile Include="Runtime\ThreadLocalValueTests.cs" />
+    <Compile Include="Runtime\ThreadDataValueTests.cs" />
     <Compile Include="Setup\LocationSetup.cs">
       <DependentUpon>LocationSetup.xaml</DependentUpon>
     </Compile>
@@ -191,7 +191,7 @@
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
     <Compile Include="Setup\SetupParameterTests.cs" />
-    <Compile Include="Setup\SetupTests.cs" />
+    <Compile Include="Setup\LocationSetupTests.cs" />
     <Compile Include="Setup\TestExtension.cs" />
     <Compile Include="Setup\UnitySetup.xaml.cs">
       <DependentUpon>UnitySetup.xaml</DependentUpon>

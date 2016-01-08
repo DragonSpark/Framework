@@ -4,10 +4,10 @@ using Xunit;
 
 namespace DragonSpark.Windows.Testing.Runtime
 {
-	public class ThreadLocalValueTests
+	public class ThreadDataValueTests
 	{
 		[Theory, AutoData]
-		public void Assign( ThreadLocalValue<int> sut, int number )
+		public void Assign( ThreadDataValue<int> sut, int number )
 		{
 			sut.Assign( number );
 			Assert.Equal( number, sut.Item );

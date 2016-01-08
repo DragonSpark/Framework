@@ -8,9 +8,10 @@ namespace DragonSpark.Testing.Framework.Setup
 	public class CurrentExecution : AssignedLogical<Tuple<string>>, IExecutionContext
 	{
 		public static CurrentExecution Instance { get; } = new CurrentExecution();
+
+		public override Tuple<string> Item => base.Item ?? MethodContext.Get( MethodBase.GetCurrentMethod() );
 	}
 
-	// TODO: See if this is fixed with Shadow Copying.
 	[Serializable]
 	public class MethodContext
 	{

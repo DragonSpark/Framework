@@ -40,7 +40,7 @@ namespace DragonSpark.Testing.Aspects
 				}
 			}
 
-			public override void OnInvoke( MethodInterceptionArgs args )
+			public sealed override void OnInvoke( MethodInterceptionArgs args )
 			{
 				new InvocationFactory().Method( args );
 				base.OnInvoke( args );

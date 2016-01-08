@@ -1,5 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
+using System;
 
 namespace DragonSpark.Runtime.Values
 {
@@ -8,19 +10,46 @@ namespace DragonSpark.Runtime.Values
 		public abstract void Assign( T item );
 	}
 
-	class ExecutionProperty<T> : ConnectedValue<T>
+	public class ExecutionContextValue<T> : DeferredValue<T>
 	{
-		public ExecutionProperty( object instance ) : base( instance, typeof( ExecutionProperty<T> ) )
-		{ }
+		public ExecutionContextValue() : base( () => new AssociatedValue<T>( Execution.Current ) ) {}
 	}
 
-	public class ExecutionContextValue<T> : WritableValue<T>
+	public class DeferredValue<T> : WritableValue<T>
 	{
-		public override void Assign( T item )
+		readonly Func<IWritableValue<T>> deferred;
+
+		public DeferredValue( [Required]Func<IWritableValue<T>> deferred )
 		{
-			new ExecutionProperty<T>( Execution.Current ).Assign( item );
+			this.deferred = deferred;
 		}
 
-		public override T Item => Execution.Current.With( x => new ExecutionProperty<T>( x ).Item );
+		public override void Assign( T item ) => deferred.Use( value => value.Assign( item ) );
+
+		public override T Item => deferred.Use( value => value.Item );
+	}
+
+	public class DecoratedValue<T> : WritableValue<T>, IDisposable
+	{
+		readonly IWritableValue<T> inner;
+
+		public DecoratedValue( [Required]IWritableValue<T> inner )
+		{
+			this.inner = inner;
+		}
+
+		public override void Assign( T item ) => inner.Assign( item );
+
+		public override T Item => inner.Item;
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		void Dispose( bool disposing ) => disposing.IsTrue( OnDispose );
+
+		protected virtual void OnDispose() => inner.TryDispose();
 	}
 }

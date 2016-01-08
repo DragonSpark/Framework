@@ -30,12 +30,4 @@ namespace DragonSpark.Testing.Framework.Setup
 			}
 		}
 	}
-
-	public class SetupEngineParts : DefaultEngineParts
-	{
-		public new static SetupEngineParts Instance { get; } = new SetupEngineParts();
-
-		public SetupEngineParts() : base( GreedyMethodBuilderFactory.Instance.Append( Default ) )
-		{}
-	}
 }

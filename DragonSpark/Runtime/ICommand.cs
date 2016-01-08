@@ -1,10 +1,10 @@
 using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using System;
-using System.Windows.Input;
 using DragonSpark.Runtime.Values;
 using PostSharp.Patterns.Contracts;
+using System;
+using System.Windows.Input;
 
 namespace DragonSpark.Runtime
 {
@@ -17,16 +17,17 @@ namespace DragonSpark.Runtime
 		void Update();
 	}
 
-	public abstract class Command : Command<object>
-	{}
-
-	public abstract class AssignValueCommand<T> : DisposingCommand<T>
+	public class AssignValueCommand<T> : DisposingCommand<T>
 	{
 		readonly IWritableValue<T> value;
+		readonly T current;
 
-		protected AssignValueCommand( [Required]IWritableValue<T> value )
+		public AssignValueCommand( [Required]IWritableValue<T> value ) : this( value, value.Item ) {}
+
+		public AssignValueCommand( [Required]IWritableValue<T> value, T current )
 		{
 			this.value = value;
+			this.current = current;
 		}
 
 		protected override void OnExecute( T parameter )
@@ -36,7 +37,8 @@ namespace DragonSpark.Runtime
 
 		protected override void OnDispose()
 		{
-			value.Assign( default( T ) );
+			value.Assign( current );
+			value.TryDispose();
 			base.OnDispose();
 		}
 	}
@@ -63,7 +65,6 @@ namespace DragonSpark.Runtime
 		{}
 	}
 
-	[BuildUp]
 	public abstract class Command<TParameter> : ICommand<TParameter>
 	{
 		public event EventHandler CanExecuteChanged = delegate {};

@@ -1,32 +1,58 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ExtensionAttribute : ActivateAttribute
+	public class ExtensionAttribute : DefaultValueBase
 	{
-		public ExtensionAttribute(string name = null ) : base( () => new ExtensionProvider( name ) )
-		{}
+		public ExtensionAttribute( string name = null ) : base( () => new ActivatedValueProvider( new ActivateAttribute.ParameterFactory<IUnityContainer>( name ).Create, new Factory().Create ) ) {}
+
+		public class Factory : ActivateAttribute.Factory<IUnityContainerExtensionConfigurator>
+		{
+			readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory;
+			public Factory() : this( new ActivateAttribute.Factory<IUnityContainer>().Create ) { }
+
+			protected Factory( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory )
+			{
+				this.factory = factory;
+			}
+
+			protected override IUnityContainerExtensionConfigurator CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter ) => factory( parameter ).Extension( parameter.Item2.Metadata.PropertyType );
+		}
 	}
 
-	public class ExtensionProvider : ActivatedValueProvider
+	public class LocateAttribute : DefaultValueBase
 	{
-		public ExtensionProvider( string name = null ) : base( null, name )
-		{}
+		public LocateAttribute() : this( (string)null ) { }
 
-		protected override object Activate( Parameter parameter )
-		{
-			var result = base.Activate( parameter ).AsTo<IUnityContainer, IUnityContainerExtensionConfigurator>( container => container.Extension( parameter.Metadata.PropertyType ) );
-			return result;
-		}
+		public LocateAttribute( string name ) : this( null, name ) { }
 
-		protected override Type DetermineType( PropertyInfo propertyInfo )
+		public LocateAttribute( Type locatedType, string name = null ) : base( () => new ActivatedValueProvider( new ActivateAttribute.ParameterFactory( locatedType, name ).Create, new Factory().Create ) ) { }
+		
+		public class Factory : ActivateAttribute.Factory<object>
 		{
-			return typeof(IUnityContainer);
+			readonly IServiceLocator locator;
+
+			public Factory() : this( Services.Location.Item )
+			{}
+
+			public Factory( [Required]IServiceLocator locator )
+			{
+				this.locator = locator;
+			}
+
+			protected override object CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter )
+			{
+				var instance = locator.GetInstance( parameter.Item1.Type, parameter.Item1.Name );
+				return instance;
+			}
 		}
 	}
 
@@ -38,68 +64,57 @@ namespace DragonSpark.ComponentModel
 		public ActivateAttribute( string name ) : this( null, name )
 		{}
 
-		public ActivateAttribute( Type activatedType, string name = null ) : this( () => new ActivatedValueProvider( activatedType, name ) )
+		public ActivateAttribute( Type activatedType, string name = null ) : this( () => new ActivatedValueProvider( new ParameterFactory( activatedType, name ).Create, new Factory<object>().Create ) )
 		{}
 
-		public ActivateAttribute( Func<IDefaultValueProvider> provider ) : base( provider )
+		protected ActivateAttribute( Func<IDefaultValueProvider> provider ) : base( provider )
 		{}
+
+		public class ParameterFactory<T> : ParameterFactory
+		{
+			public ParameterFactory( string name ) : base( typeof( T ), name ) { }
+		}
+
+		public class ParameterFactory : FactoryBase<PropertyInfo, ActivateParameter>
+		{
+			readonly Type activatedType;
+			readonly string name;
+
+			public ParameterFactory( Type activatedType, string name )
+			{
+				this.activatedType = activatedType;
+				this.name = name;
+			}
+
+			protected override ActivateParameter CreateItem( PropertyInfo parameter ) => new ActivateParameter( activatedType ?? parameter.PropertyType, name );
+		}
+
+		public class Factory<T> : FactoryBase<Tuple<ActivateParameter, DefaultValueParameter>, T> where T : class
+		{
+			readonly Func<ActivateParameter, T> factory;
+
+			public Factory() : this( new ActivateFactory<T>( Activator.Current ).Create ) { }
+
+			public Factory( [Required]Func<ActivateParameter, T> factory )
+			{
+				this.factory = factory;
+			}
+
+			protected override T CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter ) => factory( parameter.Item1 );
+		}
 	}
 
 	public class ActivatedValueProvider : IDefaultValueProvider
 	{
-		public ActivatedValueProvider( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
-		{}
+		readonly Func<PropertyInfo, ActivateParameter> createParameter;
+		readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create;
 
-		public ActivatedValueProvider( [Required]IActivator activator, Type activatedType, string name )
+		public ActivatedValueProvider( [Required]Func<PropertyInfo, ActivateParameter> createParameter, [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create )
 		{
-			Activator = activator;
-			ActivatedType = activatedType;
-			Name = name;
+			this.createParameter = createParameter;
+			this.create = create;
 		}
 
-		protected IActivator Activator { get; }
-		protected Type ActivatedType { get; }
-		protected string Name { get; }
-
-		public object GetValue( DefaultValueParameter parameter )
-		{
-			var type = ActivatedType ?? DetermineType( parameter.Metadata );
-			var adapted = new Parameter( type, parameter.Instance, parameter.Metadata );
-			var result = Activate( adapted );
-			return result;
-
-			/*var result = new[] { DetermineType( parameter.Metadata ), ActivatedType }
-				.NotNull()
-				.Select( t => new Parameter( t, parameter.Instance, parameter.Metadata ) )
-				.Select( Activate )
-				.NotNull()
-				.FirstOrDefault();
-			return result;*/
-		}
-
-		protected virtual object Activate( Parameter parameter )
-		{
-			var result = Activator.Activate<object>( parameter.ActivatedType, Name )
-				/*?? 
-				parameter.ActivatedType.Adapt().DetermineImplementor().With( info => Activator.Activate<object>( info.AsType() ) )
-				?? 
-				SingletonLocator.Instance.Locate( parameter.ActivatedType )*/;
-			return result;
-		}
-
-		protected virtual Type DetermineType( PropertyInfo propertyInfo )
-		{
-			return propertyInfo.PropertyType;
-		}
-
-		public class Parameter : DefaultValueParameter
-		{
-			public Parameter( Type activatedType, object instance, PropertyInfo metadata ) : base( instance, metadata )
-			{
-				ActivatedType = activatedType;
-			}
-
-			public Type ActivatedType { get; }
-		}
+		public object GetValue( DefaultValueParameter parameter ) => create( Tuple.Create( createParameter( parameter.Metadata ), parameter ) );
 	}
 }

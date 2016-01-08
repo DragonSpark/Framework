@@ -1,5 +1,6 @@
 ﻿using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture.Xunit2;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -26,6 +27,12 @@ namespace DragonSpark.Testing.TypeSystem
 		{
 			var adapter = new TypeAdapter( typeof(Casted) );
 			Assert.True( adapter.IsInstanceOfType( new Casted( 6776 ) ) );
+		}
+
+		[Fact]
+		public void Throws()
+		{
+			Assert.Throws<ArgumentNullException>( () => { new TypeAdapter( null ); } );
 		}
 
 		class Casted

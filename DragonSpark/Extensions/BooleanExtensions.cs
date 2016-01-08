@@ -4,25 +4,21 @@ namespace DragonSpark.Extensions
 {
 	public static class BooleanExtensions
 	{
-		public static bool And( this bool target, bool other )
-		{
-			var result = target && other;
-			return result;
-		}
+		public static bool And( this bool target, bool other ) => target && other;
 
 		public static void IsTrue( this bool target, Action action )
 		{
-			if ( target && action != null )
+			if ( target )
 			{
-				action();
+				action?.Invoke();
 			}
 		}
 
 		public static void IsFalse( this bool target, Action action )
 		{
-			if ( !target && action != null )
+			if ( !target )
 			{
-				action();
+				action?.Invoke();
 			}
 		}
 	}

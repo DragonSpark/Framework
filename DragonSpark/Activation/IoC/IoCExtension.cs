@@ -1,25 +1,25 @@
-﻿using DragonSpark.Diagnostics;
+﻿using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Properties;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
-using DragonSpark.Properties;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.IoC
 {
-	[BuildUp]
 	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
 		[Activate]
 		public RecordingMessageLogger Logger { get; set; }
 
+		[BuildUp]
 		protected override void Initialize()
 		{
 			Context.RegisteringInstance += ContextOnRegisteringInstance;
@@ -27,7 +27,6 @@ namespace DragonSpark.Activation.IoC
 			Context.Policies.SetDefault<IConstructorSelectorPolicy>( DefaultUnityConstructorSelectorPolicy.Instance );
 
 			Context.Strategies.Clear();
-			Context.Strategies.AddNew<BuildChainMonitorStrategy>( UnityBuildStage.Setup );
 			Context.Strategies.AddNew<BuildKeyMappingStrategy>( UnityBuildStage.TypeMapping );
 			Context.Strategies.AddNew<HierarchicalLifetimeStrategy>( UnityBuildStage.Lifetime );
 			Context.Strategies.AddNew<LifetimeStrategy>( UnityBuildStage.Lifetime );
@@ -85,18 +84,21 @@ namespace DragonSpark.Activation.IoC
 		void ContextOnRegisteringInstance( object sender, RegisterInstanceEventArgs args )
 		{
 			var type = args.Instance.GetType();
-			if ( args.RegisteredType != type && !Container.IsRegistered( type, args.Name ) )
-			{
-				Container.RegisterInstance( type, args.Name, args.Instance, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
-			}
 
-			args.Instance.As<IMessageLogger>( logger =>
+			var register = args.Instance.AsTo<IMessageLogger, bool>( logger =>
 			{
-				if ( logger != Logger )
+				var result = logger != Logger;
+				if ( result )
 				{
 					Logger.Purge().Each( logger.Log );
 				}
-			} );
+				return result;
+			}, () => !Container.IsRegistered( type, args.Name ) );
+
+			if ( args.RegisteredType != type && register )
+			{
+				Container.RegisterInstance( type, args.Name, args.Instance, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
+			}
 		}
 
 		IServiceRegistry CreateRegistry()

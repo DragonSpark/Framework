@@ -11,24 +11,33 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public class AutoDataCustomization : CustomizationBase, IAutoDataCustomization
 	{
-		protected override void Customize( IFixture fixture ) => new Items<IAutoDataCustomization>( fixture ).Item.Add( this );
+		protected override void Customize( IFixture fixture )
+		{
+			var autoData = new AssociatedAutoData( fixture ).Item;
+			if ( autoData != null )
+			{
+				OnInitializing(	autoData );
+			}
+
+			var items = autoData?.Items ?? new Items<IAutoDataCustomization>( fixture ).Item;
+			items.Ensure( ( IAutoDataCustomization)this );
+		}
 
 		void IAutoDataCustomization.Initializing( AutoData data ) => OnInitializing( data );
 
-		[BuildUp]
 		protected virtual void OnInitializing( AutoData context ) {}
 
 		void IAutoDataCustomization.Initialized( AutoData data ) => OnInitialized( data );
 
-		[BuildUp]
 		protected virtual void OnInitialized( AutoData context ) {}
 	}
 
 	public class OutputCustomization : AutoDataCustomization
 	{
-		[Activate]
+		[Locate]
 		public RecordingMessageLogger Logger { get; set; }
 
+		[BuildUp]
 		protected override void OnInitialized( AutoData context )
 		{
 			var item = Logger.Purge().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();

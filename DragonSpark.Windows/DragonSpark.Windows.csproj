@@ -228,7 +228,7 @@
     <Compile Include="Runtime\ExpressionEvaluator.cs" />
     <Compile Include="Runtime\ApplicationAssemblyTransformer.cs" />
     <Compile Include="Runtime\LogicalValue.cs" />
-    <Compile Include="Runtime\ThreadLocalValue.cs" />
+    <Compile Include="Runtime\ThreadDataValue.cs" />
     <Compile Include="Setup\FileConfigurationFactory.cs" />
     <Compile Include="Setup\SetupUnityFromConfigurationCommand.cs" />
     <Compile Include="Setup\InitializeMarkupCommand.cs">

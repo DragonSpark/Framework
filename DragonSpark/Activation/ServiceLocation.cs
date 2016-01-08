@@ -9,6 +9,7 @@ namespace DragonSpark.Activation
 		public static ServiceLocation Instance { get; } = new ServiceLocation();
 
 		public bool IsAvailable => Item != null;
+
 		public void Dispose() => Assign( null );
 	}
 }

@@ -30,9 +30,9 @@ namespace DragonSpark.Windows.Testing.Setup
 	/// <summary>
 	/// This file can be seen as a bucket for all the testing done around setup.  It also can be seen as a huge learning bucket for xUnit and AutoFixture.  This does not contain best practices.  Always be learning. :)
 	/// </summary>
-	public class SetupTests : Tests
+	public class LocationSetupTests : Tests
 	{
-		public SetupTests( ITestOutputHelper output ) : base( output )
+		public LocationSetupTests( ITestOutputHelper output ) : base( output )
 		{}
 
 		[Theory, LocationSetup.AutoData]
@@ -194,7 +194,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			var before = sut.GetInstance<IInterface>();
 			Assert.Null( before );
 
-			logger.Verify( x => x.Warning( $@"Specified type is not registered: ""{typeof(IInterface).FullName}"" with build name ""<None>"".", Priority.High ) );
+			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains(  $@"Specified type is not registered: ""{typeof(IInterface).FullName}"" with build name ""<None>""." ) ) ) );
 
 			sut.Register<IInterface, Class>();
 
@@ -204,7 +204,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			var broken = sut.GetInstance<ClassWithBrokenConstructor>();
 			Assert.Null( broken );
 
-			logger.Verify( x => x.Exception( $@"Could not resolve type ""{typeof(ClassWithBrokenConstructor).Name}"" with build name ""<None>"".", It.IsAny<ResolutionFailedException>() ) );
+			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains( $@"Could not resolve type ""{typeof(ClassWithBrokenConstructor).Name}"" with build name ""<None>""." ) && m.Text.Contains( typeof( ResolutionFailedException ).FullName ) ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -245,7 +245,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		void Register( IUnityContainer container, [Frozen]ServiceLocator sut )
+		void Register( IUnityContainer container, [Greedy, Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.Register<IInterface, Class>();
@@ -254,7 +254,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		void RegisterInstance( IUnityContainer container, [Frozen]ServiceLocator sut )
+		void RegisterInstance( IUnityContainer container, [Greedy, Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			var instance = new Class();
@@ -265,7 +265,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		void RegisterFactory( IUnityContainer container, [Frozen]ServiceLocator sut )
+		void RegisterFactory( IUnityContainer container, [Greedy, Frozen]ServiceLocator sut )
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			sut.RegisterFactory( typeof( IInterface ), () => new Class() );
@@ -316,8 +316,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			messageLogger.Information( message );
 			messageLogger.Information( message, Priority.High );
 
-			Mock.Get( messageLogger ).Verify( x => x.Information( message, Priority.Normal ) );
-			Mock.Get( messageLogger ).Verify( x => x.Information( message, Priority.High ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == InformationMessageFactory.Category && m.Text.Contains( message ) && m.Priority == Priority.Normal ) ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == InformationMessageFactory.Category && m.Text.Contains( message ) && m.Priority == Priority.High ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -326,8 +326,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			messageLogger.Warning( message );
 			messageLogger.Warning( message, Priority.Low );
 
-			Mock.Get( messageLogger ).Verify( x => x.Warning( message, Priority.High ) );
-			Mock.Get( messageLogger ).Verify( x => x.Warning( message, Priority.Low ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Text.Contains( message ) && m.Priority == Priority.High ) ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Text.Contains( message ) && m.Priority == Priority.Low ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -338,7 +338,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			messageLogger.Exception( message, error );
 
-			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Text.Contains( message ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.High ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -348,7 +348,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			// var message = error.ToString();
 
-			Mock.Get( messageLogger ).Verify( x => x.Exception( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Text.Contains( message ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.High ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -361,7 +361,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			// var message = formatter.FormatMessage( error, id );
 
-			Mock.Get( messageLogger ).Verify( x => x.Fatal( message, error ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == FatalExceptionMessageFactory.Category && m.Text.Contains( message ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.Highest ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -382,7 +382,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			// var message = formatter.FormatMessage( error );
 
-			Mock.Get( messageLogger ).Verify( x => x.Exception( "An exception has occurred while executing an application delegate.", exception ) );
+			Mock.Get( messageLogger ).Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Text.Contains( "An exception has occurred while executing an application delegate." ) && m.Text.Contains( error.GetType().FullName ) && m.Priority == Priority.High ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -424,22 +424,6 @@ namespace DragonSpark.Windows.Testing.Setup
 			var once = sut.Resolve<RegisterAsMany>();
 			var twice = sut.Resolve<RegisterAsMany>();
 			Assert.NotSame( once, twice );
-		}
-
-		[Theory, LocationSetup.AutoData]
-		public void Create( [Located]ApplicationInformation sut )
-		{
-			Assert.NotNull( sut.AssemblyInformation );
-			Assert.Equal( DateTimeOffset.Parse( "2/1/2016" ), sut.DeploymentDate.GetValueOrDefault() );
-			Assert.Equal( "http://framework.dragonspark.us/testing", sut.CompanyUri.ToString() );
-			var assembly = GetType().Assembly;
-			Assert.Equal( assembly.FromMetadata<AssemblyTitleAttribute, string>( attribute => attribute.Title ), sut.AssemblyInformation.Title );
-			Assert.Equal( assembly.FromMetadata<AssemblyCompanyAttribute, string>( attribute => attribute.Company ), sut.AssemblyInformation.Company );
-			Assert.Equal( assembly.FromMetadata<AssemblyCopyrightAttribute, string>( attribute => attribute.Copyright ), sut.AssemblyInformation.Copyright );
-			Assert.Equal( assembly.FromMetadata<DebuggableAttribute, string>( attribute => "DEBUG" ), sut.AssemblyInformation.Configuration );
-			Assert.Equal( assembly.FromMetadata<AssemblyDescriptionAttribute, string>( attribute => attribute.Description ), sut.AssemblyInformation.Description );
-			Assert.Equal( assembly.FromMetadata<AssemblyProductAttribute, string>( attribute => attribute.Product ), sut.AssemblyInformation.Product );
-			Assert.Equal( assembly.GetName().Version, sut.AssemblyInformation.Version );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -510,16 +494,14 @@ namespace DragonSpark.Windows.Testing.Setup
 		{ }
 
 		[Theory, LocationSetup.AutoData]
-		void Register( IAnotherInterface sut )
+		void RegisterInterface( IAnotherInterface sut )
 		{
 			Assert.IsType<MultipleInterfaces>( sut );
 		}
 
 		[DragonSpark.Setup.Registration.Register( typeof(IAnotherInterface) )]
 		public class MultipleInterfaces : IInterface, IAnotherInterface, IItem
-		{
-			
-		}
+		{}
 
 		interface IAnotherInterface
 		{ }

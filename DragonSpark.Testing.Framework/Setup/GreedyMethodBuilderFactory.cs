@@ -1,11 +1,10 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
+using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
-using System;
+using PostSharp.Patterns.Contracts;
 using System.Linq;
 using System.Reflection;
-using Ploeh.AutoFixture;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -44,26 +43,5 @@ namespace DragonSpark.Testing.Framework.Setup
 		public static FixtureLocator Instance { get; } = new FixtureLocator();
 
 		protected override IFixture CreateItem( ISpecimenContext parameter ) => parameter.AsTo<SpecimenContext, IFixture>( specimenContext => specimenContext.Builder as IFixture );
-	}
-
-	public class GreedyMethodBuilderFactory : EnginePartFactory<MethodInvoker>
-	{
-		public static GreedyMethodBuilderFactory Instance { get; } = new GreedyMethodBuilderFactory();
-
-		readonly Type[] exceptions = { typeof(DateTimeOffset) };
-		readonly IRequestSpecification any;
-		readonly ISpecimenBuilder greedy = new MethodInvoker( new CompositeMethodQuery( new GreedyConstructorQuery(), new FactoryMethodQuery() ) ), builder;
-
-		public GreedyMethodBuilderFactory()
-		{
-			any = new OrRequestSpecification( exceptions.Select( type => new ExactTypeSpecification( type ) ) );
-			builder = new FilteringSpecimenBuilder( greedy, new InverseRequestSpecification( any ) );
-		}
-
-		protected override ISpecimenBuilder CreateItem( MethodInvoker parameter )
-		{
-			var result = new CompositeSpecimenBuilder( builder, new FilteringSpecimenBuilder( parameter, any ) );
-			return result;
-		}
 	}
 }

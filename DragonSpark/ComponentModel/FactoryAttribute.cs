@@ -2,34 +2,30 @@ using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using PostSharp.Patterns.Contracts;
 using System;
+using Microsoft.Practices.ServiceLocation;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel
 {
 	public sealed class FactoryAttribute : ActivateAttribute
 	{
-		public FactoryAttribute( Type factoryType, string name = null ) : base( () => new FactoryValueProvider( factoryType, name ) )
-		{}
-	}
-
-	public class FactoryValueProvider : ActivatedValueProvider
-	{
-		readonly IFactory<ObjectFactoryParameter, object> factory;
-
-		public FactoryValueProvider( Type activatedType, string name ) : this( Activation.Activator.Current, activatedType, name )
+		public FactoryAttribute( Type factoryType, string name = null ) : base( () => new ActivatedValueProvider( new ParameterFactory( factoryType, name ).Create, new Factory().Create ) )
 		{}
 
-		public FactoryValueProvider( IActivator activator, Type activatedType, string name ) : this( activator, activator.Activate<FactoryBuiltObjectFactory>(), activatedType, name )
-		{}
-
-		public FactoryValueProvider( [Required]IActivator activator, [Required]IFactory<ObjectFactoryParameter, object> factory, [Required]Type activatedType, string name ) : base( activator, activatedType, name )
+		public class Factory : Factory<object>
 		{
-			this.factory = factory;
-		}
+			readonly Func<FactoryBuiltObjectFactory> factory;
 
-		protected override object Activate( Parameter parameter )
-		{
-			var result = factory.Create( new ObjectFactoryParameter( parameter.ActivatedType, FactoryReflectionSupport.GetResultType( parameter.ActivatedType ) ?? parameter.Metadata.PropertyType ) );
-			return result;
+			public Factory() : this( Activator.Current ) {}
+
+			public Factory( [Required]IActivator locator ) : this( locator.Activate<FactoryBuiltObjectFactory> ) { }
+
+			protected Factory( [Required]Func<FactoryBuiltObjectFactory> factory )
+			{
+				this.factory = factory;
+			}
+
+			protected override object CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter ) => factory().Create( new ObjectFactoryParameter( parameter.Item1.Type, FactoryReflectionSupport.GetResultType( parameter.Item1.Type ) ?? parameter.Item2.Metadata.PropertyType ) );
 		}
 	}
 }
