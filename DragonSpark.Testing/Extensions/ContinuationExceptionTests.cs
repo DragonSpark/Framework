@@ -5,6 +5,7 @@ using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.TypeSystem;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
@@ -58,15 +59,16 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		void Prioritize()
 		{
-			var items = new object[] { new LowPriority(), new NormalPriority(), new HighPriority() }.Prioritize().ToArray();
+			var low = new LowPriority();
+			var items = new object[] { low, new NormalPriority(), new HighPriority() }.Prioritize().ToArray();
 			Assert.IsType<HighPriority>( items.First() );
 			Assert.IsType<LowPriority>( items.Last() );
 		}
 
-		[Fact]
-		void PrioritizePredicate()
+		[Theory, Framework.Setup.AutoData]
+		void PrioritizePredicate( AttributeProvider provider )
 		{
-			var items = new object[] { new LowPriority(), new NormalPriority(), new HighPriority() }.Prioritize( x => x.GetType().GetAttribute<PriorityAttribute>() ).ToArray();
+			var items = new object[] { new LowPriority(), new NormalPriority(), new HighPriority() }.Prioritize( x => provider.GetAttribute<PriorityAttribute>( x.GetType() ) ).ToArray();
 			Assert.IsType<HighPriority>( items.First() );
 			Assert.IsType<LowPriority>( items.Last() );
 		}

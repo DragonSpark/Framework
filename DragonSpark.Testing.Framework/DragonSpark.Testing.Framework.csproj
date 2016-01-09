@@ -160,6 +160,7 @@
     <Compile Include="Parameters\AssignedAttribute.cs" />
     <Compile Include="Setup\Execution.cs" />
     <Compile Include="Setup\AutoDataMoqConfiguredAttribute.cs" />
+    <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\ResourceConfigurationFactory.cs" />
     <Compile Include="Setup\ApplicationSetup.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
@@ -173,10 +174,8 @@
     <Compile Include="Parameters\FromCustomization.cs" />
     <Compile Include="Setup\SetupEngineParts.cs" />
     <Compile Include="IAutoDataCustomization.cs" />
-    <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\OutputCustomization.cs" />
     <Compile Include="RegisteredAttribute.cs" />
-    <Compile Include="RegisterFactoryAttribute.cs" />
     <Compile Include="Setup\Location\ServiceLocationAuthority.cs" />
     <Compile Include="Setup\Location\ServiceLocationRelay.cs" />
     <Compile Include="Setup\AssignedLogical.cs">
@@ -187,10 +186,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterAttribute.cs">
+    <Compile Include="MapAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RegistrationAttribute.cs">
+    <Compile Include="RegistrationBaseAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />

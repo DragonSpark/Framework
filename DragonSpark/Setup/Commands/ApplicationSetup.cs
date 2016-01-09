@@ -1,11 +1,15 @@
+using System;
+using System.Reflection;
 using DragonSpark.Activation;
 using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
+using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
 
@@ -52,9 +56,9 @@ namespace DragonSpark.Setup.Commands
 		{
 			Locator.Container.With( container =>
 			{
-				var assemblies = AssemblyProvider.Create();
-				var support = new RegistrationSupport( container, assemblies );
+				container.Registry().RegisterFactory( AssemblyProvider );
 
+				var support = container.Registration();
 				new object[] { AssemblyProvider, MessageLogger, Location }.Each( support.Convention );
 			} );
 			

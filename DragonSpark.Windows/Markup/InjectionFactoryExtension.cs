@@ -25,10 +25,7 @@ namespace DragonSpark.Windows.Markup
 		public InjectionFactoryExtension( Type type, string buildName, object parameter ) : base( type, buildName, parameter )
 		{}
 
-		protected override IFactory<InjectionMemberParameter, InjectionMember> DetermineFactory( IServiceProvider serviceProvider )
-		{
-			return new InjectionFactoryFactory( Type, Parameter );
-		}
+		protected override IFactory<InjectionMemberParameter, InjectionMember> DetermineFactory( IServiceProvider serviceProvider ) => new InjectionFactoryFactory( Type, Parameter );
 
 		protected override InjectionMemberParameter DetermineParameter( IServiceProvider serviceProvider )
 		{
@@ -47,10 +44,7 @@ namespace DragonSpark.Windows.Markup
 		}
 
 		protected override IServiceProvider Prepare( IServiceProvider serviceProvider, IProvideValueTarget target, IMarkupTargetValueSetterBuilder builder )
-		{
-			var result = new DeferredContext( serviceProvider, target.TargetObject, target.TargetProperty, builder.GetPropertyType( target ), Resolve( serviceProvider ) );
-			return result;
-		}
+			=> new DeferredContext( serviceProvider, target.TargetObject, target.TargetProperty, builder.GetPropertyType( target ), Resolve( serviceProvider ) );
 
 		public class DeferredContext : Markup.DeferredContext
 		{

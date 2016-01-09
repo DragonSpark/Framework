@@ -1,21 +1,26 @@
-using System;
-using DragonSpark.Activation;
 using Ploeh.AutoFixture;
+using System;
 
 namespace DragonSpark.Testing.Framework.Parameters
 {
-	public class FreezeAttribute : RegistrationAttribute
+	public class FreezeAttribute : RegistrationBaseAttribute
 	{
-		public FreezeAttribute( Type type ) : base( type )
-		{}
+		public FreezeAttribute( Type registrationType ) : this( registrationType, registrationType ) {}
 
-		public FreezeAttribute( Type @from, Type to ) : base( @from, to )
-		{}
+		public FreezeAttribute( Type registrationType, Type mappedTo ) : base( () => new FreezeRegistration( registrationType, mappedTo ) ) {}
 
-		protected override void Customize( IFixture fixture, IServiceRegistry registry )
+		public class FreezeRegistration : ICustomization
 		{
-			var customization = new FreezingCustomization( MappedTo, RegistrationType );
-			fixture.Customize( customization );
+			readonly Type mappedTo;
+			readonly private Type registrationType;
+
+			public FreezeRegistration( Type registrationType, Type mappedTo )
+			{
+				this.registrationType = registrationType;
+				this.mappedTo = mappedTo;
+			}
+
+			public void Customize( IFixture fixture ) => fixture.Customize( new FreezingCustomization( mappedTo, registrationType ) );
 		}
 	}
 }

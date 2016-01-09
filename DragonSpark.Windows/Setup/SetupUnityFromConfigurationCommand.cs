@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace DragonSpark.Windows.Setup
 {
-	[RegisterFactoryForResult]
+	[RegisterFactory]
 	public class UnityConfigurationSectionFactory : ConfigurationSectionFactory<UnityConfigurationSection>
 	{
 		public static UnityConfigurationSectionFactory Instance { get; } = new UnityConfigurationSectionFactory();
@@ -26,9 +26,6 @@ namespace DragonSpark.Windows.Setup
 		[Required, Activate]
 		public UnityConfigurationSection Section { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
-		{
-			Section.Containers.Any().IsTrue( () => Container.LoadConfiguration() );
-		}
+		protected override void OnExecute( ISetupParameter parameter ) => Section.Containers.Any().IsTrue( () => Container.LoadConfiguration() );
 	}
 }

@@ -3,6 +3,7 @@ using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Aspects;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -13,8 +14,10 @@ namespace DragonSpark.Activation.FactoryModel
 			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
 			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
 
+		[Cache]
 		public static Type GetResultType( Type factoryType ) => Get( factoryType, types => types.Last(), Types );
 
+		[Cache]
 		public Type GetFactoryType( Type itemType, Type referenceType = null )
 		{
 			var name = $"{itemType.Name}Factory";
@@ -23,7 +26,7 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		Type LocateFactoryType( string name, Type itemType, Type candidate )
+		static Type LocateFactoryType( string name, Type itemType, Type candidate )
 		{
 			var result =
 				candidate.GetTypeInfo().DeclaredNestedTypes.AsTypes().Where( info => info.Name == name ).Only()
@@ -48,10 +51,7 @@ namespace DragonSpark.Activation.FactoryModel
 			return result;
 		}
 
-		/*public TypeAdapter GetParameterType( TypeAdapter factoryType )
-		{
-			var result = Get( factoryType, types => types.First(), Types.Last() );
-			return result;
-		}*/
+		[Cache]
+		public Type GetParameterType( Type factoryType ) => Get( factoryType, types => types.First(), Types.Last().Adapt() );
 	}
 }

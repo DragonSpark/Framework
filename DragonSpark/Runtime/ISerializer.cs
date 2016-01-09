@@ -1,5 +1,12 @@
+using System;
 using PostSharp.Patterns.Contracts;
 using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
+using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Runtime
 {
@@ -10,25 +17,21 @@ namespace DragonSpark.Runtime
 		string Save( object item );
 	}
 
-	/*public class DataContractSerializerFactory<T> : FactoryBase<DataContractSerializer>
+	public class DataContractSerializerFactory<T> : FactoryBase<DataContractSerializer>
 	{
 		readonly Func<Type, Type[]> knownTypes;
 
-		public DataContractSerializerFactory() : this( new KnownTypeFactory( ) )
+		public DataContractSerializerFactory( KnownTypeFactory factory ) : this( factory.Create )
 		{}
 
-		public DataContractSerializerFactory( Func<Type, Type[]> knownTypes )
+		public DataContractSerializerFactory( [Required]Func<Type, Type[]> knownTypes )
 		{
 			this.knownTypes = knownTypes;
 		}
 
 		[Cache]
-		protected override DataContractSerializer CreateItem()
-		{
-			var result = new DataContractSerializer( typeof(T), knownTypes( typeof(T) ) );
-			return result;
-		}
-	}*/
+		protected override DataContractSerializer CreateItem() => typeof(T).With( type => new DataContractSerializer( type, knownTypes( type ) ) );
+	}
 
 	/*public class Serializer<T> : ISerializer
 	{
@@ -36,7 +39,7 @@ namespace DragonSpark.Runtime
 
 		readonly DataContractSerializer serializer;
 
-		public Serializer() : this( DataContractSerializerFactory<T>. )
+		public Serializer() : this( DataContractSerializerFactory<T> )
 		{}
 
 		public Serializer( [Required]DataContractSerializer serializer )

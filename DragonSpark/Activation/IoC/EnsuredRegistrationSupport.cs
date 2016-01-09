@@ -5,7 +5,7 @@ namespace DragonSpark.Activation.IoC
 {
 	public class EnsuredRegistrationSupport : RegistrationSupport
 	{
-		public EnsuredRegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies ) : base( container, NotRegisteredSpecification.Instance, applicationAssemblies )
+		public EnsuredRegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies ) : base( container, applicationAssemblies, NotRegisteredSpecification.Instance )
 		{}
 	}
 }

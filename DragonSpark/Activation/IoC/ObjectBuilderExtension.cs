@@ -1,5 +1,6 @@
 ﻿using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.ObjectBuilder;

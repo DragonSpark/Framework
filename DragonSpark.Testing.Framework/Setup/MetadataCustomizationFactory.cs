@@ -1,4 +1,5 @@
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
 using System.Linq;
@@ -10,14 +11,10 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		public static MetadataCustomizationFactory Instance { get; } = new MetadataCustomizationFactory();
 
-		protected override ICustomization[] CreateItem( MethodBase parameter )
-		{
-			var type = parameter.DeclaringType;
-			var items = type.With( t => t.Assembly.GetCustomAttributes() )
-				.Concat( type.With( t => t.GetCustomAttributes() ) )
-				.Concat( parameter.GetCustomAttributes() )
-				.OfType<ICustomization>().Prioritize().ToArray();
-			return items;
-		}
+		protected override ICustomization[] CreateItem( MethodBase parameter ) => 
+			new object[] { parameter, parameter.DeclaringType, parameter.DeclaringType.Assembly }
+				.SelectMany( HostedValueLocator<ICustomization>.Instance.Create )
+				.Prioritize()
+				.Fixed();
 	}
 }

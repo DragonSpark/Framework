@@ -7,20 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using PostSharp.Patterns.Model;
 
 namespace DragonSpark.Activation.IoC
 {
-	public class ServiceLocator : ServiceLocatorImplBase, IDisposable
+	[Disposable]
+	public class ServiceLocator : ServiceLocatorImplBase
 	{
-		readonly IUnityContainer container;
-		readonly ConditionMonitor disposed = new ConditionMonitor();
-
-		public ServiceLocator() : this( new UnityContainer() )
-		{}
+		public ServiceLocator() : this( new UnityContainer() ) {}
 
 		public ServiceLocator( IUnityContainer container )
 		{
-			this.container = container;
+			Container = container;
 		}
 
 		public override IEnumerable<TService> GetAllInstances<TService>()
@@ -30,11 +28,7 @@ namespace DragonSpark.Activation.IoC
 			return result;
 		}
 
-		protected override IEnumerable<object> DoGetAllInstances( Type serviceType )
-		{
-			var result = Container.ResolveAll( serviceType ).ToArray();
-			return result;
-		}
+		protected override IEnumerable<object> DoGetAllInstances( Type serviceType ) => Container.ResolveAll( serviceType ).ToArray();
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
@@ -50,28 +44,7 @@ namespace DragonSpark.Activation.IoC
 
 		IMessageLogger MessageLogger => Container.Logger();
 
-		public IUnityContainer Container
-		{
-			get
-			{
-				switch ( disposed.State )
-				{
-					case ConditionMonitorState.Applied:
-						throw new ObjectDisposedException( Resources.ServiceLocator_Container );
-				}
-				return container;
-			}
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		protected virtual void Dispose( bool disposing )
-		{
-			disposed.Apply( container.Dispose );
-		}
+		[Child]
+		public IUnityContainer Container { get; }
 	}
 }

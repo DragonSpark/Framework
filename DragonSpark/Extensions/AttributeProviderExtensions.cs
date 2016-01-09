@@ -1,66 +1,28 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.Aspects;
+﻿using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
+using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Threading;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		public static bool IsDecoratedWith<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
-		{
-			var result = target.GetAttribute<TAttribute>( inherit ) != null;
-			return result;
-		}
+		public static TResult FromMetadata<TAttribute, TResult>( this IAttributeProvider @this, object target, Func<TAttribute, TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+			=> @this.GetAttributes<TAttribute>( target ).WithFirst( resolveValue, resolveDefault ?? DefaultFactory<TResult>.Instance.Create );
 
-		public static TAttribute GetAttribute<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
-		{
-			var result = target.GetAttributes<TAttribute>( inherit ).FirstOrDefault();
-			return result;
-		}
+		public static bool IsDecoratedWith<TAttribute>( this IAttributeProvider @this, object member ) where TAttribute : Attribute => IsDecoratedWith<TAttribute>( @this, member, false );
 
-		public static TAttribute[] GetAttributes<TAttribute>( this MemberInfo target, bool inherit = false ) where TAttribute : Attribute
-		{
-			var provider = Activator.Current.Activate<IAttributeProvider>() ?? AttributeProvider.Instance;
-			var result = provider.GetAttributes( target, typeof(TAttribute), inherit ).Cast<TAttribute>().ToArray();
-			return result;
-		}
-	}
+		public static bool IsDecoratedWith<TAttribute>( this IAttributeProvider @this, object member, bool inherit ) where TAttribute : Attribute => @this.GetAttribute<TAttribute>( member, inherit ) != null;
 
-	public interface IAttributeProvider
-	{
-		Attribute[] GetAttributes( [Required]MemberInfo member, [Required]Type attributeType, bool inherit );
-	}
+		public static TAttribute GetAttribute<TAttribute>( this IAttributeProvider @this, object target, bool inherit = false ) where TAttribute : Attribute => @this.GetAttributes<TAttribute>( target, inherit ).FirstOrDefault();
 
-	[Synchronized]
-	public class AttributeProvider : IAttributeProvider
-	{
-		public static AttributeProvider Instance { get; } = new AttributeProvider();
-
-		public static Attribute[] Empty { get; } = new Attribute[0];
-
-		[Reference]readonly IMemberInfoLocator locator;
-
-		AttributeProvider() : this( MemberInfoLocator.Instance )
-		{}
-
-		public AttributeProvider( IMemberInfoLocator locator )
-		{
-			this.locator = locator;
-		}
-
-		[Cache]
-		public Attribute[] GetAttributes( MemberInfo member, Type attributeType, bool inherit )
-		{
-			var located = locator.Locate( member ) ?? member;
-			var result = located.IsDefined( attributeType, inherit ) ? located.GetCustomAttributes( attributeType, inherit ).ToArray() : Empty;
-			return result;
-		}
+		public static TAttribute[] GetAttributes<TAttribute>( [Required] this IAttributeProvider @this, [Required]object target, bool inherit = false ) where TAttribute : Attribute =>
+			target.AsTo<Assembly, IEnumerable<TAttribute>>( assembly => assembly.GetCustomAttributes<TAttribute>(), () => @this.GetAttributes( target as MemberInfo ?? target.GetType().GetTypeInfo(), typeof(TAttribute), inherit ).Cast<TAttribute>() ).Fixed();
 	}
 }

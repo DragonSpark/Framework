@@ -7,7 +7,7 @@ namespace DragonSpark.Activation
 {
 	public static class Activator
 	{
-		public static IActivator Current => Services.Location.Locate<IActivator>() ?? SystemActivator.Instance;
+		public static IActivator GetCurrent() => Services.Location.Locate<IActivator>() ?? SystemActivator.Instance; // TODO: Figure out elegant way to remove this.
 
 		public static TResult Activate<TResult>( this IActivator @this ) => @this.Activate<TResult>( typeof(TResult) );
 

@@ -14,8 +14,7 @@ namespace DragonSpark.Windows.Entity
 
 		readonly Collection<Type> watching = new Collection<Type>();
 
-		public ActivationSource() : this( Activator.Current )
-		{}
+		public ActivationSource() : this( Activator.GetCurrent() ) {}
 
 		public ActivationSource( IActivator activator )
 		{

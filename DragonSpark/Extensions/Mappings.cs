@@ -9,10 +9,7 @@ namespace DragonSpark.Extensions
 {
 	public static class Mappings
 	{
-		public static Action<IMappingExpression> OnlyProvidedValues()
-		{
-			return x => x.ForAllMembers( options => options.Condition( condition => !condition.IsSourceValueNull ) );
-		}
+		public static Action<IMappingExpression> OnlyProvidedValues() => x => x.ForAllMembers( options => options.Condition( condition => !condition.IsSourceValueNull ) );
 
 		public static IMappingExpression IgnoreUnassignable( this IMappingExpression expression, Type sourceType, Type destinationType )
 		{
@@ -29,7 +26,7 @@ namespace DragonSpark.Extensions
 		public static TResult MapInto<TResult>( this object source, TResult existing = null, Action<IMappingExpression> configure = null ) where TResult : class 
 		{
 			var context = new ObjectMappingContext<TResult>( source, existing, configure );
-			var factory = Activator.Current.Activate<ObjectMappingFactory<TResult>>();
+			var factory = Services.Location.Locate<ObjectMappingFactory<TResult>>();
 			var result = factory.Create( context );
 			return result;
 		}

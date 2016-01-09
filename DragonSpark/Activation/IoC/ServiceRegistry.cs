@@ -1,44 +1,29 @@
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
 using System;
+using LifetimeManagerFactory = DragonSpark.Setup.Registration.LifetimeManagerFactory;
 
 namespace DragonSpark.Activation.IoC
 {
 	public class ServiceRegistry : IServiceRegistry
 	{
 		readonly IUnityContainer container;
-		readonly IMessageLogger messageLogger;
 		readonly IFactory<ActivateParameter, LifetimeManager> lifetimeFactory;
 
-		public ServiceRegistry( IUnityContainer container, IMessageLogger messageLogger, IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
+		public ServiceRegistry( [Required]IUnityContainer container ) : this( container, container.Resolve<LifetimeManagerFactory>() ) {}
+
+		public ServiceRegistry( [Required]IUnityContainer container, [Required]IFactory<ActivateParameter, LifetimeManager> lifetimeFactory )
 		{
 			this.container = container;
-			this.messageLogger = messageLogger;
 			this.lifetimeFactory = lifetimeFactory;
 		}
 
-		public void Register( Type @from, Type mappedTo, string name = null )
-		{
-			var lifetimeManager = lifetimeFactory.CreateUsing( mappedTo );
-			messageLogger.Information( string.Format( Resources.ServiceRegistry_Registering, @from, mappedTo, lifetimeManager?.GetType().Name ?? "Transient" ) );
-			container.RegisterType( from, mappedTo, name, lifetimeManager );
-		}
+		public void Register( Type @from, Type mappedTo, string name = null ) => container.Registration().Mapping( @from, mappedTo, name, lifetimeFactory.CreateUsing( mappedTo ) );
 
-		public void Register( Type type, object instance )
-		{
-			container.RegisterInstance( type, instance );
-		}
+		public void Register( Type type, object instance ) => container.Registration().Instance( type, instance );
 
-		public void RegisterFactory( Type type, Func<object> factory )
-		{
-			container.RegisterType( type, new InjectionFactory( x =>
-			{
-				var item = factory();
-				return item;
-			} ) );
-		}
+		public void RegisterFactory( Type type, Func<object> factory ) => container.RegisterType( type, new InjectionFactory( x => factory() ) );
 	}
 }

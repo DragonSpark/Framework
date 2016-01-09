@@ -34,12 +34,10 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
 
-			var resolutionSupport = new ResolutionSupport( Context );
-			Container.RegisterInstance<IResolutionSupport>( resolutionSupport );
-
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
 				support.Instance<IMessageLogger>( Logger );
+				support.Instance<IResolutionSupport>( new ResolutionSupport( Context ) );
 				Logger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
@@ -97,16 +95,11 @@ namespace DragonSpark.Activation.IoC
 
 			if ( args.RegisteredType != type && register )
 			{
-				Container.RegisterInstance( type, args.Name, args.Instance, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
+				Container.Registration().Instance( type, args.Instance, args.Name, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
 			}
 		}
 
-		IServiceRegistry CreateRegistry()
-		{
-			var factory = new Setup.Registration.LifetimeManagerFactory( Container.Resolve<IActivator>() );
-			var result = new ServiceRegistry( Container, Container.Logger(), factory );
-			return result;
-		}
+		IServiceRegistry CreateRegistry() => new ServiceRegistry( Container );
 
 		IActivator CreateActivator() => new CompositeActivator( Container.Resolve<Activator>(), SystemActivator.Instance );
 

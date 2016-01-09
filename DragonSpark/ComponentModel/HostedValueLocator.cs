@@ -1,18 +1,23 @@
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
+using PostSharp.Patterns.Contracts;
 using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public class HostedValueLocator<T> : FactoryBase<MemberInfo, T[]> where T : class
+	public class HostedValueLocator<T> : FactoryBase<object, T[]> where T : class
 	{
+		readonly IAttributeProvider provider;
 		public static HostedValueLocator<T> Instance { get; } = new HostedValueLocator<T>();
 
-		protected override T[] CreateItem( MemberInfo parameter )
+		public HostedValueLocator() : this( AttributeProvider.Instance ) {}
+
+		public HostedValueLocator( [Required]IAttributeProvider provider )
 		{
-			var result = parameter.GetCustomAttributes<HostingAttribute>().Select( attribute => attribute.Item ).OfType<T>().ToArray();
-			return result;
+			this.provider = provider;
 		}
+
+		protected override T[] CreateItem( object parameter ) => provider.GetAttributes<HostingAttribute>( parameter ).Select( attribute => attribute.Item ).OfType<T>().ToArray();
 	}
 }

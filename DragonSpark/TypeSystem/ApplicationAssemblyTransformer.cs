@@ -10,27 +10,18 @@ namespace DragonSpark.TypeSystem
 {
 	public class ApplicationAssemblyTransformer : TransformerBase<Assembly[]>
 	{
-		public static ApplicationAssemblyTransformer Instance { get; } = new ApplicationAssemblyTransformer();
-
 		readonly string[] namespaces;
 
-		public ApplicationAssemblyTransformer() : this( Default<Assembly>.Items )
-		{}
-
-		public ApplicationAssemblyTransformer( [Required]IEnumerable<Assembly> coreAssemblies ) : this( Determine( coreAssemblies ) )
-		{}
-
 		static string[] Determine( IEnumerable<Assembly> coreAssemblies ) => coreAssemblies.NotNull().Append( typeof(ApplicationAssemblyTransformer).Assembly() ).Distinct().Select( assembly => assembly.GetRootNamespace() ).ToArray();
+
+		public ApplicationAssemblyTransformer( [Required]params Assembly[] coreAssemblies ) : this( Determine( coreAssemblies ) )
+		{}
 
 		ApplicationAssemblyTransformer( string[] namespaces )
 		{
 			this.namespaces = namespaces;
 		}
 
-		protected override Assembly[] CreateItem( Assembly[] parameter )
-		{
-			var result = parameter.Where( assembly => assembly.IsDefined( typeof(RegistrationAttribute) ) || namespaces.Any( assembly.GetName().Name.StartsWith ) ).ToArray();
-			return result;
-		}
+		protected override Assembly[] CreateItem( Assembly[] parameter ) => parameter.Where( assembly => assembly.IsDefined( typeof( RegistrationAttribute ) ) || namespaces.Any( assembly.GetName().Name.StartsWith ) ).ToArray();
 	}
 }

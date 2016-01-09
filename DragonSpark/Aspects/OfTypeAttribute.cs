@@ -3,28 +3,33 @@ using PostSharp.Aspects;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Reflection;
 using System;
+using System.Linq;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Aspects
 {
+	public class OfFactoryType : OfTypeAttribute
+	{
+		public OfFactoryType() : base( typeof(IFactory), typeof(IFactoryWithParameter) ) {}
+	}
+
 	public class OfTypeAttribute : LocationContractAttribute, ILocationValidationAspect<Type>
 	{
-		readonly Type type;
+		readonly Type[] types;
 
-		public OfTypeAttribute( Type type )
+		public OfTypeAttribute( params Type[] types )
 		{
-			this.type = type;
+			this.types = types;
 		}
 
 		protected override string GetErrorMessage()
 		{
-			return /*ContractLocalizedTextProvider.Current.GetMessage( nameof(OfTypeAttribute) )*/ $"The specified type is not of type (or cannot be cast to) {type.FullName}";
+			var names = string.Join( " or ", types.Select( type => type.FullName ) );
+			return /*ContractLocalizedTextProvider.Current.GetMessage( nameof(OfTypeAttribute) )*/ $"The specified type is not of type (or cannot be cast to) {names}";
 		}
 
 		public Exception ValidateValue( Type value, string locationName, LocationKind locationKind )
-		{
-			var result = !type.Adapt().IsAssignableFrom( value ) ? CreateException( value, locationName, locationKind, LocationValidationContext.SuccessPostcondition ) : null;
-			return result;
-		}
+			=> types.Any( type => type.Adapt().IsAssignableFrom( value ) ) ? null : CreateException( value, locationName, locationKind, LocationValidationContext.SuccessPostcondition );
 
 		Exception CreateException( object value, string locationName, LocationKind locationKind, LocationValidationContext context )
 		{

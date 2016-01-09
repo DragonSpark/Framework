@@ -37,10 +37,7 @@ namespace DragonSpark.Windows.Testing.Setup
 	{
 		public bool Executed { get; private set; }
 		
-		protected override void OnExecute( ISetupParameter<object> parameter )
-		{
-			Executed = true;
-		}
+		protected override void OnExecute( ISetupParameter<object> parameter ) => Executed = true;
 	}
 
 	public class Parameter : SetupParameter<object>

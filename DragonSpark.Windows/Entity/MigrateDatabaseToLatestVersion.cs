@@ -9,7 +9,7 @@ namespace DragonSpark.Windows.Entity
 		public MigrateDatabaseToLatestVersion() : this( false )
 		{}
 
-		public MigrateDatabaseToLatestVersion( bool useSuppliedContext ) : base( useSuppliedContext, Activator.Current.Activate<TConfiguration>() )
+		public MigrateDatabaseToLatestVersion( bool useSuppliedContext ) : base( useSuppliedContext, Activator.GetCurrent().Activate<TConfiguration>() )
 		{}
 	}
 }

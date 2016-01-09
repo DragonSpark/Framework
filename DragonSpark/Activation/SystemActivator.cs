@@ -5,6 +5,9 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using DragonSpark.ComponentModel;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 
 namespace DragonSpark.Activation
 {
@@ -13,17 +16,19 @@ namespace DragonSpark.Activation
 	{
 		public static SystemActivator Instance { get; } = new SystemActivator();
 
-		public bool CanActivate( Type type, string name )
+		[Reference]
+		readonly IObjectBuilder builder;
+
+		public SystemActivator() : this( ObjectBuilder.Instance ) {}
+
+		public SystemActivator( [Required] IObjectBuilder builder )
 		{
-			var result = CanConstruct( type );
-			return result;
+			this.builder = builder;
 		}
 
-		public object Activate( Type type, string name = null )
-		{
-			var result = Construct( type );
-			return result;
-		}
+		public bool CanActivate( Type type, string name ) => CanConstruct( type );
+
+		public object Activate( Type type, string name = null ) => Construct( type );
 
 		public bool CanConstruct( Type type, params object[] parameters )
 		{
@@ -46,7 +51,7 @@ namespace DragonSpark.Activation
 
 			var activator = type.Adapt().FindConstructor( args ).With( GetActivator );
 
-			var result = activator( args ).BuildUp();
+			var result = builder.BuildUp( activator( args ) );
 			return result;
 		}
 

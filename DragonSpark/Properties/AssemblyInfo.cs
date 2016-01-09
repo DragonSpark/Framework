@@ -4,10 +4,14 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DragonSpark;
+using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
+using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
+using DragonSpark.Setup;
 using DragonSpark.Setup.Registration;
 using Microsoft.Practices.ServiceLocation;
 
@@ -38,5 +42,5 @@ using Microsoft.Practices.ServiceLocation;
 [assembly: XmlnsDefinition("http://framework.dragonspark.us", "DragonSpark.Logging.Configuration")]
 */
 
-[assembly: Registration( Priority.AboveLowest, typeof(IServiceLocator), typeof(IModule), typeof(IConventionRegistrationService), typeof(IConventionRegistrationProfileProvider), typeof(Collection), typeof(Collection<>), typeof(ObjectBuilderPolicy), typeof(FactoryParameterCoercer<>), Namespaces = "DragonSpark.Aspects" )]
+[assembly: Registration( Priority.AboveLowest, typeof(IServiceLocator), typeof(IModule), typeof(IExecutionContext), typeof(ISetupParameter), typeof(Collection), typeof(Collection<>), typeof(ObjectBuilderPolicy), typeof(FactoryParameterCoercer<>), Namespaces = "DragonSpark.Aspects" )]
 // [assembly: AddAspect( AttributeTargetAssemblies = "regex:^mscorlib", AttributeTargetTypes = "System.Collections.Collection`1", AttributeTargetMembers = "Add" )]

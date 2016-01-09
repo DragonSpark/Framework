@@ -5,10 +5,10 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public class FactoryBuiltObjectFactory : ActivateFactory<ObjectFactoryParameter, object>
 	{
-		public FactoryBuiltObjectFactory() : this( Activation.Activator.Current )
+		public FactoryBuiltObjectFactory() : this( Activation.Activator.GetCurrent )
 		{}
 
-		public FactoryBuiltObjectFactory( IActivator activator ) :	base( activator )
+		public FactoryBuiltObjectFactory( Func<IActivator> activator ) :	base( activator )
 		{}
 
 		protected override object Activate( ObjectFactoryParameter parameter )

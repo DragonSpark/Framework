@@ -3,30 +3,33 @@ using Microsoft.Practices.Unity;
 using System;
 using System.IO;
 using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.TypeSystem;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Runtime
 {
-	[RegisterFactoryForResult]
-	public class ApplicationAssemblyLocator : TypeSystem.ApplicationAssemblyLocator
+	[RegisterFactory]
+	public class ApplicationAssemblyLocator : FirstFactory<Assembly>
 	{
+		public ApplicationAssemblyLocator( DomainApplicationAssemblyLocator domain, TypeSystem.ApplicationAssemblyLocator system ) : base( domain, system ) {}
+	}
+
+	public class DomainApplicationAssemblyLocator : FactoryBase<Assembly>, IApplicationAssemblyLocator
+	{
+		public static DomainApplicationAssemblyLocator Instance { get; } = new DomainApplicationAssemblyLocator();
+
 		readonly AppDomain primary;
 
 		[InjectionConstructor]
-		public ApplicationAssemblyLocator( Assembly[] assemblies ) : this( assemblies, AppDomain.CurrentDomain )
-		{}
+		public DomainApplicationAssemblyLocator() : this( AppDomain.CurrentDomain ) {}
 
-		public ApplicationAssemblyLocator( Assembly[] assemblies, AppDomain primary ) : base( assemblies )
+		public DomainApplicationAssemblyLocator( [Required]AppDomain primary ) 
 		{
 			this.primary = primary;
 		}
 
 		protected override Assembly CreateItem()
-		{
-			var result = DeterminePrimaryAssembly() ?? base.CreateItem();
-			return result;
-		}
-
-		Assembly DeterminePrimaryAssembly()
 		{
 			try
 			{

@@ -101,30 +101,21 @@ namespace DragonSpark.Extensions
 
 		public static TResult With<TItem, TResult>( this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
 
-		public static TResult FromMetadata<TAttribute, TResult>( this object target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute
+		public static TItem BuildUp<TItem>( [Required]this TItem target ) where TItem : class => ObjectBuilder.Instance.BuildUp<TItem>( target );
+
+		public static TItem BuildUp<TItem>( [Required]this IObjectBuilder @this, TItem target ) where TItem : class
 		{
-			var result = target.With( x => 
-				target.AsTo<Assembly, TResult>( assembly => assembly.FromMetadata( resolveValue, resolveDefault ), () => ( x as MemberInfo ?? x.GetType().GetTypeInfo() ).FromMetadata( resolveValue, resolveDefault ) ) 
-			);
-			return result;
-		}
-
-		public static TResult FromMetadata<TAttribute, TResult>( this MemberInfo target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute => target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DefaultFactory<TResult>.Instance.Create );
-
-		public static TResult FromMetadata<TAttribute, TResult>( this Assembly target, Func<TAttribute,TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute => target.GetCustomAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault ?? DefaultFactory<TResult>.Instance.Create );
-
-		public static TItem BuildUp<TItem>( this TItem target ) where TItem : class
-		{
-			var builder = Services.Location.Locate<IObjectBuilder>() ?? ObjectBuilder.Instance;
-			builder.BuildUp( target );
+			@this.BuildUp( target );
 			return target;
 		}
 
-		public static object Evaluate( this object container, string expression ) => Services.Location.With<IExpressionEvaluator, object>( x => x.Evaluate( container, expression ) );
+		public static TResult Evaluate<TResult>( [Required]this object container, string expression ) => Evaluate<TResult>( ExpressionEvaluator.Instance, container, expression );
 
-		public static TResult Evaluate<TResult>( this object container, string expression ) => (TResult)container.Evaluate( expression );
+		public static TResult Evaluate<TResult>( [Required]this IExpressionEvaluator @this, object container, string expression ) => (TResult)@this.Evaluate( container, expression );
 
-		public static TResult AsValid<TItem, TResult>( this object @this, Func<TItem, TResult> with ) => @this.AsValid<TItem>( _ => { } ).With( with );
+		// public static TResult AsValid<TItem, TResult>( this object @this, Func<TItem, TResult> with ) => @this.AsValid<TItem>( _ => { } ).With( with );
+
+		public static TItem AsValid<TItem>( this TItem @this, Action<TItem> with ) => AsValid( @this, with, null );
 
 		public static TItem AsValid<TItem>( this object @this, Action<TItem> with ) => AsValid( @this, with, null );
 

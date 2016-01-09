@@ -19,20 +19,11 @@ namespace DragonSpark.ComponentModel
 				metadata = new Lazy<TypeInfo>( ResolveMetadata );
 			}
 
-			public Context CreateFromBaseType()
-			{
-				var result = current.BaseType.With( x => new Context( x.GetTypeInfo() ) );
-				return result;
-			}
-			
+			public Context CreateFromBaseType() => current.BaseType.With( x => new Context( x.GetTypeInfo() ) );
+
 			public TypeInfo Metadata => metadata.Value;
 
-			TypeInfo ResolveMetadata()
-			{
-				var name = $"{current.FullName}Metadata, {current.Assembly.FullName}";
-				var result = Type.GetType( name, false ).With( x => x.GetTypeInfo() );
-				return result;
-			}
+			TypeInfo ResolveMetadata() => Type.GetType( $"{current.FullName}Metadata, {current.Assembly.FullName}", false )?.GetTypeInfo();
 		}
 
 		public TypeInfo GetDefinition( TypeInfo info )

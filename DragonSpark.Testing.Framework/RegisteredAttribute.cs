@@ -1,8 +1,6 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Microsoft.Practices.ServiceLocation;
 using Moq;
@@ -13,31 +11,13 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework
 {
 	public class FactoryAttribute : CustomizeAttribute
 	{
-		class Customization : ICustomization
-		{
-			readonly ParameterInfo parameter;
-
-			public Customization( ParameterInfo parameter )
-			{
-				this.parameter = parameter;
-			}
-
-			public void Customize( IFixture fixture ) => new FixtureRegistry( fixture ).RegisterFactory( parameter.ParameterType, Create );
-
-			object Create()
-			{
-				var factoryType = FactoryReflectionSupport.Instance.GetFactoryType( parameter.ParameterType, parameter.Member.DeclaringType );
-				var result = new FactoryBuiltObjectFactory().Create( new ObjectFactoryParameter( factoryType ) );
-				return result;
-			}
-		}
-
-		public override ICustomization GetCustomization( ParameterInfo parameter ) => new Customization( parameter );
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new RegisterFactoryAttribute.FactoryRegistration( FactoryReflectionSupport.Instance.GetFactoryType( parameter.ParameterType, parameter.Member.DeclaringType ) ) );
 	}
 
 	public static class FixtureExtensions
@@ -66,7 +46,8 @@ namespace DragonSpark.Testing.Framework
 				var instance = fixture.Create<object>( registrationType );
 				var item = instance.AsTo<Mock, object>( mock => mock.Object ) ?? instance;
 				var type = instance is Mock ? registrationType.Adapt().GetInnerType() : registrationType;
-				locator.Register( type, item );
+				var registry = locator.GetInstance<IServiceRegistry>();
+				registry.Register( type, item );
 			}
 		}
 

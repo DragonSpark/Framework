@@ -8,7 +8,9 @@ namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Extend().Container.Resolve<IMessageLogger>();
+		public static IServiceRegistry Registry( this IUnityContainer @this ) => @this.Resolve<IServiceRegistry>();
+
+		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>( () => @this.Extend().Logger );
 
 		public static T Resolve<T>( this IUnityContainer @this, Func<T> @default ) => @this.IsRegistered<T>() ? @this.Resolve<T>() : @default();
 
@@ -24,6 +26,10 @@ namespace DragonSpark.Extensions
 
 		public static TExtension Extension<TExtension>( this IUnityContainer container ) where TExtension : UnityContainerExtension => (TExtension)container.Extension( typeof( TExtension ) );
 
-		public static IUnityContainerExtensionConfigurator Extension( this IUnityContainer container, Type extensionType ) => (IUnityContainerExtensionConfigurator)container.Configure( extensionType ) ?? container.Resolve( () => SystemActivator.Instance ).Activate<UnityContainerExtension>( extensionType ).WithSelf( container.AddExtension );
+		public static IUnityContainerExtensionConfigurator Extension( this IUnityContainer container, Type extensionType )
+		{
+			var configure = container.Configure( extensionType );
+			return (IUnityContainerExtensionConfigurator)configure ?? container.Resolve<IActivator>( () => SystemActivator.Instance ).Activate<UnityContainerExtension>( extensionType ).WithSelf( container.AddExtension );
+		}
 	}
 }

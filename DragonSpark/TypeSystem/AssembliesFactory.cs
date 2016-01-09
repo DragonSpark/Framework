@@ -4,7 +4,7 @@ using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.TypeSystem
 {
-	[RegisterFactoryForResult]
+	[RegisterFactory]
 	public class AssembliesFactory : FactoryBase<Assembly[]>
 	{
 		readonly IAssemblyProvider provider;
@@ -14,9 +14,6 @@ namespace DragonSpark.TypeSystem
 			this.provider = provider;
 		}
 
-		protected override Assembly[] CreateItem()
-		{
-			return provider.Create();
-		}
+		protected override Assembly[] CreateItem() => provider.Create();
 	}
 }

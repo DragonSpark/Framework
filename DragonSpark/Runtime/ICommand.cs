@@ -65,6 +65,21 @@ namespace DragonSpark.Runtime
 		{}
 	}
 
+	public class DecoratedCommand<T> : Command<T>
+	{
+		readonly ICommand<T> inner;
+
+		public DecoratedCommand( [Required]ICommand<T> inner )
+		{
+			this.inner = inner;
+		}
+
+		public override bool CanExecute( T parameter ) => inner.CanExecute( parameter );
+
+		protected override void OnExecute( T parameter ) => inner.Execute( parameter );
+	}
+
+	[BuildUp]
 	public abstract class Command<TParameter> : ICommand<TParameter>
 	{
 		public event EventHandler CanExecuteChanged = delegate {};

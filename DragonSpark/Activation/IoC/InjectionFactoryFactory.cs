@@ -23,16 +23,9 @@ namespace DragonSpark.Activation.IoC
 
 			var result = new InjectionFactory( ( unityContainer, type, buildName ) =>
 			{
-				var item = Create( unityContainer, type, buildName ) ?? previous.With( x => parameter.Container.Resolve( x ) );
+				var item = Factory.From( factoryType, context ?? type ) ?? previous.With( x => unityContainer.Resolve( x ) );
 				return item;
 			} );
-			return result;
-		}
-
-		protected virtual object Create( IUnityContainer container, Type type, string buildName )
-		{
-			var parameter = new ObjectFactoryParameter( factoryType, context ?? type );
-			var result = container.Resolve<FactoryBuiltObjectFactory>().Create( parameter );
 			return result;
 		}
 	}

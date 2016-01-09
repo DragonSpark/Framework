@@ -1,10 +1,11 @@
+using DragonSpark.Aspects;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.TypeSystem
 {
@@ -81,7 +82,9 @@ namespace DragonSpark.TypeSystem
 
 		public bool IsGenericOf<T>() => IsGenericOf( typeof(T).GetGenericTypeDefinition() );
 
-		public bool IsGenericOf( Type genericDefinition ) => info.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && info.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition();
+		[Cache]
+		public bool IsGenericOf( Type genericDefinition ) =>
+			type.Append( ExpandInterfaces( type ) ).AsTypeInfos().Any( typeInfo => typeInfo.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && typeInfo.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition() );
 
 		public Type GetConventionCandidate( Assembly[] applicationAssemblies = null )  // TODO: Replace with Assemblies.Current.
 		{

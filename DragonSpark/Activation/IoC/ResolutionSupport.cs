@@ -4,7 +4,6 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
@@ -12,10 +11,7 @@ namespace DragonSpark.Activation.IoC
 {
 	public abstract class StrategyValidator<TStrategy> : SpecificationBase<StrategyValidatorParameter> where TStrategy : BuilderStrategy
 	{
-		protected override bool IsSatisfiedByParameter( StrategyValidatorParameter parameter )
-		{
-			return base.IsSatisfiedByParameter( parameter ) && parameter.Strategies.FirstOrDefaultOfType<TStrategy>().With( strategy => Check( parameter.Key ) );
-		}
+		protected override bool IsSatisfiedByParameter( StrategyValidatorParameter parameter ) => base.IsSatisfiedByParameter( parameter ) && parameter.Strategies.FirstOrDefaultOfType<TStrategy>().With( strategy => Check( parameter.Key ) );
 
 		protected abstract bool Check( NamedTypeBuildKey key );
 	}
@@ -24,21 +20,14 @@ namespace DragonSpark.Activation.IoC
 	{
 		public static ArrayStrategyValidator Instance { get; } = new ArrayStrategyValidator();
 
-		protected override bool Check( NamedTypeBuildKey key )
-		{
-			return key.Type.IsArray;
-		}
+		protected override bool Check( NamedTypeBuildKey key ) => key.Type.IsArray;
 	}
 
 	public class EnumerableStrategyValidator : StrategyValidator<EnumerableResolutionStrategy>
 	{
 		public static EnumerableStrategyValidator Instance { get; } = new EnumerableStrategyValidator();
 
-		protected override bool Check( NamedTypeBuildKey key )
-		{
-			var result = key.Type.Adapt().IsGenericOf<IEnumerable<object>>();
-			return result;
-		}
+		protected override bool Check( NamedTypeBuildKey key ) => key.Type.Adapt().IsGenericOf<IEnumerable<object>>();
 	}
 
 	public class StrategyValidatorParameter
@@ -55,7 +44,7 @@ namespace DragonSpark.Activation.IoC
 
 	class ResolutionSpecification : SpecificationBase<ResolutionSpecificationParameter>
 	{
-		static readonly ISpecification<StrategyValidatorParameter>[] DefaultValidators = { ArrayStrategyValidator.Instance, EnumerableStrategyValidator.Instance };
+		readonly static ISpecification<StrategyValidatorParameter>[] DefaultValidators = { ArrayStrategyValidator.Instance, EnumerableStrategyValidator.Instance };
 
 		readonly IEnumerable<ISpecification<StrategyValidatorParameter>> validators;
 
@@ -67,30 +56,15 @@ namespace DragonSpark.Activation.IoC
 			this.validators = validators;
 		}
 
-		static bool CheckInstance( ResolutionSpecificationParameter parameter )
-		{
-			var result = parameter.Context.Policies.Get<ILifetimePolicy>( parameter.Key ).With( policy => policy.GetValue() ) != null;
-			return result;
-		}
+		static bool CheckInstance( ResolutionSpecificationParameter parameter ) => parameter.Context.Policies.Get<ILifetimePolicy>( parameter.Key ).With( policy => policy.GetValue() ) != null;
 
-		static bool CheckRegistered( ResolutionSpecificationParameter parameter )
-		{
-			var result = parameter.Context.Container.IsRegistered( parameter.Key.Type, parameter.Key.Name ) && !( parameter.Context.Policies.GetNoDefault<IBuildPlanPolicy>( parameter.Key, false ) is DynamicMethodBuildPlan );
-			return result;
-		}
+		static bool CheckRegistered( ResolutionSpecificationParameter parameter ) => parameter.Context.Container.IsRegistered( parameter.Key.Type, parameter.Key.Name ) && !( parameter.Context.Policies.GetNoDefault<IBuildPlanPolicy>( parameter.Key, false ) is DynamicMethodBuildPlan );
 
-		bool Check( ResolutionSpecificationParameter parameter )
-		{
-			var result = CheckInstance( parameter ) || CheckRegistered( parameter ) 
-				|| 
-				new StrategyValidatorParameter( parameter.Context.Strategies.MakeStrategyChain(), parameter.Key ).With( p => validators.Any( specification => specification.IsSatisfiedBy( p ) ) );
-			return result;
-		}
+		bool Check( ResolutionSpecificationParameter parameter ) => CheckInstance( parameter ) || CheckRegistered( parameter ) 
+																	|| 
+																	new StrategyValidatorParameter( parameter.Context.Strategies.MakeStrategyChain(), parameter.Key ).With( p => validators.Any( specification => specification.IsSatisfiedBy( p ) ) );
 
-		protected override bool IsSatisfiedByParameter( ResolutionSpecificationParameter parameter )
-		{
-			return base.IsSatisfiedByParameter( parameter ) && Check( parameter );
-		}
+		protected override bool IsSatisfiedByParameter( ResolutionSpecificationParameter parameter ) => base.IsSatisfiedByParameter( parameter ) && Check( parameter );
 	}
 
 	public class ResolutionSpecificationParameter
@@ -139,7 +113,7 @@ namespace DragonSpark.Activation.IoC
 				.GetParameters()
 				.Where( x => !x.ParameterType.GetTypeInfo().IsValueType )
 				.Select( parameterInfo => new NamedTypeBuildKey( parameterInfo.ParameterType ) )
-				.All( key => parameters.Any( key.Type.Adapt().IsAssignableFrom ) || specification.IsSatisfiedBy( new ResolutionSpecificationParameter( context, key ) ) );
+				.All( key => parameters.Any( key.Type.Adapt().IsAssignableFrom ) || GetConstructor( key ) != null || specification.IsSatisfiedBy( new ResolutionSpecificationParameter( context, key ) ) );
 			return result;
 		}
 

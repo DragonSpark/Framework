@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
+using PostSharp.Patterns.Contracts;
 using System;
 using Activator = System.Activator;
 
@@ -9,7 +10,7 @@ namespace DragonSpark.TypeSystem
 	{
 		readonly IValue inner;
 
-		protected HostingAttribute( Delegate factory ) : this( (IValue)Activator.CreateInstance( typeof( AttributeValueAdapter<> ).MakeGenericType( factory.Adapt().GetResultType() ), factory ) )
+		protected HostingAttribute( [Required]Delegate factory ) : this( (IValue)Activator.CreateInstance( typeof(AttributeValueAdapter<>).MakeGenericType( factory.Adapt().GetResultType() ), factory ) )
 		{}
 
 		protected HostingAttribute( IValue inner )
@@ -24,8 +25,7 @@ namespace DragonSpark.TypeSystem
 	{
 		readonly Lazy<T> factory;
 
-		public AttributeValueAdapter( Func<T> factory ) : this( new Lazy<T>( factory ) )
-		{ }
+		public AttributeValueAdapter( Func<T> factory ) : this( new Lazy<T>( factory ) ) {}
 
 		public AttributeValueAdapter( Lazy<T> factory )
 		{

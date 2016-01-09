@@ -1,17 +1,24 @@
-﻿using System.Diagnostics;
-using DragonSpark.Testing.Framework;
+﻿using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem;
 using Xunit;
 
 namespace DragonSpark.Testing.TypeSystem
 {
 	public class KnownTypeFactoryTests
 	{
-		/*[RegisterFactory( )]
-		[Theory, AutoData]
-		public void Testing( Testes sut )
+		[RegisterFactory( typeof(AssemblyProvider) )]
+		[Theory, AutoDataRegistration]
+		public void Testing( KnownTypeFactory sut )
 		{
-			Debugger.Break();
-		}*/
+			var parameter = typeof(Class);
+
+			var items = sut.Create( parameter );
+
+			Assert.NotEmpty( items );
+
+			Assert.All( items, type => Assert.True( type.IsSubclassOf( parameter ) ) );
+		}
 	}
 }

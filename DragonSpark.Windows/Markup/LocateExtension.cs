@@ -1,4 +1,6 @@
 using DragonSpark.Activation;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using System;
 using System.Collections.ObjectModel;
@@ -14,10 +16,7 @@ namespace DragonSpark.Windows.Markup
 		public LocateExtension()
 		{}
 
-		public LocateExtension( Type type ) : this( type, null )
-		{}
-
-		public LocateExtension( Type type, string buildName )
+		public LocateExtension( Type type, string buildName = null )
 		{
 			Type = type;
 			BuildName = buildName;
@@ -27,9 +26,13 @@ namespace DragonSpark.Windows.Markup
 
 		public string BuildName { get; set; }
 
+		[Activate]
+		IActivator Activator { get; set; }
+
+		[BuildUp]
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
-			 var result = Type.With( x => Activator.Current.Activate<object>( x, BuildName ) );
+			 var result = Type.With( x => Activator.Activate<object>( x, BuildName ) );
 			result.As<ISupportInitialize>( x => x.BeginInit() );
 			result.With( x => Properties.Each( y => x.GetType().GetProperty( y.PropertyName ).With( z => y.Apply( z, x ) ) ) );
 			result.As<ISupportInitialize>( x => x.EndInit() );

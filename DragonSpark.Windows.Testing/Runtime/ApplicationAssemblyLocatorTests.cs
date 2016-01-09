@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Theory, AutoData]
 		public void Other( Assembly[] assemblies )
 		{
-			var sut = new ApplicationAssemblyLocator( assemblies, AppDomain.CreateDomain( "NotAnAssembly" ) );
+			var sut = new ApplicationAssemblyLocator( new DomainApplicationAssemblyLocator( AppDomain.CreateDomain( "NotAnAssembly" ) ), new TypeSystem.ApplicationAssemblyLocator( ()=> assemblies ) );
 			var assembly = sut.Create();
 			Assert.Null( assembly );
 		}

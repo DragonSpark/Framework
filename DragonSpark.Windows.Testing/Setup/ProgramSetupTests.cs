@@ -1,15 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
 using DragonSpark.Setup;
-using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
+using System;
+using System.Diagnostics;
+using System.Reflection;
 using Xunit;
 using SetupParameter = DragonSpark.Testing.Framework.Setup.SetupParameter;
 
@@ -31,18 +31,18 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, ProgramSetup.AutoData]
-		public void Create( [Located]ApplicationInformation sut )
+		public void Create( [Located]ApplicationInformation sut, AttributeProvider provider )
 		{
 			Assert.NotNull( sut.AssemblyInformation );
 			Assert.Equal( DateTimeOffset.Parse( "2/1/2016" ), sut.DeploymentDate.GetValueOrDefault() );
 			Assert.Equal( "http://framework.dragonspark.us/testing", sut.CompanyUri.ToString() );
 			var assembly = GetType().Assembly;
-			Assert.Equal( assembly.FromMetadata<AssemblyTitleAttribute, string>( attribute => attribute.Title ), sut.AssemblyInformation.Title );
-			Assert.Equal( assembly.FromMetadata<AssemblyCompanyAttribute, string>( attribute => attribute.Company ), sut.AssemblyInformation.Company );
-			Assert.Equal( assembly.FromMetadata<AssemblyCopyrightAttribute, string>( attribute => attribute.Copyright ), sut.AssemblyInformation.Copyright );
-			Assert.Equal( assembly.FromMetadata<DebuggableAttribute, string>( attribute => "DEBUG" ), sut.AssemblyInformation.Configuration );
-			Assert.Equal( assembly.FromMetadata<AssemblyDescriptionAttribute, string>( attribute => attribute.Description ), sut.AssemblyInformation.Description );
-			Assert.Equal( assembly.FromMetadata<AssemblyProductAttribute, string>( attribute => attribute.Product ), sut.AssemblyInformation.Product );
+			Assert.Equal( provider.FromMetadata<AssemblyTitleAttribute, string>( assembly, attribute => attribute.Title ), sut.AssemblyInformation.Title );
+			Assert.Equal( provider.FromMetadata<AssemblyCompanyAttribute, string>( assembly, attribute => attribute.Company ), sut.AssemblyInformation.Company );
+			Assert.Equal( provider.FromMetadata<AssemblyCopyrightAttribute, string>( assembly, attribute => attribute.Copyright ), sut.AssemblyInformation.Copyright );
+			Assert.Equal( provider.FromMetadata<DebuggableAttribute, string>( assembly, attribute => "DEBUG" ), sut.AssemblyInformation.Configuration );
+			Assert.Equal( provider.FromMetadata<AssemblyDescriptionAttribute, string>( assembly, attribute => attribute.Description ), sut.AssemblyInformation.Description );
+			Assert.Equal( provider.FromMetadata<AssemblyProductAttribute, string>( assembly, attribute => attribute.Product ), sut.AssemblyInformation.Product );
 			Assert.Equal( assembly.GetName().Version, sut.AssemblyInformation.Version );
 		}
 

@@ -7,11 +7,12 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Markup;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Windows.Entity
 {
 	[ContentProperty( "Installers" )]
-	public abstract class InitializeDatabaseCommand<TContext> : SetupCommand where TContext : DbContext, IEntityInstallationStorage, new()
+	public abstract class InitializeDatabaseCommand<TContext> : SetupCommand where TContext : DbContext, IEntityInstallationStorage
 	{
 		[Activate]
 		public IDatabaseInitializer<TContext> Initializer { get; set; }
@@ -27,7 +28,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				Database.SetInitializer( initializer );
 
-				using ( var instance = new TContext() )
+				using ( var instance = SystemActivator.Instance.Activate<TContext>() )
 				{
 					MessageLogger.Information( "Initializing Database.", Priority.Low );
 					instance.Database.Initialize( true );

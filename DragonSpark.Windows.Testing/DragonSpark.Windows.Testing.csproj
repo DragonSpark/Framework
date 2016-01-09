@@ -198,7 +198,6 @@
     </Compile>
     <Compile Include="Setup\UnitySetupTests.cs" />
     <Compile Include="TestObjects\Activator.cs" />
-    <Compile Include="TestObjects\AssemblyProvider.cs" />
     <Compile Include="TestObjects\ClassWithBrokenConstructor.cs" />
     <Compile Include="TestObjects\ModulesConfiguration.cs" />
     <Compile Include="TestObjects\Modules\DummyClass.cs" />

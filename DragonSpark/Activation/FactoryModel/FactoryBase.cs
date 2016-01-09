@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -30,6 +31,18 @@ namespace DragonSpark.Activation.FactoryModel
 			var result = Create( qualified );
 			return result;
 		}
+	}
+
+	public class FirstFactory<T> : FactoryBase<T>
+	{
+		readonly IEnumerable<IFactory<T>> inner;
+
+		public FirstFactory( [Required]params IFactory<T>[] inner )
+		{
+			this.inner = inner;
+		}
+
+		protected override T CreateItem() => inner.Select( factory => factory.Create() ).NotNull().FirstOrDefault();
 	}
 
 	public class AggregateFactory<T> : FactoryBase<T>

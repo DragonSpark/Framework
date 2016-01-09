@@ -1,39 +1,41 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Framework.Setup;
 using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
 {
 	public class AttributeProviderTests
 	{
-		[Fact]
-		void ClassAttribute()
+		[Theory, AutoData]
+		void ClassAttribute( AttributeProvider sut )
 		{
-			var attribute = typeof(Decorated).GetAttribute<Attribute>();
+			var attribute = sut.GetAttribute<Attribute>( typeof(Decorated) );
 			Assert.Equal( "This is a class attribute.", attribute.PropertyName );
 		}
 
-		[Fact]
-		public void InstanceAttribute()
+		[Theory, AutoData]
+		public void InstanceAttribute( AttributeProvider sut )
 		{
-			var sut = new Decorated { Property = "Hello" };
-			Assert.Equal( "Hello", sut.Property );
-			var attribute = sut.GetType().GetAttribute<Attribute>();
+			var decorated = new Decorated { Property = "Hello" };
+			Assert.Equal( "Hello", decorated.Property );
+			var attribute = sut.GetAttribute<Attribute>( decorated.GetType() );
 			Assert.Equal( "This is a class attribute.", attribute.PropertyName );
 		}
 
-		[Fact]
-		void Decorated()
+		[Theory, AutoData]
+		void Decorated( AttributeProvider sut )
 		{
-			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
-			Assert.False( typeof(Class).IsDecoratedWith<Attribute>() );
+			Assert.True( sut.IsDecoratedWith<Attribute>( typeof(Convention) ) );
+			Assert.False( sut.IsDecoratedWith<Attribute>( typeof(Class) ) );
 		}
 
 		[Fact]
-		void Convention()
+		void Convention( AttributeProvider sut )
 		{
-			Assert.True( typeof(Convention).IsDecoratedWith<Attribute>() );
-			var attribute = typeof(Convention).GetAttribute<Attribute>();
+			Assert.True( sut.IsDecoratedWith<Attribute>( typeof( Convention ) ) );
+			var attribute = sut.GetAttribute<Attribute>( typeof(Convention) );
 			Assert.Equal( "This is a class attribute through convention.", attribute.PropertyName );
 		}
 
@@ -51,17 +53,17 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.Equal( "Hello", sut.Property );
 		}
 
-		[Fact]
-		void ConventionProperty()
+		[Theory, AutoData]
+		void ConventionProperty( AttributeProvider sut )
 		{
-			var attribute = typeof(Convention).GetProperty( "Property" ).GetAttribute<Attribute>();
+			var attribute = sut.GetAttribute<Attribute>( typeof(Convention).GetProperty( nameof(Objects.Convention.Property) ) );
 			Assert.Equal( "This is a property attribute through convention.", attribute.PropertyName );
 		}
 
-		[Fact]
-		void PropertyAttribute()
+		[Theory, AutoData]
+		void PropertyAttribute( AttributeProvider sut )
 		{
-			var attribute = typeof(Decorated).GetProperty( "Property" ).GetAttribute<Attribute>();
+			var attribute = sut.GetAttribute<Attribute>( typeof(Decorated).GetProperty( nameof(Objects.Decorated.Property) ) );
 			Assert.Equal( "This is a property attribute.", attribute.PropertyName );
 		}
 	}

@@ -30,6 +30,9 @@ namespace DragonSpark.Setup.Commands
 
 		[Activate]
 		public IServiceLocator Locator { get; set; }
+		
+		[Activate, Required]
+		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
 		protected override void OnExecute( ISetupParameter parameter )
 		{

@@ -4,7 +4,7 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Modularity
 {
-	[RegisterFactoryForResult]
+	[RegisterFactory]
 	public class ModulesConfigurationSectionFactory : ConfigurationSectionFactory<ModulesConfigurationSection>
 	{
 		public static ModulesConfigurationSectionFactory Instance { get; } = new ModulesConfigurationSectionFactory();

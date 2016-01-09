@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Activation
 		[Fact]
 		public void Default()
 		{
-			var activator = DragonSpark.Activation.Activator.Current;
+			var activator = DragonSpark.Activation.Activator.GetCurrent();
 			Assert.Same( SystemActivator.Instance, activator );
 			var instance = activator.Activate<IInterface>( typeof(Class) );
 			Assert.IsType<Class>( instance );
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Activation
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void DefaultCreate( string parameter )
 		{
-			var activator = DragonSpark.Activation.Activator.Current;
+			var activator = DragonSpark.Activation.Activator.GetCurrent();
 			Assert.Same( SystemActivator.Instance, activator );
 			
 			var instance = activator.Construct<ClassWithParameter>( parameter );

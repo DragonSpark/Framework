@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using System;
 using System.Linq;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -17,35 +18,24 @@ namespace DragonSpark.Activation.FactoryModel
 			this.item = item;
 		}
 
-		public TParameter Coerce( object context )
-		{
-			return item;
-		}
+		public TParameter Coerce( object context ) => item;
 	}
 
 	public class FactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
 	{
-		readonly IActivator activator;
+		readonly Func<IActivator> activator;
 		
-		public FactoryParameterCoercer() : this( Activator.Current )
+		public FactoryParameterCoercer() : this( Activator.GetCurrent )
 		{}
 
-		public FactoryParameterCoercer( IActivator activator )
+		public FactoryParameterCoercer( [Required]Func<IActivator> activator )
 		{
 			this.activator = activator;
 		}
 
-		public TParameter Coerce( object context )
-		{
-			var result = context is TParameter ? (TParameter)context : PerformCoercion( context );
-			return result;
-		}
+		public TParameter Coerce( object context ) => context is TParameter ? (TParameter)context : PerformCoercion( context );
 
-		protected virtual TParameter PerformCoercion( object context )
-		{
-			var result = context.With( Construct, activator.Activate<TParameter> );
-			return result;
-		}
+		protected virtual TParameter PerformCoercion( object context ) => context.With( Construct, activator().Activate<TParameter> );
 
 		protected TParameter Construct( object parameter )
 		{
@@ -55,7 +45,6 @@ namespace DragonSpark.Activation.FactoryModel
 				var parameters = info.GetParameters().First().ParameterType.Adapt().Qualify( parameter ).Append( Enumerable.Repeat( Type.Missing, Math.Max( 0, constructor.GetParameters().Length - 1 ) ) ).ToArray();
 				return info.Invoke( parameters );
 			} );
-			// var result = construct != null ? construct : parameter.AsTo<Type, TParameter>( activator.Activate<TParameter> );
 			return result;
 		}
 	}

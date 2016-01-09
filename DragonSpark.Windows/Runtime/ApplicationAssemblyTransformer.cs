@@ -1,22 +1,18 @@
 using DragonSpark.Extensions;
-using DragonSpark.Setup.Registration;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
-	[RegisterFactoryForResult]
 	public class ApplicationAssemblyTransformer : TypeSystem.ApplicationAssemblyTransformer
 	{
-		public new static ApplicationAssemblyTransformer Instance { get; } = new ApplicationAssemblyTransformer();
+		public static ApplicationAssemblyTransformer Instance { get; } = new ApplicationAssemblyTransformer();
 
-		public ApplicationAssemblyTransformer() : base( DetermineCoreAssemblies() )
-		{}
+		public ApplicationAssemblyTransformer() : base( DetermineCoreAssemblies() ) {}
 
-		static IEnumerable<Assembly> DetermineCoreAssemblies()
+		static Assembly[] DetermineCoreAssemblies()
 		{
 			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-			var result = assembly.Append( MethodBase.GetCurrentMethod().DeclaringType.Assembly );
+			var result = assembly.Append( MethodBase.GetCurrentMethod().DeclaringType.Assembly ).Fixed();
 			return result;
 		}
 	}

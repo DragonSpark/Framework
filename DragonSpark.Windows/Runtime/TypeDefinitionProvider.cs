@@ -1,10 +1,13 @@
 using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Runtime
 {
 	public class TypeDefinitionProvider : CompositeTypeDefinitionProvider
 	{
-		public TypeDefinitionProvider() : base( new ITypeDefinitionProvider[] { new ConventionBasedTypeDefinitionProvider(), new MetadataTypeDefinitionProvider() } )
+		public TypeDefinitionProvider( [Required]ConventionBasedTypeDefinitionProvider convention ) : base( new ITypeDefinitionProvider[] { convention, new MetadataTypeDefinitionProvider( AttributeProvider.Instance ) } )
 		{}
 	}
 }

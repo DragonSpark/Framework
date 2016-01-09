@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using System.Xaml;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Markup
@@ -16,10 +18,10 @@ namespace DragonSpark.Windows.Markup
 			this.expression = expression;
 		}
 
-		protected override object GetValue( IServiceProvider serviceProvider )
-		{
-			var result = serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetCustomAttribute( attributeType ).Evaluate( expression );
-			return result;
-		}
+		[Activate]
+		IExpressionEvaluator Evaluator { get; set; }
+
+		[BuildUp]
+		protected override object GetValue( IServiceProvider serviceProvider ) => Evaluator.Evaluate( serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetCustomAttribute( attributeType ), expression );
 	}
 }

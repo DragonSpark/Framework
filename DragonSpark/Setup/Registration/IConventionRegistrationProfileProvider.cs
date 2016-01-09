@@ -1,7 +1,7 @@
+using DragonSpark.Activation.FactoryModel;
+
 namespace DragonSpark.Setup.Registration
 {
-	public interface IConventionRegistrationProfileProvider
-	{
-		ConventionRegistrationProfile Retrieve();
-	}
+	public interface IConventionRegistrationProfileProvider : IFactory<ConventionRegistrationProfile>
+	{}
 }

@@ -5,12 +5,15 @@ using System.Reflection;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.TypeSystem
 {
-	[RegisterFactoryForResult]
+	[RegisterFactory]
 	public class AssemblyInformationFactory : FactoryBase<Assembly, AssemblyInformation>
 	{
+		readonly IAttributeProvider provider;
+
 		readonly static Type[] Attributes =
 		{
 			typeof(AssemblyTitleAttribute),
@@ -21,14 +24,18 @@ namespace DragonSpark.TypeSystem
 			typeof(AssemblyCopyrightAttribute)
 		};
 
-		public AssemblyInformationFactory() : base( new FactoryParameterCoercer<Assembly>() )
-		{}
+		public AssemblyInformationFactory() : this( AttributeProvider.Instance ) {}
+
+		public AssemblyInformationFactory( [Required]IAttributeProvider provider ) : base( new FactoryParameterCoercer<Assembly>() )
+		{
+			this.provider = provider;
+		}
 
 		protected override AssemblyInformation CreateItem( Assembly parameter )
 		{
 			var result = new AssemblyInformation { Version = parameter.GetName().Version };
 			Attributes.Select( parameter.GetCustomAttribute ).Cast<object>().NotNull().Each( item => item.MapInto( result ) );
-			result.Configuration = result.Configuration.NullIfEmpty() ?? parameter.FromMetadata<DebuggableAttribute, string>( attribute => "DEBUG" );
+			result.Configuration = result.Configuration.NullIfEmpty() ?? provider.FromMetadata<DebuggableAttribute, string>( parameter, attribute => "DEBUG" );
 			return result;
 		}
 	}

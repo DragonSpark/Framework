@@ -77,23 +77,26 @@ namespace DragonSpark.ComponentModel
 
 		public class ParameterFactory : FactoryBase<PropertyInfo, ActivateParameter>
 		{
-			readonly Type activatedType;
+			readonly Func<PropertyInfo, Type> type;
 			readonly string name;
 
-			public ParameterFactory( Type activatedType, string name )
+			public ParameterFactory( Type activatedType, string name ) : this( p => activatedType ?? p.PropertyType, name )
+			{}
+
+			public ParameterFactory( [Required]Func<PropertyInfo, Type> type, string name )
 			{
-				this.activatedType = activatedType;
+				this.type = type;
 				this.name = name;
 			}
 
-			protected override ActivateParameter CreateItem( PropertyInfo parameter ) => new ActivateParameter( activatedType ?? parameter.PropertyType, name );
+			protected override ActivateParameter CreateItem( PropertyInfo parameter ) => new ActivateParameter( type( parameter ), name );
 		}
 
 		public class Factory<T> : FactoryBase<Tuple<ActivateParameter, DefaultValueParameter>, T> where T : class
 		{
 			readonly Func<ActivateParameter, T> factory;
 
-			public Factory() : this( new ActivateFactory<T>( Activator.Current ).Create ) { }
+			public Factory() : this( ActivateFactory<T>.Instance.Create ) { }
 
 			public Factory( [Required]Func<ActivateParameter, T> factory )
 			{

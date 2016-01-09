@@ -4,7 +4,6 @@ using DragonSpark.Runtime;
 using DragonSpark.Setup;
 using DragonSpark.Setup.Commands;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
-using Microsoft.Practices.Unity;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -17,8 +16,7 @@ namespace DragonSpark.Windows.Setup
 	{
 		protected override void OnExecute( ISetupParameter parameter )
 		{
-			var manager = new ExceptionManager( Policies );
-			Container.RegisterInstance( manager );
+			Container.Registration().Instance( new ExceptionManager( Policies ) );
 
 			Container.TryResolve<IExceptionHandler>().With( ConfigureExceptionHandling );
 		}

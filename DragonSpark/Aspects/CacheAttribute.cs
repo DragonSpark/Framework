@@ -20,22 +20,9 @@ namespace DragonSpark.Aspects
 	[PSerializable, ProvideAspectRole( StandardRoles.Caching ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading ), LinesOfCodeAvoided( 6 ), AttributeUsage( AttributeTargets.Method | AttributeTargets.Property )]
 	public sealed class Cache : MethodInterceptionAspect
 	{
-		class Stored : ConnectedValue<WeakReference>
+		class Stored : ConnectedValue<object>
 		{
-			readonly static object Placeholder = new object();
-
-			public Stored( Invocation instance, Func<object> factory ) : base( instance.Item1, Reference<Stored>.Key( instance ), () => new WeakReference( factory() ?? Placeholder ) )
-			{ }
-
-			public override WeakReference Item => base.Item.With( reference => reference.IsAlive ? reference : Clear() );
-
-			public object GetTarget() => Item.Target == Placeholder ? null : Item.Target;
-
-			WeakReference Clear()
-			{
-				Property.TryDisconnect();
-				return base.Item;
-			}
+			public Stored( Invocation instance, Func<object> factory ) : base( instance.Item1, Reference<Stored>.Key( instance ), factory ) {}
 		}
 
 		class Invocation : Tuple<object, MemberInfo, EqualityList>
@@ -73,7 +60,7 @@ namespace DragonSpark.Aspects
 			{
 				var item = invocation( parameter );
 				var reference = new InvocationReference( item ).Item;
-				var result = new Stored( reference, factory( parameter ) ).GetTarget();
+				var result = new Stored( reference, factory( parameter ) ).Item;
 				return result;
 			}
 		}
@@ -81,7 +68,7 @@ namespace DragonSpark.Aspects
 
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
-			if ( !args.Method.Name.Contains( "set_" ) )
+			if ( !args.Method.IsSpecialName || args.Method.Name.Contains( "get_" ) )
 			{
 				args.ReturnValue = MethodInvocationFactory.Instance.Create( args ) ?? args.ReturnValue;
 			}

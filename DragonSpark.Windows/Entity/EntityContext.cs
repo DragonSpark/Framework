@@ -1,3 +1,4 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,16 +7,25 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
-using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Windows.Entity
 {
 	public class EntityContext : DbContext, IEntityInstallationStorage
 	{
+		readonly IAttributeProvider provider;
+		readonly LocalStoragePropertyProcessor processor;
 		public event EventHandler Saved = delegate { };
 
 		public event EventHandler Saving = delegate { };
 
+		protected EntityContext( [Required]IAttributeProvider provider ) : this( provider, new LocalStoragePropertyProcessor( provider ) ) {}
+
+		protected EntityContext( [Required]IAttributeProvider provider, [Required]LocalStoragePropertyProcessor processor )
+		{
+			this.provider = provider;
+			this.processor = processor;
+		}
 
 		public IDbSet<InstallationEntry> Installations { get; set; }
 
@@ -26,7 +36,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				case EntityState.Modified:
 				case EntityState.Unchanged:
-					var names = entityEntry.Entity.GetType().GetProperties().Where( x => AttributeProviderExtensions.IsDecoratedWith<RequiredAttribute>( x ) ).Select( x => x.Name ).ToArray();
+					var names = entityEntry.Entity.GetType().GetProperties().Where( provider.IsDecoratedWith<RequiredAttribute> ).Select( x => x.Name ).ToArray();
 					names.Any().IsTrue( () => this.Load( entityEntry.Entity, names, 0, false ) );
 					break;
 			}
@@ -53,13 +63,13 @@ namespace DragonSpark.Windows.Entity
 
 		protected override void OnModelCreating( DbModelBuilder modelBuilder )
 		{
-			LocalStoragePropertyProcessor.Instance.Process( this, modelBuilder );
+			processor.Process( this, modelBuilder );
 
 			base.OnModelCreating( modelBuilder );
 
 			var method = modelBuilder.GetType().GetMethod( "ComplexType" );
 
-			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( x => x.IsDecoratedWith<ComplexTypeAttribute>() ).Each( x =>
+			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( provider.IsDecoratedWith<ComplexTypeAttribute> ).Each( x =>
 			{
 				var info = method.MakeGenericMethod( x );
 				info.Invoke( modelBuilder, null );

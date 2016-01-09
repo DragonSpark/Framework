@@ -188,10 +188,10 @@
     <Compile Include="Activation\ServiceLocation.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
     <Compile Include="Runtime\Values\ThreadAmbientValue.cs" />
-    <Compile Include="Setup\Registration\FactoryResultTypeRegistration.cs" />
+    <Compile Include="Setup\Registration\FactoryRegistration.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
-    <Compile Include="Setup\Registration\RegistrationByConvention.cs" />
+    <Compile Include="Setup\Registration\MappingRegistration.cs" />
     <Compile Include="Setup\SetupParameterExtensions.cs" />
     <Compile Include="TypeSystem\AssemblyInformation.cs" />
     <Compile Include="TypeSystem\AssemblyInformationFactory.cs" />
@@ -223,6 +223,7 @@
     <Compile Include="TypeSystem\Default.cs" />
     <Compile Include="TypeSystem\DefaultFactory.cs" />
     <Compile Include="TypeSystem\HostingAttribute.cs" />
+    <Compile Include="TypeSystem\IAttributeProvider.cs" />
     <Compile Include="TypeSystem\KnownTypeFactory.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
@@ -262,7 +263,6 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Extensions\ServiceLocationExtensions.cs" />
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
@@ -313,11 +313,10 @@
     <Compile Include="Runtime\CommandCollection.cs" />
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
-    <Compile Include="Setup\Registration\ConventionRegistrationProfileProvider.cs" />
+    <Compile Include="Setup\Registration\ConventionRegistrationProfileFactory.cs" />
     <Compile Include="Activation\FactoryModel\FactoryBuiltObjectFactory.cs" />
     <Compile Include="Activation\FactoryModel\FactoryReflectionSupport.cs" />
-    <Compile Include="Setup\Registration\IConventionRegistration.cs" />
-    <Compile Include="Setup\Registration\IConventionRegistrationService.cs" />
+    <Compile Include="Setup\Registration\IRegistration.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\Commands\InitializeModulesCommand.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactory.cs" />
@@ -330,7 +329,7 @@
     <Compile Include="Activation\FactoryModel\ObjectFactoryParameter.cs" />
     <Compile Include="Runtime\Program.cs" />
     <Compile Include="Setup\Registration\RegisterAttribute.cs" />
-    <Compile Include="Setup\Registration\RegisterFactoryForResultAttribute.cs" />
+    <Compile Include="Setup\Registration\RegisterFactoryAttribute.cs" />
     <Compile Include="Setup\Registration\RegisterFrameworkExceptionTypesCommand.cs" />
     <Compile Include="Setup\Registration\RegistrationBaseAttribute.cs" />
     <Compile Include="Setup\Commands\RunProgramCommand.cs" />
@@ -338,7 +337,7 @@
     <Compile Include="Setup\SetupCommand.cs" />
     <Compile Include="Setup\SetupParameter.cs" />
     <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
-    <Compile Include="Setup\Commands\SetupRegistrationByConventionCommand.cs" />
+    <Compile Include="Setup\Commands\DelegatedSetupCommand.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\Registration\RegistrationAttribute.cs" />
     <Compile Include="Setup\Commands\SetupUnityCommand.cs" />
@@ -346,7 +345,7 @@
     <Compile Include="Activation\IoC\SingletonAttribute.cs" />
     <Compile Include="Activation\IoC\SingletonLocator.cs" />
     <Compile Include="Setup\Commands\UnityCommand.cs" />
-    <Compile Include="Setup\Registration\UnityConventionRegistrationService.cs" />
+    <Compile Include="Setup\Registration\RegisterFromMetadataCommand.cs" />
     <Compile Include="Setup\Commands\UnityInstance.cs" />
     <Compile Include="Setup\Commands\UnityRegistrationCommand.cs" />
     <Compile Include="Setup\Commands\UnityType.cs" />
@@ -422,6 +421,10 @@
     <ProjectReference Include="..\DragonSpark.Types\DragonSpark.Types.csproj">
       <Project>{69750ce1-63f1-4ddf-b22e-f8b40d8f16a8}</Project>
       <Name>DragonSpark.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NReco.LambdaParser\NReco.LambdaParser.csproj">
+      <Project>{2e4066d1-a58e-44bb-ab15-63df19aadaef}</Project>
+      <Name>NReco.LambdaParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
