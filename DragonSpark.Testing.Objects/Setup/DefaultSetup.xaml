@@ -5,8 +5,9 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:localSetup="clr-namespace:DragonSpark.Testing.Objects.Setup"
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<localSetup:SetupApplicationCommand />
+	<commands:AssignLocationCommand />
 	<localSetup:DefaultCustomizeFixtureCommand />
 </setup:Setup>

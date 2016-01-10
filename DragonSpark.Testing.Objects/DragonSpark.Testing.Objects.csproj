@@ -67,7 +67,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterAsMany.cs" />
     <Compile Include="RegisterAsSingleton.cs" />
-    <Compile Include="Setup\SetupApplicationCommand.cs" />
     <Compile Include="Setup\DefaultCustomizeFixtureCommand.xaml.cs">
       <DependentUpon>DefaultCustomizeFixtureCommand.xaml</DependentUpon>
     </Compile>

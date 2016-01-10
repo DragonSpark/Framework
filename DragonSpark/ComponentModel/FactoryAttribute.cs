@@ -1,5 +1,4 @@
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
 using PostSharp.Patterns.Contracts;
 using System;
 
@@ -7,16 +6,16 @@ namespace DragonSpark.ComponentModel
 {
 	public sealed class FactoryAttribute : ActivateAttribute
 	{
-		public FactoryAttribute( Type factoryType = null, string name = null ) : base( () => new ActivatedValueProvider( new ParameterFactory( p => factoryType ?? FactoryReflectionSupport.Instance.GetFactoryType( p.PropertyType ), name ).Create, new Factory().Create ) )
+		public FactoryAttribute( Type factoryType = null, string name = null ) : base( new ActivatedValueProvider.Converter( p => factoryType ?? FactoryReflectionSupport.Instance.GetFactoryType( p.PropertyType ), name ), new Creator() )
 		{}
 
-		public class Factory : Factory<object>
+		public class Creator : ActivatedValueProvider.Creator
 		{
 			readonly Func<Type, object, object> factory;
 
-			public Factory() : this( Activation.FactoryModel.Factory.From ) {}
+			public Creator() : this( Factory.From ) {}
 
-			public Factory( [Required]Func<Type, object, object> factory )
+			public Creator( [Required]Func<Type, object, object> factory )
 			{
 				this.factory = factory;
 			}

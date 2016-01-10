@@ -36,7 +36,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				case EntityState.Modified:
 				case EntityState.Unchanged:
-					var names = entityEntry.Entity.GetType().GetProperties().Where( provider.IsDecoratedWith<RequiredAttribute> ).Select( x => x.Name ).ToArray();
+					var names = entityEntry.Entity.GetType().GetProperties().Where( x => x.Has<RequiredAttribute>() ).Select( x => x.Name ).ToArray();
 					names.Any().IsTrue( () => this.Load( entityEntry.Entity, names, 0, false ) );
 					break;
 			}
@@ -69,7 +69,7 @@ namespace DragonSpark.Windows.Entity
 
 			var method = modelBuilder.GetType().GetMethod( "ComplexType" );
 
-			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( provider.IsDecoratedWith<ComplexTypeAttribute> ).Each( x =>
+			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( x => x.Has<ComplexTypeAttribute>() ).Each( x =>
 			{
 				var info = method.MakeGenericMethod( x );
 				info.Invoke( modelBuilder, null );

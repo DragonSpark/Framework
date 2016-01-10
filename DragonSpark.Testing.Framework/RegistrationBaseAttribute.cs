@@ -7,13 +7,14 @@ using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture;
 using PostSharp.Patterns.Contracts;
 using System;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Framework
 {
 	[AttributeUsage( AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true )]
 	public abstract class RegistrationBaseAttribute : HostingAttribute
 	{
-		protected RegistrationBaseAttribute( Func<ICustomization> factory ) : base( factory ) {}
+		protected RegistrationBaseAttribute( Func<Type, ICustomization> factory ) : base( x => x.AsTo( factory ) ) {}
 	}
 
 	public class RegistrationCustomization : ICustomization
@@ -25,7 +26,7 @@ namespace DragonSpark.Testing.Framework
 			this.registration = registration;
 		}
 
-		public void Customize( IFixture fixture ) => registration.Register( new AssociatedRegistry( fixture ).Item, null );
+		public void Customize( IFixture fixture ) => registration.Register( new AssociatedRegistry( fixture ).Item );
 
 		public class AssociatedRegistry : AssociatedValue<IFixture, IServiceRegistry>
 		{
@@ -35,11 +36,6 @@ namespace DragonSpark.Testing.Framework
 
 	public class RegisterFactoryAttribute : RegistrationBaseAttribute
 	{
-		public RegisterFactoryAttribute( Type factoryType ) : base( () => new RegistrationCustomization( new FactoryRegistration( factoryType ) ) ) {}
-
-		public class FactoryRegistration : DragonSpark.Setup.Registration.FactoryRegistration
-		{
-			public FactoryRegistration( [OfFactoryType] Type factoryType ) : base( t => factoryType ) { }
-		}
+		public RegisterFactoryAttribute( Type factoryType ) : base( t => new RegistrationCustomization( new FactoryRegistration( factoryType ) ) ) {}
 	}
 }

@@ -7,16 +7,17 @@ namespace DragonSpark.ComponentModel
 {
 	public class ValueAttribute : ActivateAttribute
 	{
-		public ValueAttribute( Type activatedType, string name = null ) : base( () => new ActivatedValueProvider( new ParameterFactory( activatedType, name ).Create, new Factory().Create ) )
-		{}
+		public ValueAttribute( Type activatedType, string name = null ) : base( new ActivatedValueProvider.Converter( activatedType, name ), Creator.Instance ) {}
 
-		public class Factory : Factory<object>
+		public class Creator : ActivatedValueProvider.Creator
 		{
+			public new static Creator Instance { get; } = new Creator();
+
 			readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, IValue> factory;
 
-			public Factory() : this( new Factory<IValue>().Create ) { }
+			public Creator() : this( new ActivatedValueProvider.Creator<IValue>().Create ) { }
 
-			protected Factory( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IValue> factory )
+			protected Creator( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IValue> factory )
 			{
 				this.factory = factory;
 			}

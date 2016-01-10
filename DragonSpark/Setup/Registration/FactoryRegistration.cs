@@ -5,30 +5,26 @@ using DragonSpark.Runtime;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
+using DragonSpark.Aspects;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class FactoryRegistration : IRegistration
 	{
-		public static FactoryRegistration Instance { get; } = new FactoryRegistration();
-
 		readonly Func<IActivator> activator;
-		readonly Func<Type, Type> map;
+		readonly Type factoryType;
 
-		FactoryRegistration() : this( t => t ) {}
+		public FactoryRegistration( Type factoryType ) : this( Activator.GetCurrent, factoryType ) {}
 
-		protected FactoryRegistration( [Required]Func<Type, Type> map ) : this( Activator.GetCurrent, map ) {}
-
-		protected FactoryRegistration( [Required]Func<IActivator> activator, [Required]Func<Type, Type> map )
+		protected FactoryRegistration( [Required]Func<IActivator> activator, [Required, OfFactoryType]Type factoryType )
 		{
 			this.activator = activator;
-			this.map = map;
+			this.factoryType = factoryType;
 		}
 
-		public void Register( IServiceRegistry registry, Type subject )
+		public void Register( IServiceRegistry registry )
 		{
-			var factoryType = map( subject );
 			var resultType = FactoryReflectionSupport.GetResultType( factoryType );
 			var parameterType = FactoryReflectionSupport.Instance.GetParameterType( factoryType );
 			var type = parameterType.With( t => typeof(RegisterFactoryCommand<,>).MakeGenericType( t, resultType ) ) ?? typeof(RegisterFactoryCommand<>).MakeGenericType( resultType );
@@ -68,11 +64,11 @@ namespace DragonSpark.Setup.Registration
 		protected override Func<T> CreateItem( Type parameter ) => new Lazy<Func<T>>( () => factory( parameter ) ).Value;
 	}
 
-	public class FactoryDelegateFactory<T, U> : FactoryBase<Type, Func<T, U>>
+	public class FactoryWithParameterDelegateFactory : FactoryBase<Type, Func<object, object>>
 	{
-		public static FactoryDelegateFactory<T, U> Instance { get; } = new FactoryDelegateFactory<T, U>();
+		public static FactoryWithParameterDelegateFactory Instance { get; } = new FactoryWithParameterDelegateFactory();
 
-		protected override Func<T, U> CreateItem( Type parameter ) => new Lazy<Func<T, U>>( () => ActivateFactory<IFactory<T, U>>.Instance.CreateUsing( parameter ).Create ).Value;
+		protected override Func<object, object> CreateItem( Type parameter ) => new Lazy<Func<object, object>>( () => ActivateFactory<IFactoryWithParameter>.Instance.CreateUsing( parameter ).Create ).Value;
 	}
 
 	public abstract class RegisterFactoryCommandBase<TFactory> : Command<Type>
@@ -109,6 +105,6 @@ namespace DragonSpark.Setup.Registration
 
 	public class RegisterFactoryCommand<T,U> : RegisterFactoryCommandBase<IFactory<object, object>>
 	{
-		public RegisterFactoryCommand( IServiceRegistry registry ) : base( registry, FactoryDelegateFactory<T, U>.Instance.Create ) { }
+		public RegisterFactoryCommand( IServiceRegistry registry ) : base( registry, FactoryWithParameterDelegateFactory.Instance.Create ) { }
 	}
 }

@@ -311,17 +311,17 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		void RelayedPropertyAttribute( AttributeProvider provider )
+		void RelayedPropertyAttribute()
 		{
-			var attribute = provider.GetAttribute<Attribute>( typeof(Relayed).GetProperty( nameof(Relayed.Property) ) );
+			var attribute = typeof(Relayed).GetProperty( nameof(Relayed.Property) ).GetAttribute<Attribute>();
 			Assert.Equal( "This is a relayed property attribute.", attribute.PropertyName );
 		}
 
 
 		[Theory, LocationSetup.AutoData]
-		void RelayedAttribute( AttributeProvider provider )
+		void RelayedAttribute()
 		{
-			var attribute = provider.GetAttribute<Attribute>( typeof(Relayed) );
+			var attribute = typeof(Relayed).GetAttribute<Attribute>();
 			Assert.Equal( "This is a relayed class attribute.", attribute.PropertyName );
 		}
 
@@ -401,9 +401,9 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		public void GetAllTypesWith( [Located]AssembliesFactory sut, AttributeProvider provider )
+		public void GetAllTypesWith( [Located]AssembliesFactory sut )
 		{
-			var items = provider.GetAllTypesWith<PriorityAttribute>( sut.Create() );
+			var items = sut.Create().GetAllTypesWith<PriorityAttribute>();
 			Assert.True( items.Select( tuple => tuple.Item2 ).AsTypes().Contains( typeof(NormalPriority) ) );
 		}
 
@@ -481,7 +481,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		public void CreateAssembly( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut, AttributeProvider provider )
+		public void CreateAssembly( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut )
 		{
 			var registered = container.IsRegistered<Assembly>();
 			Assert.True( registered );
@@ -496,12 +496,12 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.NotNull( fromProvider );
 
 			var assembly = GetType().Assembly;
-			Assert.Equal( provider.FromMetadata<AssemblyTitleAttribute, string>( assembly, attribute => attribute.Title ), fromProvider.Title );
-			Assert.Equal( provider.FromMetadata<AssemblyCompanyAttribute, string>( assembly, attribute => attribute.Company ), fromProvider.Company );
-			Assert.Equal( provider.FromMetadata<AssemblyCopyrightAttribute, string>( assembly, attribute => attribute.Copyright ), fromProvider.Copyright );
-			Assert.Equal( provider.FromMetadata<DebuggableAttribute, string>( assembly, attribute => "DEBUG" ), fromProvider.Configuration );
-			Assert.Equal( provider.FromMetadata<AssemblyDescriptionAttribute, string>( assembly, attribute => attribute.Description ), fromProvider.Description );
-			Assert.Equal( provider.FromMetadata<AssemblyProductAttribute, string>( assembly, attribute => attribute.Product ), fromProvider.Product );
+			Assert.Equal( assembly.From<AssemblyTitleAttribute, string>( attribute => attribute.Title ), fromProvider.Title );
+			Assert.Equal( assembly.From<AssemblyCompanyAttribute, string>( attribute => attribute.Company ), fromProvider.Company );
+			Assert.Equal( assembly.From<AssemblyCopyrightAttribute, string>( attribute => attribute.Copyright ), fromProvider.Copyright );
+			Assert.Equal( assembly.From<DebuggableAttribute, string>( attribute => "DEBUG" ), fromProvider.Configuration );
+			Assert.Equal( assembly.From<AssemblyDescriptionAttribute, string>( attribute => attribute.Description ), fromProvider.Description );
+			Assert.Equal( assembly.From<AssemblyProductAttribute, string>( attribute => attribute.Product ), fromProvider.Product );
 			Assert.Equal( assembly.GetName().Version, fromProvider.Version );
 		}
 
@@ -514,14 +514,14 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<MultipleInterfaces>( sut );
 		}
 
-		[DragonSpark.Setup.Registration.Register( typeof(IAnotherInterface) )]
+		[Register.As( typeof(IAnotherInterface) )]
 		public class MultipleInterfaces : IInterface, IAnotherInterface, IItem
 		{}
 
 		interface IAnotherInterface
 		{ }
 
-		[DragonSpark.Setup.Registration.Register( "Registered" )]
+		[Register.As( "Registered" )]
 		public class RegisteredWithNameClass : IRegisteredWithName
 		{ }
 
@@ -541,11 +541,11 @@ namespace DragonSpark.Windows.Testing.Setup
 		public class Item : IItem
 		{ }
 
-		[DragonSpark.Setup.Registration.Register( "AnotherItem" )]
+		[Register.As( "AnotherItem" )]
 		public class AnotherItem : IItem
 		{ }
 
-		[DragonSpark.Setup.Registration.Register( "YetAnotherItem" )]
+		[Register.As( "YetAnotherItem" )]
 		public class YetAnotherItem : IItem
 		{ }
 	}

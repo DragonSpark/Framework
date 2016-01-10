@@ -14,19 +14,10 @@ namespace DragonSpark.ComponentModel
 	{
 		public static BuildablePropertyCollectionFactory Instance { get; } = new BuildablePropertyCollectionFactory();
 
-		readonly IAttributeProvider provider;
-
-		public BuildablePropertyCollectionFactory() : this( AttributeProvider.Instance ) {}
-
-		public BuildablePropertyCollectionFactory( [Required]IAttributeProvider provider )
-		{
-			this.provider = provider;
-		}
-
 		protected override ICollection<PropertyInfo> CreateItem( object parameter )
 		{
 			var result = parameter.GetType().GetPropertiesHierarchical()
-				.Where( x => provider.IsDecoratedWith<DefaultValueAttribute>( x ) || provider.IsDecoratedWith<DefaultValueBase>( x ) )
+				.Where( x => Attributes.Get( x ).With( y => y.Has<DefaultValueAttribute>() || y.Has<DefaultValueBase>() ) )
 				.Where( x => Equals( GetValue( parameter, x ), x.PropertyType.Adapt().GetDefaultValue() ) )
 				.ToList();
 			return result;

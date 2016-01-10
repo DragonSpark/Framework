@@ -1,7 +1,8 @@
-using System;
 using DragonSpark.Diagnostics;
 using DragonSpark.Properties;
 using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
+using System;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -9,7 +10,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly IMessageLogger messageLogger;
 
-		public ResolutionContext( IMessageLogger messageLogger )
+		public ResolutionContext( [Required]IMessageLogger messageLogger )
 		{
 			this.messageLogger = messageLogger;
 		}

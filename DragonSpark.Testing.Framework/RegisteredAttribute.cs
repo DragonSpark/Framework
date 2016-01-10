@@ -12,12 +12,13 @@ using System;
 using System.Linq;
 using System.Reflection;
 using DragonSpark.Activation;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Testing.Framework
 {
 	public class FactoryAttribute : CustomizeAttribute
 	{
-		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new RegisterFactoryAttribute.FactoryRegistration( FactoryReflectionSupport.Instance.GetFactoryType( parameter.ParameterType, parameter.Member.DeclaringType ) ) );
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new FactoryRegistration( FactoryReflectionSupport.Instance.GetFactoryType( parameter.ParameterType, parameter.Member.DeclaringType ) ) );
 	}
 
 	public static class FixtureExtensions

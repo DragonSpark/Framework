@@ -15,13 +15,7 @@ namespace DragonSpark.Setup.Commands
 
 		public UnityInstanceCollection Instances { get; } = new UnityInstanceCollection();
 
-		/*public CommandCollection PreConfigurations { get; } = new CommandCollection();
-
-		public CommandCollection Configurations { get; } = new CommandCollection();
-
-		public CommandCollection PostConfigurations { get; } = new CommandCollection();*/
-
-		protected override void OnExecute( ISetupParameter parameter )
+		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{
 			Extensions.Each( x => Container.AddExtension( x ) );
 
@@ -30,14 +24,9 @@ namespace DragonSpark.Setup.Commands
 		}
 	}
 
-	// [ConvertItem]
 	public class UnityInstanceCollection : CommandCollection<UnityInstance>
 	{
-		protected override UnityInstance OnAdd( object item )
-		{
-			var result = base.OnAdd( item ) ?? new UnityInstance { Instance = item, RegistrationType = item.GetType() };
-			return result;
-		}
+		protected override UnityInstance OnAdd( object item ) => base.OnAdd( item ) ?? new UnityInstance { Instance = item, RegistrationType = item.GetType() };
 	}
 
 	/*[Serializable]

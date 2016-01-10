@@ -9,7 +9,7 @@ namespace DragonSpark.Setup.Commands
 	{
 		public object Instance { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{
 			var instance = Instance.BuildUp();
 			var type = RegistrationType ?? instance.With( item => item.GetType() );

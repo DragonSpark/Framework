@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.Setup
 {
-	[RegisterType]
+	[Register.Type]
 	public class AllTypesOfFactory : FactoryBase<Type, Array>
 	{
 		readonly IAssemblyProvider provider;

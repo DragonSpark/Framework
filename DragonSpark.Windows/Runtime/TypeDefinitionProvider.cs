@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.Runtime
 {
 	public class TypeDefinitionProvider : CompositeTypeDefinitionProvider
 	{
-		public TypeDefinitionProvider( [Required]ConventionBasedTypeDefinitionProvider convention ) : base( new ITypeDefinitionProvider[] { convention, new MetadataTypeDefinitionProvider( AttributeProvider.Instance ) } )
+		public TypeDefinitionProvider( [Required]ConventionBasedTypeDefinitionProvider convention ) : base( new ITypeDefinitionProvider[] { convention, MetadataTypeDefinitionProvider.Instance } )
 		{}
 	}
 }

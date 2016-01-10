@@ -14,16 +14,29 @@ namespace DragonSpark.Diagnostics
 
 	public static class MessageLoggerExtensions
 	{
-		public static void Information( this IMessageLogger @this, string message, Priority priority = Priority.Normal )
+		public static TLogger Information<TLogger>( this TLogger @this, string message, Priority priority = Priority.Normal ) where TLogger : IMessageLogger
 		{
-			// new LogInformationCommand( @this ).Execute( new MessageParameter( message, priority ) );
+			new LogInformationCommand( @this ).Execute( new MessageParameter( message, priority ) );
+			return @this;
 		}
 
-		public static void Warning( this IMessageLogger @this, string message, Priority priority = Priority.High ) => new LogWarningCommand( @this ).Execute( new MessageParameter( message, priority ) );
+		public static TLogger Warning<TLogger>( this TLogger @this, string message, Priority priority = Priority.High ) where TLogger : IMessageLogger
+		{
+			new LogWarningCommand( @this ).Execute( new MessageParameter( message, priority ) );
+			return @this;
+		}
 
-		public static void Exception( this IMessageLogger @this, string message, Exception exception ) => new LogExceptionCommand( @this ).Execute( new ExceptionMessageParameter( message, exception ) );
+		public static TLogger Exception<TLogger>( this TLogger @this, string message, Exception exception ) where TLogger : IMessageLogger
+		{
+			new LogExceptionCommand( @this ).Execute( new ExceptionMessageParameter( message, exception ) );
+			return @this;
+		}
 
-		public static void Fatal( this IMessageLogger @this, string message, FatalApplicationException exception ) => new LogFatalExceptionCommand( @this ).Execute( new FatalExceptionMessageParameter( message, exception ) );
+		public static TLogger Fatal<TLogger>( this TLogger @this, string message, FatalApplicationException exception ) where TLogger : IMessageLogger
+		{
+			new LogFatalExceptionCommand( @this ).Execute( new FatalExceptionMessageParameter( message, exception ) );
+			return @this;
+		}
 	}
 
 	public class LogExceptionCommand : LogMessageCommand<ExceptionMessageParameter>

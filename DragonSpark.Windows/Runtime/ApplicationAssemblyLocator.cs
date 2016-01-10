@@ -9,7 +9,7 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Runtime
 {
-	[RegisterFactory]
+	[Register.Factory]
 	public class ApplicationAssemblyLocator : FirstFactory<Assembly>
 	{
 		public ApplicationAssemblyLocator( DomainApplicationAssemblyLocator domain, TypeSystem.ApplicationAssemblyLocator system ) : base( domain, system ) {}

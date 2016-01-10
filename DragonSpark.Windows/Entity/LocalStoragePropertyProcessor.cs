@@ -25,7 +25,7 @@ namespace DragonSpark.Windows.Entity
 		{
 			var types = context.GetDeclaredEntityTypes().Select( x => x.Adapt().GetHierarchy( false ).Last() ).Distinct().SelectMany( x => x.Assembly.GetTypes().Where( y => x.Namespace == y.Namespace ) ).Distinct().ToArray();
 
-			types.SelectMany( y => y.GetProperties( BindingOptions.AllProperties ).Where( z => provider.IsDecoratedWith<LocalStorageAttribute>( z ) || ( useConvention && FollowsConvention( z ) )  ) ).Each( x =>
+			types.SelectMany( y => y.GetProperties( BindingOptions.AllProperties ).Where( z => z.Has<LocalStorageAttribute>() || ( useConvention && FollowsConvention( z ) )  ) ).Each( x =>
 			{
 				ApplyMethod.MakeGenericMethod( x.DeclaringType, x.PropertyType ).Invoke( this, new object[] { modelBuilder, x } );
 			} );
@@ -33,7 +33,7 @@ namespace DragonSpark.Windows.Entity
 
 		bool FollowsConvention( PropertyInfo propertyInfo )
 		{
-			var result = propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).With( provider.IsDecoratedWith<NotMappedAttribute> );
+			var result = propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).With( x => provider.Has<NotMappedAttribute>() );
 			return result;
 		}
 
@@ -46,7 +46,7 @@ namespace DragonSpark.Windows.Entity
 
 			var configuration = builder.Entity<TEntity>();
 			
-			configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ).With( y => y.Invoke( configuration, new object[] { result } ) );
+			ObjectExtensions.With<MethodInfo, object>( configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ), y => y.Invoke( configuration, new object[] { result } ) );
 		}
 	}
 }

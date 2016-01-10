@@ -65,10 +65,10 @@ namespace DragonSpark.Testing.Extensions
 			Assert.IsType<LowPriority>( items.Last() );
 		}
 
-		[Theory, Framework.Setup.AutoData]
-		void PrioritizePredicate( AttributeProvider provider )
+		[Fact]
+		void PrioritizePredicate()
 		{
-			var items = new object[] { new LowPriority(), new NormalPriority(), new HighPriority() }.Prioritize( x => provider.GetAttribute<PriorityAttribute>( x.GetType() ) ).ToArray();
+			var items = new object[] { new LowPriority(), new NormalPriority(), new HighPriority() }.Prioritize( x => x.GetType().GetAttribute<PriorityAttribute>() ).ToArray();
 			Assert.IsType<HighPriority>( items.First() );
 			Assert.IsType<LowPriority>( items.Last() );
 		}

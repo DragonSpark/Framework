@@ -7,6 +7,6 @@ namespace DragonSpark.Setup.Commands
 	{
 		public Type MapTo { get; set; }
 		
-		protected override void OnExecute( ISetupParameter parameter ) => Container.Registration().Mapping( RegistrationType, MapTo ?? RegistrationType, BuildName, Lifetime );
+		protected override void OnExecute( IApplicationSetupParameter parameter ) => Container.Registration().Mapping( RegistrationType, MapTo ?? RegistrationType, BuildName, Lifetime );
 	}
 }

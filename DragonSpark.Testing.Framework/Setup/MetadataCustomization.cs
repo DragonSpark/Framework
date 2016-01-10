@@ -3,6 +3,7 @@ using Ploeh.AutoFixture;
 using System;
 using System.Reflection;
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Diagnostics;
 using DragonSpark.Setup;
 
 namespace DragonSpark.Testing.Framework.Setup
@@ -45,7 +46,7 @@ namespace DragonSpark.Testing.Framework.Setup
 			}
 		}
 
-		public class SetupParameter : SetupParameter<AutoData>
+		public class SetupParameter : ApplicationSetupParameter<RecordingMessageLogger, AutoData>
 		{
 			public SetupParameter( AutoData arguments ) : base( arguments ) {}
 		}

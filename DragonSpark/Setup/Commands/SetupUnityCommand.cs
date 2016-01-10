@@ -6,7 +6,6 @@ using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
-using Microsoft.Practices.ServiceLocation;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
 
@@ -17,16 +16,12 @@ namespace DragonSpark.Setup.Commands
 		[Activate, ComponentModel.Singleton]
 		public IServiceLocation Location { get; set; }
 
-		[Activate]
-		public IServiceLocator Locator { get; set; }
-
 		[Required, ComponentModel.Singleton, Activate]
 		public virtual TAssemblyProvider AssemblyProvider { get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{
-			var logger = parameter.Item<IMessageLogger>();
-			logger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
+			parameter.Logger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
 
 			Container.With( container =>
 			{
@@ -34,9 +29,9 @@ namespace DragonSpark.Setup.Commands
 
 				container.Registration().With( support =>
 				{
-					support.Instance( new ServiceLocationMonitor( Location, Locator ) );
+					support.Instance( new ServiceLocationMonitor( Location, parameter.Locator ) );
 
-					new object[] { AssemblyProvider, logger, Location }.Each( support.Convention );
+					new object[] { AssemblyProvider, parameter.Logger, Location }.Each( support.Convention );
 				} );
 
 				container.Registration<EnsuredRegistrationSupport>().With( ensured =>

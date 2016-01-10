@@ -175,7 +175,6 @@
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
-    <Compile Include="Extensions\UnityContainerExtensionsTests.cs" />
     <Compile Include="Properties\ResourcesTests.cs" />
     <Compile Include="Runtime\CollectionTests.cs" />
     <Compile Include="Runtime\CompositeCommandTests.cs" />

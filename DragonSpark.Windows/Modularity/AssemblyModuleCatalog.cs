@@ -4,7 +4,7 @@ using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Windows.Modularity
 {
-	[Register]
+	[Register.Type]
 	public class AssemblyModuleCatalog : DragonSpark.Modularity.AssemblyModuleCatalog
 	{
 		public AssemblyModuleCatalog( IAssemblyProvider provider, IModuleInfoBuilder builder ) : base( provider, builder )

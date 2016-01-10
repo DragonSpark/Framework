@@ -1,5 +1,5 @@
-using System;
 using DragonSpark.Activation.FactoryModel;
+using System;
 
 namespace DragonSpark.Extensions
 {

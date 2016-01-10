@@ -1,5 +1,4 @@
 using DragonSpark.Activation;
-using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
 using System;
 
@@ -7,29 +6,19 @@ namespace DragonSpark.Setup.Registration
 {
 	public class TypeRegistration : IRegistration
 	{
-		public static TypeRegistration Instance { get; } = new TypeRegistration();
-
-
-		readonly Func<Type, Type> mapping;
-		readonly Func<Type, Type> register;
+		readonly Type @as;
+		readonly Type type;
 		readonly string name;
 
-		public TypeRegistration( string name = null ) : this( t => t, name ) {}
+		public TypeRegistration( Type type, string name = null ) : this( type, type, name ) {}
 
-		protected TypeRegistration( [Required]Func<Type, Type> mapping, string name = null ) : this( mapping, type => type, name ) {}
-
-		protected TypeRegistration( [Required]Func<Type, Type> mapping, [Required]Func<Type, Type> register, string name = null )
+		public TypeRegistration( [Required]Type @as, [Required]Type type, string name = null )
 		{
-			this.mapping = mapping;
-			this.register = register;
+			this.@as = @as;
+			this.type = type;
 			this.name = name;
 		}
 
-		public void Register( IServiceRegistry registry, Type subject ) => registry.Register( mapping( subject ), register( subject ), name );
-	}
-
-	public class MappingRegistration : TypeRegistration
-	{
-		public MappingRegistration( Type @as, string name ) : base( type => @as ?? type.Adapt().GetConventionCandidate(), name ) {}
+		public void Register( IServiceRegistry registry ) => registry.Register( @as, type, name );
 	}
 }

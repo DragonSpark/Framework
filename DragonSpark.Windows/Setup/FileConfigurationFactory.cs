@@ -1,9 +1,10 @@
 using System;
 using System.Configuration;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Windows.Setup
 {
-	public class FileConfigurationFactory : ConfigurationFactory
+	public class FileConfigurationFactory : FactoryBase<string, object>
 	{
 		readonly ConfigurationFileMap map;
 
@@ -15,9 +16,6 @@ namespace DragonSpark.Windows.Setup
 			this.map = map;
 		}
 
-		protected override Func<string, object> CreateItem()
-		{
-			return ConfigurationManager.OpenMappedMachineConfiguration( map ).GetSection;
-		}
+		protected override object CreateItem( string parameter ) => ConfigurationManager.OpenMappedMachineConfiguration( map ).GetSection( parameter );
 	}
 }

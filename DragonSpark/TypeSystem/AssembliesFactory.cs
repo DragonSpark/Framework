@@ -4,7 +4,7 @@ using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.TypeSystem
 {
-	[RegisterFactory]
+	[Register.Factory]
 	public class AssembliesFactory : FactoryBase<Assembly[]>
 	{
 		readonly IAssemblyProvider provider;

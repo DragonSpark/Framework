@@ -12,7 +12,7 @@
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<setupObjects:SetupApplicationCommand />
+	<commands:AssignLocationCommand />
 	<setupObjects:SetupUnityCommand>
 		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
 		<setupObjects:SetupUnityCommand.Extensions>

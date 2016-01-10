@@ -6,11 +6,11 @@ namespace DragonSpark.Testing.Framework
 {
 	public class MapAttribute : RegistrationBaseAttribute
 	{
-		public MapAttribute( Type registrationType, Type mappedTo ) : base( () => new RegistrationCustomization( new MappingRegistration( registrationType, mappedTo ) ) ){}
+		public MapAttribute( Type registrationType, Type mappedTo ) : base( t => new RegistrationCustomization( new MappingRegistration( registrationType, mappedTo ) ) ){}
 
 		public class MappingRegistration : TypeRegistration
 		{
-			public MappingRegistration( [Required]Type registrationType, [Required]Type mappedTo ) : base( t => registrationType, t => mappedTo ) { }
+			public MappingRegistration( [Required]Type registrationType, [Required]Type mappedTo ) : base( registrationType, mappedTo ) { }
 		}
 	}
 }

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Setup;
 using Ploeh.AutoFixture;
@@ -24,6 +26,18 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		public static FixtureFactory<TWith> Instance { get; } = new FixtureFactory<TWith>();
 
-		protected override IFixture CreateItem() => new Fixture( DefaultEngineParts.Instance ).Customize( new TWith() );
+		protected override IFixture CreateItem()
+		{
+			try
+			{
+				return new Fixture( DefaultEngineParts.Instance ).Customize( new TWith() );
+			}
+			catch ( Exception e )
+			{
+				File.WriteAllText( @"C:\Temp\Error.txt", e.ToString() );
+				throw;
+			}
+
+		}
 	}
 }

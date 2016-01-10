@@ -8,10 +8,6 @@ namespace DragonSpark.Runtime.Specifications
 		public TypeContextAwareSpecification( Type targetType ) : base( targetType )
 		{}
 
-		protected override bool IsSatisfiedByParameter( Type parameter )
-		{
-			var result = base.IsSatisfiedByParameter( parameter) && Context.Adapt().IsAssignableFrom( parameter );
-			return result;
-		}
+		protected override bool IsSatisfiedByParameter( Type parameter ) => base.IsSatisfiedByParameter( parameter ) && Context.Adapt().IsAssignableFrom( parameter );
 	}
 }

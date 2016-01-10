@@ -1,25 +1,22 @@
-using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel
 {
 	public class ExtensionAttribute : DefaultValueBase
 	{
-		public ExtensionAttribute( string name = null ) : base( () => new ActivatedValueProvider( new ActivateAttribute.ParameterFactory<IUnityContainer>( name ).Create, new Factory().Create ) ) {}
+		public ExtensionAttribute( string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter<IUnityContainer>( name ).Create ) ) {}
 
-		public class Factory : ActivateAttribute.Factory<IUnityContainerExtensionConfigurator>
+		public class Creator : ActivatedValueProvider.Creator<IUnityContainerExtensionConfigurator>
 		{
 			readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory;
-			public Factory() : this( new ActivateAttribute.Factory<IUnityContainer>().Create ) { }
+			public Creator() : this( new ActivatedValueProvider.Creator<IUnityContainer>().Create ) { }
 
-			protected Factory( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory )
+			protected Creator( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory )
 			{
 				this.factory = factory;
 			}
@@ -28,7 +25,7 @@ namespace DragonSpark.ComponentModel
 		}
 	}
 
-	public class LocateAttribute : DefaultValueBase
+	/*public class LocateAttribute : DefaultValueBase
 	{
 		public LocateAttribute() : this( (string)null ) { }
 
@@ -54,36 +51,60 @@ namespace DragonSpark.ComponentModel
 				return instance;
 			}
 		}
-	}
+	}*/
 
 	public class ActivateAttribute : DefaultValueBase
 	{
-		public ActivateAttribute() : this( (string)null )
-		{}
+		public ActivateAttribute() : this( (string)null ) {}
 
-		public ActivateAttribute( string name ) : this( null, name )
-		{}
+		public ActivateAttribute( string name ) : this( null, name ) {}
 
-		public ActivateAttribute( Type activatedType, string name = null ) : this( () => new ActivatedValueProvider( new ParameterFactory( activatedType, name ).Create, new Factory<object>().Create ) )
-		{}
+		public ActivateAttribute( Type activatedType, string name = null ) : this( new ActivatedValueProvider.Converter( activatedType, name ) ) {}
 
-		protected ActivateAttribute( Func<IDefaultValueProvider> provider ) : base( provider )
-		{}
+		protected ActivateAttribute( ActivatedValueProvider.Converter converter ) : this( converter, ActivatedValueProvider.Creator.Instance ) {}
 
-		public class ParameterFactory<T> : ParameterFactory
+		protected ActivateAttribute( ActivatedValueProvider.Converter converter, ActivatedValueProvider.Creator creator ) : base( t => new ActivatedValueProvider( converter, creator ) ) {}
+
+		protected ActivateAttribute( Func<object, IDefaultValueProvider> provider ) : base( provider ) {}
+	}
+
+	public class ActivatedValueProvider : IDefaultValueProvider
+	{
+		readonly Func<PropertyInfo, ActivateParameter> convert;
+		readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create;
+
+		public ActivatedValueProvider( Converter converter ) : this( converter, Creator.Instance ) {}
+
+		public ActivatedValueProvider( Converter converter, Creator creator ) : this( converter.Create, creator.Create ) {}
+
+		public ActivatedValueProvider( [Required]Func<PropertyInfo, ActivateParameter> convert ) : this( convert, Creator.Instance.Create ) {}
+
+		public ActivatedValueProvider( [Required]Func<PropertyInfo, ActivateParameter> convert, [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create )
 		{
-			public ParameterFactory( string name ) : base( typeof( T ), name ) { }
+			this.convert = convert;
+			this.create = create;
 		}
 
-		public class ParameterFactory : FactoryBase<PropertyInfo, ActivateParameter>
+		public object GetValue( DefaultValueParameter parameter )
+		{
+			var activateParameter = convert( parameter.Metadata );
+			var context = Tuple.Create( activateParameter, parameter );
+			return create( context );
+		}
+
+		public class Converter<T> : Converter
+		{
+			public Converter( string name ) : base( typeof(T), name ) { }
+		}
+
+		public class Converter : FactoryBase<PropertyInfo, ActivateParameter>
 		{
 			readonly Func<PropertyInfo, Type> type;
 			readonly string name;
 
-			public ParameterFactory( Type activatedType, string name ) : this( p => activatedType ?? p.PropertyType, name )
-			{}
+			public Converter( Type activatedType, string name ) : this( p => activatedType ?? p.PropertyType, name ) { }
 
-			public ParameterFactory( [Required]Func<PropertyInfo, Type> type, string name )
+			public Converter( [Required]Func<PropertyInfo, Type> type, string name )
 			{
 				this.type = type;
 				this.name = name;
@@ -92,32 +113,25 @@ namespace DragonSpark.ComponentModel
 			protected override ActivateParameter CreateItem( PropertyInfo parameter ) => new ActivateParameter( type( parameter ), name );
 		}
 
-		public class Factory<T> : FactoryBase<Tuple<ActivateParameter, DefaultValueParameter>, T> where T : class
+		public class Creator : Creator<object>
 		{
+			public new static Creator Instance { get; } = new Creator();
+		}
+
+		public class Creator<T> : FactoryBase<Tuple<ActivateParameter, DefaultValueParameter>, T> where T : class
+		{
+			public static Creator<T> Instance { get; } = new Creator<T>();
+
 			readonly Func<ActivateParameter, T> factory;
 
-			public Factory() : this( ActivateFactory<T>.Instance.Create ) { }
+			public Creator() : this( ActivateFactory<T>.Instance.Create ) { }
 
-			public Factory( [Required]Func<ActivateParameter, T> factory )
+			public Creator( [Required]Func<ActivateParameter, T> factory )
 			{
 				this.factory = factory;
 			}
 
 			protected override T CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter ) => factory( parameter.Item1 );
 		}
-	}
-
-	public class ActivatedValueProvider : IDefaultValueProvider
-	{
-		readonly Func<PropertyInfo, ActivateParameter> createParameter;
-		readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create;
-
-		public ActivatedValueProvider( [Required]Func<PropertyInfo, ActivateParameter> createParameter, [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, object> create )
-		{
-			this.createParameter = createParameter;
-			this.create = create;
-		}
-
-		public object GetValue( DefaultValueParameter parameter ) => create( Tuple.Create( createParameter( parameter.Metadata ), parameter ) );
 	}
 }

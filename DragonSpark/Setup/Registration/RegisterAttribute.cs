@@ -1,25 +1,29 @@
 using System;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Setup.Registration
 {
-	public sealed class RegisterTypeAttribute : RegistrationBaseAttribute
+	public static class Register
 	{
-		public RegisterTypeAttribute() : base( () => TypeRegistration.Instance )
-		{}
-	}
+		public sealed class TypeAttribute : RegistrationBaseAttribute
+		{
+			public TypeAttribute( string name = null ) : base( t => new TypeRegistration( t, name ) ) { }
+		}
 
-	public sealed class RegisterAttribute : RegistrationBaseAttribute
-	{
-		public RegisterAttribute() : this( null, null )
-		{}
+		public sealed class AsAttribute : RegistrationBaseAttribute
+		{
+			public AsAttribute() : this( null, null ) { }
 
-		public RegisterAttribute( Type @as ) : this( @as, null )
-		{}
+			public AsAttribute( Type @as ) : this( @as, null ) { }
 
-		public RegisterAttribute( string name ) : this( null, name )
-		{}
+			public AsAttribute( string name ) : this( null, name ) { }
 
-		RegisterAttribute( Type @as, string name ) : base( () => new MappingRegistration( @as, name ) )
-		{}
+			AsAttribute( Type @as, string name ) : base( t => new TypeRegistration( @as ?? t.Adapt().GetConventionCandidate(), t, name ) ) { }
+		}
+
+		public class FactoryAttribute : RegistrationBaseAttribute
+		{
+			public FactoryAttribute() : base( t => new FactoryRegistration( t ) ) { }
+		}
 	}
 }

@@ -1,9 +1,6 @@
 ﻿using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -16,10 +13,6 @@ namespace DragonSpark.Activation.IoC
 {
 	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
-		[Activate]
-		public RecordingMessageLogger Logger { get; set; }
-
-		[BuildUp]
 		protected override void Initialize()
 		{
 			Context.RegisteringInstance += ContextOnRegisteringInstance;
@@ -36,9 +29,7 @@ namespace DragonSpark.Activation.IoC
 
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
-				support.Instance<IMessageLogger>( Logger );
 				support.Instance<IResolutionSupport>( new ResolutionSupport( Context ) );
-				Logger.Information( Resources.LoggerCreatedSuccessfully, Priority.Low );
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
 			} );
@@ -83,17 +74,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			var type = args.Instance.GetType();
 
-			var register = args.Instance.AsTo<IMessageLogger, bool>( logger =>
-			{
-				var result = logger != Logger;
-				if ( result )
-				{
-					Logger.Purge().Each( logger.Log );
-				}
-				return result;
-			}, () => !Container.IsRegistered( type, args.Name ) );
-
-			if ( args.RegisteredType != type && register )
+			if ( args.RegisteredType != type && !Container.IsRegistered( type, args.Name ) )
 			{
 				Container.Registration().Instance( type, args.Instance, args.Name, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
 			}

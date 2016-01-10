@@ -104,7 +104,7 @@ namespace DragonSpark.Windows.Entity
 
 		public static TItem Get<TItem>( this DbContext target, object container, int levels = 1 ) where TItem : class
 		{
-			var key = new KeyFactory<TItem>( AttributeProvider.Instance, target ).Create( container );
+			var key = new KeyFactory<TItem>( target ).Create( container );
 
 			var current = target.Set<TItem>().Find( key.Values.ToArray() );
 
@@ -158,19 +158,17 @@ namespace DragonSpark.Windows.Entity
 
 		public class DefaultAssociationPropertyFactory : FactoryBase<Type, string[]>
 		{
-			readonly IAttributeProvider provider;
 			readonly IObjectContextAdapter adapter;
 
-			public DefaultAssociationPropertyFactory( IAttributeProvider provider, IObjectContextAdapter adapter )
+			public DefaultAssociationPropertyFactory( IObjectContextAdapter adapter )
 			{
-				this.provider = provider;
 				this.adapter = adapter;
 			}
 
 			protected override string[] CreateItem( Type parameter )
 			{
 				var names = GetAssociationPropertyNames( adapter, parameter );
-				var decorated = parameter.GetProperties().Where( provider.IsDecoratedWith<DefaultIncludeAttribute> ).Select( x => x.Name );
+				var decorated = parameter.GetProperties().Where( x => x.Has<DefaultIncludeAttribute>() ).Select( x => x.Name );
 				var result = decorated.Union( names ).ToArray();
 				return result;
 			}
@@ -280,12 +278,10 @@ namespace DragonSpark.Windows.Entity
 
 		class KeyFactory<TEntity> : FactoryBase<object, IDictionary<string, object>>
 		{
-			readonly IAttributeProvider provider;
 			readonly IObjectContextAdapter context;
 
-			public KeyFactory( [Required] IAttributeProvider provider, [Required] IObjectContextAdapter context )
+			public KeyFactory( [Required] IObjectContextAdapter context )
 			{
-				this.provider = provider;
 				this.context = context;
 			}
 
@@ -300,7 +296,7 @@ namespace DragonSpark.Windows.Entity
 				var result = names.Select( name =>
 				{
 					var info = container.GetType().GetProperty( name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy );
-					var value = provider.FromMetadata<ForeignKeyAttribute, object>( typeof(TEntity).GetProperty( name ), y =>
+					var value = typeof(TEntity).GetProperty( name ).From<ForeignKeyAttribute, object>( y =>
 					{
 						var propertyInfo = container.GetType().GetProperty( y.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy );
 						var o = propertyInfo.GetValue( container );
@@ -333,7 +329,7 @@ namespace DragonSpark.Windows.Entity
 		public static TEntity Include<TEntity>( this DbContext target, TEntity entity, string[] associationNames, int levels = 1 ) where TEntity : class
 		{
 			var associations = associationNames ?? Enumerable.Empty<string>();
-			var names = associations.Union( new DefaultAssociationPropertyFactory( AttributeProvider.Instance, target ).Create( typeof(TEntity) ) ).ToArray();
+			var names = associations.Union( new DefaultAssociationPropertyFactory( target ).Create( typeof(TEntity) ) ).ToArray();
 			var result = Load( target, entity, names, levels );
 			return result;
 		}
@@ -354,7 +350,7 @@ namespace DragonSpark.Windows.Entity
 			{
 				list.Add( entity );
 				var type = entity.GetType();
-				var names = properties ?? ( loadAllProperties ? target.GetEntityProperties( type ).Select( x => x.Name ) : new DefaultAssociationPropertyFactory( AttributeProvider.Instance, target ).Create( type ) );
+				var names = properties ?? ( loadAllProperties ? target.GetEntityProperties( type ).Select( x => x.Name ) : new DefaultAssociationPropertyFactory( target ).Create( type ) );
 				var associationNames = names.ToArray();
 				LoadEntity( target, entity, associationNames );
 

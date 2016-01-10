@@ -160,6 +160,7 @@
     <Compile Include="Runtime\FatalApplicationException.cs" />
     <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
+    <Compile Include="Runtime\Specifications\OfTypeSpecification.cs" />
     <Compile Include="Runtime\Values\AmbientContextCommand.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
@@ -310,7 +311,7 @@
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
-    <Compile Include="Setup\Commands\SetupApplicationCommandBase.cs" />
+    <Compile Include="Setup\Commands\AssignLocationCommand.cs" />
     <Compile Include="Runtime\CommandCollection.cs" />
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
@@ -330,7 +331,6 @@
     <Compile Include="Activation\FactoryModel\ObjectFactoryParameter.cs" />
     <Compile Include="Runtime\Program.cs" />
     <Compile Include="Setup\Registration\RegisterAttribute.cs" />
-    <Compile Include="Setup\Registration\RegisterFactoryAttribute.cs" />
     <Compile Include="Setup\Registration\RegisterFrameworkExceptionTypesCommand.cs" />
     <Compile Include="Setup\Registration\RegistrationBaseAttribute.cs" />
     <Compile Include="Setup\Commands\RunProgramCommand.cs" />

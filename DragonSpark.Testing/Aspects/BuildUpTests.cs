@@ -62,7 +62,7 @@ namespace DragonSpark.Testing.Aspects
 
 		public class SkipFirstCallValue : DefaultValueBase
 		{
-			public SkipFirstCallValue() : base( () => SkipFirstCallProvider.Instance )
+			public SkipFirstCallValue() : base( t => SkipFirstCallProvider.Instance )
 			{}
 		}
 

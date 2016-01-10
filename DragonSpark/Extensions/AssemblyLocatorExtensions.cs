@@ -8,11 +8,11 @@ namespace DragonSpark.Extensions
 {
 	public static class AssemblyLocatorExtensions
 	{
-		public static Tuple<TAttribute, TypeInfo>[] GetAllTypesWith<TAttribute>( this IAttributeProvider @this, IEnumerable<Assembly> target, bool inherit = false ) where TAttribute : Attribute
-			=> @this.WhereDecorated<TAttribute>( target.SelectMany( assembly => assembly.DefinedTypes ), inherit );
+		public static Tuple<TAttribute, TypeInfo>[] GetAllTypesWith<TAttribute>( this IEnumerable<Assembly> target, bool inherit = false ) where TAttribute : Attribute
+			=> target.SelectMany( assembly => assembly.DefinedTypes ).WhereDecorated<TAttribute>( inherit );
 		
-		public static Tuple<TAttribute, TypeInfo>[] WhereDecorated<TAttribute>( this IAttributeProvider provider, IEnumerable<TypeInfo> target, bool inherit = false ) where TAttribute : Attribute
-			=> target.Where( info => provider.IsDecoratedWith<TAttribute>( info, inherit ) ).Select( info => new Tuple<TAttribute, TypeInfo>( provider.GetAttribute<TAttribute>( info ), info ) ).ToArray();
+		public static Tuple<TAttribute, TypeInfo>[] WhereDecorated<TAttribute>( this IEnumerable<TypeInfo> target, bool inherit = false ) where TAttribute : Attribute
+			=> target.Where( info => Attributes.Get( info, inherit ).Has<TAttribute>() ).Select( info => new Tuple<TAttribute, TypeInfo>( Attributes.Get( info, inherit ).GetAttribute<TAttribute>(), info ) ).ToArray();
 
 		public static IEnumerable<Type> AsTypes( this IEnumerable<TypeInfo> target ) => target.Select( info => info.AsType() );
 

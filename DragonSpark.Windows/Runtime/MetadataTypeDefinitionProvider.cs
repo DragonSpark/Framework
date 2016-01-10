@@ -1,20 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using DragonSpark.ComponentModel;
+﻿using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
 	public class MetadataTypeDefinitionProvider : ITypeDefinitionProvider
 	{
-		readonly IAttributeProvider provider;
+		public static MetadataTypeDefinitionProvider Instance { get; } = new MetadataTypeDefinitionProvider();
 
-		public MetadataTypeDefinitionProvider( [Required]IAttributeProvider provider )
-		{
-			this.provider = provider;
-		}
+		MetadataTypeDefinitionProvider() {}
 
-		public TypeInfo GetDefinition( TypeInfo info ) => provider.FromMetadata<MetadataTypeAttribute, TypeInfo>( info, item => item.MetadataClassType.GetTypeInfo() );
+		public TypeInfo GetDefinition( TypeInfo info ) => info.From<MetadataTypeAttribute, TypeInfo>( item => item.MetadataClassType.GetTypeInfo() );
 	}
 }

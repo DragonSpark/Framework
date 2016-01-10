@@ -1,8 +1,9 @@
-﻿using PostSharp.Patterns.Contracts;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Runtime.Specifications;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -33,6 +34,32 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
+	public class FactoryWithSpecification<T> : FactoryBase<object, T>
+	{
+		readonly ISpecification specification;
+		readonly Func<object, T> inner;
+
+		public FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<object, T> inner  )
+		{
+			this.specification = specification;
+			this.inner = inner;
+		}
+
+		protected override T CreateItem( object parameter ) => specification.IsSatisfiedBy( parameter ) ? inner( parameter ) : default(T);
+	}
+
+	public class FirstFactory<T, U> : FactoryBase<T, U>
+	{
+		readonly IEnumerable<IFactory<T, U>> inner;
+
+		public FirstFactory( [Required]params IFactory<T, U>[] inner )
+		{
+			this.inner = inner;
+		}
+
+		protected override U CreateItem( T parameter ) => inner.FirstWhere( factory => factory.Create( parameter ) );
+	}
+
 	public class FirstFactory<T> : FactoryBase<T>
 	{
 		readonly IEnumerable<IFactory<T>> inner;
@@ -42,7 +69,7 @@ namespace DragonSpark.Activation.FactoryModel
 			this.inner = inner;
 		}
 
-		protected override T CreateItem() => inner.Select( factory => factory.Create() ).NotNull().FirstOrDefault();
+		protected override T CreateItem() => inner.FirstWhere( factory => factory.Create() );
 	}
 
 	public class AggregateFactory<T> : FactoryBase<T>

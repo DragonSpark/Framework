@@ -1,19 +1,18 @@
+using System;
 using DragonSpark.Setup.Registration;
 using DragonSpark.Windows.Setup;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Modularity
 {
-	[RegisterFactory]
+	[Register.Factory]
 	public class ModulesConfigurationSectionFactory : ConfigurationSectionFactory<ModulesConfigurationSection>
 	{
 		public static ModulesConfigurationSectionFactory Instance { get; } = new ModulesConfigurationSectionFactory();
 
-		public ModulesConfigurationSectionFactory()
-		{}
+		public ModulesConfigurationSectionFactory() {}
 
-		public ModulesConfigurationSectionFactory( ConfigurationFactory factory ) : base( factory )
-		{}
+		public ModulesConfigurationSectionFactory( Func<string, object> factory ) : base( factory ) {}
 	}
 
 	/// <summary>

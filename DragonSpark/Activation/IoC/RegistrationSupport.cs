@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	[Register]
+	[Register.Type]
 	public class RegistrationSupport
 	{
 		readonly IUnityContainer container;

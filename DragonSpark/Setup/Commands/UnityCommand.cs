@@ -4,7 +4,7 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class UnityCommand : SetupCommand
+	public abstract class UnityCommand : SetupCommandBase<IApplicationSetupParameter>
 	{
 		[Activate, Required]
 		public IUnityContainer Container { get; set; }

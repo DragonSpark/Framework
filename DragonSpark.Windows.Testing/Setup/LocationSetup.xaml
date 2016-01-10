@@ -7,9 +7,10 @@
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	xmlns:setupObjects="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<setupObjects:SetupApplicationCommand />
+	<commands:AssignLocationCommand />
 	<setupObjects:SetupUnityCommand>
 		<setupObjects:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />

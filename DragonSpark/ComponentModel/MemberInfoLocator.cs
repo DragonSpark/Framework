@@ -1,10 +1,11 @@
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Extensions;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.ComponentModel
 {
-	public class MemberInfoLocator : IMemberInfoLocator
+	public class MemberInfoLocator : TransformerBase<MemberInfo>, IMemberInfoLocator
 	{
 		public static MemberInfoLocator Instance { get; } = new MemberInfoLocator();
 
@@ -18,14 +19,6 @@ namespace DragonSpark.ComponentModel
 			this.provider = provider;
 		}
 
-		public MemberInfo Locate( MemberInfo info )
-		{
-			var typeInfo = info as TypeInfo;
-			var key = typeInfo ?? info.DeclaringType.GetTypeInfo();
-			var result = provider.GetDefinition( key ).With( x => typeInfo != null ? x : info.AsTo<PropertyInfo, MemberInfo>( y => GetDeclaredProperty( info, x ) ) );
-			return result;
-		}
-
 		static PropertyInfo GetDeclaredProperty( MemberInfo info, TypeInfo x )
 		{
 			try
@@ -37,6 +30,14 @@ namespace DragonSpark.ComponentModel
 				var result = x.DeclaredProperties.FirstOrDefault( propertyInfo => propertyInfo.Name == info.Name );
 				return result;
 			}
+		}
+
+		protected override MemberInfo CreateItem( MemberInfo parameter )
+		{
+			var typeInfo = parameter as TypeInfo;
+			var key = typeInfo ?? parameter.DeclaringType.GetTypeInfo();
+			var result = provider.GetDefinition( key ).With( x => typeInfo != null ? x : parameter.AsTo<PropertyInfo, MemberInfo>( y => GetDeclaredProperty( parameter, x ) ) );
+			return result;
 		}
 	}
 }

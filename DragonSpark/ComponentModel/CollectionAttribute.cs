@@ -1,17 +1,20 @@
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using System;
-using System.Reflection;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.ComponentModel
 {
 	public class CollectionAttribute : ActivateAttribute
 	{
-		public CollectionAttribute( Type elementType = null, string name = null ) : base( () => new ActivatedValueProvider(
-			p => new ActivateParameter( elementType.With( Transformer.Instance.Create ) ?? p.PropertyType.Adapt().GetInnerType().With( Transformer.Instance.Create ), name ),
-			new Factory<object>().Create
-		) ) {}
+		public CollectionAttribute( Type elementType = null, string name = null ) : base( t => Create( elementType, name ) ) {}
+
+		static ActivatedValueProvider Create( Type type, string name ) => new ActivatedValueProvider( p =>
+		{
+			var elementType = type ?? p.PropertyType.Adapt().GetInnerType();
+			var result = new ActivateParameter( elementType.With( Transformer.Instance.Create ), name );
+			return result;
+		} );
 
 		public class Transformer : TransformerBase<Type>
 		{

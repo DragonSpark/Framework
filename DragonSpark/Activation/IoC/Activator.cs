@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
 using System;
 
 namespace DragonSpark.Activation.IoC
@@ -10,7 +11,7 @@ namespace DragonSpark.Activation.IoC
 		readonly IResolutionSupport support;
 		readonly RegistrationSupport registration;
 
-		public Activator( IUnityContainer container, IResolutionSupport support, RegistrationSupport registration )
+		public Activator( [Required]IUnityContainer container, [Required]IResolutionSupport support, [Required]RegistrationSupport registration )
 		{
 			this.container = container;
 			this.support = support;
@@ -29,7 +30,7 @@ namespace DragonSpark.Activation.IoC
 			{
 				parameters.NotNull().Each( x => registration.AllClasses( x ) );
 
-				var result = new ResolutionContext( child.Logger() ).Execute( () => child.Resolve( type ) );
+				var result = child.TryResolve( type );
 				return result;
 			}
 		}

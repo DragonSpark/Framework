@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Linq;
 using DragonSpark.Activation.FactoryModel;
@@ -8,12 +9,11 @@ namespace DragonSpark.Windows.Setup
 {
 	public class ConfigurationSectionFactory<T> : FactoryBase<T> where T : ConfigurationSection
 	{
-		readonly ConfigurationFactory factory;
+		readonly Func<string, object> factory;
 
-		public ConfigurationSectionFactory() : this( ConfigurationFactory.Instance )
-		{}
+		public ConfigurationSectionFactory() : this( ConfigurationManager.GetSection ) {}
 
-		public ConfigurationSectionFactory( [Required]ConfigurationFactory factory )
+		public ConfigurationSectionFactory( [Required]Func<string, object> factory )
 		{
 			this.factory = factory;
 		}
@@ -21,8 +21,7 @@ namespace DragonSpark.Windows.Setup
 		protected override T CreateItem()
 		{
 			var name = typeof(T).Name.SplitCamelCase().First().ToLower();
-			var resolver = factory.Create();
-			var result = resolver( name ) as T;
+			var result = factory( name ) as T;
 			return result;
 		}
 	}

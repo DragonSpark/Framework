@@ -1,19 +1,18 @@
-using System;
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class LifetimeManagerFactory : LifetimeManagerFactory<TransientLifetimeManager>
 	{
 		[InjectionConstructor]
-		public LifetimeManagerFactory() : this( AttributeProvider.Instance, Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
+		public LifetimeManagerFactory() : this( Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
 
-		public LifetimeManagerFactory( IAttributeProvider provider, Func<IActivator> activator, ISingletonLocator locator ) : base( provider, activator, locator ) {}
+		public LifetimeManagerFactory( Func<IActivator> activator, ISingletonLocator locator ) : base( activator, locator ) {}
 	}
 
 	public class LifetimeManagerFactory<T> : ActivateFactory<LifetimeManager> where T : LifetimeManager
@@ -21,9 +20,9 @@ namespace DragonSpark.Setup.Registration
 		readonly ISingletonLocator locator;
 
 		[InjectionConstructor]
-		public LifetimeManagerFactory() : this( AttributeProvider.Instance, Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
+		public LifetimeManagerFactory() : this( Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
 
-		public LifetimeManagerFactory( IAttributeProvider provider, Func<IActivator> activator, ISingletonLocator locator ) : base( activator, new LifetimeFactoryParameterCoercer( provider, activator, typeof(T) ) )
+		public LifetimeManagerFactory( Func<IActivator> activator, ISingletonLocator locator ) : base( activator, new LifetimeFactoryParameterCoercer( activator, typeof(T) ) )
 		{
 			this.locator = locator;
 		}

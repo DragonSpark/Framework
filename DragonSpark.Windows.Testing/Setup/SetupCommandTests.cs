@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
+using DragonSpark.Windows.Testing.TestObjects.Modules;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
@@ -42,7 +44,6 @@ namespace DragonSpark.Windows.Testing.Setup
 
 	public class Parameter : SetupParameter<object>
 	{
-		public Parameter( object arguments ) : base( arguments )
-		{}
+		public Parameter( object arguments ) : base( new MockMessageLogger(), arguments ) {}
 	}
 }

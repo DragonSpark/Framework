@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Framework.Setup
 
 	public class OutputCustomization : AutoDataCustomization
 	{
-		[Locate]
+		[Activate]
 		public RecordingMessageLogger Logger { get; set; }
 
 		[BuildUp]

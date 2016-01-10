@@ -13,15 +13,12 @@ namespace DragonSpark.ComponentModel
 	{
 		public static DefaultPropertyValueFactory Instance { get; } = new DefaultPropertyValueFactory();
 
-		readonly IAttributeProvider provider;
 		readonly Func<MemberInfo, IDefaultValueProvider[]> factory;
 
-		public DefaultPropertyValueFactory() : this( AttributeProvider.Instance, HostedValueLocator<IDefaultValueProvider>.Instance.Create )
-		{}
+		public DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Instance.Create ) {}
 
-		public DefaultPropertyValueFactory( [Required]IAttributeProvider provider, [Required]Func<MemberInfo, IDefaultValueProvider[]> factory )
+		public DefaultPropertyValueFactory( [Required]Func<MemberInfo, IDefaultValueProvider[]> factory )
 		{
-			this.provider = provider;
 			this.factory = factory;
 		}
 
@@ -29,7 +26,7 @@ namespace DragonSpark.ComponentModel
 		{
 			var result = factory( parameter.Metadata ).Select( p => p.GetValue( parameter ) ).NotNull().FirstOrDefault()
 						 ??
-						 provider.FromMetadata<DefaultValueAttribute, object>( parameter.Metadata, attribute => attribute.Value );
+						 Attributes.Get( parameter.Metadata ).From<DefaultValueAttribute, object>( attribute => attribute.Value );
 			return result;
 		}
 	}

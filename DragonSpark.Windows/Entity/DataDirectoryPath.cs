@@ -3,7 +3,7 @@ using DragonSpark.Windows.Runtime;
 
 namespace DragonSpark.Windows.Entity
 {
-	[Register]
+	[Register.Type]
 	public class DataDirectoryPath : AppDomainValue<string>
 	{
 		public const string Key = "DataDirectory";

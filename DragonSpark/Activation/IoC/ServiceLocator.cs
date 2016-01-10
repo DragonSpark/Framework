@@ -3,11 +3,12 @@ using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using PostSharp.Patterns.Model;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -16,7 +17,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		public ServiceLocator() : this( new UnityContainer() ) {}
 
-		public ServiceLocator( IUnityContainer container )
+		public ServiceLocator( [Required]IUnityContainer container )
 		{
 			Container = container;
 		}
@@ -35,16 +36,19 @@ namespace DragonSpark.Activation.IoC
 			var basic = key == null && !serviceType.GetTypeInfo().IsInterface;
 			if ( basic || Container.IsRegistered( serviceType, key ) )
 			{
-				return new ResolutionContext( MessageLogger ).Execute( () => Container.Resolve( serviceType, key ) );
+				return Container.TryResolve( serviceType, key );
 			}
 
-			MessageLogger.Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
+			Container.Logger().Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
 			return null;
 		}
 
-		IMessageLogger MessageLogger => Container.Logger();
-
 		[Reference]
 		public IUnityContainer Container { get; }
+
+		protected virtual void Dispose( bool disposing )
+		{
+			
+		}
 	}
 }
