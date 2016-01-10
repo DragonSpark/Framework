@@ -8,9 +8,6 @@ namespace DragonSpark.Activation.IoC
 		readonly IServiceLocation location;
 		readonly IServiceLocator locator;
 
-		/*public ServiceLocationMonitor( IServiceLocator locator ) : this( Services.Location, locator )
-		{}*/
-
 		public ServiceLocationMonitor( IServiceLocation location, IServiceLocator locator )
 		{
 			this.location = location;

@@ -4,6 +4,7 @@ using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup;
 using PostSharp.Aspects;
 using System;
+using PostSharp.Patterns.Model;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework
@@ -30,61 +31,40 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	public class AssociatedAutoData : AssociatedValue<object, AutoData>
-	{
-		public AssociatedAutoData( object instance ) : base( instance )
-		{}
-	}
-
 	[LinesOfCodeAvoided( 8 ), Serializable]
-	public class AssignExecutionAttribute : MethodInterceptionAspect
+	public class AssignExecutionContextAspect : MethodInterceptionAspect
 	{
 		public sealed override void OnInvoke( MethodInterceptionArgs args )
 		{
-			using ( var command = new AssignExecutionCommand() )
+			var parameter = MethodContext.Get( args.Method );
+			using ( new AssignExecutionContextCommand().ExecuteWith( parameter ) )
 			{
-				command.Execute( MethodContext.Get( args.Method ) );
-
 				args.Proceed();
 			}
 		}
 	}
 
-	public class AssignExecutionCommand : AssignValueCommand<Tuple<string>>
+	public class AssignExecutionContextCommand : AssignValueCommand<Tuple<string>>
 	{
-		public AssignExecutionCommand() : this( CurrentExecution.Instance )
-		{}
+		public AssignExecutionContextCommand() : this( CurrentExecution.Instance ) {}
 
-		public AssignExecutionCommand( IWritableValue<Tuple<string>> value ) : base( value )
-		{}
+		public AssignExecutionContextCommand( IWritableValue<Tuple<string>> value ) : base( value ) {}
 	}
 
-	// [AssignExecution( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
-	public abstract class Tests : IDisposable
+	[Disposable]
+	public abstract class Tests
 	{
-		protected Tests( ITestOutputHelper output ) : this( output, new InitializeOutputCommand( output ).Run )
-		{}
+		protected Tests( ITestOutputHelper output ) : this( output, new InitializeOutputCommand( output ).Run ) {}
 
-		protected Tests( ITestOutputHelper output, Action<Type> command )
+		protected Tests( ITestOutputHelper output, Action<Type> initialize )
 		{
 			Output = output;
-			command( GetType() );
+			initialize( GetType() );
 		}
 
+		[Reference]
 		protected ITestOutputHelper Output { get; }
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		void Dispose( bool disposing )
-		{
-			disposing.IsTrue( OnDispose );
-		}
-
-		protected virtual void OnDispose()
-		{}
+		protected virtual void Dispose( bool disposing ) {}
 	}
 }

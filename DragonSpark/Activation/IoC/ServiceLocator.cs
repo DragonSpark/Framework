@@ -44,7 +44,7 @@ namespace DragonSpark.Activation.IoC
 
 		IMessageLogger MessageLogger => Container.Logger();
 
-		[Child]
+		[Reference]
 		public IUnityContainer Container { get; }
 	}
 }

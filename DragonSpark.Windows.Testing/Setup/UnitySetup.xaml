@@ -1,25 +1,27 @@
-﻿<setup1:ApplicationSetup x:Class="DragonSpark.Windows.Testing.Setup.UnitySetup"
+﻿<setup:Setup x:Class="DragonSpark.Windows.Testing.Setup.UnitySetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
-	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
 	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	xmlns:localSetup="clr-namespace:DragonSpark.Windows.Testing.Setup"
 	xmlns:testObjects="clr-namespace:DragonSpark.Testing.Objects;assembly=DragonSpark.Testing.Objects"
-	xmlns:setup1="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
+	xmlns:setupObjects="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:SetupUnityCommand>
+	<setupObjects:SetupApplicationCommand />
+	<setupObjects:SetupUnityCommand>
 		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
-		<commands:ConfigureUnityCommand.Extensions>
+		<setupObjects:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />
 			<localSetup:TestExtension />
-		</commands:ConfigureUnityCommand.Extensions>
-	</commands:SetupUnityCommand>
+		</setupObjects:SetupUnityCommand.Extensions>
+	</setupObjects:SetupUnityCommand>
+	
 	<ds:SetupRegistrationByConventionCommand />
-	<commands:InitializeModulesCommand />
-	<setup1:DefaultCustomizeFixtureCommand />
-</setup1:ApplicationSetup>
+	<!--<commands:InitializeModulesCommand />-->
+	<setupObjects:DefaultCustomizeFixtureCommand />
+</setup:Setup>

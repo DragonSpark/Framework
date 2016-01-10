@@ -44,5 +44,10 @@ namespace DragonSpark.Testing.Framework.Setup
 				setup.Run( arguments );
 			}
 		}
+
+		public class SetupParameter : SetupParameter<AutoData>
+		{
+			public SetupParameter( AutoData arguments ) : base( arguments ) {}
+		}
 	}
 }

@@ -1,20 +1,20 @@
-﻿<setup:ApplicationSetup x:Class="DragonSpark.Windows.Testing.Setup.LocationSetup"
+﻿<setup:Setup x:Class="DragonSpark.Windows.Testing.Setup.LocationSetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:ds="http://framework.dragonspark.us"
-	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
-	xmlns:setup="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
+	xmlns:setupObjects="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
+	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:SetupUnityCommand>
-		<commands:SetupUnityCommand.Extensions>
+	<setupObjects:SetupApplicationCommand />
+	<setupObjects:SetupUnityCommand>
+		<setupObjects:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />
-		</commands:SetupUnityCommand.Extensions>
-	</commands:SetupUnityCommand>
+		</setupObjects:SetupUnityCommand.Extensions>
+	</setupObjects:SetupUnityCommand>
 	<ds:SetupRegistrationByConventionCommand />
-
-	<setup:DefaultCustomizeFixtureCommand />
-</setup:ApplicationSetup>
+	<setupObjects:DefaultCustomizeFixtureCommand />
+</setup:Setup>

@@ -1,19 +1,16 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Runtime;
-using System.Windows.Markup;
+﻿using DragonSpark.Runtime;
 
 namespace DragonSpark.Setup
 {
-	[ContentProperty( nameof(Commands) )]
-	public class Setup<TParameter> : CompositeCommand<TParameter>, ISetup where TParameter : ISetupParameter
+	public class Setup : CompositeCommand<ISetupParameter>, ISetup
 	{
 		public Collection<object> Items { get; } = new Collection<object>();
 
-		public virtual void Run( ISetupParameter parameter )
+		protected override void OnExecute( ISetupParameter parameter )
 		{
-			parameter.Register<ISetup>( this );
+			parameter.AsRegistered<ISetup>( this );
 
-			CommandExtensions.Apply( this, (object)parameter );
+			base.OnExecute( parameter );
 		}
 	}
 }

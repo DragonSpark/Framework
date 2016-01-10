@@ -35,9 +35,9 @@ namespace DragonSpark.Windows.Testing.Modularity
 			items.Each( CompilerHelper.CleanUpDirectory );
 		}
 
-		protected override void OnDispose()
+		protected override void Dispose( bool disposing )
 		{
-			base.OnDispose();
+			base.Dispose( disposing );
 			CleanUp();
 		}
 

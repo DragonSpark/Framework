@@ -1,7 +1,7 @@
-﻿namespace DragonSpark.Setup
+﻿using DragonSpark.Runtime;
+
+namespace DragonSpark.Setup
 {
-	public interface ISetup
-	{
-		void Run( ISetupParameter parameter );
-	}
+	public interface ISetup : ICommand<ISetupParameter>
+	{}
 }

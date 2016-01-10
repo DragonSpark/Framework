@@ -188,6 +188,7 @@
     <Compile Include="Activation\ServiceLocation.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
     <Compile Include="Runtime\Values\ThreadAmbientValue.cs" />
+    <Compile Include="Setup\Commands\SetupObjectBuilderCommand.cs" />
     <Compile Include="Setup\Registration\FactoryRegistration.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
@@ -309,7 +310,7 @@
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
-    <Compile Include="Setup\Commands\ApplicationSetup.cs" />
+    <Compile Include="Setup\Commands\SetupApplicationCommandBase.cs" />
     <Compile Include="Runtime\CommandCollection.cs" />
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />

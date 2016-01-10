@@ -79,7 +79,6 @@ namespace DragonSpark.Runtime
 		protected override void OnExecute( T parameter ) => inner.Execute( parameter );
 	}
 
-	[BuildUp]
 	public abstract class Command<TParameter> : ICommand<TParameter>
 	{
 		public event EventHandler CanExecuteChanged = delegate {};
@@ -88,11 +87,8 @@ namespace DragonSpark.Runtime
 
 		protected virtual void OnUpdate() => CanExecuteChanged( this, EventArgs.Empty );
 
-		[Default( true )]
-		public bool Enabled { get; set; }
-
 		[BuildUp]
-		public virtual bool CanExecute( TParameter parameter ) => !parameter.IsNull() && Enabled;
+		public virtual bool CanExecute( TParameter parameter ) => !parameter.IsNull();
 
 		[BuildUp]
 		public void Execute( TParameter parameter ) => OnExecute( parameter );

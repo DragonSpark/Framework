@@ -19,17 +19,17 @@ namespace DragonSpark.Testing.Runtime.Values
 			Assert.Null( Ambient.GetCurrent<Class>() );
 
 			var first = new Class();
-			using ( new AmbientContextCommand<Class>().Apply( first ) )
+			using ( new AmbientContextCommand<Class>().ExecuteWith( first ) )
 			{
 				Assert.Same( first, Ambient.GetCurrent<Class>() );
 
 				var second = new Class();
-				using ( new AmbientContextCommand<Class>().Apply( second ) )
+				using ( new AmbientContextCommand<Class>().ExecuteWith( second ) )
 				{
 					Assert.Same( second, Ambient.GetCurrent<Class>() );
 
 					var third = new Class();
-					using ( new AmbientContextCommand<Class>().Apply( third ) )
+					using ( new AmbientContextCommand<Class>().ExecuteWith( third ) )
 					{
 						Assert.Same( third, Ambient.GetCurrent<Class>() );
 
@@ -50,7 +50,7 @@ namespace DragonSpark.Testing.Runtime.Values
 							Assert.NotSame( stack, thread );
 							Assert.Empty( thread );
 							var other = new Class();
-							using ( new AmbientContextCommand<Class>().Apply( other ) )
+							using ( new AmbientContextCommand<Class>().ExecuteWith( other ) )
 							{
 								Assert.Same( other, Ambient.GetCurrent<Class>() );
 								Assert.Single( thread, other );

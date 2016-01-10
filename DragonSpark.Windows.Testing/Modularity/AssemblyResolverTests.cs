@@ -118,16 +118,12 @@ namespace DragonSpark.Windows.Testing.Modularity
 			}
 		}
 
-		protected override void OnDispose()
+		protected override void Dispose( bool disposing )
 		{
-			base.OnDispose();
-
+			base.Dispose( disposing );
 			Clean();
 		}
 
-		static void Clean()
-		{
-			CompilerHelper.CleanUpDirectory( ModulesDirectory1 );
-		}
+		static void Clean() => CompilerHelper.CleanUpDirectory( ModulesDirectory1 );
 	}
 }

@@ -26,7 +26,7 @@ namespace DragonSpark.Setup.Commands
 			Extensions.Each( x => Container.AddExtension( x ) );
 
 			var commands = Instances.Cast<UnityCommand>().Concat( Types ).ToArray();
-			commands.Apply<UnityCommand>( parameter );
+			commands.ExecuteWith<UnityCommand>( parameter );
 		}
 	}
 

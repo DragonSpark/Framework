@@ -33,7 +33,7 @@ namespace DragonSpark.Setup.Registration
 			var parameterType = FactoryReflectionSupport.Instance.GetParameterType( factoryType );
 			var type = parameterType.With( t => typeof(RegisterFactoryCommand<,>).MakeGenericType( t, resultType ) ) ?? typeof(RegisterFactoryCommand<>).MakeGenericType( resultType );
 			var command = activator().Construct<ICommand<Type>>( type, registry );
-			command.Apply( factoryType );
+			command.ExecuteWith( factoryType );
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace DragonSpark.Setup.Registration
 
 		public static IServiceRegistry RegisterFactory<T>( [Required] this IServiceRegistry @this, [Required]IFactory<T> factory )
 		{
-			new RegisterFactoryCommand<T>( @this, type => factory.ToDelegate() ).Apply( factory.GetType() );
+			new RegisterFactoryCommand<T>( @this, type => factory.ToDelegate() ).ExecuteWith( factory.GetType() );
 			return @this;
 		}
 	}

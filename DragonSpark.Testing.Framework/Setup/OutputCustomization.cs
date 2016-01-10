@@ -1,11 +1,11 @@
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Ploeh.AutoFixture;
 using System.Linq;
-using DragonSpark.Aspects;
-using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -13,12 +13,7 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		protected override void Customize( IFixture fixture )
 		{
-			var autoData = new AssociatedAutoData( fixture ).Item;
-			if ( autoData != null )
-			{
-				OnInitializing(	autoData );
-			}
-
+			var autoData = new CurrentAutoDataContext().Item.With( OnInitializing );
 			var items = autoData?.Items ?? new Items<IAutoDataCustomization>( fixture ).Item;
 			items.Ensure( ( IAutoDataCustomization)this );
 		}

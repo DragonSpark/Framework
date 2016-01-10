@@ -21,7 +21,7 @@ namespace DragonSpark.Windows.Testing.Setup
 				parameter.Register( Tuple.Create( number ) );
 				Assert.Null( parameter.Arguments );
 				Assert.Equal( number, parameter.Item<Tuple<int>>().Item1 );
-				Assert.Same( disposable,  parameter.RegisterFor( disposable ) );
+				Assert.Same( disposable,  parameter.AsRegisteredDisposal( disposable ) );
 				Assert.Same( task, parameter.Monitor<Task>( task ) );
 			}
 			Mock.Get( disposable ).Verify( d => d.Dispose() );

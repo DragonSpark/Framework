@@ -10,7 +10,7 @@ namespace DragonSpark.Extensions
 
 		public static T New<T>( this IBuilderContext @this, string name = null )
 		{
-			using ( new AmbientContextCommand<IBuilderContext>().Apply( @this ) )
+			using ( new AmbientContextCommand<IBuilderContext>().ExecuteWith( @this ) )
 			{
 				return @this.NewBuildUp<T>( name );
 			}

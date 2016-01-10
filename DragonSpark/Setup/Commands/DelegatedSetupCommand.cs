@@ -8,7 +8,7 @@ namespace DragonSpark.Setup.Commands
 {
 	public class DelegatedSetupCommand<TCommand, TParameter> : SetupCommand where TCommand : ICommand<TParameter>
 	{
-		protected override void OnExecute( ISetupParameter parameter ) => Command.Apply( Parameter );
+		protected override void OnExecute( ISetupParameter parameter ) => Command.ExecuteWith( Parameter );
 
 		[Required, Activate]
 		public TCommand Command { [return: Required]get; set; }

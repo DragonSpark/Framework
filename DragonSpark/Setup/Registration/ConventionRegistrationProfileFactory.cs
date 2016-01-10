@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DragonSpark.TypeSystem;
+using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -14,7 +15,11 @@ namespace DragonSpark.Setup.Registration
 		readonly Func<Assembly[]> creator;
 		readonly IAttributeProvider provider;
 
-		public ConventionRegistrationProfileFactory( [Required]Func<Assembly[]> creator, [Required]IAttributeProvider provider )
+		[InjectionConstructor]
+		public ConventionRegistrationProfileFactory( [Required]Func<Assembly[]> creator ) : this( AttributeProvider.Instance, creator )
+		{}
+
+		public ConventionRegistrationProfileFactory( [Required]IAttributeProvider provider, [Required]Func<Assembly[]> creator )
 		{
 			this.creator = creator;
 			this.provider = provider;

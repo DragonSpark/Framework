@@ -28,6 +28,6 @@ namespace DragonSpark.Runtime
 
 		public CommandCollection Commands { get; }
 
-		protected override void OnExecute( TParameter parameter ) => Commands.Apply<ICommand>( parameter );
+		protected override void OnExecute( TParameter parameter ) => Commands.ExecuteWith<ICommand>( parameter );
 	}
 }

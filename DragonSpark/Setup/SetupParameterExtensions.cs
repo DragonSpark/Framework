@@ -7,13 +7,13 @@ namespace DragonSpark.Setup
 {
 	public static class SetupParameterExtensions
 	{
-		public static TItem Register<TItem>( this ISetupParameter @this, TItem item )
+		public static TItem AsRegistered<TItem>( this ISetupParameter @this, TItem item )
 		{
 			@this.Register( item );
 			return item;
 		}
 
-		public static TItem RegisterFor<TItem>( this ISetupParameter @this, TItem item ) where TItem : IDisposable
+		public static TItem AsRegisteredDisposal<TItem>( this ISetupParameter @this, TItem item ) where TItem : IDisposable
 		{
 			@this.RegisterForDispose( item );
 			return item;

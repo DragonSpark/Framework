@@ -26,11 +26,9 @@ namespace DragonSpark.Setup
 
 	public class SetupParameter : SetupParameter<object>
 	{
-		public SetupParameter() : this( null )
-		{}
+		public SetupParameter() : this( null ) {}
 
-		public SetupParameter( object arguments ) : base( arguments )
-		{}
+		public SetupParameter( object arguments ) : base( arguments ) {}
 	}
 
 	public class SetupParameter<TArgument> : ISetupParameter<TArgument>
@@ -47,22 +45,13 @@ namespace DragonSpark.Setup
 
 		public TArgument Arguments { get; }
 
-		public void Register( object item )
-		{
-			items.Add( item );
-		}
+		public void Register( object item ) => items.Add( item );
 
-		public void RegisterForDispose( IDisposable item )
-		{
-			disposables.Add( item );
-		}
+		public void RegisterForDispose( IDisposable item ) => disposables.Add( item );
 
 		object ISetupParameter.Arguments => Arguments;
 
-		public void Monitor( Task task )
-		{
-			tasks.Add( task );
-		}
+		public void Monitor( Task task ) => tasks.Add( task );
 
 		public IReadOnlyCollection<object> Items { get; }
 		readonly IList<object> items = new Collection<object>();

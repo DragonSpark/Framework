@@ -4,53 +4,48 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
+using DragonSpark.Setup.Registration;
+using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
-using System.ComponentModel;
 using System.Linq;
 
 namespace DragonSpark.Setup.Commands
 {
-	public class SetupObjectBuilderCommand : SetupCommand
+	public abstract class SetupUnityCommand<TAssemblyProvider> : ConfigureUnityCommand where TAssemblyProvider : IAssemblyProvider
 	{
-		[Extension]
-		public ObjectBuilderExtension Extension { [return: NotNull]get; set; }
-
-		[DefaultValue( true )]
-		public bool SetAsEnabled { get; set; }
-
-		protected override void OnExecute( ISetupParameter parameter ) => Extension.Enable( SetAsEnabled );
-	}
-
-	public class SetupUnityCommand : ConfigureUnityCommand
-	{
-		[Activate]
+		[Activate, ComponentModel.Singleton]
 		public IServiceLocation Location { get; set; }
 
 		[Activate]
 		public IServiceLocator Locator { get; set; }
-		
-		[Activate, Required]
-		public IMessageLogger MessageLogger { [return: Required]get; set; }
+
+		[Required, ComponentModel.Singleton, Activate]
+		public virtual TAssemblyProvider AssemblyProvider { get; set; }
 
 		protected override void OnExecute( ISetupParameter parameter )
 		{
-			MessageLogger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
-			ConfigureContainer( parameter, Container );
+			var logger = parameter.Item<IMessageLogger>();
+			logger.Information( Resources.ConfiguringUnityContainer, Priority.Low );
+
+			Container.With( container =>
+			{
+				container.Registry().RegisterFactory( AssemblyProvider );
+
+				container.Registration().With( support =>
+				{
+					support.Instance( new ServiceLocationMonitor( Location, Locator ) );
+
+					new object[] { AssemblyProvider, logger, Location }.Each( support.Convention );
+				} );
+
+				container.Registration<EnsuredRegistrationSupport>().With( ensured =>
+				{
+					parameter.Append( parameter.Items ).Except( container.ToItem() ).Each( ensured.Convention );
+				} );
+			} );
 
 			base.OnExecute( parameter );
-		}
-
-		protected virtual void ConfigureContainer( ISetupParameter parameter, IUnityContainer container )
-		{
-			container.Registration<EnsuredRegistrationSupport>().With( support =>
-			{
-				support.Instance( new ServiceLocationMonitor( Location, Locator ) );
-
-				var objects = parameter.Append( parameter.Items ).Except( container.ToItem() );
-				objects.Each( support.Convention );
-			} );
 		}
 	}
 }

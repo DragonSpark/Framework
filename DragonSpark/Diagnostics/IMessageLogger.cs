@@ -14,7 +14,10 @@ namespace DragonSpark.Diagnostics
 
 	public static class MessageLoggerExtensions
 	{
-		public static void Information( this IMessageLogger @this, string message, Priority priority = Priority.Normal ) => new LogInformationCommand( @this ).Execute( new MessageParameter( message, priority ) );
+		public static void Information( this IMessageLogger @this, string message, Priority priority = Priority.Normal )
+		{
+			// new LogInformationCommand( @this ).Execute( new MessageParameter( message, priority ) );
+		}
 
 		public static void Warning( this IMessageLogger @this, string message, Priority priority = Priority.High ) => new LogWarningCommand( @this ).Execute( new MessageParameter( message, priority ) );
 

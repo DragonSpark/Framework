@@ -34,7 +34,7 @@ namespace DragonSpark.Modularity
 		protected override void OnExecute( IMonitoredModule parameter )
 		{
 			var commands = activator.ActivateMany<IModuleCommand>( parameter.GetType().Assembly().ExportedTypes ).ToArray();
-			commands.Apply<IModuleCommand>( parameter );
+			commands.ExecuteWith<IModuleCommand>( parameter );
 		}
 	}
 
@@ -73,7 +73,7 @@ namespace DragonSpark.Modularity
 
 		protected virtual void OnLoad()
 		{
-			CommandExtensions.Apply( command, (object)this );
+			CommandExtensions.ExecuteWith( command, (object)this );
 		}
 	}
 }

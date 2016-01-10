@@ -11,7 +11,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using Xunit;
-using SetupParameter = DragonSpark.Testing.Framework.Setup.SetupParameter;
 
 namespace DragonSpark.Windows.Testing.Setup
 {

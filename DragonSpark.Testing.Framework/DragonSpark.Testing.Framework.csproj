@@ -158,11 +158,12 @@
   <ItemGroup>
     <Compile Include="Initialize.cs" />
     <Compile Include="Parameters\AssignedAttribute.cs" />
+    <Compile Include="Setup\AssignAutoDataCommand.cs" />
     <Compile Include="Setup\Execution.cs" />
     <Compile Include="Setup\AutoDataMoqConfiguredAttribute.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\ResourceConfigurationFactory.cs" />
-    <Compile Include="Setup\ApplicationSetup.cs" />
+    <Compile Include="Setup\CurrentAutoDataContext.cs" />
     <Compile Include="Setup\AuthorizedLocationSpecification.cs" />
     <Compile Include="Setup\CanLocateSpecification.cs" />
     <Compile Include="Setup\ConfigureLocationCustomization.cs" />

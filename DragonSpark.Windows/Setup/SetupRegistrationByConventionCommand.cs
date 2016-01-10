@@ -17,7 +17,7 @@ namespace DragonSpark.Windows.Setup
 	public class RegistrationByConventionCommand : CompositeCommand<ConventionRegistrationProfile>
 	{
 		[InjectionConstructor]
-		public RegistrationByConventionCommand( IAttributeProvider provider, IUnityContainer container, IMessageLogger messageLogger ) : this( provider, container, messageLogger, container.Resolve<LifetimeManagerFactory<ContainerControlledLifetimeManager>>() ) { }
+		public RegistrationByConventionCommand( IUnityContainer container, IMessageLogger messageLogger ) : this( AttributeProvider.Instance, container, messageLogger, container.Resolve<LifetimeManagerFactory<ContainerControlledLifetimeManager>>() ) { }
 
 		public RegistrationByConventionCommand( 
 			[Required]IAttributeProvider provider, 
