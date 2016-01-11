@@ -11,10 +11,13 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		public static MetadataCustomizationFactory Instance { get; } = new MetadataCustomizationFactory();
 
-		protected override ICustomization[] CreateItem( MethodBase parameter ) => 
-			new object[] { parameter, parameter.DeclaringType, parameter.DeclaringType.Assembly }
+		protected override ICustomization[] CreateItem( MethodBase parameter )
+		{
+			var customizations = new object[] { parameter, parameter.DeclaringType, parameter.DeclaringType.Assembly }
 				.SelectMany( HostedValueLocator<ICustomization>.Instance.Create )
 				.Prioritize()
 				.Fixed();
+			return customizations;
+		}
 	}
 }

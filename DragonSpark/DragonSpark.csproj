@@ -160,7 +160,7 @@
     <Compile Include="Runtime\FatalApplicationException.cs" />
     <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
-    <Compile Include="Runtime\Specifications\OfTypeSpecification.cs" />
+    <Compile Include="Runtime\Specifications\IsTypeSpecification.cs" />
     <Compile Include="Runtime\Values\AmbientContextCommand.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
     <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
@@ -307,7 +307,7 @@
     <Compile Include="Modularity\ModuleState.cs" />
     <Compile Include="Modularity\ModuleTypeLoaderNotFoundException.cs" />
     <Compile Include="Modularity\ModuleTypeLoadingException.cs" />
-    <Compile Include="Runtime\Specifications\TypeContextAwareSpecification.cs" />
+    <Compile Include="Runtime\Specifications\TypeAssignableSpecification.cs" />
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
@@ -316,8 +316,6 @@
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfileFactory.cs" />
-    <Compile Include="Activation\FactoryModel\FactoryBuiltObjectFactory.cs" />
-    <Compile Include="Activation\FactoryModel\FactoryReflectionSupport.cs" />
     <Compile Include="Setup\Registration\IRegistration.cs" />
     <Compile Include="Setup\Registration\IConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\Commands\InitializeModulesCommand.cs" />
@@ -328,7 +326,6 @@
     <Compile Include="Setup\Registration\IRegistrationTypeContext.cs" />
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Activation\IoC\ISingletonLocator.cs" />
-    <Compile Include="Activation\FactoryModel\ObjectFactoryParameter.cs" />
     <Compile Include="Runtime\Program.cs" />
     <Compile Include="Setup\Registration\RegisterAttribute.cs" />
     <Compile Include="Setup\Registration\RegisterFrameworkExceptionTypesCommand.cs" />

@@ -8,11 +8,26 @@ using Microsoft.Practices.Unity.ObjectBuilder;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using DragonSpark.ComponentModel;
 
 namespace DragonSpark.Activation.IoC
 {
 	public class IoCExtension : UnityContainerExtension, IDisposable
 	{
+		[Activate]
+		public RecordingMessageLogger Logger { get; set; }
+
+		class BuildKeyMonitorStrategy : BuilderStrategy
+		{
+			readonly IList<NamedTypeBuildKey> keys = new List<NamedTypeBuildKey>();
+
+			public IEnumerable<NamedTypeBuildKey> Purge() => keys.Purge();
+
+			public override void PreBuildUp( IBuilderContext context ) => keys.Ensure( context.BuildKey );
+		}
+
 		protected override void Initialize()
 		{
 			Context.RegisteringInstance += ContextOnRegisteringInstance;
@@ -27,12 +42,23 @@ namespace DragonSpark.Activation.IoC
 			Context.Strategies.AddNew<EnumerableResolutionStrategy>( UnityBuildStage.Creation );
 			Context.Strategies.AddNew<BuildPlanStrategy>( UnityBuildStage.Creation );
 
+			var monitor = new BuildKeyMonitorStrategy();
+			Context.BuildPlanStrategies.Add( monitor, UnityBuildStage.Setup );
+
 			Container.Registration<EnsuredRegistrationSupport>().With( support =>
 			{
+				support.Instance<IMessageLogger>( Logger );
 				support.Instance<IResolutionSupport>( new ResolutionSupport( Context ) );
 				support.Instance( CreateActivator );
 				support.Instance( CreateRegistry );
 			} );
+
+			monitor.Purge().Each( Context.Policies.Clear<IBuildPlanPolicy> );
+
+			Context.BuildPlanStrategies.Clear();
+			Context.BuildPlanStrategies.AddNew<DynamicMethodConstructorStrategy>( UnityBuildStage.Creation );
+			Context.BuildPlanStrategies.AddNew<DynamicMethodPropertySetterStrategy>( UnityBuildStage.Initialization );
+			Context.BuildPlanStrategies.AddNew<DynamicMethodCallStrategy>( UnityBuildStage.Initialization );
 
 			var policy = Context.Policies.Get<IBuildPlanCreatorPolicy>( null );
 			var builder = new Builder<TryContext>( Context.Strategies, policy.CreatePlan );
@@ -74,7 +100,17 @@ namespace DragonSpark.Activation.IoC
 		{
 			var type = args.Instance.GetType();
 
-			if ( args.RegisteredType != type && !Container.IsRegistered( type, args.Name ) )
+			var register = args.Instance.AsTo<IMessageLogger, bool>( logger =>
+			{
+				var result = logger != Logger;
+				if ( result )
+				{
+					Logger.Purge().Each( logger.Log );
+				}
+				return result;
+			}, () => !Container.IsRegistered( type, args.Name ) );
+
+			if ( args.RegisteredType != type && register )
 			{
 				Container.Registration().Instance( type, args.Instance, args.Name, (LifetimeManager)Container.Resolve( args.LifetimeManager.GetType() ) );
 			}
@@ -83,8 +119,6 @@ namespace DragonSpark.Activation.IoC
 		IServiceRegistry CreateRegistry() => new ServiceRegistry( Container );
 
 		IActivator CreateActivator() => new CompositeActivator( Container.Resolve<Activator>(), SystemActivator.Instance );
-
-		public IUnityContainer Register( IServiceLocator locator ) => Container.Registration().Instance( locator );
 
 		void IDisposable.Dispose() => Remove();
 	}

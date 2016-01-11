@@ -10,7 +10,7 @@ namespace DragonSpark.Extensions
 	{
 		public static IServiceRegistry Registry( this IUnityContainer @this ) => @this.Resolve<IServiceRegistry>();
 
-		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>();
+		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>( () => @this.Extend().Logger );
 
 		public static T Resolve<T>( this IUnityContainer @this, Func<T> @default ) => @this.IsRegistered<T>() ? @this.Resolve<T>() : @default();
 

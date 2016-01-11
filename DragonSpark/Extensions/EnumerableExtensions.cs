@@ -16,7 +16,8 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<T> Prioritize<T>( this IEnumerable<T> @this, Func<T, IAllowsPriority> determine ) => @this.Prioritize( x => determine( x ).Priority );
 
-		public static IEnumerable<T> Prioritize<T>( [Required]this IEnumerable<T> items, Func<T, Priority> determine = null ) => items.OrderByDescending( determine ?? ( x => Attributes.Get( items ).From<PriorityAttribute, Priority>( y => y.Priority, () => Priority.Normal ) ) );
+		public static IEnumerable<T> Prioritize<T>( [Required]this IEnumerable<T> items, Func<T, Priority> determine = null ) => 
+			items.OrderByDescending( determine ?? ( x => x.From<PriorityAttribute, Priority>( y => y.Priority, () => Priority.Normal ) ) );
 
 		public static U WithFirst<T, U>( this IEnumerable<T> @this, Func<T, U> with, Func<U> defaultFunction = null ) => WithFirst( @this, t => true, with, defaultFunction );
 

@@ -171,14 +171,12 @@
     <Compile Include="Markup\DependencyPropertyMarkupTargetValueSetterBuilder.cs" />
     <Compile Include="Markup\DirectoryInfoExtension.cs" />
     <Compile Include="Markup\EnumerableExtension.cs" />
-    <Compile Include="Markup\FactoryExtension.cs" />
     <Compile Include="Markup\FieldInfoMarkupTargetValueSetterBuilder.cs" />
     <Compile Include="Markup\GenericTypeExtension.cs" />
     <Compile Include="Markup\IIncrementer.cs" />
     <Compile Include="Markup\ImageSourceOperations.cs" />
     <Compile Include="Markup\IMarkupTargetValueSetterBuilder.cs" />
     <Compile Include="Markup\Incrementer.cs" />
-    <Compile Include="Markup\InjectionFactoryExtension.cs" />
     <Compile Include="Markup\MarkupExtensionMonitor.cs" />
     <Compile Include="Markup\MarkupTargetValueSetterBase.cs" />
     <Compile Include="Markup\MarkupTargetValueSetterFactory.cs" />

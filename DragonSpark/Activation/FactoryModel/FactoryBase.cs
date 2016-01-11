@@ -4,6 +4,7 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -34,42 +35,52 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
-	public class FactoryWithSpecification<T> : FactoryBase<object, T>
+	public class FactoryWithSpecification<T, U> : FactoryBase<object, U>
 	{
 		readonly ISpecification specification;
-		readonly Func<object, T> inner;
+		readonly Func<T, U> inner;
 
-		public FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<object, T> inner  )
+		public FactoryWithSpecification( Func<T, U> inner ) : this( AlwaysSpecification.Instance, inner ) {}
+
+		public FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<T, U> inner )
 		{
 			this.specification = specification;
 			this.inner = inner;
 		}
 
-		protected override T CreateItem( object parameter ) => specification.IsSatisfiedBy( parameter ) ? inner( parameter ) : default(T);
+		protected override U CreateItem( object parameter ) => specification.IsSatisfiedBy( parameter ) ? inner( (T)parameter ) : default(U);
 	}
 
-	public class FirstFactory<T, U> : FactoryBase<T, U>
+	public class FirstFromParameterFactory<T> : FactoryBase<object, T>
 	{
-		readonly IEnumerable<IFactory<T, U>> inner;
+		readonly IEnumerable<Func<object, T>> inner;
 
-		public FirstFactory( [Required]params IFactory<T, U>[] inner )
+		public FirstFromParameterFactory( params IFactory<object, T>[] factories ) : this( factories.Select( factory => factory.ToDelegate() ).ToArray() ) {}
+
+		public FirstFromParameterFactory( [Required]params Func<object, T>[] inner )
 		{
 			this.inner = inner;
 		}
 
-		protected override U CreateItem( T parameter ) => inner.FirstWhere( factory => factory.Create( parameter ) );
+		protected override T CreateItem( object parameter )
+		{
+			var result = inner.FirstWhere( factory => factory( parameter ) );
+			return result;
+		}
 	}
 
 	public class FirstFactory<T> : FactoryBase<T>
 	{
-		readonly IEnumerable<IFactory<T>> inner;
+		readonly IEnumerable<Func<T>> inner;
 
-		public FirstFactory( [Required]params IFactory<T>[] inner )
+		public FirstFactory( params IFactory<T>[] factories ) : this( factories.Select( factory => factory.ToDelegate() ).ToArray() ) { }
+
+		public FirstFactory( [Required]params Func<T>[] inner )
 		{
 			this.inner = inner;
 		}
 
-		protected override T CreateItem() => inner.FirstWhere( factory => factory.Create() );
+		protected override T CreateItem() => inner.FirstWhere( factory => factory() );
 	}
 
 	public class AggregateFactory<T> : FactoryBase<T>

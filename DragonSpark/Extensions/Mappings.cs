@@ -26,7 +26,7 @@ namespace DragonSpark.Extensions
 		public static TResult MapInto<TResult>( this object source, TResult existing = null, Action<IMappingExpression> configure = null ) where TResult : class 
 		{
 			var context = new ObjectMappingContext<TResult>( source, existing, configure );
-			var factory = Services.Location.Locate<ObjectMappingFactory<TResult>>();
+			var factory = Activator.Activate<ObjectMappingFactory<TResult>>();
 			var result = factory.Create( context );
 			return result;
 		}

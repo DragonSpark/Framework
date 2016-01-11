@@ -1,5 +1,6 @@
 using DragonSpark.Runtime.Values;
 using System;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Activation.FactoryModel
 {
@@ -25,15 +26,28 @@ namespace DragonSpark.Activation.FactoryModel
 	{
 		class Delegate<T, U> : ConnectedValue<Func<T, U>>
 		{
-			public Delegate( IFactory<T, U> instance ) : base( instance, typeof(Delegate<T, U>), () => instance.Create )
+			public Delegate( IFactoryWithParameter instance ) : base( instance, typeof(Delegate<T, U>), () => new Func<object, object>( instance.Create ).Convert<T,U>() )
 			{}
 		}
 
 		class Delegate<T> : ConnectedValue<Func<T>>
 		{
-			public Delegate( IFactory<T> instance ) : base( instance, typeof( Delegate<T> ), () => instance.Create )
-			{ }
+			public Delegate( IFactory instance ) : base( instance, typeof(Delegate<T>), () => new Func<object>( instance.Create ).Convert<T>() )
+			{}
 		}
+
+		public static Func<T> Convert<T>( this Func<object> @this )
+		{
+			var result = new Func<T>( () => (T)@this() );
+			return result;
+		}
+
+		public static Func<T, U> Convert<T, U>( this Func<object, object> @this )
+		{
+			var result = new Func<T, U>( arg => (U)@this( arg ) );
+			return result;
+		}
+
 
 		public static Func<T> ToDelegate<T>( this IFactory<T> @this ) => new Delegate<T>( @this ).Item;
 

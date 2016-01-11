@@ -1,35 +1,29 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
-using DragonSpark.Aspects;
-using Activator = DragonSpark.Activation.Activator;
+using System.Linq;
+using DragonSpark.Activation.IoC;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class FactoryRegistration : IRegistration
 	{
-		readonly Func<IActivator> activator;
 		readonly Type factoryType;
 
-		public FactoryRegistration( Type factoryType ) : this( Activator.GetCurrent, factoryType ) {}
-
-		protected FactoryRegistration( [Required]Func<IActivator> activator, [Required, OfFactoryType]Type factoryType )
+		public FactoryRegistration( [Required, OfFactoryType]Type factoryType )
 		{
-			this.activator = activator;
 			this.factoryType = factoryType;
 		}
 
 		public void Register( IServiceRegistry registry )
 		{
-			var resultType = FactoryReflectionSupport.GetResultType( factoryType );
-			var parameterType = FactoryReflectionSupport.Instance.GetParameterType( factoryType );
-			var type = parameterType.With( t => typeof(RegisterFactoryCommand<,>).MakeGenericType( t, resultType ) ) ?? typeof(RegisterFactoryCommand<>).MakeGenericType( resultType );
-			var command = activator().Construct<ICommand<Type>>( type, registry );
-			command.ExecuteWith( factoryType );
+			new ICommand<Type>[] { new RegisterFactoryWithParameterCommand( registry ), new RegisterFactoryCommand( registry ) }
+				.FirstOrDefault( command => command.CanExecute( factoryType ) )
+				.With( command => command.Run( factoryType ) );
 		}
 	}
 
@@ -41,70 +35,156 @@ namespace DragonSpark.Setup.Registration
 
 		public static void Register<TService>( this IServiceRegistry @this, Func<TService> factory ) => @this.RegisterFactory( typeof(TService), () => factory() );
 
-		public static IServiceRegistry RegisterFactory<T>( [Required] this IServiceRegistry @this, [Required]IFactory<T> factory )
+		public static IServiceRegistry RegisterFactory( [Required] this IServiceRegistry @this, [Required]IFactory factory )
 		{
-			new RegisterFactoryCommand<T>( @this, type => factory.ToDelegate() ).ExecuteWith( factory.GetType() );
+			new RegisterFactoryCommand( @this, new FactoryDelegateFactory( factory ).Create )
+				.ExecuteWith( factory.GetType() );
+			return @this;
+		}
+
+		public static IServiceRegistry RegisterFactory( [Required] this IServiceRegistry @this, [Required]IFactoryWithParameter factory )
+		{
+			new RegisterFactoryWithParameterCommand( @this, new FactoryWithParameterContainedDelegateFactory( type => factory.Create ).Create )
+				.ExecuteWith( factory.GetType() );
 			return @this;
 		}
 	}
 
-	public class FactoryDelegateFactory<T> : FactoryBase<Type, Func<T>>
+	public class FactoryDelegateFactory : FactoryBase<Type, Func<object>>
 	{
-		readonly Func<Type, Func<T>> factory;
+		readonly Func<Type, IFactory> createFactory;
 
-		public static FactoryDelegateFactory<T> Instance { get; } = new FactoryDelegateFactory<T>();
+		public static FactoryDelegateFactory Instance { get; } = new FactoryDelegateFactory();
 
-		public FactoryDelegateFactory() : this( t => ActivateFactory<IFactory<T>>.Instance.CreateUsing( t ).Create ) {}
+		public FactoryDelegateFactory() : this( ActivateFactory<IFactory>.Instance.CreateUsing ) {}
 
-		public FactoryDelegateFactory( [Required]Func<Type, Func<T>> factory )
+		public FactoryDelegateFactory( IFactory factory ) : this( t => factory ) {}
+
+		public FactoryDelegateFactory( [Required]Func<Type, IFactory> createFactory )
 		{
-			this.factory = factory;
+			this.createFactory = createFactory;
 		}
 
-		protected override Func<T> CreateItem( Type parameter ) => new Lazy<Func<T>>( () => factory( parameter ) ).Value;
+		protected override Func<object> CreateItem( Type parameter ) => () =>
+		{
+			var result = createFactory( parameter )?.Create();
+			return result;
+		};
 	}
 
 	public class FactoryWithParameterDelegateFactory : FactoryBase<Type, Func<object, object>>
 	{
 		public static FactoryWithParameterDelegateFactory Instance { get; } = new FactoryWithParameterDelegateFactory();
 
-		protected override Func<object, object> CreateItem( Type parameter ) => new Lazy<Func<object, object>>( () => ActivateFactory<IFactoryWithParameter>.Instance.CreateUsing( parameter ).Create ).Value;
+		readonly Func<Type, IFactoryWithParameter> createFactory;
+
+		public FactoryWithParameterDelegateFactory() : this( ActivateFactory<IFactoryWithParameter>.Instance.CreateUsing ) {}
+
+		public FactoryWithParameterDelegateFactory( [Required]Func<Type, IFactoryWithParameter> createFactory )
+		{
+			this.createFactory = createFactory;
+		}
+
+		protected override Func<object, object> CreateItem( Type parameter ) => o =>
+		{
+			var result = createFactory( parameter )?.Create( o );
+			return result;
+		};
+	}
+
+	public class FactoryWithParameterContainedDelegateFactory : FactoryBase<Type, Func<object>>
+	{
+		public static FactoryWithParameterContainedDelegateFactory Instance { get; } = new FactoryWithParameterContainedDelegateFactory();
+
+		readonly Func<Type, Func<object, object>> factory;
+		readonly Func<Type, object> createParameter;
+
+		public FactoryWithParameterContainedDelegateFactory() : this( FactoryWithParameterDelegateFactory.Instance.Create ) {}
+
+		public FactoryWithParameterContainedDelegateFactory( [Required]Func<Type, Func<object, object>> factory ) : this( factory, ActivateFactory<object>.Instance.CreateUsing )
+		{}
+
+		public FactoryWithParameterContainedDelegateFactory( [Required]Func<Type, Func<object, object>> factory, [Required]Func<Type, object> createParameter )
+		{
+			this.factory = factory;
+			this.createParameter = createParameter;
+		}
+
+		protected override Func<object> CreateItem( Type parameter ) => () =>
+		{
+			var item = createParameter( Factory.GetParameterType( parameter ) );
+			var @delegate = factory( parameter );
+			var result = @delegate( item );
+			return result;
+		};
+	}
+
+	public class FuncFactory<T, U> : FactoryBase<Func<object, object>, Func<T, U>>
+	{
+		public static FuncFactory<T, U> Instance { get; } = new FuncFactory<T, U>();
+
+		public FuncFactory() : base( new FactoryParameterCoercer<Func<object, object>>() ) { }
+
+		protected override Func<T, U> CreateItem( Func<object, object> parameter ) => t => (U)parameter( t );
+	}
+
+	public class FuncFactory<T> : FactoryBase<Func<object>, Func<T>>
+	{
+		public static FuncFactory<T> Instance { get; } = new FuncFactory<T>();
+
+		public FuncFactory() : base( new FactoryParameterCoercer<Func<object>>() ) {}
+
+		protected override Func<T> CreateItem( Func<object> parameter ) => () => (T)parameter();
 	}
 
 	public abstract class RegisterFactoryCommandBase<TFactory> : Command<Type>
 	{
 		readonly IServiceRegistry registry;
-		readonly Func<Type, Delegate> factory;
+		readonly Func<Type, Func<object>> create;
 
-		protected RegisterFactoryCommandBase( [Required]IServiceRegistry registry, [Required]Func<Type, Delegate> factory )
+		protected RegisterFactoryCommandBase( [Required]IServiceRegistry registry, [Required]Func<Type, Func<object>> create )
 		{
 			this.registry = registry;
-			this.factory = factory;
+			this.create = create;
 		}
 
-		public override bool CanExecute( Type parameter ) => base.CanExecute( parameter ) && parameter.Adapt().IsGenericOf<TFactory>();
+		public override bool CanExecute( Type parameter ) => base.CanExecute( parameter ) && typeof(TFactory).Adapt().IsAssignableFrom( parameter );
 
 		protected override void OnExecute( Type parameter )
 		{
-			var itemType = FactoryReflectionSupport.GetResultType( parameter );
+			var itemType = Factory.GetResultType( parameter );
+			var func = create( parameter );
+			registry.RegisterFactory( itemType, func );
 
-			var func = factory( parameter );
-			registry.RegisterFactory( itemType, () => func.DynamicInvoke() );
-			registry.Register( func.GetType(), func );
+			SingletonLocator.Instance.Locate( MakeGenericType( parameter, itemType ) ).AsValid<IFactoryWithParameter>( factory =>
+			{
+				var typed = Create( factory, parameter, func );
+				registry.Register( typed.GetType(), typed );
+			} );
 		}
+
+		protected virtual object Create( IFactoryWithParameter factory, Type type, Func<object> func ) => factory.Create( func );
+
+		protected abstract Type MakeGenericType( Type parameter, Type itemType );
 	}
 
-	public class RegisterFactoryCommand<T> : RegisterFactoryCommandBase<IFactory<object>>
+	public class RegisterFactoryCommand : RegisterFactoryCommandBase<IFactory>
 	{
-		[InjectionConstructor]
-		public RegisterFactoryCommand( IServiceRegistry registry ) : this( registry, FactoryDelegateFactory<T>.Instance.Create ) {}
+		public RegisterFactoryCommand( IServiceRegistry registry ) : base( registry, FactoryDelegateFactory.Instance.Create ) {}
 
-		public RegisterFactoryCommand( IServiceRegistry registry, Func<Type, Delegate> factory ) : base( registry, factory )
-		{}
+		public RegisterFactoryCommand( IServiceRegistry registry, Func<Type, Func<object>> create ) : base( registry, create ) {}
+
+		protected override Type MakeGenericType( Type parameter, Type itemType ) => typeof(FuncFactory<>).MakeGenericType( itemType );
 	}
 
-	public class RegisterFactoryCommand<T,U> : RegisterFactoryCommandBase<IFactory<object, object>>
+	public class RegisterFactoryWithParameterCommand : RegisterFactoryCommandBase<IFactoryWithParameter>
 	{
-		public RegisterFactoryCommand( IServiceRegistry registry ) : base( registry, FactoryWithParameterDelegateFactory.Instance.Create ) { }
+		public RegisterFactoryWithParameterCommand( IServiceRegistry registry ) : base( registry, FactoryWithParameterContainedDelegateFactory.Instance.Create ) {}
+
+		public RegisterFactoryWithParameterCommand( IServiceRegistry registry, Func<Type, Func<object>> create ) : base( registry, create ) {}
+
+		protected override Type MakeGenericType( Type parameter, Type itemType ) => typeof(FuncFactory<,>).MakeGenericType( Factory.GetParameterType( parameter ), itemType );
+
+		protected override object Create( IFactoryWithParameter factory, Type type, Func<object> func ) => FactoryWithParameterDelegateFactory.Instance.Create( type );
 	}
 }

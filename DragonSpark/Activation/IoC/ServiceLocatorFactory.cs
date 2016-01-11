@@ -1,6 +1,7 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 
@@ -21,8 +22,11 @@ namespace DragonSpark.Activation.IoC
 		{
 			locator.Container.With( container =>
 			{
-				container.RegisterInstance( logger );
-				container.Extend().Register( locator ).Extension<ObjectBuilderExtension>();
+				container
+					.Extend().Container
+					.RegisterInstance( logger )
+					.RegisterInstance<IServiceLocator>( locator )
+					.Extension<ObjectBuilderExtension>();
 			} );
 		} );
 	}

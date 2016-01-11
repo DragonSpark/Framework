@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	[Disposable]
+	[Disposable( ThrowObjectDisposedException = true )]
 	public class ServiceLocator : ServiceLocatorImplBase
 	{
 		public ServiceLocator() : this( new UnityContainer() ) {}

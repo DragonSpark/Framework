@@ -8,8 +8,7 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using PostSharp;
-using PostSharp.Extensibility;
+using DragonSpark.Activation;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.TypeSystem
@@ -30,14 +29,14 @@ namespace DragonSpark.TypeSystem
 
 	public static class Attributes
 	{
-		sealed class Default : AssociatedValue<object, IAttributeProvider>
+		sealed class Default : AssociatedValue<IAttributeProvider>
 		{
-			public Default( object instance ) : base( instance, () => AttributeProviderFactory.Instance.Create( instance ) ) {}
+			public Default( object instance ) : base( instance, () => new AttributeProviderFactory( false ).Create( instance ) ) {}
 		}
 
-		sealed class WithRelated : AssociatedValue<object, IAttributeProvider>
+		sealed class WithRelated : AssociatedValue<IAttributeProvider>
 		{
-			public WithRelated( object instance ) : base( instance, () => AttributeProviderFactory.WithRelated.Create( instance ) ) { }
+			public WithRelated( object instance ) : base( instance, () => new AttributeProviderFactory( true ).Create( instance ) ) {}
 		}
 		
 		public static IAttributeProvider Get( object target ) => new Default( target ).Item;
@@ -47,18 +46,37 @@ namespace DragonSpark.TypeSystem
 		public static IAttributeProvider GetWithRelated( object target ) => new WithRelated( target ).Item;
 	}
 
-	public class AttributeProviderFactory : FirstFactory<object, IAttributeProvider>
+	public class AttributeProviderFactory : FirstFromParameterFactory<IAttributeProvider>
 	{
-		public static AttributeProviderFactory Instance { get; } = new AttributeProviderFactory( false );
+		public AttributeProviderFactory( bool includeRelated ) : base( IsAssemblyFactory.Instance.Create, new Providerfactory( includeRelated ).Create ) {}
 
-		public static AttributeProviderFactory WithRelated { get; } = new AttributeProviderFactory( true );
-
-		public AttributeProviderFactory( bool includeRelated ) : base( new IFactory<object, IAttributeProvider>[]
+		class Providerfactory : FactoryBase<object, IAttributeProvider>
 		{
-			new FactoryWithSpecification<IAttributeProvider>( new OfTypeSpecification<Assembly>(), o => new AssemblyAttributeProvider( (Assembly)o ) ),
-			new FactoryWithSpecification<IAttributeProvider>( AlwaysSpecification.Instance, o => Activator.Activate<MemberInfoAttributeProviderFactory>().Create( new Tuple<MemberInfo, bool>( o as MemberInfo ?? o.GetType().GetTypeInfo(), includeRelated ) ) )
-		} )
-		{}
+			readonly MemberInfoAttributeProviderFactory inner;
+			readonly bool includeRelated;
+
+			public Providerfactory( bool includeRelated ) : this( Services.Locate<MemberInfoAttributeProviderFactory>(), includeRelated ) {}
+
+			Providerfactory( MemberInfoAttributeProviderFactory inner, bool includeRelated )
+			{
+				this.inner = inner;
+				this.includeRelated = includeRelated;
+			}
+
+			protected override IAttributeProvider CreateItem( object parameter )
+			{
+				var item = new Tuple<MemberInfo, bool>( parameter as MemberInfo ?? parameter.GetType().GetTypeInfo(), includeRelated );
+				var result = inner.Create( item );
+				return result;
+			}
+		}
+
+		class IsAssemblyFactory : FactoryWithSpecification<Assembly, IAttributeProvider>
+		{
+			public static IsAssemblyFactory Instance { get; } = new IsAssemblyFactory();
+
+			public IsAssemblyFactory() : base( IsTypeSpecification<Assembly>.Instance, o => new AssemblyAttributeProvider( o ) ) {}
+		}
 	}
 
 	public interface IAttributeProvider

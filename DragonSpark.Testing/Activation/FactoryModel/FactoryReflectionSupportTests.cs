@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Activation.FactoryModel
 		[Fact]
 		public void GetResultType()
 		{
-			var type = FactoryReflectionSupport.Instance.GetFactoryType( typeof(YetAnotherClass) );
+			var type = FactoryTypeLocator.Instance.Create( typeof(YetAnotherClass) );
 			Assert.Equal( typeof(FactoryOfYAC), type );
 		} 
 	}

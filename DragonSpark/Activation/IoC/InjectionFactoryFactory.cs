@@ -9,12 +9,10 @@ namespace DragonSpark.Activation.IoC
 	public class InjectionFactoryFactory : InjectionMemberFactory<InjectionFactory>
 	{
 		readonly Type factoryType;
-		readonly object context;
 
-		public InjectionFactoryFactory( Type factoryType, object context )
+		public InjectionFactoryFactory( Type factoryType )
 		{
 			this.factoryType = factoryType;
-			this.context = context;
 		}
 
 		protected override InjectionFactory CreateItem( InjectionMemberParameter parameter )
@@ -23,7 +21,7 @@ namespace DragonSpark.Activation.IoC
 
 			var result = new InjectionFactory( ( unityContainer, type, buildName ) =>
 			{
-				var item = Factory.From( factoryType, context ?? type ) ?? previous.With( x => unityContainer.Resolve( x ) );
+				var item = Factory.From( factoryType ) ?? previous.With( x => unityContainer.Resolve( x ) );
 				return item;
 			} );
 			return result;

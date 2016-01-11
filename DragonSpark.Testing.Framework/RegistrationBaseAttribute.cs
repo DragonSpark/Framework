@@ -1,5 +1,5 @@
 using DragonSpark.Activation;
-using DragonSpark.Aspects;
+using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using DragonSpark.Setup.Registration;
 using DragonSpark.Testing.Framework.Setup.Location;
@@ -7,14 +7,13 @@ using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture;
 using PostSharp.Patterns.Contracts;
 using System;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Testing.Framework
 {
 	[AttributeUsage( AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true )]
 	public abstract class RegistrationBaseAttribute : HostingAttribute
 	{
-		protected RegistrationBaseAttribute( Func<Type, ICustomization> factory ) : base( x => x.AsTo( factory ) ) {}
+		protected RegistrationBaseAttribute( Func<object, ICustomization> factory ) : base( x => x.AsTo( factory ) ) {}
 	}
 
 	public class RegistrationCustomization : ICustomization

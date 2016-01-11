@@ -2,7 +2,6 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using DragonSpark.Runtime.Specifications;
-using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
@@ -10,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	[Register.Type]
+	//[Register.Type]
 	public class RegistrationSupport
 	{
 		readonly IUnityContainer container;
@@ -20,7 +19,7 @@ namespace DragonSpark.Activation.IoC
 
 		public RegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies ) : this( container, applicationAssemblies, AlwaysSpecification.Instance ) {}
 
-		protected RegistrationSupport( [Required]IUnityContainer container, [Required]Assembly[] applicationAssemblies, [Required]ISpecification specification ) : this( container, container.Logger(), applicationAssemblies, specification ) {}
+		protected RegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies, ISpecification specification ) : this( container, container.Logger(), applicationAssemblies, specification ) {}
 
 		protected RegistrationSupport( [Required]IUnityContainer container, [Required]IMessageLogger logger, [Required]Assembly[] applicationAssemblies, [Required]ISpecification specification )
 		{

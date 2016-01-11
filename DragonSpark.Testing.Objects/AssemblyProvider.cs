@@ -20,6 +20,6 @@ namespace DragonSpark.Testing.Objects
 			this.domain = domain;
 		}
 
-		protected override Assembly[] CreateItem() => domain().Append( new[] { typeof( AssemblySourceBase ), typeof( Class ), typeof( Tests ), typeof( BindingOptions ) }.Select( type => type.Assembly ) ).Distinct().ToArray();
+		protected override Assembly[] CreateItem() => domain().Append( new[] { typeof(AssemblySourceBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).Distinct().ToArray();
 	}
 }

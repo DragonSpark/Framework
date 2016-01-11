@@ -1,4 +1,5 @@
-﻿using DragonSpark.Extensions;
+﻿using System.Collections.Generic;
+using DragonSpark.Extensions;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions

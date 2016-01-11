@@ -19,6 +19,8 @@ namespace DragonSpark.Runtime.Values
 	{
 		readonly Func<IWritableValue<T>> deferred;
 
+
+
 		public DeferredValue( [Required]Func<IWritableValue<T>> deferred )
 		{
 			this.deferred = deferred;

@@ -1,13 +1,11 @@
-using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using Nito.ConnectedProperties;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using PostSharp.Patterns.Collections;
-using PostSharp.Patterns.Threading;
 
 namespace DragonSpark.Runtime.Values
 {
@@ -38,8 +36,8 @@ namespace DragonSpark.Runtime.Values
 		public void Dispose() => local.Dispose();
 	}
 
-
-	public abstract class ConnectedValue<T> : WritableValue<T>, IDisposable
+	[Disposable( ThrowObjectDisposedException = true )]
+	public abstract class ConnectedValue<T> : WritableValue<T>
 	{
 		readonly Func<T> create;
 
@@ -59,17 +57,10 @@ namespace DragonSpark.Runtime.Values
 
 		public override T Item => Property.GetOrCreate( create );
 
+		[Reference]
 		public ConnectibleProperty<T> Property { get; }
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		void Dispose( bool disposing ) => disposing.IsTrue( OnDispose );
-
-		protected virtual void OnDispose()
+		protected virtual void Dispose( bool disposing )
 		{
 			Item.TryDispose();
 			Property.TryDisconnect();

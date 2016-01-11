@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		public void Simple()
 		{
 			var container = new UnityContainer().Extend().Container;
-			var sut = new InjectionFactoryFactory( typeof(SimpleFactory), null );
+			var sut = new InjectionFactoryFactory( typeof(SimpleFactory) );
 			var create = sut.Create( new InjectionMemberParameter( container, typeof(string) ) );
 			container.RegisterType( typeof(string), create );
 			Assert.Equal( HelloWorld, container.Resolve<string>() );
@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		public void Create()
 		{
 			var container = new UnityContainer().Extend().Container;
-			var sut = new InjectionFactoryFactory( typeof(Factory), null );
+			var sut = new InjectionFactoryFactory( typeof(Factory) );
 			container.RegisterType<IItem, Item>( new ContainerControlledLifetimeManager() );
 			var expected = container.Resolve<IItem>();
 			var create = sut.Create( new InjectionMemberParameter( container, typeof(IItem) ) );
@@ -34,20 +34,14 @@ namespace DragonSpark.Testing.Activation.IoC
 
 		class SimpleFactory : FactoryBase<string>
 		{
-			protected override string CreateItem()
-			{
-				return HelloWorld;
-			}
+			protected override string CreateItem() => HelloWorld;
 		}
 
 		class Factory : FactoryBase<IItem>
 		{
 			// public static IItem Result { get; } = new Target();
 
-			protected override IItem CreateItem()
-			{
-				return null;
-			}
+			protected override IItem CreateItem() => null;
 		}
 
 		interface IItem

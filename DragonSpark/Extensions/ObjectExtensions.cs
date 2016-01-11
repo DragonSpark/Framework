@@ -71,6 +71,8 @@ namespace DragonSpark.Extensions
 			return item.With( function, defaultFunction );
 		}
 
+		public static T OrDefault<T>( this T @this, [Required]Func<T> defaultFunction ) => @this.With( Default<T>.Self, defaultFunction );
+
 		public static TResult With<TItem, TResult>( this TItem target, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
 		{
 			var getDefault = defaultFunction ?? DefaultFactory<TResult>.Instance.Create;

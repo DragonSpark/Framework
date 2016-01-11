@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Activation.IoC
 {
 	public class RegistrationSupportTests
 	{
-		[Theory, AutoData]
+		[Theory, Framework.Setup.AutoData]
 		public void Mapping( [Frozen( Matching.ImplementedInterfaces )]UnityContainer sut, RegistrationSupport support )
 		{
 			

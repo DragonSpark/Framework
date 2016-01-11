@@ -9,35 +9,20 @@ namespace DragonSpark.Testing.Framework.Setup
 {
 	public class AutoDataRegistrationAttribute : AutoDataAttribute
 	{
-		public AutoDataRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create )
-		{ }
+		public AutoDataRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create ) {}
 	}
 
 	public class AutoDataMoqAttribute : AutoDataAttribute
 	{
-		public AutoDataMoqAttribute() : base( FixtureFactory<AutoMoqCustomization>.Instance.Create )
-		{}
+		public AutoDataMoqAttribute() : base( FixtureFactory<AutoMoqCustomization>.Instance.Create ) {}
 	}
 
-	public class SetupFixtureFactory<T> : FixtureFactory<SetupCustomization<T>> where T : class, ISetup
-	{}
+	public class SetupFixtureFactory<T> : FixtureFactory<SetupCustomization<T>> where T : class, ISetup {}
 
 	public class FixtureFactory<TWith> : FactoryBase<IFixture> where TWith : ICustomization, new()
 	{
 		public static FixtureFactory<TWith> Instance { get; } = new FixtureFactory<TWith>();
 
-		protected override IFixture CreateItem()
-		{
-			try
-			{
-				return new Fixture( DefaultEngineParts.Instance ).Customize( new TWith() );
-			}
-			catch ( Exception e )
-			{
-				File.WriteAllText( @"C:\Temp\Error.txt", e.ToString() );
-				throw;
-			}
-
-		}
+		protected override IFixture CreateItem() => new Fixture( DefaultEngineParts.Instance ).Customize( new TWith() );
 	}
 }

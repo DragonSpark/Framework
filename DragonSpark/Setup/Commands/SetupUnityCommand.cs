@@ -8,10 +8,11 @@ using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Setup.Commands
 {
-	public abstract class SetupUnityCommand<TAssemblyProvider> : ConfigureUnityCommand where TAssemblyProvider : IAssemblyProvider
+	public abstract class SetupUnityCommand<TAssemblyProvider> : ConfigureUnityCommand where TAssemblyProvider : IAssemblyProvider, IFactory
 	{
 		[Activate, ComponentModel.Singleton]
 		public IServiceLocation Location { get; set; }

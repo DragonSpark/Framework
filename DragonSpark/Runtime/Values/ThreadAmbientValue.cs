@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Runtime.Values
@@ -12,18 +13,23 @@ namespace DragonSpark.Runtime.Values
 		public static object GetCurrent() => new ThreadAmbientContext().Item;
 	}
 
-	public abstract class ThreadValueBase<T> : DecoratedValue<T>
+	public abstract class DecoratedAssociatedValue<T> : DecoratedValue<T>
 	{
-		readonly ConnectedValue<ThreadLocalValue<T>> inner;
+		readonly ConnectedValue<IWritableValue<T>> inner;
 
-		protected ThreadValueBase( object instance, Func<T> create = null ) : this( new AssociatedValue<ThreadLocalValue<T>>( instance, () => new ThreadLocalValue<T>( create ) ) ) {}
+		protected DecoratedAssociatedValue( object instance, Func<IWritableValue<T>> create = null ) : this( new AssociatedValue<IWritableValue<T>>( instance, create ) ) { }
 
-		protected ThreadValueBase( [Required]ConnectedValue<ThreadLocalValue<T>> inner ) : base( inner.Item )
+		protected DecoratedAssociatedValue( [Required]ConnectedValue<IWritableValue<T>> inner ) : base( inner.Item )
 		{
 			this.inner = inner;
 		}
 
-		protected override void OnDispose() => inner.Dispose();
+		protected override void OnDispose() => inner.TryDispose();
+	}
+
+	public abstract class ThreadValueBase<T> : DecoratedAssociatedValue<T>
+	{
+		protected ThreadValueBase( object instance, Func<T> create = null ) : base( instance, () => new ThreadLocalValue<T>( create ) ) {}
 	}
 
 	public class ThreadAmbientValue<T> : ThreadValueBase<Stack<T>>
