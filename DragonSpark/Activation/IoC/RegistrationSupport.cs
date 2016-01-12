@@ -15,21 +15,22 @@ namespace DragonSpark.Activation.IoC
 		readonly IUnityContainer container;
 		readonly IMessageLogger logger;
 		readonly ISpecification specification;
-		readonly Assembly[] applicationAssemblies;
-
+		readonly ImplementedInterfaceFromConventionLocator factory;
+		
 		public RegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies ) : this( container, applicationAssemblies, AlwaysSpecification.Instance ) {}
 
-		protected RegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies, ISpecification specification ) : this( container, container.Logger(), applicationAssemblies, specification ) {}
+		protected RegistrationSupport( IUnityContainer container, Assembly[] applicationAssemblies, ISpecification specification ) : this( container, container.Logger(), specification, new ImplementedInterfaceFromConventionLocator( applicationAssemblies ) ) {}
 
-		protected RegistrationSupport( [Required]IUnityContainer container, [Required]IMessageLogger logger, [Required]Assembly[] applicationAssemblies, [Required]ISpecification specification )
+		protected RegistrationSupport( [Required]IUnityContainer container, [Required]IMessageLogger logger, [Required]ISpecification specification, [Required]ImplementedInterfaceFromConventionLocator factory )
 		{
 			this.container = container;
 			this.logger = logger;
 			this.specification = specification;
-			this.applicationAssemblies = applicationAssemblies;
+			this.factory = factory;
 		}
 
-		public IUnityContainer Convention( object instance ) => instance.Adapt().GetConventionCandidate( applicationAssemblies ).With( type => Instance( type, instance ) );
+		public IUnityContainer Convention( [Required]object instance ) => 
+			factory.Create( instance.GetType() ).With( type => Instance( type, instance ) );
 
 		IUnityContainer Check( Type type, Action apply )
 		{

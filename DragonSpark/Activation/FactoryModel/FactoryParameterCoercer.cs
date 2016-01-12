@@ -23,6 +23,8 @@ namespace DragonSpark.Activation.FactoryModel
 
 	public class FactoryParameterCoercer<TParameter> : IFactoryParameterCoercer<TParameter>
 	{
+		public static FactoryParameterCoercer<TParameter> Instance { get; } = new FactoryParameterCoercer<TParameter>();
+
 		readonly Func<IActivator> activator;
 		
 		public FactoryParameterCoercer() : this( Activator.GetCurrent )

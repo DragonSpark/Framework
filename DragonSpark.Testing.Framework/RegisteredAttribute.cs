@@ -18,7 +18,14 @@ namespace DragonSpark.Testing.Framework
 {
 	public class FactoryAttribute : CustomizeAttribute
 	{
-		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new FactoryRegistration( ParameterInfoFactoryTypeLocator.Instance.Create( parameter ) ) );
+		readonly Type factoryType;
+
+		public FactoryAttribute( Type factoryType = null )
+		{
+			this.factoryType = factoryType;
+		}
+
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new FactoryRegistration( factoryType ?? ParameterInfoFactoryTypeLocator.Instance.Create( parameter ) ) );
 	}
 
 	public static class FixtureExtensions

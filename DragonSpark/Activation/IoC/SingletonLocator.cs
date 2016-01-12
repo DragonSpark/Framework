@@ -2,6 +2,7 @@ using DragonSpark.Extensions;
 using System;
 using System.Linq;
 using System.Reflection;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -9,16 +10,22 @@ namespace DragonSpark.Activation.IoC
 	{
 		public static SingletonLocator Instance { get; } = new SingletonLocator();
 
+		readonly BuildableTypeFromConventionLocator locator;
 		readonly string property;
 
-		public SingletonLocator( string property = nameof(Instance) )
+		public SingletonLocator( string property = nameof(Instance) ) : this( BuildableTypeFromConventionLocator.Instance, property )
 		{
+		}
+
+		public SingletonLocator( [Required]BuildableTypeFromConventionLocator locator, string property = nameof(Instance) )
+		{
+			this.locator = locator;
 			this.property = property;
 		}
 
 		public object Locate( Type type )
 		{
-			var mapped = type.Adapt().DetermineImplementor() ?? type.GetTypeInfo();
+			var mapped = locator.Create( type )?.GetTypeInfo() ?? type.GetTypeInfo();
 			var declared = mapped.DeclaredProperties.FirstOrDefault( info => info.GetMethod.IsStatic && !info.GetMethod.ContainsGenericParameters && ( info.Name == property || info.Has<SingletonAttribute>() ) );
 			var result = declared.With( info => info.GetValue( null ) );
 			return result;

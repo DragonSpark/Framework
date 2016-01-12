@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using DragonSpark.Extensions;
+﻿using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Objects;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime.Values
@@ -13,8 +12,8 @@ namespace DragonSpark.Testing.Runtime.Values
 		[Fact]
 		public void ContextAsExpected()
 		{
-			var stack = new ThreadAmbientValue<Class>().Item;
-			Assert.Same( stack, new ThreadAmbientValue<Class>().Item );
+			var stack = new ThreadAmbientChain<Class>().Item;
+			Assert.Same( stack, new ThreadAmbientChain<Class>().Item );
 
 			Assert.Null( Ambient.GetCurrent<Class>() );
 
@@ -39,14 +38,14 @@ namespace DragonSpark.Testing.Runtime.Values
 						Assert.Same( chain.Last(), first );
 
 						var inside = new Class();
-						var appended = inside.GetCurrentChain();
+						var appended = inside.Append( Ambient.GetCurrentChain<Class>() ).ToArray();
 						Assert.Equal( 4, appended.Length );
 						Assert.Same( appended.First(), inside );
 						Assert.Same( appended.Last(), first );
 
 						Task.Run( () =>
 						{
-							var thread = new ThreadAmbientValue<Class>().Item;
+							var thread = new ThreadAmbientChain<Class>().Item;
 							Assert.NotSame( stack, thread );
 							Assert.Empty( thread );
 							var other = new Class();
@@ -55,7 +54,7 @@ namespace DragonSpark.Testing.Runtime.Values
 								Assert.Same( other, Ambient.GetCurrent<Class>() );
 								Assert.Single( thread, other );
 							}
-							Assert.NotSame( thread, new ThreadAmbientValue<Class>().Item );
+							Assert.NotSame( thread, new ThreadAmbientChain<Class>().Item );
 						} ).Wait();
 					}
 
@@ -68,7 +67,7 @@ namespace DragonSpark.Testing.Runtime.Values
 
 			Assert.Null( Ambient.GetCurrent<Class>() );
 
-			Assert.NotSame( stack, new ThreadAmbientValue<Class>().Item );
+			Assert.NotSame( stack, new ThreadAmbientChain<Class>().Item );
 		} 
 	}
 }

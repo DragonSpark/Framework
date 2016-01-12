@@ -29,7 +29,7 @@ namespace DragonSpark.Runtime
 			this.knownTypes = knownTypes;
 		}
 
-		[Cache]
+		[Freeze]
 		protected override DataContractSerializer CreateItem() => typeof(T).With( type => new DataContractSerializer( type, knownTypes( type ) ) );
 	}
 

@@ -46,7 +46,7 @@ namespace DragonSpark.TypeSystem
 		public static IAttributeProvider GetWithRelated( object target ) => new WithRelated( target ).Item;
 	}
 
-	public class AttributeProviderFactory : FirstFromParameterFactory<IAttributeProvider>
+	public class AttributeProviderFactory : FirstFromParameterFactory<object, IAttributeProvider>
 	{
 		public AttributeProviderFactory( bool includeRelated ) : base( IsAssemblyFactory.Instance.Create, new Providerfactory( includeRelated ).Create ) {}
 
@@ -71,11 +71,11 @@ namespace DragonSpark.TypeSystem
 			}
 		}
 
-		class IsAssemblyFactory : FactoryWithSpecification<Assembly, IAttributeProvider>
+		class IsAssemblyFactory : FactoryWithSpecification<object, IAttributeProvider>
 		{
 			public static IsAssemblyFactory Instance { get; } = new IsAssemblyFactory();
 
-			public IsAssemblyFactory() : base( IsTypeSpecification<Assembly>.Instance, o => new AssemblyAttributeProvider( o ) ) {}
+			public IsAssemblyFactory() : base( IsTypeSpecification<Assembly>.Instance, o => new AssemblyAttributeProvider( (Assembly)o ) ) {}
 		}
 	}
 
@@ -107,10 +107,10 @@ namespace DragonSpark.TypeSystem
 			this.factory = factory;
 		}
 
-		[Cache]
+		[Freeze]
 		public bool Contains( Type attribute ) => defined( attribute );
 
-		[Cache]
+		[Freeze]
 		public Attribute[] GetAttributes( Type attributeType ) => defined( attributeType ) ? factory( attributeType ).Fixed() : Default<Attribute>.Items;
 	}
 

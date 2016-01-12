@@ -12,34 +12,22 @@ namespace DragonSpark.Runtime
 	/// </summary>
 	public class EqualityList : List<object>, IEquatable<EqualityList>
 	{
-		public EqualityList()
-		{}
+		public EqualityList() {}
 
-		public EqualityList( IEnumerable<object> collection ) : base( collection )
-		{}
+		public EqualityList( IEnumerable<object> collection ) : base( collection ) {}
 
-		/*.. most methods left out ..*/
-		public bool Equals( EqualityList other )//optional but a good idea almost always when we redefine equality
+		public bool Equals( EqualityList other )
 		{
-			if ( other == null )
-				return false;
-			if ( ReferenceEquals( this, other ) )//identity still entails equality, so this is a good shortcut
-				return true;
-			if ( Count != other.Count )
-				return false;
-			for ( int i = 0; i != Count; ++i )
-				if ( this[i] != other[i] )
-					return false;
-			return true;
+			var result = other.With( list => ReferenceEquals( this, other ) || list.Count == Count && list.GetHashCode() == GetHashCode() );
+			return result;
 		}
-		public override bool Equals( object other ) => Equals( other as EqualityList );
+
+		public override bool Equals( object other ) => other.AsTo<EqualityList, bool>( Equals );
 
 		public override int GetHashCode() => this.Aggregate( 0x2D2816FE, ( current, item ) => current * 31 + ( item?.GetHashCode() ?? 0 ) );
 	}
 
-	public class Collection : Collection<object>
-	{
-	}
+	public class Collection : Collection<object> {}
 
 	[Ambient]
 	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IEnumerable<T>, IList

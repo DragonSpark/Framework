@@ -5,9 +5,19 @@ using System;
 
 namespace DragonSpark.Runtime.Values
 {
-	public abstract class WritableValue<T> : Value<T>, IWritableValue<T>
+	public abstract class WritableValue<T> : Value<T>, IWritableValue<T>, IDisposable
 	{
 		public abstract void Assign( T item );
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		void Dispose( bool disposing ) => disposing.IsTrue( OnDispose );
+
+		protected virtual void OnDispose() {}
 	}
 
 	public class ExecutionContextValue<T> : DeferredValue<T>
@@ -18,9 +28,7 @@ namespace DragonSpark.Runtime.Values
 	public class DeferredValue<T> : WritableValue<T>
 	{
 		readonly Func<IWritableValue<T>> deferred;
-
-
-
+		
 		public DeferredValue( [Required]Func<IWritableValue<T>> deferred )
 		{
 			this.deferred = deferred;
@@ -31,7 +39,7 @@ namespace DragonSpark.Runtime.Values
 		public override T Item => deferred.Use( value => value.Item );
 	}
 
-	public class DecoratedValue<T> : WritableValue<T>, IDisposable
+	public class DecoratedValue<T> : WritableValue<T>
 	{
 		readonly IWritableValue<T> inner;
 
@@ -44,14 +52,10 @@ namespace DragonSpark.Runtime.Values
 
 		public override T Item => inner.Item;
 
-		public void Dispose()
+		protected override void OnDispose()
 		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
+			inner.TryDispose();
+			base.OnDispose();
 		}
-
-		void Dispose( bool disposing ) => disposing.IsTrue( OnDispose );
-
-		protected virtual void OnDispose() => inner.TryDispose();
 	}
 }

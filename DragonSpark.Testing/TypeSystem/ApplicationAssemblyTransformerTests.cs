@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Testing.Objects;
+using DragonSpark.Testing.Objects.Setup;
 using DragonSpark.TypeSystem;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
@@ -10,7 +11,7 @@ namespace DragonSpark.Testing.TypeSystem
 {
 	public class ApplicationAssemblyTransformerTests
 	{
-		[Theory, Framework.Setup.AutoData]
+		[Theory, DefaultSetup.AutoData, AssemblyProvider.Factory]
 		public void Basic( [Frozen]IAssemblyProvider provider, ApplicationAssemblyTransformer sut )
 		{
 			var mock = Mock.Get( provider );

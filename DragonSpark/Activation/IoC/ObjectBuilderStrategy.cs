@@ -24,7 +24,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		public override void PreBuildUp( IBuilderContext context )
 		{
-			var all = context.GetCurrentChain().All( key => context.Policies.Get<IObjectBuilderPolicy>( key ).With( policy => policy.Enabled ) );
+			var all = context.BuildKey.Append( Ambient.GetCurrentChain<NamedTypeBuildKey>() ).All( key => context.Policies.Get<IObjectBuilderPolicy>( key ).With( policy => policy.Enabled ) );
 			all.IsTrue( () =>
 			{
 				var item = context.New<IObjectBuilder>();

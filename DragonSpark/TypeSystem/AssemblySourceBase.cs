@@ -8,7 +8,7 @@ namespace DragonSpark.TypeSystem
 {
 	public abstract class AssemblySourceBase : FactoryBase<Assembly[]>
 	{
-		[Cache( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
+		[Freeze( AttributeInheritance = MulticastInheritance.Multicast, AttributeTargetMemberAttributes = MulticastAttributes.Instance )]
 		protected abstract override Assembly[] CreateItem();
 	}
 

@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ConventionBasedTypeDefinitionProvider : ITypeDefinitionProvider
+	public class TypeDefinitionProvider : ITypeDefinitionProvider
 	{
-		public static ConventionBasedTypeDefinitionProvider Instance { get; } = new ConventionBasedTypeDefinitionProvider();
+		public static TypeDefinitionProvider Instance { get; } = new TypeDefinitionProvider();
 
 		class Context
 		{

@@ -29,6 +29,13 @@ namespace DragonSpark.Testing.Runtime
 		}
 
 		[Theory, Framework.Setup.AutoData]
+		public void Equality()
+		{
+			Assert.Equal( new EqualityList { true }, new EqualityList { true } );
+			Assert.NotEqual( new EqualityList { true }, new EqualityList { false } );
+		}
+
+		[Theory, Framework.Setup.AutoData]
 		public void Array( object[] items )
 		{
 			var first = new EqualityList( items.ToArray() );

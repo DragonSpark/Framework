@@ -17,7 +17,7 @@ namespace DragonSpark.TypeSystem
 			this.assemblies = assemblies;
 		}
 
-		[Cache]
+		[Freeze]
 		protected override Type[] CreateItem( Type parameter ) => assemblies()
 																	.SelectMany( z => z.DefinedTypes )
 																	.Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" )

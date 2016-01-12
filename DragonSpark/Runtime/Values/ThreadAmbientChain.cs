@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 
 namespace DragonSpark.Runtime.Values
 {
@@ -24,7 +25,11 @@ namespace DragonSpark.Runtime.Values
 			this.inner = inner;
 		}
 
-		protected override void OnDispose() => inner.TryDispose();
+		protected override void OnDispose()
+		{
+			inner.TryDispose();
+			base.OnDispose();
+		}
 	}
 
 	public abstract class ThreadValueBase<T> : DecoratedAssociatedValue<T>
@@ -32,9 +37,9 @@ namespace DragonSpark.Runtime.Values
 		protected ThreadValueBase( object instance, Func<T> create = null ) : base( instance, () => new ThreadLocalValue<T>( create ) ) {}
 	}
 
-	public class ThreadAmbientValue<T> : ThreadValueBase<Stack<T>>
+	public class ThreadAmbientChain<T> : ThreadValueBase<Stack<T>>
 	{
-		public ThreadAmbientValue() : base( ThreadAmbientContext.GetCurrent(), () => new Stack<T>() ) {}
+		public ThreadAmbientChain() : base( ThreadAmbientContext.GetCurrent(), () => new Stack<T>() ) {}
 
 		protected override void OnDispose()
 		{

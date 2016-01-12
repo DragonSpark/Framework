@@ -35,34 +35,43 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
-	public class FactoryWithSpecification<T, U> : FactoryBase<object, U>
+	public class FactoryWithSpecification<T, U> : FactoryBase<T, U>
 	{
 		readonly ISpecification specification;
 		readonly Func<T, U> inner;
 
 		public FactoryWithSpecification( Func<T, U> inner ) : this( AlwaysSpecification.Instance, inner ) {}
 
-		public FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<T, U> inner )
+		public FactoryWithSpecification( [Required]ISpecification<T> specification, [Required]Func<T, U> inner ) : this( (ISpecification)specification, inner ) {}
+
+		FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<T, U> inner ) : base( FactoryParameterCoercer<T>.Instance )
 		{
 			this.specification = specification;
 			this.inner = inner;
 		}
 
-		protected override U CreateItem( object parameter ) => specification.IsSatisfiedBy( parameter ) ? inner( (T)parameter ) : default(U);
+		protected override U CreateItem( T parameter ) => specification.IsSatisfiedBy( parameter ) ? inner( (T)parameter ) : default(U);
 	}
 
-	public class FirstFromParameterFactory<T> : FactoryBase<object, T>
+	public class FirstFromParameterFactory<T> : FirstFromParameterFactory<object, T>
 	{
-		readonly IEnumerable<Func<object, T>> inner;
+		public FirstFromParameterFactory( params IFactory<object, T>[] factories ) : base( factories ) {}
 
-		public FirstFromParameterFactory( params IFactory<object, T>[] factories ) : this( factories.Select( factory => factory.ToDelegate() ).ToArray() ) {}
+		public FirstFromParameterFactory( params Func<object, T>[] inner ) : base( inner ) {}
+	}
 
-		public FirstFromParameterFactory( [Required]params Func<object, T>[] inner )
+	public class FirstFromParameterFactory<T, U> : FactoryBase<T, U>
+	{
+		readonly IEnumerable<Func<T, U>> inner;
+
+		public FirstFromParameterFactory( params IFactory<T, U>[] factories ) : this( factories.Select( factory => factory.ToDelegate() ).ToArray() ) {}
+
+		public FirstFromParameterFactory( [Required]params Func<T, U>[] inner ) : base( FactoryParameterCoercer<T>.Instance )
 		{
 			this.inner = inner;
 		}
 
-		protected override T CreateItem( object parameter )
+		protected override U CreateItem( T parameter )
 		{
 			var result = inner.FirstWhere( factory => factory( parameter ) );
 			return result;

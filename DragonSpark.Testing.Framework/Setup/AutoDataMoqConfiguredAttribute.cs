@@ -7,9 +7,9 @@ using Ploeh.AutoFixture.AutoMoq;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class AutoDataRegistrationAttribute : AutoDataAttribute
+	public class AutoDataWithRegistrationAttribute : AutoDataAttribute
 	{
-		public AutoDataRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create ) {}
+		public AutoDataWithRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create ) {}
 	}
 
 	public class AutoDataMoqAttribute : AutoDataAttribute

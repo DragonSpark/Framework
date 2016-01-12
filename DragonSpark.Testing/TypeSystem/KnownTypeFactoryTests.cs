@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.TypeSystem
 	public class KnownTypeFactoryTests
 	{
 		[RegisterFactory( typeof(AssemblyProvider) )]
-		[Theory, AutoDataRegistration]
+		[Theory, AutoDataWithRegistration]
 		public void Testing( KnownTypeFactory sut )
 		{
 			var parameter = typeof(Class);

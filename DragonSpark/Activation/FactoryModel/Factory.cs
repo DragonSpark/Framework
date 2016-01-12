@@ -24,14 +24,14 @@ namespace DragonSpark.Activation.FactoryModel
 
 		public static object From( [OfFactoryType]Type factoryType ) => FactoryDelegateLocatorFactory.Instance.Create( factoryType )();
 
-		[Cache]
+		[Freeze]
 		public static Type GetParameterType( Type factoryType )
 		{
 			var parameterType = Get( factoryType, types => types.First(), Types.Last() );
 			return parameterType;
 		}
 
-		[Cache]
+		[Freeze]
 		public static Type GetResultType( Type factoryType ) => Get( factoryType, types => types.Last(), Types );
 
 		static Type Get( Type factoryType, Func<Type[], Type> selector, params TypeAdapter[] typesToCheck )
@@ -45,7 +45,7 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
-	public class FactoryDelegateLocatorFactory : FirstFromParameterFactory<Func<object>>
+	public class FactoryDelegateLocatorFactory : FirstFromParameterFactory<Type, Func<object>>
 	{
 		public static FactoryDelegateLocatorFactory Instance { get; } = new FactoryDelegateLocatorFactory();
 
@@ -83,7 +83,7 @@ namespace DragonSpark.Activation.FactoryModel
 			this.types = types;
 		}
 
-		[Cache]
+		[Freeze]
 		protected override Type CreateItem( T parameter )
 		{
 			var candidates = types( parameter );
@@ -104,7 +104,7 @@ namespace DragonSpark.Activation.FactoryModel
 			this.assemblies = assemblies;
 		}
 
-		[Cache]
+		[Freeze]
 		protected override Type CreateItem( Type parameter )
 		{
 			var name = $"{parameter.Name}Factory";

@@ -7,10 +7,10 @@ namespace DragonSpark.TypeSystem
 	{
 		public static Func<T, T> Self => t => t;
 
-		[Cache]
+		[Freeze]
 		public static T Item => DefaultFactory<T>.Instance.Create();
 
-		[Cache]
+		[Freeze]
 		public static T[] Items => DefaultFactory<T[]>.Instance.Create();
 	}
 }

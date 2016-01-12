@@ -11,14 +11,14 @@ namespace DragonSpark.Runtime.Values
 {
 	public static class Ambient
 	{
-		public static T GetCurrent<T>() => new ThreadAmbientValue<T>().Item.PeekOrDefault();
+		public static T GetCurrent<T>() => new ThreadAmbientChain<T>().Item.PeekOrDefault();
 
-		public static T[] GetCurrentChain<T>( [Required]this T @this ) => @this.Append( new ThreadAmbientValue<T>().Item.ToArray() ).Distinct().Fixed();
+		// public static T[] GetCurrentChain<T>() => new ThreadAmbientChain<T>().Item.ToArray();
 
-		public static T[] GetCurrentChain<T>() => new ThreadAmbientValue<T>().Item.ToArray();
+		public static T[] GetCurrentChain<T>() => new ThreadAmbientChain<T>().Item.ToArray();
 	}
 
-	public class ThreadLocalValue<T> : WritableValue<T>, IDisposable
+	public class ThreadLocalValue<T> : WritableValue<T>
 	{
 		readonly ThreadLocal<T> local;
 
@@ -33,10 +33,13 @@ namespace DragonSpark.Runtime.Values
 
 		public override T Item => local.Value;
 
-		public void Dispose() => local.Dispose();
+		protected override void OnDispose()
+		{
+			local.Dispose();
+			base.OnDispose();
+		}
 	}
 
-	[Disposable( ThrowObjectDisposedException = true )]
 	public abstract class ConnectedValue<T> : WritableValue<T>
 	{
 		readonly Func<T> create;
@@ -60,10 +63,10 @@ namespace DragonSpark.Runtime.Values
 		[Reference]
 		public ConnectibleProperty<T> Property { get; }
 
-		protected virtual void Dispose( bool disposing )
+		protected override void OnDispose()
 		{
-			Item.TryDispose();
 			Property.TryDisconnect();
+			base.OnDispose();
 		}
 	}
 

@@ -10,6 +10,10 @@ namespace DragonSpark.Activation
 
 		public bool IsAvailable => Item != null;
 
-		public void Dispose() => Assign( null );
+		protected override void OnDispose()
+		{
+			Assign( null );
+			base.OnDispose();
+		}
 	}
 }

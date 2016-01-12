@@ -22,11 +22,11 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		public IServiceLocator Locator { get; set; }
 
 		[Activate]
-		public IServiceLocationAuthority Authority { get; set; }
+		public AuthorizedLocationSpecification Specification { get; set; }
 
-		protected override void Customize( IFixture fixture ) => Locator.With( locator =>
+		protected override void Customize( IFixture fixture ) => Specification.With( specification =>
 		{
-			new ServiceLocationRelay( locator, new AuthorizedLocationSpecification( locator, Authority ) ).With( fixture.ResidueCollectors.Add );
+			new ServiceLocationRelay( Locator, specification ).With( fixture.ResidueCollectors.Add );
 		} );
 	}
 	

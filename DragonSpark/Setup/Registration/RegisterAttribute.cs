@@ -1,5 +1,4 @@
 using System;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -12,13 +11,11 @@ namespace DragonSpark.Setup.Registration
 
 		public sealed class AsAttribute : RegistrationBaseAttribute
 		{
-			public AsAttribute() : this( null, null ) { }
-
 			public AsAttribute( Type @as ) : this( @as, null ) { }
 
 			public AsAttribute( string name ) : this( null, name ) { }
 
-			AsAttribute( Type @as, string name ) : base( t => new TypeRegistration( @as ?? t.Adapt().GetConventionCandidate(), t, name ) ) { }
+			AsAttribute( Type @as, string name ) : base( t => new TypeRegistration( @as ?? t, t, name ) ) { }
 		}
 
 		public class FactoryAttribute : RegistrationBaseAttribute

@@ -71,9 +71,6 @@ namespace DragonSpark.Modularity
 			OnLoad();
 		}
 
-		protected virtual void OnLoad()
-		{
-			CommandExtensions.ExecuteWith( command, (object)this );
-		}
+		protected virtual void OnLoad() => command.ExecuteWith( (object)this );
 	}
 }

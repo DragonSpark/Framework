@@ -1,5 +1,4 @@
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Extensions;
 using PostSharp.Patterns.Contracts;
 using System;
 

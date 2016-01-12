@@ -4,10 +4,8 @@ using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
-using PostSharp.Extensibility;
 using PostSharp.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Aspects
@@ -18,7 +16,7 @@ namespace DragonSpark.Aspects
 	}
 	
 	[PSerializable, ProvideAspectRole( StandardRoles.Caching ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading ), LinesOfCodeAvoided( 6 ), AttributeUsage( AttributeTargets.Method | AttributeTargets.Property )]
-	public sealed class Cache : MethodInterceptionAspect
+	public sealed class Freeze : MethodInterceptionAspect
 	{
 		class Stored : ConnectedValue<object>
 		{

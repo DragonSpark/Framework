@@ -68,7 +68,7 @@ namespace DragonSpark.TypeSystem
 
 		public Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), typeof( IEnumerable ).GetTypeInfo().IsAssignableFrom );
 
-		public Type GetResultType() => type.Append( ExpandInterfaces( type ) ).FirstWhere( t => InnerType( t, types => types.LastOrDefault() ) );
+		// public Type GetResultType() => type.Append( ExpandInterfaces( type ) ).FirstWhere( t => InnerType( t, types => types.LastOrDefault() ) );
 
 		public Type GetInnerType() => InnerType( type, types => types.Only() );
 
@@ -82,23 +82,9 @@ namespace DragonSpark.TypeSystem
 
 		public bool IsGenericOf<T>() => IsGenericOf( typeof(T).GetGenericTypeDefinition() );
 
-		[Cache]
+		[Freeze]
 		public bool IsGenericOf( Type genericDefinition ) =>
 			type.Append( ExpandInterfaces( type ) ).AsTypeInfos().Any( typeInfo => typeInfo.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && typeInfo.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition() );
-
-		public Type GetConventionCandidate( Assembly[] applicationAssemblies = null )  // TODO: Replace with Assemblies.Current.
-		{
-			var result = 
-				DetermineImplementor().With( typeInfo => typeInfo.AsType() )
-				??
-				type.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => interfaces.FirstOrDefault( i => type.Name.Contains( i.Name.TrimStart( 'I' ) ) ) 
-					??
-					type.Assembly().Append( applicationAssemblies.Fixed() ).Distinct().With( assemblies => interfaces.FirstOrDefault( t => assemblies.Contains( t.Assembly() ) ) )
-				) ?? type;
-			return result;
-		}
-		
-		public TypeInfo DetermineImplementor() => info.IsInterface ? type.Assembly().DefinedTypes.Where( IsAssignableFrom ).FirstOrDefault( i => !i.IsAbstract && i.Name.StartsWith( type.Name.TrimStart( 'I' ) ) ) : null;
 
 		public Type[] GetAllInterfaces() => ExpandInterfaces( type ).ToArray();
 

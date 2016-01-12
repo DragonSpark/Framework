@@ -15,7 +15,8 @@ namespace DragonSpark.Extensions
 
 		public static void Run<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> => ExecuteWith<T>( @this, parameter );
 
-		public static T ExecuteWith<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> => ExecuteWith<T>( @this, parameter );
+		public static T ExecuteWith<T, TParameter>( this T @this, TParameter parameter ) where T : ICommand<TParameter> 
+			=> ExecuteWith<T>( @this, parameter );
 
 		public static T ExecuteWith<T>( this T @this, object parameter ) where T : ICommand
 		{

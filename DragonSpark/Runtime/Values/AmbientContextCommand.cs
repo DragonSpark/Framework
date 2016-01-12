@@ -6,21 +6,21 @@ namespace DragonSpark.Runtime.Values
 {
 	public class AmbientContextCommand<T> : StackCommand<T>
 	{
-		readonly ThreadAmbientValue<T> value;
+		readonly ThreadAmbientChain<T> chain;
 
-		public AmbientContextCommand() : this( new ThreadAmbientValue<T>() ) {}
+		public AmbientContextCommand() : this( new ThreadAmbientChain<T>() ) {}
 
-		public AmbientContextCommand( [Required]ThreadAmbientValue<T> value ) : base( value.Item )
+		public AmbientContextCommand( [Required]ThreadAmbientChain<T> chain ) : base( chain.Item )
 		{
-			this.value = value;
+			this.chain = chain;
 		}
 
 		protected override void OnDispose()
 		{
 			base.OnDispose();
-			if ( !value.Item.Any() )
+			if ( !chain.Item.Any() )
 			{
-				value.Dispose();
+				chain.Dispose();
 			}
 		}
 	}

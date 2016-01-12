@@ -11,7 +11,7 @@ namespace DragonSpark.ComponentModel
 
 		readonly ITypeDefinitionProvider provider;
 
-		public MemberInfoLocator() : this( ConventionBasedTypeDefinitionProvider.Instance )
+		public MemberInfoLocator() : this( TypeDefinitionProvider.Instance )
 		{}
 
 		public MemberInfoLocator( ITypeDefinitionProvider provider )

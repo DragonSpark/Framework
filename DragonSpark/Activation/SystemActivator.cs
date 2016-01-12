@@ -57,7 +57,7 @@ namespace DragonSpark.Activation
 
 		delegate object ObjectActivator( params object[] args );
 
-		[Cache]
+		[Freeze]
 		static ObjectActivator GetActivator( ConstructorInfo ctor )
 		{
 			var paramsInfo = ctor.GetParameters();

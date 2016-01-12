@@ -11,7 +11,7 @@ namespace DragonSpark.TypeSystem
 	{
 		public static DefaultFactory<T> Instance { get; } = new DefaultFactory<T>();
 
-		[Cache]
+		[Freeze]
 		protected override T CreateItem()
 		{
 			var name = typeof(T).AssemblyQualifiedName;
