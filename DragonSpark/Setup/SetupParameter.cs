@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
@@ -44,30 +43,17 @@ namespace DragonSpark.Setup
 		public SetupParameter( IMessageLogger logger, object arguments ) : base( logger, arguments ) {}
 	}
 
-	public class SetupParameter<TLogger, TArgument> : SetupParameter<TArgument> where TLogger : class, IMessageLogger, new()
-	{
-		readonly protected static Func<TLogger> DefaultLogger = MessageLoggerFactory<TLogger>.Instance.CreateUsing;
-
-		public SetupParameter( TArgument arguments ) : this( DefaultLogger(), arguments ) {
-		}
-		public SetupParameter( TLogger logger, TArgument arguments ) : base( logger, arguments ) {}
-	}
-
 	public class MessageLoggerFactory<TLogger> : ActivateFactory<TLogger> where TLogger : class, IMessageLogger
 	{
 		public new static MessageLoggerFactory<TLogger> Instance { get; } = new MessageLoggerFactory<TLogger>();
 
 		protected override TLogger Activate( ActivateParameter parameter ) => base.Activate( parameter ).Information( Resources.LoggerCreatedSuccessfully );
 	}
-	
-	public class ApplicationSetupParameter<TLogger, TArgument> : SetupParameter<TLogger, TArgument>, IApplicationSetupParameter where TLogger : class, IMessageLogger, new()
+
+	public class ApplicationSetupParameter<TArgument> : SetupParameter<TArgument>, IApplicationSetupParameter 
 	{
-		public ApplicationSetupParameter( TArgument arguments ) : this( DefaultLogger(), arguments ) {}
 
-		public ApplicationSetupParameter( TLogger logger, TArgument arguments ) : this( new ServiceLocatorFactory( logger ).CreateUsing(), logger, arguments )
-		{}
-
-		public ApplicationSetupParameter( IServiceLocator locator, TLogger logger, TArgument arguments ) : base( logger, arguments )
+		public ApplicationSetupParameter( IServiceLocator locator, TArgument arguments ) : base( locator.GetInstance<IMessageLogger>(), arguments )
 		{
 			Locator = locator;
 		}

@@ -401,9 +401,9 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		public void GetAllTypesWith( [Located]AssembliesFactory sut )
+		public void GetAllTypesWith( [Located]Assembly[] sut )
 		{
-			var items = sut.Create().GetAllTypesWith<PriorityAttribute>();
+			var items = sut.GetAllTypesWith<PriorityAttribute>();
 			Assert.True( items.Select( tuple => tuple.Item2 ).AsTypes().Contains( typeof(NormalPriority) ) );
 		}
 
@@ -465,15 +465,12 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		public void CreateAssemblies( AssembliesFactory factory, IUnityContainer container, IAssemblyProvider provider, [Located]Assembly[] sut )
+		public void CreateAssemblies( IUnityContainer container, IAssemblyProvider provider, [Located]Assembly[] sut )
 		{
 			var registered = container.IsRegistered<Assembly[]>();
 			Assert.True( registered );
 
-			var fromFactory = factory.Create();
 			var fromContainer = container.Resolve<Assembly[]>();
-			Assert.Equal( fromFactory, fromContainer );
-
 			var fromProvider = provider.Create();
 			Assert.Equal( fromContainer, fromProvider );
 

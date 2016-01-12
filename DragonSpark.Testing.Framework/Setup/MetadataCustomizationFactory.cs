@@ -13,11 +13,11 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override ICustomization[] CreateItem( MethodBase parameter )
 		{
-			var customizations = new object[] { parameter, parameter.DeclaringType, parameter.DeclaringType.Assembly }
+			var result = new object[] { parameter.DeclaringType.Assembly, parameter.DeclaringType, parameter }
 				.SelectMany( HostedValueLocator<ICustomization>.Instance.Create )
 				.Prioritize()
 				.Fixed();
-			return customizations;
+			return result;
 		}
 	}
 }

@@ -8,9 +8,9 @@ namespace DragonSpark.Extensions
 {
 	public static class UnityContainerExtensions
 	{
-		public static IServiceRegistry Registry( this IUnityContainer @this ) => @this.Resolve<IServiceRegistry>();
+		// public static IServiceRegistry Registry( this IUnityContainer @this ) => @this.Resolve<IServiceRegistry>();
 
-		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>( () => @this.Extend().Logger );
+		public static IMessageLogger Logger( this IUnityContainer @this ) => @this.Resolve<IMessageLogger>();
 
 		public static T Resolve<T>( this IUnityContainer @this, Func<T> @default ) => @this.IsRegistered<T>() ? @this.Resolve<T>() : @default();
 
@@ -22,7 +22,9 @@ namespace DragonSpark.Extensions
 
 		public static T Registration<T>( this IUnityContainer @this ) where T : RegistrationSupport => @this.Resolve<T>();
 
-		public static IoCExtension Extend( this IUnityContainer @this ) => @this.Extension<IoCExtension>();
+		public static IUnityContainer Extend( this IUnityContainer @this ) => @this.Extend<BuildPipelineExtension>().Extend<RegistrationMonitorExtension>();
+
+		public static IUnityContainer Extend<TExtension>( this IUnityContainer @this ) where TExtension : UnityContainerExtension => @this.Extension<TExtension>().Container;
 
 		public static TExtension Extension<TExtension>( this IUnityContainer container ) where TExtension : UnityContainerExtension => (TExtension)container.Extension( typeof(TExtension) );
 

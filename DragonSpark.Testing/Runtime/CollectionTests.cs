@@ -28,8 +28,8 @@ namespace DragonSpark.Testing.Runtime
 			Assert.True( sut.Contains( second ) );
 		}
 
-		[Theory, Framework.Setup.AutoData]
-		public void Equality()
+		[Fact]
+		public void BasicEquality()
 		{
 			Assert.Equal( new EqualityList { true }, new EqualityList { true } );
 			Assert.NotEqual( new EqualityList { true }, new EqualityList { false } );

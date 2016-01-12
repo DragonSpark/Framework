@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.Setup
 	[LinesOfCodeAvoided( 5 )]
 	public class AutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute, IAspectProvider
 	{
-		public AutoDataAttribute() : this( FixtureFactory<AutoConfiguredMoqCustomization>.Instance.Create ) {}
+		public AutoDataAttribute() : this( FixtureFactory<DefaultAutoDataCustomization>.Instance.Create ) {}
 
 		protected AutoDataAttribute( [Required]Func<IFixture> fixture ) : base( fixture() ) {}
 
@@ -32,5 +32,10 @@ namespace DragonSpark.Testing.Framework.Setup
 		}
 
 		public IEnumerable<AspectInstance> ProvideAspects( object targetElement ) => targetElement.AsTo<MethodInfo, AspectInstance>( info => new AspectInstance( info, new AssignExecutionContextAspect() ) ).ToItem();
+	}
+
+	public class DefaultAutoDataCustomization : CompositeCustomization
+	{
+		public DefaultAutoDataCustomization() : base( new MetadataCustomization(), new AutoConfiguredMoqCustomization() ) {}
 	}
 }

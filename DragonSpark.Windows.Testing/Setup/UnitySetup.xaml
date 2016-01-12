@@ -12,14 +12,13 @@
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:AssignLocationCommand />
-	<setupObjects:SetupUnityCommand>
+	<commands:SetupUnityCommand>
 		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
-		<setupObjects:SetupUnityCommand.Extensions>
+		<commands:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />
 			<localSetup:TestExtension />
-		</setupObjects:SetupUnityCommand.Extensions>
-	</setupObjects:SetupUnityCommand>
+		</commands:SetupUnityCommand.Extensions>
+	</commands:SetupUnityCommand>
 	
 	<ds:SetupRegistrationByConventionCommand />
 	<!--<commands:InitializeModulesCommand />-->

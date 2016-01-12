@@ -12,7 +12,7 @@ namespace DragonSpark.Setup.Registration
 		[InjectionConstructor]
 		public LifetimeManagerFactory() : this( Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
 
-		public LifetimeManagerFactory( Func<IActivator> activator, ISingletonLocator locator ) : base( activator, locator ) {}
+		public LifetimeManagerFactory( Activation.Activator.Get activator, ISingletonLocator locator ) : base( activator, locator ) {}
 	}
 
 	public class LifetimeManagerFactory<T> : ActivateFactory<LifetimeManager> where T : LifetimeManager
@@ -22,7 +22,7 @@ namespace DragonSpark.Setup.Registration
 		[InjectionConstructor]
 		public LifetimeManagerFactory() : this( Activation.Activator.GetCurrent, SingletonLocator.Instance ) {}
 
-		public LifetimeManagerFactory( Func<IActivator> activator, ISingletonLocator locator ) : base( activator, new LifetimeFactoryParameterCoercer( activator, typeof(T) ) )
+		public LifetimeManagerFactory( Activation.Activator.Get activator, ISingletonLocator locator ) : base( activator, new LifetimeFactoryParameterCoercer( activator, typeof(T) ) )
 		{
 			this.locator = locator;
 		}

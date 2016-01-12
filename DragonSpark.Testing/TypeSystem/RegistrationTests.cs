@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.TypeSystem
 	public class RegistrationTests
 	{
 		[RegisterFactory( typeof(AssemblySource) )]
-		[Theory, AutoDataWithRegistration]
+		[Theory, AutoData]
 		public void Testing( Assembly[] sut )
 		{
 			Assert.Same( sut, AssemblySource.Result );

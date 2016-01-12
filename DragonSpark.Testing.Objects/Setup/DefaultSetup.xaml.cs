@@ -1,4 +1,5 @@
-﻿using DragonSpark.Testing.Framework.Setup;
+﻿using DragonSpark.Setup;
+using DragonSpark.Testing.Framework.Setup;
 
 namespace DragonSpark.Testing.Objects.Setup
 {
@@ -15,4 +16,7 @@ namespace DragonSpark.Testing.Objects.Setup
 			InitializeComponent();
 		}
 	}
+
+	public class SetupFixtureFactory<T> : SetupFixtureFactory<AssemblyProvider, T> where T : class, ISetup
+	{}
 }

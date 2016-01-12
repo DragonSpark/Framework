@@ -2,22 +2,26 @@ using System;
 using System.IO;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Setup;
+using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoMoq;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	public class AutoDataWithRegistrationAttribute : AutoDataAttribute
+	/*public class AutoDataWithRegistrationAttribute : AutoDataAttribute
 	{
 		public AutoDataWithRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create ) {}
-	}
+	}*/
 
 	public class AutoDataMoqAttribute : AutoDataAttribute
 	{
 		public AutoDataMoqAttribute() : base( FixtureFactory<AutoMoqCustomization>.Instance.Create ) {}
 	}
 
-	public class SetupFixtureFactory<T> : FixtureFactory<SetupCustomization<T>> where T : class, ISetup {}
+	public class SetupFixtureFactory<TAssemblyProvider, TSetup> : FixtureFactory<SetupCustomization<TAssemblyProvider, TSetup>> 
+		where TAssemblyProvider : IAssemblyProvider 
+		where TSetup : class, ISetup
+	{}
 
 	public class FixtureFactory<TWith> : FactoryBase<IFixture> where TWith : ICustomization, new()
 	{

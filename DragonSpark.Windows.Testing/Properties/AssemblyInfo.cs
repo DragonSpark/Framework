@@ -2,6 +2,7 @@
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Testing.Objects;
 using DragonSpark.Windows.Testing.Setup;
 
 // General Information about an assembly is controlled through the following 
@@ -38,3 +39,5 @@ using DragonSpark.Windows.Testing.Setup;
 [assembly: AssemblyFileVersion( "2016.2.1.1" )]
 [assembly: Application]
 [assembly: Registration( typeof(Command) )]
+
+[assembly: AssemblyProvider.Factory] // Default assembly factory.

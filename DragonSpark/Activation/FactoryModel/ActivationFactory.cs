@@ -5,12 +5,12 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public abstract class ActivationFactory<TParameter, TResult> : FactoryBase<TParameter, TResult> where TParameter : ActivationParameter where TResult : class
 	{
-		readonly Func<IActivator> activator;
+		readonly Activator.Get activator;
 
-		protected ActivationFactory( Func<IActivator> activator ) : this( activator, new FactoryParameterCoercer<TParameter>( activator ) )
+		protected ActivationFactory( Activator.Get activator ) : this( activator, new FactoryParameterCoercer<TParameter>( activator ) )
 		{}
 
-		protected ActivationFactory( [Required]Func<IActivator> activator, IFactoryParameterCoercer<TParameter> coercer ) : base( coercer )
+		protected ActivationFactory( [Required]Activator.Get activator, IFactoryParameterCoercer<TParameter> coercer ) : base( coercer )
 		{
 			this.activator = activator;
 		}

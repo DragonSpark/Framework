@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 
 		void RegisterInstance<T>( T instance ) => fixture.Inject( instance );
 
-		public void RegisterFactory( Type type, Func<object> factory ) => this.InvokeGenericAction( nameof(RegisterFactory), type.ToItem(), factory );
+		public void RegisterFactory( Type type, Func<object> factory ) =>  this.InvokeGenericAction( nameof(RegisterFactory), type.ToItem(), factory );
 
 		void RegisterFactory<T>( Func<object> factory ) => fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
 	}

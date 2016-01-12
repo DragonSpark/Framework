@@ -10,6 +10,11 @@ namespace DragonSpark.Extensions
 {
 	public static class EnumerableExtensions
 	{
+		public static IEnumerable<T> OrItem<T>( this IEnumerable<T> @this, Func<T> defaultFunction ) where T : class => AnyOr( @this, defaultFunction().ToItem );
+
+		public static IEnumerable<T> AnyOr<T>( this IEnumerable<T> @this, [Required]Func<IEnumerable<T>> defaultFunction ) => @this.Any() ? @this : defaultFunction();
+
+
 		public static T[] Fixed<T>( this IEnumerable<T> @this ) => @this as T[] ?? @this.With( x => x.ToArray() );
 
 		public static IEnumerable<T> NullIfEmpty<T>( this IEnumerable<T> @this ) => @this.With( x => x.Any() ) ? @this : null;

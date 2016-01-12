@@ -23,7 +23,9 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			sut.Assign( Factory.Create<ServiceLocator>() );
+			var serviceLocator = Factory.Create<ServiceLocator>();
+			Assert.NotNull( serviceLocator );
+			sut.Assign( serviceLocator );
 
 			var isAvailable = sut.IsAvailable;
 			Assert.True( isAvailable );

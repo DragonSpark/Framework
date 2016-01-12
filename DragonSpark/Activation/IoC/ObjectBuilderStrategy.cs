@@ -1,7 +1,6 @@
-using System.Linq;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Values;
 using Microsoft.Practices.ObjectBuilder2;
+using System.Linq;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -24,7 +23,7 @@ namespace DragonSpark.Activation.IoC
 	{
 		public override void PreBuildUp( IBuilderContext context )
 		{
-			var all = context.BuildKey.Append( Ambient.GetCurrentChain<NamedTypeBuildKey>() ).All( key => context.Policies.Get<IObjectBuilderPolicy>( key ).With( policy => policy.Enabled ) );
+			var all = context.BuildKey.Append( context.GetCurrentBuildChain() ).All( key => context.Policies.Get<IObjectBuilderPolicy>( key ).With( policy => policy.Enabled ) );
 			all.IsTrue( () =>
 			{
 				var item = context.New<IObjectBuilder>();

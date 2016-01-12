@@ -25,14 +25,14 @@ namespace DragonSpark.Activation.FactoryModel
 		public static object From( [OfFactoryType]Type factoryType ) => FactoryDelegateLocatorFactory.Instance.Create( factoryType )();
 
 		[Freeze]
-		public static Type GetParameterType( Type factoryType )
+		public static Type GetParameterType( [Required]Type factoryType )
 		{
-			var parameterType = Get( factoryType, types => types.First(), Types.Last() );
-			return parameterType;
+			var result = Get( factoryType, types => types.First(), Types.Last() );
+			return result;
 		}
 
 		[Freeze]
-		public static Type GetResultType( Type factoryType ) => Get( factoryType, types => types.Last(), Types );
+		public static Type GetResultType( [Required]Type factoryType ) => Get( factoryType, types => types.Last(), Types );
 
 		static Type Get( Type factoryType, Func<Type[], Type> selector, params TypeAdapter[] typesToCheck )
 		{
@@ -94,12 +94,13 @@ namespace DragonSpark.Activation.FactoryModel
 
 	public class FactoryTypeLocator : FactoryBase<Type, Type>
 	{
-		readonly Func<Assembly[]> assemblies;
 		public static FactoryTypeLocator Instance { get; } = new FactoryTypeLocator();
 
-		public FactoryTypeLocator() : this( Activator.Activate<Assembly[]> ) {}
+		readonly Assemblies.Get assemblies;
 
-		public FactoryTypeLocator( [Required]Func<Assembly[]> assemblies )
+		public FactoryTypeLocator() : this( Assemblies.GetCurrent ) {}
+
+		public FactoryTypeLocator( [Required]Assemblies.Get assemblies )
 		{
 			this.assemblies = assemblies;
 		}
@@ -111,19 +112,20 @@ namespace DragonSpark.Activation.FactoryModel
 			var result =
 				parameter.GetTypeInfo().DeclaredNestedTypes.AsTypes().Where( info => info.Name == name ).Only()
 				??
-				parameter.Assembly().Append( Assemblies ).Distinct().FirstWhere( assembly =>
+				assemblies.Or( parameter.Assembly ).FirstWhere( assembly =>
 				{
-					return assembly.DefinedTypes.AsTypes().ToArray().With( types =>
+					return assembly.DefinedTypes.AsTypes().Where( x => Factory.BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) ).ToArray().With( types =>
 						types.Where( info => info.Name == name ).Only()
 						??
-						types
-							.Where( x => Factory.BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) )
-							.Where( type => Factory.GetResultType( type ) == parameter ).Only()
-						);
+						types.Select( type => new { type, resultType = Factory.GetResultType( type ) } ).ToArray().With( pairs =>
+						{
+							return pairs.Where( arg => arg.resultType == parameter ).Concat( pairs.Where( arg => parameter.Adapt().IsAssignableFrom( arg.resultType ) ) ).WithFirst( arg => arg.type );
+						} )
+					);
 				} );
 			return result;
 		}
 
-		Assembly[] Assemblies => assemblies() ?? Default<Assembly>.Items;
+		// Assembly[] Assemblies => assemblies() ?? Default<Assembly>.Items;
 	}
 }

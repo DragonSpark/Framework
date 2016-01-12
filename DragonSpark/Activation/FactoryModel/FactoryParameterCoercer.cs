@@ -25,12 +25,12 @@ namespace DragonSpark.Activation.FactoryModel
 	{
 		public static FactoryParameterCoercer<TParameter> Instance { get; } = new FactoryParameterCoercer<TParameter>();
 
-		readonly Func<IActivator> activator;
+		readonly Activator.Get activator;
 		
 		public FactoryParameterCoercer() : this( Activator.GetCurrent )
 		{}
 
-		public FactoryParameterCoercer( [Required]Func<IActivator> activator )
+		public FactoryParameterCoercer( [Required]Activator.Get activator )
 		{
 			this.activator = activator;
 		}

@@ -12,18 +12,22 @@ namespace DragonSpark.Setup.Registration
 {
 	public class FactoryRegistration : IRegistration
 	{
-		readonly Type factoryType;
+		readonly RegisterFactoryParameter parameter;
 
-		public FactoryRegistration( [Required, OfFactoryType]Type factoryType )
+		public FactoryRegistration( [Required, OfFactoryType]Type factoryType ) : this( new RegisterFactoryParameter( factoryType ) ) {}
+
+		public FactoryRegistration( [Required, OfFactoryType]Type factoryType, params Type[] registrationTypes ) : this( new RegisterFactoryParameter( factoryType, registrationTypes ) ) {}
+
+		FactoryRegistration( [Required]RegisterFactoryParameter parameter )
 		{
-			this.factoryType = factoryType;
+			this.parameter = parameter;
 		}
 
 		public void Register( IServiceRegistry registry )
 		{
-			new ICommand<Type>[] { new RegisterFactoryWithParameterCommand( registry ), new RegisterFactoryCommand( registry ) }
-				.FirstOrDefault( command => command.CanExecute( factoryType ) )
-				.With( command => command.Run( factoryType ) );
+			new ICommand<RegisterFactoryParameter>[] { new RegisterFactoryWithParameterCommand( registry ), new RegisterFactoryCommand( registry ) }
+				.FirstOrDefault( command => command.CanExecute( parameter ) )
+				.With( command => command.Run( parameter ) );
 		}
 	}
 
@@ -35,10 +39,10 @@ namespace DragonSpark.Setup.Registration
 
 		public static void Register<TService>( this IServiceRegistry @this, Func<TService> factory ) => @this.RegisterFactory( typeof(TService), () => factory() );
 
-		public static IServiceRegistry RegisterFactory( [Required] this IServiceRegistry @this, [Required]IFactory factory )
+		/*public static IServiceRegistry RegisterFactory( [Required] this IServiceRegistry @this, [Required]IFactory factory )
 		{
 			new RegisterFactoryCommand( @this, new FactoryDelegateFactory( factory ).Create )
-				.ExecuteWith( factory.GetType() );
+				.ExecuteWith( new RegisterFactoryParameter( factory.GetType() ) );
 			return @this;
 		}
 
@@ -47,7 +51,7 @@ namespace DragonSpark.Setup.Registration
 			new RegisterFactoryWithParameterCommand( @this, new FactoryWithParameterContainedDelegateFactory( type => factory.Create ).Create )
 				.ExecuteWith( factory.GetType() );
 			return @this;
-		}
+		}*/
 	}
 
 	public class FactoryDelegateFactory : FactoryBase<Type, Func<object>>
@@ -137,7 +141,22 @@ namespace DragonSpark.Setup.Registration
 		protected override Func<T> CreateItem( Func<object> parameter ) => () => (T)parameter();
 	}
 
-	public abstract class RegisterFactoryCommandBase<TFactory> : Command<Type>
+	public class RegisterFactoryParameter
+	{
+		public RegisterFactoryParameter( [Required, OfFactoryType]Type factoryType ) : this( factoryType, Factory.GetResultType( factoryType ) ) { }
+
+		public RegisterFactoryParameter( [Required, OfFactoryType]Type factoryType, params Type[] registrationTypes )
+		{
+			FactoryType = factoryType;
+			RegisterTypes = registrationTypes.NotNull().Distinct().ToArray();
+		}
+		
+		public Type FactoryType { get; }
+
+		public Type[] RegisterTypes { get; }
+	}
+
+	public abstract class RegisterFactoryCommandBase<TFactory> : Command<RegisterFactoryParameter>
 	{
 		readonly IServiceRegistry registry;
 		readonly ISingletonLocator locator;
@@ -150,18 +169,19 @@ namespace DragonSpark.Setup.Registration
 			this.create = create;
 		}
 
-		public override bool CanExecute( Type parameter ) => base.CanExecute( parameter ) && typeof(TFactory).Adapt().IsAssignableFrom( parameter );
+		public override bool CanExecute( RegisterFactoryParameter parameter ) => base.CanExecute( parameter ) && typeof(TFactory).Adapt().IsAssignableFrom( parameter.FactoryType );
 
-		protected override void OnExecute( Type parameter )
+		protected override void OnExecute( RegisterFactoryParameter parameter )
 		{
-			var itemType = Factory.GetResultType( parameter );
-			var func = create( parameter );
-			registry.RegisterFactory( itemType, func );
-
-			locator.Locate( MakeGenericType( parameter, itemType ) ).AsValid<IFactoryWithParameter>( factory =>
+			var func = create( parameter.FactoryType );
+			parameter.RegisterTypes.Each( type =>
 			{
-				var typed = Create( factory, parameter, func );
-				registry.Register( typed.GetType(), typed );
+				registry.RegisterFactory( type, func );
+				locator.Locate( MakeGenericType( parameter.FactoryType, type ) ).AsValid<IFactoryWithParameter>( factory =>
+				{
+					var typed = Create( factory, parameter.FactoryType, func );
+					registry.Register( typed.GetType(), typed );
+				} );
 			} );
 		}
 

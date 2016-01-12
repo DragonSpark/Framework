@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Testing.Objects.Setup;
 
 namespace DragonSpark.Windows.Testing.Setup
 {

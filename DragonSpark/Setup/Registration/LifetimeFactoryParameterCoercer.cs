@@ -15,7 +15,7 @@ namespace DragonSpark.Setup.Registration
 
 		public LifetimeFactoryParameterCoercer( Type defaultLifetimeType ) : this( Activator.GetCurrent, defaultLifetimeType ) {}
 
-		public LifetimeFactoryParameterCoercer( [Required]Func<IActivator> activator, [OfType( typeof(LifetimeManager) )]Type defaultLifetimeType ) : base( activator )
+		public LifetimeFactoryParameterCoercer( [Required]Activator.Get activator, [OfType( typeof(LifetimeManager) )]Type defaultLifetimeType ) : base( activator )
 		{
 			this.defaultLifetimeType = defaultLifetimeType;
 		}

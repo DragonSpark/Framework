@@ -1,5 +1,6 @@
-using Microsoft.Practices.Unity;
 using System.Reflection;
+using DragonSpark.TypeSystem;
+using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Activation.IoC
 {

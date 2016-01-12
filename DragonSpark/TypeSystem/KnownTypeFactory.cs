@@ -10,15 +10,15 @@ namespace DragonSpark.TypeSystem
 {
 	public class KnownTypeFactory : FactoryBase<Type, Type[]>
 	{
-		readonly Func<Assembly[]> assemblies;
+		readonly Assembly[] assemblies;
 
-		public KnownTypeFactory( [Required]Func<Assembly[]> assemblies )
+		public KnownTypeFactory( [Required]Assembly[] assemblies )
 		{
 			this.assemblies = assemblies;
 		}
 
 		[Freeze]
-		protected override Type[] CreateItem( Type parameter ) => assemblies()
+		protected override Type[] CreateItem( Type parameter ) => assemblies
 																	.SelectMany( z => z.DefinedTypes )
 																	.Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" )
 																	.AsTypes()

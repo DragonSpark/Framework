@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Extensions
 		[Theory, Framework.Setup.AutoData]
 		public void TryResolve( UnityContainer sut )
 		{
-			var logger = sut.Extend().Container.Resolve<RecordingMessageLogger>();
+			var logger = sut.Extend().Resolve<RecordingMessageLogger>();
 			var initial = logger.Messages.Count();
 			Assert.NotEmpty( logger.Messages );
 

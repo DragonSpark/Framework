@@ -5,7 +5,7 @@ namespace DragonSpark.Extensions
 {
 	public static class ActivateFactoryExtensions
 	{
-		public static T CreateUsing<T>( this IFactory<ActivateParameter, T> @this ) => @this.CreateUsing( typeof(T) );
+		public static T Create<T>( this IFactory<ActivateParameter, T> @this ) => @this.CreateUsing( typeof(T) );
 
 		public static T CreateUsing<T>( this IFactory<ActivateParameter, T> @this, Type type )
 		{

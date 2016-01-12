@@ -10,12 +10,11 @@
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:AssignLocationCommand />
-	<setupObjects:SetupUnityCommand>
-		<setupObjects:SetupUnityCommand.Extensions>
+	<commands:SetupUnityCommand>
+		<commands:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />
-		</setupObjects:SetupUnityCommand.Extensions>
-	</setupObjects:SetupUnityCommand>
+		</commands:SetupUnityCommand.Extensions>
+	</commands:SetupUnityCommand>
 	<ds:SetupRegistrationByConventionCommand />
 	<setupObjects:DefaultCustomizeFixtureCommand />
 </setup:Setup>

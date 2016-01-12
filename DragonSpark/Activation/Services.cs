@@ -1,5 +1,4 @@
 using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Activation

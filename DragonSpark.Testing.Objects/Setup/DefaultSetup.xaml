@@ -8,6 +8,5 @@
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:AssignLocationCommand />
 	<localSetup:DefaultCustomizeFixtureCommand />
 </setup:Setup>

@@ -3,8 +3,10 @@ using Ploeh.AutoFixture;
 using System;
 using System.Reflection;
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Setup;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -25,30 +27,32 @@ namespace DragonSpark.Testing.Framework.Setup
 		protected override void OnInitializing( AutoData context ) => factory( context.Method ).Each( customization => customization.Customize( context.Fixture ) );
 	}
 
-	public class SetupCustomization<T> : AutoDataCustomization where T : class, ISetup
+	public class SetupCustomization<TAssemblyProvider, TSetup> : AutoDataCustomization 
+		where TAssemblyProvider : IAssemblyProvider
+		where TSetup : class, ISetup
 	{
-		readonly Func<T> factory;
+		readonly Func<TSetup> factory;
 
-		public SetupCustomization() : this( ActivateFactory<T>.Instance.CreateUsing )
+		public SetupCustomization() : this( ActivateFactory<TSetup>.Instance.Create )
 		{ }
 
-		public SetupCustomization( Func<T> factory )
+		public SetupCustomization( Func<TSetup> factory )
 		{
 			this.factory = factory;
 		}
 
 		protected override void OnInitializing( AutoData context )
 		{
-			using ( var arguments = new SetupParameter( context ) )
+			using ( var arguments = new SetupParameter<TAssemblyProvider>( context ) )
 			{
 				var setup = factory();
 				setup.Run( arguments );
 			}
 		}
 
-		public class SetupParameter : ApplicationSetupParameter<RecordingMessageLogger, AutoData>
+		public class SetupParameter<T> : ApplicationSetupParameter<AutoData> where T : IAssemblyProvider
 		{
-			public SetupParameter( AutoData arguments ) : base( arguments ) {}
+			public SetupParameter( AutoData arguments ) : base( new ServiceLocatorFactory<T, RecordingMessageLogger>().Create(), arguments ) {}
 		}
 	}
 }

@@ -7,9 +7,11 @@ namespace DragonSpark.Activation.FactoryModel
 		public static ActivateFactory<TResult> Instance { get; } = new ActivateFactory<TResult>();
 
 		public ActivateFactory() : this( Activation.Activator.GetCurrent ) {}
+		
+		protected ActivateFactory( Activator.Get activator ) : this( activator, new ActivateFactoryParameterCoercer<TResult>( activator ) ) {}
 
-		public ActivateFactory( Func<IActivator> activator ) : this( activator, new ActivateFactoryParameterCoercer<TResult>( activator ) ) {}
+		// protected ActivateFactory( IFactoryParameterCoercer<ActivateParameter> coercer ) : this( Activation.Activator.GetCurrent, coercer ) {}
 
-		public ActivateFactory( Func<IActivator> activator, IFactoryParameterCoercer<ActivateParameter> coercer ) : base( activator, coercer ) {}
+		protected ActivateFactory( Activator.Get activator, IFactoryParameterCoercer<ActivateParameter> coercer ) : base( activator, coercer ) {}
 	}
 }

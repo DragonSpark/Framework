@@ -213,7 +213,6 @@
     <Compile Include="Runtime\Specifications\AnySpecification.cs" />
     <Compile Include="TypeSystem\ApplicationAssemblyLocator.cs" />
     <Compile Include="TypeSystem\ApplicationAttribute.cs" />
-    <Compile Include="TypeSystem\AssembliesFactory.cs" />
     <Compile Include="Runtime\Specifications\CompositeSpecification.cs" />
     <Compile Include="Runtime\CurrentTime.cs" />
     <Compile Include="Runtime\Specifications\EqualityContextAwareSpecification.cs" />
@@ -311,7 +310,6 @@
     <Compile Include="Runtime\Values\Value.cs" />
     <Compile Include="Runtime\Values\WritableValue.cs" />
     <Compile Include="Setup\AllTypesOfFactory.cs" />
-    <Compile Include="Setup\Commands\AssignLocationCommand.cs" />
     <Compile Include="Runtime\CommandCollection.cs" />
     <Compile Include="Runtime\CompositeCommand.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
@@ -347,7 +345,7 @@
     <Compile Include="Setup\Commands\UnityInstance.cs" />
     <Compile Include="Setup\Commands\UnityRegistrationCommand.cs" />
     <Compile Include="Setup\Commands\UnityType.cs" />
-    <Compile Include="Activation\IoC\IoCExtension.cs" />
+    <Compile Include="Activation\IoC\BuildPipelineExtension.cs" />
     <Compile Include="Activation\IoC\ServiceLocator.cs" />
     <Compile Include="Runtime\ApplicationInformation.cs">
       <SubType>Code</SubType>

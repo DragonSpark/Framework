@@ -12,15 +12,14 @@
 	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:AssignLocationCommand />
-	<setupObjects:SetupUnityCommand>
+	<commands:SetupUnityCommand>
 		<commands:ConfigureUnityCommand.Types>
 			<commands:UnityType RegistrationType="{x:Type localSetup:ITyper}" MapTo="{x:Type localSetup:SomeTypeist}" />
 		</commands:ConfigureUnityCommand.Types>
-		<setupObjects:SetupUnityCommand.Extensions>
+		<commands:SetupUnityCommand.Extensions>
 			<location:FixtureExtension />
-		</setupObjects:SetupUnityCommand.Extensions>
-	</setupObjects:SetupUnityCommand>
+		</commands:SetupUnityCommand.Extensions>
+	</commands:SetupUnityCommand>
 	
 	<ds:SetupRegistrationByConventionCommand />
 	<commands:SetupObjectBuilderCommand />

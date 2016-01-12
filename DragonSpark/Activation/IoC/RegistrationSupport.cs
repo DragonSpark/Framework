@@ -6,10 +6,12 @@ using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
+using DragonSpark.Setup.Registration;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Activation.IoC
 {
-	//[Register.Type]
+	[Register.Type]
 	public class RegistrationSupport
 	{
 		readonly IUnityContainer container;

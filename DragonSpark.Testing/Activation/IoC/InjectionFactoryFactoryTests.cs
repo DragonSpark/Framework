@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		[Fact]
 		public void Simple()
 		{
-			var container = new UnityContainer().Extend().Container;
+			var container = new UnityContainer().Extend();
 			var sut = new InjectionFactoryFactory( typeof(SimpleFactory) );
 			var create = sut.Create( new InjectionMemberParameter( container, typeof(string) ) );
 			container.RegisterType( typeof(string), create );
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		[Fact]
 		public void Create()
 		{
-			var container = new UnityContainer().Extend().Container;
+			var container = new UnityContainer().Extend();
 			var sut = new InjectionFactoryFactory( typeof(Factory) );
 			container.RegisterType<IItem, Item>( new ContainerControlledLifetimeManager() );
 			var expected = container.Resolve<IItem>();
@@ -39,8 +39,6 @@ namespace DragonSpark.Testing.Activation.IoC
 
 		class Factory : FactoryBase<IItem>
 		{
-			// public static IItem Result { get; } = new Target();
-
 			protected override IItem CreateItem() => null;
 		}
 

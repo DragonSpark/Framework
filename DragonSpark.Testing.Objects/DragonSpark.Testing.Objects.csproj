@@ -73,7 +73,6 @@
     <Compile Include="Setup\DefaultSetup.xaml.cs">
       <DependentUpon>DefaultSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setup\SetupUnityCommand.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Static.cs" />
     <Compile Include="YetAnotherClass.cs" />
