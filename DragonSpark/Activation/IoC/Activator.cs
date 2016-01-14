@@ -2,6 +2,7 @@ using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
+using System.Linq;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -9,13 +10,13 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly IUnityContainer container;
 		readonly IResolutionSupport support;
-		readonly RegistrationSupport registration;
+		readonly RegisterAllClassesCommand command;
 
-		public Activator( [Required]IUnityContainer container, [Required]IResolutionSupport support, [Required]RegistrationSupport registration )
+		public Activator( [Required]IUnityContainer container, [Required]IResolutionSupport support, [Required]RegisterAllClassesCommand command )
 		{
 			this.container = container;
 			this.support = support;
-			this.registration = registration;
+			this.command = command;
 		}
 
 		public bool CanActivate( Type type, string name = null ) => support.CanResolve( type, name );
@@ -28,7 +29,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			using ( var child = container.CreateChildContainer() )
 			{
-				parameters.NotNull().Each( x => registration.AllClasses( x ) );
+				parameters.NotNull().Select( o => new InstanceRegistrationParameter( o ) ).Each( command.ExecuteWith );
 
 				var result = child.TryResolve( type );
 				return result;

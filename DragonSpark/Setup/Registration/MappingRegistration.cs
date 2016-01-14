@@ -19,6 +19,6 @@ namespace DragonSpark.Setup.Registration
 			this.name = name;
 		}
 
-		public void Register( IServiceRegistry registry ) => registry.Register( @as, type, name );
+		public void Register( IServiceRegistry registry ) => registry.Register( new MappingRegistrationParameter( @as, type, name ) );
 	}
 }

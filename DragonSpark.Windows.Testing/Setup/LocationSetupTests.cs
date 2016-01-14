@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using DragonSpark.Setup.Registration;
 using PostSharp;
+using PostSharp.Patterns.Model;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Windows.Testing.TestObjects.Activator;
@@ -123,7 +124,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		public void RegisterLocation( ServiceLocation sut )
 		{
 			var registry = sut.Item.GetInstance<IServiceRegistry>();
-			registry.Register( typeof(IInterface), typeof(Class) );
+			registry.Register<IInterface, Class>();
 
 			var located = sut.Locate<IInterface>();
 			Assert.IsType<Class>( located );
@@ -133,7 +134,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		void RegisterInstanceClass( ServiceLocation sut, Class instance )
 		{
 			var registry = sut.Item.GetInstance<IServiceRegistry>();
-			registry.Register( typeof( IInterface ), instance );
+			registry.Register<IInterface>( instance );
 
 			var located = sut.Locate<IInterface>();
 			Assert.IsType<Class>( located );
@@ -177,13 +178,13 @@ namespace DragonSpark.Windows.Testing.Setup
 			location.Assign( DragonSpark.Activation.FactoryModel.Factory.Create<ServiceLocator>() );
 
 			var registry = location.Item.GetInstance<IServiceRegistry>();
-			registry.Register( typeof(IServiceRegistry), sut.Object );
+			registry.Register<IServiceRegistry>( sut.Object );
 
 			var registered = location.Item.GetInstance<IServiceRegistry>();
 			Assert.Same( sut.Object, registered );
 			registered.Register<IInterface, Class>();
 
-			sut.Verify( x => x.Register( typeof(IInterface), typeof(Class), null ) );
+			sut.Verify( x => x.Register( new MappingRegistrationParameter( typeof(IInterface), typeof(Class), null) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -242,7 +243,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, LocationSetup.AutoData]
 		void CreateActivator( IActivator sut, string message, int number, Class @item )
 		{
-			Assert.IsType<CompositeActivator>( sut );
+			Assert.IsAssignableFrom<CompositeActivator>( sut );
 
 			var created = sut.Construct<ClassWithManyParameters>( number, message, item );
 			Assert.Equal( message, created.String );
@@ -282,7 +283,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		{
 			Assert.False( container.IsRegistered<IInterface>() );
 			var registry = sut.GetInstance<IServiceRegistry>();
-			registry.RegisterFactory( typeof( IInterface ), () => new Class() );
+			registry.RegisterFactory( new FactoryRegistrationParameter( typeof(IInterface), () => new Class() ) );
 			Assert.True( container.IsRegistered<IInterface>() );
 			Assert.IsType<Class>( container.Resolve<IInterface>() );
 		}
@@ -303,7 +304,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			Assert.Same( Services.Location.Item, sut );
 
-			Post.Cast<ServiceLocator, IDisposable>( sut ).Dispose();
+			sut.QueryInterface<IDisposable>().Dispose();
 
 			Assert.NotSame( Services.Location.Item, sut );
 
@@ -511,14 +512,14 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.IsType<MultipleInterfaces>( sut );
 		}
 
-		[Register.As( typeof(IAnotherInterface) )]
+		[Register.Mapped( typeof(IAnotherInterface) )]
 		public class MultipleInterfaces : IInterface, IAnotherInterface, IItem
 		{}
 
 		interface IAnotherInterface
 		{ }
 
-		[Register.As( "Registered" )]
+		[Register.Mapped( "Registered" )]
 		public class RegisteredWithNameClass : IRegisteredWithName
 		{ }
 
@@ -538,11 +539,11 @@ namespace DragonSpark.Windows.Testing.Setup
 		public class Item : IItem
 		{ }
 
-		[Register.As( "AnotherItem" )]
+		[Register.Mapped( "AnotherItem" )]
 		public class AnotherItem : IItem
 		{ }
 
-		[Register.As( "YetAnotherItem" )]
+		[Register.Mapped( "YetAnotherItem" )]
 		public class YetAnotherItem : IItem
 		{ }
 	}

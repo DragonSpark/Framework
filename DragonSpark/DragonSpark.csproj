@@ -138,11 +138,8 @@
     <Compile Include="Activation\FactoryModel\ActivationFactoryParameterCoercer.cs" />
     <Compile Include="Activation\FactoryModel\Factory.cs" />
     <Compile Include="Activation\IExecutionContext.cs" />
-    <Compile Include="Activation\IoC\EnsuredRegistrationSupport.cs" />
-    <Compile Include="Activation\IoC\NotRegisteredSpecification.cs" />
+    <Compile Include="Activation\IoC\IsRegisteredSpecification.cs" />
     <Compile Include="Activation\IoC\ObjectBuilderExtension.cs" />
-    <Compile Include="Activation\IoC\RegistrationSpecificationParameter.cs" />
-    <Compile Include="Activation\IoC\RegistrationSupport.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
     <Compile Include="Aspects\BuildUp.cs" />
@@ -160,6 +157,7 @@
     <Compile Include="Runtime\FatalApplicationException.cs" />
     <Compile Include="Runtime\ICommand.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
+    <Compile Include="Runtime\Specifications\WrappedSpecification.cs" />
     <Compile Include="Runtime\Specifications\IsTypeSpecification.cs" />
     <Compile Include="Runtime\Values\AmbientContextCommand.cs" />
     <Compile Include="Runtime\Values\ConnectedValue.cs" />
@@ -184,7 +182,7 @@
     <Compile Include="Activation\IoC\IResolutionSupport.cs" />
     <Compile Include="Activation\IoC\ResolutionContext.cs" />
     <Compile Include="Activation\IoC\ResolutionSupport.cs" />
-    <Compile Include="Activation\IoC\ServiceRegistry.cs" />
+    <Compile Include="Activation\IoC\TransientServiceRegistry.cs" />
     <Compile Include="Activation\IServiceLocation.cs" />
     <Compile Include="Activation\ServiceLocation.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
@@ -192,7 +190,6 @@
     <Compile Include="Setup\Commands\SetupObjectBuilderCommand.cs" />
     <Compile Include="Setup\Registration\FactoryRegistration.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
-    <Compile Include="Setup\Registration\LifetimeManagerFactory.cs" />
     <Compile Include="Setup\Registration\MappingRegistration.cs" />
     <Compile Include="Setup\SetupParameterExtensions.cs" />
     <Compile Include="TypeSystem\AssemblyInformation.cs" />
@@ -226,6 +223,7 @@
     <Compile Include="TypeSystem\HostingAttribute.cs" />
     <Compile Include="TypeSystem\IAttributeProvider.cs" />
     <Compile Include="TypeSystem\KnownTypeFactory.cs" />
+    <Compile Include="TypeSystem\MemberInfoWithRelatedProviderFactory.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
@@ -315,7 +313,6 @@
     <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
     <Compile Include="Setup\Registration\ConventionRegistrationProfileFactory.cs" />
     <Compile Include="Setup\Registration\IRegistration.cs" />
-    <Compile Include="Setup\Registration\IConventionRegistrationProfileProvider.cs" />
     <Compile Include="Setup\Commands\InitializeModulesCommand.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactory.cs" />
     <Compile Include="Activation\IoC\InjectionMemberParameter.cs" />

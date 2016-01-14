@@ -187,7 +187,6 @@
       <DependentUpon>ProgramSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup\ProgramSetupTests.cs" />
-    <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercerTests.cs" />
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
     <Compile Include="Setup\SetupParameterTests.cs" />

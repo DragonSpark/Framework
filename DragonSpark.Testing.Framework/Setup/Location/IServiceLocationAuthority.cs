@@ -4,6 +4,7 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using System;
+using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -19,11 +20,13 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		[Value( typeof(CurrentAutoDataContext) )]
 		public AutoData Setup { get; set; }
 
+		[Activate]
+		public PersistingServiceRegistry Registry { get; set; }
+
 		[BuildUp]
 		protected override void Initialize()
 		{
-			Container.Registration<EnsuredRegistrationSupport>().Instance( Setup.Fixture );
-
+			new RegisterInstanceCommand( Registry, Specifications.NotRegistered( Container ) ).ExecuteWith( new InstanceRegistrationParameter( Setup.Fixture ) );
 			// Container.Extend().Policies.Insert( 0, new FixtureBuildPlanStrategy() );
 		}
 	}

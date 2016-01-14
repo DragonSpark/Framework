@@ -6,7 +6,7 @@ namespace DragonSpark.ComponentModel
 {
 	public sealed class FactoryAttribute : ActivateAttribute
 	{
-		public FactoryAttribute( Type factoryType = null, string name = null ) : base( new ActivatedValueProvider.Converter( p => factoryType ?? FactoryTypeLocator.Instance.Create( p.PropertyType ), name ), Creator.Instance )
+		public FactoryAttribute( Type factoryType = null, string name = null ) : base( new ActivatedValueProvider.Converter( p => factoryType ?? MemberInfoFactoryTypeLocator.Instance.Create( p ), name ), Creator.Instance )
 		{}
 
 		public class Creator : ActivatedValueProvider.Creator

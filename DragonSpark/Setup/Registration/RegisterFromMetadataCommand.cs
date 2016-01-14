@@ -1,10 +1,9 @@
-using System.Linq;
 using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
+using System.Linq;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -19,7 +18,7 @@ namespace DragonSpark.Setup.Registration
 
 		protected override void OnExecute( ConventionRegistrationProfile parameter )
 		{
-			var tuples = parameter.Candidates.AsTypeInfos().WhereDecorated<RegistrationBaseAttribute>( ).ToArray();
+			var tuples = parameter.Candidates.AsTypeInfos().WhereDecorated<RegistrationBaseAttribute>().ToArray();
 			tuples
 				.Each( item => HostedValueLocator<IRegistration>.Instance.Create( item.Item2 ).Each( registration => registration.Register( registry ) ) );
 		}

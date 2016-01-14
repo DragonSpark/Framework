@@ -256,7 +256,6 @@
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
     <Compile Include="Runtime\TypeDefinitionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setup\ConventionRegistrationCommand.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />
     <Compile Include="Runtime\TaskLocalValue.cs" />
   </ItemGroup>

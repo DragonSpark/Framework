@@ -57,19 +57,9 @@ namespace DragonSpark.Activation.IoC
 
 	class SingletonBuildPlanPolicy : IBuildPlanPolicy
 	{
-		readonly ISingletonLocator locator;
-
-		public SingletonBuildPlanPolicy() : this( SingletonLocator.Instance )
-		{ }
-
-		public SingletonBuildPlanPolicy( ISingletonLocator locator )
-		{
-			this.locator = locator;
-		}
-
-
 		public void BuildUp( IBuilderContext context )
 		{
+			var locator = context.New<ISingletonLocator>();
 			var singleton = locator.Locate( context.BuildKey.Type );
 			if ( singleton != null )
 			{

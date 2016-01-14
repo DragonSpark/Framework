@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using Microsoft.Practices.ObjectBuilder2;
 using System.Linq;
+using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Activation.IoC
 {
@@ -27,7 +28,10 @@ namespace DragonSpark.Activation.IoC
 			all.IsTrue( () =>
 			{
 				var item = context.New<IObjectBuilder>();
-				context.Existing = context.Existing.With( item.BuildUp );
+				if ( new Checked( new KeyReference( context.BuildKey, this ).Item ).Item.Apply() )
+				{
+					context.Existing = context.Existing.With( item.BuildUp );
+				}
 			} );
 		}
 	}

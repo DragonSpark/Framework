@@ -1,4 +1,5 @@
-using DragonSpark.Extensions;
+using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using System;
 
 namespace DragonSpark.Setup.Commands
@@ -7,6 +8,10 @@ namespace DragonSpark.Setup.Commands
 	{
 		public Type MapTo { get; set; }
 		
-		protected override void OnExecute( IApplicationSetupParameter parameter ) => Container.Registration().Mapping( RegistrationType, MapTo ?? RegistrationType, BuildName, Lifetime );
+		protected override void OnExecute( IApplicationSetupParameter parameter )
+		{
+			var registry = new ServiceRegistry( Container, Lifetime );
+			registry.Register( new MappingRegistrationParameter( RegistrationType, MapTo ?? RegistrationType, BuildName ) );
+		}
 	}
 }

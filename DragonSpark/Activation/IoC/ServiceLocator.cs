@@ -43,12 +43,7 @@ namespace DragonSpark.Activation.IoC
 			return null;
 		}
 
-		[Reference]
+		[Child]
 		public IUnityContainer Container { get; }
-
-		protected virtual void Dispose( bool disposing )
-		{
-			
-		}
 	}
 }

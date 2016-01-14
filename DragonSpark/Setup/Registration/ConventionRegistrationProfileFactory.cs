@@ -1,37 +1,35 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.TypeSystem;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Setup.Registration
 {
 	public class ConventionRegistrationProfileFactory : FactoryBase<ConventionRegistrationProfile>
 	{
-		readonly Func<Assembly[]> creator;
+		readonly Assembly[] assemblies;
 
-		[InjectionConstructor]
-		public ConventionRegistrationProfileFactory( [Required]Func<Assembly[]> creator )
+		public ConventionRegistrationProfileFactory( [Required]Assembly[] assemblies )
 		{
-			this.creator = creator;
+			this.assemblies = assemblies;
 		}
 
-		protected virtual Type[] DetermineCandidateTypes( IEnumerable<Assembly> assemblies )
+		protected virtual Type[] DetermineCandidateTypes()
 		{
 			var result = assemblies.SelectMany( assembly =>
 				{
 					var types = assembly.DefinedTypes.Where( info => !info.IsAbstract && ( !info.IsNested || info.IsNestedPublic ) )
 						.AsTypes()
-						.Except( Attributes.Get( assembly ).From<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) );
+						.Except( assembly.From<RegistrationAttribute, IEnumerable<Type>>( attribute => attribute.IgnoreForRegistration ) );
 					return types;
 				} ).Prioritize().ToArray();
 			return result;
 		}
 
-		protected override ConventionRegistrationProfile CreateItem() => creator().Prioritize().ToArray().With( assemblies => new ConventionRegistrationProfile( assemblies, DetermineCandidateTypes( assemblies ) ) );
+		protected override ConventionRegistrationProfile CreateItem() => new ConventionRegistrationProfile( DetermineCandidateTypes() );
 	}
 }

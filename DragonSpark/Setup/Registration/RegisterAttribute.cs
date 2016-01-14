@@ -1,4 +1,5 @@
 using System;
+using DragonSpark.Activation.IoC;
 
 namespace DragonSpark.Setup.Registration
 {
@@ -9,13 +10,15 @@ namespace DragonSpark.Setup.Registration
 			public TypeAttribute( string name = null ) : base( t => new TypeRegistration( t, name ) ) { }
 		}
 
-		public sealed class AsAttribute : RegistrationBaseAttribute
+		public sealed class MappedAttribute : RegistrationBaseAttribute
 		{
-			public AsAttribute( Type @as ) : this( @as, null ) { }
+			public MappedAttribute() : this( null, null ) {}
 
-			public AsAttribute( string name ) : this( null, name ) { }
+			public MappedAttribute( Type @as ) : this( @as, null ) { }
 
-			AsAttribute( Type @as, string name ) : base( t => new TypeRegistration( @as ?? t, t, name ) ) { }
+			public MappedAttribute( string name ) : this( null, name ) { }
+
+			MappedAttribute( Type @as, string name ) : base( t => new TypeRegistration( @as ?? ImplementedFromConventionTypeLocator.Instance.Create( t ) ?? t, t, name ) ) { }
 		}
 
 		public class FactoryAttribute : RegistrationBaseAttribute

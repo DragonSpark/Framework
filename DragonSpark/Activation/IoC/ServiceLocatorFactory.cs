@@ -6,7 +6,9 @@ using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System.Reflection;
+using DragonSpark.Aspects;
 using DragonSpark.Properties;
+using DragonSpark.Runtime;
 using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Activation.IoC
@@ -27,9 +29,8 @@ namespace DragonSpark.Activation.IoC
 	{
 		public ServiceLocatorFactory() : this( new UnityContainerFactory<TAssemblyProvider, TLogger>().Create() ) { }
 
-		public ServiceLocatorFactory( IUnityContainer container ) : base( container ) { }
+		public ServiceLocatorFactory( IUnityContainer container ) : base( container, new AssignLocationCommand( Services.Location, container, container.Logger() ) ) { }
 	}
-
 
 	public class UnityContainerFactory : FactoryBase<IUnityContainer>
 	{
@@ -58,32 +59,68 @@ namespace DragonSpark.Activation.IoC
 		}
 	}
 
-	public class ServiceLocatorFactory : FactoryBase<ServiceLocator>
+	public class FrozenDisposeContainerControlledLifetimeManager : ContainerControlledLifetimeManager
+	{
+		[Freeze]
+		protected override void Dispose( bool disposing ) => base.Dispose( disposing );
+	}
+
+	public class ConfigureLocationCommand : Command<IServiceLocator>
 	{
 		readonly IServiceLocation location;
 		readonly IUnityContainer container;
 		readonly IMessageLogger logger;
 
-		public ServiceLocatorFactory() : this( Factory.Create<UnityContainer>() ) {}
-
-		public ServiceLocatorFactory( IUnityContainer container ) : this( Services.Location, container ) {}
-
-		public ServiceLocatorFactory( IServiceLocation location, [Required]IUnityContainer container ) : this( location, container, container.Logger() ) {}
-
-		public ServiceLocatorFactory( [Required]IServiceLocation location, [Required]IUnityContainer container, [Required]IMessageLogger logger )
+		public ConfigureLocationCommand( [Required]IServiceLocation location, [Required]IUnityContainer container, [Required]IMessageLogger logger )
 		{
 			this.location = location;
 			this.container = container;
 			this.logger = logger;
 		}
 
-		protected override ServiceLocator CreateItem()
+		protected override void OnExecute( IServiceLocator parameter )
 		{
 			logger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
-			var result = new ServiceLocator( container );
 			container.RegisterInstance( location );
-			container.RegisterInstance<IServiceLocator>( result );
-			location.Assign( result );
+			container.RegisterInstance( parameter, new FrozenDisposeContainerControlledLifetimeManager() );
+		}
+	}
+
+	public class AssignLocationCommand : ConfigureLocationCommand
+	{
+		readonly IServiceLocation location;
+
+		public AssignLocationCommand( IServiceLocation location, IUnityContainer container, IMessageLogger logger ) : base( location, container, logger )
+		{
+			this.location = location;
+		}
+
+		protected override void OnExecute( IServiceLocator parameter )
+		{
+			base.OnExecute( parameter );
+			location.Assign( parameter );
+		}
+	}
+
+	public class ServiceLocatorFactory : FactoryBase<IServiceLocator>
+	{
+		readonly IUnityContainer container;
+		readonly ICommand<IServiceLocator> created;
+
+		public ServiceLocatorFactory() : this( Factory.Create<UnityContainer>() ) {}
+
+		public ServiceLocatorFactory( [Required]IUnityContainer container ) : this( container, new ConfigureLocationCommand( Services.Location, container, container.Logger() ) ) {}
+
+		public ServiceLocatorFactory( [Required]IUnityContainer container, [Required]ICommand<IServiceLocator> created )
+		{
+			this.container = container;
+			this.created = created;
+		}
+
+		protected override IServiceLocator CreateItem()
+		{
+			var result = new ServiceLocator( container );
+			created.ExecuteWith( result );
 			return result;
 		}
 	}

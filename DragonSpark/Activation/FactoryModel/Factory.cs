@@ -1,4 +1,5 @@
 using AutoMapper.Internal;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Specifications;
@@ -13,21 +14,27 @@ namespace DragonSpark.Activation.FactoryModel
 {
 	public static class Factory
 	{
-		readonly internal static TypeAdapter[]
-			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray();
-
-		readonly internal static TypeAdapter[]
+		readonly static TypeAdapter[]
+			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
 			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
+		
+		public static bool IsFactory( [Required] Type type ) => BasicTypes.Any( adapter => adapter.IsAssignableFrom( type ) );
 
+		public static T Create<T>() => (T)From( FrameworkFactoryTypeLocator.Instance.Create( typeof(T) ) );
 
-		public static T Create<T>() => (T)From( FactoryTypeLocator.Instance.Create( typeof(T) ) );
-
-		public static object From( [OfFactoryType]Type factoryType ) => FactoryDelegateLocatorFactory.Instance.Create( factoryType )();
+		public static object From( [Required, OfFactoryType]Type factoryType ) => FactoryDelegateLocatorFactory.Instance.Create( factoryType )();
 
 		[Freeze]
 		public static Type GetParameterType( [Required]Type factoryType )
 		{
 			var result = Get( factoryType, types => types.First(), Types.Last() );
+			return result;
+		}
+
+		[Freeze]
+		public static Type GetInterface( [Required] Type factoryType )
+		{
+			var result = factoryType.Adapt().GetAllInterfaces().FirstOrDefault( IsFactory );
 			return result;
 		}
 
@@ -64,60 +71,65 @@ namespace DragonSpark.Activation.FactoryModel
 	{
 		public static MemberInfoFactoryTypeLocator Instance { get; } = new MemberInfoFactoryTypeLocator();
 
-		public MemberInfoFactoryTypeLocator() : base( member => new[] { member.GetMemberType(), member.DeclaringType } ) {}
+		public MemberInfoFactoryTypeLocator() : base( member => member.GetMemberType(), member => new[] { member.DeclaringType } ) {}
 	}
 
 	public class ParameterInfoFactoryTypeLocator : FactoryTypeLocatorBase<ParameterInfo>
 	{
 		public static ParameterInfoFactoryTypeLocator Instance { get; } = new ParameterInfoFactoryTypeLocator();
 
-		public ParameterInfoFactoryTypeLocator() : base( parameter => new[] { parameter.ParameterType, parameter.Member.DeclaringType } ) {}
+		public ParameterInfoFactoryTypeLocator() : base( parameter => parameter.ParameterType, parameter => new[] { parameter.Member.DeclaringType } ) {}
+	}
+
+	public class FrameworkFactoryTypeLocator : FactoryTypeLocatorBase<Type>
+	{
+		public static FrameworkFactoryTypeLocator Instance { get; } = new FrameworkFactoryTypeLocator();
+
+		public FrameworkFactoryTypeLocator() : base( Default<Type>.Self, t => Default<Type>.Items ) {}
 	}
 
 	public abstract class FactoryTypeLocatorBase<T> : FactoryBase<T, Type>
 	{
-		readonly Func<T, Type[]> types;
+		readonly Func<T, Type> type;
+		readonly Func<T, Type[]> locations;
 
-		protected FactoryTypeLocatorBase( [Required]Func<T, Type[]> types )
+		protected FactoryTypeLocatorBase( [Required]Func<T, Type> type, [Required]Func<T, Type[]> locations )
 		{
-			this.types = types;
+			this.type = type;
+			this.locations = locations;
 		}
 
 		[Freeze]
 		protected override Type CreateItem( T parameter )
 		{
-			var candidates = types( parameter );
-			var result = candidates.FirstWhere( FactoryTypeLocator.Instance.Create );
+			var mapped = type( parameter );
+			var assemblies = new Assemblies.Get[] { Assemblies.GetCurrent, mapped.Append( locations( parameter ) ).Append( GetType() ).Distinct().Assemblies };
+
+			var result = assemblies.FirstWhere( get => new FactoryTypeLocator( get() ).Create( mapped ) );
 			return result;
 		}
 	}
 
 	public class FactoryTypeLocator : FactoryBase<Type, Type>
 	{
-		public static FactoryTypeLocator Instance { get; } = new FactoryTypeLocator();
+		readonly Assembly[] assemblies;
 
-		readonly Assemblies.Get assemblies;
-
-		public FactoryTypeLocator() : this( Assemblies.GetCurrent ) {}
-
-		public FactoryTypeLocator( [Required]Assemblies.Get assemblies )
+		public FactoryTypeLocator( [Required]Assembly[] assemblies )
 		{
 			this.assemblies = assemblies;
 		}
 
-		[Freeze]
 		protected override Type CreateItem( Type parameter )
 		{
 			var name = $"{parameter.Name}Factory";
 			var result =
-				parameter.GetTypeInfo().DeclaredNestedTypes.AsTypes().Where( info => info.Name == name ).Only()
-				??
-				assemblies.Or( parameter.Assembly ).FirstWhere( assembly =>
+				assemblies.FirstWhere( assembly =>
 				{
-					return assembly.DefinedTypes.AsTypes().Where( x => Factory.BasicTypes.Any( extension => extension.IsAssignableFrom( x ) ) ).ToArray().With( types =>
+					var buildable = assembly.DefinedTypes.AsTypes().Where( Factory.IsFactory ).Where( CanBuildSpecification.Instance.IsSatisfiedBy ).ToArray();
+					return buildable.With( types =>
 						types.Where( info => info.Name == name ).Only()
 						??
-						types.Select( type => new { type, resultType = Factory.GetResultType( type ) } ).ToArray().With( pairs =>
+						types.Select( type => new { type, resultType = Factory.GetResultType( type ) } ).NotNull( arg => arg.resultType ).ToArray().With( pairs =>
 						{
 							return pairs.Where( arg => arg.resultType == parameter ).Concat( pairs.Where( arg => parameter.Adapt().IsAssignableFrom( arg.resultType ) ) ).WithFirst( arg => arg.type );
 						} )
@@ -125,7 +137,5 @@ namespace DragonSpark.Activation.FactoryModel
 				} );
 			return result;
 		}
-
-		// Assembly[] Assemblies => assemblies() ?? Default<Assembly>.Items;
 	}
 }

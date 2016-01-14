@@ -11,21 +11,21 @@ namespace DragonSpark.Testing.Objects
 {
 	public class AssemblyProvider : AssemblySourceBase, IAssemblyProvider
 	{
+		readonly Assembly[] others;
+
 		public class Factory : RegisterFactoryAttribute
 		{
 			public Factory() : base( typeof(AssemblyProvider) ) {}
 		}
 
-		readonly Func<Assembly> domain;
+		public AssemblyProvider() : this( DomainApplicationAssemblyLocator.Instance.Create() ) {}
 
-		public AssemblyProvider() : this( DomainApplicationAssemblyLocator.Instance.Create ) {}
-
-		protected AssemblyProvider( [Required]Func<Assembly> domain )
+		protected AssemblyProvider( [Required]params Assembly[] others )
 		{
-			this.domain = domain;
+			this.others = others;
 		}
 
-		protected override Assembly[] CreateItem() => 
-			domain().Append( new[] { typeof(AssemblySourceBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Select( type => type.Assembly ) ).Distinct().ToArray();
+		protected override Assembly[] CreateItem() =>
+			new[] { typeof( AssemblySourceBase ), typeof( Class ), typeof( Tests ), typeof( BindingOptions ) }.Assemblies().Concat( others ).Distinct().Prioritize().ToArray();
 	}
 }

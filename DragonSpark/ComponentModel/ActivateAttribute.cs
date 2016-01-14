@@ -9,11 +9,14 @@ namespace DragonSpark.ComponentModel
 {
 	public class ExtensionAttribute : DefaultValueBase
 	{
-		public ExtensionAttribute( string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter<IUnityContainer>( name ).Create ) ) {}
+		public ExtensionAttribute( string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter<IUnityContainer>( name ).Create, Creator.Instance.Create ) ) {}
 
 		public class Creator : ActivatedValueProvider.Creator<IUnityContainerExtensionConfigurator>
 		{
+			public new static Creator Instance { get; } = new Creator();
+
 			readonly Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory;
+
 			public Creator() : this( new ActivatedValueProvider.Creator<IUnityContainer>().Create ) { }
 
 			protected Creator( [Required]Func<Tuple<ActivateParameter, DefaultValueParameter>, IUnityContainer> factory )

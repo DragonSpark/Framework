@@ -10,10 +10,10 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 {
 	public abstract class CustomizationBase : ICustomization
 	{
-		[Aspects.BuildUp]
 		void ICustomization.Customize( IFixture fixture ) => Customize( fixture );
 
-		protected abstract void Customize( IFixture fixture );
+		[Aspects.BuildUp]
+		protected virtual void Customize( IFixture fixture ) { }
 	}
 
 	public class ServiceLocationCustomization : CustomizationBase
@@ -39,13 +39,13 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 			this.fixture = fixture;
 		}
 
-		public void Register( Type @from, Type mappedTo, string name = null ) => fixture.Customizations.Add( new TypeRelay( @from, mappedTo ) );
+		public void Register( MappingRegistrationParameter parameter ) => fixture.Customizations.Add( new TypeRelay( parameter.Type, parameter.MappedTo ) );
 
-		public void Register( Type type, object instance ) => this.InvokeGenericAction( nameof(RegisterInstance), new[] { type }, instance );
+		public void Register( InstanceRegistrationParameter parameter ) => this.InvokeGenericAction( nameof(RegisterInstance), new[] { parameter.Type }, parameter.Instance );
 
 		void RegisterInstance<T>( T instance ) => fixture.Inject( instance );
 
-		public void RegisterFactory( Type type, Func<object> factory ) =>  this.InvokeGenericAction( nameof(RegisterFactory), type.ToItem(), factory );
+		public void RegisterFactory( FactoryRegistrationParameter parameter ) => this.InvokeGenericAction( nameof(RegisterFactory), parameter.Type.ToItem(), parameter.Factory );
 
 		void RegisterFactory<T>( Func<object> factory ) => fixture.Customize<T>( c => c.FromFactory( () => (T)factory() ).OmitAutoProperties() );
 	}

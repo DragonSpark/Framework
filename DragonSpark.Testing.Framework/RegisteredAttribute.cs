@@ -61,7 +61,7 @@ namespace DragonSpark.Testing.Framework
 				var item = instance.AsTo<Mock, object>( mock => mock.Object ) ?? instance;
 				var type = instance is Mock ? registrationType.Adapt().GetInnerType() : registrationType;
 				var registry = locator.GetInstance<IServiceRegistry>();
-				registry.Register( type, item );
+				registry.Register( new InstanceRegistrationParameter( type, item ) );
 			}
 		}
 

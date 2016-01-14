@@ -15,6 +15,8 @@ namespace DragonSpark.TypeSystem
 {
 	public class MemberInfoAttributeProviderFactory : FactoryBase<Tuple<MemberInfo, bool>, IAttributeProvider>
 	{
+		public static MemberInfoAttributeProviderFactory Instance { get; } = new MemberInfoAttributeProviderFactory();
+
 		readonly IMemberInfoLocator locator;
 
 		public MemberInfoAttributeProviderFactory() : this( MemberInfoLocator.Instance ) {}
@@ -29,53 +31,73 @@ namespace DragonSpark.TypeSystem
 
 	public static class Attributes
 	{
-		sealed class Default : AssociatedValue<IAttributeProvider>
+		sealed class Cached<T> : AssociatedValue<IAttributeProvider> where T : AttributeProviderFactoryBase
 		{
-			public Default( object instance ) : base( instance, () => new AttributeProviderFactory( false ).Create( instance ) ) {}
+			public Cached( object instance ) : base( instance, () =>
+			{
+				var result = Activator.Activate<T>().Create( instance );
+				return result;
+			} ) {}
 		}
 
-		sealed class WithRelated : AssociatedValue<IAttributeProvider>
-		{
-			public WithRelated( object instance ) : base( instance, () => new AttributeProviderFactory( true ).Create( instance ) ) {}
-		}
-		
-		public static IAttributeProvider Get( object target ) => new Default( target ).Item;
+		public static IAttributeProvider Get( object target ) => new Cached<AttributeProviderFactory>( target ).Item;
 
 		public static IAttributeProvider Get( MemberInfo target, bool includeRelated ) => includeRelated ? GetWithRelated( target ) : Get( target );
 
-		public static IAttributeProvider GetWithRelated( object target ) => new WithRelated( target ).Item;
+		public static IAttributeProvider GetWithRelated( object target ) => new Cached<ExpandedAttributeProviderFactory>( target ).Item;
 	}
 
-	public class AttributeProviderFactory : FirstFromParameterFactory<object, IAttributeProvider>
+	class MemberInfoProviderFactory : MemberInfoProviderFactoryBase
 	{
-		public AttributeProviderFactory( bool includeRelated ) : base( IsAssemblyFactory.Instance.Create, new Providerfactory( includeRelated ).Create ) {}
+		public static MemberInfoProviderFactory Instance { get; } = new MemberInfoProviderFactory();
 
-		class Providerfactory : FactoryBase<object, IAttributeProvider>
+		public MemberInfoProviderFactory() : this( new MemberInfoAttributeProviderFactory( new MemberInfoLocator() ) ) {}
+
+		public MemberInfoProviderFactory( MemberInfoAttributeProviderFactory inner ) : base( inner, false ) {}
+	}
+
+	abstract class MemberInfoProviderFactoryBase : FactoryBase<object, IAttributeProvider>
+	{
+		readonly MemberInfoAttributeProviderFactory inner;
+		readonly bool includeRelated;
+
+		protected MemberInfoProviderFactoryBase( [Required]MemberInfoAttributeProviderFactory inner, bool includeRelated )
 		{
-			readonly MemberInfoAttributeProviderFactory inner;
-			readonly bool includeRelated;
-
-			public Providerfactory( bool includeRelated ) : this( Services.Locate<MemberInfoAttributeProviderFactory>(), includeRelated ) {}
-
-			Providerfactory( MemberInfoAttributeProviderFactory inner, bool includeRelated )
-			{
-				this.inner = inner;
-				this.includeRelated = includeRelated;
-			}
-
-			protected override IAttributeProvider CreateItem( object parameter )
-			{
-				var item = new Tuple<MemberInfo, bool>( parameter as MemberInfo ?? parameter.GetType().GetTypeInfo(), includeRelated );
-				var result = inner.Create( item );
-				return result;
-			}
+			this.inner = inner;
+			this.includeRelated = includeRelated;
 		}
+
+		protected override IAttributeProvider CreateItem( object parameter )
+		{
+			var item = new Tuple<MemberInfo, bool>( parameter as MemberInfo ?? ( parameter as Type ?? parameter.GetType() ).GetTypeInfo(), includeRelated );
+			var result = inner.Create( item );
+			return result;
+		}
+	}
+
+	class ExpandedAttributeProviderFactory : AttributeProviderFactoryBase
+	{
+		public ExpandedAttributeProviderFactory() : this( MemberInfoWithRelatedProviderFactory.Instance ) {}
+
+		public ExpandedAttributeProviderFactory( MemberInfoWithRelatedProviderFactory factory ) : base( factory ) {}
+	}
+
+	class AttributeProviderFactory : AttributeProviderFactoryBase
+	{
+		public AttributeProviderFactory() : this( MemberInfoProviderFactory.Instance ) {}
+
+		public AttributeProviderFactory( MemberInfoProviderFactory factory ) : base( factory ) {}
+	}
+
+	abstract class AttributeProviderFactoryBase : FirstFromParameterFactory<object, IAttributeProvider>
+	{
+		protected AttributeProviderFactoryBase( MemberInfoProviderFactoryBase factory ) : base( IsAssemblyFactory.Instance.Create, factory.Create ) {}
 
 		class IsAssemblyFactory : FactoryWithSpecification<object, IAttributeProvider>
 		{
 			public static IsAssemblyFactory Instance { get; } = new IsAssemblyFactory();
 
-			public IsAssemblyFactory() : base( IsTypeSpecification<Assembly>.Instance, o => new AssemblyAttributeProvider( (Assembly)o ) ) {}
+			IsAssemblyFactory() : base( IsTypeSpecification<Assembly>.Instance, o => new AssemblyAttributeProvider( (Assembly)o ) ) {}
 		}
 	}
 

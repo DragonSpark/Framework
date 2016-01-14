@@ -7,6 +7,8 @@ using PostSharp.Aspects.Dependencies;
 using PostSharp.Serialization;
 using System;
 using System.Reflection;
+using AutoMapper.Internal;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Aspects
 {
@@ -39,26 +41,29 @@ namespace DragonSpark.Aspects
 		{
 			public static MethodInvocationFactory Instance { get; } = new MethodInvocationFactory();
 
-			MethodInvocationFactory() : base( args => new Invocation( args.Instance ?? args.Method.DeclaringType, args.Method, new EqualityList( args.Arguments ) ), args => args.GetReturnValue )
+			MethodInvocationFactory() : base( args => new Invocation( args.Instance ?? args.Method.DeclaringType, args.Method, new EqualityList( args.Arguments ) ), args => args.GetReturnValue, args => args.Method.GetMemberType() )
 			{ }
 		}
 
 		abstract class InvocationFactory<T> : FactoryBase<T, object> where T : AdviceArgs
 		{
 			readonly Func<T, Invocation> invocation;
-			readonly Func<T, Func<object>> factory;
+			readonly Func<T, Func<object>> create;
+			readonly Func<T, Type> returnType;
 
-			protected InvocationFactory( Func<T, Invocation> invocation, Func<T, Func<object>> factory )
+			protected InvocationFactory( [Required]Func<T, Invocation> invocation, [Required]Func<T, Func<object>> create, [Required]Func<T, Type> returnType )
 			{
 				this.invocation = invocation;
-				this.factory = factory;
+				this.create = create;
+				this.returnType = returnType;
 			}
 
 			protected override object CreateItem( T parameter )
 			{
 				var item = invocation( parameter );
 				var reference = new InvocationReference( item ).Item;
-				var result = new Stored( reference, factory( parameter ) ).Item;
+				var type = returnType( parameter );
+				var result = type != typeof(void) || new Checked( reference ).Item.Apply() ? new Stored( reference, create( parameter ) ).Item : null;
 				return result;
 			}
 		}

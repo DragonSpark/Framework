@@ -62,7 +62,9 @@ namespace DragonSpark.Extensions
 
 		public static U FirstWhere<T, U>( this IEnumerable<T> @this, Func<T, U> where ) => @this.Select( @where ).NotNull().FirstOrDefault();
 
-		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target ) => target.Where( x => !x.IsNull() );
+		public static IEnumerable<TItem> NotNull<TItem>( this IEnumerable<TItem> target ) => NotNull( target, Default<TItem>.Self );
+
+		public static IEnumerable<TItem> NotNull<TItem, TCheck>( this IEnumerable<TItem> target, Func<TItem, TCheck> check ) => target.Where( x => !check( x ).IsNull() );
 
 		public static T FirstOrDefaultOfType<T>(this IEnumerable enumerable) => enumerable.OfType<T>().FirstOrDefault();
 

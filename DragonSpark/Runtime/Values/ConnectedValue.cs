@@ -75,10 +75,14 @@ namespace DragonSpark.Runtime.Values
 		public Reference( T key, object instance ) : base( instance, Key( key ), () => key )
 		{ }
 
-		public static string Key( object item ) => $"{typeof( T )}-{item.GetHashCode()}";
+		public static string Key( object item ) => $"{typeof(T)}-{item.GetHashCode()}";
 	}
 
-	
+	class Checked : AssociatedValue<ConditionMonitor>
+	{
+		public Checked( object instance ) : base( instance, () => new ConditionMonitor() ) { }
+	}
+
 	public class AssociatedValue<T> : AssociatedValue<object, T>
 	{
 		public AssociatedValue( object instance, Func<T> create = null ) : base( instance, create )

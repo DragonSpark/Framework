@@ -17,7 +17,7 @@ namespace DragonSpark.Windows.Testing.Setup
 	public class ProgramSetupTests
 	{
 		[Theory, ProgramSetup.AutoData]
-		public void Extension( [Located] SetupParameter sut )
+		public void Extension( [Located] ISetupParameter sut )
 		{
 			var collection = new Items( sut ).Item;
 			var module = collection.FirstOrDefaultOfType<MonitoredModule>();
@@ -60,7 +60,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, ProgramSetup.AutoData]
-		public void SetupModuleCommand( [Located] SetupParameter parameter, [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
+		public void SetupModuleCommand( [Located] ISetupParameter parameter, [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
 		{
 			var added = new Items( module ).Item.FirstOrDefaultOfType<SomeCommand>();
 			Assert.Null( added );

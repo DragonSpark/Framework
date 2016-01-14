@@ -9,10 +9,7 @@ namespace DragonSpark.Testing.Framework.Parameters
 	[AttributeUsage( AttributeTargets.Parameter )]
 	public class LocatedAttribute : CustomizeAttribute
 	{
-		public LocatedAttribute() : this( true )
-		{}
-
-		public LocatedAttribute( bool enabled )
+		public LocatedAttribute( bool enabled = true )
 		{
 			Enabled = enabled;
 		}

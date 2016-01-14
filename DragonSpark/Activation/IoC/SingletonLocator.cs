@@ -1,23 +1,26 @@
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Reflection;
-using PostSharp.Patterns.Contracts;
+using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Activation.IoC
 {
 	public class SingletonLocator : ISingletonLocator
 	{
-		public static SingletonLocator Instance { get; } = new SingletonLocator();
+		public const string Instance = "Instance";
+
+		// public static SingletonLocator Instance { get; } = new SingletonLocator();
 
 		readonly BuildableTypeFromConventionLocator locator;
 		readonly string property;
 
-		public SingletonLocator( string property = nameof(Instance) ) : this( BuildableTypeFromConventionLocator.Instance, property )
-		{
-		}
+		// public SingletonLocator( string property = nameof(Instance) ) : this( BuildableTypeFromConventionLocator.Instance, property ) {}
 
-		public SingletonLocator( [Required]BuildableTypeFromConventionLocator locator, string property = nameof(Instance) )
+		public SingletonLocator( string property = "Instance" ) : this( new BuildableTypeFromConventionLocator( Assemblies.GetCurrent() ), property ) {}
+
+		public SingletonLocator( [Required]BuildableTypeFromConventionLocator locator, string property = Instance )
 		{
 			this.locator = locator;
 			this.property = property;
