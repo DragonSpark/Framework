@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		public override Tuple<string> Item => base.Item ?? MethodContext.Get( MethodBase.GetCurrentMethod() );
 	}
 
-	[Serializable]
+	//[Serializable]
 	public class MethodContext
 	{
 		// readonly string method;

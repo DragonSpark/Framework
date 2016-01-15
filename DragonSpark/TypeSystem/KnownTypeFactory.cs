@@ -8,7 +8,7 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.TypeSystem
 {
-	public class KnownTypeFactory : FactoryBase<Type, Type[]>
+	public class KnownTypeFactory : FactoryBase<System.Type, System.Type[]>
 	{
 		readonly Assembly[] assemblies;
 
@@ -18,7 +18,7 @@ namespace DragonSpark.TypeSystem
 		}
 
 		[Freeze]
-		protected override Type[] CreateItem( Type parameter ) => assemblies
+		protected override System.Type[] CreateItem( System.Type parameter ) => assemblies
 																	.SelectMany( z => z.DefinedTypes )
 																	.Where( z => z.IsSubclassOf( parameter ) && parameter.Namespace != "System.Data.Entity.DynamicProxies" )
 																	.AsTypes()

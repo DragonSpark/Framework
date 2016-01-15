@@ -4,6 +4,7 @@ using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
+using Type = System.Type;
 
 namespace DragonSpark.Setup
 {

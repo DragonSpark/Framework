@@ -9,6 +9,7 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Reflection;
+using Type = System.Type;
 
 namespace DragonSpark.Activation.FactoryModel
 {

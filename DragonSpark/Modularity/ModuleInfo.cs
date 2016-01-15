@@ -8,7 +8,7 @@ namespace DragonSpark.Modularity
 	/// <summary>
 	/// Defines the metadata that describes a module.
 	/// </summary>
-	[Serializable]
+	// [Serializable]
 	public class ModuleInfo : IModuleCatalogItem
 	{
 		/// <summary>

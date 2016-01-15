@@ -16,6 +16,7 @@ using System.Reflection;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.TypeSystem;
 using PostSharp.Patterns.Contracts;
+using Type = System.Type;
 
 namespace DragonSpark.Windows.Entity
 {

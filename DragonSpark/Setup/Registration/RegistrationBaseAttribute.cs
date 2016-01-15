@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
 using System;
+using Type = System.Type;
 
 namespace DragonSpark.Setup.Registration
 {

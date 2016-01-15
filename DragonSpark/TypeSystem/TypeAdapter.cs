@@ -11,10 +11,10 @@ namespace DragonSpark.TypeSystem
 {
 	public class TypeAdapter
 	{
-		readonly Type type;
+		readonly System.Type type;
 		readonly TypeInfo info;
 
-		public TypeAdapter( [Required]Type type ) : this( type.GetTypeInfo() )
+		public TypeAdapter( [Required]System.Type type ) : this( type.GetTypeInfo() )
 		{
 			this.type = type;
 		}
@@ -28,9 +28,9 @@ namespace DragonSpark.TypeSystem
 
 		public ConstructorInfo FindConstructor( params object[] parameters ) => FindConstructor( parameters.Select( o => o?.GetType() ).ToArray() );
 
-		public ConstructorInfo FindConstructor( params Type[] parameterTypes ) => info.DeclaredConstructors.SingleOrDefault( c => c.IsPublic && !c.IsStatic && Match( c.GetParameters(), parameterTypes ) );
+		public ConstructorInfo FindConstructor( params System.Type[] parameterTypes ) => info.DeclaredConstructors.SingleOrDefault( c => c.IsPublic && !c.IsStatic && Match( c.GetParameters(), parameterTypes ) );
 
-		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyCollection<Type> provided )
+		static bool Match( IReadOnlyCollection<ParameterInfo> parameters, IReadOnlyCollection<System.Type> provided )
 		{
 			var result = 
 				provided.Count >= parameters.Count( info => !info.IsOptional ) && 
@@ -43,17 +43,17 @@ namespace DragonSpark.TypeSystem
 
 		public bool IsAssignableFrom( TypeInfo other ) => IsAssignableFrom( other.AsType() );
 
-		public bool IsAssignableFrom( Type other ) => info.IsAssignableFrom( other.GetTypeInfo() ) || GetCaster( other ) != null;
+		public bool IsAssignableFrom( System.Type other ) => info.IsAssignableFrom( other.GetTypeInfo() ) || GetCaster( other ) != null;
 
 		public bool IsInstanceOfType( object context ) => context.With( o => IsAssignableFrom( o.GetType() ) );
 
-		MethodInfo GetCaster( Type other ) => info.DeclaredMethods.SingleOrDefault( method => method.Name == "op_Implicit" && method.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom( other.GetTypeInfo() ) );
+		MethodInfo GetCaster( System.Type other ) => info.DeclaredMethods.SingleOrDefault( method => method.Name == "op_Implicit" && method.GetParameters().First().ParameterType.GetTypeInfo().IsAssignableFrom( other.GetTypeInfo() ) );
 
 		public Assembly Assembly => info.Assembly;
 
-		public Type[] GetHierarchy( bool includeRoot = true )
+		public System.Type[] GetHierarchy( bool includeRoot = true )
 		{
-			var result = new List<Type> { type };
+			var result = new List<System.Type> { type };
 			var current = info.BaseType;
 			while ( current != null )
 			{
@@ -66,13 +66,13 @@ namespace DragonSpark.TypeSystem
 			return result.ToArray();
 		}
 
-		public Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), typeof( IEnumerable ).GetTypeInfo().IsAssignableFrom );
+		public System.Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), typeof( IEnumerable ).GetTypeInfo().IsAssignableFrom );
 
 		// public Type GetResultType() => type.Append( ExpandInterfaces( type ) ).FirstWhere( t => InnerType( t, types => types.LastOrDefault() ) );
 
-		public Type GetInnerType() => InnerType( type, types => types.Only() );
+		public System.Type GetInnerType() => InnerType( type, types => types.Only() );
 
-		static Type InnerType( Type target, Func<Type[], Type> fromGenerics, Func<TypeInfo, bool> check = null )
+		static System.Type InnerType( System.Type target, Func<System.Type[], System.Type> fromGenerics, Func<TypeInfo, bool> check = null )
 		{
 			var info = target.GetTypeInfo();
 			var result = info.IsGenericType && info.GenericTypeArguments.Any() && check.With( func => func( info ), () => true ) ? fromGenerics( info.GenericTypeArguments ) :
@@ -83,13 +83,13 @@ namespace DragonSpark.TypeSystem
 		public bool IsGenericOf<T>() => IsGenericOf( typeof(T).GetGenericTypeDefinition() );
 
 		[Freeze]
-		public bool IsGenericOf( Type genericDefinition ) =>
+		public bool IsGenericOf( System.Type genericDefinition ) =>
 			type.Append( ExpandInterfaces( type ) ).AsTypeInfos().Any( typeInfo => typeInfo.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && typeInfo.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition() );
 
-		public Type[] GetAllInterfaces() => ExpandInterfaces( type ).ToArray();
+		public System.Type[] GetAllInterfaces() => ExpandInterfaces( type ).ToArray();
 
-		static IEnumerable<Type> ExpandInterfaces( Type target ) => target.Append( target.GetTypeInfo().ImplementedInterfaces.SelectMany( ExpandInterfaces ) ).Where( x => x.GetTypeInfo().IsInterface ).Distinct();
+		static IEnumerable<System.Type> ExpandInterfaces( System.Type target ) => target.Append( target.GetTypeInfo().ImplementedInterfaces.SelectMany( ExpandInterfaces ) ).Where( x => x.GetTypeInfo().IsInterface ).Distinct();
 
-		public Type[] GetEntireHierarchy() => ExpandInterfaces( type ).Union( GetHierarchy( false ) ).Distinct().ToArray();
+		public System.Type[] GetEntireHierarchy() => ExpandInterfaces( type ).Union( GetHierarchy( false ) ).Distinct().ToArray();
 	}
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DragonSpark.TypeSystem;
 using Xunit;
+using Type = System.Type;
 
 namespace DragonSpark.Testing.Extensions
 {

@@ -1,11 +1,11 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using TypeServices = DragonSpark.TypeSystem.Type;
 
 namespace DragonSpark.ComponentModel
 {
@@ -15,8 +15,7 @@ namespace DragonSpark.ComponentModel
 
 		protected override ICollection<PropertyInfo> CreateItem( object parameter )
 		{
-			var type = parameter.As<Type>() ?? parameter.AsTo<TypeInfo, Type>( info => info.AsType() ) ?? parameter.GetType();
-			var result = type.GetTypeInfo().DeclaredProperties
+			var result = TypeServices.From( parameter ).GetTypeInfo().DeclaredProperties
 				.Where( x => Attributes.Get( x ).With( y => y.Has<DefaultValueAttribute>() || y.Has<DefaultValueBase>() ) )
 				// .Where( x => Equals( GetValue( parameter, x ), x.PropertyType.Adapt().GetDefaultValue() ) )
 				.ToList();

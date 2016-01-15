@@ -3,7 +3,7 @@ using DragonSpark.Modularity;
 
 namespace DragonSpark.Windows.Modularity
 {
-	[Serializable]
+// 	[Serializable]
 	public class DynamicModuleInfo : ModuleInfo
 	{
 		public DynamicModuleInfo()

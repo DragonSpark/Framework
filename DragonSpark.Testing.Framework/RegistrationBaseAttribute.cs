@@ -7,6 +7,7 @@ using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture;
 using PostSharp.Patterns.Contracts;
 using System;
+using Type = System.Type;
 
 namespace DragonSpark.Testing.Framework
 {

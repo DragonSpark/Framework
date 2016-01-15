@@ -2,8 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture.Kernel;
+using Type = DragonSpark.TypeSystem.Type;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -19,15 +21,8 @@ namespace DragonSpark.Testing.Framework.Setup
 			this.activator = activator;
 		}
 
-		public bool IsSatisfiedBy( object request )
-		{
-			var result = request.AsTo<Type, bool>( CanLocate );
-			return result;
-		}
+		public bool IsSatisfiedBy( object request ) => Type.From( request ).With( CanLocate );
 
-		protected virtual bool CanLocate( Type type )
-		{
-			return activator.CanActivate( type );
-		}
+		protected virtual bool CanLocate( System.Type type ) => activator.CanActivate( type );
 	}
 }

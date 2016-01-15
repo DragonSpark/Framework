@@ -70,7 +70,7 @@ namespace DragonSpark.TypeSystem
 
 		protected override IAttributeProvider CreateItem( object parameter )
 		{
-			var item = new Tuple<MemberInfo, bool>( parameter as MemberInfo ?? ( parameter as Type ?? parameter.GetType() ).GetTypeInfo(), includeRelated );
+			var item = new Tuple<MemberInfo, bool>( parameter as MemberInfo ?? ( parameter as System.Type ?? parameter.GetType() ).GetTypeInfo(), includeRelated );
 			var result = inner.Create( item );
 			return result;
 		}
@@ -104,9 +104,9 @@ namespace DragonSpark.TypeSystem
 
 	public interface IAttributeProvider
 	{
-		bool Contains( Type attribute );
+		bool Contains( System.Type attribute );
 
-		Attribute[] GetAttributes( [Required]Type attributeType );
+		Attribute[] GetAttributes( [Required]System.Type attributeType );
 	}
 
 	public class MemberInfoAttributeProvider : AttributeProviderBase
@@ -121,20 +121,20 @@ namespace DragonSpark.TypeSystem
 
 	public abstract class AttributeProviderBase : IAttributeProvider
 	{
-		readonly Func<Type, bool> defined;
-		readonly Func<Type, IEnumerable<Attribute>> factory;
+		readonly Func<System.Type, bool> defined;
+		readonly Func<System.Type, IEnumerable<Attribute>> factory;
 
-		protected AttributeProviderBase( [Required]Func<Type, bool> defined, [Required]Func<Type, IEnumerable<Attribute>> factory )
+		protected AttributeProviderBase( [Required]Func<System.Type, bool> defined, [Required]Func<System.Type, IEnumerable<Attribute>> factory )
 		{
 			this.defined = defined;
 			this.factory = factory;
 		}
 
 		[Freeze]
-		public bool Contains( Type attribute ) => defined( attribute );
+		public bool Contains( System.Type attribute ) => defined( attribute );
 
 		[Freeze]
-		public Attribute[] GetAttributes( Type attributeType ) => defined( attributeType ) ? factory( attributeType ).Fixed() : Default<Attribute>.Items;
+		public Attribute[] GetAttributes( System.Type attributeType ) => defined( attributeType ) ? factory( attributeType ).Fixed() : Default<Attribute>.Items;
 	}
 
 }

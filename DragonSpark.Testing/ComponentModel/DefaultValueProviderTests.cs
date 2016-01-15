@@ -20,27 +20,13 @@ namespace DragonSpark.Testing.ComponentModel
 				this.locator = locator;
 			}
 
-			public bool CanActivate( Type type, string name )
-			{
-				return true;
-			}
+			public bool CanActivate( Type type, string name ) => true;
 
-			public object Activate( Type type, string name = null )
-			{
-				var result = locator.GetInstance( type, name );
-				return result;
-			}
+			public object Activate( Type type, string name = null ) => locator.GetInstance( type, name );
 
-			public bool CanConstruct( Type type, params object[] parameters )
-			{
-				return true;
-			}
+			public bool CanConstruct( Type type, params object[] parameters ) => true;
 
-			public object Construct( Type type, params object[] parameters )
-			{
-				var result = locator.GetInstance( type );
-				return result;
-			}
+			public object Construct( Type type, params object[] parameters ) => locator.GetInstance( type );
 		}
 
 		[Theory, AutoData]

@@ -13,7 +13,7 @@ namespace DragonSpark.TypeSystem
 	{
 		public static AssemblyInformationFactory Instance { get; } = new AssemblyInformationFactory();
 
-		readonly static Type[] Attributes =
+		readonly static System.Type[] Attributes =
 		{
 			typeof(AssemblyTitleAttribute),
 			typeof(AssemblyProductAttribute),

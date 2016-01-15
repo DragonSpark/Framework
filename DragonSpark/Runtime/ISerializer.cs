@@ -7,6 +7,7 @@ using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
+using Type = System.Type;
 
 namespace DragonSpark.Runtime
 {

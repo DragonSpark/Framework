@@ -4,7 +4,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Aspects
 {
-	public class DefaultValueAspectTests
+	public class ApplyDefaultValuesTests
 	{
 		public class ValueHost
 		{

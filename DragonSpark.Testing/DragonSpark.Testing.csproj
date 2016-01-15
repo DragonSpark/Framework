@@ -151,7 +151,7 @@
     <Compile Include="Activation\IoC\RegistrationSupportTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />
-    <Compile Include="Aspects\DefaultValueAspectTests.cs" />
+    <Compile Include="Aspects\ApplyDefaultValuesTests.cs" />
     <Compile Include="Aspects\FreezeAttributeTests.cs" />
     <Compile Include="Aspects\CacheKeyFactoryTests.cs" />
     <Compile Include="Aspects\OfTypeAttributeTests.cs" />
