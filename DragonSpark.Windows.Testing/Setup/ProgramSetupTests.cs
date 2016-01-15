@@ -5,7 +5,6 @@ using DragonSpark.Runtime.Values;
 using DragonSpark.Setup;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
-using DragonSpark.TypeSystem;
 using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;

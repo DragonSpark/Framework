@@ -53,8 +53,7 @@ namespace DragonSpark.Activation.IoC
 				.Extend<RegistrationMonitorExtension>()
 				.RegisterInstance( assemblies )
 				.RegisterInstance( logger )
-				.Extend<BuildPipelineExtension>()
-				.Extend<ObjectBuilderExtension>();
+				.Extend<BuildPipelineExtension>();
 			return result;
 		}
 	}
@@ -109,9 +108,9 @@ namespace DragonSpark.Activation.IoC
 
 		public ServiceLocatorFactory() : this( Factory.Create<UnityContainer>() ) {}
 
-		public ServiceLocatorFactory( [Required]IUnityContainer container ) : this( container, new ConfigureLocationCommand( Services.Location, container, container.Logger() ) ) {}
+		protected ServiceLocatorFactory( [Required]IUnityContainer container ) : this( container, new ConfigureLocationCommand( Services.Location, container, container.Logger() ) ) {}
 
-		public ServiceLocatorFactory( [Required]IUnityContainer container, [Required]ICommand<IServiceLocator> created )
+		protected ServiceLocatorFactory( [Required]IUnityContainer container, [Required]ICommand<IServiceLocator> created )
 		{
 			this.container = container;
 			this.created = created;

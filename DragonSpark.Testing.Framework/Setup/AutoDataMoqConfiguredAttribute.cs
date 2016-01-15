@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Setup;
 using DragonSpark.TypeSystem;
@@ -8,10 +6,10 @@ using Ploeh.AutoFixture.AutoMoq;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
-	/*public class AutoDataWithRegistrationAttribute : AutoDataAttribute
+	public class DefaultAutoDataCustomization : CompositeCustomization
 	{
-		public AutoDataWithRegistrationAttribute() : base( FixtureFactory<MetadataCustomization>.Instance.Create ) {}
-	}*/
+		public DefaultAutoDataCustomization() : base( MetadataCustomization.Instance, new AutoConfiguredMoqCustomization() ) { }
+	}
 
 	public class AutoDataMoqAttribute : AutoDataAttribute
 	{

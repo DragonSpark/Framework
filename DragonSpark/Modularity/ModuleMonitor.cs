@@ -2,9 +2,12 @@ using DragonSpark.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DragonSpark.Setup.Registration;
+using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Modularity
 {
+	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
 	public class ModuleMonitor : IModuleMonitor
 	{
 		readonly IModuleCatalog catalog;
@@ -41,7 +44,7 @@ namespace DragonSpark.Modularity
 
 		void Update()
 		{
-			var complete = loaded.Any() && loading.Any() && loaded.Count == loading.Count;
+			var complete = loaded.Any() == loading.Any() && loaded.Count == loading.Count;
 			complete.IsTrue( OnComplete );
 		}
 

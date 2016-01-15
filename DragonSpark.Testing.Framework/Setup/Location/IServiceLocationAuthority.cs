@@ -1,10 +1,9 @@
-using DragonSpark.Activation.IoC;
-using DragonSpark.Aspects;
+using DragonSpark.Activation;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
+using Ploeh.AutoFixture;
 using System;
-using DragonSpark.Activation;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -21,13 +20,16 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		public AutoData Setup { get; set; }
 
 		[Activate]
-		public PersistingServiceRegistry Registry { get; set; }
+		public RegisterInstanceCommand<OnlyIfNotRegistered> Command { get; set; }
 
-		[BuildUp]
+		[Activate]
+		public AuthorizedServiceLocationRelay Relay { get; set; }
+
 		protected override void Initialize()
 		{
-			new RegisterInstanceCommand( Registry, Specifications.NotRegistered( Container ) ).ExecuteWith( new InstanceRegistrationParameter( Setup.Fixture ) );
-			// Container.Extend().Policies.Insert( 0, new FixtureBuildPlanStrategy() );
+			Command.ExecuteWith( new InstanceRegistrationParameter<IFixture>( Setup.Fixture ) );
+
+			Setup.Fixture.ResidueCollectors.Add( Relay );
 		}
 	}
 }

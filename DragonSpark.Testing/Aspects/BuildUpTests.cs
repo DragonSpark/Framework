@@ -1,10 +1,5 @@
-﻿using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Setup;
+﻿using DragonSpark.ComponentModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects
@@ -24,29 +19,6 @@ namespace DragonSpark.Testing.Aspects
 			Assert.Same( SkipFirstCallProvider.Instance.Item, sut.Value );
 		}
 
-		[Theory, AutoData]
-		public void Constructor( BuildUp sut )
-		{
-			var aspects = sut.ProvideAspects( typeof(BuildTarget) ).Fixed();
-			Assert.Equal( 1, aspects.Length );
-
-			var elements = aspects.Select( instance => instance.TargetElement ).Fixed();
-			var constructor = elements.Only();
-			Assert.IsAssignableFrom<ConstructorInfo>( constructor );
-		}
-
-		[Theory, AutoData]
-		public void Method( BuildUp sut )
-		{
-			var aspects = sut.ProvideAspects( typeof(BuildTarget).GetMethod( nameof(BuildTarget.Call) ) ).Fixed();
-			Assert.Equal( 1, aspects.Length );
-
-			var elements = aspects.Select( instance => instance.TargetElement ).Fixed();
-			var element = elements.Only();
-			Assert.IsAssignableFrom<MethodInfo>( element );
-		}
-
-		[BuildUp]
 		public class BuildTarget
 		{
 			[DefaultValue( true )]
@@ -55,9 +27,7 @@ namespace DragonSpark.Testing.Aspects
 			[SkipFirstCallValue]
 			public object Value { get; set; }
 
-			[BuildUp]
-			public void Call()
-			{}
+			public void Call() => Value = SkipFirstCallProvider.Instance.Item;
 		}
 
 		public class SkipFirstCallValue : DefaultValueBase
@@ -74,10 +44,7 @@ namespace DragonSpark.Testing.Aspects
 
 			readonly ConditionMonitor monitor = new ConditionMonitor();
 
-			public object GetValue( DefaultValueParameter parameter )
-			{
-				return monitor.Apply() ? null : Item;
-			}
+			public object GetValue( DefaultValueParameter parameter ) => monitor.Apply() ? null : Item;
 		}
 	}
 }

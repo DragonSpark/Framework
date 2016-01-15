@@ -4,6 +4,7 @@ using System.Xaml;
 using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -19,9 +20,8 @@ namespace DragonSpark.Windows.Markup
 		}
 
 		[Activate]
-		IExpressionEvaluator Evaluator { get; set; }
+		IExpressionEvaluator Evaluator { [return: NotNull]get; set; }
 
-		[BuildUp]
 		protected override object GetValue( IServiceProvider serviceProvider ) => Evaluator.Evaluate( serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetCustomAttribute( attributeType ), expression );
 	}
 }

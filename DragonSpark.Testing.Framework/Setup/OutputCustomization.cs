@@ -1,4 +1,3 @@
-using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
@@ -6,6 +5,7 @@ using DragonSpark.Runtime.Values;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Ploeh.AutoFixture;
 using System.Linq;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -29,10 +29,9 @@ namespace DragonSpark.Testing.Framework.Setup
 
 	public class OutputCustomization : AutoDataCustomization
 	{
-		[Activate]
-		public RecordingMessageLogger Logger { get; set; }
+		[Locate]
+		public RecordingMessageLogger Logger { [return: Required]get; set; }
 
-		[BuildUp]
 		protected override void OnInitialized( AutoData context )
 		{
 			var item = Logger.Purge().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Activation.IoC;
+﻿using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
 using DragonSpark.Testing.Framework;
@@ -12,7 +13,7 @@ namespace DragonSpark.Testing.Activation.IoC
 	public class RegistrationSupportTests
 	{
 		[Theory, Framework.Setup.AutoData]
-		public void Mapping( [Factory, Frozen( Matching.ImplementedInterfaces )]UnityContainer sut, TransientServiceRegistry registry )
+		public void Mapping( [Factory, Frozen( Matching.ImplementedInterfaces )]UnityContainer sut, ServiceRegistry<TransientLifetimeManager> registry )
 		{
 			Assert.Null( sut.TryResolve<IInterface>() );
 			registry.Register<IInterface, Class>();
@@ -24,7 +25,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		}
 
 		[Theory, Framework.Setup.AutoData]
-		public void Persisting( [Factory, Frozen( Matching.ImplementedInterfaces )]UnityContainer sut, PersistingServiceRegistry registry )
+		public void Persisting( [Factory, Frozen( Matching.ImplementedInterfaces )]UnityContainer sut, ServiceRegistry<ContainerControlledLifetimeManager> registry )
 		{
 			Assert.Null( sut.TryResolve<IInterface>() );
 			registry.Register<IInterface, Class>();

@@ -10,11 +10,6 @@ namespace DragonSpark.Windows.Markup
 	[MarkupExtensionReturnType( typeof(int) )]
 	public class NextExtension : MarkupExtension
 	{
-		public NextExtension()
-		{
-			this.BuildUp();
-		}
-
 		[Activate]
 		public IIncrementer Incrementer { get; set; }
 		

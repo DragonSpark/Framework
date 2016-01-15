@@ -103,13 +103,13 @@ namespace DragonSpark.Extensions
 
 		public static TResult With<TItem, TResult>( this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
 
-		public static TItem BuildUp<TItem>( [Required]this TItem target ) where TItem : class => ObjectBuilder.Instance.BuildUp<TItem>( target );
+		/*public static TItem BuildUp<TItem>( [Required]this TItem target ) where TItem : class => ObjectBuilder.Instance.BuildUp<TItem>( target );
 
 		public static TItem BuildUp<TItem>( [Required]this IObjectBuilder @this, TItem target ) where TItem : class
 		{
 			@this.BuildUp( target );
 			return target;
-		}
+		}*/
 
 		public static TResult Evaluate<TResult>( [Required]this object container, string expression ) => Evaluate<TResult>( ExpressionEvaluator.Instance, container, expression );
 

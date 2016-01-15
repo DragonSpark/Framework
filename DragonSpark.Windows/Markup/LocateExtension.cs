@@ -6,11 +6,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Markup;
+using PostSharp.Patterns.Contracts;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
 {
-	[ContentProperty( "Properties" )]
+	[ContentProperty( nameof(Properties) )]
 	public class LocateExtension : MonitoredMarkupExtension
 	{
 		public LocateExtension()
@@ -27,9 +28,8 @@ namespace DragonSpark.Windows.Markup
 		public string BuildName { get; set; }
 
 		[Activate]
-		IActivator Activator { get; set; }
+		IActivator Activator { [return: NotNull]get; set; }
 
-		[BuildUp]
 		protected override object GetValue( IServiceProvider serviceProvider )
 		{
 			 var result = Type.With( x => Activator.Activate<object>( x, BuildName ) );

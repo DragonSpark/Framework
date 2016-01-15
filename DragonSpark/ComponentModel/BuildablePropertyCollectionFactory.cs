@@ -1,12 +1,11 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using Microsoft.Practices.Unity.Utility;
+using DragonSpark.TypeSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.TypeSystem;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.ComponentModel
 {
@@ -16,14 +15,15 @@ namespace DragonSpark.ComponentModel
 
 		protected override ICollection<PropertyInfo> CreateItem( object parameter )
 		{
-			var result = parameter.GetType().GetPropertiesHierarchical()
+			var type = parameter.As<Type>() ?? parameter.AsTo<TypeInfo, Type>( info => info.AsType() ) ?? parameter.GetType();
+			var result = type.GetTypeInfo().DeclaredProperties
 				.Where( x => Attributes.Get( x ).With( y => y.Has<DefaultValueAttribute>() || y.Has<DefaultValueBase>() ) )
-				.Where( x => Equals( GetValue( parameter, x ), x.PropertyType.Adapt().GetDefaultValue() ) )
+				// .Where( x => Equals( GetValue( parameter, x ), x.PropertyType.Adapt().GetDefaultValue() ) )
 				.ToList();
 			return result;
 		}
 
-		static object GetValue( object parameter, PropertyInfo x )
+		/*static object GetValue( object parameter, PropertyInfo x )
 		{
 			try
 			{
@@ -33,6 +33,6 @@ namespace DragonSpark.ComponentModel
 			{
 				return null;
 			}
-		}
+		}*/
 	}
 }

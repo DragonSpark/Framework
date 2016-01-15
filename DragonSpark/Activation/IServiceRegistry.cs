@@ -3,9 +3,9 @@ using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Specifications;
+using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Activation
 {
@@ -18,20 +18,26 @@ namespace DragonSpark.Activation
 		void RegisterFactory( FactoryRegistrationParameter parameter );
 	}
 
-	public static class Specifications
+	public class Always : WrappedSpecification<Type>
 	{
-		public static ISpecification<Type> Default = AlwaysSpecification.Instance.Wrap<Type>();
-
-		public static Func<IUnityContainer, ISpecification<Type>> NotRegistered { get; } = container => new InverseSpecification( new IsRegisteredSpecification( container ) ).Wrap<Type>();
+		public Always() : base( AlwaysSpecification.Instance ) { }
 	}
 
-	public class RegisterInstanceByConventionCommand : RegisterInstanceCommand
+	public class OnlyIfNotRegistered : WrappedSpecification<Type>
+	{
+		public OnlyIfNotRegistered( IUnityContainer container ) : base( new InverseSpecification( new IsRegisteredSpecification( container ) ) ) { }
+	}
+
+	public class RegisterInstanceByConventionCommand : RegisterInstanceByConventionCommand<Always>
+	{
+		public RegisterInstanceByConventionCommand( IServiceRegistry registry, ImplementedFromConventionTypeLocator locator, Always specification ) : base( registry, locator, specification ) {}
+	}
+
+	public class RegisterInstanceByConventionCommand<T> : RegisterInstanceCommand<T> where T : ISpecification<Type>
 	{
 		readonly ImplementedFromConventionTypeLocator locator;
 
-		public RegisterInstanceByConventionCommand( IServiceRegistry registry, ImplementedFromConventionTypeLocator locator ) : this( registry, locator, Specifications.Default ) {}
-
-		public RegisterInstanceByConventionCommand( IServiceRegistry registry, [Required]ImplementedFromConventionTypeLocator locator, ISpecification<Type> specification ) : base( registry, specification )
+		public RegisterInstanceByConventionCommand( IServiceRegistry registry, [Required]ImplementedFromConventionTypeLocator locator, T specification ) : base( registry, specification )
 		{
 			this.locator = locator;
 		}
@@ -42,11 +48,14 @@ namespace DragonSpark.Activation
 		} );
 	}
 
-	public class RegisterAllClassesCommand : RegisterInstanceCommand
+	public class RegisterAllClassesCommand : RegisterAllClassesCommand<Always>
 	{
-		public RegisterAllClassesCommand( IServiceRegistry registry ) : base( registry ) {}
+		public RegisterAllClassesCommand( IServiceRegistry registry, Always specification ) : base( registry, specification ) {}
+	}
 
-		public RegisterAllClassesCommand( IServiceRegistry registry, ISpecification<Type> specification ) : base( registry, specification ) {}
+	public class RegisterAllClassesCommand<T> : RegisterInstanceCommand<T> where T : ISpecification<Type>
+	{
+		public RegisterAllClassesCommand( IServiceRegistry registry, T specification ) : base( registry, specification ) {}
 
 		protected override void OnExecute( InstanceRegistrationParameter parameter ) => parameter.Instance.Adapt().GetEntireHierarchy().Each( type =>
 		{
@@ -54,14 +63,12 @@ namespace DragonSpark.Activation
 		} );
 	}
 
-	public abstract class RegistrationCommandBase<T> : Command<T> where T : RegistrationParameter
+	public abstract class RegistrationCommandBase<T, U> : Command<T> where T : RegistrationParameter where U : ISpecification<Type>
 	{
 		readonly Action<T> command;
-		readonly ISpecification<Type> specification;
+		readonly U specification;
 
-		protected RegistrationCommandBase( [Required]Action<T> command ) : this( command, Specifications.Default ) {}
-
-		protected RegistrationCommandBase( [Required]Action<T> command, [Required]ISpecification<Type> specification )
+		protected RegistrationCommandBase( [Required]Action<T> command, [Required]U specification )
 		{
 			this.command = command;
 			this.specification = specification;
@@ -72,25 +79,34 @@ namespace DragonSpark.Activation
 		protected override void OnExecute( T parameter ) => command( parameter );
 	}
 
-	public class RegisterCommand : RegistrationCommandBase<MappingRegistrationParameter>
+	public class RegisterCommand : RegisterCommand<Always>
 	{
-		public RegisterCommand( IServiceRegistry registry ) : this( registry, Specifications.Default ) {}
-
-		public RegisterCommand( [Required]IServiceRegistry registry, ISpecification<Type> specification ) : base( registry.Register, specification ) {}
+		public RegisterCommand( IServiceRegistry registry, Always specification ) : base( registry, specification ) {}
 	}
 
-	public class RegisterInstanceCommand : RegistrationCommandBase<InstanceRegistrationParameter>
+	public class RegisterCommand<T> : RegistrationCommandBase<MappingRegistrationParameter, T> where T : ISpecification<Type>
 	{
-		public RegisterInstanceCommand( IServiceRegistry registry ) : this( registry, Specifications.Default ) { }
-
-		public RegisterInstanceCommand( [Required]IServiceRegistry registry, ISpecification<Type> specification ) : base( registry.Register, specification ) { }
+		public RegisterCommand( [Required]IServiceRegistry registry, T specification ) : base( registry.Register, specification ) {}
 	}
 
-	public class RegisterFactoryCommand : RegistrationCommandBase<FactoryRegistrationParameter>
+	public class RegisterInstanceCommand : RegisterInstanceCommand<Always>
 	{
-		public RegisterFactoryCommand( IServiceRegistry registry ) : this( registry, Specifications.Default ) { }
+		public RegisterInstanceCommand( IServiceRegistry registry, Always specification ) : base( registry, specification ) {}
+	}
 
-		public RegisterFactoryCommand( [Required]IServiceRegistry registry, ISpecification<Type> specification ) : base( registry.RegisterFactory, specification ) { }
+	public class RegisterInstanceCommand<T> : RegistrationCommandBase<InstanceRegistrationParameter, T> where T : ISpecification<Type>
+	{
+		public RegisterInstanceCommand( [Required]IServiceRegistry registry, T specification ) : base( registry.Register, specification ) { }
+	}
+
+	public class RegisterFactoryCommand : RegisterFactoryCommand<Always>
+	{
+		public RegisterFactoryCommand( IServiceRegistry registry, Always specification ) : base( registry, specification ) {}
+	}
+
+	public class RegisterFactoryCommand<T> : RegistrationCommandBase<FactoryRegistrationParameter, T> where T : ISpecification<Type>
+	{
+		public RegisterFactoryCommand( [Required]IServiceRegistry registry, T specification ) : base( registry.RegisterFactory, specification ) { }
 	}
 	
 	public abstract class RegistrationParameter : ActivateParameter
@@ -108,6 +124,11 @@ namespace DragonSpark.Activation
 		}
 
 		public Type MappedTo { get; }
+	}
+
+	public class InstanceRegistrationParameter<T> : InstanceRegistrationParameter
+	{
+		public InstanceRegistrationParameter( T instance, string name = null ) : base( typeof(T), instance, name ) {}
 	}
 
 	public class InstanceRegistrationParameter : RegistrationParameter

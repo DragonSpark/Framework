@@ -44,11 +44,10 @@ namespace DragonSpark.Testing.ComponentModel
 		}
 
 		[Theory, AutoData]
-		void Apply( [Modest]ObjectBuilder sut )
+		void Apply()
 		{
 			var current = DateTime.Now;
 			var target = new ClassWithDefaultProperties();
-			sut.BuildUp( target );
 
 			Assert.Equal( 'd', target.Char );
 			Assert.Equal( 7, target.Byte );

@@ -12,24 +12,9 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 	{
 		void ICustomization.Customize( IFixture fixture ) => Customize( fixture );
 
-		[Aspects.BuildUp]
-		protected virtual void Customize( IFixture fixture ) { }
+		protected abstract void Customize( IFixture fixture );
 	}
 
-	public class ServiceLocationCustomization : CustomizationBase
-	{
-		[Activate]
-		public IServiceLocator Locator { get; set; }
-
-		[Activate]
-		public AuthorizedLocationSpecification Specification { get; set; }
-
-		protected override void Customize( IFixture fixture ) => Specification.With( specification =>
-		{
-			new ServiceLocationRelay( Locator, specification ).With( fixture.ResidueCollectors.Add );
-		} );
-	}
-	
 	class FixtureRegistry : IServiceRegistry
 	{
 		readonly IFixture fixture;

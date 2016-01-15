@@ -1,14 +1,14 @@
+using AutoMapper.Internal;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
+using PostSharp.Patterns.Contracts;
 using PostSharp.Serialization;
 using System;
 using System.Reflection;
-using AutoMapper.Internal;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Aspects
 {
@@ -16,25 +16,25 @@ namespace DragonSpark.Aspects
 	{
 		public static object GetReturnValue( this MethodInterceptionArgs @this ) => @this.With( x => x.Proceed() ).ReturnValue;
 	}
-	
+
+	class Invocation : Tuple<object, MemberInfo, EqualityList>
+	{
+		public Invocation( object item1, MemberInfo item2, EqualityList item3 ) : base( item1, item2, item3 )
+		{ }
+	}
+
+	class InvocationReference : Reference<Invocation>
+	{
+		public InvocationReference( Invocation invocation ) : base( invocation, invocation.Item1 )
+		{ }
+	}
+
 	[PSerializable, ProvideAspectRole( StandardRoles.Caching ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.After, StandardRoles.Threading ), LinesOfCodeAvoided( 6 ), AttributeUsage( AttributeTargets.Method | AttributeTargets.Property )]
 	public sealed class Freeze : MethodInterceptionAspect
 	{
 		class Stored : ConnectedValue<object>
 		{
 			public Stored( Invocation instance, Func<object> factory ) : base( instance.Item1, Reference<Stored>.Key( instance ), factory ) {}
-		}
-
-		class Invocation : Tuple<object, MemberInfo, EqualityList>
-		{
-			public Invocation( object item1, MemberInfo item2, EqualityList item3 ) : base( item1, item2, item3 )
-			{ }
-		}
-
-		class InvocationReference : Reference<Invocation>
-		{
-			public InvocationReference( Invocation invocation ) : base( invocation, invocation.Item1 )
-			{ }
 		}
 
 		class MethodInvocationFactory : InvocationFactory<MethodInterceptionArgs>

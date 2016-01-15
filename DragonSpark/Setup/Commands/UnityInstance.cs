@@ -14,9 +14,8 @@ namespace DragonSpark.Setup.Commands
 
 		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{
-			var instance = Instance.BuildUp();
-			var type = RegistrationType ?? instance.With( item => item.GetType() );
-			var registration = instance.ConvertTo( type );
+			var type = RegistrationType ?? Instance.With( item => item.GetType() );
+			var registration = Instance.ConvertTo( type );
 
 			var registry = new ServiceRegistry( Container, Lifetime );
 			registry.Register( new InstanceRegistrationParameter( type, registration, BuildName ) );

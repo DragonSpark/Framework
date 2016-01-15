@@ -4,6 +4,8 @@ using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Reflection;
+using DragonSpark.Activation;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.ComponentModel
 {
@@ -28,16 +30,18 @@ namespace DragonSpark.ComponentModel
 		}
 	}
 
-	/*public class LocateAttribute : DefaultValueBase
+	public class LocateAttribute : DefaultValueBase
 	{
-		public LocateAttribute() : this( (string)null ) { }
+		public LocateAttribute() : this( null ) { }
 
 		public LocateAttribute( string name ) : this( null, name ) { }
 
-		public LocateAttribute( Type locatedType, string name = null ) : base( () => new ActivatedValueProvider( new ActivateAttribute.ParameterFactory( locatedType, name ).Create, new Factory().Create ) ) { }
+		public LocateAttribute( Type locatedType, string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter( locatedType, name ).Create, Factory.Instance.Create ) ) { }
 		
-		public class Factory : ActivateAttribute.Factory<object>
+		public class Factory : ActivatedValueProvider.Creator<object>
 		{
+			public new static Factory Instance { get; } = new Factory();
+
 			readonly IServiceLocator locator;
 
 			public Factory() : this( Services.Location.Item )
@@ -54,7 +58,7 @@ namespace DragonSpark.ComponentModel
 				return instance;
 			}
 		}
-	}*/
+	}
 
 	public class ActivateAttribute : DefaultValueBase
 	{

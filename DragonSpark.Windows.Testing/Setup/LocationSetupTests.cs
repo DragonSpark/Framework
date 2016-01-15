@@ -4,6 +4,7 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Objects;
@@ -13,14 +14,12 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
+using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Setup.Registration;
-using PostSharp;
-using PostSharp.Patterns.Model;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Windows.Testing.TestObjects.Activator;
@@ -61,7 +60,8 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, LocationSetup.AutoData]
 		public void CreateInstance( [Registered]IActivator activator )
 		{
-			Assert.Same( DragonSpark.Activation.Activator.GetCurrent(), activator );
+			var expected = Activation.Activator.GetCurrent();
+			Assert.Same( expected, activator );
 			Assert.NotSame( SystemActivator.Instance, activator );
 			Assert.IsType<Activator>( activator );
 			var instance = activator.Activate<IObject>( typeof(Object) );
@@ -178,13 +178,13 @@ namespace DragonSpark.Windows.Testing.Setup
 			location.Assign( DragonSpark.Activation.FactoryModel.Factory.Create<ServiceLocator>() );
 
 			var registry = location.Item.GetInstance<IServiceRegistry>();
-			registry.Register<IServiceRegistry>( sut.Object );
+			registry.Register( sut.Object );
 
 			var registered = location.Item.GetInstance<IServiceRegistry>();
 			Assert.Same( sut.Object, registered );
 			registered.Register<IInterface, Class>();
 
-			sut.Verify( x => x.Register( new MappingRegistrationParameter( typeof(IInterface), typeof(Class), null) ) );
+			sut.Verify( x => x.Register( It.Is<MappingRegistrationParameter>( parameter => parameter.MappedTo == typeof(Class) && parameter.Type == typeof(IInterface) && parameter.Name == null ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -536,6 +536,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		public interface IItem
 		{ }
 
+		[Register.Mapped]
 		public class Item : IItem
 		{ }
 

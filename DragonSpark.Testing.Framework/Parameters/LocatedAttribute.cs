@@ -9,17 +9,13 @@ namespace DragonSpark.Testing.Framework.Parameters
 	[AttributeUsage( AttributeTargets.Parameter )]
 	public class LocatedAttribute : CustomizeAttribute
 	{
+		readonly bool enabled;
+
 		public LocatedAttribute( bool enabled = true )
 		{
-			Enabled = enabled;
+			this.enabled = enabled;
 		}
 
-		public bool Enabled { get; }
-
-		public override ICustomization GetCustomization( ParameterInfo parameter )
-		{
-			var result = new ConfigureLocationCustomization( parameter.ParameterType, Enabled );
-			return result;
-		}
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new ConfigureLocationCustomization( parameter.ParameterType, enabled );
 	}
 }

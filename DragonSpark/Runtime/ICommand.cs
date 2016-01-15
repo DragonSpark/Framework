@@ -1,5 +1,3 @@
-using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using PostSharp.Patterns.Contracts;
@@ -87,10 +85,8 @@ namespace DragonSpark.Runtime
 
 		protected virtual void OnUpdate() => CanExecuteChanged( this, EventArgs.Empty );
 
-		[BuildUp]
 		public virtual bool CanExecute( TParameter parameter ) => !parameter.IsNull();
 
-		[BuildUp]
 		public void Execute( TParameter parameter ) => OnExecute( parameter );
 
 		protected abstract void OnExecute( TParameter parameter );

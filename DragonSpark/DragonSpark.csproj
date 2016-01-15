@@ -139,19 +139,17 @@
     <Compile Include="Activation\FactoryModel\Factory.cs" />
     <Compile Include="Activation\IExecutionContext.cs" />
     <Compile Include="Activation\IoC\IsRegisteredSpecification.cs" />
-    <Compile Include="Activation\IoC\ObjectBuilderExtension.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
-    <Compile Include="Aspects\BuildUp.cs" />
     <Compile Include="Aspects\CacheAttribute.cs" />
     <Compile Include="Aspects\CacheKeyFactory.cs" />
+    <Compile Include="Aspects\DefaultValueAspect.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
     <Compile Include="ComponentModel\BuildablePropertyCollectionFactory.cs" />
     <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />
     <Compile Include="ComponentModel\DefaultValueBase.cs" />
     <Compile Include="ComponentModel\DefaultValueProvider.cs" />
     <Compile Include="ComponentModel\HostedValueLocator.cs" />
-    <Compile Include="ComponentModel\IBuildPropertyRepository.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Runtime\FatalApplicationException.cs" />
@@ -175,7 +173,6 @@
     <Compile Include="Activation\FactoryModel\FactoryParameterCoercer.cs" />
     <Compile Include="Activation\FactoryModel\IFactoryParameterCoercer.cs" />
     <Compile Include="Activation\FactoryModel\IFactoryWithParameter.cs" />
-    <Compile Include="Activation\IObjectBuilder.cs" />
     <Compile Include="Activation\IoC\ArrayResolutionStrategy.cs" />
     <Compile Include="Activation\IoC\DefaultUnityConstructorSelectorPolicy.cs" />
     <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
@@ -187,7 +184,6 @@
     <Compile Include="Activation\ServiceLocation.cs" />
     <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
     <Compile Include="Runtime\Values\ThreadAmbientChain.cs" />
-    <Compile Include="Setup\Commands\SetupObjectBuilderCommand.cs" />
     <Compile Include="Setup\Registration\FactoryRegistration.cs" />
     <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
     <Compile Include="Setup\Registration\MappingRegistration.cs" />
@@ -244,11 +240,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="Activation\IoC\ObjectBuilderStrategy.cs" />
     <Compile Include="ComponentModel\ActivateAttribute.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
-    <Compile Include="ComponentModel\ObjectBuilder.cs" />
     <Compile Include="ComponentModel\MemberInfoLocator.cs">
       <SubType>Code</SubType>
     </Compile>

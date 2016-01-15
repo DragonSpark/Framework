@@ -1,5 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
@@ -28,7 +29,7 @@ namespace DragonSpark.Testing.Framework
 		public override ICustomization GetCustomization( ParameterInfo parameter )
 		{
 			var type = factoryType ?? ParameterInfoFactoryTypeLocator.Instance.Create( parameter );
-			var registration = new FactoryRegistration( type, parameter.ParameterType /*, parameter.ParameterType, Factory.GetResultType( type ), parameter.ParameterType*/ );
+			var registration = new FactoryRegistration( type, parameter.ParameterType );
 			var result = new RegistrationCustomization( registration );
 			return result;
 		}

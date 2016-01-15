@@ -16,7 +16,7 @@ namespace DragonSpark.Windows.Markup
 		protected virtual IList DetermineCollection( IServiceProvider serviceProvider )
 		{
 			var service = serviceProvider.Get<IProvideValueTarget>();
-			var target = service.TargetObject.BuildUp();
+			var target = service.TargetObject;
 			var result = service.TargetProperty.AsTo<PropertyInfo, IList>( source => (IList)source.GetValue( target ) ) ?? target as IList;
 			return result;
 		}

@@ -6,15 +6,11 @@ using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.Activation.IoC
 {
-	/*public class LifetimeManagerFactory : LifetimeManagerFactory<TransientLifetimeManager>
-	{
-		public LifetimeManagerFactory( IUnityContainer container ) : base( container ) { }
-	}*/
-
-	public class LifetimeManagerFactory<T> : FactoryBase<Type, LifetimeManager> where T : LifetimeManager
+	public class LifetimeManagerFactory : FactoryBase<Type, LifetimeManager>
 	{
 		readonly IUnityContainer container;
 
@@ -25,43 +21,31 @@ namespace DragonSpark.Activation.IoC
 
 		protected override LifetimeManager CreateItem( Type parameter )
 		{
-			var lifetimeManagerType = parameter.From<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType ) ?? typeof(T);
-			var result = (LifetimeManager)container.Resolve( lifetimeManagerType );
+			var type = parameter.GetTypeInfo().GetCustomAttribute<LifetimeManagerAttribute>().AsTo<LifetimeManagerAttribute, Type>( x => x.LifetimeManagerType );
+			var result = type.With( container.Resolve<LifetimeManager> );
 			return result;
 		}
 	}
 
-	public class TransientServiceRegistry : ServiceRegistry<TransientLifetimeManager>
+	public class ServiceRegistry<TLifetime> : ServiceRegistry where TLifetime : LifetimeManager
 	{
-		public TransientServiceRegistry( IUnityContainer container, IMessageLogger logger, LifetimeManagerFactory<TransientLifetimeManager> factory ) : base( container, logger, factory ) {}
+		public ServiceRegistry( IUnityContainer container ) : base( container, typeof(TLifetime) ) {}
 	}
 
-	public class PersistingServiceRegistry : ServiceRegistry<ContainerControlledLifetimeManager>
-	{
-		public PersistingServiceRegistry( IUnityContainer container, IMessageLogger logger, LifetimeManagerFactory<ContainerControlledLifetimeManager> factory ) : base( container, logger, factory ) {}
-
-		// public PersistingServiceRegistry( IUnityContainer container, IMessageLogger logger, Func<Type, LifetimeManager> lifetimeFactory ) : base( container, logger, lifetimeFactory ) {}
-	}
-
-	public class ServiceRegistry<TDefaultLifetimeManager> : ServiceRegistryBase where TDefaultLifetimeManager : LifetimeManager
-	{
-		public ServiceRegistry( [Required]IUnityContainer container, IMessageLogger logger, [Required]LifetimeManagerFactory<TDefaultLifetimeManager> factory ) : base( container, logger, factory.Create ) { }
-	}
-
-	public class ServiceRegistry : ServiceRegistryBase
-	{
-		public ServiceRegistry( IUnityContainer container, Type lifetimeFactoryType ) : this( container, (LifetimeManager)container.TryResolve( lifetimeFactoryType ) ) { }
-
-		public ServiceRegistry( IUnityContainer container, LifetimeManager lifetimeManager ) : base( container, container.Logger(), type => lifetimeManager ) {}
-	}
-
-	public abstract class ServiceRegistryBase : IServiceRegistry
+	public class ServiceRegistry : IServiceRegistry
 	{
 		readonly IUnityContainer container;
 		readonly IMessageLogger logger;
 		readonly Func<Type, LifetimeManager> lifetimeFactory;
 
-		protected ServiceRegistryBase( [Required]IUnityContainer container, [Required]IMessageLogger logger, [Required]Func<Type, LifetimeManager> lifetimeFactory )
+		[InjectionConstructor]
+		public ServiceRegistry( IUnityContainer container, IMessageLogger logger, [Required]LifetimeManagerFactory factory ) : this( container, logger, factory.Create ) { }
+
+		public ServiceRegistry( IUnityContainer container, Type lifetimeFactoryType ) : this( container, container.Logger(), t => container.Resolve<LifetimeManager>( lifetimeFactoryType ) ) { }
+
+		public ServiceRegistry( IUnityContainer container, LifetimeManager lifetimeManager ) : this( container, container.Logger(), type => lifetimeManager ) { }
+
+		protected ServiceRegistry( [Required]IUnityContainer container, [Required]IMessageLogger logger, [Required]Func<Type, LifetimeManager> lifetimeFactory )
 		{
 			this.container = container;
 			this.logger = logger;
@@ -71,8 +55,8 @@ namespace DragonSpark.Activation.IoC
 		public void Register( MappingRegistrationParameter parameter )
 		{
 			var lifetimeManager = lifetimeFactory( parameter.MappedTo ) ?? new TransientLifetimeManager();
-			logger.Information( string.Format( Resources.ServiceRegistry_Registering, parameter.Type, parameter.Name, lifetimeManager.GetType().FullName ) );
 			container.RegisterType( parameter.Type, parameter.MappedTo, parameter.Name, lifetimeManager );
+			logger.Information( string.Format( Resources.ServiceRegistry_Registering, parameter.Type, parameter.Name, lifetimeManager.GetType().FullName ) );
 		}
 
 		public void Register( InstanceRegistrationParameter parameter )
@@ -88,7 +72,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			var lifetimeManager = lifetimeFactory( parameter.Type ) ?? new TransientLifetimeManager();
 			logger.Information( $"Registering Unity Factory: {parameter.Type} ({lifetimeManager.GetType().FullName})" );
-			container.RegisterType( parameter.Type, parameter.Name, lifetimeManager, new InjectionFactory( x => parameter.Factory ) );
+			container.RegisterType( parameter.Type, parameter.Name, lifetimeManager, new InjectionFactory( x => parameter.Factory() ) );
 		}
 	}
 }

@@ -4,7 +4,6 @@ using DragonSpark.Runtime;
 
 namespace DragonSpark.Setup
 {
-	[BuildUp]
 	public abstract class SetupCommandBase<T> : Command<T> where T : ISetupParameter
 	{
 		[Default( true )]

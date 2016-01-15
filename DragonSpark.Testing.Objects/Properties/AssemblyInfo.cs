@@ -1,4 +1,5 @@
-﻿using DragonSpark.Setup.Registration;
+﻿using DragonSpark.Aspects;
+using DragonSpark.Setup.Registration;
 using System.Reflection;
 using System.Resources;
 
@@ -10,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "DragonSpark.Testing.Objects" )]
-[assembly: AssemblyCopyright( "Copyright ©  2015" )]
+[assembly: AssemblyCopyright( "Copyright © DragonSpark Technologies Incorporated 2016" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: NeutralResourcesLanguage( "en" )]
@@ -28,3 +29,4 @@ using System.Resources;
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "1.0.0.0" )]
 [assembly: Registration]
+[assembly: DefaultValueAspectProvider]

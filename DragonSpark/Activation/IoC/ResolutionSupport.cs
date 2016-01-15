@@ -46,13 +46,15 @@ namespace DragonSpark.Activation.IoC
 	{
 		readonly static ISpecification<StrategyValidatorParameter>[] DefaultValidators = { ArrayStrategyValidator.Instance, EnumerableStrategyValidator.Instance };
 
+		readonly BuildableTypeFromConventionLocator locator;
 		readonly IEnumerable<ISpecification<StrategyValidatorParameter>> validators;
 
-		public ResolutionSpecification() : this( DefaultValidators )
+		public ResolutionSpecification( BuildableTypeFromConventionLocator locator ) : this( locator, DefaultValidators )
 		{}
 
-		public ResolutionSpecification( IEnumerable<ISpecification<StrategyValidatorParameter>> validators )
+		ResolutionSpecification( BuildableTypeFromConventionLocator locator, IEnumerable<ISpecification<StrategyValidatorParameter>> validators )
 		{
+			this.locator = locator;
 			this.validators = validators;
 		}
 
@@ -60,9 +62,13 @@ namespace DragonSpark.Activation.IoC
 
 		static bool CheckRegistered( ResolutionSpecificationParameter parameter ) => parameter.Context.Container.IsRegistered( parameter.Key.Type, parameter.Key.Name ) && !( parameter.Context.Policies.GetNoDefault<IBuildPlanPolicy>( parameter.Key, false ) is DynamicMethodBuildPlan );
 
-		bool Check( ResolutionSpecificationParameter parameter ) => CheckInstance( parameter ) || CheckRegistered( parameter ) 
-																	|| 
-																	new StrategyValidatorParameter( parameter.Context.Strategies.MakeStrategyChain(), parameter.Key ).With( p => validators.Any( specification => specification.IsSatisfiedBy( p ) ) );
+		bool Check( ResolutionSpecificationParameter parameter ) => 
+			CheckInstance( parameter ) || CheckRegistered( parameter ) 
+			|| 
+			new StrategyValidatorParameter( parameter.Context.Strategies.MakeStrategyChain(), parameter.Key ).With( p => validators.Any( specification => specification.IsSatisfiedBy( p ) ) )
+			||
+			locator.Create( parameter.Key.Type ) != null
+			;
 
 		protected override bool IsSatisfiedByParameter( ResolutionSpecificationParameter parameter ) => base.IsSatisfiedByParameter( parameter ) && Check( parameter );
 	}
@@ -84,10 +90,7 @@ namespace DragonSpark.Activation.IoC
 		readonly ISpecification<ResolutionSpecificationParameter> specification;
 		readonly IList<NamedTypeBuildKey> resolvable = new List<NamedTypeBuildKey>();
 
-		public ResolutionSupport( ExtensionContext context ) : this( context, new ResolutionSpecification() )
-		{}
-
-		public ResolutionSupport( ExtensionContext context, ISpecification<ResolutionSpecificationParameter> specification )
+		public ResolutionSupport( ExtensionContext context, ResolutionSpecification specification ) 
 		{
 			this.context = context;
 			this.specification = specification;
@@ -95,6 +98,7 @@ namespace DragonSpark.Activation.IoC
 		
 		public bool CanResolve( Type type, string name, params object[] parameters )
 		{
+
 			var key = new NamedTypeBuildKey( type, name );
 			var result = resolvable.Contains( key ) || Validate( key, parameters.NotNull().Select( o => o.GetType() ).ToArray() );
 			return result;

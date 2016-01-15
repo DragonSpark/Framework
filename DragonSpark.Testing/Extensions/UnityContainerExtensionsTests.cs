@@ -1,4 +1,5 @@
 using System.Linq;
+using DragonSpark.Activation.IoC;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
@@ -17,11 +18,15 @@ namespace DragonSpark.Testing.Extensions
 			var initial = logger.Messages.Count();
 			Assert.NotEmpty( logger.Messages );
 
+			Assert.False( sut.IsRegistered<ISingletonLocator>() );
+
 			var item = sut.TryResolve<IInterface>();
 			Assert.Null( item );
 
+			Assert.True( sut.IsRegistered<ISingletonLocator>() );
+
 			var count = logger.Messages.Count();
-			Assert.Equal( initial + 2, count );
+			Assert.Equal( initial + 3, count );
 
 			/*var register = new RecordingMessageLogger();
 			sut.RegisterInstance<IMessageLogger>( register );

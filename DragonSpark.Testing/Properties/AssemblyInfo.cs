@@ -2,6 +2,7 @@
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
+using DragonSpark.Aspects;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
 using System.Reflection;
@@ -25,3 +26,4 @@ using System.Runtime.InteropServices;
 [assembly: Application]
 
 [assembly: AssemblyProvider.Factory] // Default assembly factory.
+[assembly: DefaultValueAspectProvider]

@@ -1,6 +1,5 @@
 using DragonSpark.Extensions;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
 using PostSharp.Aspects;
 using PostSharp.Patterns.Contracts;
 using System;
@@ -32,10 +31,5 @@ namespace DragonSpark.Testing.Framework.Setup
 		}
 
 		public IEnumerable<AspectInstance> ProvideAspects( object targetElement ) => targetElement.AsTo<MethodInfo, AspectInstance>( info => new AspectInstance( info, new AssignExecutionContextAspect() ) ).ToItem();
-	}
-
-	public class DefaultAutoDataCustomization : CompositeCustomization
-	{
-		public DefaultAutoDataCustomization() : base( new MetadataCustomization(), new AutoConfiguredMoqCustomization() ) {}
 	}
 }

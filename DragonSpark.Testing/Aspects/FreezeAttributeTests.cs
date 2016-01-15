@@ -43,24 +43,10 @@ namespace DragonSpark.Testing.Aspects
 		public void Deconstructor()
 		{
 			var count = 0;
-			new SubjectWithDeconstructor( () => count++ );
+			new SubjectWithDeconstructor( () => count++ ).QueryInterface<IDisposable>().Dispose();
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 			Assert.Equal( 1, count );
-		}
-
-		[Fact]
-		public void DisposeModel()
-		{
-			Assert.Throws<ObjectDisposedException>( () => new Item().QueryInterface<IDisposable>().Dispose() );
-		}
-
-		[Disposable( ThrowObjectDisposedException = true )]
-		public class Item
-		{
-			public string PropertyName { get; set; }
-			
-			protected virtual void Dispose( bool disposing ) => PropertyName = null;
 		}
 
 		[Disposable]
@@ -79,9 +65,23 @@ namespace DragonSpark.Testing.Aspects
 				// Dispose( false );
 			}
 
-			// [Freeze]
-			// protected virtual void Dispose( bool disposing ) => action();
+			[Freeze]
+			protected virtual void Dispose( bool disposing ) => action();
 		}*/
+
+		[Fact]
+		public void DisposeModel()
+		{
+			Assert.Throws<ObjectDisposedException>( () => new Item().QueryInterface<IDisposable>().Dispose() );
+		}
+
+		[Disposable( ThrowObjectDisposedException = true )]
+		public class Item
+		{
+			public string PropertyName { get; set; }
+			
+			protected virtual void Dispose( bool disposing ) => PropertyName = null;
+		}
 
 		public class Disposable : IDisposable
 		{

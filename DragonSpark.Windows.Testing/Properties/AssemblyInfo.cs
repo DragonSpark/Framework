@@ -2,6 +2,8 @@
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Aspects;
+using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Objects;
 using DragonSpark.Windows.Testing.Setup;
 
@@ -41,3 +43,4 @@ using DragonSpark.Windows.Testing.Setup;
 [assembly: Registration( typeof(Command) )]
 
 [assembly: AssemblyProvider.Factory] // Default assembly factory.
+[assembly: DefaultValueAspectProvider]
