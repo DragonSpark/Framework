@@ -277,10 +277,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Types.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
