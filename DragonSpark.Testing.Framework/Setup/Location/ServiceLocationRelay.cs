@@ -26,7 +26,8 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		public object Create( object request, ISpecimenContext context )
 		{
 			var type = Type.From( request );
-			var item = specification.IsSatisfiedBy( type ) ? locator.GetService( type ) : null;
+			var isSatisfiedBy = specification.IsSatisfiedBy( type );
+			var item = isSatisfiedBy ? locator.GetService( type ) : null;
 			var result = item ?? new NoSpecimen();
 			return result;
 		}

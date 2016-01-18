@@ -33,7 +33,7 @@ namespace DragonSpark.Setup.Registration
 
 	public static class ServiceRegistryExtensions
 	{
-		public static void Register<TFrom, TTo>( this IServiceRegistry @this, string name = null ) => @this.Register( new MappingRegistrationParameter( typeof(TFrom), typeof(TTo), name ) );
+		public static void Register<TFrom, TTo>( this IServiceRegistry @this, string name = null ) where TTo : TFrom => @this.Register( new MappingRegistrationParameter( typeof(TFrom), typeof(TTo), name ) );
 
 		public static void Register<TService>( this IServiceRegistry @this, TService instance, string name = null ) => @this.Register( new InstanceRegistrationParameter( typeof(TService), instance, name ) );
 
@@ -48,7 +48,7 @@ namespace DragonSpark.Setup.Registration
 
 		public static IServiceRegistry RegisterFactory( [Required] this IServiceRegistry @this, [Required]IFactoryWithParameter factory )
 		{
-			new RegisterFactoryWithParameterCommand( @this, new FactoryWithParameterContainedDelegateFactory( type => factory.Create ).Create )
+			new RegisterFactoryWithParameterCommand( @this, new FactoryWithActivatedParameterDelegateFactory( type => factory.Create ).Create )
 				.ExecuteWith( factory.GetType() );
 			return @this;
 		}*/
@@ -60,11 +60,11 @@ namespace DragonSpark.Setup.Registration
 
 		public static FactoryDelegateFactory Instance { get; } = new FactoryDelegateFactory();
 
-		public FactoryDelegateFactory() : this( ActivateFactory<IFactory>.Instance.CreateUsing ) {}
+		FactoryDelegateFactory() : this( ActivateFactory<IFactory>.Instance.CreateUsing ) {}
 
-		public FactoryDelegateFactory( IFactory factory ) : this( t => factory ) {}
+		// public FactoryDelegateFactory( IFactory factory ) : this( t => factory ) {}
 
-		public FactoryDelegateFactory( [Required]Func<Type, IFactory> createFactory )
+		FactoryDelegateFactory( [Required]Func<Type, IFactory> createFactory )
 		{
 			this.createFactory = createFactory;
 		}
@@ -82,9 +82,9 @@ namespace DragonSpark.Setup.Registration
 
 		readonly Func<Type, IFactoryWithParameter> createFactory;
 
-		public FactoryWithParameterDelegateFactory() : this( ActivateFactory<IFactoryWithParameter>.Instance.CreateUsing ) {}
+		FactoryWithParameterDelegateFactory() : this( ActivateFactory<IFactoryWithParameter>.Instance.CreateUsing ) {}
 
-		public FactoryWithParameterDelegateFactory( [Required]Func<Type, IFactoryWithParameter> createFactory )
+		FactoryWithParameterDelegateFactory( [Required]Func<Type, IFactoryWithParameter> createFactory )
 		{
 			this.createFactory = createFactory;
 		}
@@ -96,19 +96,16 @@ namespace DragonSpark.Setup.Registration
 		};
 	}
 
-	public class FactoryWithParameterContainedDelegateFactory : FactoryBase<Type, Func<object>>
+	public class FactoryWithActivatedParameterDelegateFactory : FactoryBase<Type, Func<object>>
 	{
-		public static FactoryWithParameterContainedDelegateFactory Instance { get; } = new FactoryWithParameterContainedDelegateFactory();
+		public static FactoryWithActivatedParameterDelegateFactory Instance { get; } = new FactoryWithActivatedParameterDelegateFactory();
 
 		readonly Func<Type, Func<object, object>> factory;
 		readonly Func<Type, object> createParameter;
 
-		public FactoryWithParameterContainedDelegateFactory() : this( FactoryWithParameterDelegateFactory.Instance.Create ) {}
+		FactoryWithActivatedParameterDelegateFactory() : this( FactoryWithParameterDelegateFactory.Instance.Create, ActivateFactory<object>.Instance.CreateUsing ) {}
 
-		public FactoryWithParameterContainedDelegateFactory( [Required]Func<Type, Func<object, object>> factory ) : this( factory, ActivateFactory<object>.Instance.CreateUsing )
-		{}
-
-		public FactoryWithParameterContainedDelegateFactory( [Required]Func<Type, Func<object, object>> factory, [Required]Func<Type, object> createParameter )
+		FactoryWithActivatedParameterDelegateFactory( [Required]Func<Type, Func<object, object>> factory, [Required]Func<Type, object> createParameter )
 		{
 			this.factory = factory;
 			this.createParameter = createParameter;
@@ -205,7 +202,7 @@ namespace DragonSpark.Setup.Registration
 
 	public class RegisterFactoryWithParameterCommand : RegisterFactoryCommandBase<IFactoryWithParameter>
 	{
-		public RegisterFactoryWithParameterCommand( IServiceRegistry registry ) : base( registry, FactoryWithParameterContainedDelegateFactory.Instance.Create ) {}
+		public RegisterFactoryWithParameterCommand( IServiceRegistry registry ) : base( registry, FactoryWithActivatedParameterDelegateFactory.Instance.Create ) {}
 
 		// public RegisterFactoryWithParameterCommand( IServiceRegistry registry, ISingletonLocator locator, Func<Type, Func<object>> create ) : base( registry, locator, create ) {}
 

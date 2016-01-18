@@ -2,6 +2,7 @@ using DragonSpark.ComponentModel;
 using DragonSpark.Testing.Framework.Setup.Location;
 using Ploeh.AutoFixture;
 using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -16,8 +17,8 @@ namespace DragonSpark.Testing.Framework.Setup
 			this.enabled = enabled;
 		}
 
-		[Activate]
-		IServiceLocationAuthority Authority { get; set; }
+		[Locate, Required]
+		IServiceLocationAuthority Authority { [return: Required]get; set; }
 
 		protected override void Customize( IFixture fixture ) => Authority.Register( locationType, enabled );
 	}

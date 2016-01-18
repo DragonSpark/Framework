@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.ComponentModel
 {
-	public class CollectionAttribute : ActivateAttribute
+	public class CollectionAttribute : ActivateAttributeBase
 	{
 		public CollectionAttribute( Type elementType = null, string name = null ) : base( t => Create( elementType, name ) ) {}
 

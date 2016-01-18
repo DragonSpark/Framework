@@ -3,6 +3,7 @@ using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity;
 using System;
 using System.Windows.Markup;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
@@ -13,7 +14,7 @@ namespace DragonSpark.Setup.Commands
 		[Ambient]
 		public Type RegistrationType  { get; set; }
 		
-		[Activate( typeof(ContainerControlledLifetimeManager) )]
-		public LifetimeManager Lifetime { get; set; }
+		[Required, Locate( typeof(ContainerControlledLifetimeManager) )]
+		public LifetimeManager Lifetime { [return: Required]get; set; }
 	}
 }

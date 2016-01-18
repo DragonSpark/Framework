@@ -4,6 +4,7 @@ using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using Ploeh.AutoFixture;
 using System;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
@@ -19,11 +20,11 @@ namespace DragonSpark.Testing.Framework.Setup.Location
 		[Value( typeof(CurrentAutoDataContext) )]
 		public AutoData Setup { get; set; }
 
-		[Activate]
-		public RegisterInstanceCommand<OnlyIfNotRegistered> Command { get; set; }
+		[Required, Locate]
+		public RegisterInstanceCommand<OnlyIfNotRegistered> Command { [return: Required]get; set; }
 
-		[Activate]
-		public AuthorizedServiceLocationRelay Relay { get; set; }
+		[Required, Locate]
+		public AuthorizedServiceLocationRelay Relay { [return: Required]get; set; }
 
 		protected override void Initialize()
 		{

@@ -6,7 +6,7 @@ using DragonSpark.Modularity;
 
 namespace DragonSpark.Windows.Modularity
 {
-	// [Serializable]
+	[Serializable]
 	public class CustomAttributeDataProvider : IAttributeDataProvider
 	{
 		public static CustomAttributeDataProvider Instance { get; } = new CustomAttributeDataProvider();

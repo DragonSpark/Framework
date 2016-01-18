@@ -1,8 +1,8 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using Microsoft.Practices.Unity;
 using System.Linq;
 using System.Windows.Markup;
-using DragonSpark.Runtime;
 
 namespace DragonSpark.Setup.Commands
 {
@@ -28,34 +28,4 @@ namespace DragonSpark.Setup.Commands
 	{
 		protected override UnityInstance OnAdd( object item ) => base.OnAdd( item ) ?? new UnityInstance { Instance = item, RegistrationType = item.GetType() };
 	}
-
-	/*[Serializable]
-	public class AddAspect : MethodLevelAspect, IAspectProvider
-	{
-		[SelfPointcut]
-		[OnMethodSuccessAdvice]
-		public void OnEntry( MethodExecutionArgs args )
-		{}
-
-		public IEnumerable<AspectInstance> ProvideAspects( object targetElement )
-		{
-			throw new NotImplementedException();
-		}
-	}*/
-
-
-	/*[PSerializable]
-	public class ConvertItem : InstanceLevelAspect
-	{
-		[OnMethodEntryAdvice, MethodPointcut( nameof( Select ) )]
-		public void OnEntry( MethodExecutionArgs args )
-		{
-			
-		}
-
-		IEnumerable<MethodInfo> Select( Type type )
-		{
-			yield return typeof(IList).GetRuntimeMethod( nameof(IList.Add), new [] { typeof(object) } );
-		}
-	}*/
 }

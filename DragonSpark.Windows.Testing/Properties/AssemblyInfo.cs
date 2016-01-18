@@ -42,5 +42,5 @@ using DragonSpark.Windows.Testing.Setup;
 [assembly: Application]
 [assembly: Registration( typeof(Command) )]
 
-[assembly: AssemblyProvider.Factory] // Default assembly factory.
-[assembly: DefaultValueAspectProvider]
+[assembly: AssemblyProvider.Register] // Default assembly factory.
+[assembly: ApplyDefaultValues]

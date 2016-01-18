@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Markup;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Runtime
 {
@@ -14,7 +15,7 @@ namespace DragonSpark.Runtime
 	{
 		public EqualityList() {}
 
-		public EqualityList( IEnumerable<object> collection ) : base( collection ) {}
+		public EqualityList( [Required] params object[] items ) : base( items ) {}
 
 		public bool Equals( EqualityList other )
 		{

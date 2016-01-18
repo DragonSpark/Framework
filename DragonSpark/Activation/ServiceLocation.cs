@@ -4,7 +4,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.Activation
 {
-	public class ServiceLocation : ExecutionContextValue<IServiceLocator>, IServiceLocation, IDisposable
+	public class ServiceLocation : ExecutionContextValue<IServiceLocator>, IServiceLocation
 	{
 		public static ServiceLocation Instance { get; } = new ServiceLocation();
 

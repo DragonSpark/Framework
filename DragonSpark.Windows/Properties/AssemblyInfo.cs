@@ -48,4 +48,4 @@ using System.Windows.Markup;
 // [assembly: Include( typeof( Setup ) )]
 
 // [assembly: TypeForwardedTo( typeof(AmbientAttribute) )]
-[assembly: DefaultValueAspectProvider]
+// [assembly: DefaultValueAspectProvider]

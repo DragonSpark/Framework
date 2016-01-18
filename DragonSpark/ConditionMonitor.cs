@@ -1,31 +1,26 @@
 ﻿using DragonSpark.Extensions;
+using PostSharp.Patterns.Threading;
 using System;
 
 namespace DragonSpark
 {
+	[ReaderWriterSynchronized]
 	public class ConditionMonitor
 	{
 		public bool IsApplied => State > ConditionMonitorState.None;
 
 		public ConditionMonitorState State { get; private set; }
 
-		public void Reset()
-		{
-			State = ConditionMonitorState.None;
-		}
+		[Writer]
+		public void Reset() => State = ConditionMonitorState.None;
 
-		public bool Apply()
-		{
-			var result = State == ConditionMonitorState.None;
-			State = result ? ConditionMonitorState.Applied : State;
-			return result;
-		}
+		[Writer]
+		public bool Apply() => ApplyIf( null, null );
 
-		public bool Apply( Action action )
-		{
-			return ApplyIf( null, action );
-		}
+		[Writer]
+		public bool Apply( Action action ) => ApplyIf( null, action );
 
+		[Writer]
 		public bool ApplyIf( Func<bool> condition, Action action )
 		{
 			switch ( State )

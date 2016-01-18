@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime
 {
 	public class ApplicationInformation
 	{
-		[Activate]
+		[Locate]
 		public AssemblyInformation AssemblyInformation { get; set; }
 
 		public Uri CompanyUri { get; set; }

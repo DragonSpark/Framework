@@ -3,6 +3,7 @@ using DragonSpark.Activation.IoC;
 using DragonSpark.Extensions;
 using Microsoft.Practices.Unity;
 using Xunit;
+using UnityContainerFactory = DragonSpark.Testing.Objects.Setup.UnityContainerFactory;
 
 namespace DragonSpark.Testing.Activation.IoC
 {
@@ -13,7 +14,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		[Fact]
 		public void Simple()
 		{
-			var container = DragonSpark.Activation.FactoryModel.Factory.Create<UnityContainer>();
+			var container = UnityContainerFactory.Instance.Create();
 			var sut = new InjectionFactoryFactory( typeof(SimpleFactory) );
 			var create = sut.Create( new InjectionMemberParameter( container, typeof(string) ) );
 			container.RegisterType( typeof(string), create );
@@ -23,7 +24,7 @@ namespace DragonSpark.Testing.Activation.IoC
 		[Fact]
 		public void Create()
 		{
-			var container = DragonSpark.Activation.FactoryModel.Factory.Create<UnityContainer>();
+			var container = UnityContainerFactory.Instance.Create();
 			var sut = new InjectionFactoryFactory( typeof(Factory) );
 			container.RegisterType<IItem, Item>( new ContainerControlledLifetimeManager() );
 			var expected = container.Resolve<IItem>();

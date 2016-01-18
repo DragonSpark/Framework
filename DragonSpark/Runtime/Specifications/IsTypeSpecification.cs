@@ -4,6 +4,6 @@ namespace DragonSpark.Runtime.Specifications
 	{
 		public static IsTypeSpecification<T> Instance { get; } = new IsTypeSpecification<T>();
 
-		protected override bool IsSatisfiedByParameter( object parameter ) => parameter is T;
+		protected override bool Verify( object parameter ) => parameter is T;
 	}
 }

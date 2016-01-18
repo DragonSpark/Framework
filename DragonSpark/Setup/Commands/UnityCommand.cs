@@ -6,7 +6,7 @@ namespace DragonSpark.Setup.Commands
 {
 	public abstract class UnityCommand : SetupCommandBase<IApplicationSetupParameter>
 	{
-		[Activate, Required]
-		public IUnityContainer Container { get; set; }
+		[Locate, Required]
+		public IUnityContainer Container { [return: Required]get; set; }
 	}
 }

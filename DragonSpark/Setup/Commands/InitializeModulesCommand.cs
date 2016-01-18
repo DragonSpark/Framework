@@ -8,13 +8,13 @@ namespace DragonSpark.Setup.Commands
 {
 	public class InitializeModulesCommand : SetupCommand
 	{
-		[Activate, Required]
+		[Locate, Required]
 		public IModuleMonitor Monitor { [return: Required]get; set; }
 
-		[Activate, Required]
+		[Locate, Required]
 		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
-		[Activate, Required]
+		[Locate, Required]
 		public IModuleManager Manager { [return: Required]get; set; }
 
 		protected override void OnExecute( ISetupParameter parameter )

@@ -3,7 +3,6 @@ using DragonSpark.Testing.Framework;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 using PostSharp.Patterns.Contracts;
-using System;
 using System.Linq;
 using System.Reflection;
 
@@ -13,9 +12,9 @@ namespace DragonSpark.Testing.Objects
 	{
 		readonly Assembly[] others;
 
-		public class Factory : RegisterFactoryAttribute
+		public class Register : RegisterFactoryAttribute
 		{
-			public Factory() : base( typeof(AssemblyProvider) ) {}
+			public Register() : base( typeof(AssemblyProvider) ) {}
 		}
 
 		public AssemblyProvider() : this( DomainApplicationAssemblyLocator.Instance.Create() ) {}
@@ -26,6 +25,6 @@ namespace DragonSpark.Testing.Objects
 		}
 
 		protected override Assembly[] CreateItem() =>
-			new[] { typeof( AssemblySourceBase ), typeof( Class ), typeof( Tests ), typeof( BindingOptions ) }.Assemblies().Concat( others ).Distinct().Prioritize().ToArray();
+			new[] { typeof(AssemblySourceBase), typeof(Class), typeof(Tests), typeof(BindingOptions) }.Assemblies().Concat( others ).NotNull().Distinct().Prioritize().ToArray();
 	}
 }

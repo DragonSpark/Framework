@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Windows.Modularity
 {
-	// [Serializable]
+	[Serializable]
 	public class ModuleInfoBuilder : DragonSpark.Modularity.ModuleInfoBuilder
 	{
 		public static ModuleInfoBuilder Instance { get; } = new ModuleInfoBuilder();

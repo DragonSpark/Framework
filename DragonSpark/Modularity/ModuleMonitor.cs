@@ -1,13 +1,12 @@
 using DragonSpark.Extensions;
+using DragonSpark.Setup.Registration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DragonSpark.Setup.Registration;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Modularity
 {
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	[Persistent]
 	public class ModuleMonitor : IModuleMonitor
 	{
 		readonly IModuleCatalog catalog;

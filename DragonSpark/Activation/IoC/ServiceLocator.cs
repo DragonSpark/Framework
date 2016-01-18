@@ -7,6 +7,7 @@ using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -33,14 +34,12 @@ namespace DragonSpark.Activation.IoC
 
 		protected override object DoGetInstance( Type serviceType, string key )
 		{
-			var basic = key == null && !serviceType.GetTypeInfo().IsInterface;
-			if ( basic || Container.IsRegistered( serviceType, key ) )
+			var result = Container.TryResolve( serviceType, key );
+			if ( result == null && !Container.IsRegistered( serviceType, key ) )
 			{
-				return Container.TryResolve( serviceType, key );
+				Container.Logger().Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
 			}
-
-			Container.Logger().Warning( string.Format( Resources.ServiceLocator_NotRegistered, serviceType, key ?? Resources.Activator_None ) );
-			return null;
+			return result;
 		}
 
 		[Child]

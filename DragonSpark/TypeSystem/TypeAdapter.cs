@@ -80,7 +80,7 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public bool IsGenericOf<T>() => IsGenericOf( typeof(T).GetGenericTypeDefinition() );
+		public bool IsGenericOf<T>() => IsGenericOf( typeof( T ).GetGenericTypeDefinition() );
 
 		[Freeze]
 		public bool IsGenericOf( System.Type genericDefinition ) =>

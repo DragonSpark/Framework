@@ -4,13 +4,14 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Properties;
 using System.Linq;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
 	public class SetupUnityCommand : ConfigureUnityCommand
 	{
-		[Activate]
-		public RegisterAllClassesCommand<OnlyIfNotRegistered> Command { get; set; }
+		[Locate, Required]
+		public RegisterAllClassesCommand<OnlyIfNotRegistered> Command { [return: Required]get; set; }
 
 		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{

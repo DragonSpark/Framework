@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.TypeSystem
 {
 	public class ApplicationAssemblyTransformerTests
 	{
-		[Theory, DefaultSetup.AutoData, AssemblyProvider.Factory]
+		[Theory, DefaultSetup.AutoData, AssemblyProvider.Register]
 		public void Basic( [Frozen]IAssemblyProvider provider, ApplicationAssemblyTransformer sut )
 		{
 			var mock = Mock.Get( provider );

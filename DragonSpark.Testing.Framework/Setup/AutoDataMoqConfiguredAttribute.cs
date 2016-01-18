@@ -16,10 +16,7 @@ namespace DragonSpark.Testing.Framework.Setup
 		public AutoDataMoqAttribute() : base( FixtureFactory<AutoMoqCustomization>.Instance.Create ) {}
 	}
 
-	public class SetupFixtureFactory<TAssemblyProvider, TSetup> : FixtureFactory<SetupCustomization<TAssemblyProvider, TSetup>> 
-		where TAssemblyProvider : IAssemblyProvider 
-		where TSetup : class, ISetup
-	{}
+	public class SetupFixtureFactory<T> : FixtureFactory<T> where T : SetupCustomization, new() {}
 
 	public class FixtureFactory<TWith> : FactoryBase<IFixture> where TWith : ICustomization, new()
 	{

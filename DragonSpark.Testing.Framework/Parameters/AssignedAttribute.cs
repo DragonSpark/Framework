@@ -7,6 +7,7 @@ using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit2;
 using System;
 using System.Reflection;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Testing.Framework.Parameters
 {
@@ -21,13 +22,13 @@ namespace DragonSpark.Testing.Framework.Parameters
 				this.type = type;
 			}
 
-			[Activate]
-			IServiceLocation Location { get; set; }
+			[Locate, Required]
+			IServiceLocation Location { [return: Required]get; set; }
 
 			protected override void Customize( IFixture fixture )
 			{
-				var serviceLocator = fixture.Create<IServiceLocator>( type );
-				serviceLocator.With( Location.Assign );
+				var locator = fixture.Create<IServiceLocator>( type );
+				locator.With( Location.Assign );
 			}
 		}
 

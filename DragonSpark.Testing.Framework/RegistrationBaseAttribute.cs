@@ -7,6 +7,7 @@ using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture;
 using PostSharp.Patterns.Contracts;
 using System;
+using System.Reflection;
 using Type = System.Type;
 
 namespace DragonSpark.Testing.Framework
@@ -15,6 +16,23 @@ namespace DragonSpark.Testing.Framework
 	public abstract class RegistrationBaseAttribute : HostingAttribute
 	{
 		protected RegistrationBaseAttribute( Func<object, ICustomization> factory ) : base( x => x.AsTo( factory ) ) {}
+	}
+
+	[Priority( Priority.Low )]
+	public class AssembliesAttribute : RegistrationBaseAttribute
+	{
+		public AssembliesAttribute() : base( o => AssignAssemblyHostCustomization.Instance ) {}
+	}
+
+	public class AssignAssemblyHostCustomization : ICustomization
+	{
+		public static AssignAssemblyHostCustomization Instance { get; } = new AssignAssemblyHostCustomization();
+
+		public void Customize( IFixture fixture )
+		{
+			var assemblies = fixture.Create<Assembly[]>();
+			new AssemblyHost().Assign( assemblies );
+		}
 	}
 
 	public class RegistrationCustomization : ICustomization

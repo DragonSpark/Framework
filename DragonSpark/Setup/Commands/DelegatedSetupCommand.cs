@@ -1,7 +1,6 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using DragonSpark.Setup.Registration;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
@@ -10,10 +9,10 @@ namespace DragonSpark.Setup.Commands
 	{
 		protected override void OnExecute( ISetupParameter parameter ) => Command.ExecuteWith( Parameter );
 
-		[Required, Activate]
+		[Required, Locate]
 		public TCommand Command { [return: Required]get; set; }
 
-		[Required, Factory]
+		[Required, Locate]
 		public TParameter Parameter { [return: Required]get; set; }
 	}
 }

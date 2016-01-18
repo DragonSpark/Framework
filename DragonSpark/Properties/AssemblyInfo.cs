@@ -44,4 +44,4 @@ using Microsoft.Practices.ServiceLocation;
 [assembly: Registration( Priority.AboveLowest, typeof(IServiceLocator), typeof(IModule), typeof(IExecutionContext), typeof(ISetupParameter), typeof(Collection), typeof(Collection<>), typeof(FactoryParameterCoercer<>), Namespaces = "DragonSpark.Aspects" )]
 // [assembly: AddAspect( AttributeTargetAssemblies = "regex:^mscorlib", AttributeTargetTypes = "System.Collections.Collection`1", AttributeTargetMembers = "Add" )]
 
-[assembly: DefaultValueAspectProvider]
+[assembly: ApplyDefaultValues]

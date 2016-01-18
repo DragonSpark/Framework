@@ -165,6 +165,7 @@
     <Compile Include="Setup\AssignAutoDataCommand.cs" />
     <Compile Include="Setup\Execution.cs" />
     <Compile Include="Setup\AutoDataMoqConfiguredAttribute.cs" />
+    <Compile Include="Setup\Location\FixtureRegistry.cs" />
     <Compile Include="Setup\MetadataCustomizationFactory.cs" />
     <Compile Include="Setup\ResourceConfigurationFactory.cs" />
     <Compile Include="Setup\CurrentAutoDataContext.cs" />
@@ -197,7 +198,7 @@
     <Compile Include="RegistrationBaseAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setup\Location\ServiceLocationCustomization.cs" />
+    <Compile Include="Setup\Location\CustomizationBase.cs" />
     <Compile Include="Parameters\LocatedAttribute.cs" />
     <Compile Include="Setup\SetupAutoDataCommandBase.cs" />
     <Compile Include="Setup\AutoData.cs" />

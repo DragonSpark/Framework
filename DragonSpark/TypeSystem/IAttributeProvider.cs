@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using DragonSpark.Activation;
+using DragonSpark.Setup.Registration;
+using Microsoft.Practices.Unity;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.TypeSystem
@@ -41,11 +43,11 @@ namespace DragonSpark.TypeSystem
 			} ) {}
 		}
 
-		public static IAttributeProvider Get( object target ) => new Cached<AttributeProviderFactory>( target ).Item;
+		public static IAttributeProvider Get( [Required]object target ) => new Cached<AttributeProviderFactory>( target ).Item;
 
-		public static IAttributeProvider Get( MemberInfo target, bool includeRelated ) => includeRelated ? GetWithRelated( target ) : Get( target );
+		public static IAttributeProvider Get( [Required]MemberInfo target, bool includeRelated ) => includeRelated ? GetWithRelated( target ) : Get( target );
 
-		public static IAttributeProvider GetWithRelated( object target ) => new Cached<ExpandedAttributeProviderFactory>( target ).Item;
+		public static IAttributeProvider GetWithRelated( [Required]object target ) => new Cached<ExpandedAttributeProviderFactory>( target ).Item;
 	}
 
 	class MemberInfoProviderFactory : MemberInfoProviderFactoryBase
@@ -83,6 +85,7 @@ namespace DragonSpark.TypeSystem
 		public ExpandedAttributeProviderFactory( MemberInfoWithRelatedProviderFactory factory ) : base( factory ) {}
 	}
 
+	[Persistent]
 	class AttributeProviderFactory : AttributeProviderFactoryBase
 	{
 		public AttributeProviderFactory() : this( MemberInfoProviderFactory.Instance ) {}
@@ -94,7 +97,7 @@ namespace DragonSpark.TypeSystem
 	{
 		protected AttributeProviderFactoryBase( MemberInfoProviderFactoryBase factory ) : base( IsAssemblyFactory.Instance.Create, factory.Create ) {}
 
-		class IsAssemblyFactory : FactoryWithSpecification<object, IAttributeProvider>
+		class IsAssemblyFactory : SpecificationAwareFactory<object, IAttributeProvider>
 		{
 			public static IsAssemblyFactory Instance { get; } = new IsAssemblyFactory();
 

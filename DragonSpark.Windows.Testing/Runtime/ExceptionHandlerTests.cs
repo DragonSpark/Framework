@@ -42,6 +42,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 			Assert.True( fifth.RethrowRecommended );
 		}
 
+		[Discoverable]
 		public class ExceptionManagerFactory : FactoryBase<ExceptionManager>
 		{
 			internal const string ExceptionReplaced = "Exception Replaced", ExceptionWrapped = "Exception Wrapped";

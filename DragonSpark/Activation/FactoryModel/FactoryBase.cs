@@ -35,16 +35,16 @@ namespace DragonSpark.Activation.FactoryModel
 		}
 	}
 
-	public class FactoryWithSpecification<T, U> : FactoryBase<T, U>
+	public class SpecificationAwareFactory<T, U> : FactoryBase<T, U>
 	{
 		readonly ISpecification specification;
 		readonly Func<T, U> inner;
 
-		public FactoryWithSpecification( Func<T, U> inner ) : this( AlwaysSpecification.Instance, inner ) {}
+		public SpecificationAwareFactory( Func<T, U> inner ) : this( AlwaysSpecification.Instance, inner ) {}
 
-		public FactoryWithSpecification( [Required]ISpecification<T> specification, [Required]Func<T, U> inner ) : this( (ISpecification)specification, inner ) {}
+		public SpecificationAwareFactory( [Required]ISpecification<T> specification, [Required]Func<T, U> inner ) : this( (ISpecification)specification, inner ) {}
 
-		FactoryWithSpecification( [Required]ISpecification specification, [Required]Func<T, U> inner ) : base( FactoryParameterCoercer<T>.Instance )
+		SpecificationAwareFactory( [Required]ISpecification specification, [Required]Func<T, U> inner ) : base( FactoryParameterCoercer<T>.Instance )
 		{
 			this.specification = specification;
 			this.inner = inner;

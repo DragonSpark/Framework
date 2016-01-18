@@ -1,13 +1,10 @@
-using System;
-using System.IO;
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
-using Ploeh.AutoFixture;
+using DragonSpark.TypeSystem;
 using Ploeh.AutoFixture.Kernel;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Testing.Framework.Setup
 {

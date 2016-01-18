@@ -17,7 +17,7 @@ namespace DragonSpark.Activation
 			ServiceLocator.SetLocatorProvider( GetLocator );
 		}
 
-		static IServiceLocator GetLocator() => Location.Item;
+		public static IServiceLocator GetLocator() => Location.Item;
 
 		public static IServiceLocation Location { get; private set; }
 

@@ -1,13 +1,12 @@
+using DragonSpark.Setup.Registration;
 using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Setup.Registration;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
-	[LifetimeManager( typeof(ContainerControlledLifetimeManager) )]
+	[Persistent]
 	class ServiceLocationAuthority : IServiceLocationAuthority
 	{
 		readonly IFixture fixture;

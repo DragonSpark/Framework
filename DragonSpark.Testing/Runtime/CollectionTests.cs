@@ -35,6 +35,14 @@ namespace DragonSpark.Testing.Runtime
 			Assert.NotEqual( new EqualityList { true }, new EqualityList { false } );
 		}
 
+		[Fact]
+		public void NumberEquality()
+		{
+			object item = new object();
+			Assert.Equal( new EqualityList { item, 1 }, new EqualityList { item, 1 } );
+			Assert.NotEqual( new EqualityList { item, 1 }, new EqualityList { item, 3 } );
+		}
+
 		[Theory, Framework.Setup.AutoData]
 		public void Array( object[] items )
 		{

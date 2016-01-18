@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Activation.IoC
 {

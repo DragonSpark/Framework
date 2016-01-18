@@ -139,11 +139,12 @@
     <Compile Include="Activation\FactoryModel\Factory.cs" />
     <Compile Include="Activation\IExecutionContext.cs" />
     <Compile Include="Activation\IoC\IsRegisteredSpecification.cs" />
+    <Compile Include="Activation\IoC\LifetimeManagerFactory.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
-    <Compile Include="Aspects\CacheAttribute.cs" />
-    <Compile Include="Aspects\CacheKeyFactory.cs" />
-    <Compile Include="Aspects\DefaultValueAspect.cs" />
+    <Compile Include="Aspects\Freeze.cs" />
+    <Compile Include="Aspects\ApplyDefaultValues.cs" />
+    <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
     <Compile Include="ComponentModel\BuildablePropertyCollectionFactory.cs" />
     <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />
@@ -240,7 +241,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="ComponentModel\ActivateAttribute.cs" />
+    <Compile Include="ComponentModel\ActivateAttributeBase.cs" />
     <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
     <Compile Include="ComponentModel\MemberInfoLocator.cs">

@@ -15,6 +15,12 @@ namespace DragonSpark.Testing.Aspects
 			public int Number { get; set; }
 		}
 
+		static class StaticValueHost
+		{
+			[DefaultValue( true )]
+			public static bool PropertyName { get; set; }
+		}
+
 		[Fact]
 		public void BasicAccess()
 		{
@@ -22,8 +28,15 @@ namespace DragonSpark.Testing.Aspects
 			var first = sut.PropertyName;
 			Assert.True( first );
 
+			Assert.Equal( 6776, sut.Number );
+
 			var second = sut.PropertyName;
 			Assert.True( second );
+
+			var next = new ValueHost();
+			Assert.True( next.PropertyName );
+
+			Assert.True( StaticValueHost.PropertyName );
 		}
 
 		[Theory, AutoData]

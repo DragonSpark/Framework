@@ -29,7 +29,8 @@ namespace DragonSpark.Testing.Framework
 		public override ICustomization GetCustomization( ParameterInfo parameter )
 		{
 			var type = factoryType ?? ParameterInfoFactoryTypeLocator.Instance.Create( parameter );
-			var registration = new FactoryRegistration( type, parameter.ParameterType );
+			var resultType = Factory.GetResultType( type );
+			var registration = new FactoryRegistration( type, parameter.ParameterType, resultType );
 			var result = new RegistrationCustomization( registration );
 			return result;
 		}

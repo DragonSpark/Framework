@@ -17,10 +17,10 @@ namespace DragonSpark.Runtime.Specifications
 
 	public abstract class SpecificationBase<TParameter> : ISpecification<TParameter>
 	{
-		bool ISpecification.IsSatisfiedBy( object parameter ) => IsSatisfiedBy( parameter is TParameter ? (TParameter)parameter : default(TParameter) );
+		bool ISpecification.IsSatisfiedBy( object parameter ) => parameter is TParameter && IsSatisfiedBy( (TParameter)parameter );
 
-		public bool IsSatisfiedBy( TParameter parameter ) => IsSatisfiedByParameter( parameter );
+		public bool IsSatisfiedBy( TParameter parameter ) => Verify( parameter );
 
-		protected virtual bool IsSatisfiedByParameter( TParameter parameter ) => !parameter.IsNull();
+		protected abstract bool Verify( TParameter parameter );
 	}
 }

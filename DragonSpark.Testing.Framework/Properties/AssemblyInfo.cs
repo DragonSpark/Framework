@@ -41,4 +41,4 @@ using DragonSpark.Aspects;
 
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Testing.Framework" )]
 [assembly: Registration( Priority.Lower )]
-[assembly: DefaultValueAspectProvider]
+[assembly: ApplyDefaultValues]

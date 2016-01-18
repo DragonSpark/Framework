@@ -1,20 +1,11 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
+﻿using System;
+using DragonSpark.Activation;
 using DragonSpark.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
-using System;
 
 namespace DragonSpark.Testing.Framework.Setup.Location
 {
-	public abstract class CustomizationBase : ICustomization
-	{
-		void ICustomization.Customize( IFixture fixture ) => Customize( fixture );
-
-		protected abstract void Customize( IFixture fixture );
-	}
-
 	class FixtureRegistry : IServiceRegistry
 	{
 		readonly IFixture fixture;

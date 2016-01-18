@@ -4,14 +4,15 @@ using System;
 using System.Linq;
 using System.Windows.Markup;
 using System.Xaml;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Markup
 {
 	[MarkupExtensionReturnType( typeof(int) )]
 	public class NextExtension : MarkupExtension
 	{
-		[Activate]
-		public IIncrementer Incrementer { get; set; }
+		[Locate, Required]
+		public IIncrementer Incrementer { [return: Required]get; set; }
 		
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{

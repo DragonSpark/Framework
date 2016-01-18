@@ -1,16 +1,14 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Runtime;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
 	public class RunProgramCommand : SetupCommand
 	{
-		[Activate]
-		public IProgram Program { get; set; }
+		[Locate]
+		public IProgram Program { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
-		{
-			Program.Run( parameter.Arguments );
-		}
+		protected override void OnExecute( ISetupParameter parameter ) => Program.Run( parameter.Arguments );
 	}
 }

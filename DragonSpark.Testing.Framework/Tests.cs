@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Framework
 		}
 	}
 
-	[LinesOfCodeAvoided( 8 ), Serializable]
+	[Serializable, LinesOfCodeAvoided( 8 )]
 	public class AssignExecutionContextAspect : MethodInterceptionAspect
 	{
 		public sealed override void OnInvoke( MethodInterceptionArgs args )

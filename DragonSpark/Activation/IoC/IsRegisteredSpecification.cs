@@ -14,6 +14,6 @@ namespace DragonSpark.Activation.IoC
 			this.container = container;
 		}
 
-		protected override bool IsSatisfiedByParameter( Type parameter ) => base.IsSatisfiedByParameter( parameter ) && container.IsRegistered( parameter );
+		protected override bool Verify( Type parameter ) => container.IsRegistered( parameter );
 	}
 }

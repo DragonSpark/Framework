@@ -79,14 +79,13 @@ namespace DragonSpark.Activation.IoC
 			Guard.ArgumentNotNull( context, nameof(context) );
 			if ( !context.HasBuildPlan() )
 			{
-				var type = context.BuildKey.Type.Adapt();
-				if ( type.IsGenericOf<IEnumerable<object>>() )
+				context.BuildKey.Type.Adapt().GetEnumerableType().With( type =>
 				{
-					var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type.GetEnumerableType() ).CreateDelegate( typeof(Resolver) );
+					var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type ).CreateDelegate( typeof(Resolver) );
 
 					context.Existing = resolver( context );
 					context.BuildComplete = true;
-				}
+				} );
 			}
 		}
 

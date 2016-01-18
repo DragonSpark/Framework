@@ -20,5 +20,7 @@ namespace DragonSpark.Extensions
 		public static TypeAdapter Adapt( [Required]this TypeInfo @this ) => Adapt( @this.AsType() );
 
 		public static Assembly Assembly( [Required]this Type @this ) => Adapt( @this ).Assembly;
+
+		public static bool IsDefined<T>( [Required] this Type @this, bool inherited = false ) where T : Attribute => @this.GetTypeInfo().IsDefined( typeof(T), inherited );
 	}
 }

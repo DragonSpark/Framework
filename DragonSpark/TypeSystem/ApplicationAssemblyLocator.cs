@@ -3,15 +3,18 @@ using DragonSpark.Activation.FactoryModel;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.TypeSystem
 {
 	public static class Assemblies
 	{
-		public static Assembly[] GetCurrent() => Services.Locate<Assembly[]>() ?? Default<Assembly>.Items;
+		public static Assembly[] GetCurrent() => Services.Locate<Assembly[]>() ?? new AssemblyHost().Item ?? Default<Assembly>.Items;
 
 		public delegate Assembly[] Get();
 	}
+
+	public class AssemblyHost : ExecutionContextValue<Assembly[]> {}
 
 	public class ApplicationAssemblyLocator : FactoryBase<Assembly>, IApplicationAssemblyLocator
 	{

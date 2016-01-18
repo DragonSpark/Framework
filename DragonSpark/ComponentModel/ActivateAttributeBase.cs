@@ -9,7 +9,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ExtensionAttribute : DefaultValueBase
+	/*public class ExtensionAttribute : DefaultValueBase
 	{
 		public ExtensionAttribute( string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter<IUnityContainer>( name ).Create, Creator.Instance.Create ) ) {}
 
@@ -28,7 +28,7 @@ namespace DragonSpark.ComponentModel
 
 			protected override IUnityContainerExtensionConfigurator CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter ) => factory( parameter ).Extension( parameter.Item2.Metadata.PropertyType );
 		}
-	}
+	}*/
 
 	public class LocateAttribute : DefaultValueBase
 	{
@@ -40,39 +40,42 @@ namespace DragonSpark.ComponentModel
 		
 		public class Factory : ActivatedValueProvider.Creator<object>
 		{
-			public new static Factory Instance { get; } = new Factory();
+			public static Factory Instance { get; } = new Factory();
 
-			readonly IServiceLocator locator;
+			readonly ServiceLocatorProvider locator;
 
-			public Factory() : this( Services.Location.Item )
+			Factory() : this( Services.GetLocator )
 			{}
 
-			public Factory( [Required]IServiceLocator locator )
+			Factory( [Required]ServiceLocatorProvider locator )
 			{
 				this.locator = locator;
 			}
 
 			protected override object CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter )
 			{
-				var instance = locator.GetInstance( parameter.Item1.Type, parameter.Item1.Name );
-				return instance;
+				var serviceLocator = locator();
+				var instance = serviceLocator.GetInstance( parameter.Item1.Type, parameter.Item1.Name );
+				var result = instance ?? base.CreateItem( parameter );
+				return result;
 			}
 		}
 	}
 
-	public class ActivateAttribute : DefaultValueBase
+	public class ActivateAttribute : ActivateAttributeBase
 	{
-		public ActivateAttribute() : this( (string)null ) {}
+		public ActivateAttribute() : this( null ) { }
 
-		public ActivateAttribute( string name ) : this( null, name ) {}
+		public ActivateAttribute( string name ) : this( null, name ) { }
 
-		public ActivateAttribute( Type activatedType, string name = null ) : this( new ActivatedValueProvider.Converter( activatedType, name ) ) {}
+		public ActivateAttribute( Type locatedType, string name = null ) : base( t => new ActivatedValueProvider( new ActivatedValueProvider.Converter( locatedType, name ).Create, ActivatedValueProvider.Creator.Instance.Create ) ) { }
+	}
 
-		protected ActivateAttribute( ActivatedValueProvider.Converter converter ) : this( converter, ActivatedValueProvider.Creator.Instance ) {}
+	public abstract class ActivateAttributeBase : DefaultValueBase
+	{
+		protected ActivateAttributeBase( ActivatedValueProvider.Converter converter, ActivatedValueProvider.Creator creator ) : base( t => new ActivatedValueProvider( converter, creator ) ) {}
 
-		protected ActivateAttribute( ActivatedValueProvider.Converter converter, ActivatedValueProvider.Creator creator ) : base( t => new ActivatedValueProvider( converter, creator ) ) {}
-
-		protected ActivateAttribute( Func<object, IDefaultValueProvider> provider ) : base( provider ) {}
+		protected ActivateAttributeBase( Func<object, IDefaultValueProvider> provider ) : base( provider ) {}
 	}
 
 	public class ActivatedValueProvider : IDefaultValueProvider
@@ -122,12 +125,12 @@ namespace DragonSpark.ComponentModel
 
 		public class Creator : Creator<object>
 		{
-			public new static Creator Instance { get; } = new Creator();
+			public static Creator Instance { get; } = new Creator();
 		}
 
 		public class Creator<T> : FactoryBase<Tuple<ActivateParameter, DefaultValueParameter>, T> where T : class
 		{
-			public static Creator<T> Instance { get; } = new Creator<T>();
+			// public static Creator<T> Instance { get; } = new Creator<T>();
 
 			readonly Func<ActivateParameter, T> factory;
 

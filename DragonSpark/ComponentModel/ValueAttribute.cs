@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.ComponentModel
 {
-	public class ValueAttribute : ActivateAttribute
+	public class ValueAttribute : ActivateAttributeBase
 	{
 		public ValueAttribute( Type activatedType, string name = null ) : base( new ActivatedValueProvider.Converter( activatedType, name ), Creator.Instance ) {}
 

@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -8,20 +9,14 @@ namespace DragonSpark.Runtime
 {
 	public class CompositeCommand : CompositeCommand<object>
 	{
-		public CompositeCommand()
-		{}
-
-		public CompositeCommand( IEnumerable<ICommand> commands ) : base( commands )
+		public CompositeCommand( [Required]params ICommand<object>[] commands ) : base( commands )
 		{}
 	}
 
 	[ContentProperty( nameof(Commands) )]
 	public class CompositeCommand<TParameter> : Command<TParameter>
 	{
-		public CompositeCommand() : this( Enumerable.Empty<ICommand>() )
-		{}
-
-		public CompositeCommand( IEnumerable<ICommand> commands )
+		public CompositeCommand( [Required]params ICommand<TParameter>[] commands )
 		{
 			Commands = new CommandCollection( commands );
 		}

@@ -148,6 +148,7 @@
     <Compile Include="Activation\FactoryTests.cs" />
     <Compile Include="Activation\IExecutionContextTests.cs" />
     <Compile Include="Activation\IoC\InjectionFactoryFactoryTests.cs" />
+    <Compile Include="Activation\IoC\LifetimeManagerFactoryTests.cs" />
     <Compile Include="Activation\IoC\RegistrationSupportTests.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorTests.cs" />
     <Compile Include="Activation\IoC\SingletonLocatorTests.cs" />

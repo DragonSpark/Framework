@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Runtime.Values
 {
@@ -60,7 +61,6 @@ namespace DragonSpark.Runtime.Values
 
 		public override T Item => Property.GetOrCreate( create );
 
-		[Reference]
 		public ConnectibleProperty<T> Property { get; }
 
 		protected override void OnDispose()
@@ -70,40 +70,56 @@ namespace DragonSpark.Runtime.Values
 		}
 	}
 
+	public class ConnectedValueKeyFactory<T> : FactoryBase<EqualityList, string>
+	{
+		public static ConnectedValueKeyFactory<T> Instance { get; } = new ConnectedValueKeyFactory<T>();
+
+		protected override string CreateItem( EqualityList parameter ) => $"{typeof(T)}-{parameter.GetHashCode()}";
+	}
+
 	public class Reference<T> : ConnectedValue<T>
 	{
-		public Reference( T key, object instance ) : base( instance, Key( key ), () => key )
-		{ }
-
-		public static string Key( object item ) => $"{typeof(T)}-{item.GetHashCode()}";
+		public Reference( object instance, T key ) : base( instance, ConnectedValueKeyFactory<T>.Instance.Create( new EqualityList( key ) ), () => key ) {}
 	}
 
 	class Checked : AssociatedValue<ConditionMonitor>
 	{
-		public Checked( object instance ) : base( instance, () => new ConditionMonitor() ) { }
+		public Checked( object instance ) : this( instance, instance ) {}
+
+		public Checked( object instance, [Required]object reference ) : this( instance, reference.GetType() ) {}
+
+		public Checked( [Required]object instance, [Required]string key ) : base( instance, key, () => new ConditionMonitor() ) { }
+
+		protected Checked( [Required]object instance, [Required]Type key ) : base( instance, key, () => new ConditionMonitor() ) { }
 	}
 
 	public class AssociatedValue<T> : AssociatedValue<object, T>
 	{
-		public AssociatedValue( object instance, Func<T> create = null ) : base( instance, create )
-		{}
+		public AssociatedValue( object instance, Func<T> create = null ) : this( instance, typeof(AssociatedValue<object, T>), create ) {}
+
+		protected AssociatedValue( object instance, string key, Func<T> create = null ) : base( instance, key, create ) {}
+
+		protected AssociatedValue( object instance, Type key, Func<T> create = null ) : base( instance, key, create ) {}
 	}
 
 	public class AssociatedValue<T, U> : ConnectedValue<U>
 	{
-		public AssociatedValue( T instance, Func<U> create = null ) : base( instance, typeof(AssociatedValue<T, U>), create )
-		{ }
+		public AssociatedValue( T instance, Func<U> create = null ) : this( instance, typeof(AssociatedValue<T, U>), create ) {}
+
+		protected AssociatedValue( T instance, string key, Func<U> create = null ) : base( instance, key, create ) {}
+
+		protected AssociatedValue( T instance, Type key, Func<U> create = null ) : base( instance, key, create ) {}
 	}
 
 	public class Items : Items<object>
 	{
-		public Items( object instance ) : base( instance )
-		{ }
+		public Items( object instance ) : base( instance ) {}
 	}
 
 	public class Items<T> : ConnectedValue<IList<T>>
 	{
-		public Items( object instance ) : base( instance, typeof(Items<T>), () => new List<T>() )
-		{ }
+		public Items( object instance ) : base( instance, typeof(Items<T>), () => new List<T>() ) {}
+
+		public TItem Get<TItem>() => Item.FirstOrDefaultOfType<TItem>();
 	}
 }

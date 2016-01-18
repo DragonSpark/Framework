@@ -11,6 +11,6 @@ namespace DragonSpark.Runtime.Specifications
 			this.inner = inner;
 		}
 
-		protected override bool IsSatisfiedByParameter( T parameter ) => base.IsSatisfiedByParameter( parameter ) && inner.IsSatisfiedBy( parameter );
+		protected override bool Verify( T parameter ) => inner.IsSatisfiedBy( parameter );
 	}
 }

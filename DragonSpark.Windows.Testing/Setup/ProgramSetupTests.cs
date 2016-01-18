@@ -9,6 +9,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using DragonSpark.Setup.Registration;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.Setup
@@ -29,7 +30,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, ProgramSetup.AutoData]
-		public void Create( [Located]ApplicationInformation sut )
+		public void Create( [Located, EnsureValues]ApplicationInformation sut )
 		{
 			Assert.NotNull( sut.AssemblyInformation );
 			Assert.Equal( DateTimeOffset.Parse( "2/1/2016" ), sut.DeploymentDate.GetValueOrDefault() );
@@ -69,6 +70,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 	}
 
+	[Persistent]
 	public class Program : Program<AutoData>
 	{
 		public bool Ran { get; private set; }

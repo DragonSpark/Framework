@@ -4,19 +4,23 @@ using DragonSpark.Setup.Registration;
 using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
+using System.Reflection;
+using PostSharp.Patterns.Contracts;
+using Activator = DragonSpark.Activation.Activator;
 using Type = System.Type;
 
 namespace DragonSpark.Setup
 {
-	[Register.Type]
+	[Persistent]
 	public class AllTypesOfFactory : FactoryBase<Type, Array>
 	{
-		readonly IAssemblyProvider provider;
-		readonly IActivator activator;
+		readonly Assembly[] assemblies;
+		readonly Activator.Get activator;
 
-		public AllTypesOfFactory( IAssemblyProvider provider, IActivator activator )
+		public AllTypesOfFactory( [Required]Assembly[] assemblies, [Required]Activator.Get activator )
 		{
-			this.provider = provider;
+			this.assemblies = assemblies;
+			this.activator = activator;
 			this.activator = activator;
 		}
 
@@ -24,8 +28,8 @@ namespace DragonSpark.Setup
 
 		protected override Array CreateItem( Type parameter )
 		{
-			var types = provider.Create().SelectMany( assembly => assembly.ExportedTypes );
-			var result = activator.ActivateMany( parameter, types ).ToArray();
+			var types = assemblies.SelectMany( assembly => assembly.ExportedTypes );
+			var result = activator().ActivateMany( parameter, types ).ToArray();
 			return result;
 		}
 	}

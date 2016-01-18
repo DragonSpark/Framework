@@ -20,12 +20,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
+using PostSharp.Aspects;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Windows.Testing.TestObjects.Activator;
 using Attribute = DragonSpark.Testing.Objects.Attribute;
 using Object = DragonSpark.Testing.Objects.Object;
 using ServiceLocator = DragonSpark.Activation.IoC.ServiceLocator;
+using UnityContainerFactory = DragonSpark.Testing.Objects.Setup.UnityContainerFactory;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
@@ -164,7 +167,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		public void WithDefault( ServiceLocation sut )
+		public void WithDefault( [Located] ServiceLocation sut )
 		{
 			var item = sut.Item.GetInstance<ClassWithParameter>().With( x => x.Parameter != null );
 			Assert.True( item );
@@ -196,7 +199,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		void GetInstance( [Factory, Frozen]ServiceLocator sut, [Frozen, Registered]Mock<IMessageLogger> logger )
+		void GetInstance( [Factory, Frozen( Matching.ExactType )]ServiceLocator sut, [Frozen, Registered]Mock<IMessageLogger> logger )
 		{
 			Assert.NotSame( Services.Location.Item, sut );
 			Assert.Same( sut.Get<IMessageLogger>(), logger.Object );
@@ -204,7 +207,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			var before = sut.GetInstance<IInterface>();
 			Assert.Null( before );
 
-			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains(  $@"Specified type is not registered: ""{typeof(IInterface).FullName}"" with build name ""<None>""." ) ) ) );
+			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == WarningMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains( $@"Specified type is not registered: ""{typeof(IInterface).FullName}"" with build name ""<None>""." ) ) ) );
 
 			var registry = sut.GetInstance<IServiceRegistry>();
 			registry.Register<IInterface, Class>();
@@ -215,7 +218,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			var broken = sut.GetInstance<ClassWithBrokenConstructor>();
 			Assert.Null( broken );
 
-			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains( $@"Could not resolve type ""{typeof(ClassWithBrokenConstructor).Name}"" with build name ""<None>""." ) && m.Text.Contains( typeof( ResolutionFailedException ).FullName ) ) ) );
+			logger.Verify( x => x.Log( It.Is<Message>( m => m.Category == ExceptionMessageFactory.Category && m.Priority == Priority.High && m.Text.Contains( $@"Could not resolve type ""{typeof(ClassWithBrokenConstructor).Name}"" with build name ""<None>""." ) && m.Text.Contains( typeof(ResolutionFailedException).FullName ) ) ) );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -462,7 +465,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Null( locator.GetInstance<IRegisteredWithName>() );
 
 			var located = locator.GetInstance<IRegisteredWithName>( "Registered" );
-			Assert.IsType<RegisteredWithNameClass>( located );
+			Assert.IsType<MappedWithNameClass>( located );
 		}
 
 		[Theory, LocationSetup.AutoData]
@@ -481,12 +484,12 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, LocationSetup.AutoData]
 		public void CreateAssembly( AssemblyInformationFactory factory, IUnityContainer container, IApplicationAssemblyLocator locator, [Located]Assembly sut )
 		{
-			var registered = container.IsRegistered<Assembly>();
-			Assert.True( registered );
+			Assert.True( container.IsRegistered<Assembly>() );
 
 			var fromFactory = locator.Create();
 			var fromContainer = container.Resolve<Assembly>();
 			Assert.Same( fromFactory, fromContainer );
+			
 
 			Assert.Same( fromContainer, sut );
 
@@ -520,7 +523,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		{ }
 
 		[Register.Mapped( "Registered" )]
-		public class RegisteredWithNameClass : IRegisteredWithName
+		public class MappedWithNameClass : IRegisteredWithName
 		{ }
 
 		class Interfaces
@@ -547,5 +550,13 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Register.Mapped( "YetAnotherItem" )]
 		public class YetAnotherItem : IItem
 		{ }
+	}
+
+	[Discoverable]
+	public class ServiceLocatorFactory : Activation.IoC.ServiceLocatorFactory
+	{
+		public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
+
+		ServiceLocatorFactory() : base( UnityContainerFactory.Instance.Create, ConfigureLocationCommandFactory.Instance.Create ) {}
 	}
 }

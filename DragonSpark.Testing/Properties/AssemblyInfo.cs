@@ -7,6 +7,8 @@ using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Objects.Setup;
 
 [assembly: AssemblyTitle( "DragonSpark.Testing" )]
 [assembly: AssemblyDescription( "" )]
@@ -25,5 +27,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion( "2016.2.1.1" )]
 [assembly: Application]
 
-[assembly: AssemblyProvider.Factory] // Default assembly factory.
-[assembly: DefaultValueAspectProvider]
+// [assembly: ServiceLocatorFactory.Register]
+[assembly: UnityContainerFactory.Register]
+[assembly: AssemblyProvider.Register] // Default assembly factory.
+[assembly: Assemblies]
+[assembly: ApplyDefaultValues]

@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	[Register.Factory]
+	[Discoverable]
 	public class AssemblyInformationFactory : FactoryBase<Assembly, AssemblyInformation>
 	{
 		public static AssemblyInformationFactory Instance { get; } = new AssemblyInformationFactory();

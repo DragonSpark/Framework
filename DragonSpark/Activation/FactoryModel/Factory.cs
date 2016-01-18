@@ -19,11 +19,23 @@ namespace DragonSpark.Activation.FactoryModel
 			Types = new[] { typeof(IFactory<>), typeof(IFactory<,>) }.Select( type => type.Adapt() ).ToArray(),
 			BasicTypes = new[] { typeof(IFactory), typeof(IFactoryWithParameter) }.Select( type => type.Adapt() ).ToArray();
 		
-		public static bool IsFactory( [Required] Type type ) => BasicTypes.Any( adapter => adapter.IsAssignableFrom( type ) );
+		[Freeze]
+		public static bool IsFactory( [Required] Type type )
+		{
+			var isFactory = BasicTypes.Any( adapter => adapter.IsAssignableFrom( type ) );
+			return isFactory;
+		}
 
-		public static T Create<T>() => (T)From( FrameworkFactoryTypeLocator.Instance.Create( typeof(T) ) );
+		public static T Create<T>() => (T)Create( typeof(T) );
 
-		public static object From( [Required, OfFactoryType]Type factoryType ) => FactoryDelegateLocatorFactory.Instance.Create( factoryType )();
+		public static object Create( Type type ) => FrameworkFactoryTypeLocator.Instance.Create( type ).With( From );
+
+		public static object From( [Required, OfFactoryType]Type factoryType )
+		{
+			var @delegate = FactoryDelegateLocatorFactory.Instance.Create( factoryType );
+			var result = @delegate.With( d => d() );
+			return result;
+		}
 
 		[Freeze]
 		public static Type GetParameterType( [Required]Type factoryType )
@@ -58,11 +70,11 @@ namespace DragonSpark.Activation.FactoryModel
 		public static FactoryDelegateLocatorFactory Instance { get; } = new FactoryDelegateLocatorFactory();
 
 		public FactoryDelegateLocatorFactory() : base( 
-			new Factory<IFactoryWithParameter>( FactoryWithParameterContainedDelegateFactory.Instance ),
+			new Factory<IFactoryWithParameter>( FactoryWithActivatedParameterDelegateFactory.Instance ),
 			new Factory<IFactory>( FactoryDelegateFactory.Instance )
 		) {}
 
-		class Factory<T> : FactoryWithSpecification<Type, Func<object>>
+		class Factory<T> : SpecificationAwareFactory<Type, Func<object>>
 		{
 			public Factory( IFactory<Type, Func<object>> inner ) : base( TypeAssignableSpecification<T>.Instance, inner.Create ) {}
 		}
@@ -104,18 +116,17 @@ namespace DragonSpark.Activation.FactoryModel
 		protected override Type CreateItem( T parameter )
 		{
 			var mapped = type( parameter );
-			var assemblies = new Assemblies.Get[] { Assemblies.GetCurrent, mapped.Append( locations( parameter ) ).Append( GetType() ).Distinct().Assemblies };
-
-			var result = assemblies.FirstWhere( get => new FactoryTypeLocator( get() ).Create( mapped ) );
+			var assemblies = new Assemblies.Get[] { locations( parameter ).Append( mapped, GetType() ).Assemblies().Distinct().Fixed, Assemblies.GetCurrent };
+			var result = assemblies.FirstWhere( get => new DiscoverableFactoryTypeLocator( get() ).Create( mapped ) );
 			return result;
 		}
 	}
 
-	public class FactoryTypeLocator : FactoryBase<Type, Type>
+	public class DiscoverableFactoryTypeLocator : FactoryBase<Type, Type>
 	{
 		readonly Assembly[] assemblies;
 
-		public FactoryTypeLocator( [Required]Assembly[] assemblies )
+		public DiscoverableFactoryTypeLocator( [Required]Assembly[] assemblies )
 		{
 			this.assemblies = assemblies;
 		}
@@ -126,13 +137,15 @@ namespace DragonSpark.Activation.FactoryModel
 			var result =
 				assemblies.FirstWhere( assembly =>
 				{
-					var buildable = assembly.DefinedTypes.AsTypes().Where( Factory.IsFactory ).Where( CanBuildSpecification.Instance.IsSatisfiedBy ).ToArray();
+					var enumerable = assembly.DefinedTypes.AsTypes().Where( Factory.IsFactory ).Where( x => x.IsDefined<DiscoverableAttribute>( true ) );
+					var buildable = enumerable.Where( CanBuildSpecification.Instance.IsSatisfiedBy ).ToArray();
 					return buildable.With( types =>
 						types.Where( info => info.Name == name ).Only()
 						??
 						types.Select( type => new { type, resultType = Factory.GetResultType( type ) } ).NotNull( arg => arg.resultType ).ToArray().With( pairs =>
 						{
-							return pairs.Where( arg => arg.resultType == parameter ).Concat( pairs.Where( arg => parameter.Adapt().IsAssignableFrom( arg.resultType ) ) ).WithFirst( arg => arg.type );
+							var assignable = CanBuildSpecification.Instance.IsSatisfiedBy( parameter ) ? pairs.Where( arg => parameter.Adapt().IsAssignableFrom( arg.resultType ) ) : Enumerable.Empty<dynamic>();
+							return pairs.Where( arg => arg.resultType == parameter ).Concat( assignable ).WithFirst( arg => arg.type );
 						} )
 					);
 				} );

@@ -13,7 +13,7 @@ namespace DragonSpark.Setup.Registration
 	{
 		readonly IServiceRegistry registry;
 
-		public RegisterFromMetadataCommand( [Required]ServiceRegistry<ContainerControlledLifetimeManager> registry )
+		public RegisterFromMetadataCommand( [Required]PersistentServiceRegistry registry )
 		{
 			this.registry = registry;
 		}

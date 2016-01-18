@@ -9,6 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using PostSharp.Patterns.Contracts;
 using IExceptionHandler = DragonSpark.Diagnostics.IExceptionHandler;
 
 namespace DragonSpark.Windows.Setup
@@ -16,8 +17,8 @@ namespace DragonSpark.Windows.Setup
 	[ContentProperty( nameof(Policies) )]
 	public class SetupExceptionHandling : UnityCommand
 	{
-		[Activate]
-		public IServiceRegistry Registry { get; set; }
+		[Locate, Required]
+		public IServiceRegistry Registry { [return: Required]get; set; }
 
 		protected override void OnExecute( IApplicationSetupParameter parameter )
 		{

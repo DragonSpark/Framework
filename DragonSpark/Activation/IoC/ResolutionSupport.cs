@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Activation.FactoryModel;
+using DragonSpark.Setup.Registration;
 
 namespace DragonSpark.Activation.IoC
 {
 	public abstract class StrategyValidator<TStrategy> : SpecificationBase<StrategyValidatorParameter> where TStrategy : BuilderStrategy
 	{
-		protected override bool IsSatisfiedByParameter( StrategyValidatorParameter parameter ) => base.IsSatisfiedByParameter( parameter ) && parameter.Strategies.FirstOrDefaultOfType<TStrategy>().With( strategy => Check( parameter.Key ) );
+		protected override bool Verify( StrategyValidatorParameter parameter ) => parameter.Strategies.FirstOrDefaultOfType<TStrategy>().With( strategy => Check( parameter.Key ) );
 
 		protected abstract bool Check( NamedTypeBuildKey key );
 	}
@@ -68,9 +70,11 @@ namespace DragonSpark.Activation.IoC
 			new StrategyValidatorParameter( parameter.Context.Strategies.MakeStrategyChain(), parameter.Key ).With( p => validators.Any( specification => specification.IsSatisfiedBy( p ) ) )
 			||
 			locator.Create( parameter.Key.Type ) != null
+			||
+			FrameworkFactoryTypeLocator.Instance.Create( parameter.Key.Type ) != null
 			;
 
-		protected override bool IsSatisfiedByParameter( ResolutionSpecificationParameter parameter ) => base.IsSatisfiedByParameter( parameter ) && Check( parameter );
+		protected override bool Verify( ResolutionSpecificationParameter parameter ) => Check( parameter );
 	}
 
 	public class ResolutionSpecificationParameter
@@ -84,6 +88,7 @@ namespace DragonSpark.Activation.IoC
 		public NamedTypeBuildKey Key { get; }
 	}
 
+	[Persistent]
 	class ResolutionSupport : IResolutionSupport
 	{
 		readonly ExtensionContext context;
@@ -98,7 +103,6 @@ namespace DragonSpark.Activation.IoC
 		
 		public bool CanResolve( Type type, string name, params object[] parameters )
 		{
-
 			var key = new NamedTypeBuildKey( type, name );
 			var result = resolvable.Contains( key ) || Validate( key, parameters.NotNull().Select( o => o.GetType() ).ToArray() );
 			return result;

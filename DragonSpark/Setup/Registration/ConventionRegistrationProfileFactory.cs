@@ -10,6 +10,7 @@ using Type = System.Type;
 
 namespace DragonSpark.Setup.Registration
 {
+	[Discoverable]
 	public class ConventionRegistrationProfileFactory : FactoryBase<ConventionRegistrationProfile>
 	{
 		readonly Assembly[] assemblies;
