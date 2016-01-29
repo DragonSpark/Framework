@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DragonSpark.Testing.Objects.psproj" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
