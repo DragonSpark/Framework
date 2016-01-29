@@ -112,6 +112,10 @@
       <HintPath>$(SolutionDir)\packages\Unity.4.0.1\lib\portable-net45+wp80+win8+wpa81+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.LambdaParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=50b5ad72a1d364c6, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NReco.LambdaParser.1.0.0.0\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\NReco.LambdaParser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PostSharp, Version=4.2.17.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\PostSharp.4.2.17\lib\portable-net4+sl5+netcore45+wpa81+wp8\PostSharp.dll</HintPath>
       <Private>True</Private>
@@ -409,10 +413,6 @@
     <ProjectReference Include="..\DragonSpark.Types\DragonSpark.Types.csproj">
       <Project>{69750ce1-63f1-4ddf-b22e-f8b40d8f16a8}</Project>
       <Name>DragonSpark.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NReco.LambdaParser\NReco.LambdaParser.csproj">
-      <Project>{2e4066d1-a58e-44bb-ab15-63df19aadaef}</Project>
-      <Name>NReco.LambdaParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
