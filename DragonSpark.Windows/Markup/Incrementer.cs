@@ -1,29 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DragonSpark.Extensions;
+using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Windows.Markup
 {
 	class Incrementer : IIncrementer
 	{
-		readonly IDictionary<WeakReference, int>  items = new Dictionary<WeakReference, int>();
-
 		public int Next( object context )
 		{
-			var key = Items.Keys.SingleOrDefault( reference => reference.Target == context ) ?? new WeakReference( context );
-			var current = items.Ensure( key, reference => 0 ) + 1;
-			var result = items[key] = current;
+			var count = new Count( context );
+			var result = count.Item + 1;
+			count.Assign( result );
 			return result;
 		}
 
-		IDictionary<WeakReference, int> Items
+		class Count : AssociatedValue<int>
 		{
-			get
-			{
-				items.Keys.Where( reference => !reference.IsAlive ).ToArray().Each( reference => items.Remove( reference ) );
-				return items;
-			}
+			public Count( object instance ) : base( instance, typeof(Count) ) {}
 		}
 	}
 }

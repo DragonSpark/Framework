@@ -1,11 +1,11 @@
 using DragonSpark.Extensions;
+using Microsoft.Practices.Unity;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Markup;
-using Microsoft.Practices.Unity;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Runtime
 {
@@ -32,7 +32,7 @@ namespace DragonSpark.Runtime
 	public class Collection : Collection<object> {}
 
 	[Ambient]
-	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IEnumerable<T>, IList
+	public class Collection<T> : /*System.Collections.ObjectModel.Collection<T>*/ IList, ICollection<T>
 	{
 		/*public Collection()
 		{
@@ -70,11 +70,7 @@ namespace DragonSpark.Runtime
 			return result;
 		}
 
-		protected virtual T OnAdd( object item )
-		{
-			var result = item.As<T>();
-			return result;
-		}
+		protected virtual T OnAdd( object item ) => item.As<T>();
 
 		int AddItem( T arg )
 		{
