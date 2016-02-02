@@ -1,29 +1,20 @@
 ﻿using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
 using DragonSpark.Properties;
-using Microsoft.Practices.ServiceLocation;
-using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Setup
 {
-	public interface ISetupParameter<out TArguments> : ISetupParameter
+	/*public interface ISetupParameter<out TArguments> : ISetupParameter
 	{
 		new TArguments Arguments { get; }
 	}
 
-	public interface IApplicationSetupParameter : ISetupParameter
-	{
-		IServiceLocator Locator { get; }
-	}
-
 	public interface ISetupParameter : IDisposable
 	{
-		IMessageLogger Logger { get; }
+		/*IMessageLogger Logger { get; }#1#
 
 		object Arguments { get; }
 
@@ -33,15 +24,34 @@ namespace DragonSpark.Setup
 
 		void Register( object item );
 
-		void RegisterForDispose( IDisposable disposable );
+		// void RegisterForDispose( IDisposable disposable );
+	}*/
+
+	public interface ITaskMonitor : IDisposable
+	{
+		void Monitor( Task task );
 	}
 
-	public class SetupParameter : SetupParameter<object>
+	// [Persistent]
+	public class TaskMonitor : ITaskMonitor
+	{
+		readonly ICollection<Task> tasks = new List<Task>();
+
+		public void Monitor( Task task ) => tasks.Add( task );
+
+		public void Dispose()
+		{
+			Task.WhenAll( tasks ).Wait();
+			tasks.Clear();
+		}
+	}
+
+	/*public class SetupParameter : SetupParameter<object>
 	{
 		public SetupParameter() : this( MessageLogger.Instance, null ) {}
 
 		public SetupParameter( IMessageLogger logger, object arguments ) : base( logger, arguments ) {}
-	}
+	}*/
 
 	public class MessageLoggerFactory<TLogger> : ActivateFactory<TLogger> where TLogger : class, IMessageLogger
 	{
@@ -50,38 +60,27 @@ namespace DragonSpark.Setup
 		protected override TLogger Activate( ActivateParameter parameter ) => base.Activate( parameter ).Information( Resources.LoggerCreatedSuccessfully );
 	}
 
-	public class ApplicationSetupParameter<TArgument> : SetupParameter<TArgument>, IApplicationSetupParameter 
-	{
-
-		public ApplicationSetupParameter( IServiceLocator locator, TArgument arguments ) : base( locator.GetInstance<IMessageLogger>(), arguments )
-		{
-			Locator = locator;
-		}
-
-		public IServiceLocator Locator { get; }
-	}
-
-	public class SetupParameter<TArgument> : ISetupParameter<TArgument>
+	/*public class SetupParameter<TArgument> : ISetupParameter<TArgument>
 	{
 		readonly IList<object> items = new Collection<object>();
 		readonly ICollection<Task> tasks = new List<Task>();
-		readonly ICollection<IDisposable> disposables = new List<IDisposable>();
+		// readonly ICollection<IDisposable> disposables = new List<IDisposable>();
 
-		public SetupParameter( [Required]IMessageLogger logger, TArgument arguments )
+		public SetupParameter( TArgument arguments )
 		{
-			Logger = logger;
+			// Logger = logger;
 			Arguments = arguments;
 			Items = new ReadOnlyCollection<object>( items );
-			Register( arguments );
+			// Register( arguments );
 		}
 
-		public IMessageLogger Logger { get; }
+		// public IMessageLogger Logger { get; }
 
 		public TArgument Arguments { get; }
 
-		public void Register( object item ) => items.Add( item );
+		// public void Register( object item ) => items.Add( item );
 
-		public void RegisterForDispose( IDisposable item ) => disposables.Add( item );
+		// public void RegisterForDispose( IDisposable item ) => disposables.Add( item );
 
 		object ISetupParameter.Arguments => Arguments;
 
@@ -94,8 +93,8 @@ namespace DragonSpark.Setup
 			Task.WhenAll( tasks ).Wait();
 			tasks.Clear();
 			items.Clear();
-			disposables.Each( disposable => disposable.Dispose() );
-			disposables.Clear();
+			/*disposables.Each( disposable => disposable.Dispose() );
+			disposables.Clear();#1#
 		}
-	}
+	}*/
 }

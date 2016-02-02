@@ -1,20 +1,18 @@
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using Nito.ConnectedProperties;
 using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Runtime.Values
 {
 	public static class Ambient
 	{
-		public static T GetCurrent<T>() => new ThreadAmbientChain<T>().Item.PeekOrDefault();
+		public static object GetCurrent( [Required]Type type ) => typeof(Ambient).InvokeGeneric( nameof(GetCurrent), type.ToItem() );
 
-		// public static T[] GetCurrentChain<T>() => new ThreadAmbientChain<T>().Item.ToArray();
+		public static T GetCurrent<T>() => new ThreadAmbientChain<T>().Item.PeekOrDefault();
 
 		public static T[] GetCurrentChain<T>() => new ThreadAmbientChain<T>().Item.ToArray();
 	}

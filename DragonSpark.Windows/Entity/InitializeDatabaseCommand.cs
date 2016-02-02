@@ -1,4 +1,4 @@
-﻿using DragonSpark.Activation;
+﻿using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
@@ -11,8 +11,8 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Entity
 {
-	[ContentProperty( "Installers" )]
-	public abstract class InitializeDatabaseCommand<TContext> : SetupCommand where TContext : DbContext, IEntityInstallationStorage
+	[ContentProperty( nameof(Installers) )]
+	public abstract class InitializeDatabaseCommand<TContext> : SetupCommandBase where TContext : DbContext, IEntityInstallationStorage, new()
 	{
 		[Locate, Required]
 		public IDatabaseInitializer<TContext> Initializer { [return: Required]get; set; }
@@ -22,16 +22,17 @@ namespace DragonSpark.Windows.Entity
 		[Locate, Required]
 		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter ) => Initializer.With( initializer =>
+		[BuildUp]
+		protected override void OnExecute( object parameter )
 		{
-			Database.SetInitializer( initializer );
+			Database.SetInitializer( Initializer );
 
-			using ( var instance = SystemActivator.Instance.Activate<TContext>() )
+			using ( var context = new TContext() )
 			{
 				MessageLogger.Information( "Initializing Database.", Priority.Low );
-				instance.Database.Initialize( true );
+				context.Database.Initialize( true );
 
-				var items = Installers.OrderBy( x => x.Version ).Where( x => x.ContextType == typeof(TContext) && instance.Installations.Find( x.Id, x.Version.ToString() ) == null ).ToArray();
+				var items = Installers.OrderBy( x => x.Version ).Where( x => x.ContextType == typeof(TContext) && context.Installations.Find( x.Id, x.Version.ToString() ) == null ).ToArray();
 
 				MessageLogger.Information( $"Performing entity installation on {items.Length} installers.", Priority.Low );
 
@@ -41,14 +42,14 @@ namespace DragonSpark.Windows.Entity
 
 					x.Steps.Each( y =>
 					{
-						y.Execute( instance );
-						instance.Save();
+						y.Execute( context );
+						context.Save();
 					} );
-					instance.Create<InstallationEntry>( y => x.MapInto( y ) );
-					instance.Save();
+					context.Create<InstallationEntry>( y => x.MapInto( y ) );
+					context.Save();
 				} );
 				MessageLogger.Information( "Database Initialized.", Priority.Low );
 			}
-		} );
+		}
 	}
 }

@@ -1,11 +1,12 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Setup;
 using System.IO;
+using DragonSpark.Aspects;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Entity
 {
-	public class AssignDataDirectoryCommand : SetupCommand
+	public class AssignDataDirectoryCommand : SetupCommandBase
 	{
 		[Singleton( typeof(EntityFiles), nameof(EntityFiles.DefaultDataDirectory) ), Required]
 		public DirectoryInfo Directory { [return: Required]get; set; }
@@ -13,6 +14,7 @@ namespace DragonSpark.Windows.Entity
 		[Locate, Required]
 		public DataDirectoryPath Path { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter ) => Path.Assign( Directory.FullName );
+		[BuildUp]
+		protected override void OnExecute( object parameter ) => Path.Assign( Directory.FullName );
 	}
 }

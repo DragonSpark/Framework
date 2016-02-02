@@ -4,8 +4,7 @@
 	{
 		public class AutoDataAttribute : DragonSpark.Testing.Framework.Setup.AutoDataAttribute
 		{
-			public AutoDataAttribute() : base( DragonSpark.Testing.Objects.Setup.SetupFixtureFactory<LocationSetup>.Instance.Create )
-			{ }
+			public AutoDataAttribute() : base( DragonSpark.Testing.Objects.Setup.SetupFixtureFactory<LocationSetup>.Instance.Create ) {}
 		}
 
 		public LocationSetup()

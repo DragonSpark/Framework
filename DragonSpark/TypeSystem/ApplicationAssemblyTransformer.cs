@@ -22,6 +22,7 @@ namespace DragonSpark.TypeSystem
 			this.namespaces = namespaces;
 		}
 
-		protected override Assembly[] CreateItem( Assembly[] parameter ) => parameter.Where( assembly => assembly.IsDefined( typeof( RegistrationAttribute ) ) || namespaces.Any( assembly.GetName().Name.StartsWith ) ).ToArray();
+		protected override Assembly[] CreateItem( Assembly[] parameter ) => 
+			parameter.Where( assembly => assembly.Has<RegistrationAttribute>() || namespaces.Any( assembly.GetName().Name.StartsWith ) ).Prioritize().ToArray();
 	}
 }

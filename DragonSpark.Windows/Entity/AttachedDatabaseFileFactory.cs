@@ -16,10 +16,7 @@ namespace DragonSpark.Windows.Entity
 			this.context = context;
 		}
 
-		protected override FileInfo CreateItem()
-		{
-			var result = new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().With( DbProviderServices.ExpandDataDirectory ).With( s => new FileInfo( s ) );
-			return result;
-		}
+		protected override FileInfo CreateItem() => 
+			new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().With( DbProviderServices.ExpandDataDirectory ).With( s => new FileInfo( s ) );
 	}
 }

@@ -1,17 +1,19 @@
-﻿<setup:Setup x:Class="DragonSpark.Windows.Testing.Setup.UnitySetup"
+﻿<setup:SetupAutoData  x:Class="DragonSpark.Windows.Testing.Setup.UnitySetup"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:commands="clr-namespace:DragonSpark.Setup.Commands;assembly=DragonSpark"
-	xmlns:ds="http://framework.dragonspark.us"
 	xmlns:location="clr-namespace:DragonSpark.Testing.Framework.Setup.Location;assembly=DragonSpark.Testing.Framework"
 	xmlns:localSetup="clr-namespace:DragonSpark.Windows.Testing.Setup"
 	xmlns:testObjects="clr-namespace:DragonSpark.Testing.Objects;assembly=DragonSpark.Testing.Objects"
 	xmlns:setupObjects="clr-namespace:DragonSpark.Testing.Objects.Setup;assembly=DragonSpark.Testing.Objects"
-	xmlns:setup="clr-namespace:DragonSpark.Setup;assembly=DragonSpark"
+	xmlns:registration="clr-namespace:DragonSpark.Setup.Registration;assembly=DragonSpark"
+	xmlns:setup="clr-namespace:DragonSpark.Testing.Framework.Setup;assembly=DragonSpark.Testing.Framework"
 	mc:Ignorable="d"
 >
+	<setupObjects:AssignServiceLocation />
+	
 	<commands:SetupUnityCommand>
 		<commands:UnityInstance Instance="{x:Static testObjects:Singleton.Instance}" BuildName="SomeName" />
 		<commands:SetupUnityCommand.Extensions>
@@ -19,8 +21,8 @@
 			<localSetup:TestExtension />
 		</commands:SetupUnityCommand.Extensions>
 	</commands:SetupUnityCommand>
-	
-	<ds:SetupRegistrationByConventionCommand />
+
+	<registration:DelegatedRegisterFromMetadataCommand />
 	<!--<commands:InitializeModulesCommand />-->
 	<setupObjects:DefaultCustomizeFixtureCommand />
-</setup:Setup>
+</setup:SetupAutoData>

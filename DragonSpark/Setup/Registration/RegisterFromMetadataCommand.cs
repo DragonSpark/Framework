@@ -1,14 +1,16 @@
 using DragonSpark.Activation;
+using DragonSpark.Activation.IoC;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using DragonSpark.Setup.Commands;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
-using DragonSpark.Activation.IoC;
-using Microsoft.Practices.Unity;
 
 namespace DragonSpark.Setup.Registration
 {
+	public class DelegatedRegisterFromMetadataCommand : DelegatedCommand<RegisterFromMetadataCommand, ConventionRegistrationProfile> {}
+
 	public class RegisterFromMetadataCommand : Command<ConventionRegistrationProfile>
 	{
 		readonly IServiceRegistry registry;
@@ -18,11 +20,11 @@ namespace DragonSpark.Setup.Registration
 			this.registry = registry;
 		}
 
-		protected override void OnExecute( ConventionRegistrationProfile parameter )
-		{
-			var tuples = parameter.Candidates.AsTypeInfos().WhereDecorated<RegistrationBaseAttribute>().ToArray();
-			tuples
-				.Each( item => HostedValueLocator<IRegistration>.Instance.Create( item.Item2 ).Each( registration => registration.Register( registry ) ) );
-		}
+		protected override void OnExecute( ConventionRegistrationProfile parameter ) => 
+			parameter.Candidates.AsTypeInfos()
+				.WhereDecorated<RegistrationBaseAttribute>()
+				.Select( item => item.Item2 )
+				.SelectMany( HostedValueLocator<IRegistration>.Instance.Create )
+				.Each( registration => registration.Register( registry ) );
 	}
 }

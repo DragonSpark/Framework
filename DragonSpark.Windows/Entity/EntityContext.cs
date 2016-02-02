@@ -13,17 +13,13 @@ namespace DragonSpark.Windows.Entity
 {
 	public class EntityContext : DbContext, IEntityInstallationStorage
 	{
-		readonly IAttributeProvider provider;
 		readonly LocalStoragePropertyProcessor processor;
 		public event EventHandler Saved = delegate { };
 
 		public event EventHandler Saving = delegate { };
 
-		protected EntityContext( [Required]IAttributeProvider provider ) : this( provider, new LocalStoragePropertyProcessor( provider ) ) {}
-
-		protected EntityContext( [Required]IAttributeProvider provider, [Required]LocalStoragePropertyProcessor processor )
+		protected EntityContext( [Required]LocalStoragePropertyProcessor processor )
 		{
-			this.provider = provider;
 			this.processor = processor;
 		}
 

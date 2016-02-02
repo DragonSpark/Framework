@@ -1,25 +1,21 @@
+using DragonSpark.Extensions;
+using DragonSpark.Windows.Runtime;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
-using DragonSpark.Windows.Runtime;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Entity
 {
 	public class LocalStoragePropertyProcessor
 	{
-		readonly IAttributeProvider provider;
-		readonly static MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( nameof(Apply), BindingOptions.AllProperties );
+		public static LocalStoragePropertyProcessor Instance { get; } = new LocalStoragePropertyProcessor();
 
-		public LocalStoragePropertyProcessor( [Required]IAttributeProvider provider )
-		{
-			this.provider = provider;
-		}
+		LocalStoragePropertyProcessor() {}
+
+		readonly static MethodInfo ApplyMethod = typeof(LocalStoragePropertyProcessor).GetMethod( nameof(Apply), BindingOptions.AllProperties );
 
 		public void Process( DbContext context, DbModelBuilder modelBuilder, bool useConvention = true )
 		{
@@ -31,11 +27,8 @@ namespace DragonSpark.Windows.Entity
 			} );
 		}
 
-		bool FollowsConvention( PropertyInfo propertyInfo )
-		{
-			var result = propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).With( x => provider.Has<NotMappedAttribute>() );
-			return result;
-		}
+		static bool FollowsConvention( PropertyInfo propertyInfo ) => 
+			propertyInfo.Name.EndsWith( "Storage" ) && propertyInfo.DeclaringType.GetProperty( propertyInfo.Name.Replace( "Storage", string.Empty ) ).With( x => x.Has<NotMappedAttribute>() );
 
 		static void Apply<TEntity, TProperty>( DbModelBuilder builder, PropertyInfo property ) where TEntity : class
 		{
@@ -46,7 +39,7 @@ namespace DragonSpark.Windows.Entity
 
 			var configuration = builder.Entity<TEntity>();
 			
-			ObjectExtensions.With<MethodInfo, object>( configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ), y => y.Invoke( configuration, new object[] { result } ) );
+			configuration.GetType().GetMethod( "Property", new[] { result.GetType() } ).With( y => y.Invoke( configuration, new object[] { result } ) );
 		}
 	}
 }

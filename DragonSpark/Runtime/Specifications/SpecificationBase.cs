@@ -14,6 +14,17 @@ namespace DragonSpark.Runtime.Specifications
 
 		public bool IsSatisfiedBy( object context ) => !inner.IsSatisfiedBy( context );
 	}
+	
+
+	public class NullSpecification : SpecificationBase<object>
+	{
+		public static NullSpecification Instance { get; } = new NullSpecification();
+
+		public static InverseSpecification NotNull { get; } = new InverseSpecification( Instance );
+
+
+		protected override bool Verify( object parameter ) => parameter.IsNull();
+	}
 
 	public abstract class SpecificationBase<TParameter> : ISpecification<TParameter>
 	{

@@ -14,7 +14,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, AutoData]
 		public void Execute( Command sut )
 		{
-			sut.Execute( new Parameter( new object() ) );
+			sut.Execute( new object() );
 			Assert.True( sut.Executed, "Didn't call" );
 		}
 
@@ -28,22 +28,19 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, AutoData]
-		public void CallWithNonContext( Command sut )
+		public void CallWithNonContext( Command<SetupCommandTests> sut )
 		{
 			var context = new object();
 			Assert.Throws<InvalidOperationException>( () => sut.To<ICommand>().Execute( context ) );
 		}
 	}
 
-	public class Command : SetupCommand<object>
+	public class Command : Command<object> {}
+
+	public class Command<T> : SetupCommandBase<T>
 	{
 		public bool Executed { get; private set; }
 		
-		protected override void OnExecute( ISetupParameter<object> parameter ) => Executed = true;
-	}
-
-	public class Parameter : SetupParameter<object>
-	{
-		public Parameter( object arguments ) : base( new MockMessageLogger(), arguments ) {}
+		protected override void OnExecute( T parameter ) => Executed = true;
 	}
 }

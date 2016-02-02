@@ -189,7 +189,6 @@
     <Compile Include="Setup\ProgramSetupTests.cs" />
     <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
     <Compile Include="Setup\SetupCommandTests.cs" />
-    <Compile Include="Setup\SetupParameterTests.cs" />
     <Compile Include="Setup\LocationSetupTests.cs" />
     <Compile Include="Setup\TestExtension.cs" />
     <Compile Include="Setup\UnitySetup.xaml.cs">

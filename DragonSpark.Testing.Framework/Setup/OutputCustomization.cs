@@ -6,6 +6,7 @@ using DragonSpark.Testing.Framework.Setup.Location;
 using Ploeh.AutoFixture;
 using System.Linq;
 using PostSharp.Patterns.Contracts;
+using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework.Setup
 {
@@ -34,8 +35,12 @@ namespace DragonSpark.Testing.Framework.Setup
 
 		protected override void OnInitialized( AutoData context )
 		{
-			var item = Logger.Purge().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
-			new OutputValue( context.Method.DeclaringType ).Assign( item );
+			var declaringType = context.Method.DeclaringType;
+			if ( declaringType.GetConstructors().Where( info => info.IsPublic ).Any( info => info.GetParameters().Any( parameterInfo => parameterInfo.ParameterType == typeof(ITestOutputHelper) ) ) )
+			{
+				var item = Logger.Purge().OrderBy( line => line.Time ).Select( line => line.Text ).ToArray();
+				new OutputValue( declaringType ).Assign( item );	
+			}
 		}
 	}
 }

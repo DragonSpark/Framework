@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Markup;
+using Microsoft.Practices.Unity;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Runtime
@@ -45,6 +46,7 @@ namespace DragonSpark.Runtime
 
 		// readonly ConditionMonitor built = new ConditionMonitor();
 
+		[InjectionConstructor]
 		public Collection() : this( new T[0] )
 		{}
 
@@ -55,21 +57,11 @@ namespace DragonSpark.Runtime
 
 		// IEnumerable<T> Items => built.Apply() ? items.Select( arg => arg.BuildUp() ) : items;
 
-		public virtual IEnumerator<T> GetEnumerator()
-		{
-			var result = items.GetEnumerator();
-			return result;
-		}
+		public virtual IEnumerator<T> GetEnumerator() => items.GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public void Add( T item )
-		{
-			items.Add( item );
-		}
+		public void Add( T item ) => items.Add( item );
 
 		int IList.Add( object value )
 		{
@@ -90,57 +82,27 @@ namespace DragonSpark.Runtime
 			return Count - 1;
 		}
 
-		public void Clear()
-		{
-			items.Clear();
-		}
+		public void Clear() => items.Clear();
 
-		bool IList.Contains( object value )
-		{
-			return value.AsTo<T, bool>( Contains );
-		}
+		bool IList.Contains( object value ) => value.AsTo<T, bool>( Contains );
 
-		int IList.IndexOf( object value )
-		{
-			return value.AsTo<T, int>( items.IndexOf, () => -1 );
-		}
+		int IList.IndexOf( object value ) => value.AsTo<T, int>( items.IndexOf, () => -1 );
 
-		void IList.Insert( int index, object value )
-		{
-			value.As<T>( x => items.Insert( index, x ) );
-		}
+		void IList.Insert( int index, object value ) => value.As<T>( x => items.Insert( index, x ) );
 
-		void IList.Remove( object value )
-		{
-			value.As<T>( x => items.Remove( x ) );
-		}
+		void IList.Remove( object value ) => value.As<T>( x => items.Remove( x ) );
 
-		void IList.RemoveAt( int index )
-		{
-			items.RemoveAt( index );
-		}
+		void IList.RemoveAt( int index ) => items.RemoveAt( index );
 
 		bool IList.IsFixedSize => items.To<IList>().IsFixedSize;
 
-		public bool Contains( T item )
-		{
-			return items.Contains( item );
-		}
+		public bool Contains( T item ) => items.Contains( item );
 
-		public void CopyTo( T[] array, int arrayIndex )
-		{
-			items.ToArray().CopyTo( array, arrayIndex );
-		}
+		public void CopyTo( T[] array, int arrayIndex ) => items.ToArray().CopyTo( array, arrayIndex );
 
-		public bool Remove( T item )
-		{
-			return items.Remove( item );
-		}
+		public bool Remove( T item ) => items.Remove( item );
 
-		void ICollection.CopyTo( Array array, int index )
-		{
-			array.As<T[]>( obj => CopyTo( obj, index ) );
-		}
+		void ICollection.CopyTo( Array array, int index ) => array.As<T[]>( obj => CopyTo( obj, index ) );
 
 		public int Count => items.Count;
 

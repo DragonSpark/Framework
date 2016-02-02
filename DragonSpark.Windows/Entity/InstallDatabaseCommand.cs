@@ -1,4 +1,5 @@
 using System.IO;
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
@@ -6,24 +7,22 @@ using DragonSpark.Windows.Properties;
 
 namespace DragonSpark.Windows.Entity
 {
-	public class InstallDatabaseCommand : SetupCommand
+	public class InstallDatabaseCommand : SetupCommandBase
 	{
 		[Factory( typeof(AttachedDatabaseFileFactory) )]
 		public FileInfo Database { get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		[BuildUp]
+		protected override void OnExecute( object parameter ) => Database.Exists.IsFalse( () =>
 		{
-			Database.Exists.IsFalse( () =>
+			var items = EntityFiles.WithLog( Database ).TupleWith( new[] { Resources.Blank, Resources.Blank_log } );
+			items.Each( tuple => 
 			{
-				var items = EntityFiles.WithLog( Database ).TupleWith( new[] { Resources.Blank, Resources.Blank_log } );
-				items.Each( tuple => 
+				using ( var stream = File.Create( tuple.Item1.FullName ) )
 				{
-					using ( var stream = File.Create( tuple.Item1.FullName ) )
-					{
-						stream.Write( tuple.Item2, 0, tuple.Item2.Length );
-					}
-				} );
+					stream.Write( tuple.Item2, 0, tuple.Item2.Length );
+				}
 			} );
-		}
+		} );
 	}
 }

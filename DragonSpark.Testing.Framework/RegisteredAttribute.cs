@@ -1,6 +1,5 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Activation.IoC;
 using DragonSpark.Aspects;
 using DragonSpark.Extensions;
 using DragonSpark.Setup.Registration;
@@ -14,9 +13,31 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Runtime.Values;
 
 namespace DragonSpark.Testing.Framework
 {
+	public class AmbientAttribute : CustomizeAttribute
+	{
+		public class Registration : IRegistration
+		{
+			readonly Type type;
+
+			public Registration( [Required]Type type )
+			{
+				this.type = type;
+			}
+
+			public void Register( IServiceRegistry registry )
+			{
+				var instance = Ambient.GetCurrent( type );
+				registry.Register( new InstanceRegistrationParameter( type, instance ) );
+			}
+		}
+
+		public override ICustomization GetCustomization( ParameterInfo parameter ) => new RegistrationCustomization( new Registration( parameter.ParameterType ) );
+	}
+
 	public class FactoryAttribute : CustomizeAttribute
 	{
 		readonly Type factoryType;

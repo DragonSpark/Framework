@@ -1,7 +1,6 @@
 using DragonSpark.Activation.FactoryModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
-using Microsoft.Practices.ServiceLocation;
 using Ploeh.AutoFixture;
 using System;
 using System.Reflection;
@@ -32,35 +31,33 @@ namespace DragonSpark.Testing.Framework.Setup
 		protected override IUnityContainer CreateItem() => base.CreateItem().Extension<FixtureExtension>().Container;
 	}*/
 
-	public abstract class SetupCustomization<TSetup> : SetupCustomization where TSetup : class, ISetup
+
+	public abstract class SetupAutoData : Setup<AutoData>
+	{}
+
+	public abstract class SetupCustomization<TSetup> : SetupCustomization where TSetup : class, ISetup<AutoData>
 	{
-		protected SetupCustomization( Func<IServiceLocator> locatorFactory ) : base( locatorFactory, ActivateFactory<TSetup>.Instance.Create ) {}
+		protected SetupCustomization() : base( ActivateFactory<TSetup>.Instance.Create ) {}
 	}
 
 	public abstract class SetupCustomization : AutoDataCustomization
 	{
-		readonly Func<ISetup> setupFactory;
-		readonly Func<IServiceLocator> locatorFactory;
-
-		protected SetupCustomization( Func<IServiceLocator> locatorFactory, Func<ISetup> setupFactory )
+		readonly Func<ISetup<AutoData>> setupFactory;
+	
+		protected SetupCustomization( Func<ISetup<AutoData>> setupFactory )
 		{
-			this.locatorFactory = locatorFactory;
 			this.setupFactory = setupFactory;
 		}
 
 		protected override void OnInitializing( AutoData context )
 		{
-			var locator = locatorFactory();
-			using ( var arguments = new SetupParameter( locator, context ) )
-			{
-				var setup = setupFactory();
-				setup.Run( arguments );
-			}
+			var setup = setupFactory();
+			setup.Run( context );
 		}
 
-		public class SetupParameter : ApplicationSetupParameter<AutoData>
+		/*public class SetupParameter : SetupParameter<AutoData>
 		{
-			public SetupParameter( IServiceLocator locator, AutoData arguments ) : base( locator, arguments ) {}
-		}
+			public SetupParameter( IMessageLogger logger, AutoData arguments ) : base( logger, arguments ) {}
+		}*/
 	}
 }

@@ -5,9 +5,9 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-	public class DelegatedSetupCommand<TCommand, TParameter> : SetupCommand where TCommand : ICommand<TParameter>
+	public class DelegatedCommand<TCommand, TParameter> : SetupCommandBase where TCommand : ICommand<TParameter>
 	{
-		protected override void OnExecute( ISetupParameter parameter ) => Command.ExecuteWith( Parameter );
+		protected override void OnExecute( object parameter ) => Command.ExecuteWith( Parameter );
 
 		[Required, Locate]
 		public TCommand Command { [return: Required]get; set; }

@@ -4,11 +4,11 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-	public class RunProgramCommand : SetupCommand
+	public class RunProgramCommand : SetupCommandBase
 	{
 		[Locate]
 		public IProgram Program { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter ) => Program.Run( parameter.Arguments );
+		protected override void OnExecute( object parameter ) => Program.Run( parameter );
 	}
 }

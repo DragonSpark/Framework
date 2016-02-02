@@ -1,12 +1,10 @@
+using DragonSpark.Activation.FactoryModel;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Setup;
 using DragonSpark.Setup.Commands;
-using DragonSpark.Setup.Registration;
 using Microsoft.Practices.Unity.Configuration;
 using PostSharp.Patterns.Contracts;
 using System.Linq;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Windows.Setup
 {
@@ -15,8 +13,7 @@ namespace DragonSpark.Windows.Setup
 	{
 		public static UnityConfigurationSectionFactory Instance { get; } = new UnityConfigurationSectionFactory();
 
-		public UnityConfigurationSectionFactory()
-		{}
+		public UnityConfigurationSectionFactory() {}
 	}
 
 	public class SetupUnityFromConfigurationCommand : UnityCommand
@@ -24,6 +21,6 @@ namespace DragonSpark.Windows.Setup
 		[Locate, Required]
 		public UnityConfigurationSection Section { [return: Required]get; set; }
 
-		protected override void OnExecute( IApplicationSetupParameter parameter ) => Section.Containers.Any().IsTrue( () => Container.LoadConfiguration() );
+		protected override void OnExecute( object parameter ) => Section.Containers.Any().IsTrue( () => Container.LoadConfiguration() );
 	}
 }

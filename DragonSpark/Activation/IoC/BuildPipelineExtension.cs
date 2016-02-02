@@ -190,7 +190,7 @@ namespace DragonSpark.Activation.IoC
 		protected override Type CreateItem( Type parameter )
 		{
 			var adapter = parameter.Adapt();
-			var name = parameter.Name.TrimStart( 'I' );
+			var name = parameter.Name.TrimStartOf( 'I' );
 			var result = assemblies.AnyOr( () => parameter.Assembly().ToItem() )
 				.SelectMany( assembly => assembly.DefinedTypes.AsTypes() )
 				.Where( adapter.IsAssignableFrom )
@@ -227,7 +227,7 @@ namespace DragonSpark.Activation.IoC
 		{
 			var result =
 				parameter.GetTypeInfo().ImplementedInterfaces.ToArray().With( interfaces => 
-					interfaces.FirstOrDefault( i => parameter.Name.Contains( i.Name.TrimStart( 'I' ) ) )
+					interfaces.FirstOrDefault( i => parameter.Name.Contains( i.Name.TrimStartOf( 'I' ) ) )
 					??
 					interfaces.FirstOrDefault( t => assemblies.Contains( t.Assembly() ) )
 				) ?? parameter;
@@ -260,11 +260,7 @@ namespace DragonSpark.Activation.IoC
 			this.specification = specification;
 		}
 
-		protected override bool Verify( IBuilderContext parameter )
-		{
-			var result = !specification.IsSatisfiedBy( parameter.BuildKey.Type ) || !CanBuildFrom( parameter );
-			return result;
-		}
+		protected override bool Verify( IBuilderContext parameter ) => !specification.IsSatisfiedBy( parameter.BuildKey.Type ) || !CanBuildFrom( parameter );
 
 		static bool CanBuildFrom( IBuilderContext parameter )
 		{
@@ -318,13 +314,16 @@ namespace DragonSpark.Activation.IoC
 			var reference = new KeyReference( this, context.BuildKey ).Item;
 			if ( new Checked( reference, this ).Item.Apply() )
 			{
+				var type = context.BuildKey.Type;
+				var name = type.Name;
+
 				context.New<ConventionCandidateLocator>().Create( context ).With( located =>
 				{
 					var mapped = new NamedTypeBuildKey( located, context.BuildKey.Name );
 
 					var registry = context.New<IServiceRegistry>();
 
-					registry.Register( new MappingRegistrationParameter( context.BuildKey.Type, mapped.Type, context.BuildKey.Name ) );
+					registry.Register( new MappingRegistrationParameter( type, mapped.Type, context.BuildKey.Name ) );
 
 					context.BuildKey = mapped;
 				} );

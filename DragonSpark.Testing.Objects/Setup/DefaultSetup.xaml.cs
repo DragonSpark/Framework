@@ -20,14 +20,11 @@ namespace DragonSpark.Testing.Objects.Setup
 		}
 	}
 
-	public class SetupFixtureFactory<T> : FixtureFactory<SetupCustomization<T>> where T : class, ISetup {}
+	public class SetupFixtureFactory<T> : FixtureFactory<SetupCustomization<T>> where T : class, ISetup<AutoData> {}
 
-	public class SetupCustomization<T> : Framework.Setup.SetupCustomization<T> where T : class, ISetup
-	{
-		public SetupCustomization() : base( ServiceLocatorFactory.Instance.Create ) {}
-	}
+	public class SetupCustomization<T> : Framework.Setup.SetupCustomization<T> where T : class, ISetup<AutoData> {}
 
-	[Discoverable]
+	/*[Discoverable]
 	public class ServiceLocatorFactory : Activation.IoC.ServiceLocatorFactory
 	{
 		public class Register : RegisterFactoryAttribute
@@ -38,6 +35,11 @@ namespace DragonSpark.Testing.Objects.Setup
 		public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
 
 		ServiceLocatorFactory() : base( UnityContainerFactory.Instance.Create ) {}
+	}*/
+
+	public class AssignServiceLocation : AssignLocationCommand
+	{
+		public AssignServiceLocation() : base( UnityContainerFactory.Instance.Create() ) {}
 	}
 
 	[Discoverable]

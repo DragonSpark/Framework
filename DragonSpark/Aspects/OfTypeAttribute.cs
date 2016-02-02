@@ -29,7 +29,7 @@ namespace DragonSpark.Aspects
 		}
 
 		public Exception ValidateValue( Type value, string locationName, LocationKind locationKind )
-			=> types.Any( type => type.Adapt().IsAssignableFrom( value ) ) ? null : CreateException( value, locationName, locationKind, LocationValidationContext.SuccessPostcondition );
+			=> value.With( v => types.Any( type => type.Adapt().IsAssignableFrom( v ) ) ) ? null : CreateException( value, locationName, locationKind, LocationValidationContext.SuccessPostcondition );
 
 		Exception CreateException( object value, string locationName, LocationKind locationKind, LocationValidationContext context )
 		{

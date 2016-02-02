@@ -5,7 +5,7 @@ using DragonSpark.Testing.Framework.Setup;
 using Xunit;
 using Xunit.Abstractions;
 using ServiceLocation = DragonSpark.Activation.ServiceLocation;
-using ServiceLocatorFactory = DragonSpark.Testing.Objects.Setup.ServiceLocatorFactory;
+using UnityContainerFactory = DragonSpark.Testing.Objects.Setup.UnityContainerFactory;
 
 namespace DragonSpark.Testing.Activation
 {
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Activation
 
 			Assert.False( sut.IsAvailable );
 
-			var serviceLocator = ServiceLocatorFactory.Instance.Create();
+			var serviceLocator = new ServiceLocator( UnityContainerFactory.Instance.Create() );
 			Assert.NotNull( serviceLocator );
 			sut.Assign( serviceLocator );
 

@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Windows.Markup;
 using System.Xaml;
+using DragonSpark.Aspects;
 using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Markup
@@ -14,6 +15,7 @@ namespace DragonSpark.Windows.Markup
 		[Locate, Required]
 		public IIncrementer Incrementer { [return: Required]get; set; }
 		
+		[BuildUp]
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var context = DetermineContext( serviceProvider );

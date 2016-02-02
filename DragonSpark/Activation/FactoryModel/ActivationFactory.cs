@@ -4,15 +4,11 @@ using System.ComponentModel.DataAnnotations;
 namespace DragonSpark.Activation.FactoryModel
 {
 	[AttributeUsage( AttributeTargets.Class )]
-	public class DiscoverableAttribute : Attribute
-	{}
+	public class DiscoverableAttribute : Attribute {}
 
 	public abstract class ActivationFactory<TParameter, TResult> : FactoryBase<TParameter, TResult> where TParameter : ActivationParameter where TResult : class
 	{
 		readonly Activator.Get activator;
-
-		/*protected ActivationFactory( Activator.Get activator ) : this( activator, new FactoryParameterCoercer<TParameter>( activator ) )
-		{}*/
 
 		protected ActivationFactory( [Required]Activator.Get activator, IFactoryParameterCoercer<TParameter> coercer ) : base( coercer )
 		{

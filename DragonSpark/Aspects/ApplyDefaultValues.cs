@@ -1,5 +1,4 @@
 using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
 using DragonSpark.Runtime.Values;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
@@ -7,13 +6,12 @@ using PostSharp.Extensibility;
 using PostSharp.Reflection;
 using PostSharp.Serialization;
 using System;
-using System.ComponentModel;
 
 namespace DragonSpark.Aspects
 {
-	[MulticastAttributeUsage( MulticastTargets.Property,  PersistMetaData = false ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation )]
+	[MulticastAttributeUsage( MulticastTargets.Property, PersistMetaData = false ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation )]
 	[PSerializable, ProvideAspectRole( "Default Object Values" ), LinesOfCodeAvoided( 6 )]
-	[AttributeUsage( AttributeTargets.Assembly | AttributeTargets.Class )]
+	[AttributeUsage( AttributeTargets.Assembly )]
 	public sealed class ApplyDefaultValues : LocationInterceptionAspect, IInstanceScopedAspect
 	{
 		public override bool CompileTimeValidate( LocationInfo locationInfo ) => DefaultValuePropertySpecification.Instance.IsSatisfiedBy( locationInfo.PropertyInfo );

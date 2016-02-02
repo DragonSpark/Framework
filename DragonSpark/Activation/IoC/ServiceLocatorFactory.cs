@@ -24,15 +24,6 @@ namespace DragonSpark.Activation.IoC
 		UnityContainerFactory( [Required]TAssemblyProvider provider ) : base( provider.Create, MessageLoggerFactory<TLogger>.Instance.Create ) {}
 	}
 
-	/*public class UnityContainerFactoryFactory : FactoryBase<UnityContainerFactory>
-	{
-		protected override UnityContainerFactory CreateItem()
-		{
-			var result = new UnityContainerFactory( Assemblies.GetCurrent(), MessageLoggerFactory<RecordingMessageLogger>.Instance.Create() );
-			return result;
-		}
-	}*/
-
 	public class UnityContainerFactory : FactoryBase<IUnityContainer>
 	{
 		readonly Assemblies.Get assemblies;
@@ -61,40 +52,53 @@ namespace DragonSpark.Activation.IoC
 		protected override void Dispose( bool disposing ) => base.Dispose( disposing );
 	}
 
-	public class ConfigureLocationCommand : Command<IServiceLocator>
+	public class ConfigureLocationCommand : Command<object>
 	{
-		readonly IServiceLocation location;
-		readonly IUnityContainer container;
-		readonly IMessageLogger logger;
+		public ConfigureLocationCommand( [Required]IUnityContainer container ) : this( container, container.Resolve<IMessageLogger>() ) {}
 
-		public ConfigureLocationCommand( [Required]IServiceLocation location, [Required]IUnityContainer container, [Required]IMessageLogger logger )
+		protected ConfigureLocationCommand( [Required]IUnityContainer container, [Required]IMessageLogger logger ) : this( Services.Location, container, logger ) {}
+
+		protected ConfigureLocationCommand( [Required]IServiceLocation location, [Required]IUnityContainer container, [Required]IMessageLogger logger ) : this( location, new ServiceLocator( container ), container, logger ) {}
+
+		protected ConfigureLocationCommand( [Required]IServiceLocation location, [Required]IServiceLocator locator, [Required]IUnityContainer container, [Required]IMessageLogger logger )
 		{
-			this.location = location;
-			this.container = container;
-			this.logger = logger;
+			Location = location;
+			Locator = locator;
+			Container = container;
+			Logger = logger;
 		}
 
-		protected override void OnExecute( IServiceLocator parameter )
+		protected IServiceLocation Location { get; }
+		protected IServiceLocator Locator { get; }
+		protected IUnityContainer Container { get; }
+		protected IMessageLogger Logger { get; }
+		
+		protected override void OnExecute( object parameter )
 		{
-			logger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
-			container.RegisterInstance( location );
-			container.RegisterInstance( parameter, new FrozenDisposeContainerControlledLifetimeManager() );
+			Logger.Information( Resources.ConfiguringServiceLocatorSingleton, Priority.Low );
+			Container.RegisterInstance( Location );
+			Container.RegisterInstance( Locator, new FrozenDisposeContainerControlledLifetimeManager() );
 		}
 	}
 
-	public class AssignLocationCommand : Command<IServiceLocator>
+	public class AssignLocationCommand : ConfigureLocationCommand
 	{
-		readonly IServiceLocation location;
+		public AssignLocationCommand( IUnityContainer container ) : base( container ) {}
 
-		public AssignLocationCommand( IServiceLocation location )
+		/*protected AssignLocationCommand( IUnityContainer container, IMessageLogger logger ) : base( container, logger ) {}
+
+		protected AssignLocationCommand( IServiceLocation location, IUnityContainer container, IMessageLogger logger ) : base( location, container, logger ) {}
+
+		protected AssignLocationCommand( IServiceLocation location, IServiceLocator locator, IUnityContainer container, IMessageLogger logger ) : base( location, locator, container, logger ) {}*/
+
+		protected override void OnExecute( object parameter )
 		{
-			this.location = location;
+			Location.Assign( Locator );
+			base.OnExecute( parameter );
 		}
-
-		protected override void OnExecute( IServiceLocator parameter ) => location.Assign( parameter );
 	}
 
-	public class AssignLocationCommandFactory : ConfigureLocationCommandFactory
+	/*public class AssignLocationCommandFactory : ConfigureLocationCommandFactory
 	{
 		public new static AssignLocationCommandFactory Instance { get; } = new AssignLocationCommandFactory();
 
@@ -110,22 +114,6 @@ namespace DragonSpark.Activation.IoC
 		protected override ICommand<IServiceLocator> CreateItem( IUnityContainer parameter ) => new CompositeCommand<IServiceLocator>( new AssignLocationCommand( location ), base.CreateItem( parameter ) );
 	}
 
-	/*public class ServiceLocatorFactoryFactory : FactoryBase<ServiceLocatorFactory>
-	{
-		readonly UnityContainerFactory factory;
-
-		public ServiceLocatorFactoryFactory( [Required]UnityContainerFactory factory )
-		{
-			this.factory = factory;
-		}
-
-		protected override ServiceLocatorFactory CreateItem()
-		{
-			var result = new ServiceLocatorFactory( factory.Create );
-			return result;
-		}
-	}*/
-
 	public class ConfigureLocationCommandFactory : FactoryBase<IUnityContainer, ICommand<IServiceLocator>>
 	{
 		public static ConfigureLocationCommandFactory Instance { get; } = new ConfigureLocationCommandFactory();
@@ -140,9 +128,9 @@ namespace DragonSpark.Activation.IoC
 		}
 
 		protected override ICommand<IServiceLocator> CreateItem( IUnityContainer parameter ) => new ConfigureLocationCommand( location, parameter, parameter.Logger() );
-	}
+	}*/
 
-	public class ServiceLocatorFactory : FactoryBase<IServiceLocator>
+	/*public class ServiceLocatorFactory : FactoryBase<IServiceLocator>
 	{
 		readonly Func<IUnityContainer> containerFactory;
 		readonly Func<IUnityContainer, ICommand<IServiceLocator>> commandFactory;
@@ -154,15 +142,15 @@ namespace DragonSpark.Activation.IoC
 		public ServiceLocatorFactory( [Required]Func<IUnityContainer> containerFactory, [Required]Func<IUnityContainer, ICommand<IServiceLocator>> commandFactory )
 		{
 			this.containerFactory = containerFactory;
-			this.commandFactory = commandFactory;
+			// this.commandFactory = commandFactory;
 		}
 
 		protected override IServiceLocator CreateItem()
 		{
 			var container = containerFactory();
 			var result = new ServiceLocator( container );
-			commandFactory( container ).ExecuteWith( result );
+			// commandFactory( container ).ExecuteWith( result );
 			return result;
 		}
-	}
+	}*/
 }

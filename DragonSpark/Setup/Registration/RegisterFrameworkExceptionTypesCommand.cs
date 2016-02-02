@@ -12,12 +12,12 @@ using System.Windows.Markup;
 namespace DragonSpark.Setup.Registration
 {
 	[ContentProperty( nameof(Types) )]
-	public class RegisterFrameworkExceptionTypesCommand : SetupCommand
+	public class RegisterFrameworkExceptionTypesCommand : SetupCommandBase
 	{
 		[Locate, Required]
 		public IMessageLogger MessageLogger { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		protected override void OnExecute( object parameter )
 		{
 			MessageLogger.Information(Resources.RegisteringFrameworkExceptionTypes, Priority.Low);
 			Types.Each( ExceptionExtensions.RegisterFrameworkExceptionType );

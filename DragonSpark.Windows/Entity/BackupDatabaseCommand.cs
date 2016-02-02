@@ -1,13 +1,14 @@
-using System.IO;
-using System.Linq;
+using DragonSpark.Aspects;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Setup;
 using DragonSpark.Windows.Io;
+using System.IO;
+using System.Linq;
 
 namespace DragonSpark.Windows.Entity
 {
-	public class BackupDatabaseCommand : SetupCommand
+	public class BackupDatabaseCommand : SetupCommandBase
 	{
 		[Factory( typeof(AttachedDatabaseFileFactory) )]
 		public FileInfo Database { get; set; }
@@ -15,7 +16,8 @@ namespace DragonSpark.Windows.Entity
 		[Default( 6 )]
 		public int? MaximumBackups { get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		[BuildUp]
+		protected override void OnExecute( object parameter )
 		{
 			Database.With( file =>
 			{

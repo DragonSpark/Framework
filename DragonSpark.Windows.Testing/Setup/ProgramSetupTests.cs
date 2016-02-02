@@ -2,14 +2,13 @@
 using DragonSpark.Modularity;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Values;
-using DragonSpark.Setup;
+using DragonSpark.Setup.Registration;
 using DragonSpark.Testing.Framework.Parameters;
 using DragonSpark.Testing.Framework.Setup;
 using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using DragonSpark.Setup.Registration;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.Setup
@@ -17,7 +16,7 @@ namespace DragonSpark.Windows.Testing.Setup
 	public class ProgramSetupTests
 	{
 		[Theory, ProgramSetup.AutoData]
-		public void Extension( [Located] ISetupParameter sut )
+		public void Extension( [Located] IModuleMonitor sut )
 		{
 			var collection = new Items( sut ).Item;
 			var module = collection.FirstOrDefaultOfType<MonitoredModule>();
@@ -60,7 +59,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, ProgramSetup.AutoData]
-		public void SetupModuleCommand( [Located] ISetupParameter parameter, [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
+		public void SetupModuleCommand( [Located] SetupModuleCommand sut, [Located] MonitoredModule module )
 		{
 			var added = new Items( module ).Item.FirstOrDefaultOfType<SomeCommand>();
 			Assert.Null( added );
@@ -96,16 +95,15 @@ namespace DragonSpark.Windows.Testing.Setup
 
 	public class MonitoredModule : MonitoredModule<MonitoredModule.Command>
 	{
-		public MonitoredModule( IModuleMonitor moduleMonitor, ISetupParameter parameter, Command command ) : base( moduleMonitor, command )
+		public MonitoredModule( IModuleMonitor moduleMonitor, Command command ) : base( moduleMonitor, command )
 		{
-			new Items( parameter ).Item.Add( this );
+			new Items( moduleMonitor ).Item.Add( this );
 		}
 
 		public bool Initialized { get; private set; }
 
 		public bool Loaded { get; private set; }
 		
-
 		protected override void OnInitialize()
 		{
 			Initialized = true;
@@ -120,14 +118,14 @@ namespace DragonSpark.Windows.Testing.Setup
 
 		public class Command : ModuleCommand
 		{
-			readonly ISetupParameter setup;
+			readonly IModuleMonitor monitor;
 
-			public Command( ISetupParameter setup )
+			public Command( IModuleMonitor monitor )
 			{
-				this.setup = setup;
+				this.monitor = monitor;
 			}
 
-			protected override void OnExecute( IMonitoredModule parameter ) => new Items( setup ).Item.Add( this );
+			protected override void OnExecute( IMonitoredModule parameter ) => new Items( monitor ).Item.Add( this );
 		}
 	}
 }

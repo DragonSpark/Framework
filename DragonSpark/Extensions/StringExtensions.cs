@@ -6,22 +6,11 @@ namespace DragonSpark.Extensions
 {
 	public static class StringExtensions
 	{
-		public static string Capitalized( this string target )
-		{
-			var result = string.IsNullOrEmpty( target ) ? string.Empty : char.ToUpper( target[ 0 ] ) + target.Substring( 1 );
-			return result;
-		}
+		public static string Capitalized( this string target ) => string.IsNullOrEmpty( target ) ? string.Empty : char.ToUpper( target[ 0 ] ) + target.Substring( 1 );
 
-		public static string NullIfEmpty( this string target )
-		{
-			var result = string.IsNullOrEmpty( target ) ? null : target;
-			return result;
-		}
+		public static string NullIfEmpty( this string target ) => string.IsNullOrEmpty( target ) ? null : target;
 
-		public static string[] ToStringArray( this string target )
-		{
-			return ToStringArray( target, ',', ';' );
-		}
+		public static string[] ToStringArray( this string target ) => ToStringArray( target, ',', ';' );
 
 		public static string[] ToStringArray( this string target, params char[] delimiters )
 		{
@@ -31,21 +20,27 @@ namespace DragonSpark.Extensions
 			var result = items.ToArray();
 			return result;
 		}
+
+		public static string TrimStartOf( this string @this, params char[] chars )
+		{
+			var result = chars.Select( c => c.ToString() ).Any( @this.StartsWith ) ? @this.Substring( 1 ) : @this;
+			return result;
+		}
 	}
 
 	// ATTRIBUTION: http://stackoverflow.com/questions/773303/splitting-camelcase
 	public static class ConventionBasedFormattingExtensions
 	{
 		readonly static Regex SplitCamelCaseRegex = new Regex(@"
-            (
-                (?<=[a-z])[A-Z0-9] (?# lower-to-other boundaries )
-                |
-                (?<=[0-9])[a-zA-Z] (?# number-to-other boundaries )
-                |
-                (?<=[A-Z])[0-9] (?# cap-to-number boundaries; handles a specific issue with the next condition )
-                |
-                (?<=[A-Z])[A-Z](?=[a-z]) (?# handles longer strings of caps like ID or CMS by splitting off the last capital )
-            )"
+			(
+				(?<=[a-z])[A-Z0-9] (?# lower-to-other boundaries )
+				|
+				(?<=[0-9])[a-zA-Z] (?# number-to-other boundaries )
+				|
+				(?<=[A-Z])[0-9] (?# cap-to-number boundaries; handles a specific issue with the next condition )
+				|
+				(?<=[A-Z])[A-Z](?=[a-z]) (?# handles longer strings of caps like ID or CMS by splitting off the last capital )
+			)"
 			, RegexOptions.IgnorePatternWhitespace
 		);
 

@@ -114,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
-    <Compile Include="Setup\ConfigurationFactory.cs" />
+    <Compile Include="Setup\ConsoleApplication.cs" />
     <Compile Include="Setup\ConfigurationSectionFactory.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
@@ -145,7 +145,6 @@
     <Compile Include="Entity\MigrateDatabaseToLatestVersion.cs" />
     <Compile Include="Entity\ObjectContextExtensions.cs" />
     <Compile Include="Entity\VersionConverter.cs" />
-    <Compile Include="Runtime\Data\IDataTransformer.cs" />
     <Compile Include="Io\FileSystem.cs" />
     <Compile Include="Diagnostics\TextMessageLogger.cs" />
     <Compile Include="Diagnostics\TraceMessageLogger.cs" />
@@ -213,9 +212,6 @@
     <Compile Include="Setup\SetupExceptionHandling.cs" />
     <Compile Include="Setup\ExceptionPolicyDefinition.cs" />
     <Compile Include="Setup\ExceptionPolicyEntry.cs" />
-    <Compile Include="Setup\SetupRegistrationByConventionCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Markup\AssemblyVersionExtension.cs" />
     <Compile Include="Markup\ClrMemberMarkupTargetValueSetter.cs" />
     <Compile Include="Markup\DeferredMarkupExtension.cs" />
@@ -277,6 +273,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Types.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>

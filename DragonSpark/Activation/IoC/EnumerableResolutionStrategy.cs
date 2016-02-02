@@ -74,18 +74,21 @@ namespace DragonSpark.Activation.IoC
 
 		readonly static MethodInfo GenericResolveArrayMethod = typeof(EnumerableResolutionStrategy).GetTypeInfo().DeclaredMethods.First( m => m.Name == nameof(Resolve) && !m.IsPublic && m.IsStatic );
 
-		public override void PreBuildUp( IBuilderContext context )
+		public override void PreBuildUp( [Required]IBuilderContext context )
 		{
-			Guard.ArgumentNotNull( context, nameof(context) );
 			if ( !context.HasBuildPlan() )
 			{
-				context.BuildKey.Type.Adapt().GetEnumerableType().With( type =>
+				var adapt = context.BuildKey.Type.Adapt();
+				if ( adapt.IsGenericOf<IEnumerable<object>>( false ) )
 				{
-					var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type ).CreateDelegate( typeof(Resolver) );
+					adapt.GetEnumerableType().With( type =>
+					{
+						var resolver = (Resolver)GenericResolveArrayMethod.MakeGenericMethod( type ).CreateDelegate( typeof(Resolver) );
 
-					context.Existing = resolver( context );
-					context.BuildComplete = true;
-				} );
+						context.Existing = resolver( context );
+						context.BuildComplete = true;
+					} );
+				}
 			}
 		}
 

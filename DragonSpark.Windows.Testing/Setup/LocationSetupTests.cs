@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using DragonSpark.Activation.FactoryModel;
 using PostSharp.Aspects;
+using PostSharp.Patterns.Contracts;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Windows.Testing.TestObjects.Activator;
@@ -350,7 +351,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		[DragonSpark.Testing.Framework.Map( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Map(typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void Error( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]InvalidOperationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
@@ -371,7 +372,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		[DragonSpark.Testing.Framework.Map( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Map(typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void Fatal( [Located( false ), Frozen]IMessageLogger messageLogger, IExceptionFormatter formatter, [Modest]FatalApplicationException error, string message )
 		{
 			// Assert.Same( logger, Log.Current );
@@ -384,7 +385,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		[DragonSpark.Testing.Framework.Map( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Map(typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void Try()
 		{
 			var exception = ExceptionSupport.Try( () => {} );
@@ -392,7 +393,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, LocationSetup.AutoData]
-		[DragonSpark.Testing.Framework.Map( typeof( IExceptionFormatter ), typeof( ExceptionFormatter ) )]
+		[Map(typeof(IExceptionFormatter), typeof(ExceptionFormatter) )]
 		public void TryException( [Located( false ), Frozen, Registered]IMessageLogger messageLogger, [Modest]InvalidOperationException error )
 		{
 			var exception = ExceptionSupport.Try( () => { throw error; } );
@@ -553,10 +554,19 @@ namespace DragonSpark.Windows.Testing.Setup
 	}
 
 	[Discoverable]
-	public class ServiceLocatorFactory : Activation.IoC.ServiceLocatorFactory
+	public class ServiceLocatorFactory : AggregateFactory<IServiceLocator>
 	{
-		public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
+		// public static ServiceLocatorFactory Instance { get; } = new ServiceLocatorFactory();
 
-		ServiceLocatorFactory() : base( UnityContainerFactory.Instance.Create, ConfigureLocationCommandFactory.Instance.Create ) {}
+		// ServiceLocatorFactory() : base( UnityContainerFactory.Instance.Create, ConfigureLocationCommandFactory.Instance.Create ) {}
+
+		public ServiceLocatorFactory() : this( UnityContainerFactory.Instance.Create() ) {}
+
+		public ServiceLocatorFactory( [Required]IUnityContainer container ) : base( 
+			() => new ServiceLocator( container ), 
+			new CommandTransformer<ConfigureLocationCommand, IServiceLocator>( new ConfigureLocationCommand( container ) ).Create 
+		)
+		{
+		}
 	}
 }

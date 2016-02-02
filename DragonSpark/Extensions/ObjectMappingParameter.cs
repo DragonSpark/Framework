@@ -3,9 +3,9 @@ using AutoMapper;
 
 namespace DragonSpark.Extensions
 {
-	public class ObjectMappingContext<T>
+	public class ObjectMappingParameter<T>
 	{
-		public ObjectMappingContext( object source, T existing, Action<IMappingExpression> configuration )
+		public ObjectMappingParameter( object source, T existing, Action<IMappingExpression> configuration )
 		{
 			Source = source;
 			Existing = existing;

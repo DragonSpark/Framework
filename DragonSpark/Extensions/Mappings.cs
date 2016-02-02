@@ -11,9 +11,9 @@ namespace DragonSpark.Extensions
 	{
 		public static Action<IMappingExpression> OnlyProvidedValues() => x => x.ForAllMembers( options => options.Condition( condition => !condition.IsSourceValueNull ) );
 
-		public static IMappingExpression IgnoreUnassignable( this IMappingExpression expression, Type sourceType, Type destinationType )
+		public static IMappingExpression IgnoreUnassignable( this IMappingExpression expression )
 		{
-			Mapper.FindTypeMapFor( sourceType, destinationType )
+			expression.TypeMap
 				.GetPropertyMaps()
 				.Where( map => !map.DestinationPropertyType.Adapt().IsAssignableFrom( map.SourceMember.To<PropertyInfo>().PropertyType ) )
 				.Each( map =>
@@ -25,7 +25,7 @@ namespace DragonSpark.Extensions
 		
 		public static TResult MapInto<TResult>( this object source, TResult existing = null, Action<IMappingExpression> configure = null ) where TResult : class 
 		{
-			var context = new ObjectMappingContext<TResult>( source, existing, configure );
+			var context = new ObjectMappingParameter<TResult>( source, existing, configure );
 			var factory = Activator.Activate<ObjectMappingFactory<TResult>>();
 			var result = factory.Create( context );
 			return result;

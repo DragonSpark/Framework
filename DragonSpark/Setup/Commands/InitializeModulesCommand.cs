@@ -6,7 +6,7 @@ using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Setup.Commands
 {
-	public class InitializeModulesCommand : SetupCommand
+	public class InitializeModulesCommand : SetupCommandBase
 	{
 		[Locate, Required]
 		public IModuleMonitor Monitor { [return: Required]get; set; }
@@ -17,13 +17,16 @@ namespace DragonSpark.Setup.Commands
 		[Locate, Required]
 		public IModuleManager Manager { [return: Required]get; set; }
 
-		protected override void OnExecute( ISetupParameter parameter )
+		[AmbientValue, Required]
+		public ITaskMonitor Tasks { [return: Required]get; set; }
+
+		protected override void OnExecute( object parameter )
 		{
 			MessageLogger.Information( Resources.InitializingModules, Priority.Low );
 			Manager.Run();
 
 			MessageLogger.Information( Resources.LoadingModules, Priority.Low );
-			parameter.Monitor( Monitor.Load().ContinueWith( task =>
+			Tasks.Monitor( Monitor.Load().ContinueWith( task =>
 			{
 				MessageLogger.Information( Resources.ModulesLoaded, Priority.Low );
 			} ) );

@@ -24,9 +24,11 @@ namespace DragonSpark.Modularity
 
 		public Task<bool> Load()
 		{
+			var adapter = typeof(IMonitoredModule).Adapt();
+					
 			var items = catalog.Modules
-				.Where( x => typeof(IMonitoredModule).Adapt().IsAssignableFrom( x.ResolveType() ) )
-				.Where( x => ( x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized ) || loaded.Any( y => Equals( x.GetAssembly(), y.GetType().Assembly() ) ) )
+				.Where( x => adapter.IsAssignableFrom( x.ResolveType() ) )
+				.Where( x => x.State > ModuleState.NotStarted && x.State < ModuleState.Initialized || loaded.Any( y => Equals( x.GetAssembly(), y.GetType().Assembly() ) ) )
 				.ToArray();
 			loading.Clear();
 			loading.AddRange( items );

@@ -8,7 +8,7 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Markup
 {
-	[ContentProperty( "Items" )]
+	[ContentProperty( nameof(Items) )]
 	public class CollectionExtension : MonitoredMarkupExtension
 	{
 		public Collection Items { get; } = new Collection();

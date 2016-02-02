@@ -1,7 +1,5 @@
 using DragonSpark.Extensions;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -9,8 +7,7 @@ namespace DragonSpark.Runtime
 {
 	public class CompositeCommand : CompositeCommand<object>
 	{
-		public CompositeCommand( [Required]params ICommand<object>[] commands ) : base( commands )
-		{}
+		public CompositeCommand( [Required]params ICommand<object>[] commands ) : base( commands ) {}
 	}
 
 	[ContentProperty( nameof(Commands) )]

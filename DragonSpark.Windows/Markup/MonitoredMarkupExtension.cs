@@ -1,5 +1,7 @@
 using System;
 using System.Windows.Markup;
+using System.Xaml;
+using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -23,13 +25,14 @@ namespace DragonSpark.Windows.Markup
 	{
 		protected override object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
 		{
-			var result = MarkupExtensionMonitor.Instance.IsInitialized ? GetValue( serviceProvider ) : Listen( serviceProvider, setter );
+			var monitor = new AssociatedMonitor( serviceProvider.Get<IRootObjectProvider>().RootObject ).Item;
+			var result = monitor.IsInitialized ? GetValue( serviceProvider ) : Listen( monitor, serviceProvider, setter );
 			return result;
 		}
 
-		protected virtual object Listen( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
+		protected virtual object Listen( MarkupExtensionMonitor monitor, IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
 		{
-			MarkupExtensionMonitor.Instance.Initialized += ( sender, args ) =>
+			monitor.Initialized += ( sender, args ) =>
 			{
 				var value = GetValue( serviceProvider );
 				setter.SetValue( value );

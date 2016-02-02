@@ -146,6 +146,7 @@
     <Compile Include="Activation\IoC\LifetimeManagerFactory.cs" />
     <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
     <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
+    <Compile Include="Aspects\BuildUp.cs" />
     <Compile Include="Aspects\Freeze.cs" />
     <Compile Include="Aspects\ApplyDefaultValues.cs" />
     <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
@@ -206,7 +207,7 @@
     <Compile Include="Diagnostics\MessageRecorder.cs" />
     <Compile Include="Diagnostics\TryContext.cs" />
     <Compile Include="Extensions\BuilderContextExtensions.cs" />
-    <Compile Include="Extensions\ObjectMappingContext.cs" />
+    <Compile Include="Extensions\ObjectMappingParameter.cs" />
     <Compile Include="Runtime\Specifications\AllSpecification.cs" />
     <Compile Include="Runtime\Specifications\AnySpecification.cs" />
     <Compile Include="TypeSystem\ApplicationAssemblyLocator.cs" />
@@ -326,10 +327,10 @@
     <Compile Include="Setup\Registration\RegistrationBaseAttribute.cs" />
     <Compile Include="Setup\Commands\RunProgramCommand.cs" />
     <Compile Include="Setup\Setup.cs" />
-    <Compile Include="Setup\SetupCommand.cs" />
+    <Compile Include="Setup\SetupCommandBase.cs" />
     <Compile Include="Setup\SetupParameter.cs" />
     <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
-    <Compile Include="Setup\Commands\DelegatedSetupCommand.cs" />
+    <Compile Include="Setup\Commands\DelegatedCommand.cs" />
     <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />
     <Compile Include="Setup\Registration\RegistrationAttribute.cs" />
     <Compile Include="Setup\Commands\SetupUnityCommand.cs" />

@@ -1,5 +1,4 @@
 using DragonSpark.Runtime;
-using DragonSpark.Setup;
 using Ploeh.AutoFixture;
 using System.Windows.Markup;
 
@@ -10,6 +9,6 @@ namespace DragonSpark.Testing.Framework.Setup
 	{
 		public Collection<ICustomization> Customizations { get; } = new Collection<ICustomization>();
 
-		protected override void OnExecute( ISetupParameter<AutoData> parameter ) => parameter.Arguments.Fixture.Customize( new CompositeCustomization( Customizations ) );
+		protected override void OnExecute( AutoData parameter ) => parameter.Fixture.Customize( new CompositeCustomization( Customizations ) );
 	}
 }

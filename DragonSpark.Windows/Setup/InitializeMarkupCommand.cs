@@ -1,17 +1,19 @@
-﻿using DragonSpark.ComponentModel;
+﻿using DragonSpark.Aspects;
 using DragonSpark.Setup;
 using DragonSpark.Windows.Markup;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Setup
 {
-	public class InitializeMarkupCommand : SetupCommand
+	public class InitializeMarkupCommand : SetupCommandBase
 	{
-		[Singleton]
-		public MarkupExtensionMonitor Monitor { get; set; }
+		/*[Singleton]
+		public MarkupExtensionMonitor Monitor { get; set; }*/
 
-		protected override void OnExecute( ISetupParameter parameter )
-		{
-			Monitor.Initialize();
-		}
+		[Required]
+		public object Context { [return: Required]get; set; }
+
+		[BuildUp]
+		protected override void OnExecute( object parameter ) => new AssociatedMonitor( Context ).Item.Initialize();
 	}
 }

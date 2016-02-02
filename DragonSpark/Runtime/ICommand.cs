@@ -3,6 +3,7 @@ using DragonSpark.Runtime.Values;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Windows.Input;
+using DragonSpark.Runtime.Specifications;
 
 namespace DragonSpark.Runtime
 {
@@ -77,15 +78,34 @@ namespace DragonSpark.Runtime
 		protected override void OnExecute( T parameter ) => inner.Execute( parameter );
 	}
 
-	public abstract class Command<TParameter> : ICommand<TParameter>
+	public abstract class Command<TParameter> : Command<TParameter, WrappedSpecification<TParameter>>
 	{
+		protected Command() : base( Specification<TParameter>.Instance ) {}
+	}
+
+	public class Specification<TParameter> : WrappedSpecification<TParameter>
+	{
+		public static Specification<TParameter> Instance { get; } = new Specification<TParameter>();
+
+		Specification() : base( NullSpecification.NotNull ) {}
+	}
+
+	public abstract class Command<TParameter, TSpecification> : ICommand<TParameter> where TSpecification : ISpecification<TParameter>
+	{
+		readonly TSpecification specification;
+
 		public event EventHandler CanExecuteChanged = delegate {};
+
+		protected Command( TSpecification specification )
+		{
+			this.specification = specification;
+		}
 
 		public void Update() => OnUpdate();
 
 		protected virtual void OnUpdate() => CanExecuteChanged( this, EventArgs.Empty );
 
-		public virtual bool CanExecute( TParameter parameter ) => !parameter.IsNull();
+		public virtual bool CanExecute( TParameter parameter ) => specification.IsSatisfiedBy( parameter );
 
 		public void Execute( TParameter parameter ) => OnExecute( parameter );
 

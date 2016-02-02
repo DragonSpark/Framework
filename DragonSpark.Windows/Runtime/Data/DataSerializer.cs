@@ -18,16 +18,14 @@ namespace DragonSpark.Windows.Runtime.Data
 		public string Save( object item ) => XamlServices.Save( item );
 	}
 
-	public abstract class DataTransformerBase<T> : FactoryBase<DataTransformParameter, T>
-	{}
+	public abstract class DataTransformerBase<T> : FactoryBase<DataTransformParameter, T> {}
 
 	public abstract class DataTransformer<T> : DataTransformerBase<T>
 	{
 		readonly Func<DataTransformParameter, MemoryStream> factory;
 		readonly Func<MemoryStream, T> transformer;
 
-		protected DataTransformer( Func<MemoryStream, T> transformer ) : this( DataStreamFactory.Instance.Create, transformer )
-		{}
+		protected DataTransformer( Func<MemoryStream, T> transformer ) : this( DataStreamFactory.Instance.Create, transformer ) {}
 
 		protected DataTransformer( [Required]Func<DataTransformParameter, MemoryStream> factory, [Required]Func<MemoryStream, T> transformer )
 		{
@@ -60,11 +58,9 @@ namespace DragonSpark.Windows.Runtime.Data
 	{
 		public static DataSerializer<T> Instance { get; } = new DataSerializer<T>();
 
-		public DataSerializer() : this( Serializer.Instance )
-		{}
+		public DataSerializer() : this( Serializer.Instance ) {}
 
-		public DataSerializer( ISerializer serializer ) : base( serializer.Load<T> )
-		{}
+		public DataSerializer( ISerializer serializer ) : base( serializer.Load<T> ) {}
 	}
 
 	public class DataStreamFactory : DataTransformerBase<MemoryStream>

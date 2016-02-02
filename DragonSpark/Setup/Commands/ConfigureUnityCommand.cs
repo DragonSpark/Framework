@@ -15,7 +15,7 @@ namespace DragonSpark.Setup.Commands
 
 		public UnityInstanceCollection Instances { get; } = new UnityInstanceCollection();
 
-		protected override void OnExecute( IApplicationSetupParameter parameter )
+		protected override void OnExecute( object parameter )
 		{
 			Extensions.Each( x => Container.AddExtension( x ) );
 

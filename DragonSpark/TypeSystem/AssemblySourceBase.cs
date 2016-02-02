@@ -14,10 +14,8 @@ namespace DragonSpark.TypeSystem
 
 	public class AggregateAssemblyFactory : AggregateFactory<Assembly[]>, IAssemblyProvider
 	{
-		public AggregateAssemblyFactory( IFactory<Assembly[]> primary, params ITransformer<Assembly[]>[] transformers ) : base( primary, transformers )
-		{}
+		public AggregateAssemblyFactory( IFactory<Assembly[]> primary, params ITransformer<Assembly[]>[] transformers ) : base( primary, transformers ) {}
 
-		public AggregateAssemblyFactory( Func<Assembly[]> primary, params Func<Assembly[], Assembly[]>[] transformers ) : base( primary, transformers )
-		{}
+		public AggregateAssemblyFactory( Func<Assembly[]> primary, params Func<Assembly[], Assembly[]>[] transformers ) : base( primary, transformers ) {}
 	}
 }

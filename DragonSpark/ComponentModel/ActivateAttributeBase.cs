@@ -54,8 +54,7 @@ namespace DragonSpark.ComponentModel
 
 			protected override object CreateItem( Tuple<ActivateParameter, DefaultValueParameter> parameter )
 			{
-				var serviceLocator = locator();
-				var instance = serviceLocator.GetInstance( parameter.Item1.Type, parameter.Item1.Name );
+				var instance = locator()?.GetInstance( parameter.Item1.Type, parameter.Item1.Name );
 				var result = instance ?? base.CreateItem( parameter );
 				return result;
 			}

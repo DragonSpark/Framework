@@ -66,7 +66,7 @@ namespace DragonSpark.TypeSystem
 			return result.ToArray();
 		}
 
-		public System.Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), typeof( IEnumerable ).GetTypeInfo().IsAssignableFrom );
+		public System.Type GetEnumerableType() => InnerType( type, types => types.FirstOrDefault(), i => i.Adapt().IsGenericOf( typeof(IEnumerable<>) ) );
 
 		// public Type GetResultType() => type.Append( ExpandInterfaces( type ) ).FirstWhere( t => InnerType( t, types => types.LastOrDefault() ) );
 
@@ -80,11 +80,11 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		public bool IsGenericOf<T>() => IsGenericOf( typeof( T ).GetGenericTypeDefinition() );
+		public bool IsGenericOf<T>( bool includeInterfaces = true ) => IsGenericOf( typeof(T).GetGenericTypeDefinition(), includeInterfaces );
 
 		[Freeze]
-		public bool IsGenericOf( System.Type genericDefinition ) =>
-			type.Append( ExpandInterfaces( type ) ).AsTypeInfos().Any( typeInfo => typeInfo.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && typeInfo.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition() );
+		public bool IsGenericOf( System.Type genericDefinition, bool includeInterfaces = true ) =>
+			type.Append( includeInterfaces ? ExpandInterfaces( type ) : Default<System.Type>.Items ).AsTypeInfos().Any( typeInfo => typeInfo.IsGenericType && genericDefinition.GetTypeInfo().IsGenericType && typeInfo.GetGenericTypeDefinition() == genericDefinition.GetGenericTypeDefinition() );
 
 		public System.Type[] GetAllInterfaces() => ExpandInterfaces( type ).ToArray();
 

@@ -4,12 +4,28 @@ using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Setup.Registration;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Activation.FactoryModel
 {
 	public abstract class TransformerBase<T> : FactoryBase<T, T>, ITransformer<T>
 	{}
+
+	public class CommandTransformer<TCommand, T> : TransformerBase<T> where TCommand : ICommand<T>
+	{
+		readonly TCommand command;
+
+		public CommandTransformer( [Required]TCommand command )
+		{
+			this.command = command;
+		}
+
+		protected override T CreateItem( T parameter )
+		{
+			command.ExecuteWith( parameter );
+			return parameter;
+		}
+	}
 
 	public abstract class FactoryBase<TParameter, TResult> : IFactory<TParameter, TResult>
 	{

@@ -22,7 +22,7 @@ namespace DragonSpark.Activation.IoC
 
 		public bool CanActivate( Type type, string name = null ) => support.CanResolve( type, name );
 
-		public object Activate( Type type, string name = null ) => container.Resolve( type, name );
+		public object Activate( Type type, string name = null ) => container.TryResolve( type, name );
 
 		public bool CanConstruct( Type type, params object[] parameters ) => support.CanResolve( type, null, parameters );
 
