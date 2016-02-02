@@ -9,7 +9,7 @@ namespace DragonSpark.Windows.Io
 {
 	public static class FileSystem
 	{
-		public const string ValidPathTimeFormat = "yyyy-M-dd--HH-mm-ss";
+		public const string ValidPathTimeFormat = "yyyy-MM-dd--HH-mm-ss";
 
 		public static string GetValidPath()
 		{

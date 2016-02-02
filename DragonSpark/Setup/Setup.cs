@@ -26,7 +26,6 @@ namespace DragonSpark.Setup
 			{
 				using ( new AmbientContextCommand<ISetup>().ExecuteWith( this ) )
 				{
-					var temp = Ambient.GetCurrent<ISetup>();
 					base.OnExecute( parameter );
 				}
 			}

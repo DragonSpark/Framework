@@ -1,26 +1,27 @@
 using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
-using DragonSpark.TypeSystem;
 
 namespace DragonSpark.Windows.Entity
 {
 	public class EntityContext : DbContext, IEntityInstallationStorage
 	{
-		readonly LocalStoragePropertyProcessor processor;
 		public event EventHandler Saved = delegate { };
-
 		public event EventHandler Saving = delegate { };
 
-		protected EntityContext( [Required]LocalStoragePropertyProcessor processor )
+		readonly ICommand<DbContextBuildingParameter> command;
+
+		protected EntityContext() : this( DefaultCommands.Instance ) {}
+
+		protected EntityContext( ICommand<DbContextBuildingParameter> command )
 		{
-			this.processor = processor;
+			this.command = command;
 		}
 
 		public IDbSet<InstallationEntry> Installations { get; set; }
@@ -59,17 +60,9 @@ namespace DragonSpark.Windows.Entity
 
 		protected override void OnModelCreating( DbModelBuilder modelBuilder )
 		{
-			processor.Process( this, modelBuilder );
+			command.Run( new DbContextBuildingParameter( this, modelBuilder) );
 
 			base.OnModelCreating( modelBuilder );
-
-			var method = modelBuilder.GetType().GetMethod( "ComplexType" );
-
-			this.GetDeclaredEntityTypes().First().Assembly.GetTypes().Where( x => x.Has<ComplexTypeAttribute>() ).Each( x =>
-			{
-				var info = method.MakeGenericMethod( x );
-				info.Invoke( modelBuilder, null );
-			} );
 		}
 	}
 }

@@ -1,20 +1,19 @@
 using DragonSpark.Extensions;
+using System;
 
 namespace DragonSpark.ComponentModel
 {
 	class DefaultValueProvider : IDefaultValueProvider
 	{
-		readonly object value;
+		readonly Func<object> value;
 
-		public DefaultValueProvider( object value )
+		public DefaultValueProvider( object value ) : this( () => value ) {}
+
+		public DefaultValueProvider( Func<object> value )
 		{
 			this.value = value;
 		}
 
-		public virtual object GetValue( DefaultValueParameter parameter )
-		{
-			var result = value.ConvertTo( parameter.Metadata.PropertyType );
-			return result;
-		}
+		public virtual object GetValue( DefaultValueParameter parameter ) => value()?.ConvertTo( parameter.Metadata.PropertyType );
 	}
 }

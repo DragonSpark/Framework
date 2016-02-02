@@ -2,7 +2,7 @@ using DragonSpark.Setup;
 
 namespace DragonSpark.Windows.Setup
 {
-	public class ConsoleApplication : Setup<string[]> {}
+	public class ConsoleApplicationSetup : Setup<string[]> {}
 
 	/*public class ConfigurationFactory : FactoryBase<Func<string, object>>
 	{

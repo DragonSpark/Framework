@@ -59,13 +59,16 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.IsType<ClassWithParameter>( target.Factory );
 
 			Assert.NotNull( target.Collection );
-			Assert.IsType<Collection<object>>( target.Collection );
+			Assert.IsType<System.Collections.ObjectModel.Collection<object>>( target.Collection );
 			Assert.NotNull( target.Classes );
-			Assert.IsType<Collection<Class>>( target.Classes );
+			Assert.IsType<System.Collections.ObjectModel.Collection<Class>>( target.Classes );
 
 			Assert.Equal( 6776, target.ValuedInt );
 
 			Assert.NotEqual( Guid.Empty, target.Guid );
+			Assert.NotEqual( Guid.Empty, target.AnotherGuid );
+
+			Assert.NotEqual( target.Guid, target.AnotherGuid );
 
 			Assert.Equal( new Guid( "66570344-BA99-4C90-A7BE-AEC903441F97" ), target.ProvidedGuid );
 

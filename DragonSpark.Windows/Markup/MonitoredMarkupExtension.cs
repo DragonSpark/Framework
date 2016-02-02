@@ -2,6 +2,8 @@ using System;
 using System.Windows.Markup;
 using System.Xaml;
 using DragonSpark.Extensions;
+using DragonSpark.Setup;
+using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -9,24 +11,20 @@ namespace DragonSpark.Windows.Markup
 	{
 		readonly Type type;
 
-		public ActivateExtension( Type type )
+		public ActivateExtension( [Required]Type type )
 		{
 			this.type = type;
 		}
 
-		public override object ProvideValue( IServiceProvider serviceProvider )
-		{
-			var result = Activator.CreateInstance( type );
-			return result;
-		}
+		public override object ProvideValue( IServiceProvider serviceProvider ) => Activator.CreateInstance( type );
 	}
 
 	public abstract class MonitoredMarkupExtension : DeferredMarkupExtension
 	{
 		protected override object BeginProvideValue( IServiceProvider serviceProvider, IMarkupTargetValueSetter setter )
 		{
-			var monitor = new AssociatedMonitor( serviceProvider.Get<IRootObjectProvider>().RootObject ).Item;
-			var result = monitor.IsInitialized ? GetValue( serviceProvider ) : Listen( monitor, serviceProvider, setter );
+			var monitor = serviceProvider.Get<IRootObjectProvider>().RootObject.AsTo<ISetup, MarkupExtensionMonitor>( setup => new AssociatedMonitor( setup ).Item );
+			var result = monitor.With( x => x.IsInitialized, () => true ) ? GetValue( serviceProvider ) : Listen( monitor, serviceProvider, setter );
 			return result;
 		}
 

@@ -240,9 +240,9 @@ namespace DragonSpark.Windows.Entity
 			return result;
 		}*/
 
-		public static TItem Create<TItem>( this DbContext target, Action<TItem> with = null, Action<TItem> initialize = null ) where TItem : class, new()
+		public static TItem Create<TItem>( this DbContext target, Action<TItem> with = null ) where TItem : class, new()
 		{
-			var item = new TItem().With( initialize ).With( with );
+			var item = new TItem().With( with );
 			var result = target.Set<TItem>().Add( item );
 			return result;
 		}

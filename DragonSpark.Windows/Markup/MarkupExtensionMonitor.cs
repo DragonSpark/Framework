@@ -1,26 +1,21 @@
-using System;
 using DragonSpark.Runtime.Values;
+using System;
 
 namespace DragonSpark.Windows.Markup
 {
 	public class MarkupExtensionMonitor
 	{
-		// public static MarkupExtensionMonitor Instance { get; } = new MarkupExtensionMonitor();
+		public event EventHandler Initialized = delegate {};
 
 		readonly ConditionMonitor monitor = new ConditionMonitor();
-		
-		public event EventHandler Initialized = delegate { };
 
 		public bool IsInitialized => monitor.State != ConditionMonitorState.None;
 
-		public void Initialize()
+		public void Initialize() => monitor.Apply( () =>
 		{
-			monitor.Apply( () =>
-			{
-				Initialized( this, EventArgs.Empty );
-				Initialized = delegate { };
-			} );
-		}
+			Initialized( this, EventArgs.Empty );
+			Initialized = delegate { };
+		} );
 	}
 
 	public class AssociatedMonitor : AssociatedValue<MarkupExtensionMonitor>

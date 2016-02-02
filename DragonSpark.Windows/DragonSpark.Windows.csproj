@@ -114,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
-    <Compile Include="Setup\ConsoleApplication.cs" />
+    <Compile Include="Setup\ConsoleApplicationSetup.cs" />
     <Compile Include="Setup\ConfigurationSectionFactory.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
@@ -140,7 +140,7 @@
     <Compile Include="Entity\InstallDatabaseCommand.cs" />
     <Compile Include="Entity\Installer.cs" />
     <Compile Include="Entity\LocalStorageAttribute.cs" />
-    <Compile Include="Entity\LocalStoragePropertyProcessor.cs" />
+    <Compile Include="Entity\EnableLocalStoragePropertyCommand.cs" />
     <Compile Include="Entity\MetadataHelper.cs" />
     <Compile Include="Entity\MigrateDatabaseToLatestVersion.cs" />
     <Compile Include="Entity\ObjectContextExtensions.cs" />

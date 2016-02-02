@@ -81,6 +81,9 @@ namespace DragonSpark.Testing.Objects
 		[NewGuid]
 		public Guid Guid { get; set; }
 
+		[NewGuid]
+		public Guid AnotherGuid { get; set; }
+
 		[DefaultValue( "This does not get set to this value." )]
 		public string AlreadySet { get; set; }
 	}
