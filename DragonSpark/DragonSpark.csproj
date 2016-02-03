@@ -56,7 +56,6 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <Prefer32Bit>false</Prefer32Bit>
-    <PostSharpProperties>SolutionDir=C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\DevelopersWin.VoteReporter\;</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
