@@ -23,7 +23,7 @@ namespace DragonSpark.Windows.Entity
 	public static class DbContextExtensions
 	{
 		readonly static MethodInfo
-			GetMethod = typeof(DbContextExtensions).GetMethod( nameof(Dynamitey.DynamicObjects.Get), new[] { typeof(DbContext), typeof(object), typeof(int) } ),
+			GetMethod = typeof(DbContextExtensions).GetMethod( nameof(DbContextExtensions.Get), new[] { typeof(DbContext), typeof(object), typeof(int) } ),
 			ApplyChangesMethod = typeof(DbContextExtensions).GetMethods().FirstOrDefault( x => x.IsGenericMethod && x.Name == nameof(ApplyChanges) );
 
 		/*public static TEntity Find<TEntity>( this DbContext @this, Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IQueryable<TEntity>> with = null ) where TEntity : class
