@@ -2,13 +2,10 @@
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-using DragonSpark.Aspects;
-using DragonSpark.Testing.Objects;
-using DragonSpark.TypeSystem;
+using DragonSpark.Application;
+using DragonSpark.Testing.Framework;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Objects.Setup;
 
 [assembly: AssemblyTitle( "DragonSpark.Testing" )]
 [assembly: AssemblyDescription( "" )]
@@ -23,12 +20,10 @@ using DragonSpark.Testing.Objects.Setup;
 
 [assembly: Guid( "3d3176a2-8cd5-441d-bd7f-7ca0926b24a9" )]
 
-[assembly: AssemblyVersion( "2016.2.1.1" )]
-[assembly: AssemblyFileVersion( "2016.2.1.1" )]
+[assembly: AssemblyVersion( "0.1.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
 [assembly: Application]
 
-// [assembly: ServiceLocatorFactory.Register]
-[assembly: UnityContainerFactory.Register]
-[assembly: AssemblyProvider.Register] // Default assembly factory.
-[assembly: Assemblies]
-[assembly: ApplyDefaultValues]
+// [assembly: ApplyDefaultValues]
+// [assembly: DisposeAssociatedAspect]
+[assembly: TestingMethodAspect]

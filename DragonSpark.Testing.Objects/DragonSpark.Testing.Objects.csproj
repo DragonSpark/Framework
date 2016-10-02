@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{65CCD995-C347-48B1-B017-D09E917BD252}</ProjectGuid>
@@ -12,12 +12,6 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
-    <DontImportPostSharp>True</DontImportPostSharp>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PostSharpProperties>SolutionDir=C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\DevelopersWin.VoteReporter\;</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,22 +32,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnotherClass.cs" />
-    <Compile Include="AssemblyProvider.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="ClassCreatedFromDefault.cs" />
-    <Compile Include="ClassWithDefaultProperties.cs" />
     <Compile Include="ClassWithManyParameters.cs" />
     <Compile Include="ClassWithParameter.cs" />
     <Compile Include="ClassWithProperties.cs" />
-    <Compile Include="ConstructFactory.cs" />
+    <Compile Include="ClassWithProperty.cs" />
+    <Compile Include="Composition\BasicServiceFactory.cs" />
+    <Compile Include="Composition\BasicService.cs" />
+    <Compile Include="Composition\ExportedItem.cs" />
+    <Compile Include="Composition\ExportedItemFactory.cs" />
+    <Compile Include="Composition\IBasicService.cs" />
+    <Compile Include="Composition\IParameterService.cs" />
+    <Compile Include="Composition\ISharedService.cs" />
+    <Compile Include="Composition\Parameter.cs" />
+    <Compile Include="Composition\ParameterService.cs" />
+    <Compile Include="Composition\ParameterServiceFactory.cs" />
+    <Compile Include="Composition\SharedServiceFactory.cs" />
+    <Compile Include="Composition\SharedService.cs" />
+    <Compile Include="Configuration\TestItem.cs" />
+    <Compile Include="Constructor.cs" />
     <Compile Include="Convention.cs" />
     <Compile Include="ConventionMetadata.cs" />
     <Compile Include="Decorated.cs" />
     <Compile Include="Derived.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="FactoryOfYAC.cs" />
-    <Compile Include="Generic.cs" />
     <Compile Include="HighPriority.cs" />
     <Compile Include="IAnotherInterface.cs" />
     <Compile Include="IClassWithParameter.cs" />
@@ -66,13 +70,24 @@
     <Compile Include="NormalPriority.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterAsMany.cs" />
-    <Compile Include="RegisterAsSingleton.cs" />
-    <Compile Include="Setup\DefaultCustomizeFixtureCommand.xaml.cs">
-      <DependentUpon>DefaultCustomizeFixtureCommand.xaml</DependentUpon>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Setup\DefaultSetup.xaml.cs">
-      <DependentUpon>DefaultSetup.xaml</DependentUpon>
+    <Compile Include="RegisterAsSingleton.cs" />
+    <Compile Include="Configuration\Item.xaml.cs">
+      <DependentUpon>Item.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Counting.cs" />
+    <Compile Include="Setup\CountingCommand.cs" />
+    <Compile Include="Setup\CountingTaskSource.cs" />
+    <Compile Include="Setup\CountingTarget.cs" />
+    <Compile Include="Setup\ProgramSetup.xaml.cs">
+      <DependentUpon>ProgramSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Values.xaml.cs">
+      <DependentUpon>Values.xaml</DependentUpon>
     </Compile>
     <Compile Include="Singleton.cs" />
     <Compile Include="Static.cs" />
@@ -97,102 +112,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\Nito.ConnectedProperties.3.0.0\lib\net40\ConnectedProperties.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.Albedo, Version=1.0.2.0, Culture=neutral, PublicKeyToken=179ef6dd03497bbd, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Albedo.1.0.2\lib\net35\Ploeh.Albedo.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.3.40.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.AutoMoq.3.40.0\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.Idioms, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.Idioms.3.40.0\lib\net40\Ploeh.AutoFixture.Idioms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.Xunit2, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.Xunit2.3.40.0\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp, Version=4.2.18.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.4.2.18\lib\net35-client\PostSharp.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Common, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Common.4.2.18\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Model, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Model.4.2.18\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Threading.4.2.18\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DragonSpark.Testing.Objects.psproj" />
-    <None Include="packages.config" />
+    <None Include="project.json" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Page Include="Setup\DefaultCustomizeFixtureCommand.xaml">
+    <Page Include="Configuration\Item.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setup\ProgramSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setup\DefaultSetup.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Configuration\Values.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets" Condition="Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" />
-  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
-    <Error Condition="!Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
-    <Error Condition="Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
-  </Target>
+  <!--<Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -7,7 +7,7 @@ using System.Xaml;
 
 namespace DragonSpark.Windows.Markup
 {
-	public class MetadataExtension : MonitoredMarkupExtension
+	public class MetadataExtension : MarkupExtensionBase
 	{
 		readonly Type attributeType;
 		readonly string expression;
@@ -18,9 +18,10 @@ namespace DragonSpark.Windows.Markup
 			this.expression = expression;
 		}
 
-		[Locate]
-		IExpressionEvaluator Evaluator { [return: NotNull]get; set; }
+		[Service]
+		public IExpressionEvaluator Evaluator { [return: NotNull]get; set; }
 
-		protected override object GetValue( IServiceProvider serviceProvider ) => Evaluator.Evaluate( serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetCustomAttribute( attributeType ), expression );
+		protected override object GetValue( MarkupServiceProvider serviceProvider ) 
+			=> Evaluator.Evaluate( serviceProvider.Get<IRootObjectProvider>().RootObject.GetType().Assembly.GetCustomAttribute( attributeType ), expression );
 	}
 }

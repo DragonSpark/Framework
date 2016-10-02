@@ -1,45 +1,24 @@
-using DragonSpark.Setup.Registration;
-using Microsoft.Practices.Unity;
+using DragonSpark.Sources.Parameterized;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.TypeSystem;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Runtime
 {
-	[Discoverable]
-	public class ApplicationAssemblyLocator : FirstFactory<Assembly>, IApplicationAssemblyLocator
+	public sealed class ApplicationAssemblyLocator : ParameterizedSourceBase<IEnumerable<Assembly>, Assembly>
 	{
-		public ApplicationAssemblyLocator( DomainApplicationAssemblyLocator domain, TypeSystem.ApplicationAssemblyLocator system ) : base( domain, system ) {}
-	}
+		readonly Func<Assembly> defaultSource;
 
-	public class DomainApplicationAssemblyLocator : FactoryBase<Assembly>
-	{
-		public static DomainApplicationAssemblyLocator Instance { get; } = new DomainApplicationAssemblyLocator();
+		public static ApplicationAssemblyLocator Default { get; } = new ApplicationAssemblyLocator();
+		ApplicationAssemblyLocator() : this( AppDomain.CurrentDomain ) {}
 
-		readonly AppDomain primary;
+		public ApplicationAssemblyLocator( AppDomain domain ) : this( new SuppliedSource<AppDomain, Assembly>( DomainApplicationAssemblies.Default.Get, domain ).Get ) {}
 
-		[InjectionConstructor]
-		public DomainApplicationAssemblyLocator() : this( AppDomain.CurrentDomain ) {}
-
-		public DomainApplicationAssemblyLocator( [Required]AppDomain primary ) 
+		public ApplicationAssemblyLocator( Func<Assembly> defaultSource )
 		{
-			this.primary = primary;
+			this.defaultSource = defaultSource;
 		}
 
-		protected override Assembly CreateItem()
-		{
-			try
-			{
-				return Assembly.Load( primary.FriendlyName );
-			}
-			catch ( FileNotFoundException )
-			{
-				var result = Assembly.GetEntryAssembly();
-				return result;
-			}
-		}
+		public override Assembly Get( IEnumerable<Assembly> parameter ) => Application.ApplicationAssemblyLocator.Default.Get( parameter ) ?? defaultSource();
 	}
 }

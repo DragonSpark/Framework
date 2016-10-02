@@ -1,27 +1,20 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using Ploeh.AutoFixture.Xunit2;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.TypeSystem;
 using Xunit;
+// ReSharper disable ValueParameterNotUsed
 
 namespace DragonSpark.Testing.Extensions
 {
 	public class ObjectExtensionsTests
 	{
-		[Theory, AutoData]
-		void ProvidedValues( ClassWithProperties sut )
-		{
-			sut.PropertyOne = null;
-			var cloned = sut.Clone( Mappings.OnlyProvidedValues() );
-			Assert.Null( cloned.PropertyOne );
-		}
-
 		[Fact]
 		public void Convert()
 		{
@@ -50,17 +43,6 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Theory, AutoData]
-		void Clone( ClassWithProperties sut )
-		{
-			var cloned = sut.Clone();
-			Assert.NotSame( sut, cloned );
-			Assert.Equal( sut.PropertyOne, cloned.PropertyOne );
-			Assert.Equal( sut.PropertyTwo, cloned.PropertyTwo );
-			Assert.Equal( sut.PropertyThree, cloned.PropertyThree );
-			Assert.Equal( sut.PropertyFour, cloned.PropertyFour );
-		}
-
-		[Theory, AutoData]
 		public void WithNull( int number )
 		{
 			var item = new int?( number );
@@ -83,14 +65,15 @@ namespace DragonSpark.Testing.Extensions
 
 		class ClassWithProperties
 		{
-			public string PropertyOne { get; set; }
+			public string PropertyOne { get; [UsedImplicitly] set; }
  
-			public int PropertyTwo { get; set; }
+			public int PropertyTwo { get; [UsedImplicitly] set; }
 
-			public object PropertyThree { get; set; }
+			public object PropertyThree { get; [UsedImplicitly] set; }
 
-			public string PropertyFour { get; set; }
+			public string PropertyFour { get; [UsedImplicitly] set; }
 
+			[UsedImplicitly]
 			public string this[ int index ]
 			{
 				get { return null; }
@@ -101,13 +84,13 @@ namespace DragonSpark.Testing.Extensions
 
 		class ClassWithDifferentProperties
 		{
-			public int PropertyOne { get; set; }
+			public int PropertyOne { get; [UsedImplicitly] set; }
 
-			public string PropertyTwo { get; set; }
+			public string PropertyTwo { get; [UsedImplicitly] set; }
 
-			public object PropertyThree { get; set; }
+			public object PropertyThree { get; [UsedImplicitly] set; }
 
-			public string PropertyFour { get; set; }
+			public string PropertyFour { get; [UsedImplicitly] set; }
 		}
 
 		[Theory, AutoData]
@@ -116,32 +99,6 @@ namespace DragonSpark.Testing.Extensions
 			Assert.False( sut.Disposed );
 			sut.TryDispose();
 			Assert.True( sut.Disposed );
-		}
-
-		[Fact]
-		void Null()
-		{
-			Class @class = null;
-
-			var called = false;
-			@class.Null( () => called = true );
-			Assert.True( called );
-		}
-
-		[Theory, AutoData]
-		void Enumerate( List<object> sut )
-		{
-			var items = sut.GetEnumerator().Enumerate().ToList();
-			Assert.True( items.Any() && items.All( x => sut.Contains( x ) && sut.ToList().IndexOf( x ) == items.IndexOf( x ) ) );
-		}
-
-		[Theory, AutoData]
-		void GetAllPropertyValuesOf( ClassWithProperties sut )
-		{
-			var expected = new[] { sut.PropertyOne, sut.PropertyFour };
-
-			var values = sut.GetAllPropertyValuesOf<string>();
-			Assert.True( expected.Length == values.Count() && expected.All( x => values.Contains( x ) ) );
 		}
 
 		[Theory, AutoData]
@@ -162,20 +119,17 @@ namespace DragonSpark.Testing.Extensions
 		[Fact]
 		void DetermineDefault()
 		{
-			var item = Default<IEnumerable<object>>.Item;
+			var item = Items<object>.Default;
 			Assert.IsType<object[]>( item );
 			Assert.Empty( item );
-			Assert.Same( item, Default<IEnumerable<object>>.Item );
-			Assert.Same( Enumerable.Empty<object>(), Enumerable.Empty<object>() );
-			var objects = Default<object>.Items;
+			Assert.Same( item, Items<object>.Default );
+			Assert.Same( Items<object>.Default, Enumerable.Empty<object>() );
+			var objects = Items<object>.Default;
 			Assert.Same( item, objects );
 
-			var ints = Default<int>.Items;
+			var ints = Items<int>.Default;
 			Assert.Empty( ints );
-			Assert.Same( ints, Default<int>.Items );
-
-			Assert.Null( Default<object>.Item );
-			Assert.Null( Default<Generic<object>>.Item );
+			Assert.Same( ints, Items<int>.Default );
 		}
 
 		[Theory, AutoData]

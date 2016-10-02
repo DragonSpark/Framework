@@ -1,11 +1,11 @@
-using System.Data.Entity;
-using System.Windows.Markup;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
+using System.Data.Entity;
+using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Entity
 {
-	[ContentProperty( "Attach" )]
+	[ContentProperty( nameof(Attach) )]
 	public class EntityInstallationStep : IInstallationStep
 	{
 		public void Execute( DbContext context )
@@ -15,8 +15,8 @@ namespace DragonSpark.Windows.Entity
 			Attach.Each( context.ApplyChanges );
 		}
 
-		public Collection Attach { get; } = new Collection();
+		public DeclarativeCollection Attach { get; } = new DeclarativeCollection();
 		
-		public Collection Remove { get; } = new Collection();
+		public DeclarativeCollection Remove { get; } = new DeclarativeCollection();
 	}
 }

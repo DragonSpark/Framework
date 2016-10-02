@@ -1,5 +1,5 @@
 ﻿using DragonSpark.TypeSystem;
-using PostSharp.Patterns.Contracts;
+using DragonSpark.TypeSystem.Metadata;
 using System;
 using System.Linq;
 
@@ -7,20 +7,19 @@ namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		public static TResult From<TAttribute, TResult>( this object @this, Func<TAttribute, TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute => From( Attributes.Get( @this ), resolveValue, resolveDefault );
+		public static TResult From<TAttribute, TResult>( this object @this, Func<TAttribute, TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute =>
+			@this.GetAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault );
 
-		public static TResult From<TAttribute, TResult>( [Required]this IAttributeProvider @this, Func<TAttribute, TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute => @this.GetAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault );
+		public static bool Has<T>( this object @this ) where T : Attribute => Attributes.Get( @this ).Contains( typeof(T) );
 
-		public static bool Has<TAttribute>( this object @this ) where TAttribute : Attribute => Has<TAttribute>( Attributes.Get( @this ) );
+		public static T GetAttribute<T>( this object @this ) where T : Attribute => @this.GetAttributes<T>().FirstOrDefault();
 
-		public static bool Has<TAttribute>( [Required]this IAttributeProvider @this ) where TAttribute : Attribute => @this.Contains( typeof(TAttribute) );
-
-		public static TAttribute GetAttribute<TAttribute>( this object @this ) where TAttribute : Attribute => GetAttribute<TAttribute>( Attributes.Get( @this ) );
-
-		public static TAttribute GetAttribute<TAttribute>( [Required]this IAttributeProvider @this ) where TAttribute : Attribute => @this.GetAttributes<TAttribute>().FirstOrDefault();
-
-		public static TAttribute[] GetAttributes<TAttribute>( this object @this ) where TAttribute : Attribute => GetAttributes<TAttribute>( Attributes.Get( @this ) );
-
-		public static TAttribute[] GetAttributes<TAttribute>( [Required] this IAttributeProvider @this ) where TAttribute : Attribute => @this.GetAttributes( typeof(TAttribute) ).Cast<TAttribute>().Fixed();
+		public static T[] GetAttributes<T>( this object @this ) where T : Attribute
+		{
+			var attributeProvider = Attributes.Get( @this );
+			var attributes = attributeProvider.GetAttributes( typeof(T) );
+			var result = attributes as T[] ?? Items<T>.Default;
+			return result;
+		}
 	}
 }

@@ -1,8 +1,8 @@
+using DragonSpark.ComponentModel;
+using DragonSpark.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DragonSpark.ComponentModel;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Entity
 {

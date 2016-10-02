@@ -1,7 +1,9 @@
+using DragonSpark.Sources.Parameterized;
+
 namespace DragonSpark.ComponentModel
 {
-	public interface IDefaultValueProvider
+	public interface IDefaultValueProvider : IParameterizedSource<DefaultValueParameter, object>
 	{
-		object GetValue( DefaultValueParameter parameter );
+		// object GetValue( DefaultValueParameter parameter );
 	}
 }

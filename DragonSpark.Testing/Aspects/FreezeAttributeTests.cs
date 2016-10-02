@@ -1,27 +1,24 @@
-﻿using DragonSpark.Aspects;
-using DragonSpark.TypeSystem;
+﻿using DragonSpark.Application;
+using DragonSpark.Aspects;
+using DragonSpark.Testing.Framework;
 using Ploeh.AutoFixture.Xunit2;
-using PostSharp.Patterns.Model;
 using System;
-using System.Reflection;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Aspects
 {
-	public class FreezeAttributeTests
+	public class FreezeAttributeTests : TestCollectionBase
 	{
+		public FreezeAttributeTests( ITestOutputHelper output ) : base( output ) {}
+
 		[Fact]
 		public void ProviderCached()
 		{
 			var sut = new Source();
 
-			sut.Create();
-			Assert.Equal( 1, sut.Count );
-			sut.Create();
-			Assert.Equal( 1, sut.Count );
-
-			Assert.Equal( 2, sut.Cached );
-			Assert.Equal( 2, sut.Cached );
+			Assert.Equal( 1, sut.Cached );
+			Assert.Equal( 1, sut.Cached );
 		}
 
 		[Fact]
@@ -39,50 +36,6 @@ namespace DragonSpark.Testing.Aspects
 			Assert.Equal( 2, sut.Count );
 		}
 
-		/*[Fact]
-		public void Deconstructor()
-		{
-			var count = 0;
-			new SubjectWithDeconstructor( () => count++ ).QueryInterface<IDisposable>().Dispose();
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-			Assert.Equal( 1, count );
-		}
-
-		[Disposable]
-		public class SubjectWithDeconstructor
-		{
-			readonly Action action;
-
-			public SubjectWithDeconstructor( Action action )
-			{
-				this.action = action;
-			}
-
-			~SubjectWithDeconstructor()
-			{
-				action();
-				// Dispose( false );
-			}
-
-			[Freeze]
-			protected virtual void Dispose( bool disposing ) => action();
-		}*/
-
-		[Fact]
-		public void DisposeModel()
-		{
-			Assert.Throws<ObjectDisposedException>( () => new Item().QueryInterface<IDisposable>().Dispose() );
-		}
-
-		[Disposable( ThrowObjectDisposedException = true )]
-		public class Item
-		{
-			public string PropertyName { get; set; }
-			
-			protected virtual void Dispose( bool disposing ) => PropertyName = null;
-		}
-
 		public class Disposable : IDisposable
 		{
 			public int Count { get; private set; }
@@ -96,18 +49,14 @@ namespace DragonSpark.Testing.Aspects
 			protected virtual void Dispose( bool disposing ) => Count++;
 		}
 
-		public class Source : AssemblySourceBase
+		public class Source : SuppliedTypeSource
 		{
 			public int Count { get; private set; }
 
 			[Freeze]
 			public int Cached => ++Count;
 
-			protected override Assembly[] CreateItem()
-			{
-				Count++;
-				return new Assembly[0];
-			}
+			
 		}
 
 		[Theory, AutoData]

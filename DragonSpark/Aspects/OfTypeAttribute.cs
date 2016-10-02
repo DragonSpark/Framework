@@ -1,41 +1,28 @@
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using PostSharp.Aspects;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Reflection;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Activation.FactoryModel;
 
 namespace DragonSpark.Aspects
 {
-	public class OfFactoryType : OfTypeAttribute
-	{
-		public OfFactoryType() : base( typeof(IFactory), typeof(IFactoryWithParameter) ) {}
-	}
-
 	public class OfTypeAttribute : LocationContractAttribute, ILocationValidationAspect<Type>
 	{
-		readonly Type[] types;
+		readonly ImmutableArray<TypeAdapter> types;
 
-		public OfTypeAttribute( params Type[] types )
+		public OfTypeAttribute( params Type[] types ) : this( types.Select( type => type.Adapt() ).ToImmutableArray() ) {}
+
+		OfTypeAttribute( ImmutableArray<TypeAdapter> types ) : this( types, $"The specified type is not of type (or cannot be cast to) {string.Join( " or ", types.Select( type => type.ReferenceType.FullName ) )}" ) {}
+
+		OfTypeAttribute( ImmutableArray<TypeAdapter> types, string errorMessage )
 		{
 			this.types = types;
+			ErrorMessage = errorMessage;
 		}
 
-		protected override string GetErrorMessage()
-		{
-			var names = string.Join( " or ", types.Select( type => type.FullName ) );
-			return /*ContractLocalizedTextProvider.Current.GetMessage( nameof(OfTypeAttribute) )*/ $"The specified type is not of type (or cannot be cast to) {names}";
-		}
-
-		public Exception ValidateValue( Type value, string locationName, LocationKind locationKind )
-			=> value.With( v => types.Any( type => type.Adapt().IsAssignableFrom( v ) ) ) ? null : CreateException( value, locationName, locationKind, LocationValidationContext.SuccessPostcondition );
-
-		Exception CreateException( object value, string locationName, LocationKind locationKind, LocationValidationContext context )
-		{
-			var factory = context == LocationValidationContext.SuccessPostcondition ? (Func<object, string, LocationKind, Exception>)CreatePostconditionFailedException : CreateArgumentException;
-			var result = factory( value, locationName, locationKind );
-			return result;
-		}
+		public Exception ValidateValue( Type value, string locationName, LocationKind locationKind ) => value != null && !types.IsAssignableFrom( value ) ? CreateArgumentException( value, locationName, locationKind ) : null;
 	}
 }

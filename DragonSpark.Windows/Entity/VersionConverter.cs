@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Entity
 {

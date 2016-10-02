@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B21E892A-BE56-4024-BD63-AA332279E7C5}</ProjectGuid>
@@ -12,15 +12,6 @@
     <AssemblyName>DragonSpark.Windows.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
-    <DontImportPostSharp>True</DontImportPostSharp>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,193 +31,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.2.0\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Nito.ConnectedProperties.3.0.0\lib\net40\ConnectedProperties.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ConnectedProperties.Enlightenment, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Nito.ConnectedProperties.3.0.0\lib\net40\ConnectedProperties.Enlightenment.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dynamitey, Version=1.0.2.0, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.Albedo, Version=1.0.2.0, Culture=neutral, PublicKeyToken=179ef6dd03497bbd, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Albedo.1.0.2\lib\net35\Ploeh.Albedo.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.3.40.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.AutoMoq.3.40.0\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.Idioms, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.Idioms.3.40.0\lib\net40\Ploeh.AutoFixture.Idioms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.Xunit2, Version=3.40.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoFixture.Xunit2.3.40.0\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp, Version=4.2.18.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.4.2.18\lib\net35-client\PostSharp.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Common, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Common.4.2.18\lib\net45\PostSharp.Patterns.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Model, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Model.4.2.18\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PostSharp.Patterns.Threading.4.2.18\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Io\FileSystemTests.cs" />
-    <Compile Include="Modularity\DirectoryModuleInfoProviderTests.cs" />
-    <Compile Include="Runtime\ApplicationExceptionFormatterTests.cs" />
-    <Compile Include="Runtime\AssemblyProviderTests.cs" />
+    <Compile Include="Configuration\ConfigurationTests.cs" />
+    <Compile Include="Diagnostics\ApplyExceptionDetailsTests.cs" />
+    <Compile Include="FileSystemTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\FileSystemTypesTests.cs" />
     <Compile Include="Runtime\DomainAssemblySourceTests.cs" />
-    <Compile Include="Runtime\ExceptionHandlerTests.cs" />
-    <Compile Include="Runtime\ModuleConfigurationTests.cs" />
-    <Compile Include="Runtime\TaskLocalValueTests.cs" />
+    <Compile Include="Runtime\TaskLocalStoreTests.cs" />
     <Compile Include="Runtime\ThreadLocalStorageTests.cs" />
-    <Compile Include="Modularity\AssemblyResolverTests.cs" />
-    <Compile Include="Modularity\AttributeDataProviderTests.cs" />
-    <Compile Include="Modularity\CompilerHelper.cs" />
-    <Compile Include="Modularity\ConfigurationModuleCatalogTests.cs" />
-    <Compile Include="Modularity\ConfigurationStoreTests.cs" />
-    <Compile Include="Modularity\DirectoryModuleCatalogTests.cs" />
-    <Compile Include="Modularity\FileModuleTypeLoaderTests.cs" />
-    <Compile Include="Modularity\ModuleAttributeTests.cs" />
-    <Compile Include="Modularity\ModuleCatalogTests.cs" />
-    <Compile Include="Modularity\ModuleDependencySolverTests.cs" />
-    <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgsTests.cs" />
-    <Compile Include="Modularity\ModuleInfoBuilderTests.cs" />
-    <Compile Include="Modularity\ModuleInfoGroupExtensionsTests.cs" />
-    <Compile Include="Modularity\ModuleInfoGroupTests.cs" />
-    <Compile Include="Modularity\ModuleInitializerTests.cs" />
-    <Compile Include="Modularity\ModuleManagerTests.cs" />
-    <Compile Include="Modularity\ModuleTypeLoaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\AppDomainValueTests.cs" />
+    <Compile Include="Runtime\AppDomainStoreTests.cs" />
     <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
-    <Compile Include="Runtime\ExceptionFormatterTests.cs" />
-    <Compile Include="Runtime\ThreadDataValueTests.cs" />
-    <Compile Include="Setup\LocationSetup.cs">
-      <DependentUpon>LocationSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\ProgramSetup.xaml.cs">
-      <DependentUpon>ProgramSetup.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Runtime\ThreadDataStoreTests.cs" />
+    <Compile Include="Setup\InitializeUserSettingsCommandTests.cs" />
+    <Compile Include="Setup\DefaultsTests.cs" />
     <Compile Include="Setup\ProgramSetupTests.cs" />
-    <Compile Include="Setup\Registration\RegisterAttributeTests.cs" />
-    <Compile Include="Setup\SetupCommandTests.cs" />
-    <Compile Include="Setup\LocationSetupTests.cs" />
-    <Compile Include="Setup\TestExtension.cs" />
-    <Compile Include="Setup\UnitySetup.xaml.cs">
-      <DependentUpon>UnitySetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\UnitySetupTests.cs" />
-    <Compile Include="TestObjects\Activator.cs" />
     <Compile Include="TestObjects\ClassWithBrokenConstructor.cs" />
     <Compile Include="TestObjects\ModulesConfiguration.cs" />
-    <Compile Include="TestObjects\Modules\DummyClass.cs" />
-    <Compile Include="TestObjects\Modules\MockConfigurationStore.cs" />
-    <Compile Include="TestObjects\Modules\MockContainerAdapter.cs" />
-    <Compile Include="TestObjects\Modules\MockMessageLogger.cs" />
-    <Compile Include="TestObjects\Modules\MockModuleTypeLoader.cs" />
-    <Compile Include="TestObjects\Modules\MyDummyClass.cs" />
     <Compile Include="TestObjects\Relayed.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleThrowingException.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingOtherModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencingAssembly.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleReferencedAssembly.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockModuleA.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockExposingTypeFromGacAssemblyModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockDependencyModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockDependantModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockAttributedModule.cs" />
-    <EmbeddedResource Include="TestObjects\Modules\MockAbstractModule.cs" />
+    <Compile Include="TypeSystem\PartsTests.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="DragonSpark.Windows.Testing.psproj" />
-    <None Include="packages.config" />
-    <Content Include="Modularity\Invalid\Prism.StructureMap.Wpf.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Resources\Modules.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="project.json" />
+    <None Include="Resources\Certificate.cer" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">
@@ -236,10 +85,6 @@
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj">
       <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
       <Name>DragonSpark.Testing.Objects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
-      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
-      <Name>DragonSpark.Types.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
@@ -253,44 +98,12 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Modularity\ModuleCatalogXaml\SimpleModuleCatalog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Modularity\Invalid\NotAValidDotNetDll.txt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Setup\LocationSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Setup\ProgramSetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Setup\UnitySetup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
-  </Target>
-  <Import Project="..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets" Condition="Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" />
-  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
-    <Error Condition="!Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
-    <Error Condition="Exists('..\..\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
-  </Target>
+  <Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y /d  "$(ProjectDir)..\Parts\$(Configuration)\*.*" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -127,7 +127,7 @@
     <value>Module {0} depends on other modules that don't belong to the same group.</value>
   </data>
   <data name="DuplicatedModule" xml:space="preserve">
-    <value>A duplicated module with name {0} has been found by the loader.</value>
+    <value>A duplicated module with name {0} has been found by the resolver.</value>
   </data>
   <data name="StartupModuleDependsOnAnOnDemandModule" xml:space="preserve">
     <value>Module {0} is marked for automatic initialization when the application starts, but it depends on modules that are marked as OnDemand initialization. To fix this error, mark the dependency modules for InitializationMode=WhenAvailable, or remove this validation by extending the ModuleCatalog class.</value>
@@ -148,7 +148,7 @@
     <value>An exception occurred while initializing module '{0}'. 
     - The exception message was: {2}
     - The Assembly that the module was trying to be loaded from was:{1}
-    Check the InnerException property of the exception for more information. If the exception occurred while creating an object in a DI container, you can exception.GetRootException() to help locate the root cause of the problem. 
+    Check the InnerException @this of the exception for more information. If the exception occurred while creating an object in a DI container, you can exception.GetRootException() to help locate the root cause of the problem. 
   </value>
   </data>
   <data name="FailedToGetType" xml:space="preserve">
@@ -174,7 +174,7 @@ Error was: {1}.</value>
     <value>Logger was created successfully.</value>
   </data>
   <data name="ServiceLocator_NotRegistered" xml:space="preserve">
-    <value>Specified type is not registered: "{0}" with build name "{1}".</value>
+    <value>Specified type is not registered: "{Type}" with build name "{Name}".</value>
   </data>
   <data name="DefaultTextLoggerPattern" xml:space="preserve">
     <value>[{0:u}] [{1}-{3}] -&gt; {2}.</value>

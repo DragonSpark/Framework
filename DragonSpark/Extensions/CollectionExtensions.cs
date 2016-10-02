@@ -1,8 +1,5 @@
-
-
 using System.Collections.Generic;
-using System.Linq;
-using PostSharp.Patterns.Contracts;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Extensions
 {
@@ -19,8 +16,15 @@ namespace DragonSpark.Extensions
 		/// <param name="items">The items to add to the collection.</param>
 		/// <returns>The collection.</returns>
 		/// <exception cref="System.ArgumentNullException">An <see cref="System.ArgumentNullException"/> is thrown if <paramref name="collection"/> or <paramref name="items"/> is <see langword="null"/>.</exception>
-		public static ICollection<T> AddRange<T>( [Required]this ICollection<T> collection, [Required]IEnumerable<T> items)
+		public static ICollection<T> AddRange<T>( this ICollection<T> collection, IEnumerable<T> items)
 		{
+			var list = collection as List<T>;
+			if ( list != null )
+			{
+				list.AddRange( items );
+				return list;
+			}
+
 			foreach (var each in items)
 			{
 				collection.Add(each);
@@ -29,20 +33,11 @@ namespace DragonSpark.Extensions
 			return collection;
 		}
 
-		public static T[] Purge<T>( this ICollection<T> @this )
+		public static ImmutableArray<T> Purge<T>( this ICollection<T> @this )
 		{
-			var result = @this.ToArray();
+			var result = @this.WhereAssigned().ToImmutableArray();
 			@this.Clear();
 			return result;
-		}
-
-		public static T Ensure<T, U>( this T @this, U item ) where T : ICollection<U>
-		{
-			if ( !@this.Contains( item ) )
-			{
-				@this.Add( item );
-			}
-			return @this;
 		}
 	}
 }

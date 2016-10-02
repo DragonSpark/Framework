@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem.Generics;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
@@ -10,13 +11,14 @@ namespace DragonSpark.Testing.Extensions
 		[Theory, AutoData]
 		void GenericInvoke( Class @class )
 		{
-			typeof(Static).InvokeGenericAction( "Assign", new []{ typeof(Class) }, null );
+			var context = typeof(Static).Adapt().GenericCommandMethods[nameof(Static.Assign)].Make( typeof(Class) );
+			context.Invoke( new object[] { null } );
 			
 			Assert.Null( Static.Instance );
 			
-			typeof(Static).InvokeGenericAction( "Assign", new []{ typeof(Class) }, @class );
+			context.Invoke( @class );
 
-			Assert.Equal( @class, Static.Instance );
+			Assert.Same( @class, Static.Instance );
 		}
 	}
 }

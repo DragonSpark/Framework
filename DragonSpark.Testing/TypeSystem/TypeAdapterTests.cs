@@ -1,7 +1,10 @@
-﻿using DragonSpark.TypeSystem;
-using Ploeh.AutoFixture.Xunit2;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.TypeSystem
@@ -15,25 +18,22 @@ namespace DragonSpark.Testing.TypeSystem
 			Assert.Equal( typeof(int), item );
 		}
 
-		[Theory, AutoData]
-		public void Qualify( int item )
-		{
-			var qualified = new TypeAdapter( typeof(Casted) ).Qualify( item );
-			Assert.Equal( item, Assert.IsType<Casted>( qualified ).Item );
-		}
-
 		[Fact]
 		public void IsInstanceOfType()
 		{
 			var adapter = new TypeAdapter( typeof(Casted) );
-			Assert.True( adapter.IsInstanceOfType( new Casted( 6776 ) ) );
+			var instance = new Casted( 6776 );
+			Assert.True( adapter.IsInstanceOfType( instance ) );
+			Assert.Equal( 6776, instance.Item );
 		}
 
 		[Fact]
 		public void Throws()
 		{
-			Assert.Throws<ArgumentNullException>( () => { new TypeAdapter( null ); } );
+			Assert.Throws<ArgumentNullException>( () => Create() );
 		}
+
+		TypeAdapter Create() => new TypeAdapter( null, null );
 
 		class Casted
 		{
@@ -43,11 +43,34 @@ namespace DragonSpark.Testing.TypeSystem
 			}
 
 			public int Item { get; }
+		}
 
-			public static implicit operator Casted( int item )
-			{
-				return new Casted( item );
-			}
+		[Fact]
+		public void Adapt()
+		{
+			Assert.NotNull( typeof(object).GetTypeInfo().Adapt() );
+		}
+
+		[Fact]
+		public void GetHierarchy()
+		{
+			Assert.Equal( new[]{ typeof(Derived), typeof(Class), typeof(object) }, typeof(Derived).Adapt().GetHierarchy( true ).ToArray() );
+			Assert.Equal( new[]{ typeof(Derived), typeof(Class) }, typeof(Derived).Adapt().GetHierarchy().ToArray() );
+		}
+
+		[Fact]
+		public void GetAllInterfaces()
+		{
+			var interfaces = typeof(Derived).Adapt().GetAllInterfaces().OrderBy( x => x.Name ).ToArray();
+			Assert.Equal( new[]{ typeof(IAnotherInterface), typeof(IInterface) }, interfaces );
+		}
+
+		[Fact]
+		public void GetItemType()
+		{
+			Assert.Equal( typeof(Class), typeof(List<Class>).Adapt().GetInnerType() );
+			Assert.Equal( typeof(Class), typeof(Class[]).Adapt().GetInnerType() );
+			Assert.Null( typeof(Class).Adapt().GetInnerType() );
 		}
 	}
 }

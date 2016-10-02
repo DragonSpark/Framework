@@ -1,22 +1,31 @@
+using DragonSpark.Extensions;
+using JetBrains.Annotations;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
-using DragonSpark.Extensions;
+using System.Runtime.Serialization;
 
 namespace DragonSpark.Windows.Entity
 {
+	[Serializable]
 	public class EntityValidationException : Exception
 	{
-		public EntityValidationException( DbContext context, DbEntityValidationException innerException ) : base( DetermineMessage( context, innerException ), innerException )
-		{}
+		public EntityValidationException() {}
+
+		public EntityValidationException( string message ) : base( message ) {}
+		public EntityValidationException( string message, Exception innerException ) : base( message, innerException ) {}
+
+		public EntityValidationException( DbContext context, DbEntityValidationException innerException ) : base( DetermineMessage( context, innerException ), innerException ) {}
+
+		protected EntityValidationException( [NotNull] SerializationInfo info, StreamingContext context ) : base( info, context ) {}
 
 		static string DetermineMessage( DbContext context, DbEntityValidationException error )
 		{
 			var result = string.Concat( "Validation Exceptions were encountered while commiting entities to storage.  These are the exceptions:", Environment.NewLine, 
-				string.Join( string.Empty, error.EntityValidationErrors.Select( x => $"-= {x.Entry.Entity.GetType()} [State: {x.Entry.State}] [Key: {DetermineKey( context, x )}] =-{Environment.NewLine}{string.Join( Environment.NewLine, x.ValidationErrors.Select( y => string.Concat( (string)"	- ", (string)y.ErrorMessage ) ).ToArray() )}" ) ) );
+				string.Join( string.Empty, error.EntityValidationErrors.Select( x => $"-= {x.Entry.Entity.GetType()} [State: {x.Entry.State}] [Key: {DetermineKey( context, x )}] =-{Environment.NewLine}{string.Join( Environment.NewLine, x.ValidationErrors.Select( y => string.Concat( "	- ", y.ErrorMessage ) ).ToArray() )}" ) ) );
 			return result;
 		}
 

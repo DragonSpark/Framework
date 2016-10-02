@@ -1,11 +1,8 @@
-﻿using DragonSpark.Setup.Registration;
+﻿using DragonSpark.Testing.Framework;
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using DragonSpark.Aspects;
-using DragonSpark.ComponentModel;
-using DragonSpark.Testing.Objects;
-using DragonSpark.Windows.Testing.Setup;
+using DragonSpark.Application;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -37,10 +34,12 @@ using DragonSpark.Windows.Testing.Setup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "2016.2.1.1" )]
-[assembly: AssemblyFileVersion( "2016.2.1.1" )]
-[assembly: Application]
-[assembly: Registration( typeof(Command) )]
+[assembly: AssemblyVersion( "0.1.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
 
-[assembly: AssemblyProvider.Register] // Default assembly factory.
-[assembly: ApplyDefaultValues]
+[assembly: Application]
+[assembly: AssemblyHint( "DragonSpark.Testing" )]
+
+// [assembly: ApplyDefaultValues]
+// [assembly: DisposeAssociatedAspect]
+[assembly: TestingMethodAspect]

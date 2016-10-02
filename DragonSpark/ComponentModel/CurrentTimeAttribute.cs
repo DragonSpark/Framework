@@ -1,26 +1,12 @@
-using DragonSpark.Runtime;
-using PostSharp.Patterns.Contracts;
+using DragonSpark.Sources.Parameterized;
 using System;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.ComponentModel
 {
 	public sealed class CurrentTimeAttribute : DefaultValueBase
 	{
-		public CurrentTimeAttribute() : base( t => Activator.Activate<CurrentTimeValueProvider>() ) {}
-	}
+		readonly static Func<object, CurrentTimeValueProvider> Provider = CurrentTimeValueProvider.Default.Wrap();
 
-	public class CurrentTimeValueProvider : IDefaultValueProvider
-	{
-		readonly ICurrentTime currentTime;
-
-		public CurrentTimeValueProvider() : this( CurrentTime.Instance ) {}
-
-		public CurrentTimeValueProvider( [Required]ICurrentTime currentTime )
-		{
-			this.currentTime = currentTime;
-		}
-
-		public object GetValue( DefaultValueParameter parameter ) => parameter.Metadata.PropertyType == typeof(DateTime) ? (object)currentTime.Now.DateTime : currentTime.Now;
+		public CurrentTimeAttribute() : base( Provider ) {}
 	}
 }

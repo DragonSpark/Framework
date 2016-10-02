@@ -1,15 +1,15 @@
+using DragonSpark.Sources.Parameterized;
+using DragonSpark.Specifications;
 using System;
 
 namespace DragonSpark.Activation
 {
-	public interface IActivator
+	public interface IActivator : IParameterizedSource<Type, object>, IServiceProvider, ISpecification<Type> {}
+
+	public abstract class ActivatorBase : SpecificationParameterizedSource<Type, object>, IActivator
 	{
-		bool CanActivate( Type type, string name = null );
+		protected ActivatorBase( ISpecification<Type> specification, Func<Type, object> source ) : base( specification, source ) {}
 
-		object Activate( Type type, string name = null );
-
-		bool CanConstruct( Type type, params object[] parameters );
-		
-		object Construct( Type type, params object[] parameters );
+		public object GetService( Type serviceType ) => Get( serviceType );
 	}
 }

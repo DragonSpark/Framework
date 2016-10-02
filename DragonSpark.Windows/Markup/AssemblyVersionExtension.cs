@@ -1,7 +1,7 @@
+using DragonSpark.Extensions;
 using System;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Markup
 {

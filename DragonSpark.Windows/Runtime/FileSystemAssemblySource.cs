@@ -1,21 +1,16 @@
-using DragonSpark.TypeSystem;
-using Microsoft.Practices.Unity;
-using System.Linq;
+using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
+using System;
+using System.Collections.Immutable;
 using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public class FileSystemAssemblySource : AssemblySourceBase
+	public class FileSystemAssemblySource : SuppliedDeferredSource<ImmutableArray<Assembly>>
 	{
-		public static FileSystemAssemblySource Instance { get; } = new FileSystemAssemblySource();
+		public static ISource<ImmutableArray<Assembly>> Default { get; } = new FileSystemAssemblySource();
+		FileSystemAssemblySource() : this( AppDomain.CurrentDomain ) {}
 
-		protected override Assembly[] CreateItem()
-		{
-			var result = AllClasses.FromAssembliesInBasePath( includeUnityAssemblies: true )
-				.Where( x => x.Namespace != null )
-				.GroupBy( type => type.Assembly )
-				.Select( types => types.Key ).ToArray();
-			return result;
-		}
+		public FileSystemAssemblySource( AppDomain domain ) : base( DomainAssemblySource.Default.Fixed( domain ).Get ) {}
 	}
 }

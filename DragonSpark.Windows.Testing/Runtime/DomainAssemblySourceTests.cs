@@ -1,5 +1,4 @@
-﻿using DragonSpark.Testing.Framework.Setup;
-using DragonSpark.Windows.Runtime;
+﻿using DragonSpark.Windows.Runtime;
 using System;
 using System.Linq;
 using Xunit;
@@ -8,10 +7,10 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class DomainAssemblySourceTests
 	{
-		[Theory, AutoData]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void GetAssemblies( DomainAssemblySource sut )
 		{
-			var assemblies = sut.Create();
+			var assemblies = sut.Get( AppDomain.CurrentDomain );
 			var loaded = AppDomain.CurrentDomain.GetAssemblies();
 			Assert.NotEmpty( assemblies );
 			Assert.True( assemblies.All( x => loaded.Contains( x ) ) );
@@ -20,7 +19,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Fact]
 		public void Instance()
 		{
-			Assert.NotNull( DomainAssemblySource.Instance );
+			Assert.NotNull( DomainAssemblySource.Default );
 		}
 	}
 }

@@ -1,21 +1,21 @@
-using System;
 using AutoMapper;
 
 namespace DragonSpark.Extensions
 {
-	public class ObjectMappingParameter<T>
+	public struct ObjectMappingParameter<T>
 	{
-		public ObjectMappingParameter( object source, T existing, Action<IMappingExpression> configuration )
+		public ObjectMappingParameter( object source, T destination = default(T) )
 		{
 			Source = source;
-			Existing = existing;
-			Configuration = configuration;
+			Destination = destination;
+
+			var sourceType = Source.GetType();
+			Pair = new TypePair( sourceType, Destination?.GetType() ?? ( typeof(T) == typeof(object) ? sourceType : typeof(T) ) );
 		}
 
 		public object Source { get; }
 
-		public T Existing { get; }
-
-		public Action<IMappingExpression> Configuration { get; }
+		public T Destination { get; }
+		public TypePair Pair { get; }
 	}
 }

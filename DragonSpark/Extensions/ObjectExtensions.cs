@@ -1,22 +1,15 @@
-﻿using AutoMapper;
-using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
+﻿using DragonSpark.ComponentModel;
 using DragonSpark.TypeSystem;
-using PostSharp.Patterns.Contracts;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Type = System.Type;
 
 namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		public static TResult Clone<TResult>( this TResult @this, Action<IMappingExpression> configure = null ) where TResult : class => @this.MapInto<TResult>( configure: configure );
-
 		public static MemberInfo GetMemberInfo( this Expression expression )
 		{
 			var lambda = (LambdaExpression)expression;
@@ -26,19 +19,18 @@ namespace DragonSpark.Extensions
 
 		public static void TryDispose( this object target ) => target.As<IDisposable>( x => x.Dispose() );
 
-		public static void Null<TItem>( this TItem target, Action action ) => target.IsNull().IsTrue( action );
+		public static bool IsAssignedOrValue<T>( [Optional]this T @this ) => IsAssigned( @this, true );
 
-		public static bool IsNull<T>( this T @this ) => Equals( @this, default(T) );
+		public static bool IsAssigned<T>( [Optional]this T @this ) => IsAssigned( @this, false );
 
-		public static IEnumerable<TItem> Enumerate<TItem>( this IEnumerator<TItem> target )
+		static bool IsAssigned<T>( [Optional]this T @this, bool value )
 		{
-			var result = new List<TItem>();
-			while ( target.MoveNext() )
-			{
-				result.Add( target.Current );
-			}
+			var type = @this?.GetType() ?? typeof(T);
+			var result = type.GetTypeInfo().IsValueType ? value || !SpecialValues.DefaultOrEmpty( type ).Equals( @this ) : !Equals( @this, default(T) );
 			return result;
 		}
+
+		public static bool IsAssignedOrContains<T>( [Optional]this T @this ) => !Equals( @this, SpecialValues.DefaultOrEmpty<T>() );
 
 		public static TResult Loop<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem, bool> condition, Func<TItem, TResult> extract = null, TResult defaultValue = default(TResult) )
 		{
@@ -51,118 +43,88 @@ namespace DragonSpark.Extensions
 				}
 				current = resolveParent( current );
 			}
-			while ( current != null );
+			while ( current.IsAssigned() );
 			return defaultValue;
 		}
 
-		public static IEnumerable<TItem> GetAllPropertyValuesOf<TItem>( this object target ) => target.GetAllPropertyValuesOf( typeof( TItem ) ).Cast<TItem>().ToArray();
-
-		public static IEnumerable GetAllPropertyValuesOf( this object target, Type propertyType ) => target.GetType().GetRuntimeProperties().Where( x => !x.GetIndexParameters().Any() && propertyType.GetTypeInfo().IsAssignableFrom( x.PropertyType.GetTypeInfo() ) ).Select( x => x.GetValue( target, null ) ).ToArray();
-
-		public static TItem Use<TItem>( this Func<TItem> @this, Action<TItem> function )
+		public static TResult With<TItem, TResult>( [Optional]this TItem target, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
 		{
-			var item = @this();
-			var with = item.With( function );
-			return with;
-		}
-
-		public static TResult Use<TItem, TResult>( this Func<TItem> @this, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
-		{
-			var item = @this();
-			return item.With( function, defaultFunction );
-		}
-
-		public static T OrDefault<T>( this T @this, [Required]Func<T> defaultFunction ) => @this.With( Default<T>.Self, defaultFunction );
-
-		public static TResult With<TItem, TResult>( this TItem target, Func<TItem, TResult> function, Func<TResult> defaultFunction = null )
-		{
-			var getDefault = defaultFunction ?? DefaultFactory<TResult>.Instance.Create;
-			var result = target != null ? function( target ) : getDefault();
+			var getDefault = defaultFunction ?? Support<TResult>.Default;
+			var result = target.IsAssigned() ? function( target ) : getDefault();
 			return result;
 		}
 
-		public static TItem With<TItem>( this TItem @this, Action<TItem> action )
+		static class Support<T>
 		{
-			var result = @this.With( item =>
+			public static Func<T> Default { get; } = SpecialValues.DefaultOrEmpty<T>;
+		}
+
+		public static TItem With<TItem>( [Optional]this TItem @this, Action<TItem> action = null )
+		{
+			if ( @this.IsAssigned() )
 			{
-				action?.Invoke( item );
-				return item;
-			} );
-			return result;
+				action?.Invoke( @this );
+				return @this;
+			}
+			return default(TItem);
 		}
 
-		public static bool Is<T>( [Required] this object @this ) => @this is T;
-		public static bool Not<T>( [Required] this object @this ) => !@this.Is<T>();
+		public static bool Is<T>( this object @this ) => @this is T;
+		public static bool Not<T>( this object @this ) => !@this.Is<T>();
 
-		public static TItem WithSelf<TItem>( this TItem @this, Func<TItem, object> action )
+		public static TItem WithSelf<TItem>( [Optional]this TItem @this, Func<TItem, object> action )
 		{
-			@this.With( action );
+			if ( @this.IsAssigned() )
+			{
+				action( @this );
+			}
 			return @this;
 		}
 
-		public static TItem With<TItem>( this TItem? @this, Action<TItem> action ) where TItem : struct => @this?.With( action ) ?? default( TItem );
+		public static T With<T>( [Optional]this T? @this, Action<T> action ) where T : struct => @this?.With( action ) ?? default(T);
 
-		public static TResult With<TItem, TResult>( this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
+		public static TResult With<TItem, TResult>( [Optional]this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
 
-		/*public static TItem BuildUp<TItem>( [Required]this TItem target ) where TItem : class => ObjectBuilder.Instance.BuildUp<TItem>( target );
+		public static TResult Evaluate<TResult>( this object container, string expression ) => Evaluate<TResult>( ExpressionEvaluator.Default, container, expression );
 
-		public static TItem BuildUp<TItem>( [Required]this IObjectBuilder @this, TItem target ) where TItem : class
+		public static TResult Evaluate<TResult>( this IExpressionEvaluator @this, object container, string expression ) => (TResult)@this.Evaluate( container, expression );
+
+		public static T AsValid<T>( this object @this, Action<T> with = null, string message = null )
 		{
-			@this.BuildUp( target );
-			return target;
-		}*/
-
-		public static TResult Evaluate<TResult>( [Required]this object container, string expression ) => Evaluate<TResult>( ExpressionEvaluator.Instance, container, expression );
-
-		public static TResult Evaluate<TResult>( [Required]this IExpressionEvaluator @this, object container, string expression ) => (TResult)@this.Evaluate( container, expression );
-
-		// public static TResult AsValid<TItem, TResult>( this object @this, Func<TItem, TResult> with ) => @this.AsValid<TItem>( _ => { } ).With( with );
-
-		public static TItem AsValid<TItem>( this TItem @this, Action<TItem> with ) => AsValid( @this, with, null );
-
-		public static TItem AsValid<TItem>( this object @this, Action<TItem> with ) => AsValid( @this, with, null );
-
-		public static TItem AsValid<TItem>( this object @this, Action<TItem> with, string message )
-		{
-			var result = @this.As( with );
-			result.Null( () =>
+			if ( !( @this is T ) )
 			{
-				throw new InvalidOperationException( message ?? $"'{@this.GetType().FullName}' is not of type {typeof(TItem).FullName}." );
-			} );
+				throw new InvalidOperationException( message ?? $"'{@this.GetType().FullName}' is not of type {typeof(T).FullName}." );
+			}
+
+			var result = with != null ? @this.As( with ) : (T)@this;
 			return result;
 		}
 
-		public static TResult As<TResult>( this object target ) => As( target, (Action<TResult>)null );
+		public static T As<T>( [Optional]this object target ) => target is T ? (T)target : default(T);
 
-		/*public static TResult As<TResult, TReturn>( this object target, Func<TResult, TReturn> action ) => target.As<TResult>( x => { action( x ); } );*/
-
-		public static TResult As<TResult>( this object target, Action<TResult> action )
+		public static T As<T>( [Optional]this object target, Action<T> action )
 		{
-			if ( target is TResult )
+			if ( target is T )
 			{
-				var result = (TResult)target;
-				result.With( action );
+				var result = (T)target;
+				action( result );
 				return result;
 			}
-			return default(TResult);
+			return default(T);
 		}
 
 		public static TResult AsTo<TSource, TResult>( this object target, Func<TSource,TResult> transform, Func<TResult> resolve = null )
 		{
-			var @default = resolve ?? DefaultFactory<TResult>.Instance.Create;
+			var @default = resolve ?? ( () => default(TResult) );
 			var result = target is TSource ? transform( (TSource)target ) : @default();
 			return result;
 		}
 
 		public static TResult To<TResult>( this object target ) => (TResult)target;
 
-		public static T ConvertTo<T>( this object @this ) => @this.With( x => (T)ConvertTo( @this, typeof( T ) ) );
+		public static T ConvertTo<T>( this object @this ) => @this.IsAssigned() ? (T)ConvertTo( @this, typeof(T) ) : default(T);
 
-		public static object ConvertTo( this object @this, Type to )
-		{
-			var info = to.GetTypeInfo();
-			return !info.IsAssignableFrom( @this.GetType().GetTypeInfo() ) ? ( info.IsEnum ? Enum.Parse( to, @this.ToString() ) : ChangeType( @this, to ) ) : @this;
-		}
+		public static object ConvertTo( this object @this, Type to ) => !to.Adapt().IsInstanceOfType( @this ) ? ( to.GetTypeInfo().IsEnum ? Enum.Parse( to, @this.ToString() ) : ChangeType( @this, to ) ) : @this;
 
 		static object ChangeType( object @this, Type to )
 		{

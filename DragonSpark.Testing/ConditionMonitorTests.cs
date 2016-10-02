@@ -41,15 +41,15 @@ namespace DragonSpark.Testing
 		{
 			var count = 0;
 
-			Assert.False( sut.ApplyIf( () => false, () => count++ ) );
+			Assert.False( sut.ApplyIf( false, () => count++ ) );
 			
 			Assert.Equal( 0, count );
 
-			Assert.True( sut.ApplyIf( () => true, () => count++ ) );
+			Assert.True( sut.ApplyIf( true, () => count++ ) );
 
 			Assert.Equal( 1, count );
 
-			Assert.False( sut.ApplyIf( () => true, () => count++ ) );
+			Assert.False( sut.ApplyIf( true, () => count++ ) );
 		}
 
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]

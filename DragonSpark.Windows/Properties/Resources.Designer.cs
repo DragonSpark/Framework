@@ -117,6 +117,51 @@ namespace DragonSpark.Windows.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User settings file at {Location} is up to date..
+        /// </summary>
+        internal static string LoggerTemplates_Complete {
+            get {
+                return ResourceManager.GetString("LoggerTemplates_Complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User setting file created at {Location}.
+        /// </summary>
+        internal static string LoggerTemplates_Created {
+            get {
+                return ResourceManager.GetString("LoggerTemplates_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred while creating user setting file at {Location}.
+        /// </summary>
+        internal static string LoggerTemplates_ErrorSaving {
+            get {
+                return ResourceManager.GetString("LoggerTemplates_ErrorSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing user settings file at {Location}..
+        /// </summary>
+        internal static string LoggerTemplates_Initializing {
+            get {
+                return ResourceManager.GetString("LoggerTemplates_Initializing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User setting file was not found at {Location}. Creating....
+        /// </summary>
+        internal static string LoggerTemplates_NotFound {
+            get {
+                return ResourceManager.GetString("LoggerTemplates_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The ModulePath cannot contain a null value or be empty.
         /// </summary>
         internal static string ModulePathCannotBeNullOrEmpty {

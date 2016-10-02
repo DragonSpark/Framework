@@ -1,3 +1,4 @@
+using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace DragonSpark.Windows.Runtime
 		{
 			var stack = GetStack<T>();
 			stack.Push( instance );
-			return new DisposableActionContext( () => stack.Pop() );
+			return new DisposableAction( () => stack.Pop() );
 		}
 
 		public static T Peek<T>()

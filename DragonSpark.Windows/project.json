@@ -1,0 +1,16 @@
+﻿{
+  "dependencies": {
+    "EntityFramework": "6.1.3",
+    "Moq": "4.5.22",
+    "Serilog.Exceptions": "2.2.1",
+    "Serilog.Sinks.ColoredConsole": "2.0.0",
+    "Serilog.Sinks.RollingFile": "3.0.1",
+    "Serilog.Sinks.Trace": "2.0.0"
+  },
+  "frameworks": {
+    "net461": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

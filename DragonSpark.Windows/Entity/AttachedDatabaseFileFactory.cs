@@ -1,22 +1,20 @@
+using DragonSpark.Extensions;
+using DragonSpark.Sources.Parameterized;
+using System.Composition;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
 using System.Data.SqlClient;
 using System.IO;
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Extensions;
 
 namespace DragonSpark.Windows.Entity
 {
-	public class AttachedDatabaseFileFactory : FactoryBase<FileInfo>
+	public class AttachedDatabaseFileFactory : ParameterizedSourceBase<DbContext, FileInfo>
 	{
-		readonly DbContext context;
+		[Export]
+		public static AttachedDatabaseFileFactory Default { get; } = new AttachedDatabaseFileFactory();
+		AttachedDatabaseFileFactory() {}
 
-		public AttachedDatabaseFileFactory( DbContext context )
-		{
-			this.context = context;
-		}
-
-		protected override FileInfo CreateItem() => 
-			new SqlConnectionStringBuilder( context.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().With( DbProviderServices.ExpandDataDirectory ).With( s => new FileInfo( s ) );
+		public override FileInfo Get( DbContext parameter ) => 
+			new SqlConnectionStringBuilder( parameter.Database.Connection.ConnectionString ).AttachDBFilename.NullIfEmpty().With( DbProviderServices.ExpandDataDirectory ).With( s => new FileInfo( s ) );
 	}
 }

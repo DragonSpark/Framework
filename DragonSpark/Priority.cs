@@ -2,24 +2,24 @@ namespace DragonSpark
 {
 	public enum Priority
 	{
-		Lowest = -9,
-		AboveLowest = -8,
-		BelowLower = -7,
-		Lower = -6,
-		AboveLower = -5,
-		BelowLow = -4,
-		Low = -3,
-		AboveLow = -2,
-		BelowNormal = -1,
+		Highest = -9,
+		AfterHighest = -8,
+		BeforeHigher = -7,
+		Higher = -6,
+		AfterHigher = -5,
+		BeforeHigh = -4,
+		High = -3,
+		AfterHigh = -2,
+		BeforeNormal = -1,
 		Normal = 0,
-		AboveNormal = 1,
-		BelowHigh = 2,
-		High = 3,
-		AboveHigh = 4,
-		BelowHigher = 5,
-		Higher = 6,
-		AboveHigher = 7,
-		BelowHighest = 8,
-		Highest = 9
+		AfterNormal = 1,
+		BeforeLow = 2,
+		Low = 3,
+		AfterLow = 4,
+		BeforeLower = 5,
+		Lower = 6,
+		AfterLower = 7,
+		BeforeLowest = 8,
+		Lowest = 9
 	}
 }

@@ -1,5 +1,5 @@
+using DragonSpark.Commands;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +17,7 @@ namespace DragonSpark.Windows.Entity
 
 		readonly ICommand<DbContextBuildingParameter> command;
 
-		protected EntityContext() : this( DefaultCommands.Instance ) {}
+		protected EntityContext() : this( DefaultCommands.Default ) {}
 
 		protected EntityContext( ICommand<DbContextBuildingParameter> command )
 		{
@@ -60,7 +60,7 @@ namespace DragonSpark.Windows.Entity
 
 		protected override void OnModelCreating( DbModelBuilder modelBuilder )
 		{
-			command.Run( new DbContextBuildingParameter( this, modelBuilder) );
+			command.Execute( new DbContextBuildingParameter( this, modelBuilder ) );
 
 			base.OnModelCreating( modelBuilder );
 		}

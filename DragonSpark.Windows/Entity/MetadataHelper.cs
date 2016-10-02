@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data.Entity.Core;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
@@ -12,7 +11,7 @@ namespace DragonSpark.Windows.Entity
 {
 	public static class MetadataHelper
 	{
-		static readonly Dictionary<Type, EntityType> EntityTypes = new Dictionary<Type, EntityType>();
+		readonly static Dictionary<Type, EntityType> EntityTypes = new Dictionary<Type, EntityType>();
 
 		/// <summary>
 		/// Gets the entity meta data.
@@ -20,10 +19,7 @@ namespace DragonSpark.Windows.Entity
 		/// <typeparam name="T"></typeparam>
 		/// <param name="context">The context.</param>
 		/// <returns>EntityType.</returns>
-		public static EntityType GetEntityMetaData<T>( this ObjectContext context )
-		{
-			return GetEntityMetaData( context.MetadataWorkspace, typeof(T) );
-		}
+		public static EntityType GetEntityMetadata<T>( this ObjectContext context ) => GetEntityMetadata( context.MetadataWorkspace, typeof(T) );
 
 		/// <summary>
 		/// Gets the entity meta data.
@@ -31,7 +27,7 @@ namespace DragonSpark.Windows.Entity
 		/// <param name="workspace">The workspace.</param>
 		/// <param name="entityType">Type of the entity.</param>
 		/// <returns>EntityType.</returns>
-		public static EntityType GetEntityMetaData( this MetadataWorkspace workspace, Type entityType )
+		public static EntityType GetEntityMetadata( this MetadataWorkspace workspace, Type entityType )
 		{
 			lock ( EntityTypes )
 			{
@@ -82,16 +78,16 @@ namespace DragonSpark.Windows.Entity
 		/// <summary>
 		/// Creates the key.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="U"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <typeparam name="TId"></typeparam>
 		/// <param name="context">The context.</param>
 		/// <param name="id">The identifier.</param>
 		/// <returns>EntityKey.</returns>
-		public static EntityKey CreateKey<T, U>( ObjectContext context, U id ) where T : EntityObject where U : struct
+		public static EntityKey CreateKey<TContext, TId>( ObjectContext context, TId id ) where TContext : EntityObject where TId : struct
 		{
-			var type = GetEntityMetaData<T>( context );
+			var type = GetEntityMetadata<TContext>( context );
 			var list = new List<EntityKeyMember> { new EntityKeyMember( new List<EdmMember>( type.KeyMembers )[ 0 ].Name, id ) };
-			return CreateKey( context, typeof(T), list );
+			return CreateKey( context, typeof(TContext), list );
 		}
 
 		/// <summary>
@@ -103,7 +99,7 @@ namespace DragonSpark.Windows.Entity
 		/// <returns>EntityKey.</returns>
 		public static EntityKey CreateKey<T>( ObjectContext context, params object[] values )
 		{
-			var type = GetEntityMetaData( context.MetadataWorkspace, typeof(T) );
+			var type = GetEntityMetadata( context.MetadataWorkspace, typeof(T) );
 			var list = new List<EntityKeyMember>( type.KeyMembers.Select( x => new EntityKeyMember( x.Name, values[ type.KeyMembers.IndexOf( x ) ] ) ) );
 			return CreateKey( context, typeof(T), list );
 		}
@@ -124,41 +120,12 @@ namespace DragonSpark.Windows.Entity
 		}
 
 		/// <summary>
-		/// Creates the key.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="context">The context.</param>
-		/// <param name="values">The values.</param>
-		/// <returns>EntityKey.</returns>
-		/// <exception cref="System.ArgumentNullException">key;A property that's part of a key was not found.</exception>
-		public static EntityKey CreateKey<T>( ObjectContext context, IOrderedDictionary values ) where T : EntityObject
-		{
-			var items = new List<EntityKeyMember>();
-			var metadata = GetEntityMetaData<T>( context );
-			foreach ( var property in ConvertProperties<EdmProperty, EdmMember>( metadata.KeyMembers ) )
-			{
-				if ( values.Contains( property.Name ) )
-				{
-					items.Add( new EntityKeyMember( property.Name, values[ property.Name ] ) );
-				}
-				else
-				{
-					throw new ArgumentNullException( "key", "A property that's part of a key was not found." );
-				}
-			}
-			return CreateKey( context, typeof(T), items );
-		}
-
-		/// <summary>
 		/// Extracts the key.
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="target">The target.</param>
 		/// <returns>EntityKey.</returns>
-		public static EntityKey ExtractKey( this ObjectContext context, object target )
-		{
-			return ExtractKey( context, target.GetType(), target );
-		}
+		public static EntityKey ExtractKey( this ObjectContext context, object target ) => ExtractKey( context, target.GetType(), target );
 
 		/// <summary>
 		/// Extracts the key.
@@ -169,7 +136,7 @@ namespace DragonSpark.Windows.Entity
 		/// <returns>EntityKey.</returns>
 		public static EntityKey ExtractKey( ObjectContext context, Type type, object target )
 		{
-			var metadata = GetEntityMetaData( context.Initialized().MetadataWorkspace, type );
+			var metadata = GetEntityMetadata( context.Initialized().MetadataWorkspace, type );
 			try
 			{
 				var pairs = ExtractKeyValues( metadata, target );
@@ -188,7 +155,7 @@ namespace DragonSpark.Windows.Entity
 		/// <param name="type">The type.</param>
 		/// <param name="target">The target.</param>
 		/// <returns>List&lt;EntityKeyMember&gt;.</returns>
-		public static List<EntityKeyMember> ExtractKeyValues( EntityType type, object target )
+		public static IEnumerable<EntityKeyMember> ExtractKeyValues( EntityType type, object target )
 		{
 			var dictionary = target as IDictionary;
 			var targetType = target.GetType();
@@ -198,14 +165,14 @@ namespace DragonSpark.Windows.Entity
 		/// <summary>
 		/// Converts the properties.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="U"></typeparam>
+		/// <typeparam name="TTo"></typeparam>
+		/// <typeparam name="TFrom"></typeparam>
 		/// <param name="members">The members.</param>
 		/// <returns>IEnumerable&lt;T&gt;.</returns>
-		internal static IEnumerable<T> ConvertProperties<T, U>( IEnumerable<U> members ) where T : MetadataItem
-			where U : MetadataItem
+		internal static IEnumerable<TTo> ConvertProperties<TTo, TFrom>( IEnumerable<TFrom> members ) where TTo : MetadataItem
+			where TFrom : MetadataItem
 		{
-			var result = from member in members.OfType<T>()
+			var result = from member in members.OfType<TTo>()
 				select member;
 			return result;
 		}

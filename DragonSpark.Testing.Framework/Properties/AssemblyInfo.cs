@@ -1,10 +1,9 @@
-﻿using DragonSpark;
-using DragonSpark.ComponentModel;
-using DragonSpark.Setup.Registration;
+﻿// ReSharper disable once FilesNotPartOfProjectWarning
+using DragonSpark;
+using DragonSpark.Application;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
-using DragonSpark.Aspects;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -36,9 +35,9 @@ using DragonSpark.Aspects;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "2016.2.1.1" )]
-[assembly: AssemblyFileVersion( "2016.2.1.1" )]
-
+[assembly: AssemblyVersion( "0.1.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Testing.Framework" )]
 [assembly: Registration( Priority.Lower )]
-[assembly: ApplyDefaultValues]
+// [assembly: ApplyDefaultValues]
+// [assembly: DisposeAssociatedAspect]

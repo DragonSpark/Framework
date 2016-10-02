@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using DragonSpark.Extensions;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DragonSpark.Testing.Extensions
@@ -19,22 +19,6 @@ namespace DragonSpark.Testing.Extensions
 			Assert.NotNull( dictionary.TryGet( "Key1" ) );
 			Assert.Null( dictionary.TryGet( "Key10" ) );
 			Assert.Equal( "DefaultValue", dictionary.TryGet( "Key10", () => "DefaultValue" ) );
-		}
-
-		[Fact]
-		public void ExecuteOn()
-		{
-			var called = false;
-			dictionary.ExecuteOn( "Key1", s => called = true );
-			Assert.True( called );
-		}
-
-		[Fact]
-		public void ExecuteOnNot()
-		{
-			var called = false;
-			dictionary.ExecuteOn( "Key10", s => called = true );
-			Assert.False( called );
 		}
 
 		[Fact]

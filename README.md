@@ -12,6 +12,3 @@ Originally, this project started out as an ASP.NET framework, then got ported to
 This is still very much a work in progress.  Please excuse the mess. 
 
 **insert 90's internets construction guy here**
-
-As reference, an older, deployed featureset application built in HTML5 hosted on Windows Azure may be found here:
-http://framework.dragonspark.us/

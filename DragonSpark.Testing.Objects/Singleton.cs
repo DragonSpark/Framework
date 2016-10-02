@@ -2,6 +2,6 @@ namespace DragonSpark.Testing.Objects
 {
 	public class Singleton
 	{
-		public static Singleton Instance { get; } = new Singleton();
+		public static Singleton Default { get; } = new Singleton();
 	}
 }

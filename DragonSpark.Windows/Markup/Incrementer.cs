@@ -1,21 +1,16 @@
-using DragonSpark.Extensions;
-using DragonSpark.Runtime.Values;
+using DragonSpark.Sources.Parameterized.Caching;
 
 namespace DragonSpark.Windows.Markup
 {
-	class Incrementer : IIncrementer
+	public sealed class Incrementer : IIncrementer
 	{
+		readonly DecoratedSourceCache<int> count = new DecoratedSourceCache<int>();
+
 		public int Next( object context )
 		{
-			var count = new Count( context );
-			var result = count.Item + 1;
-			count.Assign( result );
+			var result = count.Get( context ) + 1;
+			count.Set( context, result );
 			return result;
-		}
-
-		class Count : AssociatedValue<int>
-		{
-			public Count( object instance ) : base( instance, typeof(Count) ) {}
 		}
 	}
 }

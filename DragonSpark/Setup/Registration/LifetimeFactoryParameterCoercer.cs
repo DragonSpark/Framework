@@ -1,4 +1,0 @@
-namespace DragonSpark.Setup.Registration
-{
-
-}

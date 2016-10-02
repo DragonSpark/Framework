@@ -1,37 +1,34 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
-using System;
 using System.Collections;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Markup
 {
 	[ContentProperty( nameof(Items) )]
-	public class CollectionExtension : MonitoredMarkupExtension
+	public class CollectionExtension : MarkupExtensionBase
 	{
-		public Collection Items { get; } = new Collection();
+		public DeclarativeCollection Items { get; } = new DeclarativeCollection();
 
-		protected virtual IList DetermineCollection( IServiceProvider serviceProvider )
+		protected virtual IList DetermineList( MarkupServiceProvider serviceProvider )
 		{
-			var service = serviceProvider.Get<IProvideValueTarget>();
-			var target = service.TargetObject;
-			var result = service.TargetProperty.AsTo<PropertyInfo, IList>( source => (IList)source.GetValue( target ) ) ?? target as IList;
+			var target = serviceProvider.TargetObject;
+			var result = serviceProvider.Property.GetValue() as IList ?? target as IList;
 			return result;
 		}
 
-		protected override object GetValue( IServiceProvider serviceProvider )
+		protected override object GetValue( MarkupServiceProvider serviceProvider )
 		{
-			var result = DetermineCollection( serviceProvider ).With( o =>
+			var result = DetermineList( serviceProvider );
+			if ( result != null )
 			{
-				var type = o.GetType().Adapt().GetEnumerableType();
-				Items.Where( type.IsInstanceOfType ).Each( item =>
+				var type = result.GetType().Adapt().GetEnumerableType();
+				foreach ( var source in Items.Purge().Where( type.IsInstanceOfType ) )
 				{
-					o.Add( item );
-				} );
-				Items.Clear();
-			} );
+					result.Add( source );
+				}
+			}
 			return result;
 		}
 	}

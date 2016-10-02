@@ -17,8 +17,8 @@ using System.Windows.Markup;
 
 [assembly: Guid( "82e56091-dd33-4f8d-a9d9-8948f3d6f820" )]
 
-[assembly: AssemblyVersion( "2016.2.1.1" )]
-[assembly: AssemblyFileVersion( "2016.2.1.1" )]
+[assembly: AssemblyVersion( "0.1.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
 
 [assembly: TypeForwardedTo( typeof( AmbientAttribute ) )]
 [assembly: TypeForwardedTo( typeof( ContentPropertyAttribute ) )]

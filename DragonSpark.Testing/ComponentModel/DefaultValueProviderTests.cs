@@ -1,34 +1,15 @@
-﻿using DragonSpark.Activation;
-using DragonSpark.ComponentModel;
-using DragonSpark.Runtime;
+﻿using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Application;
+using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Objects;
-using Microsoft.Practices.ServiceLocation;
-using Ploeh.AutoFixture.Xunit2;
 using System;
 using Xunit;
 
 namespace DragonSpark.Testing.ComponentModel
 {
+	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), FrameworkTypes, FormatterTypes, ContainingTypeAndNested]
 	public class DefaultValueProviderTests
 	{
-		public class Activator : IActivator
-		{
-			readonly IServiceLocator locator;
-
-			public Activator( IServiceLocator locator )
-			{
-				this.locator = locator;
-			}
-
-			public bool CanActivate( Type type, string name ) => true;
-
-			public object Activate( Type type, string name = null ) => locator.GetInstance( type, name );
-
-			public bool CanConstruct( Type type, params object[] parameters ) => true;
-
-			public object Construct( Type type, params object[] parameters ) => locator.GetInstance( type );
-		}
-
 		[Theory, AutoData]
 		void Apply()
 		{
@@ -56,12 +37,14 @@ namespace DragonSpark.Testing.ComponentModel
 
 			Assert.NotNull( target.Activated );
 
-			Assert.IsType<ClassWithParameter>( target.Factory );
+			var created = Assert.IsType<ClassWithParameter>( target.Factory );
+			Assert.NotNull( created.Parameter );
+			Assert.IsType<Constructor>( created.Parameter );
 
 			Assert.NotNull( target.Collection );
-			Assert.IsType<System.Collections.ObjectModel.Collection<object>>( target.Collection );
+			Assert.IsAssignableFrom<System.Collections.ObjectModel.Collection<object>>( target.Collection );
 			Assert.NotNull( target.Classes );
-			Assert.IsType<System.Collections.ObjectModel.Collection<Class>>( target.Classes );
+			Assert.IsAssignableFrom<System.Collections.ObjectModel.Collection<Class>>( target.Classes );
 
 			Assert.Equal( 6776, target.ValuedInt );
 

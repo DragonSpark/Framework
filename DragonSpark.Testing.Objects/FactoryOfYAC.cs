@@ -1,22 +1,21 @@
+using DragonSpark.Sources;
 using System;
-using DragonSpark.Activation.FactoryModel;
-using DragonSpark.Extensions;
-using PostSharp.Patterns.Contracts;
+using System.Composition;
 
 namespace DragonSpark.Testing.Objects
 {
-	[Discoverable]
-	public class FactoryOfYAC : FactoryBase<YetAnotherClass>
+	[Export]
+	public class FactoryOfYac : SourceBase<YetAnotherClass>
 	{
 		readonly Func<YetAnotherClass> inner;
 
-		public FactoryOfYAC() : this( ActivateFactory<YetAnotherClass>.Instance.Create ) {}
+		public FactoryOfYac() : this( () => new YetAnotherClass() ) {}
 
-		FactoryOfYAC( [Required] Func<YetAnotherClass> inner )
+		FactoryOfYac( Func<YetAnotherClass> inner )
 		{
 			this.inner = inner;
 		}
 
-		protected override YetAnotherClass CreateItem() => inner();
+		public override YetAnotherClass Get() => inner();
 	}
 }

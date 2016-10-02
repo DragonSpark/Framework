@@ -139,4 +139,19 @@
   <data name="Blank_log" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Blank_log.ldf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LoggerTemplates_ErrorSaving" xml:space="preserve">
+    <value>Error occurred while creating user setting file at {Location}</value>
+  </data>
+  <data name="LoggerTemplates_NotFound" xml:space="preserve">
+    <value>User setting file was not found at {Location}. Creating...</value>
+  </data>
+  <data name="LoggerTemplates_Created" xml:space="preserve">
+    <value>User setting file created at {Location}</value>
+  </data>
+  <data name="LoggerTemplates_Initializing" xml:space="preserve">
+    <value>Initializing user settings file at {Location}.</value>
+  </data>
+  <data name="LoggerTemplates_Complete" xml:space="preserve">
+    <value>User settings file at {Location} is up to date.</value>
+  </data>
 </root>

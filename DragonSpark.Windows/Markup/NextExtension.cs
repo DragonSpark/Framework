@@ -1,21 +1,21 @@
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
+using PostSharp.Patterns.Contracts;
 using System;
 using System.Linq;
 using System.Windows.Markup;
 using System.Xaml;
-using DragonSpark.Aspects;
-using PostSharp.Patterns.Contracts;
 
 namespace DragonSpark.Windows.Markup
 {
 	[MarkupExtensionReturnType( typeof(int) )]
 	public class NextExtension : MarkupExtension
 	{
-		[Locate, Required]
+		readonly static Type[] Types = { typeof(DragonSpark.Runtime.DeclarativeCollection) };
+
+		[Service, Required]
 		public IIncrementer Incrementer { [return: Required]get; set; }
 		
-		[BuildUp]
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var context = DetermineContext( serviceProvider );
@@ -25,9 +25,8 @@ namespace DragonSpark.Windows.Markup
 
 		protected virtual object DetermineContext( IServiceProvider serviceProvider )
 		{
-			var xamlSchemaContext = serviceProvider.Get<IXamlSchemaContextProvider>().SchemaContext;
-			var types = new[] { typeof(DragonSpark.Runtime.Collection) }; // TODO: More general/generic implementation.
-			var context = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( types.Select( xamlSchemaContext.GetXamlType ).ToArray() );
+			var types = Types.Select( serviceProvider.Get<IXamlSchemaContextProvider>().SchemaContext.GetXamlType ).ToArray();
+			var context = serviceProvider.Get<IAmbientProvider>().GetFirstAmbientValue( types );
 			return context;
 		}
 	}

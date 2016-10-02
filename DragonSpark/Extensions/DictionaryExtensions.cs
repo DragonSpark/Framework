@@ -1,31 +1,26 @@
-﻿using System;
+﻿using DragonSpark.Runtime.Assignments;
+using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Extensions
 {
 	public static class DictionaryExtensions
 	{
-		public static TValue TryGet<TKey,TValue>( this IDictionary<TKey,TValue> target, TKey key, Func<TValue> defaultValue = null )
-		{
-			var result = !Equals( default(TKey), key  ) && target.ContainsKey( key ) ? target[ key ] : defaultValue.With( x => x() );
-			return result;
-		}
+		public static TValue TryGet<TKey,TValue>( this IDictionary<TKey,TValue> target, TKey key ) => TryGet( target, key, () => default(TValue) );
 
-		public static void ExecuteOn<TKey, TValue>( this IDictionary<TKey, TValue> target, TKey key, Action<TValue> action )
-		{
-			target.ContainsKey( key ).IsTrue( () => action( target[key] ) );
-		}
+		public static TValue TryGet<TKey,TValue>( this IDictionary<TKey,TValue> target, TKey key, Func<TValue> defaultValue ) => key.IsAssigned() && target.ContainsKey( key ) ? target[ key ] : defaultValue.With( x => x() );
+
+		// public static void ExecuteOn<TKey, TValue>( this IDictionary<TKey, TValue> target, TKey key, Action<TValue> action ) => target.ContainsKey( key ).IsTrue( () => action( target[key] ) );
 
 		public static TValue Ensure<TKey, TValue>( this IDictionary<TKey, TValue> target, TKey key, Func<TKey,TValue> resolve )
 		{
-			lock ( Locker )
+			if ( !target.ContainsKey( key ) )
 			{
-				if ( !target.ContainsKey( key ) )
-				{
-					target.Add( key, resolve( key ) );
-				}
+				target.Add( key, resolve( key ) );
 			}
 			return target[ key ];
-		}	static readonly object Locker = new object();
+		}
+
+		public static Assignment<T1, T2> Assignment<T1, T2>( this IDictionary<T1, T2> @this, T1 first, T2 second )  => new Assignment<T1, T2>( new DictionaryAssign<T1, T2>( @this ), Assignments.From( first ), new Value<T2>( second ) );
 	}
 }

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+﻿using DragonSpark.ComponentModel;
 using Ploeh.AutoFixture.Xunit2;
+using System.ComponentModel;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects
@@ -36,7 +37,10 @@ namespace DragonSpark.Testing.Aspects
 			var next = new ValueHost();
 			Assert.True( next.PropertyName );
 
-			Assert.True( StaticValueHost.PropertyName );
+			var name = StaticValueHost.PropertyName;
+			Assert.True( name );
+
+			StaticValueHost.PropertyName = StaticValueHost.PropertyName;
 		}
 
 		[Theory, AutoData]
@@ -46,6 +50,46 @@ namespace DragonSpark.Testing.Aspects
 
 			sut.Number = number;
 			Assert.Equal( number, sut.Number );
+		}
+
+		[Fact]
+		public void Build()
+		{
+			var sut = new BuildTarget();
+			Assert.True( sut.Boolean );
+			sut.Boolean = false;
+
+			Assert.Null( sut.Value );
+			sut.Call();
+			Assert.False( sut.Boolean );
+			Assert.Same( SkipFirstCallProvider.Default.Item, sut.Value );
+		}
+
+		public class BuildTarget
+		{
+			[DefaultValue( true )]
+			public bool Boolean { get; set; }
+
+			[SkipFirstCallValue]
+			public object Value { get; set; }
+
+			public void Call() => Value = SkipFirstCallProvider.Default.Item;
+		}
+
+		public sealed class SkipFirstCallValue : DefaultValueBase
+		{
+			public SkipFirstCallValue() : base( t => SkipFirstCallProvider.Default ) {}
+		}
+
+		public sealed class SkipFirstCallProvider : DefaultValueProviderBase
+		{
+			public static SkipFirstCallProvider Default { get; } = new SkipFirstCallProvider();
+
+			readonly public object Item = new object();
+
+			readonly ConditionMonitor monitor = new ConditionMonitor();
+
+			public override object Get( DefaultValueParameter parameter ) => monitor.Apply() ? null : Item;
 		}
 	}
 }

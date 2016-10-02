@@ -1,5 +1,8 @@
-using DragonSpark.Testing.Framework.Setup;
+using DragonSpark.Diagnostics;
+using DragonSpark.Sources.Parameterized;
+using DragonSpark.Testing.Framework.Runtime;
 using PostSharp.Aspects;
+using System.Linq;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -8,7 +11,8 @@ namespace DragonSpark.Testing.Framework
 		[ModuleInitializer( 0 )]
 		public static void Execution()
 		{
-			Activation.Execution.Initialize( CurrentExecution.Instance );
+			DragonSpark.Application.Execution.Context.Assign( ExecutionContext.Default );
+			LoggingConfiguration.Default.Configurators.Assign( o => new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Get().ToArray() ).Get().Wrap() );
 		}
 	}
 }

@@ -17,6 +17,6 @@ namespace DragonSpark.Windows.Entity
 
 		IEnumerable<IInstallationStep> IInstaller.Steps => Steps;
 
-		public DragonSpark.Runtime.Collection<IInstallationStep> Steps { get; } = new DragonSpark.Runtime.Collection<IInstallationStep>();
+		public DragonSpark.Runtime.DeclarativeCollection<IInstallationStep> Steps { get; } = new DragonSpark.Runtime.DeclarativeCollection<IInstallationStep>();
 	}
 }

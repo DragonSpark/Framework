@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{167DF420-328C-4ACC-ABD0-42DBE268EFDF}</ProjectGuid>
@@ -9,18 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DragonSpark</RootNamespace>
     <AssemblyName>DragonSpark</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <!--<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>-->
-    <RestorePackages>true</RestorePackages>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <DontImportPostSharp>True</DontImportPostSharp>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostSharpProperties>SolutionDir=$(SolutionDir);$(PostSharpProperties)</PostSharpProperties>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,32 +23,8 @@
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\Framework\DragonSpark.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
-    <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
-    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -64,311 +33,725 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
-    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
-    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\Framework\DragonSpark.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\AutoMapper.4.2.0\lib\portable-net45+win+wpa81+MonoAndroid10+Xamarin.iOS10+MonoTouch10\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ConnectedProperties, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Nito.ConnectedProperties.3.0.0\lib\portable-net40+win8+sl4+wp8\ConnectedProperties.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dynamitey, Version=1.0.2.0, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Dynamitey.1.0.2.0\lib\portable-win+net45+sl40+wp80\Dynamitey.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Unity.4.0.1\lib\portable-net45+wp80+win8+wpa81+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NReco.LambdaParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=50b5ad72a1d364c6, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\NReco.LambdaParser.1.0.0.0\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\NReco.LambdaParser.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp, Version=4.2.18.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PostSharp.4.2.18\lib\portable-net4+sl5+netcore45+wpa81+wp8\PostSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Common, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PostSharp.Patterns.Common.4.2.18\lib\portable-net45+netcore45+wpa81\PostSharp.Patterns.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Model, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PostSharp.Patterns.Model.4.2.18\lib\portable-net45+netcore45+wpa81\PostSharp.Patterns.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PostSharp.Patterns.Threading, Version=4.2.18.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PostSharp.Patterns.Threading.4.2.18\lib\portable-net45+netcore45+wpa81\PostSharp.Patterns.Threading.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Collections.Concurrent">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Activation\FactoryModel\ActivateFactory.cs" />
-    <Compile Include="Activation\FactoryModel\ActivateFactoryParameterCoercer.cs" />
-    <Compile Include="Activation\FactoryModel\ActivationFactoryParameterCoercer.cs" />
-    <Compile Include="Activation\FactoryModel\Factory.cs" />
-    <Compile Include="Activation\IExecutionContext.cs" />
-    <Compile Include="Activation\IoC\IsRegisteredSpecification.cs" />
-    <Compile Include="Activation\IoC\LifetimeManagerFactory.cs" />
-    <Compile Include="Activation\IoC\ServiceLocationMonitor.cs" />
-    <Compile Include="Activation\IoC\ServiceLocatorFactory.cs" />
-    <Compile Include="Aspects\BuildUp.cs" />
-    <Compile Include="Aspects\Freeze.cs" />
+    <Compile Include="Activation\CanActivateSpecification.cs" />
+    <Compile Include="Activation\Defaults.cs" />
+    <Compile Include="Activation\IsPublicTypeSpecification.cs" />
+    <Compile Include="Activation\Location\Defaults.cs" />
+    <Compile Include="Activation\Location\SpecifiedSingletonHostSpecification.cs" />
+    <Compile Include="Activation\SingletonDelegates.cs" />
+    <Compile Include="Aspects\AdapterConstructorSource.cs" />
+    <Compile Include="Aspects\AdapterFactorySource.cs" />
+    <Compile Include="Aspects\AdapterLocatorBase.cs" />
+    <Compile Include="Aspects\ApplyAspectBase.cs" />
+    <Compile Include="Aspects\AssignedAttribute.cs" />
+    <Compile Include="Aspects\Build\ISupportDefinition.cs" />
+    <Compile Include="Aspects\Build\ITypedPairs.cs" />
+    <Compile Include="Aspects\Build\SpecificationFactory.cs" />
+    <Compile Include="Aspects\Build\SupportDefinition.cs" />
+    <Compile Include="Aspects\Build\SupportDefinitionBase.cs" />
+    <Compile Include="Aspects\Build\TypeBasedAspectInstanceLocator.cs" />
+    <Compile Include="Aspects\Build\TypedPairs.cs" />
+    <Compile Include="Aspects\Coercion\ApplyCoercerAttribute.cs" />
+    <Compile Include="Aspects\Coercion\Aspect.cs" />
+    <Compile Include="Aspects\Coercion\CoercerAdapter.cs" />
+    <Compile Include="Aspects\Coercion\CoercerSource.cs" />
+    <Compile Include="Aspects\Coercion\Constructor.cs" />
+    <Compile Include="Aspects\Coercion\Defaults.cs" />
+    <Compile Include="Aspects\Coercion\ICoercer.cs" />
+    <Compile Include="Aspects\Coercion\Support.cs" />
+    <Compile Include="Aspects\CommandInvocationBase.cs" />
+    <Compile Include="Aspects\CommandTypeDefinition.cs" />
+    <Compile Include="Aspects\ConstructedSourceBase.cs" />
+    <Compile Include="Aspects\ConstructionsSource.cs" />
+    <Compile Include="Aspects\Exceptions\AppliedAspect.cs" />
+    <Compile Include="Aspects\Exceptions\ApplyExceptionPolicyAttribute.cs" />
+    <Compile Include="Aspects\Exceptions\AspectBase.cs" />
+    <Compile Include="Aspects\Exceptions\IPolicySource.cs" />
+    <Compile Include="Aspects\Exceptions\RetryDelegateFactory.cs" />
+    <Compile Include="Aspects\Exceptions\Support.cs" />
+    <Compile Include="Aspects\Generalized.cs" />
+    <Compile Include="Aspects\GeneralizedParameterizedSourceTypeDefinition.cs" />
+    <Compile Include="Aspects\GeneralizedSpecificationTypeDefinition.cs" />
+    <Compile Include="Aspects\Implementations\Descriptor.cs" />
+    <Compile Include="Aspects\Implementations\Descriptors.cs" />
+    <Compile Include="Aspects\Implementations\GeneralizedAspectBase.cs" />
+    <Compile Include="Aspects\Implementations\GeneralizedParameterizedSourceAspect.cs" />
+    <Compile Include="Aspects\Implementations\GeneralizedSpecificationAspect.cs" />
+    <Compile Include="Aspects\Implementations\IDescriptor.cs" />
+    <Compile Include="Aspects\Implementations\ParameterizedSourceDescriptor.cs" />
+    <Compile Include="Aspects\Implementations\SpecificationDescriptor.cs" />
+    <Compile Include="Aspects\Implementations\Support.cs" />
+    <Compile Include="Aspects\ITypeAware.cs" />
+    <Compile Include="Aspects\ApplyAspectsAttribute.cs" />
+    <Compile Include="Aspects\Relay\CommandDescriptor.cs" />
+    <Compile Include="Aspects\Relay\CommandMethodAspect.cs" />
+    <Compile Include="Aspects\Relay\CommandRelay.cs" />
+    <Compile Include="Aspects\Relay\CommandRelayAspect.cs" />
+    <Compile Include="Aspects\Relay\Descriptor.cs" />
+    <Compile Include="Aspects\Relay\Descriptors.cs" />
+    <Compile Include="Aspects\Relay\ICommandRelay.cs" />
+    <Compile Include="Aspects\Relay\IDescriptor.cs" />
+    <Compile Include="Aspects\Relay\InstanceAspects.cs" />
+    <Compile Include="Aspects\Relay\IParameterizedSourceRelay.cs" />
+    <Compile Include="Aspects\Relay\ISpecificationRelay.cs" />
+    <Compile Include="Aspects\Relay\MethodAspectBase.cs" />
+    <Compile Include="Aspects\Relay\ParameterizedSourceMethodAspect.cs" />
+    <Compile Include="Aspects\Relay\ParameterizedSourceRelay.cs" />
+    <Compile Include="Aspects\Relay\RelayAspectBase.cs" />
+    <Compile Include="Aspects\Relay\SourceDescriptor.cs" />
+    <Compile Include="Aspects\Relay\SourceRelayAspect.cs" />
+    <Compile Include="Aspects\Relay\SpecificationDescriptor.cs" />
+    <Compile Include="Aspects\Relay\SpecificationMethodAspect.cs" />
+    <Compile Include="Aspects\Relay\SpecificationRelay.cs" />
+    <Compile Include="Aspects\Relay\SpecificationRelayAspect.cs" />
+    <Compile Include="Aspects\Relay\SpecificationRelayAspectBase.cs" />
+    <Compile Include="Aspects\Relay\Support.cs" />
+    <Compile Include="Aspects\Specifications\ApplyInverseSpecificationAttribute.cs" />
+    <Compile Include="Aspects\SpecificationTypeDefinitionBase.cs" />
+    <Compile Include="Aspects\TypeDefinition.cs" />
+    <Compile Include="Aspects\GenericCommandTypeDefinition.cs" />
+    <Compile Include="Aspects\ITypeDefinition.cs" />
+    <Compile Include="Aspects\Implementations\ApplyGeneralizedImplementationsAttribute.cs" />
+    <Compile Include="Aspects\IValidatedTypeDefinition.cs" />
+    <Compile Include="Aspects\KnownRoles.cs" />
+    <Compile Include="Aspects\ParameterizedSourceTypeDefinition.cs" />
+    <Compile Include="Aspects\Relay\ApplyRelayAttribute.cs" />
+    <Compile Include="Aspects\GenericSpecificationTypeDefinition.cs" />
+    <Compile Include="Aspects\TypeDefinitionWithPrimaryMethodBase.cs" />
+    <Compile Include="Aspects\ValidatedTypeDefinition.cs" />
+    <Compile Include="Aspects\Validation\AspectInstanceLocatorFactory.cs" />
+    <Compile Include="Aspects\Defaults.cs" />
+    <Compile Include="Aspects\Build\IAspectInstanceLocator.cs" />
+    <Compile Include="Aspects\Build\IMethodStore.cs" />
+    <Compile Include="Aspects\Specifications\ISpecification.cs" />
+    <Compile Include="Aspects\Specifications\ISpecificationAware.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationAdapter.cs" />
+    <Compile Include="Aspects\Specifications\Aspect.cs" />
+    <Compile Include="Aspects\Specifications\ApplySpecificationAttribute.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationAttributeBase.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationAwareAdapter.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationAwareAttribute.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationAwareConstructor.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationConstructor.cs" />
+    <Compile Include="Aspects\Specifications\Support.cs" />
+    <Compile Include="Aspects\Specifications\SpecificationSource.cs" />
+    <Compile Include="Aspects\AspectBase.cs" />
+    <Compile Include="Aspects\DelegatedInvocation.cs" />
+    <Compile Include="Aspects\IInvocation.cs" />
+    <Compile Include="Aspects\InvocationBase.cs" />
+    <Compile Include="Aspects\ApplyInstanceAspectBase.cs" />
+    <Compile Include="Aspects\Validation\ParameterizedSourceTypeDefinition.cs" />
+    <Compile Include="Aspects\Validation\SourceAdapter.cs" />
+    <Compile Include="Aspects\Validation\ParameterizedSourceAdapterFactory.cs" />
+    <Compile Include="Aspects\Validation\ApplyAutoValidationAttribute.cs" />
+    <Compile Include="Aspects\Validation\AutoValidationExecuteAspect.cs" />
+    <Compile Include="Aspects\Validation\AutoValidationValidationAspect.cs" />
+    <Compile Include="Aspects\Build\AspectInstanceFactory.cs" />
+    <Compile Include="Aspects\Validation\AutoValidationAspectBase.cs" />
+    <Compile Include="Aspects\Build\Specification.cs" />
+    <Compile Include="Aspects\Build\MethodBasedAspectInstanceLocator.cs" />
+    <Compile Include="Aspects\Validation\Support.cs" />
+    <Compile Include="Commands\IRunCommand.cs" />
+    <Compile Include="Commands\RunCommandBase.cs" />
+    <Compile Include="Commands\SpecificationCommand.cs" />
+    <Compile Include="ComponentModel\ServicesValueProviderConverter.cs" />
+    <Compile Include="Composition\ActivationParameter.cs" />
+    <Compile Include="Composition\ActivatorSource.cs" />
+    <Compile Include="Composition\CompositeActivatorParameters.cs" />
+    <Compile Include="Composition\ConstructorSelector.cs" />
+    <Compile Include="Composition\Contracts.cs" />
+    <Compile Include="Composition\ExportDescriptorProviderBase.cs" />
+    <Compile Include="Composition\ExportMappings.cs" />
+    <Compile Include="Composition\IsValidConstructorSpecification.cs" />
+    <Compile Include="Composition\SingletonExportSource.cs" />
+    <Compile Include="Aspects\ApplyValuesFromSource.cs" />
+    <Compile Include="AssemblyPriorityLocator.cs" />
+    <Compile Include="AssociatedPriority.cs" />
+    <Compile Include="ComponentModel\DefaultValueProviderBase.cs" />
+    <Compile Include="Composition\AppliedExport.cs" />
+    <Compile Include="Composition\AppliedExportLocator.cs" />
+    <Compile Include="Composition\AppliedExports.cs" />
+    <Compile Include="Composition\CompositionHostExtensions.cs" />
+    <Compile Include="Composition\CompositionHostFactory.cs" />
+    <Compile Include="Composition\ConstructedExports.cs" />
+    <Compile Include="Composition\IsValidTypeSpecification.cs" />
+    <Compile Include="Composition\ContainerConfigurator.cs" />
+    <Compile Include="Composition\ExportMappingConfigurator.cs" />
+    <Compile Include="Composition\ContainerServicesConfigurator.cs" />
+    <Compile Include="Composition\ContainsExportSpecification.cs" />
+    <Compile Include="Composition\ConventionBuilderFactory.cs" />
+    <Compile Include="Composition\ConventionCandidateNames.cs" />
+    <Compile Include="Composition\ConventionExports.cs" />
+    <Compile Include="Composition\ConventionInterfaces.cs" />
+    <Compile Include="Composition\ConventionImplementationLocator.cs" />
+    <Compile Include="Composition\ConventionMapping.cs" />
+    <Compile Include="Composition\ConventionMappingFactory.cs" />
+    <Compile Include="Composition\ConventionConfiguration.cs" />
+    <Compile Include="Composition\ConventionMappings.cs" />
+    <Compile Include="Composition\ConventionTypeSelector.cs" />
+    <Compile Include="Composition\Defaults.cs" />
+    <Compile Include="Composition\DescriptorCollectionBase.cs" />
+    <Compile Include="Composition\ExportMapping.cs" />
+    <Compile Include="Composition\ExportProvider.cs" />
+    <Compile Include="Composition\ExportSourceBase.cs" />
+    <Compile Include="Composition\ExportsProfile.cs" />
+    <Compile Include="Composition\ExportsProfileFactory.cs" />
+    <Compile Include="Composition\ExportTypeExpander.cs" />
+    <Compile Include="Composition\InitializeExportsCommand.cs" />
+    <Compile Include="Composition\IsExportSpecification.cs" />
+    <Compile Include="Composition\IsValidConventionMappingSpecification.cs" />
+    <Compile Include="Composition\MappedConventionLocator.cs" />
+    <Compile Include="Composition\SelfAndNestedTypes.cs" />
+    <Compile Include="Composition\ServiceLocator.cs" />
+    <Compile Include="Composition\ServiceProviderConfigurations.cs" />
+    <Compile Include="Composition\ServiceProviderSource.cs" />
+    <Compile Include="Composition\ServicesExportDescriptorProvider.cs" />
+    <Compile Include="Composition\SingletonExport.cs" />
+    <Compile Include="Composition\SingletonExportFactory.cs" />
+    <Compile Include="Composition\SingletonExports.cs" />
+    <Compile Include="Application\SingletonExports.cs" />
+    <Compile Include="Composition\SourceDelegateContractResolver.cs" />
+    <Compile Include="Composition\SpecificationExporter.cs" />
+    <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
+    <Compile Include="DefaultPriorityAware.cs" />
+    <Compile Include="Diagnostics\Exceptions\Retry.cs" />
+    <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
+    <Compile Include="Diagnostics\Configuration.cs" />
+    <Compile Include="Diagnostics\ConfigureLoggingCommand.cs" />
+    <Compile Include="Diagnostics\Defaults.cs" />
+    <Compile Include="Diagnostics\LoggerBase.cs" />
+    <Compile Include="Diagnostics\LoggerExportedConfigurations.cs" />
+    <Compile Include="Diagnostics\LoggerOutputSource.cs" />
+    <Compile Include="Diagnostics\LoggingConfigurationSource.cs" />
+    <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
+    <Compile Include="Diagnostics\SystemLogger.cs" />
+    <Compile Include="Diagnostics\TimedOperationFactory.cs" />
+    <Compile Include="Diagnostics\TimedOperationFactorySource.cs" />
+    <Compile Include="FormatterParameter.cs" />
+    <Compile Include="PrioritizedCollection.cs" />
+    <Compile Include="PriorityAwareCollection.cs" />
+    <Compile Include="PriorityAwareLocator.cs" />
+    <Compile Include="PriorityComparer.cs" />
+    <Compile Include="PriorityExtensions.cs" />
+    <Compile Include="Aspects\Build\MethodStore.cs" />
+    <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\AlteredResultParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
+    <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
+    <Compile Include="Sources\Parameterized\CoercedParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\DictionarySource.cs" />
+    <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\SourceTypeMapping.cs" />
+    <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
+    <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
+    <Compile Include="Sources\ThreadIdentitySource.cs" />
+    <Compile Include="Specifications\CoercedSpecification.cs" />
+    <Compile Include="Specifications\ContainsItemSpecification.cs" />
+    <Compile Include="Specifications\DeferredSpecification.cs" />
+    <Compile Include="Specifications\DelegatedAssignedSpecification.cs" />
+    <Compile Include="Specifications\SuppliedDelegatedSpecification.cs" />
+    <Compile Include="Tasks\SuppliedTaskSource.cs" />
+    <Compile Include="Tasks\MonitorTaskCommand.cs" />
+    <Compile Include="Application\Setup\RegisterInstances.cs" />
+    <Compile Include="Aspects\Validation\AdapterSourceBase.cs" />
+    <Compile Include="Aspects\AspectHub.cs" />
+    <Compile Include="Aspects\CacheEntry.cs" />
+    <Compile Include="Aspects\Validation\CommandAdapter.cs" />
+    <Compile Include="Aspects\Validation\CommandAdapterFactory.cs" />
+    <Compile Include="Aspects\Validation\GenericCommandAdapterFactory.cs" />
+    <Compile Include="Aspects\Validation\GenericParameterProfileFactoryBase.cs" />
+    <Compile Include="ComponentModel\CurrentTimeValueProvider.cs" />
+    <Compile Include="ComponentModel\DefaultValueParameter.cs" />
+    <Compile Include="ComponentModel\ExpressionEvaluator.cs" />
+    <Compile Include="ComponentModel\ServiceAttribute.cs" />
+    <Compile Include="ComponentModel\ServicesValueProvider.cs" />
+    <Compile Include="ComponentModel\SingletonDefaultValueProvider.cs" />
+    <Compile Include="ComponentModel\TypeDefinitions.cs" />
+    <Compile Include="ComponentModel\ValueProvider.cs" />
+    <Compile Include="Configuration\ConfigurableFactoryBase.cs" />
+    <Compile Include="Configuration\ConfigurableParameterizedFactoryBase.cs" />
+    <Compile Include="Configuration\ConfigurationScope.cs" />
+    <Compile Include="Configuration\ConfigurationSource.cs" />
+    <Compile Include="Configuration\Extensions.cs" />
+    <Compile Include="Configuration\IConfigurationScope.cs" />
+    <Compile Include="Configuration\IValueStore.cs" />
+    <Compile Include="Diagnostics\Exceptions\BackoffRetryTime.cs" />
+    <Compile Include="Aspects\Exceptions\Time.cs" />
+    <Compile Include="Diagnostics\DelegatedTextCommand.cs" />
+    <Compile Include="Diagnostics\IgnoredOutputCommand.cs" />
+    <Compile Include="Diagnostics\Exceptions\LinearRetryTime.cs" />
+    <Compile Include="Diagnostics\LogEventMessageFactory.cs" />
+    <Compile Include="Diagnostics\LogEventTextFactory.cs" />
+    <Compile Include="Diagnostics\Configurations\AddSeqSinkCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\AddTextWriterCommand.cs" />
+    <Compile Include="Diagnostics\ApplicationAssemblyAlteration.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureByFactoryCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureByTransformingCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureMaximumDepthCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureTypeCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\EnrichCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\EnrichCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\EnrichWithPropertyCommand.cs" />
+    <Compile Include="Diagnostics\ExceptionParameter.cs" />
+    <Compile Include="Diagnostics\Configurations\FilterByExcludingCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\FilterByIncludingOnlyCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\FilterBySpecificationCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\FilterCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\FilterCommandBase.cs" />
+    <Compile Include="Diagnostics\FormatterConfiguration.cs" />
+    <Compile Include="Diagnostics\ILoggerHistory.cs" />
+    <Compile Include="Diagnostics\LogCommandBase.cs" />
+    <Compile Include="Diagnostics\LogException.cs" />
+    <Compile Include="Diagnostics\LogExceptionCommandBase.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
+    <Compile Include="Diagnostics\Configurations\LoggerConfigurationCommandBase.cs" />
+    <Compile Include="Diagnostics\DefaultSystemLoggerConfigurations.cs" />
+    <Compile Include="Diagnostics\DefaultLoggerAlterations.cs" />
+    <Compile Include="Diagnostics\LoggingController.cs" />
+    <Compile Include="Diagnostics\LoggingHistory.cs" />
+    <Compile Include="Extensions\ConventionBasedFormattingExtensions.cs" />
+    <Compile Include="Extensions\ImmutableArrayExtensions.cs" />
+    <Compile Include="Extensions\MethodEqualitySpecification.cs" />
+    <Compile Include="Extensions\TypeAdapterCache.cs" />
+    <Compile Include="Runtime\Assignments\AssignDisposingCommand.cs" />
+    <Compile Include="Runtime\Assignments\Assignment.cs" />
+    <Compile Include="Runtime\Assignments\Assignments.cs" />
+    <Compile Include="Runtime\Assignments\CacheAssign.cs" />
+    <Compile Include="Runtime\Assignments\CollectionAction.cs" />
+    <Compile Include="Runtime\Assignments\CollectionAssign.cs" />
+    <Compile Include="Runtime\CollectionBase.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Application\CurrentTimeConfiguration.cs" />
+    <Compile Include="Runtime\DataContractSerializers.cs" />
+    <Compile Include="Commands\DecoratedCommand.cs" />
+    <Compile Include="Commands\DelegatedCommand.cs" />
+    <Compile Include="Runtime\DelegatedDisposable.cs" />
+    <Compile Include="Runtime\Delegates.cs" />
+    <Compile Include="Runtime\DelegateType.cs" />
+    <Compile Include="Runtime\Assignments\DictionaryAssign.cs" />
+    <Compile Include="Runtime\DisposableBase.cs" />
+    <Compile Include="Runtime\Disposables.cs" />
+    <Compile Include="Commands\DisposingCommand.cs" />
+    <Compile Include="Commands\FirstCommand.cs" />
+    <Compile Include="Commands\SuppliedCommand.cs" />
+    <Compile Include="Runtime\Assignments\IAssign.cs" />
+    <Compile Include="Runtime\IComposable.cs" />
+    <Compile Include="Runtime\InitializedDisposableAction.cs" />
+    <Compile Include="Application\ApplicationBase.cs" />
+    <Compile Include="Application\ApplicationAssemblies.cs" />
+    <Compile Include="Application\ApplicationCommandSource.cs" />
+    <Compile Include="Application\ApplicationParts.cs" />
+    <Compile Include="Application\ApplicationServices.cs" />
+    <Compile Include="Application\ApplicationTypes.cs" />
+    <Compile Include="Application\Setup\ApplyExportCommands.cs" />
+    <Compile Include="Application\Setup\ApplySetup.cs" />
+    <Compile Include="Commands\SuppliedCommandSource.cs" />
+    <Compile Include="Commands\DeclaredCommandBase.cs" />
+    <Compile Include="Activation\CompositeActivator.cs" />
+    <Compile Include="Application\DefaultExportProvider.cs" />
+    <Compile Include="Application\Setup\EnableServicesCommand.cs" />
+    <Compile Include="Application\Exports.cs" />
+    <Compile Include="Application\IApplication.cs" />
+    <Compile Include="Commands\ICommandSource.cs" />
+    <Compile Include="Application\IExportProvider.cs" />
+    <Compile Include="Application\Setup\InstanceRegistrationRequest.cs" />
+    <Compile Include="Application\Setup\Instances.cs" />
+    <Compile Include="Application\Setup\InstanceRepository.cs" />
+    <Compile Include="Application\Setup\IsActive.cs" />
+    <Compile Include="Application\Setup\IServiceRepository.cs" />
+    <Compile Include="Application\Setup\ISetup.cs" />
+    <Compile Include="Tasks\ITaskMonitor.cs" />
+    <Compile Include="Application\ITypeSource.cs" />
+    <Compile Include="Application\Setup\RegisterInstanceCommand.cs" />
+    <Compile Include="Sources\CompositeItemSource.cs" />
+    <Compile Include="Sources\Defaults.cs" />
+    <Compile Include="Sources\Delegates\DelegatesBase.cs" />
+    <Compile Include="Sources\Delegates\ParameterizedSourceDelegates.cs" />
+    <Compile Include="Sources\Delegates\ServiceProvidedParameterizedSourceDelegates.cs" />
+    <Compile Include="Sources\Delegates\SourceDelegates.cs" />
+    <Compile Include="Application\Setup\ServiceProviderConfigurations.cs" />
+    <Compile Include="Application\Setup\ActivatorFactory.cs" />
+    <Compile Include="Application\Setup\ServicesEnabled.cs" />
+    <Compile Include="Application\SystemParts.cs" />
+    <Compile Include="Application\SystemPartsFactory.cs" />
+    <Compile Include="Application\SuppliedTypeSource.cs" />
+    <Compile Include="Sources\ExportSource.cs" />
+    <Compile Include="Sources\IItemSource.cs" />
+    <Compile Include="Sources\ItemSource.cs" />
+    <Compile Include="Specifications\AdapterSpecificationBase.cs" />
+    <Compile Include="Sources\Parameterized\AutoValidatingSourceBase.cs" />
+    <Compile Include="Sources\Parameterized\CacheParameterHandler.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ActivatedCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\DecoratedSourceCache.cs" />
+    <Compile Include="Sources\Parameterized\CompositeFactory.cs" />
+    <Compile Include="Sources\Parameterized\ConfiguringFactory.cs" />
+    <Compile Include="Sources\Parameterized\ConfiguringAlteration.cs" />
+    <Compile Include="Sources\Parameterized\ConstructFromKnownTypes.cs" />
+    <Compile Include="Sources\Parameterized\Defaults.cs" />
+    <Compile Include="Sources\Parameterized\SuppliedSource.cs" />
+    <Compile Include="Sources\Parameterized\Caching\IArgumentCache.cs" />
+    <Compile Include="Sources\Parameterized\IParameterAwareHandler.cs" />
+    <Compile Include="Sources\Delegates\IsParameterizedSourceSpecification.cs" />
+    <Compile Include="Sources\Delegates\IsSourceSpecification.cs" />
+    <Compile Include="Sources\Parameterized\Origin.cs" />
+    <Compile Include="Sources\Parameterized\ParameterConstructedCompositeFactory.cs" />
+    <Compile Include="Sources\Parameterized\ParameterTypes.cs" />
+    <Compile Include="Sources\Parameterized\ResultTypes.cs" />
+    <Compile Include="Sources\Parameterized\SelfAlteration.cs" />
+    <Compile Include="Sources\Parameterized\SourceInterfaces.cs" />
+    <Compile Include="Sources\Parameterized\SourceTypes.cs" />
+    <Compile Include="Sources\Parameterized\TimedDelegatedSource.cs" />
+    <Compile Include="Sources\Parameterized\Alter.cs" />
+    <Compile Include="Sources\Parameterized\AlterationBase.cs" />
+    <Compile Include="Sources\Parameterized\TypeLocatorBase.cs" />
+    <Compile Include="Sources\Parameterized\Wrapper.cs" />
+    <Compile Include="Sources\SuppliedAndExportedItems.cs" />
+    <Compile Include="Sources\TimedDelegatedSource.cs" />
+    <Compile Include="Tasks\TaskMonitors.cs" />
+    <Compile Include="TypeSystem\Default.cs" />
+    <Compile Include="TypeSystem\Generics\ActionContextBase.cs" />
+    <Compile Include="Application\ApplicationAssembly.cs" />
+    <Compile Include="Application\ApplicationAssemblySpecification.cs" />
+    <Compile Include="Application\ApplicationTypeSpecification.cs" />
+    <Compile Include="TypeSystem\AssemblyAttributeProvider.cs" />
+    <Compile Include="TypeSystem\AssemblyHintAttribute.cs" />
+    <Compile Include="TypeSystem\AssemblyHintProvider.cs" />
+    <Compile Include="TypeSystem\AssemblyLoader.cs" />
+    <Compile Include="TypeSystem\AssemblyPartLocator.cs" />
+    <Compile Include="TypeSystem\AssemblyPartQueryProvider.cs" />
+    <Compile Include="TypeSystem\AssemblyPartsAttribute.cs" />
+    <Compile Include="TypeSystem\AssemblyTypes.cs" />
+    <Compile Include="TypeSystem\AssemblyTypesStore.cs" />
+    <Compile Include="TypeSystem\Metadata\AttributeProviderBase.cs" />
+    <Compile Include="TypeSystem\Metadata\AttributeProviders.cs" />
+    <Compile Include="TypeSystem\Metadata\AttributeSupport.cs" />
+    <Compile Include="TypeSystem\CompatibleArgumentsSpecification.cs" />
+    <Compile Include="TypeSystem\Configuration.cs" />
+    <Compile Include="Application\DefaultAssemblyInformationSource.cs" />
+    <Compile Include="TypeSystem\Generics\DelegateCreationContextBase.cs" />
+    <Compile Include="TypeSystem\Delegates.cs" />
+    <Compile Include="TypeSystem\Metadata\DerivedTypeSpecification.cs" />
+    <Compile Include="TypeSystem\Metadata\Descriptor.cs" />
+    <Compile Include="TypeSystem\Generics\FactoryContextBase.cs" />
+    <Compile Include="TypeSystem\Generics\FilteredMethodContextBase.cs" />
+    <Compile Include="TypeSystem\Generics\GenericInvocationFactory.cs" />
+    <Compile Include="TypeSystem\Generics\GenericMethodCandidate.cs" />
+    <Compile Include="TypeSystem\Generics\GenericMethodCommands.cs" />
+    <Compile Include="TypeSystem\Generics\GenericMethodContext.cs" />
+    <Compile Include="TypeSystem\Generics\GenericMethodEqualitySpecification.cs" />
+    <Compile Include="TypeSystem\Generics\GenericMethodFactories.cs" />
+    <Compile Include="TypeSystem\Generics\GenericStaticMethodFactories.cs" />
+    <Compile Include="TypeSystem\Generics\IGenericMethodContext.cs" />
+    <Compile Include="TypeSystem\InitializeTypeCommand.cs" />
+    <Compile Include="TypeSystem\Generics\InstanceActionContext.cs" />
+    <Compile Include="TypeSystem\InstanceConstructors.cs" />
+    <Compile Include="TypeSystem\Generics\InstanceFactoryContext.cs" />
+    <Compile Include="TypeSystem\Items.cs" />
+    <Compile Include="TypeSystem\Metadata\MemberInfoAttributeProvider.cs" />
+    <Compile Include="TypeSystem\Metadata\MemberInfoDefinitions.cs" />
+    <Compile Include="TypeSystem\Generics\MethodContext.cs" />
+    <Compile Include="TypeSystem\Generics\MethodContextExtensions.cs" />
+    <Compile Include="TypeSystem\MethodFormatter.cs" />
+    <Compile Include="Diagnostics\Configurations\MinimumLevelCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\MinimumLevelIsCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\MinimumLevelSwitchCommand.cs" />
+    <Compile Include="Diagnostics\PurgeLoggerHistoryCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\ReadFromCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\ReadFromKeyValuePairsCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\ReadFromSettingsCommand.cs" />
+    <Compile Include="Diagnostics\LogRetryException.cs" />
+    <Compile Include="Diagnostics\Exceptions\PolicyBuilderSource.cs" />
+    <Compile Include="Diagnostics\Exceptions\RetryPolicySource.cs" />
+    <Compile Include="Diagnostics\Exceptions\RetryTimeBase.cs" />
+    <Compile Include="Runtime\Hash.cs" />
+    <Compile Include="Aspects\Validation\IParameterValidationAdapter.cs" />
+    <Compile Include="Aspects\Keys.cs" />
+    <Compile Include="Aspects\OfSourceType.cs" />
+    <Compile Include="Aspects\OriginAttribute.cs" />
+    <Compile Include="Aspects\Validation\ParameterValidationAdapterBase.cs" />
+    <Compile Include="Aspects\Validation\AdapterLocator.cs" />
+    <Compile Include="Aspects\Validation\AutoValidationController.cs" />
+    <Compile Include="Aspects\Validation\AutoValidationControllerFactory.cs" />
+    <Compile Include="Aspects\Validation\Defaults.cs" />
+    <Compile Include="Aspects\Validation\Extensions.cs" />
+    <Compile Include="Aspects\IAspectHub.cs" />
+    <Compile Include="Aspects\Validation\IAutoValidationController.cs" />
+    <Compile Include="Aspects\IMethodAware.cs" />
+    <Compile Include="Aspects\Validation\LinkedParameterAwareHandler.cs" />
+    <Compile Include="Commands\AdapterCommand.cs" />
+    <Compile Include="Runtime\RepositoryBase.cs" />
+    <Compile Include="Runtime\Serializer.cs" />
+    <Compile Include="Runtime\Assignments\SourceAssignment.cs" />
+    <Compile Include="Specifications\AssignedSpecification.cs" />
+    <Compile Include="Specifications\ConditionMonitorSpecificationBase.cs" />
+    <Compile Include="Specifications\DelegatedSpecification.cs" />
+    <Compile Include="Specifications\GenericTypeAssignableSpecification.cs" />
+    <Compile Include="Specifications\InverseSpecification.cs" />
+    <Compile Include="Specifications\OncePerParameterSpecification.cs" />
+    <Compile Include="Specifications\OncePerScopeSpecification.cs" />
+    <Compile Include="Specifications\OnlyOnceSpecification.cs" />
+    <Compile Include="Specifications\ProjectedSpecification.cs" />
+    <Compile Include="Specifications\SpecificationBase.cs" />
+    <Compile Include="Specifications\Specifications.cs" />
+    <Compile Include="Specifications\SpecificationWithContextBase.cs" />
+    <Compile Include="Coercion\StringCoercer.cs" />
+    <Compile Include="Runtime\StructuralEqualityComparer.cs" />
+    <Compile Include="Commands\TimedDelegatedCommand.cs" />
+    <Compile Include="Runtime\Assignments\Value.cs" />
+    <Compile Include="Runtime\ValueTuple.cs" />
+    <Compile Include="Expressions\ActivateFromArrayExpression.cs" />
+    <Compile Include="Activation\Activator.cs" />
+    <Compile Include="Expressions\ArgumentsArrayExpressionFactory.cs" />
+    <Compile Include="Expressions\ArgumentsArrayParameter.cs" />
+    <Compile Include="Coercion\Coercer.cs" />
+    <Compile Include="Coercion\CoercerBase.cs" />
+    <Compile Include="Coercion\Extensions.cs" />
+    <Compile Include="Expressions\CompiledDelegateFactoryBase.cs" />
+    <Compile Include="Activation\ConstructingParameterLocator.cs" />
+    <Compile Include="Activation\ConstructorDelegateFactory.cs" />
+    <Compile Include="Activation\Constructors.cs" />
+    <Compile Include="Activation\ConstructTypeRequest.cs" />
+    <Compile Include="Activation\Location\ContainsSingletonPropertySpecification.cs" />
+    <Compile Include="Activation\Location\DecoratedActivator.cs" />
+    <Compile Include="Activation\Location\DefaultServices.cs" />
+    <Compile Include="Application\Execute.cs" />
+    <Compile Include="Application\ExecutionContext.cs" />
+    <Compile Include="Expressions\ExpressionBodyParameter.cs" />
+    <Compile Include="Activation\IActivator.cs" />
+    <Compile Include="Expressions\InvocationFactoryBase.cs" />
+    <Compile Include="Expressions\Invoke.cs" />
+    <Compile Include="Expressions\InvokeArrayFactoryBase.cs" />
+    <Compile Include="Expressions\InvokeInstanceMethodDelegate.cs" />
+    <Compile Include="Expressions\InvokeInstanceMethodExpressionFactory.cs" />
+    <Compile Include="Expressions\InvokeMethodDelegate.cs" />
+    <Compile Include="Expressions\InvokeMethodExpressionFactory.cs" />
+    <Compile Include="Activation\Location\ISingletonLocator.cs" />
+    <Compile Include="Expressions\Parameter.cs" />
+    <Compile Include="Activation\ParameterConstructor.cs" />
+    <Compile Include="Activation\Location\SingletonAttribute.cs" />
+    <Compile Include="Activation\Location\SingletonDelegateCache.cs" />
+    <Compile Include="Activation\Location\SingletonDelegates.cs" />
+    <Compile Include="Activation\Location\SingletonLocator.cs" />
+    <Compile Include="Activation\Location\SingletonProperties.cs" />
+    <Compile Include="Activation\Location\SingletonRequest.cs" />
+    <Compile Include="Activation\Location\SingletonSpecification.cs" />
+    <Compile Include="Sources\SourceCoercer.cs" />
+    <Compile Include="Sources\SourceTypeAssignableSpecification.cs" />
+    <Compile Include="Activation\TypeRequest.cs" />
+    <Compile Include="Aspects\AutoGuardAspect.cs" />
+    <Compile Include="Composition\ConventionImplementations.cs" />
+    <Compile Include="Diagnostics\Configurations\AddSinkCommand.cs" />
+    <Compile Include="Diagnostics\Configurations\EnrichFromLogContextCommand.cs" />
+    <Compile Include="Application\Setup\ActivatedServiceSource.cs" />
+    <Compile Include="Sources\Parameterized\Extensions.cs" />
+    <Compile Include="Sources\Parameterized\IAlteration.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ArgumentCache.cs" />
+    <Compile Include="Application\Execution.cs" />
+    <Compile Include="Aspects\FreezeAttribute.cs" />
     <Compile Include="Aspects\ApplyDefaultValues.cs" />
     <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
+    <Compile Include="Runtime\KeyFactory.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
-    <Compile Include="ComponentModel\BuildablePropertyCollectionFactory.cs" />
+    <Compile Include="Aspects\TimedAttribute.cs" />
+    <Compile Include="Aspects\RecursionGuardAttribute.cs" />
+    <Compile Include="ComponentModel\DefaultValuePropertySpecification.cs" />
     <Compile Include="ComponentModel\DefaultPropertyValueFactory.cs" />
     <Compile Include="ComponentModel\DefaultValueBase.cs" />
     <Compile Include="ComponentModel\DefaultValueProvider.cs" />
     <Compile Include="ComponentModel\HostedValueLocator.cs" />
     <Compile Include="ComponentModel\IDefaultValueProvider.cs" />
-    <Compile Include="Extensions\CommandExtensions.cs" />
-    <Compile Include="Runtime\FatalApplicationException.cs" />
-    <Compile Include="Runtime\ICommand.cs" />
+    <Compile Include="Composition\ParameterizedSourceDelegateExporter.cs" />
+    <Compile Include="Composition\ServiceProviderFactory.cs" />
+    <Compile Include="Composition\PartsContainerConfigurator.cs" />
+    <Compile Include="Composition\SourceDelegateExporter.cs" />
+    <Compile Include="Composition\SourceExporter.cs" />
+    <Compile Include="Composition\SourceDelegateExporterBase.cs" />
+    <Compile Include="Composition\InstanceExportDescriptorProvider.cs" />
+    <Compile Include="Composition\SingletonExportDescriptorProvider.cs" />
+    <Compile Include="Configuration\EnableMethodCaching.cs" />
+    <Compile Include="Diagnostics\Configurations\MinimumLevelConfiguration.cs" />
+    <Compile Include="Configuration\Registration.cs" />
+    <Compile Include="Configuration\ValueStoreBase.cs" />
+    <Compile Include="Diagnostics\DebugOutputCommand.cs" />
+    <Compile Include="Formatter.cs" />
+    <Compile Include="Diagnostics\LogTemplate.cs" />
+    <Compile Include="Commands\Extensions.cs" />
+    <Compile Include="Extensions\MethodExtensions.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\DisposableAction.cs" />
+    <Compile Include="Commands\DisposeDisposableCommand.cs" />
+    <Compile Include="Application\FatalApplicationException.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Sources\AssignableSourceBase.cs" />
+    <Compile Include="Sources\CacheContainsSpecification.cs" />
+    <Compile Include="Sources\CacheValueSpecification.cs" />
+    <Compile Include="Sources\Parameterized\Caching\AmbientStack.cs" />
+    <Compile Include="Sources\Parameterized\Caching\Cache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheBase.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheExtensions.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheFactory.cs" />
+    <Compile Include="Sources\Parameterized\Caching\Condition.cs" />
+    <Compile Include="Sources\Parameterized\Caching\DecoratedCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\EqualityReference.cs" />
+    <Compile Include="Sources\Parameterized\Caching\EqualityReferenceCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\FactoryCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\IAtomicCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ICache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ICacheRegistry.cs" />
+    <Compile Include="Sources\Parameterized\Caching\IStackSource.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ISourceCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheRegistry.cs" />
+    <Compile Include="Sources\Parameterized\Caching\Stack.cs" />
+    <Compile Include="Sources\Parameterized\Caching\Stacks.cs" />
+    <Compile Include="Sources\Parameterized\Caching\SourceCache.cs" />
+    <Compile Include="Sources\ThreadLocalStore.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\WritableSourceCache.cs" />
+    <Compile Include="Sources\Parameterized\DecoratedAssignableParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\DecoratedParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\DelegatedParameterizedSource.cs" />
+    <Compile Include="Sources\DelegatedSource.cs" />
+    <Compile Include="Sources\EmptySource.cs" />
+    <Compile Include="Sources\Factory.cs" />
+    <Compile Include="Sources\SuppliedDeferredSource.cs" />
+    <Compile Include="Sources\CachedFactoryBuilder.cs" />
+    <Compile Include="Sources\SuppliedSource.cs" />
+    <Compile Include="Sources\IAssignable.cs" />
+    <Compile Include="Sources\Parameterized\IAssignableReferenceSource.cs" />
+    <Compile Include="Sources\IAssignableSource.cs" />
+    <Compile Include="Sources\Parameterized\IParameterizedScope.cs" />
+    <Compile Include="Sources\Parameterized\IParameterizedSource.cs" />
+    <Compile Include="Sources\IScope.cs" />
+    <Compile Include="Sources\IScopeAware.cs" />
+    <Compile Include="Sources\ISource.cs" />
+    <Compile Include="Runtime\WeakList.cs" />
+    <Compile Include="Runtime\PurgingCollection.cs" />
+    <Compile Include="Sources\Extensions.cs" />
+    <Compile Include="Sources\IStack.cs" />
+    <Compile Include="Sources\Parameterized\ParameterizedScope.cs" />
+    <Compile Include="Sources\Parameterized\ParameterizedSourceBase.cs" />
+    <Compile Include="Sources\Scope.cs" />
+    <Compile Include="Sources\ScopeContext.cs" />
+    <Compile Include="Sources\Scoping.cs" />
+    <Compile Include="Sources\Source.cs" />
+    <Compile Include="Sources\SourceBase.cs" />
+    <Compile Include="Sources\StackCommand.cs" />
+    <Compile Include="Runtime\IRepository.cs" />
     <Compile Include="Runtime\ISerializer.cs" />
-    <Compile Include="Runtime\Specifications\WrappedSpecification.cs" />
-    <Compile Include="Runtime\Specifications\IsTypeSpecification.cs" />
-    <Compile Include="Runtime\Values\AmbientContextCommand.cs" />
-    <Compile Include="Runtime\Values\ConnectedValue.cs" />
-    <Compile Include="Extensions\ActivateFactoryExtensions.cs" />
-    <Compile Include="Activation\FactoryModel\ActivateParameter.cs" />
-    <Compile Include="Activation\FactoryModel\ActivationFactory.cs" />
-    <Compile Include="Activation\FactoryModel\ActivationParameter.cs" />
-    <Compile Include="Runtime\Specifications\AlwaysSpecification.cs" />
-    <Compile Include="Runtime\Specifications\FixedSpecification.cs" />
-    <Compile Include="Runtime\Specifications\NeverSpecification.cs" />
-    <Compile Include="Activation\CompositeActivator.cs" />
-    <Compile Include="Activation\FactoryModel\ConstructFactory.cs" />
-    <Compile Include="Activation\FactoryModel\ConstructFactoryParameterCoercer.cs" />
-    <Compile Include="Activation\FactoryModel\ConstructParameter.cs" />
-    <Compile Include="Activation\FactoryModel\FactoryParameterCoercer.cs" />
-    <Compile Include="Activation\FactoryModel\IFactoryParameterCoercer.cs" />
-    <Compile Include="Activation\FactoryModel\IFactoryWithParameter.cs" />
-    <Compile Include="Activation\IoC\ArrayResolutionStrategy.cs" />
-    <Compile Include="Activation\IoC\DefaultUnityConstructorSelectorPolicy.cs" />
-    <Compile Include="Activation\IoC\EnumerableResolutionStrategy.cs" />
-    <Compile Include="Activation\IoC\IResolutionSupport.cs" />
-    <Compile Include="Activation\IoC\ResolutionContext.cs" />
-    <Compile Include="Activation\IoC\ResolutionSupport.cs" />
-    <Compile Include="Activation\IoC\TransientServiceRegistry.cs" />
-    <Compile Include="Activation\IServiceLocation.cs" />
-    <Compile Include="Activation\ServiceLocation.cs" />
-    <Compile Include="Extensions\ServiceLocatorExtensions.cs" />
-    <Compile Include="Runtime\Values\ThreadAmbientChain.cs" />
-    <Compile Include="Setup\Registration\FactoryRegistration.cs" />
-    <Compile Include="Setup\Registration\LifetimeFactoryParameterCoercer.cs" />
-    <Compile Include="Setup\Registration\MappingRegistration.cs" />
-    <Compile Include="Setup\SetupParameterExtensions.cs" />
-    <Compile Include="TypeSystem\AssemblyInformation.cs" />
-    <Compile Include="TypeSystem\AssemblyInformationFactory.cs" />
+    <Compile Include="Runtime\Assignments\ParameterInvocation.cs" />
+    <Compile Include="Specifications\DecoratedSpecification.cs" />
+    <Compile Include="Sources\AmbientStackCommand.cs" />
+    <Compile Include="Specifications\AlwaysSpecification.cs" />
+    <Compile Include="Specifications\SuppliedSpecification.cs" />
+    <Compile Include="Activation\ConstructCoercer.cs" />
+    <Compile Include="Coercion\ICoercer.cs" />
+    <Compile Include="Sources\Delegates\SourceFactory.cs" />
+    <Compile Include="TypeSystem\AllParts.cs" />
+    <Compile Include="Application\AssemblyInformation.cs" />
+    <Compile Include="TypeSystem\AssemblyInformationSource.cs" />
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
-    <Compile Include="ComponentModel\ValueAttribute.cs" />
-    <Compile Include="Diagnostics\CompositeMessageLogger.cs" />
-    <Compile Include="Diagnostics\Diagnostics.cs" />
-    <Compile Include="Diagnostics\ExceptionFormatter.cs" />
-    <Compile Include="Diagnostics\IMessageRecorder.cs" />
-    <Compile Include="Diagnostics\Message.cs" />
-    <Compile Include="Diagnostics\MessageLoggerBase.cs" />
-    <Compile Include="Diagnostics\MessageRecorder.cs" />
-    <Compile Include="Diagnostics\TryContext.cs" />
-    <Compile Include="Extensions\BuilderContextExtensions.cs" />
+    <Compile Include="ComponentModel\SourceAttribute.cs" />
+    <Compile Include="Diagnostics\LoggerHistorySink.cs" />
     <Compile Include="Extensions\ObjectMappingParameter.cs" />
-    <Compile Include="Runtime\Specifications\AllSpecification.cs" />
-    <Compile Include="Runtime\Specifications\AnySpecification.cs" />
-    <Compile Include="TypeSystem\ApplicationAssemblyLocator.cs" />
-    <Compile Include="TypeSystem\ApplicationAttribute.cs" />
-    <Compile Include="Runtime\Specifications\CompositeSpecification.cs" />
-    <Compile Include="Runtime\CurrentTime.cs" />
-    <Compile Include="Runtime\Specifications\EqualityContextAwareSpecification.cs" />
-    <Compile Include="Runtime\Values\IWritableValue.cs" />
-    <Compile Include="Runtime\Values\FixedValue.cs" />
-    <Compile Include="Runtime\Specifications\ContextAwareSpecification.cs" />
-    <Compile Include="Runtime\Specifications\SpecificationBase.cs" />
-    <Compile Include="Runtime\Specifications\SpecificationExtensions.cs" />
-    <Compile Include="TypeSystem\Default.cs" />
-    <Compile Include="TypeSystem\DefaultFactory.cs" />
-    <Compile Include="TypeSystem\HostingAttribute.cs" />
+    <Compile Include="Specifications\AllSpecification.cs" />
+    <Compile Include="Specifications\AnySpecification.cs" />
+    <Compile Include="Application\ApplicationAssemblyLocator.cs" />
+    <Compile Include="Application\ApplicationAttribute.cs" />
+    <Compile Include="Application\CurrentTime.cs" />
+    <Compile Include="Specifications\EqualityContextAwareSpecification.cs" />
+    <Compile Include="Specifications\ContextAwareSpecification.cs" />
+    <Compile Include="Specifications\GuardedSpecificationBase.cs" />
+    <Compile Include="Specifications\Extensions.cs" />
+    <Compile Include="TypeSystem\Metadata\Attributes.cs" />
+    <Compile Include="TypeSystem\Where.cs" />
+    <Compile Include="TypeSystem\DefaultValues.cs" />
+    <Compile Include="TypeSystem\Metadata\DerivedMethodSpecification.cs" />
+    <Compile Include="TypeSystem\Generics\GenericStaticMethodCommands.cs" />
+    <Compile Include="ComponentModel\HostingAttributeBase.cs" />
     <Compile Include="TypeSystem\IAttributeProvider.cs" />
-    <Compile Include="TypeSystem\KnownTypeFactory.cs" />
-    <Compile Include="TypeSystem\MemberInfoWithRelatedProviderFactory.cs" />
+    <Compile Include="TypeSystem\Metadata\TypeDefinitionProviderSource.cs" />
+    <Compile Include="TypeSystem\KnownTypes.cs" />
+    <Compile Include="TypeSystem\Metadata\MethodInfoAttributeProvider.cs" />
+    <Compile Include="TypeSystem\MethodMapper.cs" />
+    <Compile Include="TypeSystem\MethodMapping.cs" />
+    <Compile Include="TypeSystem\ObjectTypeFactory.cs" />
+    <Compile Include="TypeSystem\Metadata\ParameterInfoAttributeProvider.cs" />
+    <Compile Include="TypeSystem\PartsBase.cs" />
+    <Compile Include="TypeSystem\Metadata\PropertyInfoAttributeProvider.cs" />
+    <Compile Include="TypeSystem\PublicParts.cs" />
+    <Compile Include="TypeSystem\Metadata\ReflectionElementAttributeProvider.cs" />
+    <Compile Include="TypeSystem\SpecialValues.cs" />
+    <Compile Include="TypeSystem\Generics\StaticActionContext.cs" />
+    <Compile Include="TypeSystem\Generics\StaticFactoryContext.cs" />
     <Compile Include="TypeSystem\TypeAdapter.cs" />
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
     <Compile Include="ConditionMonitorState.cs" />
-    <Compile Include="Extensions\AssemblyLocatorExtensions.cs" />
+    <Compile Include="Extensions\TypeSystemExtensions.cs" />
     <Compile Include="Extensions\Mappings.cs" />
-    <Compile Include="Extensions\ObjectMappingFactory.cs" />
-    <Compile Include="Modularity\IModuleMonitor.cs" />
-    <Compile Include="Modularity\ModuleInfoExtensions.cs" />
-    <Compile Include="Modularity\ModuleMonitor.cs" />
-    <Compile Include="TypeSystem\AssemblySourceBase.cs" />
-    <Compile Include="Activation\FactoryModel\FactoryBase.cs" />
-    <Compile Include="Runtime\Collection.cs" />
-    <Compile Include="TypeSystem\ApplicationAssemblyTransformer.cs">
+    <Compile Include="Extensions\ObjectMapper.cs" />
+    <Compile Include="TypeSystem\AssemblyBasedTypeSource.cs" />
+    <Compile Include="Runtime\DeclarativeCollection.cs" />
+    <Compile Include="Application\ApplicationAssemblyFilter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Activation\FactoryModel\IFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Activation\IoC\Activator.cs" />
-    <Compile Include="ComponentModel\ActivateAttributeBase.cs" />
-    <Compile Include="ComponentModel\CompositeTypeDefinitionProvider.cs" />
+    <Compile Include="ComponentModel\ServicesValueBase.cs" />
     <Compile Include="ComponentModel\DefaultAttribute.cs" />
-    <Compile Include="ComponentModel\MemberInfoLocator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\ApplicationExceptionFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Extensions\AttributeProviderExtensions.cs" />
     <Compile Include="Extensions\BooleanExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\ExceptionExtensions.cs" />
-    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="TypeSystem\IApplicationAssemblyLocator.cs" />
-    <Compile Include="Runtime\ICurrentTime.cs" />
-    <Compile Include="Runtime\Specifications\ISpecification.cs" />
-    <Compile Include="Runtime\Values\IValue.cs" />
-    <Compile Include="Runtime\ListDictionary.cs" />
-    <Compile Include="Diagnostics\MessageLogger.cs" />
-    <Compile Include="Modularity\AssemblyModuleCatalog.cs" />
-    <Compile Include="Modularity\AttributeDataProvider.cs" />
-    <Compile Include="Modularity\CyclicDependencyFoundException.cs" />
-    <Compile Include="Modularity\DuplicateModuleException.cs" />
-    <Compile Include="TypeSystem\IAssemblyProvider.cs" />
-    <Compile Include="Modularity\IAssemblyResolver.cs" />
-    <Compile Include="Modularity\IAttributeDataProvider.cs" />
-    <Compile Include="Modularity\IModule.cs" />
-    <Compile Include="Modularity\IModuleCatalog.cs" />
-    <Compile Include="Modularity\IModuleCatalogItem.cs" />
-    <Compile Include="Modularity\IModuleInfoBuilder.cs" />
-    <Compile Include="Modularity\IModuleInitializer.cs" />
-    <Compile Include="Modularity\IModuleManager.cs" />
-    <Compile Include="Modularity\IModuleTypeLoader.cs" />
-    <Compile Include="Modularity\LoadModuleCompletedEventArgs.cs" />
-    <Compile Include="Modularity\ModuleTypeLoader.cs" />
-    <Compile Include="Modularity\ModularityException.cs" />
-    <Compile Include="Modularity\ModuleAttribute.cs" />
-    <Compile Include="Modularity\ModuleCatalog.cs" />
-    <Compile Include="Modularity\ModuleDependencyAttribute.cs" />
-    <Compile Include="Modularity\ModuleDependencySolver.cs" />
-    <Compile Include="Modularity\ModuleDownloadProgressChangedEventArgs.cs" />
-    <Compile Include="Modularity\ModuleInfo.cs" />
-    <Compile Include="Modularity\ModuleInfoBuilder.cs" />
-    <Compile Include="Modularity\ModuleInfoGroup.cs" />
-    <Compile Include="Modularity\ModuleInfoGroupExtensions.cs" />
-    <Compile Include="Modularity\ModuleInitializeException.cs" />
-    <Compile Include="Modularity\ModuleInitializer.cs" />
-    <Compile Include="Modularity\ModuleManager.cs" />
-    <Compile Include="Modularity\ModuleNotFoundException.cs" />
-    <Compile Include="Modularity\ModuleState.cs" />
-    <Compile Include="Modularity\ModuleTypeLoaderNotFoundException.cs" />
-    <Compile Include="Modularity\ModuleTypeLoadingException.cs" />
-    <Compile Include="Runtime\Specifications\TypeAssignableSpecification.cs" />
-    <Compile Include="Runtime\Values\Value.cs" />
-    <Compile Include="Runtime\Values\WritableValue.cs" />
-    <Compile Include="Setup\AllTypesOfFactory.cs" />
-    <Compile Include="Runtime\CommandCollection.cs" />
-    <Compile Include="Runtime\CompositeCommand.cs" />
-    <Compile Include="Setup\Registration\ConventionRegistrationProfile.cs" />
-    <Compile Include="Setup\Registration\ConventionRegistrationProfileFactory.cs" />
-    <Compile Include="Setup\Registration\IRegistration.cs" />
-    <Compile Include="Setup\Commands\InitializeModulesCommand.cs" />
-    <Compile Include="Activation\IoC\InjectionFactoryFactory.cs" />
-    <Compile Include="Activation\IoC\InjectionMemberParameter.cs" />
-    <Compile Include="Activation\IoC\InjectionMemberFactory.cs" />
-    <Compile Include="Runtime\IProgram.cs" />
-    <Compile Include="Setup\Registration\IRegistrationTypeContext.cs" />
-    <Compile Include="Setup\ISetup.cs" />
-    <Compile Include="Activation\IoC\ISingletonLocator.cs" />
-    <Compile Include="Runtime\Program.cs" />
-    <Compile Include="Setup\Registration\RegisterAttribute.cs" />
-    <Compile Include="Setup\Registration\RegisterFrameworkExceptionTypesCommand.cs" />
-    <Compile Include="Setup\Registration\RegistrationBaseAttribute.cs" />
-    <Compile Include="Setup\Commands\RunProgramCommand.cs" />
-    <Compile Include="Setup\Setup.cs" />
-    <Compile Include="Setup\SetupCommandBase.cs" />
-    <Compile Include="Setup\SetupParameter.cs" />
-    <Compile Include="Setup\Commands\SetupModuleCatalogCommand.cs" />
-    <Compile Include="Setup\Commands\DelegatedCommand.cs" />
-    <Compile Include="Setup\Registration\LifetimeManagerAttribute.cs" />
-    <Compile Include="Setup\Registration\RegistrationAttribute.cs" />
-    <Compile Include="Setup\Commands\SetupUnityCommand.cs" />
-    <Compile Include="Setup\Commands\ConfigureUnityCommand.cs" />
-    <Compile Include="Activation\IoC\SingletonAttribute.cs" />
-    <Compile Include="Activation\IoC\SingletonLocator.cs" />
-    <Compile Include="Setup\Commands\UnityCommand.cs" />
-    <Compile Include="Setup\Registration\RegisterFromMetadataCommand.cs" />
-    <Compile Include="Setup\Commands\UnityInstance.cs" />
-    <Compile Include="Setup\Commands\UnityRegistrationCommand.cs" />
-    <Compile Include="Setup\Commands\UnityType.cs" />
-    <Compile Include="Activation\IoC\BuildPipelineExtension.cs" />
-    <Compile Include="Activation\IoC\ServiceLocator.cs" />
-    <Compile Include="Runtime\ApplicationInformation.cs">
+    <Compile Include="Application\ICurrentTime.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+    <Compile Include="Diagnostics\PurgeLoggerMessageHistoryCommand.cs" />
+    <Compile Include="Specifications\TypeAssignableSpecification.cs" />
+    <Compile Include="Sources\ItemSourceBase.cs" />
+    <Compile Include="Sources\CacheSpecificationBase.cs" />
+    <Compile Include="TypeSystem\AllTypesOfFactory.cs" />
+    <Compile Include="Commands\CommandCollection.cs" />
+    <Compile Include="Commands\CompositeCommand.cs" />
+    <Compile Include="Application\IProgram.cs" />
+    <Compile Include="Application\Program.cs" />
+    <Compile Include="Application\RunProgramCommand.cs" />
+    <Compile Include="Application\Setup\DeclarativeSetup.cs" />
+    <Compile Include="Tasks\TaskMonitor.cs" />
+    <Compile Include="Commands\DeclaredSuppliedCommand.cs" />
+    <Compile Include="Application\RegistrationAttribute.cs" />
+    <Compile Include="Application\ApplicationInformation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ComponentModel\TypeDefinitionProvider.cs">
+    <Compile Include="ComponentModel\ConventionTypeDefinitionProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentModel\CurrentTimeAttribute.cs" />
-    <Compile Include="ComponentModel\FactoryAttribute.cs" />
-    <Compile Include="ComponentModel\IMemberInfoLocator.cs" />
     <Compile Include="ComponentModel\ITypeDefinitionProvider.cs" />
     <Compile Include="ComponentModel\NewGuidAttribute.cs" />
     <Compile Include="ConditionMonitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\ExceptionHandlingResult.cs" />
-    <Compile Include="Diagnostics\IExceptionFormatter.cs" />
-    <Compile Include="Diagnostics\IExceptionHandler.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\IMessageLogger.cs" />
-    <Compile Include="Extensions\UnityContainerExtensions.cs" />
+    <Compile Include="Diagnostics\Configurations\DeclarativeCompositeLoggerConfiguration.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IAllowsPriority.cs" />
+    <Compile Include="IPriorityAware.cs" />
     <Compile Include="Priority.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -376,34 +759,28 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Activation\Activator.cs">
+    <Compile Include="Activation\ActivatorExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Activation\IActivator.cs" />
-    <Compile Include="Activation\IServiceRegistry.cs" />
-    <Compile Include="Activation\Services.cs">
+    <Compile Include="Activation\Location\GlobalServiceProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Activation\SystemActivator.cs" />
+    <Compile Include="Activation\Constructor.cs" />
+    <Compile Include="TypeSystem\Metadata\TypeDefinitions.cs" />
+    <Compile Include="TypeSystem\Metadata\TypeInfoAttributeProvider.cs" />
+    <Compile Include="TypeSystem\TypesFactory.cs" />
+    <Compile Include="TypeSystem\TypeSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="DragonSpark.pfx" />
-    <None Include="DragonSpark.psproj">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -416,20 +793,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!--<ItemGroup>
+	<Folder Include="Diagnostics\Logger\Categories\" />
+  </ItemGroup>-->
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\packages\PostSharp.4.2.18\tools\PostSharp.targets" Condition="Exists('$(SolutionDir)\packages\PostSharp.4.2.18\tools\PostSharp.targets')" />
-  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
-    <Error Condition="!Exists('$(SolutionDir)\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
-    <Error Condition="Exists('$(SolutionDir)\packages\PostSharp.4.2.18\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <!--<Import Project="$(SolutionDir)packages\PostSharp.4.2.29\tools\PostSharp.targets" Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.29\tools\PostSharp.targets')" />
+	<Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+		<Error Condition="!Exists('$(SolutionDir)packages\PostSharp.4.2.29\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+		<Error Condition="Exists('$(SolutionDir)packages\PostSharp.4.2.29\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+	</Target>-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />
   <Target Name="BeforeBuild">
   </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+
   <Target Name="AfterBuild">
   </Target>
   -->

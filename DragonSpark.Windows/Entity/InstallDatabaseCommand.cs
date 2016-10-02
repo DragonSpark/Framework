@@ -1,28 +1,38 @@
-using System.IO;
-using DragonSpark.Aspects;
+using DragonSpark.Commands;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using DragonSpark.Setup;
 using DragonSpark.Windows.Properties;
+using PostSharp.Patterns.Contracts;
+using System.IO;
+using System.Linq;
 
 namespace DragonSpark.Windows.Entity
 {
-	public class InstallDatabaseCommand : SetupCommandBase
+	public class InstallDatabaseCommand : CommandBase<object>
 	{
-		[Factory( typeof(AttachedDatabaseFileFactory) )]
-		public FileInfo Database { get; set; }
+		readonly static byte[][] Data = { Resources.Blank, Resources.Blank_log };
 
-		[BuildUp]
-		protected override void OnExecute( object parameter ) => Database.Exists.IsFalse( () =>
+		[Service, Required]
+		public FileInfo Database { [return: NotNull]get; set; }
+
+		public override void Execute( object parameter )
 		{
-			var items = EntityFiles.WithLog( Database ).TupleWith( new[] { Resources.Blank, Resources.Blank_log } );
-			items.Each( tuple => 
+			if ( !Database.Exists )
 			{
-				using ( var stream = File.Create( tuple.Item1.FullName ) )
+				foreach ( var item in EntityFiles.WithLog( Database ).Tuple( Data ).ToArray() )
 				{
-					stream.Write( tuple.Item2, 0, tuple.Item2.Length );
+					var fullName = item.Item1.FullName;
+					var directoryRoot = Path.GetDirectoryName( fullName );
+					if ( directoryRoot != null )
+					{
+						Directory.CreateDirectory( directoryRoot );
+						using ( var stream = File.Create( fullName ) )
+						{
+							stream.Write( item.Item2, 0, item.Item2.Length );
+						}
+					}
 				}
-			} );
-		} );
+			}
+		}
 	}
 }
