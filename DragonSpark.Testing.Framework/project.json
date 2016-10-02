@@ -1,0 +1,14 @@
+﻿{
+  "dependencies": {
+    "AutoFixture.AutoMoq": "3.50.2",
+    "AutoFixture.Xunit2": "3.50.2",
+    "JetBrains.dotMemoryUnit": "2.3.20160517.113140",
+    "xunit.core": "2.1.0"
+  },
+  "frameworks": {
+    "net461": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

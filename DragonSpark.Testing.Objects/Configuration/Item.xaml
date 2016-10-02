@@ -1,0 +1,11 @@
+﻿<local:TestItem x:Class="DragonSpark.Testing.Objects.Configuration.Item"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:ds="http://framework.dragonspark.us"
+	xmlns:local="clr-namespace:DragonSpark.Testing.Objects.Configuration"
+	mc:Ignorable="d" 
+	SomeTestingProperty="{ds:Configuration}"
+	>
+</local:TestItem>

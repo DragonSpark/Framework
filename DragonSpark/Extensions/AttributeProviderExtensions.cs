@@ -1,45 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DragonSpark.TypeSystem;
+using DragonSpark.TypeSystem.Metadata;
+using System;
 using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Extensions
 {
 	public static class AttributeProviderExtensions
 	{
-		readonly static Dictionary<Tuple<ICustomAttributeProvider,Type>,Attribute[]> Cache = new Dictionary<Tuple<ICustomAttributeProvider,Type>,Attribute[]>();
+		public static TResult From<TAttribute, TResult>( this object @this, Func<TAttribute, TResult> resolveValue, Func<TResult> resolveDefault = null ) where TAttribute : Attribute =>
+			@this.GetAttributes<TAttribute>().WithFirst( resolveValue, resolveDefault );
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Convenience method for metadata purposes." )]
-		public static bool IsDecoratedWith<TAttribute>( this ICustomAttributeProvider target ) where TAttribute : Attribute
+		public static bool Has<T>( this object @this ) where T : Attribute => Attributes.Get( @this ).Contains( typeof(T) );
+
+		public static T GetAttribute<T>( this object @this ) where T : Attribute => @this.GetAttributes<T>().FirstOrDefault();
+
+		public static T[] GetAttributes<T>( this object @this ) where T : Attribute
 		{
-			var result = target.GetAttributes<TAttribute>().Any();
-			return result;
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Convenience method for metadata purposes." )]
-		public static TAttribute GetAttribute<TAttribute>( this ICustomAttributeProvider target ) where TAttribute : Attribute
-		{
-			var result = target.GetAttributes<TAttribute>().FirstOrDefault();
-			return result;
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Convenience method for metadata purposes." )]
-		public static TAttribute[] GetAttributes<TAttribute>( this ICustomAttributeProvider target ) where TAttribute : Attribute
-		{
-			var key = new Tuple<ICustomAttributeProvider, Type>( target, typeof(TAttribute) );
-			var result = Cache.Ensure( key, ResolveAttributes ).OfType<TAttribute>().ToArray();
-			return result;
-		}
-
-		public static IEnumerable<T> GetAttributes<T>(this MemberInfo member, bool inherit) {
-			return Attribute.GetCustomAttributes(member, inherit).OfType<T>();
-		}
-
-		static Attribute[] ResolveAttributes( Tuple<ICustomAttributeProvider, Type> key )
-		{
-			var provider = key.Item1.As<MemberInfo>().Transform( x => new MetadataEnabledMemberInfoAttributeProvider( x ), () => key.Item1, x => !( x is Type ) );
-			var attributes = provider.GetCustomAttributes( key.Item2, true );
-			var result = attributes.OfType<Attribute>().ToArray();
+			var attributeProvider = Attributes.Get( @this );
+			var attributes = attributeProvider.GetAttributes( typeof(T) );
+			var result = attributes as T[] ?? Items<T>.Default;
 			return result;
 		}
 	}

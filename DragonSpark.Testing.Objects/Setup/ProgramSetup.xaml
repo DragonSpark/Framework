@@ -1,0 +1,19 @@
+﻿<setup:DeclarativeSetup x:Class="DragonSpark.Testing.Objects.Setup.ProgramSetup"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:application="clr-namespace:DragonSpark.Application;assembly=DragonSpark"
+	xmlns:setup="clr-namespace:DragonSpark.Application.Setup;assembly=DragonSpark"
+	xmlns:commands="clr-namespace:DragonSpark.Commands;assembly=DragonSpark"
+	xmlns:ds="http://framework.dragonspark.us"
+	xmlns:setup1="clr-namespace:DragonSpark.Testing.Objects.Setup"
+	xmlns:tasks="clr-namespace:DragonSpark.Tasks;assembly=DragonSpark"
+	mc:Ignorable="d"
+>
+	<commands:DeclaredSuppliedCommand Command="{x:Static tasks:MonitorTaskCommand.Default}" Parameter="{ds:Source {x:Static setup1:CountingTaskSource.Default}}" />
+	<setup:RegisterInstances>
+		<application:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
+	</setup:RegisterInstances>
+	<application:RunProgramCommand />
+</setup:DeclarativeSetup>
