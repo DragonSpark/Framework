@@ -29,11 +29,12 @@ Packages/
 *.ldf
 *.log
 *.pubxml
-/Publish.bat
+Publish.bat
+Pull.bat
 /TestResults
 -Archive/
-/Pull.bat
 *.lock.json
 *.nuget.props
 *.nuget.targets
-/.vs/config
+
+.vs/
