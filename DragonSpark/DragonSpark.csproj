@@ -54,7 +54,7 @@
     <Compile Include="Aspects\Build\SupportDefinitionBase.cs" />
     <Compile Include="Aspects\Build\TypeBasedAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Build\TypedPairs.cs" />
-    <Compile Include="Aspects\Alteration\AlterAttribute.cs" />
+    <Compile Include="Aspects\Alteration\ApplyAlterationAttribute.cs" />
     <Compile Include="Aspects\Alteration\Aspect.cs" />
     <Compile Include="Aspects\Alteration\Adapter.cs" />
     <Compile Include="Aspects\Alteration\Source.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="Aspects\Coercion\ApplyCoercerAttribute.cs" />
     <Compile Include="Aspects\Coercion\Aspect.cs" />
     <Compile Include="Aspects\Coercion\CoercerAdapter.cs" />
-    <Compile Include="Aspects\Coercion\CoercerSource.cs" />
+    <Compile Include="Aspects\Coercion\Source.cs" />
     <Compile Include="Aspects\Coercion\Constructor.cs" />
     <Compile Include="Aspects\Coercion\Defaults.cs" />
     <Compile Include="Aspects\Coercion\ICoercer.cs" />
@@ -130,7 +130,6 @@
     <Compile Include="Aspects\TypeDefinitionWithPrimaryMethodBase.cs" />
     <Compile Include="Aspects\ValidatedTypeDefinition.cs" />
     <Compile Include="Aspects\Validation\AspectInstanceLocatorFactory.cs" />
-    <Compile Include="Aspects\Defaults.cs" />
     <Compile Include="Aspects\Build\IAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Build\IMethodStore.cs" />
     <Compile Include="Aspects\Specifications\ISpecification.cs" />
@@ -142,9 +141,9 @@
     <Compile Include="Aspects\Specifications\SpecificationAwareAdapter.cs" />
     <Compile Include="Aspects\Specifications\SpecificationAwareAttribute.cs" />
     <Compile Include="Aspects\Specifications\SpecificationAwareConstructor.cs" />
-    <Compile Include="Aspects\Specifications\SpecificationConstructor.cs" />
+    <Compile Include="Aspects\Specifications\Constructor.cs" />
     <Compile Include="Aspects\Specifications\Support.cs" />
-    <Compile Include="Aspects\Specifications\SpecificationSource.cs" />
+    <Compile Include="Aspects\Specifications\Source.cs" />
     <Compile Include="Aspects\AspectBase.cs" />
     <Compile Include="Aspects\DelegatedInvocation.cs" />
     <Compile Include="Aspects\IInvocation.cs" />

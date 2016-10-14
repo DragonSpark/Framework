@@ -49,7 +49,7 @@
     <Compile Include="Activation\ConstructorTests.cs" />
     <Compile Include="Activation\ConstructorCoercerTests.cs" />
     <Compile Include="Application\TaskedTaskExecutionContextTests.cs" />
-    <Compile Include="Aspects\Alteration\AlterAttributeTests.cs" />
+    <Compile Include="Aspects\Alteration\ApplyAlterationAttributeTests.cs" />
     <Compile Include="Aspects\Coercion\ApplyCoercerAttributeTests.cs" />
     <Compile Include="Aspects\Exceptions\ApplyExceptionPolicyAttributeTests.cs" />
     <Compile Include="Aspects\Implementations\ApplyGeneralizedImplementationsAttributeTests.cs" />

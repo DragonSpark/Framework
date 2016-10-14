@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Aspects.Alteration
 {
-	sealed class Support : SupportDefinition<Aspect>
+	sealed class Support<T> : SupportDefinition<T> where T : AspectBase
 	{
-		public static Support Default { get; } = new Support();
+		public static Support<T> Default { get; } = new Support<T>();
 		Support() : base( GenericCommandTypeDefinition.Default, ParameterizedSourceTypeDefinition.Default ) {}
 	}
 }

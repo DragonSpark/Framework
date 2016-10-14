@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Sources.Parameterized;
 using System;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Aspects
 {
@@ -8,7 +9,7 @@ namespace DragonSpark.Aspects
 		readonly Func<Type, Func<object, T>> constructorSource;
 		readonly Func<Type, object> argumentSource;
 
-		protected ConstructedSourceBase( Func<Type, Func<object, T>> constructorSource ) : this( constructorSource, Defaults.ArgumentSource ) {}
+		protected ConstructedSourceBase( Func<Type, Func<object, T>> constructorSource ) : this( constructorSource, Activator.Default.GetService ) {}
 
 		protected ConstructedSourceBase( Func<Type, Func<object, T>> constructorSource, Func<Type, object> argumentSource )
 		{

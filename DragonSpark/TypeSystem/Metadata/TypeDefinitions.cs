@@ -1,3 +1,4 @@
+using DragonSpark.Aspects.Alteration;
 using DragonSpark.Coercion;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
@@ -11,13 +12,12 @@ namespace DragonSpark.TypeSystem.Metadata
 		public static TypeDefinitions Default { get; } = new TypeDefinitions();
 		TypeDefinitions() : base( new Factory().ToSourceDelegate().GlobalCache() ) {}
 
-		sealed class Factory : DecoratedParameterizedSource<object, TypeInfo>
+		[ApplyResultAlteration( typeof(ComponentModel.TypeDefinitions) )]
+		sealed class Factory : CompositeFactory<object, TypeInfo>
 		{
-			readonly static IParameterizedSource<object, TypeInfo>[]
-				Factories = { TypeInfoDefinitionProvider.DefaultNested, MemberInfoDefinitionProvider.DefaultNested, GeneralDefinitionProvider.DefaultNested };
+			readonly static IParameterizedSource<object, TypeInfo>[] Factories = { TypeInfoDefinitionProvider.DefaultNested, MemberInfoDefinitionProvider.DefaultNested, GeneralDefinitionProvider.DefaultNested };
 
-			public Factory() : this( ComponentModel.TypeDefinitions.Default.Get ) { }
-			Factory( Alter<TypeInfo> alter ) : base( new CompositeFactory<object, TypeInfo>( Factories ).Apply( alter ) ) {}
+			public Factory() : base( Factories ) {}
 
 			abstract class TypeDefinitionProviderBase<T> : ParameterizedSourceBase<T, TypeInfo> {}
 

@@ -9,7 +9,7 @@ namespace DragonSpark.Aspects.Coercion
 	[ProvideAspectRole( KnownRoles.ValueConversion ), LinesOfCodeAvoided( 1 ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation )]
 	public sealed class ApplyCoercerAttribute : ApplyInstanceAspectBase, ICoercer
 	{
-		readonly static Func<Type, ICoercer> Source = CoercerSource.Default.Get;
+		readonly static Func<Type, ICoercer> Source = Coercion.Source.Default.Get;
 		readonly Type coercerType;
 
 		public ApplyCoercerAttribute( Type coercerType ) : base( Support.Default )

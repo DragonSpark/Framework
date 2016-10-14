@@ -5,7 +5,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Aspects.Alteration
 {
-	public class AlterAttributeTests
+	public class ApplyAlterationAttributeTests
 	{
 		[Fact]
 		public void Verify()
@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Aspects.Alteration
 			Assert.Equal( Alteration.ParameterPropertyName, sut.PropertyName );
 		}
 
-		[Alter( typeof(Alteration) )]
+		[ApplyAlteration( typeof(Alteration) )]
 		class Command : CommandBase<Subject>
 		{
 			public static Command Default { get; } = new Command();

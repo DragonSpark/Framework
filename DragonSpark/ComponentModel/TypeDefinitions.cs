@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public sealed class TypeDefinitions : ParameterizedScope<TypeInfo, TypeInfo>
+	public sealed class TypeDefinitions : ParameterizedScope<TypeInfo, TypeInfo>, IAlteration<TypeInfo>
 	{
 		public static IParameterizedSource<TypeInfo, TypeInfo> Default { get; } = new TypeDefinitions();
 		TypeDefinitions() : base( Factory.GlobalCache<TypeInfo, TypeInfo>( Create ) ) {}
