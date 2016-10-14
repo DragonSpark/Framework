@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-	  <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Activation\CanActivateSpecification.cs" />
@@ -54,6 +54,13 @@
     <Compile Include="Aspects\Build\SupportDefinitionBase.cs" />
     <Compile Include="Aspects\Build\TypeBasedAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Build\TypedPairs.cs" />
+    <Compile Include="Aspects\Alteration\AlterAttribute.cs" />
+    <Compile Include="Aspects\Alteration\Aspect.cs" />
+    <Compile Include="Aspects\Alteration\Adapter.cs" />
+    <Compile Include="Aspects\Alteration\Source.cs" />
+    <Compile Include="Aspects\Alteration\Constructor.cs" />
+    <Compile Include="Aspects\Alteration\ICoercer.cs" />
+    <Compile Include="Aspects\Alteration\Support.cs" />
     <Compile Include="Aspects\Coercion\ApplyCoercerAttribute.cs" />
     <Compile Include="Aspects\Coercion\Aspect.cs" />
     <Compile Include="Aspects\Coercion\CoercerAdapter.cs" />
