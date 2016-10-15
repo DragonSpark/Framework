@@ -79,7 +79,7 @@ namespace DragonSpark.Sources.Parameterized
 			public static Delegates<TFrom, TTo> Default { get; } = new Delegates<TFrom, TTo>();
 			Delegates() : base( result => new Converter( result ).Get ) {}
 
-			class Converter : SourceBase<TTo>
+			sealed class Converter : SourceBase<TTo>
 			{
 				readonly Func<TFrom> @from;
 				public Converter( Func<TFrom> from )
