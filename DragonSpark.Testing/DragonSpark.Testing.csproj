@@ -57,6 +57,7 @@
     <Compile Include="Aspects\Relay\ApplyRelayAttributeTests.cs" />
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
     <Compile Include="ComponentModel\SourceAttributeTests.cs" />
+    <Compile Include="ComponentModel\TypeDefinitionsTests.cs" />
     <Compile Include="Diagnostics\LoggingControllerTests.cs" />
     <Compile Include="Application\DefaultExportProviderTests.cs" />
     <Compile Include="Aspects\ApplyDefaultValuesTests.cs" />

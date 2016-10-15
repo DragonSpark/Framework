@@ -1,4 +1,5 @@
 using DragonSpark.Sources.Parameterized;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace DragonSpark.Composition
 
 		public IEnumerator<SingletonExport> GetEnumerator() => dictionary.Values.GetEnumerator();
 
+		[UsedImplicitly]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

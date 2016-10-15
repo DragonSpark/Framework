@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-	  <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -68,7 +68,6 @@
     <Compile Include="Markup\ConfigurationKeyExtension.cs" />
     <Compile Include="Markup\DesignTimeValueProvider.cs" />
     <Compile Include="Markup\EvalExtension.cs" />
-    <Compile Include="Markup\FactoryTypeExtension.cs" />
     <Compile Include="Markup\MarkupExtensionBase.cs" />
     <Compile Include="Markup\MarkupPropertyFactoryBase.cs" />
     <Compile Include="Markup\MarkupValueSetterFactory.cs" />

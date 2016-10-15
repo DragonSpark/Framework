@@ -22,14 +22,14 @@ namespace DragonSpark.Aspects
 	{
 		readonly static ICache<Delegate, ConditionMonitor> Property = new ActivatedCache<Delegate, ConditionMonitor>();
 		readonly static Func<PropertyInfo, bool> DefaultSpecification = DefaultValuePropertySpecification.Default.IsSatisfiedBy;
-		readonly static Func<DefaultValueParameter, object> DefaultFactory = DefaultPropertyValueFactory.Default.Get;
+		readonly static Func<PropertyInfo, object> DefaultFactory = DefaultPropertyValueFactory.Default.Get;
 
 		readonly Func<PropertyInfo, bool> specification;
-		readonly Func<DefaultValueParameter, object> source;
+		readonly Func<PropertyInfo, object> source;
 
 		public ApplyDefaultValues() : this( DefaultSpecification, DefaultFactory ) {}
 
-		ApplyDefaultValues( Func<PropertyInfo, bool> specification, Func<DefaultValueParameter, object> source )
+		ApplyDefaultValues( Func<PropertyInfo, bool> specification, Func<PropertyInfo, object> source )
 		{
 			this.specification = specification;
 			this.source = source;
@@ -45,8 +45,7 @@ namespace DragonSpark.Aspects
 			var apply = Apply( instance, args.Location.PropertyInfo );
 			if ( apply )
 			{
-				var parameter = new DefaultValueParameter( instance, args.Location.PropertyInfo );
-				var value = source( parameter );
+				var value = source( args.Location.PropertyInfo );
 				args.SetNewValue( args.Value = value );
 			}
 			else

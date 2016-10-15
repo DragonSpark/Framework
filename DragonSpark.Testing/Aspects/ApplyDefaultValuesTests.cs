@@ -1,6 +1,7 @@
 ﻿using DragonSpark.ComponentModel;
 using Ploeh.AutoFixture.Xunit2;
 using System.ComponentModel;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects
@@ -89,7 +90,7 @@ namespace DragonSpark.Testing.Aspects
 
 			readonly ConditionMonitor monitor = new ConditionMonitor();
 
-			public override object Get( DefaultValueParameter parameter ) => monitor.Apply() ? null : Item;
+			public override object Get( PropertyInfo parameter ) => monitor.Apply() ? null : Item;
 		}
 	}
 }

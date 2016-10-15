@@ -207,7 +207,6 @@
     <Compile Include="Composition\ExportsProfileFactory.cs" />
     <Compile Include="Composition\ExportTypeExpander.cs" />
     <Compile Include="Composition\InitializeExportsCommand.cs" />
-    <Compile Include="Composition\IsExportSpecification.cs" />
     <Compile Include="Composition\IsValidConventionMappingSpecification.cs" />
     <Compile Include="Composition\MappedConventionLocator.cs" />
     <Compile Include="Composition\SelfAndNestedTypes.cs" />
@@ -271,7 +270,6 @@
     <Compile Include="Aspects\Validation\GenericCommandAdapterFactory.cs" />
     <Compile Include="Aspects\Validation\GenericParameterProfileFactoryBase.cs" />
     <Compile Include="ComponentModel\CurrentTimeValueProvider.cs" />
-    <Compile Include="ComponentModel\DefaultValueParameter.cs" />
     <Compile Include="ComponentModel\ExpressionEvaluator.cs" />
     <Compile Include="ComponentModel\ServiceAttribute.cs" />
     <Compile Include="ComponentModel\ServicesValueProvider.cs" />
@@ -578,7 +576,6 @@
     <Compile Include="Composition\SourceDelegateExporter.cs" />
     <Compile Include="Composition\SourceExporter.cs" />
     <Compile Include="Composition\SourceDelegateExporterBase.cs" />
-    <Compile Include="Composition\InstanceExportDescriptorProvider.cs" />
     <Compile Include="Composition\SingletonExportDescriptorProvider.cs" />
     <Compile Include="Configuration\EnableMethodCaching.cs" />
     <Compile Include="Diagnostics\Configurations\MinimumLevelConfiguration.cs" />

@@ -7,14 +7,12 @@ using DragonSpark.TypeSystem.Generics;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Sources.Delegates
 {
 	public sealed class SourceFactory : ParameterizedSourceBase<Type, object>
 	{
 		public static IParameterizedSource<IActivator, SourceFactory> Defaults { get; } = new Cache<IActivator, SourceFactory>( func => new SourceFactory( func ) );
-		public static SourceFactory Default { get; } = Defaults.Get( Activator.Default );
 
 		readonly Func<Type, Delegate> factory;
 		readonly IGenericMethodContext<Invoke> methods;

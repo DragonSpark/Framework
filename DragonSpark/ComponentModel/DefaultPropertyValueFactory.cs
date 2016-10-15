@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
-	public sealed class DefaultPropertyValueFactory : ParameterizedSourceBase<DefaultValueParameter, object>
+	public sealed class DefaultPropertyValueFactory : ParameterizedSourceBase<PropertyInfo, object>
 	{
 		public static DefaultPropertyValueFactory Default { get; } = new DefaultPropertyValueFactory();
 		DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Default.ToSourceDelegate() ) {}
@@ -19,6 +19,6 @@ namespace DragonSpark.ComponentModel
 			this.factory = factory;
 		}
 
-		public override object Get( DefaultValueParameter parameter ) => factory( parameter.Metadata ).Introduce( parameter, tuple => tuple.Item1.Get( tuple.Item2 ) ).FirstAssigned() ?? parameter.Metadata.From<DefaultValueAttribute, object>( attribute => attribute.Value );
+		public override object Get( PropertyInfo parameter ) => factory( parameter ).Introduce( parameter, tuple => tuple.Item1.Get( tuple.Item2 ) ).FirstAssigned() ?? parameter.From<DefaultValueAttribute, object>( attribute => attribute.Value );
 	}
 }

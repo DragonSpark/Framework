@@ -14,6 +14,6 @@ namespace DragonSpark.ComponentModel
 			this.create = create;
 		}
 
-		public override object Get( DefaultValueParameter parameter ) => create( convert( parameter.Metadata ) );
+		public override object Get( PropertyInfo parameter ) => create( convert( parameter ) );
 	}
 }

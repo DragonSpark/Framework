@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
@@ -15,6 +16,6 @@ namespace DragonSpark.ComponentModel
 			this.value = value;
 		}
 
-		public override object Get( DefaultValueParameter parameter ) => value()?.ConvertTo( parameter.Metadata.PropertyType );
+		public override object Get( PropertyInfo parameter ) => value()?.ConvertTo( parameter.PropertyType );
 	}
 }

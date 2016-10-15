@@ -1,5 +1,6 @@
 using DragonSpark.Application;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.ComponentModel
 {
@@ -15,10 +16,10 @@ namespace DragonSpark.ComponentModel
 			this.currentTime = currentTime;
 		}
 
-		public override object Get( DefaultValueParameter parameter )
+		public override object Get( PropertyInfo parameter )
 		{
 			var now = currentTime().Now;
-			var result = parameter.Metadata.PropertyType == typeof(DateTime) ? (object)now.DateTime : now;
+			var result = parameter.PropertyType == typeof(DateTime) ? (object)now.DateTime : now;
 			return result;
 		}
 	}
