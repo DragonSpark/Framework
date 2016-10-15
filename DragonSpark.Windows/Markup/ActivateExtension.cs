@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Markup;
+using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Windows.Markup
 {
@@ -12,6 +13,6 @@ namespace DragonSpark.Windows.Markup
 			this.type = type;
 		}
 
-		public override object ProvideValue( IServiceProvider serviceProvider ) => Activator.CreateInstance( type );
+		public override object ProvideValue( IServiceProvider serviceProvider ) => Activator.Default.Get( type );
 	}
 }
