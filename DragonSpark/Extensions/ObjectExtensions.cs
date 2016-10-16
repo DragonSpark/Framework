@@ -1,7 +1,6 @@
 ﻿using DragonSpark.ComponentModel;
 using DragonSpark.TypeSystem;
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Type = System.Type;
@@ -10,13 +9,6 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
-		public static MemberInfo GetMemberInfo( this Expression expression )
-		{
-			var lambda = (LambdaExpression)expression;
-			var result = ( lambda.Body.AsTo<UnaryExpression, Expression>( unaryExpression => unaryExpression.Operand ) ?? lambda.Body ).To<MemberExpression>().Member;
-			return result;
-		}
-
 		public static void TryDispose( this object target ) => target.As<IDisposable>( x => x.Dispose() );
 
 		public static bool IsAssignedOrValue<T>( [Optional]this T @this ) => IsAssigned( @this, true );
@@ -29,8 +21,6 @@ namespace DragonSpark.Extensions
 			var result = type.GetTypeInfo().IsValueType ? value || !SpecialValues.DefaultOrEmpty( type ).Equals( @this ) : !Equals( @this, default(T) );
 			return result;
 		}
-
-		public static bool IsAssignedOrContains<T>( [Optional]this T @this ) => !Equals( @this, SpecialValues.DefaultOrEmpty<T>() );
 
 		public static TResult Loop<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem, bool> condition, Func<TItem, TResult> extract = null, TResult defaultValue = default(TResult) )
 		{

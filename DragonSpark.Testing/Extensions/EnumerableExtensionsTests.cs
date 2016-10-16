@@ -2,6 +2,7 @@
 using DragonSpark.Testing.Objects;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Xunit;
@@ -36,6 +37,46 @@ namespace DragonSpark.Testing.Extensions
 			var prepended = sut.Prepend( items );
 			Assert.Equal( items.Count() + 1, prepended.Count() );
 			Assert.Same( prepended.Last(), sut );
+		}
+
+		[Fact]
+		public void Introduce()
+		{
+			var sut = new[] { new Func<int, bool>( i => i == 7 ) };
+			Assert.True( sut.Introduce( 7 ).Only() );
+		}
+
+		[Fact]
+		public void Only()
+		{
+			var sut = new[] { 2, 3, 5 }.ToImmutableArray().Only( i => i == 3 );
+			Assert.Equal( sut, 3 );
+		}
+
+		[Fact]
+		public void Fixed()
+		{
+			var sut = new[] { 2, 3, 5 }.Hide().Fixed( 4, 15 );
+			Assert.Contains( 3, sut );
+			Assert.Contains( 15, sut );
+		}
+
+		[Fact]
+		public void Prepend()
+		{
+			const int sut = 3;
+			var items = sut.Prepend( 4, 5 );
+			Assert.Contains(4, items );
+			Assert.Contains(sut, items );
+		}
+
+		[Fact]
+		public void IntroduceImmutableArray()
+		{
+			var sut = new[] { 5 }.ToImmutableArray().Introduce( true );
+			var only = sut.Only();
+			Assert.Equal( 5, only.Item1 );
+			Assert.Equal( true, only.Item2 );
 		}
 
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DragonSpark.Extensions
@@ -18,10 +19,10 @@ namespace DragonSpark.Extensions
 															  , RegexOptions.IgnorePatternWhitespace
 													);
 
-		public static string[] SplitCamelCase( this string input )
+		public static ImmutableArray<string> SplitCamelCase( this string input )
 		{
 			var separated = SplitCamelCaseRegex.Replace( input, @" $1" ).Trim();
-			var source = separated.Cast<char>().FirstOrDefault().With( c => char.IsLower( c ) ? $"{char.ToUpper( c )}{separated.Substring( 1 )}" : null ) ?? separated;
+			var source = separated.Cast<char>().FirstOrDefault().With( c => char.IsLower( c ) ? $"{char.ToUpper( c ).ToString()}{separated.Substring( 1 )}" : null ) ?? separated;
 			var result = source.ToStringArray( ' ' );
 			return result;
 		}

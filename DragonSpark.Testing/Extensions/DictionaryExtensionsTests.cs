@@ -29,5 +29,18 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( 1, sut.Ensure( "Key", x => ++called ) );
 			Assert.Equal( 1, sut.Ensure( "Key", x => ++called ) );
 		}
+
+		[Fact]
+		public void Assignment()
+		{
+			var sut = new Dictionary<int, int>();
+			Assert.False( sut.ContainsKey( 4 ) );
+			using ( sut.Assignment( 4, 5 ) )
+			{
+				Assert.Equal( 5, sut[4] );
+			}
+			Assert.True( sut.ContainsKey( 4 ) );
+			Assert.Equal( default(int), sut[4] );
+		}
 	}
 }

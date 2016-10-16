@@ -7,7 +7,6 @@ using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System.Windows.Input;
-using System.Windows.Markup;
 
 namespace DragonSpark.Application.Setup
 {

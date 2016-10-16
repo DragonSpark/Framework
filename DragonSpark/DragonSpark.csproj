@@ -749,7 +749,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostics\Configurations\DeclarativeCompositeLoggerConfiguration.cs" />
-    <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IPriorityAware.cs" />
     <Compile Include="Priority.cs">
