@@ -19,10 +19,12 @@ namespace DragonSpark.Windows.Testing.Configuration
 
 			var alias = sut.Get( "Some Key" );
 			Assert.Equal( settings.HelloWorld, alias );
+
+			var notfound = sut.Get( "NotFound" );
+			Assert.Null( notfound );
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData, AdditionalTypes( typeof(DragonSpark.Testing.Objects.Configuration.Values) )]
-		// [Map( typeof(IValueStore), typeof(DragonSpark.Testing.Objects.Configuration.Values) )]
 		public void FromItem( [NoAutoProperties]DragonSpark.Testing.Objects.Configuration.Item sut )
 		{
 			Assert.Equal( "This is a value from a MemberInfoKey", sut.SomeTestingProperty );

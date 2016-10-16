@@ -7,7 +7,6 @@ using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Windows.Input;
 
 namespace DragonSpark.Sources
 {
@@ -16,7 +15,7 @@ namespace DragonSpark.Sources
 		public static object Value( this object @this ) => @this.Value<object>();
 		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );
 
-		public static ICommand Configured<T>( this IAssignable<T> @this, T value ) => new AssignCommand<T>( @this ).Fixed( value );
+		// public static ICommand Configured<T>( this IAssignable<T> @this, T value ) => new AssignCommand<T>( @this ).Fixed( value );
 
 		public static void Assign<TParameter, TResult>( this IParameterizedScope<TParameter, TResult> @this, Func<TParameter, TResult> instance ) => @this.Assign( instance.Self );
 
@@ -42,13 +41,13 @@ namespace DragonSpark.Sources
 			return @this;
 		}
 
-		public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, ISource<T> source ) => @this.Configured( source.ToDelegate() );
+		// public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, ISource<T> source ) => @this.Configured( source.ToDelegate() );
 		public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, T instance ) => @this.Configured( Factory.For( instance ) );
 		public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, Func<T> factory ) => new AssignCommand<Func<T>>( @this ).Fixed( factory );
-		public static IRunCommand Configured<T>( this IAssignable<Func<object, T>> @this, Func<object, T> factory ) => new AssignCommand<Func<object, T>>( @this ).Fixed( factory );
+		// public static IRunCommand Configured<T>( this IAssignable<Func<object, T>> @this, Func<object, T> factory ) => new AssignCommand<Func<object, T>>( @this ).Fixed( factory );
 
 		public static Func<TParameter, TResult> Delegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => SourceDelegates<TParameter, TResult>.Default.Get( @this );
-		class SourceDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
+		sealed class SourceDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
 		{
 			public static SourceDelegates<TParameter, TResult> Default { get; } = new SourceDelegates<TParameter, TResult>();
 			SourceDelegates() : base( source => new Factory( source ).Get ) {}
@@ -91,25 +90,6 @@ namespace DragonSpark.Sources
 			ParameterizedSourceDelegates() : base( factory => factory.Get ) {}
 		}
 
-		public static Func<T> Delegate<T>( this ISource<ISource<T>> @this ) => @this.ToDelegate().Delegate();
-		public static Func<T> Delegate<T>( this Func<ISource<T>> @this ) => Delegates<T>.Default.Get( @this );
-		class Delegates<T> : Cache<Func<ISource<T>>, Func<T>>
-		{
-			public static Delegates<T> Default { get; } = new Delegates<T>();
-			Delegates() : base( source => new Factory( source ).Get ) {}
-
-			class Factory : SourceBase<T>
-			{
-				readonly Func<ISource<T>> source;
-				public Factory( Func<ISource<T>> source )
-				{
-					this.source = source;
-				}
-
-				public override T Get() => source().Get();
-			}
-		}
-
 		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate().Timed();
 		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this Func<TParameter, TResult> @this ) => Timed( @this, Defaults.ParameterizedTimerTemplate );
 		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this Func<TParameter, TResult> @this, string template ) => new TimedDelegatedSource<TParameter, TResult>( @this, template ).Get;
@@ -127,12 +107,12 @@ namespace DragonSpark.Sources
 			Scopes() : base( cache => new Scope<T>( cache.Cache() ) ) {}
 		}
 
-		public static ISource<T> Fixed<T>( this ISource<T> @this ) => SuppliedSources<T>.Default.Get( @this );
+		/*public static ISource<T> Fixed<T>( this ISource<T> @this ) => SuppliedSources<T>.Default.Get( @this );
 		sealed class SuppliedSources<T> : Cache<ISource<T>, ISource<T>>
 		{
 			public static SuppliedSources<T> Default { get; } = new SuppliedSources<T>();
 			SuppliedSources() : base( source => new SuppliedDeferredSource<T>( source.Get ) ) {}
-		}
+		}*/
 
 		public static IEnumerable<T> GetEnumerable<T>( this ISource<ImmutableArray<T>> @this ) => EnumerableSource<T>.Sources.Get( @this )();
 		sealed class EnumerableSource<T> : SourceBase<IEnumerable<T>>

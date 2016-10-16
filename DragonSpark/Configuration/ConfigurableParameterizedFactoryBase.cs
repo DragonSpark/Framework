@@ -1,5 +1,4 @@
 using DragonSpark.Sources.Parameterized;
-using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -8,18 +7,7 @@ namespace DragonSpark.Configuration
 {
 	public abstract class ConfigurableParameterizedFactoryBase<TConfiguration, TResult> : ConfigurableParameterizedFactoryBase<TConfiguration, object, TResult>, IConfigurableFactory<TConfiguration, TResult>
 	{
-		protected ConfigurableParameterizedFactoryBase( Func<object, TConfiguration> seed, Func<TConfiguration, object, TResult> factory ) : this( seed, o => Items<IAlteration<TConfiguration>>.Immutable, factory ) {}
 		protected ConfigurableParameterizedFactoryBase( Func<object, TConfiguration> seed, Func<object, ImmutableArray<IAlteration<TConfiguration>>> configurators, Func<TConfiguration, object, TResult> factory ) : base( seed, configurators, factory ) {}
-		// protected ConfigurableParameterizedFactoryBase( IParameterizedScope<TConfiguration> seed, IParameterizedScope<ImmutableArray<IAlteration<TConfiguration>>> configurators, Func<TConfiguration, object, TResult> factory ) : base( seed, configurators, factory ) {}
-	}
-
-	public interface IConfigurableFactory<TConfiguration, out TResult> : IConfigurableFactory<TConfiguration, object, TResult> {}
-
-	public interface IConfigurableFactory<TConfiguration, TParameter, out TResult> : IParameterizedSource<TParameter, TResult>
-	{
-		IParameterizedScope<TParameter, TConfiguration> Seed { get; }
-		
-		IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> Configurators { get; }
 	}
 
 	public abstract class ConfigurableParameterizedFactoryBase<TConfiguration, TParameter, TResult> : ParameterizedSourceBase<TParameter, TResult>, IConfigurableFactory<TConfiguration, TParameter, TResult>

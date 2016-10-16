@@ -88,6 +88,7 @@
     <Compile Include="Composition\SourceExporterTests.cs" />
     <Compile Include="Runtime\WeakListTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\DecoratedCacheTests.cs" />
+    <Compile Include="Sources\SuppliedSourceTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />
     <Compile Include="Extensions\MethodExtensionsTests.cs" />
     <Compile Include="ImmutableArrayTests.cs" />

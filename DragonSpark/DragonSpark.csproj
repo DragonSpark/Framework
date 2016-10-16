@@ -222,6 +222,7 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
+    <Compile Include="Configuration\IConfigurableFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
     <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
@@ -255,7 +256,6 @@
     <Compile Include="Sources\Parameterized\SourceTypeMapping.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
-    <Compile Include="Sources\ThreadIdentitySource.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
     <Compile Include="Specifications\ContainsItemSpecification.cs" />
     <Compile Include="Specifications\DeferredSpecification.cs" />
@@ -591,8 +591,6 @@
     <Compile Include="Commands\DisposeDisposableCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Sources\AssignableSourceBase.cs" />
-    <Compile Include="Sources\CacheContainsSpecification.cs" />
-    <Compile Include="Sources\CacheValueSpecification.cs" />
     <Compile Include="Sources\Parameterized\Caching\AmbientStack.cs" />
     <Compile Include="Sources\Parameterized\Caching\Cache.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheBase.cs" />
@@ -619,7 +617,6 @@
     <Compile Include="Sources\Parameterized\DecoratedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DelegatedParameterizedSource.cs" />
     <Compile Include="Sources\DelegatedSource.cs" />
-    <Compile Include="Sources\EmptySource.cs" />
     <Compile Include="Sources\Factory.cs" />
     <Compile Include="Sources\SuppliedDeferredSource.cs" />
     <Compile Include="Sources\CachedFactoryBuilder.cs" />
@@ -718,7 +715,6 @@
     <Compile Include="Diagnostics\PurgeLoggerMessageHistoryCommand.cs" />
     <Compile Include="Specifications\TypeAssignableSpecification.cs" />
     <Compile Include="Sources\ItemSourceBase.cs" />
-    <Compile Include="Sources\CacheSpecificationBase.cs" />
     <Compile Include="TypeSystem\AllTypesOfFactory.cs" />
     <Compile Include="Commands\CommandCollection.cs" />
     <Compile Include="Commands\CompositeCommand.cs" />

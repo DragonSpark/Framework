@@ -14,6 +14,9 @@ namespace DragonSpark.Testing.Configuration
 			Assert.True( sut.Equals( key ) );
 
 			Assert.False( sut.Equals( other ) );
-		} 
+
+			Assert.Equal( 0, sut.GetHashCode() );
+			Assert.False( sut.Equals( new object() ) ); // Coverage.
+		}
 	}
 }
