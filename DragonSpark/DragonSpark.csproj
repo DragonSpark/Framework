@@ -327,7 +327,6 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Application\CurrentTimeConfiguration.cs" />
     <Compile Include="Runtime\DataContractSerializers.cs" />
-    <Compile Include="Commands\DecoratedCommand.cs" />
     <Compile Include="Commands\DelegatedCommand.cs" />
     <Compile Include="Runtime\DelegatedDisposable.cs" />
     <Compile Include="Runtime\Delegates.cs" />

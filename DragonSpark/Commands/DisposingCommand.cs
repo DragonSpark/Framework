@@ -25,6 +25,6 @@ namespace DragonSpark.Commands
 
 		void Dispose( bool disposing ) => disposing.IsTrue( onDispose );
 
-		protected virtual void OnDispose() {}
+		protected abstract void OnDispose();
 	}
 }

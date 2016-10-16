@@ -1,4 +1,5 @@
-﻿using DragonSpark.Commands;
+﻿using System.Windows.Input;
+using DragonSpark.Commands;
 using Xunit;
 
 namespace DragonSpark.Testing.Commands
@@ -19,6 +20,13 @@ namespace DragonSpark.Testing.Commands
 			sut.CanExecuteChanged += ( sender, args ) => called = true;
 			sut.Update();
 			Assert.True( called, "Didn't call" );
+		}
+
+		[Fact]
+		public void CanExecute()
+		{
+			ICommand sut = new Command();
+			Assert.True( sut.CanExecute( new object() ) );
 		}
 	}
 

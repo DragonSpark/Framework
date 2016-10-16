@@ -30,11 +30,7 @@ namespace DragonSpark.Runtime.Assignments
 
 		public override void Execute( T parameter ) => Assignable.Assign( parameter );
 
-		protected override void OnDispose()
-		{
-			Assignable.TryDispose();
-			base.OnDispose();
-		}
+		protected override void OnDispose() => Assignable.TryDispose();
 	}
 
 	public class AssignCommand<T> : CommandBase<T>

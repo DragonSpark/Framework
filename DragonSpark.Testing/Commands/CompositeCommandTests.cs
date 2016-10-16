@@ -9,11 +9,17 @@ namespace DragonSpark.Testing.Commands
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void Execute( Command command )
 		{
-			
 			var sut = new CompositeCommand( command.ToItem() );
 			Assert.False( command.Executed );
 			sut.Execute( new object() );
 			Assert.True( command.Executed );
+		}
+
+		[Fact]
+		public void Coverage()
+		{
+			var sut = new CompositeCommand();
+			Assert.NotNull( sut );
 		}
 
 		class Command : CommandBase<object>
