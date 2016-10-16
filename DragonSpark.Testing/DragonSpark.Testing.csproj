@@ -87,7 +87,16 @@
     <Compile Include="Composition\SourceDelegateExporterTests.cs" />
     <Compile Include="Composition\SourceExporterTests.cs" />
     <Compile Include="Runtime\WeakListTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ArgumentCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheExtensionsTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheFactoryTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ConditionTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\DecoratedCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\DecoratedSourceCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\EqualityReferenceCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\StackTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCacheTests.cs" />
     <Compile Include="Sources\SuppliedSourceTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />
     <Compile Include="Extensions\MethodExtensionsTests.cs" />

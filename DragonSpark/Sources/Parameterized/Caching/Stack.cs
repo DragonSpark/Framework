@@ -10,7 +10,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 	{
 		readonly System.Collections.Generic.Stack<T> store;
 		readonly Action<IStack<T>> onEmpty;
-		public Stack() : this( Delegates<IStack<T>>.Empty ) {}
+		public Stack() : this( new System.Collections.Generic.Stack<T>() ) {}
 
 		public Stack( System.Collections.Generic.Stack<T> store ) : this( store, Delegates<IStack<T>>.Empty ) {}
 

@@ -609,7 +609,6 @@
     <Compile Include="Sources\Parameterized\Caching\CacheRegistry.cs" />
     <Compile Include="Sources\Parameterized\Caching\Stack.cs" />
     <Compile Include="Sources\Parameterized\Caching\Stacks.cs" />
-    <Compile Include="Sources\Parameterized\Caching\SourceCache.cs" />
     <Compile Include="Sources\ThreadLocalStore.cs" />
     <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\WritableSourceCache.cs" />

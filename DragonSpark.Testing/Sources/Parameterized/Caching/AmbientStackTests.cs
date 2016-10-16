@@ -14,6 +14,15 @@ namespace DragonSpark.Testing.Sources.Parameterized.Caching
 		readonly Stacks<Class> cache = new Stacks<Class>();
 
 		[Fact]
+		public void GetCurrentItem()
+		{
+			var item = new object();
+			AmbientStack<object>.Default.Get().Push( item );
+
+			Assert.Same( item, AmbientStack.GetCurrentItem( typeof(object) ) );
+		}
+
+		[Fact]
 		public void ContextAsExpected()
 		{
 			var stack = new AmbientStack<Class>( cache );

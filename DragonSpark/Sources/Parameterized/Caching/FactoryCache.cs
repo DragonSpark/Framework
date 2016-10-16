@@ -24,6 +24,4 @@ namespace DragonSpark.Sources.Parameterized.Caching
 
 		protected abstract TValue Create( TInstance parameter );
 	}
-
-	
 }
