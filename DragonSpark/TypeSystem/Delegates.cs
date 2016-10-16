@@ -13,8 +13,8 @@ namespace DragonSpark.TypeSystem
 
 		public static Func<T, T> Self { get; } = t => t;
 
-		public static Func<T, object> Object { get; } = t => t;
+		/*public static Func<T, object> Object { get; } = t => t;
 
-		public static Func<T> Default { get; } = () => default(T);
+		public static Func<T> Default { get; } = () => default(T);*/
 	}
 }

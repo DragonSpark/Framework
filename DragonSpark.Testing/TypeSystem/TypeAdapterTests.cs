@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.Specifications;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
+using PostSharp.Aspects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,25 @@ namespace DragonSpark.Testing.TypeSystem
 			var item = new TypeAdapter( typeof(List<int>) ).GetEnumerableType();
 			Assert.Equal( typeof(int), item );
 		}
+
+		[Fact]
+		public void GetMappedMethods()
+		{
+			var mappings = typeof(List<int>).Adapt().GetMappedMethods( typeof(ICollection<int>) );
+			Assert.NotEmpty( mappings );
+			Assert.Equal( typeof(ICollection<int>), mappings.First().InterfaceMethod.DeclaringType);
+			Assert.Equal( typeof(List<int>), mappings.First().MappedMethod.DeclaringType);
+
+			Assert.Empty( typeof(List<int>).Adapt().GetMappedMethods( typeof(ISpecification<int>) ) );
+		}
+
+		[Fact]
+		public void Coverage_GenericMethods()
+		{
+			GetType().Adapt().GenericFactoryMethods[nameof( Generic )].Make( typeof(int) );
+		}
+
+		public static Type Generic<T>( int number ) where T : IAspect => typeof(T);
 
 		[Fact]
 		public void IsInstanceOfType()

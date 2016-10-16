@@ -99,6 +99,7 @@
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="Application\ExecutionContextTests.cs" />
+    <Compile Include="TypeSystem\DefaultValuesTests.cs" />
     <Compile Include="TypeSystem\Metadata\AttributesTests.cs">
       <SubType>Code</SubType>
     </Compile>

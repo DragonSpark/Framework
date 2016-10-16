@@ -1,8 +1,8 @@
-﻿using DragonSpark.Testing.Framework;
+﻿using DragonSpark.Application;
+using DragonSpark.Testing.Framework;
 using DragonSpark.TypeSystem;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using DragonSpark.Application;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -39,6 +39,7 @@ using DragonSpark.Application;
 
 [assembly: Application]
 [assembly: AssemblyHint( "DragonSpark.Testing" )]
+[assembly: AssemblyParts]
 
 // [assembly: ApplyDefaultValues]
 // [assembly: DisposeAssociatedAspect]
