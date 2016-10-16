@@ -86,6 +86,7 @@
     <Compile Include="Composition\SingletonExportDescriptorProviderTests.cs" />
     <Compile Include="Composition\SourceDelegateExporterTests.cs" />
     <Compile Include="Composition\SourceExporterTests.cs" />
+    <Compile Include="Runtime\WeakListTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\DecoratedCacheTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />
     <Compile Include="Extensions\MethodExtensionsTests.cs" />
@@ -146,9 +147,12 @@
     <Compile Include="Sources\Parameterized\Caching\AmbientStackTests.cs" />
     <Compile Include="Application\ApplicationAssemblyFilterTests.cs" />
     <Compile Include="TypeSystem\ItemsTests.cs" />
+    <Compile Include="TypeSystem\Metadata\AttributeSupportTests.cs" />
     <Compile Include="TypeSystem\Metadata\DerivedMethodSpecificationTests.cs" />
     <Compile Include="ComponentModel\HostingAttributeBaseTests.cs" />
     <Compile Include="TypeSystem\KnownTypesTests.cs" />
+    <Compile Include="TypeSystem\Metadata\MemberInfoDefinitionsTests.cs" />
+    <Compile Include="TypeSystem\Metadata\ParameterInfoAttributeProviderTests.cs" />
     <Compile Include="TypeSystem\PartsTests.cs" />
     <Compile Include="TypeSystem\AssemblyBasedTypeSourceTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />

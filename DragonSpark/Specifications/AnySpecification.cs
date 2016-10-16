@@ -2,11 +2,6 @@ using System.Collections.Immutable;
 
 namespace DragonSpark.Specifications
 {
-	public class AnySpecification : AnySpecification<object>
-	{
-		public AnySpecification( params ISpecification<object>[] specifications ) : base( specifications ) {}
-	}
-
 	public class AnySpecification<T> : SpecificationBase<T>
 	{
 		readonly ImmutableArray<ISpecification<T>> specifications;

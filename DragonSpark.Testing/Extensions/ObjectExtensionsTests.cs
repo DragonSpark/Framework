@@ -144,6 +144,8 @@ namespace DragonSpark.Testing.Extensions
 		{
 			int sut = 0;
 			Assert.Equal( sut, sut.With( i => 3 ) );
+
+			Assert.Equal( sut, sut.With() );
 		}
 
 		[Theory, AutoData]

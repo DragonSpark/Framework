@@ -29,6 +29,13 @@ namespace DragonSpark.Testing.Specifications
 		}
 
 		[Fact]
+		public void Fixed()
+		{
+			var sut = AssignedSpecification<object>.Default.Fixed( new object() );
+			Assert.True( sut.IsSatisfiedBy( null ) );
+		}
+
+		[Fact]
 		public void Cached()
 		{
 			var count = 0;

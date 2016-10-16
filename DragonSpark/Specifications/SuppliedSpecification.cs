@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace DragonSpark.Specifications
 {
 	public class SuppliedSpecification : SuppliedSpecification<object>
@@ -14,6 +16,6 @@ namespace DragonSpark.Specifications
 			this.satisfied = satisfied;
 		}
 
-		public override bool IsSatisfiedBy( T parameter ) => satisfied;
+		public override bool IsSatisfiedBy( [Optional]T parameter ) => satisfied;
 	}
 }

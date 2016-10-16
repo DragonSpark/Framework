@@ -235,6 +235,7 @@
     <Compile Include="Diagnostics\SystemLogger.cs" />
     <Compile Include="Diagnostics\TimedOperationFactory.cs" />
     <Compile Include="Diagnostics\TimedOperationFactorySource.cs" />
+    <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="FormatterParameter.cs" />
     <Compile Include="PrioritizedCollection.cs" />
     <Compile Include="PriorityAwareCollection.cs" />
@@ -495,7 +496,6 @@
     <Compile Include="Specifications\ConditionMonitorSpecificationBase.cs" />
     <Compile Include="Specifications\DelegatedSpecification.cs" />
     <Compile Include="Specifications\GenericTypeAssignableSpecification.cs" />
-    <Compile Include="Specifications\InverseSpecification.cs" />
     <Compile Include="Specifications\OncePerParameterSpecification.cs" />
     <Compile Include="Specifications\OncePerScopeSpecification.cs" />
     <Compile Include="Specifications\OnlyOnceSpecification.cs" />
