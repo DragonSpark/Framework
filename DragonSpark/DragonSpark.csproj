@@ -228,7 +228,6 @@
     <Compile Include="Diagnostics\Defaults.cs" />
     <Compile Include="Diagnostics\LoggerBase.cs" />
     <Compile Include="Diagnostics\LoggerExportedConfigurations.cs" />
-    <Compile Include="Diagnostics\LoggerOutputSource.cs" />
     <Compile Include="Diagnostics\LoggingConfigurationSource.cs" />
     <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
     <Compile Include="Diagnostics\SystemLogger.cs" />
