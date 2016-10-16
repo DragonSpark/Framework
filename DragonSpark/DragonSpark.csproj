@@ -246,14 +246,12 @@
     <Compile Include="PriorityExtensions.cs" />
     <Compile Include="Aspects\Build\MethodStore.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
-    <Compile Include="Sources\Parameterized\AlteredResultParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
     <Compile Include="Sources\Parameterized\CoercedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
-    <Compile Include="Sources\Parameterized\SourceTypeMapping.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
@@ -404,12 +402,10 @@
     <Compile Include="Sources\Parameterized\IParameterAwareHandler.cs" />
     <Compile Include="Sources\Delegates\IsParameterizedSourceSpecification.cs" />
     <Compile Include="Sources\Delegates\IsSourceSpecification.cs" />
-    <Compile Include="Sources\Parameterized\Origin.cs" />
     <Compile Include="Sources\Parameterized\ParameterConstructedCompositeFactory.cs" />
     <Compile Include="Sources\Parameterized\ParameterTypes.cs" />
     <Compile Include="Sources\Parameterized\ResultTypes.cs" />
     <Compile Include="Sources\Parameterized\SelfAlteration.cs" />
-    <Compile Include="Sources\Parameterized\SourceInterfaces.cs" />
     <Compile Include="Sources\Parameterized\SourceTypes.cs" />
     <Compile Include="Sources\Parameterized\TimedDelegatedSource.cs" />
     <Compile Include="Sources\Parameterized\Alter.cs" />
@@ -475,7 +471,6 @@
     <Compile Include="Aspects\Validation\IParameterValidationAdapter.cs" />
     <Compile Include="Aspects\Keys.cs" />
     <Compile Include="Aspects\OfSourceType.cs" />
-    <Compile Include="Aspects\OriginAttribute.cs" />
     <Compile Include="Aspects\Validation\ParameterValidationAdapterBase.cs" />
     <Compile Include="Aspects\Validation\AdapterLocator.cs" />
     <Compile Include="Aspects\Validation\AutoValidationController.cs" />
@@ -612,7 +607,6 @@
     <Compile Include="Sources\ThreadLocalStore.cs" />
     <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\WritableSourceCache.cs" />
-    <Compile Include="Sources\Parameterized\DecoratedAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DecoratedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DelegatedParameterizedSource.cs" />
     <Compile Include="Sources\DelegatedSource.cs" />

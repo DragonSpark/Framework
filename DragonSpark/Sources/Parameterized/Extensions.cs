@@ -1,13 +1,10 @@
 using DragonSpark.Coercion;
-using DragonSpark.Expressions;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
-using DragonSpark.TypeSystem.Generics;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DragonSpark.Sources.Parameterized
 {
@@ -36,24 +33,24 @@ namespace DragonSpark.Sources.Parameterized
 
 		public static ISource<TResult> Fixed<TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TParameter> parameter ) => new SuppliedSource<TParameter, TResult>( @this, parameter );
 
-		public static Func<object, T> Wrap<T>( this ISource<T> @this ) => @this.Wrap<object, T>();
+		/*public static Func<object, T> Wrap<T>( this ISource<T> @this ) => @this.Wrap<object, T>();*/
 
 		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this ISource<TResult> @this ) => new Func<TResult>( @this.Get ).Wrap<TParameter, TResult>();
 
 		public static Func<object, T> Wrap<T>( this Func<T> @this ) => @this.Wrap<object, T>();
 
-		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this Func<TResult> @this ) => new Wrapper<TParameter, TResult>( @this ).Get;
+		static Func<TParameter, TResult> Wrap<TParameter, TResult>( this Func<TResult> @this ) => new Wrapper<TParameter, TResult>( @this ).Get;
 
-		public static Delegate Convert( this Func<object> @this, Type resultType ) => ConvertSupport.Methods.Make( resultType ).Invoke<Delegate>( @this );
+		/*public static Delegate Convert( this Func<object> @this, Type resultType ) => ConvertSupport.Methods.Make( resultType ).Invoke<Delegate>( @this );*/
 
-		public static Delegate Convert( this Func<object, object> @this, Type parameterType, Type resultType ) => ConvertSupport.Methods.Make( parameterType, resultType ).Invoke<Delegate>( @this );
+		/*public static Delegate Convert( this Func<object, object> @this, Type parameterType, Type resultType ) => ConvertSupport.Methods.Make( parameterType, resultType ).Invoke<Delegate>( @this );*/
 
-		static class ConvertSupport
+		/*static class ConvertSupport
 		{
 			public static IGenericMethodContext<Invoke> Methods { get; } = typeof(Extensions).Adapt().GenericFactoryMethods[nameof(Convert)];
-		}
+		}*/
 
-		public static Func<T> Convert<T>( this Func<object> @this ) => @this.Convert<object, T>();
+		/*public static Func<T> Convert<T>( this Func<object> @this ) => @this.Convert<object, T>();
 
 		public static Func<object> Convert<T>( this Func<T> @this ) => Delegates<T>.Default.Get( @this );
 		sealed class Delegates<T> : Cache<Func<T>, Func<object>>
@@ -71,9 +68,9 @@ namespace DragonSpark.Sources.Parameterized
 
 				public override object Get() => from();
 			}
-		}
+		}*/
 
-		public static Func<TTo> Convert<TFrom, TTo>( this Func<TFrom> @this ) where TTo : TFrom => Delegates<TFrom, TTo>.Default.Get( @this );
+		/*public static Func<TTo> Convert<TFrom, TTo>( this Func<TFrom> @this ) where TTo : TFrom => Delegates<TFrom, TTo>.Default.Get( @this );
 		sealed class Delegates<TFrom, TTo> : Cache<Func<TFrom>, Func<TTo>> where TTo : TFrom
 		{
 			public static Delegates<TFrom, TTo> Default { get; } = new Delegates<TFrom, TTo>();
@@ -89,9 +86,9 @@ namespace DragonSpark.Sources.Parameterized
 
 				public override TTo Get() => (TTo)from();
 			}
-		}
+		}*/
 
-		public static Func<TParameter, TResult> Convert<TParameter, TResult>( this Func<object, object> @this ) => Convert<object, object, TParameter, TResult>( @this );
+		/*public static Func<TParameter, TResult> Convert<TParameter, TResult>( this Func<object, object> @this ) => Convert<object, object, TParameter, TResult>( @this );*/
 		public static Func<TToParameter, TToResult> Convert<TFromParameter, TFromResult, TToParameter, TToResult>( this Func<TFromParameter, TFromResult> @this ) => ParameterizedDelegates<TFromParameter, TFromResult, TToParameter, TToResult>.Default.Get( @this );
 		sealed class ParameterizedDelegates<TFromParameter, TFromResult, TToParameter, TToResult> : Cache<Func<TFromParameter, TFromResult>, Func<TToParameter, TToResult>>
 		{
@@ -118,7 +115,7 @@ namespace DragonSpark.Sources.Parameterized
 			ParameterizedSourceDelegates() : base( factory => factory.Get ) {}
 		}
 
-		public static T Alter<T>( this IEnumerable<IAlteration<T>> @this, T seed ) => @this.Aggregate( seed, ( current, alteration ) => alteration.Get( current ) );
+		/*public static T Alter<T>( this IEnumerable<IAlteration<T>> @this, T seed ) => @this.Aggregate( seed, ( current, alteration ) => alteration.Get( current ) );*/
 
 		public static Alter<T> ToDelegate<T>( this IAlteration<T> @this ) => Selectors<T>.Default.Get( @this );
 		sealed class Selectors<T> : Cache<IAlteration<T>, Alter<T>>

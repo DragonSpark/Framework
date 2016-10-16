@@ -97,6 +97,8 @@
     <Compile Include="Sources\Parameterized\Caching\EqualityReferenceCacheTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\ConfiguringFactoryTests.cs" />
+    <Compile Include="Sources\Parameterized\SelfAlterationTests.cs" />
     <Compile Include="Sources\SuppliedSourceTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />
     <Compile Include="Extensions\MethodExtensionsTests.cs" />

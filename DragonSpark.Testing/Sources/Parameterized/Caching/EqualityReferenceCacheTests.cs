@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Sources.Parameterized.Caching
 
 			public bool Equals( MyClass other ) => !ReferenceEquals( null, other ) && ( ReferenceEquals( this, other ) || Number == other.Number );
 
-			public override bool Equals( object obj ) => !ReferenceEquals( null, obj ) && ( ReferenceEquals( this, obj ) || obj.GetType() == this.GetType() && Equals( (MyClass)obj ) );
+			public override bool Equals( object obj ) => !ReferenceEquals( null, obj ) && ( ReferenceEquals( this, obj ) || obj.GetType() == GetType() && Equals( (MyClass)obj ) );
 
 			public override int GetHashCode() => Number;
 
