@@ -18,5 +18,12 @@ namespace DragonSpark.Testing
 			Assert.IsType<string>( formatted );
 			Assert.Equal( new MethodFormatter( method ).ToString(), formatted );
 		}
+
+		[Theory, AutoData]
+		public void StringFormat( string message )
+		{
+			var formatted = Formatter.Default.Get( message );
+			Assert.Equal( message, formatted );
+		}
 	}
 }

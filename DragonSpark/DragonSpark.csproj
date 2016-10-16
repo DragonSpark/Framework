@@ -239,8 +239,6 @@
     <Compile Include="Diagnostics\TimedOperationFactorySource.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="FormatterParameter.cs" />
-    <Compile Include="PrioritizedCollection.cs" />
-    <Compile Include="PriorityAwareCollection.cs" />
     <Compile Include="PriorityAwareLocator.cs" />
     <Compile Include="PriorityComparer.cs" />
     <Compile Include="PriorityExtensions.cs" />
