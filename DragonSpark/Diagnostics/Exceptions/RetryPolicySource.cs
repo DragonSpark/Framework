@@ -21,7 +21,7 @@ namespace DragonSpark.Diagnostics.Exceptions
 		readonly Func<int, TimeSpan> time;
 		readonly Func<Action<Exception, TimeSpan>> onRetry;
 
-		public RetryPolicySource( Func<PolicyBuilder> source ) : this( source, Time.Default ) {}
+		// public RetryPolicySource( Func<PolicyBuilder> source ) : this( source, Time.Default ) {}
 
 		public RetryPolicySource( Func<PolicyBuilder> source, Func<int, TimeSpan> time ) : this( source, time, OnRetry ) {}
 
