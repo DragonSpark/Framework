@@ -37,10 +37,11 @@ namespace DragonSpark.Testing.Extensions
 			Assert.False( sut.ContainsKey( 4 ) );
 			using ( sut.Assignment( 4, 5 ) )
 			{
+				Assert.True( sut.ContainsKey( 4 ) );
 				Assert.Equal( 5, sut[4] );
 			}
-			Assert.True( sut.ContainsKey( 4 ) );
-			Assert.Equal( default(int), sut[4] );
+			
+			Assert.False( sut.ContainsKey( 4 ) );
 		}
 	}
 }

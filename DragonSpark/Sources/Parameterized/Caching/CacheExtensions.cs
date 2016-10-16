@@ -1,3 +1,4 @@
+using DragonSpark.Commands;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Assignments;
 using System;
@@ -36,7 +37,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 			return value;
 		}
 
-		public static Assignment<T1, T2> Assignment<T1, T2>( this ICache<T1, T2> @this, T1 instance, T2 start, T2 finish = default(T2) ) => new Assignment<T1, T2>( new CacheAssign<T1, T2>( @this ), Assignments.From( instance ), new Value<T2>( start, finish ) );
+		public static IDisposable Assignment<T1, T2>( this ICache<T1, T2> @this, T1 instance, T2 start, T2 finish = default(T2) ) => new Assignment<T1, T2>( new CacheAssign<T1, T2>( @this ), Assignments.From( instance ), new Value<T2>( start, finish ) ).AsExecuted();
 
 		public static Func<TInstance, TValue> ToDelegate<TInstance, TValue>( this ICache<TInstance, TValue> @this ) => Delegates<TInstance, TValue>.Default.Get( @this );
 		sealed class Delegates<TInstance, TValue> : Cache<ICache<TInstance, TValue>, Func<TInstance, TValue>>

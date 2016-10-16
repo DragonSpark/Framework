@@ -1,30 +1,11 @@
-using DragonSpark.Extensions;
 using System;
 
 namespace DragonSpark.Commands
 {
-	public abstract class DisposingCommand<T> : CommandBase<T>, IDisposable
+	public sealed class DisposingCommand : DisposingCommandBase<object>
 	{
-		readonly Action onDispose;
+		public DisposingCommand( IDisposable disposable ) : base( disposable ) {}
 
-		protected DisposingCommand()
-		{
-			onDispose = OnDispose;
-		}
-
-		~DisposingCommand()
-		{
-			Dispose( false );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		void Dispose( bool disposing ) => disposing.IsTrue( onDispose );
-
-		protected abstract void OnDispose();
+		public override void Execute( object parameter ) {}
 	}
 }

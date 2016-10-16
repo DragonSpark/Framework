@@ -93,7 +93,9 @@
     <Compile Include="Composition\SingletonExportDescriptorProviderTests.cs" />
     <Compile Include="Composition\SourceDelegateExporterTests.cs" />
     <Compile Include="Composition\SourceExporterTests.cs" />
-    <Compile Include="Runtime\CollectionBaseTests.cs" />
+    <Compile Include="Runtime\Assignments\AssignWithDisposeCommandTests.cs" />
+    <Compile Include="Runtime\Assignments\ValueAssignmentTests.cs" />
+    <Compile Include="Runtime\Assignments\CollectionAssignTests.cs" />
     <Compile Include="Runtime\ValueTupleTests.cs" />
     <Compile Include="Runtime\WeakListTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\ArgumentCacheTests.cs" />

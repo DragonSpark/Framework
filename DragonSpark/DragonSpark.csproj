@@ -158,6 +158,7 @@
     <Compile Include="Aspects\Build\Specification.cs" />
     <Compile Include="Aspects\Build\MethodBasedAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Validation\Support.cs" />
+    <Compile Include="Commands\IExecute.cs" />
     <Compile Include="Commands\IRunCommand.cs" />
     <Compile Include="Commands\RunCommandBase.cs" />
     <Compile Include="Commands\SpecificationCommand.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="PriorityComparer.cs" />
     <Compile Include="PriorityExtensions.cs" />
     <Compile Include="Aspects\Build\MethodStore.cs" />
+    <Compile Include="Runtime\Assignments\AssignCommand.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
@@ -315,10 +317,10 @@
     <Compile Include="Extensions\ImmutableArrayExtensions.cs" />
     <Compile Include="Extensions\MethodEqualitySpecification.cs" />
     <Compile Include="Extensions\TypeAdapterCache.cs" />
-    <Compile Include="Runtime\Assignments\AssignDisposingCommand.cs" />
-    <Compile Include="Runtime\Assignments\Assignment.cs" />
+    <Compile Include="Runtime\Assignments\AssignWithDisposeCommand.cs" />
+    <Compile Include="Runtime\Assignments\ValueAssignment.cs" />
     <Compile Include="Runtime\Assignments\Assignments.cs" />
-    <Compile Include="Runtime\Assignments\CacheAssign.cs" />
+    <Compile Include="Runtime\Assignments\ReferenceSourceAssign.cs" />
     <Compile Include="Runtime\Assignments\CollectionAction.cs" />
     <Compile Include="Runtime\Assignments\CollectionAssign.cs" />
     <Compile Include="Runtime\CollectionBase.cs" />
@@ -332,7 +334,7 @@
     <Compile Include="Runtime\Assignments\DictionaryAssign.cs" />
     <Compile Include="Runtime\DisposableBase.cs" />
     <Compile Include="Runtime\Disposables.cs" />
-    <Compile Include="Commands\DisposingCommand.cs" />
+    <Compile Include="Commands\DisposingCommandBase.cs" />
     <Compile Include="Commands\FirstCommand.cs" />
     <Compile Include="Commands\SuppliedCommand.cs" />
     <Compile Include="Runtime\Assignments\IAssign.cs" />
@@ -475,7 +477,6 @@
     <Compile Include="Commands\AdapterCommand.cs" />
     <Compile Include="Runtime\RepositoryBase.cs" />
     <Compile Include="Runtime\Serializer.cs" />
-    <Compile Include="Runtime\Assignments\SourceAssignment.cs" />
     <Compile Include="Specifications\AssignedSpecification.cs" />
     <Compile Include="Specifications\ConditionMonitorSpecificationBase.cs" />
     <Compile Include="Specifications\DelegatedSpecification.cs" />
@@ -573,7 +574,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Runtime\DisposableAction.cs" />
-    <Compile Include="Commands\DisposeDisposableCommand.cs" />
+    <Compile Include="Commands\DisposingCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Sources\AssignableSourceBase.cs" />
     <Compile Include="Sources\Parameterized\Caching\AmbientStack.cs" />

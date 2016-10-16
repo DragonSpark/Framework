@@ -12,14 +12,12 @@ namespace DragonSpark.Commands
 
 		public SuppliedCommand( ICommand<T> command, T parameter ) : this( command, Factory.For( parameter ) ) {}
 
-		public SuppliedCommand( ICommand<T> command, Func<T> parameter )
+		public SuppliedCommand( ICommand<T> command, Func<T> parameter ) : base( command.AsDisposable() )
 		{
 			this.command = new SpecificationCommand<T>( Common<T>.Assigned, command.ToDelegate() );
 			this.parameter = parameter;
 		}
 
 		public override void Execute() => command.Execute( parameter() );
-
-		protected override void OnDispose() => command.TryDispose();
 	}
 }

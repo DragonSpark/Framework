@@ -2,7 +2,7 @@ using DragonSpark.Commands;
 
 namespace DragonSpark.Sources
 {
-	public class StackCommand<T> : DisposingCommand<T>
+	public class StackCommand<T> : DisposingCommandBase<T>
 	{
 		public StackCommand( IStack<T> stack )
 		{

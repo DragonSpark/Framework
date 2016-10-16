@@ -8,6 +8,12 @@ namespace DragonSpark.Commands
 {
 	public static class Extensions
 	{
+		public static IDisposable AsExecuted( this IExecution @this )
+		{
+			@this.Execute();
+			return @this;
+		}
+
 		public static ICommand<T> Adapt<T>( this ICommand @this ) => new AdapterCommand<T>( @this );
 
 		public static Action ToRunDelegate( this IRunCommand @this ) => RunDelegates.Default.Get( @this );

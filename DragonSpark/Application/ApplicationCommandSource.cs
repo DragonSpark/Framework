@@ -20,7 +20,7 @@ namespace DragonSpark.Application
 		protected override IEnumerable<ICommand> Yield()
 		{
 			yield return ApplicationParts.Default.Configured( SystemPartsFactory.Default.Get( types ) );
-			yield return new DisposeDisposableCommand( Disposables.Default.Get() );
+			yield return new DisposingCommand( Disposables.Default.Get() );
 
 			foreach ( var command in base.Yield() )
 			{

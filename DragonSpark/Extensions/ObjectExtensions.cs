@@ -1,4 +1,5 @@
 ﻿using DragonSpark.ComponentModel;
+using DragonSpark.Runtime;
 using DragonSpark.TypeSystem;
 using System;
 using System.Reflection;
@@ -9,6 +10,8 @@ namespace DragonSpark.Extensions
 {
 	public static class ObjectExtensions
 	{
+		public static IDisposable AsDisposable( this object @this ) => @this as IDisposable ?? new DisposableAction( () => { } );
+
 		public static void TryDispose( this object target ) => target.As<IDisposable>( x => x.Dispose() );
 
 		public static bool IsAssignedOrValue<T>( [Optional]this T @this ) => IsAssigned( @this, true );

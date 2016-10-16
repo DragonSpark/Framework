@@ -18,7 +18,7 @@ namespace DragonSpark.Commands
 	}
 
 	[ContentProperty( nameof(Commands) )]
-	public class CompositeCommand<T> : DisposingCommand<T>
+	public class CompositeCommand<T> : DisposingCommandBase<T>
 	{
 		public CompositeCommand( params ICommand[] commands )
 		{

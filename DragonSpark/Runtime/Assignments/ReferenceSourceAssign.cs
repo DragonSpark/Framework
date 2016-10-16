@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Runtime.Assignments
 {
-	public class CacheAssign<T1, T2> : IAssign<T1, T2>
+	public sealed class CacheAssign<T1, T2> : IAssign<T1, T2>
 	{
 		readonly ICache<T1, T2> cache;
 		public CacheAssign( ICache<T1, T2> cache )
@@ -10,6 +10,6 @@ namespace DragonSpark.Runtime.Assignments
 			this.cache = cache;
 		}
 
-		public void Assign( T1 first, T2 second ) => cache.Set( first, second );
+		public void Assign( T1 first, T2 second ) => cache.SetOrClear( first, second );
 	}
 }
