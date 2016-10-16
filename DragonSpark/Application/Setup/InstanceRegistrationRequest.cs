@@ -4,8 +4,6 @@ namespace DragonSpark.Application.Setup
 {
 	public struct InstanceRegistrationRequest
 	{
-		public InstanceRegistrationRequest( object instance ) : this( instance.GetType(), instance ) {}
-
 		public InstanceRegistrationRequest( Type type, object instance )
 		{
 			RegistrationType = type;

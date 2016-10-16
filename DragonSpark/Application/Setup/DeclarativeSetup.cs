@@ -5,7 +5,9 @@ using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace DragonSpark.Application.Setup
 {
@@ -28,6 +30,7 @@ namespace DragonSpark.Application.Setup
 
 		public override bool IsSatisfiedBy( object parameter ) => specification.IsSatisfiedBy( parameter );
 
+		[UsedImplicitly]
 		public Priority Priority { get; set; }
 
 		public DeclarativeCollection<object> Items { get; } = new DeclarativeCollection<object>();

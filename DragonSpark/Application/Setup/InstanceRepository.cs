@@ -11,8 +11,7 @@ namespace DragonSpark.Application.Setup
 	{
 		public InstanceRepository( params object[] instances ) : this( instances.AsEnumerable() ) {}
 		public InstanceRepository( IEnumerable<object> items ) : base( items ) {}
-		public InstanceRepository( ICollection<object> source ) : base( source ) {}
-
+		
 		public virtual object GetService( Type serviceType ) => Get( serviceType, o => o.Value() );
 
 		T Get<T>( Type serviceType, Func<object, T> projection )
@@ -32,9 +31,7 @@ namespace DragonSpark.Application.Setup
 		public virtual void Add( InstanceRegistrationRequest request ) => Add( request.Instance );
 
 		public bool IsSatisfiedBy( Type parameter ) => Get( parameter, o => true );
-		// bool ISpecification.IsSatisfiedBy( object parameter ) => parameter is Type && IsSatisfiedBy( (Type)parameter );
-
+		
 		public object Get( Type parameter ) => GetService( parameter );
-		public object Get( object parameter ) => parameter is Type ? Get( parameter ) : null;
 	}
 }

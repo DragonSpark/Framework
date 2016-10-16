@@ -49,6 +49,7 @@
     <Compile Include="Activation\ConstructorTests.cs" />
     <Compile Include="Activation\ConstructorCoercerTests.cs" />
     <Compile Include="Activation\ConstructTypeRequestTests.cs" />
+    <Compile Include="Application\Setup\DeclarativeSetupTests.cs" />
     <Compile Include="Application\TaskedTaskExecutionContextTests.cs" />
     <Compile Include="Aspects\Alteration\ApplyAlterationAttributeTests.cs" />
     <Compile Include="Aspects\Coercion\ApplyCoercerAttributeTests.cs" />

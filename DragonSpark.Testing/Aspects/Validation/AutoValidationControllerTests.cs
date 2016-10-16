@@ -72,9 +72,10 @@ namespace DragonSpark.Testing.Aspects.Validation
 			Assert.True( controller.Handles( first ) );
 			Assert.True( controller.Handles( second ) );
 			Assert.False( controller.Handles( Guid.NewGuid() ) );
-			
-			Assert.Same( one, controller.Execute( first, new Mock<IInvocation>().Object ) );
-			Assert.Same( two, controller.Execute( second, new Mock<IInvocation>().Object ) );
+
+			var invocation = new Mock<IInvocation>().Object;
+			Assert.Same( one, controller.Execute( first, invocation ) );
+			Assert.Same( two, controller.Execute( second, invocation ) );
 		}
 
 		sealed class Adapter : IParameterValidationAdapter
