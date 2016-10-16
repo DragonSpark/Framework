@@ -1,12 +1,15 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Runtime
 {
-	public class PurgingCollection<T> : CollectionBase<T>
+	public sealed class PurgingCollection<T> : CollectionBase<T>
 	{
-		public PurgingCollection() {}
+		readonly static IEnumerable<T> Items = Items<T>.Default.AsEnumerable();
+
+		public PurgingCollection() : this( Items ) {}
 		public PurgingCollection( IEnumerable<T> collection ) : base( collection ) {}
 		public PurgingCollection( ICollection<T> source ) : base( source ) {}
 

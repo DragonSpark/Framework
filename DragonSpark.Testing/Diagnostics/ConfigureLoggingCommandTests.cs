@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Diagnostics
 		[Fact]
 		public void Coverage()
 		{
-			new DefaultConfigureLoggingCommand();
+			using ( new DefaultConfigureLoggingCommand() ) {}
 			new DelegatedTextCommand( IgnoredOutputCommand.Default.Execute ).Execute( string.Empty );
 			DebugOutputCommand.Default.Execute( string.Empty );
 		}

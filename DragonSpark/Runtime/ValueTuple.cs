@@ -29,12 +29,9 @@ namespace DragonSpark.Runtime
 		public T2 Item2 { get; }
 		public T3 Item3 { get; }
 
-		public bool Equals( ValueTuple<T1, T2, T3> other )
-		{
-			return Comparer1.Equals( Item1, other.Item1 )
-				   && Comparer2.Equals( Item2, other.Item2 )
-				   && Comparer3.Equals( Item3, other.Item3 );
-		}
+		public bool Equals( ValueTuple<T1, T2, T3> other ) => Comparer1.Equals( Item1, other.Item1 )
+															  && Comparer2.Equals( Item2, other.Item2 )
+															  && Comparer3.Equals( Item3, other.Item3 );
 
 		public override bool Equals( object obj )
 		{
@@ -47,24 +44,15 @@ namespace DragonSpark.Runtime
 			return false;
 		}
 
-		public override int GetHashCode()
-		{
-			return Hash.Combine(
-				Hash.Combine(
-					Comparer1.GetHashCode( Item1 ),
-					Comparer2.GetHashCode( Item2 ) ),
-				Comparer3.GetHashCode( Item3 ) );
-		}
+		public override int GetHashCode() => Hash.Combine(
+			Hash.Combine(
+				Comparer1.GetHashCode( Item1 ),
+				Comparer2.GetHashCode( Item2 ) ),
+			Comparer3.GetHashCode( Item3 ) );
 
-		public static bool operator ==( ValueTuple<T1, T2, T3> left, ValueTuple<T1, T2, T3> right )
-		{
-			return left.Equals( right );
-		}
+		public static bool operator ==( ValueTuple<T1, T2, T3> left, ValueTuple<T1, T2, T3> right ) => left.Equals( right );
 
-		public static bool operator !=( ValueTuple<T1, T2, T3> left, ValueTuple<T1, T2, T3> right )
-		{
-			return !left.Equals( right );
-		}
+		public static bool operator !=( ValueTuple<T1, T2, T3> left, ValueTuple<T1, T2, T3> right ) => !left.Equals( right );
 	}
 
 	// ATTRIBUTION: https://github.com/dotnet/roslyn/blob/master/src/Compilers/Core/Portable/InternalUtilities/ValueTuple%602.cs

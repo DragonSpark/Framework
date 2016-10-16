@@ -258,7 +258,6 @@
     <Compile Include="Application\Setup\RegisterInstances.cs" />
     <Compile Include="Aspects\Validation\AdapterSourceBase.cs" />
     <Compile Include="Aspects\AspectHub.cs" />
-    <Compile Include="Aspects\CacheEntry.cs" />
     <Compile Include="Aspects\Validation\CommandAdapter.cs" />
     <Compile Include="Aspects\Validation\CommandAdapterFactory.cs" />
     <Compile Include="Aspects\Validation\GenericCommandAdapterFactory.cs" />
@@ -462,7 +461,6 @@
     <Compile Include="Diagnostics\Exceptions\RetryTimeBase.cs" />
     <Compile Include="Runtime\Hash.cs" />
     <Compile Include="Aspects\Validation\IParameterValidationAdapter.cs" />
-    <Compile Include="Aspects\Keys.cs" />
     <Compile Include="Aspects\OfSourceType.cs" />
     <Compile Include="Aspects\Validation\ParameterValidationAdapterBase.cs" />
     <Compile Include="Aspects\Validation\AdapterLocator.cs" />
@@ -544,7 +542,6 @@
     <Compile Include="Aspects\FreezeAttribute.cs" />
     <Compile Include="Aspects\ApplyDefaultValues.cs" />
     <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
-    <Compile Include="Runtime\KeyFactory.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
     <Compile Include="Aspects\TimedAttribute.cs" />
     <Compile Include="Aspects\RecursionGuardAttribute.cs" />

@@ -9,6 +9,8 @@ namespace DragonSpark.Application.Setup
 {
 	public class InstanceRepository : RepositoryBase<object>, IServiceRepository
 	{
+		public InstanceRepository() {}
+
 		public InstanceRepository( params object[] instances ) : this( instances.AsEnumerable() ) {}
 		public InstanceRepository( IEnumerable<object> items ) : base( items ) {}
 		

@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Commands
 		{
 			public Command( int number )
 			{
-				this.Number = number;
+				Number = number;
 			}
 
 			public int Number { get; }

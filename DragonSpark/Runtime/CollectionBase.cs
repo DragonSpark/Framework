@@ -44,7 +44,7 @@ namespace DragonSpark.Runtime
 			}
 		}
 
-		public void Insert( T item ) => list.Insert( 0, item );
+		/*public void Insert( T item ) => list.Insert( 0, item );*/
 
 		int IList.Add( object value )
 		{

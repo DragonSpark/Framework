@@ -79,7 +79,6 @@
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Extensions\ConventionBasedFormattingExtensionsTests.cs" />
     <Compile Include="Extensions\ImmutableArrayExtensionsTests.cs" />
-    <Compile Include="Runtime\KeyFactoryTests.cs" />
     <Compile Include="Aspects\Validation\AutoValidationControllerTests.cs" />
     <Compile Include="Aspects\OfTypeAttributeTests.cs" />
     <Compile Include="Aspects\Validation\ApplyAutoValidationAttributeTests.cs" />
@@ -94,6 +93,8 @@
     <Compile Include="Composition\SingletonExportDescriptorProviderTests.cs" />
     <Compile Include="Composition\SourceDelegateExporterTests.cs" />
     <Compile Include="Composition\SourceExporterTests.cs" />
+    <Compile Include="Runtime\CollectionBaseTests.cs" />
+    <Compile Include="Runtime\ValueTupleTests.cs" />
     <Compile Include="Runtime\WeakListTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\ArgumentCacheTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheExtensionsTests.cs" />
