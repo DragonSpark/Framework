@@ -4,27 +4,25 @@ using System.Linq;
 
 namespace DragonSpark.Sources.Parameterized.Caching
 {
-	public class EqualityReference<T> : AlterationBase<T> where T : class
+	public sealed class EqualityReference<T> : AlterationBase<T> where T : class
 	{
 		public static EqualityReference<T> Default { get; } = new EqualityReference<T>();
 		EqualityReference() {}
 
 		readonly WeakList<T> list = new WeakList<T>();
 
-		T GetOrAdd( T item )
+		public override T Get( T parameter )
 		{
 			lock ( list )
 			{
-				var current = list.Introduce( item, tuple => Equals( tuple.Item1, tuple.Item2 ) ).SingleOrDefault();
+				var current = list.Introduce( parameter, tuple => tuple.Item1.Equals( tuple.Item2 ) ).SingleOrDefault();
 				if ( current == null )
 				{
-					list.Add( item );
-					return item;
+					list.Add( parameter );
+					return parameter;
 				}
 				return current;
 			}
 		}
-
-		public override T Get( T parameter ) => GetOrAdd( parameter );
 	}
 }

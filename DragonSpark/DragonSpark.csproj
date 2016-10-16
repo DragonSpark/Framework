@@ -268,7 +268,6 @@
     <Compile Include="Aspects\Validation\CommandAdapter.cs" />
     <Compile Include="Aspects\Validation\CommandAdapterFactory.cs" />
     <Compile Include="Aspects\Validation\GenericCommandAdapterFactory.cs" />
-    <Compile Include="Aspects\Validation\GenericParameterProfileFactoryBase.cs" />
     <Compile Include="ComponentModel\CurrentTimeValueProvider.cs" />
     <Compile Include="ComponentModel\ExpressionEvaluator.cs" />
     <Compile Include="ComponentModel\ServiceAttribute.cs" />
@@ -547,7 +546,6 @@
     <Compile Include="Activation\Location\SingletonSpecification.cs" />
     <Compile Include="Sources\SourceCoercer.cs" />
     <Compile Include="Sources\SourceTypeAssignableSpecification.cs" />
-    <Compile Include="Activation\TypeRequest.cs" />
     <Compile Include="Aspects\AutoGuardAspect.cs" />
     <Compile Include="Composition\ConventionImplementations.cs" />
     <Compile Include="Diagnostics\Configurations\AddSinkCommand.cs" />

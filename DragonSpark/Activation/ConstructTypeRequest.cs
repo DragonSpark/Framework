@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace DragonSpark.Activation
 {
-	public class ConstructTypeRequest : TypeRequest, IEquatable<ConstructTypeRequest>
+	public sealed class ConstructTypeRequest : IEquatable<ConstructTypeRequest>
 	{
 		readonly static StructuralEqualityComparer<object[]> Comparer = StructuralEqualityComparer<object[]>.Default;
 
@@ -13,19 +13,22 @@ namespace DragonSpark.Activation
 
 		public ConstructTypeRequest( Type type ) : this( type, Items<object>.Default ) {}
 
-		public ConstructTypeRequest( Type type, params object[] arguments ) : base( type )
+		public ConstructTypeRequest( Type type, params object[] arguments )
 		{
+			RequestedType = type;
 			Arguments = arguments.ToImmutableArray();
 
 			unchecked
 			{
-				code = base.GetHashCode() * 397 ^ Comparer.GetHashCode( arguments );
+				code = RequestedType.GetHashCode() * 397 ^ Comparer.GetHashCode( arguments );
 			}
 		}
 
+		public Type RequestedType { get; }
+		
 		public ImmutableArray<object> Arguments { get; }
 
-		public bool Equals( ConstructTypeRequest other ) => base.Equals( other ) && code == other.code;
+		public bool Equals( ConstructTypeRequest other ) => ReferenceEquals( this, other ) || code == other?.code;
 
 		public override bool Equals( object obj ) => obj is ConstructTypeRequest && Equals( (ConstructTypeRequest)obj );
 

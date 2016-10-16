@@ -48,6 +48,7 @@
     <Compile Include="Activation\ConstructorsTests.cs" />
     <Compile Include="Activation\ConstructorTests.cs" />
     <Compile Include="Activation\ConstructorCoercerTests.cs" />
+    <Compile Include="Activation\ConstructTypeRequestTests.cs" />
     <Compile Include="Application\TaskedTaskExecutionContextTests.cs" />
     <Compile Include="Aspects\Alteration\ApplyAlterationAttributeTests.cs" />
     <Compile Include="Aspects\Coercion\ApplyCoercerAttributeTests.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
     <Compile Include="ComponentModel\SourceAttributeTests.cs" />
     <Compile Include="ComponentModel\TypeDefinitionsTests.cs" />
+    <Compile Include="Composition\ExportMappingTests.cs" />
     <Compile Include="Diagnostics\LoggingControllerTests.cs" />
     <Compile Include="Application\DefaultExportProviderTests.cs" />
     <Compile Include="Aspects\ApplyDefaultValuesTests.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Composition\SingletonExportDescriptorProviderTests.cs" />
     <Compile Include="Composition\SourceDelegateExporterTests.cs" />
     <Compile Include="Composition\SourceExporterTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\DecoratedCacheTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />
     <Compile Include="Extensions\MethodExtensionsTests.cs" />
     <Compile Include="ImmutableArrayTests.cs" />

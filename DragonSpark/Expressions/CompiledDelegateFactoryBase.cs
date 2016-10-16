@@ -4,14 +4,12 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Expressions
 {
-	public abstract class CompiledDelegateFactoryBase<TParameter, TResult> //: ParameterizedSourceBase<TParameter, TResult>
+	public abstract class CompiledDelegateFactoryBase<TParameter, TResult>
 	{
 		readonly ParameterExpression parameterExpression;
 		readonly Func<ExpressionBodyParameter<TParameter>, Expression> bodySource;
 
 		readonly Type convertType;
-
-		protected CompiledDelegateFactoryBase( Func<ExpressionBodyParameter<TParameter>, Expression> bodySource ) : this( Parameter.Default, bodySource ) {}
 
 		protected CompiledDelegateFactoryBase( ParameterExpression parameterExpression, Func<ExpressionBodyParameter<TParameter>, Expression> bodySource )
 		{

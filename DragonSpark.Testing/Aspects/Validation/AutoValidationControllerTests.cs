@@ -1,5 +1,10 @@
-﻿using DragonSpark.Aspects.Validation;
+﻿using DragonSpark.Aspects;
+using DragonSpark.Aspects.Validation;
+using DragonSpark.Sources.Parameterized;
+using Moq;
+using PostSharp.Aspects;
 using System;
+using System.Reflection;
 using System.Windows.Input;
 using Xunit;
 
@@ -36,6 +41,76 @@ namespace DragonSpark.Testing.Aspects.Validation
 			Assert.Equal( 5, command.CanExecuteCalled );
 			Assert.Equal( 1, command.ExecuteCalled );
 			Assert.Equal( valid, command.LastResult.GetValueOrDefault() );
+		}
+
+		[Fact]
+		public void Handler()
+		{
+			var method = (MethodInfo)MethodBase.GetCurrentMethod();
+			var adapter = new Adapter( method );
+			var controller = new AutoValidationController( adapter );
+			var first = Guid.NewGuid();
+			var one = new Aspect( method, first );
+			controller.Register( one );
+			Assert.Same( one, controller.Execute( first, new Mock<IInvocation>().Object ) );
+		}
+
+		[Fact]
+		public void Linked()
+		{
+			var method = (MethodInfo)MethodBase.GetCurrentMethod();
+			var adapter = new Adapter( method );
+			var controller = new AutoValidationController( adapter );
+			var first = Guid.NewGuid();
+			var second = Guid.NewGuid();
+			var one = new Aspect( method, first );
+			controller.Register( one );
+
+			var two = new Aspect( method, second );
+			controller.Register( two );
+
+			Assert.True( controller.Handles( first ) );
+			Assert.True( controller.Handles( second ) );
+			Assert.False( controller.Handles( Guid.NewGuid() ) );
+			
+			Assert.Same( one, controller.Execute( first, new Mock<IInvocation>().Object ) );
+			Assert.Same( two, controller.Execute( second, new Mock<IInvocation>().Object ) );
+		}
+
+		sealed class Adapter : IParameterValidationAdapter
+		{
+			readonly MethodInfo method;
+
+			public Adapter( MethodInfo method )
+			{
+				this.method = method;
+			}
+
+			public bool IsSatisfiedBy( MethodInfo parameter ) => parameter == method;
+
+			public bool IsSatisfiedBy( object parameter ) => false;
+		}
+
+		sealed class Aspect : IAspect, IMethodAware, IParameterAwareHandler
+		{
+			readonly Guid id;
+
+			public Aspect( MethodInfo method, Guid id )
+			{
+				this.id = id;
+				Method = method;
+			}
+
+			public MethodInfo Method { get; }
+
+			public bool Handles( object parameter ) => id.Equals( parameter );
+
+			public bool Handle( object parameter, out object handled )
+			{
+				var result = Handles( parameter );
+				handled = result ? this : null;
+				return result;
+			}
 		}
 
 		[Fact]
