@@ -139,9 +139,6 @@
     <Compile Include="Aspects\Specifications\Aspect.cs" />
     <Compile Include="Aspects\Specifications\ApplySpecificationAttribute.cs" />
     <Compile Include="Aspects\Specifications\SpecificationAttributeBase.cs" />
-    <Compile Include="Aspects\Specifications\SpecificationAwareAdapter.cs" />
-    <Compile Include="Aspects\Specifications\SpecificationAwareAttribute.cs" />
-    <Compile Include="Aspects\Specifications\SpecificationAwareConstructor.cs" />
     <Compile Include="Aspects\Specifications\Constructor.cs" />
     <Compile Include="Aspects\Specifications\Support.cs" />
     <Compile Include="Aspects\Specifications\Source.cs" />
