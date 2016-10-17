@@ -80,6 +80,7 @@
     <Compile Include="Markup\Specification.cs" />
     <Compile Include="Markup\StringDesignerValueFactory.cs" />
     <Compile Include="Runtime\AllParts.cs" />
+    <Compile Include="Runtime\AppDomainSource.cs" />
     <Compile Include="Runtime\ApplicationDomainProxyFactory.cs" />
     <Compile Include="Runtime\ApplicationTypesBase.cs" />
     <Compile Include="Runtime\AssemblySource.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Runtime\Data\DocumentFactory.cs" />
     <Compile Include="Runtime\Data\DocumentResourceFactory.cs" />
     <Compile Include="Runtime\Data\Serializer.cs" />
+    <Compile Include="Runtime\Defaults.cs" />
     <Compile Include="Runtime\DomainApplicationAssemblies.cs" />
     <Compile Include="Runtime\PartTypesBase.cs" />
     <Compile Include="Runtime\PublicParts.cs" />
@@ -99,7 +101,6 @@
     <Compile Include="Setup\FileSystemInfoExistsSpecification.cs" />
     <Compile Include="Setup\InitializeUserSettingsCommand.cs" />
     <Compile Include="Setup\ConsoleApplication.cs" />
-    <Compile Include="Setup\ConfigurationSectionFactory.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
     <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
@@ -158,9 +159,7 @@
     <Compile Include="Runtime\ApplicationAssemblyLocator.cs" />
     <Compile Include="Runtime\FileSystemAssemblySource.cs" />
     <Compile Include="Runtime\DomainAssemblySource.cs" />
-    <Compile Include="Runtime\LogicalStore.cs" />
     <Compile Include="Runtime\ThreadDataStore.cs" />
-    <Compile Include="Setup\FileConfigurationFactory.cs" />
     <Compile Include="Markup\AssemblyVersionExtension.cs" />
     <Compile Include="Markup\ClrMemberMarkupProperty.cs" />
     <Compile Include="Markup\DependencyPropertyMarkupProperty.cs" />
@@ -180,6 +179,7 @@
     <Compile Include="Runtime\TaskLocalStore.cs" />
     <Compile Include="Setup\IsExecutingInManagedHostSpecification.cs" />
     <Compile Include="Setup\ReadKeyCommand.cs" />
+    <Compile Include="Setup\SaveUserSettingsCommand.cs" />
     <Compile Include="Setup\UserSettingsExistsSpecification.cs" />
     <Compile Include="Setup\UserSettingsFile.cs" />
     <Compile Include="AppDomainFormatter.cs" />

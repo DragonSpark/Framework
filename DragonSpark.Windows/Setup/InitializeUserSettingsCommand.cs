@@ -17,17 +17,17 @@ namespace DragonSpark.Windows.Setup
 	public sealed class InitializeUserSettingsCommand : CommandBase<ApplicationSettingsBase>
 	{
 		public static InitializeUserSettingsCommand Default { get; } = new InitializeUserSettingsCommand();
-		InitializeUserSettingsCommand() : this( TemplatesFactory.DefaultNested.Fixed( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, UserConfigurationLocator.Default.Get ) {}
+		InitializeUserSettingsCommand() : this( TemplatesFactory.DefaultNested.Fixed( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, SaveUserSettingsCommand.Default.Execute ) {}
 
 		readonly Func<Templates> templatesSource;
 		readonly Func<FileInfo> fileSource;
-		readonly Func<FileInfo, System.Configuration.Configuration> configurationSource;
+		readonly Action<ApplicationSettingsBase> save;
 
-		InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<FileInfo> fileSource, Func<FileInfo, System.Configuration.Configuration> configurationSource  )
+		InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<FileInfo> fileSource, Action<ApplicationSettingsBase> save )
 		{
 			this.templatesSource = templatesSource;
 			this.fileSource = fileSource;
-			this.configurationSource = configurationSource;
+			this.save = save;
 		}
 
 		public override void Execute( ApplicationSettingsBase parameter )
@@ -47,9 +47,7 @@ namespace DragonSpark.Windows.Setup
 			{
 				try
 				{
-					var configuration = configurationSource( file ) ?? ConfigurationManager.OpenExeConfiguration( parameter.GetType().Assembly.Location );
-					configuration.SaveAs( name, ConfigurationSaveMode.Modified );
-					parameter.Save();
+					save( parameter );
 					templates.Created( name );
 				}
 				catch ( ConfigurationErrorsException e )

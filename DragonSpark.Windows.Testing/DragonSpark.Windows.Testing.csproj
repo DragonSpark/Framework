@@ -46,6 +46,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\AllPartsTests.cs" />
+    <Compile Include="Runtime\ApplicationDomainProxyFactoryTests.cs" />
     <Compile Include="Runtime\FileSystemTypesTests.cs" />
     <Compile Include="Runtime\DomainAssemblySourceTests.cs" />
     <Compile Include="Runtime\TaskLocalStoreTests.cs" />
@@ -54,11 +56,13 @@
     <Compile Include="Runtime\AppDomainStoreTests.cs" />
     <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
     <Compile Include="Runtime\ThreadDataStoreTests.cs" />
+    <Compile Include="Setup\ConsoleApplicationTests.cs" />
     <Compile Include="Setup\InitializeUserSettingsCommandTests.cs" />
     <Compile Include="Setup\DefaultsTests.cs" />
+    <Compile Include="Setup\IsExecutingInManagedHostSpecificationTests.cs" />
     <Compile Include="Setup\ProgramSetupTests.cs" />
+    <Compile Include="Setup\ReadKeyCommandTests.cs" />
     <Compile Include="TestObjects\ClassWithBrokenConstructor.cs" />
-    <Compile Include="TestObjects\ModulesConfiguration.cs" />
     <Compile Include="TestObjects\Relayed.cs" />
     <Compile Include="TypeSystem\PartsTests.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -70,12 +74,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Resources\Modules.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="project.json" />
-    <None Include="Resources\Certificate.cer" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Testing.Framework\DragonSpark.Testing.Framework.csproj">

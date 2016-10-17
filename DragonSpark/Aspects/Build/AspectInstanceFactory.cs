@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
-using DragonSpark.TypeSystem;
 using PostSharp.Aspects;
 using PostSharp.Extensibility;
 using PostSharp.Reflection;
@@ -14,9 +13,6 @@ namespace DragonSpark.Aspects.Build
 	{
 		public static ObjectConstructionFactory<T> Default { get; } = new ObjectConstructionFactory<T>();
 		ObjectConstructionFactory() {}
-
-		public ObjectConstruction Get() => GetUsing( Items<object>.Default );
-		public ObjectConstruction GetUsing( params object[] parameter ) => Get( parameter );
 
 		public override ObjectConstruction Get( IEnumerable<object> parameter ) => new ObjectConstruction( typeof(T), parameter.Fixed() );
 	}

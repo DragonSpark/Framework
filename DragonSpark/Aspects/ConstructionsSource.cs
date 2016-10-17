@@ -1,13 +1,14 @@
-﻿using System;
-using DragonSpark.Aspects.Build;
+﻿using DragonSpark.Aspects.Build;
 using DragonSpark.Aspects.Coercion;
 using DragonSpark.Aspects.Relay;
 using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Coercion;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
 using PostSharp.Reflection;
+using System;
 
 namespace DragonSpark.Aspects
 {
@@ -20,11 +21,10 @@ namespace DragonSpark.Aspects
 
 		public ConstructionsSource( [OfType( typeof(ICoercer<,>) )]Type coercerType, [OfType( typeof(ISpecification<>) )]Type specificationType )
 			: base( 
-				// new ApplyGeneralizedImplementationsAttribute(),
-				Coercer.GetUsing( coercerType ),
+				Coercer.Get( coercerType ),
 				Relay,
 				Auto,
-				Specification.GetUsing( specificationType )
+				Specification.Get( specificationType )
 			) {}
 	}
 }

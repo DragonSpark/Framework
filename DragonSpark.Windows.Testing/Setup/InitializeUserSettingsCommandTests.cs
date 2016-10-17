@@ -59,18 +59,29 @@ namespace DragonSpark.Windows.Testing.Setup
 			sut.Execute( Settings.Default );
 
 			Assert.Equal( count, history.Events.Count() );
-			/*var upgraded = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
-			Assert.Contains( Resources.LoggerTemplates_Initializing, upgraded );
-			Assert.Contains( Resources.LoggerTemplates_Complete, upgraded );*/
 		}
 
 		[Theory, AutoData]
-		public void NoProperties( InitializeUserSettingsCommand create, InitializeUserSettingsCommand sut, ILoggerHistory history )
+		public void NoProperties( InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
 			var before = history.Events.Fixed();
 			sut.Execute( new SettingsWithNoProperties() );
 			var items = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
 			var expected = new[] { Resources.LoggerTemplates_Initializing, Resources.LoggerTemplates_NotFound, Resources.LoggerTemplates_Created };
+			foreach ( var message in expected )
+			{
+				Assert.Contains( message, items );
+			}
+			Assert.Equal( before.Length + expected.Length, items.Length );
+		}
+
+		[Theory, AutoData]
+		public void UpgradeWithFileCreate( InitializeUserSettingsCommand sut, ILoggerHistory history )
+		{
+			var before = history.Events.Fixed();
+			sut.Execute( new UpgradeWithCompleteSettings() );
+			var items = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
+			var expected = new[] { Resources.LoggerTemplates_Initializing, Resources.LoggerTemplates_Complete };
 			foreach ( var message in expected )
 			{
 				Assert.Contains( message, items );
@@ -106,6 +117,15 @@ namespace DragonSpark.Windows.Testing.Setup
 			public override void Save()
 			{
 				throw new ConfigurationErrorsException( "Some exception" );
+			}
+		}
+
+		sealed class UpgradeWithCompleteSettings : ApplicationSettingsBase
+		{
+			public override void Upgrade()
+			{
+				SaveUserSettingsCommand.Default.Execute( this );
+				base.Upgrade();
 			}
 		}
 	}
