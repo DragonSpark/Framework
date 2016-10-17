@@ -7,15 +7,15 @@ namespace DragonSpark.Windows.FileSystem
 	public sealed class TimestampPathFactory : SourceBase<string>
 	{
 		public static TimestampPathFactory Default { get; } = new TimestampPathFactory();
-		TimestampPathFactory() : this( CurrentTimeConfiguration.Default.Get ) {}
+		TimestampPathFactory() : this( Time.Default.Get ) {}
 
-		readonly Func<ICurrentTime> time;
+		readonly Func<DateTimeOffset> time;
 
-		public TimestampPathFactory( Func<ICurrentTime> time )
+		public TimestampPathFactory( Func<DateTimeOffset> time )
 		{
 			this.time = time;
 		}
 
-		public override string Get() => time().Now.ToString( Defaults.ValidPathTimeFormat );
+		public override string Get() => time().ToString( Defaults.ValidPathTimeFormat );
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Composition;
 using DragonSpark.Extensions;
+using DragonSpark.Sources;
 using JetBrains.Annotations;
 using System;
 using System.Composition;
@@ -37,13 +38,13 @@ namespace DragonSpark.Testing.Composition
 			Assert.IsType<CurrentTime>( handler );
 		}
 
-		public sealed class CurrentTime : ICurrentTime
+		public sealed class CurrentTime : SourceBase<DateTimeOffset>, ICurrentTime
 		{
 			[UsedImplicitly]
 			public static ICurrentTime Default { get; } = new CurrentTime();
 			CurrentTime() {}
 
-			public DateTimeOffset Now => new DateTimeOffset();
+			public override DateTimeOffset Get() => new DateTimeOffset();
 		}
 
 		[Fact]

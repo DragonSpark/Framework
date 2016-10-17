@@ -1,3 +1,4 @@
+using DragonSpark.Application;
 using DragonSpark.Diagnostics;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Testing.Framework.Runtime;
@@ -11,6 +12,7 @@ namespace DragonSpark.Testing.Framework
 		[ModuleInitializer( 0 )]
 		public static void Execution()
 		{
+			Time.Default.Configuration.Assign( CurrentTime.Default.Wrap() );
 			DragonSpark.Application.Execution.Context.Assign( ExecutionContext.Default );
 			LoggingConfiguration.Default.Configurators.Assign( o => new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Get().ToArray() ).Get().Wrap() );
 		}

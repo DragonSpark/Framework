@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CurrentTestingMethod.cs" />
+    <Compile Include="CurrentTime.cs" />
     <Compile Include="Runtime\Defer.cs" />
     <Compile Include="Diagnostics\MedianFactory.cs" />
     <Compile Include="Diagnostics\ModeFactory.cs" />

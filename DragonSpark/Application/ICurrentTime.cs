@@ -1,9 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Sources;
+using System;
 
 namespace DragonSpark.Application
 {
-	public interface ICurrentTime
-	{
-		DateTimeOffset Now { get; }
-	}
+	public interface ICurrentTime : ISource<DateTimeOffset> {}
 }

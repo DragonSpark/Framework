@@ -13,7 +13,6 @@ namespace DragonSpark.Testing.ComponentModel
 		[Theory, AutoData]
 		void Apply()
 		{
-			var current = DateTime.Now;
 			var target = new ClassWithDefaultProperties();
 
 			Assert.Equal( 'd', target.Char );
@@ -32,8 +31,8 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.NotEqual( DateTime.MinValue, target.CurrentDateTime );
 			Assert.NotEqual( DateTimeOffset.MinValue, target.CurrentDateTimeOffset );
 
-			Assert.True( target.CurrentDateTime >= current );
-			Assert.True( target.CurrentDateTimeOffset >= current );
+			Assert.Equal( CurrentTime.Default.Get().DateTime, target.CurrentDateTime );
+			Assert.Equal( CurrentTime.Default.Get(), target.CurrentDateTimeOffset );
 
 			Assert.NotNull( target.Activated );
 

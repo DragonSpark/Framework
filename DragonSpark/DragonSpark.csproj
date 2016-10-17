@@ -43,6 +43,7 @@
     <Compile Include="Activation\Location\SpecifiedSingletonHostSpecification.cs" />
     <Compile Include="Activation\SingletonDelegates.cs" />
     <Compile Include="Application\FatalApplicationException.cs" />
+    <Compile Include="Application\SuppliedCurrentTime.cs" />
     <Compile Include="Aspects\AdapterConstructorSource.cs" />
     <Compile Include="Aspects\AdapterFactorySource.cs" />
     <Compile Include="Aspects\AdapterLocatorBase.cs" />
