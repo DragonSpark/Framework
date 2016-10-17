@@ -5,7 +5,7 @@ using System.Windows.Markup;
 namespace DragonSpark.Commands
 {
 	[ContentProperty( nameof(Parameter) )]
-	public class DeclaredSuppliedCommand : DeclaredCommandBase<object>
+	public class DeclarativeSuppliedCommand : DeclarativeCommandBase<object>
 	{
 		[Required]
 		public ICommand Command { [return: Required]get; set; }

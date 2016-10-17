@@ -349,7 +349,7 @@
     <Compile Include="Application\Setup\ApplyExportCommands.cs" />
     <Compile Include="Application\Setup\ApplySetup.cs" />
     <Compile Include="Commands\SuppliedCommandSource.cs" />
-    <Compile Include="Commands\DeclaredCommandBase.cs" />
+    <Compile Include="Commands\DeclarativeCommandBase.cs" />
     <Compile Include="Activation\CompositeActivator.cs" />
     <Compile Include="Application\DefaultExportProvider.cs" />
     <Compile Include="Application\Setup\EnableServicesCommand.cs" />
@@ -707,7 +707,7 @@
     <Compile Include="Application\RunProgramCommand.cs" />
     <Compile Include="Application\Setup\DeclarativeSetup.cs" />
     <Compile Include="Tasks\TaskMonitor.cs" />
-    <Compile Include="Commands\DeclaredSuppliedCommand.cs" />
+    <Compile Include="Commands\DeclarativeSuppliedCommand.cs" />
     <Compile Include="Application\RegistrationAttribute.cs" />
     <Compile Include="Application\ApplicationInformation.cs">
       <SubType>Code</SubType>

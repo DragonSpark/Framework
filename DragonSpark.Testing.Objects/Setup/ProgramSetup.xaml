@@ -11,7 +11,7 @@
 	xmlns:tasks="clr-namespace:DragonSpark.Tasks;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:DeclaredSuppliedCommand Command="{x:Static tasks:MonitorTaskCommand.Default}" Parameter="{ds:Source {ds:Activate setup1:CountingTaskSource}}" />
+	<commands:DeclarativeSuppliedCommand Command="{x:Static tasks:MonitorTaskCommand.Default}" Parameter="{ds:Source {ds:Activate setup1:CountingTaskSource}}" />
 	<setup:RegisterInstances>
 		<application:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 	</setup:RegisterInstances>

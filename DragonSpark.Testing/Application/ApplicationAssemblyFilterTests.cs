@@ -27,17 +27,17 @@ namespace DragonSpark.Testing.Application
 		}
 
 		[Theory, Framework.Application.AutoData]
-		public void DeclaredProvider( ITypeSource sut )
+		public void Source( ITypeSource sut )
 		{
 			Assert.NotNull( sut );
-			Assert.Same( DeclaredAssemblyProvider.Default, sut );
+			Assert.Same( AssemblyTypeSource.Default, sut );
 		}
 
-		class DeclaredAssemblyProvider : AssemblyBasedTypeSource
+		sealed class AssemblyTypeSource : AssemblyBasedTypeSource
 		{
 			[Export( typeof(ITypeSource) )]
-			public static DeclaredAssemblyProvider Default { get; } = new DeclaredAssemblyProvider();
-			DeclaredAssemblyProvider() : base( typeof(DeclaredAssemblyProvider) ) {}
+			public static AssemblyTypeSource Default { get; } = new AssemblyTypeSource();
+			AssemblyTypeSource() : base( typeof(AssemblyTypeSource) ) {}
 		}
 	}
 }
