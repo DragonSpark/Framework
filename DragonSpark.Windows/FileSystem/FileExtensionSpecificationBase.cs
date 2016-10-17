@@ -1,7 +1,7 @@
-﻿using System.IO;
-using DragonSpark.Specifications;
+﻿using DragonSpark.Specifications;
+using System.IO;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.FileSystem
 {
 	public abstract class FileExtensionSpecificationBase : SpecificationBase<FileSystemInfo>
 	{

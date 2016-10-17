@@ -1,5 +1,6 @@
 using DragonSpark.Diagnostics;
 using DragonSpark.Diagnostics.Configurations;
+using JetBrains.Annotations;
 using PostSharp.Patterns.Contracts;
 using Serilog;
 using Serilog.Configuration;
@@ -16,7 +17,7 @@ namespace DragonSpark.Windows.Diagnostics
 			OutputTemplate = outputTemplate;
 		}
 
-		[NotEmpty]
+		[NotEmpty, UsedImplicitly]
 		public string OutputTemplate { [return: NotEmpty]get; set; }
 
 		protected override void Configure( LoggerSinkConfiguration configuration )

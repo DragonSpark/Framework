@@ -38,6 +38,7 @@
     <Reference Include="System.Xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDomainFormatterTests.cs" />
     <Compile Include="Configuration\ConfigurationTests.cs" />
     <Compile Include="Diagnostics\ApplyExceptionDetailsTests.cs" />
     <Compile Include="FileSystemTests.cs" />

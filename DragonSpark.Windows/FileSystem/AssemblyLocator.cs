@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Sources.Parameterized;
 using System.Collections.Immutable;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.FileSystem
 {
 	public sealed class AssemblyLocator : QueryableResourceLocator
 	{

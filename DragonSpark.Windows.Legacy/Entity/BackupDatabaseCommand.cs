@@ -1,27 +1,43 @@
 using DragonSpark.Commands;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
-using PostSharp.Patterns.Contracts;
+using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
+using System;
 using System.IO;
 using System.Linq;
 
 namespace DragonSpark.Windows.Legacy.Entity
 {
-	public class BackupDatabaseCommand : CommandBase<object>
+	public sealed class BackupDatabaseCommand : CommandBase<object>
 	{
-		[Service, NotNull]
-		public FileInfo Database { [return: NotNull]get; set; }
+		public static BackupDatabaseCommand Default { get; } = new BackupDatabaseCommand();
+		BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy ) {}
 
-		[Default( 6 )]
+		readonly Func<FileInfo, bool> lockedSource;
+		readonly Func<string> pathSource;
+		readonly Func<string, bool> validSource;
+
+		public BackupDatabaseCommand( Func<FileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource )
+		{
+			this.lockedSource = lockedSource;
+			this.pathSource = pathSource;
+			this.validSource = validSource;
+		}
+
+		[Service, PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
+		public FileInfo Database { [return: PostSharp.Patterns.Contracts.NotNull]get; set; }
+
+		[Default( 6 ), PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
 		public int? MaximumBackups { get; set; }
 
 		public override void Execute( object parameter )
 		{
-			var files = EntityFiles.WithLog( Database ).Where( info => !info.IsLocked() ).ToArray();
 			var directory = Database.Directory;
+			var files = EntityFiles.WithLog( Database ).Where( lockedSource ).ToArray();
 			if ( files.Any() )
 			{
-				var destination = directory.CreateSubdirectory( FileSystem.GetValidPath() );
+				var destination = directory.CreateSubdirectory( pathSource() );
 				foreach ( var file in files )
 				{
 					file.CopyTo( Path.Combine( destination.FullName, file.Name ) );
@@ -31,11 +47,11 @@ namespace DragonSpark.Windows.Legacy.Entity
 			if ( MaximumBackups.HasValue )
 			{
 				directory
-						.GetDirectories()
-						.Where( x => FileSystem.IsValidPath( x.Name ) )
-						.OrderByDescending( info => info.CreationTime )
-						.Skip( MaximumBackups.Value )
-						.Each( info => info.Delete( true ) );
+					.GetDirectories()
+					.Where( x => validSource( x.Name ) )
+					.OrderByDescending( info => info.CreationTime )
+					.Skip( MaximumBackups.Value )
+					.Each( info => info.Delete( true ) );
 			}
 		}
 	}

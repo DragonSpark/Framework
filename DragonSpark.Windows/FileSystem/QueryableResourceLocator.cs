@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
-namespace DragonSpark.Windows
+namespace DragonSpark.Windows.FileSystem
 {
 	public class QueryableResourceLocator : ParameterizedSourceBase<string, ImmutableArray<string>>
 	{

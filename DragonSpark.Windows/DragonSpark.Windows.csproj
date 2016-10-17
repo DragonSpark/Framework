@@ -53,11 +53,16 @@
     <Compile Include="Diagnostics\AddTraceSinkCommand.cs" />
     <Compile Include="Diagnostics\TraceSink.cs" />
     <Compile Include="ExecutionContext.cs" />
+    <Compile Include="FileSystem\AllFilesSource.cs" />
+    <Compile Include="FileSystem\Defaults.cs" />
+    <Compile Include="FileSystem\LockedFileSpecification.cs" />
+    <Compile Include="FileSystem\PurgeDirectoryCommand.cs" />
+    <Compile Include="FileSystem\TimestampPathSpecification.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InitializationCommand.cs" />
     <Compile Include="Initialize.cs" />
-    <Compile Include="FileExtensionSpecificationBase.cs" />
-    <Compile Include="IsAssemblyFileSpecification.cs" />
+    <Compile Include="FileSystem\FileExtensionSpecificationBase.cs" />
+    <Compile Include="FileSystem\IsAssemblyFileSpecification.cs" />
     <Compile Include="Runtime\AllParts.cs" />
     <Compile Include="Runtime\AppDomainSource.cs" />
     <Compile Include="Runtime\ApplicationDomainProxyFactory.cs" />
@@ -82,7 +87,7 @@
     <Compile Include="Setup\ConsoleApplication.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
-    <Compile Include="FileSystem.cs" />
+    <Compile Include="FileSystem\TimestampPathFactory.cs" />
     <Compile Include="Diagnostics\ApplyExceptionDetails.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -106,8 +111,8 @@
     <Compile Include="Setup\UserSettingsExistsSpecification.cs" />
     <Compile Include="Setup\UserSettingsFile.cs" />
     <Compile Include="AppDomainFormatter.cs" />
-    <Compile Include="AssemblyLocator.cs" />
-    <Compile Include="QueryableResourceLocator.cs" />
+    <Compile Include="FileSystem\AssemblyLocator.cs" />
+    <Compile Include="FileSystem\QueryableResourceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

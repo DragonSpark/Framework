@@ -1,8 +1,11 @@
+using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
 using PostSharp.Aspects;
 using System.Reflection;
 
 namespace DragonSpark.Windows
 {
+	[UsedImplicitly]
 	public static class Initialize
 	{
 		[ModuleInitializer( 0 )]

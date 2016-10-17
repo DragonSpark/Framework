@@ -1,8 +1,8 @@
-﻿namespace DragonSpark.Windows
+﻿namespace DragonSpark.Windows.FileSystem
 {
 	public sealed class IsAssemblyFileSpecification : FileExtensionSpecificationBase
 	{
 		public static IsAssemblyFileSpecification Default { get; } = new IsAssemblyFileSpecification();
-		IsAssemblyFileSpecification() : base( FileSystem.AssemblyExtension ) {}
+		IsAssemblyFileSpecification() : base( Defaults.AssemblyExtension ) {}
 	}
 }
