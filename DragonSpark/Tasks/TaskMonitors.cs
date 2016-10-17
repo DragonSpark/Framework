@@ -1,5 +1,7 @@
 using DragonSpark.Application.Setup;
+using DragonSpark.Runtime;
 using DragonSpark.Sources.Parameterized.Caching;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Tasks
 {
@@ -7,7 +9,8 @@ namespace DragonSpark.Tasks
 	{
 		public static ITaskMonitor Current() => Default.Get( DeclarativeSetup.Current() );
 
+		[UsedImplicitly]
 		public static TaskMonitors Default { get; } = new TaskMonitors();
-		TaskMonitors() : base( setup => new TaskMonitor() ) {}
+		TaskMonitors() : base( setup => Disposables.Default.Registered( new TaskMonitor() ) ) {}
 	}
 }

@@ -61,62 +61,6 @@ namespace DragonSpark.Windows.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Blank {
-            get {
-                object obj = ResourceManager.GetObject("Blank", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Blank_log {
-            get {
-                object obj = ResourceManager.GetObject("Blank_log", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The ConfigurationStore cannot contain a null value. .
-        /// </summary>
-        internal static string ConfigurationStoreCannotBeNull {
-            get {
-                return ResourceManager.GetString("ConfigurationStoreCannotBeNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {1}: {2}. Priority: {3}. Timestamp:{0:o}..
-        /// </summary>
-        internal static string DefaultTextLoggerPattern {
-            get {
-                return ResourceManager.GetString("DefaultTextLoggerPattern", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory {0} was not found..
-        /// </summary>
-        internal static string DirectoryNotFound {
-            get {
-                return ResourceManager.GetString("DirectoryNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The argument must be a valid absolute Uri to an assembly file..
-        /// </summary>
-        internal static string InvalidArgumentAssemblyUri {
-            get {
-                return ResourceManager.GetString("InvalidArgumentAssemblyUri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User settings file at {Location} is up to date..
         /// </summary>
         internal static string LoggerTemplates_Complete {
@@ -158,15 +102,6 @@ namespace DragonSpark.Windows.Properties {
         internal static string LoggerTemplates_NotFound {
             get {
                 return ResourceManager.GetString("LoggerTemplates_NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The ModulePath cannot contain a null value or be empty.
-        /// </summary>
-        internal static string ModulePathCannotBeNullOrEmpty {
-            get {
-                return ResourceManager.GetString("ModulePathCannotBeNullOrEmpty", resourceCulture);
             }
         }
     }

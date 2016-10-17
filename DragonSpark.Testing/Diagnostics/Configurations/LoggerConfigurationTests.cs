@@ -60,7 +60,7 @@ namespace DragonSpark.Testing.Diagnostics.Configurations
 								{
 									Commands =
 									{
-										new ReadFromKeyValuePairsCommand() { Dictionary =  dictionary }
+										new ReadFromKeyValuePairsCommand { Dictionary =  dictionary }
 									}
 								};
 			var configured = configuration.Get( new Serilog.LoggerConfiguration() );
@@ -271,7 +271,7 @@ namespace DragonSpark.Testing.Diagnostics.Configurations
 								{
 									Commands =
 									{
-										new AddTextWriterCommand { Writer = writer }
+										new AddTextWriterCommand { Writer = writer, FormatProvider = null }
 									}
 								};
 			var configured = configuration.Get( new Serilog.LoggerConfiguration() );

@@ -10,12 +10,4 @@ namespace DragonSpark.Coercion
 
 		protected abstract TTo Apply( TFrom parameter );
 	}
-
-	public class Coercer<TFrom, TTo> : CoercerBase<TFrom, TTo>
-	{
-		public static Coercer<TFrom, TTo> Default { get; } = new Coercer<TFrom, TTo>();
-		Coercer() {}
-
-		protected override TTo Apply( TFrom parameter ) => default(TTo);
-	}
 }

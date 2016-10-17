@@ -19,11 +19,6 @@ namespace DragonSpark.Composition
 			this.disposables = disposables;
 		}
 
-		public override CompositionHost Get()
-		{
-			var result = base.Get();
-			disposables.Add( result );
-			return result;
-		}
+		public override CompositionHost Get() => disposables.Registered( base.Get() );
 	}
 }

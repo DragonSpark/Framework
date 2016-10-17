@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
-using DragonSpark.Windows.Entity;
+using DragonSpark.Windows.Legacy.Entity;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture.Xunit2;
 using System;

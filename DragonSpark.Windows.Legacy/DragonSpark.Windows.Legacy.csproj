@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5E18A1BA-C6C9-4070-B8F5-C4F2A14079FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DragonSpark.Windows.Legacy</RootNamespace>
+    <AssemblyName>DragonSpark.Windows.Legacy</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml">
+      <Aliases>global</Aliases>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity\DbContextBuildingParameter.cs" />
+    <Compile Include="Entity\DefaultCommands.cs" />
+    <Compile Include="Entity\RegisterComplexTypesCommand.cs" />
+    <Compile Include="Markup\ClrFieldMarkupProperty.cs" />
+    <Compile Include="Markup\ClrPropertyMarkupProperty.cs" />
+    <Compile Include="Markup\CollectionSpecification.cs" />
+    <Compile Include="Markup\ConfigurationExtension.cs" />
+    <Compile Include="Markup\ConfigurationKeyExtension.cs" />
+    <Compile Include="Markup\DesignTimeValueProvider.cs" />
+    <Compile Include="Markup\EvalExtension.cs" />
+    <Compile Include="Markup\MarkupExtensionBase.cs" />
+    <Compile Include="Markup\MarkupPropertyFactoryBase.cs" />
+    <Compile Include="Markup\MarkupValueSetterFactory.cs" />
+    <Compile Include="Markup\MemberInfoKeyExtension.cs" />
+    <Compile Include="Markup\MemberInfoKeyFactory.cs" />
+    <Compile Include="Markup\MockFactory.cs" />
+    <Compile Include="Markup\PropertyReference.cs" />
+    <Compile Include="Markup\PropertyReferenceFactory.cs" />
+    <Compile Include="Markup\SourceExtension.cs" />
+    <Compile Include="Markup\Specification.cs" />
+    <Compile Include="Markup\StringDesignerValueFactory.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\AssignDataDirectoryCommand.cs" />
+    <Compile Include="Entity\AttachedDatabaseFileFactory.cs" />
+    <Compile Include="Entity\BackupDatabaseCommand.cs" />
+    <Compile Include="Entity\DataDirectoryPath.cs" />
+    <Compile Include="Entity\DbMigrationsConfiguration.cs" />
+    <Compile Include="Entity\EntityFiles.cs" />
+    <Compile Include="Entity\EntityInstallationStep.cs" />
+    <Compile Include="Entity\InitializeDatabaseCommand.cs" />
+    <Compile Include="Entity\DbContextExtensions.cs" />
+    <Compile Include="Entity\DbSetExtensions.cs" />
+    <Compile Include="Entity\DefaultIncludeAttribute.cs" />
+    <Compile Include="Entity\EntityContext.cs" />
+    <Compile Include="Entity\EntityValidationException.cs" />
+    <Compile Include="Entity\IEntityInstallationStorage.cs" />
+    <Compile Include="Entity\IInstallationStep.cs" />
+    <Compile Include="Entity\IInstaller.cs" />
+    <Compile Include="Entity\InstallationEntry.cs" />
+    <Compile Include="Entity\InstallDatabaseCommand.cs" />
+    <Compile Include="Entity\Installer.cs" />
+    <Compile Include="Entity\LocalStorageAttribute.cs" />
+    <Compile Include="Entity\EnableLocalStoragePropertyCommand.cs" />
+    <Compile Include="Entity\MetadataHelper.cs" />
+    <Compile Include="Entity\MigrateDatabaseToLatestVersion.cs" />
+    <Compile Include="Entity\ObjectContextExtensions.cs" />
+    <Compile Include="Entity\VersionConverter.cs" />
+    <Compile Include="Markup\CollectionExtension.cs" />
+    <Compile Include="Markup\CollectionMarkupProperty.cs" />
+    <Compile Include="Markup\CollectionMarkupPropertyFactory.cs" />
+    <Compile Include="Markup\MarkupServiceProvider.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupPropertyFactory.cs" />
+    <Compile Include="Markup\DirectoryInfoExtension.cs" />
+    <Compile Include="Markup\EnumerableExtension.cs" />
+    <Compile Include="Markup\FieldInfoMarkupPropertyFactory.cs" />
+    <Compile Include="Markup\GenericTypeExtension.cs" />
+    <Compile Include="Markup\IIncrementer.cs" />
+    <Compile Include="Markup\IMarkupPropertyFactory.cs" />
+    <Compile Include="Markup\Incrementer.cs" />
+    <Compile Include="Markup\MarkupPropertyBase.cs" />
+    <Compile Include="Markup\MarkupPropertyFactory.cs" />
+    <Compile Include="Markup\ActivateExtension.cs" />
+    <Compile Include="Markup\NameExtension.cs" />
+    <Compile Include="Markup\NextExtension.cs" />
+    <Compile Include="Markup\PropertyInfoMarkupPropertyFactory.cs" />
+    <Compile Include="Markup\ReferenceExtension.cs" />
+    <Compile Include="Markup\StaticResourceExtension.cs" />
+    <Compile Include="Markup\AssemblyVersionExtension.cs" />
+    <Compile Include="Markup\ClrMemberMarkupProperty.cs" />
+    <Compile Include="Markup\DependencyPropertyMarkupProperty.cs" />
+    <Compile Include="Markup\IMarkupProperty.cs" />
+    <Compile Include="Markup\ServiceExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Markup\MetadataExtension.cs" />
+    <Compile Include="Markup\PropertySetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+    <None Include="Resources\Blank.mdf" />
+    <Content Include="Resources\Blank_log.ldf">
+      <DependentUpon>Blank.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Types.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
+      <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
+      <Name>DragonSpark.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
+      <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
+      <Name>DragonSpark</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

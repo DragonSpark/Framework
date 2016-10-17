@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Markup;
 
 // using AmbientAttribute = hello::System.Windows.Markup.AmbientAttribute;
 
@@ -46,9 +45,6 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion( "0.1.1.1" )]
 [assembly: AssemblyFileVersion( "0.1.1.1" )]
-[assembly: XmlnsPrefix( "http://framework.dragonspark.us", "ds" )]
-[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Markup" )]
-[assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Windows.Setup" )]
 [assembly: Registration( Priority.AfterLower )]
 [assembly: InternalsVisibleTo( "DragonSpark.Windows.Testing" )]
 // [assembly: Include( typeof( Setup ) )]

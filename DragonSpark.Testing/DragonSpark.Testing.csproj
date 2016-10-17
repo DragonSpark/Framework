@@ -58,6 +58,7 @@
     <Compile Include="Aspects\ApplyAspectsAttributeTests.cs" />
     <Compile Include="Aspects\Relay\ApplyRelayAttributeTests.cs" />
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
+    <Compile Include="Coercion\StringCoercerTests.cs" />
     <Compile Include="Commands\ExtensionsTests.cs" />
     <Compile Include="Commands\FirstCommandTests.cs" />
     <Compile Include="Commands\SuppliedCommandSourceTests.cs" />
@@ -203,6 +204,10 @@
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj">
       <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
       <Name>DragonSpark.Testing.Objects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Windows.Legacy\DragonSpark.Windows.Legacy.csproj">
+      <Project>{5E18A1BA-C6C9-4070-B8F5-C4F2A14079FD}</Project>
+      <Name>DragonSpark.Windows.Legacy</Name>
     </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>

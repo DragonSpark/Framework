@@ -85,6 +85,10 @@
       <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
       <Name>DragonSpark.Testing.Objects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Windows.Legacy\DragonSpark.Windows.Legacy.csproj">
+      <Project>{5e18a1ba-c6c9-4070-b8f5-c4f2a14079fd}</Project>
+      <Name>DragonSpark.Windows.Legacy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Windows\DragonSpark.Windows.csproj">
       <Project>{b51d28d3-bc96-41ea-885f-f7be1543d6f4}</Project>
       <Name>DragonSpark.Windows</Name>

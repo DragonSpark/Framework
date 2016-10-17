@@ -1,0 +1,12 @@
+﻿{
+  "dependencies": {
+    "EntityFramework": "6.1.3",
+    "Moq": "4.5.23"
+  },
+  "frameworks": {
+    "net461": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}
