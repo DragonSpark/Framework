@@ -2,12 +2,12 @@
 using DragonSpark.Sources.Parameterized;
 using System;
 using System.Configuration;
-using System.IO;
+using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.Setup
 {
 	public static class Defaults
 	{
-		public static Func<FileInfo> UserSettingsPath { get; } = UserSettingsFile.Default.Fixed( ConfigurationUserLevel.PerUserRoamingAndLocal ).ToDelegate();
+		public static Func<FileInfoBase> UserSettingsPath { get; } = UserSettingsFile.Default.Fixed( ConfigurationUserLevel.PerUserRoamingAndLocal ).ToDelegate();
 	}
 }

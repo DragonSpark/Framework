@@ -2,19 +2,25 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 
 namespace DragonSpark.Windows.FileSystem
 {
 	public class QueryableResourceLocator : ParameterizedSourceBase<string, ImmutableArray<string>>
 	{
-		readonly Func<FileSystemInfo, bool> specification;
-		public QueryableResourceLocator( Func<FileSystemInfo, bool> specification )
+		readonly Func<FileSystemInfoBase, bool> specification;
+		readonly DirectoryInfoBase directory;
+
+		public QueryableResourceLocator( Func<FileSystemInfoBase, bool> specification ) : this( specification, new DirectoryInfo( "." ) ) {}
+
+		public QueryableResourceLocator( Func<FileSystemInfoBase, bool> specification, DirectoryInfoBase directory )
 		{
 			this.specification = specification;
+			this.directory = directory;
 		}
 
 		public override ImmutableArray<string> Get( string parameter ) => 
-			new DirectoryInfo( "." ).GetFileSystemInfos( parameter ).Where( specification ).Select( info => info.FullName ).ToImmutableArray();
+			directory.GetFileSystemInfos( parameter ).Where( specification ).Select( info => info.FullName ).ToImmutableArray();
 	}
 }

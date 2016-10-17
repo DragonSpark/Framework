@@ -1,14 +1,15 @@
+using DragonSpark.Sources.Parameterized;
 using System.Collections.Immutable;
 using System.IO;
-using DragonSpark.Sources.Parameterized;
+using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public sealed class AllFilesSource : ParameterizedSourceBase<DirectoryInfo, ImmutableArray<FileInfo>>
+	public sealed class AllFilesSource : ParameterizedSourceBase<DirectoryInfoBase, ImmutableArray<FileInfoBase>>
 	{
 		public static AllFilesSource Default { get; } = new AllFilesSource();
 		AllFilesSource() {}
 
-		public override ImmutableArray<FileInfo> Get( DirectoryInfo parameter ) => parameter.GetFiles( "*.*", SearchOption.AllDirectories ).ToImmutableArray();
+		public override ImmutableArray<FileInfoBase> Get( DirectoryInfoBase parameter ) => parameter.GetFiles( "*.*", SearchOption.AllDirectories ).ToImmutableArray();
 	}
 }

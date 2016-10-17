@@ -4,6 +4,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Windows.Legacy.Properties;
 using JetBrains.Annotations;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 
 namespace DragonSpark.Windows.Legacy.Entity
@@ -13,7 +14,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 		readonly static byte[][] Data = { Resources.Blank, Resources.Blank_log };
 
 		[Service, PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
-		public FileInfo Database { [return: PostSharp.Patterns.Contracts.NotNull]get; set; }
+		public FileInfoBase Database { [return: PostSharp.Patterns.Contracts.NotNull]get; set; }
 
 		public override void Execute()
 		{

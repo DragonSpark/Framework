@@ -5,6 +5,7 @@ using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 
 namespace DragonSpark.Windows.Legacy.Entity
@@ -14,11 +15,11 @@ namespace DragonSpark.Windows.Legacy.Entity
 		public static BackupDatabaseCommand Default { get; } = new BackupDatabaseCommand();
 		BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy ) {}
 
-		readonly Func<FileInfo, bool> lockedSource;
+		readonly Func<FileInfoBase, bool> lockedSource;
 		readonly Func<string> pathSource;
 		readonly Func<string, bool> validSource;
 
-		public BackupDatabaseCommand( Func<FileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource )
+		public BackupDatabaseCommand( Func<FileInfoBase, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource )
 		{
 			this.lockedSource = lockedSource;
 			this.pathSource = pathSource;
@@ -26,7 +27,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 		}
 
 		[Service, PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
-		public FileInfo Database { [return: PostSharp.Patterns.Contracts.NotNull]get; set; }
+		public FileInfoBase Database { [return: PostSharp.Patterns.Contracts.NotNull]get; set; }
 
 		[Default( 6 ), PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
 		public int? MaximumBackups { get; set; }

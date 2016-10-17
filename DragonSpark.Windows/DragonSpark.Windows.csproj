@@ -82,6 +82,7 @@
     <Compile Include="Setup\ClearUserSettingCommand.cs" />
     <Compile Include="Setup\Defaults.cs" />
     <Compile Include="Setup\DeleteFileCommand.cs" />
+    <Compile Include="Setup\Extensions.cs" />
     <Compile Include="Setup\FileSystemInfoExistsSpecification.cs" />
     <Compile Include="Setup\InitializeUserSettingsCommand.cs" />
     <Compile Include="Setup\ConsoleApplication.cs" />
