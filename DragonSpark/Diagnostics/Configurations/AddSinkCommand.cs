@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Diagnostics.Configurations
 {
-	public abstract class AddSinkCommand : LoggerConfigurationCommandBase<LoggerSinkConfiguration>
+	public abstract class AddSinkCommand : ConfigureLoggerBase<LoggerSinkConfiguration>
 	{
 		protected AddSinkCommand() : this( LogEventLevel.Verbose ) {}
 

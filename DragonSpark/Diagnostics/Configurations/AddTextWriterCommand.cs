@@ -6,9 +6,13 @@ namespace DragonSpark.Diagnostics.Configurations
 {
 	public class AddTextWriterCommand : AddSinkCommand
 	{
-		public AddTextWriterCommand() : this( new StringWriter(), "{Timestamp} [{Level}] {Message}{NewLine}{Exception}" ) {}
+		const string Template = "{Timestamp} [{Level}] {Message}{NewLine}{Exception}";
 
-		public AddTextWriterCommand( TextWriter writer, string outputTemplate )
+		public AddTextWriterCommand() : this( Template ) {}
+
+		public AddTextWriterCommand( string outputTemplate ) : this( new StringWriter(), outputTemplate ) {}
+
+		public AddTextWriterCommand( TextWriter writer, string outputTemplate = Template )
 		{
 			Writer = writer;
 			OutputTemplate = outputTemplate;

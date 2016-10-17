@@ -2,9 +2,9 @@ using DragonSpark.Commands;
 using DragonSpark.Diagnostics.Configurations;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
-using Serilog;
 using Serilog.Core;
 using System;
+using LoggerConfiguration = Serilog.LoggerConfiguration;
 
 namespace DragonSpark.Diagnostics
 {

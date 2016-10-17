@@ -1,4 +1,3 @@
-using DragonSpark.Diagnostics.Configurations;
 using DragonSpark.Sources;
 using Serilog.Core;
 

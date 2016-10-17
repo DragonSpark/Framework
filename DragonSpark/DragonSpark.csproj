@@ -287,8 +287,7 @@
     <Compile Include="Diagnostics\Configurations\AddSeqSinkCommand.cs" />
     <Compile Include="Diagnostics\Configurations\AddTextWriterCommand.cs" />
     <Compile Include="Diagnostics\ApplicationAssemblyAlteration.cs" />
-    <Compile Include="Diagnostics\Configurations\DestructureByFactoryCommand.cs" />
-    <Compile Include="Diagnostics\Configurations\DestructureByTransformingCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\DestructureByTransformCommand.cs" />
     <Compile Include="Diagnostics\Configurations\DestructureCommand.cs" />
     <Compile Include="Diagnostics\Configurations\DestructureCommandBase.cs" />
     <Compile Include="Diagnostics\Configurations\DestructureMaximumDepthCommand.cs" />
@@ -308,7 +307,7 @@
     <Compile Include="Diagnostics\LogException.cs" />
     <Compile Include="Diagnostics\LogExceptionCommandBase.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="Diagnostics\Configurations\LoggerConfigurationCommandBase.cs" />
+    <Compile Include="Diagnostics\Configurations\ConfigureLoggerBase.cs" />
     <Compile Include="Diagnostics\DefaultSystemLoggerConfigurations.cs" />
     <Compile Include="Diagnostics\DefaultLoggerAlterations.cs" />
     <Compile Include="Diagnostics\LoggingController.cs" />
@@ -349,7 +348,6 @@
     <Compile Include="Application\Setup\ApplyExportCommands.cs" />
     <Compile Include="Application\Setup\ApplySetup.cs" />
     <Compile Include="Commands\SuppliedCommandSource.cs" />
-    <Compile Include="Commands\DeclarativeCommandBase.cs" />
     <Compile Include="Activation\CompositeActivator.cs" />
     <Compile Include="Application\DefaultExportProvider.cs" />
     <Compile Include="Application\Setup\EnableServicesCommand.cs" />
@@ -560,7 +558,7 @@
     <Compile Include="Composition\SourceDelegateExporterBase.cs" />
     <Compile Include="Composition\SingletonExportDescriptorProvider.cs" />
     <Compile Include="Configuration\EnableMethodCaching.cs" />
-    <Compile Include="Diagnostics\Configurations\MinimumLevelConfiguration.cs" />
+    <Compile Include="Diagnostics\MinimumLevelConfiguration.cs" />
     <Compile Include="Configuration\Registration.cs" />
     <Compile Include="Configuration\ValueStoreBase.cs" />
     <Compile Include="Diagnostics\DebugOutputCommand.cs" />
@@ -707,7 +705,7 @@
     <Compile Include="Application\RunProgramCommand.cs" />
     <Compile Include="Application\Setup\DeclarativeSetup.cs" />
     <Compile Include="Tasks\TaskMonitor.cs" />
-    <Compile Include="Commands\DeclarativeSuppliedCommand.cs" />
+    <Compile Include="Commands\DeclarativeCommand.cs" />
     <Compile Include="Application\RegistrationAttribute.cs" />
     <Compile Include="Application\ApplicationInformation.cs">
       <SubType>Code</SubType>
@@ -725,7 +723,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostics\Configurations\DeclarativeCompositeLoggerConfiguration.cs" />
+    <Compile Include="Diagnostics\Configurations\LoggerConfiguration.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IPriorityAware.cs" />
     <Compile Include="Priority.cs">

@@ -7,11 +7,11 @@
 	xmlns:setup="clr-namespace:DragonSpark.Application.Setup;assembly=DragonSpark"
 	xmlns:commands="clr-namespace:DragonSpark.Commands;assembly=DragonSpark"
 	xmlns:ds="http://framework.dragonspark.us"
-	xmlns:setup1="clr-namespace:DragonSpark.Testing.Objects.Setup"
+	xmlns:local="clr-namespace:DragonSpark.Testing.Objects.Setup"
 	xmlns:tasks="clr-namespace:DragonSpark.Tasks;assembly=DragonSpark"
 	mc:Ignorable="d"
 >
-	<commands:DeclarativeSuppliedCommand Command="{x:Static tasks:MonitorTaskCommand.Default}" Parameter="{ds:Source {ds:Activate setup1:CountingTaskSource}}" />
+	<commands:DeclarativeCommand Command="{x:Static tasks:MonitorTaskCommand.Default}" Parameter="{ds:Source {ds:Activate local:CountingTaskSource}}" />
 	<setup:RegisterInstances>
 		<application:ApplicationInformation DeploymentDate="2/1/2016" CompanyUri="http://framework.dragonspark.us/testing" />
 	</setup:RegisterInstances>

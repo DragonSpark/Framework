@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Sources;
 using Serilog.Events;
 
-namespace DragonSpark.Diagnostics.Configurations
+namespace DragonSpark.Diagnostics
 {
 	public sealed class MinimumLevelConfiguration : Scope<LogEventLevel>
 	{

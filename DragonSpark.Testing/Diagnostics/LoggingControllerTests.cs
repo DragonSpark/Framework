@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using DragonSpark.Diagnostics;
-using DragonSpark.Diagnostics.Configurations;
+﻿using DragonSpark.Diagnostics;
 using DragonSpark.Sources;
 using Ploeh.AutoFixture.Xunit2;
 using Serilog.Core;
 using Serilog.Events;
+using System.Linq;
 using Xunit;
 using Logger = DragonSpark.Diagnostics.Logger;
 

@@ -5,11 +5,6 @@ namespace DragonSpark.Diagnostics.Configurations
 {
 	public class ReadFromSettingsCommand : ReadFromCommandBase
 	{
-		public ReadFromSettingsCommand( ILoggerSettings settings )
-		{
-			Settings = settings;
-		}
-
 		[Required]
 		public ILoggerSettings Settings { [return: Required]get; set; }
 
