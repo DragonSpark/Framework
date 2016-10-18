@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="INVALID_CHARACTERS" xml:space="preserve">
-    <value>Path contains invalid path characters.</value>
+  <data name="ACCESS_TO_THE_PATH_IS_DENIED" xml:space="preserve">
+    <value>Access to the path '{0}' is denied.</value>
   </data>
-	<data name="SERVER_PATH" xml:space="preserve">
-    <value>The UNC path should be of the form \\server\share.</value>
+  <data name="COULD_NOT_FIND_PART_OF_PATH_EXCEPTION" xml:space="preserve">
+    <value>Could not find a part of the path '{0}'.</value>
+  </data>
+  <data name="FILENAME_CANNOT_BE_NULL" xml:space="preserve">
+    <value>File name cannot be null.</value>
+  </data>
+  <data name="ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION" xml:space="preserve">
+    <value>Illegal characters in path.</value>
+  </data>
+  <data name="NOT_IMPLEMENTED_EXCEPTION" xml:space="preserve">
+    <value>This test helper hasn't been implemented yet. They are implemented on an as-needed basis. As it seems like you need it, now would be a great time to send us a pull request over at https://github.com/tathamoddie/System.IO.Abstractions. You know, because it's open source and all.</value>
+  </data>
+  <data name="PATH_CANNOT_BE_THE_EMPTY_STRING_OR_ALL_WHITESPACE" xml:space="preserve">
+    <value>Path cannot be the empty string or all whitespace.</value>
+  </data>
+  <data name="THE_PATH_IS_NOT_OF_A_LEGAL_FORM" xml:space="preserve">
+    <value>The path is not of a legal form.</value>
+  </data>
+  <data name="VALUE_CANNOT_BE_NULL" xml:space="preserve">
+    <value>Value cannot be null.</value>
   </data>
 </root>

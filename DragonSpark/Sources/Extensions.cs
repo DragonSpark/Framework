@@ -7,11 +7,17 @@ using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace DragonSpark.Sources
 {
 	public static class Extensions
 	{
+		public static T[] ToArray<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
+
+		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
+		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
+
 		public static object Value( this object @this ) => @this.Value<object>();
 		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );
 

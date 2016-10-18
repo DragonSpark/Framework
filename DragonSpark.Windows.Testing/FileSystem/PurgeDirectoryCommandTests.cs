@@ -1,4 +1,8 @@
-﻿using Xunit;
+﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Testing.Framework.FileSystem;
+using DragonSpark.Windows.FileSystem;
+using System.Diagnostics;
+using Xunit;
 
 namespace DragonSpark.Windows.Testing.FileSystem
 {
@@ -7,8 +11,9 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			/*var temp = Time.Default.Get();
-			Debugger.Break();*/
+			var system = FileSystemFactory.Default.Get( @".\Testes.txt", @".\SomeDirectory" );
+			PurgeDirectoryCommand.Default.Execute( system );
+			Debugger.Break();
 		}
 	}
 }

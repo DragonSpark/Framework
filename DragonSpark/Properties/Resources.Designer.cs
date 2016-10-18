@@ -60,5 +60,23 @@ namespace DragonSpark.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path contains invalid path characters..
+        /// </summary>
+        public static string INVALID_CHARACTERS {
+            get {
+                return ResourceManager.GetString("INVALID_CHARACTERS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The UNC path should be of the form \\server\share..
+        /// </summary>
+        public static string SERVER_PATH {
+            get {
+                return ResourceManager.GetString("SERVER_PATH", resourceCulture);
+            }
+        }
     }
 }

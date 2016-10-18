@@ -20,7 +20,7 @@ namespace DragonSpark.Windows.FileSystem
 		readonly Func<DirectoryInfoBase, ImmutableArray<FileInfoBase>> fileSource;
 		readonly Action<DirectoryInfoBase> delete;
 
-		public PurgeDirectoryCommand( Func<DirectoryInfoBase, ImmutableArray<FileInfoBase>> fileSource  )
+		public PurgeDirectoryCommand( Func<DirectoryInfoBase, ImmutableArray<FileInfoBase>> fileSource )
 		{
 			this.fileSource = fileSource;
 			delete = TryDeleteDirectory;
