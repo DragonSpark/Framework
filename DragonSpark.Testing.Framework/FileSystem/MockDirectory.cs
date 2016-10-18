@@ -18,42 +18,30 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockDirectory : DirectoryBase
 	{
-		private readonly FileBase fileBase;
-
-		private readonly IFileSystemAccessor fileSystemAccessor;
+		readonly IFileSystem fileSystem;
+		readonly IPathingValidator validator;
 
 		private string currentDirectory;
 
-		public MockDirectory(IFileSystemAccessor fileSystemAccessor, FileBase fileBase, string currentDirectory)
-		{
-			if (fileSystemAccessor == null)
-			{
-				throw new ArgumentNullException("fileSystemAccessor");
-			}
+		public MockDirectory(IFileSystem fileSystem, string currentDirectory) : this( fileSystem, PathingValidator.Default, currentDirectory ) {}
 
+		public MockDirectory(IFileSystem fileSystem, IPathingValidator validator, string currentDirectory)
+		{
 			this.currentDirectory = currentDirectory;
-			this.fileSystemAccessor = fileSystemAccessor;
-			this.fileBase = fileBase;
+			this.fileSystem = fileSystem;
+			this.validator = validator;
 		}
 
-		public override DirectoryInfoBase CreateDirectory(string path)
-		{
-			return CreateDirectory(path, null);
-		}
+		public override DirectoryInfoBase CreateDirectory(string path) => CreateDirectory(path, null);
 
 		public override DirectoryInfoBase CreateDirectory(string path, DirectorySecurity directorySecurity)
 		{
-			if (path == null)
-			{
-				throw new ArgumentNullException("path");
-			}
-
 			if (path.Length == 0)
 			{
 				throw new ArgumentException(Properties.Resources.PATH_CANNOT_BE_THE_EMPTY_STRING_OR_ALL_WHITESPACE, "path");
 			}
 
-			if (fileSystemAccessor.FileExists(path))
+			if (fileSystem.FileExists(path))
 			{
 				var message = string.Format(CultureInfo.InvariantCulture, @"Cannot create ""{0}"" because a file or directory with the same name already exists.", path);
 				var ex = new IOException(message);
@@ -61,14 +49,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw ex;
 			}
 
-			path = EnsurePathEndsWithDirectorySeparator(fileSystemAccessor.Path.GetFullPath(path));
+			path = EnsurePathEndsWithDirectorySeparator(fileSystem.Path.GetFullPath(path));
 
 			if (!Exists(path))
 			{
-				fileSystemAccessor.AddDirectory(path);
+				fileSystem.AddDirectory(path);
 			}
 
-			var created = new MockDirectoryInfo(fileSystemAccessor, path);
+			var created = new MockDirectoryInfo(fileSystem, path);
 			return created;
 		}
 
@@ -79,8 +67,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Delete(string path, bool recursive)
 		{
-			path = EnsurePathEndsWithDirectorySeparator(fileSystemAccessor.Path.GetFullPath(path));
-			var affectedPaths = fileSystemAccessor
+			path = EnsurePathEndsWithDirectorySeparator(fileSystem.Path.GetFullPath(path));
+			var affectedPaths = fileSystem
 				.AllPaths
 				.Where(p => p.StartsWith(path, StringComparison.OrdinalIgnoreCase))
 				.ToList();
@@ -93,7 +81,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new IOException("The directory specified by " + path + " is read-only, or recursive is false and " + path + " is not an empty directory.");
 
 			foreach (var affectedPath in affectedPaths)
-				fileSystemAccessor.RemoveFile(affectedPath);
+				fileSystem.RemoveFile(affectedPath);
 		}
 
 		public override bool Exists(string path)
@@ -102,8 +90,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			{
 				path = EnsurePathEndsWithDirectorySeparator(path);
 
-				path = fileSystemAccessor.Path.GetFullPath(path);
-				return fileSystemAccessor.AllDirectories.Any(p => p.Equals(path, StringComparison.OrdinalIgnoreCase));
+				path = fileSystem.Path.GetFullPath(path);
+				return fileSystem.AllDirectories.Any(p => p.Equals(path, StringComparison.OrdinalIgnoreCase));
 			}
 			catch (Exception)
 			{
@@ -121,71 +109,39 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override DateTime GetCreationTime(string path)
-		{
-			return fileBase.GetCreationTime(path);
-		}
+		public override DateTime GetCreationTime(string path) => fileSystem.File.GetCreationTime(path);
 
-		public override DateTime GetCreationTimeUtc(string path)
-		{
-			return fileBase.GetCreationTimeUtc(path);
-		}
+		public override DateTime GetCreationTimeUtc(string path) => fileSystem.File.GetCreationTimeUtc(path);
 
-		public override string GetCurrentDirectory()
-		{
-			return currentDirectory;
-		}
+		public override string GetCurrentDirectory() => currentDirectory;
 
-		public override string[] GetDirectories(string path)
-		{
-			return GetDirectories(path, "*");
-		}
+		public override string[] GetDirectories(string path) => GetDirectories(path, "*");
 
-		public override string[] GetDirectories(string path, string searchPattern)
-		{
-			return GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
-		}
+		public override string[] GetDirectories(string path, string searchPattern) => GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
 
-		public override string[] GetDirectories(string path, string searchPattern, SearchOption searchOption)
-		{
-			return EnumerateDirectories(path, searchPattern, searchOption).ToArray();
-		}
+		public override string[] GetDirectories(string path, string searchPattern, SearchOption searchOption) => EnumerateDirectories(path, searchPattern, searchOption).ToArray();
 
-		public override string GetDirectoryRoot(string path)
-		{
-			return Path.GetPathRoot(path);
-		}
+		public override string GetDirectoryRoot(string path) => Path.GetPathRoot(path);
 
-		public override string[] GetFiles(string path)
-		{
-			// Same as what the real framework does
-			return GetFiles(path, "*");
-		}
+		public override string[] GetFiles(string path) => GetFiles(path, "*");
 
-		public override string[] GetFiles(string path, string searchPattern)
-		{
-			// Same as what the real framework does
-			return GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
-		}
+		public override string[] GetFiles(string path, string searchPattern) => GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
 
 		public override string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
 		{
-			if(path == null)
-				throw new ArgumentNullException();
-
 			if (!Exists(path))
 			{
 				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, path));
 			}
 
-			return GetFilesInternal(fileSystemAccessor.AllFiles, path, searchPattern, searchOption);
+			return GetFilesInternal(fileSystem.AllFiles, path, searchPattern, searchOption);
 		}
 
 		private string[] GetFilesInternal(IEnumerable<string> files, string path, string searchPattern, SearchOption searchOption)
 		{
 			CheckSearchPattern(searchPattern);
 			path = EnsurePathEndsWithDirectorySeparator(path);
-			path = fileSystemAccessor.Path.GetFullPath(path);
+			path = fileSystem.Path.GetFullPath(path);
 
 			bool isUnix = XFS.IsUnixPlatform();
 
@@ -258,31 +214,19 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return dirs.Union(files).ToArray();
 		}
 
-		public override DateTime GetLastAccessTime(string path)
-		{
-			return fileBase.GetLastAccessTime(path);
-		}
+		public override DateTime GetLastAccessTime(string path) => fileSystem.File.GetLastAccessTime(path);
 
-		public override DateTime GetLastAccessTimeUtc(string path)
-		{
-			return fileBase.GetLastAccessTimeUtc(path);
-		}
+		public override DateTime GetLastAccessTimeUtc(string path) => fileSystem.File.GetLastAccessTimeUtc(path);
 
-		public override DateTime GetLastWriteTime(string path)
-		{
-			return fileBase.GetLastWriteTime(path);
-		}
+		public override DateTime GetLastWriteTime(string path) => fileSystem.File.GetLastWriteTime(path);
 
-		public override DateTime GetLastWriteTimeUtc(string path)
-		{
-			return fileBase.GetLastWriteTimeUtc(path);
-		}
+		public override DateTime GetLastWriteTimeUtc(string path) => fileSystem.File.GetLastWriteTimeUtc(path);
 
 		public override string[] GetLogicalDrives()
 		{
-			return fileSystemAccessor
+			return fileSystem
 				.AllDirectories
-				.Select(d => new MockDirectoryInfo(fileSystemAccessor, d).Root.FullName)
+				.Select(d => new MockDirectoryInfo(fileSystem, d).Root.FullName)
 				.Select(r => r.ToLowerInvariant())
 				.Distinct()
 				.ToArray();
@@ -290,11 +234,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DirectoryInfoBase GetParent(string path)
 		{
-			if (path == null)
-			{
-				throw new ArgumentNullException("path");
-			}
-
 			if (path.Length == 0)
 			{
 				throw new ArgumentException(Properties.Resources.PATH_CANNOT_BE_THE_EMPTY_STRING_OR_ALL_WHITESPACE, nameof(path));
@@ -305,14 +244,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new ArgumentException(Resources.INVALID_CHARACTERS, nameof(path));
 			}
 
-			var absolutePath = fileSystemAccessor.Path.GetFullPath(path);
-			var sepAsString = fileSystemAccessor.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
+			var absolutePath = fileSystem.Path.GetFullPath(path);
+			var sepAsString = fileSystem.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
 
 			var lastIndex = 0;
 			if (absolutePath != sepAsString)
 			{
 				var startIndex = absolutePath.EndsWith(sepAsString, StringComparison.OrdinalIgnoreCase) ? absolutePath.Length - 1 : absolutePath.Length;
-				lastIndex = absolutePath.LastIndexOf(fileSystemAccessor.Path.DirectorySeparatorChar, startIndex - 1);
+				lastIndex = absolutePath.LastIndexOf(fileSystem.Path.DirectorySeparatorChar, startIndex - 1);
 				if (lastIndex < 0)
 				{
 					return null;
@@ -325,29 +264,29 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				return null;
 			}
 
-			var parent = new MockDirectoryInfo(fileSystemAccessor, parentPath);
+			var parent = new MockDirectoryInfo(fileSystem, parentPath);
 			return parent;
 		}
 
 		public override void Move(string sourceDirName, string destDirName)
 		{
-			var fullSourcePath = EnsurePathEndsWithDirectorySeparator(fileSystemAccessor.Path.GetFullPath(sourceDirName));
-			var fullDestPath = EnsurePathEndsWithDirectorySeparator(fileSystemAccessor.Path.GetFullPath(destDirName));
+			var fullSourcePath = EnsurePathEndsWithDirectorySeparator(fileSystem.Path.GetFullPath(sourceDirName));
+			var fullDestPath = EnsurePathEndsWithDirectorySeparator(fileSystem.Path.GetFullPath(destDirName));
 
 			if (string.Equals(fullSourcePath, fullDestPath, StringComparison.OrdinalIgnoreCase))
 			{
 				throw new IOException("Source and destination path must be different.");
 			}
 
-			var sourceRoot = fileSystemAccessor.Path.GetPathRoot(fullSourcePath);
-			var destinationRoot = fileSystemAccessor.Path.GetPathRoot(fullDestPath);
+			var sourceRoot = fileSystem.Path.GetPathRoot(fullSourcePath);
+			var destinationRoot = fileSystem.Path.GetPathRoot(fullDestPath);
 			if (!string.Equals(sourceRoot, destinationRoot, StringComparison.OrdinalIgnoreCase))
 			{
 				throw new IOException("Source and destination path must have identical roots. Move will not work across volumes.");
 			}
 
 			//Make sure that the destination exists
-			fileSystemAccessor.Directory.CreateDirectory(fullDestPath);
+			fileSystem.Directory.CreateDirectory(fullDestPath);
 
 			//Recursively move all the subdirectories from the source into the destination directory
 			var subdirectories = GetDirectories(fullSourcePath);
@@ -362,7 +301,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			foreach (var file in files)
 			{
 				var newFilePath = file.Replace(fullSourcePath, fullDestPath, StringComparison.OrdinalIgnoreCase);
-				fileSystemAccessor.FileInfo.FromFileName(file).MoveTo(newFilePath);
+				fileSystem.FromFileName(file).MoveTo(newFilePath);
 			}
 
 			//Delete the source directory
@@ -374,58 +313,37 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override void SetCreationTime(string path, DateTime creationTime)
-		{
-			fileBase.SetCreationTime(path, creationTime);
-		}
+		public override void SetCreationTime(string path, DateTime creationTime) => fileSystem.File.SetCreationTime(path, creationTime);
 
-		public override void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
-		{
-			fileBase.SetCreationTimeUtc(path, creationTimeUtc);
-		}
+		public override void SetCreationTimeUtc(string path, DateTime creationTimeUtc) => fileSystem.File.SetCreationTimeUtc(path, creationTimeUtc);
 
-		public override void SetCurrentDirectory(string path)
-		{
-		  currentDirectory = path;
-		}
+		public override void SetCurrentDirectory(string path) => currentDirectory = path;
 
-		public override void SetLastAccessTime(string path, DateTime lastAccessTime)
-		{
-			fileBase.SetLastAccessTime(path, lastAccessTime);
-		}
+		public override void SetLastAccessTime(string path, DateTime lastAccessTime) => fileSystem.File.SetLastAccessTime(path, lastAccessTime);
 
-		public override void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
-		{
-			fileBase.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
-		}
+		public override void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) => fileSystem.File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
 
-		public override void SetLastWriteTime(string path, DateTime lastWriteTime)
-		{
-			fileBase.SetLastWriteTime(path, lastWriteTime);
-		}
+		public override void SetLastWriteTime(string path, DateTime lastWriteTime) => fileSystem.File.SetLastWriteTime(path, lastWriteTime);
 
-		public override void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
-		{
-			fileBase.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
-		}
+		public override void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) => fileSystem.File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
 
 		public override IEnumerable<string> EnumerateDirectories(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return EnumerateDirectories(path, "*");
 		}
 
 		public override IEnumerable<string> EnumerateDirectories(string path, string searchPattern)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return EnumerateDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
 		}
 
 		public override IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			path = EnsurePathEndsWithDirectorySeparator(path);
 
@@ -434,45 +352,21 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, path));
 			}
 
-			var dirs = GetFilesInternal(fileSystemAccessor.AllDirectories, path, searchPattern, searchOption);
+			var dirs = GetFilesInternal(fileSystem.AllDirectories, path, searchPattern, searchOption);
 			return dirs.Where(p => string.Compare(p, path, StringComparison.OrdinalIgnoreCase) != 0);
 		}
 
-		public override IEnumerable<string> EnumerateFiles(string path)
-		{
-			return GetFiles(path);
-		}
+		public override IEnumerable<string> EnumerateFiles(string path) => GetFiles(path);
 
-		public override IEnumerable<string> EnumerateFiles(string path, string searchPattern)
-		{
-			return GetFiles(path, searchPattern);
-		}
+		public override IEnumerable<string> EnumerateFiles(string path, string searchPattern) => GetFiles(path, searchPattern);
 
-		public override IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
-		{
-			return GetFiles(path, searchPattern, searchOption);
-		}
+		public override IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption) => GetFiles(path, searchPattern, searchOption);
 
-		public override IEnumerable<string> EnumerateFileSystemEntries(string path)
-		{
-			var fileSystemEntries = new List<string>(GetFiles(path));
-			fileSystemEntries.AddRange(GetDirectories(path));
-			return fileSystemEntries;
-		}
+		public override IEnumerable<string> EnumerateFileSystemEntries(string path) => new List<string>(GetFiles(path).Concat( GetDirectories(path) ));
 
-		public override IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern)
-		{
-			var fileSystemEntries = new List<string>(GetFiles(path, searchPattern));
-			fileSystemEntries.AddRange(GetDirectories(path, searchPattern));
-			return fileSystemEntries;
-		}
+		public override IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern) => new List<string>(GetFiles(path, searchPattern).Concat( GetDirectories(path) ));
 
-		public override IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, SearchOption searchOption)
-		{
-			var fileSystemEntries = new List<string>(GetFiles(path, searchPattern, searchOption));
-			fileSystemEntries.AddRange(GetDirectories(path, searchPattern, searchOption));
-			return fileSystemEntries;
-		}
+		public override IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, SearchOption searchOption) => new List<string>(GetFiles(path, searchPattern, searchOption).Concat( GetDirectories(path, searchPattern, searchOption) ));
 
 		static string EnsurePathEndsWithDirectorySeparator(string path)
 		{
@@ -483,11 +377,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		static void CheckSearchPattern(string searchPattern)
 		{
-			if (searchPattern == null)
-			{
-				throw new ArgumentNullException("searchPattern");
-			}
-
 			const string twoDots = "..";
 			Func<ArgumentException> createException = () => new ArgumentException(@"Search pattern cannot contain "".."" to move up directories and can be contained only internally in file/directory names, as in ""a..b"".", searchPattern);
 

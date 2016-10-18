@@ -12,58 +12,42 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockFileInfo : FileInfoBase
 	{
-		readonly IFileSystemAccessor accessor;
+		readonly IFileSystem fileSystem;
 		string path;
 		readonly IFileElement fileElement;
+		readonly MockFile file;
+		readonly MockPath mockPath;
 
-		public MockFileInfo(IFileSystemAccessor accessor, string path)
+		public MockFileInfo(IFileSystem fileSystem, string path)
 		{
-			this.accessor = accessor;
+			this.fileSystem = fileSystem;
 			this.path = path;
-			fileElement = accessor.GetFile( path );
+			fileElement = fileSystem.GetFile( path );
+			if (fileElement == null) throw new FileNotFoundException("File not found", path);
+			file = new MockFile(this.fileSystem);
+			mockPath = new MockPath(this.fileSystem);
 		}
 
-		public override void Delete() => accessor.RemoveFile(path);
+		public override void Delete() => fileSystem.RemoveFile(path);
 
 		public override void Refresh() {}
 
 		public override FileAttributes Attributes
 		{
-			get
-			{
-				if (fileElement == null)
-					throw new FileNotFoundException("File not found", path);
-				return fileElement.Attributes;
-			}
+			get { return fileElement.Attributes; }
 			set { fileElement.Attributes = value; }
 		}
 
 		public override DateTime CreationTime
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.CreationTime.DateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.CreationTime = value;
-			}
+			get { return fileElement.CreationTime.DateTime; }
+			set { fileElement.CreationTime = value; }
 		}
 
 		public override DateTime CreationTimeUtc
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.CreationTime.UtcDateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.CreationTime = value.ToLocalTime();
-			}
+			get { return fileElement.CreationTime.UtcDateTime; }
+			set { fileElement.CreationTime = value.ToLocalTime(); }
 		}
 
 		public override bool Exists => fileElement != null;
@@ -76,88 +60,50 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DateTime LastAccessTime
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.LastAccessTime.DateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.LastAccessTime = value;
-			}
+			get { return fileElement.LastAccessTime.DateTime; }
+			set { fileElement.LastAccessTime = value; }
 		}
 
 		public override DateTime LastAccessTimeUtc
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.LastAccessTime.UtcDateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.LastAccessTime = value;
-			}
+			get { return fileElement.LastAccessTime.UtcDateTime; }
+			set { fileElement.LastAccessTime = value; }
 		}
 
 		public override DateTime LastWriteTime
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.LastWriteTime.DateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.LastWriteTime = value;
-			}
+			get { return fileElement.LastWriteTime.DateTime; }
+			set { fileElement.LastWriteTime = value; }
 		}
 
 		public override DateTime LastWriteTimeUtc
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.LastWriteTime.UtcDateTime;
-			}
-			set
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				fileElement.LastWriteTime = value.ToLocalTime();
-			}
+			get { return fileElement.LastWriteTime.UtcDateTime; }
+			set { fileElement.LastWriteTime = value.ToLocalTime(); }
 		}
 
-		public override string Name => new MockPath(accessor).GetFileName(path);
+		public override string Name => mockPath.GetFileName(path);
 
-		public override StreamWriter AppendText()
-		{
-			if (fileElement == null) throw new FileNotFoundException("File not found", path);
-			return new StreamWriter(new MockFileStream(accessor, FullName, true));
-			//return ((MockFileDataModifier) MockFileData).AppendText();
-		}
+		public override StreamWriter AppendText() => new StreamWriter(new MockFileStream(fileSystem, FullName, true));
 
 		public override FileInfoBase CopyTo(string destFileName)
 		{
-			new MockFile(accessor).Copy(FullName, destFileName);
-			return accessor.FileInfo.FromFileName(destFileName);
+			file.Copy(FullName, destFileName);
+			return fileSystem.FromFileName(destFileName);
 		}
 
 		public override FileInfoBase CopyTo(string destFileName, bool overwrite)
 		{
-			new MockFile(accessor).Copy(FullName, destFileName, overwrite);
-			return accessor.FileInfo.FromFileName(destFileName);
+			file.Copy(FullName, destFileName, overwrite);
+			return fileSystem.FromFileName(destFileName);
 		}
 
-		public override Stream Create() => new MockFile(accessor).Create(FullName);
+		public override Stream Create() => file.Create(FullName);
 
-		public override StreamWriter CreateText() => new MockFile(accessor).CreateText(FullName);
+		public override StreamWriter CreateText() => file.CreateText(FullName);
 
 		public override void Decrypt()
 		{
-			if (fileElement == null) throw new FileNotFoundException("File not found", path);
 			var contents = fileElement.ToArray();
 			for (var i = 0; i < contents.Length; i++)
 				contents[i] ^= (byte)(i % 256);
@@ -166,7 +112,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Encrypt()
 		{
-			if (fileElement == null) throw new FileNotFoundException("File not found", path);
 			var contents = fileElement.ToArray();
 			for(var i = 0; i < contents.Length; i++)
 				contents[i] ^= (byte) (i % 256);
@@ -190,17 +135,17 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			path = movedFileInfo.FullName;
 		}
 
-		public override Stream Open(FileMode mode) => new MockFile(accessor).Open(FullName, mode);
+		public override Stream Open(FileMode mode) => file.Open(FullName, mode);
 
-		public override Stream Open(FileMode mode, FileAccess access) => new MockFile(accessor).Open(FullName, mode, access);
+		public override Stream Open(FileMode mode, FileAccess access) => file.Open(FullName, mode, access);
 
-		public override Stream Open(FileMode mode, FileAccess access, FileShare share) => new MockFile(accessor).Open(FullName, mode, access, share);
+		public override Stream Open(FileMode mode, FileAccess access, FileShare share) => file.Open(FullName, mode, access, share);
 
-		public override Stream OpenRead() => new MockFileStream(accessor, path);
+		public override Stream OpenRead() => new MockFileStream(fileSystem, path);
 
 		public override StreamReader OpenText() => new StreamReader(OpenRead());
 
-		public override Stream OpenWrite() => new MockFileStream(accessor, path);
+		public override Stream OpenWrite() => new MockFileStream(fileSystem, path);
 
 		public override FileInfoBase Replace(string destinationFileName, string destinationBackupFileName)
 		{
@@ -217,7 +162,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override DirectoryInfoBase Directory => accessor.DirectoryInfo.FromDirectoryName(DirectoryName);
+		public override DirectoryInfoBase Directory => fileSystem.FromDirectoryName(DirectoryName);
 
 		// System.IO.Path.GetDirectoryName does only string manipulation,
 		// so it's safe to delegate.
@@ -225,14 +170,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override bool IsReadOnly
 		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return (fileElement.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-			}
+			get { return ( fileElement.Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly; }
 			set
 			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
 				if(value)
 					fileElement.Attributes |= FileAttributes.ReadOnly;
 				else
@@ -240,13 +180,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 		}
 
-		public override long Length
-		{
-			get
-			{
-				if (fileElement == null) throw new FileNotFoundException("File not found", path);
-				return fileElement.ToArray().LongLength;
-			}
-		}
+		public override long Length => fileElement.ToArray().LongLength;
 	}
 }

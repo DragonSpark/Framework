@@ -10,20 +10,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockDriveInfo : DriveInfoBase
 	{
-		private readonly IFileSystemAccessor fileSystemAccessor;
+		readonly IFileSystem fileSystem;
 
-		public MockDriveInfo(IFileSystemAccessor fileSystemAccessor, string name)
+		public MockDriveInfo(IFileSystem fileSystem, string name)
 		{
-			if (fileSystemAccessor == null)
-			{
-				throw new ArgumentNullException("fileSystemAccessor");
-			}
-
-			if (name == null)
-			{
-				throw new ArgumentNullException("name");
-			}
-
 			const string driveSeparator = @":\";
 			if (name.Length == 1)
 			{
@@ -40,7 +30,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			else
 			{
 				MockPath.CheckInvalidPathChars(name);
-				name = fileSystemAccessor.Path.GetPathRoot(name);
+				name = fileSystem.Path.GetPathRoot(name);
 
 				if (string.IsNullOrEmpty(name) || name.StartsWith(@"\\", StringComparison.Ordinal))
 				{
@@ -49,7 +39,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				}
 			}
 
-			this.fileSystemAccessor = fileSystemAccessor;
+			this.fileSystem = fileSystem;
 
 			Name = name;
 			IsReady = true;
@@ -61,14 +51,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public new bool IsReady { get; protected set; }
 		public sealed override string Name { get; protected set; }
 
-		public override DirectoryInfoBase RootDirectory
-		{
-			get
-			{
-				var directory = fileSystemAccessor.DirectoryInfo.FromDirectoryName(Name);
-				return directory;
-			}
-		}
+		public override DirectoryInfoBase RootDirectory => fileSystem.FromDirectoryName(Name);
 
 		public new long TotalFreeSpace { get; protected set; }
 		public new long TotalSize { get; protected set; }

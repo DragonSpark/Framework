@@ -11,18 +11,18 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockFileStream : MemoryStream
 	{
-		readonly private IFileSystemAccessor fileSystemAccessor;
+		readonly private IFileSystem fileSystem;
 		readonly private string path;
 
-		public MockFileStream(IFileSystemAccessor fileSystemAccessor, string path, bool forAppend = false)
+		public MockFileStream(IFileSystem fileSystem, string path, bool forAppend = false)
 		{
-			this.fileSystemAccessor = fileSystemAccessor;
+			this.fileSystem = fileSystem;
 			this.path = path;
 
-			if (fileSystemAccessor.FileExists(path))
+			if (fileSystem.FileExists(path))
 			{
 				/* only way to make an expandable MemoryStream that starts with a particular content */
-				var data = fileSystemAccessor.GetFile(path).Get();
+				var data = fileSystem.GetFile(path).Get();
 				if (data != null && data.Length > 0)
 				{
 					Write(data.ToArray(), 0, data.Length);
@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 			else
 			{
-				fileSystemAccessor.AddFile(path, new FileElement(new byte[] { }));
+				fileSystem.AddFile(path, new FileElement(new byte[] { }));
 			}
 		}
 
@@ -53,9 +53,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		private void InternalFlush()
 		{
-			if (fileSystemAccessor.FileExists(path))
+			if (fileSystem.FileExists(path))
 			{
-				var mockFileData = fileSystemAccessor.GetFile(path);
+				var mockFileData = fileSystem.GetFile(path);
 				/* reset back to the beginning .. */
 				Seek(0, SeekOrigin.Begin);
 				/* .. read everything out */

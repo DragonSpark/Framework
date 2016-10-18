@@ -52,21 +52,18 @@
     <Compile Include="FileSystem\FileSystemElementBase.cs" />
     <Compile Include="FileSystem\FileSystemFactory.cs" />
     <Compile Include="FileSystem\IMockFileData.cs" />
-    <Compile Include="FileSystem\IFileSystemAccessor.cs" />
+    <Compile Include="FileSystem\IPathingValidator.cs" />
     <Compile Include="FileSystem\MockDirectory.cs" />
     <Compile Include="FileSystem\DirectoryElement.cs" />
     <Compile Include="FileSystem\MockDirectoryInfo.cs" />
-    <Compile Include="FileSystem\MockDirectoryInfoFactory.cs" />
     <Compile Include="FileSystem\MockDriveInfo.cs" />
-    <Compile Include="FileSystem\MockDriveInfoFactory.cs" />
     <Compile Include="FileSystem\MockFile.cs" />
     <Compile Include="FileSystem\FileElement.cs" />
     <Compile Include="FileSystem\MockFileInfo.cs" />
-    <Compile Include="FileSystem\MockFileInfoFactory.cs" />
     <Compile Include="FileSystem\MockFileStream.cs" />
     <Compile Include="FileSystem\MockPath.cs" />
     <Compile Include="FileSystem\MockUnixSupport.cs" />
-    <Compile Include="FileSystem\PathVerifier.cs" />
+    <Compile Include="FileSystem\PathingValidator.cs" />
     <Compile Include="FileSystem\StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

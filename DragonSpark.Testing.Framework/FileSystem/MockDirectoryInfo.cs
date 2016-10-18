@@ -14,26 +14,26 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockDirectoryInfo : DirectoryInfoBase
 	{
-		readonly IFileSystemAccessor fileSystemAccessor;
+		readonly IFileSystem fileSystem;
 		readonly string directoryPath;
 		readonly IDirectoryElement element;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MockDirectoryInfo"/> class.
 		/// </summary>
-		/// <param name="fileSystemAccessor">The mock file data accessor.</param>
+		/// <param name="fileSystem">The mock file data accessor.</param>
 		/// <param name="directoryPath">The directory path.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="fileSystemAccessor"/> or <paramref name="directoryPath"/> is <see langref="null"/>.</exception>
-		public MockDirectoryInfo(IFileSystemAccessor fileSystemAccessor, string directoryPath)
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="fileSystem"/> or <paramref name="directoryPath"/> is <see langref="null"/>.</exception>
+		public MockDirectoryInfo(IFileSystem fileSystem, string directoryPath)
 		{
-			this.fileSystemAccessor = fileSystemAccessor;
+			this.fileSystem = fileSystem;
 
-			this.directoryPath = EnsurePathEndsWithDirectorySeparator(fileSystemAccessor.Path.GetFullPath(directoryPath));
-			element = (IDirectoryElement)fileSystemAccessor.GetElement( directoryPath );
+			this.directoryPath = EnsurePathEndsWithDirectorySeparator(fileSystem.Path.GetFullPath(directoryPath));
+			element = (IDirectoryElement)fileSystem.GetElement( directoryPath );
 			if (element == null) throw new FileNotFoundException("File not found", directoryPath);
 		}
 
-		public override void Delete() => fileSystemAccessor.Directory.Delete(directoryPath);
+		public override void Delete() => fileSystem.Directory.Delete(directoryPath);
 
 		public override void Refresh() {}
 
@@ -55,7 +55,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			set { element.CreationTime = value.ToLocalTime(); }
 		}
 
-		public override bool Exists => fileSystemAccessor.Directory.Exists(FullName);
+		public override bool Exists => fileSystem.Directory.Exists(FullName);
 
 		// System.IO.Path.GetExtension does only string manipulation,
 		// so it's safe to delegate.
@@ -65,7 +65,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		{
 			get
 			{
-				var root = fileSystemAccessor.Path.GetPathRoot(directoryPath);
+				var root = fileSystem.Path.GetPathRoot(directoryPath);
 				// directories do not have a trailing slash
 				return string.Equals(directoryPath, root, StringComparison.OrdinalIgnoreCase) ? directoryPath : directoryPath.TrimEnd('\\').TrimEnd('/');
 			}
@@ -95,17 +95,17 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			set { element.LastWriteTime = value.ToLocalTime(); }
 		}
 
-		public override string Name => new MockPath(fileSystemAccessor).GetFileName(directoryPath.TrimEnd('\\'));
+		public override string Name => new MockPath(fileSystem).GetFileName(directoryPath.TrimEnd('\\'));
 
-		public override void Create() => fileSystemAccessor.Directory.CreateDirectory(FullName);
+		public override void Create() => fileSystem.Directory.CreateDirectory(FullName);
 
-		public override void Create(DirectorySecurity directorySecurity) => fileSystemAccessor.Directory.CreateDirectory(FullName, directorySecurity);
+		public override void Create(DirectorySecurity directorySecurity) => fileSystem.Directory.CreateDirectory(FullName, directorySecurity);
 
-		public override DirectoryInfoBase CreateSubdirectory(string path) => fileSystemAccessor.Directory.CreateDirectory(Path.Combine(FullName, path));
+		public override DirectoryInfoBase CreateSubdirectory(string path) => fileSystem.Directory.CreateDirectory(Path.Combine(FullName, path));
 
-		public override DirectoryInfoBase CreateSubdirectory(string path, DirectorySecurity directorySecurity) => fileSystemAccessor.Directory.CreateDirectory(Path.Combine(FullName, path), directorySecurity);
+		public override DirectoryInfoBase CreateSubdirectory(string path, DirectorySecurity directorySecurity) => fileSystem.Directory.CreateDirectory(Path.Combine(FullName, path), directorySecurity);
 
-		public override void Delete(bool recursive) => fileSystemAccessor.Directory.Delete(directoryPath, recursive);
+		public override void Delete(bool recursive) => fileSystem.Directory.Delete(directoryPath, recursive);
 
 		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories() => GetDirectories();
 
@@ -125,25 +125,25 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos(string searchPattern, SearchOption searchOption) => GetFileSystemInfos(searchPattern, searchOption);
 
-		public override DirectorySecurity GetAccessControl() => fileSystemAccessor.Directory.GetAccessControl(directoryPath);
+		public override DirectorySecurity GetAccessControl() => fileSystem.Directory.GetAccessControl(directoryPath);
 
-		public override DirectorySecurity GetAccessControl(AccessControlSections includeSections) => fileSystemAccessor.Directory.GetAccessControl(directoryPath, includeSections);
+		public override DirectorySecurity GetAccessControl(AccessControlSections includeSections) => fileSystem.Directory.GetAccessControl(directoryPath, includeSections);
 
-		public override DirectoryInfoBase[] GetDirectories() => ConvertStringsToDirectories(fileSystemAccessor.Directory.GetDirectories(directoryPath));
+		public override DirectoryInfoBase[] GetDirectories() => ConvertStringsToDirectories(fileSystem.Directory.GetDirectories(directoryPath));
 
-		public override DirectoryInfoBase[] GetDirectories(string searchPattern) => ConvertStringsToDirectories(fileSystemAccessor.Directory.GetDirectories(directoryPath, searchPattern));
+		public override DirectoryInfoBase[] GetDirectories(string searchPattern) => ConvertStringsToDirectories(fileSystem.Directory.GetDirectories(directoryPath, searchPattern));
 
-		public override DirectoryInfoBase[] GetDirectories(string searchPattern, SearchOption searchOption) => ConvertStringsToDirectories(fileSystemAccessor.Directory.GetDirectories(directoryPath, searchPattern, searchOption));
+		public override DirectoryInfoBase[] GetDirectories(string searchPattern, SearchOption searchOption) => ConvertStringsToDirectories(fileSystem.Directory.GetDirectories(directoryPath, searchPattern, searchOption));
 
-		DirectoryInfoBase[] ConvertStringsToDirectories(IEnumerable<string> paths) => paths.Select(path => new MockDirectoryInfo(fileSystemAccessor, path)).Cast<DirectoryInfoBase>().ToArray();
+		DirectoryInfoBase[] ConvertStringsToDirectories(IEnumerable<string> paths) => paths.Select(path => new MockDirectoryInfo(fileSystem, path)).Cast<DirectoryInfoBase>().ToArray();
 
-		public override FileInfoBase[] GetFiles() => ConvertStringsToFiles(fileSystemAccessor.Directory.GetFiles(FullName));
+		public override FileInfoBase[] GetFiles() => ConvertStringsToFiles(fileSystem.Directory.GetFiles(FullName));
 
-		public override FileInfoBase[] GetFiles(string searchPattern) => ConvertStringsToFiles(fileSystemAccessor.Directory.GetFiles(FullName, searchPattern));
+		public override FileInfoBase[] GetFiles(string searchPattern) => ConvertStringsToFiles(fileSystem.Directory.GetFiles(FullName, searchPattern));
 
-		public override FileInfoBase[] GetFiles(string searchPattern, SearchOption searchOption) => ConvertStringsToFiles(fileSystemAccessor.Directory.GetFiles(FullName, searchPattern, searchOption));
+		public override FileInfoBase[] GetFiles(string searchPattern, SearchOption searchOption) => ConvertStringsToFiles(fileSystem.Directory.GetFiles(FullName, searchPattern, searchOption));
 
-		FileInfoBase[] ConvertStringsToFiles(IEnumerable<string> paths) => paths.Select(fileSystemAccessor.FileInfo.FromFileName).ToArray();
+		FileInfoBase[] ConvertStringsToFiles(IEnumerable<string> paths) => paths.Select(fileSystem.FromFileName).ToArray();
 
 		public override FileSystemInfoBase[] GetFileSystemInfos() => GetFileSystemInfos("*");
 
@@ -151,19 +151,19 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override FileSystemInfoBase[] GetFileSystemInfos(string searchPattern, SearchOption searchOption) => GetDirectories(searchPattern, searchOption).OfType<FileSystemInfoBase>().Concat(GetFiles(searchPattern, searchOption)).ToArray();
 
-		public override void MoveTo(string destDirName) => fileSystemAccessor.Directory.Move(directoryPath, destDirName);
+		public override void MoveTo(string destDirName) => fileSystem.Directory.Move(directoryPath, destDirName);
 
-		public override void SetAccessControl(DirectorySecurity directorySecurity) => fileSystemAccessor.Directory.SetAccessControl(directoryPath, directorySecurity);
+		public override void SetAccessControl(DirectorySecurity directorySecurity) => fileSystem.Directory.SetAccessControl(directoryPath, directorySecurity);
 
-		public override DirectoryInfoBase Parent => fileSystemAccessor.Directory.GetParent(directoryPath);
+		public override DirectoryInfoBase Parent => fileSystem.Directory.GetParent(directoryPath);
 
-		public override DirectoryInfoBase Root => new MockDirectoryInfo(fileSystemAccessor, fileSystemAccessor.Directory.GetDirectoryRoot(FullName));
+		public override DirectoryInfoBase Root => new MockDirectoryInfo(fileSystem, fileSystem.Directory.GetDirectoryRoot(FullName));
 
 		private string EnsurePathEndsWithDirectorySeparator(string path)
 		{
-			if (!path.EndsWith(fileSystemAccessor.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))
+			if (!path.EndsWith(fileSystem.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))
 			{
-				path += fileSystemAccessor.Path.DirectorySeparatorChar;
+				path += fileSystem.Path.DirectorySeparatorChar;
 			}
 
 			return path;

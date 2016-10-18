@@ -1,5 +1,5 @@
 using DragonSpark.Properties;
-using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,48 +10,76 @@ using System.Linq;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
+	public interface IFileSystem : System.IO.Abstractions.IFileSystem, IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
+	{
+		/// <summary>
+		/// Gets a file.
+		/// </summary>
+		/// <param name="path">The path of the file to get.</param>
+		/// <returns>The file. <see langword="null"/> if the file does not exist.</returns>
+		IFileSystemElement GetElement(string path);
+
+		void AddFile(string path, IFileElement file);
+		void AddDirectory(string path);
+
+		/// <summary>
+		/// Removes the file.
+		/// </summary>
+		/// <param name="path">The file to remove.</param>
+		/// <remarks>
+		/// The file must not exist.
+		/// </remarks>
+		void RemoveFile(string path);
+
+		/// <summary>
+		/// Determines whether the file exists.
+		/// </summary>
+		/// <param name="path">The file to check. </param>
+		/// <returns><see langword="true"/> if the file exists; otherwise, <see langword="false"/>.</returns>
+		bool FileExists(string path);
+
+		/// <summary>
+		/// Gets all unique paths of all files and directories.
+		/// </summary>
+		ImmutableArray<string> AllPaths { get; }
+
+		/// <summary>
+		/// Gets the paths of all files.
+		/// </summary>
+		ImmutableArray<string> AllFiles { get; }
+
+		/// <summary>
+		/// Gets the paths of all directories.
+		/// </summary>
+		ImmutableArray<string> AllDirectories { get; }
+	}
+
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
 	[Serializable]
-	public class FileSystem : IFileSystem, IFileSystemAccessor
+	public class FileSystem : IFileSystem
 	{
 		readonly static string CurrentDirectory = System.IO.Path.GetTempPath();
 
 		readonly IDictionary<string, IFileSystemElement> elements = new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase );
 
-		public FileSystem() : this( Items<KeyValuePair<string, FileElement>>.Default ) {}
+		public FileSystem() : this( CurrentDirectory ) {}
 
-		public FileSystem( IEnumerable<KeyValuePair<string, FileElement>> files ) : this( files, CurrentDirectory ) {}
-
-		public FileSystem( IEnumerable<KeyValuePair<string, FileElement>> files, string currentDirectory )
+		[UsedImplicitly]
+		public FileSystem( string currentDirectory )
 		{
-			PathVerifier = new PathVerifier( this );
-			Path = new MockPath( this );
-			File = new MockFile( this );
-			Directory = new MockDirectory( this, File, currentDirectory );
-			FileInfo = new MockFileInfoFactory( this );
-			DirectoryInfo = new MockDirectoryInfoFactory( this );
-			DriveInfo = new MockDriveInfoFactory( this );
-			foreach ( var file in files )
-			{
-				AddFile( file.Key, file.Value );
-			}
+			var mockPath = new MockPath( this );
+			Path = mockPath;
+			Directory = new MockDirectory( this, currentDirectory );
+			File = new MockFile( this, mockPath );
 		}
 
 		public FileBase File { get; }
 
 		public DirectoryBase Directory { get; }
 
-		public IFileInfoFactory FileInfo { get; }
-
 		public PathBase Path { get; }
-
-		public IDirectoryInfoFactory DirectoryInfo { get; }
-
-		public IDriveInfoFactory DriveInfo { get; }
-
-		public PathVerifier PathVerifier { get; }
 
 		public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
 
@@ -108,13 +136,53 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public void RemoveFile( string path ) => elements.Remove( FixPath( path ) );
 
-		public bool FileExists( string path ) => !string.IsNullOrEmpty( path ) && elements.ContainsKey( FixPath( path ) );
+		public bool FileExists( string path ) => elements.ContainsKey( FixPath( path ) );
 
 		IFileSystemElement GetFileWithoutFixingPath( string path )
 		{
 			IFileSystemElement result;
 			elements.TryGetValue( path, out result );
 			return result;
+		}
+
+		IDirectoryInfoFactory System.IO.Abstractions.IFileSystem.DirectoryInfo => this;
+		public DirectoryInfoBase FromDirectoryName( string directoryName ) => new MockDirectoryInfo( this, directoryName );
+
+		IFileInfoFactory System.IO.Abstractions.IFileSystem.FileInfo => this;
+		public FileInfoBase FromFileName( string fileName ) => new MockFileInfo( this, fileName );
+
+		IDriveInfoFactory System.IO.Abstractions.IFileSystem.DriveInfo => this;
+		public DriveInfoBase[] GetDrives()
+		{
+			var driveLetters = new HashSet<string>(DriveEqualityComparer.Default);
+			foreach (var path in AllPaths)
+			{
+				var pathRoot = Path.GetPathRoot(path);
+				driveLetters.Add(pathRoot);
+			}
+
+			var result = new List<DriveInfoBase>();
+			foreach (var driveLetter in driveLetters)
+			{
+				try
+				{
+					var mockDriveInfo = new MockDriveInfo(this, driveLetter);
+					result.Add(mockDriveInfo);
+				}
+				catch (ArgumentException) {} // invalid drives should be ignored
+			}
+
+			return result.ToArray();
+		}
+
+		sealed class DriveEqualityComparer : IEqualityComparer<string>
+		{
+			public static DriveEqualityComparer Default { get; } = new DriveEqualityComparer();
+			DriveEqualityComparer() {}
+
+			public bool Equals(string x, string y) => ReferenceEquals( x, y ) || !ReferenceEquals( x, null ) && ( !ReferenceEquals( y, null ) && ( x[1] == ':' && y[1] == ':' && char.ToUpperInvariant( x[0] ) == char.ToUpperInvariant( y[0] ) ) );
+
+			public int GetHashCode(string obj) => obj.ToUpperInvariant().GetHashCode();
 		}
 	}
 }

@@ -18,52 +18,56 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockFile : FileBase
 	{
-		readonly private IFileSystemAccessor fileSystemAccessor;
-		readonly private MockPath mockPath;
+		readonly IFileSystem fileSystem;
+		readonly IPathingValidator validator;
+		readonly MockPath mockPath;
 
-		public MockFile(IFileSystemAccessor fileSystemAccessor)
+		public MockFile( IFileSystem fileSystem, MockPath mockPath ) : this( fileSystem, mockPath, PathingValidator.Default ) {}
+
+		public MockFile(IFileSystem fileSystem, MockPath mockPath, IPathingValidator validator)
 		{
-			this.fileSystemAccessor = fileSystemAccessor;
-			mockPath = new MockPath(fileSystemAccessor);
+			this.fileSystem = fileSystem;
+			this.validator = validator;
+			this.mockPath = mockPath;
 		}
 
 		public override void AppendAllLines(string path, IEnumerable<string> contents)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			AppendAllLines(path, contents, Defaults.DefaultEncoding);
 		}
 
 		public override void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			AppendAllText(path, contents.Aggregate(string.Empty, (a, b) => $"{a}{b}{Environment.NewLine}" ), encoding);
 		}
 
 		public override void AppendAllText(string path, string contents)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			AppendAllText(path, contents, Defaults.DefaultEncoding);
 		}
 
 		public override void AppendAllText(string path, string contents, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			if (!fileSystemAccessor.FileExists(path))
+			if (!fileSystem.FileExists(path))
 			{
-				var dir = fileSystemAccessor.Path.GetDirectoryName(path);
-				if (!fileSystemAccessor.Directory.Exists(dir))
+				var dir = fileSystem.Path.GetDirectoryName(path);
+				if (!fileSystem.Directory.Exists(dir))
 				{
 					throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, path));
 				}
 
-				fileSystemAccessor.AddFile(path, FileElement.Create(contents, encoding));
+				fileSystem.AddFile(path, FileElement.Create(contents, encoding));
 			}
 			else
 			{
-				var file = fileSystemAccessor.GetFile( path );
+				var file = fileSystem.GetFile( path );
 				var bytesToAppend = encoding.GetBytes( contents );
 				file.Assign( file.Get().Concat( bytesToAppend ) );
 			}
@@ -71,9 +75,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override StreamWriter AppendText(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			if (fileSystemAccessor.FileExists(path))
+			if (fileSystem.FileExists(path))
 			{
 				StreamWriter sw = new StreamWriter(OpenWrite(path));
 				sw.BaseStream.Seek(0, SeekOrigin.End); //push the stream pointer at the end for append.
@@ -100,16 +104,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new ArgumentNullException("destFileName", Properties.Resources.FILENAME_CANNOT_BE_NULL);
 			}
 
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
+			validator.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
+			validator.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
 
 			var directoryNameOfDestination = mockPath.GetDirectoryName(destFileName);
-			if (!fileSystemAccessor.Directory.Exists(directoryNameOfDestination))
+			if (!fileSystem.Directory.Exists(directoryNameOfDestination))
 			{
 				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, destFileName));
 			}
 
-			var fileExists = fileSystemAccessor.FileExists(destFileName);
+			var fileExists = fileSystem.FileExists(destFileName);
 			if (fileExists)
 			{
 				if (!overwrite)
@@ -117,18 +121,18 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file {0} already exists.", destFileName));
 				}
 
-				fileSystemAccessor.RemoveFile(destFileName);
+				fileSystem.RemoveFile(destFileName);
 			}
 
-			var sourceFile = fileSystemAccessor.GetFile(sourceFileName);
-			fileSystemAccessor.AddFile(destFileName, sourceFile);
+			var sourceFile = fileSystem.GetFile(sourceFileName);
+			fileSystem.AddFile(destFileName, sourceFile);
 		}
 
 		public override Stream Create(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.AddFile(path, new FileElement(new byte[0]));
+			fileSystem.AddFile(path, new FileElement(new byte[0]));
 			var stream = OpenWrite(path);
 			return stream;
 		}
@@ -155,28 +159,28 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Decrypt(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			new MockFileInfo(fileSystemAccessor, path).Decrypt();
+			new MockFileInfo(fileSystem, path).Decrypt();
 		}
 
 		public override void Delete(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.RemoveFile(path);
+			fileSystem.RemoveFile(path);
 		}
 
 		public override void Encrypt(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			new MockFileInfo(fileSystemAccessor, path).Encrypt();
+			new MockFileInfo(fileSystem, path).Encrypt();
 		}
 
 		public override bool Exists(string path)
 		{
-			return fileSystemAccessor.FileExists(path) && !fileSystemAccessor.AllDirectories.Any(d => d.Equals(path, StringComparison.OrdinalIgnoreCase));
+			return fileSystem.FileExists(path) && !fileSystem.AllDirectories.Any(d => d.Equals(path, StringComparison.OrdinalIgnoreCase));
 		}
 
 		public override FileSecurity GetAccessControl(string path)
@@ -211,9 +215,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				}
 			}
 
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			var possibleFileData = fileSystemAccessor.GetElement(path);
+			var possibleFileData = fileSystem.GetElement(path);
 			FileAttributes result;
 			if (possibleFileData != null)
 			{
@@ -221,7 +225,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 			else
 			{
-				var directoryInfo = fileSystemAccessor.DirectoryInfo.FromDirectoryName(path);
+				var directoryInfo = fileSystem.FromDirectoryName(path);
 				if (directoryInfo.Exists)
 				{
 					result = directoryInfo.Attributes;
@@ -244,94 +248,94 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DateTime GetCreationTime(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.CreationTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetCreationTimeUtc(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.CreationTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
 		public override DateTime GetLastAccessTime(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.LastAccessTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetLastAccessTimeUtc(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.LastAccessTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
 		public override DateTime GetLastWriteTime(string path) {
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.LastWriteTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetLastWriteTimeUtc(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return GetTimeFromFile(path, data => data.LastWriteTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
 		private DateTime GetTimeFromFile(string path, Func<IFileElement, DateTime> existingFileFunction, Func<DateTime> nonExistingFileFunction)
 		{
-			var file = fileSystemAccessor.GetFile(path);
+			var file = fileSystem.GetFile(path);
 			var result = file != null ? existingFileFunction(file) : nonExistingFileFunction();
 			return result;
 		}
 
 		public override void Move(string sourceFileName, string destFileName)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
+			validator.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
+			validator.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
 
-			if (fileSystemAccessor.GetElement(destFileName) != null)
+			if (fileSystem.GetElement(destFileName) != null)
 				throw new IOException("A file can not be created if it already exists.");
 
-			var sourceFile = fileSystemAccessor.GetFile(sourceFileName);
+			var sourceFile = fileSystem.GetFile(sourceFileName);
 
 			if (sourceFile == null)
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "The file \"{0}\" could not be found.", sourceFileName), sourceFileName);
 
-			var destDir = fileSystemAccessor.Directory.GetParent(destFileName);
+			var destDir = fileSystem.Directory.GetParent(destFileName);
 			if (!destDir.Exists)
 			{
 				throw new DirectoryNotFoundException("Could not find a part of the path.");
 			}
 
-			fileSystemAccessor.AddFile(destFileName, new FileElement(sourceFile.ToArray()));
-			fileSystemAccessor.RemoveFile(sourceFileName);
+			fileSystem.AddFile(destFileName, new FileElement(sourceFile.ToArray()));
+			fileSystem.RemoveFile(sourceFileName);
 		}
 
 		public override Stream Open(string path, FileMode mode)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return Open(path, mode, (mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite), FileShare.None);
 		}
 
 		public override Stream Open(string path, FileMode mode, FileAccess access)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return Open(path, mode, access, FileShare.None);
 		}
 
 		public override Stream Open(string path, FileMode mode, FileAccess access, FileShare share)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			bool exists = fileSystemAccessor.FileExists(path);
+			bool exists = fileSystem.FileExists(path);
 
 			if (mode == FileMode.CreateNew && exists)
 				throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file '{0}' already exists.", path));
@@ -348,7 +352,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				return Create(path);
 			}
 
-			var length = fileSystemAccessor.GetFile(path).Get().Length;
+			var length = fileSystem.GetFile(path).Get().Length;
 			var stream = OpenWrite(path);
 
 			if (mode == FileMode.Append)
@@ -359,14 +363,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override Stream OpenRead(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
 
 		public override StreamReader OpenText(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return new StreamReader(
 				OpenRead(path));
@@ -374,52 +378,52 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override Stream OpenWrite(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			return new MockFileStream(fileSystemAccessor, path);
+			return new MockFileStream(fileSystem, path);
 		}
 
 		public override byte[] ReadAllBytes(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			return fileSystemAccessor.GetFile(path).ToArray();
+			return fileSystem.GetFile(path).ToArray();
 		}
 
 		public override string[] ReadAllLines(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			if (!fileSystemAccessor.FileExists(path))
+			if (!fileSystem.FileExists(path))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
 			}
 
-			return fileSystemAccessor.GetFile(path).AsText().SplitLines();
+			return fileSystem.GetFile(path).AsText().SplitLines();
 		}
 
 		public override string[] ReadAllLines(string path, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			if (encoding == null)
 			{
 				throw new ArgumentNullException("encoding");
 			}
 
-			if (!fileSystemAccessor.FileExists(path))
+			if (!fileSystem.FileExists(path))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
 			}
 
-			return encoding.GetString(fileSystemAccessor.GetFile(path).ToArray()).SplitLines();
+			return encoding.GetString(fileSystem.GetFile(path).ToArray()).SplitLines();
 		}
 
 		public override string ReadAllText(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			if (!fileSystemAccessor.FileExists(path))
+			if (!fileSystem.FileExists(path))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
 			}
@@ -429,7 +433,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string ReadAllText(string path, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			if (encoding == null)
 			{
@@ -441,14 +445,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override IEnumerable<string> ReadLines(string path)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			return ReadAllLines(path);
 		}
 
 		public override IEnumerable<string> ReadLines(string path, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			return ReadAllLines(path, encoding);
 		}
 
@@ -469,51 +473,51 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void SetAttributes(string path, FileAttributes fileAttributes)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).Attributes = fileAttributes;
+			fileSystem.GetElement(path).Attributes = fileAttributes;
 		}
 
 		public override void SetCreationTime(string path, DateTime creationTime)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).CreationTime = new DateTimeOffset(creationTime);
+			fileSystem.GetElement(path).CreationTime = new DateTimeOffset(creationTime);
 		}
 
 		public override void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
+			fileSystem.GetElement(path).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
 		}
 
 		public override void SetLastAccessTime(string path, DateTime lastAccessTime)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTime);
+			fileSystem.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTime);
 		}
 
 		public override void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
+			fileSystem.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
 		}
 
 		public override void SetLastWriteTime(string path, DateTime lastWriteTime)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTime);
+			fileSystem.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTime);
 		}
 
 		public override void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
-			fileSystemAccessor.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
+			fileSystem.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
 		}
 
 		/// <summary>
@@ -545,7 +549,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <remarks>
 		/// Given a byte array and a file path, this method opens the specified file, writes the contents of the byte array to the file, and then closes the file.
 		/// </remarks>
-		public override void WriteAllBytes(string path, byte[] bytes) => fileSystemAccessor.AddFile(path, new FileElement(bytes));
+		public override void WriteAllBytes(string path, byte[] bytes) => fileSystem.AddFile(path, new FileElement(bytes));
 
 		/// <summary>
 		/// Creates a new file, writes a collection of strings to the file, and then closes the file.
@@ -582,7 +586,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string path, IEnumerable<string> contents)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			WriteAllLines(path, contents, Defaults.DefaultEncoding);
 		}
 
@@ -630,7 +634,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			var sb = new StringBuilder();
 			foreach (var line in contents)
 			{
@@ -679,7 +683,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string path, string[] contents)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			WriteAllLines(path, contents, Defaults.DefaultEncoding);
 		}
 
@@ -720,7 +724,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string path, string[] contents, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			WriteAllLines(path, new List<string>(contents), encoding);
 		}
 
@@ -758,7 +762,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllText(string path, string contents)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 
 			WriteAllText(path, contents, Defaults.DefaultEncoding);
 		}
@@ -795,15 +799,15 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllText(string path, string contents, Encoding encoding)
 		{
-			fileSystemAccessor.PathVerifier.IsLegalAbsoluteOrRelative(path, "path");
+			validator.IsLegalAbsoluteOrRelative(path, "path");
 			
-			if (fileSystemAccessor.Directory.Exists(path))
+			if (fileSystem.Directory.Exists(path))
 			{
 				throw new UnauthorizedAccessException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, path));
 			}
 
 			var data = contents == null ? FileElement.Empty() : FileElement.Create(contents, encoding);
-			fileSystemAccessor.AddFile(path, data);
+			fileSystem.AddFile(path, data);
 		}
 
 		internal static string ReadAllBytes(byte[] contents, Encoding encoding)
@@ -817,7 +821,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		private string ReadAllTextInternal(string path, Encoding encoding)
 		{
-			var mockFileData = fileSystemAccessor.GetFile(path);
+			var mockFileData = fileSystem.GetFile(path);
 			return ReadAllBytes(mockFileData.ToArray(), encoding);
 		}
 	}
