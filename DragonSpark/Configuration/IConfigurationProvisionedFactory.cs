@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 
 namespace DragonSpark.Configuration
 {
-	public interface IConfigurableFactory<TConfiguration, out TResult> : IConfigurableFactory<TConfiguration, object, TResult> {}
-	public interface IConfigurableFactory<TConfiguration, TParameter, out TResult> : IParameterizedSource<TParameter, TResult>
+	public interface IConfigurationProvisionedFactory<TConfiguration, out TResult> : IConfigurationProvisionedFactory<TConfiguration, object, TResult> {}
+	public interface IConfigurationProvisionedFactory<TConfiguration, TParameter, out TResult> : IParameterizedSource<TParameter, TResult>
 	{
 		IParameterizedScope<TParameter, TConfiguration> Seed { get; }
 		

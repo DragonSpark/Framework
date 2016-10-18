@@ -29,7 +29,7 @@ namespace DragonSpark.Diagnostics
 
 	public sealed class LoggingConfiguration : LoggerBase
 	{
-		public static IConfigurableFactory<LoggerConfiguration, ILogger> Default { get; } = new LoggingConfiguration();
+		public static IConfigurationProvisionedFactory<LoggerConfiguration, ILogger> Default { get; } = new LoggingConfiguration();
 		LoggingConfiguration() {}
 	}
 }

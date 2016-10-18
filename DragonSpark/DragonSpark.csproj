@@ -221,7 +221,9 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
-    <Compile Include="Configuration\IConfigurableFactory.cs" />
+    <Compile Include="Configuration\ConfigurableParameterizedSource.cs" />
+    <Compile Include="Configuration\IConfigurableParameterizedSource.cs" />
+    <Compile Include="Configuration\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
     <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
@@ -272,7 +274,7 @@
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
     <Compile Include="ComponentModel\ValueProvider.cs" />
     <Compile Include="Configuration\ConfigurableFactoryBase.cs" />
-    <Compile Include="Configuration\ConfigurableParameterizedFactoryBase.cs" />
+    <Compile Include="Configuration\ConfigurationProvisionedParameterizedFactoryBase.cs" />
     <Compile Include="Configuration\ConfigurationScope.cs" />
     <Compile Include="Configuration\ConfigurationSource.cs" />
     <Compile Include="Configuration\Extensions.cs" />

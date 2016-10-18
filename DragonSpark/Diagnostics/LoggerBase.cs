@@ -9,7 +9,7 @@ using System.Collections.Immutable;
 
 namespace DragonSpark.Diagnostics
 {
-	public abstract class LoggerBase : ConfigurableParameterizedFactoryBase<LoggerConfiguration, ILogger>
+	public abstract class LoggerBase : ConfigurationProvisionedParameterizedFactoryBase<LoggerConfiguration, ILogger>
 	{
 		protected LoggerBase() : this( Items<IAlteration<LoggerConfiguration>>.Default ) {}
 		protected LoggerBase( params IAlteration<LoggerConfiguration>[] configurations ) : this( configurations.ToImmutableArray() ) {}

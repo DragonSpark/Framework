@@ -5,11 +5,16 @@ using System.Linq;
 
 namespace DragonSpark.Sources.Parameterized
 {
-	public class ParameterConstructedCompositeFactory<T> : CompositeFactory<object, T>
+	public class ParameterConstructedCompositeFactory<T> : ParameterConstructedCompositeFactory<object, T>
+	{
+		public ParameterConstructedCompositeFactory( params Type[] types ) : base( types ) {}
+	}
+
+	public class ParameterConstructedCompositeFactory<TParameter, TResult> : CompositeFactory<TParameter, TResult>
 	{
 		public ParameterConstructedCompositeFactory( params Type[] types ) : base( types.Select( type => new Factory( type ) ).Fixed() ) {}
 
-		sealed class Factory : ParameterizedSourceBase<T>
+		sealed class Factory : ParameterizedSourceBase<TParameter, TResult>
 		{
 			readonly Type type;
 
@@ -18,7 +23,7 @@ namespace DragonSpark.Sources.Parameterized
 				this.type = type;
 			}
 
-			public override T Get( object parameter ) => ParameterConstructor<T>.Make( parameter.GetType(), type )( parameter );
+			public override TResult Get( TParameter parameter ) => ParameterConstructor<TResult>.Make( parameter.GetType(), type )( parameter );
 		}
 	}
 }

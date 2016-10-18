@@ -1,11 +1,9 @@
-﻿using DragonSpark.Sources.Parameterized;
-using DragonSpark.TypeSystem;
+﻿using DragonSpark.TypeSystem;
 using System.Collections.Generic;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public sealed class FileSystemFactory : ParameterizedSourceBase<IEnumerable<string>, DirectoryInfoBase>
+	/*public sealed class FileSystemFactory : ParameterizedSourceBase<IEnumerable<string>, DirectoryInfoBase>
 	{
 		public static FileSystemFactory Default { get; } = new FileSystemFactory();
 		FileSystemFactory() : this( FileElement.Empty() ) {}
@@ -23,12 +21,12 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			foreach ( var path in parameter )
 			{
 				files.Add( path, file );
-			}*/
+			}#1#
 			var fileSystem = new FileSystem();
 			var result = fileSystem.FromDirectoryName( "." );
 			return result;
 		}
-	}
+	}*/
 
 	public struct FileSystemProfile
 	{

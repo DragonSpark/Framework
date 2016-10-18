@@ -24,8 +24,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.path = path;
 			fileElement = fileSystem.GetFile( path );
 			if (fileElement == null) throw new FileNotFoundException("File not found", path);
-			file = new MockFile(this.fileSystem);
 			mockPath = new MockPath(this.fileSystem);
+			file = new MockFile(this.fileSystem, mockPath );
 		}
 
 		public override void Delete() => fileSystem.RemoveFile(path);

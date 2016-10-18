@@ -1,15 +1,14 @@
 using DragonSpark.Specifications;
 using System.IO;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public sealed class LockedFileSpecification : SpecificationBase<FileInfoBase>
+	public sealed class LockedFileSpecification : SpecificationBase<IFileInfo>
 	{
 		public static LockedFileSpecification Default { get; } = new LockedFileSpecification();
 		LockedFileSpecification() {}
 
-		public override bool IsSatisfiedBy( FileInfoBase parameter )
+		public override bool IsSatisfiedBy( IFileInfo parameter )
 		{
 			Stream stream = null;
 

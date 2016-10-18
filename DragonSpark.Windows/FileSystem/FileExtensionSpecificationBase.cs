@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Specifications;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public abstract class FileExtensionSpecificationBase : SpecificationBase<FileSystemInfoBase>
+	public abstract class FileExtensionSpecificationBase : SpecificationBase<IFileSystemInfo>
 	{
 		readonly string extension;
 		protected FileExtensionSpecificationBase( string extension )
@@ -11,6 +10,6 @@ namespace DragonSpark.Windows.FileSystem
 			this.extension = extension;
 		}
 
-		public override bool IsSatisfiedBy( FileSystemInfoBase parameter ) => parameter.Extension == extension;
+		public override bool IsSatisfiedBy( IFileSystemInfo parameter ) => parameter.Extension == extension;
 	}
 }

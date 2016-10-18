@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Commands;
+using DragonSpark.Windows.FileSystem;
 using System;
 using System.Configuration;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.Setup
 {
@@ -10,10 +10,10 @@ namespace DragonSpark.Windows.Setup
 		public static SaveUserSettingsCommand Default { get; } = new SaveUserSettingsCommand();
 		SaveUserSettingsCommand() : this( Defaults.UserSettingsPath, UserConfigurationLocator.Default.Get ) {}
 
-		readonly Func<FileInfoBase> fileSource;
-		readonly Func<FileInfoBase, System.Configuration.Configuration> configurationSource;
+		readonly Func<IFileInfo> fileSource;
+		readonly Func<IFileInfo, System.Configuration.Configuration> configurationSource;
 
-		SaveUserSettingsCommand( Func<FileInfoBase> fileSource, Func<FileInfoBase, System.Configuration.Configuration> configurationSource  )
+		SaveUserSettingsCommand( Func<IFileInfo> fileSource, Func<IFileInfo, System.Configuration.Configuration> configurationSource  )
 		{
 			this.fileSource = fileSource;
 			this.configurationSource = configurationSource;

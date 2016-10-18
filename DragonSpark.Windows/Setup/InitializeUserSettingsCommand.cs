@@ -5,11 +5,11 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Properties;
 using Serilog;
 using System;
 using System.Configuration;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.Setup
 {
@@ -20,10 +20,10 @@ namespace DragonSpark.Windows.Setup
 		InitializeUserSettingsCommand() : this( TemplatesFactory.DefaultNested.Fixed( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, SaveUserSettingsCommand.Default.Execute ) {}
 
 		readonly Func<Templates> templatesSource;
-		readonly Func<FileInfoBase> fileSource;
+		readonly Func<IFileInfo> fileSource;
 		readonly Action<ApplicationSettingsBase> save;
 
-		InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<FileInfoBase> fileSource, Action<ApplicationSettingsBase> save )
+		InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<IFileInfo> fileSource, Action<ApplicationSettingsBase> save )
 		{
 			this.templatesSource = templatesSource;
 			this.fileSource = fileSource;
@@ -119,12 +119,12 @@ namespace DragonSpark.Windows.Setup
 		}
 	}
 
-	sealed class UserConfigurationLocator : ParameterizedSourceBase<FileInfoBase, System.Configuration.Configuration>
+	sealed class UserConfigurationLocator : ParameterizedSourceBase<IFileInfo, System.Configuration.Configuration>
 	{
 		public static UserConfigurationLocator Default { get; } = new UserConfigurationLocator();
 		UserConfigurationLocator() {}
 
-		public override System.Configuration.Configuration Get( FileInfoBase parameter )
+		public override System.Configuration.Configuration Get( IFileInfo parameter )
 		{
 			var source = parameter.Directory.Parent.GetFiles( parameter.Name ).Only();
 			var result = source != null ?

@@ -7,32 +7,31 @@ using DragonSpark.Windows.Setup;
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
 	[ApplyAutoValidation, ApplySpecification( typeof(FileSystemInfoExistsSpecification) )]
-	public sealed class PurgeDirectoryCommand : CommandBase<DirectoryInfoBase>
+	public sealed class PurgeDirectoryCommand : CommandBase<IDirectoryInfo>
 	{
 		public static PurgeDirectoryCommand Default { get; } = new PurgeDirectoryCommand();
 		PurgeDirectoryCommand() : this( AllFilesSource.Default.Get ) {}
 
-		readonly Func<DirectoryInfoBase, ImmutableArray<FileInfoBase>> fileSource;
-		readonly Action<DirectoryInfoBase> delete;
+		readonly Func<IDirectoryInfo, ImmutableArray<IFileInfo>> fileSource;
+		readonly Action<IDirectoryInfo> delete;
 
-		public PurgeDirectoryCommand( Func<DirectoryInfoBase, ImmutableArray<FileInfoBase>> fileSource )
+		public PurgeDirectoryCommand( Func<IDirectoryInfo, ImmutableArray<IFileInfo>> fileSource )
 		{
 			this.fileSource = fileSource;
 			delete = TryDeleteDirectory;
 		}
 
-		public override void Execute( DirectoryInfoBase parameter )
+		public override void Execute( IDirectoryInfo parameter )
 		{
 			parameter.GetDirectories().Each( delete );
 			parameter.GetFiles().Each( x => x.Delete() );
 		}
 
-		void TryDeleteDirectory( DirectoryInfoBase target )
+		void TryDeleteDirectory( IDirectoryInfo target )
 		{
 			try
 			{
