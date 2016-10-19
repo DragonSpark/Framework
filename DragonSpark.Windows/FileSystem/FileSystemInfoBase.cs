@@ -1,5 +1,4 @@
-﻿using DragonSpark.Extensions;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Abstractions;
 
@@ -7,17 +6,10 @@ namespace DragonSpark.Windows.FileSystem
 {
 	public abstract class FileSystemInfoBase<T> : IFileSystemInfo where T : FileSystemInfoBase
 	{
-		readonly Func<FileSystemInfoBase, IFileSystemInfo> factory;
-		
-		protected FileSystemInfoBase( T source, Func<FileSystemInfoBase, IFileSystemInfo> factory )
+		protected FileSystemInfoBase( T source )
 		{
-			this.factory = factory;
 			Source = source;
 		}
-
-		protected IFileSystemInfo Create( FileSystemInfoBase item ) => factory( item );
-
-		protected TResult Create<TResult>( FileSystemInfoBase item ) => factory( item ).AsValid<TResult>();
 
 		protected T Source { get; }
 

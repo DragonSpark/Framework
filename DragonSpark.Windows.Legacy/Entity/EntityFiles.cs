@@ -1,6 +1,6 @@
 using DragonSpark.Windows.FileSystem;
 using System.Collections.Generic;
-using System.IO;
+using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Windows.Legacy.Entity
 {
@@ -10,6 +10,11 @@ namespace DragonSpark.Windows.Legacy.Entity
 
 		public static IEnumerable<IFileInfo> WithLog( IFileInfo databaseFile ) => new[] { databaseFile, GetLog( databaseFile ) };
 
-		public static IFileInfo GetLog( IFileInfo database ) => FileFactory.Default.Get( Path.Combine( database.DirectoryName ?? string.Empty, string.Concat( Path.GetFileNameWithoutExtension( database.Name ), "_log.ldf" ) ) );
+		public static IFileInfo GetLog( IFileInfo database )
+		{
+			var path = Path.Current.Get();
+			var result = FileFactory.Default.Get( path.Combine( database.DirectoryName ?? string.Empty, string.Concat( path.GetFileNameWithoutExtension( database.Name ), "_log.ldf" ) ) );
+			return result;
+		}
 	}
 }

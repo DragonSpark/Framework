@@ -47,12 +47,12 @@
     <Compile Include="CurrentTestingMethod.cs" />
     <Compile Include="CurrentTime.cs" />
     <Compile Include="FileSystem\Defaults.cs" />
+    <Compile Include="FileSystem\ElementSource.cs" />
     <Compile Include="FileSystem\Extensions.cs" />
     <Compile Include="FileSystem\FileSystem.cs" />
     <Compile Include="FileSystem\FileSystemElementBase.cs" />
     <Compile Include="FileSystem\FileSystemFactory.cs" />
     <Compile Include="FileSystem\IMockFileData.cs" />
-    <Compile Include="FileSystem\IPathingValidator.cs" />
     <Compile Include="FileSystem\MockDirectory.cs" />
     <Compile Include="FileSystem\DirectoryElement.cs" />
     <Compile Include="FileSystem\MockDirectoryInfo.cs" />
@@ -63,7 +63,6 @@
     <Compile Include="FileSystem\MockFileStream.cs" />
     <Compile Include="FileSystem\MockPath.cs" />
     <Compile Include="FileSystem\MockUnixSupport.cs" />
-    <Compile Include="FileSystem\PathingValidator.cs" />
     <Compile Include="FileSystem\StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

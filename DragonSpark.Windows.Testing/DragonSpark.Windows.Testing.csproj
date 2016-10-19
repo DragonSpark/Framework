@@ -42,7 +42,6 @@
     <Compile Include="Configuration\ConfigurationTests.cs" />
     <Compile Include="Diagnostics\ApplyExceptionDetailsTests.cs" />
     <Compile Include="FileSystemTests.cs" />
-    <Compile Include="FileSystem\FileFactoryTests.cs" />
     <Compile Include="FileSystem\PurgeDirectoryCommandTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

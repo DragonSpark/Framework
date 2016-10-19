@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public interface IFileSystemElement
 	{
-		// string Path { get; }
+		string Path { get; }
 
 		FileAttributes Attributes { get; set; }
 		DateTimeOffset CreationTime { get; set; }

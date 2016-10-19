@@ -59,9 +59,13 @@
     <Compile Include="FileSystem\Factory.cs" />
     <Compile Include="FileSystem\FileFactory.cs" />
     <Compile Include="FileSystem\FileSystemInfoBase.cs" />
+    <Compile Include="FileSystem\FileSystemInfoFactory.cs" />
+    <Compile Include="FileSystem\IDirectory.cs" />
     <Compile Include="FileSystem\IDirectoryInfo.cs" />
+    <Compile Include="FileSystem\IFile.cs" />
     <Compile Include="FileSystem\IFileInfo.cs" />
     <Compile Include="FileSystem\IFileSystemInfoBase.cs" />
+    <Compile Include="FileSystem\IPath.cs" />
     <Compile Include="FileSystem\LockedFileSpecification.cs" />
     <Compile Include="FileSystem\PurgeDirectoryCommand.cs" />
     <Compile Include="FileSystem\TimestampPathSpecification.cs" />

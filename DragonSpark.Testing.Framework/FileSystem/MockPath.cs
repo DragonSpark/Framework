@@ -1,9 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Windows.FileSystem;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using Path = System.IO.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
@@ -16,11 +17,15 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	{
 		readonly private static char[] InvalidAdditionalPathChars = { '*', '?' };
 
-		readonly private IFileSystem fileSystem;
+		public MockPath() : this( FileSystemRepository.Current.Get(), Directory.Current.Get() ) {}
 
-		public MockPath(IFileSystem fileSystem)
+		readonly IFileSystemRepository repository;
+		readonly IDirectory directory;
+
+		public MockPath(IFileSystemRepository repository, IDirectory directory)
 		{
-			this.fileSystem = fileSystem;
+			this.repository = repository;
+			this.directory = directory;
 		}
 
 		public override string GetFullPath(string path)
@@ -45,7 +50,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			if (root.Length == 0)
 			{
 				// relative path on the current drive or volume
-				path = fileSystem.Directory.GetCurrentDirectory() + DirectorySeparatorChar + path;
+				path = directory.GetCurrentDirectory() + DirectorySeparatorChar + path;
 				pathSegments = GetSegments(path);
 			}
 			else if (isUnc)
@@ -60,7 +65,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			else if (@"\".Equals(root, StringComparison.OrdinalIgnoreCase) || @"/".Equals(root, StringComparison.OrdinalIgnoreCase))
 			{
 				// absolute path on the current drive or volume
-				pathSegments = GetSegments(GetPathRoot(fileSystem.Directory.GetCurrentDirectory()), path);
+				pathSegments = GetSegments(GetPathRoot(directory.GetCurrentDirectory()), path);
 			}
 			else
 			{
@@ -69,7 +74,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 			// unc paths need at least two segments, the others need one segment
 			bool isUnixRooted =
-				fileSystem.Directory.GetCurrentDirectory()
+				directory.GetCurrentDirectory()
 					.StartsWith(DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase);
 
 			var minPathSegments = isUnc
@@ -124,12 +129,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string GetTempFileName()
 		{
-			string fileName = fileSystem.Path.GetRandomFileName();
-			string tempDir = fileSystem.Path.GetTempPath();
-
-			string fullPath = fileSystem.Path.Combine(tempDir, fileName);
-
-			fileSystem.AddFile(fullPath, FileElement.Empty() );
+			var fullPath = Combine( GetTempPath(), GetRandomFileName() );
+			repository.AddFile( FileElement.Empty( fullPath ) );
 
 			return fullPath;
 		}

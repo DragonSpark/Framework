@@ -1,4 +1,5 @@
 using DragonSpark.Coercion;
+using DragonSpark.Configuration;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
@@ -11,6 +12,13 @@ namespace DragonSpark.Sources.Parameterized
 {
 	public static class Extensions
 	{
+		public static IConfigurableParameterizedSource<TParameter, TResult> AsConfigurable<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => Configurable<TParameter, TResult>.Default.Get( @this );
+		sealed class Configurable<TParameter, TResult> : Cache<IParameterizedSource<TParameter, TResult>, IConfigurableParameterizedSource<TParameter, TResult>>
+		{
+			public static Configurable<TParameter, TResult> Default { get; } = new Configurable<TParameter, TResult>();
+			Configurable() : base( source => new ConfigurableParameterizedSource<TParameter, TResult>( source.Get ) ) {}
+		}
+
 		public static TResult Get<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this ) => Get( @this, Items<TItem>.Default );
 		public static TResult Get<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this, params TItem[] parameters ) => @this.Get( parameters );
 

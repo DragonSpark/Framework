@@ -1,5 +1,5 @@
 using DragonSpark.Properties;
-using JetBrains.Annotations;
+using DragonSpark.Sources;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public interface IFileSystem : System.IO.Abstractions.IFileSystem, IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
+	public interface IFileSystemRepository : IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
 	{
 		/// <summary>
 		/// Gets a file.
@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <returns>The file. <see langword="null"/> if the file does not exist.</returns>
 		IFileSystemElement GetElement(string path);
 
-		void AddFile(string path, IFileElement file);
+		void AddFile(IFileElement file);
 		void AddDirectory(string path);
 
 		/// <summary>
@@ -52,34 +52,23 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// Gets the paths of all directories.
 		/// </summary>
 		ImmutableArray<string> AllDirectories { get; }
+
+		void IsLegalAbsoluteOrRelative( string pathToValidate, string paramName );
 	}
 
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
 	[Serializable]
-	public class FileSystem : IFileSystem
+	public class FileSystemRepository : IFileSystemRepository
 	{
-		readonly static string CurrentDirectory = System.IO.Path.GetTempPath();
+		readonly static char[] InvalidChars = Path.GetInvalidFileNameChars();
+
+		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
+		FileSystemRepository() {}
+
 
 		readonly IDictionary<string, IFileSystemElement> elements = new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase );
-
-		public FileSystem() : this( CurrentDirectory ) {}
-
-		[UsedImplicitly]
-		public FileSystem( string currentDirectory )
-		{
-			var mockPath = new MockPath( this );
-			Path = mockPath;
-			Directory = new MockDirectory( this, currentDirectory );
-			File = new MockFile( this, mockPath );
-		}
-
-		public FileBase File { get; }
-
-		public DirectoryBase Directory { get; }
-
-		public PathBase Path { get; }
 
 		public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
 
@@ -91,12 +80,12 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public IFileSystemElement GetElement( string path ) => GetFileWithoutFixingPath( FixPath( path ) );
 
-		public void AddFile( string path, IFileElement file )
+		public void AddFile( IFileElement file )
 		{
-			var key = FixPath( path );
+			var key = FixPath( file.Path );
 			if ( FileExists( key ) && ( elements[key].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly | ( elements[key].Attributes & FileAttributes.Hidden ) == FileAttributes.Hidden )
 			{
-				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, path ) );
+				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, file.Path ) );
 			}
 			var name = Path.GetDirectoryName( key );
 			if ( !Directory.Exists( name ) )
@@ -120,7 +109,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				local4 = path.IndexOf( str, 2, StringComparison.OrdinalIgnoreCase );
 				if ( local4 < 0 )
 				{
-					throw new ArgumentException( Resources.SERVER_PATH, "path" );
+					throw new ArgumentException( Resources.SERVER_PATH, nameof( path ) );
 				}
 			}
 			while ( ( local4 = path.IndexOf( str, local4 + 1, StringComparison.OrdinalIgnoreCase ) ) > -1 )
@@ -128,10 +117,11 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				var local10 = path.Substring( 0, local4 + 1 );
 				if ( !Directory.Exists( local10 ) )
 				{
-					elements[local10] = new DirectoryElement();
+					elements[local10] = new DirectoryElement( local10 );
 				}
 			}
-			elements[path.EndsWith( str, StringComparison.OrdinalIgnoreCase ) ? path : path + str] = new DirectoryElement();
+			var key = path.EndsWith( str, StringComparison.OrdinalIgnoreCase ) ? path : path + str;
+			elements[key] = new DirectoryElement( key );
 		}
 
 		public void RemoveFile( string path ) => elements.Remove( FixPath( path ) );
@@ -145,13 +135,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return result;
 		}
 
-		IDirectoryInfoFactory System.IO.Abstractions.IFileSystem.DirectoryInfo => this;
 		public DirectoryInfoBase FromDirectoryName( string directoryName ) => new MockDirectoryInfo( this, directoryName );
 
-		IFileInfoFactory System.IO.Abstractions.IFileSystem.FileInfo => this;
 		public FileInfoBase FromFileName( string fileName ) => new MockFileInfo( this, fileName );
 
-		IDriveInfoFactory System.IO.Abstractions.IFileSystem.DriveInfo => this;
 		public DriveInfoBase[] GetDrives()
 		{
 			var driveLetters = new HashSet<string>(DriveEqualityComparer.Default);
@@ -166,15 +153,40 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			{
 				try
 				{
-					var mockDriveInfo = new MockDriveInfo(this, driveLetter);
-					result.Add(mockDriveInfo);
+					result.Add( new MockDriveInfo( this, driveLetter ) );
 				}
 				catch (ArgumentException) {} // invalid drives should be ignored
 			}
 
 			return result.ToArray();
 		}
+		
+		public void IsLegalAbsoluteOrRelative(string pathToValidate, string paramName)
+		{
+			if (pathToValidate.Trim() == string.Empty)
+			{
+				throw new ArgumentException(Properties.Resources.THE_PATH_IS_NOT_OF_A_LEGAL_FORM, paramName);
+			}
 
+			if (ExtractFileName(pathToValidate).IndexOfAny(InvalidChars) > -1)
+			{
+				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
+			}
+
+			var filePath = ExtractFilePath(pathToValidate);
+			if (MockPath.HasIllegalCharacters(filePath, false))
+			{
+				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
+			}
+		}
+
+		static string ExtractFileName(string fullFileName) => fullFileName.Split(Path.DirectorySeparatorChar).Last();
+
+		static string ExtractFilePath(string fullFileName)
+		{
+			var extractFilePath = fullFileName.Split(Path.DirectorySeparatorChar);
+			return string.Join(Path.DirectorySeparatorChar.ToString(), extractFilePath.Take(extractFilePath.Length - 1));
+		}
 		sealed class DriveEqualityComparer : IEqualityComparer<string>
 		{
 			public static DriveEqualityComparer Default { get; } = new DriveEqualityComparer();

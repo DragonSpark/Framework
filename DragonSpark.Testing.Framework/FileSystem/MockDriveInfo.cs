@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
+using System;
 using System.IO;
 using System.IO.Abstractions;
+using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
@@ -10,9 +13,12 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockDriveInfo : DriveInfoBase
 	{
-		readonly IFileSystem fileSystem;
+		readonly IFileSystemRepository repository;
 
-		public MockDriveInfo(IFileSystem fileSystem, string name)
+		public MockDriveInfo( IFileSystemRepository repository, string name ) : this( repository, Path.Current.Get(), name ) {}
+
+		[UsedImplicitly]
+		public MockDriveInfo( IFileSystemRepository repository, IPath path, string name )
 		{
 			const string driveSeparator = @":\";
 			if (name.Length == 1)
@@ -30,7 +36,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			else
 			{
 				MockPath.CheckInvalidPathChars(name);
-				name = fileSystem.Path.GetPathRoot(name);
+				name = path.GetPathRoot(name);
 
 				if (string.IsNullOrEmpty(name) || name.StartsWith(@"\\", StringComparison.Ordinal))
 				{
@@ -39,7 +45,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				}
 			}
 
-			this.fileSystem = fileSystem;
+			this.repository = repository;
 
 			Name = name;
 			IsReady = true;
@@ -51,7 +57,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public new bool IsReady { get; protected set; }
 		public sealed override string Name { get; protected set; }
 
-		public override DirectoryInfoBase RootDirectory => fileSystem.FromDirectoryName(Name);
+		public override DirectoryInfoBase RootDirectory => repository.FromDirectoryName(Name);
 
 		public new long TotalFreeSpace { get; protected set; }
 		public new long TotalSize { get; protected set; }

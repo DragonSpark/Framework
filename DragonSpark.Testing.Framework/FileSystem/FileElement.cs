@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DragonSpark.Testing.Framework.FileSystem
@@ -14,25 +15,20 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class FileElement : FileSystemElementBase, IFileElement
 	{
-		public static FileElement Empty() => Create( string.Empty );
+		public static FileElement Empty( string path ) => Create( path, string.Empty );
 
-		public static FileElement Create( string textContents, Encoding encoding ) => new FileElement( encoding.GetPreamble().Concat( encoding.GetBytes( textContents ) ).ToArray() );
-		public static FileElement Create( string textContents ) => new FileElement( Defaults.DefaultEncoding.GetBytes( textContents ) );
-
-		/// <summary>
-		/// Casts a string into <see cref="FileElement"/>.
-		/// </summary>
-		/// <param name="s">The path of the <see cref="FileElement"/> to be created.</param>
-		public static implicit operator FileElement( string s ) => Create(s);
+		public static FileElement Create( string path, [Optional]string textContents, Encoding encoding ) => new FileElement( path, encoding.GetPreamble().Concat( encoding.GetBytes( textContents ?? string.Empty ) ).ToArray() );
+		public static FileElement Create( string path, [Optional]string textContents ) => new FileElement( path, Defaults.DefaultEncoding.GetBytes( textContents ?? string.Empty ) );
 
 		readonly IAssignableSource<ImmutableArray<byte>> source = new SuppliedSource<ImmutableArray<byte>>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FileElement"/> class with the content of <paramref name="contents"/>.
 		/// </summary>
+		/// <param name="path"></param>
 		/// <param name="contents">The actual content.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="contents"/> is <see langword="null" />.</exception>
-		public FileElement( IEnumerable<byte> contents )
+		public FileElement( string path, IEnumerable<byte> contents ) : base( path )
 		{
 			source.Assign( contents );
 		}

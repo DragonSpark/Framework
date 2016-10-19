@@ -43,19 +43,19 @@ namespace DragonSpark.Windows.FileSystem
 
 	public class DirectoryInfo : FileSystemInfoBase<DirectoryInfoBase>, IDirectoryInfo
 	{
-		readonly Func<FileSystemInfoBase, IFileInfo> createFile;
-		readonly Func<FileSystemInfoBase, IFileSystemInfo> createGeneral;
-		readonly Func<DirectoryInfoBase, IDirectoryInfo> createDirectory;
+		readonly Func<FileSystemInfoBase, IFileSystemInfo> generalSource;
+		readonly Func<DirectoryInfoBase, IDirectoryInfo> directorySource;
+		readonly Func<FileInfoBase, IFileInfo> fileSource;
 
-		public DirectoryInfo( DirectoryInfoBase source ) : this( source, Defaults.Factory ) {}
+		public DirectoryInfo( DirectoryInfoBase source ) : this( source, Defaults.General, Defaults.Directory, Defaults.File ) {}
 
-		public DirectoryInfo( DirectoryInfoBase source, Func<FileSystemInfoBase, IFileSystemInfo> factory ) : base( source, factory )
+		public DirectoryInfo( DirectoryInfoBase source, Func<FileSystemInfoBase, IFileSystemInfo> generalSource, Func<DirectoryInfoBase, IDirectoryInfo> directorySource, Func<FileInfoBase, IFileInfo> fileSource ) : base( source )
 		{
-			createFile = Create<IFileInfo>;
-			createGeneral = Create;
-			createDirectory = Create<IDirectoryInfo>;
-			Parent = createDirectory( Source.Parent );
-			Root = createDirectory( Source.Root );
+			this.generalSource = generalSource;
+			this.directorySource = directorySource;
+			this.fileSource = fileSource;
+			Parent = directorySource( Source.Parent );
+			Root = directorySource( Source.Root );
 		}
 
 		public IDirectoryInfo Parent { get; }
@@ -66,9 +66,9 @@ namespace DragonSpark.Windows.FileSystem
 
 		public void Create( DirectorySecurity directorySecurity ) => Source.Create( directorySecurity );
 
-		public IDirectoryInfo CreateSubdirectory( string path ) => Create<IDirectoryInfo>( Source.CreateSubdirectory( path ) );
+		public IDirectoryInfo CreateSubdirectory( string path ) => directorySource( Source.CreateSubdirectory( path ) );
 
-		public IDirectoryInfo CreateSubdirectory( string path, DirectorySecurity directorySecurity ) => Create<IDirectoryInfo>( Source.CreateSubdirectory( path, directorySecurity ) );
+		public IDirectoryInfo CreateSubdirectory( string path, DirectorySecurity directorySecurity ) => directorySource( Source.CreateSubdirectory( path, directorySecurity ) );
 
 		public void Delete( bool recursive ) => Source.Delete( recursive );
 
@@ -76,7 +76,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateDirectories() )
 			{
-				yield return Create<IDirectoryInfo>( directory );
+				yield return directorySource( directory );
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateDirectories( searchPattern ) )
 			{
-				yield return Create<IDirectoryInfo>( directory );
+				yield return directorySource( directory );
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateDirectories( searchPattern, searchOption ) )
 			{
-				yield return Create<IDirectoryInfo>( directory );
+				yield return directorySource( directory );
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFiles() )
 			{
-				yield return Create<IFileInfo>( directory );
+				yield return fileSource( directory );
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFiles( searchPattern ) )
 			{
-				yield return Create<IFileInfo>( directory );
+				yield return fileSource( directory );
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFiles( searchPattern, searchOption ) )
 			{
-				yield return Create<IFileInfo>( directory );
+				yield return fileSource( directory );
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFileSystemInfos() )
 			{
-				yield return Create( directory );
+				yield return generalSource( directory );
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFileSystemInfos( searchPattern ) )
 			{
-				yield return Create( directory );
+				yield return generalSource( directory );
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace DragonSpark.Windows.FileSystem
 		{
 			foreach ( var directory in Source.EnumerateFileSystemInfos( searchPattern, searchOption ) )
 			{
-				yield return Create( directory );
+				yield return generalSource( directory );
 			}
 		}
 
@@ -148,17 +148,17 @@ namespace DragonSpark.Windows.FileSystem
 
 		public DirectorySecurity GetAccessControl( AccessControlSections includeSections ) => Source.GetAccessControl( includeSections );
 
-		public IDirectoryInfo[] GetDirectories() => Source.GetDirectories().Select( createDirectory ).ToArray();
-		public IDirectoryInfo[] GetDirectories( string searchPattern ) => Source.GetDirectories( searchPattern ).Select( createDirectory ).ToArray();
-		public IDirectoryInfo[] GetDirectories( string searchPattern, SearchOption searchOption ) => Source.GetDirectories( searchPattern, searchOption ).Select( createDirectory ).ToArray();
+		public IDirectoryInfo[] GetDirectories() => Source.GetDirectories().Select( directorySource ).ToArray();
+		public IDirectoryInfo[] GetDirectories( string searchPattern ) => Source.GetDirectories( searchPattern ).Select( directorySource ).ToArray();
+		public IDirectoryInfo[] GetDirectories( string searchPattern, SearchOption searchOption ) => Source.GetDirectories( searchPattern, searchOption ).Select( directorySource ).ToArray();
 
-		public IFileInfo[] GetFiles() => Source.GetFiles().Select( createFile ).ToArray();
-		public IFileInfo[] GetFiles( string searchPattern ) => Source.GetFiles( searchPattern ).Select( createFile ).ToArray();
-		public IFileInfo[] GetFiles( string searchPattern, SearchOption searchOption ) => Source.GetFiles( searchPattern, searchOption ).Select( createFile ).ToArray();
+		public IFileInfo[] GetFiles() => Source.GetFiles().Select( fileSource ).ToArray();
+		public IFileInfo[] GetFiles( string searchPattern ) => Source.GetFiles( searchPattern ).Select( fileSource ).ToArray();
+		public IFileInfo[] GetFiles( string searchPattern, SearchOption searchOption ) => Source.GetFiles( searchPattern, searchOption ).Select( fileSource ).ToArray();
 
-		public IFileSystemInfo[] GetFileSystemInfos() => Source.GetFileSystemInfos().Select( createGeneral ).ToArray();
-		public IFileSystemInfo[] GetFileSystemInfos( string searchPattern ) => Source.GetFileSystemInfos( searchPattern ).Select( createGeneral ).ToArray();
-		public IFileSystemInfo[] GetFileSystemInfos( string searchPattern, SearchOption searchOption ) => Source.GetFileSystemInfos( searchPattern, searchOption ).Select( createGeneral ).ToArray();
+		public IFileSystemInfo[] GetFileSystemInfos() => Source.GetFileSystemInfos().Select( generalSource ).ToArray();
+		public IFileSystemInfo[] GetFileSystemInfos( string searchPattern ) => Source.GetFileSystemInfos( searchPattern ).Select( generalSource ).ToArray();
+		public IFileSystemInfo[] GetFileSystemInfos( string searchPattern, SearchOption searchOption ) => Source.GetFileSystemInfos( searchPattern, searchOption ).Select( generalSource ).ToArray();
 
 		public void MoveTo( string destDirName ) => Source.MoveTo( destDirName );
 

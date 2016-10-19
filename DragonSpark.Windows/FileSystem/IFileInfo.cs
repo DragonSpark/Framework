@@ -35,16 +35,21 @@ namespace DragonSpark.Windows.FileSystem
 
 	public class FileInfo : FileSystemInfoBase<FileInfoBase>, IFileInfo
 	{
-		public static implicit operator FileInfo( FileInfoBase fileInfo ) => new FileInfo( fileInfo );
+		readonly Func<FileInfoBase, IFileInfo> fileSource;
+		// public static implicit operator FileInfo( FileInfoBase fileInfo ) => new FileInfo( fileInfo );
 
-		public FileInfo( FileInfoBase source ) : this( source, Defaults.Factory ) {}
-		public FileInfo( FileInfoBase source, Func<FileSystemInfoBase, IFileSystemInfo> factory ) : base( source, factory ) {}
+		public FileInfo( FileInfoBase source ) : this( source, Defaults.Directory, Defaults.File ) {}
+		public FileInfo( FileInfoBase source, Func<DirectoryInfoBase, IDirectoryInfo> directorySource, Func<FileInfoBase, IFileInfo> fileSource ) : base( source )
+		{
+			this.fileSource = fileSource;
+			Directory = directorySource( source.Directory );
+		}
 
 		public StreamWriter AppendText() => Source.AppendText();
 
-		public IFileInfo CopyTo( string destFileName ) => Create<IFileInfo>( Source.CopyTo( destFileName ) );
+		public IFileInfo CopyTo( string destFileName ) => fileSource( Source.CopyTo( destFileName ) );
 
-		public IFileInfo CopyTo( string destFileName, bool overwrite ) => Create<IFileInfo>( Source.CopyTo( destFileName, overwrite ) );
+		public IFileInfo CopyTo( string destFileName, bool overwrite ) => fileSource( Source.CopyTo( destFileName, overwrite ) );
 
 		public Stream Create() => Source.Create();
 
@@ -72,13 +77,13 @@ namespace DragonSpark.Windows.FileSystem
 
 		public Stream OpenWrite() => Source.OpenWrite();
 
-		public IFileInfo Replace( string destinationFileName, string destinationBackupFileName ) => Create<IFileInfo>( Source.Replace( destinationFileName, destinationBackupFileName ) );
+		public IFileInfo Replace( string destinationFileName, string destinationBackupFileName ) => fileSource( Source.Replace( destinationFileName, destinationBackupFileName ) );
 
-		public IFileInfo Replace( string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors ) => Create<IFileInfo>( Source.Replace( destinationFileName, destinationBackupFileName, ignoreMetadataErrors ) );
+		public IFileInfo Replace( string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors ) => fileSource( Source.Replace( destinationFileName, destinationBackupFileName, ignoreMetadataErrors ) );
 
 		public void SetAccessControl( FileSecurity fileSecurity ) => Source.SetAccessControl( fileSecurity );
 
-		public IDirectoryInfo Directory => Create<IDirectoryInfo>( Source.Directory );
+		public IDirectoryInfo Directory { get; }
 
 		public string DirectoryName => Source.DirectoryName;
 

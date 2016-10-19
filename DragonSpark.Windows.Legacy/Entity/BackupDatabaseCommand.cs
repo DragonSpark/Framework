@@ -4,25 +4,26 @@ using DragonSpark.Extensions;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
-using System.IO;
 using System.Linq;
+using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Windows.Legacy.Entity
 {
 	public sealed class BackupDatabaseCommand : CommandBase<object>
 	{
-		public static BackupDatabaseCommand Default { get; } = new BackupDatabaseCommand();
-		BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy ) {}
-
 		readonly Func<IFileInfo, bool> lockedSource;
 		readonly Func<string> pathSource;
 		readonly Func<string, bool> validSource;
+		readonly Func<IPath> path;
 
-		public BackupDatabaseCommand( Func<IFileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource )
+		public BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy, Path.Current.Get ) {}
+
+		public BackupDatabaseCommand( Func<IFileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource, Func<IPath> path )
 		{
 			this.lockedSource = lockedSource;
 			this.pathSource = pathSource;
 			this.validSource = validSource;
+			this.path = path;
 		}
 
 		[Service, PostSharp.Patterns.Contracts.NotNull, UsedImplicitly]
@@ -40,7 +41,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 				var destination = directory.CreateSubdirectory( pathSource() );
 				foreach ( var file in files )
 				{
-					file.CopyTo( Path.Combine( destination.FullName, file.Name ) );
+					file.CopyTo( path().Combine( destination.FullName, file.Name ) );
 				}
 			}
 

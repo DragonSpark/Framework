@@ -1,8 +1,11 @@
 ﻿using DragonSpark.Sources;
+using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
 using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Security.AccessControl;
+using File = DragonSpark.Windows.FileSystem.File;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
@@ -12,174 +15,179 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockFileInfo : FileInfoBase
 	{
-		readonly IFileSystem fileSystem;
-		string path;
-		readonly IFileElement fileElement;
-		readonly MockFile file;
-		readonly MockPath mockPath;
+		readonly IFileSystemRepository repository;
+		readonly IFile file;
+		readonly IPath path;
+		readonly IElementSource<IFileElement> element;
 
-		public MockFileInfo(IFileSystem fileSystem, string path)
+		public MockFileInfo( IFileSystemRepository repository, string filePath ) : this( repository, Windows.FileSystem.Path.Current.Get(), File.Current.Get(), filePath ) {}
+
+		[UsedImplicitly]
+		public MockFileInfo( IFileSystemRepository repository, IPath path, IFile file, string filePath ) : this( repository, path, file, new ElementSource<IFileElement>( repository, filePath ) ) {}
+
+		MockFileInfo( IFileSystemRepository repository, IPath path, IFile file, IElementSource<IFileElement> element )
 		{
-			this.fileSystem = fileSystem;
+			this.repository = repository;
 			this.path = path;
-			fileElement = fileSystem.GetFile( path );
-			if (fileElement == null) throw new FileNotFoundException("File not found", path);
-			mockPath = new MockPath(this.fileSystem);
-			file = new MockFile(this.fileSystem, mockPath );
+			this.file = file;
+			this.element = element;
 		}
 
-		public override void Delete() => fileSystem.RemoveFile(path);
+		IFileElement Element => element.Get();
 
-		public override void Refresh() {}
+		public override void Delete()
+		{
+			repository.RemoveFile( FullName );
+			Refresh();
+		}
+
+		public override void Refresh() => element.Assign( repository.GetFile( FullName ) );
 
 		public override FileAttributes Attributes
 		{
-			get { return fileElement.Attributes; }
-			set { fileElement.Attributes = value; }
+			get { return Element.Attributes; }
+			set { Element.Attributes = value; }
 		}
 
 		public override DateTime CreationTime
 		{
-			get { return fileElement.CreationTime.DateTime; }
-			set { fileElement.CreationTime = value; }
+			get { return Element.CreationTime.DateTime; }
+			set { Element.CreationTime = value; }
 		}
 
 		public override DateTime CreationTimeUtc
 		{
-			get { return fileElement.CreationTime.UtcDateTime; }
-			set { fileElement.CreationTime = value.ToLocalTime(); }
+			get { return Element.CreationTime.UtcDateTime; }
+			set { Element.CreationTime = value.ToLocalTime(); }
 		}
 
-		public override bool Exists => fileElement != null;
+		public override bool Exists => repository.GetElement( FullName ) is IFileElement;
 
-		// System.IO.Path.GetExtension does only string manipulation,
-		// so it's safe to delegate.
-		public override string Extension => Path.GetExtension(path);
+		public override string Extension => path.GetExtension( FullName );
 
-		public override string FullName => path;
+		public override string FullName => element.Path;
 
 		public override DateTime LastAccessTime
 		{
-			get { return fileElement.LastAccessTime.DateTime; }
-			set { fileElement.LastAccessTime = value; }
+			get { return Element.LastAccessTime.DateTime; }
+			set { Element.LastAccessTime = value; }
 		}
 
 		public override DateTime LastAccessTimeUtc
 		{
-			get { return fileElement.LastAccessTime.UtcDateTime; }
-			set { fileElement.LastAccessTime = value; }
+			get { return Element.LastAccessTime.UtcDateTime; }
+			set { Element.LastAccessTime = value; }
 		}
 
 		public override DateTime LastWriteTime
 		{
-			get { return fileElement.LastWriteTime.DateTime; }
-			set { fileElement.LastWriteTime = value; }
+			get { return Element.LastWriteTime.DateTime; }
+			set { Element.LastWriteTime = value; }
 		}
 
 		public override DateTime LastWriteTimeUtc
 		{
-			get { return fileElement.LastWriteTime.UtcDateTime; }
-			set { fileElement.LastWriteTime = value.ToLocalTime(); }
+			get { return Element.LastWriteTime.UtcDateTime; }
+			set { Element.LastWriteTime = value.ToLocalTime(); }
 		}
 
-		public override string Name => mockPath.GetFileName(path);
+		public override string Name => path.GetFileName( FullName );
 
-		public override StreamWriter AppendText() => new StreamWriter(new MockFileStream(fileSystem, FullName, true));
+		public override StreamWriter AppendText() => new StreamWriter( new MockFileStream( repository, FullName, true ) );
 
-		public override FileInfoBase CopyTo(string destFileName)
+		public override FileInfoBase CopyTo( string destFileName )
 		{
-			file.Copy(FullName, destFileName);
-			return fileSystem.FromFileName(destFileName);
+			file.Copy( FullName, destFileName );
+			return repository.FromFileName( destFileName );
 		}
 
-		public override FileInfoBase CopyTo(string destFileName, bool overwrite)
+		public override FileInfoBase CopyTo( string destFileName, bool overwrite )
 		{
-			file.Copy(FullName, destFileName, overwrite);
-			return fileSystem.FromFileName(destFileName);
+			file.Copy( FullName, destFileName, overwrite );
+			return repository.FromFileName( destFileName );
 		}
 
-		public override Stream Create() => file.Create(FullName);
+		public override Stream Create() => file.Create( FullName );
 
-		public override StreamWriter CreateText() => file.CreateText(FullName);
+		public override StreamWriter CreateText() => file.CreateText( FullName );
 
 		public override void Decrypt()
 		{
-			var contents = fileElement.ToArray();
-			for (var i = 0; i < contents.Length; i++)
-				contents[i] ^= (byte)(i % 256);
-			fileElement.Assign( contents );
+			var contents = Element.ToArray();
+			for ( var i = 0; i < contents.Length; i++ )
+				contents[i] ^= (byte)( i % 256 );
+			Element.Assign( contents );
 		}
 
 		public override void Encrypt()
 		{
-			var contents = fileElement.ToArray();
-			for(var i = 0; i < contents.Length; i++)
-				contents[i] ^= (byte) (i % 256);
-			fileElement.Assign( contents );
+			var contents = Element.ToArray();
+			for ( var i = 0; i < contents.Length; i++ )
+				contents[i] ^= (byte)( i % 256 );
+			Element.Assign( contents );
 		}
 
 		public override FileSecurity GetAccessControl()
 		{
-			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
+			throw new NotImplementedException( Properties.Resources.NOT_IMPLEMENTED_EXCEPTION );
 		}
 
-		public override FileSecurity GetAccessControl(AccessControlSections includeSections)
+		public override FileSecurity GetAccessControl( AccessControlSections includeSections )
 		{
-			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
+			throw new NotImplementedException( Properties.Resources.NOT_IMPLEMENTED_EXCEPTION );
 		}
 
-		public override void MoveTo(string destFileName)
+		public override void MoveTo( string destFileName )
 		{
-			var movedFileInfo = CopyTo(destFileName);
+			var movedFileInfo = CopyTo( destFileName );
 			Delete();
-			path = movedFileInfo.FullName;
+
+			element.Assign( repository.GetFile( movedFileInfo.FullName ) );
 		}
 
-		public override Stream Open(FileMode mode) => file.Open(FullName, mode);
+		public override Stream Open( FileMode mode ) => file.Open( FullName, mode );
 
-		public override Stream Open(FileMode mode, FileAccess access) => file.Open(FullName, mode, access);
+		public override Stream Open( FileMode mode, FileAccess access ) => file.Open( FullName, mode, access );
 
-		public override Stream Open(FileMode mode, FileAccess access, FileShare share) => file.Open(FullName, mode, access, share);
+		public override Stream Open( FileMode mode, FileAccess access, FileShare share ) => file.Open( FullName, mode, access, share );
 
-		public override Stream OpenRead() => new MockFileStream(fileSystem, path);
+		public override Stream OpenRead() => new MockFileStream( repository, FullName );
 
-		public override StreamReader OpenText() => new StreamReader(OpenRead());
+		public override StreamReader OpenText() => new StreamReader( OpenRead() );
 
-		public override Stream OpenWrite() => new MockFileStream(fileSystem, path);
+		public override Stream OpenWrite() => new MockFileStream( repository, FullName );
 
-		public override FileInfoBase Replace(string destinationFileName, string destinationBackupFileName)
+		public override FileInfoBase Replace( string destinationFileName, string destinationBackupFileName )
 		{
-			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
+			throw new NotImplementedException( Properties.Resources.NOT_IMPLEMENTED_EXCEPTION );
 		}
 
-		public override FileInfoBase Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
+		public override FileInfoBase Replace( string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors )
 		{
-			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
+			throw new NotImplementedException( Properties.Resources.NOT_IMPLEMENTED_EXCEPTION );
 		}
 
-		public override void SetAccessControl(FileSecurity fileSecurity)
+		public override void SetAccessControl( FileSecurity fileSecurity )
 		{
-			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
+			throw new NotImplementedException( Properties.Resources.NOT_IMPLEMENTED_EXCEPTION );
 		}
 
-		public override DirectoryInfoBase Directory => fileSystem.FromDirectoryName(DirectoryName);
+		public override DirectoryInfoBase Directory => repository.FromDirectoryName( DirectoryName );
 
-		// System.IO.Path.GetDirectoryName does only string manipulation,
-		// so it's safe to delegate.
-		public override string DirectoryName => Path.GetDirectoryName(path);
+		public override string DirectoryName => path.GetDirectoryName( FullName );
 
 		public override bool IsReadOnly
 		{
-			get { return ( fileElement.Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly; }
+			get { return ( Element.Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly; }
 			set
 			{
-				if(value)
-					fileElement.Attributes |= FileAttributes.ReadOnly;
+				if ( value )
+					Element.Attributes |= FileAttributes.ReadOnly;
 				else
-					fileElement.Attributes &= ~FileAttributes.ReadOnly;
+					Element.Attributes &= ~FileAttributes.ReadOnly;
 			}
 		}
 
-		public override long Length => fileElement.ToArray().LongLength;
+		public override long Length => Element.ToArray().LongLength;
 	}
 }

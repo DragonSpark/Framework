@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Sources;
+using DragonSpark.Windows.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,73 +19,71 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class MockFile : FileBase
 	{
-		readonly IFileSystem fileSystem;
-		readonly IPathingValidator validator;
-		readonly MockPath mockPath;
+		readonly IFileSystemRepository repository;
+		readonly IPath path;
+		readonly IDirectory directory;
 
-		public MockFile( IFileSystem fileSystem, MockPath mockPath ) : this( fileSystem, mockPath, PathingValidator.Default ) {}
-
-		public MockFile(IFileSystem fileSystem, MockPath mockPath, IPathingValidator validator)
+		public MockFile(IFileSystemRepository repository, IPath path, IDirectory directory )
 		{
-			this.fileSystem = fileSystem;
-			this.validator = validator;
-			this.mockPath = mockPath;
+			this.repository = repository;
+			this.path = path;
+			this.directory = directory;
 		}
 
-		public override void AppendAllLines(string path, IEnumerable<string> contents)
+		public override void AppendAllLines(string pathName, IEnumerable<string> contents)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-			AppendAllLines(path, contents, Defaults.DefaultEncoding);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			AppendAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
-		public override void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
+		public override void AppendAllLines(string pathName, IEnumerable<string> contents, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			AppendAllText(path, contents.Aggregate(string.Empty, (a, b) => $"{a}{b}{Environment.NewLine}" ), encoding);
+			AppendAllText(pathName, contents.Aggregate(string.Empty, (a, b) => $"{a}{b}{Environment.NewLine}" ), encoding);
 		}
 
-		public override void AppendAllText(string path, string contents)
+		public override void AppendAllText(string pathName, string contents)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			AppendAllText(path, contents, Defaults.DefaultEncoding);
+			AppendAllText(pathName, contents, Defaults.DefaultEncoding);
 		}
 
-		public override void AppendAllText(string path, string contents, Encoding encoding)
+		public override void AppendAllText(string pathName, string contents, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!fileSystem.FileExists(path))
+			if (!repository.FileExists(pathName))
 			{
-				var dir = fileSystem.Path.GetDirectoryName(path);
-				if (!fileSystem.Directory.Exists(dir))
+				var dir = path.GetDirectoryName(pathName);
+				if (!directory.Exists(dir))
 				{
-					throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, path));
+					throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
 				}
 
-				fileSystem.AddFile(path, FileElement.Create(contents, encoding));
+				repository.AddFile(FileElement.Create(pathName, contents, encoding));
 			}
 			else
 			{
-				var file = fileSystem.GetFile( path );
+				var file = repository.GetFile( pathName );
 				var bytesToAppend = encoding.GetBytes( contents );
 				file.Assign( file.Get().Concat( bytesToAppend ) );
 			}
 		}
 
-		public override StreamWriter AppendText(string path)
+		public override StreamWriter AppendText(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (fileSystem.FileExists(path))
+			if (repository.FileExists(pathName))
 			{
-				StreamWriter sw = new StreamWriter(OpenWrite(path));
+				StreamWriter sw = new StreamWriter(OpenWrite(pathName));
 				sw.BaseStream.Seek(0, SeekOrigin.End); //push the stream pointer at the end for append.
 				return sw;
 			}
 
-			return new StreamWriter(Create(path));
+			return new StreamWriter(Create(pathName));
 		}
 
 		public override void Copy(string sourceFileName, string destFileName)
@@ -94,26 +93,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Copy(string sourceFileName, string destFileName, bool overwrite)
 		{
-			if (sourceFileName == null)
-			{
-				throw new ArgumentNullException("sourceFileName", Properties.Resources.FILENAME_CANNOT_BE_NULL);
-			}
+			repository.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
+			repository.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
 
-			if (destFileName == null)
-			{
-				throw new ArgumentNullException("destFileName", Properties.Resources.FILENAME_CANNOT_BE_NULL);
-			}
-
-			validator.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
-			validator.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
-
-			var directoryNameOfDestination = mockPath.GetDirectoryName(destFileName);
-			if (!fileSystem.Directory.Exists(directoryNameOfDestination))
+			var directoryNameOfDestination = path.GetDirectoryName(destFileName);
+			if (!directory.Exists(directoryNameOfDestination))
 			{
 				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, destFileName));
 			}
 
-			var fileExists = fileSystem.FileExists(destFileName);
+			var fileExists = repository.FileExists(destFileName);
 			if (fileExists)
 			{
 				if (!overwrite)
@@ -121,74 +110,65 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file {0} already exists.", destFileName));
 				}
 
-				fileSystem.RemoveFile(destFileName);
+				repository.RemoveFile(destFileName);
 			}
 
-			var sourceFile = fileSystem.GetFile(sourceFileName);
-			fileSystem.AddFile(destFileName, sourceFile);
+			var sourceFile = repository.GetFile(sourceFileName);
+			repository.AddFile( new FileElement( destFileName, sourceFile.ToArray() ) );
 		}
 
-		public override Stream Create(string path)
+		public override Stream Create(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.AddFile(path, new FileElement(new byte[0]));
-			var stream = OpenWrite(path);
+			repository.AddFile( FileElement.Empty( pathName ) );
+			var stream = OpenWrite(pathName);
 			return stream;
 		}
 
-		public override Stream Create(string path, int bufferSize)
+		public override Stream Create(string pathName, int bufferSize)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override Stream Create(string path, int bufferSize, FileOptions options)
+		public override Stream Create(string pathName, int bufferSize, FileOptions options)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override Stream Create(string path, int bufferSize, FileOptions options, FileSecurity fileSecurity)
+		public override Stream Create(string pathName, int bufferSize, FileOptions options, FileSecurity fileSecurity)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override StreamWriter CreateText(string path)
+		public override StreamWriter CreateText(string pathName) => new StreamWriter(Create(pathName));
+
+		public override void Decrypt(string pathName)
 		{
-			return new StreamWriter(Create(path));
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			repository.FromFileName(pathName).Decrypt();
 		}
 
-		public override void Decrypt(string path)
+		public override void Delete(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-
-			new MockFileInfo(fileSystem, path).Decrypt();
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			repository.RemoveFile(pathName);
 		}
 
-		public override void Delete(string path)
+		public override void Encrypt(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-
-			fileSystem.RemoveFile(path);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			repository.FromFileName(pathName).Encrypt();
 		}
 
-		public override void Encrypt(string path)
-		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+		public override bool Exists(string pathName) => repository.FileExists(pathName) && !repository.AllDirectories.Any(d => d.Equals(pathName, StringComparison.OrdinalIgnoreCase));
 
-			new MockFileInfo(fileSystem, path).Encrypt();
-		}
-
-		public override bool Exists(string path)
-		{
-			return fileSystem.FileExists(path) && !fileSystem.AllDirectories.Any(d => d.Equals(path, StringComparison.OrdinalIgnoreCase));
-		}
-
-		public override FileSecurity GetAccessControl(string path)
+		public override FileSecurity GetAccessControl(string pathName)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override FileSecurity GetAccessControl(string path, AccessControlSections includeSections)
+		public override FileSecurity GetAccessControl(string pathName, AccessControlSections includeSections)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
@@ -196,28 +176,20 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <summary>
 		/// Gets the <see cref="FileAttributes"/> of the file on the path.
 		/// </summary>
-		/// <param name="path">The path to the file.</param>
+		/// <param name="pathName">The path to the file.</param>
 		/// <returns>The <see cref="FileAttributes"/> of the file on the path.</returns>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is empty, contains only white spaces, or contains invalid characters.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is empty, contains only white spaces, or contains invalid characters.</exception>
 		/// <exception cref="PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
-		/// <exception cref="FileNotFoundException"><paramref name="path"/> represents a file and is invalid, such as being on an unmapped drive, or the file cannot be found.</exception>
-		/// <exception cref="DirectoryNotFoundException"><paramref name="path"/> represents a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException"><paramref name="pathName"/> represents a file and is invalid, such as being on an unmapped drive, or the file cannot be found.</exception>
+		/// <exception cref="DirectoryNotFoundException"><paramref name="pathName"/> represents a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
 		/// <exception cref="IOException">This file is being used by another process.</exception>
 		/// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
-		public override FileAttributes GetAttributes(string path)
+		public override FileAttributes GetAttributes(string pathName)
 		{
-			if (path != null)
-			{
-				if (path.Length == 0)
-				{
-					throw new ArgumentException(Properties.Resources.THE_PATH_IS_NOT_OF_A_LEGAL_FORM, "path");
-				}
-			}
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-
-			var possibleFileData = fileSystem.GetElement(path);
+			var possibleFileData = repository.GetElement(pathName);
 			FileAttributes result;
 			if (possibleFileData != null)
 			{
@@ -225,7 +197,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 			else
 			{
-				var directoryInfo = fileSystem.FromDirectoryName(path);
+				var directoryInfo = repository.FromDirectoryName(pathName);
 				if (directoryInfo.Exists)
 				{
 					result = directoryInfo.Attributes;
@@ -236,124 +208,124 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					if (!parentDirectoryInfo.Exists)
 					{
 						throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture,
-							Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, path));
+							Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
 					}
 
-					throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Could not find file '{0}'.", path));
+					throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Could not find file '{0}'.", pathName));
 				}
 			}
 
 			return result;
 		}
 
-		public override DateTime GetCreationTime(string path)
+		public override DateTime GetCreationTime(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.CreationTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
+			return GetTimeFromFile(pathName, data => data.CreationTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
-		public override DateTime GetCreationTimeUtc(string path)
+		public override DateTime GetCreationTimeUtc(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.CreationTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
+			return GetTimeFromFile(pathName, data => data.CreationTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
-		public override DateTime GetLastAccessTime(string path)
+		public override DateTime GetLastAccessTime(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.LastAccessTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
+			return GetTimeFromFile(pathName, data => data.LastAccessTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
-		public override DateTime GetLastAccessTimeUtc(string path)
+		public override DateTime GetLastAccessTimeUtc(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.LastAccessTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
+			return GetTimeFromFile(pathName, data => data.LastAccessTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
-		public override DateTime GetLastWriteTime(string path) {
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+		public override DateTime GetLastWriteTime(string pathName) {
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.LastWriteTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
+			return GetTimeFromFile(pathName, data => data.LastWriteTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
-		public override DateTime GetLastWriteTimeUtc(string path)
+		public override DateTime GetLastWriteTimeUtc(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return GetTimeFromFile(path, data => data.LastWriteTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
+			return GetTimeFromFile(pathName, data => data.LastWriteTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
-		private DateTime GetTimeFromFile(string path, Func<IFileElement, DateTime> existingFileFunction, Func<DateTime> nonExistingFileFunction)
+		DateTime GetTimeFromFile(string pathName, Func<IFileElement, DateTime> existingFileFunction, Func<DateTime> nonExistingFileFunction)
 		{
-			var file = fileSystem.GetFile(path);
+			var file = repository.GetFile(pathName);
 			var result = file != null ? existingFileFunction(file) : nonExistingFileFunction();
 			return result;
 		}
 
 		public override void Move(string sourceFileName, string destFileName)
 		{
-			validator.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
-			validator.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
+			repository.IsLegalAbsoluteOrRelative(sourceFileName, nameof(sourceFileName));
+			repository.IsLegalAbsoluteOrRelative(destFileName, nameof(destFileName));
 
-			if (fileSystem.GetElement(destFileName) != null)
+			if (repository.GetElement(destFileName) != null)
 				throw new IOException("A file can not be created if it already exists.");
 
-			var sourceFile = fileSystem.GetFile(sourceFileName);
+			var sourceFile = repository.GetFile( sourceFileName );
 
-			if (sourceFile == null)
-				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "The file \"{0}\" could not be found.", sourceFileName), sourceFileName);
+			if ( sourceFile == null )
+				throw new FileNotFoundException( string.Format( CultureInfo.InvariantCulture, @"The file ""{0}"" could not be found.", sourceFileName ), sourceFileName );
 
-			var destDir = fileSystem.Directory.GetParent(destFileName);
-			if (!destDir.Exists)
+			var destDir = directory.GetParent( destFileName );
+			if ( !destDir.Exists )
 			{
-				throw new DirectoryNotFoundException("Could not find a part of the path.");
+				throw new DirectoryNotFoundException( "Could not find a part of the path." );
 			}
 
-			fileSystem.AddFile(destFileName, new FileElement(sourceFile.ToArray()));
-			fileSystem.RemoveFile(sourceFileName);
+			repository.AddFile( new FileElement( destFileName, sourceFile.ToArray() ) );
+			repository.RemoveFile( sourceFileName );
 		}
 
-		public override Stream Open(string path, FileMode mode)
+		public override Stream Open(string pathName, FileMode mode)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return Open(path, mode, (mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite), FileShare.None);
+			return Open(pathName, mode, (mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite), FileShare.None);
 		}
 
-		public override Stream Open(string path, FileMode mode, FileAccess access)
+		public override Stream Open(string pathName, FileMode mode, FileAccess access)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return Open(path, mode, access, FileShare.None);
+			return Open(pathName, mode, access, FileShare.None);
 		}
 
-		public override Stream Open(string path, FileMode mode, FileAccess access, FileShare share)
+		public override Stream Open(string pathName, FileMode mode, FileAccess access, FileShare share)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			bool exists = fileSystem.FileExists(path);
+			bool exists = repository.FileExists(pathName);
 
 			if (mode == FileMode.CreateNew && exists)
-				throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file '{0}' already exists.", path));
+				throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file '{0}' already exists.", pathName));
 
 			if ((mode == FileMode.Open || mode == FileMode.Truncate) && !exists)
-				throw new FileNotFoundException(path);
+				throw new FileNotFoundException(pathName);
 
 			if (!exists || mode == FileMode.CreateNew)
-				return Create(path);
+				return Create(pathName);
 
 			if (mode == FileMode.Create || mode == FileMode.Truncate)
 			{
-				Delete(path);
-				return Create(path);
+				Delete(pathName);
+				return Create(pathName);
 			}
 
-			var length = fileSystem.GetFile(path).Get().Length;
-			var stream = OpenWrite(path);
+			var length = repository.GetFile(pathName).Get().Length;
+			var stream = OpenWrite(pathName);
 
 			if (mode == FileMode.Append)
 				stream.Seek(length, SeekOrigin.Begin);
@@ -361,99 +333,98 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return stream;
 		}
 
-		public override Stream OpenRead(string path)
+		public override Stream OpenRead(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+			return Open(pathName, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
 
-		public override StreamReader OpenText(string path)
+		public override StreamReader OpenText(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return new StreamReader(
-				OpenRead(path));
+			return new StreamReader(OpenRead(pathName));
 		}
 
-		public override Stream OpenWrite(string path)
+		public override Stream OpenWrite(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return new MockFileStream(fileSystem, path);
+			return new MockFileStream(repository, pathName);
 		}
 
-		public override byte[] ReadAllBytes(string path)
+		public override byte[] ReadAllBytes(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return fileSystem.GetFile(path).ToArray();
+			return repository.GetFile(pathName).ToArray();
 		}
 
-		public override string[] ReadAllLines(string path)
+		public override string[] ReadAllLines(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!fileSystem.FileExists(path))
+			if (!repository.FileExists(pathName))
 			{
-				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
+				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
 
-			return fileSystem.GetFile(path).AsText().SplitLines();
+			return repository.GetFile(pathName).AsText().SplitLines();
 		}
 
-		public override string[] ReadAllLines(string path, Encoding encoding)
+		public override string[] ReadAllLines(string pathName, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			if (encoding == null)
 			{
-				throw new ArgumentNullException("encoding");
+				throw new ArgumentNullException(nameof( encoding ));
 			}
 
-			if (!fileSystem.FileExists(path))
+			if (!repository.FileExists(pathName))
 			{
-				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
+				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
 
-			return encoding.GetString(fileSystem.GetFile(path).ToArray()).SplitLines();
+			return encoding.GetString(repository.GetFile(pathName).ToArray()).SplitLines();
 		}
 
-		public override string ReadAllText(string path)
+		public override string ReadAllText(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!fileSystem.FileExists(path))
+			if (!repository.FileExists(pathName))
 			{
-				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", path));
+				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
 
-			return ReadAllText(path, Defaults.DefaultEncoding);
+			return ReadAllText(pathName, Defaults.DefaultEncoding);
 		}
 
-		public override string ReadAllText(string path, Encoding encoding)
+		public override string ReadAllText(string pathName, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			if (encoding == null)
 			{
-				throw new ArgumentNullException("encoding");
+				throw new ArgumentNullException(nameof( encoding ));
 			}
 
-			return ReadAllTextInternal(path, encoding);
+			return ReadAllTextInternal(pathName, encoding);
 		}
 
-		public override IEnumerable<string> ReadLines(string path)
+		public override IEnumerable<string> ReadLines(string pathName)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return ReadAllLines(path);
+			return ReadAllLines(pathName);
 		}
 
-		public override IEnumerable<string> ReadLines(string path, Encoding encoding)
+		public override IEnumerable<string> ReadLines(string pathName, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-			return ReadAllLines(path, encoding);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			return ReadAllLines(pathName, encoding);
 		}
 
 		public override void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName)
@@ -466,68 +437,68 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override void SetAccessControl(string path, FileSecurity fileSecurity)
+		public override void SetAccessControl(string pathName, FileSecurity fileSecurity)
 		{
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override void SetAttributes(string path, FileAttributes fileAttributes)
+		public override void SetAttributes(string pathName, FileAttributes fileAttributes)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).Attributes = fileAttributes;
+			repository.GetElement(pathName).Attributes = fileAttributes;
 		}
 
-		public override void SetCreationTime(string path, DateTime creationTime)
+		public override void SetCreationTime(string pathName, DateTime creationTime)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).CreationTime = new DateTimeOffset(creationTime);
+			repository.GetElement(pathName).CreationTime = new DateTimeOffset(creationTime);
 		}
 
-		public override void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
+		public override void SetCreationTimeUtc(string pathName, DateTime creationTimeUtc)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
+			repository.GetElement(pathName).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
 		}
 
-		public override void SetLastAccessTime(string path, DateTime lastAccessTime)
+		public override void SetLastAccessTime(string pathName, DateTime lastAccessTime)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTime);
+			repository.GetElement(pathName).LastAccessTime = new DateTimeOffset(lastAccessTime);
 		}
 
-		public override void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
+		public override void SetLastAccessTimeUtc(string pathName, DateTime lastAccessTimeUtc)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
+			repository.GetElement(pathName).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
 		}
 
-		public override void SetLastWriteTime(string path, DateTime lastWriteTime)
+		public override void SetLastWriteTime(string pathName, DateTime lastWriteTime)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTime);
+			repository.GetElement(pathName).LastWriteTime = new DateTimeOffset(lastWriteTime);
 		}
 
-		public override void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
+		public override void SetLastWriteTimeUtc(string pathName, DateTime lastWriteTimeUtc)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			fileSystem.GetElement(path).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
+			repository.GetElement(pathName).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
 		}
 
 		/// <summary>
 		/// Creates a new file, writes the specified byte array to the file, and then closes the file.
 		/// If the target file already exists, it is overwritten.
 		/// </summary>
-		/// <param name="path">The file to write to.</param>
+		/// <param name="pathName">The file to write to.</param>
 		/// <param name="bytes">The bytes to write to the file. </param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/> or contents is empty.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="pathName"/> is <see langword="null"/> or contents is empty.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
@@ -543,36 +514,36 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <remarks>
 		/// Given a byte array and a file path, this method opens the specified file, writes the contents of the byte array to the file, and then closes the file.
 		/// </remarks>
-		public override void WriteAllBytes(string path, byte[] bytes) => fileSystem.AddFile(path, new FileElement(bytes));
+		public override void WriteAllBytes(string pathName, byte[] bytes) => repository.AddFile(new FileElement(pathName, bytes));
 
 		/// <summary>
 		/// Creates a new file, writes a collection of strings to the file, and then closes the file.
 		/// </summary>
-		/// <param name="path">The file to write to.</param>
+		/// <param name="pathName">The file to write to.</param>
 		/// <param name="contents">The lines to write to the file.</param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException">Either <paramref name="path"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException">Either <paramref name="pathName"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
 		/// <exception cref="DirectoryNotFoundException">The specified path is invalid (for example, it is on an unmapped drive).</exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
 		/// <exception cref="IOException">An I/O error occurred while opening the file.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
 		/// </exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <exception cref="UnauthorizedAccessException">
-		/// <paramref name="path"/> specified a file that is read-only.
+		/// <paramref name="pathName"/> specified a file that is read-only.
 		/// -or-
 		/// This operation is not supported on the current platform.
 		/// -or-
-		/// <paramref name="path"/> specified a directory.
+		/// <paramref name="pathName"/> specified a directory.
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
@@ -584,35 +555,35 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		///     You can use this method to create the contents for a collection class that takes an <see cref="IEnumerable{T}"/> in its constructor, such as a <see cref="List{T}"/>, <see cref="HashSet{T}"/>, or a <see cref="SortedSet{T}"/> class.
 		/// </para>
 		/// </remarks>
-		public override void WriteAllLines(string path, IEnumerable<string> contents)
+		public override void WriteAllLines(string pathName, IEnumerable<string> contents)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-			WriteAllLines(path, contents, Defaults.DefaultEncoding);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			WriteAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
 		/// <summary>
 		/// Creates a new file by using the specified encoding, writes a collection of strings to the file, and then closes the file.
 		/// </summary>
-		/// <param name="path">The file to write to.</param>
+		/// <param name="pathName">The file to write to.</param>
 		/// <param name="contents">The lines to write to the file.</param>
 		/// <param name="encoding">The character encoding to use.</param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException">Either <paramref name="path"/>, <paramref name="contents"/>, or <paramref name="encoding"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException">Either <paramref name="pathName"/>, <paramref name="contents"/>, or <paramref name="encoding"/> is <see langword="null"/>.</exception>
 		/// <exception cref="DirectoryNotFoundException">The specified path is invalid (for example, it is on an unmapped drive).</exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
 		/// <exception cref="IOException">An I/O error occurred while opening the file.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
 		/// </exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <exception cref="UnauthorizedAccessException">
-		/// <paramref name="path"/> specified a file that is read-only.
+		/// <paramref name="pathName"/> specified a file that is read-only.
 		/// -or-
 		/// This operation is not supported on the current platform.
 		/// -or-
-		/// <paramref name="path"/> specified a directory.
+		/// <paramref name="pathName"/> specified a directory.
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
@@ -632,25 +603,25 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </list>
 		/// </para>
 		/// </remarks>
-		public override void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
+		public override void WriteAllLines(string pathName, IEnumerable<string> contents, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			var sb = new StringBuilder();
 			foreach (var line in contents)
 			{
 				sb.AppendLine(line);
 			}
 
-			WriteAllText(path, sb.ToString(), encoding);
+			WriteAllText(pathName, sb.ToString(), encoding);
 		}
 
 		/// <summary>
 		/// Creates a new file, writes the specified string array to the file by using the specified encoding, and then closes the file.
 		/// </summary>
-		/// <param name="path">The file to write to.</param>
+		/// <param name="pathName">The file to write to.</param>
 		/// <param name="contents">The string array to write to the file.</param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException">Either <paramref name="path"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException">Either <paramref name="pathName"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
@@ -658,16 +629,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <exception cref="DirectoryNotFoundException">The specified path is invalid (for example, it is on an unmapped drive).</exception>
 		/// <exception cref="IOException">An I/O error occurred while opening the file.</exception>
 		/// <exception cref="UnauthorizedAccessException">
-		/// <paramref name="path"/> specified a file that is read-only.
+		/// <paramref name="pathName"/> specified a file that is read-only.
 		/// -or-
 		/// This operation is not supported on the current platform.
 		/// -or-
-		/// <paramref name="path"/> specified a directory.
+		/// <paramref name="pathName"/> specified a directory.
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <remarks>
 		/// <para>
@@ -681,20 +652,20 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		///     and then closes the file.
 		/// </para>
 		/// </remarks>
-		public override void WriteAllLines(string path, string[] contents)
+		public override void WriteAllLines(string pathName, string[] contents)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-			WriteAllLines(path, contents, Defaults.DefaultEncoding);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			WriteAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
 		/// <summary>
 		/// Creates a new file, writes the specified string array to the file by using the specified encoding, and then closes the file.
 		/// </summary>
-		/// <param name="path">The file to write to.</param>
+		/// <param name="pathName">The file to write to.</param>
 		/// <param name="contents">The string array to write to the file.</param>
 		/// <param name="encoding">An <see cref="Encoding"/> object that represents the character encoding applied to the string array.</param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException">Either <paramref name="path"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException">Either <paramref name="pathName"/> or <paramref name="contents"/> is <see langword="null"/>.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
@@ -702,16 +673,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <exception cref="DirectoryNotFoundException">The specified path is invalid (for example, it is on an unmapped drive).</exception>
 		/// <exception cref="IOException">An I/O error occurred while opening the file.</exception>
 		/// <exception cref="UnauthorizedAccessException">
-		/// <paramref name="path"/> specified a file that is read-only.
+		/// <paramref name="pathName"/> specified a file that is read-only.
 		/// -or-
 		/// This operation is not supported on the current platform.
 		/// -or-
-		/// <paramref name="path"/> specified a directory.
+		/// <paramref name="pathName"/> specified a directory.
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <remarks>
 		/// <para>
@@ -722,19 +693,19 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		///     and then closes the file.
 		/// </para>
 		/// </remarks>
-		public override void WriteAllLines(string path, string[] contents, Encoding encoding)
+		public override void WriteAllLines(string pathName, string[] contents, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
-			WriteAllLines(path, new List<string>(contents), encoding);
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			WriteAllLines(pathName, new List<string>(contents), encoding);
 		}
 
 		/// <summary>
 		/// Creates a new file, writes the specified string to the file using the specified encoding, and then closes the file. If the target file already exists, it is overwritten.
 		/// </summary>
-		/// <param name="path">The file to write to. </param>
+		/// <param name="pathName">The file to write to. </param>
 		/// <param name="contents">The string to write to the file. </param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/> or contents is empty.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="pathName"/> is <see langword="null"/> or contents is empty.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
@@ -750,8 +721,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <remarks>
 		/// This method uses UTF-8 encoding without a Byte-Order Mark (BOM), so using the <see cref="M:Encoding.GetPreamble"/> method will return an empty byte array.
@@ -760,21 +731,21 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// Given a string and a file path, this method opens the specified file, writes the string to the file, and then closes the file.
 		/// </para>
 		/// </remarks>
-		public override void WriteAllText(string path, string contents)
+		public override void WriteAllText(string pathName, string contents)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			WriteAllText(path, contents, Defaults.DefaultEncoding);
+			WriteAllText(pathName, contents, Defaults.DefaultEncoding);
 		}
 
 		/// <summary>
 		/// Creates a new file, writes the specified string to the file using the specified encoding, and then closes the file. If the target file already exists, it is overwritten.
 		/// </summary>
-		/// <param name="path">The file to write to. </param>
+		/// <param name="pathName">The file to write to. </param>
 		/// <param name="contents">The string to write to the file. </param>
 		/// <param name="encoding">The encoding to apply to the string.</param>
-		/// <exception cref="ArgumentException"><paramref name="path"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="Path.GetInvalidPathChars"/>.</exception>
-		/// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/> or contents is empty.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pathName"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="System.IO.Path.GetInvalidPathChars"/>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="pathName"/> is <see langword="null"/> or contents is empty.</exception>
 		/// <exception cref="PathTooLongException">
 		/// The specified path, file name, or both exceed the system-defined maximum length.
 		/// For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.
@@ -790,24 +761,24 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// -or-
 		/// The caller does not have the required permission.
 		/// </exception>
-		/// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> was not found.</exception>
-		/// <exception cref="NotSupportedException"><paramref name="path"/> is in an invalid format.</exception>
+		/// <exception cref="FileNotFoundException">The file specified in <paramref name="pathName"/> was not found.</exception>
+		/// <exception cref="NotSupportedException"><paramref name="pathName"/> is in an invalid format.</exception>
 		/// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
 		/// <remarks>
 		/// Given a string and a file path, this method opens the specified file, writes the string to the file using the specified encoding, and then closes the file.
 		/// The file handle is guaranteed to be closed by this method, even if exceptions are raised.
 		/// </remarks>
-		public override void WriteAllText(string path, string contents, Encoding encoding)
+		public override void WriteAllText(string pathName, string contents, Encoding encoding)
 		{
-			validator.IsLegalAbsoluteOrRelative(path, "path");
+			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			
-			if (fileSystem.Directory.Exists(path))
+			if (directory.Exists(pathName))
 			{
-				throw new UnauthorizedAccessException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, path));
+				throw new UnauthorizedAccessException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, pathName));
 			}
 
-			var data = contents == null ? FileElement.Empty() : FileElement.Create(contents, encoding);
-			fileSystem.AddFile(path, data);
+			var data = contents == null ? FileElement.Empty( pathName ) : FileElement.Create( pathName, contents, encoding );
+			repository.AddFile( data );
 		}
 
 		internal static string ReadAllBytes(byte[] contents, Encoding encoding)
@@ -819,10 +790,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 		}
 
-		private string ReadAllTextInternal(string path, Encoding encoding)
-		{
-			var mockFileData = fileSystem.GetFile(path);
-			return ReadAllBytes(mockFileData.ToArray(), encoding);
-		}
+		private string ReadAllTextInternal(string pathName, Encoding encoding) => ReadAllBytes(repository.GetFile(pathName).ToArray(), encoding);
 	}
 }
