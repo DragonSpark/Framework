@@ -61,7 +61,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			set { Element.CreationTime = value.ToLocalTime(); }
 		}
 
-		public override bool Exists => repository.GetElement( FullName ) is IFileElement;
+		public override bool Exists => repository.Get( FullName ) is IFileElement;
 
 		public override string Extension => path.GetExtension( FullName );
 

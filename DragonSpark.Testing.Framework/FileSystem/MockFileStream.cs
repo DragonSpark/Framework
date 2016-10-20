@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.repository = repository;
 			this.path = path;
 
-			if (repository.FileExists(path))
+			if (repository.Contains(path))
 			{
 				/* only way to make an expandable MemoryStream that starts with a particular content */
 				var data = repository.GetFile(path).Get();
@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 			else
 			{
-				repository.AddFile( FileElement.Empty( path ) );
+				repository.Add( FileElement.Empty( path ) );
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		private void InternalFlush()
 		{
-			if (repository.FileExists(path))
+			if (repository.Contains(path))
 			{
 				var mockFileData = repository.GetFile(path);
 				/* reset back to the beginning .. */

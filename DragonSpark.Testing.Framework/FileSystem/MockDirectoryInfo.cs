@@ -1,8 +1,8 @@
-﻿using DragonSpark.Windows.FileSystem;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
@@ -43,7 +43,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <param name="directory"></param>
 		/// <param name="directoryPath">The directory path.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="repository"/> or <paramref name="directoryPath"/> is <see langref="null"/>.</exception>
-		public MockDirectoryInfo( IFileSystemRepository repository, IPath path, IDirectory directory, string directoryPath ) : this( repository, path, directory, CreateElement( repository, path, directoryPath ) )  {}
+		public MockDirectoryInfo( IFileSystemRepository repository, IPath path, IDirectory directory, string directoryPath ) : this( repository, path, directory, new ElementSource<IDirectoryElement>( repository, path.Normalize( directoryPath ) ) )  {}
 
 		MockDirectoryInfo( IFileSystemRepository repository, IPath path, IDirectory directory, IElementSource<IDirectoryElement> element )
 		{
@@ -56,19 +56,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			parent = directory.GetParent( FullName ).FullName;
 		}
 
-		static IElementSource<IDirectoryElement> CreateElement( IFileSystemRepository repository, IPath path, string directoryPath )
-		{
-			if ( !directoryPath.EndsWith( path.DirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ), StringComparison.OrdinalIgnoreCase ) )
-			{
-				directoryPath += path.DirectorySeparatorChar;
-			}
-
-			var name = string.Equals( directoryPath, path.GetPathRoot( directoryPath ), StringComparison.OrdinalIgnoreCase ) ? directoryPath : directoryPath.TrimEnd( '\\' ).TrimEnd( '/' );
-
-			var result = new ElementSource<IDirectoryElement>( repository, name );
-			return result;
-		}
-			
+		
 		IDirectoryElement Element => element.Get();
 
 		public override DirectoryInfoBase Root => Get( root );
@@ -76,7 +64,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Delete() => directory.Delete( FullName );
 
-		public override void Refresh() => element.Assign( repository.GetDirectory( FullName ) );
+		public override void Refresh() => repository.Get( FullName ).As<IDirectoryElement>( element.Assign );
 
 		public override bool Exists => directory.Exists( FullName );
 
@@ -191,7 +179,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		FileInfoBase[] ConvertStringsToFiles( IEnumerable<string> paths ) => paths.Select( repository.FromFileName ).ToArray();
 
-		public override FileSystemInfoBase[] GetFileSystemInfos() => GetFileSystemInfos( "*" );
+		public override FileSystemInfoBase[] GetFileSystemInfos() => GetFileSystemInfos( Defaults.AllPattern );
 
 		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern ) => GetFileSystemInfos( searchPattern, SearchOption.TopDirectoryOnly );
 

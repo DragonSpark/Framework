@@ -23,6 +23,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly IPath path;
 		readonly IDirectory directory;
 
+		public MockFile() : this( FileSystemRepository.Current.Get(), Windows.FileSystem.Path.Current.Get(), Windows.FileSystem.Directory.Current.Get() ) {}
+
 		public MockFile(IFileSystemRepository repository, IPath path, IDirectory directory )
 		{
 			this.repository = repository;
@@ -32,29 +34,29 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void AppendAllLines(string pathName, IEnumerable<string> contents)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			AppendAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
 		public override void AppendAllLines(string pathName, IEnumerable<string> contents, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			AppendAllText(pathName, contents.Aggregate(string.Empty, (a, b) => $"{a}{b}{Environment.NewLine}" ), encoding);
 		}
 
 		public override void AppendAllText(string pathName, string contents)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			AppendAllText(pathName, contents, Defaults.DefaultEncoding);
 		}
 
 		public override void AppendAllText(string pathName, string contents, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!repository.FileExists(pathName))
+			if (!repository.Contains(pathName))
 			{
 				var dir = path.GetDirectoryName(pathName);
 				if (!directory.Exists(dir))
@@ -62,7 +64,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
 				}
 
-				repository.AddFile(FileElement.Create(pathName, contents, encoding));
+				repository.Add(FileElement.Create(pathName, contents, encoding));
 			}
 			else
 			{
@@ -74,9 +76,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override StreamWriter AppendText(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (repository.FileExists(pathName))
+			if (repository.Contains(pathName))
 			{
 				StreamWriter sw = new StreamWriter(OpenWrite(pathName));
 				sw.BaseStream.Seek(0, SeekOrigin.End); //push the stream pointer at the end for append.
@@ -93,8 +95,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Copy(string sourceFileName, string destFileName, bool overwrite)
 		{
-			repository.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
-			repository.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
+			path.IsLegalAbsoluteOrRelative(sourceFileName, "sourceFileName");
+			path.IsLegalAbsoluteOrRelative(destFileName, "destFileName");
 
 			var directoryNameOfDestination = path.GetDirectoryName(destFileName);
 			if (!directory.Exists(directoryNameOfDestination))
@@ -102,7 +104,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, destFileName));
 			}
 
-			var fileExists = repository.FileExists(destFileName);
+			var fileExists = repository.Contains(destFileName);
 			if (fileExists)
 			{
 				if (!overwrite)
@@ -114,14 +116,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 
 			var sourceFile = repository.GetFile(sourceFileName);
-			repository.AddFile( new FileElement( destFileName, sourceFile.ToArray() ) );
+			repository.Add( new FileElement( destFileName, sourceFile.ToArray() ) );
 		}
 
 		public override Stream Create(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.AddFile( FileElement.Empty( pathName ) );
+			repository.Add( FileElement.Empty( pathName ) );
 			var stream = OpenWrite(pathName);
 			return stream;
 		}
@@ -145,23 +147,23 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Decrypt(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			repository.FromFileName(pathName).Decrypt();
 		}
 
 		public override void Delete(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			repository.RemoveFile(pathName);
 		}
 
 		public override void Encrypt(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			repository.FromFileName(pathName).Encrypt();
 		}
 
-		public override bool Exists(string pathName) => repository.FileExists(pathName) && !repository.AllDirectories.Any(d => d.Equals(pathName, StringComparison.OrdinalIgnoreCase));
+		public override bool Exists(string pathName) => repository.Contains(pathName) && !repository.AllDirectories.Any(d => d.Equals(pathName, StringComparison.OrdinalIgnoreCase));
 
 		public override FileSecurity GetAccessControl(string pathName)
 		{
@@ -187,9 +189,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
 		public override FileAttributes GetAttributes(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			var possibleFileData = repository.GetElement(pathName);
+			var possibleFileData = repository.Get(pathName);
 			FileAttributes result;
 			if (possibleFileData != null)
 			{
@@ -220,41 +222,41 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DateTime GetCreationTime(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.CreationTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetCreationTimeUtc(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.CreationTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
 		public override DateTime GetLastAccessTime(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.LastAccessTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetLastAccessTimeUtc(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.LastAccessTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
 
 		public override DateTime GetLastWriteTime(string pathName) {
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.LastWriteTime.LocalDateTime, () => Defaults.DefaultDateTimeOffset.LocalDateTime);
 		}
 
 		public override DateTime GetLastWriteTimeUtc(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return GetTimeFromFile(pathName, data => data.LastWriteTime.UtcDateTime, () => Defaults.DefaultDateTimeOffset.UtcDateTime);
 		}
@@ -268,10 +270,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Move(string sourceFileName, string destFileName)
 		{
-			repository.IsLegalAbsoluteOrRelative(sourceFileName, nameof(sourceFileName));
-			repository.IsLegalAbsoluteOrRelative(destFileName, nameof(destFileName));
+			path.IsLegalAbsoluteOrRelative(sourceFileName, nameof(sourceFileName));
+			path.IsLegalAbsoluteOrRelative(destFileName, nameof(destFileName));
 
-			if (repository.GetElement(destFileName) != null)
+			if (repository.Get(destFileName) != null)
 				throw new IOException("A file can not be created if it already exists.");
 
 			var sourceFile = repository.GetFile( sourceFileName );
@@ -285,29 +287,29 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new DirectoryNotFoundException( "Could not find a part of the path." );
 			}
 
-			repository.AddFile( new FileElement( destFileName, sourceFile.ToArray() ) );
+			repository.Add( new FileElement( destFileName, sourceFile.ToArray() ) );
 			repository.RemoveFile( sourceFileName );
 		}
 
 		public override Stream Open(string pathName, FileMode mode)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return Open(pathName, mode, (mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite), FileShare.None);
 		}
 
 		public override Stream Open(string pathName, FileMode mode, FileAccess access)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return Open(pathName, mode, access, FileShare.None);
 		}
 
 		public override Stream Open(string pathName, FileMode mode, FileAccess access, FileShare share)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			bool exists = repository.FileExists(pathName);
+			bool exists = repository.Contains(pathName);
 
 			if (mode == FileMode.CreateNew && exists)
 				throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file '{0}' already exists.", pathName));
@@ -335,37 +337,37 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override Stream OpenRead(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return Open(pathName, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
 
 		public override StreamReader OpenText(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return new StreamReader(OpenRead(pathName));
 		}
 
 		public override Stream OpenWrite(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return new MockFileStream(repository, pathName);
 		}
 
 		public override byte[] ReadAllBytes(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return repository.GetFile(pathName).ToArray();
 		}
 
 		public override string[] ReadAllLines(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!repository.FileExists(pathName))
+			if (!repository.Contains(pathName))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
@@ -375,14 +377,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string[] ReadAllLines(string pathName, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			if (encoding == null)
 			{
 				throw new ArgumentNullException(nameof( encoding ));
 			}
 
-			if (!repository.FileExists(pathName))
+			if (!repository.Contains(pathName))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
@@ -392,9 +394,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string ReadAllText(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			if (!repository.FileExists(pathName))
+			if (!repository.Contains(pathName))
 			{
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
@@ -404,7 +406,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string ReadAllText(string pathName, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			if (encoding == null)
 			{
@@ -416,14 +418,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override IEnumerable<string> ReadLines(string pathName)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			return ReadAllLines(pathName);
 		}
 
 		public override IEnumerable<string> ReadLines(string pathName, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			return ReadAllLines(pathName, encoding);
 		}
 
@@ -444,51 +446,51 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void SetAttributes(string pathName, FileAttributes fileAttributes)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).Attributes = fileAttributes;
+			repository.Get(pathName).Attributes = fileAttributes;
 		}
 
 		public override void SetCreationTime(string pathName, DateTime creationTime)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).CreationTime = new DateTimeOffset(creationTime);
+			repository.Get(pathName).CreationTime = new DateTimeOffset(creationTime);
 		}
 
 		public override void SetCreationTimeUtc(string pathName, DateTime creationTimeUtc)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
+			repository.Get(pathName).CreationTime = new DateTimeOffset(creationTimeUtc, TimeSpan.Zero);
 		}
 
 		public override void SetLastAccessTime(string pathName, DateTime lastAccessTime)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).LastAccessTime = new DateTimeOffset(lastAccessTime);
+			repository.Get(pathName).LastAccessTime = new DateTimeOffset(lastAccessTime);
 		}
 
 		public override void SetLastAccessTimeUtc(string pathName, DateTime lastAccessTimeUtc)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
+			repository.Get(pathName).LastAccessTime = new DateTimeOffset(lastAccessTimeUtc, TimeSpan.Zero);
 		}
 
 		public override void SetLastWriteTime(string pathName, DateTime lastWriteTime)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).LastWriteTime = new DateTimeOffset(lastWriteTime);
+			repository.Get(pathName).LastWriteTime = new DateTimeOffset(lastWriteTime);
 		}
 
 		public override void SetLastWriteTimeUtc(string pathName, DateTime lastWriteTimeUtc)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.GetElement(pathName).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
+			repository.Get(pathName).LastWriteTime = new DateTimeOffset(lastWriteTimeUtc, TimeSpan.Zero);
 		}
 
 		/// <summary>
@@ -520,7 +522,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <remarks>
 		/// Given a byte array and a file path, this method opens the specified file, writes the contents of the byte array to the file, and then closes the file.
 		/// </remarks>
-		public override void WriteAllBytes(string pathName, byte[] bytes) => repository.AddFile(new FileElement(pathName, bytes));
+		public override void WriteAllBytes(string pathName, byte[] bytes) => repository.Add(new FileElement(pathName, bytes));
 
 		/// <summary>
 		/// Creates a new file, writes a collection of strings to the file, and then closes the file.
@@ -557,7 +559,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string pathName, IEnumerable<string> contents)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			WriteAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
@@ -605,7 +607,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string pathName, IEnumerable<string> contents, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			var sb = new StringBuilder();
 			foreach (var line in contents)
 			{
@@ -654,7 +656,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string pathName, string[] contents)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			WriteAllLines(pathName, contents, Defaults.DefaultEncoding);
 		}
 
@@ -695,7 +697,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllLines(string pathName, string[] contents, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			WriteAllLines(pathName, new List<string>(contents), encoding);
 		}
 
@@ -733,7 +735,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllText(string pathName, string contents)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
 			WriteAllText(pathName, contents, Defaults.DefaultEncoding);
 		}
@@ -770,7 +772,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </remarks>
 		public override void WriteAllText(string pathName, string contents, Encoding encoding)
 		{
-			repository.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 			
 			if (directory.Exists(pathName))
 			{
@@ -778,7 +780,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 
 			var data = contents == null ? FileElement.Empty( pathName ) : FileElement.Create( pathName, contents, encoding );
-			repository.AddFile( data );
+			repository.Add( data );
 		}
 
 		internal static string ReadAllBytes(byte[] contents, Encoding encoding)

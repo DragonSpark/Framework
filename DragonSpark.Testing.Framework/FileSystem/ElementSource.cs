@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		T Locate()
 		{
-			var element = repository.GetElement( filePath );
+			var element = repository.Get( filePath );
 			if ( element == null )
 			{
 				throw new FileNotFoundException( "Element not found at specified path.", filePath );

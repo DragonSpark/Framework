@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public static class Defaults
 	{
+		public const string AllPattern = "*";
+
+		public static bool IsUnix { get; } = new[] { 4, 5, 128 }.Contains( (int)Environment.OSVersion.Platform );
+
 		/// <summary>
 		/// The default encoding.
 		/// </summary>

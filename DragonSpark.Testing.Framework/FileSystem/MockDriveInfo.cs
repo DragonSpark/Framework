@@ -21,21 +21,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public MockDriveInfo( IFileSystemRepository repository, IPath path, string name )
 		{
 			const string driveSeparator = @":\";
-			if (name.Length == 1)
+			if (name.Length == 1 || name.Length == 2 && name[1] == ':' || name.Length == 3 && name.EndsWith(driveSeparator, StringComparison.Ordinal ) )
 			{
-				name = char.ToUpperInvariant(name[0]) + driveSeparator;
-			}
-			else if (name.Length == 2 && name[1] == ':')
-			{
-				name = char.ToUpperInvariant(name[0]) + driveSeparator;
-			}
-			else if (name.Length == 3 && name.EndsWith(driveSeparator, StringComparison.Ordinal))
-			{
-				name = char.ToUpperInvariant(name[0]) + driveSeparator;
+				name = $"{name[0].ToString().ToUpperInvariant()}{driveSeparator}";
 			}
 			else
 			{
-				MockPath.CheckInvalidPathChars(name);
+				if (!path.IsValidPath(name))
+				{
+					throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
+				}
 				name = path.GetPathRoot(name);
 
 				if (string.IsNullOrEmpty(name) || name.StartsWith(@"\\", StringComparison.Ordinal))

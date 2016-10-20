@@ -1,13 +1,61 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Sources;
+using DragonSpark.Windows.FileSystem;
+using System;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public static class Extensions
 	{
-		public static IFileElement GetFile( this IFileSystemRepository @this, string path ) => @this.GetElement( path ).AsValid<IFileElement>();
-		public static IDirectoryElement GetDirectory( this IFileSystemRepository @this, string path ) => @this.GetElement( path ).AsValid<IDirectoryElement>();
+		public static IFileElement GetFile( this IFileSystemRepository @this, string path ) => @this.Get( path ).AsValid<IFileElement>();
+		public static IDirectoryElement GetDirectory( this IFileSystemRepository @this, string path ) => @this.Get( path ).AsValid<IDirectoryElement>();
 
 		public static string AsText( this IFileElement @this ) => MockFile.ReadAllBytes( @this.ToArray(), Defaults.DefaultEncoding );
+
+		public static void IsLegalAbsoluteOrRelative(this IPath @this, string pathToValidate, string paramName)
+		{
+			var invalid = @this.GetInvalidFileNameChars();
+			if (pathToValidate.Trim() == string.Empty)
+			{
+				throw new ArgumentException(Properties.Resources.THE_PATH_IS_NOT_OF_A_LEGAL_FORM, paramName);
+			}
+
+			if (@this.GetFileName( pathToValidate ).IndexOfAny(invalid) > -1)
+			{
+				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
+			}
+
+			
+			if (@this.IsValidPath( @this.GetDirectoryName( pathToValidate ) ) )
+			{
+				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
+			}
+		}
+
+		public static string Normalize( this IPath @this, string parameter )
+		{
+/*if ( !directoryPath.EndsWith( path.DirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ), StringComparison.OrdinalIgnoreCase ) )
+			{
+				directoryPath += path.DirectorySeparatorChar;
+			}
+
+			*/
+			var path = parameter.Replace( @this.AltDirectorySeparatorChar, @this.DirectorySeparatorChar );
+			var fullPath = @this.GetFullPath( path );
+			var result = @this.HasExtension( parameter ) ? fullPath : NormalizeDirectory( @this, fullPath );
+			// var result = path.ToLowerInvariant();
+			return result;
+			/*var separatorChar = @this.DirectorySeparatorChar;
+			var result = !parameter.EndsWith( separatorChar.ToString( CultureInfo.InvariantCulture ), StringComparison.OrdinalIgnoreCase ) ?
+				string.Concat( parameter, separatorChar.ToString() ) : parameter;
+			return result;*/
+		}
+
+		static string NormalizeDirectory( IPath path, string fullPath ) => 
+			string.Equals( fullPath, path.GetPathRoot( fullPath ), StringComparison.OrdinalIgnoreCase ) 
+			? 
+			fullPath 
+			:
+			fullPath.TrimEnd( path.DirectorySeparatorChar, path.AltDirectorySeparatorChar );
 	}
 }

@@ -1,5 +1,11 @@
+using DragonSpark.Extensions;
 using DragonSpark.Properties;
+using DragonSpark.Runtime;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,36 +13,27 @@ using System.Globalization;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public interface IFileSystemRepository : IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
+	public interface IFileSystemRepository : IParameterizedSource<string, IFileSystemElement>, IComposable<IFileElement>, IComposable<IDirectoryElement>, IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
 	{
-		/// <summary>
-		/// Gets a file.
-		/// </summary>
-		/// <param name="path">The path of the file to get.</param>
-		/// <returns>The file. <see langword="null"/> if the file does not exist.</returns>
-		IFileSystemElement GetElement(string path);
-
-		void AddFile(IFileElement file);
-		void AddDirectory(string path);
-
 		/// <summary>
 		/// Removes the file.
 		/// </summary>
-		/// <param name="path">The file to remove.</param>
+		/// <param name="pathName">The file to remove.</param>
 		/// <remarks>
 		/// The file must not exist.
 		/// </remarks>
-		void RemoveFile(string path);
+		void RemoveFile(string pathName);
 
 		/// <summary>
 		/// Determines whether the file exists.
 		/// </summary>
-		/// <param name="path">The file to check. </param>
+		/// <param name="pathName">The file to check. </param>
 		/// <returns><see langword="true"/> if the file exists; otherwise, <see langword="false"/>.</returns>
-		bool FileExists(string path);
+		bool Contains(string pathName);
 
 		/// <summary>
 		/// Gets all unique paths of all files and directories.
@@ -52,23 +49,30 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// Gets the paths of all directories.
 		/// </summary>
 		ImmutableArray<string> AllDirectories { get; }
-
-		void IsLegalAbsoluteOrRelative( string pathToValidate, string paramName );
 	}
 
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
-	[Serializable]
 	public class FileSystemRepository : IFileSystemRepository
 	{
-		readonly static char[] InvalidChars = Path.GetInvalidFileNameChars();
+		readonly IDictionary<string, IFileSystemElement> elements = new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase );
+		readonly ICache<string, DirectoryInfoBase> directories;
+		readonly ICache<string, FileInfoBase> files;
+		readonly IPath path;
+		
 
 		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
-		FileSystemRepository() {}
+		FileSystemRepository() : this( Path.Current.Get() ) {}
 
+		[UsedImplicitly]
+		public FileSystemRepository( IPath path )
+		{
+			this.path = path;
 
-		readonly IDictionary<string, IFileSystemElement> elements = new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase );
+			directories = new DirectorySource( this ).ToEqualityCache();
+			files = new FileSource( this ).ToEqualityCache();
+		}
 
 		public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
 
@@ -76,80 +80,73 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public ImmutableArray<string> AllDirectories => elements.Where( f => f.Value is IDirectoryElement ).Select( f => f.Key ).ToImmutableArray();
 
-		string FixPath( string path ) => Path.GetFullPath( path.Replace( Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar ) );
-
-		public IFileSystemElement GetElement( string path ) => GetFileWithoutFixingPath( FixPath( path ) );
-
-		public void AddFile( IFileElement file )
+		public IFileSystemElement Get( string parameter )
 		{
-			var key = FixPath( file.Path );
-			if ( FileExists( key ) && ( elements[key].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly | ( elements[key].Attributes & FileAttributes.Hidden ) == FileAttributes.Hidden )
+			IFileSystemElement found;
+			var result = elements.TryGetValue( path.Normalize( parameter ), out found ) ? found : null;
+			return result;
+		}
+
+		public void Add( IFileElement file )
+		{
+			var key = path.Normalize( file.Path );
+			if ( Contains( key ) && ( elements[key].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly | ( elements[key].Attributes & FileAttributes.Hidden ) == FileAttributes.Hidden )
 			{
 				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, file.Path ) );
 			}
-			var name = Path.GetDirectoryName( key );
-			if ( !Directory.Exists( name ) )
+			var name = path.Normalize( path.GetDirectoryName( key ) );
+			if ( !elements.ContainsKey( name ) )
 			{
-				AddDirectory( name );
+				Add( new DirectoryElement( name ) );
 			}
 			elements[key] = file;
 		}
 
-		public void AddDirectory( string path )
+		public void Add( IDirectoryElement element )
 		{
-			var index = FixPath( path );
-			var str = MockUnixSupport.Separator();
-			if ( FileExists( path ) && ( elements[index].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly )
+			var name = path.Normalize( element.Path );
+			if ( elements.ContainsKey( name ) && ( elements[name].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly )
 			{
-				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, path ) );
+				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, name ) );
 			}
 			var local4 = 0;
-			if ( path.StartsWith( @"\\", StringComparison.OrdinalIgnoreCase ) || path.StartsWith( "//", StringComparison.OrdinalIgnoreCase ) )
+			var separator = path.DirectorySeparatorChar.ToString();
+			var prefix = Defaults.IsUnix ? Windows.FileSystem.Defaults.UncUnix : Windows.FileSystem.Defaults.Unc;
+			if ( name.StartsWith( prefix, StringComparison.OrdinalIgnoreCase ) )
 			{
-				local4 = path.IndexOf( str, 2, StringComparison.OrdinalIgnoreCase );
+				local4 = name.IndexOf( separator, 2, StringComparison.OrdinalIgnoreCase );
 				if ( local4 < 0 )
 				{
-					throw new ArgumentException( Resources.SERVER_PATH, nameof( path ) );
+					throw new ArgumentException( Resources.SERVER_PATH, nameof( name ) );
 				}
 			}
-			while ( ( local4 = path.IndexOf( str, local4 + 1, StringComparison.OrdinalIgnoreCase ) ) > -1 )
+			while ( ( local4 = name.IndexOf( separator, local4 + 1, StringComparison.OrdinalIgnoreCase ) ) > -1 )
 			{
-				var local10 = path.Substring( 0, local4 + 1 );
-				if ( !Directory.Exists( local10 ) )
+				var local10 = path.Normalize( name.Substring( 0, local4 + 1 ) );
+				if ( !Contains( local10 ) )
 				{
 					elements[local10] = new DirectoryElement( local10 );
 				}
 			}
-			var key = path.EndsWith( str, StringComparison.OrdinalIgnoreCase ) ? path : path + str;
-			elements[key] = new DirectoryElement( key );
+			// var key = name.EndsWith( separator, StringComparison.OrdinalIgnoreCase ) ? name : name + str;
+			elements[name] = element.Path.Equals( name, StringComparison.OrdinalIgnoreCase ) ? element : new DirectoryElement( name );
 		}
 
-		public void RemoveFile( string path ) => elements.Remove( FixPath( path ) );
+		public void RemoveFile( string pathName ) => elements.Remove( path.Normalize( pathName ) );
 
-		public bool FileExists( string path ) => elements.ContainsKey( FixPath( path ) );
+		public bool Contains( string pathName ) => elements.ContainsKey( path.Normalize( pathName ) );
 
-		IFileSystemElement GetFileWithoutFixingPath( string path )
-		{
-			IFileSystemElement result;
-			elements.TryGetValue( path, out result );
-			return result;
-		}
+		public DirectoryInfoBase FromDirectoryName( string directoryName ) => directories.Get( path.Normalize( directoryName ) );
 
-		public DirectoryInfoBase FromDirectoryName( string directoryName ) => new MockDirectoryInfo( this, directoryName );
-
-		public FileInfoBase FromFileName( string fileName ) => new MockFileInfo( this, fileName );
+		public FileInfoBase FromFileName( string fileName ) => files.Get( path.Normalize( fileName ) );
 
 		public DriveInfoBase[] GetDrives()
 		{
-			var driveLetters = new HashSet<string>(DriveEqualityComparer.Default);
-			foreach (var path in AllPaths)
-			{
-				var pathRoot = Path.GetPathRoot(path);
-				driveLetters.Add(pathRoot);
-			}
+			var letters = new HashSet<string>(DriveEqualityComparer.Default);
+			letters.AddRange(AllPaths.Select( path.GetPathRoot ));
 
 			var result = new List<DriveInfoBase>();
-			foreach (var driveLetter in driveLetters)
+			foreach (var driveLetter in letters)
 			{
 				try
 				{
@@ -161,32 +158,41 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return result.ToArray();
 		}
 		
-		public void IsLegalAbsoluteOrRelative(string pathToValidate, string paramName)
+		/*string ExtractFileName(string fullFileName) => fullFileName.Split(path.DirectorySeparatorChar).Last();
+
+		string ExtractFilePath(string fullFileName)
 		{
-			if (pathToValidate.Trim() == string.Empty)
+			var extractFilePath = fullFileName.Split(path.DirectorySeparatorChar);
+			var result = string.Join( path.DirectorySeparatorChar.ToString(), extractFilePath.Take( extractFilePath.Length - 1 ) );
+			return result;
+		}*/
+
+
+
+		sealed class DirectorySource : ParameterizedSourceBase<string, DirectoryInfoBase>
+		{
+			readonly IFileSystemRepository repository;
+
+			public DirectorySource( IFileSystemRepository repository )
 			{
-				throw new ArgumentException(Properties.Resources.THE_PATH_IS_NOT_OF_A_LEGAL_FORM, paramName);
+				this.repository = repository;
 			}
 
-			if (ExtractFileName(pathToValidate).IndexOfAny(InvalidChars) > -1)
-			{
-				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
-			}
-
-			var filePath = ExtractFilePath(pathToValidate);
-			if (MockPath.HasIllegalCharacters(filePath, false))
-			{
-				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
-			}
+			public override DirectoryInfoBase Get( string parameter ) => new MockDirectoryInfo( repository, parameter );
 		}
 
-		static string ExtractFileName(string fullFileName) => fullFileName.Split(Path.DirectorySeparatorChar).Last();
-
-		static string ExtractFilePath(string fullFileName)
+		sealed class FileSource : ParameterizedSourceBase<string, FileInfoBase>
 		{
-			var extractFilePath = fullFileName.Split(Path.DirectorySeparatorChar);
-			return string.Join(Path.DirectorySeparatorChar.ToString(), extractFilePath.Take(extractFilePath.Length - 1));
+			readonly IFileSystemRepository repository;
+
+			public FileSource( IFileSystemRepository repository )
+			{
+				this.repository = repository;
+			}
+
+			public override FileInfoBase Get( string parameter ) => new MockFileInfo( repository, parameter );
 		}
+
 		sealed class DriveEqualityComparer : IEqualityComparer<string>
 		{
 			public static DriveEqualityComparer Default { get; } = new DriveEqualityComparer();
