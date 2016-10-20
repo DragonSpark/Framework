@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.TypeSystem.Generics
 {
-	public sealed class MethodContext<T> : ArgumentCache<ImmutableArray<Type>, T> where T : class 
+	public sealed class MethodContext<T> : StructuralCache<ImmutableArray<Type>, T> where T : class 
 	{
 		public MethodContext( ImmutableArray<GenericMethodCandidate<T>> candidates ) : this( new Factory( candidates ).Get ) {}
 		MethodContext( Func<ImmutableArray<Type>, T> resultSelector ) : base( resultSelector ) {}

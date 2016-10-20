@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Sources;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Security.AccessControl;
-using DragonSpark.Sources;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Windows.FileSystem
 {
@@ -116,7 +116,7 @@ namespace DragonSpark.Windows.FileSystem
 		public sealed class Implementation : Scope<DirectoryBase>
 		{
 			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( () => new DirectoryWrapper() ) {}
+			Implementation() : base( Sources.Factory.GlobalCache( () => new DirectoryWrapper() ) ) {}
 		}
 	}
 }

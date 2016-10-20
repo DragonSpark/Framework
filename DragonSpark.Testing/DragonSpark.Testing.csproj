@@ -101,7 +101,7 @@
     <Compile Include="Runtime\Assignments\CollectionAssignTests.cs" />
     <Compile Include="Runtime\ValueTupleTests.cs" />
     <Compile Include="Runtime\WeakListTests.cs" />
-    <Compile Include="Sources\Parameterized\Caching\ArgumentCacheTests.cs" />
+    <Compile Include="Sources\Parameterized\Caching\StructuralCacheTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheExtensionsTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheFactoryTests.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheTests.cs" />

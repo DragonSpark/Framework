@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO.Abstractions;
-using DragonSpark.Sources;
+﻿using DragonSpark.Sources;
 using JetBrains.Annotations;
+using System;
+using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
@@ -70,7 +70,7 @@ namespace DragonSpark.Windows.FileSystem
 		public sealed class Implementation : Scope<PathBase>
 		{
 			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( () => new PathWrapper() ) {}
+			Implementation() : base( Sources.Factory.GlobalCache( () => new PathWrapper() ) ) {}
 		}
 	}
 }

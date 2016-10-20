@@ -10,7 +10,7 @@ namespace DragonSpark.TypeSystem.Generics
 {
 	public abstract class DelegateCreationContextBase<T> : FilteredMethodContextBase where T : class
 	{
-		readonly IArgumentCache<string, IGenericMethodContext<T>> candidates = new ArgumentCache<string, IGenericMethodContext<T>>();
+		readonly IArgumentCache<string, IGenericMethodContext<T>> candidates = new StructuralCache<string, IGenericMethodContext<T>>();
 
 		readonly Func<MethodInfo, T> creator;
 		readonly Func<string, IGenericMethodContext<T>> create;

@@ -37,7 +37,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Delete()
 		{
-			repository.RemoveFile( FullName );
+			repository.Remove( FullName );
 			Refresh();
 		}
 

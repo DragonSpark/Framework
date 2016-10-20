@@ -46,7 +46,7 @@ namespace DragonSpark.Aspects
 		{
 			readonly IArgumentCache<object, object> cache;
 
-			public SingleParameterFreeze( MethodInfo method ) : this( new ArgumentCache<object, object>(), method ) {}
+			public SingleParameterFreeze( MethodInfo method ) : this( new StructuralCache<object, object>(), method ) {}
 
 			SingleParameterFreeze( IArgumentCache<object, object> cache, MethodInfo method ) : base( new CacheParameterHandler<object, object>( cache ), method  )
 			{
@@ -90,7 +90,7 @@ namespace DragonSpark.Aspects
 		{
 			readonly IArgumentCache<object[], object> cache;
 
-			public Freeze( MethodInfo method ) : this( new ArgumentCache<object[], object>(), method ) {}
+			public Freeze( MethodInfo method ) : this( new StructuralCache<object[], object>(), method ) {}
 
 			Freeze( IArgumentCache<object[], object> cache, MethodInfo method ) : base( new CacheParameterHandler<object[], object>( cache ), method  )
 			{

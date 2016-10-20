@@ -23,5 +23,7 @@ namespace DragonSpark.Windows.FileSystem
 	public static class Extensions
 	{
 		public static bool IsValidPath( this IPath @this, string pathName ) => pathName.IndexOfAny( @this.GetInvalidPathChars() ) == -1;
+
+		public static bool IsValidFileName( this IPath @this, string pathName ) => pathName.IndexOfAny( @this.GetInvalidFileNameChars() ) == -1;
 	}
 }

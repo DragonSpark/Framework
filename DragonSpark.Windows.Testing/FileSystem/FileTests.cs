@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
-using System;
+using Moq;
+using System.Text;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.FileSystem
@@ -9,19 +10,25 @@ namespace DragonSpark.Windows.Testing.FileSystem
 	public class FileTests
 	{
 		[Theory, AutoData]
-		public void Verify( string path )
+		public void Verify( string path, string message )
 		{
-			File.Implementation.DefaultImplementation.Assign( () => new Implementation() );
-			var sut = File.Current.Get();
-			var random = sut.ReadAllText( path );
-			Assert.Equal( string.Concat( path, Implementation.Name ), random );
-		}
+			var repository = FileSystemRepository.Current.Get();
+			var expected = Encoding.Default.GetBytes( message );
+			repository.Set( path, new FileElement( expected ) );
 
-		sealed class Implementation : MockFile
-		{
-			public static string Name { get; } = Guid.NewGuid().ToString();
 
-			public override string ReadAllText( string pathName ) => string.Concat( pathName, Name );
+			File.Implementation.DefaultImplementation.Assign( Sources.Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
+			var implementation = File.Implementation.DefaultImplementation.Get();
+			Assert.Same( File.Implementation.DefaultImplementation.Get(), implementation );
+			var mock = Mock.Get( (MockFile)implementation );
+			var instance = File.Current.Get();
+			Assert.Same( instance, File.Current.Get() );
+			var pathToTest = $@".\{path}";
+			mock.Verify( i => i.ReadAllText( pathToTest ), Times.Never );
+
+			var item = instance.ReadAllText( pathToTest );
+			Assert.Equal( message, item );
+			mock.Verify( i => i.ReadAllText( pathToTest ), Times.Once );
 		}
 	}
 }

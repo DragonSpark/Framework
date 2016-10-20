@@ -14,7 +14,7 @@ namespace DragonSpark.Extensions
 
 		readonly IActivator activatorSource;
 
-		readonly IArgumentCache<TypePair, IMapper> mappers = new ArgumentCache<TypePair, IMapper>( Factory.DefaultNested.Get );
+		readonly IArgumentCache<TypePair, IMapper> mappers = new StructuralCache<TypePair, IMapper>( Factory.DefaultNested.Get );
 
 		public ObjectMapper( IActivator activatorSource )
 		{

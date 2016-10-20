@@ -62,8 +62,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public override DirectoryInfoBase Root => Get( root );
 		public override DirectoryInfoBase Parent => Get( parent );
 
-		public override void Delete() => directory.Delete( FullName );
-
 		public override void Refresh() => repository.Get( FullName ).As<IDirectoryElement>( element.Assign );
 
 		public override bool Exists => directory.Exists( FullName );
@@ -114,7 +112,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			set { Element.LastWriteTime = value.ToLocalTime(); }
 		}
 
-		public override string Name => path.GetFileName( FullName.TrimEnd( '\\' ) );
+		public override string Name => path.GetFileName( FullName.TrimEnd( path.DirectorySeparatorChar ) );
 
 		public override void Create()
 		{
@@ -134,6 +132,12 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		DirectoryInfoBase Get( IFileSystemInfo source ) => Get( source.FullName );
 		DirectoryInfoBase Get( string source ) => repository.FromDirectoryName( source );
+
+		public override void Delete()
+		{
+			directory.Delete( FullName );
+			Refresh();
+		}
 
 		public override void Delete( bool recursive )
 		{

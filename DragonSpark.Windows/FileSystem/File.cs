@@ -137,7 +137,7 @@ namespace DragonSpark.Windows.FileSystem
 		public sealed class Implementation : Scope<FileBase>
 		{
 			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( () => new FileWrapper() ) {}
+			Implementation() : base( Sources.Factory.GlobalCache( () => new FileWrapper() ) ) {}
 		}
 	}
 }

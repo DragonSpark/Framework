@@ -10,7 +10,6 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
-using Path = System.IO.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
@@ -53,7 +52,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			var result = repository.FromDirectoryName( pathName );
 			if (current == null)
 			{
-				repository.Add(new DirectoryElement(result.FullName));
+				repository.Set( pathName, new DirectoryElement() );
 			}
 			return result;
 		}
@@ -75,7 +74,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new IOException( $"The directory specified by {name} is read-only, or recursive is false and {name} is not an empty directory." );
 
 			foreach (var affectedPath in affectedPaths)
-				repository.RemoveFile(affectedPath);
+				repository.Remove(affectedPath);
 		}
 
 		public override bool Exists(string pathName) => repository.Get( pathName ) is IDirectoryElement;
@@ -102,7 +101,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override string[] GetDirectories(string pathName, string searchPattern, SearchOption searchOption) => EnumerateDirectories(pathName, searchPattern, searchOption).ToArray();
 
-		public override string GetDirectoryRoot(string pathName) => Path.GetPathRoot(pathName);
+		public override string GetDirectoryRoot(string pathName) => path.GetPathRoot(pathName);
 
 		public override string[] GetFiles(string pathName) => GetFiles(pathName, Defaults.AllPattern);
 
@@ -136,7 +135,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					.Replace(@"\*", Defaults.IsUnix ? @"[^<>:""/|?*]*?" : @"[^<>:""/\\|?*]*?")
 					.Replace(@"\?", Defaults.IsUnix ? @"[^<>:""/|?*]?" : @"[^<>:""/\\|?*]?");
 
-				var extension = Path.GetExtension(searchPattern);
+				var extension = path.GetExtension(searchPattern);
 				bool hasExtensionLengthOfThree = extension.Length == 4 && !extension.Contains( Defaults.AllPattern) && !extension.Contains("?");
 				if (hasExtensionLengthOfThree)
 				{
@@ -313,7 +312,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return path;
 		}*/
 
-		static void CheckSearchPattern(string searchPattern)
+		void CheckSearchPattern(string searchPattern)
 		{
 			Func<ArgumentException> createException = () => new ArgumentException($@"Search pattern cannot contain ""{Windows.FileSystem.Defaults.ParentPath}"" to move up directories and can be contained only internally in file/directory names, as in ""a..b"".", searchPattern);
 
@@ -326,14 +325,13 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			if ((position = searchPattern.IndexOf(Windows.FileSystem.Defaults.ParentPath, StringComparison.OrdinalIgnoreCase)) >= 0)
 			{
 				var characterAfterTwoDots = searchPattern[position + 2];
-				if (characterAfterTwoDots == Path.DirectorySeparatorChar || characterAfterTwoDots == Path.AltDirectorySeparatorChar)
+				if (characterAfterTwoDots == path.DirectorySeparatorChar || characterAfterTwoDots == path.AltDirectorySeparatorChar)
 				{
 					throw createException();
 				}
 			}
 
-			var invalidPathChars = Path.GetInvalidPathChars();
-			if (searchPattern.IndexOfAny(invalidPathChars) > -1)
+			if ( !path.IsValidPath( searchPattern ) )
 			{
 				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION, nameof( searchPattern ));
 			}

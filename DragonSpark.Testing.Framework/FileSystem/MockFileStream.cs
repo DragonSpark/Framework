@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 			else
 			{
-				repository.Add( FileElement.Empty( path ) );
+				repository.Set( path, FileElement.Empty() );
 			}
 		}
 

@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[Serializable]
 	public class DirectoryElement : FileSystemElementBase, IDirectoryElement
 	{
-		public DirectoryElement( string path ) : base( path )
+		public DirectoryElement()
 		{
 			Attributes = FileAttributes.Directory;
 		}

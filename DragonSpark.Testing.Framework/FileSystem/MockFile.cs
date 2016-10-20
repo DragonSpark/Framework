@@ -64,7 +64,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
 				}
 
-				repository.Add(FileElement.Create(pathName, contents, encoding));
+				repository.Set( pathName, FileElement.Create( contents, encoding ) );
 			}
 			else
 			{
@@ -112,18 +112,18 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					throw new IOException(string.Format(CultureInfo.InvariantCulture, "The file {0} already exists.", destFileName));
 				}
 
-				repository.RemoveFile(destFileName);
+				repository.Remove(destFileName);
 			}
 
 			var sourceFile = repository.GetFile(sourceFileName);
-			repository.Add( new FileElement( destFileName, sourceFile.ToArray() ) );
+			repository.Set( destFileName, new FileElement( sourceFile.ToArray() ) );
 		}
 
 		public override Stream Create(string pathName)
 		{
 			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			repository.Add( FileElement.Empty( pathName ) );
+			repository.Set( pathName, FileElement.Empty() );
 			var stream = OpenWrite(pathName);
 			return stream;
 		}
@@ -154,7 +154,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public override void Delete(string pathName)
 		{
 			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
-			repository.RemoveFile(pathName);
+			repository.Remove(pathName);
 		}
 
 		public override void Encrypt(string pathName)
@@ -287,8 +287,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new DirectoryNotFoundException( "Could not find a part of the path." );
 			}
 
-			repository.Add( new FileElement( destFileName, sourceFile.ToArray() ) );
-			repository.RemoveFile( sourceFileName );
+			repository.Set( destFileName, new FileElement( sourceFile.ToArray() ) );
+			repository.Remove( sourceFileName );
 		}
 
 		public override Stream Open(string pathName, FileMode mode)
@@ -522,7 +522,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <remarks>
 		/// Given a byte array and a file path, this method opens the specified file, writes the contents of the byte array to the file, and then closes the file.
 		/// </remarks>
-		public override void WriteAllBytes(string pathName, byte[] bytes) => repository.Add(new FileElement(pathName, bytes));
+		public override void WriteAllBytes(string pathName, byte[] bytes) => repository.Set( pathName, new FileElement( bytes ) );
 
 		/// <summary>
 		/// Creates a new file, writes a collection of strings to the file, and then closes the file.
@@ -779,8 +779,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new UnauthorizedAccessException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, pathName));
 			}
 
-			var data = contents == null ? FileElement.Empty( pathName ) : FileElement.Create( pathName, contents, encoding );
-			repository.Add( data );
+			var data = contents == null ? FileElement.Empty() : FileElement.Create( contents, encoding );
+			repository.Set( pathName, data );
 		}
 
 		internal static string ReadAllBytes(byte[] contents, Encoding encoding)

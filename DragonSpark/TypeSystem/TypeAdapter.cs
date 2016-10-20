@@ -51,7 +51,7 @@ namespace DragonSpark.TypeSystem
 
 		public bool IsAssignableFrom( Type other ) => isAssignableFrom( other );
 		bool IsAssignableFromBody( Type parameter ) => Info.IsGenericTypeDefinition && parameter.Adapt().IsGenericOf( ReferenceType ) || Info.IsAssignableFrom( parameter.GetTypeInfo() );
-		class IsInstanceOfTypeOrDefinitionCache : ArgumentCache<Type, bool>
+		class IsInstanceOfTypeOrDefinitionCache : StructuralCache<Type, bool>
 		{
 			public IsInstanceOfTypeOrDefinitionCache( TypeAdapter owner ) : base( owner.IsAssignableFromBody ) {}
 		}

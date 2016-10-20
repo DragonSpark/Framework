@@ -1,6 +1,5 @@
+using DragonSpark.Commands;
 using DragonSpark.Extensions;
-using DragonSpark.Properties;
-using DragonSpark.Runtime;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
@@ -17,23 +16,20 @@ using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public interface IFileSystemRepository : IParameterizedSource<string, IFileSystemElement>, IComposable<IFileElement>, IComposable<IDirectoryElement>, IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
+	public interface IFileSystemRepository : ICache<string, IFileSystemElement>, /*IComposable<FileEntry>,*/ IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
 	{
-		/// <summary>
-		/// Removes the file.
-		/// </summary>
-		/// <param name="pathName">The file to remove.</param>
-		/// <remarks>
-		/// The file must not exist.
-		/// </remarks>
-		void RemoveFile(string pathName);
+		// IFileElement AddFile( string path, IEnumerable<byte> data );
+
+		/*void Remove( IFileSystemElement element );
 
 		/// <summary>
 		/// Determines whether the file exists.
 		/// </summary>
 		/// <param name="pathName">The file to check. </param>
 		/// <returns><see langword="true"/> if the file exists; otherwise, <see langword="false"/>.</returns>
-		bool Contains(string pathName);
+		bool Contains(string pathName);*/
+
+		string GetPath( IFileSystemElement element );
 
 		/// <summary>
 		/// Gets all unique paths of all files and directories.
@@ -54,87 +50,36 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
-	public class FileSystemRepository : IFileSystemRepository
+	public class FileSystemRepository : AlteredCache<string, IFileSystemElement>, IFileSystemRepository
 	{
-		readonly IDictionary<string, IFileSystemElement> elements = new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase );
+		readonly IDictionary<string, IFileSystemElement> elements;
 		readonly ICache<string, DirectoryInfoBase> directories;
 		readonly ICache<string, FileInfoBase> files;
 		readonly IPath path;
-		
 
 		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
 		FileSystemRepository() : this( Path.Current.Get() ) {}
 
 		[UsedImplicitly]
-		public FileSystemRepository( IPath path )
+		public FileSystemRepository( IPath path ) : this( path, new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase ) ) {}
+
+		[UsedImplicitly]
+		public FileSystemRepository( IPath path, IDictionary<string, IFileSystemElement> elements ) : base( new Cache( path, elements ), new DelegatedAlteration<string>( path.Normalize ).Get )
 		{
 			this.path = path;
+			this.elements = elements;
 
 			directories = new DirectorySource( this ).ToEqualityCache();
 			files = new FileSource( this ).ToEqualityCache();
 		}
+
+		public string GetPath( IFileSystemElement element ) => elements.Introduce( element, tuple => tuple.Item1.Value == tuple.Item2, tuple => tuple.Item1.Key ).SingleOrDefault();
 
 		public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
 
 		public ImmutableArray<string> AllFiles => elements.Where( f => f.Value is IFileElement ).Select( f => f.Key ).ToImmutableArray();
 
 		public ImmutableArray<string> AllDirectories => elements.Where( f => f.Value is IDirectoryElement ).Select( f => f.Key ).ToImmutableArray();
-
-		public IFileSystemElement Get( string parameter )
-		{
-			IFileSystemElement found;
-			var result = elements.TryGetValue( path.Normalize( parameter ), out found ) ? found : null;
-			return result;
-		}
-
-		public void Add( IFileElement file )
-		{
-			var key = path.Normalize( file.Path );
-			if ( Contains( key ) && ( elements[key].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly | ( elements[key].Attributes & FileAttributes.Hidden ) == FileAttributes.Hidden )
-			{
-				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, file.Path ) );
-			}
-			var name = path.Normalize( path.GetDirectoryName( key ) );
-			if ( !elements.ContainsKey( name ) )
-			{
-				Add( new DirectoryElement( name ) );
-			}
-			elements[key] = file;
-		}
-
-		public void Add( IDirectoryElement element )
-		{
-			var name = path.Normalize( element.Path );
-			if ( elements.ContainsKey( name ) && ( elements[name].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly )
-			{
-				throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, name ) );
-			}
-			var local4 = 0;
-			var separator = path.DirectorySeparatorChar.ToString();
-			var prefix = Defaults.IsUnix ? Windows.FileSystem.Defaults.UncUnix : Windows.FileSystem.Defaults.Unc;
-			if ( name.StartsWith( prefix, StringComparison.OrdinalIgnoreCase ) )
-			{
-				local4 = name.IndexOf( separator, 2, StringComparison.OrdinalIgnoreCase );
-				if ( local4 < 0 )
-				{
-					throw new ArgumentException( Resources.SERVER_PATH, nameof( name ) );
-				}
-			}
-			while ( ( local4 = name.IndexOf( separator, local4 + 1, StringComparison.OrdinalIgnoreCase ) ) > -1 )
-			{
-				var local10 = path.Normalize( name.Substring( 0, local4 + 1 ) );
-				if ( !Contains( local10 ) )
-				{
-					elements[local10] = new DirectoryElement( local10 );
-				}
-			}
-			// var key = name.EndsWith( separator, StringComparison.OrdinalIgnoreCase ) ? name : name + str;
-			elements[name] = element.Path.Equals( name, StringComparison.OrdinalIgnoreCase ) ? element : new DirectoryElement( name );
-		}
-
-		public void RemoveFile( string pathName ) => elements.Remove( path.Normalize( pathName ) );
-
-		public bool Contains( string pathName ) => elements.ContainsKey( path.Normalize( pathName ) );
 
 		public DirectoryInfoBase FromDirectoryName( string directoryName ) => directories.Get( path.Normalize( directoryName ) );
 
@@ -158,15 +103,107 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			return result.ToArray();
 		}
 		
-		/*string ExtractFileName(string fullFileName) => fullFileName.Split(path.DirectorySeparatorChar).Last();
-
-		string ExtractFilePath(string fullFileName)
+		sealed class Cache : DictionaryCache<string, IFileSystemElement>
 		{
-			var extractFilePath = fullFileName.Split(path.DirectorySeparatorChar);
-			var result = string.Join( path.DirectorySeparatorChar.ToString(), extractFilePath.Take( extractFilePath.Length - 1 ) );
-			return result;
-		}*/
+			readonly IDictionary<Type, ICommand<string>> commands;
 
+			public Cache( IPath path, IDictionary<string, IFileSystemElement> dictionary ) : this( PreparedCommandFactory.Default.Get( new PreparedCommandFactoryParameter( path, dictionary ) ), dictionary ) {}
+
+			Cache( IDictionary<Type, ICommand<string>> commands, IDictionary<string, IFileSystemElement> dictionary ) : base( dictionary )
+			{
+				this.commands = commands;
+			}
+
+			class PreparedCommandFactory : ParameterizedSourceBase<PreparedCommandFactoryParameter, IDictionary<Type, ICommand<string>>>
+			{
+				public static PreparedCommandFactory Default { get; } = new PreparedCommandFactory();
+				PreparedCommandFactory() {}
+
+				public override IDictionary<Type, ICommand<string>> Get( PreparedCommandFactoryParameter parameter ) =>
+					new Dictionary<Type, ICommand<string>>
+					{
+						{ typeof(IDirectoryElement), new PrepareDirectoryCommand( parameter.Path, parameter.Dictionary ) },
+						{ typeof(IFileElement), new PrepareFileCommand( parameter.Path, parameter.Dictionary ) }
+					};
+			}
+
+			struct PreparedCommandFactoryParameter
+			{
+				public PreparedCommandFactoryParameter( IPath path, IDictionary<string, IFileSystemElement> dictionary )
+				{
+					Path = path;
+					Dictionary = dictionary;
+				}
+
+				public IPath Path { get; }
+				public IDictionary<string, IFileSystemElement> Dictionary { get; }
+			}
+
+			abstract class PrepareCommandBase : CommandBase<string>
+			{
+				protected PrepareCommandBase( IPath path, IDictionary<string, IFileSystemElement> dictionary )
+				{
+					Path = path;
+					Dictionary = dictionary;
+				}
+
+				protected IPath Path { get; }
+				protected IDictionary<string, IFileSystemElement> Dictionary { get; }
+			}
+
+			class PrepareDirectoryCommand : PrepareCommandBase
+			{
+				public PrepareDirectoryCommand( IPath path, IDictionary<string, IFileSystemElement> dictionary ) : base( path, dictionary ) {}
+
+				public override void Execute( string parameter )
+				{
+					if ( Dictionary.ContainsKey( parameter ) && ( Dictionary[parameter].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly )
+					{
+						throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, parameter ) );
+					}
+					var local4 = 0;
+					var separator = Path.DirectorySeparatorChar.ToString();
+					var prefix = Defaults.IsUnix ? Windows.FileSystem.Defaults.UncUnix : Windows.FileSystem.Defaults.Unc;
+					if ( parameter.StartsWith( prefix, StringComparison.OrdinalIgnoreCase ) )
+					{
+						local4 = parameter.IndexOf( separator, 2, StringComparison.OrdinalIgnoreCase );
+						if ( local4 < 0 )
+						{
+							throw new ArgumentException( DragonSpark.Properties.Resources.SERVER_PATH, nameof( parameter ) );
+						}
+					}
+					while ( ( local4 = parameter.IndexOf( separator, local4 + 1, StringComparison.OrdinalIgnoreCase ) ) > -1 )
+					{
+						var local10 = Path.Normalize( parameter.Substring( 0, local4 + 1 ) );
+						Dictionary.Ensure( local10, s => new DirectoryElement() );
+					}
+				}
+			}
+
+			sealed class PrepareFileCommand : PrepareDirectoryCommand
+			{
+				public PrepareFileCommand( IPath path, IDictionary<string, IFileSystemElement> dictionary ) : base( path, dictionary ) {}
+
+				public override void Execute( string parameter )
+				{
+					if ( Dictionary.ContainsKey( parameter ) && ( Dictionary[parameter].Attributes & FileAttributes.ReadOnly ) == FileAttributes.ReadOnly | ( Dictionary[parameter].Attributes & FileAttributes.Hidden ) == FileAttributes.Hidden )
+					{
+						throw new UnauthorizedAccessException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.ACCESS_TO_THE_PATH_IS_DENIED, parameter ) );
+					}
+					var name = Path.Normalize( Path.GetDirectoryName( parameter ) );
+					if ( !Dictionary.ContainsKey( name ) )
+					{
+						base.Execute( name );
+					}
+				}
+			}
+
+			public override void Set( string instance, IFileSystemElement value )
+			{
+				commands.TryGet( value.GetType() )?.Execute( value );
+				base.Set( instance, value );
+			}
+		}
 
 
 		sealed class DirectorySource : ParameterizedSourceBase<string, DirectoryInfoBase>

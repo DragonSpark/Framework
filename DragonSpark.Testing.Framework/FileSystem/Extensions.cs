@@ -14,19 +14,19 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public static void IsLegalAbsoluteOrRelative(this IPath @this, string pathToValidate, string paramName)
 		{
-			var invalid = @this.GetInvalidFileNameChars();
 			if (pathToValidate.Trim() == string.Empty)
 			{
 				throw new ArgumentException(Properties.Resources.THE_PATH_IS_NOT_OF_A_LEGAL_FORM, paramName);
 			}
 
-			if (@this.GetFileName( pathToValidate ).IndexOfAny(invalid) > -1)
+
+			if ( !@this.IsValidFileName( @this.GetFileName( pathToValidate ) ) )
 			{
 				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
 			}
 
 			
-			if (@this.IsValidPath( @this.GetDirectoryName( pathToValidate ) ) )
+			if ( !@this.IsValidPath( @this.GetDirectoryName( pathToValidate ) ) )
 			{
 				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
 			}

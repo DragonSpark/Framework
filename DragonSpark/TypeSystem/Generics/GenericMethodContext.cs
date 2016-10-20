@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem.Generics
 {
-	sealed class GenericMethodContext<T> : ArgumentCache<Type[], MethodContext<T>>, IGenericMethodContext<T> where T : class
+	sealed class GenericMethodContext<T> : StructuralCache<Type[], MethodContext<T>>, IGenericMethodContext<T> where T : class
 	{
 		public GenericMethodContext( IEnumerable<Descriptor> descriptors, Func<MethodInfo, T> create ) : this( new Factory( descriptors, create ).Get ) {}
 		GenericMethodContext( Func<Type[], MethodContext<T>> resultSelector ) : base( resultSelector ) {}

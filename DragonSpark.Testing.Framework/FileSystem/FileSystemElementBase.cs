@@ -5,13 +5,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public abstract class FileSystemElementBase : IFileSystemElement
 	{
-		protected FileSystemElementBase( string path )
-		{
-			Path = path;
-		}
-
-		public string Path { get; }
-
 		/// <summary>
 		/// Gets or sets the date and time the <see cref="FileElement"/> was created.
 		/// </summary>

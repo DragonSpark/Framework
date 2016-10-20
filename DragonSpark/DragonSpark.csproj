@@ -247,6 +247,8 @@
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
+    <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
     <Compile Include="Sources\Parameterized\CoercedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
@@ -539,7 +541,7 @@
     <Compile Include="Application\Setup\ActivatedServiceSource.cs" />
     <Compile Include="Sources\Parameterized\Extensions.cs" />
     <Compile Include="Sources\Parameterized\IAlteration.cs" />
-    <Compile Include="Sources\Parameterized\Caching\ArgumentCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\StructuralCache.cs" />
     <Compile Include="Application\Execution.cs" />
     <Compile Include="Aspects\FreezeAttribute.cs" />
     <Compile Include="Aspects\ApplyDefaultValues.cs" />

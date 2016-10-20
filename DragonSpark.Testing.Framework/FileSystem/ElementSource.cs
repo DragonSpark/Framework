@@ -11,24 +11,29 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	sealed class ElementSource<T> : SuppliedSource<T>, IElementSource<T> where T : class, IFileSystemElement
 	{
 		readonly IFileSystemRepository repository;
-		readonly string filePath;
-
+		
 		public ElementSource( IFileSystemRepository repository, string filePath )
 		{
 			this.repository = repository;
-			this.filePath = filePath;
+			Path = filePath;
 		}
 
-		public string Path => base.Get()?.Path ?? filePath;
+		public string Path { get; private set; }
+
+		protected override void OnAssign( T item )
+		{
+			Path = item != null ? repository.GetPath( item ) : Path;
+			base.OnAssign( item );
+		}
 
 		public override T Get() => base.Get() ?? Locate();
 
 		T Locate()
 		{
-			var element = repository.Get( filePath );
+			var element = repository.Get( Path );
 			if ( element == null )
 			{
-				throw new FileNotFoundException( "Element not found at specified path.", filePath );
+				throw new FileNotFoundException( "Element not found at specified path.", Path );
 			}
 			var result = (T)element;
 			Assign( result );
