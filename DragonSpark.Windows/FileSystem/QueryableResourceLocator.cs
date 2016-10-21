@@ -10,7 +10,7 @@ namespace DragonSpark.Windows.FileSystem
 		readonly Func<IFileSystemInfo, bool> specification;
 		readonly IDirectoryInfo directory;
 
-		public QueryableResourceLocator( Func<IFileSystemInfo, bool> specification ) : this( specification, DirectoryFactory.Default.Get( "." ) ) {}
+		public QueryableResourceLocator( Func<IFileSystemInfo, bool> specification ) : this( specification, DirectoryInfoFactory.Default.Get( Defaults.CurrentPath ) ) {}
 
 		public QueryableResourceLocator( Func<IFileSystemInfo, bool> specification, IDirectoryInfo directory )
 		{

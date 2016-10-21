@@ -6,15 +6,18 @@ using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public abstract class FileSystemInfoFactory<TAbstraction, TResult> : ParameterizedSourceBase<string, TResult> where TAbstraction : FileSystemInfoBase where TResult : IFileSystemInfo
+	public abstract class FileSystemInfoFactory<TAbstraction, TImplementation, TResult> : ParameterizedSourceBase<string, TResult> 
+		where TAbstraction : FileSystemInfoBase
+		where TResult : IFileSystemInfo
+		where TImplementation : TResult
 	{
 		readonly Func<string, TAbstraction> source;
-		readonly Func<TAbstraction, TResult> abstractionSource;
+		readonly Func<TAbstraction, TImplementation> abstractionSource;
 
-		protected FileSystemInfoFactory( Func<string, TAbstraction> source ) : this( source, ParameterConstructor<TAbstraction, TResult>.Default ) {}
+		protected FileSystemInfoFactory( Func<string, TAbstraction> source ) : this( source, ParameterConstructor<TAbstraction, TImplementation>.Default ) {}
 
 		[UsedImplicitly]
-		protected FileSystemInfoFactory( Func<string, TAbstraction> source, Func<TAbstraction, TResult> abstractionSource )
+		protected FileSystemInfoFactory( Func<string, TAbstraction> source, Func<TAbstraction, TImplementation> abstractionSource )
 		{
 			this.source = source;
 			this.abstractionSource = abstractionSource;

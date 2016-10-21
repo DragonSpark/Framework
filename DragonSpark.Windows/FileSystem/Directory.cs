@@ -75,7 +75,12 @@ namespace DragonSpark.Windows.FileSystem
 
 		public string[] GetLogicalDrives() => source.GetLogicalDrives();
 
-		public IDirectoryInfo GetParent( string path ) => directorySource( source.GetParent( path ) );
+		public IDirectoryInfo GetParent( string path )
+		{
+			var parent = source.GetParent( path );
+			var result = parent != null ? directorySource( parent ) : null;
+			return result;
+		}
 
 		public void Move( string sourceDirName, string destDirName ) => source.Move( sourceDirName, destDirName );
 

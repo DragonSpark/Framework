@@ -52,13 +52,13 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// </summary>
 	public class FileSystemRepository : AlteredCache<string, IFileSystemElement>, IFileSystemRepository
 	{
+		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
+		FileSystemRepository() : this( Path.Current.Get() ) {}
+
 		readonly IDictionary<string, IFileSystemElement> elements;
 		readonly ICache<string, DirectoryInfoBase> directories;
 		readonly ICache<string, FileInfoBase> files;
 		readonly IPath path;
-
-		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
-		FileSystemRepository() : this( Path.Current.Get() ) {}
 
 		[UsedImplicitly]
 		public FileSystemRepository( IPath path ) : this( path, new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase ) ) {}

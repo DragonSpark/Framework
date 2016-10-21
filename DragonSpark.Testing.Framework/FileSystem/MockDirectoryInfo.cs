@@ -53,14 +53,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.element = element;
 
 			root = directory.GetDirectoryRoot( FullName );
-			parent = directory.GetParent( FullName ).FullName;
+			parent = directory.GetParent( FullName )?.FullName;
 		}
 
 		
 		IDirectoryElement Element => element.Get();
 
 		public override DirectoryInfoBase Root => Get( root );
-		public override DirectoryInfoBase Parent => Get( parent );
+		public override DirectoryInfoBase Parent => parent != null ? Get( parent ) : null;
 
 		public override void Refresh() => repository.Get( FullName ).As<IDirectoryElement>( element.Assign );
 

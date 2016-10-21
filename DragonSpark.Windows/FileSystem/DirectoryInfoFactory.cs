@@ -4,10 +4,10 @@ using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public sealed class DirectoryFactory : FileSystemInfoFactory<DirectoryInfoBase, IDirectoryInfo>
+	public sealed class DirectoryInfoFactory : FileSystemInfoFactory<DirectoryInfoBase, DirectoryInfo, IDirectoryInfo>
 	{
-		public static IConfigurableParameterizedSource<string, IDirectoryInfo> Default { get; } = new DirectoryFactory().ToEqualityCache().AsConfigurable();
-		DirectoryFactory() : base( Implementation.DefaultImplementation.Get ) {}
+		public static IConfigurableParameterizedSource<string, IDirectoryInfo> Default { get; } = new DirectoryInfoFactory().ToEqualityCache().AsConfigurable();
+		DirectoryInfoFactory() : base( Implementation.DefaultImplementation.Get ) {}
 
 		public sealed class Implementation : ConfigurableParameterizedSource<string, DirectoryInfoBase>
 		{

@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Setup
 
 			[Freeze]
 			public override IFileInfo Get( ConfigurationUserLevel parameter ) => 
-				FileFactory.Default.Get( ConfigurationManager.OpenExeConfiguration( parameter ).FilePath );
+				FileInfoFactory.Default.Get( ConfigurationManager.OpenExeConfiguration( parameter ).FilePath );
 		}
 	}
 }

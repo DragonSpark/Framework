@@ -1,4 +1,5 @@
-﻿using DragonSpark.Properties;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Properties;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
@@ -34,6 +35,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.repository = repository;
 			this.path = path;
 			this.directory = directory;
+
+			repository.Set( directory.Get(), new DirectoryElement() );
 		}
 
 		public override DirectoryInfoBase CreateDirectory(string pathName) => CreateDirectory(pathName, null);
@@ -123,43 +126,35 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			
 			pathName = path.Normalize(pathName);
 
-			string fileNamePattern;
-			string pathPatternSpecial = null;
-			if (searchPattern == Defaults.AllPattern)
+			var option = searchOption == SearchOption.AllDirectories ? AllDirectoriesPattern : string.Empty;
+			var patterns = new List<string>();
+			var separator = path.DirectorySeparatorChar.ToString();
+			switch ( searchPattern )
 			{
-				fileNamePattern = FileNamePattern;
+				case Defaults.AllPattern:
+					patterns.Add( FileNamePattern );
+					break;
+				default:
+					var slashes = string.Concat( "/", Defaults.IsUnix ? string.Empty : separator );
+					var pattern = $@"[^<>:""{slashes}|?*]";
+					var fileNamePattern = Regex.Escape( searchPattern )
+											   .Replace( @"\*", $@"{pattern}*?" )
+											   .Replace( @"\?", $@"{pattern}?" );
+					patterns.Add( fileNamePattern );
+
+					var extension = path.GetExtension(searchPattern);
+					var hasExtensionLengthOfThree = extension.Length == 4 && !extension.Contains( Defaults.AllPattern ) && !extension.Contains("?");
+					if (hasExtensionLengthOfThree)
+					{
+						patterns.Add( $"{fileNamePattern}[^.]" );
+					}
+					break;
 			}
-			else
-			{
-				fileNamePattern = Regex.Escape(searchPattern)
-					.Replace(@"\*", Defaults.IsUnix ? @"[^<>:""/|?*]*?" : @"[^<>:""/\\|?*]*?")
-					.Replace(@"\?", Defaults.IsUnix ? @"[^<>:""/|?*]?" : @"[^<>:""/\\|?*]?");
-
-				var extension = path.GetExtension(searchPattern);
-				bool hasExtensionLengthOfThree = extension.Length == 4 && !extension.Contains( Defaults.AllPattern) && !extension.Contains("?");
-				if (hasExtensionLengthOfThree)
-				{
-					var fileNamePatternSpecial = string.Format(CultureInfo.InvariantCulture, "{0}[^.]", fileNamePattern);
-					pathPatternSpecial = string.Format(
-						CultureInfo.InvariantCulture,
-						Defaults.IsUnix ? @"(?i:^{0}{1}{2}(?:/?)$)" : @"(?i:^{0}{1}{2}(?:\\?)$)",
-						Regex.Escape(pathName),
-						searchOption == SearchOption.AllDirectories ? AllDirectoriesPattern : string.Empty,
-						fileNamePatternSpecial);
-				}
-			}
-
-			var pathPattern = string.Format(
-				CultureInfo.InvariantCulture,
-				Defaults.IsUnix ? @"(?i:^{0}{1}{2}(?:/?)$)" : @"(?i:^{0}{1}{2}(?:\\?)$)",
-				Regex.Escape(pathName),
-				searchOption == SearchOption.AllDirectories ? AllDirectoriesPattern : string.Empty,
-				fileNamePattern);
-
-
-			return files
-				.Where(p => Regex.IsMatch( p, pathPattern ) || pathPatternSpecial != null && Regex.IsMatch( p, pathPatternSpecial ) )
+			var checks = patterns.Select( s => $@"(?i:^{Regex.Escape( pathName )}{option}{s}(?:{separator}?)$)" ).ToArray();
+			var result = files
+				.Where(file => checks.Any( pattern => Regex.IsMatch( file, pattern ) ) )
 				.ToArray();
+			return result;
 		}
 
 		public override string[] GetFileSystemEntries(string pathName) => GetFileSystemEntries(pathName, Defaults.AllPattern);
@@ -172,7 +167,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DateTime GetLastWriteTime(string pathName) => repository.Get( pathName ).LastWriteTime.DateTime;
 
-		public override DateTime GetLastWriteTimeUtc(string pathName) => repository.Get( pathName ).LastAccessTime.UtcDateTime;
+		public override DateTime GetLastWriteTimeUtc(string pathName) => repository.Get( pathName ).LastWriteTime.UtcDateTime;
 
 		public override string[] GetLogicalDrives() => repository
 			.AllDirectories
@@ -182,31 +177,24 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override DirectoryInfoBase GetParent(string pathName)
 		{
-			if (!path.IsValidPath(pathName))
+			if ( !path.IsValidPath( pathName ) )
 			{
-				throw new ArgumentException(Resources.INVALID_CHARACTERS, nameof(pathName));
+				throw new ArgumentException(Resources.INVALID_CHARACTERS, nameof(pathName) );
 			}
 
-			var absolutePath = path.GetFullPath(pathName);
-			var sepAsString = path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
-
-			var lastIndex = 0;
-			if (absolutePath != sepAsString)
+			var collection = path.GetFullPath( pathName ).ToStringArray( path.DirectorySeparatorChar ).ToArray();
+			if ( collection.Length > 1 )
 			{
-				var startIndex = absolutePath.EndsWith(sepAsString, StringComparison.OrdinalIgnoreCase) ? absolutePath.Length - 1 : absolutePath.Length;
-				lastIndex = absolutePath.LastIndexOf(path.DirectorySeparatorChar, startIndex - 1);
-				if (lastIndex < 0)
-				{
-					return null;
-				}
+				var parts = new Stack<string>( collection );
+				parts.Pop();
+				var name = parts.Count == 1 ? path.GetPathRoot( pathName ) : string.Join( path.DirectorySeparatorChar.ToString(), parts.Reverse() );
+				var result = repository.FromDirectoryName( name );
+				return result;
 			}
-
-			var parentPath = absolutePath.Substring(0, lastIndex);
-			var parent = !string.IsNullOrEmpty(parentPath) ? repository.FromDirectoryName(parentPath) : null;
-			return parent;
+			return null;
 		}
 
-		public override void Move(string sourceDirName, string destDirName)
+		public override void Move(string sourceDirName, string destDirName) 
 		{
 			var fullSourcePath = path.Normalize(sourceDirName);
 			var fullDestPath = path.Normalize(destDirName);

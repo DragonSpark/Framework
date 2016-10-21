@@ -56,10 +56,10 @@
     <Compile Include="FileSystem\AllFilesSource.cs" />
     <Compile Include="FileSystem\Defaults.cs" />
     <Compile Include="FileSystem\Directory.cs" />
-    <Compile Include="FileSystem\DirectoryFactory.cs" />
+    <Compile Include="FileSystem\DirectoryInfoFactory.cs" />
     <Compile Include="FileSystem\Factory.cs" />
     <Compile Include="FileSystem\File.cs" />
-    <Compile Include="FileSystem\FileFactory.cs" />
+    <Compile Include="FileSystem\FileInfoFactory.cs" />
     <Compile Include="FileSystem\FileSystemInfoBase.cs" />
     <Compile Include="FileSystem\FileSystemInfoFactory.cs" />
     <Compile Include="FileSystem\IDirectory.cs" />

@@ -54,13 +54,11 @@ namespace DragonSpark.Windows.FileSystem
 			this.generalSource = generalSource;
 			this.directorySource = directorySource;
 			this.fileSource = fileSource;
-			Parent = directorySource( Source.Parent );
-			Root = directorySource( Source.Root );
 		}
 
-		public IDirectoryInfo Parent { get; }
+		public IDirectoryInfo Parent => Source.Parent != null ? directorySource( Source.Parent ) : null;
 
-		public IDirectoryInfo Root { get; }
+		public IDirectoryInfo Root => directorySource( Source.Root );
 
 		public void Create() => Source.Create();
 
