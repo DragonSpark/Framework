@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Testing.Configuration
 	public class ConfigurationTests
 	{
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
-		public void FromConfiguration( DragonSpark.Testing.Objects.Configuration.Values sut )
+		public void FromConfiguration( DragonSpark.Testing.Objects.Declarative.Configuration.Values sut )
 		{
 			var settings = Settings.Default;
 			var primary = sut.Get( "PrimaryKey" );
@@ -24,8 +24,8 @@ namespace DragonSpark.Windows.Testing.Configuration
 			Assert.Null( notfound );
 		}
 
-		[Theory, DragonSpark.Testing.Framework.Application.AutoData, AdditionalTypes( typeof(DragonSpark.Testing.Objects.Configuration.Values) )]
-		public void FromItem( [NoAutoProperties]DragonSpark.Testing.Objects.Configuration.Item sut )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData, AdditionalTypes( typeof(DragonSpark.Testing.Objects.Declarative.Configuration.Values) )]
+		public void FromItem( [NoAutoProperties]DragonSpark.Testing.Objects.Declarative.Configuration.Item sut )
 		{
 			Assert.Equal( "This is a value from a MemberInfoKey", sut.SomeTestingProperty );
 		}

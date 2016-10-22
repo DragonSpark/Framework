@@ -7,8 +7,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public static class Extensions
 	{
-		public static IFileElement GetFile( this IFileSystemRepository @this, string path ) => @this.Get( path ).AsValid<IFileElement>();
-		public static IDirectoryElement GetDirectory( this IFileSystemRepository @this, string path ) => @this.Get( path ).AsValid<IDirectoryElement>();
+		public static IFileElement GetFile( this IFileSystemRepository @this, string path ) => @this.Get( path )?.AsValid<IFileElement>();
+		public static IDirectoryElement GetDirectory( this IFileSystemRepository @this, string path ) => @this.Get( path )?.AsValid<IDirectoryElement>();
 
 		public static string AsText( this IFileElement @this ) => MockFile.ReadAllBytes( @this.ToArray(), Defaults.DefaultEncoding );
 
@@ -30,6 +30,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			{
 				throw new ArgumentException(Properties.Resources.ILLEGAL_CHARACTERS_IN_PATH_EXCEPTION);
 			}
+		}
+
+		// public static string EnsureTrailingSlash( this IPath @this, string path ) => EnsureTrailingSlash( @this, path, @this.PathSeparator.ToString() );
+
+		public static string EnsureTrailingSlash( this IPath @this, string path, string reference = null )
+		{
+			var separator = @this.DirectorySeparatorChar;
+			var separatorText = separator.ToString();
+			var result = reference?.EndsWith( separatorText, StringComparison.OrdinalIgnoreCase ) ?? true ? string.Concat( path.TrimEnd( separator ), separatorText ) : path;
+			return result;
 		}
 
 		public static string Normalize( this IPath @this, string parameter )

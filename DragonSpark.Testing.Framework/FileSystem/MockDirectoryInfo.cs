@@ -55,7 +55,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			root = directory.GetDirectoryRoot( FullName );
 			parent = directory.GetParent( FullName )?.FullName;
 		}
-
 		
 		IDirectoryElement Element => element.Get();
 
@@ -145,49 +144,33 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			Refresh();
 		}
 
-		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories() => GetDirectories();
+		public override DirectoryInfoBase[] GetDirectories() => EnumerateDirectories().ToArray();
+		public override DirectoryInfoBase[] GetDirectories( string searchPattern ) => EnumerateDirectories( searchPattern ).ToArray();
+		public override DirectoryInfoBase[] GetDirectories( string searchPattern, SearchOption searchOption ) => EnumerateDirectories( searchPattern, searchOption ).ToArray();
+		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories() => EnumerateDirectories( Defaults.AllPattern );
+		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories( string searchPattern ) => EnumerateDirectories( searchPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories( string searchPattern, SearchOption searchOption ) => directory.EnumerateDirectories( FullName, searchPattern, searchOption ).Select( repository.FromDirectoryName );
 
-		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories( string searchPattern ) => GetDirectories( searchPattern );
+		public override FileInfoBase[] GetFiles() => EnumerateFiles().ToArray();
+		public override FileInfoBase[] GetFiles( string searchPattern ) => EnumerateFiles( searchPattern ).ToArray();
+		public override FileInfoBase[] GetFiles( string searchPattern, SearchOption searchOption ) => EnumerateFiles( searchPattern, searchOption ).ToArray();
+		public override IEnumerable<FileInfoBase> EnumerateFiles() => EnumerateFiles( Defaults.AllPattern );
+		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern ) => EnumerateFiles( searchPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern, SearchOption searchOption ) => directory.EnumerateFiles( FullName, searchPattern, searchOption ).Select( repository.FromFileName );
+		// FileInfoBase[] ConvertStringsToFiles( IEnumerable<string> paths ) => paths.Select( repository.FromFileName ).ToArray();
 
-		public override IEnumerable<DirectoryInfoBase> EnumerateDirectories( string searchPattern, SearchOption searchOption ) => GetDirectories( searchPattern, searchOption );
-
-		public override IEnumerable<FileInfoBase> EnumerateFiles() => GetFiles();
-
-		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern ) => GetFiles( searchPattern );
-
-		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern, SearchOption searchOption ) => GetFiles( searchPattern, searchOption );
-
-		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos() => GetFileSystemInfos();
-
-		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos( string searchPattern ) => GetFileSystemInfos( searchPattern );
-
-		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos( string searchPattern, SearchOption searchOption ) => GetFileSystemInfos( searchPattern, searchOption );
+		public override FileSystemInfoBase[] GetFileSystemInfos() => EnumerateFileSystemInfos().ToArray();
+		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern ) => EnumerateFileSystemInfos( searchPattern ).ToArray();
+		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern, SearchOption searchOption ) => EnumerateFileSystemInfos( searchPattern, searchOption ).ToArray();
+		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos() => EnumerateFileSystemInfos( Defaults.AllPattern );
+		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos( string searchPattern ) => EnumerateFileSystemInfos( searchPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<FileSystemInfoBase> EnumerateFileSystemInfos( string searchPattern, SearchOption searchOption ) => 
+			EnumerateDirectories( searchPattern, searchOption )
+				.OfType<FileSystemInfoBase>()
+				.Concat( EnumerateFiles( searchPattern, searchOption ) );
 
 		public override DirectorySecurity GetAccessControl() => directory.GetAccessControl( FullName );
-
 		public override DirectorySecurity GetAccessControl( AccessControlSections includeSections ) => directory.GetAccessControl( FullName, includeSections );
-
-		public override DirectoryInfoBase[] GetDirectories() => ConvertStringsToDirectories( directory.GetDirectories( FullName ) );
-
-		public override DirectoryInfoBase[] GetDirectories( string searchPattern ) => ConvertStringsToDirectories( directory.GetDirectories( FullName, searchPattern ) );
-
-		public override DirectoryInfoBase[] GetDirectories( string searchPattern, SearchOption searchOption ) => ConvertStringsToDirectories( directory.GetDirectories( FullName, searchPattern, searchOption ) );
-
-		DirectoryInfoBase[] ConvertStringsToDirectories( IEnumerable<string> paths ) => paths.Select( s => repository.FromDirectoryName( s ) ).ToArray();
-
-		public override FileInfoBase[] GetFiles() => ConvertStringsToFiles( directory.GetFiles( FullName ) );
-
-		public override FileInfoBase[] GetFiles( string searchPattern ) => ConvertStringsToFiles( directory.GetFiles( FullName, searchPattern ) );
-
-		public override FileInfoBase[] GetFiles( string searchPattern, SearchOption searchOption ) => ConvertStringsToFiles( directory.GetFiles( FullName, searchPattern, searchOption ) );
-
-		FileInfoBase[] ConvertStringsToFiles( IEnumerable<string> paths ) => paths.Select( repository.FromFileName ).ToArray();
-
-		public override FileSystemInfoBase[] GetFileSystemInfos() => GetFileSystemInfos( Defaults.AllPattern );
-
-		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern ) => GetFileSystemInfos( searchPattern, SearchOption.TopDirectoryOnly );
-
-		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern, SearchOption searchOption ) => GetDirectories( searchPattern, searchOption ).OfType<FileSystemInfoBase>().Concat( GetFiles( searchPattern, searchOption ) ).ToArray();
 
 		public override void MoveTo( string destDirName )
 		{

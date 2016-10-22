@@ -1,7 +1,4 @@
-﻿using DragonSpark.TypeSystem;
-using System.Collections.Generic;
-
-namespace DragonSpark.Testing.Framework.FileSystem
+﻿namespace DragonSpark.Testing.Framework.FileSystem
 {
 	/*public sealed class FileSystemFactory : ParameterizedSourceBase<IEnumerable<string>, DirectoryInfoBase>
 	{
@@ -28,5 +25,5 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		}
 	}*/
 
-	
+
 }

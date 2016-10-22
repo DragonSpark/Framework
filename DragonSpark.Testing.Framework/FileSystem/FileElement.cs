@@ -22,15 +22,17 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		readonly IAssignableSource<ImmutableArray<byte>> source = new SuppliedSource<ImmutableArray<byte>>();
 
+		public FileElement( ImmutableArray<byte> contents )
+		{
+			source.Assign( contents );
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FileElement"/> class with the content of <paramref name="contents"/>.
 		/// </summary>
 		/// <param name="contents">The actual content.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="contents"/> is <see langword="null" />.</exception>
-		public FileElement( IEnumerable<byte> contents )
-		{
-			source.Assign( contents );
-		}
+		public FileElement( IEnumerable<byte> contents ) : this( contents.ToImmutableArray() ) {}
 
 		public ImmutableArray<byte> Get() => source.Get();
 		object ISource.Get() => source.Get();

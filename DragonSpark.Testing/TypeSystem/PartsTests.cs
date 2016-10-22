@@ -1,26 +1,36 @@
-﻿using DragonSpark.TypeSystem;
+﻿using DragonSpark.Testing.Framework.Application;
+using DragonSpark.Testing.Objects.FileSystem;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Testing.Framework.Application;
 using Xunit;
 
 namespace DragonSpark.Testing.TypeSystem
 {
+	[InitializePartsCommand.Attribute]
 	public class PartsTests
 	{
 		[Fact]
-		public void Public() => PublicAttributed( PublicParts.Default.Get( GetType().Assembly )  );
+		public void Public()
+		{
+			new InitializePartsCommand().Execute();
+			PublicAttributed( PublicParts.Default.Get( GetType().Assembly ) );
+		}
 
 		[Theory, AutoData, ApplicationPublicParts]
 		public void PublicAttributed( ImmutableArray<Type> types )
 		{
-			Assert.Single( types );
-			Assert.Equal( "DragonSpark.Testing.Parts.PublicClass", types.Single().FullName );
+			var type = Assert.Single( types );
+			Assert.Equal( "DragonSpark.Testing.Parts.PublicClass", type.FullName );
 		}
 
 		[Fact]
-		public void All() => AllAttributed( AllParts.Default.Get( GetType().Assembly ) );
+		public void All()
+		{
+			new InitializePartsCommand().Execute();
+			AllAttributed( AllParts.Default.Get( GetType().Assembly ) );
+		}
 
 		[Theory, AutoData, ApplicationParts]
 		public void AllAttributed( ImmutableArray<Type> types )

@@ -18,7 +18,10 @@ namespace DragonSpark.Windows.FileSystem
 			this.directory = directory;
 		}
 
-		public override ImmutableArray<string> Get( string parameter ) => 
-			directory.GetFileSystemInfos( parameter ).Where( specification ).Select( info => info.FullName ).ToImmutableArray();
+		public override ImmutableArray<string> Get( string parameter )
+		{
+			var fileSystemInfos = directory.GetFileSystemInfos( parameter );
+			return fileSystemInfos.Where( specification ).Select( info => info.FullName ).ToImmutableArray();
+		}
 	}
 }

@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public string Path { get; private set; }
 
-		protected override void OnAssign( T item )
+		protected override void OnAssign( T item = null )
 		{
 			Path = item != null ? repository.GetPath( item ) : Path;
 			base.OnAssign( item );

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DragonSpark.Testing.Framework.FileSystem
@@ -28,12 +29,12 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		}
 
 		[Pure]
-		public static string Replace(this string source, string oldValue, string newValue, StringComparison comparisonType)
+		public static string Replace(this string source, string oldValue, [Optional]string newValue, StringComparison comparisonType)
 		{
 			// from http://stackoverflow.com/a/22565605 with some adaptions
 			if (string.IsNullOrEmpty(oldValue))
 			{
-				throw new ArgumentNullException("oldValue");
+				throw new ArgumentNullException(nameof( oldValue ));
 			}
 
 			if (source.Length == 0)
@@ -41,18 +42,14 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				return source;
 			}
 
-			if (newValue == null)
-			{
-				newValue = string.Empty;
-			}
-
+			var replace = newValue ?? string.Empty;
 			var result = new StringBuilder();
 			int startingPos = 0;
 			int nextMatch;
 			while ((nextMatch = source.IndexOf(oldValue, startingPos, comparisonType)) > -1)
 			{
 				result.Append(source, startingPos, nextMatch - startingPos);
-				result.Append(newValue);
+				result.Append(replace);
 				startingPos = nextMatch + oldValue.Length;
 			}
 

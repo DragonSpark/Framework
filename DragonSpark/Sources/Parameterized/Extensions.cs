@@ -7,6 +7,7 @@ using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace DragonSpark.Sources.Parameterized
 {
@@ -154,5 +155,37 @@ namespace DragonSpark.Sources.Parameterized
 
 		public static ICache<TParameter, TResult> ToEqualityCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) where TParameter : class => @this.ToSourceDelegate().ToEqualityCache();
 		public static ICache<TParameter, TResult> ToEqualityCache<TParameter, TResult>( this Func<TParameter, TResult> @this ) where TParameter : class => new EqualityReferenceCache<TParameter, TResult>( @this );
+
+		public static ImmutableArray<TItem> AsImmutable<TParameter, TItem>( this IParameterizedSource<TParameter, IEnumerable<TItem>> @this, TParameter parameter ) => AsImmutable( @this.ToSourceDelegate(), parameter );
+		public static ImmutableArray<TItem> AsImmutable<TParameter, TItem>( this Func<TParameter, IEnumerable<TItem>> @this, TParameter parameter ) => ImmutableSource<TParameter, TItem>.Sources.Get( @this )( parameter );
+		sealed class ImmutableSource<TParameter, TItem> : ParameterizedSourceBase<TParameter, ImmutableArray<TItem>>
+		{
+			public static IParameterizedSource<Func<TParameter, IEnumerable<TItem>>, Func<TParameter, ImmutableArray<TItem>>> Sources { get; } = new Cache<Func<TParameter, IEnumerable<TItem>>, Func<TParameter, ImmutableArray<TItem>>>( s => new ImmutableSource<TParameter, TItem>( s ).Get );
+
+			readonly Func<TParameter, IEnumerable<TItem>> source;
+
+			ImmutableSource( Func<TParameter, IEnumerable<TItem>> source )
+			{
+				this.source = source;
+			}
+
+			public override ImmutableArray<TItem> Get( TParameter parameter ) => source( parameter ).ToImmutableArray();
+		}
+
+		public static IEnumerable<TItem> AsEnumerable<TParameter, TItem>( this IParameterizedSource<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => AsEnumerable( @this.ToSourceDelegate(), parameter );
+		public static IEnumerable<TItem> AsEnumerable<TParameter, TItem>( this Func<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => EnumerableSource<TParameter, TItem>.Sources.Get( @this )( parameter );
+		sealed class EnumerableSource<TParameter, TItem> : ParameterizedSourceBase<TParameter, IEnumerable<TItem>>
+		{
+			public static IParameterizedSource<Func<TParameter, ImmutableArray<TItem>>, Func<TParameter, IEnumerable<TItem>>> Sources { get; } = new Cache<Func<TParameter, ImmutableArray<TItem>>, Func<TParameter, IEnumerable<TItem>>>( s => new EnumerableSource<TParameter, TItem>( s ).Get );
+
+			readonly Func<TParameter, ImmutableArray<TItem>> source;
+
+			EnumerableSource( Func<TParameter, ImmutableArray<TItem>> source )
+			{
+				this.source = source;
+			}
+
+			public override IEnumerable<TItem> Get( TParameter parameter ) => source( parameter ).ToArray();
+		}
 	}
 }

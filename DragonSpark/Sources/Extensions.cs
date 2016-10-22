@@ -139,7 +139,7 @@ namespace DragonSpark.Sources
 			SuppliedSources() : base( source => new SuppliedDeferredSource<T>( source.Get ) ) {}
 		}*/
 
-		public static IEnumerable<T> GetEnumerable<T>( this ISource<ImmutableArray<T>> @this ) => EnumerableSource<T>.Sources.Get( @this )();
+		public static IEnumerable<T> AsEnumerable<T>( this ISource<ImmutableArray<T>> @this ) => EnumerableSource<T>.Sources.Get( @this )();
 		sealed class EnumerableSource<T> : SourceBase<IEnumerable<T>>
 		{
 			public static IParameterizedSource<ISource<ImmutableArray<T>>, Func<IEnumerable<T>>> Sources { get; } = new Cache<ISource<ImmutableArray<T>>, Func<IEnumerable<T>>>( s => new EnumerableSource<T>( s ).Get );

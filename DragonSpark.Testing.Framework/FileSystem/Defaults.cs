@@ -7,7 +7,9 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public static class Defaults
 	{
-		public const string AllPattern = "*";
+		public const string
+			AllPattern = "*",
+			PathRoot = @"Test:\";
 
 		public static bool IsUnix { get; } = new[] { 4, 5, 128 }.Contains( (int)Environment.OSVersion.Platform );
 
@@ -22,6 +24,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// </summary>
 		public static DateTimeOffset DefaultDateTimeOffset { get; } = new DateTime(1601, 01, 01, 00, 00, 00, DateTimeKind.Utc);
 
-		public static string DirectoryName { get; } = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
+		public static string DirectoryName { get; } = Path.Combine( PathRoot, Guid.NewGuid().ToString() );
 	}
 }

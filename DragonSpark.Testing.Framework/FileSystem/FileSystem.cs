@@ -3,6 +3,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.TypeSystem;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
@@ -116,15 +117,19 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 			class PreparedCommandFactory : ParameterizedSourceBase<PreparedCommandFactoryParameter, IDictionary<Type, ICommand<string>>>
 			{
+				readonly static IEqualityComparer<Type> Comparer = new AssignableEqualityComparer( typeof(IDirectoryElement), typeof(IFileElement) );
+
 				public static PreparedCommandFactory Default { get; } = new PreparedCommandFactory();
 				PreparedCommandFactory() {}
 
 				public override IDictionary<Type, ICommand<string>> Get( PreparedCommandFactoryParameter parameter ) =>
-					new Dictionary<Type, ICommand<string>>
+					new Dictionary<Type, ICommand<string>>( Comparer )
 					{
 						{ typeof(IDirectoryElement), new PrepareDirectoryCommand( parameter.Path, parameter.Dictionary ) },
 						{ typeof(IFileElement), new PrepareFileCommand( parameter.Path, parameter.Dictionary ) }
 					};
+
+				
 			}
 
 			struct PreparedCommandFactoryParameter
@@ -193,6 +198,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 					var name = Path.Normalize( Path.GetDirectoryName( parameter ) );
 					if ( !Dictionary.ContainsKey( name ) )
 					{
+						Dictionary.Add( name, new DirectoryElement() );
 						base.Execute( name );
 					}
 				}
@@ -200,7 +206,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 			public override void Set( string instance, IFileSystemElement value )
 			{
-				commands.TryGet( value.GetType() )?.Execute( value );
+				commands.TryGet( value.GetType() )?.Execute( instance );
 				base.Set( instance, value );
 			}
 		}

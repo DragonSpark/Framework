@@ -1,6 +1,6 @@
 using DragonSpark.Application;
 using DragonSpark.Extensions;
-using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace DragonSpark.TypeSystem
 {
 	public class AssemblyBasedTypeSource : SuppliedTypeSource
 	{
-		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.ToDelegate();
+		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.AsEnumerable;
 
 		public AssemblyBasedTypeSource( params Type[] types ) : this( types, Items<Assembly>.Default ) {}
 

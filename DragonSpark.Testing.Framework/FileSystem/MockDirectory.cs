@@ -35,8 +35,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.repository = repository;
 			this.path = path;
 			this.directory = directory;
-
-			repository.Set( directory.Get(), new DirectoryElement() );
 		}
 
 		public override DirectoryInfoBase CreateDirectory(string pathName) => CreateDirectory(pathName, null);
@@ -92,43 +90,51 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
-		public override DateTime GetCreationTime(string pathName) => repository.Get( pathName ).CreationTime.DateTime;
-
-		public override DateTime GetCreationTimeUtc(string pathName) => repository.Get( pathName ).CreationTime.UtcDateTime;
-
 		public override string GetCurrentDirectory() => directory.Get();
-
-		public override string[] GetDirectories(string pathName) => GetDirectories(pathName, Defaults.AllPattern);
-
-		public override string[] GetDirectories(string pathName, string searchPattern) => GetDirectories(pathName, searchPattern, SearchOption.TopDirectoryOnly);
-
-		public override string[] GetDirectories(string pathName, string searchPattern, SearchOption searchOption) => EnumerateDirectories(pathName, searchPattern, searchOption).ToArray();
+		public override void SetCurrentDirectory(string pathName) => directory.Assign( pathName );
 
 		public override string GetDirectoryRoot(string pathName) => path.GetPathRoot(pathName);
 
-		public override string[] GetFiles(string pathName) => GetFiles(pathName, Defaults.AllPattern);
+		public override string[] GetDirectories( string pathName ) => EnumerateDirectories( pathName ).ToArray();
+		public override string[] GetDirectories( string pathName, string searchPattern ) => EnumerateDirectories( pathName, searchPattern ).ToArray();
+		public override string[] GetDirectories( string pathName, string searchPattern, SearchOption searchOption ) => EnumerateDirectories( pathName, searchPattern, searchOption ).ToArray();
+		public override IEnumerable<string> EnumerateDirectories( string pathName ) => EnumerateDirectories( pathName, Defaults.AllPattern );
+		public override IEnumerable<string> EnumerateDirectories( string pathName, string searchPattern ) => EnumerateDirectories( pathName, searchPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<string> EnumerateDirectories( string pathName, string searchPattern, SearchOption searchOption ) =>
+			Search( pathName, repository.AllDirectories, searchPattern, searchOption );
 
-		public override string[] GetFiles(string pathName, string searchPattern) => GetFiles(pathName, searchPattern, SearchOption.TopDirectoryOnly);
+		public override string[] GetFiles( string pathName ) => EnumerateFiles( pathName ).ToArray();
+		public override string[] GetFiles( string pathName, string searchPattern ) => EnumerateFiles( pathName, searchPattern ).ToArray();
+		public override string[] GetFiles( string pathName, string searchPattern, SearchOption searchOption ) => EnumerateFiles( pathName, searchPattern, searchOption ).ToArray();
+		public override IEnumerable<string> EnumerateFiles( string pathName ) => EnumerateFiles( pathName, Defaults.AllPattern );
+		public override IEnumerable<string> EnumerateFiles( string pathName, string searchPattern ) => EnumerateFiles( pathName, searchPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<string> EnumerateFiles( string pathName, string searchPattern, SearchOption searchOption ) => 
+			Search( pathName, repository.AllFiles, searchPattern, searchOption );
 
-		public override string[] GetFiles(string pathName, string searchPattern, SearchOption searchOption)
+		public override string[] GetFileSystemEntries( string pathName ) => EnumerateFileSystemEntries( pathName ).ToArray();
+		public override string[] GetFileSystemEntries( string pathName, string searchPattern ) => EnumerateFileSystemEntries( pathName, searchPattern ).ToArray();
+		public override IEnumerable<string> EnumerateFileSystemEntries( string pathName ) => EnumerateFileSystemEntries( pathName, Defaults.AllPattern );
+		public override IEnumerable<string> EnumerateFileSystemEntries(string pathName, string searchPattern) => EnumerateFileSystemEntries( pathName, Defaults.AllPattern, SearchOption.TopDirectoryOnly );
+		public override IEnumerable<string> EnumerateFileSystemEntries( string pathName, string searchPattern, SearchOption searchOption ) => 
+			Search( pathName, repository.AllPaths, searchPattern, SearchOption.TopDirectoryOnly );
+
+		IEnumerable<string> Search( string pathName, ImmutableArray<string> names, string searchPattern, SearchOption searchOption )
 		{
-			if (!Exists(pathName))
+			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
+
+			if ( !Exists( pathName ) )
 			{
-				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
+				throw new DirectoryNotFoundException( string.Format( CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName ) );
 			}
 
-			return GetFilesInternal(repository.AllFiles, pathName, searchPattern, searchOption);
-		}
-
-		string[] GetFilesInternal(ImmutableArray<string> files, string pathName, string searchPattern, SearchOption searchOption)
-		{
 			CheckSearchPattern(searchPattern);
-			
-			pathName = path.Normalize(pathName);
 
+			var normalized = path.Normalize( pathName );
+			var escaped = Regex.Escape( normalized );
+
+			var separator = Regex.Escape( path.DirectorySeparatorChar.ToString() );
 			var option = searchOption == SearchOption.AllDirectories ? AllDirectoriesPattern : string.Empty;
 			var patterns = new List<string>();
-			var separator = path.DirectorySeparatorChar.ToString();
 			switch ( searchPattern )
 			{
 				case Defaults.AllPattern:
@@ -142,32 +148,20 @@ namespace DragonSpark.Testing.Framework.FileSystem
 											   .Replace( @"\?", $@"{pattern}?" );
 					patterns.Add( fileNamePattern );
 
-					var extension = path.GetExtension(searchPattern);
-					var hasExtensionLengthOfThree = extension.Length == 4 && !extension.Contains( Defaults.AllPattern ) && !extension.Contains("?");
-					if (hasExtensionLengthOfThree)
+					var extension = path.GetExtension( searchPattern );
+					var hasExtensionLengthOfThree = extension.Length == 4 && !extension.Contains( Defaults.AllPattern ) && !extension.Contains( "?" );
+					if ( hasExtensionLengthOfThree )
 					{
 						patterns.Add( $"{fileNamePattern}[^.]" );
 					}
 					break;
 			}
-			var checks = patterns.Select( s => $@"(?i:^{Regex.Escape( pathName )}{option}{s}(?:{separator}?)$)" ).ToArray();
-			var result = files
-				.Where(file => checks.Any( pattern => Regex.IsMatch( file, pattern ) ) )
-				.ToArray();
+			var checks = patterns.Select( s => $@"(?i:^{escaped}{separator}{option}{s}(?:{separator}?)$)" ).ToArray();
+			var result = names
+				.Where( file => checks.Any( pattern => Regex.IsMatch( file, pattern ) ) )
+				.Where( p => string.Compare( p, normalized, StringComparison.OrdinalIgnoreCase ) != 0 );
 			return result;
 		}
-
-		public override string[] GetFileSystemEntries(string pathName) => GetFileSystemEntries(pathName, Defaults.AllPattern);
-
-		public override string[] GetFileSystemEntries(string pathName, string searchPattern) => GetDirectories(pathName, searchPattern).Union( GetFiles(pathName, searchPattern) ).ToArray();
-
-		public override DateTime GetLastAccessTime(string pathName) => repository.Get( pathName ).LastAccessTime.DateTime;
-
-		public override DateTime GetLastAccessTimeUtc(string pathName) => repository.Get( pathName ).LastAccessTime.UtcDateTime;
-
-		public override DateTime GetLastWriteTime(string pathName) => repository.Get( pathName ).LastWriteTime.DateTime;
-
-		public override DateTime GetLastWriteTimeUtc(string pathName) => repository.Get( pathName ).LastWriteTime.UtcDateTime;
 
 		public override string[] GetLogicalDrives() => repository
 			.AllDirectories
@@ -187,7 +181,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			{
 				var parts = new Stack<string>( collection );
 				parts.Pop();
-				var name = parts.Count == 1 ? path.GetPathRoot( pathName ) : string.Join( path.DirectorySeparatorChar.ToString(), parts.Reverse() );
+				var name = parts.Count == 1 ? path.GetPathRoot( pathName ).NullIfEmpty() ?? directory.PathRoot : string.Join( path.DirectorySeparatorChar.ToString(), parts.Reverse() );
 				var result = repository.FromDirectoryName( name );
 				return result;
 			}
@@ -239,60 +233,22 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			throw new NotImplementedException(Properties.Resources.NOT_IMPLEMENTED_EXCEPTION);
 		}
 
+		public override DateTime GetCreationTime(string pathName) => repository.Get( pathName ).CreationTime.DateTime;
 		public override void SetCreationTime(string pathName, DateTime creationTime) => repository.GetDirectory( pathName ).CreationTime = creationTime;
-
+		public override DateTime GetCreationTimeUtc(string pathName) => repository.Get( pathName ).CreationTime.UtcDateTime;
 		public override void SetCreationTimeUtc( string pathName, DateTime creationTimeUtc ) => repository.GetDirectory( pathName ).CreationTime = creationTimeUtc;
 
-		public override void SetCurrentDirectory(string pathName) => directory.Assign( pathName );
-
+		public override DateTime GetLastAccessTime(string pathName) => repository.Get( pathName ).LastAccessTime.DateTime;
 		public override void SetLastAccessTime(string pathName, DateTime lastAccessTime) => repository.GetDirectory( pathName ).LastAccessTime = lastAccessTime;
-
+		public override DateTime GetLastAccessTimeUtc(string pathName) => repository.Get( pathName ).LastAccessTime.UtcDateTime;
 		public override void SetLastAccessTimeUtc(string pathName, DateTime lastAccessTimeUtc) => repository.GetDirectory( pathName ).LastAccessTime = lastAccessTimeUtc;
 
+		public override DateTime GetLastWriteTime(string pathName) => repository.Get( pathName ).LastWriteTime.DateTime;
 		public override void SetLastWriteTime(string pathName, DateTime lastWriteTime) => repository.GetDirectory( pathName ).LastWriteTime = lastWriteTime;
-
+		public override DateTime GetLastWriteTimeUtc(string pathName) => repository.Get( pathName ).LastWriteTime.UtcDateTime;
 		public override void SetLastWriteTimeUtc(string pathName, DateTime lastWriteTimeUtc) => repository.GetDirectory( pathName ).LastWriteTime = lastWriteTimeUtc;
 
-		public override IEnumerable<string> EnumerateDirectories(string pathName)
-		{
-			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
-
-			return EnumerateDirectories(pathName, Defaults.AllPattern);
-		}
-
-		public override IEnumerable<string> EnumerateDirectories(string pathName, string searchPattern)
-		{
-			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
-
-			return EnumerateDirectories(pathName, searchPattern, SearchOption.TopDirectoryOnly);
-		}
-
-		public override IEnumerable<string> EnumerateDirectories(string pathName, string searchPattern, SearchOption searchOption)
-		{
-			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
-
-			var element = repository.Get( pathName );
-			if ( element == null )
-			{
-				throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.COULD_NOT_FIND_PART_OF_PATH_EXCEPTION, pathName));
-			}
-
-			var dirs = GetFilesInternal(repository.AllDirectories, pathName, searchPattern, searchOption);
-			return dirs.Where(p => string.Compare(p, pathName, StringComparison.OrdinalIgnoreCase) != 0);
-		}
-
-		public override IEnumerable<string> EnumerateFiles(string pathName) => GetFiles(pathName);
-
-		public override IEnumerable<string> EnumerateFiles(string pathName, string searchPattern) => GetFiles(pathName, searchPattern);
-
-		public override IEnumerable<string> EnumerateFiles(string pathName, string searchPattern, SearchOption searchOption) => GetFiles(pathName, searchPattern, searchOption);
-
-		public override IEnumerable<string> EnumerateFileSystemEntries(string pathName) => new List<string>(GetFiles(pathName).Concat( GetDirectories(pathName) ));
-
-		public override IEnumerable<string> EnumerateFileSystemEntries(string pathName, string searchPattern) => new List<string>(GetFiles(pathName, searchPattern).Concat( GetDirectories(pathName) ));
-
-		public override IEnumerable<string> EnumerateFileSystemEntries(string pathName, string searchPattern, SearchOption searchOption) => new List<string>(GetFiles(pathName, searchPattern, searchOption).Concat( GetDirectories(pathName, searchPattern, searchOption) ));
-
+		
 		/*static string EnsurePathEndsWithDirectorySeparator(string path)
 		{
 			if (!path.EndsWith(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))

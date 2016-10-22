@@ -20,11 +20,7 @@ namespace DragonSpark.Aspects.Alteration
 		}
 
 		IAlteration Alteration { get; set; }
-		public override void RuntimeInitializeInstance()
-		{
-			Func<Type, IAlteration> func = Source;
-			Alteration = func( alterationType );
-		}
+		public override void RuntimeInitializeInstance() => Alteration = Source( alterationType );
 
 		object IAlteration.Alter( object parameter ) => Alteration.Alter( parameter );
 	}

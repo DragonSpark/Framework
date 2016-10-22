@@ -412,6 +412,7 @@
     <Compile Include="Sources\SuppliedAndExportedItems.cs" />
     <Compile Include="Sources\TimedDelegatedSource.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />
+    <Compile Include="TypeSystem\AssignableEqualityComparer.cs" />
     <Compile Include="TypeSystem\Default.cs" />
     <Compile Include="TypeSystem\Generics\ActionContextBase.cs" />
     <Compile Include="Application\ApplicationAssembly.cs" />

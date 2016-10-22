@@ -1,3 +1,4 @@
+using DragonSpark.Sources.Parameterized;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using PostSharp.Aspects;
@@ -13,7 +14,7 @@ namespace DragonSpark.Windows
 		{
 			Application.Execution.Context.Assign( ExecutionContext.Default );
 			TypeSystem.Configuration.AssemblyLoader.Assign( o => Assembly.LoadFile );
-			TypeSystem.Configuration.AssemblyPathLocator.Assign( o => AssemblyLocator.Default.Get );
+			TypeSystem.Configuration.AssemblyPathLocator.Assign( o => new AssemblyLocator().ToEqualityCache().Get );
 		}
 	}
 }

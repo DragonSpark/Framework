@@ -2,6 +2,7 @@
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
 using System;
+using System.Collections.Generic;
 using ICommand = System.Windows.Input.ICommand;
 
 namespace DragonSpark.Commands
@@ -30,6 +31,7 @@ namespace DragonSpark.Commands
 			return result;
 		}
 
+		public static SuppliedCommand<IEnumerable<T>> Fixed<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );
 		public static SuppliedCommand<T> Fixed<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> Fixed<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
 

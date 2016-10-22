@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Diagnostics.Exceptions;
 using System.IO;
 
-namespace DragonSpark.Testing.Objects.Configuration
+namespace DragonSpark.Testing.Objects.Declarative.Configuration
 {
 	/// <summary>
 	/// Interaction logic for Item.xaml

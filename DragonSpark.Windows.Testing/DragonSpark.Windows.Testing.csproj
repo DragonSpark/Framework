@@ -86,6 +86,10 @@
       <Project>{96f63f2b-7d11-4d0f-a932-26c29f8e48bf}</Project>
       <Name>DragonSpark.Testing.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Testing.Objects.Declarative\DragonSpark.Testing.Objects.Declarative.csproj">
+      <Project>{7f75a2ac-6ddf-43d9-aab8-6370166a6e57}</Project>
+      <Name>DragonSpark.Testing.Objects.Declarative</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj">
       <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
       <Name>DragonSpark.Testing.Objects</Name>
@@ -110,7 +114,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d  "$(ProjectDir)..\Parts\$(Configuration)\*.*" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

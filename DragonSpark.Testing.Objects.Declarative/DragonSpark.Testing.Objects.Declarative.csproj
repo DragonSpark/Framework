@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F01891D-FFB9-485B-BD5F-C072EF00DE59}</ProjectGuid>
+    <ProjectGuid>{7F75A2AC-6DDF-43D9-AAB8-6370166A6E57}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DragonSpark.Testing.Parts</RootNamespace>
-    <AssemblyName>DragonSpark.Testing.Parts</AssemblyName>
+    <RootNamespace>DragonSpark.Testing.Objects.Declarative</RootNamespace>
+    <AssemblyName>DragonSpark.Testing.Objects.Declarative</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,29 +31,62 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NonPublicClass.cs" />
+    <Compile Include="Configuration\Item.xaml.cs">
+      <DependentUpon>Item.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Values.xaml.cs">
+      <DependentUpon>Values.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicClass.cs" />
+    <Compile Include="Setup\ProgramSetup.xaml.cs">
+      <DependentUpon>ProgramSetup.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="project.json" />
+    <Page Include="Configuration\Item.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\Values.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setup\ProgramSetup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj">
+      <Project>{65ccd995-c347-48b1-b017-d09e917bd252}</Project>
+      <Name>DragonSpark.Testing.Objects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">
+      <Project>{82e56091-dd33-4f8d-a9d9-8948f3d6f820}</Project>
+      <Name>DragonSpark.Types.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DragonSpark.Windows.Legacy\DragonSpark.Windows.Legacy.csproj">
+      <Project>{5e18a1ba-c6c9-4070-b8f5-c4f2a14079fd}</Project>
+      <Name>DragonSpark.Windows.Legacy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj">
       <Project>{167df420-328c-4acc-abd0-42dbe268efdf}</Project>
       <Name>DragonSpark</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!--<Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

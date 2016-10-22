@@ -143,7 +143,6 @@ namespace DragonSpark.Windows.FileSystem
 		}
 
 		public DirectorySecurity GetAccessControl() => Source.GetAccessControl();
-
 		public DirectorySecurity GetAccessControl( AccessControlSections includeSections ) => Source.GetAccessControl( includeSections );
 
 		public IDirectoryInfo[] GetDirectories() => Source.GetDirectories().Select( directorySource ).ToArray();

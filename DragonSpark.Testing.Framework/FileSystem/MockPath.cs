@@ -1,6 +1,9 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Windows.FileSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO.Abstractions;
 using System.Linq;
@@ -12,11 +15,13 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
 	[Serializable]
-	public class MockPath : PathWrapper
+	public class MockPath : PathWrapper, IPath
 	{
 		readonly IDirectorySource directory;
-		readonly char[] separator;
-		readonly string separatorText;
+		readonly char[] separator/*, separators*/;
+		readonly string[] separators;
+		readonly string directorySeparator;
+
 
 		public MockPath() : this( DirectorySource.Current.Get() ) {}
 
@@ -26,82 +31,80 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.directory = directory;
 
 			var c = DirectorySeparatorChar;
-			separatorText = c.ToString(CultureInfo.InvariantCulture);
+			directorySeparator = c.ToString( CultureInfo.InvariantCulture );
 			separator = new[] { c };
+			separators = new[] { directorySeparator, AltDirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ) };
 		}
 
 		public sealed override char DirectorySeparatorChar => Defaults.IsUnix ? AltDirectorySeparatorChar : base.DirectorySeparatorChar;
 
-		public override char AltDirectorySeparatorChar => Defaults.IsUnix ? DirectorySeparatorChar : base.AltDirectorySeparatorChar;
+		public sealed override char AltDirectorySeparatorChar => Defaults.IsUnix ? DirectorySeparatorChar : base.AltDirectorySeparatorChar;
+
+		public override string GetPathRoot( string path ) => base.GetPathRoot( path ).NullIfEmpty() ?? ( path.StartsWith( directory.PathRoot, StringComparison.OrdinalIgnoreCase ) ? directory.PathRoot : string.Empty );
 
 		public override string GetFullPath(string path)
 		{
-			var directorySeparator = DirectorySeparatorChar;
-			var altDirectorySeparatorChar = AltDirectorySeparatorChar;
-			var replaced = path.Replace(altDirectorySeparatorChar, directorySeparator);
-			var isUnc = replaced.StartsWith( Windows.FileSystem.Defaults.Unc, StringComparison.OrdinalIgnoreCase) || replaced.StartsWith( Windows.FileSystem.Defaults.UncUnix, StringComparison.OrdinalIgnoreCase);
-			var root = GetPathRoot(path);
+			var replaced = path.Replace(AltDirectorySeparatorChar, DirectorySeparatorChar);
+			var isUnc = replaced.StartsWith( Defaults.IsUnix ? Windows.FileSystem.Defaults.UncUnix : Windows.FileSystem.Defaults.Unc, StringComparison.OrdinalIgnoreCase );
+			var root = GetPathRoot( path );
 
-			string[] pathSegments;
+			var current = directory.Get();
+			var segments = root == string.Empty // relative path on the current drive or volume
+				? 
+				GetSegments( Combine( current, replaced ) ) // absolute path on the current drive or volume
+					: 
+					separators.Any( s => s.Equals( root, StringComparison.OrdinalIgnoreCase ) ) ? GetSegments( directory.PathRoot, replaced ) : GetSegments( replaced );
 
-			if (root.Length == 0)
+			if ( isUnc && segments.Length < 2 )
 			{
-				// relative path on the current drive or volume
-				pathSegments = GetSegments($"{directory.Get()}{separatorText}{replaced}");
+				throw new ArgumentException( @"The UNC path should be of the form \\server\share.", nameof( path ) );
 			}
-			else if (isUnc)
-			{
-				// unc path
-				pathSegments = GetSegments(replaced);
-				if (pathSegments.Length < 2)
-				{
-					throw new ArgumentException(@"The UNC path should be of the form \\server\share.", nameof( path ));
-				}
-			}
-			else if (separatorText.Equals(root, StringComparison.OrdinalIgnoreCase) || altDirectorySeparatorChar.ToString().Equals(root, StringComparison.OrdinalIgnoreCase))
-			{
-				// absolute path on the current drive or volume
-				pathSegments = GetSegments(GetPathRoot(directory.Get()), replaced);
-			}
-			else
-			{
-				pathSegments = GetSegments(replaced);
-			}
-
+			
 			// unc paths need at least two segments, the others need one segment
-			var isUnixRooted = directory.Get().StartsWith(separatorText, StringComparison.OrdinalIgnoreCase);
+			var isUnixRooted = Defaults.IsUnix && current.StartsWith( directorySeparator, StringComparison.OrdinalIgnoreCase );
 
 			var minPathSegments = isUnc ? 2 : isUnixRooted ? 0 : 1;
 
 			var stack = new Stack<string>();
-			foreach (var segment in pathSegments)
+			foreach ( var segment in segments )
 			{
-				if ( Windows.FileSystem.Defaults.ParentPath.Equals(segment, StringComparison.OrdinalIgnoreCase))
+				if ( Windows.FileSystem.Defaults.ParentPath.Equals( segment, StringComparison.OrdinalIgnoreCase ) )
 				{
-					// only pop, if afterwards are at least the minimal amount of path segments
-					if (stack.Count > minPathSegments)
+					if (stack.Count > minPathSegments) // only pop, if afterwards are at least the minimal amount of path segments
 					{
 						stack.Pop();
 					}
 				}
-				else if ( Windows.FileSystem.Defaults.CurrentPath.Equals(segment, StringComparison.OrdinalIgnoreCase)) {} // ignore .
+				else if ( Windows.FileSystem.Defaults.CurrentPath.Equals( segment, StringComparison.OrdinalIgnoreCase ) ) {} // ignore .
 				else
 				{
-					stack.Push(segment);
+					stack.Push( segment );
 				}
 			}
 
-			var joined = string.Join(separatorText, stack.Reverse().ToArray());
-			var fullPath = replaced.Length > 1 && replaced.EndsWith( separatorText, StringComparison.OrdinalIgnoreCase ) ? string.Concat( joined, separatorText ) : joined;
+			var joined = this.EnsureTrailingSlash( Combine( stack.Reverse().ToArray() ), replaced );
 
-			var result = isUnixRooted 
+			var prefix = isUnixRooted 
 				? 
-				string.Concat( isUnc ? Windows.FileSystem.Defaults.UncUnix : separatorText, fullPath ) 
+				isUnc ? Windows.FileSystem.Defaults.UncUnix : directorySeparator 
 				: 
-				( isUnc ? string.Concat( Windows.FileSystem.Defaults.Unc, fullPath ) : fullPath );
+				( isUnc ? Windows.FileSystem.Defaults.Unc : string.Empty );
+
+			var result = string.Concat( prefix, joined );
 			return result;
 		}
 
-		string[] GetSegments( params string[] paths ) => paths.SelectMany( path => path.Split( separator, StringSplitOptions.RemoveEmptyEntries ) ).ToArray();
+		ImmutableArray<string> GetSegments( params string[] paths )
+		{
+			var segments = paths.SelectMany( path => path.Split( separator, StringSplitOptions.RemoveEmptyEntries ) ).ToArray();
+			if ( segments.Length > 1 )
+			{
+				var first = segments[0];
+				segments[0] = directory.PathRoot.StartsWith( first ) ? this.EnsureTrailingSlash( first ) : first;
+			}
+			
+			var result = segments.ToImmutableArray();
+			return result;
+		}
 	}
 }

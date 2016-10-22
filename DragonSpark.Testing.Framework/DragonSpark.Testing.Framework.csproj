@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />-->
   <PropertyGroup>
+	 <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{96F63F2B-7D11-4D0F-A932-26C29F8E48BF}</ProjectGuid>
@@ -11,7 +12,6 @@
     <AssemblyName>DragonSpark.Testing.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PostSharpHostConfigurationFile>App.config</PostSharpHostConfigurationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,8 +44,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Setup\ExecutedRunCommandAttributeBase.cs" />
     <Compile Include="CurrentTestingMethod.cs" />
     <Compile Include="CurrentTime.cs" />
+    <Compile Include="FileSystem\InitializePartsAssemblyCommand.cs" />
+    <Compile Include="FileSystem\AssemblyLoader.cs" />
     <Compile Include="FileSystem\Defaults.cs" />
     <Compile Include="FileSystem\ElementSource.cs" />
     <Compile Include="FileSystem\Extensions.cs" />
