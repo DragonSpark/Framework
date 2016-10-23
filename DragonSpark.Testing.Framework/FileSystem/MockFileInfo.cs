@@ -115,7 +115,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Decrypt()
 		{
-			var contents = Element.ToArray();
+			var contents = Element.Unwrap();
 			for ( var i = 0; i < contents.Length; i++ )
 				contents[i] ^= (byte)( i % 256 );
 			Element.Assign( contents );
@@ -123,7 +123,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Encrypt()
 		{
-			var contents = Element.ToArray();
+			var contents = Element.Unwrap();
 			for ( var i = 0; i < contents.Length; i++ )
 				contents[i] ^= (byte)( i % 256 );
 			Element.Assign( contents );
@@ -190,6 +190,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 		}
 
-		public override long Length => Element.ToArray().LongLength;
+		public override long Length => Element.Unwrap().LongLength;
 	}
 }

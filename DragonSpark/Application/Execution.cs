@@ -11,7 +11,7 @@ namespace DragonSpark.Application
 
 		static class Support
 		{
-			readonly public static Func<object> Get = Context.Delegate();
+			readonly public static Func<object> Get = Context.GetCurrent;
 		}
 	}
 }

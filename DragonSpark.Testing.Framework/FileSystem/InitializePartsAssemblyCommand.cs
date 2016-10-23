@@ -1,38 +1,36 @@
 ﻿using DragonSpark.Commands;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
-using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Reflection;
+using System.Linq;
+using FileInfo = System.IO.FileInfo;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public class InitializePartsAssemblyCommand : CommandBase<IEnumerable<Type>>
 	{
 		public static IScope<InitializePartsAssemblyCommand> Current { get; } = new Scope<InitializePartsAssemblyCommand>( Factory.GlobalCache( () => new InitializePartsAssemblyCommand() ) );
-		InitializePartsAssemblyCommand() : this( FileSystemRepository.Current.Get(), Path.Current.Get(), ByteReader.Default.Get ) {}
+		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Current.Get().Execute ) {}
 
-		readonly IFileSystemRepository repository;
-		readonly IPath path;
-		readonly Func<string, ImmutableArray<byte>> reader;
+		readonly Action<FileInfo> provision;
 
 		[UsedImplicitly]
-		public InitializePartsAssemblyCommand( IFileSystemRepository repository, IPath path, Func<string, ImmutableArray<byte>> reader )
+		public InitializePartsAssemblyCommand( Action<FileInfo> provision )
 		{
-			this.repository = repository;
-			this.path = path;
-			this.reader = reader;
+			this.provision = provision;
 		}
 
 		public override void Execute( IEnumerable<Type> parameter )
 		{
-			var items = parameter.Assemblies().Introduce( path, tuple => new KeyValuePair<string, Assembly>( tuple.Item2.GetFileName( tuple.Item1.Location ), tuple.Item1 ) );
+			var items = parameter
+				.Assemblies()
+				.Where( assembly => assembly.Location != null )
+				.Select( assembly => new FileInfo( assembly.Location ) );
 			foreach ( var item in items )
 			{
-				repository.Set( item.Key, new FileElement( reader( item.Key ) ) );
+				provision( item );
 			}
 		}
 	}

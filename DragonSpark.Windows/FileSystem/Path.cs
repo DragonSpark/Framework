@@ -8,8 +8,6 @@ namespace DragonSpark.Windows.FileSystem
 	public class Path : IPath
 	{
 		public static IScope<IPath> Current { get; } = new Scope<IPath>( Sources.Factory.GlobalCache( () => new Path() ) );
-
-		public static Path Default { get; } = new Path();
 		Path() : this( Implementation.DefaultImplementation.Get() ) {}
 
 		readonly PathBase source;

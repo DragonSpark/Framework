@@ -116,7 +116,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 
 			var sourceFile = repository.GetFile(sourceFileName);
-			repository.Set( destFileName, new FileElement( sourceFile.ToArray() ) );
+			repository.Set( destFileName, new FileElement( sourceFile.Unwrap() ) );
 		}
 
 		public override Stream Create(string pathName)
@@ -287,7 +287,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new DirectoryNotFoundException( "Could not find a part of the path." );
 			}
 
-			repository.Set( destFileName, new FileElement( sourceFile.ToArray() ) );
+			repository.Set( destFileName, new FileElement( sourceFile.Unwrap() ) );
 			repository.Remove( sourceFileName );
 		}
 
@@ -360,7 +360,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		{
 			path.IsLegalAbsoluteOrRelative(pathName, nameof(pathName));
 
-			return repository.GetFile(pathName).ToArray();
+			return repository.GetFile(pathName).Unwrap();
 		}
 
 		public override string[] ReadAllLines(string pathName)
@@ -389,7 +389,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find {0}", pathName));
 			}
 
-			return encoding.GetString(repository.GetFile(pathName).ToArray()).SplitLines();
+			return encoding.GetString(repository.GetFile(pathName).Unwrap()).SplitLines();
 		}
 
 		public override string ReadAllText(string pathName)
@@ -792,6 +792,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 		}
 
-		private string ReadAllTextInternal(string pathName, Encoding encoding) => ReadAllBytes(repository.GetFile(pathName).ToArray(), encoding);
+		private string ReadAllTextInternal(string pathName, Encoding encoding) => ReadAllBytes(repository.GetFile(pathName).Unwrap(), encoding);
 	}
 }

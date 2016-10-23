@@ -1,4 +1,5 @@
-﻿using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
 using System;
@@ -40,6 +41,25 @@ namespace DragonSpark.Commands
 		{
 			public static DelegateCache<T> Default { get; } = new DelegateCache<T>();
 			DelegateCache() : base( command => command.Execute ) {}
+		}
+
+		public static Action<T> Delegate<T>( this ISource<ICommand<T>> @this ) => @this.ToDelegate().Delegate();
+		public static Action<T> Delegate<T>( this Func<ICommand<T>> @this ) => Delegates<T>.Default.Get( @this );
+		sealed class Delegates<T> : Cache<Func<ICommand<T>>, Action<T>>
+		{
+			public static Delegates<T> Default { get; } = new Delegates<T>();
+			Delegates() : base( source => new Command( source ).Execute ) {}
+
+			sealed class Command : CommandBase<T>
+			{
+				readonly Func<ICommand<T>> source;
+				public Command( Func<ICommand<T>> source )
+				{
+					this.source = source;
+				}
+
+				public override void Execute( T parameter ) => source().Execute( parameter );
+			}
 		}
 
 		public static IAlteration<T> ToAlteration<T>( this ICommand<T> @this ) => Alterations<T>.Default.Get( @this );

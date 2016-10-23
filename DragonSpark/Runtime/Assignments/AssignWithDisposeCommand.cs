@@ -7,6 +7,8 @@ namespace DragonSpark.Runtime.Assignments
 {
 	public class AssignWithRestoreCommand<T> : AssignWithDisposeCommand<T>
 	{
+		/*public AssignWithRestoreCommand( IScope<T> source ) : this( source, source.Get() ) {}
+		public AssignWithRestoreCommand( IAssignableSource<T> source ) : this( source, source.Get() ) {}*/
 		public AssignWithRestoreCommand( IAssignable<T> assignable, T current ) : base( assignable, new Assignment<T>( new Assign<T>( assignable ), current ) ) {}
 	}
 

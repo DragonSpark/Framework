@@ -1,12 +1,15 @@
 using DragonSpark.Activation;
 using DragonSpark.Application;
+using DragonSpark.Configuration;
 using DragonSpark.Diagnostics;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.Windows.FileSystem;
+using DragonSpark.Windows.Setup;
 using PostSharp.Aspects;
-using System.Linq;
+using System.Configuration;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -15,15 +18,19 @@ namespace DragonSpark.Testing.Framework
 		[ModuleInitializer( 0 )]
 		public static void Execution()
 		{
-			Time.Default.Configuration.Assign( CurrentTime.Default.Wrap() );
 			DragonSpark.Application.Execution.Context.Assign( ExecutionContext.Default );
-			LoggingConfiguration.Default.Configurators.Assign( o => new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Get().ToArray() ).Get().Wrap() );
+			Time.Default.Configuration.Assign( CurrentTime.Default.Wrap() );
+			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global() );
 
-			Path.Implementation.DefaultImplementation.Assign( o => new MockPath() );
-			Directory.Implementation.DefaultImplementation.Assign( o => new MockDirectory() );
-			File.Implementation.DefaultImplementation.Assign( o => new MockFile() );
-			DirectoryInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Wrap() );
-			FileInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Wrap() );
+			Path.Implementation.DefaultImplementation.Assign<MockPath>();
+			Directory.Implementation.DefaultImplementation.Assign<MockDirectory>();
+			
+			File.Implementation.DefaultImplementation.Assign<MockFile>();
+			DirectoryInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Global );
+			FileInfoFactory.Default.Configuration.Assign( new AlteredParameterizedSource<string, IFileInfo>( MappedPathAlteration.Current.GetCurrent, FileInfoFactory.Default.Configuration.GetFactory() ).Global );
+			FileInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Global );
+
+			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global<ConfigurationUserLevel, string>() );
 		}
 	}
 }

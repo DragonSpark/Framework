@@ -2,7 +2,6 @@
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
-using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Windows.FileSystem;
@@ -116,20 +115,6 @@ namespace DragonSpark.Windows.Setup
 			public Action<Exception, string> ErrorSaving { get; }
 			public Action<string> Created { get; }
 			public Action<string> Complete { get; }
-		}
-	}
-
-	sealed class UserConfigurationLocator : ParameterizedSourceBase<IFileInfo, System.Configuration.Configuration>
-	{
-		public static UserConfigurationLocator Default { get; } = new UserConfigurationLocator();
-		UserConfigurationLocator() {}
-
-		public override System.Configuration.Configuration Get( IFileInfo parameter )
-		{
-			var source = parameter.Directory.Parent.GetFiles( parameter.Name ).Only();
-			var result = source != null ?
-				ConfigurationManager.OpenMappedExeConfiguration( new ExeConfigurationFileMap { ExeConfigFilename = source.FullName }, ConfigurationUserLevel.None ) : null;
-			return result;
 		}
 	}
 }

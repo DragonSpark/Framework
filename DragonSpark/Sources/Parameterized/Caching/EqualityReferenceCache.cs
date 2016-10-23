@@ -7,6 +7,8 @@ namespace DragonSpark.Sources.Parameterized.Caching
 	{
 		readonly static Alter<TInstance> DefaultSource = EqualityReference<TInstance>.Default.Get;
 
+		public EqualityReferenceCache() : this( instance => default(TValue) ) {}
+
 		public EqualityReferenceCache( Func<TInstance, TValue> create ) : this( create, DefaultSource ) {}
 
 		[UsedImplicitly]

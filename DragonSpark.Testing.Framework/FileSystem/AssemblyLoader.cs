@@ -24,6 +24,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			this.domain = domain;
 		}
 
-		public override Assembly Get( string parameter ) => domain.Load( repository.GetFile( parameter ).ToArray() );
+		public override Assembly Get( string parameter ) => domain.Load( repository.GetFile( parameter ).Unwrap() );
 	}
 }

@@ -36,10 +36,6 @@ namespace DragonSpark.Sources.Parameterized
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ISpecification<TParameter> specification ) =>
 			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToSourceDelegate() );
 		
-		public static Func<object, T> Wrap<T>( this T @this ) => @this.Wrap<object, T>();
-
-		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this TResult @this ) => Factory.For( @this ).Wrap<TParameter, TResult>();
-
 		public static ISource<TResult> Fixed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, TParameter parameter ) => @this.ToSourceDelegate().Fixed( parameter );
 		public static ISource<TResult> Fixed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter> parameter ) => @this.ToSourceDelegate().Fixed( parameter );
 		public static ISource<TResult> Fixed<TParameter, TResult>( this Func<TParameter, TResult> @this, TParameter parameter ) => @this.Fixed( Factory.For( parameter ) );
@@ -48,11 +44,19 @@ namespace DragonSpark.Sources.Parameterized
 
 		/*public static Func<object, T> Wrap<T>( this ISource<T> @this ) => @this.Wrap<object, T>();*/
 
+		public static Func<object, T> Wrap<T>( this T @this ) => @this.Wrap<object, T>();
+		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this TResult @this ) => Factory.For( @this ).Wrap<TParameter, TResult>();
 		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this ISource<TResult> @this ) => new Func<TResult>( @this.Get ).Wrap<TParameter, TResult>();
 
 		public static Func<object, T> Wrap<T>( this Func<T> @this ) => @this.Wrap<object, T>();
 
-		static Func<TParameter, TResult> Wrap<TParameter, TResult>( this Func<TResult> @this ) => new Wrapper<TParameter, TResult>( @this ).Get;
+		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this Func<TResult> @this ) => new SourceAdapter<TParameter, TResult>( @this ).Get;
+
+		public static Func<TParameter, TResult> ScopedLocal<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate();
+		public static Func<TParameter, TResult> ScopedLocal<TParameter, TResult>( this Func<TParameter, TResult> @this ) => @this;
+
+		public static Func<TParameter,TResult> Global<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, object _ ) => @this.ToSourceDelegate();
+		public static Func<TParameter,TResult> Global<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
 
 		/*public static Delegate Convert( this Func<object> @this, Type resultType ) => ConvertSupport.Methods.Make( resultType ).Invoke<Delegate>( @this );*/
 

@@ -125,6 +125,7 @@
     <Compile Include="Setup\IsExecutingInManagedHostSpecification.cs" />
     <Compile Include="Setup\ReadKeyCommand.cs" />
     <Compile Include="Setup\SaveUserSettingsCommand.cs" />
+    <Compile Include="Setup\UserConfigurationLocator.cs" />
     <Compile Include="Setup\UserSettingsExistsSpecification.cs" />
     <Compile Include="Setup\UserSettingsFile.cs" />
     <Compile Include="AppDomainFormatter.cs" />

@@ -2,6 +2,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Application;
+using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Objects.Properties;
 using DragonSpark.Windows.Setup;
 using JetBrains.Annotations;
@@ -13,7 +14,7 @@ using Resources = DragonSpark.Windows.Properties.Resources;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	[Trait( Traits.Category, Traits.Categories.ServiceLocation )]
+	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), InitializeUserSettingsFileCommand.Attribute]
 	public class InitializeUserSettingsCommandTests : TestCollectionBase
 	{
 		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output )

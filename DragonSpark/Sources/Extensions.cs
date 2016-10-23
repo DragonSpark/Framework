@@ -1,4 +1,3 @@
-using DragonSpark.Application;
 using DragonSpark.Commands;
 using DragonSpark.Extensions;
 using DragonSpark.Runtime.Assignments;
@@ -13,7 +12,9 @@ namespace DragonSpark.Sources
 {
 	public static class Extensions
 	{
-		public static T[] ToArray<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
+		// public static IDisposable Assignment<T>( this IScope<T> @this, T start ) => new ValueAssignment<Func<T>>( new Assign<Func<T>>( @this ), new Value<Func<T>>( Factory.For( start ), Factory.For( @this.Get() ) ) );
+
+		public static T[] Unwrap<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
 
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
@@ -39,7 +40,7 @@ namespace DragonSpark.Sources
 			return @this.Get();
 		}
 
-		public static T ScopedWithDefault<T>( this T @this ) where T : IScopeAware => @this.ScopedWith( ExecutionContext.Default );
+		/*public static T ScopedWithDefault<T>( this T @this ) where T : IScopeAware => @this.ScopedWith( ExecutionContext.Default );*/
 
 		public static T ScopedWith<T>( this T @this, ISource scope ) where T : IScopeAware
 		{
@@ -52,60 +53,38 @@ namespace DragonSpark.Sources
 		public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, Func<T> factory ) => new AssignCommand<Func<T>>( @this ).Fixed( factory );
 		// public static IRunCommand Configured<T>( this IAssignable<Func<object, T>> @this, Func<object, T> factory ) => new AssignCommand<Func<object, T>>( @this ).Fixed( factory );
 
-		public static Func<TParameter, TResult> Delegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => SourceDelegates<TParameter, TResult>.Default.Get( @this );
-		sealed class SourceDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
+		public static void Assign<T>( this IAssignable<Func<object, T>> @this ) where T : class, new() => @this.Assign( o => new T() );
+
+		public static Func<TParameter, TResult> Local<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => @this.GetCurrentDelegate();
+		public static Func<TParameter, TResult> Global<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, object _ ) => @this.GetCurrentDelegate();
+
+		public static TResult GetCurrent<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, TParameter parameter ) => @this.Get().Get( parameter );
+		public static Func<TParameter, TResult> GetCurrentDelegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => LocalDelegates<TParameter, TResult>.Default.Get( @this );
+		sealed class LocalDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
 		{
-			public static SourceDelegates<TParameter, TResult> Default { get; } = new SourceDelegates<TParameter, TResult>();
-			SourceDelegates() : base( source => new Factory( source ).Get ) {}
-
-			sealed class Factory : ParameterizedSourceBase<TParameter, TResult>
-			{
-				readonly ISource<IParameterizedSource<TParameter, TResult>> source;
-				public Factory( ISource<IParameterizedSource<TParameter, TResult>> source )
-				{
-					this.source = source;
-				}
-
-				public override TResult Get( TParameter parameter ) => source.Get().Get( parameter );
-			}
+			public static LocalDelegates<TParameter, TResult> Default { get; } = new LocalDelegates<TParameter, TResult>();
+			LocalDelegates() : base( source => source.GetCurrent ) {}
 		}
 
-		public static Func<object> Delegate( this ISource<ISource> @this ) => @this.ToDelegate().Delegate();
-		public static Func<object> Delegate( this Func<ISource> @this ) => Delegates.Default.Get( @this );
-		sealed class Delegates : Cache<Func<ISource>, Func<object>>
+		public static object GetCurrent( this ISource<ISource> @this ) => @this.Get().Get();
+		public static T GetCurrent<T>( this ISource<ISource<T>> @this ) => @this.Get().Get();
+		/*public static Func<Func<object>> LocalDelegate( this ISource<ISource> @this ) => @this.ToDelegate().LocalDelegate();
+		public static Func<Func<object>> LocalDelegate( this Func<ISource> @this ) => Delegates.Default.Get( @this );
+		sealed class Delegates : Cache<Func<ISource>, Func<Func<object>>>
 		{
 			public static Delegates Default { get; } = new Delegates();
-			Delegates() : base( source => new Factory( source ).Get ) {}
+			Delegates() : base( source => source.Self ) {}
+		}*/
+		public static Func<Func<TParameter, TResult>> Local<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
+			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Self;
+		public static Func<object, Func<TParameter,TResult>> Global<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
+			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Wrap();
 
-			sealed class Factory : SourceBase<object>
-			{
-				readonly Func<ISource> source;
-				public Factory( Func<ISource> source )
-				{
-					this.source = source;
-				}
-
-				public override object Get() => source().Get();
-			}
-		}
-
-		public static Func<T> Delegate<T>( this ISource<ISource<T>> @this ) => @this.ToDelegate().Delegate();
-		public static Func<T> Delegate<T>( this Func<ISource<T>> @this ) => Delegates<T>.Default.Get( @this );
-		sealed class Delegates<T> : Cache<Func<ISource<T>>, Func<T>>
+		public static Func<T> GetCurrentDelegate<T>( this ISource<ISource<T>> @this ) => Delegates<T>.Default.Get( @this );
+		sealed class Delegates<T> : Cache<ISource<ISource<T>>, Func<T>>
 		{
 			public static Delegates<T> Default { get; } = new Delegates<T>();
-			Delegates() : base( source => new Factory( source ).Get ) {}
-
-			sealed class Factory : SourceBase<T>
-			{
-				readonly Func<ISource<T>> source;
-				public Factory( Func<ISource<T>> source )
-				{
-					this.source = source;
-				}
-
-				public override T Get() => source().Get();
-			}
+			Delegates() : base( source => source.GetCurrent ) {}
 		}
 
 		public static Func<T> ToDelegate<T>( this ISource<T> @this ) => ParameterizedSourceDelegates<T>.Default.Get( @this );

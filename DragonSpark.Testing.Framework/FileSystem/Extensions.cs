@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public static IFileElement GetFile( this IFileSystemRepository @this, string path ) => @this.Get( path )?.AsValid<IFileElement>();
 		public static IDirectoryElement GetDirectory( this IFileSystemRepository @this, string path ) => @this.Get( path )?.AsValid<IDirectoryElement>();
 
-		public static string AsText( this IFileElement @this ) => MockFile.ReadAllBytes( @this.ToArray(), Defaults.DefaultEncoding );
+		public static string AsText( this IFileElement @this ) => MockFile.ReadAllBytes( @this.Unwrap(), Defaults.DefaultEncoding );
 
 		public static void IsLegalAbsoluteOrRelative(this IPath @this, string pathToValidate, string paramName)
 		{

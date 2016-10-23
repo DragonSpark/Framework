@@ -21,7 +21,7 @@ namespace DragonSpark.Runtime.Assignments
 		readonly IAssign<T> assign;
 		readonly T start;
 
-		public ValueAssignment( IAssign<T> assign, Value<T> first ) : this( assign, first.Start, first.Finish ) {}
+		public ValueAssignment( IAssign<T> assign, Value<T> value ) : this( assign, value.Start, value.Finish ) {}
 
 		ValueAssignment( IAssign<T> assign, T start, T finish ) : base( assign, finish )
 		{

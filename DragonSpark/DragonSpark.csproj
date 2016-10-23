@@ -408,7 +408,7 @@
     <Compile Include="Sources\Parameterized\Alter.cs" />
     <Compile Include="Sources\Parameterized\AlterationBase.cs" />
     <Compile Include="Sources\Parameterized\TypeLocatorBase.cs" />
-    <Compile Include="Sources\Parameterized\Wrapper.cs" />
+    <Compile Include="Sources\Parameterized\SourceAdapter.cs" />
     <Compile Include="Sources\SuppliedAndExportedItems.cs" />
     <Compile Include="Sources\TimedDelegatedSource.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />

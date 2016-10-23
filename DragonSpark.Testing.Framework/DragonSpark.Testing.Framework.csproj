@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />-->
   <PropertyGroup>
-	 <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{96F63F2B-7D11-4D0F-A932-26C29F8E48BF}</ProjectGuid>
@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Setup\ExecutedRunCommandAttributeBase.cs" />
+    <Compile Include="Application\Setup\InitializeUserSettingsFileCommand.cs" />
     <Compile Include="CurrentTestingMethod.cs" />
     <Compile Include="CurrentTime.cs" />
     <Compile Include="FileSystem\InitializePartsAssemblyCommand.cs" />
@@ -54,7 +55,6 @@
     <Compile Include="FileSystem\Extensions.cs" />
     <Compile Include="FileSystem\FileSystem.cs" />
     <Compile Include="FileSystem\FileSystemElementBase.cs" />
-    <Compile Include="FileSystem\FileSystemFactory.cs" />
     <Compile Include="FileSystem\IDirectorySource.cs" />
     <Compile Include="FileSystem\IMockFileData.cs" />
     <Compile Include="FileSystem\MockDirectory.cs" />
@@ -66,6 +66,8 @@
     <Compile Include="FileSystem\MockFileInfo.cs" />
     <Compile Include="FileSystem\MockFileStream.cs" />
     <Compile Include="FileSystem\MockPath.cs" />
+    <Compile Include="FileSystem\PathTranslator.cs" />
+    <Compile Include="FileSystem\ProvisionFromSystemFileCommand.cs" />
     <Compile Include="FileSystem\StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

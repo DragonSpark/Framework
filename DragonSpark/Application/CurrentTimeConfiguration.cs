@@ -9,7 +9,7 @@ namespace DragonSpark.Application
 
 		Time() : this( new Scope<ICurrentTime>() ) {}
 
-		Time( IScope<ICurrentTime> configuration ) : base( configuration.Delegate() )
+		Time( IScope<ICurrentTime> configuration ) : base( configuration.GetCurrentDelegate() )
 		{
 			Configuration = configuration;
 		}
