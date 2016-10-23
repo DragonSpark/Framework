@@ -3,18 +3,13 @@ using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Sources;
 using DragonSpark.Specifications;
-using DragonSpark.Testing.Framework.Application.Setup;
+using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Parts;
 using System;
 
 namespace DragonSpark.Testing.Objects.FileSystem
 {
-	/*public sealed class InitializeUserSettingsCommand : SuppliedCommand<System.IO.FileInfo>
-	{
-		public InitializeUserSettingsCommand() : base( Framework.Application.Setup.InitializeUserSettingsCommand.Current.Get(), Windows.Setup.Defaults.UserSettingsPath ) {}
-	}*/
-
 	[ApplyAutoValidation, ApplySpecification( typeof(OnlyOnceSpecification) )]
 	public sealed class InitializePartsCommand : CompositeCommand
 	{
@@ -23,9 +18,14 @@ namespace DragonSpark.Testing.Objects.FileSystem
 			TypeSystem.Configuration.AssemblyLoader.Configured( AssemblyLoader.Current.GetCurrentDelegate() )
 			) {}
 
-		public sealed class Attribute : ExecutedRunCommandAttributeBase
+		public sealed class Public : ApplicationPublicPartsAttribute
 		{
-			public Attribute() : base( new InitializePartsCommand() ) {}
+			public Public() : base( new InitializePartsCommand().Execute ) {}
+		}
+
+		public sealed class All : ApplicationPartsAttribute
+		{
+			public All() : base( new InitializePartsCommand().Execute ) {}
 		}
 	}
 

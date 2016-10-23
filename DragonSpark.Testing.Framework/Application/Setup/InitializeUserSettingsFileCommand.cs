@@ -1,11 +1,7 @@
-﻿using DragonSpark.Aspects.Specifications;
-using DragonSpark.Aspects.Validation;
-using DragonSpark.Commands;
-using DragonSpark.Sources;
-using DragonSpark.Specifications;
+﻿using DragonSpark.Sources;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
-using System;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
@@ -21,6 +17,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		readonly string directoryName;
 		readonly string fileName;
 
+		[UsedImplicitly]
 		public UserSettingsFilePath( IPath path, IDirectorySource directory, string directoryName = UserSettingsPath, string fileName = UserConfigurationFileName )
 		{
 			this.path = path;
@@ -30,21 +27,5 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		}
 
 		public override string Get() => path.Combine( directory.Get(), directoryName, fileName );
-	}
-
-	[ApplyAutoValidation, ApplySpecification( typeof(OnlyOnceSpecification) )]
-	public sealed class InitializeUserSettingsFileCommand : SuppliedCommand<FileSystemEntry>
-	{
-		readonly static Action<FileSystemEntry> Delegate = ApplyFileSystemEntryCommand.Current.Delegate();
-
-		public static IScope<InitializeUserSettingsFileCommand> Current { get; } = new Scope<InitializeUserSettingsFileCommand>( Factory.GlobalCache( () => new InitializeUserSettingsFileCommand() ) );
-		InitializeUserSettingsFileCommand() : this( UserSettingsFilePath.Current.Get().Get() ) {}
-
-		public InitializeUserSettingsFileCommand( string userSettingsFilePath ) : base( Delegate, FileSystemEntry.File( userSettingsFilePath ) ) {}
-
-		public sealed class Attribute : ExecutedRunCommandAttributeBase
-		{
-			public Attribute() : base( Current.Get() ) {}
-		}
 	}
 }

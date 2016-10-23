@@ -44,10 +44,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Setup\ExecutedRunCommandAttributeBase.cs" />
+    <Compile Include="Application\Setup\ClearUserSettingCommand.cs" />
+    <Compile Include="Application\Setup\InitializeUserSettingsFileAttribute.cs" />
     <Compile Include="Application\Setup\InitializeUserSettingsFileCommand.cs" />
     <Compile Include="CurrentTestingMethod.cs" />
     <Compile Include="CurrentTime.cs" />
+    <Compile Include="FileSystem\FileSystemRegistration.cs" />
     <Compile Include="FileSystem\InitializePartsAssemblyCommand.cs" />
     <Compile Include="FileSystem\AssemblyLoader.cs" />
     <Compile Include="FileSystem\Defaults.cs" />
@@ -68,6 +70,8 @@
     <Compile Include="FileSystem\MockPath.cs" />
     <Compile Include="FileSystem\PathTranslator.cs" />
     <Compile Include="FileSystem\ProvisionFromSystemFileCommand.cs" />
+    <Compile Include="FileSystem\RegisterFilesAttribute.cs" />
+    <Compile Include="FileSystem\RegisterFileSystemEntryCommand.cs" />
     <Compile Include="FileSystem\StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

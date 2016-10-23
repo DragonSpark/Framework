@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class InitializePartsAssemblyCommand : CommandBase<IEnumerable<Type>>
 	{
 		public static IScope<InitializePartsAssemblyCommand> Current { get; } = new Scope<InitializePartsAssemblyCommand>( Factory.GlobalCache( () => new InitializePartsAssemblyCommand() ) );
-		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Current.Get().Execute ) {}
+		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Current.Execute ) {}
 
 		readonly Action<FileInfo> provision;
 

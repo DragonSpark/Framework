@@ -95,7 +95,6 @@
     <Compile Include="Runtime\DomainApplicationAssemblies.cs" />
     <Compile Include="Runtime\PartTypesBase.cs" />
     <Compile Include="Runtime\PublicParts.cs" />
-    <Compile Include="Setup\ClearUserSettingCommand.cs" />
     <Compile Include="Setup\Defaults.cs" />
     <Compile Include="Setup\DeleteFileCommand.cs" />
     <Compile Include="Setup\Extensions.cs" />

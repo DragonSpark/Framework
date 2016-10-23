@@ -14,18 +14,13 @@ using Resources = DragonSpark.Windows.Properties.Resources;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), InitializeUserSettingsFileCommand.Attribute]
+	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), InitializeUserSettingsFile]
 	public class InitializeUserSettingsCommandTests : TestCollectionBase
 	{
-		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output )
-		{
-			Clear();
-		}
-
-		static void Clear() => ClearUserSettingCommand.Default.Execute();
+		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output ) {}
 
 		[Theory, AutoData]
-		public void Create( InitializeUserSettingsCommand sut, ILoggerHistory history, UserSettingsFile factory )
+		public void Create( InitializeUserSettingsCommand sut, ILoggerHistory history, UserSettingsFile factory, ClearUserSettingCommand clear )
 		{
 			var path = factory.Get( ConfigurationUserLevel.PerUserRoamingAndLocal );
 			Assert.False( path.Exists, path.FullName );
@@ -38,7 +33,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			Assert.True( path.Refreshed().Exists );
 
-			Clear();
+			clear.Execute();
 
 			Assert.False( path.Refreshed().Exists );
 			sut.Execute( Settings.Default );

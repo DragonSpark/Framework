@@ -6,6 +6,7 @@ using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Properties;
+using JetBrains.Annotations;
 using Serilog;
 using System;
 using System.Configuration;
@@ -15,6 +16,7 @@ namespace DragonSpark.Windows.Setup
 	[ApplyAutoValidation, ApplyInverseSpecification( typeof(UserSettingsExistsSpecification) )]
 	public sealed class InitializeUserSettingsCommand : CommandBase<ApplicationSettingsBase>
 	{
+		[UsedImplicitly]
 		public static InitializeUserSettingsCommand Default { get; } = new InitializeUserSettingsCommand();
 		InitializeUserSettingsCommand() : this( TemplatesFactory.DefaultNested.Fixed( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, SaveUserSettingsCommand.Default.Execute ) {}
 

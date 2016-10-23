@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;

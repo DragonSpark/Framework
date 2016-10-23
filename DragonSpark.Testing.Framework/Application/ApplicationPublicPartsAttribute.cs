@@ -1,10 +1,11 @@
-using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.TypeSystem;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Application
 {
-	public sealed class ApplicationPublicPartsAttribute : TypeProviderAttributeBase
+	public class ApplicationPublicPartsAttribute : PartsAttributeBase
 	{
-		public ApplicationPublicPartsAttribute() : base( m => PublicParts.Default.Get( m.DeclaringType.Assembly ) ) {}
+		protected ApplicationPublicPartsAttribute( Action<MethodBase> initialize ) : base( m => AllParts.Default.Get( m.DeclaringType.Assembly ), initialize ) {}
 	}
 }

@@ -2,11 +2,9 @@
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
-using DragonSpark.TypeSystem;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using FileInfo = System.IO.FileInfo;
 
@@ -15,15 +13,15 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class ProvisionFromSystemFileCommand : CommandBase<FileInfo>
 	{
 		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = new Scope<ProvisionFromSystemFileCommand>( Factory.GlobalCache( () => new ProvisionFromSystemFileCommand() ) );
-		ProvisionFromSystemFileCommand() : this( ApplyFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetCurrentDelegate(), ByteReader.Default.Get ) {}
+		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetCurrent, ByteReader.Default.Get ) {}
 
-		readonly ICommand<FileSystemEntry> apply;
+		readonly ICommand<FileSystemRegistration> apply;
 		readonly Func<FileInfo, string> pathSource;
 		readonly Func<string, ImmutableArray<byte>> reader;
 		readonly IAssignableReferenceSource<string, string> mappings;
 
 		[UsedImplicitly]
-		public ProvisionFromSystemFileCommand( ICommand<FileSystemEntry> apply, IAssignableReferenceSource<string, string> mappings, Func<FileInfo, string> pathSource, Func<string, ImmutableArray<byte>> reader )
+		public ProvisionFromSystemFileCommand( ICommand<FileSystemRegistration> apply, IAssignableReferenceSource<string, string> mappings, Func<FileInfo, string> pathSource, Func<string, ImmutableArray<byte>> reader )
 		{
 			this.apply = apply;
 			this.pathSource = pathSource;
@@ -35,42 +33,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		{
 			var path = pathSource( parameter );
 			mappings.Set( parameter.FullName, path );
-			apply.Execute( new FileSystemEntry( path, reader( parameter.FullName ) ) );
+			apply.Execute( new FileSystemRegistration( path, reader( parameter.FullName ) ) );
 		}
-	}
-
-	public sealed class ApplyFileSystemEntryCommand : CommandBase<FileSystemEntry>
-	{
-		public static IScope<ApplyFileSystemEntryCommand> Current { get; } = new Scope<ApplyFileSystemEntryCommand>( Factory.GlobalCache( () => new ApplyFileSystemEntryCommand() ) );
-		ApplyFileSystemEntryCommand() : this( FileSystemRepository.Current.Get() ) {}
-
-		readonly IFileSystemRepository repository;
-
-		[UsedImplicitly]
-		public ApplyFileSystemEntryCommand( IFileSystemRepository repository )
-		{
-			this.repository = repository;
-		}
-
-		public override void Execute( FileSystemEntry parameter ) => repository.Set( parameter.Path, parameter.Element );
-	}
-
-	public struct FileSystemEntry
-	{
-		public static FileSystemEntry File( string path ) => new FileSystemEntry( path, new FileElement( Items<byte>.Default ) );
-		public static FileSystemEntry Directory( string path ) => new FileSystemEntry( path, new DirectoryElement() );
-
-		public FileSystemEntry( string path, ImmutableArray<byte> bytes ) : this( path, new FileElement( bytes ) ) {}
-		public FileSystemEntry( string path, IEnumerable<byte> bytes ) : this( path, new FileElement( bytes ) ) {}
-
-		public FileSystemEntry( string path, IFileSystemElement element )
-		{
-			Path = path;
-			Element = element;
-		}
-
-		public string Path { get; }
-		public IFileSystemElement Element { get; }
 	}
 
 	public sealed class MappedPathAlteration : AppliedAlteration<string>

@@ -8,7 +8,6 @@ using Xunit;
 
 namespace DragonSpark.Windows.Testing.TypeSystem
 {
-	[InitializePartsCommand.Attribute]
 	public class PartsTests
 	{
 		[Fact]
@@ -18,7 +17,7 @@ namespace DragonSpark.Windows.Testing.TypeSystem
 			PublicAttributed( PublicParts.Default.Get( GetType().Assembly ) );
 		}
 
-		[Theory, AutoData, ApplicationPublicParts]
+		[Theory, AutoData, InitializePartsCommand.Public]
 		public void PublicAttributed( ImmutableArray<Type> types )
 		{
 			Assert.Single( types );
@@ -32,7 +31,7 @@ namespace DragonSpark.Windows.Testing.TypeSystem
 			AllAttributed( AllParts.Default.Get( GetType().Assembly ) );
 		}
 
-		[Theory, AutoData, ApplicationParts]
+		[Theory, AutoData, InitializePartsCommand.All]
 		public void AllAttributed( ImmutableArray<Type> types )
 		{
 			Assert.Equal( 2, types.Length );

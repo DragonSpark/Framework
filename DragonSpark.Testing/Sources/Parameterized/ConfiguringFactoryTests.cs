@@ -1,4 +1,4 @@
-﻿using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources;
 using Xunit;
 
 namespace DragonSpark.Testing.Sources.Parameterized

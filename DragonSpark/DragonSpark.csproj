@@ -244,6 +244,7 @@
     <Compile Include="PriorityExtensions.cs" />
     <Compile Include="Aspects\Build\MethodStore.cs" />
     <Compile Include="Runtime\Assignments\AssignCommand.cs" />
+    <Compile Include="Sources\ConfiguringFactory.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />

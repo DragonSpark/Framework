@@ -10,6 +10,11 @@ namespace DragonSpark.Commands
 {
 	public static class Extensions
 	{
+		public static ICommand<T> Apply<T>( this ICommand<T> @this, ISpecification<T> specification ) => new SpecificationCommand<T>( specification, @this.ToDelegate() );
+
+		public static void Execute<T>( this ISource<ICommand<T>> @this, T parameter ) => @this.ToDelegate().Execute( parameter );
+		public static void Execute<T>( this Func<ICommand<T>> @this, T parameter ) => @this().Execute( parameter );
+
 		public static IDisposable AsExecuted( this IExecution @this )
 		{
 			@this.Execute();
@@ -35,6 +40,8 @@ namespace DragonSpark.Commands
 		public static SuppliedCommand<IEnumerable<T>> Fixed<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );
 		public static SuppliedCommand<T> Fixed<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> Fixed<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<T> Fixed<T>( this Action<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<T> Fixed<T>( this Action<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
 
 		public static Action<T> ToDelegate<T>( this ICommand<T> @this ) => DelegateCache<T>.Default.Get( @this );
 		sealed class DelegateCache<T> : Cache<ICommand<T>, Action<T>>
@@ -43,24 +50,13 @@ namespace DragonSpark.Commands
 			DelegateCache() : base( command => command.Execute ) {}
 		}
 
-		public static Action<T> Delegate<T>( this ISource<ICommand<T>> @this ) => @this.ToDelegate().Delegate();
+		/*public static Action<T> Delegate<T>( this ISource<ICommand<T>> @this ) => @this.ToDelegate().Delegate();
 		public static Action<T> Delegate<T>( this Func<ICommand<T>> @this ) => Delegates<T>.Default.Get( @this );
 		sealed class Delegates<T> : Cache<Func<ICommand<T>>, Action<T>>
 		{
 			public static Delegates<T> Default { get; } = new Delegates<T>();
-			Delegates() : base( source => new Command( source ).Execute ) {}
-
-			sealed class Command : CommandBase<T>
-			{
-				readonly Func<ICommand<T>> source;
-				public Command( Func<ICommand<T>> source )
-				{
-					this.source = source;
-				}
-
-				public override void Execute( T parameter ) => source().Execute( parameter );
-			}
-		}
+			Delegates() : base( source => source.Execute ) {}
+		}*/
 
 		public static IAlteration<T> ToAlteration<T>( this ICommand<T> @this ) => Alterations<T>.Default.Get( @this );
 		sealed class Alterations<T> : Cache<ICommand<T>, IAlteration<T>>
@@ -89,6 +85,7 @@ namespace DragonSpark.Commands
 			public static Wrappers<T> Default { get; } = new Wrappers<T>();
 			Wrappers() : base( result => new Wrapper<T>( result ).Execute ) {}
 		}
+
 		sealed class Wrapper<T> : CommandBase<T>
 		{
 			readonly Action action;
