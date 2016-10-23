@@ -19,6 +19,7 @@ namespace DragonSpark.Sources
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
 
+		public static object Value( this Func<object> @this ) => @this().Value<object>();
 		public static object Value( this object @this ) => @this.Value<object>();
 		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );
 
@@ -55,8 +56,8 @@ namespace DragonSpark.Sources
 
 		public static void Assign<T>( this IAssignable<Func<object, T>> @this ) where T : class, new() => @this.Assign( o => new T() );
 
-		public static Func<TParameter, TResult> Local<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => @this.GetCurrentDelegate();
-		public static Func<TParameter, TResult> Global<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, object _ ) => @this.GetCurrentDelegate();
+		/*public static Func<TParameter, TResult> Local<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => @this.GetCurrentDelegate();
+		public static Func<TParameter, TResult> Global<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, object _ ) => @this.GetCurrentDelegate();*/
 
 		public static TResult GetCurrent<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, TParameter parameter ) => @this.Get().Get( parameter );
 		public static Func<TParameter, TResult> GetCurrentDelegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => LocalDelegates<TParameter, TResult>.Default.Get( @this );

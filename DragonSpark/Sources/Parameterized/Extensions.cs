@@ -28,6 +28,11 @@ namespace DragonSpark.Sources.Parameterized
 				.SelectAssigned( @this.ToSourceDelegate() )
 				.ToImmutableArray();
 
+		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, IAlteration<TParameter> alteration ) => Apply( @this, alteration.ToDelegate() );
+		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Alter<TParameter> alter ) => Apply( @this.ToSourceDelegate(), alter );
+		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this Func<TParameter, TResult> @this, Alter<TParameter> alter ) =>
+			new AlteredParameterizedSource<TParameter, TResult>( alter, @this );
+
 		public static IParameterizedSource<object, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ICoercer<TParameter> coercer ) => Apply( @this.ToSourceDelegate(), coercer.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Apply<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ICoercer<TFrom, TParameter> coercer ) => Apply( @this.ToSourceDelegate(), coercer.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Apply<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TFrom, TParameter> coerce ) =>

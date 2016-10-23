@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Framework
 			
 			File.Implementation.DefaultImplementation.Assign<MockFile>();
 			DirectoryInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Global );
-			FileInfoFactory.Default.Configuration.Assign( new AlteredParameterizedSource<string, IFileInfo>( MappedPathAlteration.Current.GetCurrent, FileInfoFactory.Default.Configuration.GetFactory() ).Global );
+			FileInfoFactory.Default.Configuration.Assign( FileInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetCurrent ).Global );
 			FileInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Global );
 
 			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global<ConfigurationUserLevel, string>() );

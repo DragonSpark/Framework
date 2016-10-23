@@ -1,31 +1,53 @@
-﻿using DragonSpark.Diagnostics;
+﻿using DragonSpark.Commands;
+using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
-using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
-using DragonSpark.Testing.Objects.Properties;
+using DragonSpark.Testing.Framework.FileSystem;
+using DragonSpark.Windows.FileSystem;
+using DragonSpark.Windows.Properties;
 using DragonSpark.Windows.Setup;
 using JetBrains.Annotations;
+using Moq;
+using Ploeh.AutoFixture.Xunit2;
 using System.Configuration;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
-using Resources = DragonSpark.Windows.Properties.Resources;
 
 namespace DragonSpark.Windows.Testing.Setup
 {
-	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), InitializeUserSettingsFile]
+	[Trait( Traits.Category, Traits.Categories.ServiceLocation )]
 	public class InitializeUserSettingsCommandTests : TestCollectionBase
 	{
-		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output ) {}
+		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output )
+		{
+			SaveUserSettingsCommand.Default.Configuration.Assign( () => p => p.Save() );
+		}
 
-		[Theory, AutoData]
-		public void Create( InitializeUserSettingsCommand sut, ILoggerHistory history, UserSettingsFile factory, ClearUserSettingCommand clear )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData, InitializeUserSettingsFile]
+		public void VerifyFileOne( IFile file, UserSettingsFilePath sut, IDirectorySource source )
+		{
+			var path = sut.Get( ConfigurationUserLevel.PerUserRoamingAndLocal );
+			Assert.StartsWith( source.Get(), path );
+			Assert.True( file.Exists( path ) );
+		}
+
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
+		public void Create( [NoAutoProperties]Mock<ApplicationSettingsBase> parameter, [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history, [DragonSpark.Testing.Framework.Application.Service]UserSettingsFile factory, ClearUserSettingCommand clear )
 		{
 			var path = factory.Get( ConfigurationUserLevel.PerUserRoamingAndLocal );
+			parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( path.FullName ) ).Verifiable();
+
+			Assert.NotNull( path );
 			Assert.False( path.Exists, path.FullName );
 			var before = history.Events.Fixed();
-			sut.Execute( Settings.Default );
+
+			sut.Execute( parameter.Object );
+
+			parameter.Verify( p => p.Upgrade(), Times.Once );
+			parameter.Verify( p => p.Save(), Times.Once );
+
 			var items = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
 			Assert.Contains( Resources.LoggerTemplates_NotFound, items );
 			Assert.Contains( Resources.LoggerTemplates_Created, items );
@@ -34,31 +56,40 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.True( path.Refreshed().Exists );
 
 			clear.Execute();
+			history.Clear();
+
+			Assert.Empty( history.Events );
 
 			Assert.False( path.Refreshed().Exists );
-			sut.Execute( Settings.Default );
+			sut.Execute( parameter.Object );
 			Assert.True( path.Refreshed().Exists );
 			
-			Assert.Equal( items.Length + 3, history.Events.Count() );
+			Assert.Equal( 3, history.Events.Count() );
 		}
 
-		[Theory, AutoData]
-		public void CreateThenRecreate( InitializeUserSettingsCommand sut, ILoggerHistory history )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
+		public void CreateThenRecreate( [NoAutoProperties]Mock<ApplicationSettingsBase> parameter, [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
-			sut.Execute( Settings.Default );
+			parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( UserSettingsFilePath.Default.Get( ConfigurationUserLevel.PerUserRoamingAndLocal ) ) ).Verifiable();
+
+			sut.Execute( parameter.Object );
+			
 			var created = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
 			Assert.Contains( Resources.LoggerTemplates_NotFound, created );
 			Assert.Contains( Resources.LoggerTemplates_Created, created );
 
 			var count = history.Events.Count();
 
-			sut.Execute( Settings.Default );
+			sut.Execute( parameter.Object );
 
 			Assert.Equal( count, history.Events.Count() );
+
+			parameter.Verify( p => p.Upgrade(), Times.Once );
+			parameter.Verify( p => p.Save(), Times.Once );
 		}
 
-		[Theory, AutoData]
-		public void NoProperties( InitializeUserSettingsCommand sut, ILoggerHistory history )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
+		public void NoProperties( [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
 			var before = history.Events.Fixed();
 			sut.Execute( new SettingsWithNoProperties() );
@@ -71,8 +102,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( before.Length + expected.Length, items.Length );
 		}
 
-		[Theory, AutoData]
-		public void UpgradeWithFileCreate( InitializeUserSettingsCommand sut, ILoggerHistory history )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
+		public void UpgradeWithFileCreate( [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
 			var before = history.Events.Fixed();
 			sut.Execute( new UpgradeWithCompleteSettings() );
@@ -85,8 +116,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( before.Length + expected.Length, items.Length );
 		}
 
-		[Theory, AutoData]
-		public void Error( InitializeUserSettingsCommand sut, ILoggerHistory history )
+		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
+		public void Error( [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
 			var before = history.Events.Fixed();
 			sut.Execute( new SettingsWithException() );

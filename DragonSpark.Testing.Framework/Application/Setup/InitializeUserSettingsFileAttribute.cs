@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Sources;
 using DragonSpark.Testing.Framework.FileSystem;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
@@ -7,6 +8,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 	{
 		public InitializeUserSettingsFileAttribute() : this( UserSettingsFilePath.Current.GetCurrent() ) {}
 
+		[UsedImplicitly]
 		public InitializeUserSettingsFileAttribute( string userSettingsFilePath ) : base( userSettingsFilePath ) {}
 	}
 }

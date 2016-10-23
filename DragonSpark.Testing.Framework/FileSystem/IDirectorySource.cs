@@ -9,7 +9,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	{
 		string PathRoot { get; }
 	}
-	sealed class DirectorySource : SuppliedSource<string>, IDirectorySource
+
+	public sealed class DirectorySource : SuppliedSource<string>, IDirectorySource
 	{
 		public static IScope<IDirectorySource> Current { get; } = new Scope<IDirectorySource>( Factory.GlobalCache( () => new DirectorySource() ) );
 		DirectorySource() : this( Defaults.PathRoot, Guid.NewGuid().ToString() ) {}

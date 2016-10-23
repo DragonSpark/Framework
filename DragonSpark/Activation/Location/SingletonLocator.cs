@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Composition;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
@@ -26,7 +27,8 @@ namespace DragonSpark.Activation.Location
 
 			public override Func<Type, object> Get( Func<Type, Func<object>> parameter )
 			{
-				var source = new SpecificationParameterizedSource<Type, object>( Specification.DefaultNested, new Source( parameter ) ).ToSourceDelegate();
+				var scope = new ParameterizedScope<Type, object>( new Source( parameter ).Global );
+				var source = new SpecificationParameterizedSource<Type, object>( Specification.DefaultNested, scope ).ToSourceDelegate();
 				var altered = new AlteredParameterizedSource<Type, object>( Conventions, source );
 				var result = altered.ToSourceDelegate();
 				return result;
@@ -38,7 +40,7 @@ namespace DragonSpark.Activation.Location
 				Specification() : base( Common<Type>.Assigned, ContainsSingletonPropertySpecification.Default ) {}
 			}
 
-			sealed class Source : FactoryCache<Type, object>
+			sealed class Source : ParameterizedSourceBase<Type, object>
 			{
 				readonly Func<Type, Func<object>> source;
 
@@ -47,7 +49,7 @@ namespace DragonSpark.Activation.Location
 					this.source = source;
 				}
 
-				protected override object Create( Type parameter ) => source( parameter )?.Invoke();
+				public override object Get( Type parameter ) => source( parameter )?.Invoke();
 			}
 		}
 	}

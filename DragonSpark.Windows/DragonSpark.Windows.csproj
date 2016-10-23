@@ -96,7 +96,7 @@
     <Compile Include="Runtime\PartTypesBase.cs" />
     <Compile Include="Runtime\PublicParts.cs" />
     <Compile Include="Setup\Defaults.cs" />
-    <Compile Include="Setup\DeleteFileCommand.cs" />
+    <Compile Include="FileSystem\DeleteFileCommand.cs" />
     <Compile Include="Setup\Extensions.cs" />
     <Compile Include="Setup\FileSystemInfoExistsSpecification.cs" />
     <Compile Include="Setup\InitializeUserSettingsCommand.cs" />
@@ -130,6 +130,7 @@
     <Compile Include="AppDomainFormatter.cs" />
     <Compile Include="FileSystem\AssemblyLocator.cs" />
     <Compile Include="FileSystem\QueryableResourceLocator.cs" />
+    <Compile Include="Setup\UserSettingsFilePath.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

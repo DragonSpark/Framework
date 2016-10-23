@@ -24,7 +24,8 @@ namespace DragonSpark.Windows.Setup
 		readonly Func<IFileInfo> fileSource;
 		readonly Action<ApplicationSettingsBase> save;
 
-		InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<IFileInfo> fileSource, Action<ApplicationSettingsBase> save )
+		[UsedImplicitly]
+		public InitializeUserSettingsCommand( Func<Templates> templatesSource, Func<IFileInfo> fileSource, Action<ApplicationSettingsBase> save )
 		{
 			this.templatesSource = templatesSource;
 			this.fileSource = fileSource;
@@ -101,7 +102,7 @@ namespace DragonSpark.Windows.Setup
 			}
 		}
 
-		struct Templates
+		public struct Templates
 		{
 			public Templates( Action<string> initializing, Action<string> notFound, Action<Exception, string> errorSaving, Action<string> created, Action<string> complete )
 			{

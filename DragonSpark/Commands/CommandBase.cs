@@ -1,7 +1,7 @@
+using DragonSpark.Coercion;
 using DragonSpark.Extensions;
 using System;
 using System.Windows.Input;
-using DragonSpark.Coercion;
 
 namespace DragonSpark.Commands
 {

@@ -3,10 +3,10 @@ using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics.Exceptions;
-using DragonSpark.Windows.FileSystem;
+using DragonSpark.Windows.Setup;
 using System.IO;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows.FileSystem
 {
 	[ApplyAutoValidation, ApplySpecification( typeof(FileSystemInfoExistsSpecification) ), ApplyExceptionPolicy( typeof(SuppliedRetryPolicySource<IOException>) )]
 	public sealed class DeleteFileCommand : CommandBase<IFileSystemInfo>

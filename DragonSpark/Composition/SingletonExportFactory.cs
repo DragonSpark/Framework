@@ -20,10 +20,11 @@ namespace DragonSpark.Composition
 		{
 			public override SingletonExport Get( PropertyInfo parameter )
 			{
-				var instance = SingletonDelegateCache.Default.Get( parameter );
+				var instance = SingletonPropertyDelegates.Default.Get( parameter );
 				if ( instance != null )
 				{
-					var contractType = parameter.PropertyType.Adapt().IsGenericOf( typeof(ISource<>), false ) ? ResultTypes.Default.Get( parameter.PropertyType ) : instance.GetMethodInfo().ReturnType;
+					/*var isGenericOf = parameter.PropertyType.Adapt().IsGenericOf( typeof(ISource<>) ) ? */
+					var contractType = ResultTypes.Default.Get( parameter.PropertyType ) ?? instance.GetMethodInfo().ReturnType;
 					var types = parameter.GetCustomAttributes<ExportAttribute>().Introduce( contractType, x => new CompositionContract( x.Item1.ContractType ?? x.Item2, x.Item1.ContractName ) ).Append( new CompositionContract( contractType ) ).Distinct().ToImmutableArray();
 					var result = new SingletonExport( parameter, types, instance.Cache() );
 					return result;
