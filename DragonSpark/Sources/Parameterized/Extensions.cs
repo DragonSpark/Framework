@@ -181,7 +181,7 @@ namespace DragonSpark.Sources.Parameterized
 			public override ImmutableArray<TItem> Get( TParameter parameter ) => source( parameter ).ToImmutableArray();
 		}
 
-		public static IEnumerable<TItem> AsEnumerable<TParameter, TItem>( this IParameterizedSource<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => AsEnumerable( @this.ToSourceDelegate(), parameter );
+		public static IEnumerable<TItem> AsEnumerable<TParameter, TItem>( this IParameterizedSource<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => @this.ToSourceDelegate().AsEnumerable( parameter );
 		public static IEnumerable<TItem> AsEnumerable<TParameter, TItem>( this Func<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => EnumerableSource<TParameter, TItem>.Sources.Get( @this )( parameter );
 		sealed class EnumerableSource<TParameter, TItem> : ParameterizedSourceBase<TParameter, IEnumerable<TItem>>
 		{

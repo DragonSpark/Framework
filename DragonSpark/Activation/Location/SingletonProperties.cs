@@ -1,14 +1,15 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
 using System;
 using System.Reflection;
 
 namespace DragonSpark.Activation.Location
 {
-	public class SingletonProperties : ParameterizedSourceBase<Type, PropertyInfo>
+	public class SingletonProperties : FactoryCache<Type, PropertyInfo>
 	{
-		public static IParameterizedSource<Type, PropertyInfo> Default { get; } = new SingletonProperties().ToCache();
+		public static IParameterizedSource<Type, PropertyInfo> Default { get; } = new SingletonProperties();
 		SingletonProperties() : this( Defaults.SourcedSingleton ) {}
 
 		readonly ISpecification<SingletonRequest> specification;
@@ -18,7 +19,7 @@ namespace DragonSpark.Activation.Location
 			this.specification = specification;
 		}
 
-		public override PropertyInfo Get( Type parameter )
+		protected override PropertyInfo Create( Type parameter )
 		{
 			foreach ( var property in parameter.GetTypeInfo().DeclaredProperties.Fixed() )
 			{

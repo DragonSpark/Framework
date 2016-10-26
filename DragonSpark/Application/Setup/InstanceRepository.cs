@@ -1,6 +1,8 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Runtime;
 using DragonSpark.Sources;
-using DragonSpark.Specifications;
+using DragonSpark.Sources.Parameterized;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +11,28 @@ namespace DragonSpark.Application.Setup
 {
 	public class InstanceRepository : RepositoryBase<object>, IServiceRepository
 	{
+		readonly Func<Type, IParameterizedSource<object>> sourceSource;
 		public InstanceRepository() {}
 
-		public InstanceRepository( params object[] instances ) : this( instances.AsEnumerable() ) {}
-		public InstanceRepository( IEnumerable<object> items ) : base( items ) {}
-		
-		public virtual object GetService( Type serviceType ) => Get( serviceType, o => o.Value() );
+		public InstanceRepository( params object[] instances ) : this( instances.AsEnumerable(), SourceAccountedValues.Defaults.Get ) {}
 
-		T Get<T>( Type serviceType, Func<object, T> projection )
+		[UsedImplicitly]
+		public InstanceRepository( IEnumerable<object> items, Func<Type, IParameterizedSource<object>> sourceSource ) : base( items )
 		{
-			var specification = TypeAssignableSpecification.Defaults.Get( serviceType );
-			foreach ( var item in Yield() )
-			{
-				var parameter = ( item as IServiceAware )?.ServiceType ?? item.GetType();
-				if ( specification.IsSatisfiedBy( parameter ) )
-				{
-					return projection( item );
-				}
-			}
-			return default(T);
+			this.sourceSource = sourceSource;
+		}
+		
+		public virtual object GetService( Type serviceType )
+		{
+			var source = sourceSource( serviceType ).ToSourceDelegate();
+			var result = Yield().SelectAssigned( source ).FirstOrDefault();
+			return result;
 		}
 
-		public virtual void Add( InstanceRegistrationRequest request ) => Add( request.Instance );
+		public virtual void Add( ServiceRegistration request ) => Add( request.Instance );
 
-		public bool IsSatisfiedBy( Type parameter ) => Get( parameter, o => true );
-		
+		public bool IsSatisfiedBy( Type parameter ) => GetService( parameter ).IsAssigned();
+
 		public object Get( Type parameter ) => GetService( parameter );
 	}
 }

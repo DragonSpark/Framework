@@ -19,9 +19,9 @@ namespace DragonSpark.Sources
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
 
-		public static object Value( this Func<object> @this ) => @this().Value<object>();
+		/*public static object Value( this Func<object> @this ) => @this().Value<object>();
 		public static object Value( this object @this ) => @this.Value<object>();
-		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );
+		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );*/
 
 		// public static ICommand Configured<T>( this IAssignable<T> @this, T value ) => new AssignCommand<T>( @this ).Fixed( value );
 
@@ -76,8 +76,11 @@ namespace DragonSpark.Sources
 			public static Delegates Default { get; } = new Delegates();
 			Delegates() : base( source => source.Self ) {}
 		}*/
-		public static Func<Func<TParameter, TResult>> Local<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
-			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Self;
+		/*public static Func<Func<TParameter, TResult>> Local<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
+			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Self;*/
+
+		public static T Global<T>( this ISource<ISource<T>> @this, object _ ) => @this.GetCurrent();
+
 		public static Func<object, Func<TParameter,TResult>> Global<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
 			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Wrap();
 

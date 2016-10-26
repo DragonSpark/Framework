@@ -1,4 +1,6 @@
-﻿using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Sources.Parameterized;
+using System.Runtime.InteropServices;
 
 namespace DragonSpark.Aspects.Alteration
 {
@@ -11,6 +13,11 @@ namespace DragonSpark.Aspects.Alteration
 			this.alteration = alteration;
 		}
 
-		public object Alter( object parameter ) => parameter is T ? alteration.Get( (T)parameter ) : parameter;
+		public object Alter( [Optional]object parameter )
+		{
+			var altered = alteration.Get( parameter.As<T>() );
+			var result = altered.IsAssigned() ? altered : parameter;
+			return result;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using Ploeh.AutoFixture.Kernel;
 using System;
 using Defaults = DragonSpark.Activation.Location.Defaults;
@@ -13,6 +14,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 		readonly Func<Type, object> provider;
 
+		[UsedImplicitly]
 		public ServiceRelay( Func<Type, object> provider )
 		{
 			this.provider = provider;

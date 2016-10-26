@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Application.Setup
 {
-	public struct InstanceRegistrationRequest
+	public struct ServiceRegistration
 	{
-		public InstanceRegistrationRequest( Type type, object instance )
+		public ServiceRegistration( Type type, object instance )
 		{
 			RegistrationType = type;
 			Instance = instance;

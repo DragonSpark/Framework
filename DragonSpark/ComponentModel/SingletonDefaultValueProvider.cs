@@ -2,6 +2,7 @@ using DragonSpark.Activation.Location;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
+using JetBrains.Annotations;
 using System;
 using System.Reflection;
 
@@ -14,7 +15,8 @@ namespace DragonSpark.ComponentModel
 		
 		public SingletonDefaultValueProvider( Type hostType = null, string propertyName = nameof(SingletonLocator.Default) ) : this( new SingletonLocator( new SingletonDelegates( new SingletonProperties( new SpecifiedSingletonHostSpecification( hostType, propertyName.ToItem() ).Project<SingletonRequest, PropertyInfo>( request => request.Candidate ) ) ).Get ), hostType ) {}
 
-		SingletonDefaultValueProvider( IParameterizedSource<Type, object> provider, Type hostType = null )
+		[UsedImplicitly]
+		public SingletonDefaultValueProvider( IParameterizedSource<Type, object> provider, Type hostType = null )
 		{
 			this.hostType = hostType;
 			this.provider = provider;

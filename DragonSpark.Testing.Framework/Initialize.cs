@@ -9,7 +9,6 @@ using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Setup;
 using PostSharp.Aspects;
-using System.Configuration;
 
 namespace DragonSpark.Testing.Framework
 {
@@ -20,7 +19,7 @@ namespace DragonSpark.Testing.Framework
 		{
 			DragonSpark.Application.Execution.Context.Assign( ExecutionContext.Default );
 			Time.Default.Configuration.Assign( CurrentTime.Default.Wrap() );
-			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global() );
+			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
 
 			Path.Implementation.DefaultImplementation.Assign<MockPath>();
 			Directory.Implementation.DefaultImplementation.Assign<MockDirectory>();
@@ -30,7 +29,7 @@ namespace DragonSpark.Testing.Framework
 			FileInfoFactory.Default.Configuration.Assign( FileInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetCurrent ).Global );
 			FileInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Global );
 
-			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global<ConfigurationUserLevel, string>() );
+			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global );
 		}
 	}
 }

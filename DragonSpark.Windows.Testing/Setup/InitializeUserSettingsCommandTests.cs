@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Sources;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Framework.FileSystem;
@@ -10,6 +11,7 @@ using DragonSpark.Windows.Setup;
 using JetBrains.Annotations;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
+using System;
 using System.Configuration;
 using System.Linq;
 using Xunit;
@@ -22,31 +24,36 @@ namespace DragonSpark.Windows.Testing.Setup
 	{
 		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output )
 		{
-			SaveUserSettingsCommand.Default.Configuration.Assign( () => p => p.Save() );
+			// SaveUserSettingsCommand.Default.Configuration.Assign( () => p => p.Save() );
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData, InitializeUserSettingsFile]
 		public void VerifyFileOne( IFile file, UserSettingsFilePath sut, IDirectorySource source )
 		{
-			var path = sut.Get( ConfigurationUserLevel.PerUserRoamingAndLocal );
+			var path = sut.Get();
 			Assert.StartsWith( source.Get(), path );
 			Assert.True( file.Exists( path ) );
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
-		public void Create( [NoAutoProperties]Mock<ApplicationSettingsBase> parameter, [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history, [DragonSpark.Testing.Framework.Application.Service]UserSettingsFile factory, ClearUserSettingCommand clear )
+		public void Create( 
+			[NoAutoProperties]ApplicationSettingsBase parameter, 
+			[DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, 
+			ILoggerHistory history, 
+			[DragonSpark.Testing.Framework.Application.Service]UserSettingsFile factory, 
+			ClearUserSettingCommand clear )
 		{
-			var path = factory.Get( ConfigurationUserLevel.PerUserRoamingAndLocal );
-			parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( path.FullName ) ).Verifiable();
+			var path = factory.Get();
+			// parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( path.FullName ) ).Verifiable();
 
 			Assert.NotNull( path );
 			Assert.False( path.Exists, path.FullName );
 			var before = history.Events.Fixed();
 
-			sut.Execute( parameter.Object );
+			sut.Execute( parameter );
 
-			parameter.Verify( p => p.Upgrade(), Times.Once );
-			parameter.Verify( p => p.Save(), Times.Once );
+			/*parameter.Verify( p => p.Upgrade(), Times.Once );
+			parameter.Verify( p => p.Save(), Times.Once );*/
 
 			var items = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
 			Assert.Contains( Resources.LoggerTemplates_NotFound, items );
@@ -61,7 +68,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Empty( history.Events );
 
 			Assert.False( path.Refreshed().Exists );
-			sut.Execute( parameter.Object );
+			sut.Execute( parameter );
 			Assert.True( path.Refreshed().Exists );
 			
 			Assert.Equal( 3, history.Events.Count() );
@@ -70,7 +77,7 @@ namespace DragonSpark.Windows.Testing.Setup
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
 		public void CreateThenRecreate( [NoAutoProperties]Mock<ApplicationSettingsBase> parameter, [DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, ILoggerHistory history )
 		{
-			parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( UserSettingsFilePath.Default.Get( ConfigurationUserLevel.PerUserRoamingAndLocal ) ) ).Verifiable();
+			parameter.Setup( p => p.Save() ).Verifiable();
 
 			sut.Execute( parameter.Object );
 			
@@ -86,6 +93,7 @@ namespace DragonSpark.Windows.Testing.Setup
 
 			parameter.Verify( p => p.Upgrade(), Times.Once );
 			parameter.Verify( p => p.Save(), Times.Once );
+			parameter.VerifyAll();
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
@@ -128,6 +136,26 @@ namespace DragonSpark.Windows.Testing.Setup
 				Assert.Contains( message, items );
 			}
 			Assert.Equal( before.Length + expected.Length, items.Length );
+		}
+
+		class Settings : ApplicationSettingsBase
+		{
+			readonly Action save;
+
+			public Settings() : this( Register.Default.Execute ) {}
+
+			public Settings( Action save )
+			{
+				this.save = save;
+			}
+
+			public override void Save() => save();
+
+			sealed class Register : SuppliedCommand<string>
+			{
+				public static Register Default { get; } = new Register();
+				Register() : base( RegisterFileCommand.Default, UserSettingsFilePath.Default.ToDelegate() ) {}
+			}
 		}
 
 		class SettingsWithNoProperties : ApplicationSettingsBase {}

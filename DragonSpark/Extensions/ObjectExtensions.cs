@@ -21,7 +21,7 @@ namespace DragonSpark.Extensions
 		static bool IsAssigned<T>( [Optional]this T @this, bool value )
 		{
 			var type = @this?.GetType() ?? typeof(T);
-			var result = type.GetTypeInfo().IsValueType ? value || !SpecialValues.DefaultOrEmpty( type ).Equals( @this ) : !Equals( @this, default(T) );
+			var result = Nullable.GetUnderlyingType( type ) == null && type.GetTypeInfo().IsValueType ? value || !SpecialValues.DefaultOrEmpty( type ).Equals( @this ) : !Equals( @this, default(T) );
 			return result;
 		}
 

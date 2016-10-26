@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Ploeh.AutoFixture;
 using System;
 using System.Collections.Immutable;
@@ -14,6 +15,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 		readonly Func<MethodBase, ImmutableArray<ICustomization>> factory;
 		
+		[UsedImplicitly]
 		public MetadataCommand( Func<MethodBase, ImmutableArray<ICustomization>> factory )
 		{
 			this.factory = factory;

@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Application\Setup\ClearUserSettingCommand.cs" />
     <Compile Include="Application\Setup\InitializeUserSettingsFileAttribute.cs" />
-    <Compile Include="Application\Setup\InitializeUserSettingsFileCommand.cs" />
+    <Compile Include="Application\Setup\UserSettingsFilePath.cs" />
     <Compile Include="CurrentTestingMethod.cs" />
     <Compile Include="CurrentTime.cs" />
     <Compile Include="FileSystem\FileSystemRegistration.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Application\ServiceAttribute.cs" />
     <Compile Include="Runtime\MethodOperationContext.cs" />
     <Compile Include="Diagnostics\TimedOperationFactory.cs" />
-    <Compile Include="ServiceRegistration.cs" />
+    <Compile Include="ServiceRegistrationCustomization.cs" />
     <Compile Include="Application\Setup\AdditionalTypesAttribute.cs" />
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\ApplicationCommandSource.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Runtime\AssociatedRegistry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Runtime\CustomizationBase.cs" />
+    <Compile Include="Application\Setup\CustomizationBase.cs" />
     <Compile Include="Application\AutoDataCommandBase.cs" />
     <Compile Include="Application\AutoData.cs" />
     <Compile Include="Application\Setup\TypeProviderAttributeBase.cs" />

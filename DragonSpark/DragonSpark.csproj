@@ -227,6 +227,7 @@
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
     <Compile Include="Configuration\ConfigurableParameterizedSource.cs" />
     <Compile Include="Configuration\IConfigurableParameterizedSource.cs" />
+    <Compile Include="Configuration\IConfigurableSource.cs" />
     <Compile Include="Configuration\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="PriorityExtensions.cs" />
     <Compile Include="Aspects\Build\MethodStore.cs" />
     <Compile Include="Runtime\Assignments\AssignCommand.cs" />
+    <Compile Include="Runtime\EnumerableResultAlteration.cs" />
     <Compile Include="Sources\ConfiguringFactory.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
@@ -259,6 +261,7 @@
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
+    <Compile Include="Sources\SourceAccountedTypes.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
     <Compile Include="Specifications\ContainsItemSpecification.cs" />
@@ -365,7 +368,7 @@
     <Compile Include="Application\IApplication.cs" />
     <Compile Include="Commands\ICommandSource.cs" />
     <Compile Include="Application\IExportProvider.cs" />
-    <Compile Include="Application\Setup\InstanceRegistrationRequest.cs" />
+    <Compile Include="Application\Setup\ServiceRegistration.cs" />
     <Compile Include="Application\Setup\Instances.cs" />
     <Compile Include="Application\Setup\InstanceRepository.cs" />
     <Compile Include="Application\Setup\IsActive.cs" />

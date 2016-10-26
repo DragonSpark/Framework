@@ -1,5 +1,6 @@
 using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
 using System;
@@ -18,7 +19,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		protected override void OnCustomize( IFixture fixture )
 		{
 			fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.DefaultNested );
-			fixture.ResidueCollectors.Add( ServiceRelay.Default );
+			// fixture.ResidueCollectors.Add( ServiceRelay.Default );
 		}
 
 		sealed class FrameworkSpecimenBuilder : ISpecimenBuilder
@@ -28,7 +29,8 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 			readonly Type[] types;
 
-			FrameworkSpecimenBuilder( params Type[] types )
+			[UsedImplicitly]
+			public FrameworkSpecimenBuilder( params Type[] types )
 			{
 				this.types = types;
 			}

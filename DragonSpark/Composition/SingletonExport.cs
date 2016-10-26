@@ -14,7 +14,7 @@ namespace DragonSpark.Composition
 			Factory = factory;
 		}
 
-		public PropertyInfo Location { get; set; }
+		public PropertyInfo Location { get; }
 		public ImmutableArray<CompositionContract> Contracts { get; }
 		public Func<object> Factory { get; }
 	}

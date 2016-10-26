@@ -1,18 +1,20 @@
+using JetBrains.Annotations;
+using Ploeh.AutoFixture.Kernel;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Ploeh.AutoFixture.Kernel;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	public class DefaultEngineParts : Ploeh.AutoFixture.DefaultEngineParts
 	{
+		static ImmutableArray<ISpecimenBuilderTransformation> Transformers { get; } = ImmutableArray.Create<ISpecimenBuilderTransformation>( OptionalParameterAlteration.Default );
+
 		readonly ImmutableArray<ISpecimenBuilderTransformation> transformers;
 
-		public static ImmutableArray<ISpecimenBuilderTransformation> DefaultTransformations { get; } = ImmutableArray.Create<ISpecimenBuilderTransformation>( OptionalParameterAlteration.Default );
-
 		public static DefaultEngineParts Default { get; } = new DefaultEngineParts();
-		DefaultEngineParts() : this( DefaultTransformations ) {}
+		DefaultEngineParts() : this( Transformers ) {}
 
+		[UsedImplicitly]
 		public DefaultEngineParts( ImmutableArray<ISpecimenBuilderTransformation> transformers )
 		{
 			this.transformers = transformers;

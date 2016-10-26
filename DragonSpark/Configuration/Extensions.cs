@@ -7,6 +7,7 @@ namespace DragonSpark.Configuration
 {
 	public static class Extensions
 	{
-		public static Func<object, Func<object, ImmutableArray<IAlteration<T>>>> Global<T>( this IItemSource<IAlteration<T>> @this ) => @this.ToDelegate().Wrap<object, ImmutableArray<IAlteration<T>>>().Wrap();
+		public static Func<object, ImmutableArray<IAlteration<T>>> Global<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get;
+		static ImmutableArray<IAlteration<T>> Get<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
 	}
 }

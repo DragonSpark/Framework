@@ -1,17 +1,18 @@
 ﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Parameterized.Caching;
 using System;
 
 namespace DragonSpark.Composition
 {
-	public sealed class ConventionMappingFactory : ParameterizedSourceBase<Type, ConventionMapping>
+	public sealed class ConventionMappingFactory : FactoryCache<Type, ConventionMapping?>
 	{
-		public static IParameterizedSource<Type, ConventionMapping> Default { get; } = new ConventionMappingFactory().ToCache();
+		public static IParameterizedSource<Type, ConventionMapping?> Default { get; } = new ConventionMappingFactory();
 		ConventionMappingFactory() {}
 
-		public override ConventionMapping Get( Type parameter )
+		protected override ConventionMapping? Create( Type parameter )
 		{
 			var @interface = ConventionInterfaces.Default.Get( parameter );
-			var result = @interface != null ? new ConventionMapping( @interface, parameter ) : default(ConventionMapping);
+			var result = @interface != null ? new ConventionMapping( @interface, parameter ) : (ConventionMapping?)null;
 			return result;
 		}
 	}

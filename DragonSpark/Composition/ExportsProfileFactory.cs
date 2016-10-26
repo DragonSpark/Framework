@@ -11,8 +11,8 @@ namespace DragonSpark.Composition
 {
 	public sealed class ExportsProfileFactory : SourceBase<ExportsProfile>
 	{
-		readonly static Func<Type, ConventionMapping> Selector = ConventionMappingFactory.Default.Get;
-		readonly static Func<Type, SingletonExport> SingletonExports = SingletonExportFactory.Default.Get;
+		readonly static Func<Type, ConventionMapping?> Selector = ConventionMappingFactory.Default.Get;
+		readonly static Func<Type, SingletonExport?> SingletonExports = SingletonExportFactory.Default.Get;
 		readonly static Func<Type, IEnumerable<Type>> Expander = ExportTypeExpander.Default.Get;
 
 		public static ISource<ExportsProfile> Default { get; } = new Scope<ExportsProfile>( new ExportsProfileFactory().GlobalCache() );

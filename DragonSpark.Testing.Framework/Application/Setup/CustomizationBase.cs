@@ -1,6 +1,6 @@
 ﻿using Ploeh.AutoFixture;
 
-namespace DragonSpark.Testing.Framework.Runtime
+namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	public abstract class CustomizationBase : ICustomization
 	{

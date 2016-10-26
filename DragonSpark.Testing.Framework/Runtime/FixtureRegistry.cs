@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Setup;
+﻿using DragonSpark.Application;
+using DragonSpark.Application.Setup;
 using DragonSpark.TypeSystem.Generics;
 using Ploeh.AutoFixture;
 
@@ -8,17 +9,17 @@ namespace DragonSpark.Testing.Framework.Runtime
 	{
 		readonly IFixture fixture;
 
-		readonly GenericMethodCommands commands;
+		readonly IGenericMethodContext<Execute> context;
 
 		public FixtureRegistry( IFixture fixture )
 		{
 			this.fixture = fixture;
-			commands = new GenericMethodCommands( this );
+			context = new GenericMethodCommands( this )[nameof(RegisterInstance)];
 		}
 
-		public override void Add( InstanceRegistrationRequest request )
+		public override void Add( ServiceRegistration request )
 		{
-			commands[nameof(RegisterInstance)].Make( request.RegistrationType ).Invoke( request.Instance );
+			context.Make( request.RegistrationType ).Invoke( request.Instance );
 			base.Add( request );
 		}
 
