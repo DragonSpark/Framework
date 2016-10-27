@@ -13,6 +13,6 @@ namespace DragonSpark.Windows.FileSystem
 		ByteReader() : this( System.IO.File.ReadAllBytes ) {}
 
 		[UsedImplicitly]
-		public ByteReader( Func<string, IEnumerable<byte>> factory ) : base( factory.AsImmutable ) {}
+		public ByteReader( Func<string, IEnumerable<byte>> factory ) : base( factory.GetImmutable ) {}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
-using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -29,34 +29,26 @@ namespace DragonSpark.Sources
 
 	public sealed class SourceAccountedValues : AlterationBase<object>
 	{
-		public static IParameterizedSource<Type, IParameterizedSource<object>> Defaults { get; } = new Cache<Type, IParameterizedSource<object>>( type => new SourceAccountedValues( type.Adapt() ).ToCache() );
+		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = new Cache<Type, Func<object, object>>( type => new SourceAccountedValues( type.Adapt().IsInstanceOfType ).ToCache().GetAssigned );
 
-		readonly TypeAdapter requestedType;
+		readonly Func<object, bool> specification;
 
-		public SourceAccountedValues( TypeAdapter requestedType )
+		[UsedImplicitly]
+		public SourceAccountedValues( Func<object, bool> specification )
 		{
-			this.requestedType = requestedType;
+			this.specification = specification;
 		}
 
-		public override object Get( object parameter )
-		{
-			foreach ( var candidate in Candidates( parameter ) )
-			{
-				if ( requestedType.IsInstanceOfType( candidate ) )
-				{
-					return candidate;
-				}
-			}
-			return null;
-		}
+		public override object Get( object parameter ) => Candidates( parameter ).FirstOrDefault( specification );
 
 		static IEnumerable<object> Candidates( object parameter )
 		{
 			yield return parameter;
 			var source = parameter as ISource;
-			if ( source != null )
+			var candidate = source?.Get();
+			if ( candidate != null )
 			{
-				yield return source.Get();
+				yield return candidate;
 			}
 		}
 	}

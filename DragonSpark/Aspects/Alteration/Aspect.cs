@@ -25,6 +25,7 @@ namespace DragonSpark.Aspects.Alteration
 	{
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
+			var method = args.Method;
 			args.Proceed();
 
 			var alteration = args.Instance as IAlteration;

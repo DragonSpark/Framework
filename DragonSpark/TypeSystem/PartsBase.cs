@@ -13,7 +13,7 @@ namespace DragonSpark.TypeSystem
 		readonly Func<Assembly, IEnumerable<Type>> source;
 		readonly Func<Assembly, IEnumerable<Assembly>> locator;
 
-		protected PartsBase( Func<Assembly, IEnumerable<Type>> source ) : this( source, AssemblyPartLocator.Default.AsEnumerable ) {}
+		protected PartsBase( Func<Assembly, IEnumerable<Type>> source ) : this( source, AssemblyPartLocator.Default.GetEnumerable ) {}
 
 		protected PartsBase( Func<Assembly, IEnumerable<Type>> source, Func<Assembly, IEnumerable<Assembly>> locator )
 		{

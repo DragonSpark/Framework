@@ -47,6 +47,6 @@ namespace DragonSpark
 	public sealed class FormattableSource : DelegatedParameterizedSource<object, IFormattable>
 	{
 		public static FormattableSource Default { get; } = new FormattableSource();
-		FormattableSource() : base( ConstructFromKnownTypes<IFormattable>.Default.GetCurrentDelegate().Cache() ) {}
+		FormattableSource() : base( ConstructFromKnownTypes<IFormattable>.Default.GetValueDelegate().Cache() ) {}
 	}
 }

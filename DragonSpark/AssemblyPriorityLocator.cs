@@ -1,5 +1,6 @@
-using System.Reflection;
 using DragonSpark.Extensions;
+using System;
+using System.Reflection;
 
 namespace DragonSpark
 {
@@ -7,5 +8,7 @@ namespace DragonSpark
 	{
 		public new static AssemblyPriorityLocator Default { get; } = new AssemblyPriorityLocator();
 		AssemblyPriorityLocator() : base( assembly => assembly.GetAttribute<PriorityAttribute>() ) {}
+
+		public IPriorityAware Get( Type type ) => Get( type.Assembly() );
 	}
 }

@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Framework.Application
 {
 	public sealed class ApplicationCommandSource : DragonSpark.Application.ApplicationCommandSource
 	{
-		readonly static Func<MethodBase, IEnumerable<ICommand<AutoData>>> Factory = MetadataCustomizationFactory<ICommand<AutoData>>.Default.AsEnumerable;
+		readonly static Func<MethodBase, IEnumerable<ICommand<AutoData>>> Factory = MetadataCustomizationFactory<ICommand<AutoData>>.Default.GetEnumerable;
 
 		public static ApplicationCommandSource Default { get; } = new ApplicationCommandSource();
 		ApplicationCommandSource() : base( MethodTypes.Default, Composition.ServiceProviderConfigurations.Default ) {}

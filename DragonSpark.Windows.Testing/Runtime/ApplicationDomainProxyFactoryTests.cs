@@ -1,8 +1,8 @@
-﻿using System;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Windows.Runtime;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture.Xunit2;
+using System;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.Runtime

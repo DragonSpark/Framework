@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	public sealed class InitializeUserSettingsFileAttribute : RegisterFilesAttribute
 	{
-		public InitializeUserSettingsFileAttribute() : this( UserSettingsFilePath.Current.GetCurrent() ) {}
+		public InitializeUserSettingsFileAttribute() : this( UserSettingsFilePath.Current.GetValue() ) {}
 
 		[UsedImplicitly]
 		public InitializeUserSettingsFileAttribute( string userSettingsFilePath ) : base( userSettingsFilePath ) {}

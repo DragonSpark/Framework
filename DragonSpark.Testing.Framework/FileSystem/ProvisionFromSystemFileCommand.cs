@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class ProvisionFromSystemFileCommand : CommandBase<FileInfo>
 	{
 		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = new Scope<ProvisionFromSystemFileCommand>( Factory.GlobalCache( () => new ProvisionFromSystemFileCommand() ) );
-		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetCurrent, ByteReader.Default.Get ) {}
+		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetValue, ByteReader.Default.Get ) {}
 
 		readonly ICommand<FileSystemRegistration> apply;
 		readonly Func<FileInfo, string> pathSource;

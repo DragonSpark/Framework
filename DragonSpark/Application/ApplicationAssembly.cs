@@ -10,6 +10,6 @@ namespace DragonSpark.Application
 	{
 		[Export]
 		public static ISource<Assembly> Default { get; } = new ApplicationAssembly();
-		ApplicationAssembly() : base( TypeSystem.Configuration.ApplicationAssemblyLocator.ToSourceDelegate(), ApplicationAssemblies.Default.AsEnumerable ) {}
+		ApplicationAssembly() : base( TypeSystem.Configuration.ApplicationAssemblyLocator.ToSourceDelegate(), ApplicationAssemblies.Default.GetEnumerable ) {}
 	}
 }

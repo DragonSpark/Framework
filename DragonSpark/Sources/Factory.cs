@@ -17,6 +17,7 @@ namespace DragonSpark.Sources
 
 		public static Func<object, T> GlobalCache<T>( this ISource<T> @this ) => @this.ToDelegate().GlobalCache();
 		public static Func<object, T> GlobalCache<T>( this Func<T> @this ) => @this.Wrap().Cache();
+		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate().GlobalCache();
 		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new Caches<TParameter, TResult>( @this ).Get;
 
 		sealed class Caches<TParameter, TResult> : FactoryCache<Func<TParameter, TResult>>

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Activation
@@ -10,6 +11,7 @@ namespace DragonSpark.Activation
 
 		public CompositeActivator( params IActivator[] activators ) : this( new AnySpecification<Type>( activators ), activators ) {}
 
+		[UsedImplicitly]
 		public CompositeActivator( ISpecification<Type> specification, params IActivator[] activators ) : base( activators )
 		{
 			this.specification = specification;

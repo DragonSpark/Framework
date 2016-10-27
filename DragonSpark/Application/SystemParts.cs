@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,8 +10,9 @@ namespace DragonSpark.Application
 {
 	public struct SystemParts
 	{
-		public static SystemParts Default { get; } = new SystemParts( Items<Assembly>.Default );
+		/*public static SystemParts Default { get; } = new SystemParts( Items<Assembly>.Default );*/
 
+		[UsedImplicitly]
 		public SystemParts( IEnumerable<Assembly> assemblies ) : this( assemblies.ToImmutableArray() ) {}
 
 		SystemParts( ImmutableArray<Assembly> assemblies ) : this( assemblies, TypesFactory.Default.Get( assemblies ) ) {}

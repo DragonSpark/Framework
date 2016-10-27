@@ -9,7 +9,7 @@ namespace DragonSpark.Sources
 
 		public ScopeContext() : this( Execution.Context ) {}
 
-		public ScopeContext( ISource<ISource> defaultScope ) : this( defaultScope.GetCurrent ) {}
+		public ScopeContext( ISource<ISource> defaultScope ) : this( defaultScope.GetValue ) {}
 
 		public ScopeContext( Func<object> defaultScope )
 		{

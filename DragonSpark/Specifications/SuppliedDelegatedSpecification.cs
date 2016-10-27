@@ -13,7 +13,7 @@ namespace DragonSpark.Specifications
 		public SuppliedDelegatedSpecification( ISpecification<T> specification, Func<T> parameterSource ) : this( specification.ToSpecificationDelegate(), parameterSource ) {}
 
 		public SuppliedDelegatedSpecification( Func<T, bool> source, T parameter ) : this( source, Factory.For( parameter ) ) {}
-		public SuppliedDelegatedSpecification( Func<T, bool> source, Func<T> parameterSource )// : base( Where<object>.Always )
+		public SuppliedDelegatedSpecification( Func<T, bool> source, Func<T> parameterSource )
 		{
 			this.source = source;
 			this.parameterSource = parameterSource;

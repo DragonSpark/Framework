@@ -14,6 +14,7 @@ namespace DragonSpark.Testing.ComponentModel
 		{
 			var sut = new Component();
 			var source = Assert.IsType<SingletonSource>( sut.Source );
+			Assert.Same( SingletonSource.Default, source );
 			var expected = source.Get();
 			Assert.NotNull( expected );
 			Assert.Equal( expected, sut.PropertyName );

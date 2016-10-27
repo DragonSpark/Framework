@@ -8,6 +8,8 @@ namespace DragonSpark.Extensions
 	{
 		public static IEnumerable<T> AsEnumerable<T>( this ImmutableArray<T> source ) => source.ToArray();
 
+		public static IEnumerable<T> Distinct<T>( this ImmutableArray<T> first ) => first.ToArray().Distinct();
+
 		public static IEnumerable<T> Union<T>( this ImmutableArray<T> first, IEnumerable<T> second ) => first.ToArray().Union( second );
 
 		public static IEnumerable<T> Except<T>( this IEnumerable<T> first, ImmutableArray<T> second ) => first.Except( second.AsEnumerable() );

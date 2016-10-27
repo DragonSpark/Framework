@@ -8,6 +8,6 @@ namespace DragonSpark.Composition
 	public sealed class ExportMappings : Scope<ImmutableArray<ExportMapping>>
 	{
 		public static ExportMappings Default { get; } = new ExportMappings();
-		ExportMappings() : base( () => Sources.Extensions.AsEnumerable( ExportSource<IEnumerable<ExportMapping>>.Default ).Concat().ToImmutableArray() ) {}
+		ExportMappings() : base( () => ExportSource<IEnumerable<ExportMapping>>.Default.GetEnumerable().Concat().ToImmutableArray() ) {}
 	}
 }

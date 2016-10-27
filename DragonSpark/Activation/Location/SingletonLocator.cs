@@ -2,7 +2,6 @@
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
-using JetBrains.Annotations;
 using System;
 using System.Composition;
 
@@ -27,7 +26,7 @@ namespace DragonSpark.Activation.Location
 
 			public override Func<Type, object> Get( Func<Type, Func<object>> parameter )
 			{
-				var result = new ParameterizedScope<Type, object>( new Source( parameter ).Global )
+				var result = new ParameterizedScope<Type, object>( new Source( parameter ).GlobalCache() )
 					.Apply( ContainsSingletonPropertySpecification.Default )
 					.Apply( Conventions )
 					.ToSourceDelegate();
@@ -36,11 +35,22 @@ namespace DragonSpark.Activation.Location
 
 			sealed class Source : ParameterizedSourceBase<Type, object>
 			{
-				readonly static Func<Type, IParameterizedSource<object>> AccountedSource = SourceAccountedValues.Defaults.Get;
+				readonly Func<Type, Func<object>> source;
+				
+				public Source( Func<Type, Func<object>> source )
+				{
+					this.source = source;
+				}
+
+				public override object Get( Type parameter ) => source( parameter )?.Invoke();
+			}
+
+			/*sealed class Source : ParameterizedSourceBase<Type, object>
+			{
 				readonly Func<Type, Func<object>> source;
 				readonly Func<Type, IParameterizedSource<object>> accountedSource;
 
-				public Source( Func<Type, Func<object>> source ) : this( source, AccountedSource ) {}
+				public Source( Func<Type, Func<object>> source ) : this( source, Sources.Defaults.AccountedSource ) {}
 
 				[UsedImplicitly]
 				public Source( Func<Type, Func<object>> source, Func<Type, IParameterizedSource<object>> accountedSource )
@@ -55,7 +65,7 @@ namespace DragonSpark.Activation.Location
 					var result = invoke != null ? accountedSource( parameter ).Get( invoke ) : null;
 					return result;
 				}
-			}
+			}*/
 		}
 	}
 }

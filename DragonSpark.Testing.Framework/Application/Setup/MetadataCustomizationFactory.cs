@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	public sealed class MetadataCustomizationFactory<T> : ParameterizedSourceBase<MethodBase, ImmutableArray<T>> where T : class
 	{
-		readonly static Func<object, IEnumerable<T>> CollectionSelector = HostedValueLocator<T>.Default.AsEnumerable;
+		readonly static Func<object, IEnumerable<T>> CollectionSelector = HostedValueLocator<T>.Default.GetEnumerable;
 		public static MetadataCustomizationFactory<T> Default { get; } = new MetadataCustomizationFactory<T>();
 		MetadataCustomizationFactory() {}
 

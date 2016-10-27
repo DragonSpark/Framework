@@ -10,7 +10,7 @@ namespace DragonSpark.TypeSystem
 {
 	public class AssemblyBasedTypeSource : SuppliedTypeSource
 	{
-		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.AsEnumerable;
+		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.GetEnumerable;
 
 		public AssemblyBasedTypeSource( params Type[] types ) : this( types, Items<Assembly>.Default ) {}
 

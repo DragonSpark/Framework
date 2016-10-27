@@ -10,7 +10,7 @@ namespace DragonSpark.TypeSystem
 {
 	public sealed class TypesFactory : StructuralCache<ImmutableArray<Assembly>, ImmutableArray<Type>>
 	{
-		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.AsEnumerable;
+		readonly static Func<Assembly, IEnumerable<Type>> All = AssemblyTypes.All.GetEnumerable;
 
 		public static TypesFactory Default { get; } = new TypesFactory();
 		TypesFactory() : base( array => array.ToArray().SelectMany( All ).ToImmutableArray() ) {}

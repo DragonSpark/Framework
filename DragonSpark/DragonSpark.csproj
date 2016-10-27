@@ -42,6 +42,7 @@
     <Compile Include="Activation\Location\Defaults.cs" />
     <Compile Include="Activation\Location\SpecifiedSingletonHostSpecification.cs" />
     <Compile Include="Activation\SingletonDelegates.cs" />
+    <Compile Include="Application\ApplicationPartsFactory.cs" />
     <Compile Include="Application\FatalApplicationException.cs" />
     <Compile Include="Application\SuppliedCurrentTime.cs" />
     <Compile Include="Aspects\AdapterConstructorSource.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Coercion\DelegatedCoercer.cs" />
     <Compile Include="Commands\CoercedCommand.cs" />
     <Compile Include="Commands\CompiledCommand.cs" />
+    <Compile Include="Commands\FactoryCommand.cs" />
     <Compile Include="Commands\IConfigurableCommand.cs" />
     <Compile Include="Commands\IExecute.cs" />
     <Compile Include="Commands\IRunCommand.cs" />
@@ -659,7 +661,7 @@
     <Compile Include="Application\ApplicationAssemblyLocator.cs" />
     <Compile Include="Application\ApplicationAttribute.cs" />
     <Compile Include="Application\CurrentTime.cs" />
-    <Compile Include="Specifications\EqualityContextAwareSpecification.cs" />
+    <Compile Include="Specifications\EqualitySpecification.cs" />
     <Compile Include="Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Specifications\GuardedSpecificationBase.cs" />
     <Compile Include="Specifications\Extensions.cs" />

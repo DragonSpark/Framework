@@ -1,4 +1,5 @@
 using DragonSpark.Application;
+using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -16,6 +17,6 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<TypeInfo> AsTypeInfos( this IEnumerable<Type> target ) => target.Select( info => info.GetTypeInfo() );
 
-		public static ImmutableArray<Type> AsApplicationParts( this IEnumerable<Type> target ) => ApplicationParts.Assign( target.Fixed() );
+		public static ImmutableArray<Type> AsApplicationParts( this IEnumerable<Type> target ) => ApplicationPartsFactory.Default.GetEnumerable( target ).Types;
 	}
 }

@@ -41,11 +41,11 @@ namespace DragonSpark.Testing.Application.Setup
 		public void SystemParts()
 		{
 			var system = DefaultServices.Default.Get<SystemParts>();
-			Assert.Empty( system.Assemblies.AsEnumerable() );
-			Assert.Empty( system.Types.AsEnumerable() );
+			Assert.True( system.Assemblies.IsDefault );
+			Assert.True( system.Types.IsDefault );
 
 			var types = new[] { typeof(ClassFactory), typeof(Class) }.AsApplicationParts();
-			
+
 			var after = DefaultServices.Default.Get<SystemParts>();
 			Assert.NotEmpty( after.Assemblies.AsEnumerable() );
 			Assert.NotEmpty( after.Types.AsEnumerable() );
