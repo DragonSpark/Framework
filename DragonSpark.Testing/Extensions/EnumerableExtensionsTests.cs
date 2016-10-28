@@ -146,5 +146,14 @@ namespace DragonSpark.Testing.Extensions
 			var sut = items.FirstOrDefaultOfType<string>();
 			Assert.Equal( third, sut );
 		}
+
+		[Fact]
+		public void SelectAssigned()
+		{
+			var numbers = new int?[] { 6, 7, null, 76 };
+			var assigned = numbers.SelectAssigned( i => i ).Fixed();
+			Assert.Equal( 3, assigned.Length );
+			Assert.Equal( new [] { 6, 7, 76 }, assigned );
+		}
 	}
 }

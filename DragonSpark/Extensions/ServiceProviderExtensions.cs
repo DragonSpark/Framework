@@ -1,5 +1,6 @@
 using DragonSpark.Activation;
 using DragonSpark.Activation.Location;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized.Caching;
 using System;
 
@@ -11,6 +12,6 @@ namespace DragonSpark.Extensions
 
 		public static T Get<T>( this IServiceProvider serviceProvider ) => Get<T>( serviceProvider, typeof(T) );
 
-		public static T Get<T>( this IServiceProvider serviceProvider, Type type ) => serviceProvider.GetService( type ).As<T>();
+		public static T Get<T>( this IServiceProvider serviceProvider, Type type ) => SourceCoercer<T>.Default.Coerce( serviceProvider.GetService( type ) );
 	}
 }

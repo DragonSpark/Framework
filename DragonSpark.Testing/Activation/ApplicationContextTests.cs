@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Activation
 
 			var method = MethodBase.GetCurrentMethod();
 			object inner;
-			using ( ApplicationFactory.Default.Get( method ).Run( new AutoData( FixtureContext.Default.WithFactory( FixtureFactory<AutoDataCustomization>.Default.Get ), method ) ) )
+			using ( ApplicationFactory.Default.Get( method ).Run( new AutoData( FixtureContext.Default.WithFactory( FixtureFactory<DefaultAutoDataCustomization>.Default.Get ), method ) ) )
 			{
 				Assert.NotNull( MethodContext.Default.Get() );
 				Assert.Same( method, MethodContext.Default.Get() );

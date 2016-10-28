@@ -1,3 +1,4 @@
+using DragonSpark.Configuration;
 using DragonSpark.Specifications;
 
 namespace DragonSpark.Sources.Parameterized.Caching
@@ -13,13 +14,13 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		readonly protected static ISpecification<TInstance> DefaultSpecification = Common<TInstance>.Always;
 
 		protected FactoryCache() : this( DefaultSpecification ) {}
-		protected FactoryCache( ISpecification<TInstance> specification ) : this( new AssignableParameterizedSource<TInstance, TValue>( instance => default(TValue) ), specification ) {}
+		protected FactoryCache( ISpecification<TInstance> specification ) : this( new ConfigurableParameterizedSource<TInstance, TValue>( instance => default(TValue) ), specification ) {}
 
-		FactoryCache( IAssignableParameterizedSource<TInstance, TValue> configuration, ISpecification<TInstance> specification ) : base( configuration.ToCache() )
+		FactoryCache( IConfigurableParameterizedSource<TInstance, TValue> configuration, ISpecification<TInstance> specification ) : base( configuration.ToCache() )
 		{
 			IParameterizedSource<TInstance, TValue> source = new DelegatedParameterizedSource<TInstance, TValue>( Create );
 			var factory = specification == DefaultSpecification ? source : source.Apply( specification );
-			configuration.Assign( factory.ToSourceDelegate() );
+			configuration.Configuration.Assign( factory.Global );
 		}
 
 		protected abstract TValue Create( TInstance parameter );

@@ -4,7 +4,7 @@ using System;
 namespace DragonSpark.Aspects.Exceptions
 {
 	[AttributeUsage( AttributeTargets.Method )]
-	public sealed class AppliedAspect : AspectBase
+	public sealed class Aspect : AspectBase
 	{
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{

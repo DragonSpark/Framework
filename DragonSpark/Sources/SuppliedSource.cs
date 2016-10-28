@@ -8,7 +8,7 @@ namespace DragonSpark.Sources
 
 		public SuppliedSource() {}
 
-		public SuppliedSource( T reference )
+		public SuppliedSource( T reference = default(T) )
 		{
 			Assign( reference );
 		}

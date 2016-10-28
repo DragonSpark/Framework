@@ -3,17 +3,15 @@ using DragonSpark.Sources;
 using DragonSpark.Testing.Framework.Application.Setup;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture;
-using PostSharp.Aspects;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Application
 {
-	[LinesOfCodeAvoided( 5 )]
 	public class AutoDataAttribute : Ploeh.AutoFixture.Xunit2.AutoDataAttribute
 	{
-		readonly static Func<IFixture> DefaultFixtureFactory = FixtureFactory<AutoDataCustomization>.Default.Get;
+		readonly static Func<IFixture> DefaultFixtureFactory = FixtureFactory<DefaultAutoDataCustomization>.Default.Get;
 		
 		public AutoDataAttribute() : this( DefaultFixtureFactory ) {}
 
@@ -28,5 +26,11 @@ namespace DragonSpark.Testing.Framework.Application
 			var result = base.GetData( methodUnderTest );
 			return result;
 		}
+	}
+
+	public class AutoConfiguredDataAttribute : AutoDataAttribute
+	{
+		readonly static Func<IFixture> Factory = FixtureFactory<AutoConfiguredDataCustomization>.Default.Get;
+		public AutoConfiguredDataAttribute() : base( Factory ) {}
 	}
 }

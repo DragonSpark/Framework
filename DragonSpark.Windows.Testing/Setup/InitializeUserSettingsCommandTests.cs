@@ -3,6 +3,7 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
@@ -24,7 +25,7 @@ namespace DragonSpark.Windows.Testing.Setup
 	{
 		public InitializeUserSettingsCommandTests( ITestOutputHelper output ) : base( output )
 		{
-			// SaveUserSettingsCommand.Default.Configuration.Assign( () => p => p.Save() );
+			SaveUserSettingsCommand.Default.Configuration.Assign( () => p => p.Save() );
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData, InitializeUserSettingsFile]
@@ -36,24 +37,23 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData]
-		public void Create( 
-			[NoAutoProperties]ApplicationSettingsBase parameter, 
-			[DragonSpark.Testing.Framework.Application.Service]InitializeUserSettingsCommand sut, 
-			ILoggerHistory history, 
-			[DragonSpark.Testing.Framework.Application.Service]UserSettingsFile factory, 
+		void Create( 
+			Mock<Settings> parameter, 
+			InitializeUserSettingsCommand sut, 
+			[Service]ILoggerHistory history, 
+			UserSettingsFile factory, 
 			ClearUserSettingCommand clear )
 		{
 			var path = factory.Get();
-			// parameter.Setup( p => p.Save() ).Callback( () => RegisterFilesCommand.Default.Execute( path.FullName ) ).Verifiable();
-
+			
 			Assert.NotNull( path );
 			Assert.False( path.Exists, path.FullName );
 			var before = history.Events.Fixed();
 
-			sut.Execute( parameter );
+			sut.Execute( parameter.Object );
 
-			/*parameter.Verify( p => p.Upgrade(), Times.Once );
-			parameter.Verify( p => p.Save(), Times.Once );*/
+			parameter.Verify( p => p.Upgrade(), Times.Once );
+			parameter.Verify( p => p.Save(), Times.Once );
 
 			var items = history.Events.Select( item => item.MessageTemplate.Text ).Fixed();
 			Assert.Contains( Resources.LoggerTemplates_NotFound, items );
@@ -68,7 +68,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Empty( history.Events );
 
 			Assert.False( path.Refreshed().Exists );
-			sut.Execute( parameter );
+			sut.Execute( parameter.Object );
 			Assert.True( path.Refreshed().Exists );
 			
 			Assert.Equal( 3, history.Events.Count() );
@@ -138,7 +138,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			Assert.Equal( before.Length + expected.Length, items.Length );
 		}
 
-		class Settings : ApplicationSettingsBase
+		[UsedImplicitly]
+		public class Settings : ApplicationSettingsBase
 		{
 			readonly Action save;
 

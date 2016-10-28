@@ -76,7 +76,7 @@
     <Compile Include="Aspects\CommandTypeDefinition.cs" />
     <Compile Include="Aspects\ConstructedSourceBase.cs" />
     <Compile Include="Aspects\ConstructionsSource.cs" />
-    <Compile Include="Aspects\Exceptions\AppliedAspect.cs" />
+    <Compile Include="Aspects\Exceptions\Aspect.cs" />
     <Compile Include="Aspects\Exceptions\ApplyExceptionPolicyAttribute.cs" />
     <Compile Include="Aspects\Exceptions\AspectBase.cs" />
     <Compile Include="Aspects\Exceptions\IPolicySource.cs" />
@@ -254,7 +254,6 @@
     <Compile Include="Runtime\EnumerableResultAlteration.cs" />
     <Compile Include="Sources\ConfiguringFactory.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
-    <Compile Include="Sources\Parameterized\AssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
     <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
