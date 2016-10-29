@@ -15,7 +15,7 @@ namespace DragonSpark.Sources.Parameterized
 		readonly Func<TypeInfo, bool> isAssignable;
 		readonly Func<Type[], Type> selector;
 
-		protected TypeLocatorBase( params Type[] types ) : this( types.Select( type => type.Adapt() ).ToImmutableArray() ) {}
+		protected TypeLocatorBase( params Type[] types ) : this( types.AsAdapters() ) {}
 
 		TypeLocatorBase( ImmutableArray<TypeAdapter> adapters )
 		{

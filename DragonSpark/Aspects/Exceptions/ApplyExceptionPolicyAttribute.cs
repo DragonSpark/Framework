@@ -33,5 +33,6 @@ namespace DragonSpark.Aspects.Exceptions
 
 		public Policy Get() => source.Get();
 		object ISource.Get() => Get();
+		Type ISource.SourceType => typeof(Policy);
 	}
 }

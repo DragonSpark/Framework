@@ -1,4 +1,3 @@
-using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
 using PostSharp.Aspects;
 using PostSharp.Patterns.Contracts;
@@ -13,7 +12,7 @@ namespace DragonSpark.Aspects
 	{
 		readonly ImmutableArray<TypeAdapter> types;
 
-		public OfTypeAttribute( params Type[] types ) : this( types.Select( type => type.Adapt() ).ToImmutableArray() ) {}
+		public OfTypeAttribute( params Type[] types ) : this( types.AsAdapters() ) {}
 
 		OfTypeAttribute( ImmutableArray<TypeAdapter> types ) : this( types, $"The specified type is not of type (or cannot be cast to) {string.Join( " or ", types.Select( type => type.ReferenceType.FullName ) )}" ) {}
 

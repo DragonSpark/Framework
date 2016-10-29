@@ -1,4 +1,5 @@
 using DragonSpark.Sources;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -25,21 +26,26 @@ namespace DragonSpark.Composition
 			{
 				if ( singleton.Contracts.Contains( contract ) )
 				{
-					yield return new ExportDescriptorPromise( contract, GetType().FullName, true, NoDependencies, new Factory( singleton.Factory ).Create );
+					yield return new ExportDescriptorPromise( contract, GetType().FullName, true, NoDependencies, new Factory( contract.ContractType, singleton.Factory ).Create );
 				}
 			}
 		}
 
 		sealed class Factory : DelegatedSource<object>
 		{
+			readonly Func<object, object> accounter;
 			readonly CompositeActivator activate;
 
-			public Factory( Func<object> provider ) : base( provider )
+			public Factory( Type serviceType, Func<object> provider ) : this( provider, SourceAccountedAlteration.Defaults.Get( serviceType ) ) {}
+
+			[UsedImplicitly]
+			public Factory( Func<object> provider, Func<object, object> accounter ) : base( provider )
 			{
+				this.accounter = accounter;
 				activate = Activate;
 			}
 
-			object Activate( LifetimeContext context, CompositionOperation operation ) => Get();
+			object Activate( LifetimeContext context, CompositionOperation operation ) => accounter( Get() );
 
 			public ExportDescriptor Create( IEnumerable<CompositionDependency> dependencies ) => ExportDescriptor.Create( activate, NoMetadata );
 		}

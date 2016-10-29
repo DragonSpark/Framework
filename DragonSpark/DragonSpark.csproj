@@ -283,7 +283,6 @@
     <Compile Include="ComponentModel\ServicesValueProvider.cs" />
     <Compile Include="ComponentModel\SingletonDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
-    <Compile Include="ComponentModel\ValueProvider.cs" />
     <Compile Include="Configuration\ConfigurableFactoryBase.cs" />
     <Compile Include="Configuration\ConfigurationProvisionedParameterizedFactoryBase.cs" />
     <Compile Include="Configuration\ConfigurationScope.cs" />
@@ -393,7 +392,7 @@
     <Compile Include="Sources\ExportSource.cs" />
     <Compile Include="Sources\IItemSource.cs" />
     <Compile Include="Sources\ItemSource.cs" />
-    <Compile Include="Specifications\AdapterSpecificationBase.cs" />
+    <Compile Include="Specifications\AdapterAssignableSpecification.cs" />
     <Compile Include="Sources\Parameterized\AutoValidatingSourceBase.cs" />
     <Compile Include="Sources\Parameterized\CacheParameterHandler.cs" />
     <Compile Include="Sources\Parameterized\Caching\ActivatedCache.cs" />
@@ -423,6 +422,7 @@
     <Compile Include="Tasks\TaskMonitors.cs" />
     <Compile Include="TypeSystem\AssignableEqualityComparer.cs" />
     <Compile Include="TypeSystem\Default.cs" />
+    <Compile Include="TypeSystem\Extensions.cs" />
     <Compile Include="TypeSystem\Generics\ActionContextBase.cs" />
     <Compile Include="Application\ApplicationAssembly.cs" />
     <Compile Include="Application\ApplicationAssemblySpecification.cs" />
@@ -706,7 +706,6 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Application\ICurrentTime.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="Diagnostics\PurgeLoggerMessageHistoryCommand.cs" />
@@ -758,7 +757,7 @@
     <Compile Include="TypeSystem\Metadata\TypeDefinitions.cs" />
     <Compile Include="TypeSystem\Metadata\TypeInfoAttributeProvider.cs" />
     <Compile Include="TypeSystem\TypesFactory.cs" />
-    <Compile Include="TypeSystem\TypeSupport.cs" />
+    <Compile Include="TypeSystem\TypeCoercer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

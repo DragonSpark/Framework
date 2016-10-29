@@ -3,6 +3,7 @@ using AutoMapper.Configuration;
 using DragonSpark.Activation;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.TypeSystem;
 using Activator = DragonSpark.Activation.Activator;
 
 namespace DragonSpark.Extensions

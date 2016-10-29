@@ -12,16 +12,16 @@ namespace DragonSpark.Application
 {
 	public class ApplicationCommandSource : SuppliedCommandSource
 	{
-		readonly ImmutableArray<Type> types;
+		readonly IEnumerable<Type> types;
 		// public ApplicationCommandSource( IEnumerable<Type> types ) : this( types, Items<ICommandSource>.Default ) {}
 		public ApplicationCommandSource( IEnumerable<Type> types, params ICommandSource[] sources ) : base( sources )
 		{
-			this.types = types.ToImmutableArray();
+			this.types = types;
 		}
 
 		protected override IEnumerable<ICommand> Yield()
 		{
-			yield return ApplicationPartsFactory.Default.Fixed( types ).ToCommand();
+			yield return ApplicationPartsFactory.Default.Fixed( types.ToImmutableArray() ).ToCommand();
 			yield return new DisposingCommand( Disposables.Default.Get() );
 
 			foreach ( var command in base.Yield() )

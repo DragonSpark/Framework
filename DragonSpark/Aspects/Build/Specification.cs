@@ -1,5 +1,4 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Specifications;
+﻿using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Immutable;
@@ -9,7 +8,7 @@ namespace DragonSpark.Aspects.Build
 {
 	sealed class Specification : SpecificationWithContextBase<Type, ImmutableArray<TypeAdapter>>
 	{
-		public Specification( params Type[] types ) : base( types.Select( type => type.Adapt() ).ToImmutableArray() ) {}
+		public Specification( params Type[] types ) : base( types.AsAdapters() ) {}
 
 		public override bool IsSatisfiedBy( Type parameter )
 		{

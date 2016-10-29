@@ -1,5 +1,6 @@
 using DragonSpark.Expressions;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using DragonSpark.TypeSystem.Generics;
 using System;
 

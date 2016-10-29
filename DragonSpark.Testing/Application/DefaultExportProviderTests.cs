@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System.Composition;
 using Xunit;

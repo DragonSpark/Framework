@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using DragonSpark.TypeSystem.Metadata;
 using JetBrains.Annotations;
 using System;

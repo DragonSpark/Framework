@@ -9,7 +9,8 @@ namespace DragonSpark.Aspects.Exceptions
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
 			var source = args.Instance as IPolicySource;
-			source?.Get().Execute( args.Proceed );
+			var policy = source?.Get();
+			policy.Execute( args.Proceed );
 		}
 	}
 }

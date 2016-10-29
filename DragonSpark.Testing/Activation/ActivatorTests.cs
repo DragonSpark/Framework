@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Activation
 		[Fact]
 		public void Default()
 		{
-			var activator = GlobalServiceProvider.GetService<IActivator>();
+			var activator = GlobalServiceProvider.Default.Get<IActivator>();
 			Assert.Same( Activator.Default, activator );
 			var instance = activator.Get<IInterface>( typeof(Class) );
 			Assert.IsType<Class>( instance );
@@ -66,7 +66,7 @@ namespace DragonSpark.Testing.Activation
 		[Theory, AutoData]
 		public void DefaultCreate( string parameter )
 		{
-			var activator = GlobalServiceProvider.GetService<IConstructor>();
+			var activator = GlobalServiceProvider.Default.Get<IConstructor>();
 			Assert.Same( Constructor.Default, activator );
 			
 			var instance = activator.Construct<ClassWithParameter>( parameter );

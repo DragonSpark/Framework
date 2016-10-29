@@ -1,6 +1,7 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Specifications;
+using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -9,46 +10,56 @@ using System.Linq;
 
 namespace DragonSpark.Sources
 {
-	public sealed class SourceAccountedTypes : FactoryCache<Type, ImmutableArray<Type>>
+	public sealed class SourceAccountedTypes : FactoryCache<Type, ImmutableArray<TypeAdapter>>
 	{
+		public static IParameterizedSource<Type, Func<object, bool>> Specifications { get; } = 
+			new ParameterizedScope<Type, Func<object, bool>>( Factory.GlobalCache<Type, Func<object, bool>>( type => new AdapterInstanceSpecification( Default.Get( type ).ToArray() ).ToCachedSpecification().IsSatisfiedBy ) );
+
 		public static SourceAccountedTypes Default { get; } = new SourceAccountedTypes();
 		SourceAccountedTypes() {}
 
-		protected override ImmutableArray<Type> Create( Type parameter ) => Candidates( parameter ).ToImmutableArray();
+		protected override ImmutableArray<TypeAdapter> Create( Type parameter ) => Candidates( parameter ).AsAdapters();
 
 		static IEnumerable<Type> Candidates( Type type )
 		{
 			yield return type;
-			var implementations = type.Adapt().GetImplementations( typeof(ISource<>) );
-			if ( implementations.Any() )
+			foreach ( var implementation in type.Adapt().GetImplementations( typeof(ISource<>) ) )
 			{
-				yield return implementations.First().Adapt().GetInnerType();
+				yield return implementation.Adapt().GetInnerType();
 			}
 		}
 	}
 
-	public sealed class SourceAccountedValues : AlterationBase<object>
+	public sealed class SourceAccountedAlteration : AlterationBase<object>
 	{
-		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = new Cache<Type, Func<object, object>>( type => new SourceAccountedValues( type.Adapt().IsInstanceOfType ).ToCache().GetAssigned );
+		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = 
+			new ParameterizedScope<Type, Func<object, object>>( Factory.GlobalCache<Type, Func<object, object>>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ) );
 
+		readonly Func<Type, bool> assignable;
 		readonly Func<object, bool> specification;
 
+		public SourceAccountedAlteration( TypeAdapter adapter ) : this( adapter.IsAssignableFrom, adapter.IsInstanceOfType ) {}
+
 		[UsedImplicitly]
-		public SourceAccountedValues( Func<object, bool> specification )
+		public SourceAccountedAlteration( Func<Type, bool> assignable, Func<object, bool> specification )
 		{
+			this.assignable = assignable;
 			this.specification = specification;
 		}
 
 		public override object Get( object parameter ) => Candidates( parameter ).FirstOrDefault( specification );
 
-		static IEnumerable<object> Candidates( object parameter )
+		IEnumerable<object> Candidates( object parameter )
 		{
 			yield return parameter;
 			var source = parameter as ISource;
-			var candidate = source?.Get();
-			if ( candidate != null )
+			if ( source != null && assignable( source.SourceType ) )
 			{
-				yield return candidate;
+				var candidate = source.Get();
+				if ( candidate != null )
+				{
+					yield return candidate;
+				}
 			}
 		}
 	}

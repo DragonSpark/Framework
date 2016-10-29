@@ -8,7 +8,7 @@ using Type = System.Type;
 
 namespace DragonSpark.TypeSystem
 {
-	[Shared]
+	[Export, Shared]
 	public class AllTypesOfFactory : ParameterizedSourceBase<Type, Array>
 	{
 		readonly ImmutableArray<Type> types;

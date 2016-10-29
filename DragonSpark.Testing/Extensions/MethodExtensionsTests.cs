@@ -3,6 +3,7 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
 using System.Windows.Input;

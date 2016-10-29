@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
+using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Composition;

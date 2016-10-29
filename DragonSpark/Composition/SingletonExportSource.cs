@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Sources;
 using DragonSpark.Specifications;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -15,6 +16,7 @@ namespace DragonSpark.Composition
 		readonly Func<ImmutableArray<SingletonExport>> exports;
 		readonly Func<Type, bool> specification;
 
+		[UsedImplicitly]
 		public SingletonExportSource( Func<ImmutableArray<SingletonExport>> exports ) : this( TypeAssignableSpecification<T>.Default.ToSpecificationDelegate() )
 		{
 			this.exports = exports;

@@ -1,13 +1,6 @@
-using DragonSpark.Extensions;
-using DragonSpark.TypeSystem;
-using JetBrains.Annotations;
-using Ploeh.AutoFixture.Kernel;
-using System;
-using Defaults = DragonSpark.Activation.Location.Defaults;
-
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
-	public sealed class ServiceRelay : ISpecimenBuilder
+	/*public sealed class ServiceRelay : ISpecimenBuilder
 	{
 		public static ServiceRelay Default { get; } = new ServiceRelay();
 		ServiceRelay() : this( Defaults.ServiceSource ) {}
@@ -26,5 +19,5 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 			var result = type.With( provider ) ?? new NoSpecimen();
 			return result;
 		}
-	}
+	}*/
 }

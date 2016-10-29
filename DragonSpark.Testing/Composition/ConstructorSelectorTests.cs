@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Setup;
 using DragonSpark.Composition;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using Serilog;
 using System.Composition;

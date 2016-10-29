@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Activation.Location;
 using DragonSpark.Application.Setup;
 using DragonSpark.Aspects;
+using DragonSpark.Extensions;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects
@@ -11,7 +12,7 @@ namespace DragonSpark.Testing.Aspects
 		public void Verify()
 		{
 			var source = new SourceItem { SourceProperty = 6776 };
-			var repository = GlobalServiceProvider.GetService<IServiceRepository>();
+			var repository = GlobalServiceProvider.Default.Get<IServiceRepository>();
 			repository.Add( source );
 
 			var copy = new SourceItem();

@@ -2,6 +2,7 @@ using DragonSpark.Activation.Location;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
 using System.Composition;

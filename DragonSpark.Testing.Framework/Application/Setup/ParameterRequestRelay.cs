@@ -1,8 +1,8 @@
+using DragonSpark.Testing.Framework.Runtime;
+using DragonSpark.TypeSystem;
+using Ploeh.AutoFixture.Kernel;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
-using DragonSpark.Testing.Framework.Runtime;
-using Ploeh.AutoFixture.Kernel;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {

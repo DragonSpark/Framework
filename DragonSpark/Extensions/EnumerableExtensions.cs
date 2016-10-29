@@ -137,6 +137,7 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<T> Prepend<T>( this IEnumerable<T> @this, params T[] items ) => items.Concat( @this );
 
+		public static IEnumerable<ValueTuple<T1, T2>> Tuple<T1, T2>( this ImmutableArray<T1> target, IEnumerable<T2> other ) => target.ToArray().Tuple( other );
 		public static IEnumerable<ValueTuple<T1, T2>> Tuple<T1, T2>( this IEnumerable<T1> target, IEnumerable<T2> other ) => target.Zip( other, ValueTuple.Create ).ToArray();
 
 		public static T FirstAssigned<T>( this IEnumerable<T> @this ) => @this.WhereAssigned().FirstOrDefault();

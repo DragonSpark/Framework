@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;

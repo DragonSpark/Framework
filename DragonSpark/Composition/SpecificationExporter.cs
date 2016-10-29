@@ -1,4 +1,4 @@
-using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Composition.Hosting.Core;

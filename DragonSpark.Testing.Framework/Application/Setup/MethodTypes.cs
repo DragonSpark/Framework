@@ -1,15 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection;
 using DragonSpark.Application;
 using DragonSpark.ComponentModel;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Testing.Framework.Runtime;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
@@ -33,9 +33,19 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 			selector = Get;
 		}
 
-		protected override ImmutableArray<Type> Create( object parameter ) => locator( parameter ).Introduce( methodSource() ).Concat().ToImmutableArray();
+		protected override ImmutableArray<Type> Create( object parameter )
+		{
+			var methodBase = methodSource();
+			var immutableArray = locator( parameter );
+			var enumerable = immutableArray.Introduce( methodBase ).Concat();
+			var result = enumerable.ToImmutableArray();
+			return result;
+		}
 
 		public ImmutableArray<Type> Get() => this.ToImmutableArray();
+
+		Type ISource.SourceType => typeof(ImmutableArray<Type>);
+
 		object ISource.Get() => Get();
 
 		public IEnumerator<Type> GetEnumerator()

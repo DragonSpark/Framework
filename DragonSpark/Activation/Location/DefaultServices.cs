@@ -11,6 +11,6 @@ namespace DragonSpark.Activation.Location
 			new InstanceRepository( GlobalServiceProvider.Default, Activator.Default, Exports.Default, ApplicationParts.Default, ApplicationAssemblies.Default, ApplicationTypes.Default, LoggingHistory.Default, LoggingController.Default, Diagnostics.Defaults.Source, Instances.Default ), 
 			new DecoratedActivator( Instances.Default.Get ),
 			Activator.Default
-			) {}
+		) {}
 	}
 }

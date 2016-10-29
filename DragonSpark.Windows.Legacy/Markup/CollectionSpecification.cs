@@ -1,5 +1,6 @@
 using DragonSpark.Extensions;
 using DragonSpark.Specifications;
+using DragonSpark.TypeSystem;
 using System;
 using System.Collections;
 using System.Windows.Markup;

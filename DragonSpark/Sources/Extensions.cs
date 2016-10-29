@@ -1,4 +1,5 @@
 using DragonSpark.Commands;
+using DragonSpark.Extensions;
 using DragonSpark.Runtime.Assignments;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
@@ -6,28 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace DragonSpark.Sources
 {
 	public static class Extensions
 	{
-		// public static IDisposable Assignment<T>( this IScope<T> @this, T start ) => new ValueAssignment<Func<T>>( new Assign<Func<T>>( @this ), new Value<Func<T>>( Factory.For( start ), Factory.For( @this.Get() ) ) );
+		public static T Account<T>( [Optional]this object @this ) => Account( @this, typeof(T) ).As<T>();
+		public static object Account( [Optional]this object @this, Type type ) => @this.IsAssigned() ? SourceAccountedAlteration.Defaults.Get( type ).Invoke( @this ) : @this;
 
 		public static T[] Unwrap<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
 
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
-
-		/*public static object Value( this Func<object> @this ) => @this().Value<object>();
-		public static object Value( this object @this ) => @this.Value<object>();
-		public static T Value<T>( this object @this ) => SourceCoercer<T>.Default.Coerce( @this );*/
-
-		// public static ICommand Configured<T>( this IAssignable<T> @this, T value ) => new AssignCommand<T>( @this ).Fixed( value );
-
 		public static void Assign<TParameter, TResult>( this IParameterizedScope<TParameter, TResult> @this, Func<TParameter, TResult> instance ) => @this.Assign( instance.Self );
-
 		public static void Assign<T>( this IScopeAware<T> @this, T instance ) => @this.Assign( Factory.For( instance ) );
-
 		public static void Assign<T>( this IScopeAware<T?> @this, T instance ) where T : struct => @this.Assign( Factory.For( new T?( instance ) ) );
 
 		public static T WithInstance<T>( this IScope<T> @this, T instance )

@@ -1,5 +1,6 @@
 using DragonSpark.Commands;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;

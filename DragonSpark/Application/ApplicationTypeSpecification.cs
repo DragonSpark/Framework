@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
+using DragonSpark.TypeSystem;
 using PostSharp.Aspects.Internals;
 using System;
 using System.Runtime.CompilerServices;

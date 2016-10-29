@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
-using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.TypeSystem;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Expressions
 {

@@ -1,16 +1,16 @@
-﻿using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
-using DragonSpark.TypeSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Type = System.Type;
 
-namespace DragonSpark.Extensions
+namespace DragonSpark.TypeSystem
 {
-	public static class TypeExtensions
+	public static class Extensions
 	{
 		public static Type GetMemberType(this MemberInfo memberInfo) => 
 			( memberInfo as MethodInfo )?.ReturnType ??
@@ -31,7 +31,8 @@ namespace DragonSpark.Extensions
 		readonly static TypeInfo Structural = typeof(IStructuralEquatable).GetTypeInfo();
 
 		public static bool IsStructural( this Type @this ) => Structural.IsAssignableFrom( @this.GetTypeInfo() );
-		
+
+		public static bool IsAssignableFrom( this IEnumerable<Type> @this, Type type ) => @this.AsAdapters().IsAssignableFrom( type );
 		public static bool IsAssignableFrom( this ImmutableArray<TypeAdapter> @this, Type type )
 		{
 			foreach ( var adapter in @this )
@@ -43,6 +44,22 @@ namespace DragonSpark.Extensions
 			}
 			return false;
 		}
+
+		public static bool IsInstanceOfType( this IEnumerable<Type> @this, object instance ) => @this.AsAdapters().IsInstanceOfType( instance );
+		public static bool IsInstanceOfType( this IEnumerable<TypeAdapter> @this, object instance ) => @this.ToImmutableArray().IsInstanceOfType( instance );
+		public static bool IsInstanceOfType( this ImmutableArray<TypeAdapter> @this, object instance )
+		{
+			foreach ( var adapter in @this )
+			{
+				if ( adapter.IsInstanceOfType( instance ) )
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public static ImmutableArray<TypeAdapter> AsAdapters( this IEnumerable<Type> @this ) => @this.Select( type => type.Adapt() ).ToImmutableArray();
 
 		public static ImmutableArray<Type> GetParameterTypes( this MethodBase @this ) => Support.ParameterTypes.Get( @this );
 

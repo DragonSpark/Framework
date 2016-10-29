@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
+using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 using System.Linq;
 using Xunit;

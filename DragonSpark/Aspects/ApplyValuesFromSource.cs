@@ -14,7 +14,7 @@ namespace DragonSpark.Aspects
 	{
 		readonly Func<IServiceRepository> repositorySource;
 
-		public ApplyValuesFromSource() : this( GlobalServiceProvider.GetService<IServiceRepository> ) {}
+		public ApplyValuesFromSource() : this( GlobalServiceProvider.Default.Get<IServiceRepository> ) {}
 
 		public ApplyValuesFromSource( Func<IServiceRepository> repositorySource )
 		{

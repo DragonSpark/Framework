@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Sources
+﻿using System;
+
+namespace DragonSpark.Sources
 {
 	public interface ISource<out T> : ISource
 	{
@@ -8,6 +10,8 @@
 	public interface ISource
 	{
 		object Get();
+
+		Type SourceType { get; }
 	}
 
 	public class Source<T> : SourceBase<T>

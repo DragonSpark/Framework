@@ -18,7 +18,7 @@ namespace DragonSpark.Aspects.Validation
 			CommandAdapterFactory.Default.Get 
 		);
 
-		public static IEnumerable<ValueTuple<TypeAdapter, Func<object, IParameterValidationAdapter>>> Factories { get; } = Definitions.Select( definition => definition.DeclaringType.Adapt() ).Tuple( AdapterSources.ToArray() );
+		public static IEnumerable<ValueTuple<TypeAdapter, Func<object, IParameterValidationAdapter>>> Factories { get; } = Definitions.Select( definition => definition.DeclaringType ).AsAdapters().Tuple( AdapterSources.ToArray() );
 
 		public static Func<object, IAutoValidationController> ControllerSource { get; } = AutoValidationControllerFactory.Default.Get;
 	}

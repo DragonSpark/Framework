@@ -28,9 +28,9 @@ namespace DragonSpark.Windows.Setup
 
 			public override void Execute( ApplicationSettingsBase parameter )
 			{
-				/*var file = fileSource();
+				var file = fileSource();
 				var configuration = configurationSource( file ) ?? ConfigurationManager.OpenExeConfiguration( parameter.GetType().Assembly.Location );
-				configuration.SaveAs( file.FullName, ConfigurationSaveMode.Modified );*/
+				configuration.SaveAs( file.FullName, ConfigurationSaveMode.Modified );
 				parameter.Save();
 			}
 		}
