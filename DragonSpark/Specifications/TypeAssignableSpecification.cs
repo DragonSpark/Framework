@@ -12,6 +12,8 @@ namespace DragonSpark.Specifications
 
 	public sealed class TypeAssignableSpecification : DelegatedSpecification<Type>
 	{
+		public static IParameterizedSource<Type, Func<Type, bool>> Delegates { get; } = new Curry<Type, Type, bool>( type => new TypeAssignableSpecification( type ).ToCachedSpecification().ToSpecificationDelegate() ).ToCache();
+
 		public static IParameterizedSource<Type, ISpecification<Type>> Defaults { get; } = new Cache<Type, ISpecification<Type>>( type => new TypeAssignableSpecification( type ).ToCachedSpecification() );
 		TypeAssignableSpecification( Type targetType ) : base( targetType.Adapt().IsAssignableFrom ) {}
 	}

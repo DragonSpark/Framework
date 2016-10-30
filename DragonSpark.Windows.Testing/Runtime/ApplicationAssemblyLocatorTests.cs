@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Extensions;
+using DragonSpark.TypeSystem;
 using System;
 using System.Reflection;
 using Xunit;

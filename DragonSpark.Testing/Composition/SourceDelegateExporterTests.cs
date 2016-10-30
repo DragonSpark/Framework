@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
+using DragonSpark.TypeSystem;
 using System;
 using System.Composition;
 using System.Composition.Hosting;

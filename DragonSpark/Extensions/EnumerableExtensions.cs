@@ -60,6 +60,32 @@ namespace DragonSpark.Extensions
 			}
 		}
 
+		public static bool AnyTrue( this IEnumerable<bool> source )
+		{
+			foreach ( var b in source )
+			{
+				if ( b )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public static bool AnyFalse( this IEnumerable<bool> source )
+		{
+			foreach ( var b in source )
+			{
+				if ( !b )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public static bool All( this IEnumerable<bool> source )
 		{
 			foreach ( var b in source )

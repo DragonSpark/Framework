@@ -5,6 +5,7 @@ using DragonSpark.Application.Setup;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Testing.Objects;
+using DragonSpark.TypeSystem;
 using Serilog;
 using System.Linq;
 using Xunit;

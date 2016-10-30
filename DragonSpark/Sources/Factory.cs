@@ -5,6 +5,12 @@ using System.Reflection;
 
 namespace DragonSpark.Sources
 {
+	public static class Scopes
+	{
+		public static IParameterizedScope<TParameter, TResult> CreateScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate().CreateScope();
+		public static IParameterizedScope<TParameter, TResult> CreateScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this.GlobalCache() );
+	}
+
 	public static class Factory
 	{
 		public static T Self<T>( this T @this ) => @this;

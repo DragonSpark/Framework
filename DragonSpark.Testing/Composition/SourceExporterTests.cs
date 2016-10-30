@@ -2,6 +2,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.TypeSystem;
 using System.Composition;
 using System.Composition.Hosting;
 using System.Linq;

@@ -2,7 +2,6 @@ using DragonSpark.Activation;
 using DragonSpark.Activation.Location;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
-using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -25,10 +24,10 @@ namespace DragonSpark.Composition
 			Factory() : this( SingletonPropertyDelegates.Default.Get, SourceAccountedTypes.Default.Get ) {}
 
 			readonly Func<PropertyInfo, Func<object>> factorySource;
-			readonly Func<Type, ImmutableArray<TypeAdapter>> typesSource;
+			readonly Func<Type, ImmutableArray<Type>> typesSource;
 
 			[UsedImplicitly]
-			public Factory( Func<PropertyInfo, Func<object>> factorySource, Func<Type, ImmutableArray<TypeAdapter>> typesSource )
+			public Factory( Func<PropertyInfo, Func<object>> factorySource, Func<Type, ImmutableArray<Type>> typesSource )
 			{
 				this.factorySource = factorySource;
 				this.typesSource = typesSource;
@@ -47,15 +46,15 @@ namespace DragonSpark.Composition
 				return null;
 			}
 
-			static IEnumerable<CompositionContract> Expand( ImmutableArray<ExportAttribute> attributes, ImmutableArray<TypeAdapter> types )
+			static IEnumerable<CompositionContract> Expand( ImmutableArray<ExportAttribute> attributes, ImmutableArray<Type> types )
 			{
 				foreach ( var type in types )
 				{
 					foreach ( var attribute in attributes )
 					{
-						yield return new CompositionContract( attribute.ContractType ?? type.ReferenceType, attribute.ContractName );
+						yield return new CompositionContract( attribute.ContractType ?? type, attribute.ContractName );
 					}
-					yield return new CompositionContract( type.ReferenceType );
+					yield return new CompositionContract( type );
 				}
 			}
 		}

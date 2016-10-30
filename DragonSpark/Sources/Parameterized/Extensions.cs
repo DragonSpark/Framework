@@ -45,6 +45,8 @@ namespace DragonSpark.Sources.Parameterized
 
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ISpecification<TParameter> specification ) =>
 			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToSourceDelegate() );
+		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter, bool> specification ) =>
+			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToSourceDelegate() );
 		
 		public static ISource<TResult> Fixed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, TParameter parameter ) => @this.ToSourceDelegate().Fixed( parameter );
 		public static ISource<TResult> Fixed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter> parameter ) => @this.ToSourceDelegate().Fixed( parameter );

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
-using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
@@ -10,15 +9,12 @@ using System.Linq;
 
 namespace DragonSpark.Sources
 {
-	public sealed class SourceAccountedTypes : FactoryCache<Type, ImmutableArray<TypeAdapter>>
+	public sealed class SourceAccountedTypes : FactoryCache<Type, ImmutableArray<Type>>
 	{
-		public static IParameterizedSource<Type, Func<object, bool>> Specifications { get; } = 
-			new ParameterizedScope<Type, Func<object, bool>>( Factory.GlobalCache<Type, Func<object, bool>>( type => new AdapterInstanceSpecification( Default.Get( type ).ToArray() ).ToCachedSpecification().IsSatisfiedBy ) );
-
 		public static SourceAccountedTypes Default { get; } = new SourceAccountedTypes();
 		SourceAccountedTypes() {}
 
-		protected override ImmutableArray<TypeAdapter> Create( Type parameter ) => Candidates( parameter ).AsAdapters();
+		protected override ImmutableArray<Type> Create( Type parameter ) => Candidates( parameter ).ToImmutableArray();
 
 		static IEnumerable<Type> Candidates( Type type )
 		{
@@ -33,7 +29,7 @@ namespace DragonSpark.Sources
 	public sealed class SourceAccountedAlteration : AlterationBase<object>
 	{
 		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = 
-			new ParameterizedScope<Type, Func<object, object>>( Factory.GlobalCache<Type, Func<object, object>>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ) );
+			new Curry<Type, object>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ).CreateScope();
 
 		readonly Func<Type, bool> assignable;
 		readonly Func<object, bool> specification;

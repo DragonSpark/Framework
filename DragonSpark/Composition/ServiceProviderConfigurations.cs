@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.Sources;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ namespace DragonSpark.Composition
 
 		readonly Func<IActivator> source;
 
+		[UsedImplicitly]
 		protected ServiceProviderConfigurations( Func<IActivator> source ) : this( source, InitializeExportsCommand.Default.Execute ) {}
 
 		ServiceProviderConfigurations( Func<IActivator> source, Action<IActivator> configure )

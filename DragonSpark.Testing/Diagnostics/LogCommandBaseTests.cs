@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Diagnostics
 		}
 
 		[Theory, Framework.Application.AutoData]
-		void Log( LogCommand<string, DateTime, int> command, string message, DateTime dateTime, int number ) => command.Execute( message, dateTime, number );
+		void LogList( LogCommand<string, DateTime, int> command, string message, DateTime dateTime, int number ) => command.Execute( message, dateTime, number );
 
 		[UsedImplicitly]
 		sealed class LogCommand<T1, T2, T3> : LogCommandBase<T1, T2, T3>

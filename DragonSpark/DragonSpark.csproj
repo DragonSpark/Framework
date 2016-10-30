@@ -689,7 +689,6 @@
     <Compile Include="ComponentModel\CollectionAttribute.cs" />
     <Compile Include="ComponentModel\IExpressionEvaluator.cs" />
     <Compile Include="ConditionMonitorState.cs" />
-    <Compile Include="Extensions\TypeSystemExtensions.cs" />
     <Compile Include="Extensions\Mappings.cs" />
     <Compile Include="Extensions\ObjectMapper.cs" />
     <Compile Include="TypeSystem\AssemblyBasedTypeSource.cs" />

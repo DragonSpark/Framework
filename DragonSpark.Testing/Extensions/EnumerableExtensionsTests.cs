@@ -62,7 +62,7 @@ namespace DragonSpark.Testing.Extensions
 		}
 
 		[Fact]
-		public void Prepend()
+		public void PrependBasic()
 		{
 			const int sut = 3;
 			var items = sut.Prepend( 4, 5 );

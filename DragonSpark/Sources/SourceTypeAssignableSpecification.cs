@@ -11,10 +11,10 @@ namespace DragonSpark.Sources
 		public static SourceTypeAssignableSpecification Default { get; } = new SourceTypeAssignableSpecification();
 		SourceTypeAssignableSpecification() : this( SourceAccountedTypes.Default.Get ) {}
 
-		readonly Func<Type, ImmutableArray<TypeAdapter>> typesSource;
+		readonly Func<Type, ImmutableArray<Type>> typesSource;
 
 		[UsedImplicitly]
-		public SourceTypeAssignableSpecification( Func<Type, ImmutableArray<TypeAdapter>> typesSource )
+		public SourceTypeAssignableSpecification( Func<Type, ImmutableArray<Type>> typesSource )
 		{
 			this.typesSource = typesSource;
 		}

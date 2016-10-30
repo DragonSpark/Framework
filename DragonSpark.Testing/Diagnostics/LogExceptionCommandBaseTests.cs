@@ -12,13 +12,13 @@ namespace DragonSpark.Testing.Diagnostics
 		void Log( LogExceptionCommand command, Exception error ) => command.Execute( error );
 
 		[Theory, Framework.Application.AutoData]
-		void Log( LogExceptionCommand<string> command, Exception error, string message ) => command.Execute( error, message );
+		void LogListOne( LogExceptionCommand<string> command, Exception error, string message ) => command.Execute( error, message );
 
 		[Theory, Framework.Application.AutoData]
-		void Log( LogExceptionCommand<string, DateTime> command, Exception error, string message, DateTime dateTime ) => command.Execute( error, message, dateTime );
+		void LogListTwo( LogExceptionCommand<string, DateTime> command, Exception error, string message, DateTime dateTime ) => command.Execute( error, message, dateTime );
 
 		[Theory, Framework.Application.AutoData]
-		void Log( LogExceptionCommand<string, DateTime, int> command, Exception error, string message, DateTime dateTime, int number ) => command.Execute( error, message, dateTime, number );
+		void LogListThree( LogExceptionCommand<string, DateTime, int> command, Exception error, string message, DateTime dateTime, int number ) => command.Execute( error, message, dateTime, number );
 
 		[UsedImplicitly]
 		sealed class LogExceptionCommand : LogExceptionCommandBase

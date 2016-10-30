@@ -30,13 +30,15 @@ namespace DragonSpark.Testing.Composition
 		public CompositionTests( ITestOutputHelper output ) : base( output ) {}
 
 		[Theory, AutoData, Types]
-		public void BasicCompose( CompositionContext host )
+		public void BasicCompose( [Service]CompositionContext host )
 		{
 			var serviceProvider = DefaultServices.Default.Cached();
+			var loggerHistory = serviceProvider.Get<ILoggerHistory>();
+
 			var sinkOne = host.GetExport<ILoggerHistory>();
 			var sinkTwo = host.GetExport<ILoggerHistory>();
 			Assert.Same( sinkOne, sinkTwo );
-			Assert.Same( serviceProvider.Get<ILoggerHistory>(), sinkOne );
+			Assert.Same( loggerHistory, sinkOne );
 
 			var first = host.GetExport<ILogger>();
 			var second = host.GetExport<ILogger>();
@@ -51,7 +53,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, AdditionalTypes( typeof(AssemblyInformationSource) )]
-		public void InterfaceExport( CompositionContext host )
+		public void InterfaceExport( [Service]CompositionContext host )
 		{
 			Assert.Same( AssemblyInformationSource.Default, host.GetExport<IParameterizedSource<Assembly, AssemblyInformation>>() );
 		}
@@ -77,7 +79,7 @@ namespace DragonSpark.Testing.Composition
 		interface IExported {}
 
 		[Theory, AutoData, MinimumLevel( LogEventLevel.Debug )]
-		public void BasicComposeAgain( CompositionContext host )
+		public void BasicComposeAgain( [Service]CompositionContext host )
 		{
 			var serviceProvider = DefaultServices.Default.Cached();
 
@@ -99,7 +101,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void BasicComposition( [Service]CompositionContext host, string text, ILogger logger )
+		public void BasicComposition( [Service]CompositionContext host, string text, [Service]ILogger logger )
 		{
 			var test = host.GetExport<IBasicService>();
 			var message = test.HelloWorld( text );
@@ -109,7 +111,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void BasicCompositionWithParameter( CompositionContext host, string text )
+		public void BasicCompositionWithParameter( [Service]CompositionContext host, string text )
 		{
 			var test = host.GetExport<IParameterService>();
 			var parameter = Assert.IsType<Parameter>( test.Parameter );
@@ -117,7 +119,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void FactoryWithParameterDelegate( CompositionContext host, string message )
+		public void FactoryWithParameterDelegate( [Service]CompositionContext host, string message )
 		{
 			var factory = host.GetExport<Func<Parameter, IParameterService>>();
 			Assert.NotNull( factory );
@@ -135,7 +137,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void ExportWhenAlreadyRegistered( CompositionContext host )
+		public void ExportWhenAlreadyRegistered( [Service]CompositionContext host )
 		{
 			var item = host.GetExport<ExportedItem>();
 			Assert.IsType<ExportedItem>( item );
@@ -143,7 +145,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void FactoryInstance( CompositionContext host )
+		public void FactoryInstance( [Service]CompositionContext host )
 		{
 			var service = host.GetExport<IBasicService>();
 			Assert.IsType<BasicService>( service );
@@ -159,7 +161,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void Composition( CompositionContext host )
+		public void Composition( [Service]CompositionContext host )
 		{
 			var item = host.GetExport<ExportedItem>();
 			Assert.NotNull( item );
@@ -167,14 +169,14 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void VerifyInstanceExport( CompositionContext host, [Service]ImmutableArray<Assembly> assemblies )
+		public void VerifyInstanceExport( [Service]CompositionContext host, [Service]ImmutableArray<Assembly> assemblies )
 		{
 			var composed = host.GetExport<ImmutableArray<Assembly>>();
 			Assert.Equal( assemblies, composed );
 		}
 
 		[Theory, AutoData, Types]
-		public void SharedComposition( CompositionContext host )
+		public void SharedComposition( [Service]CompositionContext host )
 		{
 			var service = host.GetExport<ISharedService>();
 			Assert.IsType<SharedService>( service );

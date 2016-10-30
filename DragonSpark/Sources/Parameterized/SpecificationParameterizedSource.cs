@@ -7,10 +7,14 @@ namespace DragonSpark.Sources.Parameterized
 
 	public class SpecificationParameterizedSource<TParameter, TResult> : DelegatedParameterizedSource<TParameter, TResult>, ISpecificationParameterizedSource<TParameter, TResult>
 	{
-		readonly ISpecification<TParameter> specification;
+		readonly Func<TParameter, bool> specification;
 
 		public SpecificationParameterizedSource( ISpecification<TParameter> specification, IParameterizedSource<TParameter, TResult> source ) : this( specification, source.ToSourceDelegate() ) {}
-		public SpecificationParameterizedSource( ISpecification<TParameter> specification, Func<TParameter, TResult> source ) : base( source )
+
+		public SpecificationParameterizedSource( ISpecification<TParameter> specification, Func<TParameter, TResult> source ) : this( specification.ToSpecificationDelegate(), source )
+		{}
+
+		public SpecificationParameterizedSource( Func<TParameter, bool> specification, Func<TParameter, TResult> source ) : base( source )
 		{
 			this.specification = specification;
 		}
@@ -24,6 +28,6 @@ namespace DragonSpark.Sources.Parameterized
 
 		protected virtual bool Validate( TParameter parameter ) => IsSatisfiedBy( parameter );
 
-		public bool IsSatisfiedBy( TParameter parameter ) => specification.IsSatisfiedBy( parameter );
+		public bool IsSatisfiedBy( TParameter parameter ) => specification( parameter );
 	}
 }
