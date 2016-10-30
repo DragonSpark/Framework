@@ -99,7 +99,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData, Types]
-		public void BasicComposition( [Service]CompositionContext host, string text, ILogger logger )
+		public void BasicComposition( CompositionContext host, string text, ILogger logger )
 		{
 			var test = host.GetExport<IBasicService>();
 			var message = test.HelloWorld( text );

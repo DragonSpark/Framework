@@ -5,7 +5,7 @@ using System.Composition.Hosting;
 
 namespace DragonSpark.Composition
 {
-	public sealed class CompositionHostFactory : ConfigurableFactoryBase<ContainerConfiguration, CompositionHost>
+	public sealed class CompositionHostFactory : ConfigurationProvisionedSourceBase<ContainerConfiguration, CompositionHost>
 	{
 		readonly IComposable<IDisposable> disposables;
 		readonly static IConfigurationScope<ContainerConfiguration> DefaultConfiguration = new ConfigurationScope<ContainerConfiguration>( ContainerServicesConfigurator.Default, PartsContainerConfigurator.Default );

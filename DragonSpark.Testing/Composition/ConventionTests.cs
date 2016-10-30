@@ -18,7 +18,6 @@ namespace DragonSpark.Testing.Composition
 		{
 			var parts = new[] { typeof(IHelloWorld), typeof(HelloWorld) }.AsApplicationParts();
 			
-
 			var container = new ContainerConfiguration().WithParts( parts.ToArray(), ConventionBuilderFactory.Default.Get() ).CreateContainer();
 			var export = container.GetExport<IHelloWorld>();
 			Assert.IsType<HelloWorld>( export );

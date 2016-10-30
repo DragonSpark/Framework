@@ -11,7 +11,7 @@ namespace DragonSpark.Sources
 		public object Coerce( [Optional]object parameter )
 		{
 			var source = parameter as ISource;
-			var result = source?.Get() ?? source;
+			var result = source?.Get() ?? parameter;
 			return result;
 		}
 	}

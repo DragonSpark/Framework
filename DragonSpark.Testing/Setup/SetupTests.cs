@@ -29,12 +29,12 @@ namespace DragonSpark.Testing.Setup
 			Assert.Equal( 2, count );
 
 			provider.Get<IExportProvider>();
-			Assert.Equal( 3, count );
+			Assert.Equal( 2, count );
 
 			for ( var i = 0; i < 10; i++ )
 			{
 				provider.Get<IExportProvider>();
-				Assert.Equal( 3, count );
+				Assert.Equal( 2, count );
 			}
 		}
 	}

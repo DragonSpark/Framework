@@ -31,8 +31,6 @@ namespace DragonSpark.Composition
 				.ImplementedInterfaces
 				.Except( exempt )
 				.Introduce( parameter, tuple => new ConventionMapping( tuple.Item1, tuple.Item2 ) )
-				.Where( Valid )
-				.SelectAssigned( mapping => mapping.ImplementationType )
-				.FirstOrDefault();
+				.FirstOrDefault( Valid ).InterfaceType;
 	}
 }

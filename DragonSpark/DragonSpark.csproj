@@ -44,6 +44,7 @@
     <Compile Include="Activation\SingletonDelegates.cs" />
     <Compile Include="Application\ApplicationPartsFactory.cs" />
     <Compile Include="Application\FatalApplicationException.cs" />
+    <Compile Include="Application\Setup\ReadKeyCommand.cs" />
     <Compile Include="Application\SuppliedCurrentTime.cs" />
     <Compile Include="Aspects\AdapterConstructorSource.cs" />
     <Compile Include="Aspects\AdapterFactorySource.cs" />
@@ -283,8 +284,8 @@
     <Compile Include="ComponentModel\ServicesValueProvider.cs" />
     <Compile Include="ComponentModel\SingletonDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
-    <Compile Include="Configuration\ConfigurableFactoryBase.cs" />
-    <Compile Include="Configuration\ConfigurationProvisionedParameterizedFactoryBase.cs" />
+    <Compile Include="Configuration\ConfigurationProvisionedSourceBase.cs" />
+    <Compile Include="Configuration\ConfigurationProvisionedParameterizedSourceBase.cs" />
     <Compile Include="Configuration\ConfigurationScope.cs" />
     <Compile Include="Configuration\ConfigurationSource.cs" />
     <Compile Include="Configuration\Extensions.cs" />

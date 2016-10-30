@@ -6,23 +6,23 @@ using System.Linq;
 
 namespace DragonSpark.Configuration
 {
-	public abstract class ConfigurableFactoryBase<T> : ConfigurableFactoryBase<T, T>
+	public abstract class ConfigurationProvisionedSourceBase<T> : ConfigurationProvisionedSourceBase<T, T>
 	{
-		protected ConfigurableFactoryBase( Func<T> seed ) : this( seed, Items<IAlteration<T>>.Default ) {}
-		protected ConfigurableFactoryBase( Func<T> seed, params IAlteration<T>[] configurations ) : this( seed, new ConfigurationScope<T>( configurations ), Delegates<T>.Self ) {}
-		protected ConfigurableFactoryBase( Func<T> seed, IConfigurationScope<T> scope, Func<T, T> factory ) : base( seed, scope, factory ) {}
+		protected ConfigurationProvisionedSourceBase( Func<T> seed ) : this( seed, Items<IAlteration<T>>.Default ) {}
+		protected ConfigurationProvisionedSourceBase( Func<T> seed, params IAlteration<T>[] configurations ) : this( seed, new ConfigurationScope<T>( configurations ), Delegates<T>.Self ) {}
+		protected ConfigurationProvisionedSourceBase( Func<T> seed, IConfigurationScope<T> scope, Func<T, T> factory ) : base( seed, scope, factory ) {}
 		/*protected ConfigurableFactoryBase( IScope<T> seed ) : this( seed, new ConfigurationScope<T>( Items<IAlteration<T>>.Default ), Delegates<T>.Self ) {}
 		protected ConfigurableFactoryBase( IScope<T> seed, IConfigurationScope<T> scope, Func<T, T> factory ) : base( seed, scope, factory ) {}*/
 	}
 
-	public abstract class ConfigurableFactoryBase<TConfiguration, TResult> : SourceBase<TResult>
+	public abstract class ConfigurationProvisionedSourceBase<TConfiguration, TResult> : SourceBase<TResult>
 	{
 		readonly Func<TConfiguration, TResult> factory;
 		
-		protected ConfigurableFactoryBase( Func<TConfiguration> seed, IConfigurationScope<TConfiguration> scope, Func<TConfiguration, TResult> factory ) : 
+		protected ConfigurationProvisionedSourceBase( Func<TConfiguration> seed, IConfigurationScope<TConfiguration> scope, Func<TConfiguration, TResult> factory ) : 
 			this( new Scope<TConfiguration>( seed ), scope, factory ) {}
 
-		protected ConfigurableFactoryBase( IScope<TConfiguration> seed, IConfigurationScope<TConfiguration> scope, Func<TConfiguration, TResult> factory )
+		protected ConfigurationProvisionedSourceBase( IScope<TConfiguration> seed, IConfigurationScope<TConfiguration> scope, Func<TConfiguration, TResult> factory )
 		{
 			Seed = seed;
 			Configurators = scope;
