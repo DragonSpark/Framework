@@ -1,16 +1,10 @@
-using DragonSpark.Application;
 using DragonSpark.Application.Setup;
-using DragonSpark.Composition;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Testing.Framework.Runtime;
-using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture;
 using System;
-using System.Collections.Immutable;
-using System.Composition.Hosting;
-using DragonSpark.Activation.Location;
 using Defaults = DragonSpark.Activation.Location.Defaults;
 
 namespace DragonSpark.Testing.Framework
