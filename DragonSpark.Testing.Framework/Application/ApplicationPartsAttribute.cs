@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Framework.Application
 
 	public abstract class PartsAttributeBase : TypeProviderAttributeBase
 	{
-		protected PartsAttributeBase( Func<MethodBase, ImmutableArray<Type>> factory ) : this( factory, m => {} ) {}
+		/*protected PartsAttributeBase( Func<MethodBase, ImmutableArray<Type>> factory ) : this( factory, m => {} ) {}*/
 		protected PartsAttributeBase( Func<MethodBase, ImmutableArray<Type>> factory, Action<MethodBase> initialize ) : base( new ConfiguringFactory<MethodBase, ImmutableArray<Type>>( factory, initialize ).Get ) {}
 	}
 }

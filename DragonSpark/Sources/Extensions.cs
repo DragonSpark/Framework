@@ -104,14 +104,6 @@ namespace DragonSpark.Sources
 		public static Func<T> Timed<T>( this Func<T> @this, string template ) => new TimedDelegatedSource<T>( @this, template ).Get;
 		
 
-		public static IScope<T> ToScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToSourceDelegate().ToScope();
-		public static IScope<T> ToScope<T>( this Func<object, T> @this ) => Scopes<T>.Default.Get( @this );
-		sealed class Scopes<T> : Cache<Func<object, T>, IScope<T>>
-		{
-			public static Scopes<T> Default { get; } = new Scopes<T>();
-			Scopes() : base( cache => new Scope<T>( cache.Cache() ) ) {}
-		}
-
 		public static IRunCommand ToCommand<T>( this ISource<T> @this ) => @this.ToDelegate().ToCommand();
 		public static IRunCommand ToCommand<T>( this Func<T> @this ) => Commands<T>.Default.Get( @this );
 		sealed class Commands<T> : Cache<Func<T>, IRunCommand>

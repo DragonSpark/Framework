@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application;
-using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 using System.Linq;
@@ -10,11 +10,11 @@ namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class FileSystemTypesTests
 	{
-		[Theory, Ploeh.AutoFixture.Xunit2.AutoData, Trait( Traits.Category, Traits.Categories.FileSystem )]
+		[Theory, Ploeh.AutoFixture.Xunit2.AutoData, Trait( Traits.Category, Traits.Categories.FileSystem ), InitializeFileSystem]
 		public void Assemblies( FileSystemTypes sut )
 		{
 			Assert.Same( sut, FileSystemTypes.Default );
-			var assemblies = sut.Get().AsEnumerable().Assemblies();
+			var assemblies = sut.Assemblies();
 			var specification = ApplicationAssemblySpecification.Default;
 
 			Assert.True( assemblies.All( specification.IsSatisfiedBy ) );

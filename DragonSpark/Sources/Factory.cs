@@ -7,8 +7,20 @@ namespace DragonSpark.Sources
 {
 	public static class Scopes
 	{
+		public static IScope<T> CreateScope<T>( this IScope<T> @this ) => @this.ToDelegate().CreateScope();
+		public static IScope<T> CreateScope<T>( this Func<T> @this ) => new Scope<T>( @this.GlobalCache() );
+
 		public static IParameterizedScope<TParameter, TResult> CreateScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate().CreateScope();
 		public static IParameterizedScope<TParameter, TResult> CreateScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this.GlobalCache() );
+
+		public static IScope<T> ToScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToSourceDelegate().ToScope();
+		public static IScope<T> ToScope<T>( this Func<object, T> @this ) => ScopeCaches<T>.Default.Get( @this );
+
+		sealed class ScopeCaches<T> : Cache<Func<object, T>, IScope<T>>
+		{
+			public static ScopeCaches<T> Default { get; } = new ScopeCaches<T>();
+			ScopeCaches() : base( cache => new Scope<T>( cache.Cache<object, T>() ) ) {}
+		}
 	}
 
 	public static class Factory

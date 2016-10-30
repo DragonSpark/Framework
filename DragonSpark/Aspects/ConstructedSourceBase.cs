@@ -1,4 +1,5 @@
-﻿using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
 using System;
 using Activator = DragonSpark.Activation.Activator;
 
@@ -20,7 +21,7 @@ namespace DragonSpark.Aspects
 		public override T Get( Type parameter )
 		{
 			var constructor = constructorSource( parameter );
-			var argument = argumentSource( parameter );
+			var argument = argumentSource( parameter ).Account( parameter );
 			var result = constructor( argument );
 			return result;
 		}

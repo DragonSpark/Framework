@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Application;
+using DragonSpark.Sources;
+using DragonSpark.Testing.Objects.FileSystem;
 using DragonSpark.Windows.Runtime;
 using System.Linq;
 using Xunit;
@@ -10,7 +12,8 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Fact]
 		public void Coverage()
 		{
-			Assert.True( AllParts.Default.Get( ApplicationAssemblies.Default.Get().ToArray() ).Any() );
+			new InitializePartsCommand().Execute();
+			Assert.True( AllParts.Default.Get( ApplicationAssemblies.Default.Unwrap() ).Any() );
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Objects.FileSystem
 
 	public sealed class InitializePartsAssemblyCommand : SuppliedEnumerableComand<Type>
 	{
-		public static IScope<InitializePartsAssemblyCommand> Current { get; } = new Scope<InitializePartsAssemblyCommand>( Factory.GlobalCache( () => new InitializePartsAssemblyCommand() ) );
+		public static IScope<InitializePartsAssemblyCommand> Current { get; } = Scopes.CreateScope( () => new InitializePartsAssemblyCommand() );
 		InitializePartsAssemblyCommand() : base( Framework.FileSystem.InitializePartsAssemblyCommand.Current.Get(), typeof(PublicClass) ) {}
 	}
 }
