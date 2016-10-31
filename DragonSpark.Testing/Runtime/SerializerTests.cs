@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Runtime;
+using DragonSpark.Testing.Framework.Application;
+using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Objects;
 using System.IO;
 using System.Text;
-using DragonSpark.Testing.Framework.Application;
-using DragonSpark.Testing.Framework.Application.Setup;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime
@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Runtime
 		readonly static string Expected = $@"<ClassWithProperty xmlns=""http://schemas.datacontract.org/2004/07/DragonSpark.Testing.Objects"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance""><Property>{Property}</Property></ClassWithProperty>";
 
 		[Theory, AutoData, AdditionalTypes( typeof(Serializer) )]
-		public void Save( ISerializer sut, ClassWithProperty item )
+		public void Save( [Service]ISerializer sut, ClassWithProperty item )
 		{
 			item.Property = Property;
 			Assert.IsType<Serializer>( sut );
@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Runtime
 		}
 
 		[Theory, AutoData, AdditionalTypes( typeof(Serializer) )]
-		public void Load( ISerializer sut )
+		public void Load( [Service]ISerializer sut )
 		{
 			Assert.IsType<Serializer>( sut );
 

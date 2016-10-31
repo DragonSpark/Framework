@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.TypeSystem;
 using Moq;
@@ -27,7 +28,7 @@ namespace DragonSpark.Testing.Application
 		}
 
 		[Theory, Framework.Application.AutoData]
-		public void Source( ITypeSource sut )
+		public void Source( [Service]ITypeSource sut )
 		{
 			Assert.NotNull( sut );
 			Assert.Same( AssemblyTypeSource.Default, sut );

@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		protected override void OnCustomize( IFixture fixture )
 		{
 			fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.DefaultNested );
-			fixture.ResidueCollectors.Add( ServiceRelay.Default );
+			// fixture.ResidueCollectors.Add( ServiceRelay.Default );
 		}
 
 		sealed class FrameworkSpecimenBuilder : ISpecimenBuilder

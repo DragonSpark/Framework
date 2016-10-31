@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Theory, AutoData]
-		public void LocalStrict( ISingletonLocator sut )
+		public void LocalStrict( [Service]ISingletonLocator sut )
 		{
 			Assert.IsType<SingletonLocator>( sut );
 		}

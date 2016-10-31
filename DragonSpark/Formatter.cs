@@ -2,6 +2,7 @@
 using DragonSpark.Coercion;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using JetBrains.Annotations;
 using System;
 using System.Composition;
 
@@ -16,14 +17,14 @@ namespace DragonSpark
 		Formatter() : this( Implementation.DefaultNested.Apply( ConstructCoercer<FormatterParameter>.Default ).ToCache(), Implementation.DefaultNested ) {}
 
 		readonly IParameterizedSource<object, string> general;
-		
-		Formatter( IParameterizedSource<object, string> general, IParameterizedSource<FormatterParameter, string> source ) : base( source )
+
+		[UsedImplicitly]
+		public Formatter( IParameterizedSource<object, string> general, IParameterizedSource<FormatterParameter, string> source ) : base( source )
 		{
 			this.general = general;
 		}
 
 		public string Get( object parameter ) => general.Get( parameter );
-
 
 		sealed class Implementation : ParameterizedSourceBase<FormatterParameter, string>
 		{

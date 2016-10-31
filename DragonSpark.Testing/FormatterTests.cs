@@ -11,7 +11,7 @@ namespace DragonSpark.Testing
 	public class FormatterTests
 	{
 		[Theory, AutoData, FrameworkTypes, FormatterTypes]
-		public void MethodFormatsAsExpected( [Service]Formatter sut )
+		public void MethodFormatsAsExpected( Formatter sut )
 		{
 			var method = MethodBase.GetCurrentMethod();
 			var formatted = sut.Get( new FormatterParameter( method ) );
