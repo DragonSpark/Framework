@@ -36,7 +36,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public ImmutableArray<byte> Get() => source.Get();
 		object ISource.Get() => source.Get();
-		Type ISource.SourceType => typeof(ImmutableArray<byte>);
 		public void Assign( ImmutableArray<byte> item ) => source.Assign( item );
 	}
 }

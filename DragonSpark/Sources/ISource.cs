@@ -10,7 +10,10 @@ namespace DragonSpark.Sources
 	public interface ISource
 	{
 		object Get();
+	}
 
+	public interface ISourceAware
+	{
 		Type SourceType { get; }
 	}
 

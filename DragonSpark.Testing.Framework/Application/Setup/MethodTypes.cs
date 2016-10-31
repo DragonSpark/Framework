@@ -44,8 +44,6 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 		public ImmutableArray<Type> Get() => this.ToImmutableArray();
 
-		Type ISource.SourceType => typeof(ImmutableArray<Type>);
-
 		object ISource.Get() => Get();
 
 		public IEnumerator<Type> GetEnumerator()

@@ -48,10 +48,11 @@ namespace DragonSpark.Sources
 		IEnumerable<object> Candidates( object parameter )
 		{
 			yield return parameter;
-			var source = parameter as ISource;
-			if ( source != null && assignable( source.SourceType ) )
+			var aware = parameter as ISourceAware;
+			if ( aware != null && assignable( aware.SourceType ) )
 			{
-				var candidate = source.Get();
+				var source = parameter as ISource;
+				var candidate = source?.Get();
 				if ( candidate != null )
 				{
 					yield return candidate;
