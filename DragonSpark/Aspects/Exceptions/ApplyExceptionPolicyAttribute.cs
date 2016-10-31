@@ -24,7 +24,7 @@ namespace DragonSpark.Aspects.Exceptions
 
 		public ApplyExceptionPolicyAttribute( Type policyType ) : this( policyType, Source ) {}
 
-		ApplyExceptionPolicyAttribute( Type policyType, Func<Type, Policy> source ) : this( source.Fixed( policyType ) ) {}
+		ApplyExceptionPolicyAttribute( Type policyType, Func<Type, Policy> source ) : this( source.WithParameter( policyType ) ) {}
 
 		ApplyExceptionPolicyAttribute( ISource<Policy> source ) : base( Support.Default )
 		{

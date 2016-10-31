@@ -10,16 +10,16 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public class RegisterFilesAttribute : CommandAttributeBase
 	{
-		readonly static ICommand<ImmutableArray<string>> Command = RegisterFileCommand.Default.AsCompiled<string>().Apply( OncePerScopeSpecification<ImmutableArray<string>>.Default );
+		readonly static ICommand<ImmutableArray<string>> Command = RegisterFileCommand.Default.AsCompiled<string>().Apply( new OncePerScopeSpecification<ImmutableArray<string>>() );
 		
-		public RegisterFilesAttribute( params string[] files ) : base( Command.Fixed( files.ToImmutableArray() ) ) {}
+		public RegisterFilesAttribute( params string[] files ) : base( Command.ToCommand( files.ToImmutableArray() ) ) {}
 	}
 
 	public class RegisterDirectoriesAttribute : CommandAttributeBase
 	{
-		readonly static ICommand<ImmutableArray<string>> Command = RegisterDirectoryCommand.Default.AsCompiled<string>().Apply( OncePerScopeSpecification<ImmutableArray<string>>.Default );
+		readonly static ICommand<ImmutableArray<string>> Command = RegisterDirectoryCommand.Default.AsCompiled<string>().Apply( new OncePerScopeSpecification<ImmutableArray<string>>() );
 		
-		public RegisterDirectoriesAttribute( params string[] directories ) : base( Command.Fixed( directories.ToImmutableArray() ) ) {}
+		public RegisterDirectoriesAttribute( params string[] directories ) : base( Command.ToCommand( directories.ToImmutableArray() ) ) {}
 	}
 
 	public sealed class InitializeFileSystemAttribute : RegisterDirectoriesAttribute

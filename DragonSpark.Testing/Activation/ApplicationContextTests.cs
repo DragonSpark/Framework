@@ -52,7 +52,7 @@ namespace DragonSpark.Testing.Activation
 		[Export( typeof(ISetup) ), UsedImplicitly]
 		class Setup : DeclarativeSetup
 		{
-			public Setup() : base( EnableMethodCaching.Default.Configured( false ) ) {}
+			public Setup() : base( EnableMethodCaching.Default.ToCommand( false ) ) {}
 		}
 	}
 }

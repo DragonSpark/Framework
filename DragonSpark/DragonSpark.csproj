@@ -83,6 +83,7 @@
     <Compile Include="Aspects\Exceptions\IPolicySource.cs" />
     <Compile Include="Aspects\Exceptions\RetryDelegateFactory.cs" />
     <Compile Include="Aspects\Exceptions\Support.cs" />
+    <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
     <Compile Include="Aspects\Generalized.cs" />
     <Compile Include="Aspects\GeneralizedParameterizedSourceTypeDefinition.cs" />
     <Compile Include="Aspects\GeneralizedSpecificationTypeDefinition.cs" />
@@ -359,7 +360,7 @@
     <Compile Include="Application\ApplicationParts.cs" />
     <Compile Include="Application\ApplicationServices.cs" />
     <Compile Include="Application\ApplicationTypes.cs" />
-    <Compile Include="Application\Setup\ApplyExportCommands.cs" />
+    <Compile Include="Application\Setup\ApplyExportsCommand.cs" />
     <Compile Include="Application\Setup\ApplySetup.cs" />
     <Compile Include="Commands\SuppliedCommandSource.cs" />
     <Compile Include="Activation\CompositeActivator.cs" />
@@ -556,7 +557,6 @@
     <Compile Include="Application\Execution.cs" />
     <Compile Include="Aspects\FreezeAttribute.cs" />
     <Compile Include="Aspects\ApplyDefaultValues.cs" />
-    <Compile Include="Aspects\InterceptionArgsExtensions.cs" />
     <Compile Include="Aspects\OfTypeAttribute.cs" />
     <Compile Include="Aspects\TimedAttribute.cs" />
     <Compile Include="Aspects\RecursionGuardAttribute.cs" />

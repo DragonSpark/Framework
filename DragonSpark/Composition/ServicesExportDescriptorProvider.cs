@@ -35,7 +35,7 @@ namespace DragonSpark.Composition
 		{
 			readonly CompositeActivator activate;
 
-			public Factory( Func<Type, object> provider, Type contract ) : base( provider.Fixed( contract ).ToCachedDelegate() )
+			public Factory( Func<Type, object> provider, Type contract ) : base( provider.WithParameter( contract ).ToCachedDelegate() )
 			{
 				activate = Activate;
 			}

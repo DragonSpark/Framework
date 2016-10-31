@@ -21,7 +21,7 @@ namespace DragonSpark.Application
 
 		protected override IEnumerable<ICommand> Yield()
 		{
-			yield return ApplicationPartsFactory.Default.Fixed( types.ToImmutableArray() ).ToCommand();
+			yield return ApplicationPartsFactory.Default.WithParameter( types.ToImmutableArray() ).ToCommand();
 			yield return new DisposingCommand( Disposables.Default.Get() );
 
 			foreach ( var command in base.Yield() )
@@ -29,7 +29,7 @@ namespace DragonSpark.Application
 				yield return command;
 			}
 
-			yield return new ApplySetup();
+			yield return ApplySetup.Default;
 		}
 	}
 }

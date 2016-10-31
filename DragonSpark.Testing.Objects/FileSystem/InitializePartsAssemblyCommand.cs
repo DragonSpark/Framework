@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Objects.FileSystem
 	{
 		public InitializePartsCommand() : base( 
 			InitializePartsAssemblyCommand.Current.Get(),
-			TypeSystem.Configuration.AssemblyLoader.Configured( AssemblyLoader.Current.GetValueDelegate() )
+			TypeSystem.Configuration.AssemblyLoader.ToCommand( AssemblyLoader.Current.GetValueDelegate() )
 			) {}
 
 		public sealed class Public : ApplicationPublicPartsAttribute

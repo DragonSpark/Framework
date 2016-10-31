@@ -29,8 +29,8 @@ namespace DragonSpark.Sources.Delegates
 
 		static Delegate ToDelegate<TParameter, TResult>( Type parameter, Func<TParameter, TResult> factory, Func<Type, object> locator )
 		{
-			var @delegate = locator.Convert<Type, object, Type, TParameter>().Fixed( ParameterTypes.Default.Get( parameter ) ).ToDelegate();
-			var result = factory.Fixed( @delegate ).ToDelegate();
+			var @delegate = locator.Convert<Type, object, Type, TParameter>().WithParameter( ParameterTypes.Default.Get( parameter ) ).ToDelegate();
+			var result = factory.WithParameter( @delegate ).ToDelegate();
 			return result;
 		}
 	}

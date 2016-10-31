@@ -24,7 +24,7 @@ namespace DragonSpark.Composition
 
 		protected override IEnumerable<ICommand> Yield()
 		{
-			yield return Application.Setup.ActivatorFactory.Default.Seed.Configured( source );
+			yield return Application.Setup.ActivatorFactory.Default.Seed.ToCommand( source );
 			foreach ( var command in base.Yield() )
 			{
 				yield return command;

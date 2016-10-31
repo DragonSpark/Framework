@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Setup
 		public DeclarativeSetup() : this( Priority.Normal ) {}
 		public DeclarativeSetup( Priority priority = Priority.Normal ) : this( priority, Items<ICommand>.Default ) {}
 		public DeclarativeSetup( params ICommand[] commands ) : this( Priority.Normal, commands ) {}
-		public DeclarativeSetup( Priority priority = Priority.Normal, params ICommand[] commands ) : this( OncePerScopeSpecification<object>.Default, priority, commands ) {}
+		public DeclarativeSetup( Priority priority = Priority.Normal, params ICommand[] commands ) : this( new OncePerScopeSpecification<object>(), priority, commands ) {}
 		public DeclarativeSetup( ISpecification<object> specification, Priority priority = Priority.Normal, params ICommand[] commands ) : base( commands )
 		{
 			this.specification = specification;

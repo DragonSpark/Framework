@@ -7,6 +7,6 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	public class MinimumLevel : CommandAttributeBase
 	{
-		public MinimumLevel( LogEventLevel level ) : base( MinimumLevelConfiguration.Default.Configured( level ).Adapt<AutoData>().WithPriority( Priority.BeforeNormal ) ) {}
+		public MinimumLevel( LogEventLevel level ) : base( MinimumLevelConfiguration.Default.ToCommand( level ).Adapt<AutoData>().WithPriority( Priority.BeforeNormal ) ) {}
 	}
 }

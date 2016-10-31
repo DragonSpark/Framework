@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Setup
 
 		protected override IEnumerable<ICommand> Yield()
 		{
-			yield return GlobalServiceProvider.Default.Configured( ActivatorFactory.Default.ToCachedDelegate() );
+			yield return GlobalServiceProvider.Default.ToCommand( ActivatorFactory.Default.ToCachedDelegate() );
 		}
 	}
 }

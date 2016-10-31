@@ -14,5 +14,11 @@ namespace DragonSpark.Runtime
 			@this.Add( entry );
 			return entry;
 		}
+
+		public static T Register<T>( this IComposable<object> @this, T entry ) 
+		{
+			@this.Add( entry );
+			return entry;
+		}
 	}
 }
