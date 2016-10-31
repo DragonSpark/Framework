@@ -14,11 +14,11 @@ namespace DragonSpark.ComponentModel
 
 		public override TypeInfo Get( TypeInfo parameter )
 		{
-			var context = new Context( parameter );
+			Context? context = new Context( parameter );
 			var result = context.Loop( 
-				item => item.CreateFromBaseType(), 
-				item => item.Metadata != null,
-				item => item.Metadata
+				item => item?.CreateFromBaseType(), 
+				item => item?.Metadata != null,
+				item => item?.Metadata
 				);
 			return result;
 		}
@@ -37,7 +37,7 @@ namespace DragonSpark.ComponentModel
 				Metadata = metadata;
 			}
 
-			public Context CreateFromBaseType() => current.BaseType.With( x => new Context( x.GetTypeInfo() ) );
+			public Context? CreateFromBaseType() => current.BaseType?.With( x => new Context( x.GetTypeInfo() ) );
 
 			public TypeInfo Metadata { get; }
 		}

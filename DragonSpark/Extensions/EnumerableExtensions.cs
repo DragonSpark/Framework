@@ -186,6 +186,7 @@ namespace DragonSpark.Extensions
 
 		public static IEnumerable<TResult> SelectAssigned<TSource, TResult>( this ImmutableArray<TSource> @this, Func<TSource, TResult> select ) => @this.AsEnumerable().SelectAssigned( select );
 		public static IEnumerable<TResult> SelectAssigned<TSource, TResult>( this IEnumerable<TSource> @this, Func<TSource, TResult> select ) => @this.Select( select ).WhereAssigned();
+		public static IEnumerable<TResult> SelectAssigned<TSource, TResult>( this ImmutableArray<TSource> @this, Func<TSource, TResult?> select ) where TResult : struct => 			@this.AsEnumerable().SelectAssigned( select );
 		public static IEnumerable<TResult> SelectAssigned<TSource, TResult>( this IEnumerable<TSource> @this, Func<TSource, TResult?> select ) where TResult : struct => 
 			@this.Select( select ).Where( arg => arg.HasValue ).Select( arg => arg.Value );
 

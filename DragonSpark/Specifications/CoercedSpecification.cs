@@ -19,7 +19,7 @@ namespace DragonSpark.Specifications
 		public override bool IsSatisfiedBy( TFrom parameter )
 		{
 			var to = coerce( parameter );
-			var result = to.IsAssignedOrValue() && IsSatisfiedBy( to );
+			var result = to.IsAssigned() && IsSatisfiedBy( to );
 			return result;
 		}
 	}

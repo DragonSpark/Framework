@@ -24,7 +24,7 @@ namespace DragonSpark.Extensions
 
 		public static TValue SetOrClear<TKey, TValue>( this IDictionary<TKey, TValue> @this, TKey instance, TValue value = default(TValue) )
 		{
-			if ( value.IsAssigned() )
+			if ( !@this.ContainsKey( instance ) && value.IsAssigned() )
 			{
 				@this[instance] = value;
 			}

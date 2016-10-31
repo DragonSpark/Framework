@@ -23,7 +23,7 @@ namespace DragonSpark.Sources.Parameterized
 		public TResult Get( TFrom parameter )
 		{
 			var to = coercer( parameter );
-			var result = to.IsAssignedOrValue() ? Get( to ) : default(TResult);
+			var result = to.IsAssigned() ? Get( to ) : default(TResult);
 			return result;
 		}
 	}

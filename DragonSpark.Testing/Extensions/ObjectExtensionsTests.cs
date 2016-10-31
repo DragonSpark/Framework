@@ -139,15 +139,6 @@ namespace DragonSpark.Testing.Extensions
 			Assert.Equal( sut.Parameter, sut.With( x => x.Parameter, () => message ) );
 		}
 
-		[Fact]
-		public void UnassignedWith()
-		{
-			int sut = 0;
-			Assert.Equal( sut, sut.With( i => 3 ) );
-
-			Assert.Equal( sut, sut.With() );
-		}
-
 		[Theory, AutoData]
 		void WithNullable( int supplied )
 		{

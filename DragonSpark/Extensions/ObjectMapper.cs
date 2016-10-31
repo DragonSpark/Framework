@@ -39,7 +39,7 @@ namespace DragonSpark.Extensions
 				var expression = new MapperConfigurationExpression();
 				expression.ForAllPropertyMaps( map => map.SourceMember == null || !map.DestinationPropertyType.Adapt().IsAssignableFrom( map.SourceMember.GetMemberType() ), ( map, _ ) => map.Ignored = true );
 				expression.CreateMap( parameter.SourceType, parameter.DestinationType, MemberList.Destination );
-				expression.ForAllMaps( ( map, mappingExpression ) => mappingExpression.ForAllMembers( option => option.Condition( ( source, destination, sourceValue ) => sourceValue.IsAssignedOrValue() ) ) );
+				expression.ForAllMaps( ( map, mappingExpression ) => mappingExpression.ForAllMembers( option => option.Condition( ( source, destination, sourceValue ) => sourceValue.IsAssigned() ) ) );
 				var result = new MapperConfiguration( expression ).CreateMapper();
 				return result;
 			}

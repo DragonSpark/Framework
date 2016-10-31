@@ -14,16 +14,9 @@ namespace DragonSpark.Extensions
 
 		public static void TryDispose( this object target ) => target.As<IDisposable>( x => x.Dispose() );
 
-		public static bool IsAssignedOrValue<T>( [Optional]this T @this ) => IsAssigned( @this, true );
+		public static bool IsAssigned<T>( [Optional]this T @this ) => @this != null;
 
-		public static bool IsAssigned<T>( [Optional]this T @this ) => IsAssigned( @this, false );
-
-		static bool IsAssigned<T>( [Optional]this T @this, bool value )
-		{
-			var type = @this?.GetType() ?? typeof(T);
-			var result = Nullable.GetUnderlyingType( type ) == null && type.GetTypeInfo().IsValueType ? value || !SpecialValues.DefaultOrEmpty( type ).Equals( @this ) : !Equals( @this, default(T) );
-			return result;
-		}
+		public static T? NullIfDefault<T>( this T target ) where T : struct => target.Equals( default(T) ) ? (T?)null : target;
 
 		public static TResult Loop<TItem,TResult>( this TItem current, Func<TItem,TItem> resolveParent, Func<TItem, bool> condition, Func<TItem, TResult> extract = null, TResult defaultValue = default(TResult) )
 		{
@@ -76,7 +69,7 @@ namespace DragonSpark.Extensions
 
 		public static T With<T>( [Optional]this T? @this, Action<T> action ) where T : struct => @this?.With( action ) ?? default(T);
 
-		public static TResult With<TItem, TResult>( [Optional]this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
+		//public static TResult With<TItem, TResult>( [Optional]this TItem? @this, Func<TItem, TResult> action ) where TItem : struct => @this != null ? @this.Value.With( action ) : default( TResult );
 
 		public static TResult Evaluate<TResult>( this object container, string expression ) => Evaluate<TResult>( ExpressionEvaluator.Default, container, expression );
 
