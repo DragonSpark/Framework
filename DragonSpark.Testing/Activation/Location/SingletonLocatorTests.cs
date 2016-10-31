@@ -34,6 +34,7 @@ namespace DragonSpark.Testing.Activation.Location
 			Assert.NotSame( SingletonWithConstructorsSubject.Default, greedy );
 			Assert.Null( greedy.Parameter );
 			Assert.NotNull( greedy.DateTime );
+			Assert.NotNull( greedy.Number );
 			Assert.Same( parameters, greedy.Parameters );
 
 			Assert.NotSame( SingletonWithConstructorsSubject.Default, modest );

@@ -1,5 +1,3 @@
-using DragonSpark.Extensions;
-
 namespace DragonSpark.TypeSystem
 {
 	public static class AssemblyTypes

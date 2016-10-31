@@ -1,5 +1,4 @@
-﻿using DragonSpark.Extensions;
-using DragonSpark.Specifications;
+﻿using DragonSpark.Specifications;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
 using PostSharp.Aspects;

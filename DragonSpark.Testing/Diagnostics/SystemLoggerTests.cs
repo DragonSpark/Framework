@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var events = history.Events.ToImmutableHashSet();
 			Assert.Single( events );
 
-			var logger = Logger.Default.ToScope().Get();
+			var logger = Logger.Default.ToExecutionScope().Get();
 			Assert.Empty( history.Events );
 			var set = sink.Events.ToImmutableHashSet();
 			Assert.Single( set );

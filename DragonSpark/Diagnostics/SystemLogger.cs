@@ -8,7 +8,7 @@ namespace DragonSpark.Diagnostics
 	{
 		/*public static IConfigurationProvisionedFactory<LoggerConfiguration, ILogger> Configurable { get; } = new SystemLogger();*/
 
-		public static IScope<ILogger> Default { get; } = new SystemLogger().ToCache().ToScope();
+		public static IScope<ILogger> Default { get; } = new SystemLogger().ToCache().ToExecutionScope();
 		SystemLogger() : base( DefaultSystemLoggerConfigurations.Default.Get() ) {}
 	}
 }
