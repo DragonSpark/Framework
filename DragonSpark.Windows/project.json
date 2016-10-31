@@ -2,8 +2,8 @@
   "dependencies": {
     "Serilog.Exceptions": "2.2.1",
     "Serilog.Sinks.ColoredConsole": "2.0.0",
-    "Serilog.Sinks.RollingFile": "3.1.0",
-    "Serilog.Sinks.Trace": "2.0.0",
+    "Serilog.Sinks.RollingFile": "3.2.0",
+    "Serilog.Sinks.Trace": "2.1.0",
     "System.IO.Abstractions": "2.0.0.137"
   },
   "frameworks": {

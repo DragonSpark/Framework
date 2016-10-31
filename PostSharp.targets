@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>	
-	<PostSharpTargetVersion>4.3.21</PostSharpTargetVersion>
+	<NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>	
+	<PostSharpTargetVersion>4.3.22</PostSharpTargetVersion>
 	<DontImportPostSharp>True</DontImportPostSharp>
 	<PostSharpProperties>NuGetPackageRoot=$(NuGetPackageRoot);PostSharpTargetVersion=$(PostSharpTargetVersion);$(PostSharpProperties)</PostSharpProperties>
 	<PostSharpHostConfigurationFile Condition="Exists( 'App.config' )">app.config</PostSharpHostConfigurationFile>
@@ -13,6 +13,6 @@
   </Target>
   -->
   <ImportGroup>
-    <Import Project="$(NuGetPackageRoot)PostSharp\$(PostSharpTargetVersion)\tools\PostSharp.targets" Condition="Exists('$(NuGetPackageRoot)PostSharp\$(PostSharpTargetVersion)\tools\PostSharp.targets')" />
+	<Import Project="$(NuGetPackageRoot)PostSharp\$(PostSharpTargetVersion)\tools\PostSharp.targets" Condition="Exists('$(NuGetPackageRoot)PostSharp\$(PostSharpTargetVersion)\tools\PostSharp.targets')" />
   </ImportGroup>  
 </Project>
