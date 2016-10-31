@@ -9,12 +9,12 @@ namespace DragonSpark.Testing.Framework.Application
 	public sealed class ApplicationFactory : ConfigurableParameterizedSource<MethodBase, IApplication>
 	{
 		public static ApplicationFactory Default { get; } = new ApplicationFactory();
-		ApplicationFactory() : base( Implementation.DefaultImplementation.Get ) {}
+		ApplicationFactory() : base( DefaultImplementation.Implementation.Get ) {}
 
-		sealed class Implementation : ConfiguringFactory<MethodBase, IApplication>
+		sealed class DefaultImplementation : ConfiguringFactory<MethodBase, IApplication>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( _ => new Application( ApplicationCommandSource.Default.ToArray() ), ApplicationInitializer.Default.Execute ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : base( _ => new Application( ApplicationCommandSource.Default.ToArray() ), ApplicationInitializer.Default.Execute ) {}
 		}
 	}
 }

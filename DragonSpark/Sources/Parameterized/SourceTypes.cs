@@ -14,7 +14,7 @@ namespace DragonSpark.Sources.Parameterized
 	public sealed class SourceTypes : FactoryCache<Type, Type>
 	{
 		readonly static string[] Suffixes = { "Source", "Factory" };
-		readonly static Func<Type, KeyValuePair<Type, Type>> Selector = Mappings.DefaultNested.Get;
+		readonly static Func<Type, KeyValuePair<Type, Type>> Selector = Mappings.Implementation.Get;
 
 		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( Factory.GlobalCache( () => new SourceTypes().ToSourceDelegate() ) );
 		SourceTypes() : this( ApplicationTypes.Default.Get().SelectAssigned( Selector ).ToImmutableDictionary() ) {}
@@ -46,7 +46,7 @@ namespace DragonSpark.Sources.Parameterized
 			readonly static Func<Type, Type> Results = ResultTypes.Default.ToSourceDelegate();
 			readonly static ISpecification<Type> Specification = Activation.Defaults.Instantiable.And( Defaults.KnownSourcesSpecification, ContainsExportSpecification.Default, new DelegatedSpecification<Type>( type => Results( type ) != typeof(object) ) );
 
-			public static IParameterizedSource<Type, KeyValuePair<Type, Type>> DefaultNested { get; } = new Mappings().Apply( Specification );
+			public static IParameterizedSource<Type, KeyValuePair<Type, Type>> Implementation { get; } = new Mappings().Apply( Specification );
 			Mappings() {}
 
 			public override KeyValuePair<Type, Type> Get( Type parameter ) =>

@@ -22,7 +22,7 @@ namespace DragonSpark.TypeSystem
 		sealed class Specification : AllSpecification<Type>
 		{
 			[UsedImplicitly]
-			public static Specification DefaultNested { get; } = new Specification();
+			public static Specification Implementation { get; } = new Specification();
 			Specification() : base( CanActivateSpecification.Default, new OncePerParameterSpecification<Type>() ) {}
 		}
 	}

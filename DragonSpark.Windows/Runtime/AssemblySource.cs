@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.Runtime
 	{
 		readonly AppDomain domain;
 		readonly Func<Assembly, bool> specification;
-		public AssemblySource( AppDomain domain ) : this( domain, Specification.DefaultNested.IsSatisfiedBy ) {}
+		public AssemblySource( AppDomain domain ) : this( domain, Specification.Implementation.IsSatisfiedBy ) {}
 		public AssemblySource( AppDomain domain, Func<Assembly, bool> specification )
 		{
 			this.domain = domain;
@@ -25,7 +25,7 @@ namespace DragonSpark.Windows.Runtime
 		sealed class Specification : SpecificationBase<Assembly>
 		{
 			const string SystemReflectionEmitInternalAssemblyBuilder = "System.Reflection.Emit.InternalAssemblyBuilder";
-			public static Specification DefaultNested { get; } = new Specification();
+			public static Specification Implementation { get; } = new Specification();
 			Specification() {}
 
 			public override bool IsSatisfiedBy( Assembly parameter ) => 

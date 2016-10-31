@@ -17,9 +17,9 @@ namespace DragonSpark.Windows.Testing.FileSystem
 			repository.Set( path, new FileElement( expected ) );
 
 
-			File.Implementation.DefaultImplementation.Assign( Sources.Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
-			var implementation = File.Implementation.DefaultImplementation.Get();
-			Assert.Same( File.Implementation.DefaultImplementation.Get(), implementation );
+			File.DefaultImplementation.Implementation.Assign( Sources.Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
+			var implementation = File.DefaultImplementation.Implementation.Get();
+			Assert.Same( File.DefaultImplementation.Implementation.Get(), implementation );
 			var mock = Mock.Get( (MockFile)implementation );
 			var instance = File.Current.Get();
 			Assert.Same( instance, File.Current.Get() );

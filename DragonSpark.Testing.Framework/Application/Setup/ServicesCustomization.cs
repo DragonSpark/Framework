@@ -17,13 +17,13 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 		protected override void OnCustomize( IFixture fixture )
 		{
-			fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.DefaultNested );
+			fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.Implementation );
 			// fixture.ResidueCollectors.Add( ServiceRelay.Default );
 		}
 
 		sealed class FrameworkSpecimenBuilder : ISpecimenBuilder
 		{
-			public static FrameworkSpecimenBuilder DefaultNested { get; } = new FrameworkSpecimenBuilder();
+			public static FrameworkSpecimenBuilder Implementation { get; } = new FrameworkSpecimenBuilder();
 			FrameworkSpecimenBuilder() : this( typeof(Type[]), typeof(Assembly[]), typeof(ImmutableArray<Type>), typeof(ImmutableArray<Assembly>) ) {}
 
 			readonly Type[] types;

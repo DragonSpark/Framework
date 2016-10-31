@@ -7,12 +7,12 @@ namespace DragonSpark.Windows.FileSystem
 	public sealed class FileInfoFactory : FileSystemInfoFactory<FileInfoBase, FileInfo, IFileInfo>
 	{
 		public static IConfigurableParameterizedSource<string, IFileInfo> Default { get; } = new FileInfoFactory().ToEqualityCache().AsConfigurable();
-		FileInfoFactory() : base( Implementation.DefaultImplementation.Get ) {}
+		FileInfoFactory() : base( DefaultImplementation.Implementation.Get ) {}
 
-		public sealed class Implementation : ConfigurableParameterizedSource<string, FileInfoBase>
+		public sealed class DefaultImplementation : ConfigurableParameterizedSource<string, FileInfoBase>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( new FileSystemImplementationFactory<System.IO.FileInfo, FileInfoWrapper, FileInfoBase>().ToEqualityCache().Get ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : base( new FileSystemImplementationFactory<System.IO.FileInfo, FileInfoWrapper, FileInfoBase>().ToEqualityCache().Get ) {}
 		}
 	}
 }

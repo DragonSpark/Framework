@@ -20,13 +20,13 @@ namespace DragonSpark.Aspects.Build
 	public sealed class AspectInstanceFactory<TAspect, TTarget> : SpecificationParameterizedSource<TTarget, AspectInstance>
 	{
 		public static AspectInstanceFactory<TAspect, TTarget> Default { get; } = new AspectInstanceFactory<TAspect, TTarget>();
-		AspectInstanceFactory() : base( HasAspectSpecification.DefaultNested.Inverse(), Factory.DefaultNested.Get ) {}
+		AspectInstanceFactory() : base( HasAspectSpecification.Implementation.Inverse(), Factory.Implementation.Get ) {}
 		
 		sealed class HasAspectSpecification : SpecificationBase<TTarget>
 		{
 			readonly static Type AspectType = typeof(TAspect);
 
-			public static HasAspectSpecification DefaultNested { get; } = new HasAspectSpecification();
+			public static HasAspectSpecification Implementation { get; } = new HasAspectSpecification();
 			HasAspectSpecification() : this( () => PostSharpEnvironment.CurrentProject.GetService<IAspectRepositoryService>() ) {}
 
 			readonly Func<IAspectRepositoryService> repositorySource;
@@ -41,7 +41,7 @@ namespace DragonSpark.Aspects.Build
 
 		sealed class Factory : ParameterizedSourceBase<TTarget, AspectInstance>
 		{
-			public static Factory DefaultNested { get; } = new Factory();
+			public static Factory Implementation { get; } = new Factory();
 			Factory() : this( ObjectConstructionFactory<TAspect>.Default.Get() ) {}
 
 			readonly ObjectConstruction construction;

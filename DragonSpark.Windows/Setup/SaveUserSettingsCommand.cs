@@ -9,18 +9,18 @@ namespace DragonSpark.Windows.Setup
 	public sealed class SaveUserSettingsCommand : ConfigurableCommand<ApplicationSettingsBase>
 	{
 		public static SaveUserSettingsCommand Default { get; } = new SaveUserSettingsCommand();
-		SaveUserSettingsCommand() : base( Implementation.DefaultImplementation.Execute ) {}
+		SaveUserSettingsCommand() : base( DefaultImplementation.Implementation.Execute ) {}
 
-		sealed class Implementation : CommandBase<ApplicationSettingsBase>
+		sealed class DefaultImplementation : CommandBase<ApplicationSettingsBase>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : this( Defaults.UserSettingsPath, UserConfigurationLocator.Default.Get ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : this( Defaults.UserSettingsPath, UserConfigurationLocator.Default.Get ) {}
 
 			readonly Func<IFileInfo> fileSource;
 			readonly Func<IFileInfo, System.Configuration.Configuration> configurationSource;
 
 			[UsedImplicitly]
-			public Implementation( Func<IFileInfo> fileSource, Func<IFileInfo, System.Configuration.Configuration> configurationSource )
+			public DefaultImplementation( Func<IFileInfo> fileSource, Func<IFileInfo, System.Configuration.Configuration> configurationSource )
 			{
 				this.fileSource = fileSource;
 				this.configurationSource = configurationSource;

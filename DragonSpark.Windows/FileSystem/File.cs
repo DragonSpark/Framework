@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.FileSystem
 		public static IScope<IFile> Current { get; } = new Scope<IFile>( Sources.Factory.GlobalCache( () => new File() ) );
 
 		public static File Default { get; } = new File();
-		File() : this( Implementation.DefaultImplementation.Get() ) {}
+		File() : this( DefaultImplementation.Implementation.Get() ) {}
 
 		readonly FileBase source;
 
@@ -134,10 +134,10 @@ namespace DragonSpark.Windows.FileSystem
 
 		public void WriteAllText( string path, string contents, Encoding encoding ) => source.WriteAllText( path, contents, encoding );
 
-		public sealed class Implementation : Scope<FileBase>
+		public sealed class DefaultImplementation : Scope<FileBase>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( Sources.Factory.GlobalCache( () => new FileWrapper() ) ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : base( Sources.Factory.GlobalCache( () => new FileWrapper() ) ) {}
 		}
 	}
 }

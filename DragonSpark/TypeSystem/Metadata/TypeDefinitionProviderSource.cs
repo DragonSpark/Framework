@@ -11,11 +11,11 @@ namespace DragonSpark.TypeSystem.Metadata
 		public static TypeDefinitionProviderSource Default { get; } = new TypeDefinitionProviderSource();
 		TypeDefinitionProviderSource() : this( Items<ITypeDefinitionProvider>.Default ) {}
 
-		protected TypeDefinitionProviderSource( params ITypeDefinitionProvider[] items ) : base( items.Append( ConventionTypeDefinitionProvider.Default, Self.DefaultNested ) ) {}
+		protected TypeDefinitionProviderSource( params ITypeDefinitionProvider[] items ) : base( items.Append( ConventionTypeDefinitionProvider.Default, Self.Implementation ) ) {}
 
 		sealed class Self : SelfAlteration<TypeInfo>, ITypeDefinitionProvider
 		{
-			public static Self DefaultNested { get; } = new Self();
+			public static Self Implementation { get; } = new Self();
 			Self() {}
 		}
 	}

@@ -13,7 +13,7 @@ namespace DragonSpark.Windows.FileSystem
 		public static ISource<IDirectory> Current { get; } = new Scope<IDirectory>( Sources.Factory.GlobalCache( () => new Directory() ) );
 
 		public static Directory Default { get; } = new Directory();
-		Directory() : this( Implementation.DefaultImplementation.Get() ) {}
+		Directory() : this( DefaultImplementation.Implementation.Get() ) {}
 
 		readonly DirectoryBase source;
 		readonly Func<DirectoryInfoBase, IDirectoryInfo> directorySource;
@@ -118,10 +118,10 @@ namespace DragonSpark.Windows.FileSystem
 
 		public IEnumerable<string> EnumerateFileSystemEntries( string path, string searchPattern, SearchOption searchOption ) => source.EnumerateFileSystemEntries( path, searchPattern, searchOption );
 
-		public sealed class Implementation : Scope<DirectoryBase>
+		public sealed class DefaultImplementation : Scope<DirectoryBase>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( Sources.Factory.GlobalCache( () => new DirectoryWrapper() ) ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : base( Sources.Factory.GlobalCache( () => new DirectoryWrapper() ) ) {}
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace DragonSpark.Windows.FileSystem
 	public class Path : IPath
 	{
 		public static IScope<IPath> Current { get; } = new Scope<IPath>( Sources.Factory.GlobalCache( () => new Path() ) );
-		Path() : this( Implementation.DefaultImplementation.Get() ) {}
+		Path() : this( DefaultImplementation.Implementation.Get() ) {}
 
 		readonly PathBase source;
 
@@ -65,10 +65,10 @@ namespace DragonSpark.Windows.FileSystem
 
 		public char VolumeSeparatorChar => source.VolumeSeparatorChar;
 
-		public sealed class Implementation : Scope<PathBase>
+		public sealed class DefaultImplementation : Scope<PathBase>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() : base( Sources.Factory.GlobalCache( () => new PathWrapper() ) ) {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() : base( Sources.Factory.GlobalCache( () => new PathWrapper() ) ) {}
 		}
 	}
 }

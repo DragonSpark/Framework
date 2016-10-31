@@ -52,14 +52,14 @@ namespace DragonSpark.Aspects
 
 		sealed class DefaultSource : ParameterizedSourceBase<Type, Type>
 		{
-			public static IParameterizedSource<Type, Type> Default { get; } = new DefaultSource().Apply( Specification.DefaultNested );
+			public static IParameterizedSource<Type, Type> Default { get; } = new DefaultSource().Apply( Specification.Implementation );
 			DefaultSource() {}
 
 			public override Type Get( Type parameter ) => parameter == typeof(string) ? typeof(RequiredAttribute) : typeof(NotNullAttribute);
 
 			sealed class Specification : SpecificationBase<Type>
 			{
-				public static ISpecification<Type> DefaultNested { get; } = new DelegatedSpecification<Type>( new DecoratedSourceCache<Type, bool>( new Specification().IsSatisfiedBy ).Get );
+				public static ISpecification<Type> Implementation { get; } = new DelegatedSpecification<Type>( new DecoratedSourceCache<Type, bool>( new Specification().IsSatisfiedBy ).Get );
 				Specification() {}
 
 				public override bool IsSatisfiedBy( Type parameter ) => !parameter.IsByRef && Nullable.GetUnderlyingType( parameter ) == null && !parameter.GetTypeInfo().IsValueType;

@@ -9,7 +9,7 @@ namespace DragonSpark.Windows.Legacy.Markup
 {
 	public sealed class MockFactory : ParameterizedSourceBase<Type, object>
 	{
-		public static IParameterizedSource<Type, object> Default { get; } = new MockFactory().Apply( Specification.DefaultNested );
+		public static IParameterizedSource<Type, object> Default { get; } = new MockFactory().Apply( Specification.Implementation );
 		MockFactory() : this( Activator.Default.Get<Mock> ) {}
 
 		readonly Func<Type, Mock> activator;
@@ -21,7 +21,7 @@ namespace DragonSpark.Windows.Legacy.Markup
 
 		class Specification : SpecificationBase<Type>
 		{
-			public static Specification DefaultNested { get; } = new Specification();
+			public static Specification Implementation { get; } = new Specification();
 			Specification() {}
 
 			public override bool IsSatisfiedBy( Type parameter ) => parameter.IsInterface || !parameter.IsSealed;

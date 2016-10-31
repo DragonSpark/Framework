@@ -11,12 +11,12 @@ namespace DragonSpark.Diagnostics
 	public sealed class Logger : ConfiguringFactory<object, ILogger>
 	{
 		public static IParameterizedSource<object, ILogger> Default { get; } = new Logger().ToCache();
-		Logger() : base( LoggingConfiguration.Default.ToCache().ToSourceDelegate(), Command.DefaultNested.ToDelegate() ) {}
+		Logger() : base( LoggingConfiguration.Default.ToCache().ToSourceDelegate(), Command.Implementation.ToDelegate() ) {}
 		
 		[ApplyAutoValidation, ApplySpecification( typeof(OncePerScopeSpecification<ILogger>) )]
 		sealed class Command : CommandBase<ILogger>
 		{
-			public static Command DefaultNested { get; } = new Command();
+			public static Command Implementation { get; } = new Command();
 			Command() {}
 
 			public override void Execute( ILogger parameter )

@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Setup
 	{
 		[UsedImplicitly]
 		public static InitializeUserSettingsCommand Default { get; } = new InitializeUserSettingsCommand();
-		InitializeUserSettingsCommand() : this( TemplatesFactory.DefaultNested.WithParameter( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, SaveUserSettingsCommand.Default.Execute ) {}
+		InitializeUserSettingsCommand() : this( TemplatesFactory.Implementation.WithParameter( SystemLogger.Default.Get ).Get, Defaults.UserSettingsPath, SaveUserSettingsCommand.Default.Execute ) {}
 
 		readonly Func<Templates> templatesSource;
 		readonly Func<IFileInfo> fileSource;
@@ -61,7 +61,7 @@ namespace DragonSpark.Windows.Setup
 
 		sealed class TemplatesFactory : ParameterizedSourceBase<ILogger, Templates>
 		{
-			public static TemplatesFactory DefaultNested { get; } = new TemplatesFactory();
+			public static TemplatesFactory Implementation { get; } = new TemplatesFactory();
 			TemplatesFactory() {}
 
 			public override Templates Get( ILogger parameter ) => new Templates( InitializingTemplate.Defaults.Get( parameter ).Execute,

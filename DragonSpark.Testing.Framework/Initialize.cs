@@ -21,13 +21,13 @@ namespace DragonSpark.Testing.Framework
 			Time.Default.Configuration.Assign( CurrentTime.Default.Wrap() );
 			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
 
-			Path.Implementation.DefaultImplementation.Assign<MockPath>();
-			Directory.Implementation.DefaultImplementation.Assign<MockDirectory>();
+			Path.DefaultImplementation.Implementation.Assign<MockPath>();
+			Directory.DefaultImplementation.Implementation.Assign<MockDirectory>();
 			DirectoryInfoFactory.Default.Configuration.Assign( DirectoryInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).Global );
-			DirectoryInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Global );
-			File.Implementation.DefaultImplementation.Assign<MockFile>();
+			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Global );
+			File.DefaultImplementation.Implementation.Assign<MockFile>();
 			FileInfoFactory.Default.Configuration.Assign( FileInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).Global );
-			FileInfoFactory.Implementation.DefaultImplementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Global );
+			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.Global );
 
 			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global );
 		}

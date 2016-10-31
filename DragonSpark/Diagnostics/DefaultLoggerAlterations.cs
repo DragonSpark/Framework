@@ -13,11 +13,11 @@ namespace DragonSpark.Diagnostics
 		readonly static IAlteration<LoggerConfiguration> LogContext = EnrichFromLogContextCommand.Default.ToAlteration();
 
 		public static DefaultLoggerAlterations Default { get; } = new DefaultLoggerAlterations();
-		DefaultLoggerAlterations() : base( LogContext, FormatterConfiguration.Default, ControllerAlteration.DefaultNested, ApplicationAssemblyAlteration.Default ) {}
+		DefaultLoggerAlterations() : base( LogContext, FormatterConfiguration.Default, ControllerAlteration.Implementation, ApplicationAssemblyAlteration.Default ) {}
 
 		sealed class ControllerAlteration : AlterationBase<LoggerConfiguration>
 		{
-			public static ControllerAlteration DefaultNested { get; } = new ControllerAlteration();
+			public static ControllerAlteration Implementation { get; } = new ControllerAlteration();
 			ControllerAlteration() : this( LoggingController.Default.Get ) {}
 
 			readonly Func<LoggingLevelSwitch> controller;

@@ -7,12 +7,12 @@ namespace DragonSpark.Windows.Setup
 	public sealed class UserSettingsFilePath : ConfigurableSource<string>
 	{
 		public static UserSettingsFilePath Default { get; } = new UserSettingsFilePath();
-		UserSettingsFilePath() : base( Implementation.DefaultImplementation.Get ) {}
+		UserSettingsFilePath() : base( DefaultImplementation.Implementation.Get ) {}
 
-		sealed class Implementation : SourceBase<string>
+		sealed class DefaultImplementation : SourceBase<string>
 		{
-			public static Implementation DefaultImplementation { get; } = new Implementation();
-			Implementation() {}
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() {}
 
 			public override string Get() => ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal ).FilePath;
 		}

@@ -8,7 +8,7 @@ namespace DragonSpark.Activation.Location
 	public class SingletonSpecification : SpecificationBase<PropertyInfo>
 	{
 		public static SingletonSpecification Default { get; } = new SingletonSpecification();
-		SingletonSpecification() : this( "Instance", "Default", "Current", "DefaultImplementation", "DefaultNested" ) {}
+		SingletonSpecification() : this( "Instance", "Default", "Current", "DefaultImplementation", "Implementation" ) {}
 
 		readonly ImmutableArray<string> candidates;
 

@@ -38,13 +38,13 @@ namespace DragonSpark.Activation
 			return result;
 		}
 
-		public static Func<TParameter, TResult> Make( ConstructorInfo constructor ) => Factories.DefaultNested.Get( constructor );
+		public static Func<TParameter, TResult> Make( ConstructorInfo constructor ) => Factories.Implementation.Get( constructor );
 
 		public override TResult Get( TParameter parameter ) => factory( parameter );
 
 		sealed class Factories : CompiledDelegateFactoryBase<ConstructorInfo, Func<TParameter, TResult>>
 		{
-			public static IParameterizedSource<ConstructorInfo, Func<TParameter, TResult>> DefaultNested { get; } = new Cache<ConstructorInfo, Func<TParameter, TResult>>( new Factories().Get );
+			public static IParameterizedSource<ConstructorInfo, Func<TParameter, TResult>> Implementation { get; } = new Cache<ConstructorInfo, Func<TParameter, TResult>>( new Factories().Get );
 			Factories() : base( Parameter.Create<TParameter>(), parameter => Expression.New( parameter.Input, CreateParameters( parameter ) ) ) {}
 
 			static IEnumerable<Expression> CreateParameters( ExpressionBodyParameter<ConstructorInfo> parameter )

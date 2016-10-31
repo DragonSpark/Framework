@@ -15,7 +15,7 @@ namespace DragonSpark.Activation
 	public sealed class Constructor : ActivatorBase, IConstructor
 	{
 		public static IConstructor Default { get; } = new Constructor();
-		Constructor() : this( ConstructorSpecification.Default, Source.DefaultNested ){}
+		Constructor() : this( ConstructorSpecification.Default, Source.Implementation ){}
 
 		readonly ISpecification<ConstructTypeRequest> specification;
 		readonly IParameterizedSource<ConstructTypeRequest, object> source;
@@ -32,7 +32,7 @@ namespace DragonSpark.Activation
 
 		sealed class Source : ParameterizedSourceBase<ConstructTypeRequest, object>
 		{
-			public static Source DefaultNested { get; } = new Source();
+			public static Source Implementation { get; } = new Source();
 			Source() : this( Constructors.Default.Get, ConstructorDelegateFactory<Invoke>.Default.Get ) {}
 
 			readonly Func<ConstructTypeRequest, ConstructorInfo> constructorSource;
