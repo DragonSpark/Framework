@@ -4,13 +4,14 @@ using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 using System.Linq;
+using DragonSpark.Testing.Framework.Application;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.Runtime
 {
 	public class FileSystemTypesTests
 	{
-		[Theory, Ploeh.AutoFixture.Xunit2.AutoData, Trait( Traits.Category, Traits.Categories.FileSystem ), InitializeFileSystem]
+		[Theory, AutoData, Trait( Traits.Category, Traits.Categories.FileSystem ), InitializeFileSystem]
 		public void Assemblies( FileSystemTypes sut )
 		{
 			Assert.Same( sut, FileSystemTypes.Default );

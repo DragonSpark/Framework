@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public class ProvisionFromSystemFileCommand : CommandBase<FileInfo>
 	{
-		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = new Scope<ProvisionFromSystemFileCommand>( Factory.GlobalCache( () => new ProvisionFromSystemFileCommand() ) );
+		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = Scopes.CreateScope( () => new ProvisionFromSystemFileCommand() );
 		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetValue, ByteReader.Default.Get ) {}
 
 		readonly ICommand<FileSystemRegistration> apply;
@@ -39,7 +39,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 	public sealed class MappedPathAlteration : AppliedAlteration<string>
 	{
-		public static IScope<MappedPathAlteration> Current { get; } = new Scope<MappedPathAlteration>( Factory.GlobalCache( () => new MappedPathAlteration() ) );
+		public static IScope<MappedPathAlteration> Current { get; } = Scopes.CreateScope( () => new MappedPathAlteration() );
 		MappedPathAlteration() : this( MappedPaths.Current.Get() ) {}
 
 		[UsedImplicitly]
@@ -48,6 +48,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 	sealed class MappedPaths : EqualityReferenceCache<string, string>
 	{
-		public static ISource<MappedPaths> Current { get; } = new Scope<MappedPaths>( Factory.GlobalCache( () => new MappedPaths() ) );
+		public static ISource<MappedPaths> Current { get; } = Scopes.CreateScope( () => new MappedPaths() );
 	}
 }

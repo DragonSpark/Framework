@@ -1,9 +1,9 @@
-﻿using PostSharp.Aspects;
+﻿using JetBrains.Annotations;
+using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
 
 namespace DragonSpark.Aspects.Alteration
 {
-	[ProvideAspectRole( KnownRoles.ValueConversion ), LinesOfCodeAvoided( 1 ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation )]
 	public sealed class Aspect : AspectBase
 	{
 		public override void OnInvoke( MethodInterceptionArgs args )
@@ -18,14 +18,13 @@ namespace DragonSpark.Aspects.Alteration
 		}
 	}
 
-	[ProvideAspectRole( KnownRoles.ValueConversion ), LinesOfCodeAvoided( 1 ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation )]
+	[ProvideAspectRole( KnownRoles.ValueConversion ), LinesOfCodeAvoided( 1 ), AspectRoleDependency( AspectDependencyAction.Order, AspectDependencyPosition.Before, StandardRoles.Validation ), UsedImplicitly]
 	public abstract class AspectBase : Aspects.AspectBase { }
 
 	public sealed class ResultAspect : AspectBase
 	{
 		public override void OnInvoke( MethodInterceptionArgs args )
 		{
-			var method = args.Method;
 			args.Proceed();
 
 			var alteration = args.Instance as IAlteration;

@@ -29,7 +29,7 @@ namespace DragonSpark.Application
 				yield return command;
 			}
 
-			yield return ApplySetup.Default;
+			yield return new ApplySetup();
 		}
 	}
 }
