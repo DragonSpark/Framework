@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly IPath path;
 		readonly IElementSource<IFileElement> element;
 
-		public MockFileInfo( string filePath ) : this( FileSystemRepository.Current.Get(), filePath ) {}
+		public MockFileInfo( string filePath ) : this( FileSystemRepository.Default, filePath ) {}
 
 		public MockFileInfo( IFileSystemRepository repository, string filePath ) : this( repository, Windows.FileSystem.Path.Default, File.Default, filePath ) {}
 

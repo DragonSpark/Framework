@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class AssemblyLoader : ParameterizedSourceBase<string, Assembly>
 	{
 		public static ISource<AssemblyLoader> Current { get; } = new Scope<AssemblyLoader>( Factory.GlobalCache( () => new AssemblyLoader() ) );
-		AssemblyLoader() : this( FileSystemRepository.Current.Get(), AppDomain.CurrentDomain ) {}
+		AssemblyLoader() : this( FileSystemRepository.Default, AppDomain.CurrentDomain ) {}
 
 		readonly IFileSystemRepository repository;
 		readonly AppDomain domain;

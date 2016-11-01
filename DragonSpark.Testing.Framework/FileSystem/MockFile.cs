@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly IPath path;
 		readonly IDirectory directory;
 
-		public MockFile() : this( FileSystemRepository.Current.Get(), Windows.FileSystem.Path.Default, Windows.FileSystem.Directory.Default ) {}
+		public MockFile() : this( FileSystemRepository.Default, Windows.FileSystem.Path.Default, Windows.FileSystem.Directory.Default ) {}
 
 		public MockFile(IFileSystemRepository repository, IPath path, IDirectory directory )
 		{

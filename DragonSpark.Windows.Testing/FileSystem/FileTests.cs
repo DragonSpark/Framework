@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Theory, AutoData]
 		public void Verify( string path, string message )
 		{
-			var repository = FileSystemRepository.Current.Get();
+			var repository = FileSystemRepository.Default;
 			var expected = Encoding.Default.GetBytes( message );
 			repository.Set( path, new FileElement( expected ) );
 

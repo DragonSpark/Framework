@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly IElementSource<IDirectoryElement> element;
 
 		[UsedImplicitly]
-		public MockDirectoryInfo( string directoryPath ) : this( FileSystemRepository.Current.Get(), directoryPath ) {}
+		public MockDirectoryInfo( string directoryPath ) : this( FileSystemRepository.Default, directoryPath ) {}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MockDirectoryInfo"/> class.

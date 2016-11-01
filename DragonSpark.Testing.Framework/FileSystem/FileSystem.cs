@@ -1,6 +1,6 @@
 using DragonSpark.Commands;
+using DragonSpark.Configuration;
 using DragonSpark.Extensions;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.TypeSystem;
@@ -17,19 +17,8 @@ using Path = DragonSpark.Windows.FileSystem.Path;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public interface IFileSystemRepository : ICache<string, IFileSystemElement>, /*IComposable<FileEntry>,*/ IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
+	public interface IFileSystemRepository : ICache<string, IFileSystemElement>, IFileInfoFactory, IDirectoryInfoFactory, IDriveInfoFactory
 	{
-		// IFileElement AddFile( string path, IEnumerable<byte> data );
-
-		/*void Remove( IFileSystemElement element );
-
-		/// <summary>
-		/// Determines whether the file exists.
-		/// </summary>
-		/// <param name="pathName">The file to check. </param>
-		/// <returns><see langword="true"/> if the file exists; otherwise, <see langword="false"/>.</returns>
-		bool Contains(string pathName);*/
-
 		string GetPath( IFileSystemElement element );
 
 		/// <summary>
@@ -51,64 +40,81 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
-	public class FileSystemRepository : AlteredCache<string, IFileSystemElement>, IFileSystemRepository
+	public class FileSystemRepository : ConfigurableSource<IFileSystemRepository>, IFileSystemRepository
 	{
-		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
-		FileSystemRepository() : this( Path.Default ) {}
+		public static FileSystemRepository Default { get; } = new FileSystemRepository();
+		FileSystemRepository() : base( () => new Implementation() ) {}
 
-		readonly IDictionary<string, IFileSystemElement> elements;
-		readonly ICache<string, DirectoryInfoBase> directories;
-		readonly ICache<string, FileInfoBase> files;
-		readonly IPath path;
+		public string GetPath( IFileSystemElement element ) => Get().GetPath( element );
+		public ImmutableArray<string> AllPaths => Get().AllPaths;
+		public ImmutableArray<string> AllFiles => Get().AllFiles;
+		public ImmutableArray<string> AllDirectories => Get().AllDirectories;
+		public DirectoryInfoBase FromDirectoryName( string directoryName ) => Get().FromDirectoryName( directoryName );
+		public FileInfoBase FromFileName( string fileName ) => Get().FromFileName( fileName );
+		public DriveInfoBase[] GetDrives() => Get().GetDrives();
+		public IFileSystemElement Get( string parameter ) => Get().Get( parameter );
+		public void Set( string instance, IFileSystemElement value ) => Get().Set( instance, value );
+		public bool Contains( string instance ) => Get().Contains( instance );
+		public bool Remove( string instance ) => Get().Remove( instance );
 
-		[UsedImplicitly]
-		public FileSystemRepository( IPath path ) : this( path, new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase ) ) {}
-
-		[UsedImplicitly]
-		public FileSystemRepository( IPath path, IDictionary<string, IFileSystemElement> elements ) : base( new Cache( path, elements ), new DelegatedAlteration<string>( path.Normalize ).Get )
+		sealed class Implementation : AlteredCache<string, IFileSystemElement>, IFileSystemRepository
 		{
-			this.path = path;
-			this.elements = elements;
+			readonly IDictionary<string, IFileSystemElement> elements;
+			readonly ICache<string, DirectoryInfoBase> directories;
+			readonly ICache<string, FileInfoBase> files;
+			readonly IPath path;
 
-			directories = new DirectorySource( this ).ToEqualityCache();
-			files = new FileSource( this ).ToEqualityCache();
-		}
+			public Implementation() : this( Path.Default ) {}
 
-		public string GetPath( IFileSystemElement element ) => elements.Introduce( element, tuple => tuple.Item1.Value == tuple.Item2, tuple => tuple.Item1.Key ).SingleOrDefault();
+			[UsedImplicitly]
+			public Implementation( IPath path ) : this( path, new Dictionary<string, IFileSystemElement>( StringComparer.OrdinalIgnoreCase ) ) {}
 
-		public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
-
-		public ImmutableArray<string> AllFiles => elements.Where( f => f.Value is IFileElement ).Select( f => f.Key ).ToImmutableArray();
-
-		public ImmutableArray<string> AllDirectories => elements.Where( f => f.Value is IDirectoryElement ).Select( f => f.Key ).ToImmutableArray();
-
-		public DirectoryInfoBase FromDirectoryName( string directoryName ) => directories.Get( path.Normalize( directoryName ) );
-
-		public FileInfoBase FromFileName( string fileName ) => files.Get( path.Normalize( fileName ) );
-
-		public DriveInfoBase[] GetDrives()
-		{
-			var letters = new HashSet<string>(DriveEqualityComparer.Default);
-			letters.AddRange(AllPaths.Select( path.GetPathRoot ));
-
-			var result = new List<DriveInfoBase>();
-			foreach (var driveLetter in letters)
+			[UsedImplicitly]
+			public Implementation( IPath path, IDictionary<string, IFileSystemElement> elements ) : base( new Cache( path, elements ), new DelegatedAlteration<string>( path.Normalize ).Get )
 			{
-				try
-				{
-					result.Add( new MockDriveInfo( this, driveLetter ) );
-				}
-				catch (ArgumentException) {} // invalid drives should be ignored
+				this.path = path;
+				this.elements = elements;
+
+				directories = new DirectorySource( this ).ToEqualityCache();
+				files = new FileSource( this ).ToEqualityCache();
 			}
 
-			return result.ToArray();
+			public string GetPath( IFileSystemElement element ) => elements.Introduce( element, tuple => tuple.Item1.Value == tuple.Item2, tuple => tuple.Item1.Key ).SingleOrDefault();
+
+			public ImmutableArray<string> AllPaths => elements.Keys.ToImmutableArray();
+
+			public ImmutableArray<string> AllFiles => elements.Where( f => f.Value is IFileElement ).Select( f => f.Key ).ToImmutableArray();
+
+			public ImmutableArray<string> AllDirectories => elements.Where( f => f.Value is IDirectoryElement ).Select( f => f.Key ).ToImmutableArray();
+
+			public DirectoryInfoBase FromDirectoryName( string directoryName ) => directories.Get( path.Normalize( directoryName ) );
+
+			public FileInfoBase FromFileName( string fileName ) => files.Get( path.Normalize( fileName ) );
+
+			public DriveInfoBase[] GetDrives()
+			{
+				var letters = new HashSet<string>( DriveEqualityComparer.Instance );
+				letters.AddRange( AllPaths.Select( path.GetPathRoot ) );
+
+				var result = new List<DriveInfoBase>();
+				foreach ( var driveLetter in letters )
+				{
+					try
+					{
+						result.Add( new MockDriveInfo( this, driveLetter ) );
+					}
+					catch ( ArgumentException ) {} // invalid drives should be ignored
+				}
+
+				return result.ToArray();
+			}
 		}
-		
+
 		sealed class Cache : DictionaryCache<string, IFileSystemElement>
 		{
 			readonly IDictionary<Type, ICommand<string>> commands;
 
-			public Cache( IPath path, IDictionary<string, IFileSystemElement> dictionary ) : this( PreparedCommandFactory.Default.Get( new PreparedCommandFactoryParameter( path, dictionary ) ), dictionary ) {}
+			public Cache( IPath path, IDictionary<string, IFileSystemElement> dictionary ) : this( PreparedCommandFactory.Instance.Get( new PreparedCommandFactoryParameter( path, dictionary ) ), dictionary ) {}
 
 			Cache( IDictionary<Type, ICommand<string>> commands, IDictionary<string, IFileSystemElement> dictionary ) : base( dictionary )
 			{
@@ -119,7 +125,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			{
 				readonly static IEqualityComparer<Type> Comparer = new AssignableEqualityComparer( typeof(IDirectoryElement), typeof(IFileElement) );
 
-				public static PreparedCommandFactory Default { get; } = new PreparedCommandFactory();
+				public static PreparedCommandFactory Instance { get; } = new PreparedCommandFactory();
 				PreparedCommandFactory() {}
 
 				public override IDictionary<Type, ICommand<string>> Get( PreparedCommandFactoryParameter parameter ) =>
@@ -128,8 +134,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 						{ typeof(IDirectoryElement), new PrepareDirectoryCommand( parameter.Path, parameter.Dictionary ) },
 						{ typeof(IFileElement), new PrepareFileCommand( parameter.Path, parameter.Dictionary ) }
 					};
-
-				
 			}
 
 			struct PreparedCommandFactoryParameter
@@ -210,8 +214,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				base.Set( instance, value );
 			}
 		}
-
-
+		
 		sealed class DirectorySource : ParameterizedSourceBase<string, DirectoryInfoBase>
 		{
 			readonly IFileSystemRepository repository;
@@ -238,7 +241,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		sealed class DriveEqualityComparer : IEqualityComparer<string>
 		{
-			public static DriveEqualityComparer Default { get; } = new DriveEqualityComparer();
+			public static DriveEqualityComparer Instance { get; } = new DriveEqualityComparer();
 			DriveEqualityComparer() {}
 
 			public bool Equals(string x, string y) => ReferenceEquals( x, y ) || !ReferenceEquals( x, null ) && ( !ReferenceEquals( y, null ) && ( x[1] == ':' && y[1] == ':' && char.ToUpperInvariant( x[0] ) == char.ToUpperInvariant( y[0] ) ) );

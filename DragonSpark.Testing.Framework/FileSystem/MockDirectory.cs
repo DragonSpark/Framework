@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly IPath path;
 		readonly IDirectorySource directory;
 		
-		public MockDirectory() : this( FileSystemRepository.Current.Get(), Windows.FileSystem.Path.Default, DirectorySource.Default ) {}
+		public MockDirectory() : this( FileSystemRepository.Default, Windows.FileSystem.Path.Default, DirectorySource.Default ) {}
 
 		[UsedImplicitly]
 		public MockDirectory(IFileSystemRepository repository, IPath path, IDirectorySource directory )
