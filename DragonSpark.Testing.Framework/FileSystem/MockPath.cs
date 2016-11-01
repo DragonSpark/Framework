@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		readonly string directorySeparator;
 
 
-		public MockPath() : this( DirectorySource.Current.Get() ) {}
+		public MockPath() : this( DirectorySource.Default ) {}
 
 		[UsedImplicitly]
 		public MockPath(IDirectorySource directory)

@@ -10,13 +10,13 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			Path.DefaultImplementation.Implementation.Assign( Sources.Factory.Cache( () => new Mock<MockPath> { CallBase = true }.Object ) );
+			Path.Default.Configuration.Assign( Sources.Factory.Cache( () => new Mock<MockPath> { CallBase = true }.Object ) );
 
-			var implementation = Path.DefaultImplementation.Implementation.Get();
-			Assert.Same( Path.DefaultImplementation.Implementation.Get(), implementation );
+			var implementation = Path.Default.Configuration.Get();
+			Assert.Same( Path.Default.Configuration.Get(), implementation );
 			var mock = Mock.Get( (MockPath)implementation );
-			var instance = Path.Current.Get();
-			Assert.Same( Path.Current.Get(), instance  );
+			var instance = Path.Default.Get();
+			Assert.Same( Path.Default.Get(), instance  );
 			mock.Verify( i => i.GetRandomFileName(), Times.Never() );
 			Assert.NotEmpty( instance.GetRandomFileName() );
 			mock.Verify( i => i.GetRandomFileName(), Times.Once() );

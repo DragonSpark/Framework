@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Coercion;
 using DragonSpark.Commands;
-using DragonSpark.Sources;
 using DragonSpark.Specifications;
 using DragonSpark.Testing.Framework.Application.Setup;
 using JetBrains.Annotations;
@@ -24,7 +23,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 	public sealed class InitializeFileSystemAttribute : RegisterDirectoriesAttribute
 	{
-		public InitializeFileSystemAttribute() : this( DirectorySource.Current.GetValue() ) {}
+		public InitializeFileSystemAttribute() : this( DirectorySource.Default.Get() ) {}
 
 		[UsedImplicitly]
 		public InitializeFileSystemAttribute( string rootDirectory ) : base( rootDirectory ) {}

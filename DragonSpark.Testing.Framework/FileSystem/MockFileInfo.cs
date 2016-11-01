@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public MockFileInfo( string filePath ) : this( FileSystemRepository.Current.Get(), filePath ) {}
 
-		public MockFileInfo( IFileSystemRepository repository, string filePath ) : this( repository, Windows.FileSystem.Path.Current.Get(), File.Current.Get(), filePath ) {}
+		public MockFileInfo( IFileSystemRepository repository, string filePath ) : this( repository, Windows.FileSystem.Path.Default, File.Current.Get(), filePath ) {}
 
 		[UsedImplicitly]
 		public MockFileInfo( IFileSystemRepository repository, IPath path, IFile file, string filePath ) : this( repository, path, file, new ElementSource<IFileElement>( repository, filePath ) ) {}

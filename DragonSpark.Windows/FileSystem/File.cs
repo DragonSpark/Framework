@@ -11,9 +11,9 @@ namespace DragonSpark.Windows.FileSystem
 	public class File : IFile
 	{
 		public static IScope<IFile> Current { get; } = new Scope<IFile>( Sources.Factory.GlobalCache( () => new File() ) );
-
-		public static File Default { get; } = new File();
 		File() : this( DefaultImplementation.Implementation.Get() ) {}
+
+		/*public static File Default { get; } = new File();*/
 
 		readonly FileBase source;
 

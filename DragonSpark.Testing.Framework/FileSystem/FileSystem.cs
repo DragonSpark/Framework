@@ -54,7 +54,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class FileSystemRepository : AlteredCache<string, IFileSystemElement>, IFileSystemRepository
 	{
 		public static IScope<IFileSystemRepository> Current { get; } = new Scope<IFileSystemRepository>( Factory.GlobalCache( () => new FileSystemRepository() ) );
-		FileSystemRepository() : this( Path.Current.Get() ) {}
+		FileSystemRepository() : this( Path.Default ) {}
 
 		readonly IDictionary<string, IFileSystemElement> elements;
 		readonly ICache<string, DirectoryInfoBase> directories;

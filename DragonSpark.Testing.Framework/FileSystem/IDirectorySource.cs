@@ -10,17 +10,28 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		string PathRoot { get; }
 	}
 
-	public sealed class DirectorySource : SuppliedSource<string>, IDirectorySource
+	public sealed class DirectorySource : ScopedSource<IDirectorySource>, IDirectorySource
 	{
-		public static IScope<IDirectorySource> Current { get; } = new Scope<IDirectorySource>( Factory.GlobalCache( () => new DirectorySource() ) );
-		DirectorySource() : this( Defaults.PathRoot, Guid.NewGuid().ToString() ) {}
+		public static DirectorySource Default { get; } = new DirectorySource();
+		DirectorySource() : base( () => new Implementation() ) {}
 
-		[UsedImplicitly]
-		public DirectorySource( string pathRoot, string name ) : base( Path.Combine( pathRoot, name ) )
+		public new string Get() => base.Get().Get();
+
+		public void Assign( string item ) => base.Get().Assign( item );
+
+		public string PathRoot => base.Get().PathRoot;
+
+		public sealed class Implementation : SuppliedSource<string>, IDirectorySource
 		{
-			PathRoot = pathRoot;
-		}
+			public Implementation() : this( Defaults.PathRoot, Guid.NewGuid().ToString() ) {}
 
-		public string PathRoot { get; }
+			[UsedImplicitly]
+			public Implementation( string pathRoot, string name ) : base( Path.Combine( pathRoot, name ) )
+			{
+				PathRoot = pathRoot;
+			}
+
+			public string PathRoot { get; }
+		}
 	}
 }

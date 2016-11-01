@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Framework
 			DragonSpark.Application.Clock.Default.Configuration.Assign( Time.Default.GlobalCache() );
 			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
 
-			Path.DefaultImplementation.Implementation.Assign<MockPath>();
+			Path.Default.Configuration.Assign<MockPath>();
 			Directory.DefaultImplementation.Implementation.Assign<MockDirectory>();
 			DirectoryInfoFactory.Default.Configuration.Assign( DirectoryInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).AssignGlobal );
 			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.AssignGlobal );
@@ -28,7 +28,7 @@ namespace DragonSpark.Testing.Framework
 			FileInfoFactory.Default.Configuration.Assign( FileInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).AssignGlobal );
 			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.AssignGlobal );
 
-			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Current.Global );
+			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Default.GlobalCache() );
 		}
 	}
 }

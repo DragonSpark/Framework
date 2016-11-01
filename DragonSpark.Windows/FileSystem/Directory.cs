@@ -11,9 +11,8 @@ namespace DragonSpark.Windows.FileSystem
 	public class Directory : IDirectory
 	{
 		public static ISource<IDirectory> Current { get; } = new Scope<IDirectory>( Sources.Factory.GlobalCache( () => new Directory() ) );
-
-		public static Directory Default { get; } = new Directory();
 		Directory() : this( DefaultImplementation.Implementation.Get() ) {}
+		/*public static Directory Default { get; } = new Directory();*/
 
 		readonly DirectoryBase source;
 		readonly Func<DirectoryInfoBase, IDirectoryInfo> directorySource;

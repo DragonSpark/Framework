@@ -29,6 +29,8 @@ namespace DragonSpark.Composition
 			source()
 				.Where( Activation.Defaults.Instantiable.And( TypeAssignableSpecification.Defaults.Get( parameter ) ).IsSatisfiedBy )
 				.Introduce( parameter, tuple => new ConventionMapping( tuple.Item2, tuple.Item1 ) )
-				.FirstOrDefault( @where ).ImplementationType;
+				.FirstOrDefault( @where )
+				.NullIfDefault()?
+				.ImplementationType;
 	}
 }

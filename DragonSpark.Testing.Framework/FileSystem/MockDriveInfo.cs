@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	{
 		readonly IFileSystemRepository repository;
 
-		public MockDriveInfo( IFileSystemRepository repository, string name ) : this( repository, Path.Current.Get(), name ) {}
+		public MockDriveInfo( IFileSystemRepository repository, string name ) : this( repository, Path.Default, name ) {}
 
 		[UsedImplicitly]
 		public MockDriveInfo( IFileSystemRepository repository, IPath path, string name )

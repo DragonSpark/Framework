@@ -9,7 +9,7 @@ namespace DragonSpark.Composition
 	sealed class MappedConventionLocator : AlterationBase<Type>
 	{
 		public static MappedConventionLocator Default { get; } = new MappedConventionLocator();
-		MappedConventionLocator() : this( CanActivateSpecification.Default ) {}
+		MappedConventionLocator() : this( Activation.Defaults.Instantiable ) {}
 
 		readonly ISpecification<Type> specification;
 

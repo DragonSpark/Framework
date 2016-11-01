@@ -14,11 +14,11 @@ namespace DragonSpark.Windows.Legacy.Entity
 		readonly Func<IFileInfo, bool> lockedSource;
 		readonly Func<string> pathSource;
 		readonly Func<string, bool> validSource;
-		readonly Func<IPath> path;
+		readonly IPath path;
 
-		public BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy, Path.Current.Get ) {}
+		public BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy, Path.Default ) {}
 
-		public BackupDatabaseCommand( Func<IFileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource, Func<IPath> path )
+		public BackupDatabaseCommand( Func<IFileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource, IPath path )
 		{
 			this.lockedSource = lockedSource;
 			this.pathSource = pathSource;
@@ -41,7 +41,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 				var destination = directory.CreateSubdirectory( pathSource() );
 				foreach ( var file in files )
 				{
-					file.CopyTo( path().Combine( destination.FullName, file.Name ) );
+					file.CopyTo( path.Combine( destination.FullName, file.Name ) );
 				}
 			}
 

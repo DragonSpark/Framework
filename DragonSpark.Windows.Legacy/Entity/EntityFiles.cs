@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 
 		public static IFileInfo GetLog( IFileInfo database )
 		{
-			var path = Path.Current.Get();
+			var path = Path.Default.Get();
 			var result = FileInfoFactory.Default.Get( path.Combine( database.DirectoryName ?? string.Empty, string.Concat( path.GetFileNameWithoutExtension( database.Name ), "_log.ldf" ) ) );
 			return result;
 		}
