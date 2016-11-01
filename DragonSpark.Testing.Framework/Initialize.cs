@@ -2,7 +2,6 @@ using DragonSpark.Activation;
 using DragonSpark.Configuration;
 using DragonSpark.Diagnostics;
 using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.Windows.FileSystem;
@@ -21,11 +20,9 @@ namespace DragonSpark.Testing.Framework
 			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
 
 			Path.Default.Configuration.Assign<MockPath>();
-			Directory.DefaultImplementation.Implementation.Assign<MockDirectory>();
-			DirectoryInfoFactory.Default.Configuration.Assign( DirectoryInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).AssignGlobal );
+			Directory.Default.Configuration.Assign<MockDirectory>();
 			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.AssignGlobal );
-			File.DefaultImplementation.Implementation.Assign<MockFile>();
-			FileInfoFactory.Default.Configuration.Assign( FileInfoFactory.Default.Configuration.GetFactory().Apply( MappedPathAlteration.Current.GetValue ).AssignGlobal );
+			File.Default.Configuration.Assign<MockFile>();
 			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.AssignGlobal );
 
 			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Default.GlobalCache() );

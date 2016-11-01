@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Commands;
 using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
-using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
@@ -13,31 +11,28 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class ProvisionFromSystemFileCommand : CommandBase<FileInfo>
 	{
 		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = Scopes.Create( () => new ProvisionFromSystemFileCommand() );
-		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), MappedPaths.Current.Get(), PathTranslator.Current.GetValue, ByteReader.Default.Get ) {}
+		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), PathTranslator.Current.GetValue, ByteReader.Default.Get ) {}
 
-		readonly ICommand<FileSystemRegistration> apply;
+		readonly ICommand<FileSystemRegistration> register;
 		readonly Func<FileInfo, string> pathSource;
 		readonly Func<string, ImmutableArray<byte>> reader;
-		readonly IAssignableReferenceSource<string, string> mappings;
-
+		
 		[UsedImplicitly]
-		public ProvisionFromSystemFileCommand( ICommand<FileSystemRegistration> apply, IAssignableReferenceSource<string, string> mappings, Func<FileInfo, string> pathSource, Func<string, ImmutableArray<byte>> reader )
+		public ProvisionFromSystemFileCommand( ICommand<FileSystemRegistration> register, Func<FileInfo, string> pathSource, Func<string, ImmutableArray<byte>> reader )
 		{
-			this.apply = apply;
+			this.register = register;
 			this.pathSource = pathSource;
 			this.reader = reader;
-			this.mappings = mappings;
 		}
 
 		public override void Execute( FileInfo parameter )
 		{
 			var path = pathSource( parameter );
-			mappings.Set( parameter.FullName, path );
-			apply.Execute( new FileSystemRegistration( path, reader( parameter.FullName ) ) );
+			register.Execute( new FileSystemRegistration( path, reader( parameter.FullName ) ) );
 		}
 	}
 
-	public sealed class MappedPathAlteration : AppliedAlteration<string>
+	/*public sealed class MappedPathAlteration : AppliedAlteration<string>
 	{
 		public static IScope<MappedPathAlteration> Current { get; } = Scopes.Create( () => new MappedPathAlteration() );
 		MappedPathAlteration() : this( MappedPaths.Current.Get() ) {}
@@ -49,5 +44,5 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	sealed class MappedPaths : EqualityReferenceCache<string, string>
 	{
 		public static ISource<MappedPaths> Current { get; } = Scopes.Create( () => new MappedPaths() );
-	}
+	}*/
 }

@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// <param name="directoryPath">The directory path.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="repository"/> or <paramref name="directoryPath"/> is <see langref="null"/>.</exception>
 		public MockDirectoryInfo( IFileSystemRepository repository, string directoryPath )
-			: this( repository, Windows.FileSystem.Path.Default, Directory.Current.Get(), directoryPath ) {}
+			: this( repository, Windows.FileSystem.Path.Default, Directory.Default, directoryPath ) {}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MockDirectoryInfo"/> class.

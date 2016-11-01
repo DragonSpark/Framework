@@ -17,12 +17,12 @@ namespace DragonSpark.Windows.Testing.FileSystem
 			repository.Set( path, new FileElement( expected ) );
 
 
-			File.DefaultImplementation.Implementation.Assign( Sources.Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
-			var implementation = File.DefaultImplementation.Implementation.Get();
-			Assert.Same( File.DefaultImplementation.Implementation.Get(), implementation );
+			File.Default.Configuration.Assign( Sources.Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
+			var implementation = File.Default.Configuration.Get();
+			Assert.Same( File.Default.Configuration.Get(), implementation );
 			var mock = Mock.Get( (MockFile)implementation );
-			var instance = File.Current.Get();
-			Assert.Same( instance, File.Current.Get() );
+			var instance = File.Default.Get();
+			Assert.Same( instance, File.Default.Get() );
 			var pathToTest = $@".\{path}";
 			mock.Verify( i => i.ReadAllText( pathToTest ), Times.Never );
 

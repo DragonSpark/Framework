@@ -115,7 +115,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 				this.commands = commands;
 			}
 
-			class PreparedCommandFactory : ParameterizedSourceBase<PreparedCommandFactoryParameter, IDictionary<Type, ICommand<string>>>
+			sealed class PreparedCommandFactory : ParameterizedSourceBase<PreparedCommandFactoryParameter, IDictionary<Type, ICommand<string>>>
 			{
 				readonly static IEqualityComparer<Type> Comparer = new AssignableEqualityComparer( typeof(IDirectoryElement), typeof(IFileElement) );
 

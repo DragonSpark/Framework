@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 
 		readonly static byte[][] Data = { Resources.Blank, Resources.Blank_log };
 
-		public InstallDatabaseCommand() : this( Path.Default, Directory.Current.Get(), File.Current.Get() ) {}
+		public InstallDatabaseCommand() : this( Path.Default, Directory.Default, File.Default ) {}
 
 		public InstallDatabaseCommand( IPath path, IDirectory directory, IFile file )
 		{
