@@ -8,7 +8,7 @@ namespace DragonSpark.ComponentModel
 	public sealed class CurrentTimeValueProvider : DefaultValueProviderBase
 	{
 		public static CurrentTimeValueProvider Default { get; } = new CurrentTimeValueProvider();
-		CurrentTimeValueProvider() : this( Time.Default.Get ) {}
+		CurrentTimeValueProvider() : this( Clock.Default.Get ) {}
 
 		readonly Func<DateTimeOffset> currentTime;
 

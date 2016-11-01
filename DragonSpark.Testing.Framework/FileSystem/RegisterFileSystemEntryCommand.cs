@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public sealed class RegisterFileSystemEntryCommand : CommandBase<FileSystemRegistration>
 	{
-		public static IScope<RegisterFileSystemEntryCommand> Current { get; } = Scopes.CreateScope( () => new RegisterFileSystemEntryCommand() );
+		public static IScope<RegisterFileSystemEntryCommand> Current { get; } = Scopes.Create( () => new RegisterFileSystemEntryCommand() );
 		RegisterFileSystemEntryCommand() : this( FileSystemRepository.Current.Get() ) {}
 
 		readonly IFileSystemRepository repository;

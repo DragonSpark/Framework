@@ -8,7 +8,7 @@ namespace DragonSpark.TypeSystem.Metadata
 	public sealed class AttributeProviders : ParameterizedScope<IAttributeProvider>
 	{
 		public static IParameterizedSource<IAttributeProvider> Default { get; } = new AttributeProviders();
-		AttributeProviders() : base( new Factory().ToSourceDelegate().GlobalCache() ) {}
+		AttributeProviders() : base( new Factory().ToDelegate().GlobalCache() ) {}
 
 		sealed class Factory : ParameterConstructedCompositeFactory<IAttributeProvider>
 		{

@@ -10,8 +10,8 @@ namespace DragonSpark.Windows.Legacy.Markup
 {
 	public abstract class MarkupExtensionBase : MarkupExtension
 	{
-		readonly static Func<IServiceProvider, IMarkupProperty> Setter = MarkupValueSetterFactory.Default.ToSourceDelegate();
-		readonly static Func<Type, object> DesignTime = DesignTimeValueProvider.Default.ToSourceDelegate();
+		readonly static Func<IServiceProvider, IMarkupProperty> Setter = MarkupValueSetterFactory.Default.ToDelegate();
+		readonly static Func<Type, object> DesignTime = DesignTimeValueProvider.Default.ToDelegate();
 
 		readonly static ThreadLocal<DependencyObject> DependencyObject = new ThreadLocal<DependencyObject>( () => new DependencyObject() );
 

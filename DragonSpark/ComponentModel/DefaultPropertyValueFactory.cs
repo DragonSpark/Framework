@@ -10,7 +10,7 @@ namespace DragonSpark.ComponentModel
 	public sealed class DefaultPropertyValueFactory : ParameterizedSourceBase<PropertyInfo, object>
 	{
 		public static DefaultPropertyValueFactory Default { get; } = new DefaultPropertyValueFactory();
-		DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Default.ToSourceDelegate() ) {}
+		DefaultPropertyValueFactory() : this( HostedValueLocator<IDefaultValueProvider>.Default.ToDelegate() ) {}
 
 		readonly Func<MemberInfo, ImmutableArray<IDefaultValueProvider>> factory;
 

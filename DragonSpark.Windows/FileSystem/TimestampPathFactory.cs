@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.FileSystem
 	public sealed class TimestampPathFactory : SourceBase<string>
 	{
 		public static TimestampPathFactory Default { get; } = new TimestampPathFactory();
-		TimestampPathFactory() : this( Time.Default.Get ) {}
+		TimestampPathFactory() : this( Clock.Default.Get ) {}
 
 		readonly Func<DateTimeOffset> time;
 

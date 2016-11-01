@@ -16,7 +16,7 @@ namespace DragonSpark.Composition
 		readonly static Func<Type, IEnumerable<Type>> Expander = ExportTypeExpander.Default.Get;
 
 		public static ISource<ExportsProfile> Default { get; } = new Scope<ExportsProfile>( new ExportsProfileFactory().GlobalCache() );
-		ExportsProfileFactory() : this( ApplicationTypes.Default.ToDelegate(), AppliedExportLocator.Default.ToSourceDelegate() ) {}
+		ExportsProfileFactory() : this( ApplicationTypes.Default.ToDelegate(), AppliedExportLocator.Default.ToDelegate() ) {}
 
 		readonly Func<ImmutableArray<Type>> typesSource;
 		readonly Func<Type, AppliedExport> exportSource;

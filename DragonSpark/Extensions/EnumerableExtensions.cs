@@ -196,7 +196,7 @@ namespace DragonSpark.Extensions
 
 		static class Support<T>
 		{
-			public static Func<T, IPriorityAware> PriorityLocator { get; } = PriorityAwareLocator<T>.Default.ToSourceDelegate();
+			public static Func<T, IPriorityAware> PriorityLocator { get; } = PriorityAwareLocator<T>.Default.ToDelegate();
 		}
 	}
 }

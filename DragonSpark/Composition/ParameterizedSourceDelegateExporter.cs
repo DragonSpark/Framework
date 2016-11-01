@@ -7,7 +7,7 @@ namespace DragonSpark.Composition
 {
 	public sealed class ParameterizedSourceDelegateExporter : SourceDelegateExporterBase
 	{
-		readonly static Func<CompositionContract, CompositionContract> Resolver = SourceDelegateContractResolver.Parameterized.ToSourceDelegate();
+		readonly static Func<CompositionContract, CompositionContract> Resolver = SourceDelegateContractResolver.Parameterized.ToDelegate();
 		readonly static Func<ActivationParameter, object> DelegateSource = Factory.Implementation.Get;
 
 		public static ParameterizedSourceDelegateExporter Default { get; } = new ParameterizedSourceDelegateExporter();

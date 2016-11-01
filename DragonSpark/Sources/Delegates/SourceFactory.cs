@@ -37,7 +37,7 @@ namespace DragonSpark.Sources.Delegates
 
 		sealed class Factory : CompositeFactory<Type, Delegate>
 		{
-			readonly static ImmutableArray<Func<IActivator, IParameterizedSource<Type, Delegate>>> Delegates = SourceDelegates.Sources.Append( ServiceProvidedParameterizedSourceDelegates.Sources ).Select( source => source.ToSourceDelegate() ).ToImmutableArray();
+			readonly static ImmutableArray<Func<IActivator, IParameterizedSource<Type, Delegate>>> Delegates = SourceDelegates.Sources.Append( ServiceProvidedParameterizedSourceDelegates.Sources ).Select( source => source.ToDelegate() ).ToImmutableArray();
 			public Factory( IActivator source ) : base( Delegates.Introduce( source ).ToArray() ) {}
 		}
 	}

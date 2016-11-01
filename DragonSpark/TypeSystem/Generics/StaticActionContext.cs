@@ -9,7 +9,7 @@ namespace DragonSpark.TypeSystem.Generics
 {
 	public class StaticActionContext : ActionContextBase
 	{
-		readonly static Func<MethodInfo, Execute> ToDelegate = InvokeMethodDelegate<Execute>.Default.ToSourceDelegate();
+		readonly static Func<MethodInfo, Execute> ToDelegate = InvokeMethodDelegate<Execute>.Default.ToDelegate();
 		public StaticActionContext( IEnumerable<MethodInfo> methods ) : base( ToDelegate, methods ) {}
 	}
 }

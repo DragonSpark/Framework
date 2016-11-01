@@ -9,6 +9,6 @@ namespace DragonSpark.Diagnostics
 		public static IParameterizedSource<string, Func<MethodBase, IDisposable>> Default { get; } = new TimedOperationFactorySource().ToEqualityCache();
 		TimedOperationFactorySource() {}
 
-		public override Func<MethodBase, IDisposable> Get( string parameter ) => new TimedOperationFactory( parameter ).ToSourceDelegate();
+		public override Func<MethodBase, IDisposable> Get( string parameter ) => new TimedOperationFactory( parameter ).ToDelegate();
 	}
 }

@@ -10,7 +10,7 @@ namespace DragonSpark.Diagnostics
 	[ApplyAutoValidation]
 	public class PurgeLoggerMessageHistoryCommand : PurgeLoggerHistoryCommandBase<string>
 	{
-		readonly static Func<IEnumerable<LogEvent>, ImmutableArray<string>> MessageFactory = LogEventMessageFactory.Default.ToSourceDelegate();
+		readonly static Func<IEnumerable<LogEvent>, ImmutableArray<string>> MessageFactory = LogEventMessageFactory.Default.ToDelegate();
 
 		public static PurgeLoggerMessageHistoryCommand Default { get; } = new PurgeLoggerMessageHistoryCommand();
 		PurgeLoggerMessageHistoryCommand() : this( LoggingHistory.Default.Get ) {}

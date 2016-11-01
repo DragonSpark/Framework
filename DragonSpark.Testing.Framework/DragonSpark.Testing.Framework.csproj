@@ -51,7 +51,7 @@
     <Compile Include="Application\Setup\SingletonQuery.cs" />
     <Compile Include="Application\Setup\UserSettingsFilePath.cs" />
     <Compile Include="CurrentTestingMethod.cs" />
-    <Compile Include="CurrentTime.cs" />
+    <Compile Include="Time.cs" />
     <Compile Include="FileSystem\FileSystemRegistration.cs" />
     <Compile Include="FileSystem\InitializePartsAssemblyCommand.cs" />
     <Compile Include="FileSystem\AssemblyLoader.cs" />

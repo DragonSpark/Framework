@@ -122,7 +122,7 @@
     <Compile Include="ImmutableArrayTests.cs" />
     <Compile Include="Runtime\DelegateTests.cs" />
     <Compile Include="Runtime\PurgingCollectionTests.cs" />
-    <Compile Include="Sources\DelegatesTests.cs" />
+    <Compile Include="Activation\DelegatesTests.cs" />
     <Compile Include="Sources\ScopeTests.cs" />
     <Compile Include="Application\Setup\ActivatedServiceSourceTests.cs" />
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />

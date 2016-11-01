@@ -1,6 +1,5 @@
 using DragonSpark.Commands;
 using DragonSpark.Extensions;
-using DragonSpark.Runtime.Assignments;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using System;
@@ -18,42 +17,6 @@ namespace DragonSpark.Sources
 
 		public static T[] Unwrap<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
 
-		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
-		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
-		public static void Assign<TParameter, TResult>( this IParameterizedScope<TParameter, TResult> @this, Func<TParameter, TResult> instance ) => @this.Assign( instance.Self );
-		public static void Assign<T>( this IScopeAware<T> @this, T instance ) => @this.Assign( Factory.For( instance ) );
-		public static void Assign<T>( this IScopeAware<T?> @this, T instance ) where T : struct => @this.Assign( Factory.For( new T?( instance ) ) );
-
-		public static T WithInstance<T>( this IScope<T> @this, T instance )
-		{
-			@this.Assign( instance );
-			return @this.Get();
-		}
-
-		public static T WithFactory<T>( this IScope<T> @this, Func<T> factory )
-		{
-			@this.Assign( factory );
-			return @this.Get();
-		}
-
-		/*public static T ScopedWithDefault<T>( this T @this ) where T : IScopeAware => @this.ScopedWith( ExecutionContext.Default );*/
-
-		public static T ScopedWith<T>( this T @this, ISource scope ) where T : IScopeAware
-		{
-			@this.Assign( scope );
-			return @this;
-		}
-
-		// public static IRunCommand Configured<T>( this IAssignable<Func<T>> @this, ISource<T> source ) => @this.Configured( source.ToDelegate() );
-		public static IRunCommand ToCommand<T>( this IAssignable<Func<T>> @this, T instance ) => @this.ToCommand( Factory.For( instance ) );
-		public static IRunCommand ToCommand<T>( this IAssignable<Func<T>> @this, Func<T> factory ) => new AssignCommand<Func<T>>( @this ).ToCommand( factory );
-		// public static IRunCommand Configured<T>( this IAssignable<Func<object, T>> @this, Func<object, T> factory ) => new AssignCommand<Func<object, T>>( @this ).Fixed( factory );
-
-		public static void Assign<T>( this IAssignable<Func<object, T>> @this ) where T : class, new() => @this.Assign( o => new T() );
-
-		/*public static Func<TParameter, TResult> Local<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => @this.GetCurrentDelegate();
-		public static Func<TParameter, TResult> Global<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, object _ ) => @this.GetCurrentDelegate();*/
-
 		public static TResult GetValue<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, TParameter parameter ) => @this.Get().Get( parameter );
 		public static Func<TParameter, TResult> GetValueDelegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => LocalDelegates<TParameter, TResult>.Default.Get( @this );
 		sealed class LocalDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
@@ -64,29 +27,6 @@ namespace DragonSpark.Sources
 
 		public static object GetValue( this ISource<ISource> @this ) => @this.Get().Get();
 		public static T GetValue<T>( this ISource<ISource<T>> @this ) => @this.Get().Get();
-		// public static T GetValue<T>( this ISource<ISource<T?>> @this ) where T : struct => @this.Get().GetValue();
-		public static T GetValue<T>( this ISource<T?> @this ) where T : struct => @this.Get().GetValueOrDefault();
-		/*public static Func<Func<object>> LocalDelegate( this ISource<ISource> @this ) => @this.ToDelegate().LocalDelegate();
-		public static Func<Func<object>> LocalDelegate( this Func<ISource> @this ) => Delegates.Default.Get( @this );
-		sealed class Delegates : Cache<Func<ISource>, Func<Func<object>>>
-		{
-			public static Delegates Default { get; } = new Delegates();
-			Delegates() : base( source => source.Self ) {}
-		}*/
-		/*public static Func<Func<TParameter, TResult>> Local<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
-			=> @this.GetCurrentDelegate().Wrap<TParameter, TResult>().Self;*/
-
-		public static T Global<T>( this ISource<ISource<T>> @this, object _ ) => @this.GetValue();
-
-		public static Func<object, Func<TParameter,TResult>> Global<TParameter, TResult>( this ISource<ISource<TResult>> @this ) 
-			=> @this.GetValueDelegate().Wrap<TParameter, TResult>().Wrap();
-
-		public static Func<T> GetValueDelegate<T>( this ISource<ISource<T>> @this ) => Delegates<T>.Default.Get( @this );
-		sealed class Delegates<T> : Cache<ISource<ISource<T>>, Func<T>>
-		{
-			public static Delegates<T> Default { get; } = new Delegates<T>();
-			Delegates() : base( source => source.GetValue ) {}
-		}
 
 		public static Func<T> ToDelegate<T>( this ISource<T> @this ) => ParameterizedSourceDelegates<T>.Default.Get( @this );
 		sealed class ParameterizedSourceDelegates<T> : Cache<ISource<T>, Func<T>>
@@ -95,7 +35,7 @@ namespace DragonSpark.Sources
 			ParameterizedSourceDelegates() : base( factory => factory.Get ) {}
 		}
 
-		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToSourceDelegate().Timed();
+		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().Timed();
 		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this Func<TParameter, TResult> @this ) => Timed( @this, Defaults.ParameterizedTimerTemplate );
 		public static Func<TParameter, TResult> Timed<TParameter, TResult>( this Func<TParameter, TResult> @this, string template ) => new TimedDelegatedSource<TParameter, TResult>( @this, template ).Get;
 
@@ -112,27 +52,7 @@ namespace DragonSpark.Sources
 			Commands() : base( x => new FactoryCommand<T>( x ) ) {}
 		}
 
-		/*public static ISource<T> Fixed<T>( this ISource<T> @this ) => SuppliedSources<T>.Default.Get( @this );
-		sealed class SuppliedSources<T> : Cache<ISource<T>, ISource<T>>
-		{
-			public static SuppliedSources<T> Default { get; } = new SuppliedSources<T>();
-			SuppliedSources() : base( source => new SuppliedDeferredSource<T>( source.Get ) ) {}
-		}*/
-
 		public static ImmutableArray<T> GetImmutable<T>( this ISource<IEnumerable<T>> @this ) => @this.Get().ToImmutableArray();
 		public static IEnumerable<T> GetEnumerable<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
-		/*sealed class EnumerableSource<T> : SourceBase<IEnumerable<T>>
-		{
-			public static IParameterizedSource<ISource<ImmutableArray<T>>, Func<IEnumerable<T>>> Sources { get; } = new Cache<ISource<ImmutableArray<T>>, Func<IEnumerable<T>>>( s => new EnumerableSource<T>( s ).Get );
-
-			readonly ISource<ImmutableArray<T>> source;
-
-			EnumerableSource( ISource<ImmutableArray<T>> source )
-			{
-				this.source = source;
-			}
-
-			public override IEnumerable<T> Get() => source.Get().AsEnumerable();
-		}*/
 	}
 }

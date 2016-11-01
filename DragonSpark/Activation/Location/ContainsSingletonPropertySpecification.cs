@@ -8,6 +8,6 @@ namespace DragonSpark.Activation.Location
 	public sealed class ContainsSingletonPropertySpecification : DelegatedAssignedSpecification<Type, PropertyInfo>
 	{
 		public static ContainsSingletonPropertySpecification Default { get; } = new ContainsSingletonPropertySpecification();
-		ContainsSingletonPropertySpecification() : base( SingletonProperties.Default.ToSourceDelegate() ) {}
+		ContainsSingletonPropertySpecification() : base( SingletonProperties.Default.ToDelegate() ) {}
 	}
 }

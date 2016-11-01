@@ -11,7 +11,7 @@ namespace DragonSpark.Diagnostics
 	public sealed class Logger : ConfiguringFactory<object, ILogger>
 	{
 		public static IParameterizedSource<object, ILogger> Default { get; } = new Logger().ToCache();
-		Logger() : base( LoggingConfiguration.Default.ToCache().ToSourceDelegate(), Command.Implementation.ToDelegate() ) {}
+		Logger() : base( LoggingConfiguration.Default.ToCache().ToDelegate(), Command.Implementation.ToDelegate() ) {}
 		
 		[ApplyAutoValidation, ApplySpecification( typeof(OncePerScopeSpecification<ILogger>) )]
 		sealed class Command : CommandBase<ILogger>

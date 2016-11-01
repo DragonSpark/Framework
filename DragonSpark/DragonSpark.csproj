@@ -45,7 +45,6 @@
     <Compile Include="Application\ApplicationPartsFactory.cs" />
     <Compile Include="Application\FatalApplicationException.cs" />
     <Compile Include="Application\Setup\ReadKeyCommand.cs" />
-    <Compile Include="Application\SuppliedCurrentTime.cs" />
     <Compile Include="Aspects\AdapterConstructorSource.cs" />
     <Compile Include="Aspects\AdapterFactorySource.cs" />
     <Compile Include="Aspects\AdapterLocatorBase.cs" />
@@ -339,7 +338,6 @@
     <Compile Include="Runtime\Assignments\CollectionAssign.cs" />
     <Compile Include="Runtime\CollectionBase.cs" />
     <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Application\CurrentTimeConfiguration.cs" />
     <Compile Include="Runtime\DataContractSerializers.cs" />
     <Compile Include="Commands\DelegatedCommand.cs" />
     <Compile Include="Runtime\DelegatedDisposable.cs" />
@@ -660,7 +658,7 @@
     <Compile Include="Specifications\AnySpecification.cs" />
     <Compile Include="Application\ApplicationAssemblyLocator.cs" />
     <Compile Include="Application\ApplicationAttribute.cs" />
-    <Compile Include="Application\CurrentTime.cs" />
+    <Compile Include="Application\Clock.cs" />
     <Compile Include="Specifications\EqualitySpecification.cs" />
     <Compile Include="Specifications\ContextAwareSpecification.cs" />
     <Compile Include="Specifications\GuardedSpecificationBase.cs" />
@@ -706,7 +704,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Application\ICurrentTime.cs" />
+    <Compile Include="Application\IClock.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="Diagnostics\PurgeLoggerMessageHistoryCommand.cs" />
     <Compile Include="Specifications\TypeAssignableSpecification.cs" />

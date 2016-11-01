@@ -9,7 +9,7 @@ namespace DragonSpark.Diagnostics
 {
 	public sealed class LogEventMessageFactory : ParameterizedSourceBase<IEnumerable<LogEvent>, ImmutableArray<string>>
 	{
-		readonly static Func<LogEvent, string> Text = LogEventTextFactory.Default.ToSourceDelegate();
+		readonly static Func<LogEvent, string> Text = LogEventTextFactory.Default.ToDelegate();
 		public static LogEventMessageFactory Default { get; } = new LogEventMessageFactory();
 		LogEventMessageFactory() {}
 

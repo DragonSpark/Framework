@@ -6,7 +6,7 @@ using Xunit;
 
 // ReSharper disable AccessToModifiedClosure
 
-namespace DragonSpark.Testing.Sources
+namespace DragonSpark.Testing.Activation
 {
 	public class DelegatesTests
 	{

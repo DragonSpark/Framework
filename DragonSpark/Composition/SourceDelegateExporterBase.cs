@@ -16,7 +16,7 @@ namespace DragonSpark.Composition
 	public abstract class SourceDelegateExporterBase : ExportDescriptorProviderBase
 	{
 		readonly static IStackSource<CompositeActivatorParameters> Stack = new AmbientStack<CompositeActivatorParameters>();
-		readonly static Func<Type, Type> Locator = SourceTypes.Default.ToSourceDelegate();
+		readonly static Func<Type, Type> Locator = SourceTypes.Default.ToDelegate();
 		readonly static Func<Type, Type> Parameters = ParameterTypes.Default.ToDelegate();
 
 		readonly ICache<LifetimeContext, object> cache = new Cache<LifetimeContext, object>();
@@ -116,7 +116,7 @@ namespace DragonSpark.Composition
 			
 			sealed class Specification : DelegatedAssignedSpecification<Type, CompositeActivator>
 			{
-				public Specification( IParameterizedSource<Type, CompositeActivator> source ) : base( source.ToSourceDelegate() ) {}
+				public Specification( IParameterizedSource<Type, CompositeActivator> source ) : base( source.ToDelegate() ) {}
 			}
 
 			sealed class Inner : ParameterizedSourceBase<Type, object>

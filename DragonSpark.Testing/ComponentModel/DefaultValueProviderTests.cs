@@ -31,8 +31,8 @@ namespace DragonSpark.Testing.ComponentModel
 			Assert.NotEqual( DateTime.MinValue, target.CurrentDateTime );
 			Assert.NotEqual( DateTimeOffset.MinValue, target.CurrentDateTimeOffset );
 
-			Assert.Equal( CurrentTime.Default.Get().DateTime, target.CurrentDateTime );
-			Assert.Equal( CurrentTime.Default.Get(), target.CurrentDateTimeOffset );
+			Assert.Equal( Time.Default.Get().DateTime, target.CurrentDateTime );
+			Assert.Equal( Time.Default.Get(), target.CurrentDateTimeOffset );
 
 			Assert.NotNull( target.Activated );
 

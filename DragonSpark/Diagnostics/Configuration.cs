@@ -7,6 +7,6 @@ namespace DragonSpark.Diagnostics
 {
 	public static class Configuration
 	{
-		public static IParameterizedScope<string, Func<MethodBase, IDisposable>> TimedOperationFactory { get; } = new ParameterizedScope<string, Func<MethodBase, IDisposable>>( TimedOperationFactorySource.Default.ToSourceDelegate().GlobalCache() );
+		public static IParameterizedScope<string, Func<MethodBase, IDisposable>> TimedOperationFactory { get; } = new ParameterizedScope<string, Func<MethodBase, IDisposable>>( TimedOperationFactorySource.Default.ToDelegate().GlobalCache() );
 	}
 }

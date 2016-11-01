@@ -9,6 +9,6 @@ namespace DragonSpark.Activation.Location
 		/*public static ISource<SingletonDelegates> Current { get; } = new Scope<SingletonDelegates>( Factory.GlobalCache( () => new SingletonDelegates() ) );*/
 		public static SingletonDelegates Default { get; } = new SingletonDelegates();
 		SingletonDelegates() : this( SingletonProperties.Default ) {}
-		public SingletonDelegates( IParameterizedSource<Type, PropertyInfo> source ) : base( source.ToSourceDelegate(), SingletonPropertyDelegates.Default.Get ) {}
+		public SingletonDelegates( IParameterizedSource<Type, PropertyInfo> source ) : base( source.ToDelegate(), SingletonPropertyDelegates.Default.Get ) {}
 	}
 }

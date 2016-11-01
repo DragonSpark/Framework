@@ -7,7 +7,7 @@ namespace DragonSpark.Windows.FileSystem
 {
 	public class Path : IPath
 	{
-		public static IScope<IPath> Current { get; } = new Scope<IPath>( Sources.Factory.GlobalCache( () => new Path() ) );
+		public static IScope<IPath> Current { get; } = Scopes.Create<IPath>( () => new Path() );
 		Path() : this( DefaultImplementation.Implementation.Get() ) {}
 
 		readonly PathBase source;

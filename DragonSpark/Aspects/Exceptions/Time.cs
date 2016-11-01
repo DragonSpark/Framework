@@ -8,6 +8,6 @@ namespace DragonSpark.Aspects.Exceptions
 	{
 		public static Func<int, TimeSpan> None { get; } = i => TimeSpan.Zero;
 
-		public static Func<int, TimeSpan> Default { get; } = LinearRetryTime.Default.ToSourceDelegate();
+		public static Func<int, TimeSpan> Default { get; } = LinearRetryTime.Default.ToDelegate();
 	}
 }

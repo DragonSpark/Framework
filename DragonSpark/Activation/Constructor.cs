@@ -20,7 +20,7 @@ namespace DragonSpark.Activation
 		readonly ISpecification<ConstructTypeRequest> specification;
 		readonly IParameterizedSource<ConstructTypeRequest, object> source;
 
-		Constructor( ISpecification<ConstructTypeRequest> specification, IParameterizedSource<ConstructTypeRequest, object> source ) : base( specification.Apply( ConstructorCoercer.Default ), source.Apply( ConstructorCoercer.Default ).ToSourceDelegate() )
+		Constructor( ISpecification<ConstructTypeRequest> specification, IParameterizedSource<ConstructTypeRequest, object> source ) : base( specification.Apply( ConstructorCoercer.Default ), source.Apply( ConstructorCoercer.Default ).ToDelegate() )
 		{
 			this.specification = specification;
 			this.source = source;

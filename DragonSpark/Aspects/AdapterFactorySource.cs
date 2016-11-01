@@ -14,7 +14,7 @@ namespace DragonSpark.Aspects
 		readonly Func<Type, Func<object, T>> factorySource;
 
 		public AdapterFactorySource( Type implementedType, Type adapterType ) : this( implementedType, implementedType, adapterType ) {}
-		public AdapterFactorySource( Type parameterType, Type implementedType, Type adapterType ) : this( new AdapterConstructorSource<T>( parameterType, implementedType, adapterType ).ToCache().ToSourceDelegate() ) {}
+		public AdapterFactorySource( Type parameterType, Type implementedType, Type adapterType ) : this( new AdapterConstructorSource<T>( parameterType, implementedType, adapterType ).ToCache().ToDelegate() ) {}
 
 		AdapterFactorySource( Func<Type, Func<object, T>> factorySource )
 		{

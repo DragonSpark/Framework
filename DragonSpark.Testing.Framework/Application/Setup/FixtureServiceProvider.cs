@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 {
 	sealed class FixtureServiceProvider : DecoratedActivator
 	{
-		public FixtureServiceProvider( IFixture fixture ) : base( new Specification( fixture ), new Inner( fixture ).ToSourceDelegate() ) {}
+		public FixtureServiceProvider( IFixture fixture ) : base( new Specification( fixture ), new Inner( fixture ).ToDelegate() ) {}
 
 		sealed class Inner : ParameterizedSourceBase<Type, object>
 		{

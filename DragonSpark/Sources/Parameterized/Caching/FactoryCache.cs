@@ -20,7 +20,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		{
 			IParameterizedSource<TInstance, TValue> source = new DelegatedParameterizedSource<TInstance, TValue>( Create );
 			var factory = specification == DefaultSpecification ? source : source.Apply( specification );
-			configuration.Configuration.Assign( factory.Global );
+			configuration.Configuration.Assign( factory.AssignGlobal );
 		}
 
 		protected abstract TValue Create( TInstance parameter );

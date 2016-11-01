@@ -8,12 +8,13 @@ namespace DragonSpark.Configuration
 		IScope<T> Configuration { get; }
 	}
 
-	public class ConfigurableSource<T> : DelegatedSource<T>, IConfigurableSource<T>
+	public class ConfigurableSource<T> : ScopedSource<T>, IConfigurableSource<T>
 	{
-		public ConfigurableSource( Func<T> get ) : this( new Scope<T>( get ) ) {}
-		public ConfigurableSource( IScope<T> configuration ) : base( configuration.Get )
+		public ConfigurableSource() : this( () => default(T) ) {}
+		public ConfigurableSource( Func<T> factory ) : this( factory.Create() ) {}
+		public ConfigurableSource( IScope<T> scope ) : base( scope )
 		{
-			Configuration = configuration;
+			Configuration = scope;
 		}
 
 		public IScope<T> Configuration { get; }

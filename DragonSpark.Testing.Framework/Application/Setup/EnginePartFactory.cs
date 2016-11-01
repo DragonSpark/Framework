@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 		protected EnginePartFactory()
 		{
-			toDelegate = this.ToSourceDelegate();
+			toDelegate = this.ToDelegate();
 		}
 
 		public ISpecimenBuilder Transform( ISpecimenBuilder builder ) => builder.AsTo( toDelegate );

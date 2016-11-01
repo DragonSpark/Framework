@@ -29,7 +29,7 @@ namespace DragonSpark.Activation.Location
 				var result = new ParameterizedScope<Type, object>( new Source( parameter ).GlobalCache() )
 					.Apply( ContainsSingletonPropertySpecification.Default )
 					.Apply( Conventions )
-					.ToSourceDelegate();
+					.ToDelegate();
 				return result;
 			}
 

@@ -9,7 +9,7 @@ namespace DragonSpark.TypeSystem.Generics
 {
 	public static class MethodContextExtensions
 	{
-		readonly static Func<IEnumerable<object>, ImmutableArray<Type>> ToType = ObjectTypeFactory.Default.ToSourceDelegate();
+		readonly static Func<IEnumerable<object>, ImmutableArray<Type>> ToType = ObjectTypeFactory.Default.ToDelegate();
 
 		// public static TResult Invoke<TParameter, TResult>( this Invoke @this, TParameter argument ) => (TResult)@this.Invoke( argument );
 

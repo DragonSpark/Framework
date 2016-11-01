@@ -29,19 +29,19 @@ namespace DragonSpark.Testing.Composition
 		[Fact]
 		public void OrderOfSelection()
 		{
-			new[] { typeof(ICurrentTime), typeof(CurrentTime), typeof(DragonSpark.Application.CurrentTime) }.AsApplicationParts();
+			new[] { typeof(IClock), typeof(Clock), typeof(DragonSpark.Application.Clock) }.AsApplicationParts();
 
-			Assert.Equal( typeof(CurrentTime), ApplicationTypes.Default.Get().First() );
+			Assert.Equal( typeof(Clock), ApplicationTypes.Default.Get().First() );
 
-			var handler = CompositionHostFactory.Default.Get().GetExport<ICurrentTime>();
-			Assert.IsType<CurrentTime>( handler );
+			var handler = CompositionHostFactory.Default.Get().GetExport<IClock>();
+			Assert.IsType<Clock>( handler );
 		}
 
-		public sealed class CurrentTime : SourceBase<DateTimeOffset>, ICurrentTime
+		public sealed class Clock : SourceBase<DateTimeOffset>, IClock
 		{
 			[UsedImplicitly]
-			public static ICurrentTime Default { get; } = new CurrentTime();
-			CurrentTime() {}
+			public static IClock Default { get; } = new Clock();
+			Clock() {}
 
 			public override DateTimeOffset Get() => new DateTimeOffset();
 		}

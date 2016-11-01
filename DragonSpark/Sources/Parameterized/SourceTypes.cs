@@ -16,7 +16,7 @@ namespace DragonSpark.Sources.Parameterized
 		readonly static string[] Suffixes = { "Source", "Factory" };
 		readonly static Func<Type, KeyValuePair<Type, Type>?> Selector = Mappings.Implementation.Get;
 
-		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( Factory.GlobalCache( () => new SourceTypes().ToSourceDelegate() ) );
+		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( Factory.GlobalCache( () => new SourceTypes().ToDelegate() ) );
 		SourceTypes() : this( ApplicationTypes.Default.Get().SelectAssigned( Selector ).ToImmutableDictionary() ) {}
 
 		readonly IDictionary<Type, Type> mappings;
@@ -44,7 +44,7 @@ namespace DragonSpark.Sources.Parameterized
 
 		sealed class Mappings : ParameterizedSourceBase<Type, KeyValuePair<Type, Type>?>
 		{
-			readonly static Func<Type, Type> Results = ResultTypes.Default.ToSourceDelegate();
+			readonly static Func<Type, Type> Results = ResultTypes.Default.ToDelegate();
 			readonly static ISpecification<Type> Specification = Activation.Defaults.Instantiable.And( Defaults.KnownSourcesSpecification, ContainsExportSpecification.Default, new DelegatedSpecification<Type>( type => Results( type ) != typeof(object) ) );
 
 			public static IParameterizedSource<Type, KeyValuePair<Type, Type>?> Implementation { get; } = new Mappings().Apply( Specification );

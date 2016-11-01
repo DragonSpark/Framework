@@ -1,9 +1,16 @@
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Sources
 {
+	public abstract class ScopedSource<T> : DelegatedSource<T>
+	{
+		protected ScopedSource( Func<T> factory ) : this( factory.Create() ) {}
+		protected ScopedSource( IScope<T> scope ) : base( scope.ToDelegate() ) {}
+	}
+
 	public class Scope<T> : SourceBase<T>, IScope<T>//, IDisposable
 	{
 		readonly ICache<Func<object, T>> factories = new Cache<Func<object, T>>();
@@ -16,6 +23,7 @@ namespace DragonSpark.Sources
 
 		public Scope( Func<object, T> defaultFactory ) : this( new ScopeContext(), defaultFactory ) {}
 
+		[UsedImplicitly]
 		protected Scope( IAssignableSource<object> scope, Func<object, T> defaultFactory )
 		{
 			this.scope = scope;

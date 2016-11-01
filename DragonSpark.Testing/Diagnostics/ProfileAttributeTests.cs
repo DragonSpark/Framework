@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Diagnostics
 		public void AssignedSource()
 		{
 			var configuration = DragonSpark.Diagnostics.Configuration.TimedOperationFactory;
-			configuration.ToCommand( TimedOperationFactory.Default.ToEqualityCache().ToSourceDelegate().GlobalCache() ).Execute();
+			configuration.ToCommand( TimedOperationFactory.Default.ToEqualityCache().ToDelegate().GlobalCache() ).Execute();
 
 			var history = LoggingHistory.Default.Get();
 			Assert.Empty( history.Events );
