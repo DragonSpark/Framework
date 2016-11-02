@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public sealed class DomainAssemblySource : FactoryCache<AppDomain, ImmutableArray<Assembly>>
+	public sealed class DomainAssemblySource : CacheWithImplementedFactoryBase<AppDomain, ImmutableArray<Assembly>>
 	{
 		public static DomainAssemblySource Default { get; } = new DomainAssemblySource();
 		DomainAssemblySource() {}

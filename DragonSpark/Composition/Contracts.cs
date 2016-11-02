@@ -4,7 +4,7 @@ using System.Composition.Hosting.Core;
 
 namespace DragonSpark.Composition
 {
-	public sealed class Contracts : FactoryCache<CompositionContract, string>
+	public sealed class Contracts : CacheWithImplementedFactoryBase<CompositionContract, string>
 	{
 		public static Contracts Default { get; } = new Contracts();
 		Contracts() {}

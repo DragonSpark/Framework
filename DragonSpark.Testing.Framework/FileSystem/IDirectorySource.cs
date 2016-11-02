@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.IO;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		string PathRoot { get; }
 	}
 
-	public sealed class DirectorySource : ScopedSource<IDirectorySource>, IDirectorySource
+	public sealed class DirectorySource : ScopedSourceBase<IDirectorySource>, IDirectorySource
 	{
 		public static DirectorySource Default { get; } = new DirectorySource();
 		DirectorySource() : base( () => new Implementation() ) {}

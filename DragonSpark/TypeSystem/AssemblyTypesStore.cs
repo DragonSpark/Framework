@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public sealed class AssemblyTypesStore : FactoryCache<Assembly, ImmutableArray<Type>>
+	public sealed class AssemblyTypesStore : CacheWithImplementedFactoryBase<Assembly, ImmutableArray<Type>>
 	{
 		readonly static Func<Type, bool> Specification = ApplicationTypeSpecification.Default.ToSpecificationDelegate();
 

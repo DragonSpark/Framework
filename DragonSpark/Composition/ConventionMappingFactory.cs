@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Composition
 {
-	public sealed class ConventionMappingFactory : FactoryCache<Type, ConventionMapping?>
+	public sealed class ConventionMappingFactory : CacheWithImplementedFactoryBase<Type, ConventionMapping?>
 	{
 		public static IParameterizedSource<Type, ConventionMapping?> Default { get; } = new ConventionMappingFactory();
 		ConventionMappingFactory() {}

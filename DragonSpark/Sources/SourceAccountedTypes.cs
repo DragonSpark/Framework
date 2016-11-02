@@ -1,16 +1,16 @@
 ﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources
 {
-	public sealed class SourceAccountedTypes : FactoryCache<Type, ImmutableArray<Type>>
+	public sealed class SourceAccountedTypes : CacheWithImplementedFactoryBase<Type, ImmutableArray<Type>>
 	{
 		public static SourceAccountedTypes Default { get; } = new SourceAccountedTypes();
 		SourceAccountedTypes() {}

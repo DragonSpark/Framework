@@ -10,7 +10,7 @@ namespace DragonSpark.Runtime
 		public static Delegates Default { get; } = new Delegates();
 		Delegates() : base( o => new Cache( o ) ) {}
 
-		sealed class Cache : FactoryCache<MethodInfo, Delegate>
+		sealed class Cache : CacheWithImplementedFactoryBase<MethodInfo, Delegate>
 		{
 			readonly object instance;
 

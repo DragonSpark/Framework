@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Application.Setup
 {
-	sealed class MethodTypes : FactoryCache<ImmutableArray<Type>>, ITypeSource
+	sealed class MethodTypes : CacheWithImplementedFactoryBase<ImmutableArray<Type>>, ITypeSource
 	{
 		readonly static Func<object, ImmutableArray<Func<MethodBase, ImmutableArray<Type>>>> Locator = HostedValueLocator<Func<MethodBase, ImmutableArray<Type>>>.Default.Get;
 

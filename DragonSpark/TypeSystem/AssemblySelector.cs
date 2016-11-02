@@ -1,5 +1,4 @@
 using DragonSpark.Sources.Parameterized;
-using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Immutable;
@@ -24,17 +23,5 @@ namespace DragonSpark.TypeSystem
 		}
 
 		public override ImmutableArray<Assembly> Get( string parameter ) => locator( parameter ).Select( loader ).ToImmutableArray();
-	}
-
-	public sealed class AssemblyResourcePathSelector : ConfigurableParameterizedSource<string, ImmutableArray<string>>
-	{
-		public static AssemblyResourcePathSelector Default { get; } = new AssemblyResourcePathSelector();
-		AssemblyResourcePathSelector() : base( path => Items<string>.Immutable ) {}
-	}
-
-	public sealed class AssemblyLoader : ConfigurableParameterizedSource<string, Assembly>
-	{
-		public static AssemblyLoader Default { get; } = new AssemblyLoader();
-		AssemblyLoader() {}
 	}
 }

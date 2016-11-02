@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public sealed class AssemblyInformationSource : FactoryCache<Assembly, AssemblyInformation>
+	public sealed class AssemblyInformationSource : CacheWithImplementedFactoryBase<Assembly, AssemblyInformation>
 	{
 		[Export]
 		public static IParameterizedSource<Assembly, AssemblyInformation> Default { get; } = new AssemblyInformationSource();

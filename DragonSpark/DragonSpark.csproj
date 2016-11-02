@@ -262,7 +262,7 @@
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
-    <Compile Include="Sources\Scopes\ScopedSource.cs" />
+    <Compile Include="Sources\Scopes\ScopedSourceBase.cs" />
     <Compile Include="Sources\SourceAccountedTypes.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
@@ -421,8 +421,11 @@
     <Compile Include="Sources\TimedDelegatedSource.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />
     <Compile Include="TypeSystem\AllParts.cs" />
+    <Compile Include="TypeSystem\AssemblyLoader.cs" />
+    <Compile Include="TypeSystem\AssemblyResourcePathSelector.cs" />
     <Compile Include="TypeSystem\AssignableEqualityComparer.cs" />
     <Compile Include="TypeSystem\Default.cs" />
+    <Compile Include="TypeSystem\Defaults.cs" />
     <Compile Include="TypeSystem\Extensions.cs" />
     <Compile Include="TypeSystem\Generics\ActionContextBase.cs" />
     <Compile Include="Application\ApplicationAssembly.cs" />
@@ -598,7 +601,7 @@
     <Compile Include="Sources\Parameterized\Caching\DecoratedCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\EqualityReference.cs" />
     <Compile Include="Sources\Parameterized\Caching\EqualityReferenceCache.cs" />
-    <Compile Include="Sources\Parameterized\Caching\FactoryCache.cs" />
+    <Compile Include="Sources\Parameterized\Caching\CacheWithImplementedFactoryBase.cs" />
     <Compile Include="Sources\Parameterized\Caching\IAtomicCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\ICache.cs" />
     <Compile Include="Sources\Parameterized\Caching\ICacheRegistry.cs" />

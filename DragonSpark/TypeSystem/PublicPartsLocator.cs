@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public sealed class PublicPartsLocator : ScopedParameterizedSource<Assembly, ImmutableArray<Type>>
+	public sealed class PublicPartsLocator : ScopedParameterizedSourceBase<Assembly, ImmutableArray<Type>>
 	{
 		readonly static Func<Assembly, IEnumerable<Type>> Factory = AssemblyTypes.Public.GetEnumerable;
 

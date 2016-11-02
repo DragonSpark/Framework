@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.Activation.Location
 {
-	public class SingletonProperties : FactoryCache<Type, PropertyInfo>
+	public class SingletonProperties : CacheWithImplementedFactoryBase<Type, PropertyInfo>
 	{
 		public static IParameterizedSource<Type, PropertyInfo> Default { get; } = new SingletonProperties();
 		SingletonProperties() : this( Defaults.SourcedSingleton ) {}

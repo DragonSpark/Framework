@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.Aspects.Build
 {
-	public sealed class MethodStore : FactoryCache<Type, MethodInfo>, IMethodStore
+	public sealed class MethodStore : CacheWithImplementedFactoryBase<Type, MethodInfo>, IMethodStore
 	{
 		readonly string methodName;
 

@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace DragonSpark.Composition
 {
-	sealed class AppliedExportLocator : FactoryCache<Type, AppliedExport>
+	sealed class AppliedExportLocator : CacheWithImplementedFactoryBase<Type, AppliedExport>
 	{
 		readonly Func<Type, PropertyInfo> propertySource;
 		public static IParameterizedSource<Type, AppliedExport> Default { get; } = new AppliedExportLocator();

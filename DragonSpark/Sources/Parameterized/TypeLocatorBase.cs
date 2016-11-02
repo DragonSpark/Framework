@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.Sources.Parameterized
 {
-	public abstract class TypeLocatorBase : FactoryCache<Type, Type>
+	public abstract class TypeLocatorBase : CacheWithImplementedFactoryBase<Type, Type>
 	{
 		readonly ImmutableArray<TypeAdapter> adapters;
 		readonly Func<TypeInfo, bool> isAssignable;

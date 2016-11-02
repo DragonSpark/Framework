@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Sources.Scopes
 {
-	public class Scope<T> : SourceBase<T>, IScope<T>//, IDisposable
+	public class Scope<T> : SourceBase<T>, IScope<T>
 	{
 		readonly ICache<Func<object, T>> factories = new Cache<Func<object, T>>();
 		readonly IAssignableSource<object> scope;

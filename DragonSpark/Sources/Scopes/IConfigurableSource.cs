@@ -7,9 +7,8 @@ namespace DragonSpark.Sources.Scopes
 		IScope<T> Configuration { get; }
 	}
 
-	public class ConfigurableSource<T> : ScopedSource<T>, IConfigurableSource<T>
+	public class ConfigurableSource<T> : ScopedSourceBase<T>, IConfigurableSource<T>
 	{
-		public ConfigurableSource() : this( () => default(T) ) {}
 		public ConfigurableSource( Func<T> factory ) : this( factory.Create() ) {}
 		public ConfigurableSource( IScope<T> scope ) : base( scope )
 		{
@@ -17,5 +16,16 @@ namespace DragonSpark.Sources.Scopes
 		}
 
 		public IScope<T> Configuration { get; }
+	}
+
+	public abstract class ConfigurableSourceWithImplementedFactoryBase<T> : ConfigurableSource<T>
+	{
+		protected ConfigurableSourceWithImplementedFactoryBase() : this( new Scope<T>() ) {}
+		protected ConfigurableSourceWithImplementedFactoryBase( IScope<T> scope ) : base( scope )
+		{
+			scope.Assign( new Func<T>( Create ).GlobalCache() );
+		}
+
+		protected abstract T Create();
 	}
 }

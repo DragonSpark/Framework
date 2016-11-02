@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public class PartsLocator : FactoryCache<Assembly, ImmutableArray<Type>>
+	public class PartsLocator : CacheWithImplementedFactoryBase<Assembly, ImmutableArray<Type>>
 	{
 		readonly Func<Assembly, IEnumerable<Type>> source;
 		readonly Func<Assembly, IEnumerable<Assembly>> locator;

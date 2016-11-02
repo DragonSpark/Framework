@@ -2,17 +2,17 @@ using DragonSpark.Application;
 using DragonSpark.Composition;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources.Parameterized
 {
-	public sealed class SourceTypes : FactoryCache<Type, Type>
+	public sealed class SourceTypes : CacheWithImplementedFactoryBase<Type, Type>
 	{
 		readonly static string[] Suffixes = { "Source", "Factory" };
 		readonly static Func<Type, KeyValuePair<Type, Type>?> Selector = Mappings.Implementation.Get;

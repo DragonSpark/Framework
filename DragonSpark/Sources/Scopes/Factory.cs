@@ -21,7 +21,7 @@ namespace DragonSpark.Sources.Scopes
 		public static T AssignGlobal<T>( this ISource<ISource<T>> @this, object _ ) => @this.GetValue();
 
 		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, object _ ) => @this.ToDelegate();
-		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
+		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => CacheFactory.Create( @this ).Get;
 
 		public static IParameterizedScope<TParameter, TResult> Create<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().Create();
 		public static IParameterizedScope<TParameter, TResult> Create<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this.GlobalCache() );
@@ -81,7 +81,7 @@ namespace DragonSpark.Sources.Scopes
 		public static Func<object, T> GlobalCache<T>( this Func<T> @this ) => @this.Wrap().Cache();
 		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().GlobalCache();
 		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new Caches<TParameter, TResult>( @this ).Get;
-		sealed class Caches<TParameter, TResult> : FactoryCache<Func<TParameter, TResult>>
+		sealed class Caches<TParameter, TResult> : CacheWithImplementedFactoryBase<Func<TParameter, TResult>>
 		{
 			readonly Func<TParameter, TResult> factory;
 
