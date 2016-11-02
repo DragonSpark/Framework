@@ -6,6 +6,6 @@ namespace DragonSpark.Testing.Framework.Application
 {
 	public class ApplicationPublicPartsAttribute : PartsAttributeBase
 	{
-		protected ApplicationPublicPartsAttribute( Action<MethodBase> initialize ) : base( m => PublicParts.Default.Get( m.DeclaringType.Assembly ), initialize ) {}
+		protected ApplicationPublicPartsAttribute( Action<MethodBase> initialize ) : base( m => PublicPartsLocator.Default.Get( m.DeclaringType.Assembly ), initialize ) {}
 	}
 }

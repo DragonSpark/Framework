@@ -44,6 +44,9 @@ namespace DragonSpark.Windows.Testing.Setup
 			ClearUserSettingCommand clear,
 			UserSettingsExistsSpecification specification, [Service]IFileSystemRepository repository )
 		{
+			/*var one = UserSettingsFile.Default.Get();
+			var two = UserSettingsFilePath.Default.Get();*/
+
 			var path = factory.Get();
 			
 			Assert.NotNull( path );
@@ -83,6 +86,8 @@ namespace DragonSpark.Windows.Testing.Setup
 			[Service]ILoggerHistory history, 
 			UserSettingsExistsSpecification specification )
 		{
+			/*var one = UserSettingsFile.Default.Get();
+			var two = UserSettingsFilePath.Default.Get();*/
 			Assert.False( specification.IsSatisfied() );
 		
 			sut.Execute( parameter.Object );

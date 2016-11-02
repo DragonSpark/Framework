@@ -9,7 +9,7 @@ using System.Reflection;
 namespace DragonSpark.Testing.Framework.FileSystem
 {
 	[ApplyAlteration( typeof(FileNameAlteration) )]
-	public class AssemblyLoader : ParameterizedSourceBase<string, Assembly>
+	public sealed class AssemblyLoader : ParameterizedSourceBase<string, Assembly>
 	{
 		public static AssemblyLoader Default { get; } = new AssemblyLoader();
 		AssemblyLoader() : this( FileSystemRepository.Default, AppDomain.CurrentDomain ) {}

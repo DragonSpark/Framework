@@ -239,7 +239,7 @@
     <Compile Include="Diagnostics\ConfigureLoggingCommand.cs" />
     <Compile Include="Diagnostics\Defaults.cs" />
     <Compile Include="Diagnostics\LoggerBase.cs" />
-    <Compile Include="Diagnostics\LoggerExportedConfigurations.cs" />
+    <Compile Include="Diagnostics\LoggerExportedAlterations.cs" />
     <Compile Include="Diagnostics\LoggingConfigurationSource.cs" />
     <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
     <Compile Include="Diagnostics\SystemLogger.cs" />
@@ -288,7 +288,7 @@
     <Compile Include="Sources\Scopes\ConfigurationProvisionedSourceBase.cs" />
     <Compile Include="Sources\Scopes\ConfigurationProvisionedParameterizedSourceBase.cs" />
     <Compile Include="Sources\Scopes\Alterations.cs" />
-    <Compile Include="Configuration\ConfigurationSource.cs" />
+    <Compile Include="Sources\Scopes\AlterationsSource.cs" />
     <Compile Include="Configuration\Extensions.cs" />
     <Compile Include="Sources\Scopes\IAlterations.cs" />
     <Compile Include="Configuration\IValueStore.cs" />
@@ -323,7 +323,7 @@
     <Compile Include="Diagnostics\LogExceptionCommandBase.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Diagnostics\Configurations\ConfigureLoggerBase.cs" />
-    <Compile Include="Diagnostics\DefaultSystemLoggerConfigurations.cs" />
+    <Compile Include="Diagnostics\DefaultSystemLoggerAlterations.cs" />
     <Compile Include="Diagnostics\DefaultLoggerAlterations.cs" />
     <Compile Include="Diagnostics\LoggingController.cs" />
     <Compile Include="Diagnostics\LoggingHistory.cs" />
@@ -421,12 +421,13 @@
     <Compile Include="Sources\SuppliedAndExportedItems.cs" />
     <Compile Include="Sources\TimedDelegatedSource.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />
+    <Compile Include="TypeSystem\AllParts.cs" />
     <Compile Include="TypeSystem\AssignableEqualityComparer.cs" />
     <Compile Include="TypeSystem\Default.cs" />
     <Compile Include="TypeSystem\Extensions.cs" />
     <Compile Include="TypeSystem\Generics\ActionContextBase.cs" />
     <Compile Include="Application\ApplicationAssembly.cs" />
-    <Compile Include="Application\ApplicationAssemblySpecification.cs" />
+    <Compile Include="Application\RegisteredAssemblySpecification.cs" />
     <Compile Include="Application\ApplicationTypeSpecification.cs" />
     <Compile Include="TypeSystem\AssemblyAttributeProvider.cs" />
     <Compile Include="TypeSystem\AssemblyHintAttribute.cs" />
@@ -647,7 +648,7 @@
     <Compile Include="Activation\ConstructCoercer.cs" />
     <Compile Include="Coercion\ICoercer.cs" />
     <Compile Include="Sources\Delegates\SourceFactory.cs" />
-    <Compile Include="TypeSystem\AllParts.cs" />
+    <Compile Include="TypeSystem\AllPartsLocator.cs" />
     <Compile Include="Application\AssemblyInformation.cs" />
     <Compile Include="TypeSystem\AssemblyInformationSource.cs" />
     <Compile Include="ComponentModel\SingletonAttribute.cs" />
@@ -656,7 +657,7 @@
     <Compile Include="Extensions\ObjectMappingParameter.cs" />
     <Compile Include="Specifications\AllSpecification.cs" />
     <Compile Include="Specifications\AnySpecification.cs" />
-    <Compile Include="Application\ApplicationAssemblyLocator.cs" />
+    <Compile Include="Application\ApplicationAssemblySpecification.cs" />
     <Compile Include="Application\ApplicationAttribute.cs" />
     <Compile Include="Application\Clock.cs" />
     <Compile Include="Specifications\EqualitySpecification.cs" />
@@ -664,6 +665,8 @@
     <Compile Include="Specifications\GuardedSpecificationBase.cs" />
     <Compile Include="Specifications\Extensions.cs" />
     <Compile Include="TypeSystem\Metadata\Attributes.cs" />
+    <Compile Include="TypeSystem\PartTypesBase.cs" />
+    <Compile Include="TypeSystem\PublicParts.cs" />
     <Compile Include="TypeSystem\Where.cs" />
     <Compile Include="TypeSystem\DefaultValues.cs" />
     <Compile Include="TypeSystem\Metadata\DerivedMethodSpecification.cs" />
@@ -677,9 +680,9 @@
     <Compile Include="TypeSystem\MethodMapping.cs" />
     <Compile Include="TypeSystem\ObjectTypeFactory.cs" />
     <Compile Include="TypeSystem\Metadata\ParameterInfoAttributeProvider.cs" />
-    <Compile Include="TypeSystem\PartsBase.cs" />
+    <Compile Include="TypeSystem\PartsLocator.cs" />
     <Compile Include="TypeSystem\Metadata\PropertyInfoAttributeProvider.cs" />
-    <Compile Include="TypeSystem\PublicParts.cs" />
+    <Compile Include="TypeSystem\PublicPartsLocator.cs" />
     <Compile Include="TypeSystem\Metadata\ReflectionElementAttributeProvider.cs" />
     <Compile Include="TypeSystem\SpecialValues.cs" />
     <Compile Include="TypeSystem\Generics\StaticActionContext.cs" />
@@ -692,7 +695,7 @@
     <Compile Include="Extensions\ObjectMapper.cs" />
     <Compile Include="TypeSystem\AssemblyBasedTypeSource.cs" />
     <Compile Include="Runtime\DeclarativeCollection.cs" />
-    <Compile Include="Application\ApplicationAssemblyFilter.cs">
+    <Compile Include="Application\RegisteredAssemblyFilter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentModel\ServicesValueBase.cs" />

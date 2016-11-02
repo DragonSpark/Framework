@@ -1,5 +1,5 @@
-using System.Collections.Immutable;
 using DragonSpark.Sources.Parameterized;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Sources.Scopes
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Sources.Scopes
 	{
 		IParameterizedScope<TParameter, TConfiguration> Seed { get; }
 		
-		IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> Configurators { get; }
+		IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> Alterations { get; }
 	}
 }

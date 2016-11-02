@@ -6,14 +6,14 @@ using System.Reflection;
 
 namespace DragonSpark.Application
 {
-	public class ApplicationAssemblyFilter : AlterationBase<IEnumerable<Assembly>>
+	public class RegisteredAssemblyFilter : AlterationBase<IEnumerable<Assembly>>
 	{
-		public static ApplicationAssemblyFilter Default { get; } = new ApplicationAssemblyFilter();
-		ApplicationAssemblyFilter() : this( ApplicationAssemblySpecification.Default.IsSatisfiedBy ) {}
+		public static RegisteredAssemblyFilter Default { get; } = new RegisteredAssemblyFilter();
+		RegisteredAssemblyFilter() : this( RegisteredAssemblySpecification.Default.IsSatisfiedBy ) {}
 
 		readonly Func<Assembly, bool> specification;
 
-		ApplicationAssemblyFilter( Func<Assembly, bool> specification )
+		RegisteredAssemblyFilter( Func<Assembly, bool> specification )
 		{
 			this.specification = specification;
 		}

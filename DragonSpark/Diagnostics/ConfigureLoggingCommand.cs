@@ -16,6 +16,6 @@ namespace DragonSpark.Diagnostics
 	public sealed class ConfigureLoggingCommand : AssignCommand<Func<Func<object, ImmutableArray<IAlteration<LoggerConfiguration>>>>>
 	{
 		public static ConfigureLoggingCommand Default { get; } = new ConfigureLoggingCommand();
-		ConfigureLoggingCommand() : base( LoggingConfiguration.Default.Configurators ) {}
+		ConfigureLoggingCommand() : base( LoggingConfiguration.Default.Alterations ) {}
 	}
 }

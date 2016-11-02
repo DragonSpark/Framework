@@ -128,6 +128,7 @@
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="Application\ExecutionContextTests.cs" />
+    <Compile Include="TypeSystem\AllPartsTests.cs" />
     <Compile Include="TypeSystem\DefaultValuesTests.cs" />
     <Compile Include="TypeSystem\Metadata\AttributesTests.cs">
       <SubType>Code</SubType>
@@ -175,7 +176,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Sources\Parameterized\Caching\AmbientStackTests.cs" />
-    <Compile Include="Application\ApplicationAssemblyFilterTests.cs" />
+    <Compile Include="Application\RegisteredAssemblyFilterTests.cs" />
     <Compile Include="TypeSystem\ItemsTests.cs" />
     <Compile Include="TypeSystem\Metadata\AttributeSupportTests.cs" />
     <Compile Include="TypeSystem\Metadata\DerivedMethodSpecificationTests.cs" />

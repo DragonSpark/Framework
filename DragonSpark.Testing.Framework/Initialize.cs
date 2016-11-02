@@ -7,18 +7,19 @@ using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Setup;
+using JetBrains.Annotations;
 using PostSharp.Aspects;
 
 namespace DragonSpark.Testing.Framework
 {
 	public static class Initialize
 	{
-		[ModuleInitializer( 0 )]
+		[ModuleInitializer( 0 ), UsedImplicitly]
 		public static void Execution()
 		{
 			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
 			DragonSpark.Application.Clock.Default.Configuration.Assign( Time.Default.GlobalCache() );
-			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
+			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Global );
 
 			Path.Default.Configuration.Assign<MockPath>();
 			Directory.Default.Configuration.Assign<MockDirectory>();

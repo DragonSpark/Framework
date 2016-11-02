@@ -14,12 +14,12 @@ namespace DragonSpark.Testing.Objects.FileSystem
 	[ApplyAutoValidation, ApplySpecification( typeof(OncePerScopeSpecification<object>) )]
 	public sealed class InitializePartsCommand : CompositeCommand
 	{
-		readonly static Func<string, Assembly> Delegate = AssemblyLoader.Default.Get;
+		readonly static Func<string, Assembly> Loader = AssemblyLoader.Default.Get;
 
 		public static InitializePartsCommand Default { get; } = new InitializePartsCommand();
 		InitializePartsCommand() : base( 
 			InitializePartsAssemblyCommand.Default,
-			TypeSystem.AssemblyLoader.Default.Configuration.ToCommand( Delegate )
+			TypeSystem.AssemblyLoader.Default.Configuration.ToCommand( Loader )
 			) {}
 
 		public sealed class Public : ApplicationPublicPartsAttribute
@@ -27,13 +27,13 @@ namespace DragonSpark.Testing.Objects.FileSystem
 			public Public() : base( Default.Execute ) {}
 		}
 
-		public sealed class All : ApplicationPartsAttribute
+		public sealed class All : ApplicationAllPartsAttribute
 		{
 			public All() : base( Default.Execute ) {}
 		}
 	}
 
-	public sealed class InitializePartsAssemblyCommand : SuppliedEnumerableComand<Type>
+	public sealed class InitializePartsAssemblyCommand : SuppliedCommand<Type>
 	{
 		public static InitializePartsAssemblyCommand Default { get; } = new InitializePartsAssemblyCommand();
 		InitializePartsAssemblyCommand() : base( Framework.FileSystem.InitializePartsAssemblyCommand.Default, typeof(PublicClass) ) {}

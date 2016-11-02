@@ -16,7 +16,7 @@ namespace DragonSpark.Windows.Runtime
 		readonly Alter<IEnumerable<Assembly>> filter;
 		readonly Func<IEnumerable<Assembly>, IEnumerable<Type>> partsSource;
 
-		protected ApplicationTypesBase( Func<ImmutableArray<Assembly>> assemblySource ) : this( assemblySource, ApplicationAssemblyFilter.Default.Get, PublicParts.Default.Get ) {}
+		protected ApplicationTypesBase( Func<ImmutableArray<Assembly>> assemblySource ) : this( assemblySource, RegisteredAssemblyFilter.Default.Get, PublicParts.Default.Get ) {}
 
 		protected ApplicationTypesBase( Func<ImmutableArray<Assembly>> assemblySource, Alter<IEnumerable<Assembly>> filter, Func<IEnumerable<Assembly>, IEnumerable<Type>> partsSource )
 		{

@@ -51,7 +51,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\AllPartsTests.cs" />
     <Compile Include="Runtime\ApplicationDomainProxyFactoryTests.cs" />
     <Compile Include="Runtime\FileSystemTypesTests.cs" />
     <Compile Include="Runtime\DomainAssemblySourceTests.cs" />
@@ -59,7 +58,7 @@
     <Compile Include="Runtime\ThreadLocalStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\AppDomainStoreTests.cs" />
-    <Compile Include="Runtime\ApplicationAssemblyLocatorTests.cs" />
+    <Compile Include="Runtime\DomainAssemblySpecificationTests.cs" />
     <Compile Include="Runtime\ThreadDataStoreTests.cs" />
     <Compile Include="Setup\ConsoleApplicationTests.cs" />
     <Compile Include="Setup\InitializeUserSettingsCommandTests.cs" />

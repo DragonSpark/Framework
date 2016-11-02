@@ -109,7 +109,7 @@
     <Compile Include="Application\Setup\Configure.cs" />
     <Compile Include="Application\ApplicationFactory.cs" />
     <Compile Include="Application\ApplicationInitializer.cs" />
-    <Compile Include="Application\ApplicationPartsAttribute.cs" />
+    <Compile Include="Application\ApplicationAllPartsAttribute.cs" />
     <Compile Include="Application\ApplicationPublicPartsAttribute.cs" />
     <Compile Include="Application\Setup\AutoConfiguredDataCustomization.cs" />
     <Compile Include="Application\Setup\CommandAttributeBase.cs" />

@@ -1,36 +1,52 @@
 ﻿using DragonSpark.Commands;
-using DragonSpark.TypeSystem;
+using DragonSpark.Sources.Parameterized;
+using DragonSpark.Specifications;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using FileInfo = System.IO.FileInfo;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public class InitializePartsAssemblyCommand : CommandBase<IEnumerable<Type>>
+	public class InitializePartsAssemblyCommand : CommandBase<Type>
 	{
 		public static InitializePartsAssemblyCommand Default { get; } = new InitializePartsAssemblyCommand();
-		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Default.Execute ) {}
+		InitializePartsAssemblyCommand() : this( AssemblySystemFileSource.Default.Get, ProvisionFromSystemFileCommand.Default.Execute ) {}
 
+		readonly Func<Assembly, FileInfo> source;
 		readonly Action<FileInfo> provision;
 
 		[UsedImplicitly]
-		public InitializePartsAssemblyCommand( Action<FileInfo> provision )
+		public InitializePartsAssemblyCommand( Func<Assembly, FileInfo> source, Action<FileInfo> provision )
 		{
+			this.source = source;
 			this.provision = provision;
 		}
 
-		public override void Execute( IEnumerable<Type> parameter )
+		public override void Execute( Type parameter )
 		{
-			var items = parameter
-				.Assemblies()
-				.Where( assembly => assembly.Location != null )
-				.Select( assembly => new FileInfo( assembly.Location ) );
-			foreach ( var item in items )
+			var file = source( parameter.Assembly );
+			if ( file != null )
 			{
-				provision( item );
+				provision( file );
 			}
+		}
+	}
+
+	public class AssemblySystemFileSource : ParameterizedSourceBase<Assembly, FileInfo>
+	{
+		public static IParameterizedSource<Assembly, FileInfo> Default { get; } = new AssemblySystemFileSource().Apply( Specification.Implementation );
+		AssemblySystemFileSource() {}
+
+		// ReSharper disable once AssignNullToNotNullAttribute
+		public override FileInfo Get( Assembly parameter ) => new FileInfo( parameter.Location );
+
+		public sealed class Specification : SpecificationBase<Assembly>
+		{
+			public static Specification Implementation { get; } = new Specification();
+			Specification() {}
+
+			public override bool IsSatisfiedBy( Assembly parameter ) => parameter.Location != null;
 		}
 	}
 

@@ -1,4 +1,7 @@
-﻿using DragonSpark.Testing.Framework.Application;
+﻿using DragonSpark.Application;
+using DragonSpark.Sources;
+using DragonSpark.Testing.Framework.Application;
+using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Objects.FileSystem;
 using DragonSpark.TypeSystem;
 using System;
@@ -13,13 +16,20 @@ namespace DragonSpark.Testing.TypeSystem
 		[Fact]
 		public void Public()
 		{
+			Assert.Empty( ApplicationAssemblies.Default.Unwrap() );
 			InitializePartsCommand.Default.Execute();
-			PublicAttributed( PublicParts.Default.Get( GetType().Assembly ) );
+			PublicAttributed( PublicPartsLocator.Default.Get( GetType().Assembly ) );
 		}
 
 		[Theory, AutoData, InitializePartsCommand.Public]
 		public void PublicAttributed( ImmutableArray<Type> types )
 		{
+			if ( types.IsEmpty )
+			{
+				var repository = FileSystemRepository.Default;
+				throw new InvalidOperationException( $"WTF! {repository.AllFiles.Length} - {string.Join( ", ", repository.AllFiles )}" );
+			}
+
 			var type = Assert.Single( types );
 			Assert.Equal( "DragonSpark.Testing.Parts.PublicClass", type.FullName );
 		}
@@ -27,8 +37,9 @@ namespace DragonSpark.Testing.TypeSystem
 		[Fact]
 		public void All()
 		{
+			Assert.Empty( ApplicationAssemblies.Default.Unwrap() );
 			InitializePartsCommand.Default.Execute();
-			AllAttributed( AllParts.Default.Get( GetType().Assembly ) );
+			AllAttributed( AllPartsLocator.Default.Get( GetType().Assembly ) );
 		}
 
 		[Theory, AutoData, InitializePartsCommand.All]

@@ -1,14 +1,14 @@
+using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.IO;
 using System.Reflection;
-using DragonSpark.Sources.Parameterized.Caching;
 
 namespace DragonSpark.Windows.Runtime
 {
-	public sealed class DomainApplicationAssemblies : FactoryCache<AppDomain, Assembly>
+	public sealed class DomainAssemblies : FactoryCache<AppDomain, Assembly>
 	{
-		public static DomainApplicationAssemblies Default { get; } = new DomainApplicationAssemblies();
-		DomainApplicationAssemblies() {}
+		public static DomainAssemblies Default { get; } = new DomainAssemblies();
+		DomainAssemblies() {}
 
 		protected override Assembly Create( AppDomain parameter )
 		{

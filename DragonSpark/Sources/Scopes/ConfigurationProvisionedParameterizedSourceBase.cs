@@ -1,7 +1,7 @@
+using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Sources.Parameterized;
 
 namespace DragonSpark.Sources.Scopes
 {
@@ -20,17 +20,17 @@ namespace DragonSpark.Sources.Scopes
 		protected ConfigurationProvisionedParameterizedSourceBase( IParameterizedScope<TParameter, TConfiguration> seed, IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> configurators, Func<TConfiguration, TParameter, TResult> factory )
 		{
 			Seed = seed;
-			Configurators = configurators;
+			Alterations = configurators;
 			this.factory = factory;
 		}
 
 		public IParameterizedScope<TParameter, TConfiguration> Seed { get; }
 
-		public IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> Configurators { get; }
+		public IParameterizedScope<TParameter, ImmutableArray<IAlteration<TConfiguration>>> Alterations { get; }
 
 		public override TResult Get( TParameter parameter )
 		{
-			var configured = Configurators.Get( parameter ).Aggregate( Seed.Get( parameter ), ( configuration, transformer ) => transformer.Get( configuration ) );
+			var configured = Alterations.Get( parameter ).Aggregate( Seed.Get( parameter ), ( configuration, transformer ) => transformer.Get( configuration ) );
 			var result = factory( configured, parameter );
 			return result;
 		}

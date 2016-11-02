@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Testing.Framework;
+using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.Runtime;
 using System.Linq;
-using DragonSpark.Testing.Framework.Application;
 using Xunit;
 
 namespace DragonSpark.Windows.Testing.Runtime
@@ -16,7 +16,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		{
 			Assert.Same( sut, FileSystemTypes.Default );
 			var assemblies = sut.Assemblies();
-			var specification = ApplicationAssemblySpecification.Default;
+			var specification = RegisteredAssemblySpecification.Default;
 
 			Assert.True( assemblies.All( specification.IsSatisfiedBy ) );
 		} 

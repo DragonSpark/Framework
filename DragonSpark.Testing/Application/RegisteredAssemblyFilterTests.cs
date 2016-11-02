@@ -13,10 +13,10 @@ using AutoDataAttribute = Ploeh.AutoFixture.Xunit2.AutoDataAttribute;
 namespace DragonSpark.Testing.Application
 {
 	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), ContainingTypeAndNested]
-	public class ApplicationAssemblyFilterTests
+	public class RegisteredAssemblyFilterTests
 	{
 		[Theory, Framework.Application.AutoData]
-		public void Basic( Mock<ITypeSource> provider, ApplicationAssemblyFilter sut )
+		public void Basic( Mock<ITypeSource> provider, RegisteredAssemblyFilter sut )
 		{
 			provider.Setup( p => p.Get() ).Returns( () => new[] { typeof(AutoDataAttribute), typeof(Framework.Application.AutoDataAttribute) }.ToImmutableArray() );
 

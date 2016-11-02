@@ -1,10 +1,8 @@
-using DragonSpark.Sources.Parameterized;
-
 namespace DragonSpark.TypeSystem
 {
-	public sealed class AllParts : PartsBase
+	public sealed class AllParts : PartTypesBase
 	{
 		public static AllParts Default { get; } = new AllParts();
-		AllParts() : base( AssemblyTypes.All.GetEnumerable ) {}
+		AllParts() : base( AllPartsLocator.Default.Get ) {}
 	}
 }

@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Extensions;
 using DragonSpark.TypeSystem;
-using System;
+using DragonSpark.Windows.Runtime;
 using System.Reflection;
 using Xunit;
-using ApplicationAssemblyLocator = DragonSpark.Windows.Runtime.ApplicationAssemblyLocator;
 
 namespace DragonSpark.Windows.Testing.Runtime
 {
-	public class ApplicationAssemblyLocatorTests
+	public class DomainAssemblySpecificationTests
 	{
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Create()
@@ -20,8 +19,9 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		public void Other( Assembly[] assemblies )
 		{
-			var sut = new ApplicationAssemblyLocator( AppDomain.CreateDomain( "NotAnAssembly" ) );
-			var assembly = sut.Get( assemblies );
+			var sut = new DomainAssemblySpecification( typeof(object).Assembly );
+			var locator = new ApplicationAssemblyLocator( sut.IsSatisfiedBy );
+			var assembly = locator.Get( assemblies );
 			Assert.Null( assembly );
 		}
 	}

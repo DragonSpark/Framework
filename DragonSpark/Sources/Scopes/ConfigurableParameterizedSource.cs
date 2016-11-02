@@ -4,7 +4,17 @@ using System;
 
 namespace DragonSpark.Sources.Scopes
 {
-	public class ConfigurableParameterizedSource<TParameter, TResult> : DecoratedParameterizedSource<TParameter, TResult>, IConfigurableParameterizedSource<TParameter, TResult>
+	public abstract class ScopedParameterizedSource<TParameter, TResult> : DecoratedParameterizedSource<TParameter, TResult>
+	{
+		protected ScopedParameterizedSource() : this( parameter => default(TResult) ) {}
+		protected ScopedParameterizedSource( Func<object, Func<TParameter, TResult>> global ) : this( new ParameterizedScope<TParameter, TResult>( global ) ) {}
+		protected ScopedParameterizedSource( Func<TParameter, TResult> factory ) : this( new ParameterizedScope<TParameter, TResult>( factory ) ) {}
+
+		[UsedImplicitly]
+		protected ScopedParameterizedSource( IParameterizedScope<TParameter, TResult> configuration ) : base( configuration ) {}
+	}
+
+	public class ConfigurableParameterizedSource<TParameter, TResult> : ScopedParameterizedSource<TParameter, TResult>, IConfigurableParameterizedSource<TParameter, TResult>
 	{
 		public ConfigurableParameterizedSource() : this( parameter => default(TResult) ) {}
 		public ConfigurableParameterizedSource( Func<object, Func<TParameter, TResult>> global ) : this( new ParameterizedScope<TParameter, TResult>( global ) ) {}

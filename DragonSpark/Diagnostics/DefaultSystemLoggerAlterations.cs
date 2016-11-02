@@ -6,10 +6,10 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public sealed class DefaultSystemLoggerConfigurations : ItemSource<IAlteration<LoggerConfiguration>>
+	public sealed class DefaultSystemLoggerAlterations : ItemSource<IAlteration<LoggerConfiguration>>
 	{
-		public static DefaultSystemLoggerConfigurations Default { get; } = new DefaultSystemLoggerConfigurations();
-		DefaultSystemLoggerConfigurations() : base( HistoryAlteration.Implementation.Append( DefaultLoggerAlterations.Default.Unwrap() ) ) {}
+		public static DefaultSystemLoggerAlterations Default { get; } = new DefaultSystemLoggerAlterations();
+		DefaultSystemLoggerAlterations() : base( HistoryAlteration.Implementation.Append( DefaultLoggerAlterations.Default.Unwrap() ) ) {}
 
 		sealed class HistoryAlteration : AlterationBase<LoggerConfiguration>
 		{

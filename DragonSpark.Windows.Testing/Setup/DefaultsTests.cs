@@ -10,6 +10,7 @@ using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
+using DragonSpark.Windows.Runtime;
 using DragonSpark.Windows.Testing.TestObjects;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
@@ -22,7 +23,6 @@ using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Activation.Activator;
-using ApplicationAssemblyLocator = DragonSpark.Windows.Runtime.ApplicationAssemblyLocator;
 using Attribute = DragonSpark.Testing.Objects.Attribute;
 using Defaults = DragonSpark.Composition.Defaults;
 
@@ -83,9 +83,9 @@ namespace DragonSpark.Windows.Testing.Setup
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData, IncludeParameterTypes]
-		public void Locate( [Service]ImmutableArray<Assembly> assemblies,  [Service]ApplicationAssemblyLocator sut )
+		public void Locate( [Service]DomainAssemblySpecification sut )
 		{
-			Assert.Same( GetType().Assembly, sut.Get( assemblies ) );
+			Assert.True( sut.IsSatisfiedBy( GetType().Assembly ) );
 		}
 
 		[Fact]

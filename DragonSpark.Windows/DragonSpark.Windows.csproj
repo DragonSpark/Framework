@@ -79,7 +79,6 @@
     <Compile Include="Initialize.cs" />
     <Compile Include="FileSystem\FileExtensionSpecificationBase.cs" />
     <Compile Include="FileSystem\IsAssemblyFileSpecification.cs" />
-    <Compile Include="Runtime\AllParts.cs" />
     <Compile Include="Runtime\AppDomainSource.cs" />
     <Compile Include="Runtime\ApplicationDomainProxyFactory.cs" />
     <Compile Include="Runtime\ApplicationTypesBase.cs" />
@@ -92,9 +91,7 @@
     <Compile Include="Runtime\Data\DocumentResourceFactory.cs" />
     <Compile Include="Runtime\Data\Serializer.cs" />
     <Compile Include="Runtime\Defaults.cs" />
-    <Compile Include="Runtime\DomainApplicationAssemblies.cs" />
-    <Compile Include="Runtime\PartTypesBase.cs" />
-    <Compile Include="Runtime\PublicParts.cs" />
+    <Compile Include="Runtime\DomainAssemblies.cs" />
     <Compile Include="Setup\Defaults.cs" />
     <Compile Include="FileSystem\DeleteFileCommand.cs" />
     <Compile Include="Setup\Extensions.cs" />
@@ -111,7 +108,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Runtime\AppDomainStore.cs" />
-    <Compile Include="Runtime\ApplicationAssemblyLocator.cs" />
+    <Compile Include="Runtime\DomainAssemblySpecification.cs" />
     <Compile Include="Runtime\FileSystemAssemblySource.cs" />
     <Compile Include="Runtime\DomainAssemblySource.cs" />
     <Compile Include="Runtime\ThreadDataStore.cs" />
