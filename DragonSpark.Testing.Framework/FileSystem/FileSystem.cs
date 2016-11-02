@@ -40,10 +40,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
-	public class FileSystemRepository : ConfigurableSource<IFileSystemRepository>, IFileSystemRepository
+	public class FileSystemRepository : Scope<IFileSystemRepository>, IFileSystemRepository
 	{
 		public static FileSystemRepository Default { get; } = new FileSystemRepository();
-		FileSystemRepository() : base( () => new Implementation() ) {}
+		FileSystemRepository() : base( Factory.GlobalCache( () => new Implementation() ) ) {}
 
 		public string GetPath( IFileSystemElement element ) => Get().GetPath( element );
 		public ImmutableArray<string> AllPaths => Get().AllPaths;

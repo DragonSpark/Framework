@@ -21,7 +21,7 @@ namespace DragonSpark.Windows
 				.IsSatisfiedBy;
 
 		public InitializationCommand() : base( Priority.Higher,
-			TypeDefinitions.Source.Implementation.Configuration.ToCommand( Providers ),
+			TypeDefinitions.Source.Implementation.ToCommand( Providers ),
 			ApplicationAssemblySpecification.Default.Configuration.ToCommand( Specification )
 		) {}
 	}

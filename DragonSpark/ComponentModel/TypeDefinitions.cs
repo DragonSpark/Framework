@@ -33,10 +33,10 @@ namespace DragonSpark.ComponentModel
 			return null;
 		}
 
-		public sealed class Source : ConfigurableSource<ImmutableArray<ITypeDefinitionProvider>>
+		public sealed class Source : Scope<ImmutableArray<ITypeDefinitionProvider>>
 		{
 			public static Source Implementation { get; } = new Source();
-			Source() : base( () => ImmutableArray.Create<ITypeDefinitionProvider>( ConventionTypeDefinitionProvider.Default, Self.Instance ) ) {}
+			Source() : base( Factory.GlobalCache( () => ImmutableArray.Create<ITypeDefinitionProvider>( ConventionTypeDefinitionProvider.Default, Self.Instance ) ) ) {}
 			
 			sealed class Self : SelfAlteration<TypeInfo>, ITypeDefinitionProvider
 			{

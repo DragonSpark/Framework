@@ -3,9 +3,9 @@ using System;
 
 namespace DragonSpark.Application
 {
-	public sealed class Clock : ConfigurableSource<DateTimeOffset>, IClock
+	public sealed class Clock : Scope<DateTimeOffset>, IClock
 	{
 		public static Clock Default { get; } = new Clock();
-		Clock() : base( new Scope<DateTimeOffset>( () => DateTimeOffset.Now ) ) {}
+		Clock() : base( () => DateTimeOffset.Now ) {}
 	}
 }

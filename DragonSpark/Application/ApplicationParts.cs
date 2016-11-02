@@ -6,9 +6,7 @@ namespace DragonSpark.Application
 	public sealed class ApplicationParts : Scope<SystemParts?>
 	{
 		public static IScope<SystemParts?> Default { get; } = new ApplicationParts();
-		ApplicationParts() : base( () => null ) {}
-
-		// public static bool IsAssigned => !Equals( Default.Get(), SystemParts.Default );
+		ApplicationParts() {}
 	}
 
 	public sealed class ApplicationPartsAssignedSpecification : SuppliedDelegatedSpecification<SystemParts?>

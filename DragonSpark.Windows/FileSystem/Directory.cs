@@ -8,10 +8,10 @@ using System.Security.AccessControl;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Directory : ConfigurableSource<DirectoryBase>, IDirectory
+	public class Directory : Scope<DirectoryBase>, IDirectory
 	{
 		public static Directory Default { get; } = new Directory();
-		Directory() : base( () => new DirectoryWrapper() ) {}
+		Directory() : base( Sources.Scopes.Factory.GlobalCache( () => new DirectoryWrapper() ) ) {}
 		
 		readonly Func<DirectoryInfoBase, IDirectoryInfo> directorySource = Defaults.Directory;
 

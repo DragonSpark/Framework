@@ -11,9 +11,9 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			Directory.Default.Configuration.Assign( Factory.Cache(  () => new Mock<MockDirectory> { CallBase = true }.Object ) );
-			var implementation = Directory.Default.Configuration.Get();
-			Assert.Same( Directory.Default.Configuration.Get(), implementation );
+			Directory.Default.Assign( Factory.Cache(  () => new Mock<MockDirectory> { CallBase = true }.Object ) );
+			var implementation = Directory.Default.Get();
+			Assert.Same( Directory.Default.Get(), implementation );
 			var mock = Mock.Get( (MockDirectory)implementation );
 			var instance = Directory.Default.Get();
 			Assert.Same( instance, Directory.Default.Get() );

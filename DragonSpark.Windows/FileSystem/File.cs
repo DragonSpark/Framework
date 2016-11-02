@@ -9,10 +9,10 @@ using System.Text;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class File : ConfigurableSource<FileBase>, IFile
+	public class File : Scope<FileBase>, IFile
 	{
 		public static File Default { get; } = new File();
-		File() : base( () => new FileWrapper() ) {}
+		File() : base( Sources.Scopes.Factory.GlobalCache( () => new FileWrapper() ) ) {}
 
 		[UsedImplicitly]
 		public File( FileBase source) :  base( source.Self ) {}

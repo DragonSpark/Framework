@@ -5,10 +5,10 @@ using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Path : ConfigurableSource<PathBase>, IPath
+	public class Path : Scope<PathBase>, IPath
 	{
 		public static Path Default { get; } = new Path();
-		Path() : base( () => new PathWrapper() ) {}
+		Path() : base( Sources.Scopes.Factory.GlobalCache( () => new PathWrapper() ) ) {}
 
 		[UsedImplicitly]
 		public Path( PathBase source ) : base( source.Self ) {}

@@ -7,9 +7,9 @@ namespace DragonSpark.Sources.Scopes
 {
 	public class Scope<T> : SourceBase<T>, IScope<T>
 	{
-		readonly ICache<Func<object, T>> factories = new Cache<Func<object, T>>();
-		readonly IAssignableSource<object> scope;
 		readonly IAssignableSource<Func<object, T>> defaultFactory = new SuppliedSource<Func<object, T>>();
+		readonly ICache<Func<object, T>> factories = new Cache<Func<object, T>>();
+		readonly IAssignableSource<object> context;
 
 		public Scope() : this( () => default(T) ) {}
 
@@ -18,45 +18,29 @@ namespace DragonSpark.Sources.Scopes
 		public Scope( Func<object, T> defaultFactory ) : this( new ScopeContext(), defaultFactory ) {}
 
 		[UsedImplicitly]
-		protected Scope( IAssignableSource<object> scope, Func<object, T> defaultFactory )
+		protected Scope( IAssignableSource<object> context, Func<object, T> defaultFactory )
 		{
-			this.scope = scope;
+			this.context = context;
 			this.defaultFactory.Assign( defaultFactory );
 		}
-
-		public virtual void Assign( Func<T> item ) => factories.SetOrClear( scope.Get(), item?.Wrap() );
 
 		public virtual void Assign( Func<object, T> item )
 		{
 			defaultFactory.Assign( item );
 
-			factories.Remove( scope.Get() );
+			factories.Remove( context.Get() );
 		}
+
+		public virtual void Assign( Func<T> item ) => factories.SetOrClear( context.Get(), item?.Wrap() );
 
 		public override T Get()
 		{
-			var context = scope.Get();
-			var factory = factories.Get( context ) ?? defaultFactory.Get();
-			var result = factory( context );
+			var current = context.Get();
+			var factory = factories.Get( current ) ?? defaultFactory.Get();
+			var result = factory( current );
 			return result;
 		}
 
-		public void Assign( ISource item ) => scope.Assign( item );
-		
-		/*~Scope()
-		{
-			Dispose( false );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		[Freeze]
-		void Dispose( bool disposing ) => OnDispose( disposing );
-
-		protected virtual void OnDispose( bool disposing ) {}*/
+		public void Assign( ISource item ) => context.Assign( item );
 	}
 }

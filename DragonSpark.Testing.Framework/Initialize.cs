@@ -18,16 +18,16 @@ namespace DragonSpark.Testing.Framework
 		public static void Execution()
 		{
 			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
-			DragonSpark.Application.Clock.Default.Configuration.Assign( Time.Default.GlobalCache() );
+			DragonSpark.Application.Clock.Default.Assign( Time.Default.GlobalCache() );
 			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Global );
 
-			Path.Default.Configuration.Assign<MockPath>();
-			Directory.Default.Configuration.Assign<MockDirectory>();
+			Path.Default.Assign<MockPath>();
+			Directory.Default.Assign<MockDirectory>();
 			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.GlobalCache() );
-			File.Default.Configuration.Assign<MockFile>();
+			File.Default.Assign<MockFile>();
 			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.GlobalCache() );
 
-			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Default.GlobalCache() );
+			UserSettingsFilePath.Default.Assign( Application.Setup.UserSettingsFilePath.Default.GlobalCache() );
 		}
 	}
 }
