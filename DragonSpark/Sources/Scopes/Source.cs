@@ -1,6 +1,6 @@
 using DragonSpark.Sources.Parameterized.Caching;
 
-namespace DragonSpark.Sources
+namespace DragonSpark.Sources.Scopes
 {
 	public static class Source
 	{

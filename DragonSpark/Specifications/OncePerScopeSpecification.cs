@@ -1,5 +1,6 @@
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Specifications

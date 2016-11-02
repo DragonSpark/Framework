@@ -1,6 +1,6 @@
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using Serilog.Events;
 
 namespace DragonSpark.Testing.Framework.Application.Setup

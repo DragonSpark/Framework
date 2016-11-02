@@ -1,6 +1,7 @@
 ﻿using DragonSpark.TypeSystem;
 using System;
 using System.Linq;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources.Parameterized
 {

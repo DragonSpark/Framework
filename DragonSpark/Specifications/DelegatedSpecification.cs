@@ -2,6 +2,7 @@ using System;
 
 namespace DragonSpark.Specifications
 {
+
 	public class DelegatedSpecification<T> : SpecificationBase<T>
 	{
 		readonly Func<T, bool> @delegate;

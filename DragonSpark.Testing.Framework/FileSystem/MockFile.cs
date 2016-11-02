@@ -9,6 +9,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {

@@ -1,7 +1,7 @@
 using DragonSpark.Aspects.Alteration;
 using DragonSpark.Coercion;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using System.Reflection;
 

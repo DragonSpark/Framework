@@ -1,7 +1,6 @@
-using DragonSpark.Sources;
 using System;
 
-namespace DragonSpark.Configuration
+namespace DragonSpark.Sources.Scopes
 {
 	public interface IConfigurableSource<T> : ISource<T>
 	{

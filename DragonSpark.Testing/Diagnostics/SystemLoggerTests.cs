@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using Serilog;
 using System.Collections.Immutable;
 using Xunit;

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources.Parameterized
 {

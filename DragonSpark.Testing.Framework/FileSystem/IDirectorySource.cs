@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using System;
 using System.IO;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {

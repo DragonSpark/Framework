@@ -1,5 +1,5 @@
-﻿using DragonSpark.Configuration;
-using DragonSpark.Sources;
+﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using System.Configuration;
 
 namespace DragonSpark.Windows.Setup

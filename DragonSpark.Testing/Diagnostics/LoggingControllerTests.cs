@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using Ploeh.AutoFixture.Xunit2;
 using Serilog.Core;
 using Serilog.Events;

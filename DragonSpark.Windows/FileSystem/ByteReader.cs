@@ -1,5 +1,5 @@
-﻿using DragonSpark.Configuration;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;

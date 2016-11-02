@@ -1,5 +1,5 @@
-using DragonSpark.Configuration;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
 using Serilog;

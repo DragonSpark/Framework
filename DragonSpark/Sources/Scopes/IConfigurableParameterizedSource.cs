@@ -1,6 +1,6 @@
 using DragonSpark.Sources.Parameterized;
 
-namespace DragonSpark.Configuration
+namespace DragonSpark.Sources.Scopes
 {
 	public interface IConfigurableParameterizedSource<TParameter, TResult> : IParameterizedSource<TParameter, TResult>
 	{

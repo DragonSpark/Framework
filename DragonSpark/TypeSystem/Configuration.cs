@@ -1,6 +1,6 @@
 using DragonSpark.ComponentModel;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem.Metadata;
 using System.Collections.Generic;
 using System.Collections.Immutable;

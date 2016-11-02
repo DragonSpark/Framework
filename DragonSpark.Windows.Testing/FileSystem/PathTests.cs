@@ -2,6 +2,7 @@
 using DragonSpark.Windows.FileSystem;
 using Moq;
 using Xunit;
+using Factory = DragonSpark.Sources.Scopes.Factory;
 
 namespace DragonSpark.Windows.Testing.FileSystem
 {
@@ -10,7 +11,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			Path.Default.Configuration.Assign( Sources.Factory.Cache( () => new Mock<MockPath> { CallBase = true }.Object ) );
+			Path.Default.Configuration.Assign( Factory.Cache( () => new Mock<MockPath> { CallBase = true }.Object ) );
 
 			var implementation = Path.Default.Configuration.Get();
 			Assert.Same( Path.Default.Configuration.Get(), implementation );

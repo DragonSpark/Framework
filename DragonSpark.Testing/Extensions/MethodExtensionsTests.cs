@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using System;
 using System.Linq;

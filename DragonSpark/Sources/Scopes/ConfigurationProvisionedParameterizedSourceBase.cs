@@ -1,9 +1,9 @@
-using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using DragonSpark.Sources.Parameterized;
 
-namespace DragonSpark.Configuration
+namespace DragonSpark.Sources.Scopes
 {
 	public abstract class ConfigurationProvisionedParameterizedSourceBase<TConfiguration, TResult> : ConfigurationProvisionedParameterizedSourceBase<TConfiguration, object, TResult>, IConfigurationProvisionedFactory<TConfiguration, TResult>
 	{

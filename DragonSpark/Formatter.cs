@@ -5,6 +5,7 @@ using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 using System;
 using System.Composition;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark
 {

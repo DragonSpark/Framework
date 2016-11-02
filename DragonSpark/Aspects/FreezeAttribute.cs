@@ -1,5 +1,10 @@
+using DragonSpark.Configuration;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Scopes;
+using DragonSpark.Specifications;
+using JetBrains.Annotations;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Configuration;
 using PostSharp.Aspects.Dependencies;
@@ -17,57 +22,51 @@ namespace DragonSpark.Aspects
 		]
 	public class FreezeAttribute : MethodInterceptionAspect, IInstanceScopedAspect
 	{
-		readonly Func<object, IAspectHub> hubSource;
 		readonly static Func<object, IAspectHub> HubSource = AspectHub.Default.ToDelegate();
+
+		readonly Func<object, IAspectHub> hubSource;
 
 		public FreezeAttribute() : this( HubSource ) {}
 
+		[UsedImplicitly]
 		protected FreezeAttribute( Func<object, IAspectHub> hubSource )
 		{
 			this.hubSource = hubSource;
 		}
 
-		public override void RuntimeInitialize( MethodBase method ) => Profile = new MethodProfile( (MethodInfo)method );
+		public override void RuntimeInitialize( MethodBase method )
+		{
+			var methodInfo = (MethodInfo)method;
+			var factory = Factory.Default.Get( methodInfo );
+			Source = factory != null ? new SuppliedSource<MethodInfo, FreezeAttribute>( factory, methodInfo.Self ) : null;
+		}
 
-		MethodProfile Profile { get; set; }
+		ISource<FreezeAttribute> Source { get; set; }
 
 		public object CreateInstance( AdviceArgs adviceArgs )
 		{
-			var result = Profile.Create( Profile.Method );
-
-			hubSource( adviceArgs.Instance )?.Register( result );
-
-			return result;
+			var result = Source?.Get();
+			if ( result != null )
+			{
+				hubSource( adviceArgs.Instance )?.Register( result );
+			}
+			return result ?? this;
 		}
 
 		void IInstanceScopedAspect.RuntimeInitializeInstance() {}
 
-		sealed class SingleParameterFreeze : InstanceFreezeBase
+		sealed class Factory : ConditionalInstanceParameterizedSource<MethodInfo, Func<MethodInfo, FreezeAttribute>>
 		{
-			readonly IArgumentCache<object, object> cache;
+			public static IParameterizedSource<MethodInfo, Func<MethodInfo, FreezeAttribute>> Default { get; } = new Factory().Apply( new SpecificationAdapter<MethodInfo>( EnableMethodCaching.Default.Get ) );
+			Factory() : base( IsSingleParameterSpecification.Implementation, info => new SingleParameterFreeze( info ), info => new Freeze( info ) ) {}
 
-			public SingleParameterFreeze( MethodInfo method ) : this( new StructuralCache<object, object>(), method ) {}
-
-			SingleParameterFreeze( IArgumentCache<object, object> cache, MethodInfo method ) : base( new CacheParameterHandler<object, object>( cache ), method  )
+			sealed class IsSingleParameterSpecification : SpecificationBase<MethodBase>
 			{
-				this.cache = cache;
+				public static IsSingleParameterSpecification Implementation { get; } = new IsSingleParameterSpecification();
+				IsSingleParameterSpecification() {}
+
+				public override bool IsSatisfiedBy( MethodBase parameter ) => parameter.GetParameters().Length == 1;
 			}
-
-			public override void OnInvoke( MethodInterceptionArgs args ) => args.ReturnValue = cache.GetOrSet( args.Arguments[0], args.GetReturnValue );
-		}
-
-		struct MethodProfile
-		{
-			public MethodProfile( MethodInfo method ) : this( method, method.GetParameters().Length == 1 ? new Func<MethodInfo, FreezeAttribute>( info => new SingleParameterFreeze( info ) ) : ( info => new Freeze( info ) ) ) {}
-
-			MethodProfile( MethodInfo method, Func<MethodInfo, FreezeAttribute> create )
-			{
-				Method = method;
-				Create = create;
-			}
-
-			public MethodInfo Method { get; }
-			public Func<MethodInfo, FreezeAttribute> Create { get; }
 		}
 
 		abstract class InstanceFreezeBase : FreezeAttribute, IParameterAwareHandler, IMethodAware
@@ -84,6 +83,20 @@ namespace DragonSpark.Aspects
 			public bool Handle( object parameter, out object handled ) => handler.Handle( parameter, out handled );
 
 			public MethodInfo Method { get; }
+		}
+
+		sealed class SingleParameterFreeze : InstanceFreezeBase
+		{
+			readonly IArgumentCache<object, object> cache;
+
+			public SingleParameterFreeze( MethodInfo method ) : this( new StructuralCache<object, object>(), method ) {}
+
+			SingleParameterFreeze( IArgumentCache<object, object> cache, MethodInfo method ) : base( new CacheParameterHandler<object, object>( cache ), method  )
+			{
+				this.cache = cache;
+			}
+
+			public override void OnInvoke( MethodInterceptionArgs args ) => args.ReturnValue = cache.GetOrSet( args.Arguments[0], args.GetReturnValue );
 		}
 
 		sealed class Freeze : InstanceFreezeBase

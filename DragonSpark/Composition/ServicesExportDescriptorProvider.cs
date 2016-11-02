@@ -5,6 +5,7 @@ using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Generic;
 using System.Composition.Hosting.Core;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Composition
 {

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Security.AccessControl;
+using DragonSpark.Sources.Scopes;
 using File = DragonSpark.Windows.FileSystem.File;
 
 namespace DragonSpark.Testing.Framework.FileSystem

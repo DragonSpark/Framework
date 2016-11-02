@@ -1,8 +1,8 @@
 using DragonSpark.Commands;
-using DragonSpark.Configuration;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;

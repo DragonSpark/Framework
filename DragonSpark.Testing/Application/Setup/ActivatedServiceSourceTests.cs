@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Activation.Location;
 using DragonSpark.Application.Setup;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System;
 using Xunit;
 

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;

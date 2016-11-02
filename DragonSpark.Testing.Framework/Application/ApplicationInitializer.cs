@@ -1,6 +1,6 @@
 using DragonSpark.Commands;
 using DragonSpark.Runtime;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.Runtime;
 using System;
 using System.Reflection;

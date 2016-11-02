@@ -1,5 +1,5 @@
 using DragonSpark.Commands;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.Application.Setup;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture;

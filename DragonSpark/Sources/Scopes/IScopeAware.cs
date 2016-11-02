@@ -1,4 +1,4 @@
-namespace DragonSpark.Sources
+namespace DragonSpark.Sources.Scopes
 {
 	public interface IScopeAware : IAssignable<ISource> {}
 }

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Sources;
+﻿using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Application.Setup
 {

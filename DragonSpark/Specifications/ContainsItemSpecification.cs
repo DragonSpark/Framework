@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -9,6 +10,7 @@ namespace DragonSpark.Specifications
 
 		public ContainsItemSpecification( IEnumerable<T> items ) : this( items.ToImmutableArray() ) {}
 
+		[UsedImplicitly]
 		public ContainsItemSpecification( ImmutableArray<T> items )
 		{
 			this.items = items;

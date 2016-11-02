@@ -1,6 +1,6 @@
 using DragonSpark.Application;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Collections.Immutable;
 using System.Linq;

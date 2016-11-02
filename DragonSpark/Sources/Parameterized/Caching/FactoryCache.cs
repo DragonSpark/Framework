@@ -1,4 +1,4 @@
-using DragonSpark.Configuration;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 
 namespace DragonSpark.Sources.Parameterized.Caching

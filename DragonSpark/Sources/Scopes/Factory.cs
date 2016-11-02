@@ -1,13 +1,13 @@
-using DragonSpark.Commands;
-using DragonSpark.Runtime.Assignments;
-using DragonSpark.Sources.Parameterized;
-using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using DragonSpark.Commands;
+using DragonSpark.Runtime.Assignments;
+using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Parameterized.Caching;
 
-namespace DragonSpark.Sources
+namespace DragonSpark.Sources.Scopes
 {
 	public static class Scopes
 	{

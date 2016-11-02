@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.Activation.Location;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Application.Setup
 {

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Immutable;
-using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Application
 {

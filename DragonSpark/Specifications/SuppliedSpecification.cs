@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace DragonSpark.Specifications
@@ -17,5 +18,17 @@ namespace DragonSpark.Specifications
 		}
 
 		public override bool IsSatisfiedBy( [Optional]T parameter ) => satisfied;
+	}
+
+	public sealed class SpecificationAdapter<T> : SpecificationBase<T>
+	{
+		readonly Func<bool> factory;
+
+		public SpecificationAdapter( Func<bool> factory )
+		{
+			this.factory = factory;
+		}
+
+		public override bool IsSatisfiedBy( T parameter ) => factory();
 	}
 }

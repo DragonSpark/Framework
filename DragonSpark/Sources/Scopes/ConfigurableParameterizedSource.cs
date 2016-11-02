@@ -2,7 +2,7 @@ using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 using System;
 
-namespace DragonSpark.Configuration
+namespace DragonSpark.Sources.Scopes
 {
 	public class ConfigurableParameterizedSource<TParameter, TResult> : DecoratedParameterizedSource<TParameter, TResult>, IConfigurableParameterizedSource<TParameter, TResult>
 	{

@@ -1,5 +1,5 @@
-using DragonSpark.Configuration;
 using DragonSpark.Runtime;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Composition.Hosting;
 
@@ -8,7 +8,7 @@ namespace DragonSpark.Composition
 	public sealed class CompositionHostFactory : ConfigurationProvisionedSourceBase<ContainerConfiguration, CompositionHost>
 	{
 		readonly IComposable<IDisposable> disposables;
-		readonly static IConfigurationScope<ContainerConfiguration> DefaultConfiguration = new ConfigurationScope<ContainerConfiguration>( ContainerServicesConfigurator.Default, PartsContainerConfigurator.Default );
+		readonly static IAlterations<ContainerConfiguration> DefaultConfiguration = new Alterations<ContainerConfiguration>( ContainerServicesConfigurator.Default, PartsContainerConfigurator.Default );
 
 		public static CompositionHostFactory Default { get; } = new CompositionHostFactory();
 

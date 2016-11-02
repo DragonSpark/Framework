@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Application;
+using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Extensions;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Composition;
-using DragonSpark.Aspects.Validation;
 
 namespace DragonSpark.Composition
 {

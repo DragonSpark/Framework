@@ -1,5 +1,5 @@
-﻿using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Windows.FileSystem;
 using System;
 using FileInfo = System.IO.FileInfo;

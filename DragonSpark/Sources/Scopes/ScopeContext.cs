@@ -1,7 +1,7 @@
-using DragonSpark.Application;
 using System;
+using DragonSpark.Application;
 
-namespace DragonSpark.Sources
+namespace DragonSpark.Sources.Scopes
 {
 	public class ScopeContext : SuppliedSource<object>
 	{

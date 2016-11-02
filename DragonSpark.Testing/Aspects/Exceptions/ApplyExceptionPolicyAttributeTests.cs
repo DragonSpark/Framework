@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Polly;
 using System;
 using System.Linq;
+using DragonSpark.Sources.Scopes;
 using Xunit;
 
 namespace DragonSpark.Testing.Aspects.Exceptions

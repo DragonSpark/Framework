@@ -1,7 +1,7 @@
-﻿using DragonSpark.Sources;
+﻿using DragonSpark.Sources.Scopes;
 using Xunit;
 
-namespace DragonSpark.Testing.Sources
+namespace DragonSpark.Testing.Sources.Scopes
 {
 	public class ScopeTests
 	{

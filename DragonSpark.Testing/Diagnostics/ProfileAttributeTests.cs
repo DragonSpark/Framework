@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Aspects;
 using DragonSpark.Diagnostics;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework;
 using Xunit;
 using Xunit.Abstractions;

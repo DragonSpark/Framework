@@ -2,6 +2,7 @@
 using System.Windows.Media.Animation;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using Xunit;
 
 // ReSharper disable AccessToModifiedClosure

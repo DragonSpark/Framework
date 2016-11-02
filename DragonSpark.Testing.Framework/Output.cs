@@ -1,5 +1,5 @@
+using DragonSpark.Sources.Scopes;
 using System;
-using DragonSpark.Sources;
 
 namespace DragonSpark.Testing.Framework
 {

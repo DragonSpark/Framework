@@ -1,7 +1,7 @@
 using DragonSpark.Coercion;
 using DragonSpark.Extensions;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized.Caching;
+using DragonSpark.Sources.Scopes;
 using System;
 
 namespace DragonSpark.Specifications

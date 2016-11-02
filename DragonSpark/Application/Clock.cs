@@ -1,5 +1,5 @@
-using DragonSpark.Configuration;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using System;
 
 namespace DragonSpark.Application

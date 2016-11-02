@@ -1,8 +1,8 @@
 using DragonSpark.Runtime;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
+using DragonSpark.Testing.Framework.Application.Setup;
 using JetBrains.dotMemoryUnit;
 using System;
-using DragonSpark.Testing.Framework.Application.Setup;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Framework

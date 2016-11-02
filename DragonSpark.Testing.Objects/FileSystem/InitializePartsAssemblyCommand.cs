@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;

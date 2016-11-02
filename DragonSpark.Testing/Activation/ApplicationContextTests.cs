@@ -2,7 +2,7 @@
 using DragonSpark.Application.Setup;
 using DragonSpark.Commands;
 using DragonSpark.Configuration;
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Framework.Runtime;

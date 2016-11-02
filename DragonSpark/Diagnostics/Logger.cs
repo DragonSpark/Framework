@@ -1,8 +1,8 @@
 using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
-using DragonSpark.Configuration;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using Serilog;
 

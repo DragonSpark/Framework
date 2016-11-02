@@ -3,6 +3,7 @@ using DragonSpark.Sources.Parameterized;
 using Serilog;
 using System;
 using System.Collections.Immutable;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Diagnostics
 {

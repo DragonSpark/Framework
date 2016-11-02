@@ -1,6 +1,6 @@
 using DragonSpark.Commands;
-using DragonSpark.Configuration;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System.Linq;
 using System.Reflection;
 

@@ -3,6 +3,7 @@ using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 using Polly;
 using System;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Diagnostics.Exceptions
 {

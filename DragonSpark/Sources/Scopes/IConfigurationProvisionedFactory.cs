@@ -1,7 +1,7 @@
-using DragonSpark.Sources.Parameterized;
 using System.Collections.Immutable;
+using DragonSpark.Sources.Parameterized;
 
-namespace DragonSpark.Configuration
+namespace DragonSpark.Sources.Scopes
 {
 	public interface IConfigurationProvisionedFactory<TConfiguration, out TResult> : IConfigurationProvisionedFactory<TConfiguration, object, TResult> {}
 	public interface IConfigurationProvisionedFactory<TConfiguration, TParameter, out TResult> : IParameterizedSource<TParameter, TResult>

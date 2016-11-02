@@ -1,7 +1,7 @@
-﻿using DragonSpark.Configuration;
+﻿using DragonSpark.Sources.Scopes;
 using Xunit;
 
-namespace DragonSpark.Testing.Configuration
+namespace DragonSpark.Testing.Sources.Scopes
 {
 	public class ConfigurableParameterizedSourceTests
 	{

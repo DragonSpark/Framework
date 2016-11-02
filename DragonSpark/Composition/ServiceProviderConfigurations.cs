@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Composition
 {

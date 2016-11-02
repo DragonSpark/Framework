@@ -1,4 +1,4 @@
-using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using Ploeh.AutoFixture;
 
 namespace DragonSpark.Testing.Framework.Application.Setup

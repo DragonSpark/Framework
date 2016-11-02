@@ -1,6 +1,7 @@
 using DragonSpark.Composition;
 using DragonSpark.Sources;
 using System.Collections.Immutable;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Application
 {

@@ -2,6 +2,7 @@ using DragonSpark.Expressions;
 using DragonSpark.TypeSystem;
 using DragonSpark.TypeSystem.Generics;
 using System;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources.Parameterized.Caching
 {

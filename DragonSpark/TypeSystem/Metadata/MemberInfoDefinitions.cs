@@ -1,7 +1,7 @@
 using DragonSpark.Activation;
 using DragonSpark.Extensions;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

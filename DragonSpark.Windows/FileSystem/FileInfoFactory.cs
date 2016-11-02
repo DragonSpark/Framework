@@ -1,5 +1,5 @@
-﻿using DragonSpark.Configuration;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem

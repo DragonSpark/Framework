@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Sources;
 using Serilog;
 using System;
+using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Diagnostics
 {

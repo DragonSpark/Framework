@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Composition;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using System;
 using System.Composition;

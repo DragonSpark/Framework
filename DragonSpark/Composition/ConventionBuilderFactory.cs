@@ -1,4 +1,4 @@
-using DragonSpark.Configuration;
+using DragonSpark.Sources.Scopes;
 using System.Composition.Convention;
 
 namespace DragonSpark.Composition

@@ -1,5 +1,7 @@
 namespace DragonSpark.Specifications
 {
+	public sealed class Common : Common<object> {}
+
 	public class Common<T>
 	{
 		protected Common() {}
