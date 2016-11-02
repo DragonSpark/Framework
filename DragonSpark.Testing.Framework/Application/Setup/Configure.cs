@@ -13,6 +13,6 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		Configure() {}
 
 		public override IActivator Get( IActivator parameter ) => 
-			new CompositeActivator( new InstanceRepository( FixtureContext.Default, MethodContext.Default ), new FixtureServiceProvider( FixtureContext.Default.Get() ), parameter );
+			new CompositeActivator( new InstanceRepository( CurrentFixture.Default, CurrentMethod.Default ), new FixtureServiceProvider( CurrentFixture.Default.Get() ), parameter );
 	}
 }

@@ -356,7 +356,7 @@
     <Compile Include="Application\ApplicationAssemblies.cs" />
     <Compile Include="Application\ApplicationCommandSource.cs" />
     <Compile Include="Application\ApplicationParts.cs" />
-    <Compile Include="Application\ApplicationServices.cs" />
+    <Compile Include="Application\CurrentApplication.cs" />
     <Compile Include="Application\ApplicationTypes.cs" />
     <Compile Include="Application\Setup\ApplyExportsCommand.cs" />
     <Compile Include="Application\Setup\ApplySetup.cs" />

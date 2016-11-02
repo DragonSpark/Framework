@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Framework.Application
 		public AutoDataAttribute() : this( DefaultFixtureFactory ) {}
 
 		[UsedImplicitly]
-		protected AutoDataAttribute( Func<IFixture> fixture ) : base( FixtureContext.Default.WithInstance( fixture() ) ) {}
+		protected AutoDataAttribute( Func<IFixture> fixture ) : base( CurrentFixture.Default.WithInstance( fixture() ) ) {}
 
 		public override IEnumerable<object[]> GetData( MethodInfo methodUnderTest )
 		{

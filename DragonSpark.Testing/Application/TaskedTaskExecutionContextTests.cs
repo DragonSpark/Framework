@@ -18,12 +18,12 @@ namespace DragonSpark.Testing.Application
 		{
 			var current = ExecutionContext.Default.Get();
 			Assert.Equal( ExecutionContext.Default.Get().Origin, Identifier.Current() );
-			Assert.Null( MethodContext.Default.Get() );
+			Assert.Null( CurrentMethod.Default.Get() );
 			return Task.Run( () =>
 							 {
 								 Assert.Same( current, ExecutionContext.Default.Get() );
 								 Assert.NotEqual( ExecutionContext.Default.Get().Origin, Identifier.Current() );
-								 Assert.Null( MethodContext.Default.Get() );
+								 Assert.Null( CurrentMethod.Default.Get() );
 							 } );
 		}
 
@@ -33,14 +33,14 @@ namespace DragonSpark.Testing.Application
 			var current = ExecutionContext.Default.Get();
 			Assert.Equal( Identification.Default.Get(), Identifier.Current() );
 			var method = new Func<Task>( Theory ).Method;
-			Assert.Equal( method, MethodContext.Default.Get() );
+			Assert.Equal( method, CurrentMethod.Default.Get() );
 			return Task.Run( () =>
 							 {
 								 Assert.Same( current, ExecutionContext.Default.Get() );
 								 ExecutionContextTests.Verify( method );
 								 Assert.NotEqual( ExecutionContext.Default.Get().Origin, Identifier.Current() );
-								 Assert.NotNull( MethodContext.Default.Get() );
-								 Assert.Equal( method, MethodContext.Default.Get() );
+								 Assert.NotNull( CurrentMethod.Default.Get() );
+								 Assert.Equal( method, CurrentMethod.Default.Get() );
 							 } );
 		}
 	}

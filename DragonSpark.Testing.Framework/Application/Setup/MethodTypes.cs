@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		readonly static Func<object, ImmutableArray<Func<MethodBase, ImmutableArray<Type>>>> Locator = HostedValueLocator<Func<MethodBase, ImmutableArray<Type>>>.Default.Get;
 
 		public static MethodTypes Default { get; } = new MethodTypes();
-		MethodTypes() : this( MethodContext.Default.Get ) {}
+		MethodTypes() : this( CurrentMethod.Default.Get ) {}
 
 		readonly Func<MethodBase> methodSource;
 		readonly Func<object, ImmutableArray<Func<MethodBase, ImmutableArray<Type>>>> locator;

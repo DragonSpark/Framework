@@ -43,7 +43,7 @@ namespace DragonSpark.Testing.Framework
 				}
 				finally
 				{
-					var disposable = (IDisposable)ApplicationServices.Default.Get() ?? ExecutionContext.Default.Get();
+					var disposable = (IDisposable)CurrentApplication.Default.Get() ?? ExecutionContext.Default.Get();
 					args.ReturnValue = Defer.Run( new Action( disposable.Dispose ).Wrap<Task>(), args.ReturnValue );
 				}
 			}

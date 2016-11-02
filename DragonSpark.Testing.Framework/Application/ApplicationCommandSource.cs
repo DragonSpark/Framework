@@ -21,6 +21,6 @@ namespace DragonSpark.Testing.Framework.Application
 		protected override IEnumerable<ICommand> Yield() => 
 			base.Yield()
 				.Append( MetadataCommand.Default )
-				.Concat( Factory( MethodContext.Default.Get() ) );
+				.Concat( Factory( CurrentMethod.Default.Get() ) );
 	}
 }

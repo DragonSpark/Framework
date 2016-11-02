@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Application
 
 		public static void Verify( MethodBase method )
 		{
-			var current = MethodContext.Default.Get();
+			var current = CurrentMethod.Default.Get();
 			if ( method != null && current != method )
 			{
 				throw new InvalidOperationException( $"Assigned Method is different from expected.  Expected: {method}.  Actual: {current}" );
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Application
 		public void Fact()
 		{
 			Assert.Equal( Identification.Default.Get(), Identifier.Current() );
-			Assert.Null( MethodContext.Default.Get() );
+			Assert.Null( CurrentMethod.Default.Get() );
 		}
 
 		[Theory, ExecutionContextAutoData]
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Application
 			var method = new Action( Theory ).Method;
 			Verify( method );
 			Assert.Equal( ExecutionContext.Default.Get().Origin, Identifier.Current() );
-			Assert.Equal( method, MethodContext.Default.Get() );
+			Assert.Equal( method, CurrentMethod.Default.Get() );
 		}
 	}
 

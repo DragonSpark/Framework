@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Framework.Application
 
 		public override void Execute( MethodBase parameter )
 		{
-			MethodContext.Default.Assign( parameter );
+			CurrentMethod.Default.Assign( parameter );
 			disposables.Add( ExecutionContext.Default.Get() );
 		}
 	}

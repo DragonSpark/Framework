@@ -97,7 +97,7 @@
     <Compile Include="Runtime\Identifier.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Diagnostics\PerformanceSupport.cs" />
-    <Compile Include="Runtime\MethodContext.cs" />
+    <Compile Include="Runtime\CurrentMethod.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Application\ServiceAttribute.cs" />
     <Compile Include="Runtime\MethodOperationContext.cs" />
@@ -114,7 +114,7 @@
     <Compile Include="Application\Setup\AutoConfiguredDataCustomization.cs" />
     <Compile Include="Application\Setup\CommandAttributeBase.cs" />
     <Compile Include="Application\Setup\ContainingTypeAndNestedAttribute.cs" />
-    <Compile Include="Application\Setup\FixtureContext.cs" />
+    <Compile Include="Application\Setup\CurrentFixture.cs" />
     <Compile Include="Application\Setup\FixtureFactory.cs" />
     <Compile Include="Application\Setup\FixtureFactoryBase.cs" />
     <Compile Include="Application\Setup\FixtureServiceProvider.cs" />

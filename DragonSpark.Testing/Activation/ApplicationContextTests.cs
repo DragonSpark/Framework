@@ -25,15 +25,15 @@ namespace DragonSpark.Testing.Activation
 			var current = Assert.IsType<TaskContext>( before );
 			Assert.Same( ExecutionContext.Default.Get(), current );
 			Assert.Equal( Identification.Default.Get(), current.Origin );
-			Assert.Null( MethodContext.Default.Get() );
+			Assert.Null( CurrentMethod.Default.Get() );
 			Assert.True( EnableMethodCaching.Default.Get() );
 
 			var method = MethodBase.GetCurrentMethod();
 			object inner;
-			using ( ApplicationFactory.Default.Get( method ).Run( new AutoData( FixtureContext.Default.WithFactory( FixtureFactory<DefaultAutoDataCustomization>.Default.Get ), method ) ) )
+			using ( ApplicationFactory.Default.Get( method ).Run( new AutoData( CurrentFixture.Default.WithFactory( FixtureFactory<DefaultAutoDataCustomization>.Default.Get ), method ) ) )
 			{
-				Assert.NotNull( MethodContext.Default.Get() );
-				Assert.Same( method, MethodContext.Default.Get() );
+				Assert.NotNull( CurrentMethod.Default.Get() );
+				Assert.Same( method, CurrentMethod.Default.Get() );
 				inner = Execution.Default.GetValue();
 				Assert.Same( current, inner );
 				var condition = EnableMethodCaching.Default.Get();
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Activation
 			Assert.NotSame( inner, after );
 			Assert.NotSame( current, after );
 
-			Assert.Null( MethodContext.Default.Get() );
+			Assert.Null( CurrentMethod.Default.Get() );
 
 			Assert.True( EnableMethodCaching.Default.Get() );
 		}

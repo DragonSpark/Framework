@@ -24,6 +24,6 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		}
 
 		static bool ShouldDefault( ParameterInfo info ) => 
-			info.IsOptional && !MethodContext.Default.Get().GetParameterTypes().Any( info.ParameterType.Adapt().IsAssignableFrom );
+			info.IsOptional && !CurrentMethod.Default.Get().GetParameterTypes().Any( info.ParameterType.Adapt().IsAssignableFrom );
 	}
 }
