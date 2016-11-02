@@ -1,3 +1,4 @@
+using DragonSpark.Diagnostics;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using PostSharp.Aspects;
@@ -21,7 +22,7 @@ namespace DragonSpark.Aspects
 
 		public TimedAttribute() : this( "Executed Method '{@Method}'" ) {}
 
-		public TimedAttribute( string template ) : this( Diagnostics.Configuration.TimedOperationFactory.WithParameter( template ).ToDelegate() ) {}
+		public TimedAttribute( string template ) : this( TimedOperations.Default.WithParameter( template ).ToDelegate() ) {}
 
 		TimedAttribute( Func<Func<MethodBase, IDisposable>> source )
 		{

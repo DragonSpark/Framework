@@ -235,7 +235,6 @@
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
     <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
-    <Compile Include="Diagnostics\Configuration.cs" />
     <Compile Include="Diagnostics\ConfigureLoggingCommand.cs" />
     <Compile Include="Diagnostics\Defaults.cs" />
     <Compile Include="Diagnostics\LoggerBase.cs" />
@@ -244,7 +243,7 @@
     <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
     <Compile Include="Diagnostics\SystemLogger.cs" />
     <Compile Include="Diagnostics\TimedOperationFactory.cs" />
-    <Compile Include="Diagnostics\TimedOperationFactorySource.cs" />
+    <Compile Include="Diagnostics\TimedOperations.cs" />
     <Compile Include="Extensions\WeakReferenceListExtensions.cs" />
     <Compile Include="FormatterParameter.cs" />
     <Compile Include="PriorityAwareLocator.cs" />
