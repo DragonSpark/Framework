@@ -228,6 +228,16 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
+    <Compile Include="Sources\ISourceAware.cs" />
+    <Compile Include="Sources\Parameterized\AlterationAdapter.cs" />
+    <Compile Include="Sources\Parameterized\AlteredResultParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\AppliedAlteration.cs" />
+    <Compile Include="Sources\Parameterized\ConditionalInstanceParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\ConditionalParameterizedSource.cs" />
+    <Compile Include="Sources\Parameterized\Curry.cs" />
+    <Compile Include="Sources\Parameterized\DelegatedAlteration.cs" />
+    <Compile Include="Sources\Parameterized\ICurry.cs" />
+    <Compile Include="Sources\Parameterized\ISpecificationParameterizedSource.cs" />
     <Compile Include="Sources\Scopes\ParameterizedScopedSingleton.cs" />
     <Compile Include="Sources\Scopes\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
@@ -252,7 +262,7 @@
     <Compile Include="Runtime\EnumerableResultAlteration.cs" />
     <Compile Include="Sources\ConfiguringFactory.cs" />
     <Compile Include="Sources\Parameterized\AlteredParameterizedSource.cs" />
-    <Compile Include="Sources\Parameterized\AutoValidatingFactory.cs" />
+    <Compile Include="Sources\Parameterized\AutoValidatingSource.cs" />
     <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
@@ -261,6 +271,9 @@
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
     <Compile Include="Sources\Scopes\ScopedSingleton.cs" />
+    <Compile Include="Sources\Scopes\Scopes.cs" />
+    <Compile Include="Sources\Source.cs" />
+    <Compile Include="Sources\SourceAccountedAlteration.cs" />
     <Compile Include="Sources\SourceAccountedTypes.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />

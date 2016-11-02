@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Sources
+﻿namespace DragonSpark.Sources
 {
 	public interface ISource<out T> : ISource
 	{
@@ -10,22 +8,5 @@ namespace DragonSpark.Sources
 	public interface ISource
 	{
 		object Get();
-	}
-
-	public interface ISourceAware
-	{
-		Type SourceType { get; }
-	}
-
-	public class Source<T> : SourceBase<T>
-	{
-		readonly T instance;
-
-		public Source( T instance )
-		{
-			this.instance = instance;
-		}
-
-		public override T Get() => instance;
 	}
 }

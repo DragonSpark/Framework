@@ -3,11 +3,6 @@ using System.IO;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public interface IElementSource<T> : IAssignableSource<T> where T : class, IFileSystemElement
-	{
-		string Path { get; }
-	}
-
 	sealed class ElementSource<T> : SuppliedSource<T>, IElementSource<T> where T : class, IFileSystemElement
 	{
 		readonly IFileSystemRepository repository;

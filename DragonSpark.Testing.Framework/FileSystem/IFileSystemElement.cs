@@ -1,6 +1,4 @@
-﻿using DragonSpark.Sources;
-using System;
-using System.Collections.Immutable;
+﻿using System;
 using System.IO;
 
 namespace DragonSpark.Testing.Framework.FileSystem
@@ -12,8 +10,4 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		DateTimeOffset LastAccessTime { get; set; }
 		DateTimeOffset LastWriteTime { get; set; }
 	}
-
-	public interface IFileElement : IFileSystemElement, IAssignableSource<ImmutableArray<byte>> {}
-
-	public interface IDirectoryElement : IFileSystemElement {}
 }
