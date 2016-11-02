@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Commands;
-using DragonSpark.Sources;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using System;
@@ -11,8 +10,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public class InitializePartsAssemblyCommand : CommandBase<IEnumerable<Type>>
 	{
-		public static IScope<InitializePartsAssemblyCommand> Current { get; } = new Scope<InitializePartsAssemblyCommand>( Factory.GlobalCache( () => new InitializePartsAssemblyCommand() ) );
-		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Current.Execute ) {}
+		public static InitializePartsAssemblyCommand Default { get; } = new InitializePartsAssemblyCommand();
+		InitializePartsAssemblyCommand() : this( ProvisionFromSystemFileCommand.Default.Execute ) {}
 
 		readonly Action<FileInfo> provision;
 

@@ -21,9 +21,9 @@ namespace DragonSpark.Testing.Framework
 
 			Path.Default.Configuration.Assign<MockPath>();
 			Directory.Default.Configuration.Assign<MockDirectory>();
-			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.AssignGlobal );
+			DirectoryInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.GlobalCache() );
 			File.Default.Configuration.Assign<MockFile>();
-			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.AssignGlobal );
+			FileInfoFactory.DefaultImplementation.Implementation.Configuration.Assign( ParameterConstructor<string, MockFileInfo>.Default.GlobalCache() );
 
 			UserSettingsFilePath.Default.Configuration.Assign( Application.Setup.UserSettingsFilePath.Default.GlobalCache() );
 		}

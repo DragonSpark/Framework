@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	[ApplyAlteration( typeof(FileNameAlteration) )]
 	public class AssemblyLoader : ParameterizedSourceBase<string, Assembly>
 	{
-		public static ISource<AssemblyLoader> Current { get; } = new Scope<AssemblyLoader>( Factory.GlobalCache( () => new AssemblyLoader() ) );
+		public static AssemblyLoader Default { get; } = new AssemblyLoader();
 		AssemblyLoader() : this( FileSystemRepository.Default, AppDomain.CurrentDomain ) {}
 
 		readonly IFileSystemRepository repository;

@@ -2,6 +2,7 @@
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;
@@ -10,28 +11,29 @@ using System;
 
 namespace DragonSpark.Testing.Objects.FileSystem
 {
-	[ApplyAutoValidation, ApplySpecification( typeof(OnlyOnceSpecification) )]
+	[ApplyAutoValidation, ApplySpecification( typeof(OncePerScopeSpecification<object>) )]
 	public sealed class InitializePartsCommand : CompositeCommand
 	{
-		public InitializePartsCommand() : base( 
-			InitializePartsAssemblyCommand.Current.Get(),
-			TypeSystem.Configuration.AssemblyLoader.ToCommand( AssemblyLoader.Current.GetValueDelegate() )
+		public static InitializePartsCommand Default { get; } = new InitializePartsCommand();
+		InitializePartsCommand() : base( 
+			InitializePartsAssemblyCommand.Default,
+			TypeSystem.Configuration.AssemblyLoader.ToCommand( AssemblyLoader.Default.ToDelegate() )
 			) {}
 
 		public sealed class Public : ApplicationPublicPartsAttribute
 		{
-			public Public() : base( new InitializePartsCommand().Execute ) {}
+			public Public() : base( Default.Execute ) {}
 		}
 
 		public sealed class All : ApplicationPartsAttribute
 		{
-			public All() : base( new InitializePartsCommand().Execute ) {}
+			public All() : base( Default.Execute ) {}
 		}
 	}
 
 	public sealed class InitializePartsAssemblyCommand : SuppliedEnumerableComand<Type>
 	{
-		public static IScope<InitializePartsAssemblyCommand> Current { get; } = Scopes.Create( () => new InitializePartsAssemblyCommand() );
-		InitializePartsAssemblyCommand() : base( Framework.FileSystem.InitializePartsAssemblyCommand.Current.Get(), typeof(PublicClass) ) {}
+		public static InitializePartsAssemblyCommand Default { get; } = new InitializePartsAssemblyCommand();
+		InitializePartsAssemblyCommand() : base( Framework.FileSystem.InitializePartsAssemblyCommand.Default, typeof(PublicClass) ) {}
 	}
 }

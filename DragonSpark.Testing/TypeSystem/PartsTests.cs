@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.TypeSystem
 		[Fact]
 		public void Public()
 		{
-			new InitializePartsCommand().Execute();
+			InitializePartsCommand.Default.Execute();
 			PublicAttributed( PublicParts.Default.Get( GetType().Assembly ) );
 		}
 
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.TypeSystem
 		[Fact]
 		public void All()
 		{
-			new InitializePartsCommand().Execute();
+			InitializePartsCommand.Default.Execute();
 			AllAttributed( AllParts.Default.Get( GetType().Assembly ) );
 		}
 

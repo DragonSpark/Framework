@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Commands;
-using DragonSpark.Sources;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
 using System;
@@ -10,8 +9,8 @@ namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public class ProvisionFromSystemFileCommand : CommandBase<FileInfo>
 	{
-		public static IScope<ProvisionFromSystemFileCommand> Current { get; } = Scopes.Create( () => new ProvisionFromSystemFileCommand() );
-		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Current.Get(), PathTranslator.Current.GetValue, ByteReader.Default.Get ) {}
+		public static ProvisionFromSystemFileCommand Default { get; } = new ProvisionFromSystemFileCommand();
+		ProvisionFromSystemFileCommand() : this( RegisterFileSystemEntryCommand.Default, PathTranslator.Default.Get, ByteReader.Default.Get ) {}
 
 		readonly ICommand<FileSystemRegistration> register;
 		readonly Func<FileInfo, string> pathSource;

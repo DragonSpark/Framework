@@ -29,24 +29,17 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public InitializeFileSystemAttribute( string rootDirectory ) : base( rootDirectory ) {}
 	}
 
-	/*public sealed class InitializeFileSystemCommand : SuppliedCommand<string>
-	{
-		public static IScope<InitializeFileSystemCommand> Current { get; } = new Scope<InitializeFileSystemCommand>( Factory.GlobalCache( () => new InitializeFileSystemCommand() ) );
-		InitializeFileSystemCommand() : this( DirectorySource.Current.Get() ) {}
-
-		public InitializeFileSystemCommand( IDirectorySource source ) : base( RegisterDirectoryCommand.Default, source.Get ) {}
-	}*/
-
 	public sealed class RegisterFileCommand : CoercedCommand<string, FileSystemRegistration>
 	{
 		public static RegisterFileCommand Default { get; } = new RegisterFileCommand();
-		RegisterFileCommand() : base( FileRegistrationCoercer.Default, RegisterFileSystemEntryCommand.Current.Execute ) {}
+		RegisterFileCommand() : base( FileRegistrationCoercer.Default, Defaults.Register ) {}
 	}
 
 	public sealed class RegisterDirectoryCommand : CoercedCommand<string, FileSystemRegistration>
 	{
+		
 		public static RegisterDirectoryCommand Default { get; } = new RegisterDirectoryCommand();
-		RegisterDirectoryCommand() : base( DirectoryRegistrationCoercer.Default, RegisterFileSystemEntryCommand.Current.Execute ) {}
+		RegisterDirectoryCommand() : base( DirectoryRegistrationCoercer.Default, Defaults.Register ) {}
 	}
 
 	public sealed class FileRegistrationCoercer : DelegatedCoercer<string, FileSystemRegistration>

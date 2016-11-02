@@ -22,5 +22,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		/// E.g. for not existing files.
 		/// </summary>
 		public static DateTimeOffset DefaultDateTimeOffset { get; } = new DateTime(1601, 01, 01, 00, 00, 00, DateTimeKind.Utc);
+
+		public static Action<FileSystemRegistration> Register { get; } = RegisterFileSystemEntryCommand.Default.Execute;
 	}
 }

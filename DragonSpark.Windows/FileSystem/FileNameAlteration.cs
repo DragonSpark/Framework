@@ -1,12 +1,11 @@
-﻿using DragonSpark.Sources;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Windows.FileSystem
 {
 	public sealed class FileNameAlteration : DelegatedAlteration<string>
 	{
-		public static ISource<FileNameAlteration> Current { get; } = new Scope<FileNameAlteration>( Sources.Factory.GlobalCache( () => new FileNameAlteration() ) );
+		public static FileNameAlteration Default { get; } = new FileNameAlteration();
 		FileNameAlteration() : this( Path.Default ) {}
 
 		[UsedImplicitly]

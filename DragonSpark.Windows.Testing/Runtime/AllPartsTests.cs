@@ -12,7 +12,7 @@ namespace DragonSpark.Windows.Testing.Runtime
 		[Fact]
 		public void Coverage()
 		{
-			new InitializePartsCommand().Execute();
+			InitializePartsCommand.Default.Execute();
 			Assert.True( AllParts.Default.Get( ApplicationAssemblies.Default.Unwrap() ).Any() );
 		}
 	}

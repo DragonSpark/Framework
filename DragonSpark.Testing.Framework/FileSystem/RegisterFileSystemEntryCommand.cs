@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Commands;
-using DragonSpark.Sources;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
 	public sealed class RegisterFileSystemEntryCommand : CommandBase<FileSystemRegistration>
 	{
-		public static IScope<RegisterFileSystemEntryCommand> Current { get; } = Scopes.Create( () => new RegisterFileSystemEntryCommand() );
+		public static RegisterFileSystemEntryCommand Default { get; } = new RegisterFileSystemEntryCommand();
 		RegisterFileSystemEntryCommand() : this( FileSystemRepository.Default ) {}
 
 		readonly IFileSystemRepository repository;

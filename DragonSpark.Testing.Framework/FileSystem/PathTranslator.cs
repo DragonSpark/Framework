@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 	sealed class PathTranslator : ParameterizedSourceBase<FileInfo, string>
 	{
-		public static ISource<PathTranslator> Current { get; } = new Scope<PathTranslator>( Factory.GlobalCache( () => new PathTranslator() ) );
+		public static PathTranslator Default { get; } = new PathTranslator();
 		PathTranslator() : this( Path.Default ) {}
 
 		readonly IPath path;
