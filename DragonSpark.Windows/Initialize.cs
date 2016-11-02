@@ -12,7 +12,7 @@ namespace DragonSpark.Windows
 		[ModuleInitializer( 0 )]
 		public static void Execute()
 		{
-			Application.Execution.Context.Assign( ExecutionContext.Default );
+			Application.Execution.Default.Assign( ExecutionContext.Default );
 			TypeSystem.Configuration.AssemblyLoader.Assign( o => Assembly.LoadFile );
 			TypeSystem.Configuration.AssemblyPathLocator.Assign( o => new AssemblyLocator().ToEqualityCache().Get );
 		}

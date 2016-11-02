@@ -1,5 +1,6 @@
-using System;
 using DragonSpark.Application;
+using JetBrains.Annotations;
+using System;
 
 namespace DragonSpark.Sources.Scopes
 {
@@ -7,10 +8,11 @@ namespace DragonSpark.Sources.Scopes
 	{
 		readonly Func<object> defaultScope;
 
-		public ScopeContext() : this( Execution.Context ) {}
+		public ScopeContext() : this( Execution.Default ) {}
 
 		public ScopeContext( ISource<ISource> defaultScope ) : this( defaultScope.GetValue ) {}
 
+		[UsedImplicitly]
 		public ScopeContext( Func<object> defaultScope )
 		{
 			this.defaultScope = defaultScope;

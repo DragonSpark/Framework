@@ -2,6 +2,7 @@
 using DragonSpark.Application;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Testing.Framework;
@@ -27,7 +28,7 @@ namespace DragonSpark.Testing.Diagnostics
 			var logger = context.GetExport<ILogger>();
 
 			var serviceProvider = DefaultServices.Default.Cached();
-			Assert.Same( Logger.Default.Get( Execution.Current() ), serviceProvider.Get<ILogger>() );
+			Assert.Same( Logger.Default.Get( Execution.Default.GetValue() ), serviceProvider.Get<ILogger>() );
 			Assert.Same( serviceProvider.Get<ILogger>(), logger );
 
 			var method = new Action( Subject ).Method;

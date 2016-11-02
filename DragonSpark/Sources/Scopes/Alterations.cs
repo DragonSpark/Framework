@@ -8,7 +8,6 @@ namespace DragonSpark.Sources.Scopes
 	[SuppressMessage( "ReSharper", "PossibleInfiniteInheritance" )]
 	public class Alterations<T> : Scope<ImmutableArray<IAlteration<T>>>, IAlterations<T>
 	{
-		// public ConfigurationScope() : this( Items<ITransformer<T>>.Default ) {}
 		public Alterations( params IAlteration<T>[] configurators ) : base( new ConfigurationSource<T>( configurators ).GlobalCache() ) {}
 	}
 }

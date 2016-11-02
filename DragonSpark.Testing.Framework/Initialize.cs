@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Framework
 		[ModuleInitializer( 0 )]
 		public static void Execution()
 		{
-			DragonSpark.Application.Execution.Context.Assign( ExecutionContext.Default );
+			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
 			DragonSpark.Application.Clock.Default.Configuration.Assign( Time.Default.GlobalCache() );
 			LoggingConfiguration.Default.Configurators.Assign( new LoggerExportedConfigurations( DefaultSystemLoggerConfigurations.Default.Unwrap() ).Global );
 

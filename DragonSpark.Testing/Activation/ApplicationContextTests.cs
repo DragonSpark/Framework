@@ -2,6 +2,7 @@
 using DragonSpark.Application.Setup;
 using DragonSpark.Commands;
 using DragonSpark.Configuration;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
@@ -20,7 +21,7 @@ namespace DragonSpark.Testing.Activation
 		[Fact]
 		public void Assignment()
 		{
-			var before = Execution.Current();
+			var before = Execution.Default.GetValue();
 			var current = Assert.IsType<TaskContext>( before );
 			Assert.Same( ExecutionContext.Default.Get(), current );
 			Assert.Equal( Identification.Default.Get(), current.Origin );
@@ -33,13 +34,13 @@ namespace DragonSpark.Testing.Activation
 			{
 				Assert.NotNull( MethodContext.Default.Get() );
 				Assert.Same( method, MethodContext.Default.Get() );
-				inner = Execution.Current();
+				inner = Execution.Default.GetValue();
 				Assert.Same( current, inner );
 				var condition = EnableMethodCaching.Default.Get();
 				Assert.False( condition );
 			}
 
-			var after = Execution.Current();
+			var after = Execution.Default.GetValue();
 			Assert.NotNull( after );
 			Assert.NotSame( inner, after );
 			Assert.NotSame( current, after );
