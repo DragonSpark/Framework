@@ -83,7 +83,7 @@ namespace DragonSpark.Testing.Activation.Location
 
 		sealed class SingletonScopedSubject
 		{
-			public static IScope<SingletonScopedSubject> Default { get; } = new Scope<SingletonScopedSubject>( Factory.GlobalCache( () => new SingletonScopedSubject() ) );
+			public static IScope<SingletonScopedSubject> Default { get; } = new ScopedSingleton<SingletonScopedSubject>( () => new SingletonScopedSubject() );
 			SingletonScopedSubject() {}
 
 			[UsedImplicitly]

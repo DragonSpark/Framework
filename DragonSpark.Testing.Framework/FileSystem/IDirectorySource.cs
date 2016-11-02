@@ -11,10 +11,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		string PathRoot { get; }
 	}
 
-	public sealed class DirectorySource : Scope<IDirectorySource>, IDirectorySource
+	public sealed class DirectorySource : ScopedSingleton<IDirectorySource>, IDirectorySource
 	{
 		public static DirectorySource Default { get; } = new DirectorySource();
-		DirectorySource() : base( Factory.GlobalCache( () => new Implementation() ) ) {}
+		DirectorySource() : base( () => new Implementation() ) {}
 
 		public new string Get() => base.Get().Get();
 

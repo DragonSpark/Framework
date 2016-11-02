@@ -3,7 +3,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Sources.Scopes
 {
-	public class ConfigurableParameterizedSourceTests
+	public class ParameterizedScopeTests
 	{
 		[Fact]
 		public void VerifyConfiguration()
@@ -12,14 +12,14 @@ namespace DragonSpark.Testing.Sources.Scopes
 			var before = Configurable.Default.Get( parameter );
 			Assert.Equal( parameter + 6776, before );
 
-			Configurable.Default.Configuration.Assign( () => i => i * 2 );
+			Configurable.Default.Assign( () => i => i * 2 );
 
 			const int answer = 42;
 			var after = Configurable.Default.Get( answer );
 			Assert.Equal( answer * 2, after );
 		}
 
-		sealed class Configurable : ConfigurableParameterizedSource<int, int>
+		sealed class Configurable : ParameterizedScope<int, int>
 		{
 			public static Configurable Default { get; } = new Configurable();
 			Configurable() : base( i => i + 6776 ) {}

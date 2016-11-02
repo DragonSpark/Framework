@@ -9,13 +9,13 @@ using System.Text;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class File : Scope<FileBase>, IFile
+	public class File : ScopedSingleton<FileBase>, IFile
 	{
 		public static File Default { get; } = new File();
-		File() : base( Sources.Scopes.Factory.GlobalCache( () => new FileWrapper() ) ) {}
+		File() : base( () => new FileWrapper() ) {}
 
 		[UsedImplicitly]
-		public File( FileBase source) :  base( source.Self ) {}
+		public File( FileBase source ) :  base( source ) {}
 
 		public void AppendAllLines( string path, IEnumerable<string> contents ) => Get().AppendAllLines( path, contents );
 		public void AppendAllLines( string path, IEnumerable<string> contents, Encoding encoding ) => Get().AppendAllLines( path, contents, encoding );

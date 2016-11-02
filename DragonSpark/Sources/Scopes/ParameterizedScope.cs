@@ -1,7 +1,8 @@
+using DragonSpark.Sources.Parameterized;
+using JetBrains.Annotations;
 using System;
-using DragonSpark.Sources.Scopes;
 
-namespace DragonSpark.Sources.Parameterized
+namespace DragonSpark.Sources.Scopes
 {
 	public class ParameterizedScope<T> : ParameterizedScope<object, T>, IParameterizedScope<T>
 	{
@@ -12,10 +13,12 @@ namespace DragonSpark.Sources.Parameterized
 	{
 		readonly IScope<Func<TParameter, TResult>> scope;
 
+		public ParameterizedScope() : this( parameter => default(TResult) ) {}
 		public ParameterizedScope( Func<TParameter, TResult> source ) : this( new Func<object, Func<TParameter, TResult>>( new SourceAdapter<object, Func<TParameter, TResult>>( source.Self ).Get ) ) {}
 
 		public ParameterizedScope( Func<object, Func<TParameter, TResult>> source ) : this( new Scope<Func<TParameter, TResult>>( source ) ) {}
 
+		[UsedImplicitly]
 		protected ParameterizedScope( IScope<Func<TParameter, TResult>> scope )
 		{
 			this.scope = scope;

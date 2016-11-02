@@ -16,13 +16,13 @@ namespace DragonSpark.Windows
 	{
 		readonly static ImmutableArray<ITypeDefinitionProvider> Providers = TypeDefinitions.Source.Implementation.Get().Insert( 0, MetadataTypeDefinitionProvider.Default );
 		readonly static Func<Assembly, bool> Specification =
-			new DelegatedSpecification<Assembly>( ApplicationAssemblySpecification.Default.Configuration.GetFactory() )
+			new DelegatedSpecification<Assembly>( ApplicationAssemblySpecification.Default.GetFactory() )
 				.Or( DomainAssemblySpecification.Default )
 				.IsSatisfiedBy;
 
 		public InitializationCommand() : base( Priority.Higher,
 			TypeDefinitions.Source.Implementation.ToCommand( Providers ),
-			ApplicationAssemblySpecification.Default.Configuration.ToCommand( Specification )
+			ApplicationAssemblySpecification.Default.ToCommand( Specification )
 		) {}
 	}
 }

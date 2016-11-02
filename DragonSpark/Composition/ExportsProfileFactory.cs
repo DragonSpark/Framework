@@ -2,11 +2,11 @@ using DragonSpark.Application;
 using DragonSpark.Extensions;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Composition
 {
@@ -16,7 +16,7 @@ namespace DragonSpark.Composition
 		readonly static Func<Type, SingletonExport?> SingletonExports = SingletonExportFactory.Default.Get;
 		readonly static Func<Type, IEnumerable<Type>> Expander = ExportTypeExpander.Default.Get;
 
-		public static ISource<ExportsProfile> Default { get; } = new Scope<ExportsProfile>( new ExportsProfileFactory().GlobalCache() );
+		public static ISource<ExportsProfile> Default { get; } = new ExportsProfileFactory().Create();
 		ExportsProfileFactory() : this( ApplicationTypes.Default.ToDelegate(), AppliedExportLocator.Default.ToDelegate() ) {}
 
 		readonly Func<ImmutableArray<Type>> typesSource;

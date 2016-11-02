@@ -67,7 +67,7 @@
     <Compile Include="ComponentModel\SourceAttributeTests.cs" />
     <Compile Include="ComponentModel\TypeDefinitionsTests.cs" />
     <Compile Include="Composition\ExportMappingTests.cs" />
-    <Compile Include="Sources\Scopes\ConfigurableParameterizedSourceTests.cs" />
+    <Compile Include="Sources\Scopes\ParameterizedScopeTests.cs" />
     <Compile Include="Diagnostics\Configurations\LoggerConfigurationTests.cs" />
     <Compile Include="Diagnostics\ConfigureLoggingCommandTests.cs" />
     <Compile Include="Diagnostics\Exceptions\BackoffRetryTimeTests.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Runtime\DelegateTests.cs" />
     <Compile Include="Runtime\PurgingCollectionTests.cs" />
     <Compile Include="Activation\DelegatesTests.cs" />
-    <Compile Include="Sources\Scopes\ScopeTests.cs" />
+    <Compile Include="Sources\Scopes\ScopedSingletonTests.cs" />
     <Compile Include="Application\Setup\ActivatedServiceSourceTests.cs" />
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />

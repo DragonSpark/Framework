@@ -28,8 +28,7 @@ namespace DragonSpark.Testing.Diagnostics
 		[Fact]
 		public void AssignedSource()
 		{
-			var configuration = TimedOperations.Configuration.Implementation.Configuration;
-			
+			var configuration = TimedOperations.Configuration.Implementation;
 			configuration.Assign( TimedOperationFactory.Default.Wrap() );
 
 			var history = LoggingHistory.Default.Get();

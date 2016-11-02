@@ -8,17 +8,17 @@ using System.Security.AccessControl;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Directory : Scope<DirectoryBase>, IDirectory
+	public class Directory : ScopedSingleton<DirectoryBase>, IDirectory
 	{
 		public static Directory Default { get; } = new Directory();
-		Directory() : base( Sources.Scopes.Factory.GlobalCache( () => new DirectoryWrapper() ) ) {}
+		Directory() : base( () => new DirectoryWrapper() ) {}
 		
 		readonly Func<DirectoryInfoBase, IDirectoryInfo> directorySource = Defaults.Directory;
 
 		public Directory( DirectoryBase source ) : this( source, Defaults.Directory ) {}
 
 		[UsedImplicitly]
-		public Directory( DirectoryBase source, Func<DirectoryInfoBase, IDirectoryInfo> directorySource ) : base( source.Self )
+		public Directory( DirectoryBase source, Func<DirectoryInfoBase, IDirectoryInfo> directorySource ) : base( source )
 		{
 			this.directorySource = directorySource;
 		}

@@ -6,10 +6,12 @@ namespace DragonSpark.Runtime
 {
 	public interface IDisposables : IRepository<IDisposable>, IDisposable {}
 
-	public sealed class Disposables : Scope<IDisposables>, IComposable<IDisposable>
+	public sealed class Disposables : ScopedSingleton<IDisposables>, IComposable<IDisposable>
 	{
 		public static Disposables Default { get; } = new Disposables();
-		Disposables() : base( Factory.GlobalCache( () => new Repository() ) ) {}
+		Disposables() : base( () => new Repository() ) {}
+
+		public void Add( IDisposable instance ) => Default.Get().Add( instance );
 
 		sealed class Repository : RepositoryBase<IDisposable>, IDisposables
 		{
@@ -23,7 +25,5 @@ namespace DragonSpark.Runtime
 			void OnDispose() => this.Each( entry => entry.Dispose() );
 			public void Dispose() => disposable.Dispose();
 		}
-
-		public void Add( IDisposable instance ) => Default.Get().Add( instance );
 	}
 }

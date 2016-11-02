@@ -10,7 +10,7 @@ namespace DragonSpark.Diagnostics
 		public static TimedOperations Default { get; } = new TimedOperations();
 		TimedOperations() : base( parameter => Configuration.Implementation.Get( parameter ).ToEqualityCache().ToDelegate() ) {}
 
-		public sealed class Configuration : ConfigurableParameterizedSource<string, IParameterizedSource<MethodBase, IDisposable>>
+		public sealed class Configuration : ParameterizedScope<string, IParameterizedSource<MethodBase, IDisposable>>
 		{
 			public static Configuration Implementation { get; } = new Configuration();
 			Configuration() : base( parameter => new TimedOperationFactory( parameter ) ) {}

@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public sealed class ByteReader : ConfigurableParameterizedSource<string, ImmutableArray<byte>>
+	public sealed class ByteReader : ParameterizedScopedSingleton<string, ImmutableArray<byte>>
 	{
 		public static ByteReader Default { get; } = new ByteReader();
 		ByteReader() : this( System.IO.File.ReadAllBytes ) {}

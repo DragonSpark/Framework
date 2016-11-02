@@ -14,8 +14,8 @@ namespace DragonSpark.Windows
 		{
 			Application.Execution.Default.Assign( ExecutionContext.Default );
 
-			AssemblyLoader.Default.Configuration.Assign( o => Assembly.LoadFile );
-			AssemblyResourcePathSelector.Default.Configuration.Assign( o => new AssemblyFilePathSelector().ToEqualityCache().Get );
+			AssemblyLoader.Default.Assign( o => Assembly.LoadFile );
+			AssemblyResourcePathSelector.Default.Assign( o => new AssemblyFilePathSelector().ToEqualityCache().Get );
 		}
 	}
 }

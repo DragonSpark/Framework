@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DragonSpark.Composition
 {
-	public sealed class ExportMappings : Scope<ImmutableArray<ExportMapping>>
+	public sealed class ExportMappings : ScopedSingleton<ImmutableArray<ExportMapping>>
 	{
 		public static ExportMappings Default { get; } = new ExportMappings();
 		ExportMappings() : base( () => ExportSource<IEnumerable<ExportMapping>>.Default.Concat().ToImmutableArray() ) {}

@@ -12,7 +12,7 @@ namespace DragonSpark.Sources.Scopes
 	public static class Scopes
 	{
 		public static IScope<T> Create<T>( this ISource<T> @this ) => @this.ToDelegate().Create();
-		public static IScope<T> Create<T>( this Func<T> @this ) => new Scope<T>( @this.GlobalCache() );
+		public static IScope<T> Create<T>( this Func<T> @this ) => new Scope<T>( @this.Singleton() );
 		public static Func<T> ToScopeDelegate<T>( this ISource<T> @this ) => @this.ToDelegate().ToScopeDelegate();
 		public static Func<T> ToScopeDelegate<T>( this Func<T> @this ) => @this.Create().ToDelegate();
 
@@ -24,7 +24,7 @@ namespace DragonSpark.Sources.Scopes
 		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => CacheFactory.Create( @this ).Get;
 
 		public static IParameterizedScope<TParameter, TResult> Create<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().Create();
-		public static IParameterizedScope<TParameter, TResult> Create<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this.GlobalCache() );
+		public static IParameterizedScope<TParameter, TResult> Create<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this.Singleton() );
 
 		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
 		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ScopeCaches<T>.Default.Get( @this );
@@ -77,10 +77,11 @@ namespace DragonSpark.Sources.Scopes
 
 		public static T Global<T>( this ISource<ISource<T>> @this, object _ ) => @this.GetValue();
 		/*public static Func<object, T> GlobalCache<T>( this ISource<ISource<T>> @this ) => @this.ToVDelegate().GlobalCache();*/
-		public static Func<object, T> GlobalCache<T>( this ISource<T> @this ) => @this.ToDelegate().GlobalCache();
-		public static Func<object, T> GlobalCache<T>( this Func<T> @this ) => @this.Wrap().Cache();
-		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().GlobalCache();
-		public static Func<object, Func<TParameter, TResult>> GlobalCache<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new Caches<TParameter, TResult>( @this ).Get;
+		public static Func<object, T> Singleton<T>( this ISource<T> @this ) => @this.ToDelegate().Singleton();
+		public static Func<object, T> Singleton<T>( this Func<T> @this ) => @this.Wrap().Cache();
+		public static Func<object, Func<TParameter, TResult>> Singleton<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().Singleton();
+		public static Func<object, Func<TParameter, TResult>> Singleton<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new Caches<TParameter, TResult>( @this ).Get;
+		public static Func<object, Func<TParameter, TResult>> Singleton<TParameter, TResult>( this Func<Func<TParameter, TResult>> @this ) => CacheFactory.Create( @this ).Get;
 		sealed class Caches<TParameter, TResult> : CacheWithImplementedFactoryBase<Func<TParameter, TResult>>
 		{
 			readonly Func<TParameter, TResult> factory;

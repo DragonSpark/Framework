@@ -5,13 +5,13 @@ using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Path : Scope<PathBase>, IPath
+	public class Path : ScopedSingleton<PathBase>, IPath
 	{
 		public static Path Default { get; } = new Path();
-		Path() : base( Sources.Scopes.Factory.GlobalCache( () => new PathWrapper() ) ) {}
+		Path() : base( () => new PathWrapper() ) {}
 
 		[UsedImplicitly]
-		public Path( PathBase source ) : base( source.Self ) {}
+		public Path( PathBase source ) : base( source ) {}
 
 		public string ChangeExtension( string path, string extension ) => Get().ChangeExtension( path, extension );
 		public string Combine( params string[] paths ) => Get().Combine( paths );

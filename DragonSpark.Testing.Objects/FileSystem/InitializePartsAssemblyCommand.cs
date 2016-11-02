@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Objects.FileSystem
 		public static InitializePartsCommand Default { get; } = new InitializePartsCommand();
 		InitializePartsCommand() : base( 
 			InitializePartsAssemblyCommand.Default,
-			TypeSystem.AssemblyLoader.Default.Configuration.ToCommand( Loader )
+			TypeSystem.AssemblyLoader.Default.ToCommand( Loader )
 			) {}
 
 		public sealed class Public : ApplicationPublicPartsAttribute

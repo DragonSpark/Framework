@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using Polly;
 using System;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Diagnostics.Exceptions
 {
@@ -11,7 +11,7 @@ namespace DragonSpark.Diagnostics.Exceptions
 	{
 		const int Retries = 5;
 
-		public static ISource<Policy> Default { get; } = new Scope<Policy>( new SuppliedRetryPolicySource<T>().GlobalCache() );
+		public static ISource<Policy> Default { get; } = new SuppliedRetryPolicySource<T>().Create();
 		SuppliedRetryPolicySource() : this( Retries ) {}
 
 		[UsedImplicitly]

@@ -228,8 +228,7 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
-    <Compile Include="Sources\Scopes\ConfigurableParameterizedSource.cs" />
-    <Compile Include="Sources\Scopes\IConfigurableParameterizedSource.cs" />
+    <Compile Include="Sources\Scopes\ParameterizedScopedSingleton.cs" />
     <Compile Include="Sources\Scopes\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
@@ -261,6 +260,7 @@
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
+    <Compile Include="Sources\Scopes\ScopedSingleton.cs" />
     <Compile Include="Sources\SourceAccountedTypes.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
@@ -630,7 +630,7 @@
     <Compile Include="Runtime\PurgingCollection.cs" />
     <Compile Include="Sources\Extensions.cs" />
     <Compile Include="Sources\IStack.cs" />
-    <Compile Include="Sources\Parameterized\ParameterizedScope.cs" />
+    <Compile Include="Sources\Scopes\ParameterizedScope.cs" />
     <Compile Include="Sources\Parameterized\ParameterizedSourceBase.cs" />
     <Compile Include="Sources\Scopes\Scope.cs" />
     <Compile Include="Sources\Scopes\ScopeContext.cs" />

@@ -2,6 +2,7 @@ using DragonSpark.Commands;
 using DragonSpark.Runtime;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.Runtime;
+using JetBrains.Annotations;
 using System;
 using System.Reflection;
 
@@ -9,11 +10,13 @@ namespace DragonSpark.Testing.Framework.Application
 {
 	public sealed class ApplicationInitializer : CommandBase<MethodBase>
 	{
-		readonly IComposable<IDisposable> disposables;
-		public static IScope<ApplicationInitializer> Default { get; } = new Scope<ApplicationInitializer>( Factory.GlobalCache( () => new ApplicationInitializer() ) );
+		public static IScope<ApplicationInitializer> Default { get; } = new ScopedSingleton<ApplicationInitializer>( () => new ApplicationInitializer() );
 		ApplicationInitializer() : this( Disposables.Default ) {}
-		
-		ApplicationInitializer( IComposable<IDisposable> disposables )
+
+		readonly IComposable<IDisposable> disposables;
+
+		[UsedImplicitly]
+		public ApplicationInitializer( IComposable<IDisposable> disposables )
 		{
 			this.disposables = disposables;
 		}

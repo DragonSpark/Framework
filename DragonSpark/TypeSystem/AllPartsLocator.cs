@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.TypeSystem
 {
-	public sealed class AllPartsLocator : ScopedParameterizedSourceBase<Assembly, ImmutableArray<Type>>
+	public sealed class AllPartsLocator : ParameterizedScopedSingleton<Assembly, ImmutableArray<Type>>
 	{
 		readonly static Func<Assembly, IEnumerable<Type>> Factory = AssemblyTypes.All.GetEnumerable;
 
