@@ -1,14 +1,14 @@
+using DragonSpark.Sources.Parameterized;
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
-using DragonSpark.Sources.Parameterized;
 
 namespace DragonSpark.TypeSystem
 {
 	public sealed class AssemblyPartLocator : ParameterizedSourceBase<Assembly, ImmutableArray<Assembly>>
 	{
 		public static AssemblyPartLocator Default { get; } = new AssemblyPartLocator();
-		AssemblyPartLocator() : this( AssemblyLoader.Default.Get, AssemblyHintProvider.Default.Get, AssemblyPartQueryProvider.Default.Get ) {}
+		AssemblyPartLocator() : this( AssemblySelector.Default.Get, AssemblyHintProvider.Default.Get, AssemblyPartQueryProvider.Default.Get ) {}
 
 		readonly Func<string, ImmutableArray<Assembly>> assemblySource;
 		readonly Func<Assembly, string> hintSource;

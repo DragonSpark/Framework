@@ -1,8 +1,6 @@
-﻿using DragonSpark.Coercion;
-using DragonSpark.Commands;
+﻿using DragonSpark.Commands;
 using DragonSpark.Specifications;
 using DragonSpark.Testing.Framework.Application.Setup;
-using JetBrains.Annotations;
 using System.Collections.Immutable;
 
 namespace DragonSpark.Testing.Framework.FileSystem
@@ -11,46 +9,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	{
 		readonly static ICommand<ImmutableArray<string>> Command = RegisterFileCommand.Default.AsCompiled<string>().Apply( new OncePerScopeSpecification<ImmutableArray<string>>() );
 		
-		public RegisterFilesAttribute( params string[] files ) : base( Command.ToCommand( files.ToImmutableArray() ) ) {}
-	}
-
-	public class RegisterDirectoriesAttribute : CommandAttributeBase
-	{
-		readonly static ICommand<ImmutableArray<string>> Command = RegisterDirectoryCommand.Default.AsCompiled<string>().Apply( new OncePerScopeSpecification<ImmutableArray<string>>() );
-		
-		public RegisterDirectoriesAttribute( params string[] directories ) : base( Command.ToCommand( directories.ToImmutableArray() ) ) {}
-	}
-
-	public sealed class InitializeFileSystemAttribute : RegisterDirectoriesAttribute
-	{
-		public InitializeFileSystemAttribute() : this( DirectorySource.Default.Get() ) {}
-
-		[UsedImplicitly]
-		public InitializeFileSystemAttribute( string rootDirectory ) : base( rootDirectory ) {}
-	}
-
-	public sealed class RegisterFileCommand : CoercedCommand<string, FileSystemRegistration>
-	{
-		public static RegisterFileCommand Default { get; } = new RegisterFileCommand();
-		RegisterFileCommand() : base( FileRegistrationCoercer.Default, Defaults.Register ) {}
-	}
-
-	public sealed class RegisterDirectoryCommand : CoercedCommand<string, FileSystemRegistration>
-	{
-		
-		public static RegisterDirectoryCommand Default { get; } = new RegisterDirectoryCommand();
-		RegisterDirectoryCommand() : base( DirectoryRegistrationCoercer.Default, Defaults.Register ) {}
-	}
-
-	public sealed class FileRegistrationCoercer : DelegatedCoercer<string, FileSystemRegistration>
-	{
-		public static FileRegistrationCoercer Default { get; } = new FileRegistrationCoercer();
-		FileRegistrationCoercer() : base( FileSystemRegistration.File ) {}
-	}
-
-	public sealed class DirectoryRegistrationCoercer : DelegatedCoercer<string, FileSystemRegistration>
-	{
-		public static DirectoryRegistrationCoercer Default { get; } = new DirectoryRegistrationCoercer();
-		DirectoryRegistrationCoercer() : base( FileSystemRegistration.Directory ) {}
+		public RegisterFilesAttribute( params string[] files ) : base( Command.WithParameter( files.ToImmutableArray() ) ) {}
 	}
 }

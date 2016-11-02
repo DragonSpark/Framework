@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.Runtime
 {
 	public sealed class MethodOperationContext : InitializedDisposableAction
 	{
-		readonly static Action Run = PurgeLoggerMessageHistoryCommand.Default.Apply( Common<Action<string>>.Assigned ).ToCommand( Output.Default.Get ).ToRunDelegate();
+		readonly static Action Run = PurgeLoggerMessageHistoryCommand.Default.Apply( Common<Action<string>>.Assigned ).WithParameter( Output.Default.Get ).ToRunDelegate();
 
 		readonly IDisposable disposable;
 

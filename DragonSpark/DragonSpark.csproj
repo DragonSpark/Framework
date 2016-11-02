@@ -431,7 +431,7 @@
     <Compile Include="TypeSystem\AssemblyAttributeProvider.cs" />
     <Compile Include="TypeSystem\AssemblyHintAttribute.cs" />
     <Compile Include="TypeSystem\AssemblyHintProvider.cs" />
-    <Compile Include="TypeSystem\AssemblyLoader.cs" />
+    <Compile Include="TypeSystem\AssemblySelector.cs" />
     <Compile Include="TypeSystem\AssemblyPartLocator.cs" />
     <Compile Include="TypeSystem\AssemblyPartQueryProvider.cs" />
     <Compile Include="TypeSystem\AssemblyPartsAttribute.cs" />

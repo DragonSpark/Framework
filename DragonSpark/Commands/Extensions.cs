@@ -79,11 +79,11 @@ namespace DragonSpark.Commands
 			return result;
 		}
 
-		public static SuppliedCommand<IEnumerable<T>> ToCommand<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );
-		public static SuppliedCommand<T> ToCommand<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
-		public static SuppliedCommand<T> ToCommand<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
-		public static SuppliedCommand<T> ToCommand<T>( this Action<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
-		public static SuppliedCommand<T> ToCommand<T>( this Action<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<IEnumerable<T>> WithParameter<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );
+		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<T> WithParameter<T>( this Action<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
+		public static SuppliedCommand<T> WithParameter<T>( this Action<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
 
 		public static Action<T> ToDelegate<T>( this ICommand<T> @this ) => DelegateCache<T>.Default.Get( @this );
 		sealed class DelegateCache<T> : Cache<ICommand<T>, Action<T>>
