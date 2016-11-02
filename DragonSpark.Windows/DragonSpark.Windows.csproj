@@ -128,7 +128,7 @@
     <Compile Include="Setup\UserSettingsExistsSpecification.cs" />
     <Compile Include="Setup\UserSettingsFile.cs" />
     <Compile Include="AppDomainFormatter.cs" />
-    <Compile Include="FileSystem\AssemblyLocator.cs" />
+    <Compile Include="FileSystem\AssemblyFilePathSelector.cs" />
     <Compile Include="FileSystem\QueryableResourceLocator.cs" />
     <Compile Include="Setup\UserSettingsFilePath.cs" />
   </ItemGroup>

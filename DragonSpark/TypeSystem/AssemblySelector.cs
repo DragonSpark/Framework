@@ -11,7 +11,7 @@ namespace DragonSpark.TypeSystem
 	public sealed class AssemblySelector : ParameterizedSourceBase<string, ImmutableArray<Assembly>>
 	{
 		public static AssemblySelector Default { get; } = new AssemblySelector();
-		AssemblySelector() : this( Configuration.AssemblyPathLocator.Get, AssemblyLoader.Default.Get ) {}
+		AssemblySelector() : this( AssemblyResourcePathSelector.Default.Get, AssemblyLoader.Default.Get ) {}
 
 		readonly Func<string, ImmutableArray<string>> locator;
 		readonly Func<string, Assembly> loader;
@@ -24,6 +24,12 @@ namespace DragonSpark.TypeSystem
 		}
 
 		public override ImmutableArray<Assembly> Get( string parameter ) => locator( parameter ).Select( loader ).ToImmutableArray();
+	}
+
+	public sealed class AssemblyResourcePathSelector : ConfigurableParameterizedSource<string, ImmutableArray<string>>
+	{
+		public static AssemblyResourcePathSelector Default { get; } = new AssemblyResourcePathSelector();
+		AssemblyResourcePathSelector() : base( path => Items<string>.Immutable ) {}
 	}
 
 	public sealed class AssemblyLoader : ConfigurableParameterizedSource<string, Assembly>

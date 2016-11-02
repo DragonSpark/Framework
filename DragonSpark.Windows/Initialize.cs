@@ -7,16 +7,15 @@ using System.Reflection;
 
 namespace DragonSpark.Windows
 {
-	[UsedImplicitly]
 	public static class Initialize
 	{
-		[ModuleInitializer( 0 )]
+		[ModuleInitializer( 0 ), UsedImplicitly]
 		public static void Execute()
 		{
 			Application.Execution.Default.Assign( ExecutionContext.Default );
 
 			AssemblyLoader.Default.Configuration.Assign( o => Assembly.LoadFile );
-			TypeSystem.Configuration.AssemblyPathLocator.Assign( o => new AssemblyLocator().ToEqualityCache().Get );
+			AssemblyResourcePathSelector.Default.Configuration.Assign( o => new AssemblyFilePathSelector().ToEqualityCache().Get );
 		}
 	}
 }
