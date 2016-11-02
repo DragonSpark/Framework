@@ -114,7 +114,6 @@
     <Compile Include="Runtime\ThreadDataStore.cs" />
     <Compile Include="Runtime\FileSystemTypes.cs" />
     <Compile Include="Runtime\MetadataTypeDefinitionProvider.cs" />
-    <Compile Include="Runtime\TypeDefinitionProviderSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />
     <Compile Include="Runtime\TaskLocalStore.cs" />

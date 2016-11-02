@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.ComponentModel
 		[Fact]
 		public void Coverage_EmptyConfiguration()
 		{
-			DragonSpark.TypeSystem.Configuration.TypeDefinitionProviders.Assign( () => Items<ITypeDefinitionProvider>.Immutable );
+			TypeDefinitions.Source.Implementation.Configuration.Assign( () => Items<ITypeDefinitionProvider>.Immutable );
 			Assert.Null( TypeDefinitions.Default.Get( GetType().GetTypeInfo() ) );
 		}
 	}
