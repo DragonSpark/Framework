@@ -2,7 +2,7 @@ using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using System.Runtime.InteropServices;
 
-namespace DragonSpark.Coercion
+namespace DragonSpark.Sources.Coercion
 {
 	public abstract class CoercerBase<T> : CoercerBase<object, T>, IParameterizedSource<T> {}
 

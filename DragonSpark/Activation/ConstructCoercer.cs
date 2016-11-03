@@ -1,4 +1,4 @@
-using DragonSpark.Coercion;
+using DragonSpark.Sources.Coercion;
 using System;
 using System.Runtime.InteropServices;
 

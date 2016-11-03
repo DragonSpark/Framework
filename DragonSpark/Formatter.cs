@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Activation;
-using DragonSpark.Coercion;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;

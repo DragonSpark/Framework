@@ -1,5 +1,5 @@
-using DragonSpark.Coercion;
 using DragonSpark.Extensions;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;

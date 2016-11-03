@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Aspects.Coercion;
-using DragonSpark.Coercion;
+using DragonSpark.Sources.Coercion;
 using System;
 using System.Windows.Input;
 using Xunit;

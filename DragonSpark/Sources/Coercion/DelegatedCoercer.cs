@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Coercion
+namespace DragonSpark.Sources.Coercion
 {
 	public class DelegatedCoercer<TFrom, TTo> : CoercerBase<TFrom, TTo>
 	{

@@ -3,7 +3,7 @@ using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 using System;
 
-namespace DragonSpark.Coercion
+namespace DragonSpark.Sources.Coercion
 {
 	public class LinkedParameterizedSource<TParameter, TResult> : LinkedParameterizedSource<object, TParameter, TResult>
 	{

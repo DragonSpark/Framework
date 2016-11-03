@@ -1,5 +1,5 @@
-using DragonSpark.Coercion;
 using DragonSpark.Extensions;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
 using System;
 using System.Windows.Input;

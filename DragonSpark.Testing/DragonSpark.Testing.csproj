@@ -60,7 +60,7 @@
     <Compile Include="Aspects\ApplyAspectsAttributeTests.cs" />
     <Compile Include="Aspects\Relay\ApplyRelayAttributeTests.cs" />
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
-    <Compile Include="Coercion\StringCoercerTests.cs" />
+    <Compile Include="Sources\Coercion\StringCoercerTests.cs" />
     <Compile Include="Commands\ExtensionsTests.cs" />
     <Compile Include="Commands\FirstCommandTests.cs" />
     <Compile Include="Commands\SuppliedCommandSourceTests.cs" />
@@ -226,7 +226,9 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Coercion\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)PostSharp.targets" Condition="Exists('$(SolutionDir)PostSharp.targets')" />
   <PropertyGroup>

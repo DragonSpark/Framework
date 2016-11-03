@@ -1,4 +1,4 @@
-﻿using DragonSpark.Coercion;
+﻿using DragonSpark.Sources.Coercion;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {

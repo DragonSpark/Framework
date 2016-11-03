@@ -1,7 +1,7 @@
-﻿using DragonSpark.Coercion;
+﻿using DragonSpark.Sources.Coercion;
 using Xunit;
 
-namespace DragonSpark.Testing.Coercion
+namespace DragonSpark.Testing.Sources.Coercion
 {
 	public class StringCoercerTests
 	{

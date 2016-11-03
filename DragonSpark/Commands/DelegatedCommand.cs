@@ -1,4 +1,4 @@
-using DragonSpark.Coercion;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
 using System;
 

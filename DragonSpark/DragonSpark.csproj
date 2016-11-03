@@ -161,7 +161,7 @@
     <Compile Include="Aspects\Build\Specification.cs" />
     <Compile Include="Aspects\Build\MethodBasedAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Validation\Support.cs" />
-    <Compile Include="Coercion\DelegatedCoercer.cs" />
+    <Compile Include="Sources\Coercion\DelegatedCoercer.cs" />
     <Compile Include="Commands\CoercedCommand.cs" />
     <Compile Include="Commands\CompiledCommand.cs" />
     <Compile Include="Commands\FactoryCommand.cs" />
@@ -268,7 +268,7 @@
     <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
-    <Compile Include="Coercion\LinkedParameterizedSource.cs" />
+    <Compile Include="Sources\Coercion\LinkedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
@@ -516,7 +516,7 @@
     <Compile Include="Specifications\SpecificationBase.cs" />
     <Compile Include="Specifications\Common.cs" />
     <Compile Include="Specifications\SpecificationWithContextBase.cs" />
-    <Compile Include="Coercion\StringCoercer.cs" />
+    <Compile Include="Sources\Coercion\StringCoercer.cs" />
     <Compile Include="Runtime\StructuralEqualityComparer.cs" />
     <Compile Include="Commands\TimedDelegatedCommand.cs" />
     <Compile Include="Runtime\Assignments\Value.cs" />
@@ -525,8 +525,8 @@
     <Compile Include="Activation\Activator.cs" />
     <Compile Include="Expressions\ArgumentsArrayExpressionFactory.cs" />
     <Compile Include="Expressions\ArgumentsArrayParameter.cs" />
-    <Compile Include="Coercion\Coercer.cs" />
-    <Compile Include="Coercion\CoercerBase.cs" />
+    <Compile Include="Sources\Coercion\Coercer.cs" />
+    <Compile Include="Sources\Coercion\CoercerBase.cs" />
     <Compile Include="Expressions\CompiledDelegateFactoryBase.cs" />
     <Compile Include="Activation\ConstructingParameterLocator.cs" />
     <Compile Include="Activation\ConstructorDelegateFactory.cs" />
