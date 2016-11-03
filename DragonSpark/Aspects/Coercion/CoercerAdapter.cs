@@ -1,16 +1,16 @@
-﻿using DragonSpark.Coercion;
+﻿using DragonSpark.Sources.Parameterized;
 
 namespace DragonSpark.Aspects.Coercion
 {
 	sealed class CoercerAdapter<TFrom, TTo> : ICoercer
 	{
-		readonly ICoercer<TFrom, TTo> coercer;
+		readonly IParameterizedSource<TFrom, TTo> coercer;
 
-		public CoercerAdapter( ICoercer<TFrom, TTo> coercer )
+		public CoercerAdapter( IParameterizedSource<TFrom, TTo> coercer )
 		{
 			this.coercer = coercer;
 		}
 
-		public object Coerce( object parameter ) => parameter is TFrom ? (object)coercer.Coerce( (TFrom)parameter ) ?? parameter : parameter;
+		public object Coerce( object parameter ) => parameter is TFrom ? (object)coercer.Get( (TFrom)parameter ) ?? parameter : parameter;
 	}
 }

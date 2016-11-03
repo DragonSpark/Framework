@@ -13,12 +13,7 @@ namespace DragonSpark.Extensions
 		public static T Get<T>( this ISource<IServiceProvider> @this ) => @this.GetService( typeof(T) ).As<T>();
 		public static object GetService( this ISource<IServiceProvider> @this, Type type ) => @this.Get().GetService( type ).Account( type );
 
-		public static T Get<T>( this IServiceProvider @this )
-		{
-			var service = @this.GetService( typeof(T) );
-			var @as = service.As<T>();
-			return @as;
-		}
+		public static T Get<T>( this IServiceProvider @this ) => @this.GetService( typeof(T) ).As<T>();
 
 		public static T Get<T>( this IServiceProvider @this, Type type ) => @this.GetService( type ).Account<T>();
 	}

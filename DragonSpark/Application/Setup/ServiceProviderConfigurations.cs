@@ -8,8 +8,6 @@ namespace DragonSpark.Application.Setup
 {
 	public class ServiceProviderConfigurations : SuppliedCommandSource
 	{
-		protected ServiceProviderConfigurations() {}
-
 		protected override IEnumerable<ICommand> Yield()
 		{
 			yield return GlobalServiceProvider.Default.ToCommand( ActivatorFactory.Default.ToSingleton() );

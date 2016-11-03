@@ -1,9 +1,9 @@
-﻿using System;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Coercion;
+using System;
 
 namespace DragonSpark.Aspects.Validation
 {
-	abstract class AdapterSourceBase<T> : CoercedParameterizedSource<T, IParameterValidationAdapter>
+	abstract class AdapterSourceBase<T> : LinkedParameterizedSource<T, IParameterValidationAdapter>
 	{
 		protected AdapterSourceBase( Func<T, IParameterValidationAdapter> create ) : base( create ) {}
 	}

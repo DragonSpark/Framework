@@ -13,7 +13,7 @@ namespace DragonSpark.TypeSystem
 {
 	public static class Extensions
 	{
-		readonly static Func<object, Type> CoerceType = TypeCoercer.Default.Coerce;
+		readonly static Func<object, Type> CoerceType = TypeCoercer.Default.Get;
 
 		readonly static TypeInfo Structural = typeof(IStructuralEquatable).GetTypeInfo();
 		public static bool IsStructural( this Type @this ) => Structural.IsAssignableFrom( @this.GetTypeInfo() );

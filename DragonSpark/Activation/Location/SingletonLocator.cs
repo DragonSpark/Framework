@@ -15,7 +15,7 @@ namespace DragonSpark.Activation.Location
 
 		public SingletonLocator( Func<Type, Func<object>> source ) : this( SourceFactory.Instance.Get( source ) ) {}
 
-		SingletonLocator( Func<Type, object> source ) : base( new DelegatedAssignedSpecification<Type, object>( source ), source ) {}
+		SingletonLocator( Func<Type, object> second ) : base( new DelegatedAssignedSpecification<Type, object>( second ), second ) {}
 
 		sealed class SourceFactory : ParameterizedSourceBase<Func<Type, Func<object>>, Func<Type, object>>
 		{

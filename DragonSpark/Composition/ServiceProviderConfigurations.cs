@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Activation;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Composition
 {
@@ -25,7 +25,7 @@ namespace DragonSpark.Composition
 
 		protected override IEnumerable<ICommand> Yield()
 		{
-			yield return Application.Setup.ActivatorFactory.Default.Seed.ToCommand( source );
+			yield return Application.Setup.ActivatorFactory.Default.ToCommand( source );
 			foreach ( var command in base.Yield() )
 			{
 				yield return command;

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Coercion;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
 using System;
 
 namespace DragonSpark.Aspects.Coercion
@@ -7,6 +6,6 @@ namespace DragonSpark.Aspects.Coercion
 	sealed class Constructor : AdapterConstructorSource<ICoercer>
 	{
 		public static IParameterizedSource<Type, Func<object, ICoercer>> Default { get; } = new Constructor().ToCache();
-		Constructor() : base( typeof(ICoercer<,>), typeof(CoercerAdapter<,>) ) {}
+		Constructor() : base( typeof(IParameterizedSource<,>), typeof(CoercerAdapter<,>) ) {}
 	}
 }

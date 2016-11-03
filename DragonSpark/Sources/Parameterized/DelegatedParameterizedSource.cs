@@ -4,13 +4,13 @@ namespace DragonSpark.Sources.Parameterized
 {
 	public class DelegatedParameterizedSource<TParameter, TResult> : ParameterizedSourceBase<TParameter, TResult>
 	{
-		readonly Func<TParameter, TResult> source;
+		readonly Func<TParameter, TResult> second;
 
-		public DelegatedParameterizedSource( Func<TParameter, TResult> source )
+		public DelegatedParameterizedSource( Func<TParameter, TResult> second )
 		{
-			this.source = source;
+			this.second = second;
 		}
 
-		public override TResult Get( TParameter parameter ) => source( parameter );
+		public override TResult Get( TParameter parameter ) => second( parameter );
 	}
 }

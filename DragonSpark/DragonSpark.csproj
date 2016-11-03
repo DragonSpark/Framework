@@ -239,6 +239,7 @@
     <Compile Include="Sources\Parameterized\DelegatedAlteration.cs" />
     <Compile Include="Sources\Parameterized\ICurry.cs" />
     <Compile Include="Sources\Parameterized\ISpecificationParameterizedSource.cs" />
+    <Compile Include="Sources\Scopes\ScopedItems.cs" />
     <Compile Include="Sources\Scopes\ParameterizedSingletonScope.cs" />
     <Compile Include="Sources\Scopes\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
@@ -267,7 +268,7 @@
     <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
-    <Compile Include="Sources\Parameterized\CoercedParameterizedSource.cs" />
+    <Compile Include="Coercion\LinkedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
@@ -296,10 +297,9 @@
     <Compile Include="ComponentModel\ServicesValueProvider.cs" />
     <Compile Include="ComponentModel\SingletonDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
-    <Compile Include="Sources\Scopes\ConfigurationProvisionedSourceBase.cs" />
+    <Compile Include="Sources\Scopes\AggregateSource.cs" />
     <Compile Include="Sources\Scopes\ConfigurationProvisionedParameterizedSourceBase.cs" />
     <Compile Include="Sources\Scopes\Alterations.cs" />
-    <Compile Include="Sources\Scopes\AlterationsSource.cs" />
     <Compile Include="Configuration\Extensions.cs" />
     <Compile Include="Sources\Scopes\IAlterations.cs" />
     <Compile Include="Configuration\IValueStore.cs" />
@@ -527,7 +527,6 @@
     <Compile Include="Expressions\ArgumentsArrayParameter.cs" />
     <Compile Include="Coercion\Coercer.cs" />
     <Compile Include="Coercion\CoercerBase.cs" />
-    <Compile Include="Coercion\Extensions.cs" />
     <Compile Include="Expressions\CompiledDelegateFactoryBase.cs" />
     <Compile Include="Activation\ConstructingParameterLocator.cs" />
     <Compile Include="Activation\ConstructorDelegateFactory.cs" />
@@ -657,7 +656,6 @@
     <Compile Include="Sources\AmbientStackCommand.cs" />
     <Compile Include="Specifications\SuppliedSpecification.cs" />
     <Compile Include="Activation\ConstructCoercer.cs" />
-    <Compile Include="Coercion\ICoercer.cs" />
     <Compile Include="Sources\Delegates\SourceFactory.cs" />
     <Compile Include="TypeSystem\AllPartsLocator.cs" />
     <Compile Include="Application\AssemblyInformation.cs" />

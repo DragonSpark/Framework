@@ -25,16 +25,17 @@ namespace DragonSpark.Testing.Setup
 			serviceProvider.Get<IExportProvider>();
 			Assert.Equal( 1, count );
 
-			var provider = ActivatorFactory.Default.Get();
+			DefaultServices.Default.Get<IExportProvider>();
 			Assert.Equal( 2, count );
 
+			var provider = ActivatorFactory.Default.Get();
 			provider.Get<IExportProvider>();
-			Assert.Equal( 2, count );
+			Assert.Equal( 3, count );
 
 			for ( var i = 0; i < 10; i++ )
 			{
 				provider.Get<IExportProvider>();
-				Assert.Equal( 2, count );
+				Assert.Equal( 3, count );
 			}
 		}
 	}

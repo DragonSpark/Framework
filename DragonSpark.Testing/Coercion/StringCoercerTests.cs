@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Coercion
 		[Fact]
 		public void Verify()
 		{
-			Assert.Equal( Subject.Message, StringCoercer.Default.Coerce( new Subject() ) );
+			Assert.Equal( Subject.Message, StringCoercer.Default.Get( new Subject() ) );
 		}
 
 		sealed class Subject

@@ -18,6 +18,6 @@ namespace DragonSpark.Sources.Scopes
 			this.defaultScope = defaultScope;
 		}
 
-		public override object Get() => SourceCoercer.Default.Coerce( base.Get() ) ?? defaultScope();
+		public override object Get() => SourceCoercer.Default.Get( base.Get() ) ?? defaultScope();
 	}
 }

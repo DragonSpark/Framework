@@ -12,14 +12,14 @@ namespace DragonSpark.Testing.Activation
 		[Theory, AutoData]
 		public void Construct( ConstructorCoercer sut )
 		{
-			var parameter = sut.Coerce( typeof(Class) );
+			var parameter = sut.Get( typeof(Class) );
 			Assert.Equal( parameter.RequestedType, typeof(Class) );
 		} 
 
 		[Theory, AutoData]
 		void Parameter( ConstructCoercer<IntegerParameter> sut, int item )
 		{
-			var parameter = sut.Coerce( item );
+			var parameter = sut.Get( item );
 			Assert.NotNull( parameter );
 			Assert.Equal( parameter.SomeInteger, item );
 			
@@ -28,7 +28,7 @@ namespace DragonSpark.Testing.Activation
 		[Theory, AutoData]
 		void ConstructParameter( ConstructorCoercer sut, Type item )
 		{
-			var parameter = sut.Coerce( item );
+			var parameter = sut.Get( item );
 			Assert.NotNull( parameter );
 			Assert.Equal( parameter.RequestedType, item );
 		}

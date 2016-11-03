@@ -7,6 +7,21 @@ using System.Linq;
 
 namespace DragonSpark.Runtime
 {
+	/*public class InsertingCollection<T> : CollectionBase<T>
+	{
+		public InsertingCollection() {}
+		public InsertingCollection( IEnumerable<T> items ) : base( items ) {}
+		public InsertingCollection( ICollection<T> source ) : base( source ) {}
+
+		public override void Add( T item )
+		{
+			lock ( Source )
+			{
+				Insert( 0, item );
+			}
+		}
+	}*/
+
 	public abstract class CollectionBase<T> : IList, ICollection<T>
 	{
 		readonly Func<T, int> add;
@@ -36,7 +51,7 @@ namespace DragonSpark.Runtime
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public void Add( T item )
+		public virtual void Add( T item )
 		{
 			lock ( Source )
 			{

@@ -3,7 +3,6 @@ using DragonSpark.Aspects.Coercion;
 using DragonSpark.Aspects.Relay;
 using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
-using DragonSpark.Coercion;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
@@ -19,7 +18,7 @@ namespace DragonSpark.Aspects
 		readonly static ObjectConstructionFactory<ApplyCoercerAttribute> Coercer = ObjectConstructionFactory<ApplyCoercerAttribute>.Default;
 		readonly static ObjectConstructionFactory<ApplySpecificationAttribute> Specification = ObjectConstructionFactory<ApplySpecificationAttribute>.Default;
 
-		public ConstructionsSource( [OfType( typeof(ICoercer<,>) )]Type coercerType, [OfType( typeof(ISpecification<>) )]Type specificationType )
+		public ConstructionsSource( [OfType( typeof(IParameterizedSource<,>) )]Type coercerType, [OfType( typeof(ISpecification<>) )]Type specificationType )
 			: base( 
 				Coercer.Get( coercerType ),
 				Relay,

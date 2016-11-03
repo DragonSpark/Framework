@@ -9,10 +9,10 @@ namespace DragonSpark.Sources.Parameterized
 
 		public SpecificationParameterizedSource( ISpecification<TParameter> specification, IParameterizedSource<TParameter, TResult> source ) : this( specification, source.ToDelegate() ) {}
 
-		public SpecificationParameterizedSource( ISpecification<TParameter> specification, Func<TParameter, TResult> source ) : this( specification.ToSpecificationDelegate(), source )
+		public SpecificationParameterizedSource( ISpecification<TParameter> specification, Func<TParameter, TResult> second ) : this( specification.ToSpecificationDelegate(), second )
 		{}
 
-		public SpecificationParameterizedSource( Func<TParameter, bool> specification, Func<TParameter, TResult> source ) : base( source )
+		public SpecificationParameterizedSource( Func<TParameter, bool> specification, Func<TParameter, TResult> second ) : base( second )
 		{
 			this.specification = specification;
 		}

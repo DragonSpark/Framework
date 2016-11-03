@@ -1,13 +1,14 @@
+using DragonSpark.Coercion;
 using DragonSpark.Expressions;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Specifications;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Coercion;
 
 namespace DragonSpark.Activation
 {
@@ -20,7 +21,8 @@ namespace DragonSpark.Activation
 		readonly ISpecification<ConstructTypeRequest> specification;
 		readonly IParameterizedSource<ConstructTypeRequest, object> source;
 
-		Constructor( ISpecification<ConstructTypeRequest> specification, IParameterizedSource<ConstructTypeRequest, object> source ) : base( specification.Apply( ConstructorCoercer.Default ), source.Apply( ConstructorCoercer.Default ).ToDelegate() )
+		[UsedImplicitly]
+		public Constructor( ISpecification<ConstructTypeRequest> specification, IParameterizedSource<ConstructTypeRequest, object> source ) : base( specification.Coerce( ConstructorCoercer.Default ), source.Coerce( ConstructorCoercer.Default ).Get )
 		{
 			this.specification = specification;
 			this.source = source;

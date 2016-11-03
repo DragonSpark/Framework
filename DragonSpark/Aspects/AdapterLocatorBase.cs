@@ -22,7 +22,7 @@ namespace DragonSpark.Aspects
 
 		public TResult Get( TParameter parameter )
 		{
-			var type = TypeCoercer.Default.Coerce( parameter );
+			var type = TypeCoercer.Default.Get( parameter );
 			foreach ( var pair in pairs )
 			{
 				if ( pair.Item1.IsAssignableFrom( type ) )

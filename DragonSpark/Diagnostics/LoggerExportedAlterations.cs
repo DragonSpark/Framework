@@ -5,10 +5,10 @@ using Serilog;
 
 namespace DragonSpark.Diagnostics
 {
-	public sealed class LoggerExportedAlterations : AlterationsSource<LoggerConfiguration>
+	public sealed class LoggerExportedAlterations : Alterations<LoggerConfiguration>
 	{
 		public static LoggerExportedAlterations Default { get; } = new LoggerExportedAlterations();
 		LoggerExportedAlterations() : this( DefaultLoggerAlterations.Default.Unwrap() ) {}
-		public LoggerExportedAlterations( params IAlteration<LoggerConfiguration>[] configurators ) : base( configurators ) {}
+		public LoggerExportedAlterations( params IAlteration<LoggerConfiguration>[] alterations ) : base( alterations ) {}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Sources.Parameterized;
-using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
@@ -12,7 +11,7 @@ namespace DragonSpark.Sources
 	public sealed class SourceAccountedAlteration : AlterationBase<object>
 	{
 		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = 
-			new Curry<Type, object>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ).ToSingletonScope();
+			new ParameterizedSingletonScope<Type, Func<object, object>>( type => new SourceAccountedAlteration( type.Adapt() ).Get/*.ToCache().GetAssigned*/ );
 
 		readonly Func<Type, bool> assignable;
 		readonly Func<object, bool> specification;

@@ -27,6 +27,12 @@ namespace DragonSpark.Sources
 
 		public static object GetValue( this ISource<ISource> @this ) => @this.Get().Get();
 		public static T GetValue<T>( this ISource<ISource<T>> @this ) => @this.Get().Get();
+		public static Func<T> GetValueDelegate<T>( this ISource<ISource<T>> @this ) => LocalDelegates<T>.Default.Get( @this );
+		sealed class LocalDelegates<T> : Cache<ISource<ISource<T>>, Func<T>>
+		{
+			public static LocalDelegates<T> Default { get; } = new LocalDelegates<T>();
+			LocalDelegates() : base( source => source.GetValue ) {}
+		}
 
 		public static Func<T> ToDelegate<T>( this ISource<T> @this ) => ParameterizedSourceDelegates<T>.Default.Get( @this );
 		sealed class ParameterizedSourceDelegates<T> : Cache<ISource<T>, Func<T>>

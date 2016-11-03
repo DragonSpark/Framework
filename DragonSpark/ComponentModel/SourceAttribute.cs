@@ -1,7 +1,7 @@
 using DragonSpark.Aspects;
-using System;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using System;
 using Defaults = DragonSpark.Activation.Location.Defaults;
 
 namespace DragonSpark.ComponentModel
@@ -14,7 +14,7 @@ namespace DragonSpark.ComponentModel
 		static object Create( Type type )
 		{
 			var serviceSource = Defaults.ServiceSource( type );
-			var coerce = SourceCoercer.Default.Coerce( serviceSource );
+			var coerce = SourceCoercer.Default.Get( serviceSource );
 			return coerce;
 		}
 	}

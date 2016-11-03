@@ -5,7 +5,7 @@ using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Application.Setup
 {
-	public sealed class ActivatorFactory : ConfigurationProvisionedSourceBase<IActivator>
+	public sealed class ActivatorFactory : Scope<IActivator>
 	{
 		public static ActivatorFactory Default { get; } = new ActivatorFactory();
 		ActivatorFactory() : base( () => DefaultServices.Default ) {}

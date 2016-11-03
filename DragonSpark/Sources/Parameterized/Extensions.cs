@@ -34,13 +34,17 @@ namespace DragonSpark.Sources.Parameterized
 		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Alter<TResult> selector ) => Apply( @this.ToDelegate(), selector );
 		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this Func<TParameter, TResult> @this, Alter<TResult> selector ) =>
 			new AlteredResultParameterizedSource<TParameter, TResult>( @this, selector );
-		/*public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TResult, TResult> selector ) =>
-			new AlteredResultParameterizedSource<TParameter, TResult>( @this, selector );*/
+		
+		public static ISource<TResult> Coerce<TParameter, TResult>( this ISource<TParameter> @this, IParameterizedSource<TParameter, TResult> coerce ) => @this.ToDelegate().Coerce( coerce.ToDelegate() );
+		public static ISource<TResult> Coerce<TParameter, TResult>( this ISource<TParameter> @this, Func<TParameter, TResult> coerce ) => @this.ToDelegate().Coerce( coerce );
+		public static ISource<TResult> Coerce<TParameter, TResult>( this Func<TParameter> @this, IParameterizedSource<TParameter, TResult> coerce ) => @this.Coerce( coerce.ToDelegate() );
+		public static ISource<TResult> Coerce<TParameter, TResult>( this Func<TParameter> @this, Func<TParameter, TResult> coerce ) => coerce.WithParameter( @this );
 
-		public static IParameterizedSource<object, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ICoercer<TParameter> coercer ) => Apply( @this.ToDelegate(), coercer.ToDelegate() );
-		public static IParameterizedSource<TFrom, TResult> Apply<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ICoercer<TFrom, TParameter> coercer ) => Apply( @this.ToDelegate(), coercer.ToDelegate() );
-		public static IParameterizedSource<TFrom, TResult> Apply<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TFrom, TParameter> coerce ) =>
-			new CoercedParameterizedSource<TFrom, TParameter, TResult>( coerce, @this );
+		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.ToDelegate().Coerce( coerce.ToDelegate() );
+		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TFrom, TParameter> coerce ) => @this.ToDelegate().Coerce( coerce );
+		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.Coerce( coerce.ToDelegate() );
+		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TFrom, TParameter> coerce )
+			=> new LinkedParameterizedSource<TFrom, TParameter, TResult>( coerce, @this );
 
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ISpecification<TParameter> specification ) =>
 			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToDelegate() );
@@ -50,7 +54,6 @@ namespace DragonSpark.Sources.Parameterized
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, TParameter parameter ) => @this.ToDelegate().WithParameter( parameter );
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter> parameter ) => @this.ToDelegate().WithParameter( parameter );
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this Func<TParameter, TResult> @this, TParameter parameter ) => @this.WithParameter( Factory.For( parameter ) );
-
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TParameter> parameter ) => new SuppliedSource<TParameter, TResult>( @this, parameter );
 
 		/*public static Func<object, T> Wrap<T>( this ISource<T> @this ) => @this.Wrap<object, T>();*/

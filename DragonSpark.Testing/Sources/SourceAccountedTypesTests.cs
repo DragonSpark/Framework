@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using System;
 using Xunit;
 
@@ -10,11 +11,12 @@ namespace DragonSpark.Testing.Sources
 		public void VerifyCaching()
 		{
 			var one = SourceAccountedAlteration.Defaults.Get( typeof(Guid) );
-			var item = one.Invoke( Source.Default );
+			var cached = one.ToSingleton();
+			var item = cached.Invoke( Source.Default );
 			Assert.IsType<Guid>( item );
 			var two = SourceAccountedAlteration.Defaults.Get( typeof(Guid) );
 			Assert.Same( one, two );
-			Assert.Equal( item, two.Invoke( Source.Default ) );
+			Assert.Equal( item, cached.Invoke( Source.Default ) );
 		}
 
 		sealed class Source : SourceBase<Guid>

@@ -1,5 +1,5 @@
-using DragonSpark.Coercion;
 using DragonSpark.Extensions;
+using DragonSpark.Sources.Parameterized;
 using System;
 
 namespace DragonSpark.Commands
@@ -8,7 +8,7 @@ namespace DragonSpark.Commands
 	{
 		readonly Func<TFrom, TParameter> coercer;
 
-		public CoercedCommand( ICoercer<TFrom, TParameter> coercer, Action<TParameter> source ) : this( coercer.ToDelegate(), source ) {}
+		public CoercedCommand( IParameterizedSource<TFrom, TParameter> coercer, Action<TParameter> source ) : this( coercer.ToDelegate(), source ) {}
 
 		public CoercedCommand( Func<TFrom, TParameter> coercer, Action<TParameter> source ) : base( source )
 		{

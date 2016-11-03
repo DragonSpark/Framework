@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 
 			public object Create( object request, ISpecimenContext context )
 			{
-				var type = TypeCoercer.Default.Coerce( request );
+				var type = TypeCoercer.Default.Get( request );
 				var result = type != null && types.Contains( type ) ? Defaults.ServiceSource( type ) : new NoSpecimen();
 				return result;
 			}

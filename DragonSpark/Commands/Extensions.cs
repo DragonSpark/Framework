@@ -1,5 +1,4 @@
-﻿using DragonSpark.Coercion;
-using DragonSpark.Sources;
+﻿using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
@@ -14,8 +13,8 @@ namespace DragonSpark.Commands
 	{
 		public static ICommand<T> Apply<T>( this ICommand<T> @this, ISpecification<T> specification ) => new SpecificationCommand<T>( specification, @this.ToDelegate() );
 
-		public static ICommand<T> Apply<T>( this ICommand<T> @this, ICoercer<T> coercer ) => @this.ToDelegate().Apply( coercer );
-		public static CoercedCommand<TFrom,TParameter> Apply<TFrom, TParameter>( this Action<TParameter> @this, ICoercer<TFrom, TParameter> coercer ) => new CoercedCommand<TFrom,TParameter>( coercer, @this );
+		public static ICommand<T> Apply<T>( this ICommand<T> @this, IParameterizedSource<T> coercer ) => @this.ToDelegate().Apply( coercer );
+		public static CoercedCommand<TFrom,TParameter> Apply<TFrom, TParameter>( this Action<TParameter> @this, IParameterizedSource<TFrom, TParameter> coercer ) => new CoercedCommand<TFrom,TParameter>( coercer, @this );
 
 		public static void Execute<T>( this ISource<ICommand<T>> @this, T parameter ) => @this.ToDelegate().Execute( parameter );
 		public static void Execute<T>( this Func<ICommand<T>> @this, T parameter ) => @this().Execute( parameter );

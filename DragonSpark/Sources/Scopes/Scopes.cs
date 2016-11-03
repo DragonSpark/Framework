@@ -5,11 +5,16 @@ using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace DragonSpark.Sources.Scopes
 {
 	public static class Scopes
 	{
+		public static IAlteration<T>[] Unwrap<T>( this ISource<IAlterations<T>> @this ) => @this.GetValue().ToArray();
+
+		public static IScope<T> ToScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToScope();
+		public static IScope<T> ToScope<T>( this Func<T> @this ) => new Scope<T>( @this );
 		public static IScope<T> ToSingletonScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IScope<T> ToSingletonScope<T>( this Func<T> @this ) => new SingletonScope<T>( @this );
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingletonScope();
