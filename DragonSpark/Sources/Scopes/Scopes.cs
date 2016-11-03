@@ -12,24 +12,20 @@ namespace DragonSpark.Sources.Scopes
 	{
 		public static IScope<T> ToSingletonScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IScope<T> ToSingletonScope<T>( this Func<T> @this ) => new SingletonScope<T>( @this );
-
-		public static Func<T> ToScopeDelegate<T>( this ISource<T> @this ) => @this.ToDelegate().ToScopeDelegate();
-		public static Func<T> ToScopeDelegate<T>( this Func<T> @this ) => @this.ToSingletonScope().ToDelegate();
-
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedSingletonScope<TParameter, TResult>( @this );
-
-		public static Func<TParameter, TResult> Invoke<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
-		public static T Scoped<T>( this ISource<T> @this, object _ ) => @this.ToDelegate().Scoped( _ );
-		public static T Scoped<T>( this Func<T> @this, object _ ) => @this();
-		public static Func<TParameter, TResult> Scoped<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this.ToSingleton();
-		public static Func<object, ImmutableArray<IAlteration<T>>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get;
-		static ImmutableArray<IAlteration<T>> Get<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
 
 		public static Func<T> ToSingleton<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingleton();
 		public static Func<T> ToSingleton<T>( this Func<T> @this ) => SingletonDelegateBuilder<T>.Default.Get( @this );
 		public static Func<TParameter, TResult> ToSingleton<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingleton();
 		public static Func<TParameter, TResult> ToSingleton<TParameter, TResult>( this Func<TParameter, TResult> @this ) => Caches.Create( @this ).Get;
+
+		public static Func<TParameter, TResult> Invoke<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
+		public static T Scoped<T>( this ISource<T> @this, object _ ) => @this.ToDelegate().Scoped( _ );
+		public static T Scoped<T>( this Func<T> @this, object _ ) => @this();
+		public static Func<TParameter, TResult> Scoped<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this.ToSingleton();
+		public static Func<object, ImmutableArray<IAlteration<T>>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Invoke;
+		static ImmutableArray<IAlteration<T>> Invoke<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
 
 		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
 		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ExecutionScopes<T>.Default.Get( @this );

@@ -12,7 +12,7 @@ namespace DragonSpark.Sources.Scopes
 
 		public Scope() : this( () => default(T) ) {}
 
-		public Scope( Func<T> defaultFactory ) : this( new Func<object, T>( defaultFactory.Scoped ) ) {}
+		public Scope( Func<T> defaultFactory ) : this( defaultFactory.Scoped ) {}
 
 		public Scope( Func<object, T> defaultFactory ) : this( new ScopeContext(), defaultFactory ) {}
 

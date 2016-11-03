@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Setup
 {
 	public sealed class Instances : DelegatedSource<IServiceRepository>
 	{
-		public static Instances Default { get; } = new Instances();
-		Instances() : base( Scopes.ToScopeDelegate( () => new InstanceRepository( SingletonLocator.Default, Constructor.Default ) ) ) {}
+		public static ISource<IServiceRepository> Default { get; } = new Instances().ToSingletonScope();
+		Instances() : base( () => new InstanceRepository( SingletonLocator.Default, Constructor.Default ) ) {}
 	}
 }
