@@ -123,7 +123,7 @@
     <Compile Include="Runtime\DelegateTests.cs" />
     <Compile Include="Runtime\PurgingCollectionTests.cs" />
     <Compile Include="Activation\DelegatesTests.cs" />
-    <Compile Include="Sources\Scopes\ScopedSingletonTests.cs" />
+    <Compile Include="Sources\Scopes\SingletonScopeTests.cs" />
     <Compile Include="Application\Setup\ActivatedServiceSourceTests.cs" />
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />

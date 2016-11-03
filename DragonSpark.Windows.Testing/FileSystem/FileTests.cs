@@ -1,10 +1,10 @@
-﻿using DragonSpark.Testing.Framework.Application;
+﻿using DragonSpark.Sources.Scopes;
+using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
 using Moq;
 using System.Text;
 using Xunit;
-using Factory = DragonSpark.Sources.Scopes.Factory;
 
 namespace DragonSpark.Windows.Testing.FileSystem
 {
@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 			repository.Set( path, new FileElement( expected ) );
 
 
-			File.Default.Assign( Factory.ToSingleton(  () => new Mock<MockFile> { CallBase = true }.Object ) );
+			File.Default.Assign( Scopes.ToSingleton(  () => new Mock<MockFile> { CallBase = true }.Object ) );
 			var implementation = File.Default.Get();
 			Assert.Same( File.Default.Get(), implementation );
 			var mock = Mock.Get( (MockFile)implementation );

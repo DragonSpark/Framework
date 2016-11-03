@@ -3,7 +3,7 @@ using Serilog.Core;
 
 namespace DragonSpark.Diagnostics
 {
-	public sealed class LoggingController : ScopedSingleton<LoggingLevelSwitch>
+	public sealed class LoggingController : SingletonScope<LoggingLevelSwitch>
 	{
 		public static LoggingController Default { get; } = new LoggingController();
 		LoggingController() : base( () => new LoggingLevelSwitch( MinimumLevelConfiguration.Default.Get() ) ) {}

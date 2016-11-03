@@ -17,7 +17,7 @@ namespace DragonSpark.Sources.Parameterized
 		readonly static string[] Suffixes = { "Source", "Factory" };
 		readonly static Func<Type, KeyValuePair<Type, Type>?> Selector = Mappings.Implementation.Get;
 
-		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( Factory.ToGlobalSingleton( () => new SourceTypes().ToDelegate() ) );
+		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedSingletonScope<Type, Type>( x => new SourceTypes().ToDelegate() );
 		SourceTypes() : this( ApplicationTypes.Default.Get().SelectAssigned( Selector ).ToImmutableDictionary() ) {}
 
 		readonly IDictionary<Type, Type> mappings;

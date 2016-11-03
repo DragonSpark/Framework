@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.Application
 {
 	public sealed class ApplicationInitializer : CommandBase<MethodBase>
 	{
-		public static IScope<ApplicationInitializer> Default { get; } = new ScopedSingleton<ApplicationInitializer>( () => new ApplicationInitializer() );
+		public static IScope<ApplicationInitializer> Default { get; } = new SingletonScope<ApplicationInitializer>( () => new ApplicationInitializer() );
 		ApplicationInitializer() : this( Disposables.Default ) {}
 
 		readonly IComposable<IDisposable> disposables;

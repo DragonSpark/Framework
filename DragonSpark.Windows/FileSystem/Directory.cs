@@ -8,7 +8,7 @@ using System.Security.AccessControl;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Directory : ScopedSingleton<DirectoryBase>, IDirectory
+	public class Directory : SingletonScope<DirectoryBase>, IDirectory
 	{
 		public static Directory Default { get; } = new Directory();
 		Directory() : base( () => new DirectoryWrapper() ) {}

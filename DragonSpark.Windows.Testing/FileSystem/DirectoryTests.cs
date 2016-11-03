@@ -1,8 +1,8 @@
-﻿using DragonSpark.Testing.Framework.FileSystem;
+﻿using DragonSpark.Sources.Scopes;
+using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
 using Moq;
 using Xunit;
-using Factory = DragonSpark.Sources.Scopes.Factory;
 
 namespace DragonSpark.Windows.Testing.FileSystem
 {
@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			Directory.Default.Assign( Factory.ToSingleton(  () => new Mock<MockDirectory> { CallBase = true }.Object ) );
+			Directory.Default.Assign( Scopes.ToSingleton(  () => new Mock<MockDirectory> { CallBase = true }.Object ) );
 			var implementation = Directory.Default.Get();
 			Assert.Same( Directory.Default.Get(), implementation );
 			var mock = Mock.Get( (MockDirectory)implementation );

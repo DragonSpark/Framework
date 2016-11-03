@@ -228,6 +228,7 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
+    <Compile Include="Sources\Factory.cs" />
     <Compile Include="Sources\ISourceAware.cs" />
     <Compile Include="Sources\Parameterized\AlterationAdapter.cs" />
     <Compile Include="Sources\Parameterized\AlteredResultParameterizedSource.cs" />
@@ -270,7 +271,7 @@
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
-    <Compile Include="Sources\Scopes\ScopedSingleton.cs" />
+    <Compile Include="Sources\Scopes\SingletonScope.cs" />
     <Compile Include="Sources\Scopes\Scopes.cs" />
     <Compile Include="Sources\Source.cs" />
     <Compile Include="Sources\SourceAccountedAlteration.cs" />
@@ -627,7 +628,6 @@
     <Compile Include="Sources\Parameterized\DecoratedParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\DelegatedParameterizedSource.cs" />
     <Compile Include="Sources\DelegatedSource.cs" />
-    <Compile Include="Sources\Scopes\Factory.cs" />
     <Compile Include="Sources\SuppliedDeferredSource.cs" />
     <Compile Include="Sources\SingletonDelegateBuilder.cs" />
     <Compile Include="Sources\SuppliedSource.cs" />

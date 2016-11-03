@@ -19,14 +19,26 @@ namespace DragonSpark.Sources.Scopes
 		public static T AssignGlobal<T>( this ISource<T> @this, object _ ) => @this.Get();
 		public static T AssignGlobal<T>( this ISource<ISource<T>> @this, object _ ) => @this.GetValue();*/
 
-		public static Func<TParameter,TResult> Invoke<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
+		public static Func<TParameter, TResult> Invoke<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this;
 
+		public static Func<object, ImmutableArray<IAlteration<T>>> Global<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get;
+		static ImmutableArray<IAlteration<T>> Get<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
 
-		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, object _ ) => @this.ToDelegate();
-		public static Func<TParameter,TResult> AssignGlobal<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => Caches.Create( @this ).Get;
+		public static Func<TParameter, TResult> AssignGlobal<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, object _ ) => @this.ToDelegate();
+		public static Func<TParameter, TResult> AssignGlobal<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => Caches.Create( @this ).Get;
 
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedSingletonScope<TParameter, TResult>( @this );
+
+		public static Func<T> ToSingleton<T>( this ISource<T> @this ) => new Func<T>( @this.Get ).ToSingleton();
+		public static Func<T> ToSingleton<T>( this Func<T> @this ) => SingletonDelegateBuilder<T>.Default.Get( @this );
+		public static Func<TParameter, TResult> ToSingleton<TParameter, TResult>( this Func<TParameter, TResult> @this ) => Caches.Create( @this ).Get;
+
+		public static Func<object, T> ToGlobalSingleton<T>( this ISource<T> @this ) => @this.ToDelegate().ToGlobalSingleton();
+		public static Func<object, T> ToGlobalSingleton<T>( this Func<T> @this ) => Caches.Create( @this ).Get;
+		public static Func<object, Func<TParameter, TResult>> ToGlobalSingleton<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToGlobalSingleton();
+		public static Func<object, Func<TParameter, TResult>> ToGlobalSingleton<TParameter, TResult>( this Func<TParameter, TResult> @this ) => ToGlobalSingleton( @this.ToSingleton );
+		public static Func<object, Func<TParameter, TResult>> ToGlobalSingleton<TParameter, TResult>( this Func<Func<TParameter, TResult>> @this ) => Caches.Create( @this ).Get;
 
 		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
 		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ExecutionScopes<T>.Default.Get( @this );

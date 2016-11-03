@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime
 {
 	public interface IDisposables : IRepository<IDisposable>, IDisposable {}
 
-	public sealed class Disposables : ScopedSingleton<IDisposables>, IComposable<IDisposable>
+	public sealed class Disposables : SingletonScope<IDisposables>, IComposable<IDisposable>
 	{
 		public static Disposables Default { get; } = new Disposables();
 		Disposables() : base( () => new Repository() ) {}

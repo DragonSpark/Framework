@@ -83,7 +83,7 @@ namespace DragonSpark.Testing.Activation.Location
 
 		sealed class SingletonScopedSubject
 		{
-			public static IScope<SingletonScopedSubject> Default { get; } = new ScopedSingleton<SingletonScopedSubject>( () => new SingletonScopedSubject() );
+			public static IScope<SingletonScopedSubject> Default { get; } = new SingletonScope<SingletonScopedSubject>( () => new SingletonScopedSubject() );
 			SingletonScopedSubject() {}
 
 			[UsedImplicitly]

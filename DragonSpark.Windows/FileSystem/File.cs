@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class File : ScopedSingleton<FileBase>, IFile
+	public class File : SingletonScope<FileBase>, IFile
 	{
 		public static File Default { get; } = new File();
 		File() : base( () => new FileWrapper() ) {}

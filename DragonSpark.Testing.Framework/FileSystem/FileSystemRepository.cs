@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	/// <summary>
 	/// Attribution: https://github.com/tathamoddie/System.IO.Abstractions
 	/// </summary>
-	public class FileSystemRepository : ScopedSingleton<IFileSystemRepository>, IFileSystemRepository
+	public class FileSystemRepository : SingletonScope<IFileSystemRepository>, IFileSystemRepository
 	{
 		public static FileSystemRepository Default { get; } = new FileSystemRepository();
 		FileSystemRepository() : base( () => new Implementation() ) {}

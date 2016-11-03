@@ -1,4 +1,4 @@
-using DragonSpark.Sources.Scopes;
+using DragonSpark.Sources;
 using System;
 using System.Runtime.InteropServices;
 

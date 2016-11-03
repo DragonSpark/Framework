@@ -5,7 +5,7 @@ using System.IO.Abstractions;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public class Path : ScopedSingleton<PathBase>, IPath
+	public class Path : SingletonScope<PathBase>, IPath
 	{
 		public static Path Default { get; } = new Path();
 		Path() : base( () => new PathWrapper() ) {}

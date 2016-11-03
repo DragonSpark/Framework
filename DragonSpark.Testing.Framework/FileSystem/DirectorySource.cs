@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using DragonSpark.Sources;
+﻿using DragonSpark.Sources;
 using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
+using System;
+using System.IO;
 
 namespace DragonSpark.Testing.Framework.FileSystem
 {
-	public sealed class DirectorySource : ScopedSingleton<IDirectorySource>, IDirectorySource
+	public sealed class DirectorySource : SingletonScope<IDirectorySource>, IDirectorySource
 	{
 		public static DirectorySource Default { get; } = new DirectorySource();
 		DirectorySource() : base( () => new Implementation() ) {}

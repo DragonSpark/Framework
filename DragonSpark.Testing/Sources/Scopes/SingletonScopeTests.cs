@@ -3,7 +3,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Sources.Scopes
 {
-	public class ScopedSingletonTests
+	public class SingletonScopeTests
 	{
 		[Fact]
 		public void CachingTests()
@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Sources.Scopes
 			Assert.Same( Scope.Default.Get(), Scope.Default.Get() );
 		}
 
-		class Scope : ScopedSingleton<object>
+		class Scope : SingletonScope<object>
 		{
 			public static Scope Default { get; } = new Scope();
 			Scope() : base( () => new object() ) {}
