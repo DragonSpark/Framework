@@ -26,7 +26,7 @@ namespace DragonSpark.Activation.Location
 
 			public override Func<Type, object> Get( Func<Type, Func<object>> parameter )
 			{
-				var result = new ParameterizedScope<Type, object>( new Source( parameter ).ToGlobalSingleton() )
+				var result = new Source( parameter ).ToSingletonScope()
 					.Apply( ContainsSingletonPropertySpecification.Default )
 					.Apply( Conventions )
 					.ToDelegate();

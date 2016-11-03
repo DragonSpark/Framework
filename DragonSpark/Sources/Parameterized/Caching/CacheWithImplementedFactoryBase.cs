@@ -18,11 +18,11 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		readonly protected static ISpecification<TInstance> DefaultSpecification = Common<TInstance>.Assigned;
 
 		protected CacheWithImplementedFactoryBase() : this( DefaultSpecification ) {}
-		protected CacheWithImplementedFactoryBase( ISpecification<TInstance> specification ) : this( new ParameterizedScope<TInstance, TValue>(), specification ) {}
+		protected CacheWithImplementedFactoryBase( ISpecification<TInstance> specification ) : this( new ParameterizedSingletonScope<TInstance, TValue>(), specification ) {}
 
 		CacheWithImplementedFactoryBase( IParameterizedScope<TInstance, TValue> configuration, ISpecification<TInstance> specification ) : base( configuration.Apply( specification ).ToCache() )
 		{
-			configuration.Assign( new Func<TInstance, TValue>( Create ).AssignGlobal );
+			configuration.Assign( new Func<TInstance, TValue>( Create ).Scoped );
 		}
 
 		protected abstract TValue Create( TInstance parameter );

@@ -1,5 +1,4 @@
 using DragonSpark.Activation;
-using DragonSpark.Configuration;
 using DragonSpark.Diagnostics;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Scopes;
@@ -18,16 +17,16 @@ namespace DragonSpark.Testing.Framework
 		public static void Execution()
 		{
 			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
-			DragonSpark.Application.Clock.Default.Assign( Time.Default.ToGlobalSingleton() );
-			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Global );
+			DragonSpark.Application.Clock.Default.Assign( Time.Default.Scoped );
+			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Scoped );
 
 			Path.Default.Assign<MockPath>();
 			Directory.Default.Assign<MockDirectory>();
-			DirectoryInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.ToGlobalSingleton() );
+			DirectoryInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Scoped );
 			File.Default.Assign<MockFile>();
-			FileInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockFileInfo>.Default.ToGlobalSingleton() );
+			FileInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockFileInfo>.Default.Scoped );
 
-			UserSettingsFilePath.Default.Assign( Application.Setup.UserSettingsFilePath.Default.ToGlobalSingleton() );
+			UserSettingsFilePath.Default.Assign( Application.Setup.UserSettingsFilePath.Default.Scoped );
 		}
 	}
 }

@@ -2,7 +2,6 @@ using DragonSpark.Configuration;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
-using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using JetBrains.Annotations;
 using PostSharp.Aspects;
