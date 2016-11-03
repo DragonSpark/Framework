@@ -6,7 +6,7 @@ namespace DragonSpark.Composition
 {
 	public sealed class ConventionImplementations : CompositeFactory<Type, Type>
 	{
-		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( new ConventionImplementations().Apply( Defaults.ConventionCandidate ).ToDelegate().Singleton() );
+		public static IParameterizedSource<Type, Type> Default { get; } = new ParameterizedScope<Type, Type>( new ConventionImplementations().Apply( Defaults.ConventionCandidate ).ToDelegate().ToGlobalSingleton() );
 		ConventionImplementations() : base( MappedConventionLocator.Default, ConventionImplementationLocator.Default ) {}
 	}
 }

@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Framework.Application
 {
-	public sealed class ApplicationFactory : ParameterizedScopedSingleton<MethodBase, IApplication>
+	public sealed class ApplicationFactory : ParameterizedSingletonScope<MethodBase, IApplication>
 	{
 		public static ApplicationFactory Default { get; } = new ApplicationFactory();
 		ApplicationFactory() : base( DefaultImplementation.Implementation.Get ) {}

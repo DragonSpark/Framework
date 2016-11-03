@@ -79,7 +79,7 @@ namespace DragonSpark.TypeSystem
 
 		static class Support
 		{
-			public static IParameterizedSource<MethodBase, ImmutableArray<Type>> ParameterTypes { get; } = CacheFactory.Create<MethodBase, ImmutableArray<Type>>( method => method.GetParameters().Select( info => info.ParameterType ).ToImmutableArray() );
+			public static IParameterizedSource<MethodBase, ImmutableArray<Type>> ParameterTypes { get; } = Caches.Create<MethodBase, ImmutableArray<Type>>( method => method.GetParameters().Select( info => info.ParameterType ).ToImmutableArray() );
 		}
 	}
 }

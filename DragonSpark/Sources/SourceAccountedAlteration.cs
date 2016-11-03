@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DragonSpark.Sources.Parameterized;
+﻿using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DragonSpark.Sources
 {
 	public sealed class SourceAccountedAlteration : AlterationBase<object>
 	{
 		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = 
-			new Curry<Type, object>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ).Create();
+			new Curry<Type, object>( type => new SourceAccountedAlteration( type.Adapt() ).ToCache().GetAssigned ).ToSingletonScope();
 
 		readonly Func<Type, bool> assignable;
 		readonly Func<object, bool> specification;

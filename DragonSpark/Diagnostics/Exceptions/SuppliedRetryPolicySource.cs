@@ -11,7 +11,7 @@ namespace DragonSpark.Diagnostics.Exceptions
 	{
 		const int Retries = 5;
 
-		public static ISource<Policy> Default { get; } = new SuppliedRetryPolicySource<T>().Create();
+		public static ISource<Policy> Default { get; } = new SuppliedRetryPolicySource<T>().ToSingletonScope();
 		SuppliedRetryPolicySource() : this( Retries ) {}
 
 		[UsedImplicitly]

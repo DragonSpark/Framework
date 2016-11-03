@@ -16,7 +16,7 @@ namespace DragonSpark.Specifications
 		public override bool IsSatisfiedBy( T parameter ) => @delegate.Invoke( parameter );
 	}
 
-	public class ConfigurableSpecification<T> : ParameterizedScopedSingleton<T, bool>, ISpecification<T>
+	public class ConfigurableSpecification<T> : ParameterizedSingletonScope<T, bool>, ISpecification<T>
 	{
 		public ConfigurableSpecification( Func<object, Func<T, bool>> global ) : base( global ) {}
 		public ConfigurableSpecification( Func<T, bool> factory ) : base( factory ) {}

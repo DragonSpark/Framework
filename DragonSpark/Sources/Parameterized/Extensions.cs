@@ -104,7 +104,7 @@ namespace DragonSpark.Sources.Parameterized
 		sealed class ParameterizedSources<T> : Cache<Func<object, T>, ICache<T>>
 		{
 			public static ParameterizedSources<T> Default { get; } = new ParameterizedSources<T>();
-			ParameterizedSources() : base( CacheFactory.Create ) {}
+			ParameterizedSources() : base( Caches.Create ) {}
 		}
 
 		public static ICache<TParameter, TResult> ToCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToCache();
@@ -112,7 +112,7 @@ namespace DragonSpark.Sources.Parameterized
 		sealed class ParameterizedSources<TParameter, TResult> : Cache<Func<TParameter, TResult>, ICache<TParameter, TResult>>
 		{
 			public static ParameterizedSources<TParameter, TResult> Default { get; } = new ParameterizedSources<TParameter, TResult>();
-			ParameterizedSources() : base( CacheFactory.Create ) {}
+			ParameterizedSources() : base( Caches.Create ) {}
 		}
 
 		public static ICache<TParameter, TResult> ToEqualityCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) where TParameter : class => @this.ToDelegate().ToEqualityCache();

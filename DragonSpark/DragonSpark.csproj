@@ -238,7 +238,7 @@
     <Compile Include="Sources\Parameterized\DelegatedAlteration.cs" />
     <Compile Include="Sources\Parameterized\ICurry.cs" />
     <Compile Include="Sources\Parameterized\ISpecificationParameterizedSource.cs" />
-    <Compile Include="Sources\Scopes\ParameterizedScopedSingleton.cs" />
+    <Compile Include="Sources\Scopes\ParameterizedSingletonScope.cs" />
     <Compile Include="Sources\Scopes\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
@@ -607,7 +607,7 @@
     <Compile Include="Sources\Parameterized\Caching\Cache.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheBase.cs" />
     <Compile Include="Sources\Parameterized\Caching\CacheExtensions.cs" />
-    <Compile Include="Sources\Parameterized\Caching\CacheFactory.cs" />
+    <Compile Include="Sources\Parameterized\Caching\Caches.cs" />
     <Compile Include="Sources\Parameterized\Caching\Condition.cs" />
     <Compile Include="Sources\Parameterized\Caching\DecoratedCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\EqualityReference.cs" />
@@ -629,7 +629,7 @@
     <Compile Include="Sources\DelegatedSource.cs" />
     <Compile Include="Sources\Scopes\Factory.cs" />
     <Compile Include="Sources\SuppliedDeferredSource.cs" />
-    <Compile Include="Sources\CachedFactoryBuilder.cs" />
+    <Compile Include="Sources\SingletonDelegateBuilder.cs" />
     <Compile Include="Sources\SuppliedSource.cs" />
     <Compile Include="Sources\IAssignable.cs" />
     <Compile Include="Sources\Parameterized\IAssignableReferenceSource.cs" />

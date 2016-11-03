@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Aspects.Exceptions
 		sealed class RetrySource<T> : SuppliedRetryPolicySource<T> where T : Exception
 		{
 			[UsedImplicitly]
-			public new static ISource<Policy> Default { get; } = new RetrySource<T>().Create();
+			public new static ISource<Policy> Default { get; } = new RetrySource<T>().ToSingletonScope();
 			RetrySource() : base( new RetryPolicySource<T>( Time.None ), 3 ) {}
 		}
 

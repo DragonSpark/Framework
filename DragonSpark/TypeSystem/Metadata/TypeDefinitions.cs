@@ -10,7 +10,7 @@ namespace DragonSpark.TypeSystem.Metadata
 	sealed class TypeDefinitions : ParameterizedScope<TypeInfo>
 	{
 		public static TypeDefinitions Default { get; } = new TypeDefinitions();
-		TypeDefinitions() : base( new Factory().ToDelegate().Singleton() ) {}
+		TypeDefinitions() : base( new Factory().ToDelegate().ToGlobalSingleton() ) {}
 
 		[ApplyResultAlteration( typeof(ComponentModel.TypeDefinitions) )]
 		sealed class Factory : CompositeFactory<object, TypeInfo>

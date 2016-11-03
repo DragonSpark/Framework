@@ -11,7 +11,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 		[Fact]
 		public void Verify()
 		{
-			Path.Default.Assign( Factory.Cache( () => new Mock<MockPath> { CallBase = true }.Object ) );
+			Path.Default.Assign( Factory.ToSingleton( () => new Mock<MockPath> { CallBase = true }.Object ) );
 
 			var implementation = Path.Default.Get();
 			Assert.Same( Path.Default.Get(), implementation );

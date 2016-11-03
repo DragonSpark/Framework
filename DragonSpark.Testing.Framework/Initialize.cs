@@ -18,16 +18,16 @@ namespace DragonSpark.Testing.Framework
 		public static void Execution()
 		{
 			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
-			DragonSpark.Application.Clock.Default.Assign( Time.Default.Singleton() );
+			DragonSpark.Application.Clock.Default.Assign( Time.Default.ToGlobalSingleton() );
 			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Global );
 
 			Path.Default.Assign<MockPath>();
 			Directory.Default.Assign<MockDirectory>();
-			DirectoryInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.Singleton() );
+			DirectoryInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockDirectoryInfo>.Default.ToGlobalSingleton() );
 			File.Default.Assign<MockFile>();
-			FileInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockFileInfo>.Default.Singleton() );
+			FileInfoFactory.DefaultImplementation.Implementation.Assign( ParameterConstructor<string, MockFileInfo>.Default.ToGlobalSingleton() );
 
-			UserSettingsFilePath.Default.Assign( Application.Setup.UserSettingsFilePath.Default.Singleton() );
+			UserSettingsFilePath.Default.Assign( Application.Setup.UserSettingsFilePath.Default.ToGlobalSingleton() );
 		}
 	}
 }

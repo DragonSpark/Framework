@@ -12,7 +12,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		public EqualityReferenceCache( Func<TInstance, TValue> create ) : this( create, DefaultSource ) {}
 
 		[UsedImplicitly]
-		public EqualityReferenceCache( Func<TInstance, TValue> create , Alter<TInstance> equalitySource ) : this( CacheFactory.Create( create ), equalitySource ) {}
+		public EqualityReferenceCache( Func<TInstance, TValue> create , Alter<TInstance> equalitySource ) : this( Caches.Create( create ), equalitySource ) {}
 
 		[UsedImplicitly]
 		public EqualityReferenceCache( ICache<TInstance, TValue> inner, Alter<TInstance> equalitySource ) : base( inner, equalitySource ) {}

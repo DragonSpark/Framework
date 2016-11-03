@@ -2,10 +2,10 @@ using DragonSpark.Activation.Location;
 using DragonSpark.Application.Setup;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Composition.Hosting.Core;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Composition
 {
@@ -36,7 +36,7 @@ namespace DragonSpark.Composition
 		{
 			readonly CompositeActivator activate;
 
-			public Factory( Func<Type, object> provider, Type contract ) : base( provider.WithParameter( contract ).ToCachedDelegate() )
+			public Factory( Func<Type, object> provider, Type contract ) : base( provider.WithParameter( contract ).ToSingleton() )
 			{
 				activate = Activate;
 			}

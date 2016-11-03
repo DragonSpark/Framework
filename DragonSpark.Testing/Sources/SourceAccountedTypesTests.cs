@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Sources;
-using DragonSpark.Testing.Framework.Application;
-using DragonSpark.Testing.Framework.Application.Setup;
 using System;
 using Xunit;
 
@@ -8,12 +6,15 @@ namespace DragonSpark.Testing.Sources
 {
 	public class SourceAccountedTypesTests
 	{
-		[Theory, AutoData, ContainingTypeAndNested]
+		[Fact]
 		public void VerifyCaching()
 		{
-			var item = SourceAccountedAlteration.Defaults.Get( typeof(Guid) ).Invoke( Source.Default );
+			var one = SourceAccountedAlteration.Defaults.Get( typeof(Guid) );
+			var item = one.Invoke( Source.Default );
 			Assert.IsType<Guid>( item );
-			Assert.Equal( item, SourceAccountedAlteration.Defaults.Get( typeof(Guid) ).Invoke( Source.Default ) );
+			var two = SourceAccountedAlteration.Defaults.Get( typeof(Guid) );
+			Assert.Same( one, two );
+			Assert.Equal( item, two.Invoke( Source.Default ) );
 		}
 
 		sealed class Source : SourceBase<Guid>

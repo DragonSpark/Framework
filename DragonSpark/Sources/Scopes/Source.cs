@@ -8,7 +8,7 @@ namespace DragonSpark.Sources.Scopes
 
 		static class Support<T>
 		{
-			public static ICache<T, Source<T>> Sources { get; } = CacheFactory.Create<T, Source<T>>( arg => new Source<T>( arg ) );
+			public static ICache<T, Source<T>> Sources { get; } = Caches.Create<T, Source<T>>( arg => new Source<T>( arg ) );
 		}
 	}
 }

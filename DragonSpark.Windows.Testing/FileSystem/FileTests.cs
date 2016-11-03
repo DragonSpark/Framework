@@ -18,7 +18,7 @@ namespace DragonSpark.Windows.Testing.FileSystem
 			repository.Set( path, new FileElement( expected ) );
 
 
-			File.Default.Assign( Factory.Cache(  () => new Mock<MockFile> { CallBase = true }.Object ) );
+			File.Default.Assign( Factory.ToSingleton(  () => new Mock<MockFile> { CallBase = true }.Object ) );
 			var implementation = File.Default.Get();
 			Assert.Same( File.Default.Get(), implementation );
 			var mock = Mock.Get( (MockFile)implementation );

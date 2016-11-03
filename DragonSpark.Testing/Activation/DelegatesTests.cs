@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Media.Animation;
-using DragonSpark.Sources;
+﻿using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
+using System;
+using System.Windows.Media.Animation;
 using Xunit;
 
 // ReSharper disable AccessToModifiedClosure
@@ -28,7 +28,7 @@ namespace DragonSpark.Testing.Activation
 			var count = 0;
 			var factory = new Func<int>( () => ++count );
 
-			var cached = CachedFactoryBuilder<int>.Default.Get( factory );
+			var cached = SingletonDelegateBuilder<int>.Default.Get( factory );
 			Assert.Equal( 0, count );
 			Assert.Equal( 1, cached() );
 			Assert.Equal( 1, cached() );

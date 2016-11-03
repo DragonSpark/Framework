@@ -14,7 +14,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		readonly ICache<TInstance, TValue> cache;
 		public DecoratedCache() : this( ParameterConstructor<TInstance, TValue>.Default ) {}
 
-		public DecoratedCache( Func<TInstance, TValue> factory ) : this( CacheFactory.Create( factory ) ) {}
+		public DecoratedCache( Func<TInstance, TValue> factory ) : this( Caches.Create( factory ) ) {}
 
 		public DecoratedCache( ICache<TInstance, TValue> cache )
 		{

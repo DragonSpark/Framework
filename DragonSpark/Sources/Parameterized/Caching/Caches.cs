@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace DragonSpark.Sources.Parameterized.Caching
 {
-	public static class CacheFactory
+	public static class Caches
 	{
 		public static ICache<T> Create<T>( Func<T> parameter ) => Create( parameter.Wrap() );
 

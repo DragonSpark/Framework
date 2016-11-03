@@ -39,7 +39,7 @@ namespace DragonSpark.Specifications
 		sealed class CachedSpecifications<T> : Cache<ISpecification<T>, ISpecification<T>>
 		{
 			public static CachedSpecifications<T> Default { get; } = new CachedSpecifications<T>();
-			CachedSpecifications() : base( specification => new DelegatedSpecification<T>( specification.ToSpecificationDelegate().Cache() ) ) {}
+			CachedSpecifications() : base( specification => new DelegatedSpecification<T>( specification.ToSpecificationDelegate().ToSingleton() ) ) {}
 		}
 	}
 }
