@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Diagnostics
 		{
 			var history = LoggingHistory.Default.Get();
 			var sink = new LoggerHistorySink();
-			LoggingConfiguration.Default.Seed.Assign( o => new LoggerConfiguration().WriteTo.Sink( sink ) );
+			LoggerFactory.Default.Configuration.Assign( x => new LoggerConfiguration().WriteTo.Sink( sink ) );
 
 			var system = SystemLogger.Default.Get();
 			system.Information( "Hello World!" );

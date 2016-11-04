@@ -15,6 +15,6 @@ namespace DragonSpark.Activation
 			this.projector = projector;
 		}
 
-		protected override T Apply( [Optional]object parameter ) => projector( parameter );
+		protected override T Coerce( [Optional]object parameter ) => projector( parameter );
 	}
 }

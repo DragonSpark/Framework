@@ -1,5 +1,6 @@
 using DragonSpark.Commands;
 using DragonSpark.Sources;
+using System;
 
 namespace DragonSpark.Runtime.Assignments
 {
@@ -13,5 +14,15 @@ namespace DragonSpark.Runtime.Assignments
 		}
 
 		public override void Execute( T parameter ) => assignable.Assign( parameter );
+	}
+
+	public class AssignScopeCommand<T> : AssignCommand<Func<T>>
+	{
+		public AssignScopeCommand( IAssignable<Func<T>> assignable ) : base( assignable ) {}
+	}
+
+	public class AssignGlobalScopeCommand<T> : AssignCommand<Func<object, T>>
+	{
+		public AssignGlobalScopeCommand( IAssignable<Func<object, T>> assignable ) : base( assignable ) {}
 	}
 }

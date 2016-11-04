@@ -1,14 +1,13 @@
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
 using Serilog;
+using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public sealed class SystemLogger : LoggerBase
+	public sealed class SystemLogger : SingletonScope<ILogger>
 	{
-		/*public static IConfigurationProvisionedFactory<LoggerConfiguration, ILogger> Configurable { get; } = new SystemLogger();*/
-
-		public static IScope<ILogger> Default { get; } = new SystemLogger().ToCache().ToExecutionScope();
-		SystemLogger() : base( DefaultSystemLoggerAlterations.Default.Get() ) {}
+		public static IScope<ILogger> Default { get; } = new SystemLogger();
+		SystemLogger() : base( new Func<ILogger>( new LoggerFactory( DefaultSystemLoggerAlterations.Default.Get() ).Get ) ) {}
 	}
 }

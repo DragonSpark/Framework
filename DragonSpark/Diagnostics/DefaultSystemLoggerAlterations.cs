@@ -9,7 +9,7 @@ namespace DragonSpark.Diagnostics
 	public sealed class DefaultSystemLoggerAlterations : ItemSource<IAlteration<LoggerConfiguration>>
 	{
 		public static DefaultSystemLoggerAlterations Default { get; } = new DefaultSystemLoggerAlterations();
-		DefaultSystemLoggerAlterations() : base( HistoryAlteration.Implementation.Append( DefaultLoggerAlterations.Default.Unwrap() ) ) {}
+		DefaultSystemLoggerAlterations() : base( HistoryAlteration.Implementation.Append( DefaultLoggerAlterations.Default ) ) {}
 
 		sealed class HistoryAlteration : AlterationBase<LoggerConfiguration>
 		{

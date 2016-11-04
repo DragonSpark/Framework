@@ -14,6 +14,6 @@ namespace DragonSpark.Windows.Diagnostics
 		ApplyExceptionDetails() {}
 
 		public override LoggerConfiguration Get( LoggerConfiguration parameter ) => 
-			parameter.Enrich.WithExceptionDetails( new SuppliedAndExportedItems<IExceptionDestructurer>( ExceptionEnricher.DefaultDestructurers ) );
+			parameter.Enrich.WithExceptionDetails( ExceptionEnricher.DefaultDestructurers.IncludeExports() );
 	}
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Aspects.Validation
 {
-	abstract class AdapterSourceBase<T> : LinkedParameterizedSource<T, IParameterValidationAdapter>
+	abstract class AdapterSourceBase<T> : ParameterCoercionSource<T, IParameterValidationAdapter>
 	{
 		protected AdapterSourceBase( Func<T, IParameterValidationAdapter> create ) : base( create ) {}
 	}

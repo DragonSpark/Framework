@@ -5,13 +5,17 @@ using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.Specifications;
 using Serilog;
+using System;
 
 namespace DragonSpark.Diagnostics
 {
 	public sealed class Logger : ConfiguringFactory<object, ILogger>
 	{
-		public static IParameterizedSource<object, ILogger> Default { get; } = new Logger().ToCache();
-		Logger() : base( LoggingConfiguration.Default.ToCache().ToDelegate(), Command.Implementation.ToDelegate() ) {}
+		readonly static Func<object, ILogger> Factory = LoggerFactory.Default.ToDelegate();
+		readonly static Action<ILogger> Configure = Command.Implementation.ToDelegate();
+
+		public static IParameterizedSource<object, ILogger> Default { get; } = new ParameterizedSingletonScope<object, ILogger>( o => new Logger().Get( o ) );
+		Logger() : base( Factory, Configure ) {}
 		
 		[ApplyAutoValidation, ApplySpecification( typeof(OncePerScopeSpecification<ILogger>) )]
 		sealed class Command : CommandBase<ILogger>
@@ -27,9 +31,9 @@ namespace DragonSpark.Diagnostics
 		}
 	}
 
-	public sealed class LoggingConfiguration : LoggerBase
+	/*public sealed class LoggingConfiguration : LoggerBase
 	{
 		public static IConfigurationProvisionedFactory<LoggerConfiguration, ILogger> Default { get; } = new LoggingConfiguration();
 		LoggingConfiguration() {}
-	}
+	}*/
 }

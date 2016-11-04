@@ -60,5 +60,9 @@ namespace DragonSpark.Sources
 
 		public static ImmutableArray<T> GetImmutable<T>( this ISource<IEnumerable<T>> @this ) => @this.Get().ToImmutableArray();
 		public static IEnumerable<T> GetEnumerable<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
+
+		public static IEnumerable<T> IncludeExports<T>( this IEnumerable<T> @this ) => IncludeExportsAlteration<T>.Default.Get( @this );
+
+		public static IItemSource<T> ToSource<T>( this IEnumerable<T> @this ) => new ItemSource<T>( @this );
 	}
 }

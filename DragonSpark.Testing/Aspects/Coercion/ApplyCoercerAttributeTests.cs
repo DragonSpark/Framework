@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Aspects.Coercion
 		{
 			public const string ValidMatch = "Valid Match";
 
-			protected override string Apply( int parameter )
+			protected override string Coerce( int parameter )
 			{
 				switch ( parameter )
 				{

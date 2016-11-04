@@ -1,3 +1,4 @@
+using DragonSpark.Application;
 using DragonSpark.Extensions;
 using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized.Caching;
@@ -40,11 +41,22 @@ namespace DragonSpark.Sources.Parameterized
 		public static ISource<TResult> Coerce<TParameter, TResult>( this Func<TParameter> @this, IParameterizedSource<TParameter, TResult> coerce ) => @this.Coerce( coerce.ToDelegate() );
 		public static ISource<TResult> Coerce<TParameter, TResult>( this Func<TParameter> @this, Func<TParameter, TResult> coerce ) => coerce.WithParameter( @this );
 
+		/*public static TResult GetCast<TParameter, TResult, TCast>( this IParameterizedSource<TParameter, TResult> @this, TCast parameter ) where TParameter : TCast => @this.Get( parameter.AsValid<TParameter>() );*/
+
+		
 		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.ToDelegate().Coerce( coerce.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TFrom, TParameter> coerce ) => @this.ToDelegate().Coerce( coerce );
 		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.Coerce( coerce.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Coerce<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TFrom, TParameter> coerce )
-			=> new LinkedParameterizedSource<TFrom, TParameter, TResult>( coerce, @this );
+			=> new ParameterCoercionSource<TFrom, TParameter, TResult>( coerce, @this );
+
+		public static IParameterizedSource<object, TTo> CoerceTo<TResult, TTo>( this IParameterizedSource<object, TResult> @this ) => @this.ToDelegate().CoerceTo<TResult, TTo>();
+		public static IParameterizedSource<object, TTo> CoerceTo<TResult, TTo>( this Func<object, TResult> @this ) => CoerceTo( @this, CastCoercer<TResult, TTo>.Default );
+		public static IParameterizedSource<TParameter, TTo> CoerceTo<TParameter, TResult, TTo>( this IParameterizedSource<TParameter, TResult> @this, IParameterizedSource<TResult, TTo> coerce ) => @this.ToDelegate().CoerceTo( coerce.ToDelegate() );
+		public static IParameterizedSource<TParameter, TTo> CoerceTo<TParameter, TResult, TTo>( this IParameterizedSource<TParameter, TResult> @this, Func<TResult, TTo> coerce ) => @this.ToDelegate().CoerceTo( coerce );
+		public static IParameterizedSource<TParameter, TTo> CoerceTo<TParameter, TResult, TTo>( this Func<TParameter, TResult> @this, IParameterizedSource<TResult, TTo> coerce ) => @this.CoerceTo( coerce.ToDelegate() );
+		public static IParameterizedSource<TParameter, TTo> CoerceTo<TParameter, TResult, TTo>( this Func<TParameter, TResult> @this, Func<TResult, TTo> coerce )
+			=> new ResultCoercionSource<TParameter, TResult, TTo>( @this, coerce );
 
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ISpecification<TParameter> specification ) =>
 			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToDelegate() );
@@ -100,6 +112,9 @@ namespace DragonSpark.Sources.Parameterized
 			public static Selectors<T> Default { get; } = new Selectors<T>();
 			Selectors() : base( item => item.Get ) {}
 		}
+
+		public static T Get<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().Invoke();
+		public static T Invoke<T>( this Func<object, T> @this ) => @this.Invoke( Execution.Default.Get() );
 
 		public static ICache<T> ToCache<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToCache();
 		public static ICache<T> ToCache<T>( this Func<object, T> @this ) => ParameterizedSources<T>.Default.Get( @this );

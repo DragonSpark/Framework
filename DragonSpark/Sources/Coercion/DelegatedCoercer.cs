@@ -11,6 +11,6 @@ namespace DragonSpark.Sources.Coercion
 			this.factory = factory;
 		}
 
-		protected override TTo Apply( TFrom parameter ) => factory( parameter );
+		protected override TTo Coerce( TFrom parameter ) => factory( parameter );
 	}
 }

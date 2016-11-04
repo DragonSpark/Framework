@@ -5,6 +5,6 @@ namespace DragonSpark.Sources.Coercion
 		public static Coercer<T> Default { get; } = new Coercer<T>();
 		protected Coercer() {}
 
-		protected override T Apply( object parameter ) => default(T);
+		protected override T Coerce( object parameter ) => default(T);
 	}
 }

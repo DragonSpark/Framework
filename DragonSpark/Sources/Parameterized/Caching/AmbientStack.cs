@@ -1,8 +1,8 @@
 using DragonSpark.Expressions;
+using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
 using DragonSpark.TypeSystem.Generics;
 using System;
-using DragonSpark.Sources.Scopes;
 
 namespace DragonSpark.Sources.Parameterized.Caching
 {
@@ -11,7 +11,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 		public static AmbientStack<T> Default { get; } = new AmbientStack<T>();
 
 		public AmbientStack() : this( Stacks<T>.Default ) {}
-		public AmbientStack( IParameterizedSource<object, IStack<T>> source ) : base( source.Get ) {}
+		public AmbientStack( IParameterizedSource<object, IStack<T>> source ) : base( source.ToDelegate() ) {}
 
 		public T GetCurrentItem() => Get().Peek();
 	}

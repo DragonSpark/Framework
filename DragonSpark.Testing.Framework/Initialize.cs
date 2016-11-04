@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework
 		{
 			DragonSpark.Application.Execution.Default.Assign( ExecutionContext.Default );
 			DragonSpark.Application.Clock.Default.Assign( Time.Default.Scoped );
-			LoggingConfiguration.Default.Alterations.Assign( new LoggerExportedAlterations( DefaultSystemLoggerAlterations.Default.Unwrap() ).Scoped );
+			LoggerAlterations.Default.Assign( DefaultSystemLoggerAlterations.Default.IncludeExports().ToSource().Scoped );
 
 			Path.Default.Assign<MockPath>();
 			Directory.Default.Assign<MockDirectory>();

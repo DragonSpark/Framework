@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace DragonSpark.Sources.Scopes
 {
-	public abstract class ConfigurationProvisionedParameterizedSourceBase<TConfiguration, TResult> : ConfigurationProvisionedParameterizedSourceBase<TConfiguration, object, TResult>, IConfigurationProvisionedFactory<TConfiguration, TResult>
-	{
-		protected ConfigurationProvisionedParameterizedSourceBase( Func<object, TConfiguration> seed, Func<object, ImmutableArray<IAlteration<TConfiguration>>> configurators, Func<TConfiguration, object, TResult> factory ) : base( seed, configurators, factory ) {}
-	}
+	/*	public abstract class ConfigurationProvisionedParameterizedSourceBase<TConfiguration, TResult> : ConfigurationProvisionedParameterizedSourceBase<TConfiguration, object, TResult>, IConfigurationProvisionedFactory<TConfiguration, TResult>
+		{
+			protected ConfigurationProvisionedParameterizedSourceBase( Func<object, TConfiguration> seed, Func<object, ImmutableArray<IAlteration<TConfiguration>>> configurators, Func<TConfiguration, object, TResult> factory ) : base( seed, configurators, factory ) {}
+		}*/
 
 	public abstract class ConfigurationProvisionedParameterizedSourceBase<TConfiguration, TParameter, TResult> : ParameterizedSourceBase<TParameter, TResult>, IConfigurationProvisionedFactory<TConfiguration, TParameter, TResult>
 	{

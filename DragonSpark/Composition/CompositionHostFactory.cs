@@ -1,3 +1,4 @@
+using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
@@ -27,21 +28,9 @@ namespace DragonSpark.Composition
 
 		public sealed class Configuration : Scope<ContainerConfiguration>
 		{
+			readonly static IAlteration<ContainerConfiguration>[] DefaultAlterations = { ContainerServicesConfigurator.Default, PartsContainerConfigurator.Default };
 			public static Configuration Implementation { get; } = new Configuration();
-			Configuration() : base( () => new AggregateSource<ContainerConfiguration>( Seed.Implementation.Get, Alterations.Implementation.Unwrap() ).Get() ) {}
-		}
-
-		public sealed class Seed : Scope<ContainerConfiguration>
-		{
-			public static Seed Implementation { get; } = new Seed();
-			Seed() : base( () => new ContainerConfiguration() ) {}
-		}
-
-		// ReSharper disable once PossibleInfiniteInheritance
-		public sealed class Alterations : SingletonScope<IAlterations<ContainerConfiguration>>
-		{
-			public static Alterations Implementation { get; } = new Alterations();
-			Alterations() : base( () => new Alterations<ContainerConfiguration>( ContainerServicesConfigurator.Default, PartsContainerConfigurator.Default ) ) {}
+			Configuration() : base( () => new AggregateSource<ContainerConfiguration>( DefaultAlterations.IncludeExports().Fixed() ).Get() ) {}
 		}
 	}
 }

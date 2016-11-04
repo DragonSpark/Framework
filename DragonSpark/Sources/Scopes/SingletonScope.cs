@@ -7,6 +7,7 @@ namespace DragonSpark.Sources.Scopes
 	{
 		public SingletonScope( T instance ) : base( Factory.For( instance ) ) {}
 		public SingletonScope( Func<T> defaultFactory ) : base( Caches.Create( defaultFactory ).Get ) {}
+		public SingletonScope( Func<object, T> defaultFactory ) : base( Caches.Create( defaultFactory ).Get ) {}
 
 		public override void Assign( Func<T> item ) => base.Assign( item.ToSingleton() );
 

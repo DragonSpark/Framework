@@ -69,7 +69,7 @@
     <Compile Include="Composition\ExportMappingTests.cs" />
     <Compile Include="Sources\Scopes\ParameterizedScopeTests.cs" />
     <Compile Include="Diagnostics\Configurations\LoggerConfigurationTests.cs" />
-    <Compile Include="Diagnostics\ConfigureLoggingCommandTests.cs" />
+    <Compile Include="Diagnostics\ConfigureLoggerAlterationsCommandTests.cs" />
     <Compile Include="Diagnostics\Exceptions\BackoffRetryTimeTests.cs" />
     <Compile Include="Diagnostics\Exceptions\LinearRetryTimeTests.cs" />
     <Compile Include="Diagnostics\LogCommandBaseTests.cs" />

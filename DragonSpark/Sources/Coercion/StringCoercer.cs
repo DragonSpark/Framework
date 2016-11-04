@@ -5,6 +5,6 @@ namespace DragonSpark.Sources.Coercion
 		public new static StringCoercer Default { get; } = new StringCoercer();
 		StringCoercer() {}
 
-		protected override string Apply( object parameter ) => parameter.ToString();
+		protected override string Coerce( object parameter ) => parameter.ToString();
 	}
 }

@@ -87,6 +87,6 @@ namespace DragonSpark.Activation
 		public static ConstructorCoercer Default { get; } = new ConstructorCoercer();
 		ConstructorCoercer() {}
 
-		protected override ConstructTypeRequest Apply( Type parameter ) => new ConstructTypeRequest( parameter );
+		protected override ConstructTypeRequest Coerce( Type parameter ) => new ConstructTypeRequest( parameter );
 	}
 }

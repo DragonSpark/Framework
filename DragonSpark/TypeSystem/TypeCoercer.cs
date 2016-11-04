@@ -9,7 +9,7 @@ namespace DragonSpark.TypeSystem
 		public static TypeCoercer Default { get; } = new TypeCoercer();
 		TypeCoercer() {}
 
-		protected override Type Apply( object parameter )
+		protected override Type Coerce( object parameter )
 		{
 			var info = parameter as ParameterInfo;
 			if ( info != null )

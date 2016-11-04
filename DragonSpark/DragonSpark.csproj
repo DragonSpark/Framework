@@ -229,6 +229,7 @@
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
     <Compile Include="Sources\Factory.cs" />
+    <Compile Include="Sources\IncludeExportsAlteration.cs" />
     <Compile Include="Sources\ISourceAware.cs" />
     <Compile Include="Sources\Parameterized\AlterationAdapter.cs" />
     <Compile Include="Sources\Parameterized\AlteredResultParameterizedSource.cs" />
@@ -239,17 +240,16 @@
     <Compile Include="Sources\Parameterized\DelegatedAlteration.cs" />
     <Compile Include="Sources\Parameterized\ICurry.cs" />
     <Compile Include="Sources\Parameterized\ISpecificationParameterizedSource.cs" />
+    <Compile Include="Sources\Scopes\AggregateParameterizedSource.cs" />
     <Compile Include="Sources\Scopes\ScopedItems.cs" />
     <Compile Include="Sources\Scopes\ParameterizedSingletonScope.cs" />
     <Compile Include="Sources\Scopes\IConfigurationProvisionedFactory.cs" />
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
     <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
-    <Compile Include="Diagnostics\ConfigureLoggingCommand.cs" />
+    <Compile Include="Diagnostics\ConfigureLoggerAlterationsCommand.cs" />
     <Compile Include="Diagnostics\Defaults.cs" />
-    <Compile Include="Diagnostics\LoggerBase.cs" />
-    <Compile Include="Diagnostics\LoggerExportedAlterations.cs" />
-    <Compile Include="Diagnostics\LoggingConfigurationSource.cs" />
+    <Compile Include="Diagnostics\LoggerFactory.cs" />
     <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
     <Compile Include="Diagnostics\SystemLogger.cs" />
     <Compile Include="Diagnostics\TimedOperationFactory.cs" />
@@ -268,7 +268,7 @@
     <Compile Include="Sources\Parameterized\Caching\AlteredCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\DictionaryCache.cs" />
     <Compile Include="Sources\Parameterized\Caching\StackAssignment.cs" />
-    <Compile Include="Sources\Coercion\LinkedParameterizedSource.cs" />
+    <Compile Include="Sources\Coercion\ParameterCoercionSource.cs" />
     <Compile Include="Sources\Parameterized\DictionarySource.cs" />
     <Compile Include="Sources\Parameterized\IAssignableParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\SpecificationParameterizedSource.cs" />
@@ -299,9 +299,7 @@
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
     <Compile Include="Sources\Scopes\AggregateSource.cs" />
     <Compile Include="Sources\Scopes\ConfigurationProvisionedParameterizedSourceBase.cs" />
-    <Compile Include="Sources\Scopes\Alterations.cs" />
     <Compile Include="Configuration\Extensions.cs" />
-    <Compile Include="Sources\Scopes\IAlterations.cs" />
     <Compile Include="Configuration\IValueStore.cs" />
     <Compile Include="Diagnostics\Exceptions\BackoffRetryTime.cs" />
     <Compile Include="Aspects\Exceptions\Time.cs" />
@@ -429,7 +427,6 @@
     <Compile Include="Sources\Parameterized\AlterationBase.cs" />
     <Compile Include="Sources\Parameterized\TypeLocatorBase.cs" />
     <Compile Include="Sources\Parameterized\SourceAdapter.cs" />
-    <Compile Include="Sources\SuppliedAndExportedItems.cs" />
     <Compile Include="Sources\TimedDelegatedSource.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />
     <Compile Include="TypeSystem\AllParts.cs" />

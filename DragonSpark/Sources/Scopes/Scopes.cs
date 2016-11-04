@@ -5,20 +5,34 @@ using DragonSpark.Sources.Parameterized.Caching;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DragonSpark.Sources.Scopes
 {
 	public static class Scopes
 	{
-		public static IAlteration<T>[] Unwrap<T>( this ISource<IAlterations<T>> @this ) => @this.GetValue().ToArray();
-
 		public static IScope<T> ToScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToScope();
 		public static IScope<T> ToScope<T>( this Func<T> @this ) => new Scope<T>( @this );
+		public static IParameterizedScope<TParameter, TResult> ToScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToScope();
+		public static IParameterizedScope<TParameter, TResult> ToScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedScope<TParameter, TResult>( @this );
 		public static IScope<T> ToSingletonScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IScope<T> ToSingletonScope<T>( this Func<T> @this ) => new SingletonScope<T>( @this );
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingletonScope();
+		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this TResult @this ) => @this.Wrap<TParameter, TResult>().ToSingletonScope();
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedSingletonScope<TParameter, TResult>( @this );
+		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
+		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ExecutionScopes<T>.Default.Get( @this );
+		sealed class ExecutionScopes<T> : Cache<Func<object, T>, IScope<T>>
+		{
+			public static ExecutionScopes<T> Default { get; } = new ExecutionScopes<T>();
+			ExecutionScopes() : base( factory => new Scope<T>( factory ) ) {}
+		}
+		public static IScope<T> ToExecutionSingletonScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionSingletonScope();
+		public static IScope<T> ToExecutionSingletonScope<T>( this Func<object, T> @this ) => ExecutionSingletonScopes<T>.Default.Get( @this );
+		sealed class ExecutionSingletonScopes<T> : Cache<Func<object, T>, IScope<T>>
+		{
+			public static ExecutionSingletonScopes<T> Default { get; } = new ExecutionSingletonScopes<T>();
+			ExecutionSingletonScopes() : base( factory => new SingletonScope<T>( factory ) ) {}
+		}
 
 		public static Func<T> ToSingleton<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingleton();
 		public static Func<T> ToSingleton<T>( this Func<T> @this ) => SingletonDelegateBuilder<T>.Default.Get( @this );
@@ -29,17 +43,13 @@ namespace DragonSpark.Sources.Scopes
 		public static T Scoped<T>( this ISource<T> @this, object _ ) => @this.ToDelegate().Scoped( _ );
 		public static T Scoped<T>( this Func<T> @this, object _ ) => @this();
 		public static Func<TParameter, TResult> Scoped<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this.ToSingleton();
-		public static Func<object, ImmutableArray<IAlteration<T>>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Invoke;
-		static ImmutableArray<IAlteration<T>> Invoke<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
-
-		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
-		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ExecutionScopes<T>.Default.Get( @this );
-		sealed class ExecutionScopes<T> : Cache<Func<object, T>, IScope<T>>
-		{
-			public static ExecutionScopes<T> Default { get; } = new ExecutionScopes<T>();
-			ExecutionScopes() : base( cache => new Scope<T>( cache.ToSingleton() ) ) {}
-		}
-
+		public static ImmutableArray<IAlteration<T>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
+		
+		// public static ImmutableArray<IAlteration<TResult>> Get<TParameter, TResult>( this IEnumerable<IAlteration<TResult>> @this, TParameter _ ) => @this.ToImmutableArray();
+		// public static ImmutableArray<IAlteration<TResult>> GetValue<TParameter, TResult>( this IParameterizedSource<TParameter, IAlterations<TResult>> @this, TParameter parameter ) => @this.Get( parameter ).Get();
+		/*public static ImmutableArray<IAlteration<TResult>> Invoke<TParameter, TResult>( this IParameterizedSource<TParameter, IAlterations<TResult>> @this, TParameter parameter ) => @this.Get( parameter ).Get();*/
+		// public static IAlteration<T>[] Unwrap<T>( this ISource<IAlterations<T>> @this ) => @this.GetValue().ToArray();
+		
 		public static void Assign<T>( this IAssignable<Func<object, T>> @this ) where T : class, new() => @this.Assign( o => new T() );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
