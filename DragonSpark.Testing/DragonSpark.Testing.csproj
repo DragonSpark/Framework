@@ -142,7 +142,7 @@
     <Compile Include="Configuration\RegistrationTests.cs" />
     <Compile Include="Configuration\ValueStoreBaseTests.cs" />
     <Compile Include="FormatterTests.cs" />
-    <Compile Include="Diagnostics\LoggerCreatorTests.cs" />
+    <Compile Include="Diagnostics\LoggerTests.cs" />
     <Compile Include="Diagnostics\LoggerHistorySinkTests.cs" />
     <Compile Include="Diagnostics\ProfileAttributeTests.cs" />
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
