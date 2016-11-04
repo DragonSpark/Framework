@@ -6,7 +6,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics
 {
-	public class SystemLoggerTests
+	public class LoggerFactoryTests
 	{
 		[Fact]
 		public void Verify()

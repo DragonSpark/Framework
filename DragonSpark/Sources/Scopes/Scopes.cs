@@ -43,7 +43,7 @@ namespace DragonSpark.Sources.Scopes
 		public static T Scoped<T>( this ISource<T> @this, object _ ) => @this.ToDelegate().Scoped( _ );
 		public static T Scoped<T>( this Func<T> @this, object _ ) => @this();
 		public static Func<TParameter, TResult> Scoped<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this.ToSingleton();
-		public static ImmutableArray<IAlteration<T>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.Get();
+		public static IEnumerable<IAlteration<T>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.GetEnumerable();
 		
 		// public static ImmutableArray<IAlteration<TResult>> Get<TParameter, TResult>( this IEnumerable<IAlteration<TResult>> @this, TParameter _ ) => @this.ToImmutableArray();
 		// public static ImmutableArray<IAlteration<TResult>> GetValue<TParameter, TResult>( this IParameterizedSource<TParameter, IAlterations<TResult>> @this, TParameter parameter ) => @this.Get( parameter ).Get();

@@ -1,4 +1,5 @@
 using DragonSpark.Activation;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
@@ -7,17 +8,16 @@ using JetBrains.Annotations;
 using Serilog;
 using Serilog.Core;
 using System;
-using System.Collections.Immutable;
 
 namespace DragonSpark.Diagnostics
 {
 	public class LoggerFactory : ParameterizedSourceBase<object, ILogger>
 	{
 		public static LoggerFactory Default { get; } = new LoggerFactory();
-		LoggerFactory() : this ( LoggerAlterations.Default.Get() ) {}
+		LoggerFactory() : this ( LoggerAlterations.Default ) {}
 
-		public LoggerFactory( params IAlteration<Serilog.LoggerConfiguration>[] alterations ) : this( alterations.ToImmutableArray() ) {}
-		public LoggerFactory( ImmutableArray<IAlteration<Serilog.LoggerConfiguration>> alterations ) : this( new LoggerConfigurationFactory( alterations ).ToScope() ) {}
+		/*public LoggerFactory( params IAlteration<Serilog.LoggerConfiguration>[] alterations ) : this( alterations.ToImmutableArray() ) {}*/
+		public LoggerFactory( IItemSource<IAlteration<Serilog.LoggerConfiguration>> alterations ) : this( new LoggerConfigurationCreator( alterations ).ToScope() ) {}
 
 		[UsedImplicitly]
 		public LoggerFactory( IParameterizedScope<object, Serilog.LoggerConfiguration> configuration )
@@ -29,20 +29,21 @@ namespace DragonSpark.Diagnostics
 
 		public override ILogger Get( object parameter ) =>
 			Configuration
-				.CoerceTo<Serilog.LoggerConfiguration, LoggerConfiguration>()
-				.CoerceTo( LoggerCreator.Implementation )
+				.To<Serilog.LoggerConfiguration, LoggerConfiguration>()
+				.To( Factory.Implementation )
 				.Get( parameter );
 
 		[UsedImplicitly]
-		public sealed class LoggerConfigurationFactory : AggregateParameterizedSource<Serilog.LoggerConfiguration>
+		sealed class LoggerConfigurationCreator : AggregateParameterizedSource<Serilog.LoggerConfiguration>
 		{
-			public LoggerConfigurationFactory( ImmutableArray<IAlteration<Serilog.LoggerConfiguration>> alterations ) : base( ParameterConstructor<LoggerConfiguration>.Default, alterations ) {}
+			public LoggerConfigurationCreator( IItemSource<IAlteration<Serilog.LoggerConfiguration>> alterations ) : base( ParameterConstructor<LoggerConfiguration>.Default, alterations ) {}
 		}
 
-		public sealed class LoggerCreator : ParameterizedSourceBase<LoggerConfiguration, ILogger>
+		[UsedImplicitly]
+		public sealed class Factory : ParameterizedSourceBase<LoggerConfiguration, ILogger>
 		{
-			public static IParameterizedScope<Serilog.LoggerConfiguration, ILogger> Implementation { get; } = new LoggerCreator().Coerce( CastCoercer<Serilog.LoggerConfiguration, LoggerConfiguration>.Default ).ToScope();
-			LoggerCreator() {}
+			public static IParameterizedScope<Serilog.LoggerConfiguration, ILogger> Implementation { get; } = new Factory().Accept( CastCoercer<Serilog.LoggerConfiguration, LoggerConfiguration>.Default ).ToScope();
+			Factory() {}
 
 			public override ILogger Get( LoggerConfiguration parameter ) => 
 				parameter.CreateLogger().ForContext( Constants.SourceContextPropertyName, parameter.Instance, Specification.Instance.IsSatisfiedBy( parameter ) );

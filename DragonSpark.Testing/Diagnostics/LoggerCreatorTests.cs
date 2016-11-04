@@ -20,7 +20,7 @@ using Xunit;
 namespace DragonSpark.Testing.Diagnostics
 {
 	[Trait( Traits.Category, Traits.Categories.ServiceLocation ), ContainingTypeAndNested, FormatterTypes]
-	public class LoggerTests
+	public class LoggerCreatorTests
 	{
 		[Theory, AutoData, FrameworkTypes]
 		public void FormattingAsExpected( [Service]CompositionContext context, string text )

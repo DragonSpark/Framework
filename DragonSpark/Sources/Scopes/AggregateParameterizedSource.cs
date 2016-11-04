@@ -1,25 +1,24 @@
 using DragonSpark.Sources.Parameterized;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace DragonSpark.Sources.Scopes
 {
 	public class AggregateParameterizedSource<T> : AggregateParameterizedSource<object, T>
 	{
-		public AggregateParameterizedSource( Func<object, T> seed, params IAlteration<T>[] alterations ) : base( seed, alterations ) {}
-		public AggregateParameterizedSource( Func<object, T> seed, ImmutableArray<IAlteration<T>> alterations ) : base( seed, alterations ) {}
+		/*public AggregateParameterizedSource( Func<object, T> seed, params IAlteration<T>[] alterations ) : base( seed, alterations ) {}*/
+		public AggregateParameterizedSource( Func<object, T> seed, IItemSource<IAlteration<T>> alterations ) : base( seed, alterations ) {}
 	}
 
 	public class AggregateParameterizedSource<TParameter, TResult> : DelegatedParameterizedSource<TParameter, TResult>
 	{
-		readonly ImmutableArray<IAlteration<TResult>> alterations;
+		readonly IItemSource<IAlteration<TResult>> alterations;
 		
-		public AggregateParameterizedSource( Func<TParameter, TResult> seed, params IAlteration<TResult>[] alterations ) : this( seed, alterations.ToImmutableArray() ) {}
+		/*public AggregateParameterizedSource( Func<TParameter, TResult> seed, params IAlteration<TResult>[] alterations ) : this( seed, alterations.ToImmutableArray() ) {}*/
 
 		[UsedImplicitly]
-		public AggregateParameterizedSource( Func<TParameter, TResult> seed, ImmutableArray<IAlteration<TResult>> alterations ) : base( seed )
+		public AggregateParameterizedSource( Func<TParameter, TResult> seed, IItemSource<IAlteration<TResult>> alterations ) : base( seed )
 		{
 			this.alterations = alterations;
 		}

@@ -228,6 +228,7 @@
     <Compile Include="Composition\SourceDelegateContractResolver.cs" />
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
+    <Compile Include="Sources\Coercion\Extensions.cs" />
     <Compile Include="Sources\Factory.cs" />
     <Compile Include="Sources\IncludeExportsAlteration.cs" />
     <Compile Include="Sources\ISourceAware.cs" />

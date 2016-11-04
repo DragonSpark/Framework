@@ -69,7 +69,7 @@
     <Compile Include="Composition\ExportMappingTests.cs" />
     <Compile Include="Sources\Scopes\ParameterizedScopeTests.cs" />
     <Compile Include="Diagnostics\Configurations\LoggerConfigurationTests.cs" />
-    <Compile Include="Diagnostics\ConfigureLoggerAlterationsCommandTests.cs" />
+    <Compile Include="Diagnostics\LoggerAlterationsTests.cs" />
     <Compile Include="Diagnostics\Exceptions\BackoffRetryTimeTests.cs" />
     <Compile Include="Diagnostics\Exceptions\LinearRetryTimeTests.cs" />
     <Compile Include="Diagnostics\LogCommandBaseTests.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="Aspects\ApplyValuesFromSourceTests.cs" />
     <Compile Include="Aspects\AutoGuardAspectTests.cs" />
     <Compile Include="Aspects\FreezeAttributeTests.cs" />
-    <Compile Include="Diagnostics\SystemLoggerTests.cs" />
+    <Compile Include="Diagnostics\LoggerFactoryTests.cs" />
     <Compile Include="Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Extensions\ConventionBasedFormattingExtensionsTests.cs" />
     <Compile Include="Extensions\ImmutableArrayExtensionsTests.cs" />
@@ -142,7 +142,7 @@
     <Compile Include="Configuration\RegistrationTests.cs" />
     <Compile Include="Configuration\ValueStoreBaseTests.cs" />
     <Compile Include="FormatterTests.cs" />
-    <Compile Include="Diagnostics\LoggerTests.cs" />
+    <Compile Include="Diagnostics\LoggerCreatorTests.cs" />
     <Compile Include="Diagnostics\LoggerHistorySinkTests.cs" />
     <Compile Include="Diagnostics\ProfileAttributeTests.cs" />
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />

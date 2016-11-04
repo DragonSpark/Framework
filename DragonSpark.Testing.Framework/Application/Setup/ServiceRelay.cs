@@ -1,4 +1,4 @@
-using DragonSpark.Sources.Parameterized;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.TypeSystem;
 using JetBrains.Annotations;
 using Ploeh.AutoFixture.Kernel;
@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 	public sealed class ServiceRelay : ISpecimenBuilder
 	{
 		public static ServiceRelay Default { get; } = new ServiceRelay();
-		ServiceRelay() : this( Defaults.ServiceSource.Coerce( TypeCoercer.Default ).Get ) {}
+		ServiceRelay() : this( Defaults.ServiceSource.Accept( TypeCoercer.Default ).Get ) {}
 
 		readonly Func<object, object> provider;
 

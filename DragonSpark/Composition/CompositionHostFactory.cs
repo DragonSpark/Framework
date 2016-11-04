@@ -1,6 +1,7 @@
 using DragonSpark.Extensions;
 using DragonSpark.Runtime;
 using DragonSpark.Sources;
+using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
@@ -11,7 +12,7 @@ namespace DragonSpark.Composition
 {
 	public sealed class CompositionHostFactory : DelegatedSource<CompositionHost>
 	{
-		readonly static Func<CompositionHost> Source = Configuration.Implementation.Coerce( configuration => configuration.CreateContainer() ).Get;
+		readonly static Func<CompositionHost> Source = Configuration.Implementation.Then( configuration => configuration.CreateContainer() ).Get;
 
 		public static CompositionHostFactory Default { get; } = new CompositionHostFactory();
 		CompositionHostFactory() : this( Disposables.Default, Source ) {}

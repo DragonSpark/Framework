@@ -19,7 +19,7 @@ namespace DragonSpark.TypeSystem.Metadata
 
 		sealed class TypeInfoDefinitionProvider : TypeDefinitionProviderBase<TypeInfo>
 		{
-			public static IParameterizedSource<object, TypeInfo> Implementation { get; } = Sources.Parameterized.Extensions.Coerce( new TypeInfoDefinitionProvider().Apply( Common<TypeInfo>.Assigned ), Coercer<TypeInfo>.Default );
+			public static IParameterizedSource<object, TypeInfo> Implementation { get; } = Sources.Coercion.Extensions.Accept( new TypeInfoDefinitionProvider().Apply( Common<TypeInfo>.Assigned ), Coercer<TypeInfo>.Default );
 			TypeInfoDefinitionProvider() {}
 
 			public override TypeInfo Get( TypeInfo parameter ) => parameter;
@@ -27,7 +27,7 @@ namespace DragonSpark.TypeSystem.Metadata
 
 		sealed class MemberInfoDefinitionProvider : TypeDefinitionProviderBase<MemberInfo>
 		{
-			public static IParameterizedSource<object, TypeInfo> Implementation { get; } = Sources.Parameterized.Extensions.Coerce( new MemberInfoDefinitionProvider().Apply( Common<MemberInfo>.Assigned ), Coercer<MemberInfo>.Default );
+			public static IParameterizedSource<object, TypeInfo> Implementation { get; } = Sources.Coercion.Extensions.Accept( new MemberInfoDefinitionProvider().Apply( Common<MemberInfo>.Assigned ), Coercer<MemberInfo>.Default );
 			MemberInfoDefinitionProvider() {}
 
 			public override TypeInfo Get( MemberInfo parameter ) => parameter.DeclaringType.GetTypeInfo();
