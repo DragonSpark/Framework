@@ -139,6 +139,20 @@ namespace DragonSpark.Testing.Extensions
 			} );
 		}
 
+		[Fact]
+		public void AnyTrue()
+		{
+			Assert.True( new[] { true, false, false, false }.AnyTrue() );
+			Assert.False( new[] { false, false, false, false }.AnyTrue() );
+		}
+
+		[Fact]
+		public void AnyFalse()
+		{
+			Assert.True( new[] { true, true, true, false }.AnyFalse() );
+			Assert.False( new[] { true, true, true, true }.AnyFalse() );
+		}
+
 		[Theory, Ploeh.AutoFixture.Xunit2.AutoData]
 		void FirstOrDefaultOfType( Class first, ClassWithParameter second, string third, Derived fourth )
 		{

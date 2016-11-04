@@ -50,8 +50,11 @@
     <Compile Include="Activation\ConstructorCoercerTests.cs" />
     <Compile Include="Activation\ConstructTypeRequestTests.cs" />
     <Compile Include="Activation\Location\SingletonLocatorTests.cs" />
+    <Compile Include="Application\ClockTests.cs" />
     <Compile Include="Application\Setup\DeclarativeSetupTests.cs" />
+    <Compile Include="Application\Setup\InputOutputBaseTests.cs" />
     <Compile Include="Application\Setup\ReadKeyCommandTests.cs" />
+    <Compile Include="Application\SystemPartsTests.cs" />
     <Compile Include="Application\TaskedTaskExecutionContextTests.cs" />
     <Compile Include="Aspects\Alteration\ApplyAlterationAttributeTests.cs" />
     <Compile Include="Aspects\Coercion\ApplyCoercerAttributeTests.cs" />
@@ -60,6 +63,10 @@
     <Compile Include="Aspects\ApplyAspectsAttributeTests.cs" />
     <Compile Include="Aspects\Relay\ApplyRelayAttributeTests.cs" />
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
+    <Compile Include="Composition\SingletonExportFactoryTests.cs" />
+    <Compile Include="Runtime\Assignments\AssignScopeCommandTests.cs" />
+    <Compile Include="Runtime\ExtensionsTests.cs" />
+    <Compile Include="Runtime\RepositoryBaseTests.cs" />
     <Compile Include="Sources\Coercion\StringCoercerTests.cs" />
     <Compile Include="Commands\ExtensionsTests.cs" />
     <Compile Include="Commands\FirstCommandTests.cs" />
@@ -67,6 +74,9 @@
     <Compile Include="ComponentModel\SourceAttributeTests.cs" />
     <Compile Include="ComponentModel\TypeDefinitionsTests.cs" />
     <Compile Include="Composition\ExportMappingTests.cs" />
+    <Compile Include="Sources\CompositeItemSourceTests.cs" />
+    <Compile Include="Sources\ExtensionsTests.cs" />
+    <Compile Include="Sources\Parameterized\ConditionalParameterizedSourceTests.cs" />
     <Compile Include="Sources\Scopes\ParameterizedScopeTests.cs" />
     <Compile Include="Diagnostics\Configurations\LoggerConfigurationTests.cs" />
     <Compile Include="Diagnostics\LoggerAlterationsTests.cs" />
@@ -128,8 +138,14 @@
     <Compile Include="Application\Setup\InstanceRepositoryTests.cs" />
     <Compile Include="Setup\SetupTests.cs" />
     <Compile Include="Application\ExecutionContextTests.cs" />
+    <Compile Include="Specifications\AdapterAssignableSpecificationTests.cs" />
+    <Compile Include="Specifications\AdapterInstanceSpecificationTests.cs" />
+    <Compile Include="Specifications\ConfigurableSpecificationTests.cs" />
     <Compile Include="TypeSystem\AllPartsTests.cs" />
+    <Compile Include="TypeSystem\AssemblyResourcePathSelectorTests.cs" />
+    <Compile Include="TypeSystem\AssignableEqualityComparerTests.cs" />
     <Compile Include="TypeSystem\DefaultValuesTests.cs" />
+    <Compile Include="TypeSystem\ExtensionsTests.cs" />
     <Compile Include="TypeSystem\Metadata\AttributesTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,6 +203,7 @@
     <Compile Include="TypeSystem\PartsTests.cs" />
     <Compile Include="TypeSystem\AssemblyBasedTypeSourceTests.cs" />
     <Compile Include="TypeSystem\TypeAdapterTests.cs" />
+    <Compile Include="TypeSystem\TypeCoercerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

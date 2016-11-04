@@ -118,7 +118,7 @@
     <Compile Include="Application\ApplicationInitializer.cs" />
     <Compile Include="Application\ApplicationAllPartsAttribute.cs" />
     <Compile Include="Application\ApplicationPublicPartsAttribute.cs" />
-    <Compile Include="Application\Setup\AutoConfiguredDataCustomization.cs" />
+    <Compile Include="Application\Setup\AutoDataCustomization.cs" />
     <Compile Include="Application\Setup\CommandAttributeBase.cs" />
     <Compile Include="Application\Setup\ContainingTypeAndNestedAttribute.cs" />
     <Compile Include="Application\Setup\CurrentFixture.cs" />

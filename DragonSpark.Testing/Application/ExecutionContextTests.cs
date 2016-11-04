@@ -24,6 +24,9 @@ namespace DragonSpark.Testing.Application
 		}
 
 		[Fact]
+		public void Coverage() => Assert.Same( DragonSpark.Application.ExecutionContext.Default, DragonSpark.Application.ExecutionContext.Default.Get() );
+
+		[Fact]
 		public void Fact()
 		{
 			Assert.Equal( Identification.Default.Get(), Identifier.Current() );

@@ -9,9 +9,9 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		public DefaultAutoDataCustomization() : base( ServicesCustomization.Default, SingletonCustomization.Default, AutoMoqCustomization.Default ) {}
 	}
 
-	public sealed class AutoConfiguredDataCustomization : CompositeCustomization
+	public sealed class AutoDataCustomization : CompositeCustomization
 	{
-		public AutoConfiguredDataCustomization() : base( ServicesCustomization.Default, SingletonCustomization.Default, new AutoConfiguredMoqCustomization() ) {}
+		public AutoDataCustomization() : base( ServicesCustomization.Default, SingletonCustomization.Default, new Ploeh.AutoFixture.AutoMoq.AutoMoqCustomization() ) {}
 	}
 
 	sealed class AutoMoqCustomization : CustomizationBase

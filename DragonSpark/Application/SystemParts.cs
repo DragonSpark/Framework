@@ -10,8 +10,6 @@ namespace DragonSpark.Application
 {
 	public struct SystemParts
 	{
-		/*public static SystemParts Default { get; } = new SystemParts( Items<Assembly>.Default );*/
-
 		[UsedImplicitly]
 		public SystemParts( IEnumerable<Assembly> assemblies ) : this( assemblies.ToImmutableArray() ) {}
 

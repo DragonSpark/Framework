@@ -28,9 +28,9 @@ namespace DragonSpark.Testing.Framework.Application
 		}
 	}
 
-	public class AutoConfiguredDataAttribute : AutoDataAttribute
+	public class AutoDataBasicAttribute : AutoDataAttribute
 	{
-		readonly static Func<IFixture> Factory = FixtureFactory<AutoConfiguredDataCustomization>.Default.Get;
-		public AutoConfiguredDataAttribute() : base( Factory ) {}
+		readonly static Func<IFixture> Factory = FixtureFactory<AutoDataCustomization>.Default.Get;
+		public AutoDataBasicAttribute() : base( Factory ) {}
 	}
 }

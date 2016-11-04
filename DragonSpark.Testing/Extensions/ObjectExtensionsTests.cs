@@ -137,6 +137,9 @@ namespace DragonSpark.Testing.Extensions
 		void With( ClassWithParameter sut, string message )
 		{
 			Assert.Equal( sut.Parameter, sut.With( x => x.Parameter, () => message ) );
+
+			object subject = null;
+			Assert.Null( subject.With() );
 		}
 
 		[Theory, AutoData]

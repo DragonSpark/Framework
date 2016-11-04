@@ -7,11 +7,6 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Diagnostics
 {
-	/*public sealed class DefaultConfigureLoggingCommand : SuppliedCommand<Func<Func<object, ImmutableArray<IAlteration<LoggerConfiguration>>>>>
-	{
-		public DefaultConfigureLoggingCommand() : base( ConfigureLoggingCommand.Default, LoggingConfigurationSource.Default.ToDelegate() ) {}
-	}*/
-
 	public sealed class LoggerAlterations : ItemsScope<IAlteration<LoggerConfiguration>>
 	{
 		public static LoggerAlterations Default { get; } = new LoggerAlterations();

@@ -18,20 +18,20 @@ namespace DragonSpark.Sources
 		public static T[] Unwrap<T>( this ISource<ImmutableArray<T>> @this ) => @this.Get().ToArray();
 
 		public static TResult GetValue<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this, TParameter parameter ) => @this.Get().Get( parameter );
-		public static Func<TParameter, TResult> GetValueDelegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => LocalDelegates<TParameter, TResult>.Default.Get( @this );
-		sealed class LocalDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
+		public static Func<TParameter, TResult> GetValueDelegate<TParameter, TResult>( this ISource<IParameterizedSource<TParameter, TResult>> @this ) => ValueDelegates<TParameter, TResult>.Default.Get( @this );
+		sealed class ValueDelegates<TParameter, TResult> : Cache<ISource<IParameterizedSource<TParameter, TResult>>, Func<TParameter, TResult>>
 		{
-			public static LocalDelegates<TParameter, TResult> Default { get; } = new LocalDelegates<TParameter, TResult>();
-			LocalDelegates() : base( source => source.GetValue ) {}
+			public static ValueDelegates<TParameter, TResult> Default { get; } = new ValueDelegates<TParameter, TResult>();
+			ValueDelegates() : base( source => source.GetValue ) {}
 		}
 
 		public static object GetValue( this ISource<ISource> @this ) => @this.Get().Get();
 		public static T GetValue<T>( this ISource<ISource<T>> @this ) => @this.Get().Get();
-		public static Func<T> GetValueDelegate<T>( this ISource<ISource<T>> @this ) => LocalDelegates<T>.Default.Get( @this );
-		sealed class LocalDelegates<T> : Cache<ISource<ISource<T>>, Func<T>>
+		public static Func<T> GetValueDelegate<T>( this ISource<ISource<T>> @this ) => ValueDelegates<T>.Default.Get( @this );
+		sealed class ValueDelegates<T> : Cache<ISource<ISource<T>>, Func<T>>
 		{
-			public static LocalDelegates<T> Default { get; } = new LocalDelegates<T>();
-			LocalDelegates() : base( source => source.GetValue ) {}
+			public static ValueDelegates<T> Default { get; } = new ValueDelegates<T>();
+			ValueDelegates() : base( source => source.GetValue ) {}
 		}
 
 		public static Func<T> ToDelegate<T>( this ISource<T> @this ) => ParameterizedSourceDelegates<T>.Default.Get( @this );

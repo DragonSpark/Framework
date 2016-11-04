@@ -8,9 +8,7 @@ namespace DragonSpark.Testing.Diagnostics
 		[Fact]
 		public void Coverage()
 		{
-			/*var before = LoggerAlterations.Default.Get();
-			LoggerAlterations.Configure.Implementation.Execute( LoggerAlterations.Default.Get().ToArray() );
-			Assert.Equal( before, LoggerAlterations.Default.Get() );*/
+			Assert.NotNull( LoggerAlterations.Configure.Implementation );
 			new DelegatedTextCommand( IgnoredOutputCommand.Default.Execute ).Execute( string.Empty );
 			DebugOutputCommand.Default.Execute( string.Empty );
 		}

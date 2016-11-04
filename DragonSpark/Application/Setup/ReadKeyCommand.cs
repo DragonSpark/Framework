@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Commands;
 using JetBrains.Annotations;
 using System.ComponentModel;
-using System.IO;
 
 namespace DragonSpark.Application.Setup
 {
@@ -21,23 +20,5 @@ namespace DragonSpark.Application.Setup
 
 			parameter.Writer.Write( Exiting );
 		}
-	}
-
-	public interface IInputOutput
-	{
-		TextReader Reader { get; }
-		TextWriter Writer { get; }
-	}
-
-	public class InputOutput : IInputOutput
-	{
-		public InputOutput( TextWriter writer, TextReader reader )
-		{
-			Writer = writer;
-			Reader = reader;
-		}
-
-		public TextWriter Writer { get; }
-		public TextReader Reader { get; }
 	}
 }

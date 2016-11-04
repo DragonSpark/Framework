@@ -24,7 +24,8 @@ namespace DragonSpark.TypeSystem
 			}
 
 			var member = parameter as MemberInfo;
-			var result = member?.GetMemberType() ?? parameter.GetType();
+			var memberType = member?.GetMemberType();
+			var result = memberType ?? parameter.GetType();
 			return result;
 		}
 	}

@@ -44,6 +44,7 @@
     <Compile Include="Activation\SingletonDelegates.cs" />
     <Compile Include="Application\ApplicationPartsFactory.cs" />
     <Compile Include="Application\FatalApplicationException.cs" />
+    <Compile Include="Application\Setup\IInputOutput.cs" />
     <Compile Include="Application\Setup\ReadKeyCommand.cs" />
     <Compile Include="Aspects\AdapterConstructorSource.cs" />
     <Compile Include="Aspects\AdapterFactorySource.cs" />
@@ -161,6 +162,9 @@
     <Compile Include="Aspects\Build\Specification.cs" />
     <Compile Include="Aspects\Build\MethodBasedAspectInstanceLocator.cs" />
     <Compile Include="Aspects\Validation\Support.cs" />
+    <Compile Include="Runtime\Assignments\AssignGlobalScopeCommand.cs" />
+    <Compile Include="Runtime\Assignments\AssignScopeCommand.cs" />
+    <Compile Include="Runtime\Extensions.cs" />
     <Compile Include="Sources\Coercion\DelegatedCoercer.cs" />
     <Compile Include="Commands\CoercedCommand.cs" />
     <Compile Include="Commands\CompiledCommand.cs" />
@@ -229,6 +233,8 @@
     <Compile Include="Composition\SpecificationExporter.cs" />
     <Compile Include="Composition\TypeInitializingExportDescriptorProvider.cs" />
     <Compile Include="Sources\Coercion\Extensions.cs" />
+    <Compile Include="Sources\DecoratedItemsSource.cs" />
+    <Compile Include="Sources\DelegatedItemsSource.cs" />
     <Compile Include="Sources\Factory.cs" />
     <Compile Include="Sources\IncludeExportsAlteration.cs" />
     <Compile Include="Sources\ISourceAware.cs" />
@@ -248,7 +254,7 @@
     <Compile Include="DefaultPriorityAware.cs" />
     <Compile Include="Diagnostics\Exceptions\Retry.cs" />
     <Compile Include="Diagnostics\Exceptions\SuppliedRetryPolicySource.cs" />
-    <Compile Include="Diagnostics\ConfigureLoggerAlterationsCommand.cs" />
+    <Compile Include="Diagnostics\LoggerAlterations.cs" />
     <Compile Include="Diagnostics\Defaults.cs" />
     <Compile Include="Diagnostics\LoggerFactory.cs" />
     <Compile Include="Diagnostics\PurgeLoggerHistoryCommand.cs" />
@@ -279,7 +285,9 @@
     <Compile Include="Sources\SourceAccountedAlteration.cs" />
     <Compile Include="Sources\SourceAccountedTypes.cs" />
     <Compile Include="Sources\SourceTypeCandidateParameter.cs" />
+    <Compile Include="Specifications\AdapterInstanceSpecification.cs" />
     <Compile Include="Specifications\CoercedSpecification.cs" />
+    <Compile Include="Specifications\ConfigurableSpecification.cs" />
     <Compile Include="Specifications\ContainsItemSpecification.cs" />
     <Compile Include="Specifications\DeferredSpecification.cs" />
     <Compile Include="Specifications\DelegatedAssignedSpecification.cs" />

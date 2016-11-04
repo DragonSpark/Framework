@@ -44,5 +44,14 @@ namespace DragonSpark.Testing.Runtime
 			Assert.Equal( -1, sut.To<IList>().Add( new object() ) );
 			Assert.NotSame( sut, coverage );
 		}
+
+		[Fact]
+		public void Coverage()
+		{
+			var item = new object();
+			IList<object> sut = new DeclarativeCollection { item };
+			sut[0] = new object();
+			Assert.NotSame( item, sut[0] );
+		}
 	}
 }
