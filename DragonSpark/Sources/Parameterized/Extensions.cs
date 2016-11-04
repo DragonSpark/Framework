@@ -90,8 +90,8 @@ namespace DragonSpark.Sources.Parameterized
 			Selectors() : base( item => item.Get ) {}
 		}
 
-		public static T FromExecution<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().Invoke();
-		public static T Invoke<T>( this Func<object, T> @this ) => @this.Invoke( Execution.Default.Get() );
+		public static T GetDefault<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().Invoke();
+		public static T Invoke<T>( this Func<object, T> @this ) => @this.Invoke( Execution.Default.GetValue() );
 
 		public static ICache<T> ToCache<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToCache();
 		public static ICache<T> ToCache<T>( this Func<object, T> @this ) => ParameterizedSources<T>.Default.Get( @this );

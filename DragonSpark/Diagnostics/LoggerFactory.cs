@@ -11,27 +11,23 @@ using System;
 
 namespace DragonSpark.Diagnostics
 {
-	public class LoggerFactory : ParameterizedSourceBase<object, ILogger>
+	public sealed class LoggerFactory : DecoratedParameterizedSource<object, ILogger>
 	{
 		public static LoggerFactory Default { get; } = new LoggerFactory();
 		LoggerFactory() : this ( LoggerAlterations.Default ) {}
 
-		/*public LoggerFactory( params IAlteration<Serilog.LoggerConfiguration>[] alterations ) : this( alterations.ToImmutableArray() ) {}*/
-		public LoggerFactory( IItemSource<IAlteration<Serilog.LoggerConfiguration>> alterations ) : this( new LoggerConfigurationCreator( alterations ).ToScope() ) {}
+		public LoggerFactory( IItemSource<IAlteration<Serilog.LoggerConfiguration>> alterations ) : this( 
+			new LoggerConfigurationCreator( alterations )
+				.Cast<Serilog.LoggerConfiguration, LoggerConfiguration>()
+				.ToScope() ) {}
 
 		[UsedImplicitly]
-		public LoggerFactory( IParameterizedScope<object, Serilog.LoggerConfiguration> configuration )
+		public LoggerFactory( IParameterizedScope<object, Serilog.LoggerConfiguration> configuration ) : base( configuration.To( Factory.Implementation ) )
 		{
 			Configuration = configuration;
 		}
 
 		public IParameterizedScope<object, Serilog.LoggerConfiguration> Configuration { get; }
-
-		public override ILogger Get( object parameter ) =>
-			Configuration
-				.To<Serilog.LoggerConfiguration, LoggerConfiguration>()
-				.To( Factory.Implementation )
-				.Get( parameter );
 
 		[UsedImplicitly]
 		sealed class LoggerConfigurationCreator : AggregateParameterizedSource<Serilog.LoggerConfiguration>
