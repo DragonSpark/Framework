@@ -61,7 +61,7 @@ namespace DragonSpark.Commands
 		sealed class Configurable<T> : Cache<ICommand<T>, IConfigurableCommand<T>>
 		{
 			public static Configurable<T> Default { get; } = new Configurable<T>();
-			Configurable() : base( source => new ConfigurableCommand<T>( source.Execute ) ) {}
+			Configurable() : base( source => new ScopedCommand<T>( source.Execute ) ) {}
 		}
 
 		public static Action ToRunDelegate( this IRunCommand @this ) => RunDelegates.Default.Get( @this );

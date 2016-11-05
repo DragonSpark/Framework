@@ -73,7 +73,7 @@
     <Compile Include="FileSystem\LockedFileSpecification.cs" />
     <Compile Include="FileSystem\Path.cs" />
     <Compile Include="FileSystem\PurgeDirectoryCommand.cs" />
-    <Compile Include="FileSystem\TimestampPathSpecification.cs" />
+    <Compile Include="FileSystem\TimestampNameSpecification.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InitializationCommand.cs" />
     <Compile Include="Initialize.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="Setup\ConsoleApplication.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
-    <Compile Include="FileSystem\TimestampPathFactory.cs" />
+    <Compile Include="FileSystem\TimestampNameFactory.cs" />
     <Compile Include="Diagnostics\ApplyExceptionDetails.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

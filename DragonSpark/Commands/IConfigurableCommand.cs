@@ -10,12 +10,12 @@ namespace DragonSpark.Commands
 		IScope<Action<T>> Configuration { get; }
 	}
 
-	public class ConfigurableCommand<T> : DelegatedCommand<T>, IConfigurableCommand<T>
+	public class ScopedCommand<T> : DelegatedCommand<T>, IConfigurableCommand<T>
 	{
-		public ConfigurableCommand( Action<T> command ) : this( new Scope<Action<T>>( command.Self ) ) {}
+		public ScopedCommand( Action<T> command ) : this( new Scope<Action<T>>( command.Self ) ) {}
 
 		[UsedImplicitly]
-		public ConfigurableCommand( IScope<Action<T>> configuration ) : base( configuration.Execute )
+		public ScopedCommand( IScope<Action<T>> configuration ) : base( configuration.Execute )
 		{
 			Configuration = configuration;
 		}

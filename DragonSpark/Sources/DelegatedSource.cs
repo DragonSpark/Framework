@@ -4,13 +4,13 @@ namespace DragonSpark.Sources
 {
 	public class DelegatedSource<T> : SourceBase<T>
 	{
-		readonly Func<T> get;
+		readonly Func<T> factory;
 
-		public DelegatedSource( Func<T> get )
+		public DelegatedSource( Func<T> factory )
 		{
-			this.get = get;
+			this.factory = factory;
 		}
 
-		public override T Get() => get();
+		public override T Get() => factory();
 	}
 }

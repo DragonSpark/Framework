@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace DragonSpark.Windows.Setup
 {
-	public sealed class SaveUserSettingsCommand : ConfigurableCommand<ApplicationSettingsBase>
+	public sealed class SaveUserSettingsCommand : ScopedCommand<ApplicationSettingsBase>
 	{
 		public static SaveUserSettingsCommand Default { get; } = new SaveUserSettingsCommand();
 		SaveUserSettingsCommand() : base( DefaultImplementation.Implementation.Execute ) {}

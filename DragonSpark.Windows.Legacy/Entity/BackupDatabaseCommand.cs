@@ -16,7 +16,7 @@ namespace DragonSpark.Windows.Legacy.Entity
 		readonly Func<string, bool> validSource;
 		readonly IPath path;
 
-		public BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampPathFactory.Default.Get, TimestampPathSpecification.Default.IsSatisfiedBy, Path.Default ) {}
+		public BackupDatabaseCommand() : this( LockedFileSpecification.Default.IsSatisfiedBy, TimestampNameFactory.Default.Get, TimestampNameSpecification.Default.IsSatisfiedBy, Path.Default ) {}
 
 		public BackupDatabaseCommand( Func<IFileInfo, bool> lockedSource, Func<string> pathSource, Func<string, bool> validSource, IPath path )
 		{

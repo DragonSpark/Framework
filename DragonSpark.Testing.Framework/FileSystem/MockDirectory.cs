@@ -62,7 +62,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public override void Delete(string pathName, bool recursive)
 		{
-			var name = path.Normalize( pathName );
+			var name = path.EnsureTrailingSlash( path.Normalize( pathName ) );
 			var affectedPaths = repository
 				.AllPaths
 				.Where(p => p.StartsWith(name, StringComparison.OrdinalIgnoreCase))

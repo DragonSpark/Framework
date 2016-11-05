@@ -36,7 +36,6 @@ namespace DragonSpark.Windows.FileSystem
 	public class FileInfo : FileSystemInfoBase<FileInfoBase>, IFileInfo
 	{
 		readonly Func<FileInfoBase, IFileInfo> fileSource;
-		// public static implicit operator FileInfo( FileInfoBase fileInfo ) => new FileInfo( fileInfo );
 
 		public FileInfo( FileInfoBase source ) : this( source, Defaults.Directory, Defaults.File ) {}
 		public FileInfo( FileInfoBase source, Func<DirectoryInfoBase, IDirectoryInfo> directorySource, Func<FileInfoBase, IFileInfo> fileSource ) : base( source )

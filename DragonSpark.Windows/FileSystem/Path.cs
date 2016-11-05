@@ -1,4 +1,5 @@
-﻿using DragonSpark.Sources.Scopes;
+﻿using DragonSpark.Sources;
+using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.IO.Abstractions;
@@ -8,7 +9,7 @@ namespace DragonSpark.Windows.FileSystem
 	public class Path : SingletonScope<PathBase>, IPath
 	{
 		public static Path Default { get; } = new Path();
-		Path() : base( () => new PathWrapper() ) {}
+		Path() : base( DefaultImplementation.Implementation.Get ) {}
 
 		[UsedImplicitly]
 		public Path( PathBase source ) : base( source ) {}
@@ -38,5 +39,13 @@ namespace DragonSpark.Windows.FileSystem
 		public char[] InvalidPathChars => Get().InvalidPathChars;
 		public char PathSeparator => Get().PathSeparator;
 		public char VolumeSeparatorChar => Get().VolumeSeparatorChar;
+
+		public sealed class DefaultImplementation : SourceBase<PathBase>
+		{
+			public static DefaultImplementation Implementation { get; } = new DefaultImplementation();
+			DefaultImplementation() {}
+
+			public override PathBase Get() => new PathWrapper();
+		}
 	}
 }

@@ -1,13 +1,13 @@
+using DragonSpark.Specifications;
 using System;
 using System.Globalization;
-using DragonSpark.Specifications;
 
 namespace DragonSpark.Windows.FileSystem
 {
-	public sealed class TimestampPathSpecification : SpecificationBase<string>
+	public sealed class TimestampNameSpecification : SpecificationBase<string>
 	{
-		public static TimestampPathSpecification Default { get; } = new TimestampPathSpecification();
-		TimestampPathSpecification() {}
+		public static TimestampNameSpecification Default { get; } = new TimestampNameSpecification();
+		TimestampNameSpecification() {}
 
 		public override bool IsSatisfiedBy( string parameter )
 		{
