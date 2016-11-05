@@ -31,8 +31,6 @@ namespace DragonSpark.Sources.Parameterized
 				}
 				return DefaultResult;
 			}
-
-			// protected override object GetGeneralized( object parameter ) => sources.Introduce( parameter, tuple => tuple.Item1.Get( tuple.Item2 ) ).FirstAssigned();
 		}
 	}
 }

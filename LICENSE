@@ -18,21 +18,3 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Some code found within this project does originate from a great external project
-known as Prism.  You can find this project here:
-https://github.com/PrismLibrary/Prism
-
-All code in this project that makes use of this originating code is subject to
-and copyrighted under the conditions of the license found here:
-https://github.com/PrismLibrary/Prism/blob/master/LICENSE
-
-The code here is borrowed as Prism owners did not want to change the 
-intent/concern/location of its modularity, logging, eventing and bootstrapping
-functionality.  This project has does this and has adapted these features here
-accordingly.
-
-More information about this can be found at these locations:
-https://github.com/PrismLibrary/Prism/issues/3
-https://github.com/PrismLibrary/Prism/issues/4
-https://github.com/PrismLibrary/Prism/issues/1

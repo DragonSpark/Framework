@@ -46,8 +46,6 @@ namespace DragonSpark.Activation
 				this.activatorSource = activatorSource;
 			}
 
-			// public T Create<T>( ConstructTypeRequest parameter ) => (T)Get( parameter );
-
 			public override object Get( ConstructTypeRequest parameter ) => LocateAndCreate( parameter ) ?? SpecialValues.DefaultOrEmpty( parameter.RequestedType );
 
 			object LocateAndCreate( ConstructTypeRequest parameter )
@@ -73,7 +71,7 @@ namespace DragonSpark.Activation
 
 		readonly Constructors cache;
 
-		ConstructorSpecification( Constructors cache ) // : base( ConstructorCoercer.Default.ToDelegate() )
+		ConstructorSpecification( Constructors cache )
 		{
 			this.cache = cache;
 		}

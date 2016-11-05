@@ -8,8 +8,6 @@ namespace DragonSpark.Sources.Coercion
 		public static ISource<TResult> Then<TParameter, TResult>( this ISource<TParameter> @this, Func<TParameter, TResult> coerce ) => @this.ToDelegate().Then( coerce );
 		public static ISource<TResult> Then<TParameter, TResult>( this Func<TParameter> @this, Func<TParameter, TResult> coerce ) => coerce.WithParameter( @this );
 
-		/*public static TResult GetCast<TParameter, TResult, TCast>( this IParameterizedSource<TParameter, TResult> @this, TCast parameter ) where TParameter : TCast => @this.Get( parameter.AsValid<TParameter>() );*/
-
 		public static IParameterizedSource<TFrom, TResult> Accept<TFrom, TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.ToDelegate().Accept( coerce.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Accept<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, IParameterizedSource<TFrom, TParameter> coerce ) => @this.Accept( coerce.ToDelegate() );
 		public static IParameterizedSource<TFrom, TResult> Accept<TFrom, TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TFrom, TParameter> coerce )

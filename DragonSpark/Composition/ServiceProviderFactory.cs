@@ -6,7 +6,6 @@ namespace DragonSpark.Composition
 {
 	public sealed class ServiceProviderFactory : AlterationBase<IActivator>
 	{
-		// [Export( typeof(ITransformer<IServiceProvider>) )]
 		public static ServiceProviderFactory Default { get; } = new ServiceProviderFactory();
 		ServiceProviderFactory() {}
 

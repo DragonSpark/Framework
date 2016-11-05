@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Framework.FileSystem
 	public class MockPath : PathWrapper, IPath
 	{
 		readonly IDirectorySource directory;
-		readonly char[] separator/*, separators*/;
+		readonly char[] separator;
 		readonly string[] separators;
 		readonly string directorySeparator;
 

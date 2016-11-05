@@ -168,11 +168,6 @@ namespace DragonSpark.Extensions
 
 		public static T FirstAssigned<T>( this IEnumerable<T> @this ) => @this.WhereAssigned().FirstOrDefault();
 
-		// public static TTo FirstAssigned<TFrom, TTo>( this ImmutableArray<TFrom> @this, Func<TFrom, TTo> projection ) => @this.ToArray().FirstAssigned( projection );
-
-		// public static TTo FirstAssigned<TFrom, TTo>( this IEnumerable<TFrom> @this, Func<TFrom, TTo> projection ) => @this.WhereAssigned().Select( projection ).FirstAssigned();
-
-		// public static IEnumerable<T> WhereAssigned<T>( this ImmutableArray<T> target ) => target.AsEnumerable().WhereAssigned();
 		public static IEnumerable<T> WhereAssigned<T>( this IEnumerable<T> target )
 		{
 			foreach ( var item in target )

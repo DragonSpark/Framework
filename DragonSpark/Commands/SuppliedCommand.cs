@@ -4,11 +4,6 @@ using System;
 
 namespace DragonSpark.Commands
 {
-	/*public class SuppliedEnumerableComand<T> : SuppliedCommand<IEnumerable<T>>
-	{
-		public SuppliedEnumerableComand( ICommand<IEnumerable<T>> command, params T[] parameter ) : base( command, parameter ) {}
-	}*/
-
 	public class SuppliedCommand<T> : RunCommandBase
 	{
 		readonly Action<T> command;

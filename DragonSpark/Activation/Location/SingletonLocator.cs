@@ -44,28 +44,6 @@ namespace DragonSpark.Activation.Location
 
 				public override object Get( Type parameter ) => source( parameter )?.Invoke();
 			}
-
-			/*sealed class Source : ParameterizedSourceBase<Type, object>
-			{
-				readonly Func<Type, Func<object>> source;
-				readonly Func<Type, IParameterizedSource<object>> accountedSource;
-
-				public Source( Func<Type, Func<object>> source ) : this( source, Sources.Defaults.AccountedSource ) {}
-
-				[UsedImplicitly]
-				public Source( Func<Type, Func<object>> source, Func<Type, IParameterizedSource<object>> accountedSource )
-				{
-					this.source = source;
-					this.accountedSource = accountedSource;
-				}
-
-				public override object Get( Type parameter )
-				{
-					var invoke = source( parameter )?.Invoke();
-					var result = invoke != null ? accountedSource( parameter ).Get( invoke ) : null;
-					return result;
-				}
-			}*/
 		}
 	}
 }

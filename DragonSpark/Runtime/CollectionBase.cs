@@ -7,21 +7,6 @@ using System.Linq;
 
 namespace DragonSpark.Runtime
 {
-	/*public class InsertingCollection<T> : CollectionBase<T>
-	{
-		public InsertingCollection() {}
-		public InsertingCollection( IEnumerable<T> items ) : base( items ) {}
-		public InsertingCollection( ICollection<T> source ) : base( source ) {}
-
-		public override void Add( T item )
-		{
-			lock ( Source )
-			{
-				Insert( 0, item );
-			}
-		}
-	}*/
-
 	public abstract class CollectionBase<T> : IList, ICollection<T>
 	{
 		readonly Func<T, int> add;
@@ -58,8 +43,6 @@ namespace DragonSpark.Runtime
 				Source.Add( item );
 			}
 		}
-
-		/*public void Insert( T item ) => list.Insert( 0, item );*/
 
 		int IList.Add( object value )
 		{

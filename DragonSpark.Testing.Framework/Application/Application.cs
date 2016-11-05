@@ -5,7 +5,6 @@ namespace DragonSpark.Testing.Framework.Application
 {
 	public class Application : ApplicationBase<AutoData>, IApplication
 	{
-		// public Application() {}
 		public Application( params ICommand[] commands ) : base( commands ) {}
 	}
 }

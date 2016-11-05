@@ -26,7 +26,6 @@ namespace DragonSpark.Composition
 
 		public override IEnumerable<ExportDescriptorPromise> GetExportDescriptors( CompositionContract contract, DependencyAccessor descriptorAccessor )
 		{
-			// var type = convention( contract.ContractType ) ?? contract.ContractType;
 			contract.ContractType
 					.Append( convention( contract.ContractType ) )
 					.WhereAssigned()

@@ -30,10 +30,4 @@ namespace DragonSpark.Diagnostics
 			}
 		}
 	}
-
-	/*public sealed class LoggingConfiguration : LoggerBase
-	{
-		public static IConfigurationProvisionedFactory<LoggerConfiguration, ILogger> Default { get; } = new LoggingConfiguration();
-		LoggingConfiguration() {}
-	}*/
 }

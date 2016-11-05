@@ -80,7 +80,6 @@ namespace DragonSpark.Testing.Aspects.Implementations
 			public override bool IsSatisfiedBy( DateTime parameter ) => false;
 		}
 
-		// [EnsureGeneralizedImplementations]
 		class Command : ICommand<int>
 		{
 			bool ICommand.CanExecute( object parameter ) => false;

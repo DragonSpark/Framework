@@ -15,11 +15,7 @@ namespace DragonSpark.Testing.Framework.Application.Setup
 		public static ServicesCustomization Default { get; } = new ServicesCustomization();
 		ServicesCustomization() {}
 
-		protected override void OnCustomize( IFixture fixture )
-		{
-			fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.Implementation );
-			// fixture.ResidueCollectors.Add( ServiceRelay.Default );
-		}
+		protected override void OnCustomize( IFixture fixture ) => fixture.Customizations.Insert( 0, FrameworkSpecimenBuilder.Implementation );
 
 		sealed class FrameworkSpecimenBuilder : ISpecimenBuilder
 		{

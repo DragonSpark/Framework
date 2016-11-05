@@ -206,14 +206,12 @@ namespace DragonSpark.Testing.Aspects.Validation
 
 			public int? LastResult { get; private set; }
 
-			// [ExtensionPoint]
 			public bool CanExecute( object parameter )
 			{
 				CanExecuteCalled++;
 				return parameter is int && (int)parameter == 1212;
 			}
 
-			// [ExtensionPoint]
 			public void Execute( object parameter )
 			{
 				ExecuteCalled++;

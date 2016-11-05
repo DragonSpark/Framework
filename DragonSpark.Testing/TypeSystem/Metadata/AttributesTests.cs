@@ -20,17 +20,14 @@ namespace DragonSpark.Testing.TypeSystem.Metadata
 		[Fact]
 		public void SameInstances()
 		{
-			// for ( int i = 0; i < 10000; i++ )
-			{
-				var propertyInfo = GetType().GetProperty( nameof(PropertyName) );
-			
-				var sut = Attributes.Get( propertyInfo );
-				Assert.Same( sut, Attributes.Get( propertyInfo ) );
+			var propertyInfo = GetType().GetProperty( nameof( PropertyName ) );
 
-				var firstAll = sut.GetAttributes<Attribute>();
-				var secondAll = sut.GetAttributes<Attribute>();
-				Assert.Same( firstAll, secondAll );
-			}
+			var sut = Attributes.Get( propertyInfo );
+			Assert.Same( sut, Attributes.Get( propertyInfo ) );
+
+			var firstAll = sut.GetAttributes<Attribute>();
+			var secondAll = sut.GetAttributes<Attribute>();
+			Assert.Same( firstAll, secondAll );
 		}
 
 		[Fact]

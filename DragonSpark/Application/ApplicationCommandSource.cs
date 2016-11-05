@@ -13,7 +13,7 @@ namespace DragonSpark.Application
 	public class ApplicationCommandSource : SuppliedCommandSource
 	{
 		readonly IEnumerable<Type> types;
-		// public ApplicationCommandSource( IEnumerable<Type> types ) : this( types, Items<ICommandSource>.Default ) {}
+
 		public ApplicationCommandSource( IEnumerable<Type> types, params ICommandSource[] sources ) : base( sources )
 		{
 			this.types = types;

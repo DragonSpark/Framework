@@ -78,7 +78,6 @@ namespace DragonSpark.Commands
 			return result;
 		}
 
-		/*public static SuppliedCommand<IEnumerable<T>> WithParameter<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );*/
 		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> WithParameter<T>( this Action<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
@@ -90,15 +89,7 @@ namespace DragonSpark.Commands
 			public static DelegateCache<T> Default { get; } = new DelegateCache<T>();
 			DelegateCache() : base( command => command.Execute ) {}
 		}
-
-		/*public static Action<T> Delegate<T>( this ISource<ICommand<T>> @this ) => @this.ToDelegate().Delegate();
-		public static Action<T> Delegate<T>( this Func<ICommand<T>> @this ) => Delegates<T>.Default.Get( @this );
-		sealed class Delegates<T> : Cache<Func<ICommand<T>>, Action<T>>
-		{
-			public static Delegates<T> Default { get; } = new Delegates<T>();
-			Delegates() : base( source => source.Execute ) {}
-		}*/
-
+		
 		public static IAlteration<T> ToAlteration<T>( this ICommand<T> @this ) => Alterations<T>.Default.Get( @this );
 		sealed class Alterations<T> : Cache<ICommand<T>, IAlteration<T>>
 		{

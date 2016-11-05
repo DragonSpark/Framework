@@ -7,9 +7,4 @@ namespace DragonSpark.Application.Setup
 	{
 		void Add( ServiceRegistration request );
 	}
-
-	/*public interface IServiceAware
-	{
-		Type ServiceType { get; }
-	}*/
 }

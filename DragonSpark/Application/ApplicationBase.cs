@@ -11,8 +11,7 @@ namespace DragonSpark.Application
 	public abstract class ApplicationBase<T> : CompositeCommand<T>, IApplication<T>
 	{
 		readonly ISpecification<T> specification;
-		// protected ApplicationBase() : this( Items<ICommand>.Default ) {}
-
+		
 		protected ApplicationBase( params ICommand[] commands ) : this( new OnlyOnceSpecification<T>(), commands ) {}
 
 		protected ApplicationBase( ISpecification<T> specification, params ICommand[] commands ) : base( commands.Distinct().Prioritize().Fixed() )

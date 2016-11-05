@@ -70,7 +70,6 @@
     <Compile Include="Aspects\Coercion\CoercerAdapter.cs" />
     <Compile Include="Aspects\Coercion\Source.cs" />
     <Compile Include="Aspects\Coercion\Constructor.cs" />
-    <Compile Include="Aspects\Coercion\Defaults.cs" />
     <Compile Include="Aspects\Coercion\ICoercer.cs" />
     <Compile Include="Aspects\Coercion\Support.cs" />
     <Compile Include="Aspects\CommandInvocationBase.cs" />

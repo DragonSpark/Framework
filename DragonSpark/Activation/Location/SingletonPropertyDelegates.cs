@@ -11,7 +11,6 @@ namespace DragonSpark.Activation.Location
 		public static SingletonPropertyDelegates Default { get; } = new SingletonPropertyDelegates();
 		SingletonPropertyDelegates() {}
 
-		public override Func<object> Get( PropertyInfo parameter ) => 
-			/*parameter.PropertyType.Adapt().IsGenericOf( typeof(ISource<>) ) ? parameter.GetMethod.CreateDelegate<Func<ISource>>().Invoke().Get :*/ parameter.GetMethod.CreateDelegate<Func<object>>().ToSingleton();
+		public override Func<object> Get( PropertyInfo parameter ) => parameter.GetMethod.CreateDelegate<Func<object>>().ToSingleton();
 	}
 }

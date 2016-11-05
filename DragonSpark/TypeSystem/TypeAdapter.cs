@@ -19,10 +19,7 @@ namespace DragonSpark.TypeSystem
 		readonly Func<Type, bool> isAssignableFrom;
 		
 		readonly Func<Type, ImmutableArray<MethodMapping>> methodMapper;
-		// readonly Func<Type, Type[]> getTypeArguments;
 		public TypeAdapter( Type referenceType ) : this( referenceType, referenceType.GetTypeInfo() ) {}
-
-		// public TypeAdapter( TypeInfo info ) : this( info.AsType(), info ) {}
 
 		public TypeAdapter( Type referenceType, TypeInfo info )
 		{
@@ -32,7 +29,6 @@ namespace DragonSpark.TypeSystem
 			GenericFactoryMethods = new GenericStaticMethodFactories( ReferenceType );
 			GenericCommandMethods = new GenericStaticMethodCommands( ReferenceType );
 			isAssignableFrom = new IsInstanceOfTypeOrDefinitionCache( this ).Get;
-			// getTypeArguments = new GetTypeArgumentsForCache( this ).Get;
 		}
 
 		public Type ReferenceType { get; }
@@ -95,13 +91,6 @@ namespace DragonSpark.TypeSystem
 			return null;
 		}
 
-		/*public Type[] GetTypeArgumentsFor( Type implementationType ) => getTypeArguments( implementationType );
-		Type[] GetTypeArgumentsForBody( Type implementationType ) => GetImplementations( implementationType ).First().GenericTypeArguments;
-		class GetTypeArgumentsForCache : ArgumentCache<Type, Type[]>
-		{
-			public GetTypeArgumentsForCache( TypeAdapter owner ) : base( owner.GetTypeArgumentsForBody ) {}
-		}*/
-
 		[Freeze]
 		public Type[] GetImplementations( Type genericDefinition, bool includeInterfaces = true )
 		{
@@ -118,7 +107,6 @@ namespace DragonSpark.TypeSystem
 			return result;
 		}
 
-		/*public ImmutableArray<MethodMapping> GetMappedMethods<T>() => GetMappedMethods( typeof(T) );*/
 		public ImmutableArray<MethodMapping> GetMappedMethods( Type interfaceType ) => methodMapper( interfaceType );
 		
 
@@ -132,8 +120,5 @@ namespace DragonSpark.TypeSystem
 		public Type[] GetAllInterfaces() => Expand( ReferenceType ).ToArray();
 
 		static IEnumerable<Type> ExpandInterfaces( Type target ) => target.Append( target.GetTypeInfo().ImplementedInterfaces.SelectMany( Expand ) ).Where( x => x.GetTypeInfo().IsInterface ).Distinct();
-
-		/*[Freeze]
-		public ImmutableArray<Type> GetEntireHierarchy() => Expand( ReferenceType ).Union( GetHierarchy() ).ToImmutableArray();*/
 	}
 }

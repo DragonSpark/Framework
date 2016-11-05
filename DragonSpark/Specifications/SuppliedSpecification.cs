@@ -12,7 +12,7 @@ namespace DragonSpark.Specifications
 	{
 		readonly bool satisfied;
 
-		public SuppliedSpecification( bool satisfied ) // : base( Where<T>.Always )
+		public SuppliedSpecification( bool satisfied )
 		{
 			this.satisfied = satisfied;
 		}

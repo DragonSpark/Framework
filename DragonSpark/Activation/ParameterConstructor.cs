@@ -29,11 +29,6 @@ namespace DragonSpark.Activation
 		public static Func<TParameter, TResult> Make( Type parameterType, Type resultType )
 		{
 			var constructor = resultType.Adapt().FindConstructor( parameterType );
-			/*if ( constructor != null )
-			{
-				return ;
-			}*/
-			// throw new InvalidOperationException( $"A constructor on '{resultType.FullName}' was not found that takes a parameter of type '{parameterType.FullName}'" );
 			var result = constructor != null ? Make( constructor ) : ( parameter => default(TResult) );
 			return result;
 		}
@@ -55,8 +50,7 @@ namespace DragonSpark.Activation
 
 				foreach ( var source in parameters.Skip( 1 ) )
 				{
-					Expression constant = Expression.Constant( source.DefaultValue, source.ParameterType );
-					yield return constant; // source.ParameterType == typeof(object) ? constant : Expression.Convert( constant, source.ParameterType );
+					yield return Expression.Constant( source.DefaultValue, source.ParameterType );
 				}
 			}
 		}

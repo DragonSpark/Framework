@@ -248,14 +248,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public override DateTime GetLastWriteTimeUtc(string pathName) => repository.Get( pathName ).LastWriteTime.UtcDateTime;
 		public override void SetLastWriteTimeUtc(string pathName, DateTime lastWriteTimeUtc) => repository.GetDirectory( pathName ).LastWriteTime = lastWriteTimeUtc;
 
-		
-		/*static string EnsurePathEndsWithDirectorySeparator(string path)
-		{
-			if (!path.EndsWith(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))
-				path += Path.DirectorySeparatorChar;
-			return path;
-		}*/
-
 		void CheckSearchPattern(string searchPattern)
 		{
 			Func<ArgumentException> createException = () => new ArgumentException($@"Search pattern cannot contain ""{Windows.FileSystem.Defaults.ParentPath}"" to move up directories and can be contained only internally in file/directory names, as in ""a..b"".", searchPattern);

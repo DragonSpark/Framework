@@ -12,9 +12,5 @@ namespace DragonSpark.TypeSystem
 		public static Action<T> Empty { get; } = t => {};
 
 		public static Func<T, T> Self { get; } = t => t;
-
-		/*public static Func<T, object> Object { get; } = t => t;
-
-		public static Func<T> Default { get; } = () => default(T);*/
 	}
 }

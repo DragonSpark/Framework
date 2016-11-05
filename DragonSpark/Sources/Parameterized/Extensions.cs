@@ -12,13 +12,6 @@ namespace DragonSpark.Sources.Parameterized
 {
 	public static class Extensions
 	{
-		/*public static IConfigurableParameterizedSource<TParameter, TResult> AsConfigurable<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => Configurable<TParameter, TResult>.Default.Get( @this );
-		sealed class Configurable<TParameter, TResult> : Cache<IParameterizedSource<TParameter, TResult>, IConfigurableParameterizedSource<TParameter, TResult>>
-		{
-			public static Configurable<TParameter, TResult> Default { get; } = new Configurable<TParameter, TResult>();
-			Configurable() : base( source => new ConfigurableParameterizedSource<TParameter, TResult>( source.Get ) ) {}
-		}*/
-
 		public static ImmutableArray<TResult> CreateMany<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, IEnumerable<TParameter> parameters ) =>
 			parameters
 				.SelectAssigned( @this.ToDelegate() )
@@ -44,8 +37,6 @@ namespace DragonSpark.Sources.Parameterized
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter> parameter ) => @this.ToDelegate().WithParameter( parameter );
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this Func<TParameter, TResult> @this, TParameter parameter ) => @this.WithParameter( Factory.For( parameter ) );
 		public static ISource<TResult> WithParameter<TParameter, TResult>( this Func<TParameter, TResult> @this, Func<TParameter> parameter ) => new SuppliedSource<TParameter, TResult>( @this, parameter );
-
-		/*public static Func<object, T> Wrap<T>( this ISource<T> @this ) => @this.Wrap<object, T>();*/
 
 		public static Func<object, T> Wrap<T>( this T @this ) => @this.Wrap<object, T>();
 		public static Func<TParameter, TResult> Wrap<TParameter, TResult>( this TResult @this ) => Factory.For( @this ).Wrap<TParameter, TResult>();
@@ -80,8 +71,6 @@ namespace DragonSpark.Sources.Parameterized
 			public static ParameterizedSourceDelegates<TParameter, TResult> Default { get; } = new ParameterizedSourceDelegates<TParameter, TResult>();
 			ParameterizedSourceDelegates() : base( factory => factory.Get ) {}
 		}
-
-		/*public static T Alter<T>( this IEnumerable<IAlteration<T>> @this, T seed ) => @this.Aggregate( seed, ( current, alteration ) => alteration.Get( current ) );*/
 
 		public static Alter<T> ToDelegate<T>( this IAlteration<T> @this ) => Selectors<T>.Default.Get( @this );
 		sealed class Selectors<T> : Cache<IAlteration<T>, Alter<T>>
@@ -125,25 +114,10 @@ namespace DragonSpark.Sources.Parameterized
 		public static TResult GetImmutable<TItem, TResult>( this Func<IEnumerable<TItem>, TResult> @this, ImmutableArray<TItem> parameter ) => @this( parameter.ToArray() );
 		public static ImmutableArray<TItem> GetImmutable<TParameter, TItem>( this IParameterizedSource<TParameter, IEnumerable<TItem>> @this, TParameter parameter ) => GetImmutable( @this.ToDelegate(), parameter );
 		public static ImmutableArray<TItem> GetImmutable<TParameter, TItem>( this Func<TParameter, IEnumerable<TItem>> @this, TParameter parameter ) => @this( parameter ).ToImmutableArray();
-		
-		/*public static TResult GetEnumerable<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this ) => GetImmutable( @this, Items<TItem>.Immutable );
-		public static TResult GetEnumerable<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this, params TItem[] parameters ) => @this.Get( parameters );*/
+
 		public static TResult GetEnumerable<TItem, TResult>( this IParameterizedSource<ImmutableArray<TItem>, TResult> @this, IEnumerable<TItem> parameter ) => @this.ToDelegate().GetEnumerable( parameter );
 		public static TResult GetEnumerable<TItem, TResult>( this Func<ImmutableArray<TItem>, TResult> @this, IEnumerable<TItem> parameter ) => @this( parameter.ToImmutableArray() );
 		public static IEnumerable<TItem> GetEnumerable<TParameter, TItem>( this IParameterizedSource<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => @this.ToDelegate().GetEnumerable( parameter );
 		public static IEnumerable<TItem> GetEnumerable<TParameter, TItem>( this Func<TParameter, ImmutableArray<TItem>> @this, TParameter parameter ) => @this( parameter ).ToArray();
-		/*sealed class EnumerableResults<TParameter, TItem> : ParameterizedSourceBase<TParameter, IEnumerable<TItem>>
-		{
-			public static IParameterizedSource<Func<TParameter, ImmutableArray<TItem>>, Func<TParameter, IEnumerable<TItem>>> Sources { get; } = new Cache<Func<TParameter, ImmutableArray<TItem>>, Func<TParameter, IEnumerable<TItem>>>( s => new EnumerableResults<TParameter, TItem>( s ).Get );
-
-			readonly Func<TParameter, ImmutableArray<TItem>> source;
-
-			EnumerableResults( Func<TParameter, ImmutableArray<TItem>> source )
-			{
-				this.source = source;
-			}
-
-			public override IEnumerable<TItem> Get( TParameter parameter ) => source( parameter ).ToArray();
-		}*/
 	}
 }

@@ -11,7 +11,7 @@ namespace DragonSpark.Sources
 	public sealed class SourceAccountedAlteration : AlterationBase<object>
 	{
 		public static IParameterizedSource<Type, Func<object, object>> Defaults { get; } = 
-			new ParameterizedSingletonScope<Type, Func<object, object>>( type => new SourceAccountedAlteration( type.Adapt() ).Get/*.ToCache().GetAssigned*/ );
+			new ParameterizedSingletonScope<Type, Func<object, object>>( type => new SourceAccountedAlteration( type.Adapt() ).Get );
 
 		readonly Func<Type, bool> assignable;
 		readonly Func<object, bool> specification;

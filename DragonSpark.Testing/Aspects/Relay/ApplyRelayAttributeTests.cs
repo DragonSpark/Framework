@@ -88,7 +88,7 @@ namespace DragonSpark.Testing.Aspects.Relay
 			}
 		}
 
-		[/*EnsureGeneralizedImplementations,*/ ApplyRelay]
+		[ApplyRelay]
 		sealed class Specification : GeneralizedSpecificationBase<int>
 		{
 			public int IsSatisfiedByCalled { get; private set; }

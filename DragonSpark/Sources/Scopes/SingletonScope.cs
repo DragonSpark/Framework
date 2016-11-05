@@ -4,23 +4,6 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Sources.Scopes
 {
-	/*public abstract class ScopedSource<T> : DelegatedSource<T>, IScope<T>
-	{
-		readonly IScope<T> scope;
-
-		protected ScopedSource( IScope<T> scope ) : base( scope.Get )
-		{
-			this.scope = scope;
-			scope.Assign( new Func<T>( Create ).Scoped );
-		}
-
-		protected abstract T Create();
-
-		public void Assign( ISource item ) => scope.Assign( item );
-		public void Assign( Func<object, T> item ) => scope.Assign( item );
-		public void Assign( Func<T> item ) => scope.Assign( item );
-	}*/
-
 	public class SingletonScope<T> : Scope<T>
 	{
 		public SingletonScope() {}

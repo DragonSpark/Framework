@@ -6,7 +6,6 @@ namespace DragonSpark.Windows.Runtime.Data
 {
 	public sealed class Serializer : ISerializer
 	{
-		// [Export]
 		public static ISerializer Default { get; } = new Serializer();
 		Serializer() {}
 

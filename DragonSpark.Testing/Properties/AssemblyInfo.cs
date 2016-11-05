@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "DragonSpark.Testing" )]
 [assembly: AssemblyDescription( "" )]
-// [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "DragonSpark Technologies Incorporated" )]
 [assembly: AssemblyProduct( "DragonSpark.Testing" )]
 [assembly: AssemblyCopyright( "Copyright © The DragonSpark Framework 2016" )]
@@ -24,6 +23,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion( "0.1.1.1" )]
 [assembly: Application]
 
-// [assembly: ApplyDefaultValues]
-// [assembly: DisposeAssociatedAspect]
 [assembly: TestingMethodAspect]

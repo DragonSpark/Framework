@@ -6,8 +6,6 @@ namespace DragonSpark.Specifications
 	{
 		protected Common() {}
 
-		// protected Common() {}
-
 		public static ISpecification<T> Assigned { get; } = AssignedSpecification<T>.Default;
 		
 		public static ISpecification<T> Always { get; } = new SuppliedSpecification<T>( true );

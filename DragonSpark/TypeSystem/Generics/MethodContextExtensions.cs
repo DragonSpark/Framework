@@ -11,8 +11,6 @@ namespace DragonSpark.TypeSystem.Generics
 	{
 		readonly static Func<IEnumerable<object>, ImmutableArray<Type>> ToType = ObjectTypeFactory.Default.ToDelegate();
 
-		// public static TResult Invoke<TParameter, TResult>( this Invoke @this, TParameter argument ) => (TResult)@this.Invoke( argument );
-
 		public static T Invoke<T>( this MethodContext<Invoke> @this ) => Invoke<T>( @this, Items<object>.Default );
 
 		public static T Invoke<T>( this MethodContext<Invoke> @this, params object[] arguments ) => (T)@this.Get( ToType( arguments ) ).Invoke( arguments );

@@ -6,8 +6,6 @@ namespace DragonSpark.Sources.Parameterized.Caching
 	{
 		readonly IStackSource<T> source;
 
-		// public StackAssignment( T item ) : this( AmbientStack<T>.Default, item ) {}
-
 		public StackAssignment( IStackSource<T> source, T item )
 		{
 			this.source = source;

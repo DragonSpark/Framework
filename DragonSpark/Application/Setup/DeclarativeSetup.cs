@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace DragonSpark.Application.Setup
 {
 	[ApplyAutoValidation]
-	public class DeclarativeSetup : CompositeCommand, ISetup// , ISpecificationAware<object>
+	public class DeclarativeSetup : CompositeCommand, ISetup
 	{
 		public static ISetup Current() => AmbientStack.GetCurrentItem<ISetup>();
 

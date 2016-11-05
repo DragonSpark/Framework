@@ -7,8 +7,6 @@ namespace DragonSpark.Sources
 	{
 		readonly ThreadLocal<T> local;
 
-		// public ThreadLocalStore() : this( () => default(T) ) {}
-
 		public ThreadLocalStore( Func<T> create ) : this( new ThreadLocal<T>( create ) ) {}
 
 		public ThreadLocalStore( ThreadLocal<T> local )

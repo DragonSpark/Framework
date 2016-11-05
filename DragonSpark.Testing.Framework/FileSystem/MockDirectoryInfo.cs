@@ -157,7 +157,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 		public override IEnumerable<FileInfoBase> EnumerateFiles() => EnumerateFiles( Defaults.AllPattern );
 		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern ) => EnumerateFiles( searchPattern, SearchOption.TopDirectoryOnly );
 		public override IEnumerable<FileInfoBase> EnumerateFiles( string searchPattern, SearchOption searchOption ) => directory.EnumerateFiles( FullName, searchPattern, searchOption ).Select( repository.FromFileName );
-		// FileInfoBase[] ConvertStringsToFiles( IEnumerable<string> paths ) => paths.Select( repository.FromFileName ).ToArray();
 
 		public override FileSystemInfoBase[] GetFileSystemInfos() => EnumerateFileSystemInfos().ToArray();
 		public override FileSystemInfoBase[] GetFileSystemInfos( string searchPattern ) => EnumerateFileSystemInfos( searchPattern ).ToArray();

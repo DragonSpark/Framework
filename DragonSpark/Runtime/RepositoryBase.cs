@@ -21,9 +21,5 @@ namespace DragonSpark.Runtime
 		protected virtual void OnAdd( T entry ) => Source.Add( entry );
 
 		protected override IEnumerable<T> Yield() => Source;
-
-		// public virtual ImmutableArray<T> List() => Query().ToImmutableArray();
-
-		// protected virtual IEnumerable<T> Query() => Source;
 	}
 }

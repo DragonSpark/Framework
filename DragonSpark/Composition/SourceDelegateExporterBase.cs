@@ -20,7 +20,6 @@ namespace DragonSpark.Composition
 		readonly static Func<Type, Type> Parameters = ParameterTypes.Default.ToDelegate();
 
 		readonly ICache<LifetimeContext, object> cache = new Cache<LifetimeContext, object>();
-		// readonly IDictionary<CompositionContract, CompositeActivator> registry = new ConcurrentDictionary<CompositionContract, CompositeActivator>();
 		readonly Func<ActivationParameter, object> resultSource;
 		readonly Func<CompositionContract, CompositionContract> resolver;
 

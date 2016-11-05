@@ -44,11 +44,6 @@ namespace DragonSpark.Sources.Scopes
 		public static Func<TParameter, TResult> Scoped<TParameter, TResult>( this Func<TParameter, TResult> @this, object _ ) => @this.ToSingleton();
 		public static IEnumerable<IAlteration<T>> Scoped<T>( this IItemSource<IAlteration<T>> @this, object _ ) => @this.GetEnumerable();
 		
-		// public static ImmutableArray<IAlteration<TResult>> Get<TParameter, TResult>( this IEnumerable<IAlteration<TResult>> @this, TParameter _ ) => @this.ToImmutableArray();
-		// public static ImmutableArray<IAlteration<TResult>> GetValue<TParameter, TResult>( this IParameterizedSource<TParameter, IAlterations<TResult>> @this, TParameter parameter ) => @this.Get( parameter ).Get();
-		/*public static ImmutableArray<IAlteration<TResult>> Invoke<TParameter, TResult>( this IParameterizedSource<TParameter, IAlterations<TResult>> @this, TParameter parameter ) => @this.Get( parameter ).Get();*/
-		// public static IAlteration<T>[] Unwrap<T>( this ISource<IAlterations<T>> @this ) => @this.GetValue().ToArray();
-		
 		public static void Assign<T>( this IAssignable<Func<object, T>> @this ) where T : class, new() => @this.Assign( o => new T() );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, params T[] parameter ) => @this.Assign( (IEnumerable<T>)parameter );
 		public static void Assign<T>( this IAssignable<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Assign( parameter.ToImmutableArray() );
@@ -73,7 +68,6 @@ namespace DragonSpark.Sources.Scopes
 			return @this.Get();
 		}
 
-		/*public static T ScopedWithDefault<T>( this T @this ) where T : IScopeAware => @this.ScopedWith( ExecutionContext.Default );*/
 		public static T ScopedWith<T>( this T @this, ISource scope ) where T : IScopeAware
 		{
 			@this.Assign( scope );

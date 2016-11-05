@@ -1,13 +1,13 @@
+using DragonSpark.Extensions;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Extensions;
 
 
 namespace DragonSpark.TypeSystem
 {
-	class MethodMapper // : ParameterizedSourceBase<Type, ImmutableArray<MethodMapping>>
+	class MethodMapper
 	{
 		readonly TypeAdapter adapter;
 

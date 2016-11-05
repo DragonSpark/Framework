@@ -8,7 +8,5 @@ namespace DragonSpark.TypeSystem
 		public static T[] Default { get; } = (T[])Enumerable.Empty<T>();
 
 		public static ImmutableArray<T> Immutable { get; } = Default.ToImmutableArray();
-
-		// public static IList<T> List { get; } = Default.ToImmutableList();
 	}
 }

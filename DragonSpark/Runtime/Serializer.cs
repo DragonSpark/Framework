@@ -4,7 +4,6 @@ namespace DragonSpark.Runtime
 {
 	public sealed class Serializer : ISerializer
 	{
-		// [Export]
 		public static ISerializer Default { get; } = new Serializer();
 		Serializer() {}
 

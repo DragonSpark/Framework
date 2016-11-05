@@ -30,18 +30,4 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			register.Execute( new FileSystemRegistration( path, reader( parameter.FullName ) ) );
 		}
 	}
-
-	/*public sealed class MappedPathAlteration : AppliedAlteration<string>
-	{
-		public static IScope<MappedPathAlteration> Current { get; } = Scopes.Create( () => new MappedPathAlteration() );
-		MappedPathAlteration() : this( MappedPaths.Current.Get() ) {}
-
-		[UsedImplicitly]
-		public MappedPathAlteration( IParameterizedSource<string, string> mappings ) : base( new AlterationAdapter<string>( mappings.ToDelegate() ).Get ) {}
-	}
-
-	sealed class MappedPaths : EqualityReferenceCache<string, string>
-	{
-		public static ISource<MappedPaths> Current { get; } = Scopes.Create( () => new MappedPaths() );
-	}*/
 }

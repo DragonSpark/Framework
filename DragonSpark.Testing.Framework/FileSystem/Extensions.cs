@@ -32,8 +32,6 @@ namespace DragonSpark.Testing.Framework.FileSystem
 			}
 		}
 
-		// public static string EnsureTrailingSlash( this IPath @this, string path ) => EnsureTrailingSlash( @this, path, @this.PathSeparator.ToString() );
-
 		public static string EnsureTrailingSlash( this IPath @this, string path, string reference = null )
 		{
 			var separator = @this.DirectorySeparatorChar;
@@ -44,21 +42,10 @@ namespace DragonSpark.Testing.Framework.FileSystem
 
 		public static string Normalize( this IPath @this, string parameter )
 		{
-/*if ( !directoryPath.EndsWith( path.DirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ), StringComparison.OrdinalIgnoreCase ) )
-			{
-				directoryPath += path.DirectorySeparatorChar;
-			}
-
-			*/
 			var path = parameter.Replace( @this.AltDirectorySeparatorChar, @this.DirectorySeparatorChar );
 			var fullPath = @this.GetFullPath( path );
 			var result = @this.HasExtension( parameter ) ? fullPath : NormalizeDirectory( @this, fullPath );
-			// var result = path.ToLowerInvariant();
 			return result;
-			/*var separatorChar = @this.DirectorySeparatorChar;
-			var result = !parameter.EndsWith( separatorChar.ToString( CultureInfo.InvariantCulture ), StringComparison.OrdinalIgnoreCase ) ?
-				string.Concat( parameter, separatorChar.ToString() ) : parameter;
-			return result;*/
 		}
 
 		static string NormalizeDirectory( IPath path, string fullPath ) => 

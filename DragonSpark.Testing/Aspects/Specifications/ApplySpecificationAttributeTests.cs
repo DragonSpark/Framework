@@ -65,7 +65,7 @@ namespace DragonSpark.Testing.Aspects.Specifications
 		[Theory, AutoData]
 		void VerifyAutoValidation( CoreCommand sut )
 		{
-			var applied = sut; //.Apply<Command>( AutoValidationPolicy.Default );
+			var applied = sut;
 			Assert.False( applied.CanExecute( 123 ) );
 			Assert.True( applied.CanExecute( 6776 ) );
 			Assert.Equal( 2, applied.CanExecuteCalled );
