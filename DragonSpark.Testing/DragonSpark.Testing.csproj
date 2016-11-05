@@ -65,8 +65,11 @@
     <Compile Include="Aspects\Specifications\ApplySpecificationAttributeTests.cs" />
     <Compile Include="Composition\SingletonExportFactoryTests.cs" />
     <Compile Include="Runtime\Assignments\AssignScopeCommandTests.cs" />
+    <Compile Include="Runtime\DelegatedDisposableTests.cs" />
     <Compile Include="Runtime\ExtensionsTests.cs" />
     <Compile Include="Runtime\RepositoryBaseTests.cs" />
+    <Compile Include="Sources\Coercion\CastCoercerTests.cs" />
+    <Compile Include="Sources\Coercion\ExtensionsTests.cs" />
     <Compile Include="Sources\Coercion\StringCoercerTests.cs" />
     <Compile Include="Commands\ExtensionsTests.cs" />
     <Compile Include="Commands\FirstCommandTests.cs" />
@@ -76,7 +79,10 @@
     <Compile Include="Composition\ExportMappingTests.cs" />
     <Compile Include="Sources\CompositeItemSourceTests.cs" />
     <Compile Include="Sources\ExtensionsTests.cs" />
+    <Compile Include="Sources\Parameterized\AlterationAdapterTests.cs" />
+    <Compile Include="Sources\Parameterized\AppliedAlterationTests.cs" />
     <Compile Include="Sources\Parameterized\ConditionalParameterizedSourceTests.cs" />
+    <Compile Include="Sources\Parameterized\ExtensionsTests.cs" />
     <Compile Include="Sources\Scopes\ParameterizedScopeTests.cs" />
     <Compile Include="Diagnostics\Configurations\LoggerConfigurationTests.cs" />
     <Compile Include="Diagnostics\LoggerAlterationsTests.cs" />
@@ -125,6 +131,8 @@
     <Compile Include="Sources\Parameterized\Caching\ThreadLocalSourceCacheTests.cs" />
     <Compile Include="Sources\Parameterized\ConfiguringFactoryTests.cs" />
     <Compile Include="Sources\Parameterized\SelfAlterationTests.cs" />
+    <Compile Include="Sources\Scopes\ParameterizedSingletonScopeTests.cs" />
+    <Compile Include="Sources\Scopes\ScopesTests.cs" />
     <Compile Include="Sources\SourceAccountedTypesTests.cs" />
     <Compile Include="Sources\SuppliedSourceTests.cs" />
     <Compile Include="Sources\TimedDelegatedSourceTests.cs" />

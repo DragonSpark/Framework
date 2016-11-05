@@ -4,10 +4,10 @@ using System;
 
 namespace DragonSpark.Sources.Scopes
 {
-	public class ParameterizedScope<T> : ParameterizedScope<object, T>, IParameterizedScope<T>
+	/*public class ParameterizedScope<T> : ParameterizedScope<object, T>, IParameterizedScope<T>
 	{
 		public ParameterizedScope( Func<object, Func<object, T>> source ) : base( source ) {}
-	}
+	}*/
 
 	public class ParameterizedScope<TParameter, TResult> : ParameterizedSourceBase<TParameter, TResult>, IParameterizedScope<TParameter, TResult>
 	{

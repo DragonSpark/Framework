@@ -17,7 +17,6 @@ namespace DragonSpark.Sources.Scopes
 		public static IScope<T> ToSingletonScope<T>( this ISource<T> @this ) => @this.ToDelegate().ToSingletonScope();
 		public static IScope<T> ToSingletonScope<T>( this Func<T> @this ) => new SingletonScope<T>( @this );
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) => @this.ToDelegate().ToSingletonScope();
-		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this TResult @this ) => @this.Wrap<TParameter, TResult>().ToSingletonScope();
 		public static IParameterizedScope<TParameter, TResult> ToSingletonScope<TParameter, TResult>( this Func<TParameter, TResult> @this ) => new ParameterizedSingletonScope<TParameter, TResult>( @this );
 		public static IScope<T> ToExecutionScope<T>( this IParameterizedSource<object, T> @this ) => @this.ToDelegate().ToExecutionScope();
 		public static IScope<T> ToExecutionScope<T>( this Func<object, T> @this ) => ExecutionScopes<T>.Default.Get( @this );
@@ -57,6 +56,8 @@ namespace DragonSpark.Sources.Scopes
 		public static void Assign<T>( this IScopeAware<T> @this, T instance ) => @this.Assign( Factory.For( instance ) );
 		public static void Assign<T>( this IScopeAware<T?> @this, T instance ) where T : struct => @this.Assign( Factory.For( new T?( instance ) ) );
 
+		public static void Execute<T>( this ICommand<Func<T>> @this, T instance ) => @this.Execute( Factory.For( instance ) );
+		
 		public static IRunCommand ToCommand<T>( this IAssignable<Func<T>> @this, T instance ) => @this.ToCommand( Factory.For( instance ) );
 		public static IRunCommand ToCommand<T>( this IAssignable<Func<T>> @this, Func<T> factory ) => new AssignCommand<Func<T>>( @this ).WithParameter( factory );
 		

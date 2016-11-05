@@ -6,6 +6,7 @@ namespace DragonSpark.Sources.Scopes
 {
 	public class SingletonScope<T> : Scope<T>
 	{
+		public SingletonScope() {}
 		public SingletonScope( T instance ) : base( Factory.For( instance ) ) {}
 		public SingletonScope( Func<T> defaultFactory ) : base( Caches.Create( defaultFactory ).Get ) {}
 		public SingletonScope( Func<object, T> defaultFactory ) : base( Caches.Create( defaultFactory ).Get ) {}

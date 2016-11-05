@@ -1,4 +1,5 @@
-﻿using DragonSpark.Sources;
+﻿using DragonSpark.Extensions;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Specifications;
@@ -13,8 +14,8 @@ namespace DragonSpark.Commands
 	{
 		public static ICommand<T> Apply<T>( this ICommand<T> @this, ISpecification<T> specification ) => new SpecificationCommand<T>( specification, @this.ToDelegate() );
 
-		public static ICommand<T> Apply<T>( this ICommand<T> @this, IParameterizedSource<T> coercer ) => @this.ToDelegate().Apply( coercer );
-		public static CoercedCommand<TFrom,TParameter> Apply<TFrom, TParameter>( this Action<TParameter> @this, IParameterizedSource<TFrom, TParameter> coercer ) => new CoercedCommand<TFrom,TParameter>( coercer, @this );
+		public static CoercedCommand<TFrom, TParameter> Accept<TFrom, TParameter>( this ICommand<TParameter> @this, IParameterizedSource<TFrom, TParameter> coercer ) => @this.ToDelegate().Accept( coercer );
+		public static CoercedCommand<TFrom, TParameter> Accept<TFrom, TParameter>( this Action<TParameter> @this, IParameterizedSource<TFrom, TParameter> coercer ) => new CoercedCommand<TFrom,TParameter>( coercer, @this );
 
 		public static void Execute<T>( this ISource<ICommand<T>> @this, T parameter ) => @this.ToDelegate().Execute( parameter );
 		public static void Execute<T>( this Func<ICommand<T>> @this, T parameter ) => @this().Execute( parameter );
@@ -22,10 +23,9 @@ namespace DragonSpark.Commands
 		public static void Execute<T>( this ISource<Action<T>> @this, T parameter ) => @this.ToDelegate().Execute( parameter );
 		public static void Execute<T>( this Func<Action<T>> @this, T parameter ) => @this().Invoke( parameter );
 
-		public static void Execute<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => @this.Execute( parameter );
-
+		public static void ExecuteItem<T>( this ICommand<ImmutableArray<T>> @this, T parameter ) => Execute( @this, parameter.Yield() );
+		public static void Execute<T>( this ICommand<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => Execute( @this, parameter.Fixed() );
 		public static void Execute<T>( this ICommand<ImmutableArray<T>> @this, params T[] parameter ) => @this.Execute( parameter.ToImmutableArray() );
-		public static void Execute<T>( this ICommand<ImmutableArray<T>> @this, IEnumerable<T> parameter ) => @this.Execute( parameter.ToImmutableArray() );
 
 		public static IDisposable AsExecuted( this IExecution @this )
 		{
@@ -78,7 +78,7 @@ namespace DragonSpark.Commands
 			return result;
 		}
 
-		public static SuppliedCommand<IEnumerable<T>> WithParameter<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );
+		/*public static SuppliedCommand<IEnumerable<T>> WithParameter<T>( this ICommand<IEnumerable<T>> @this, params T[] parameter ) => new SuppliedCommand<IEnumerable<T>>( @this, parameter );*/
 		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> WithParameter<T>( this ICommand<T> @this, Func<T> parameter ) => new SuppliedCommand<T>( @this, parameter );
 		public static SuppliedCommand<T> WithParameter<T>( this Action<T> @this, T parameter ) => new SuppliedCommand<T>( @this, parameter );

@@ -14,7 +14,7 @@ namespace DragonSpark.Commands
 		readonly Action<T> command;
 		readonly Func<T> parameter;
 
-		public SuppliedCommand( ICommand<T> command, T parameter ) : this( command, Factory.For( parameter ) ) {}
+		public SuppliedCommand( ICommand<T> command, T parameter ) : this( command.ToDelegate(), parameter ) {}
 
 		public SuppliedCommand( ICommand<T> command, Func<T> parameter ) : this( command.ToDelegate(), parameter ) {}
 

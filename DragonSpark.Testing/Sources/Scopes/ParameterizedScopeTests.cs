@@ -19,6 +19,13 @@ namespace DragonSpark.Testing.Sources.Scopes
 			Assert.Equal( answer * 2, after );
 		}
 
+		[Fact]
+		public void Coverage()
+		{
+			var sut = new ParameterizedScope<object, object>();
+			Assert.Null( sut.Get( new object() ) );
+		}
+
 		sealed class Configurable : ParameterizedScope<int, int>
 		{
 			public static Configurable Default { get; } = new Configurable();

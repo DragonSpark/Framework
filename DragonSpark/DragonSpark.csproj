@@ -165,6 +165,7 @@
     <Compile Include="Runtime\Assignments\AssignGlobalScopeCommand.cs" />
     <Compile Include="Runtime\Assignments\AssignScopeCommand.cs" />
     <Compile Include="Runtime\Extensions.cs" />
+    <Compile Include="Sources\Coercion\CastCoercer.cs" />
     <Compile Include="Sources\Coercion\DelegatedCoercer.cs" />
     <Compile Include="Commands\CoercedCommand.cs" />
     <Compile Include="Commands\CompiledCommand.cs" />
@@ -243,7 +244,6 @@
     <Compile Include="Sources\Parameterized\AppliedAlteration.cs" />
     <Compile Include="Sources\Parameterized\ConditionalInstanceParameterizedSource.cs" />
     <Compile Include="Sources\Parameterized\ConditionalParameterizedSource.cs" />
-    <Compile Include="Sources\Parameterized\Curry.cs" />
     <Compile Include="Sources\Parameterized\DelegatedAlteration.cs" />
     <Compile Include="Sources\Parameterized\ICurry.cs" />
     <Compile Include="Sources\Parameterized\ISpecificationParameterizedSource.cs" />
@@ -307,7 +307,6 @@
     <Compile Include="ComponentModel\SingletonDefaultValueProvider.cs" />
     <Compile Include="ComponentModel\TypeDefinitions.cs" />
     <Compile Include="Sources\Scopes\AggregateSource.cs" />
-    <Compile Include="Sources\Scopes\ConfigurationProvisionedParameterizedSourceBase.cs" />
     <Compile Include="Configuration\Extensions.cs" />
     <Compile Include="Configuration\IValueStore.cs" />
     <Compile Include="Diagnostics\Exceptions\BackoffRetryTime.cs" />
@@ -437,6 +436,7 @@
     <Compile Include="Sources\Parameterized\TypeLocatorBase.cs" />
     <Compile Include="Sources\Parameterized\SourceAdapter.cs" />
     <Compile Include="Sources\TimedDelegatedSource.cs" />
+    <Compile Include="Tasks\TaskMonitorContext.cs" />
     <Compile Include="Tasks\TaskMonitors.cs" />
     <Compile Include="TypeSystem\AllParts.cs" />
     <Compile Include="TypeSystem\AssemblyLoader.cs" />

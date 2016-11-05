@@ -1,5 +1,5 @@
-using System;
 using DragonSpark.Sources;
+using System;
 
 namespace DragonSpark.Runtime.Assignments
 {

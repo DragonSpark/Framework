@@ -11,19 +11,13 @@ namespace DragonSpark.Runtime
 		public static Disposables Default { get; } = new Disposables();
 		Disposables() : base( () => new Repository() ) {}
 
-		public void Add( IDisposable instance ) => Default.Get().Add( instance );
+		public void Add( IDisposable instance ) => Get().Add( instance );
 
 		sealed class Repository : RepositoryBase<IDisposable>, IDisposables
 		{
-			readonly IDisposable disposable;
+			public Repository() : base( new PurgingCollection<IDisposable>() ) {}
 
-			public Repository() : base( new PurgingCollection<IDisposable>() )
-			{
-				disposable = new DelegatedDisposable( OnDispose );
-			}
-
-			void OnDispose() => this.Each( entry => entry.Dispose() );
-			public void Dispose() => disposable.Dispose();
+			public void Dispose() => this.Each( entry => entry.Dispose() );
 		}
 	}
 }

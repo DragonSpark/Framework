@@ -34,9 +34,9 @@ namespace DragonSpark.Sources.Parameterized
 		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Alter<TResult> selector ) => Apply( @this.ToDelegate(), selector );
 		public static IParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this Func<TParameter, TResult> @this, Alter<TResult> selector ) =>
 			new AlteredResultParameterizedSource<TParameter, TResult>( @this, selector );
-		
+
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, ISpecification<TParameter> specification ) =>
-			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToDelegate() );
+			@this.Apply( specification.ToSpecificationDelegate() );
 		public static ISpecificationParameterizedSource<TParameter, TResult> Apply<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this, Func<TParameter, bool> specification ) =>
 			new SpecificationParameterizedSource<TParameter, TResult>( specification, @this.ToDelegate() );
 		
@@ -112,11 +112,11 @@ namespace DragonSpark.Sources.Parameterized
 		public static ICache<TParameter, TResult> ToEqualityCache<TParameter, TResult>( this IParameterizedSource<TParameter, TResult> @this ) where TParameter : class => @this.ToDelegate().ToEqualityCache();
 		public static ICache<TParameter, TResult> ToEqualityCache<TParameter, TResult>( this Func<TParameter, TResult> @this ) where TParameter : class => new EqualityReferenceCache<TParameter, TResult>( @this );
 		
-		public static TResult Get<TItem, TResult>( this IParameterizedSource<ImmutableArray<TItem>, TResult> @this ) => @this.Get( Items<TItem>.Default );
+		public static TResult Get<TItem, TResult>( this IParameterizedSource<ImmutableArray<TItem>, TResult> @this ) => @this.ToDelegate().Get();
 		public static TResult Get<TItem, TResult>( this IParameterizedSource<ImmutableArray<TItem>, TResult> @this, params TItem[] parameters ) => @this.ToDelegate().Get( parameters );
 		public static TResult Get<TItem, TResult>( this Func<ImmutableArray<TItem>, TResult> @this ) => @this.Get( Items<TItem>.Default );
 		public static TResult Get<TItem, TResult>( this Func<ImmutableArray<TItem>, TResult> @this, params TItem[] parameters ) => @this( parameters.ToImmutableArray() );
-		public static TResult Get<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this ) => Get( @this, Items<TItem>.Default );
+		public static TResult Get<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this ) => @this.ToDelegate().Get();
 		public static TResult Get<TItem, TResult>( this IParameterizedSource<IEnumerable<TItem>, TResult> @this, params TItem[] parameters ) => @this.ToDelegate().Get( parameters );
 		public static TResult Get<TItem, TResult>( this Func<IEnumerable<TItem>, TResult> @this ) => Get( @this, Items<TItem>.Default );
 		public static TResult Get<TItem, TResult>( this Func<IEnumerable<TItem>, TResult> @this, params TItem[] parameters ) => @this( parameters );
