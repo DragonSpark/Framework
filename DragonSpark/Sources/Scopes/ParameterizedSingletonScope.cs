@@ -11,7 +11,7 @@ namespace DragonSpark.Sources.Scopes
 		public ParameterizedSingletonScope( Func<TParameter, TResult> factory ) : base( new Func<object, Func<TParameter, TResult>>( Caches.Create( factory.ToSingleton ).Get ) ) {}
 		public ParameterizedSingletonScope( Func<object, Func<TParameter, TResult>> global ) : base( global.ToSingleton() ) {}
 
-		public override void Assign( Func<Func<TParameter, TResult>> item ) => base.Assign( Caches.Create( item ).Get );
+		public override void Assign( Func<Func<TParameter, TResult>> item ) => base.Assign( item.ToSingleton() );
 		public override void Assign( Func<object, Func<TParameter, TResult>> item ) => base.Assign( item.ToSingleton() );
 	}
 }
