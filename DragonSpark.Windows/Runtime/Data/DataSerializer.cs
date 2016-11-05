@@ -1,4 +1,5 @@
 using DragonSpark.Runtime;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Windows.Runtime.Data
 {
@@ -13,6 +14,7 @@ namespace DragonSpark.Windows.Runtime.Data
 		public static DataSerializer<T> Default { get; } = new DataSerializer<T>();
 		protected DataSerializer() : this( Serializer.Default ) {}
 
+		[UsedImplicitly]
 		public DataSerializer( ISerializer serializer ) : base( serializer.Load<T> ) {}
 	}
 }

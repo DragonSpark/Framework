@@ -60,6 +60,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Runtime\ApplicationDomainProxyFactoryTests.cs" />
+    <Compile Include="Runtime\Data\DataSerializerTests.cs" />
+    <Compile Include="Runtime\Data\DataTransformerTests.cs" />
+    <Compile Include="Runtime\Data\DocumentResourceFactoryTests.cs" />
     <Compile Include="Runtime\DomainAssembliesTests.cs" />
     <Compile Include="Runtime\FileSystemTypesTests.cs" />
     <Compile Include="Runtime\DomainAssemblySourceTests.cs" />
