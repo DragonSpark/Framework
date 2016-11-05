@@ -1,8 +1,8 @@
-﻿using DragonSpark.Sources;
+﻿using System.Configuration;
+using DragonSpark.Sources;
 using DragonSpark.Sources.Scopes;
-using System.Configuration;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public sealed class UserSettingsFilePath : SingletonScope<string>
 	{

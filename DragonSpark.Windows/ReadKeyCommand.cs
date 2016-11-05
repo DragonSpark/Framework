@@ -1,8 +1,8 @@
 using System;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
-	public class InputOutput : Application.Setup.InputOutputBase
+	public sealed class InputOutput : Application.Setup.InputOutputBase
 	{
 		public static InputOutput Default { get; } = new InputOutput();
 		InputOutput() : base( Console.Out, Console.In ) {}

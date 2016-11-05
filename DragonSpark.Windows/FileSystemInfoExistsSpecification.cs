@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Specifications;
 using DragonSpark.Windows.FileSystem;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public sealed class FileSystemInfoExistsSpecification : SpecificationBase<IFileSystemInfo>
 	{

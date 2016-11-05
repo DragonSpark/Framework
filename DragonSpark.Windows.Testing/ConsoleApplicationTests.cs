@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Commands;
 using DragonSpark.TypeSystem;
-using DragonSpark.Windows.Setup;
 using Xunit;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing
 {
 	public class ConsoleApplicationTests
 	{

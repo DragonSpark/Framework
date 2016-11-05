@@ -1,4 +1,6 @@
-﻿using DragonSpark.Aspects.Specifications;
+﻿using System;
+using System.Configuration;
+using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
@@ -8,10 +10,8 @@ using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Properties;
 using JetBrains.Annotations;
 using Serilog;
-using System;
-using System.Configuration;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	[ApplyAutoValidation, ApplyInverseSpecification( typeof(UserSettingsExistsSpecification) )]
 	public sealed class InitializeUserSettingsCommand : CommandBase<ApplicationSettingsBase>

@@ -4,7 +4,7 @@ using System.Windows.Markup;
 
 namespace DragonSpark.Windows.Legacy.Markup
 {
-	public class MarkupServiceProvider : IServiceProvider, IProvideValueTarget
+	public sealed class MarkupServiceProvider : IServiceProvider, IProvideValueTarget
 	{
 		readonly static Type[] Types = { typeof(MarkupServiceProvider), typeof(IProvideValueTarget) };
 
@@ -23,6 +23,6 @@ namespace DragonSpark.Windows.Legacy.Markup
 
 		object IProvideValueTarget.TargetProperty => Property;
 		
-		public virtual object GetService( Type serviceType ) => Types.Any( type => type.IsAssignableFrom( serviceType ) ) ? this : inner.GetService( serviceType );
+		public object GetService( Type serviceType ) => Types.Any( type => type.IsAssignableFrom( serviceType ) ) ? this : inner.GetService( serviceType );
 	}
 }

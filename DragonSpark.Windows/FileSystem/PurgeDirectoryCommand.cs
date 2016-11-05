@@ -3,7 +3,6 @@ using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics;
 using DragonSpark.Extensions;
-using DragonSpark.Windows.Setup;
 using System;
 using System.Collections.Immutable;
 using System.IO;

@@ -1,8 +1,8 @@
-﻿using DragonSpark.Sources;
+﻿using System;
+using DragonSpark.Sources;
 using DragonSpark.Windows.FileSystem;
-using System;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public static class Defaults
 	{

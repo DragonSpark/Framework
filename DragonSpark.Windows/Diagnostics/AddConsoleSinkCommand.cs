@@ -1,4 +1,3 @@
-using DragonSpark.Diagnostics;
 using DragonSpark.Diagnostics.Configurations;
 using JetBrains.Annotations;
 using PostSharp.Patterns.Contracts;
@@ -10,7 +9,7 @@ namespace DragonSpark.Windows.Diagnostics
 {
 	public class AddConsoleSinkCommand : AddSinkCommand
 	{
-		public AddConsoleSinkCommand() : this( Defaults.Template, LogEventLevel.Verbose ) {}
+		public AddConsoleSinkCommand() : this( DragonSpark.Diagnostics.Defaults.Template, LogEventLevel.Verbose ) {}
 
 		public AddConsoleSinkCommand( [NotEmpty]string outputTemplate, LogEventLevel restrictedToMinimumLevel ) : base( restrictedToMinimumLevel )
 		{

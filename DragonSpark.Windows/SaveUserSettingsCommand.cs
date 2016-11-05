@@ -1,10 +1,10 @@
-﻿using DragonSpark.Commands;
+﻿using System;
+using System.Configuration;
+using DragonSpark.Commands;
 using DragonSpark.Windows.FileSystem;
 using JetBrains.Annotations;
-using System;
-using System.Configuration;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public sealed class SaveUserSettingsCommand : ScopedCommand<ApplicationSettingsBase>
 	{

@@ -1,4 +1,10 @@
-﻿using DragonSpark.Activation;
+﻿using System;
+using System.Collections.Immutable;
+using System.Composition;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using DragonSpark.Activation;
 using DragonSpark.Activation.Location;
 using DragonSpark.Application;
 using DragonSpark.Application.Setup;
@@ -14,19 +20,12 @@ using DragonSpark.Windows.Runtime;
 using DragonSpark.Windows.Testing.TestObjects;
 using Moq;
 using Ploeh.AutoFixture.Xunit2;
-using System;
-using System.Collections.Immutable;
-using System.Composition;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 using Activator = DragonSpark.Activation.Activator;
 using Attribute = DragonSpark.Testing.Objects.Attribute;
-using Defaults = DragonSpark.Composition.Defaults;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing.FileSystem
 {
 	/// <summary>
 	/// This file can be seen as a bucket for all the testing done around setup.  It also can be seen as a huge learning bucket for xUnit and AutoFixture.  This does not contain best practices.  Always be learning. :)
@@ -94,7 +93,7 @@ namespace DragonSpark.Windows.Testing.Setup
 			var type = ConventionImplementations.Default.Get( typeof(Assembly) );
 			Assert.Null( type );
 
-			Assert.True( new[] { typeof(Assembly), typeof(IActivator) }.All( Defaults.ConventionCandidate.IsSatisfiedBy ) );
+			Assert.True( new[] { typeof(Assembly), typeof(IActivator) }.All( Composition.Defaults.ConventionCandidate.IsSatisfiedBy ) );
 		}
 
 		[Theory, DragonSpark.Testing.Framework.Application.AutoData, IncludeParameterTypes( typeof(ApplicationAssembly) )]

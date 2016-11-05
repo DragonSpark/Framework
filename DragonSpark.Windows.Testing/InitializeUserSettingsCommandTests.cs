@@ -8,7 +8,6 @@ using DragonSpark.Testing.Framework.Application.Setup;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Windows.FileSystem;
 using DragonSpark.Windows.Properties;
-using DragonSpark.Windows.Setup;
 using JetBrains.Annotations;
 using Moq;
 using System;
@@ -17,7 +16,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing
 {
 	[Trait( Traits.Category, Traits.Categories.ServiceLocation )]
 	public class InitializeUserSettingsCommandTests : TestCollectionBase

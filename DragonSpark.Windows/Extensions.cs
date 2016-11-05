@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Windows.FileSystem;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public static class Extensions
 	{

@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\DragonSpark.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Activation\CanActivateSpecification.cs" />

@@ -3,7 +3,6 @@ using DragonSpark.Aspects.Specifications;
 using DragonSpark.Aspects.Validation;
 using DragonSpark.Commands;
 using DragonSpark.Diagnostics.Exceptions;
-using DragonSpark.Windows.Setup;
 using System.IO;
 
 namespace DragonSpark.Windows.FileSystem

@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
-using DragonSpark.Windows.Setup;
 using Xunit;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing
 {
 	public class UserConfigurationLocatorTests
 	{

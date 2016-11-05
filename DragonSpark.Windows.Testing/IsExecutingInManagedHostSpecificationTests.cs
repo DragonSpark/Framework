@@ -1,8 +1,7 @@
-﻿using DragonSpark.Windows.Setup;
-using System;
+﻿using System;
 using Xunit;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing
 {
 	public class IsExecutingInManagedHostSpecificationTests
 	{

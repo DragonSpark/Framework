@@ -4,8 +4,8 @@ using DragonSpark.Sources;
 using DragonSpark.Sources.Scopes;
 using DragonSpark.Testing.Framework.FileSystem;
 using DragonSpark.Testing.Framework.Runtime;
+using DragonSpark.Windows;
 using DragonSpark.Windows.FileSystem;
-using DragonSpark.Windows.Setup;
 using JetBrains.Annotations;
 using PostSharp.Aspects;
 

@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="The DragonSpark Application Framework" ToolsVersion="12.0">
+<RuleSet Name="The DragonSpark Application Framework" ToolsVersion="14.0">
   <Include Path="extendedcorrectnessrules.ruleset" Action="Default" />
   <Include Path="extendeddesignguidelinerules.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1004" Action="None" />
+    <Rule Id="CA1006" Action="None" />
+    <Rule Id="CA1018" Action="None" />
     <Rule Id="CA1026" Action="None" />
+    <Rule Id="CA1034" Action="None" />
     <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1501" Action="None" />
     <Rule Id="CA1703" Action="None" />
+    <Rule Id="CA1710" Action="None" />
+    <Rule Id="CA1724" Action="None" />
   </Rules>
 </RuleSet>

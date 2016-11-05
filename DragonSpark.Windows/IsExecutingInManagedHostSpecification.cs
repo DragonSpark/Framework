@@ -1,7 +1,7 @@
-﻿using DragonSpark.Specifications;
-using System;
+﻿using System;
+using DragonSpark.Specifications;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public sealed class IsExecutingInManagedHostSpecification : SpecificationBase<AppDomain>
 	{

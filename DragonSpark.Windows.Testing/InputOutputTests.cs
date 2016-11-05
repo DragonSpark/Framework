@@ -1,7 +1,6 @@
-﻿using DragonSpark.Windows.Setup;
-using Xunit;
+﻿using Xunit;
 
-namespace DragonSpark.Windows.Testing.Setup
+namespace DragonSpark.Windows.Testing
 {
 	public class InputOutputTests
 	{

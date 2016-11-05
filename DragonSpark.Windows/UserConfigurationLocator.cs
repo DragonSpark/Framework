@@ -1,9 +1,9 @@
-﻿using DragonSpark.Extensions;
+﻿using System.Configuration;
+using DragonSpark.Extensions;
 using DragonSpark.Sources.Parameterized;
 using DragonSpark.Windows.FileSystem;
-using System.Configuration;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	sealed class UserConfigurationLocator : ParameterizedSourceBase<IFileInfo, System.Configuration.Configuration>
 	{

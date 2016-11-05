@@ -19,7 +19,7 @@ namespace DragonSpark.Windows.Legacy.Markup
 		public override object ProvideValue( IServiceProvider serviceProvider )
 		{
 			var context = DetermineContext( serviceProvider );
-			var result = Incrementer.Next( context );
+			var result = Incrementer.NextCount( context );
 			return result;
 		}
 

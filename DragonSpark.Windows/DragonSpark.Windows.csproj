@@ -92,12 +92,12 @@
     <Compile Include="Runtime\Data\Serializer.cs" />
     <Compile Include="Runtime\Defaults.cs" />
     <Compile Include="Runtime\DomainAssemblies.cs" />
-    <Compile Include="Setup\Defaults.cs" />
+    <Compile Include="Defaults.cs" />
     <Compile Include="FileSystem\DeleteFileCommand.cs" />
-    <Compile Include="Setup\Extensions.cs" />
-    <Compile Include="Setup\FileSystemInfoExistsSpecification.cs" />
-    <Compile Include="Setup\InitializeUserSettingsCommand.cs" />
-    <Compile Include="Setup\ConsoleApplication.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FileSystemInfoExistsSpecification.cs" />
+    <Compile Include="InitializeUserSettingsCommand.cs" />
+    <Compile Include="ConsoleApplication.cs" />
     <Compile Include="Runtime\Data\DataBuilder.cs" />
     <Compile Include="Runtime\Data\DataSerializer.cs" />
     <Compile Include="FileSystem\TimestampNameFactory.cs" />
@@ -117,16 +117,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\ThreadLocalStorage.cs" />
     <Compile Include="Runtime\TaskLocalStore.cs" />
-    <Compile Include="Setup\IsExecutingInManagedHostSpecification.cs" />
-    <Compile Include="Setup\ReadKeyCommand.cs" />
-    <Compile Include="Setup\SaveUserSettingsCommand.cs" />
-    <Compile Include="Setup\UserConfigurationLocator.cs" />
-    <Compile Include="Setup\UserSettingsExistsSpecification.cs" />
-    <Compile Include="Setup\UserSettingsFile.cs" />
+    <Compile Include="IsExecutingInManagedHostSpecification.cs" />
+    <Compile Include="ReadKeyCommand.cs" />
+    <Compile Include="SaveUserSettingsCommand.cs" />
+    <Compile Include="UserConfigurationLocator.cs" />
+    <Compile Include="UserSettingsExistsSpecification.cs" />
+    <Compile Include="UserSettingsFile.cs" />
     <Compile Include="AppDomainFormatter.cs" />
     <Compile Include="FileSystem\AssemblyFilePathSelector.cs" />
     <Compile Include="FileSystem\QueryableResourceLocator.cs" />
-    <Compile Include="Setup\UserSettingsFilePath.cs" />
+    <Compile Include="UserSettingsFilePath.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -140,10 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <None Include="Resources\Blank.mdf" />
-    <Content Include="Resources\Blank_log.ldf">
-      <DependentUpon>Blank.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Types.Windows\DragonSpark.Types.Windows.csproj">

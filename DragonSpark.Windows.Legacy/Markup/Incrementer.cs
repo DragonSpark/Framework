@@ -6,7 +6,7 @@ namespace DragonSpark.Windows.Legacy.Markup
 	{
 		readonly DecoratedSourceCache<int> count = new DecoratedSourceCache<int>();
 
-		public int Next( object context )
+		public int NextCount( object context )
 		{
 			var result = count.Get( context ) + 1;
 			count.Set( context, result );

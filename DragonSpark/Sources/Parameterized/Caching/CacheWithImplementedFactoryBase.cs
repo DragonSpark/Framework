@@ -15,7 +15,7 @@ namespace DragonSpark.Sources.Parameterized.Caching
 
 	public abstract class CacheWithImplementedFactoryBase<TInstance, TValue> : DecoratedCache<TInstance, TValue>
 	{
-		readonly protected static ISpecification<TInstance> DefaultSpecification = Common<TInstance>.Assigned;
+		protected static ISpecification<TInstance> DefaultSpecification { get; } = Common<TInstance>.Assigned;
 
 		protected CacheWithImplementedFactoryBase() : this( DefaultSpecification ) {}
 		protected CacheWithImplementedFactoryBase( ISpecification<TInstance> specification ) : this( new ParameterizedSingletonScope<TInstance, TValue>(), specification ) {}

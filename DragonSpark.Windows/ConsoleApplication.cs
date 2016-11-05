@@ -1,8 +1,8 @@
+using System.Windows.Input;
 using DragonSpark.Application;
 using DragonSpark.TypeSystem;
-using System.Windows.Input;
 
-namespace DragonSpark.Windows.Setup
+namespace DragonSpark.Windows
 {
 	public class ConsoleApplication : ApplicationBase<string[]>
 	{

@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>$(SolutionDir)\DragonSpark.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\DragonSpark.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -51,6 +51,7 @@
     <Compile Include="Entity\DbContextBuildingParameter.cs" />
     <Compile Include="Entity\DefaultCommands.cs" />
     <Compile Include="Entity\RegisterComplexTypesCommand.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Markup\ClrFieldMarkupProperty.cs" />
     <Compile Include="Markup\ClrPropertyMarkupProperty.cs" />
     <Compile Include="Markup\CollectionSpecification.cs" />
