@@ -33,8 +33,6 @@
     <Compile Include="AnotherClass.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="Class.cs" />
-    <Compile Include="ClassCreatedFromDefault.cs" />
-    <Compile Include="ClassWithManyParameters.cs" />
     <Compile Include="ClassWithParameter.cs" />
     <Compile Include="ClassWithProperties.cs" />
     <Compile Include="ClassWithProperty.cs" />
@@ -63,12 +61,9 @@
     <Compile Include="IAnotherInterface.cs" />
     <Compile Include="IClassWithParameter.cs" />
     <Compile Include="IInterface.cs" />
-    <Compile Include="IItem.cs" />
     <Compile Include="IObject.cs" />
-    <Compile Include="Item.cs" />
     <Compile Include="LowPriority.cs" />
     <Compile Include="NormalPriority.cs" />
-    <Compile Include="Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -80,7 +75,6 @@
     <Compile Include="Setup\CountingCommand.cs" />
     <Compile Include="Setup\CountingTaskSource.cs" />
     <Compile Include="Setup\CountingTarget.cs" />
-    <Compile Include="Singleton.cs" />
     <Compile Include="Static.cs" />
     <Compile Include="YetAnotherClass.cs" />
   </ItemGroup>

@@ -134,7 +134,7 @@ namespace DragonSpark.Testing.Composition
 			Assert.NotSame( parameter, p );
 		}
 
-		[Theory, AutoData, Types]
+		[Theory, AutoData, Types, AdditionalTypes( typeof(ExportedItem) )]
 		public void ExportWhenAlreadyRegistered( [Service]CompositionContext host )
 		{
 			var item = host.GetExport<ExportedItem>();
@@ -163,7 +163,7 @@ namespace DragonSpark.Testing.Composition
 		{
 			var item = host.GetExport<ExportedItem>();
 			Assert.NotNull( item );
-			Assert.False( Condition.Default.Get( item ).IsApplied );
+			Assert.True( Condition.Default.Get( item ).IsApplied );
 		}
 
 		[Theory, AutoData, Types]
@@ -184,7 +184,7 @@ namespace DragonSpark.Testing.Composition
 
 		internal class Types : IncludeParameterTypesAttribute
 		{
-			readonly static Type[] Items = { typeof(ParameterServiceFactory), typeof(BasicServiceFactory), typeof(ExportedItem), typeof(ExportedItemFactory), typeof(SharedServiceFactory) };
+			readonly static Type[] Items = { typeof(ParameterServiceFactory), typeof(BasicServiceFactory), /*typeof(ExportedItem),*/ typeof(ExportedItemFactory), typeof(SharedServiceFactory) };
 
 			public Types() : base( Items ) {}
 		}

@@ -4,8 +4,8 @@ using DragonSpark.Extensions;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
-using DragonSpark.Testing.Objects;
 using DragonSpark.TypeSystem;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Immutable;
 using System.Composition;
@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Composition
 			Assert.NotNull( export );
 			Assert.NotSame( export, container.GetExport<SomeExport>() );
 
-			var invalid = container.TryGet<Item>();
+			var invalid = container.TryGet<IItem>();
 			Assert.Null( invalid );
 
 			var shared = container.GetExport<SharedExport>();
@@ -61,9 +61,13 @@ namespace DragonSpark.Testing.Composition
 			Assert.IsType<SingletonLocator>( sut );
 		}
 
+		[UsedImplicitly]
+		interface IItem {}
+
+		[UsedImplicitly]
 		class SomeExport {}
 
-		[Shared]
+		[UsedImplicitly, Shared]
 		class SharedExport {}
 	}
 }
