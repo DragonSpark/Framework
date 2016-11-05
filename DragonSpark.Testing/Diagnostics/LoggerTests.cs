@@ -8,6 +8,7 @@ using DragonSpark.Sources.Parameterized.Caching;
 using DragonSpark.Testing.Framework;
 using DragonSpark.Testing.Framework.Application;
 using DragonSpark.Testing.Framework.Application.Setup;
+using DragonSpark.Testing.Framework.Runtime;
 using DragonSpark.TypeSystem;
 using Serilog;
 using Serilog.Events;
@@ -25,11 +26,16 @@ namespace DragonSpark.Testing.Diagnostics
 		[Theory, AutoData, FrameworkTypes]
 		public void FormattingAsExpected( [Service]CompositionContext context, string text )
 		{
+			var execution = Assert.IsType<TaskContext>( Execution.Default.GetValue() );
+			var formattable = FormattableSource.Default.Get( execution );
+			Assert.NotNull( formattable );
+			Assert.Same( formattable, FormattableSource.Default.Get( execution ) );
 			var logger = context.GetExport<ILogger>();
 
 			var serviceProvider = DefaultServices.Default.Cached();
-			Assert.Same( Logger.Default.Get( Execution.Default.GetValue() ), serviceProvider.Get<ILogger>() );
+			Assert.Same( Logger.Default.Get( execution ), serviceProvider.Get<ILogger>() );
 			Assert.Same( serviceProvider.Get<ILogger>(), logger );
+			Assert.Same( Logger.Default.GetDefault(), logger );
 
 			var method = new Action( Subject ).Method;
 
@@ -41,6 +47,7 @@ namespace DragonSpark.Testing.Diagnostics
 			Assert.Contains( text, message );
 			
 			Assert.Contains( new MethodFormatter( method ).ToString(), message );
+			Assert.Contains( new TaskContextFormatter( execution ).ToString(), message );
 		}
 
 		[Theory, AutoData]

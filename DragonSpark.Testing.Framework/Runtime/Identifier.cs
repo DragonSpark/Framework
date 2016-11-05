@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace DragonSpark.Testing.Framework.Runtime
 		readonly int threadId;
 		readonly int? taskId;
 
+		[UsedImplicitly]
 		public Identifier( int threadId, int? taskId = null )
 		{
 			this.threadId = threadId;

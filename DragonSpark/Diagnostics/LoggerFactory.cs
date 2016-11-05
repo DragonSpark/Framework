@@ -42,7 +42,7 @@ namespace DragonSpark.Diagnostics
 			Factory() {}
 
 			public override ILogger Get( LoggerConfiguration parameter ) => 
-				parameter.CreateLogger().ForContext( Constants.SourceContextPropertyName, parameter.Instance, Specification.Instance.IsSatisfiedBy( parameter ) );
+				parameter.CreateLogger().ForContext( Constants.SourceContextPropertyName, parameter.Instance, Specification.Instance.IsSatisfiedBy( parameter.Instance ) );
 
 			sealed class Specification : DelegatedAssignedSpecification<object, IFormattable>
 			{

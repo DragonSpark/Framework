@@ -1,15 +1,17 @@
 ﻿using DragonSpark.Sources.Scopes;
 using DragonSpark.TypeSystem;
-using System;
 using System.Linq;
 
 namespace DragonSpark.Sources.Parameterized
 {
-	public sealed class ConstructFromKnownTypes<T> : ParameterConstructedCompositeFactory<object>, IParameterizedSource<object, T>
+	public sealed class ConstructFromKnownTypes<T> : ParameterizedSingletonScope<object, T>
 	{
-		public static ISource<IParameterizedSource<object, T>> Default { get; } = new SingletonScope<IParameterizedSource<object, T>>( () => new ConstructFromKnownTypes<T>( KnownTypes.Default.Get<T>().ToArray() ) );
-		ConstructFromKnownTypes( params Type[] types ) : base( types ) {}
+		public static ConstructFromKnownTypes<T> Default { get; } = new ConstructFromKnownTypes<T>();
+		ConstructFromKnownTypes() : base( o => new DefaultImplementation().ToSingleton() ) {}
 
-		T IParameterizedSource<object, T>.Get( object parameter ) => (T)Get( parameter );
+		sealed class DefaultImplementation : ParameterConstructedCompositeFactory<T>
+		{
+			public DefaultImplementation() : base( KnownTypes.Default.Get<T>().ToArray() ) {}
+		}
 	}
 }

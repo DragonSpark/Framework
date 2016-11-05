@@ -124,7 +124,6 @@
     <Compile Include="Application\Setup\CurrentFixture.cs" />
     <Compile Include="Application\Setup\FixtureFactory.cs" />
     <Compile Include="Application\Setup\FixtureFactoryBase.cs" />
-    <Compile Include="Application\Setup\FixtureServiceProvider.cs" />
     <Compile Include="Application\Setup\FrameworkTypesAttribute.cs" />
     <Compile Include="Application\IApplication.cs" />
     <Compile Include="Application\Setup\IncludeParameterTypesAttribute.cs" />
@@ -139,7 +138,6 @@
     <Compile Include="Application\Setup\ServiceRelay.cs" />
     <Compile Include="Application\Setup\DefaultEngineParts.cs" />
     <Compile Include="Application\Setup\ServicesCustomization.cs" />
-    <Compile Include="FixtureExtensions.cs" />
     <Compile Include="Application\AutoDataAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\AssociatedRegistry.cs">

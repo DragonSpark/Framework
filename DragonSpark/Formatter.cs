@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Activation;
-using DragonSpark.Sources;
 using DragonSpark.Sources.Coercion;
 using DragonSpark.Sources.Parameterized;
-using DragonSpark.Sources.Scopes;
 using JetBrains.Annotations;
 using System;
 using System.Composition;
@@ -48,6 +46,6 @@ namespace DragonSpark
 	public sealed class FormattableSource : DelegatedParameterizedSource<object, IFormattable>
 	{
 		public static FormattableSource Default { get; } = new FormattableSource();
-		FormattableSource() : base( ConstructFromKnownTypes<IFormattable>.Default.GetValueDelegate().ToSingleton() ) {}
+		FormattableSource() : base( ConstructFromKnownTypes<IFormattable>.Default.Get ) {}
 	}
 }
