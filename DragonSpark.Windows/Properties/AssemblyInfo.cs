@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid( "4e4cf3dc-1c0e-4a37-9871-71124aef7cb9" )]
 
-[assembly: AssemblyVersion( "0.1.1.1" )]
-[assembly: AssemblyFileVersion( "0.1.1.1" )]
+[assembly: AssemblyVersion( "0.1.2.0" )]
+[assembly: AssemblyFileVersion( "0.1.2.0" )]
 [assembly: Registration( Priority.AfterLower )]
 [assembly: InternalsVisibleTo( "DragonSpark.Windows.Testing" )]

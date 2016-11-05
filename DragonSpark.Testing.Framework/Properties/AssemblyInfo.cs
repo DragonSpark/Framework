@@ -18,7 +18,7 @@ using System.Windows.Markup;
 
 [assembly: Guid( "0d3d9c01-5c46-4489-98cb-455604dabe02" )]
 
-[assembly: AssemblyVersion( "0.1.1.1" )]
-[assembly: AssemblyFileVersion( "0.1.1.1" )]
+[assembly: AssemblyVersion( "0.1.2.0" )]
+[assembly: AssemblyFileVersion( "0.1.2.0" )]
 [assembly: XmlnsDefinition( "http://framework.dragonspark.us", "DragonSpark.Testing.Framework" )]
 [assembly: Registration( Priority.Lower )]

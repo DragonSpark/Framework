@@ -17,8 +17,8 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid( "b21e892a-be56-4024-bd63-aa332279e7c5" )]
 
-[assembly: AssemblyVersion( "0.1.1.1" )]
-[assembly: AssemblyFileVersion( "0.1.1.1" )]
+[assembly: AssemblyVersion( "0.1.2.0" )]
+[assembly: AssemblyFileVersion( "0.1.2.0" )]
 
 [assembly: Application]
 [assembly: AssemblyHint( "DragonSpark.Testing" )]
