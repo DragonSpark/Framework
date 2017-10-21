@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Dragonspark.Extensions
+namespace DragonSpark.Extensions
 {
 	public static class NotifyPropertyChangedExtensions
 	{
