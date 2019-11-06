@@ -7,7 +7,7 @@ namespace DragonSpark
 {
 	// ReSharper disable once MismatchedFileName
 
-	public static partial class ExtensionMethods // Testing
+	public static partial class ExtensionMethods
 	{
 		public static T Attribute<T>(this ICustomAttributeProvider @this) where T : Attribute
 			=> Reflection.Attribute<T>.Default.Get(@this);
