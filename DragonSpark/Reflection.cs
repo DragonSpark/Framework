@@ -1,13 +1,13 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Reflection;
+using System;
+using System.Reflection;
 
 namespace DragonSpark
 {
 	// ReSharper disable once MismatchedFileName
 
-	public static partial class ExtensionMethods
+	public static partial class ExtensionMethods // Testing
 	{
 		public static T Attribute<T>(this ICustomAttributeProvider @this) where T : Attribute
 			=> Reflection.Attribute<T>.Default.Get(@this);
