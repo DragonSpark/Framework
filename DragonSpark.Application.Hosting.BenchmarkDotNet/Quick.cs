@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Toolchains.InProcess;
+using BenchmarkDotNet.Toolchains.InProcess.NoEmit;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Hosting.BenchmarkDotNet
@@ -9,6 +9,6 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 	{
 		public static Quick Default { get; } = new Quick();
 
-		Quick() : base(QuickConfiguration.Default, Job.ShortRun.With(InProcessToolchain.DontLogOutput)) {}
+		Quick() : base(QuickConfiguration.Default, Job.ShortRun.With(InProcessNoEmitToolchain.DontLogOutput)) {}
 	}
 }

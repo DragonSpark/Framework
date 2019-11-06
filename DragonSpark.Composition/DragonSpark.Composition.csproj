@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LightInject" Version="5.5.0" />
+    <PackageReference Include="LightInject" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>
