@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logging\Configuration\**" />
+    <EmbeddedResource Remove="Logging\Configuration\**" />
+    <None Remove="Logging\Configuration\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApplyProjectionsCommand.cs" />
+    <Compile Remove="ContextSelector.cs" />
+    <Compile Remove="DefaultLoggingLevel.cs" />
+    <Compile Remove="Exception.cs" />
+    <Compile Remove="ExceptionParameter.cs" />
+    <Compile Remove="Formats.cs" />
+    <Compile Remove="IFormats.cs" />
+    <Compile Remove="ILogMessage.cs" />
+    <Compile Remove="Implementations.cs" />
+    <Compile Remove="IPrimaryLogger.cs" />
+    <Compile Remove="IScalar.cs" />
+    <Compile Remove="IScalars.cs" />
+    <Compile Remove="Log.cs" />
+    <Compile Remove="LogException.cs" />
+    <Compile Remove="Logger.cs" />
+    <Compile Remove="LoggerDestructureSelector.cs" />
+    <Compile Remove="LoggerEnrichmentSelector.cs" />
+    <Compile Remove="LoggerSelector.cs" />
+    <Compile Remove="LoggerSinkDecoration.cs" />
+    <Compile Remove="LoggerSinkSelector.cs" />
+    <Compile Remove="Logging.cs" />
+    <Compile Remove="LoggingLevelController.cs" />
+    <Compile Remove="LogMessage.cs" />
+    <Compile Remove="Message.cs" />
+    <Compile Remove="PrimaryAssemblyEnricher.cs" />
+    <Compile Remove="PrimaryLogger.cs" />
+    <Compile Remove="ProjectionAwareSink.cs" />
+    <Compile Remove="ProjectionAwareSinkDecoration.cs" />
+    <Compile Remove="ProjectionEnricher.cs" />
+    <Compile Remove="ProjectionLogEvents.cs" />
+    <Compile Remove="PropertyFactories.cs" />
+    <Compile Remove="Scalar.cs" />
+    <Compile Remove="ScalarProperty.cs" />
+    <Compile Remove="Scalars.cs" />
+    <Compile Remove="SeqConfiguration.cs" />
+    <Compile Remove="TraceConfiguration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Logging\Configuration\DefaultLoggingConfiguration.cs" />
+    <Compile Include="Logging\Configuration\EnhancedExceptionStackTraceConfiguration.cs" />
+    <Compile Include="Logging\Configuration\EnrichmentConfiguration.cs" />
+    <Compile Include="Logging\Configuration\ILoggingConfiguration.cs" />
+    <Compile Include="Logging\Configuration\ILoggingEnrichmentConfiguration.cs" />
+    <Compile Include="Logging\Configuration\ILoggingSinkConfiguration.cs" />
+    <Compile Include="Logging\Configuration\LoggerConfigurations.cs" />
+    <Compile Include="Logging\Configuration\LoggingConfiguration.cs" />
+    <Compile Include="Logging\Configuration\LoggingLevelControllerConfiguration.cs" />
+    <Compile Include="Logging\Configuration\SinkConfiguration.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Enrichers.Context" Version="4.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Correlation" Version="0.0.2" />
+    <PackageReference Include="Serilog.Enrichers.Demystify" Version="0.1.0-dev-00016" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="Serilog.Enrichers.ExceptionStackTraceHash" Version="1.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.1-dev-00154" />
+    <PackageReference Include="Serilog.Sinks.Trace" Version="3.0.0-dev-00728" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
+  </ItemGroup>
+
+</Project>

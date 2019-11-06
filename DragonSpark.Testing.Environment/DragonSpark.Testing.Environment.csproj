@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>DragonSpark.Testing.Environment</AssemblyName>
+    <RootNamespace>DragonSpark.Testing.Environment</RootNamespace>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
+  </ItemGroup>
+
+</Project>

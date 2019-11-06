@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <!--<PlatformTarget Condition="'$(BuildingInsideVisualStudio)' != ''">x64</PlatformTarget>-->
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <startupobject>DragonSpark.Testing.Application.Program</startupobject>
+
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="BenchmarkDotNet.Artifacts\**" />
+    <EmbeddedResource Remove="BenchmarkDotNet.Artifacts\**" />
+    <None Remove="BenchmarkDotNet.Artifacts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.Console\DragonSpark.Application.Hosting.Console.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
+    <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
+    <ProjectReference Include="..\DragonSpark.Testing.Environment.Development\DragonSpark.Testing.Environment.Development.csproj" Condition="'$(Configuration)' == 'Debug'" />
+    <ProjectReference Include="..\DragonSpark.Testing.Environment\DragonSpark.Testing.Environment.csproj" Condition="'$(Configuration)' == 'Release'" />
+    <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
+    <!--<ProjectReference Include="..\DragonSpark.Testing.Platform.NetCore\DragonSpark.Testing.Platform.NetCore.csproj" />
+    <ProjectReference Include="..\DragonSpark.Platform.NetCore\DragonSpark.Platform.NetCore.csproj" />-->
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reflection\Members\" />
+  </ItemGroup>
+</Project>

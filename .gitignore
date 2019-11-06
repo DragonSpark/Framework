@@ -212,5 +212,5 @@ paket-files/
 __pycache__/
 *.pyc
 *.cmd
-/Super.Testing.Application/BenchmarkDotNet.Artifacts/results
-/Super.Serialization.Testing.Application/BenchmarkDotNet.Artifacts/results
+/*/BenchmarkDotNet.Artifacts/results
+
