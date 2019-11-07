@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
@@ -6,6 +7,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection;
 using DragonSpark.Runtime;
+using DragonSpark.Runtime.Environment;
 using DragonSpark.Runtime.Execution;
 using System;
 
@@ -57,8 +59,14 @@ namespace DragonSpark
 		public static ISelect<TIn, TOut> Assume<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
 			=> new Select<TIn, TOut>(@this.Get);
 
+		public static ICommand<T> Assume<T>(this IResult<ICommand<T>> @this)
+			=> new DelegatedInstanceCommand<T>(@this.Get);
+
 		public static IResult<T> ToContextual<T>(this IResult<T> @this)
 			=> new Contextual<T>(@this.ToDelegateReference());
+
+		public static IResult<T> ToComponent<T>(this IResult<T> @this)
+			=> new Component<T>(@this.Get);
 
 		public static IResult<TOut> Select<TIn, TOut>(this IResult<TIn> @this, ISelect<TIn, TOut> select)
 			=> @this.Select(select.Get);

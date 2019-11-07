@@ -1,48 +1,79 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
+using DragonSpark.Runtime.Environment;
+using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 
-namespace DragonSpark.Services
+namespace DragonSpark.Application.Hosting.Blazor.Server
 {
-	/*public static class ApplicationConfiguration
+	public sealed class BlazorApplicationAttribute : HostingAttribute
 	{
-		public static Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> For<T>()
-			where T : IComponent
-			=> ApplicationConfiguration<T>.Default.Execute;
+		public BlazorApplicationAttribute() : base(typeof(BlazorApplicationAttribute).Assembly) {}
+	}
+
+	sealed class DefaultEnvironmentalConfiguration : IEnvironmentalConfiguration
+	{
+		public static DefaultEnvironmentalConfiguration Default { get; } = new DefaultEnvironmentalConfiguration();
+
+		DefaultEnvironmentalConfiguration() : this("/Home/Error") {}
+
+		readonly string _handler;
+
+		public DefaultEnvironmentalConfiguration(string handler) => _handler = handler;
+
+		public void Execute((IApplicationBuilder Builder, IWebHostEnvironment Environment) parameter)
+		{
+			parameter.Builder.UseExceptionHandler(_handler)
+			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+		}
+	}
+
+	public sealed class EnvironmentalConfiguration
+		: Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
+		  IEnvironmentalConfiguration
+	{
+		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
+
+		EnvironmentalConfiguration() : base(Start.A.Result.Of.Type<IEnvironmentalConfiguration>()
+		                                         .By.Using(DefaultEnvironmentalConfiguration.Default)
+		                                         .ToComponent()
+		                                         .Assume()) {}
+	}
+
+	/*public readonly struct ApplicationContext
+	{
+		public ApplicationContext(IApplicationBuilder builder, IWebHostEnvironment environment)
+		{
+			Builder     = builder;
+			Environment = environment;
+		}
+
+		public IApplicationBuilder Builder { get; }
+
+		public IWebHostEnvironment Environment { get; }
 	}*/
 
-	public sealed class ApplicationConfiguration : ICommand<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>
+	public sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
 		public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
 
 		ApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
 
 		readonly Action<IEndpointRouteBuilder> _endpoints;
-		readonly string                        _handler;
 
-		public ApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints, string handler = "/Home/Error")
+		public ApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+
+		public void Execute(IApplicationBuilder parameter)
 		{
-			_endpoints = endpoints;
-			_handler   = handler;
-		}
-
-		public void Execute((IApplicationBuilder Builder, IWebHostEnvironment Environment) parameter)
-		{
-			var (builder, environment) = parameter;
-			var handle = environment.IsDevelopment()
-				             ? builder.UseDeveloperExceptionPage()
-				             : builder.UseExceptionHandler(_handler)
-				                      .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-
-			handle.UseHttpsRedirection()
-			      .UseStaticFiles()
-			      .UseRouting()
-			      .UseEndpoints(_endpoints);
+			parameter.UseHttpsRedirection()
+			         .UseStaticFiles()
+			         .UseRouting()
+			         .UseEndpoints(_endpoints);
 		}
 	}
 
@@ -103,6 +134,9 @@ namespace DragonSpark.Services
 	{
 		readonly Action<IServiceCollection>                                             _services;
 		readonly Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> _application;
+
+		public HostedApplication(Action<IServiceCollection> services)
+			: this(services, EnvironmentalConfiguration.Default.Execute) {}
 
 		public HostedApplication(Action<IServiceCollection> services,
 		                         Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)

@@ -14,10 +14,10 @@ namespace DragonSpark.Runtime.Environment
 		                     .Select(ComponentAssemblyNames.Default)
 		                     .Query()
 		                     .Select(Load.Default)
-		                     .Append(HostingAssembly.Default.And(PrimaryAssembly.Default))
+		                     .Append(Sequence.Using(HostingAssembly.Default))
 		                     .WhereBy(y => y != null)
 		                     .Distinct()
-		                     .Get()
-		                     .ToResult()) {}
+		                     .Selector()
+		                     .Start()) {}
 	}
 }

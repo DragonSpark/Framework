@@ -23,7 +23,7 @@ namespace DragonSpark
 		public static IArray<_, T> ToStore<_, T>(this Func<_, Array<T>> @this) => new ArrayStore<_, T>(@this);
 
 		public static ISequence<T> And<T>(this IResult<T> @this, params IResult<T>[] others)
-			=> Sequence.From(others.Prepend(@this).ToArray());
+			=> Sequence.Using(others.Prepend(@this).ToArray());
 
 		public static ISequence<T> And<T>(this T[] @this, params T[] others)
 			=> Sequence.From(@this.Concat(others).ToArray());

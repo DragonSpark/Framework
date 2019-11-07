@@ -6,7 +6,7 @@ namespace DragonSpark.Model.Sequences
 	{
 		public static ISequence<T> From<T>(params T[] items) => new Sequence<T>(items);
 
-		public static ISequence<T> From<T>(params IResult<T>[] items) => new DeferredSequence<T>(items);
+		public static ISequence<T> Using<T>(params IResult<T>[] items) => new DeferredSequence<T>(items);
 	}
 
 	class Sequence<T> : ISequence<T>

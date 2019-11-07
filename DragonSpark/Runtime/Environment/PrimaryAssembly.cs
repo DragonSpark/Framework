@@ -12,7 +12,6 @@ namespace DragonSpark.Runtime.Environment
 		                              .As.Sequence.Immutable.By.Self.Query()
 		                              .Only(x => x.Has<HostingAttribute>())
 		                              .Select(PrimaryAssemblyMessage.Default.AsGuard())
-		                              .In(Reflection.Assemblies.Assemblies.Default.Get)
-		                              .Get()) {}
+		                              .Get(Reflection.Assemblies.Assemblies.Default)) {}
 	}
 }

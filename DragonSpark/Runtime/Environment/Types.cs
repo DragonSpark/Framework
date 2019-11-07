@@ -19,7 +19,7 @@ namespace DragonSpark.Runtime.Environment
 		public static Types<T> Default { get; } = new Types<T>();
 
 		Types() : base(Assemblies.Default.Query()
-		                         .Select(I<T>.Default.From)
+		                         .Select(I.A<T>().From)
 		                         .SelectMany(x => x.Get().Open())
 		                         .Selector()) {}
 	}

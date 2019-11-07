@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>DragonSpark.Application.Hosting.Blazor.Environment</AssemblyName>
+    <RootNamespace>DragonSpark.Application.Hosting.Blazor.Environment</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
+  </ItemGroup>
+
+</Project>
