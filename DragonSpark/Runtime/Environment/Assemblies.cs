@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Assemblies;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -9,15 +9,18 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static Assemblies Default { get; } = new Assemblies();
 
-		Assemblies() : base(A.This(PrimaryAssembly.Default)
-		                     .Select(AssemblyNameSelector.Default)
-		                     .Select(ComponentAssemblyNames.Default)
-		                     .Query()
-		                     .Select(Load.Default)
-		                     .Append(Sequence.Using(HostingAssembly.Default))
-		                     .WhereBy(y => y != null)
-		                     .Distinct()
-		                     .Selector()
-		                     .Start()) {}
+		Assemblies() : this(PrimaryAssembly.Default, HostingAssembly.Default) {}
+
+		public Assemblies(params Assembly[] input) : base(Start.A.Selection.Of.Type<Assembly>()
+		                                                       .As.Sequence.Immutable.By.Self.Query()
+		                                                       .Select(AssemblyNameSelector.Default)
+		                                                       .SelectMany(ComponentAssemblyNames.Default)
+		                                                       .Select(Load.Default)
+		                                                       .WhereBy(y => y != null)
+		                                                       .Append(Sequence.From(input))
+		                                                       .Distinct()
+		                                                       .Get()
+		                                                       .In(input.Result)
+		                                                       .Get) {}
 	}
 }

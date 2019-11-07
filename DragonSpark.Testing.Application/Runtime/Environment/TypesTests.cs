@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences;
+using DragonSpark.Runtime.Execution;
+using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
-using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Execution;
 using Xunit;
 
 // ReSharper disable All
@@ -46,7 +46,8 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			types.Get().Open().Should().HaveCount(1);
 			types.Execute(default);
 
-			types.Get().Open().Should().HaveCountGreaterThan(1);
+			var open = types.Get().Open();
+			open.Should().HaveCountGreaterThan(1);
 		}
 	}
 }

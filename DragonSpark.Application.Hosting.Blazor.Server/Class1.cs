@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		}
 	}
 
-	public sealed class EnvironmentalConfiguration
+	sealed class EnvironmentalConfiguration
 		: Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
 		  IEnvironmentalConfiguration
 	{
