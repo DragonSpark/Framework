@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 	{
 		public static DefaultEnvironmentalConfiguration Default { get; } = new DefaultEnvironmentalConfiguration();
 
-		DefaultEnvironmentalConfiguration() : this("/Home/Error") {}
+		DefaultEnvironmentalConfiguration() : this("/Error") {}
 
 		readonly string _handler;
 
@@ -40,23 +40,9 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
 
 		EnvironmentalConfiguration() : base(Start.A.Result.Of.Type<IEnvironmentalConfiguration>()
-		                                         .By.Using(DefaultEnvironmentalConfiguration.Default)
-		                                         .ToComponent()
+		                                         .By.Location.Or.Default(DefaultEnvironmentalConfiguration.Default)
 		                                         .Assume()) {}
 	}
-
-	/*public readonly struct ApplicationContext
-	{
-		public ApplicationContext(IApplicationBuilder builder, IWebHostEnvironment environment)
-		{
-			Builder     = builder;
-			Environment = environment;
-		}
-
-		public IApplicationBuilder Builder { get; }
-
-		public IWebHostEnvironment Environment { get; }
-	}*/
 
 	public sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
@@ -98,11 +84,18 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		ApplicationSelector() : base("div#application") {}
 	}
 
+	sealed class DefaultApplicationSelector : Instance<string>
+	{
+		public static DefaultApplicationSelector Default { get; } = new DefaultApplicationSelector();
+
+		DefaultApplicationSelector() : base("app") {}
+	}
+
 	sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
 	{
 		public static EndpointConfiguration Default { get; } = new EndpointConfiguration();
 
-		EndpointConfiguration() : this(ApplicationSelector.Default, "/_Host") {}
+		EndpointConfiguration() : this(DefaultApplicationSelector.Default, "/_Host") {}
 
 		readonly string _selector, _fallback;
 
@@ -114,7 +107,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 
 		public void Execute(IEndpointRouteBuilder parameter)
 		{
-			parameter.MapBlazorHub(_selector)
+			parameter.MapBlazorHub()
 			         .ThenWith(parameter)
 			         .MapFallbackToPage(_fallback);
 		}
@@ -136,7 +129,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		readonly Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> _application;
 
 		public HostedApplication(Action<IServiceCollection> services)
-			: this(services, EnvironmentalConfiguration.Default.Execute) {}
+			: this(services, EnvironmentalConfiguration.Default.Then(ApplicationConfiguration.Default).Selector()) {}
 
 		public HostedApplication(Action<IServiceCollection> services,
 		                         Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)

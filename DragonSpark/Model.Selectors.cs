@@ -45,6 +45,14 @@ namespace DragonSpark
 		public static CommandSelector<T> Then<T>(this ICommand<T> @this, params ICommand<T>[] others)
 			=> new CommandSelector<T>(@this).Then(others);
 
+		public static CommandSelector<(T, T1)> Then<T, T1>(this ICommand<(T, T1)> @this,
+		                                                   ICommand<T> other)
+			=> @this.Then(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
+
+		public static CommandSelector<(T, T2)> Then<T, T2>(this ICommand<(T, T2)> @this,
+		                                                   ICommand<T2> other)
+			=> @this.Then(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
+
 		public static ResultInstanceSelector<None, T> Then<T>(this IResult<IResult<T>> @this)
 			=> new ResultInstanceSelector<None, T>(@this.ToSelect());
 
