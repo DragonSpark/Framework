@@ -33,9 +33,8 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		}
 	}
 
-	sealed class EnvironmentalConfiguration
-		: Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
-		  IEnvironmentalConfiguration
+	sealed class EnvironmentalConfiguration : Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
+	                                          IEnvironmentalConfiguration
 	{
 		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
 
@@ -88,7 +87,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 	{
 		public static DefaultApplicationSelector Default { get; } = new DefaultApplicationSelector();
 
-		DefaultApplicationSelector() : base("app") {}
+		DefaultApplicationSelector() : base("/_blazor") {}
 	}
 
 	sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
@@ -107,7 +106,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 
 		public void Execute(IEndpointRouteBuilder parameter)
 		{
-			parameter.MapBlazorHub()
+			parameter.MapBlazorHub(_selector)
 			         .ThenWith(parameter)
 			         .MapFallbackToPage(_fallback);
 		}

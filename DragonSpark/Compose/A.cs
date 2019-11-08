@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Compose
 {
@@ -17,5 +18,10 @@ namespace DragonSpark.Compose
 		public static TypeInfo Metadata<T>() => Reflection.Types.Type<T>.Metadata;
 
 		public static IAlteration<T> Self<T>() => Model.Selection.Self<T>.Default;
+	}
+
+	public static class An
+	{
+		public static Array<T> Array<T>(params T[] elements) => elements;
 	}
 }
