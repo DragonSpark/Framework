@@ -3,11 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
 
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <!--<PlatformTarget Condition="'$(BuildingInsideVisualStudio)' != ''">x64</PlatformTarget>-->
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <startupobject>DragonSpark.Testing.Application.Program</startupobject>
+    <GenerateProgramFile>false</GenerateProgramFile>
 
   </PropertyGroup>
   <ItemGroup>
