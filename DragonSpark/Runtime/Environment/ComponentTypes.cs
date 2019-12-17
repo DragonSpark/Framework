@@ -1,7 +1,7 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using System;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -9,12 +9,12 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static ComponentTypes Default { get; } = new ComponentTypes();
 
-		ComponentTypes() : base(A.This(ComponentTypesDefinition.Default)
-		                         .Select(x => x.ToStore())
-		                         .ToContextual()
-		                         .AsDefined()
-		                         .Then()
-		                         .Delegate()
-		                         .Selector()) {}
+		ComponentTypes() : base(Start.An.Instance(ComponentTypesDefinition.Default)
+		                             .Select(x => x.ToStore())
+		                             .ToContextual()
+		                             .AsDefined()
+		                             .Then()
+		                             .Delegate()
+		                             .Selector()) {}
 	}
 }

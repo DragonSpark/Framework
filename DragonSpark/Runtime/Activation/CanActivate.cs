@@ -1,17 +1,12 @@
-﻿using System.Reflection;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Runtime.Activation
 {
-	sealed class CanActivate : ICondition<TypeInfo>
+	sealed class CanActivate : Condition<Type>
 	{
-		readonly static TypeInfo GeneralObject = typeof(object).GetTypeInfo();
-
 		public static CanActivate Default { get; } = new CanActivate();
 
-		CanActivate() {}
-
-		public bool Get(TypeInfo parameter)
-			=> !parameter.IsAbstract && parameter.IsClass && !parameter.Equals(GeneralObject);
+		CanActivate() : base(HasSingletonProperty.Default.Then().Or(HasActivationConstructor.Default)) {}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
@@ -8,6 +6,8 @@ using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Reflection;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -16,34 +16,27 @@ namespace DragonSpark.Runtime.Environment
 		public static Selections Default { get; } = new Selections();
 
 		Selections() : this(Start.A.Selection.Of.System.Type.By.Returning(Default<Type, Type>.Instance)
-		                         .Unless(IsDefinedGenericType.Default, Make.Instance)) {}
+		                         .Unless(IsDefinedGenericType.Default, Make.Instance),
+		                    ResultDefinition.Default.Get) {}
 
 		readonly ISelect<Type, ISelect<Type, Type>> _default;
+		readonly Func<Type, Type> _result;
 
-		public Selections(ISelect<Type, ISelect<Type, Type>> @default) => _default = @default;
+		public Selections(ISelect<Type, ISelect<Type, Type>> @default, Func<Type, Type> result)
+		{
+			_default = @default;
+			_result = result;
+		}
 
 		public ISelect<Type, Type> Get(Type parameter)
 			=> _default.Get(parameter)
-			           .Unless(parameter.To(ResultDefinition.Default.Get)
+			           .Unless(parameter.To(_result)
 			                            .To(I<Specification>.Default))
 			           .Unless(parameter.To(I<Specification>.Default));
 
-		sealed class Specifications : Instance<ISelect<Type, ICondition<Type>>>
+		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>
 		{
-			public static Specifications Instance { get; } = new Specifications();
-
-			Specifications() : this(TypeMetadata.Default) {}
-
-			public Specifications(ISelect<Type, TypeInfo> metadata)
-				: base(metadata.Select(GenericInterfaceImplementations.Default)
-				               .Select(x => x.Condition.ToDelegate())
-				               .Then()
-				               .Activate<OneItemIs<Type>>()
-				               .Select(metadata.Select(GenericInterfaces.Default)
-				                               .Open()
-				                               .Select)
-				               .Select(x => x.ToCondition())
-				               .Get()) {}
+			public Specification(Type type) : base(new IsAssignableFrom(type).Get, Delegate.Self<Type>()) {}
 		}
 
 		sealed class Make : ISelect<Type, ISelect<Type, Type>>, IActivateUsing<Type>
@@ -73,9 +66,22 @@ namespace DragonSpark.Runtime.Environment
 			                                                        .To(_source.Get(parameter).If);
 		}
 
-		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>
+		sealed class Specifications : Instance<ISelect<Type, ICondition<Type>>>
 		{
-			public Specification(Type type) : base(new IsAssignableFrom(type).Get, Delegates<Type>.Self) {}
+			public static Specifications Instance { get; } = new Specifications();
+
+			Specifications() : this(TypeMetadata.Default) {}
+
+			public Specifications(ISelect<Type, TypeInfo> metadata)
+				: base(metadata.Select(GenericInterfaceImplementations.Default)
+				               .Select(x => x.Condition.ToDelegate())
+				               .Then()
+				               .Activate<OneItemIs<Type>>()
+				               .Select(metadata.Select(GenericInterfaces.Default)
+				                               .Open()
+				                               .Select)
+				               .Select(x => x.ToCondition())
+				               .Get()) {}
 		}
 	}
 }

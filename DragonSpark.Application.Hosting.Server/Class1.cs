@@ -77,7 +77,9 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-	public interface IHostedApplication
+
+
+	public interface IConfigurator
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -87,16 +89,16 @@ namespace DragonSpark.Application.Hosting.Server
 		void Configure(IApplicationBuilder app, IWebHostEnvironment env);
 	}
 
-	public class HostedApplication : IHostedApplication
+	public class Configurator : IConfigurator
 	{
 		readonly Action<IServiceCollection>                                             _services;
 		readonly Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> _application;
 
-		public HostedApplication(Action<IServiceCollection> services)
+		public Configurator(Action<IServiceCollection> services)
 			: this(services, EnvironmentalConfiguration.Default.Then(ApplicationConfiguration.Default).Selector()) {}
 
-		public HostedApplication(Action<IServiceCollection> services,
-		                         Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)
+		public Configurator(Action<IServiceCollection> services,
+		                    Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)
 		{
 			_services    = services;
 			_application = application;

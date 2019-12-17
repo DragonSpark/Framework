@@ -1,17 +1,19 @@
-﻿using System;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
+using System;
 
 namespace DragonSpark.Model.Results
 {
 	public class ValidatedResult<T> : IResult<T>
 	{
+		public static implicit operator T(ValidatedResult<T> source) => source.Get();
+
 		readonly Func<T> _source, _fallback;
 
 		readonly Func<T, bool> _specification;
 
-		public ValidatedResult(IResult<T> result, IResult<T> fallback) :
-			this(IsAssigned<T>.Default, result, fallback) {}
+		public ValidatedResult(IResult<T> result, IResult<T> fallback)
+			: this(IsAssigned<T>.Default, result, fallback) {}
 
 		public ValidatedResult(ICondition<T> specification, IResult<T> result, IResult<T> fallback)
 			: this(specification.Get, result.Get, fallback.Get) {}
@@ -29,7 +31,5 @@ namespace DragonSpark.Model.Results
 			var result = _specification(source) ? source : _fallback();
 			return result;
 		}
-
-		public static implicit operator T(ValidatedResult<T> source) => source.Get();
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Members
 {
@@ -10,7 +10,7 @@ namespace DragonSpark.Reflection.Members
 		public static ConstructorCondition Default { get; } = new ConstructorCondition();
 
 		ConstructorCondition()
-			: base(Start.An.Instance(Parameters.Default)
+			: base(Start.A.Selection(Parameters.Default)
 			            .Open()
 			            .Then()
 			            .To(x => x.HasNone()

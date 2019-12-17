@@ -1,7 +1,6 @@
-﻿using System;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Activation;
+using System;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -9,12 +8,15 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static ComponentTypesDefinition Default { get; } = new ComponentTypesDefinition();
 
-		ComponentTypesDefinition() : this(Types.Default.Query()
-		                                       .Where(CanActivate.Default.Get)
-		                                       .To(x => x.Get().Then())
-		                                       .Activate<ComponentTypesSelector>()
-		                                       .Select(x => x.Open().Then().Sort().Out())
-		                                       .Selector()) {}
+		ComponentTypesDefinition() : this(IsComponentTypeCandidate.Default.Get) {}
+
+		ComponentTypesDefinition(Func<Type, bool> condition)
+			: this(Types.Default.Query()
+			            .Where(condition)
+			            .To(x => x.Get().Then())
+			            .Activate<ComponentTypesSelector>()
+			            .Select(x => x.Open().Then().Sort().Out())
+			            .Selector()) {}
 
 		public ComponentTypesDefinition(Func<ISelect<Type, Array<Type>>> source) : base(source) {}
 	}

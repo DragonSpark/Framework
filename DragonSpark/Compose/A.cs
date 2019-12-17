@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Compose
 {
