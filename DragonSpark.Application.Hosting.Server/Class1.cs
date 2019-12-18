@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -12,37 +13,36 @@ namespace DragonSpark.Application.Hosting.Server
 {
 	public sealed class ServerApplicationAttribute : HostingAttribute
 	{
-		public ServerApplicationAttribute() : base(typeof(ServerApplicationAttribute).Assembly) {}
+		public ServerApplicationAttribute() : base(A.Type<ServerApplicationAttribute>().Assembly) {}
 	}
 
-	sealed class DefaultEnvironmentalConfiguration : IEnvironmentalConfiguration
+	sealed class DefaultApplicationConfiguration : IApplicationConfiguration
 	{
-		public static DefaultEnvironmentalConfiguration Default { get; } = new DefaultEnvironmentalConfiguration();
+		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
 
-		DefaultEnvironmentalConfiguration() {}
+		DefaultApplicationConfiguration() {}
 
-		public void Execute((IApplicationBuilder Builder, IWebHostEnvironment Environment) parameter) {}
+		public void Execute(IApplicationBuilder parameter) {}
 	}
 
-	sealed class EnvironmentalConfiguration : Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
-	                                          IEnvironmentalConfiguration
-	{
-		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
-
-		EnvironmentalConfiguration() : base(Start.A.Result.Of.Type<IEnvironmentalConfiguration>()
-		                                         .By.Location.Or.Default(DefaultEnvironmentalConfiguration.Default)
-		                                         .Assume()) {}
-	}
-
-	public sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
+	sealed class ApplicationConfiguration : Command<IApplicationBuilder>, IApplicationConfiguration
 	{
 		public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
 
-		ApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+		ApplicationConfiguration() : base(Start.A.Result.Of.Type<IApplicationConfiguration>()
+		                                       .By.Location.Or.Default(DefaultApplicationConfiguration.Default)
+		                                       .Assume()) {}
+	}
+
+	public sealed class ServerApplicationConfiguration : ICommand<IApplicationBuilder>
+	{
+		public static ServerApplicationConfiguration Default { get; } = new ServerApplicationConfiguration();
+
+		ServerApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
 
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public ApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+		public ServerApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
 
 		public void Execute(IApplicationBuilder parameter)
 		{
@@ -53,16 +53,37 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-	public sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
+	public interface IServiceConfiguration : ICommand<ConfigureParameter> {}
+
+	public readonly struct ConfigureParameter
+	{
+		public ConfigureParameter(IConfiguration configuration, IServiceCollection services)
+		{
+			Configuration = configuration;
+			Services      = services;
+		}
+
+		public IConfiguration Configuration { get; }
+
+		public IServiceCollection Services { get; }
+	}
+
+	[Infrastructure]
+	public sealed class ServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
+	{
+		public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
+
+		ServiceConfiguration() : base(Start.A.Result.Of.Type<IServiceConfiguration>()
+		                                   .By.Location.Or.Default(DefaultServiceConfiguration.Default)
+		                                   .Assume()) {}
+	}
+
+	[Infrastructure]
+	public sealed class DefaultServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
 	{
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
-		DefaultServiceConfiguration() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.AddControllers();
-		}
+		DefaultServiceConfiguration() : base(x => x.Services.AddControllers()) {}
 	}
 
 	sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
@@ -77,41 +98,42 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-
-
-	public interface IConfigurator
+	public interface IConfigurator : IActivateUsing<IConfiguration>
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		void ConfigureServices(IServiceCollection services);
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		void Configure(IApplicationBuilder app, IWebHostEnvironment env);
+		void Configure(IApplicationBuilder builder);
 	}
 
 	public class Configurator : IConfigurator
 	{
-		readonly Action<IServiceCollection>                                             _services;
-		readonly Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> _application;
+		readonly IConfiguration              _configuration;
+		readonly Action<ConfigureParameter>  _services;
+		readonly Action<IApplicationBuilder> _application;
 
-		public Configurator(Action<IServiceCollection> services)
-			: this(services, EnvironmentalConfiguration.Default.Then(ApplicationConfiguration.Default).Selector()) {}
+		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
+			: this(configuration, services,
+			       ApplicationConfiguration.Default.Then(ServerApplicationConfiguration.Default)) {}
 
-		public Configurator(Action<IServiceCollection> services,
-		                    Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)
+		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
+		                    Action<IApplicationBuilder> application)
 		{
-			_services    = services;
-			_application = application;
+			_configuration = configuration;
+			_services      = services;
+			_application   = application;
 		}
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			_services(services);
+			_services(new ConfigureParameter(_configuration, services));
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder builder)
 		{
-			_application((app, env));
+			_application(builder);
 		}
 	}
 }

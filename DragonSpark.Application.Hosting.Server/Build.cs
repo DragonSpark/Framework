@@ -1,9 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Environment;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 
@@ -33,9 +36,13 @@ namespace DragonSpark.Application.Hosting.Server
 
 		ProgramLocationByContext() {}
 
-		public ProgramContext Environment() => Activating<EnvironmentalProgram>();
+		public ProgramContext Environment() => Activating<LocatedProgram>();
 
-		public ProgramContext Activating<T>() where T : class, IProgram => new ProgramContext(Start.An.Instance<T>());
+		public ProgramContext Environment(IProgram @default) => Using(new LocatedProgram(@default));
+
+		public ProgramContext Using(IProgram program) => new ProgramContext(program);
+
+		public ProgramContext Activating<T>() where T : class, IProgram => Using(Start.An.Instance<T>());
 	}
 
 	public sealed class ProgramContext
@@ -48,6 +55,29 @@ namespace DragonSpark.Application.Hosting.Server
 			=> HostBuilder<T>.Default.Select(_program);
 	}
 
+	public class ActivatedProgram<T> : IProgram where T : ISelect<IHost, Task>
+	{
+		protected ActivatedProgram() {}
+
+		public Task Get(IHost parameter) => parameter.Services.GetRequiredService<T>().Get(parameter);
+	}
+
+	public sealed class RegisterOption<T> : IAlteration<ConfigureParameter> where T : class, new()
+	{
+		public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
+
+		RegisterOption() : this(A.Type<T>().Name) {}
+
+		readonly string _name;
+
+		public RegisterOption(string name) => _name = name;
+
+		public ConfigureParameter Get(ConfigureParameter parameter)
+			=> parameter.Services.Configure<T>(parameter.Configuration.GetSection(_name))
+			            .AddSingleton(resolver => resolver.GetRequiredService<IOptions<T>>().Value)
+			            .ThenWith(parameter);
+	}
+
 	public interface IProgram : ISelect<IHost, Task> {}
 
 	public class Program : Select<IHost, Task>, IProgram
@@ -57,13 +87,15 @@ namespace DragonSpark.Application.Hosting.Server
 		public Program(Func<IHost, Task> select) : base(select) {}
 	}
 
-	sealed class EnvironmentalProgram : Program
+	sealed class LocatedProgram : Program
 	{
-		public static EnvironmentalProgram Default { get; } = new EnvironmentalProgram();
+		public static LocatedProgram Default { get; } = new LocatedProgram();
 
-		EnvironmentalProgram() : base(Start.A.Result.Of.Type<IProgram>()
-		                                   .By.Location.Or.Default(DefaultProgram.Default)
-		                                   .Assume()) {}
+		LocatedProgram() : this(DefaultProgram.Default) {}
+
+		public LocatedProgram(IProgram @default) : base(Start.A.Result.Of.Type<IProgram>()
+		                                                     .By.Location.Or.Default(@default)
+		                                                     .Assume()) {}
 	}
 
 	[Infrastructure]
@@ -82,9 +114,8 @@ namespace DragonSpark.Application.Hosting.Server
 
 		HostBuilder() {}
 
-		public IHost Get(Array<string> parameter)
-			=> Host.CreateDefaultBuilder(parameter)
-			       .ConfigureWebHostDefaults(builder => builder.UseStartup<T>())
-			       .Build();
+		public IHost Get(Array<string> parameter) => Host.CreateDefaultBuilder(parameter)
+		                                                 .ConfigureWebHostDefaults(builder => builder.UseStartup<T>())
+		                                                 .Build();
 	}
 }
