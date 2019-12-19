@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
@@ -55,6 +56,43 @@ namespace DragonSpark.Application.Hosting.Server
 
 	public interface IServiceConfiguration : ICommand<ConfigureParameter> {}
 
+	public static class ServicesConfiguration
+	{
+		public static ICommand<ConfigureParameter> Promote(this ICommand<IServiceCollection> @this)
+			=> new RegistrationConfiguration(@this.Execute);
+	}
+
+	public static class Extensions
+	{
+		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
+			=> new RegistrationContext<T>(@this);
+	}
+
+	public sealed class RegistrationContext<T> where T : class
+	{
+		readonly IServiceCollection _collection;
+
+		public RegistrationContext(IServiceCollection collection) => _collection = collection;
+
+		public IServiceCollection Singleton<TResult>() where TResult : class, IResult<T>
+			=> _collection.AddSingleton<TResult>()
+			              .AddSingleton(x => x.GetRequiredService<TResult>().ToDelegate())
+			              .AddSingleton(x => x.GetRequiredService<TResult>().Get());
+	}
+
+	[Infrastructure]
+	public class RegistrationConfiguration : IServiceConfiguration
+	{
+		readonly Action<IServiceCollection> _command;
+
+		public RegistrationConfiguration(Action<IServiceCollection> command) => _command = command;
+
+		public void Execute(ConfigureParameter parameter)
+		{
+			_command(parameter.Services);
+		}
+	}
+
 	public readonly struct ConfigureParameter
 	{
 		public ConfigureParameter(IConfiguration configuration, IServiceCollection services)
@@ -79,23 +117,18 @@ namespace DragonSpark.Application.Hosting.Server
 	}
 
 	[Infrastructure]
-	public sealed class DefaultServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
+	public sealed class DefaultServiceConfiguration : RegistrationConfiguration
 	{
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
-		DefaultServiceConfiguration() : base(x => x.Services.AddControllers()) {}
+		DefaultServiceConfiguration() : base(x => x.AddControllers()) {}
 	}
 
-	sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
+	sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
 	{
 		public static EndpointConfiguration Default { get; } = new EndpointConfiguration();
 
-		EndpointConfiguration() {}
-
-		public void Execute(IEndpointRouteBuilder parameter)
-		{
-			parameter.MapControllers();
-		}
+		EndpointConfiguration() : base(x => x.MapControllers()) {}
 	}
 
 	public interface IConfigurator : IActivateUsing<IConfiguration>

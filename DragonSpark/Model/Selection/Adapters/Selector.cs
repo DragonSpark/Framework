@@ -55,7 +55,9 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public CommandSelector<_> Terminate() => new CommandSelector<_>(new InvokeParameterCommand<_, T>(Get().Get));
 
-		public CommandSelector<_> Terminate(ICommand<T> command)
-			=> new CommandSelector<_>(new SelectedParameterCommand<_, T>(command.Execute, _subject.Get));
+		public CommandSelector<_> Terminate(ICommand<T> command) => Terminate(command.Execute);
+
+		public CommandSelector<_> Terminate(System.Action<T> command)
+			=> new CommandSelector<_>(new SelectedParameterCommand<_, T>(command, _subject.Get));
 	}
 }
