@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Application.Operations
 {
 	public class OperationTests
 	{
-		sealed class Number : Operation<string, uint>
+		sealed class Number : OperationResult<string, uint>
 		{
 			public static Number Default { get; } = new Number();
 

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Reflection;
 using DragonSpark.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable TooManyArguments
 // ReSharper disable once PossibleInvalidOperationException
@@ -18,6 +19,9 @@ namespace DragonSpark
 		public static T[] Open<T>(this IEnumerable<T> @this) => @this is T[] array ? array : @this.ToArray();
 
 		public static Array<T> Result<T>(this IEnumerable<T> @this) => @this.Open();
+
+		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this, T2 instance)
+			=> @this.Introduce(instance, tuple => tuple.Item1.Get(tuple.Item2));
 
 		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<Func<T2, T1>> @this, T2 instance)
 			=> @this.Introduce(instance, tuple => tuple.Item1(tuple.Item2));

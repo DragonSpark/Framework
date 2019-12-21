@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Text.Formatting
 {
@@ -7,6 +7,6 @@ namespace DragonSpark.Text.Formatting
 	{
 		public static KnownFormatters Default { get; } = new KnownFormatters();
 
-		KnownFormatters() : base(FormatterRegistration.Default.Get) {}
+		KnownFormatters() : base(FormatterRegistration.Default.Assume()) {}
 	}
 }

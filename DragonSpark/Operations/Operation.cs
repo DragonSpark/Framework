@@ -1,21 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Operations
 {
-	public class Operation<TIn, TOut> : Select<TIn, ValueTask<TOut>>, IOperation<TIn, TOut>
+	public class Operation<T> : Select<T, ValueTask>, IOperation<T>
 	{
-		public Operation(Func<TIn, ValueTask<TOut>> select) : base(select) {}
+		public Operation(Func<T, ValueTask> select) : base(select) {}
 	}
 
-	class Operation<T> : Instance<ValueTask<T>>, IOperation<T>
+	public class Operation : Instance<ValueTask>, IOperation
 	{
-		public Operation(Task<T> instance) : this(new ValueTask<T>(instance)) {}
+		public Operation(Task instance) : this(new ValueTask(instance)) {}
 
-		public Operation(T instance) : this(new ValueTask<T>(instance)) {}
-
-		public Operation(ValueTask<T> instance) : base(instance) {}
+		public Operation(ValueTask instance) : base(instance) {}
 	}
 }

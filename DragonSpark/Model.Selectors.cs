@@ -158,6 +158,8 @@ namespace DragonSpark
 
 		public static Func<Array<T>> Selector<T>(this Query<None, T> @this) => @this.Get().ToResult().Get;
 
+		public static Func<_, Array<T>> Selector<_, T>(this Query<_, T> @this) => @this.Get().Get;
+
 		public static ICommand Out<T>(this CommandSelector<T> @this, T parameter) => @this.Input(parameter).Command;
 
 		public static IAlteration<T> Out<T>(this CommandSelector<T> @this)

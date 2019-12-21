@@ -21,7 +21,7 @@ namespace DragonSpark.Model.Selection.Adapters
 			=> new ConditionSelector<T>(new AllCondition<T>(others.Prepend(Get()).Open()));
 
 		public ConditionSelector<T> Inverse()
-			=> new ConditionSelector<T>(InverseSpecifications<T>.Default.Get(new Condition<T>(Get().Get)));
+			=> new ConditionSelector<T>(InverseConditions<T>.Default.Get(new Condition<T>(Get().Get)));
 	}
 
 	public class ConditionSelector<_, T> : SelectionSelector<_, T, bool>

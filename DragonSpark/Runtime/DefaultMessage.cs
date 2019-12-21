@@ -1,5 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Text;
+using System;
 
 namespace DragonSpark.Runtime
 {
@@ -8,7 +9,7 @@ namespace DragonSpark.Runtime
 		public static DefaultMessage<T> Default { get; } = new DefaultMessage<T>();
 
 		DefaultMessage()
-			: base(x => $"Expected instance of type {typeof(T)} to be assigned, but an operation using an instance of {x} did not produce this.") {}
+			: base(x => $"Expected instance of type {A.Type<T>()} to be assigned, but an operation using an instance of {x} did not produce this.") {}
 	}
 
 	sealed class DefaultMessage : Message<Type>

@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using System;
 
 namespace DragonSpark.Reflection.Types
 {
@@ -10,6 +10,6 @@ namespace DragonSpark.Reflection.Types
 
 		GenericInterfaces() : base(AllInterfaces.Default.Query()
 		                                        .Where(y => y.IsGenericType)
-		                                        .Get) {}
+		                                        .Selector()) {}
 	}
 }

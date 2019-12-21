@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Application.Model.Specifications
 		[Fact]
 		public void Number()
 		{
-			var sut = new EqualityCondition<int>(3);
+			var sut = new Equals<int>(3);
 			sut.Get(4)
 			   .Should()
 			   .BeFalse();
@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Application.Model.Specifications
 		public void Object()
 		{
 			var source = new object();
-			var sut    = new EqualityCondition<object>(source);
+			var sut    = new Equals<object>(source);
 			sut.Get(new object())
 			   .Should()
 			   .BeFalse();

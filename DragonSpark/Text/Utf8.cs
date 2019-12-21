@@ -16,7 +16,7 @@ namespace DragonSpark.Text
 		Utf8() {}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public int Get(ReadOnlySpan<char> source, Span<byte> destination)
+		public int Get(in ReadOnlySpan<char> source, in Span<byte> destination)
 		{
 			var status = Get(source, destination, out var result);
 			return status == OperationStatus.Done
@@ -26,7 +26,7 @@ namespace DragonSpark.Text
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public OperationStatus Get(ReadOnlySpan<char> source, Span<byte> destination, out int written)
+		public OperationStatus Get(in ReadOnlySpan<char> source, in Span<byte> destination, out int written)
 			=> Get(MemoryMarshal.AsBytes(source), destination, out written);
 
 		// ReSharper disable once CyclomaticComplexity
@@ -39,7 +39,7 @@ namespace DragonSpark.Text
 		/// <param name="destination"></param>
 		/// <param name="written"></param>
 		/// <returns></returns>
-		public static unsafe OperationStatus Get(ReadOnlySpan<byte> source, Span<byte> destination, out int written)
+		public static unsafe OperationStatus Get(in ReadOnlySpan<byte> source, in Span<byte> destination, out int written)
 		{
 			fixed (byte* chars = &MemoryMarshal.GetReference(source))
 			fixed (byte* bytes = &MemoryMarshal.GetReference(destination))
