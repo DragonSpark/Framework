@@ -1,11 +1,11 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Hosting.Server;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Environment;
-using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -13,53 +13,43 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 {
 	public sealed class BlazorApplicationAttribute : HostingAttribute
 	{
-		public BlazorApplicationAttribute() : base(typeof(BlazorApplicationAttribute).Assembly) {}
+		public BlazorApplicationAttribute() : base(A.Type<BlazorApplicationAttribute>().Assembly) {}
 	}
 
-	sealed class DefaultEnvironmentalConfiguration : IEnvironmentalConfiguration
+	public sealed class DefaultBlazorApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
-		public static DefaultEnvironmentalConfiguration Default { get; } = new DefaultEnvironmentalConfiguration();
+		public static DefaultBlazorApplicationConfiguration Default { get; } = new DefaultBlazorApplicationConfiguration();
 
-		DefaultEnvironmentalConfiguration() : this("/Error") {}
+		DefaultBlazorApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
 
-		readonly string _handler;
-
-		public DefaultEnvironmentalConfiguration(string handler) => _handler = handler;
-
-		public void Execute((IApplicationBuilder Builder, IWebHostEnvironment Environment) parameter)
-		{
-			parameter.Builder.UseExceptionHandler(_handler)
-			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-		}
-	}
-
-	sealed class EnvironmentalConfiguration : Command<(IApplicationBuilder Builder, IWebHostEnvironment Environment)>,
-	                                          IEnvironmentalConfiguration
-	{
-		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
-
-		EnvironmentalConfiguration() : base(Start.A.Result.Of.Type<IEnvironmentalConfiguration>()
-		                                         .By.Location.Or.Default(DefaultEnvironmentalConfiguration.Default)
-		                                         .Assume()) {}
-	}
-
-	public sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
-	{
-		public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
-
-		ApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
-
+		readonly string                        _handler;
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public ApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+		public DefaultBlazorApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
+		{
+			_handler   = handler;
+			_endpoints = endpoints;
+		}
 
 		public void Execute(IApplicationBuilder parameter)
 		{
 			parameter.UseHttpsRedirection()
 			         .UseStaticFiles()
 			         .UseRouting()
-			         .UseEndpoints(_endpoints);
+			         .UseEndpoints(_endpoints)
+			         .UseExceptionHandler(_handler)
+			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.;
 		}
+	}
+
+	sealed class Configurator : Hosting.Server.Configurator
+	{
+		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
+			: base(configuration, services,
+			       LocatedApplicationConfiguration.Default.Then(DefaultBlazorApplicationConfiguration.Default)) {}
+
+		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
+		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}
 	}
 
 	public sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
@@ -109,42 +99,6 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 			parameter.MapBlazorHub(_selector)
 			         .ThenWith(parameter)
 			         .MapFallbackToPage(_fallback);
-		}
-	}
-
-	public interface IHostedApplication
-	{
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-		void ConfigureServices(IServiceCollection services);
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		void Configure(IApplicationBuilder app, IWebHostEnvironment env);
-	}
-
-	public class HostedApplication : IHostedApplication
-	{
-		readonly Action<IServiceCollection>                                             _services;
-		readonly Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> _application;
-
-		public HostedApplication(Action<IServiceCollection> services)
-			: this(services, EnvironmentalConfiguration.Default.Then(ApplicationConfiguration.Default).Selector()) {}
-
-		public HostedApplication(Action<IServiceCollection> services,
-		                         Action<(IApplicationBuilder Builder, IWebHostEnvironment Environment)> application)
-		{
-			_services    = services;
-			_application = application;
-		}
-
-		public void ConfigureServices(IServiceCollection services)
-		{
-			_services(services);
-		}
-
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			_application((app, env));
 		}
 	}
 }
