@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>DragonSpark.Application.Hosting.Server.GitHub.Environment</AssemblyName>
+    <RootNamespace>DragonSpark.Application.Hosting.Server.GitHub.Environment</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Environment.Development\DragonSpark.Application.Hosting.Server.Environment.Development.csproj" />
+    <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,15 +1,15 @@
-﻿using DragonSpark.Application.Hosting.Server;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Environment;
+using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Hosting.Blazor.Server
+namespace DragonSpark.Application.Hosting.Server.Blazor
 {
 	public sealed class BlazorApplicationAttribute : HostingAttribute
 	{
@@ -38,12 +38,15 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 			         .UseRouting()
 			         .UseEndpoints(_endpoints)
 			         .UseExceptionHandler(_handler)
-			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.;
+			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 		}
 	}
 
-	sealed class Configurator : Hosting.Server.Configurator
+	sealed class Configurator : Services.Configurator
 	{
+		public Configurator(IConfiguration configuration)
+			: this(configuration, DefaultServiceConfiguration.Default.Promote().Execute) {}
+
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
 			: base(configuration, services,
 			       LocatedApplicationConfiguration.Default.Then(DefaultBlazorApplicationConfiguration.Default)) {}
@@ -61,7 +64,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		public void Execute(IServiceCollection parameter)
 		{
 			parameter.AddRazorPages()
-			         .ThenWith(parameter)
+			         .Return(parameter)
 			         .AddServerSideBlazor();
 		}
 	}
@@ -97,7 +100,7 @@ namespace DragonSpark.Application.Hosting.Blazor.Server
 		public void Execute(IEndpointRouteBuilder parameter)
 		{
 			parameter.MapBlazorHub(_selector)
-			         .ThenWith(parameter)
+			         .Return(parameter)
 			         .MapFallbackToPage(_fallback);
 		}
 	}
