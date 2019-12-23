@@ -59,7 +59,7 @@ namespace DragonSpark.Application.Hosting.Server
 		EndpointConfiguration() : base(x => x.MapControllers()) {}
 	}
 
-	sealed class Configurator : Services.Configurator
+	public class Configurator : Services.Configurator
 	{
 		public Configurator(IConfiguration configuration) : this(configuration, ServiceConfiguration.Default.Execute) {}
 

@@ -57,6 +57,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.Testing.Application", "DragonSpark.Application.Hosting.Server.Testing.Application\DragonSpark.Application.Hosting.Server.Testing.Application.csproj", "{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application", "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application\DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.csproj", "{D3445660-18AA-47CC-80E4-151734B35CE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3445660-18AA-47CC-80E4-151734B35CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3445660-18AA-47CC-80E4-151734B35CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3445660-18AA-47CC-80E4-151734B35CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3445660-18AA-47CC-80E4-151734B35CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +175,7 @@ Global
 		{301B35DC-B409-4D5D-A439-5BEF008B6423} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{260A1394-2915-40D5-83B4-702947DA0F8D} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
+		{D3445660-18AA-47CC-80E4-151734B35CE8} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7E910BA-B9EE-40A8-9C18-08D091DA997F}
