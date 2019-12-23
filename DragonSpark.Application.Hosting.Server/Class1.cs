@@ -15,7 +15,14 @@ namespace DragonSpark.Application.Hosting.Server
 		public ServerApplicationAttribute() : base(A.Type<ServerApplicationAttribute>().Assembly) {}
 	}
 
-	public sealed class ServerApplicationConfiguration : ICommand<IApplicationBuilder>
+	public sealed class DefaultApplicationConfiguration : ApplicationConfiguration
+	{
+		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
+
+		DefaultApplicationConfiguration() : base(ServerApplicationConfiguration.Default) {}
+	}
+
+	sealed class ServerApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
 		public static ServerApplicationConfiguration Default { get; } = new ServerApplicationConfiguration();
 
@@ -34,22 +41,18 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-	[Infrastructure]
-	public sealed class ServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
-	{
-		public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
-
-		ServiceConfiguration() : base(Start.A.Result.Of.Type<IServiceConfiguration>()
-		                                   .By.Location.Or.Default(DefaultServiceConfiguration.Default)
-		                                   .Assume()) {}
-	}
-
-	[Infrastructure]
-	public sealed class DefaultServiceConfiguration : RegistrationConfiguration
+	public sealed class DefaultServiceConfiguration : ServiceConfiguration
 	{
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
-		DefaultServiceConfiguration() : base(x => x.AddControllers()) {}
+		DefaultServiceConfiguration() : base(RegistrationConfiguration.Default) {}
+	}
+
+	sealed class RegistrationConfiguration : Services.RegistrationConfiguration
+	{
+		public static RegistrationConfiguration Default { get; } = new RegistrationConfiguration();
+
+		RegistrationConfiguration() : base(x => x.AddControllers()) {}
 	}
 
 	sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
@@ -61,11 +64,11 @@ namespace DragonSpark.Application.Hosting.Server
 
 	public class Configurator : Services.Configurator
 	{
-		public Configurator(IConfiguration configuration) : this(configuration, ServiceConfiguration.Default.Execute) {}
+		public Configurator(IConfiguration configuration) : this(configuration,
+		                                                         DefaultServiceConfiguration.Default.Execute) {}
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
-			: this(configuration, services,
-			       LocatedApplicationConfiguration.Default.Then(ServerApplicationConfiguration.Default)) {}
+			: this(configuration, services, DefaultApplicationConfiguration.Default.Execute) {}
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
 		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}

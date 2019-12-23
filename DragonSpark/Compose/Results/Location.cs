@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Environment;
+using System;
 
 namespace DragonSpark.Compose.Results
 {

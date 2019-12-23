@@ -13,4 +13,9 @@
     <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LaunchDarkly.EventSource" Version="3.3.2" />
+  </ItemGroup>
+
+
 </Project>

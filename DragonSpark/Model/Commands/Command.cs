@@ -11,7 +11,10 @@ namespace DragonSpark.Model.Commands
 
 		public Command(Action<T> command) => _command = command;
 
-		public void Execute(T parameter) => _command(parameter);
+		public void Execute(T parameter)
+		{
+			_command(parameter);
+		}
 	}
 
 	public class Command : ICommand<None>
@@ -22,6 +25,9 @@ namespace DragonSpark.Model.Commands
 
 		public Command(Action command) => _command = command;
 
-		public void Execute(None _) => _command();
+		public void Execute(None _)
+		{
+			_command();
+		}
 	}
 }

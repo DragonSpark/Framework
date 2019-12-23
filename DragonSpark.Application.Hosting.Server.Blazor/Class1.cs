@@ -16,16 +16,16 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 		public BlazorApplicationAttribute() : base(A.Type<BlazorApplicationAttribute>().Assembly) {}
 	}
 
-	public sealed class DefaultBlazorApplicationConfiguration : ICommand<IApplicationBuilder>
+	public sealed class BlazorApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
-		public static DefaultBlazorApplicationConfiguration Default { get; } = new DefaultBlazorApplicationConfiguration();
+		public static BlazorApplicationConfiguration Default { get; } = new BlazorApplicationConfiguration();
 
-		DefaultBlazorApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
+		BlazorApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
 
 		readonly string                        _handler;
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public DefaultBlazorApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
+		public BlazorApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
 		{
 			_handler   = handler;
 			_endpoints = endpoints;
@@ -45,21 +45,21 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 	sealed class Configurator : Services.Configurator
 	{
 		public Configurator(IConfiguration configuration)
-			: this(configuration, DefaultServiceConfiguration.Default.Promote().Execute) {}
+			: this(configuration, Registrations.Default.Adapt().Execute) {}
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
 			: base(configuration, services,
-			       LocatedApplicationConfiguration.Default.Then(DefaultBlazorApplicationConfiguration.Default)) {}
+			       LocatedApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
 		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}
 	}
 
-	public sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
+	public sealed class Registrations : ICommand<IServiceCollection>
 	{
-		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
+		public static Registrations Default { get; } = new Registrations();
 
-		DefaultServiceConfiguration() {}
+		Registrations() {}
 
 		public void Execute(IServiceCollection parameter)
 		{

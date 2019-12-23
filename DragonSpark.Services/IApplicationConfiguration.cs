@@ -5,7 +5,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
-using DragonSpark.Runtime.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,12 +28,11 @@ namespace DragonSpark.Services
 		void Configure(IApplicationBuilder builder);
 	}
 
-
 	public interface IServiceConfiguration : ICommand<ConfigureParameter> {}
 
 	public static class Extensions
 	{
-		public static ICommand<ConfigureParameter> Promote(this ICommand<IServiceCollection> @this)
+		public static ICommand<ConfigureParameter> Adapt(this ICommand<IServiceCollection> @this)
 			=> new RegistrationConfiguration(@this.Execute);
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
@@ -53,7 +51,15 @@ namespace DragonSpark.Services
 			              .AddSingleton(x => x.GetRequiredService<TResult>().Get());
 	}
 
-	[Infrastructure]
+	sealed class EmptyServiceConfiguration : IServiceConfiguration
+	{
+		public static EmptyServiceConfiguration Default { get; } = new EmptyServiceConfiguration();
+
+		EmptyServiceConfiguration() {}
+
+		public void Execute(ConfigureParameter parameter) {}
+	}
+
 	public class RegistrationConfiguration : IServiceConfiguration
 	{
 		readonly Action<IServiceCollection> _command;
@@ -64,6 +70,25 @@ namespace DragonSpark.Services
 		{
 			_command(parameter.Services);
 		}
+	}
+
+	/*public sealed class DefaultServiceConfiguration : ServiceConfiguration
+	{
+		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
+
+		DefaultServiceConfiguration() : base(EmptyServiceConfiguration.Default) {}
+	}*/
+
+	public class ServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
+	{
+		public ServiceConfiguration(Action<ConfigureParameter> @default)
+			: this(Start.A.Command<ConfigureParameter>().By.Calling(@default)) {}
+
+		public ServiceConfiguration(ICommand<ConfigureParameter> @default)
+			: base(Start.A.Result.Of.Type<IServiceConfiguration>()
+			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
+			            .Assume()
+			            .Then(@default)) {}
 	}
 
 	public readonly struct ConfigureParameter
@@ -104,22 +129,29 @@ namespace DragonSpark.Services
 		}
 	}
 
-	sealed class DefaultApplicationConfiguration : IApplicationConfiguration
+	sealed class EmptyApplicationConfiguration : IApplicationConfiguration
 	{
-		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
+		public static EmptyApplicationConfiguration Default { get; } = new EmptyApplicationConfiguration();
 
-		DefaultApplicationConfiguration() {}
+		EmptyApplicationConfiguration() {}
 
 		public void Execute(IApplicationBuilder parameter) {}
 	}
 
-	public sealed class LocatedApplicationConfiguration : Command<IApplicationBuilder>, IApplicationConfiguration
+	public sealed class DefaultApplicationConfiguration : ApplicationConfiguration
 	{
-		public static LocatedApplicationConfiguration Default { get; } = new LocatedApplicationConfiguration();
+		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
 
-		LocatedApplicationConfiguration() : base(Start.A.Result.Of.Type<IApplicationConfiguration>()
-		                                              .By.Location.Or.Default(DefaultApplicationConfiguration.Default)
-		                                              .Assume()) {}
+		DefaultApplicationConfiguration() : base(EmptyApplicationConfiguration.Default) {}
+	}
+
+	public class ApplicationConfiguration : Command<IApplicationBuilder>, IApplicationConfiguration
+	{
+		public ApplicationConfiguration(ICommand<IApplicationBuilder> @default)
+			: base(Start.A.Result.Of.Type<IApplicationConfiguration>()
+			            .By.Location.Or.Default(EmptyApplicationConfiguration.Default)
+			            .Assume()
+			            .Then(@default)) {}
 	}
 
 	public sealed class Build
@@ -172,7 +204,12 @@ namespace DragonSpark.Services
 		public Task Get(IHost parameter) => parameter.Services.GetRequiredService<T>().Get(parameter);
 	}
 
-	public sealed class RegisterOption<T> : IAlteration<ConfigureParameter> where T : class, new()
+	public static class RegisterOption
+	{
+		public static IAlteration<ConfigureParameter> Of<T>() where T : class, new() => RegisterOption<T>.Default;
+	}
+
+	sealed class RegisterOption<T> : IAlteration<ConfigureParameter> where T : class, new()
 	{
 		public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
 
@@ -208,7 +245,6 @@ namespace DragonSpark.Services
 		                                                     .Assume()) {}
 	}
 
-	[Infrastructure]
 	public sealed class DefaultProgram : IProgram
 	{
 		public static DefaultProgram Default { get; } = new DefaultProgram();
