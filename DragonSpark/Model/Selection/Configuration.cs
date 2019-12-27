@@ -1,10 +1,10 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using System;
 
 namespace DragonSpark.Model.Selection
 {
-	public class Configuration<TIn, TOut> : ISelect<TIn, TOut>
+	sealed class Configuration<TIn, TOut> : ISelect<TIn, TOut>
 	{
 		readonly Action<TIn, TOut> _configuration;
 		readonly Func<TIn, TOut>   _source;
@@ -26,7 +26,7 @@ namespace DragonSpark.Model.Selection
 		}
 	}
 
-	public class Configuration<TIn, TOut, TOther> : ISelect<TIn, TOut>
+	sealed class Configuration<TIn, TOut, TOther> : ISelect<TIn, TOut>
 	{
 		readonly Action<TIn, TOther> _configuration;
 		readonly Func<TOut, TOther>  _other;
@@ -35,8 +35,7 @@ namespace DragonSpark.Model.Selection
 		public Configuration(ISelect<TIn, TOut> select, IAssign<TIn, TOther> configuration)
 			: this(select, Start.A.Selection<TOut>().AndOf<TOther>().By.Cast, configuration) {}
 
-		public Configuration(ISelect<TIn, TOut> select, ISelect<TOut, TOther> other,
-		                     IAssign<TIn, TOther> configuration)
+		public Configuration(ISelect<TIn, TOut> select, ISelect<TOut, TOther> other, IAssign<TIn, TOther> configuration)
 			: this(select.Get, other.Get, configuration.Assign) {}
 
 		public Configuration(Func<TIn, TOut> source, Func<TOut, TOther> other, Action<TIn, TOther> configuration)

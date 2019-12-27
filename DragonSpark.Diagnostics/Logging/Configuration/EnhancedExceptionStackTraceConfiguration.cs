@@ -1,6 +1,6 @@
-﻿using Serilog;
+﻿using DragonSpark.Model.Selection;
+using Serilog;
 using Serilog.Configuration;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Diagnostics.Logging.Configuration
 {

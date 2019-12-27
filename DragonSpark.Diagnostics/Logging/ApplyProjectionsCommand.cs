@@ -1,7 +1,7 @@
-﻿using System;
-using Serilog.Events;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using DragonSpark.Runtime.Objects;
+using Serilog.Events;
+using System;
 
 namespace DragonSpark.Diagnostics.Logging
 {

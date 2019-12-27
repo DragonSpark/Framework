@@ -1,6 +1,7 @@
-﻿using Serilog;
+﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging.Configuration;
 using DragonSpark.Model.Results;
+using Serilog;
 
 namespace DragonSpark.Diagnostics.Logging
 {
@@ -8,11 +9,12 @@ namespace DragonSpark.Diagnostics.Logging
 	{
 		public static Logger Default { get; } = new Logger();
 
-		Logger() : base(LoggingConfiguration.Default
-		                                    .Select(x => x.Get(new LoggerConfiguration()))
-		                                    .Select(LoggerSelector.Default)
-		                                    .Then()
-		                                    .Activate<PrimaryLogger>()
-		                                    .Selector()) {}
+		Logger() : base(Start.An.Instance(LoggingConfiguration.Default)
+		                     .Assume()
+		                     .In(Start.A.Result<LoggerConfiguration>().By.Instantiation())
+		                     .Select(LoggerSelector.Default)
+		                     .Then()
+		                     .Activate<PrimaryLogger>()
+		                     .Selector()) {}
 	}
 }

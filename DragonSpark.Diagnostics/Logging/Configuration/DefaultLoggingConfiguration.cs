@@ -8,7 +8,7 @@ namespace DragonSpark.Diagnostics.Logging.Configuration
 
 		DefaultLoggingConfiguration() : base(LoggingLevelControllerConfiguration.Default,
 		                                     new EnrichmentConfiguration(PrimaryAssemblyEnricher.Default).ToConfiguration(),
-											 /*EnhancedExceptionStackTraceConfiguration.Default.ToConfiguration(),*/
+											 EnhancedExceptionStackTraceConfiguration.Default.ToConfiguration(),
 		                                     LogContextEnricher.Default.ToConfiguration()) {}
 	}
 }

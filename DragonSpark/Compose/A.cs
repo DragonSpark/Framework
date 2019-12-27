@@ -13,9 +13,16 @@ namespace DragonSpark.Compose
 
 		public static ICondition<object> Always() => Always<object>();
 
+
+		public static ICondition<T> Never<T>() => Model.Selection.Conditions.Never<T>.Default;
+
+		public static ICondition<object> Never() => Always<object>();
+
 		public static ICondition<T> EqualTo<T>(T source) => new Equals<T>(source);
 
 		public static ICondition<object> Of<T>() => IsOf<T>.Default;
+
+		public static ICondition<Type> AssignableFrom<T>() => IsAssignableFrom<T>.Default;
 	}
 
 	public static class A

@@ -1,7 +1,7 @@
-﻿using Serilog;
+﻿using DragonSpark.Model.Sequences;
+using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
-using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Diagnostics.Logging.Configuration
 {

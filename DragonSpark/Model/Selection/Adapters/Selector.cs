@@ -28,11 +28,14 @@ namespace DragonSpark.Model.Selection.Adapters
 		public Selector<_, TTo> Select<TTo>(Func<T, TTo> select)
 			=> new Selector<_, TTo>(new Selection<_, T, TTo>(Get().Get, select));
 
-		public Selector<_, T> Configure<TOther>(IAssign<_, TOther> configuration)
-			=> new Selector<_, T>(new Configuration<_, T, TOther>(_subject, configuration));
-
 		public Selector<_, T> Configure(IAssign<_, T> configuration)
 			=> new Selector<_, T>(new Configuration<_, T>(_subject, configuration));
+
+		public Selector<_, T> Configure(ICommand<(_, T)> configuration)
+			=> new Selector<_, T>(new Configuration<_, T>(_subject.Get, configuration.Execute));
+
+		public Selector<_, T> Configure<TOther>(IAssign<_, TOther> configuration)
+			=> new Selector<_, T>(new Configuration<_, T, TOther>(_subject, configuration));
 
 		public Selector<_, Array<T>> Result() => Select(x => x.Yield().Result());
 

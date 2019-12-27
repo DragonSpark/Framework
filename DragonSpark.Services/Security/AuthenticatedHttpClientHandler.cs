@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Flurl;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -12,9 +13,11 @@ namespace DragonSpark.Services.Security
 		readonly string        _apiKey;
 		readonly Alter<string> _secret;
 
-		public AuthenticatedHttpClientHandler(string apiKey, string secret) : this(apiKey, new Encryptor(secret).Get) {}
+		public AuthenticatedHttpClientHandler(ILogger<Communication.HttpClientHandler> logger, string apiKey,
+		                                      string secret) : this(logger, apiKey, new Encryptor(secret).Get) {}
 
-		public AuthenticatedHttpClientHandler(string apiKey, Alter<string> secret)
+		public AuthenticatedHttpClientHandler(ILogger<Communication.HttpClientHandler> logger, string apiKey,
+		                                      Alter<string> secret) : base(logger)
 		{
 			_apiKey = apiKey;
 			_secret = secret;

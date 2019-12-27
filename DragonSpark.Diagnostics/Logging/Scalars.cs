@@ -1,5 +1,5 @@
-﻿using Serilog.Events;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,10 +24,11 @@ namespace DragonSpark.Diagnostics.Logging
 			var properties = parameter.Properties;
 			foreach (var name in formats.Get().Open())
 			{
-				var property = properties[name];
-				if (property is ScalarValue scalar)
+				switch (properties[name])
 				{
-					yield return new ScalarProperty(name, formats, scalar.Value);
+					case ScalarValue scalar:
+						yield return new ScalarProperty(name, formats, scalar.Value);
+						break;
 				}
 			}
 		}
