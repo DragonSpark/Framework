@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose.Selections;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
@@ -21,6 +22,8 @@ namespace DragonSpark
 	public static partial class ExtensionMethods
 	{
 		public static ISelect<TIn, IResult<TOut>> AsDefined<TIn, TOut>(this ISelect<TIn, IResult<TOut>> @this) => @this;
+
+		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
 		public static ConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
 			=> new ConditionSelector<_, T>(@this);

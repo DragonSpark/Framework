@@ -23,6 +23,10 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 
 		Registrations() : base(x => x.AddSingleton<EventMessages>()
 		                             .AddSingleton<Hasher>()
-		                             .AddSingleton<EventMessageBinder>()) {}
+		                             .AddSingleton<EventMessageBinder>()
+		                             .AddSingleton(typeof(FaultAwareTemplate<>))
+		                             .AddSingleton(typeof(LoggedProcessorOperation<>))
+		                             .AddSingleton(typeof(TaskInformationTemplate<>))
+		                             ) {}
 	}
 }

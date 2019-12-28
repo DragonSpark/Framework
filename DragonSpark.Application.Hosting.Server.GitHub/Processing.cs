@@ -17,12 +17,12 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 
 	sealed class Processor : IProcessor
 	{
-		readonly ILogger<Processor> _logger;
+		readonly ILogger<Processor>     _logger;
 		readonly Array<IMessageHandler> _handlers;
 
 		public Processor(ILogger<Processor> logger, Array<IMessageHandler> handlers)
 		{
-			_logger = logger;
+			_logger   = logger;
 			_handlers = handlers;
 		}
 
@@ -35,13 +35,6 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 				if (handler.IsSatisfiedBy(parameter))
 				{
 					var task = handler.Get(parameter);
-
-					if (task.IsFaulted)
-					{
-						_logger.LogError(task.AsTask().Exception, "[{Id}] An exception occurred while processing an event message of type {MessageType}.",
-						                 parameter.Header.Delivery, parameter.Header.Event);
-					}
-
 					if (!task.IsCompleted)
 					{
 						await task.ConfigureAwait(false);
@@ -103,21 +96,40 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		}
 
 		public IMessageHandler Get(IServiceProvider parameter)
-			=> new MessageHandler<T>(_condition, _registrations.Open().Introduce(parameter).Result());
+		{
+			var template  = parameter.GetRequiredService<FaultAwareTemplate<T>>();
+			var operation = new MessageOperation<T>(_condition, _registrations.Open().Introduce(parameter).Result());
+			var result = new MessageHandler(operation.Condition,
+			                                operation.Then()
+			                                         .Bind(template)
+			                                         .WithArguments(x => (x.Header.Delivery, x.Header.Event))
+			                                         .Get);
+			return result;
+		}
 	}
 
 	public interface IMessageHandler : IConditional<EventMessage, ValueTask> {}
 
-	sealed class MessageHandler<T> : ConditionAware<EventMessage>, IMessageHandler where T : ActivityPayload
+	sealed class MessageHandler : ConditionAware<EventMessage>, IMessageHandler
+	{
+		readonly Func<EventMessage, ValueTask> _select;
+
+		public MessageHandler(ICondition<EventMessage> condition, Func<EventMessage, ValueTask> select)
+			: base(condition) => _select = select;
+
+		public ValueTask Get(EventMessage parameter) => _select(parameter);
+	}
+
+	sealed class MessageOperation<T> : ConditionAware<EventMessage>, IOperation<EventMessage> where T : ActivityPayload
 	{
 		readonly Func<EventMessage, T> _deserializer;
 		readonly Array<IHandler<T>>    _entries;
 
-		public MessageHandler(ICondition<EventMessage> candidate, Array<IHandler<T>> entries)
+		public MessageOperation(ICondition<EventMessage> candidate, Array<IHandler<T>> entries)
 			: this(EventMessages<T>.Default.Get, candidate, entries) {}
 
-		public MessageHandler(Func<EventMessage, T> deserializer, ICondition<EventMessage> candidate,
-		                      Array<IHandler<T>> entries) : base(candidate)
+		public MessageOperation(Func<EventMessage, T> deserializer, ICondition<EventMessage> candidate,
+		                        Array<IHandler<T>> entries) : base(candidate)
 		{
 			_deserializer = deserializer;
 			_entries      = entries;
@@ -132,7 +144,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 				var task = _entries[i].Get(payload);
 				if (!task.IsCompleted)
 				{
-					await task;
+					await task.ConfigureAwait(false);
 				}
 			}
 		}
@@ -150,9 +162,10 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	sealed class LocatedHandler<T, TPayload> : Select<TPayload, ValueTask> where T : class, IHandler<TPayload>
 	                                                                       where TPayload : ActivityPayload
 	{
-		public LocatedHandler(IServiceProvider locator) : base(Compose.Start.A.Result<IHandler<TPayload>>()
-		                                                              .By.Calling(locator.GetRequiredService<T>)
-		                                                              .Assume()) {}
+		public LocatedHandler(IServiceProvider locator)
+			: base(Compose.Start.A.Result<IHandler<TPayload>>()
+			              .By.Calling(locator.GetRequiredService<T>)
+			              .Assume()) {}
 	}
 
 	sealed class Serializer : Instance<IJsonSerializer>, IJsonSerializer
