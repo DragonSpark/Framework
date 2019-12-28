@@ -49,7 +49,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
 			: base(configuration, services,
-			       LocatedApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
+			       DefaultApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
 
 		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
 		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}

@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Testing.Objects
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.xUnit", "DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj", "{41861BF2-367F-4D62-9868-2B9AAD2EC5D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Diagnostics", "DragonSpark.Diagnostics\DragonSpark.Diagnostics.csproj", "{C32C03EC-628E-4C16-A5FF-9F087DC351E7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Console", "DragonSpark.Application.Hosting.Console\DragonSpark.Application.Hosting.Console.csproj", "{BE168114-7861-45FC-B9FD-2A25F43275CD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.AzureFunctions", "DragonSpark.Application.Hosting.AzureFunctions\DragonSpark.Application.Hosting.AzureFunctions.csproj", "{A1A8D1B0-5E4D-44BE-82C8-543940A81EEC}"
@@ -55,9 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Environment.Development", "DragonSpark.Application.Hosting.Server.Environment.Development\DragonSpark.Application.Hosting.Server.Environment.Development.csproj", "{260A1394-2915-40D5-83B4-702947DA0F8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.Testing.Application", "DragonSpark.Application.Hosting.Server.Testing.Application\DragonSpark.Application.Hosting.Server.Testing.Application.csproj", "{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Testing.Application", "DragonSpark.Application.Hosting.Server.Testing.Application\DragonSpark.Application.Hosting.Server.Testing.Application.csproj", "{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application", "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application\DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.csproj", "{D3445660-18AA-47CC-80E4-151734B35CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application", "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application\DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.csproj", "{D3445660-18AA-47CC-80E4-151734B35CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,10 +95,6 @@ Global
 		{41861BF2-367F-4D62-9868-2B9AAD2EC5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41861BF2-367F-4D62-9868-2B9AAD2EC5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41861BF2-367F-4D62-9868-2B9AAD2EC5D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C32C03EC-628E-4C16-A5FF-9F087DC351E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C32C03EC-628E-4C16-A5FF-9F087DC351E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C32C03EC-628E-4C16-A5FF-9F087DC351E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C32C03EC-628E-4C16-A5FF-9F087DC351E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE168114-7861-45FC-B9FD-2A25F43275CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE168114-7861-45FC-B9FD-2A25F43275CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE168114-7861-45FC-B9FD-2A25F43275CD}.Release|Any CPU.ActiveCfg = Release|Any CPU

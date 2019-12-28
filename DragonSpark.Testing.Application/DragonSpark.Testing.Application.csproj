@@ -36,6 +36,7 @@
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Application\Services\" />
     <Folder Include="Reflection\Members\" />
   </ItemGroup>
 </Project>

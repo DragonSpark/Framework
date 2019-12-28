@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Runtime.Execution
 {
-	public class Contextual<T> : FixedSelection<object, T>
+	public class Contextual<T> : DelegatedSelection<object, T>
 	{
 		readonly static bool Attach = Is.AssignableFrom<IDisposable>().Get(A.Metadata<T>());
 
