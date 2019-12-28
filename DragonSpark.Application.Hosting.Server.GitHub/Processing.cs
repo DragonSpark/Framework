@@ -5,7 +5,6 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Operations;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Octokit;
 using Octokit.Internal;
 using System;
@@ -17,14 +16,9 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 
 	sealed class Processor : IProcessor
 	{
-		readonly ILogger<Processor>     _logger;
 		readonly Array<IMessageHandler> _handlers;
 
-		public Processor(ILogger<Processor> logger, Array<IMessageHandler> handlers)
-		{
-			_logger   = logger;
-			_handlers = handlers;
-		}
+		public Processor(Array<IMessageHandler> handlers) => _handlers = handlers;
 
 		public async ValueTask Get(EventMessage parameter)
 		{
@@ -54,8 +48,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 			=> _registrations = registrations;
 
 		public IProcessor Get(IServiceProvider parameter)
-			=> new Processor(parameter.GetRequiredService<ILogger<Processor>>(),
-			                 _registrations.Open().Introduce(parameter).Result());
+			=> new Processor(_registrations.Open().Introduce(parameter).Result());
 	}
 
 	public interface IHandlerRegistration<in T> : ISelect<IServiceProvider, IHandler<T>>
