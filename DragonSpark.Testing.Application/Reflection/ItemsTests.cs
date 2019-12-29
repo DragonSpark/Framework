@@ -1,7 +1,6 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
+﻿using DragonSpark.Runtime;
 using FluentAssertions;
-using DragonSpark.Runtime;
+using System.Collections.Immutable;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Reflection
@@ -12,7 +11,7 @@ namespace DragonSpark.Testing.Application.Reflection
 		public void Coverage()
 		{
 			Empty<int>.Enumerable.Should()
-			          .BeSameAs(Enumerable.Empty<int>());
+			          .BeSameAs(System.Linq.Enumerable.Empty<int>());
 			Empty<int>.Immutable.Should().BeEquivalentTo(ImmutableArray<int>.Empty);
 		}
 	}

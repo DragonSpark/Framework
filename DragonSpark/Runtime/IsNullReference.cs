@@ -6,6 +6,6 @@ namespace DragonSpark.Runtime
 	{
 		public static IsNullReference Default { get; } = new IsNullReference();
 
-		IsNullReference() : base(EqualsNullReference.Default.Get) {}
+		IsNullReference() : base(x => x is null) {}
 	}
 }

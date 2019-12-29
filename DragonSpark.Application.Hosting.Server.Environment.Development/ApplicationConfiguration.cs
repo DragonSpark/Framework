@@ -16,7 +16,8 @@ namespace DragonSpark.Application.Hosting.Server.Environment
 
 		public void Execute(IApplicationBuilder parameter)
 		{
-			if (parameter.ApplicationServices.GetRequiredService<IHostEnvironment>().IsDevelopment())
+			var service = parameter.ApplicationServices.GetRequiredService<IHostEnvironment>();
+			if (service.IsDevelopment())
 			{
 				parameter.UseDeveloperExceptionPage();
 			}

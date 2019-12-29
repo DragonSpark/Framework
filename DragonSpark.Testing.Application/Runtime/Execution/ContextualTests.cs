@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Execution
@@ -11,7 +12,7 @@ namespace DragonSpark.Testing.Application.Runtime.Execution
 		{
 			public static Resource Default { get; } = new Resource();
 
-			Resource() : base(() => new CountingDisposable()) {}
+			Resource() : base(A.New<CountingDisposable>()) {}
 		}
 
 		[Fact]

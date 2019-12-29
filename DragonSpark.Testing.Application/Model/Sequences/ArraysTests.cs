@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences

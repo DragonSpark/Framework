@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using System;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
@@ -19,6 +20,8 @@ namespace DragonSpark.Runtime.Activation
 
 	public sealed class New<T> : FixedActivator<T>
 	{
+		public static implicit operator Func<T>(New<T> instance) => instance.Get;
+
 		public static New<T> Default { get; } = new New<T>();
 
 		New() : base(Start.A.Selection(TypeMetadata.Default)

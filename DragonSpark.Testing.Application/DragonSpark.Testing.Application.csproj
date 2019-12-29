@@ -31,8 +31,6 @@
     <ProjectReference Include="..\DragonSpark.Testing.Environment.Development\DragonSpark.Testing.Environment.Development.csproj" Condition="'$(Configuration)' == 'Debug'" />
     <ProjectReference Include="..\DragonSpark.Testing.Environment\DragonSpark.Testing.Environment.csproj" Condition="'$(Configuration)' == 'Release'" />
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
-    <!--<ProjectReference Include="..\DragonSpark.Testing.Platform.NetCore\DragonSpark.Testing.Platform.NetCore.csproj" />
-    <ProjectReference Include="..\DragonSpark.Platform.NetCore\DragonSpark.Platform.NetCore.csproj" />-->
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
   <ItemGroup>

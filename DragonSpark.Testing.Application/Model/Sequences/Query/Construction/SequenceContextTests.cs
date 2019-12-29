@@ -1,12 +1,12 @@
 ﻿using BenchmarkDotNet.Attributes;
-using FluentAssertions;
-using Humanizer;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using Humanizer;
 using System.Linq;
 using Xunit;
 

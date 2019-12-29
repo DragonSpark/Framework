@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +19,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.GitHub.Environment.Development\DragonSpark.Application.Hosting.Server.GitHub.Environment.Development.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.GitHub\DragonSpark.Application.Hosting.Server.GitHub.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
+    <ProjectReference Include="..\DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
+using DragonSpark.Runtime.Activation;
 using System;
 using System.Reflection;
 
@@ -38,6 +39,8 @@ namespace DragonSpark.Compose
 		public static TypeInfo Metadata<T>() => Reflection.Types.Type<T>.Metadata;
 
 		public static IAlteration<T> Self<T>() => Model.Selection.Self<T>.Default;
+
+		public static New<T> New<T>() => Runtime.Activation.New<T>.Default;
 	}
 
 	public static class An

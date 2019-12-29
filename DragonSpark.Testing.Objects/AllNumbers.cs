@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
+using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Objects
 {
@@ -8,6 +7,6 @@ namespace DragonSpark.Testing.Objects
 	{
 		public static IResult<IEnumerable<int>> Default { get; } = new AllNumbers();
 
-		AllNumbers() : base(Enumerable.Range(0, int.MaxValue)) {}
+		AllNumbers() : base(System.Linq.Enumerable.Range(0, int.MaxValue)) {}
 	}
 }
