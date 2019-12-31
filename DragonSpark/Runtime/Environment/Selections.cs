@@ -3,7 +3,6 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences.Query;
-using DragonSpark.Reflection;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using System;
@@ -30,9 +29,8 @@ namespace DragonSpark.Runtime.Environment
 
 		public ISelect<Type, Type> Get(Type parameter)
 			=> _default.Get(parameter)
-			           .Unless(parameter.To(_result)
-			                            .To(I<Specification>.Default))
-			           .Unless(parameter.To(I<Specification>.Default));
+			           .Unless(Start.An.Extent<Specification>().From(parameter.To(_result)))
+			           .Unless(Start.An.Extent<Specification>().From(parameter));
 
 		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>
 		{

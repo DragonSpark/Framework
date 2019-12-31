@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Testing.Objects
 {
@@ -7,6 +7,6 @@ namespace DragonSpark.Testing.Objects
 	{
 		public static Numbers Default { get; } = new Numbers();
 
-		Numbers() : base(AllNumbers.Default.ToDelegate().To(I<ClassicTake<int>>.Default).Result().Get) {}
+		Numbers() : base(Start.An.Extent<ClassicTake<int>>().From(AllNumbers.Default.ToDelegate()).Result().Get) {}
 	}
 }

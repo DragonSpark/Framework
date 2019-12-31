@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Reflection;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -8,14 +9,13 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static IsAssemblyDeployed Default { get; } = new IsAssemblyDeployed();
 
-		IsAssemblyDeployed() : this(I<AssemblyFileExists>.Default) {}
+		IsAssemblyDeployed() : this(Start.An.Extent<AssemblyFileExists>()) {}
 
-		public IsAssemblyDeployed(I<AssemblyFileExists> infer)
+		public IsAssemblyDeployed(Extent<AssemblyFileExists> infer)
 			: base(infer.From(ExecutableRuntimeFile.Default),
-			       DevelopmentRuntimeFile.Default
-			                             .To(I<AssemblyFileExists>.Default)
-			                             .Then()
-			                             .Inverse()
-			                             .Get()) {}
+			       infer.From(DevelopmentRuntimeFile.Default)
+			            .Then()
+			            .Inverse()
+			            .Get()) {}
 	}
 }

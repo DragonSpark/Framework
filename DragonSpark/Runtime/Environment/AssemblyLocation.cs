@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
-using DragonSpark.Reflection;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -12,7 +11,7 @@ namespace DragonSpark.Runtime.Environment
 
 		AssemblyLocation() : base(Start.A.Selection<Assembly>()
 		                               .By.Calling(x => x.CodeBase)
-		                               .Select(I.A<Uri>().New)
+		                               .Select(Start.An.Extent<Uri>().New)
 		                               .Get) {}
 	}
 }

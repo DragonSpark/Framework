@@ -1,10 +1,8 @@
-﻿using DragonSpark.Model.Selection.Alterations;
-
-namespace DragonSpark.Runtime.Environment
+﻿namespace DragonSpark.Runtime.Environment
 {
 	sealed class DevelopmentRuntimeFile : RuntimeFile
 	{
-		public static IAlteration<string> Default { get; } = new DevelopmentRuntimeFile();
+		public static DevelopmentRuntimeFile Default { get; } = new DevelopmentRuntimeFile();
 
 		DevelopmentRuntimeFile() : base(".runtimeconfig.dev.json") {}
 	}

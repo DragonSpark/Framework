@@ -4,10 +4,8 @@
 	{
 		public static VowelContext Default { get; } = new VowelContext();
 
-		VowelContext() : this(Extents.Extents.Default) {}
+		VowelContext() {}
 
-		public VowelContext(Extents.Extents extent) => Extent = extent;
-
-		public Extents.Extents Extent { get; }
+		public Extents.Extents Extent => Extents.Extents.Default;
 	}
 }

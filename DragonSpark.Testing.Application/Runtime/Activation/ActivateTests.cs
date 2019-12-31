@@ -1,9 +1,10 @@
-﻿using FluentAssertions;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
+using DragonSpark.Compose;
+using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
+using FluentAssertions;
 using Xunit;
 
 // ReSharper disable All
@@ -15,14 +16,14 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		[Theory, AutoData]
 		public void VerifyNumber(int number)
 		{
-			var subject = I<Subject>.Default.From(number);
-			subject.Should().NotBeSameAs(I<Subject>.Default.From(number));
+			var subject = Start.An.Extent<Subject>().From(number);
+			subject.Should().NotBeSameAs(Start.An.Extent<Subject>().From(number));
 
 			subject.Number.Should().Be(number);
 		}
 
 		[Theory, AutoData]
-		void VerifyParameter(I<Object> sut, object parameter)
+		void VerifyParameter(Extent<Object> sut, object parameter)
 		{
 			sut.New(parameter).Should().NotBeSameAs(sut.New(parameter));
 		}

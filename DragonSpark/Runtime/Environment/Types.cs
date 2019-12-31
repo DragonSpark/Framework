@@ -1,9 +1,9 @@
-using System;
-using System.Reflection;
+using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -19,7 +19,7 @@ namespace DragonSpark.Runtime.Environment
 		public static Types<T> Default { get; } = new Types<T>();
 
 		Types() : base(Assemblies.Default.Query()
-		                         .Select(I.A<T>().From)
+		                         .Select(Start.An.Extent<T>().From)
 		                         .SelectMany(x => x.Get().Open())
 		                         .Selector()) {}
 	}

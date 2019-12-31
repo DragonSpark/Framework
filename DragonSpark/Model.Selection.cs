@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
@@ -6,7 +7,6 @@ using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Objects;
@@ -18,7 +18,7 @@ namespace DragonSpark
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		public static ISelect<TIn, TOut> Start<TIn, TOut>(this TOut @this, I<TIn> _)
+		public static ISelect<TIn, TOut> Start<TIn, TOut>(this TOut @this, Extent<TIn> _)
 			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);
 
 		public static ISelect<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
@@ -89,7 +89,7 @@ namespace DragonSpark
 
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ICondition<TIn> condition,
 		                                                   IResult<TOut> then)
-			=> @this.Unless(condition, then.ToSelect(I.A<TIn>()));
+			=> @this.Unless(condition, then.ToSelect(Compose.Start.An.Extent<TIn>()));
 
 		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                        ISelect<TIn, bool> unless,
@@ -103,9 +103,6 @@ namespace DragonSpark
 
 		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this ISelect<TIn, TOut> @this) where TIn : class
 			=> new ReferenceContext<TIn, TOut>(@this);
-
-		public static ISelect<TIn, TOut> ToSelect<TIn, TOut>(this Func<TIn, TOut> @this)
-			=> Selections<TIn, TOut>.Default.Get(@this);
 
 		public static ICondition<T> ToCondition<T>(this ISelect<T, bool> @this)
 			=> @this as ICondition<T> ?? new Model.Selection.Conditions.Condition<T>(@this.Get);

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Reflection;
 using DragonSpark.Runtime.Environment;
 
 namespace DragonSpark.Runtime.Execution
@@ -12,6 +11,6 @@ namespace DragonSpark.Runtime.Execution
 		ExecutionContextLocator() : base(A.This(ComponentTypesDefinition.Default)
 		                                  .Select(x => x.Query().FirstAssigned())
 		                                  .Assume()
-		                                  .To(I.A<ComponentLocator<IExecutionContext>>())) {}
+		                                  .To(Start.An.Extent<ComponentLocator<IExecutionContext>>())) {}
 	}
 }

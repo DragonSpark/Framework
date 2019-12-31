@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
-using DragonSpark.Reflection;
 using DragonSpark.Runtime;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark
 {
@@ -21,7 +21,7 @@ namespace DragonSpark
 			=> new Select<T, TIn, TOut>(@this.ToStore().ToDelegate());
 
 		public static IConditional<TIn, TOut> ToStore<TIn, TOut>(this IReadOnlyDictionary<TIn, TOut> @this)
-			=> @this.To(I<Lookup<TIn, TOut>>.Default);
+			=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
 			=> StandardTables<TIn, TOut>.Default.Get(@this);
@@ -55,7 +55,7 @@ namespace DragonSpark
 
 		public static ITable<TIn, TOut> ToStandardTable<TIn, TOut>(this Func<TIn, TOut> @this,
 		                                                           IDictionary<TIn, TOut> table)
-			=> @this.To(I<StandardTables<TIn, TOut>>.Default).Get(table);
+			=> Compose.Start.An.Extent<StandardTables<TIn, TOut>>().From(@this).Get(table);
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			=> @this.ToDelegateReference().ToConcurrentTable();
@@ -69,6 +69,6 @@ namespace DragonSpark
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this Func<TIn, TOut> @this,
 		                                                             ConcurrentDictionary<TIn, TOut> table)
-			=> @this.To(I<ConcurrentTables<TIn, TOut>>.Default).Get(table);
+			=> Compose.Start.An.Extent<ConcurrentTables<TIn, TOut>>().From(@this).Get(table);
 	}
 }

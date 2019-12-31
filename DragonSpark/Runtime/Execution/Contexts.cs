@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection;
 using System;
 
 namespace DragonSpark.Runtime.Execution
@@ -11,7 +10,8 @@ namespace DragonSpark.Runtime.Execution
 	{
 		public static Contexts Default { get; } = new Contexts();
 
-		Contexts() : this(DisposeContext.Default, ExecutionContextStore.Default, I<ContextDetails>.Default.From) {}
+		Contexts() : this(DisposeContext.Default, ExecutionContextStore.Default,
+		                  Start.An.Extent<ContextDetails>().From) {}
 
 		readonly Func<object, ICommand> _command;
 
@@ -39,7 +39,7 @@ namespace DragonSpark.Runtime.Execution
 			var result = _dispose.Then()
 			                     .Then(_command(current))
 			                     .Selector()
-			                     .To(I<Disposable>.Default);
+			                     .To(Start.An.Extent<Disposable>());
 			_store.Execute(_context(parameter));
 			return result;
 		}

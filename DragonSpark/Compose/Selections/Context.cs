@@ -1,14 +1,13 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
-using DragonSpark.Reflection;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Objects;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Compose.Selections
 {
@@ -59,12 +58,12 @@ namespace DragonSpark.Compose.Selections
 		public ISelect<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
 			=> new Model.Selection.Select<T, Func<TIn, TOut>>(select);
 
-		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.ToSelect(I.A<T>());
+		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.ToSelect(Start.An.Extent<T>());
 
 		public ISelect<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T> => Activations<T, TOut>.Default;
 
 		public ISelect<T, TOut> Singleton<TOut>()
-			=> Runtime.Activation.Singleton<TOut>.Default.ToSelect(I.A<T>());
+			=> Runtime.Activation.Singleton<TOut>.Default.ToSelect(Start.An.Extent<T>());
 
 		public ISelect<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default;
 
@@ -83,9 +82,9 @@ namespace DragonSpark.Compose.Selections
 
 		public Cast<TIn, TOut> Cast => Cast<TIn, TOut>.Default;
 
-		public ISelect<TIn, TOut> Activation() => Activator<TOut>.Default.ToSelect(I.A<TIn>());
+		public ISelect<TIn, TOut> Activation() => Activator<TOut>.Default.ToSelect(Start.An.Extent<TIn>());
 
-		public ISelect<TIn, TOut> Singleton() => Singleton<TOut>.Default.ToSelect(I.A<TIn>());
+		public ISelect<TIn, TOut> Singleton() => Singleton<TOut>.Default.ToSelect(Start.An.Extent<TIn>());
 
 		public ISelect<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result);
 

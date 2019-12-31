@@ -1,11 +1,11 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Runtime.Execution;
@@ -19,7 +19,8 @@ namespace DragonSpark
 		public static IResult<T> Start<T>(this T @this) => Compose.Start.A.Result(@this);
 
 		public static IResult<T> Start<T>(this Func<T> @this) => @this.Target as IResult<T> ??
-		                                                         I.A<Model.Results.Result<T>>().From(@this);
+		                                                         Compose.Start.An.Extent<Model.Results.Result<T>>()
+		                                                                .From(@this);
 
 		public static IResult<T> Singleton<T>(this IResult<T> @this) => new DeferredSingleton<T>(@this.Get);
 
@@ -81,7 +82,7 @@ namespace DragonSpark
 		public static Func<T> ToDelegateReference<T>(this IResult<T> @this)
 			=> Model.Results.Delegates<T>.Default.Get(@this);
 
-		public static ISelect<TIn, TOut> ToSelect<TIn, TOut>(this IResult<TOut> @this, I<TIn> _)
+		public static ISelect<TIn, TOut> ToSelect<TIn, TOut>(this IResult<TOut> @this, Extent<TIn> _)
 			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);
 
 		public static ISelect<T> ToSelect<T>(this IResult<T> @this)

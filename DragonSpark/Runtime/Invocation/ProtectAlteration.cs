@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Reflection;
 
 namespace DragonSpark.Runtime.Invocation
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Invocation
 	{
 		public static ProtectAlteration<TIn, TOut> Default { get; } = new ProtectAlteration<TIn, TOut>();
 
-		ProtectAlteration() : base(I<Protect<TIn, TOut>>.Default.From) {}
+		ProtectAlteration() : base(Start.An.Extent<Protect<TIn, TOut>>().From) {}
 	}
 }

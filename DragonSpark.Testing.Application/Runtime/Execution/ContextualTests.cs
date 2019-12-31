@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Application.Runtime.Execution
 		{
 			public static Resource Default { get; } = new Resource();
 
-			Resource() : base(A.New<CountingDisposable>()) {}
+			Resource() : base(Start.A.New<CountingDisposable>()) {}
 		}
 
 		[Fact]

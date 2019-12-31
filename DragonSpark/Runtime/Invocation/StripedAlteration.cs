@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Reflection;
 
 namespace DragonSpark.Runtime.Invocation
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Invocation
 	{
 		public static StripedAlteration<TIn, TOut> Default { get; } = new StripedAlteration<TIn, TOut>();
 
-		StripedAlteration() : base(I<Striped<TIn, TOut>>.Default.From) {}
+		StripedAlteration() : base(Start.An.Extent<Striped<TIn, TOut>>().From) {}
 	}
 }

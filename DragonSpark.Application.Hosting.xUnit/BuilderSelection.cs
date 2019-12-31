@@ -1,7 +1,7 @@
-﻿using System;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Kernel;
-using DragonSpark.Reflection;
+using DragonSpark.Compose;
+using System;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {
@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 		readonly Func<T, ISpecimenBuilderNode> _delegate;
 
 		protected BuilderSelection(Func<T, ISpecimenBuilder> @delegate)
-			: this(@delegate.ToSelect().Select(I<CustomizationNode>.Default.New).Get) {}
+			: this(@delegate.Start().Select(Start.An.Extent<CustomizationNode>().New).Get) {}
 
 		public ISpecimenBuilderNode Transform(ISpecimenBuilder builder) => builder.AsTo(_delegate);
 	}

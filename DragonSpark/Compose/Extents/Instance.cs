@@ -2,11 +2,11 @@
 
 namespace DragonSpark.Compose.Extents
 {
-	public sealed class Activation<T>
+	public sealed class Instance<T>
 	{
-		public static Activation<T> Instance { get; } = new Activation<T>();
+		public static Instance<T> Implementation { get; } = new Instance<T>();
 
-		Activation() {}
+		Instance() {}
 
 		public T Default => default;
 

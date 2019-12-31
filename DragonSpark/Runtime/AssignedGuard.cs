@@ -1,8 +1,7 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Reflection;
+using System;
 
 namespace DragonSpark.Runtime
 {
@@ -17,9 +16,9 @@ namespace DragonSpark.Runtime
 	{
 		readonly static ICondition<T> Condition = IsAssigned<T>.Default.Then().Inverse().Out();
 
-		protected AssignedGuard(Func<Type, string> message) : this(message.ToSelect()
+		protected AssignedGuard(Func<Type, string> message) : this(message.Start()
 		                                                                  .In(A.Type<T>())
-		                                                                  .ToSelect(I.A<T>())) {}
+		                                                                  .ToSelect(Start.An.Extent<T>())) {}
 
 		public AssignedGuard(ISelect<T, string> message) : base(Condition, message) {}
 	}

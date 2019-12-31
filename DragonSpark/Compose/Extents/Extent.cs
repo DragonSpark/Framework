@@ -25,6 +25,6 @@ namespace DragonSpark.Compose.Extents
 
 		public ExtentSelection<T> Into => ExtentSelection<T>.Default;
 
-		public Activation<T> Activation => Activation<T>.Instance;
+		public Instance<T> Instance => Instance<T>.Implementation;
 	}
 }

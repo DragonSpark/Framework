@@ -51,7 +51,7 @@ namespace DragonSpark.Testing.Application.Model.Sources
 			subject.Should()
 			       .BeSameAs(Subject<string, int>.Default.ToDelegateReference());
 
-			subject.ToSelect().Should().BeSameAs(subject.ToSelect());
+			subject.Start().Should().BeSameAs(subject.Start());
 		}
 	}
 }

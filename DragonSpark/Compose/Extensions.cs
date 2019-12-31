@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose.Extents;
-using DragonSpark.Compose.Results;
+﻿using DragonSpark.Compose.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
+using DragonSpark.Runtime.Activation;
 using System;
 using Action = DragonSpark.Model.Selection.Adapters.Action;
 
@@ -13,17 +13,15 @@ namespace DragonSpark.Compose
 	{
 		public static Extents.Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
 
-		public static Activation<T> Activation<T>(this VowelContext _) => Extents.Activation<T>.Instance;
+		public static Extents.Instance<T> Activation<T>(this VowelContext _) => Extents.Instance<T>.Implementation;
 
-		public static T Instance<T>(this VowelContext _) => Extents.Activation<T>.Instance.Activate();
+		public static T Instance<T>(this VowelContext _) => Extents.Instance<T>.Implementation.Activate();
 
 		public static T Instance<T>(this VowelContext _, T instance) => instance;
 
-		public static Results.Extent<T> Of<T>(this Context @this) => @this.Of.Type<T>();
+		public static Extent<T> Of<T>(this Context @this) => @this.Of.Type<T>();
 
-		public static Results.Extent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
-
-		public static IResult<T> Result<T>(this ModelContext _, IResult<T> result) => result;
+		public static Extent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
 
 		public static IResult<T> Result<T>(this ModelContext @this, T instance) => @this.Result<T>().By.Using(instance);
 
@@ -45,6 +43,8 @@ namespace DragonSpark.Compose
 		public static Selections.Extent<T> Of<T>(this Selections.Context @this) => @this.Of.Type<T>();
 
 		public static Selections.Extent<T> Selection<T>(this ModelContext @this) => @this.Selection.Of.Type<T>();
+
+		public static New<T> New<T>(this ModelContext _) => Runtime.Activation.New<T>.Default;
 
 		public static ISelect<TIn, TOut> Selection<TIn, TOut>(this ModelContext _, Func<TIn, TOut> select)
 			=> new Select<TIn, TOut>(select);

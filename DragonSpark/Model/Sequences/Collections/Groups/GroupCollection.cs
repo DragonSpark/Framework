@@ -1,7 +1,7 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Sequences.Query;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Model.Sequences.Query;
-using DragonSpark.Reflection;
 
 namespace DragonSpark.Model.Sequences.Collections.Groups
 {
@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 			       store.Select(x => x.Value.ToArray())
 			            .Select(SortAlteration<T>.Default.Get)
 			            .SelectMany(x => x)
-			            .To(I<DeferredArray<T>>.Default)) {}
+			            .To(Start.An.Extent<DeferredArray<T>>())) {}
 
 		public GroupCollection(IOrderedDictionary<GroupName, IList<T>> store, IArray<T> values)
 			: base(store.GetValue) => Values = values;
