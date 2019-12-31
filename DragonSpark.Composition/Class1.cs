@@ -1,5 +1,4 @@
-﻿using LightInject;
-using DragonSpark.Application;
+﻿using DragonSpark.Application;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
@@ -10,6 +9,7 @@ using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
+using LightInject;
 using System;
 using System.Linq;
 

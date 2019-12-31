@@ -1,12 +1,10 @@
 using DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controllers;
 using DragonSpark.Model.Commands;
-using DragonSpark.Services;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,7 +18,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 		[InlineData("Development", "/HelloWorld")]
 		public async Task VerifyHelloWorld(string environment, string url)
 		{
-			using var host = await TestHost.ConfiguredWith<Configure>(environment);
+			using var host = await TestHost.ConfiguredWith<Configurator>(environment);
 
 			var client   = host.GetTestServer().CreateClient();
 			var response = await client.GetAsync(url);
@@ -37,11 +35,10 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 		public string Get() => "Hello World!";
 	}
 
-	sealed class Configure : Configurator
+	sealed class Configurator : Server.Configurator
 	{
 		[UsedImplicitly]
-		public Configure(IConfiguration configuration)
-			: base(configuration, Registrations.Default.Adapt().Then(DefaultServiceConfiguration.Default)) {}
+		public Configurator() : base(Registrations.Default.Then(DefaultServiceConfiguration.Default)) {}
 	}
 
 	sealed class Registrations : Command<IServiceCollection>

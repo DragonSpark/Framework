@@ -1,13 +1,11 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Activation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -16,9 +14,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Services
 {
-	public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}
+	public static class Extensions
+	{
+	}
 
-	public interface IConfigurator : IActivateUsing<IConfiguration>
+	public interface IConfigurator
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -28,28 +28,9 @@ namespace DragonSpark.Services
 		void Configure(IApplicationBuilder builder);
 	}
 
-	public interface IServiceConfiguration : ICommand<ConfigureParameter> {}
+	public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}
 
-	public static class Extensions
-	{
-		public static ICommand<ConfigureParameter> Adapt(this ICommand<IServiceCollection> @this)
-			=> new RegistrationConfiguration(@this.Execute);
-
-		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
-			=> new RegistrationContext<T>(@this);
-	}
-
-	public sealed class RegistrationContext<T> where T : class
-	{
-		readonly IServiceCollection _collection;
-
-		public RegistrationContext(IServiceCollection collection) => _collection = collection;
-
-		public IServiceCollection Singleton<TResult>() where TResult : class, IResult<T>
-			=> _collection.AddSingleton<TResult>()
-			              .AddSingleton(x => x.GetRequiredService<TResult>().ToDelegate())
-			              .AddSingleton(x => x.GetRequiredService<TResult>().Get());
-	}
+	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
 
 	sealed class EmptyServiceConfiguration : IServiceConfiguration
 	{
@@ -57,10 +38,10 @@ namespace DragonSpark.Services
 
 		EmptyServiceConfiguration() {}
 
-		public void Execute(ConfigureParameter parameter) {}
+		public void Execute(IServiceCollection parameter) {}
 	}
 
-	public class RegistrationConfiguration : IServiceConfiguration
+	/*public class RegistrationConfiguration : IServiceConfiguration
 	{
 		readonly Action<IServiceCollection> _command;
 
@@ -70,57 +51,54 @@ namespace DragonSpark.Services
 		{
 			_command(parameter.Services);
 		}
-	}
-
-	/*public sealed class DefaultServiceConfiguration : ServiceConfiguration
-	{
-		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
-
-		DefaultServiceConfiguration() : base(EmptyServiceConfiguration.Default) {}
 	}*/
 
-	public class ServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
+	public class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
-		public ServiceConfiguration(Action<ConfigureParameter> @default)
-			: this(Start.A.Command<ConfigureParameter>().By.Calling(@default)) {}
+		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}
 
-		public ServiceConfiguration(ICommand<ConfigureParameter> @default)
+		public ServiceConfiguration(Action<IServiceCollection> command) : base(command) {}
+	}
+
+	public class LocatedServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
+	{
+		public LocatedServiceConfiguration(ICommand<IServiceCollection> @default)
 			: base(Start.A.Result.Of.Type<IServiceConfiguration>()
 			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
 			            .Assume()
 			            .Then(@default)) {}
 	}
 
-	public readonly struct ConfigureParameter
+	/*public readonly struct ConfigureParameter
 	{
-		public ConfigureParameter(IConfiguration configuration, IServiceCollection services)
+		public ConfigureParameter(IHostEnvironment environment, IConfiguration configuration,
+		                          IServiceCollection services)
 		{
+			Environment   = environment;
 			Configuration = configuration;
 			Services      = services;
 		}
 
+		public IHostEnvironment Environment { get; }
 		public IConfiguration Configuration { get; }
 
 		public IServiceCollection Services { get; }
-	}
+	}*/
 
 	public class Configurator : IConfigurator
 	{
-		readonly IConfiguration              _configuration;
-		readonly Action<ConfigureParameter>  _services;
+		readonly Action<IServiceCollection>  _configure;
 		readonly Action<IApplicationBuilder> _application;
 
-		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
-		                    Action<IApplicationBuilder> application)
+		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
 		{
-			_configuration = configuration;
-			_services      = services;
-			_application   = application;
+			_configure   = configure;
+			_application = application;
 		}
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			_services(new ConfigureParameter(_configuration, services));
+			_configure(services);
 		}
 
 		public void Configure(IApplicationBuilder builder)
@@ -154,49 +132,6 @@ namespace DragonSpark.Services
 			            .Then(@default)) {}
 	}
 
-	public sealed class Build
-	{
-		public static Build A { get; } = new Build();
-
-		Build() {}
-
-		public ProgramLocationContext Program { get; } = ProgramLocationContext.Instance;
-
-		public sealed class ProgramLocationContext
-		{
-			public static ProgramLocationContext Instance { get; } = new ProgramLocationContext();
-
-			ProgramLocationContext() {}
-
-			public ProgramLocationByContext By { get; } = ProgramLocationByContext.Default;
-		}
-	}
-
-	public sealed class ProgramLocationByContext
-	{
-		public static ProgramLocationByContext Default { get; } = new ProgramLocationByContext();
-
-		ProgramLocationByContext() {}
-
-		public ProgramContext Environment() => Activating<LocatedProgram>();
-
-		public ProgramContext Environment(IProgram @default) => Using(new LocatedProgram(@default));
-
-		public ProgramContext Using(IProgram program) => new ProgramContext(program);
-
-		public ProgramContext Activating<T>() where T : class, IProgram => Using(Start.An.Instance<T>());
-	}
-
-	public sealed class ProgramContext
-	{
-		readonly IProgram _program;
-
-		public ProgramContext(IProgram program) => _program = program;
-
-		public ISelect<Array<string>, Task> ConfiguredBy<T>() where T : class, IConfigurator
-			=> HostBuilder<T>.Default.Select(_program);
-	}
-
 	public class ActivatedProgram<T> : IProgram where T : ISelect<IHost, Task>
 	{
 		protected ActivatedProgram() {}
@@ -206,10 +141,10 @@ namespace DragonSpark.Services
 
 	public static class RegisterOption
 	{
-		public static IAlteration<ConfigureParameter> Of<T>() where T : class, new() => RegisterOption<T>.Default;
+		public static IAlteration<IServiceCollection> Of<T>() where T : class, new() => RegisterOption<T>.Default;
 	}
 
-	sealed class RegisterOption<T> : IAlteration<ConfigureParameter> where T : class, new()
+	sealed class RegisterOption<T> : IAlteration<IServiceCollection> where T : class, new()
 	{
 		public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
 
@@ -219,8 +154,8 @@ namespace DragonSpark.Services
 
 		public RegisterOption(string name) => _name = name;
 
-		public ConfigureParameter Get(ConfigureParameter parameter)
-			=> parameter.Services.Configure<T>(parameter.Configuration.GetSection(_name))
+		public IServiceCollection Get(IServiceCollection parameter)
+			=> parameter.Configure<T>(parameter.Configuration().GetSection(_name))
 			            .AddSingleton(x => x.GetRequiredService<IOptions<T>>().Value)
 			            .Return(parameter);
 	}

@@ -4,7 +4,6 @@ using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -41,14 +40,14 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-	public sealed class DefaultServiceConfiguration : ServiceConfiguration
+	public sealed class DefaultServiceConfiguration : LocatedServiceConfiguration
 	{
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
 		DefaultServiceConfiguration() : base(RegistrationConfiguration.Default) {}
 	}
 
-	sealed class RegistrationConfiguration : Services.RegistrationConfiguration
+	sealed class RegistrationConfiguration : ServiceConfiguration
 	{
 		public static RegistrationConfiguration Default { get; } = new RegistrationConfiguration();
 
@@ -64,13 +63,12 @@ namespace DragonSpark.Application.Hosting.Server
 
 	public class Configurator : Services.Configurator
 	{
-		public Configurator(IConfiguration configuration) : this(configuration,
-		                                                         DefaultServiceConfiguration.Default.Execute) {}
+		public Configurator() : this(DefaultServiceConfiguration.Default.Execute) {}
 
-		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
-			: this(configuration, services, DefaultApplicationConfiguration.Default.Execute) {}
+		public Configurator(Action<IServiceCollection> services)
+			: this(services, DefaultApplicationConfiguration.Default.Execute) {}
 
-		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
-		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}
+		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
+			: base(configure, application) {}
 	}
 }

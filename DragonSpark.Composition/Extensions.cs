@@ -1,10 +1,42 @@
-﻿using LightInject;
+﻿using DragonSpark.Composition.Compose;
+using LightInject;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace DragonSpark.Composition
 {
-	static class Extensions
+	public static class Extensions
 	{
+		public static IConfiguration Configuration(this IServiceCollection @this)
+			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
+			        .ImplementationFactory?.Invoke(null)
+			        .To<IConfiguration>();
+
+		public static T GetInstance<T>(this IServiceCollection @this) where T : class
+			=> (@this.Where(x => x.ServiceType == typeof(T))
+			         .Select(x => x.ImplementationInstance)
+			         .Only()
+			    ??
+			    @this.Select(x => x.ImplementationInstance)
+			         .OfType<T>()
+			         .FirstOrDefault())?
+				.To<T>();
+
+		public static T GetRequiredInstance<T>(this IServiceCollection @this) where T : class
+			=> (@this.Where(x => x.ServiceType == typeof(T))
+			         .Select(x => x.ImplementationInstance)
+			         .Only()
+			    ??
+			    @this.Select(x => x.ImplementationInstance)
+			         .OfType<T>()
+			         .FirstOrDefault())
+				.To<T>();
+
+		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
+			=> new RegistrationContext<T>(@this);
+
 		public static IServiceRegistry RegisterDefinition<T>(this IServiceRegistry @this)
 		{
 			var to = typeof(T).GetGenericTypeDefinition();
@@ -27,7 +59,8 @@ namespace DragonSpark.Composition
 			            .RegisterDependencies(to);
 		}
 
-		public static IServiceRegistry DecorateWithDependencies<TFrom, TTo>(this IServiceRegistry @this) where TTo : TFrom
+		public static IServiceRegistry DecorateWithDependencies<TFrom, TTo>(this IServiceRegistry @this)
+			where TTo : TFrom
 			=> @this.Decorate<TFrom, TTo>()
 			        .RegisterDependencies(typeof(TTo));
 
@@ -43,7 +76,8 @@ namespace DragonSpark.Composition
 			=> @this.Register<T>()
 			        .RegisterDependencies(typeof(T));
 
-		public static IServiceRegistry RegisterWithDependencies<TFrom, TTo>(this IServiceRegistry @this) where TTo : TFrom
+		public static IServiceRegistry RegisterWithDependencies<TFrom, TTo>(this IServiceRegistry @this)
+			where TTo : TFrom
 			=> @this.Register<TFrom, TTo>()
 			        .RegisterDependencies(typeof(TTo));
 

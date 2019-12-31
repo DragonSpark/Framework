@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Composition;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Services;
@@ -16,13 +17,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Hosting.Server.GitHub.Environment
 {
-	public sealed class ServiceConfiguration : Command<ConfigureParameter>, IServiceConfiguration
+	public sealed class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
+		[UsedImplicitly]
 		public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
 
 		ServiceConfiguration() : base(RegisterOption.Of<RelayerSettings>()
 		                                            .Then()
-		                                            .Terminate(Registrations.Default.Adapt())) {}
+		                                            .Terminate(Registrations.Default)) {}
 	}
 
 	sealed class Registrations : ICommand<IServiceCollection>

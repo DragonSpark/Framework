@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
 

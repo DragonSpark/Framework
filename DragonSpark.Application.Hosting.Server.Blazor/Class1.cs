@@ -2,10 +2,8 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Environment;
-using DragonSpark.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -44,15 +42,13 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 
 	sealed class Configurator : Services.Configurator
 	{
-		public Configurator(IConfiguration configuration)
-			: this(configuration, Registrations.Default.Adapt().Execute) {}
+		public Configurator() : this(Registrations.Default.Execute) {}
 
-		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services)
-			: base(configuration, services,
-			       DefaultApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
+		public Configurator(Action<IServiceCollection> services)
+			: base(services, DefaultApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
 
-		public Configurator(IConfiguration configuration, Action<ConfigureParameter> services,
-		                    Action<IApplicationBuilder> application) : base(configuration, services, application) {}
+		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
+			: base(configure, application) {}
 	}
 
 	public sealed class Registrations : ICommand<IServiceCollection>

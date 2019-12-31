@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Environment.Development\DragonSpark.Application.Hosting.Server.Environment.Development.csproj" />
+    <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
     <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
   </ItemGroup>
 
