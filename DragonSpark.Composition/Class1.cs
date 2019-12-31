@@ -162,7 +162,7 @@ namespace DragonSpark.Composition
 		                          .Then()
 		                          .Activate<NotHave<Type>>()
 		                          .Get()
-		                          .AsDefined()
+		                          .DefinedAsCondition()
 		                          .Then()
 		                          .Delegate()) {}
 	}

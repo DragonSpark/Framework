@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection;
+using System;
 
 namespace DragonSpark.Runtime.Execution
 {
@@ -12,6 +13,17 @@ namespace DragonSpark.Runtime.Execution
 
 		Contexts() : this(DisposeContext.Default, ExecutionContextStore.Default, I<ContextDetails>.Default.From) {}
 
+		readonly Func<object, ICommand> _command;
+
+		readonly Func<string, object> _context;
+
+		readonly ICommand _dispose;
+
+		readonly IMutable<object> _store;
+
+		public Contexts(ICommand dispose, IMutable<object> store, Func<string, object> context)
+			: this(dispose, store, context, A.Command(store).Then().Out) {}
+
 		// ReSharper disable once TooManyDependencies
 		Contexts(ICommand dispose, IMutable<object> store, Func<string, object> context, Func<object, ICommand> command)
 		{
@@ -20,15 +32,6 @@ namespace DragonSpark.Runtime.Execution
 			_context = context;
 			_command = command;
 		}
-
-		readonly Func<object, ICommand> _command;
-		readonly Func<string, object>   _context;
-
-		readonly ICommand         _dispose;
-		readonly IMutable<object> _store;
-
-		public Contexts(ICommand dispose, IMutable<object> store, Func<string, object> context)
-			: this(dispose, store, context, store.AsCommand().Then().Out) {}
 
 		public IDisposable Get(string parameter)
 		{

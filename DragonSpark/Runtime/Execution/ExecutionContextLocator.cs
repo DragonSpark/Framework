@@ -12,6 +12,6 @@ namespace DragonSpark.Runtime.Execution
 		ExecutionContextLocator() : base(A.This(ComponentTypesDefinition.Default)
 		                                  .Select(x => x.Query().FirstAssigned())
 		                                  .Assume()
-		                                  .To(I<ComponentLocator<IExecutionContext>>.Default)) {}
+		                                  .To(I.A<ComponentLocator<IExecutionContext>>())) {}
 	}
 }

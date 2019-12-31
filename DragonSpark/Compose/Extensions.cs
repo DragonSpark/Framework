@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Results;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
@@ -40,9 +39,6 @@ namespace DragonSpark.Compose
 		public static Commands.Extent<T> Of<T>(this Commands.Context @this) => @this.Of.Type<T>();
 
 		public static Commands.Extent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
-
-		public static Model.Selection.Adapters.Action<T> Command<T>(this ModelContext _, ICommand<T> result)
-			=> result.ToDelegateReference();
 
 		public static Action Calling(this Commands.Extent<None> _, System.Action body) => new Action(body);
 

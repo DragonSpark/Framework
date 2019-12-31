@@ -12,7 +12,7 @@ namespace DragonSpark.Runtime.Environment
 		ComponentTypes() : base(Start.An.Instance(ComponentTypesDefinition.Default)
 		                             .Select(x => x.ToStore())
 		                             .ToContextual()
-		                             .AsDefined()
+		                             .DefinedAsSelection()
 		                             .Then()
 		                             .Delegate()
 		                             .Selector()) {}

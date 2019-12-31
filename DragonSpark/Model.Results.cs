@@ -16,10 +16,6 @@ namespace DragonSpark
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		public static IResult<IResult<T>> AsDefined<T>(this IResult<IResult<T>> @this) => @this;
-
-		public static IResult<ISelect<TIn, TOut>> AsDefined<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this) => @this;
-
 		public static IResult<T> Start<T>(this T @this) => Compose.Start.A.Result(@this);
 
 		public static IResult<T> Start<T>(this Func<T> @this) => @this.Target as IResult<T> ??

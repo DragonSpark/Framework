@@ -11,7 +11,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		                           .By.Returning(-1)
 		                           .Unless(SortMetadata<T>.Default)
 		                           .UnlessIsOf(Start.A.Selection<ISortAware>()
-		                                            .By.Self.AsDefined()
+		                                            .By.Self.DefinedAsResult()
 		                                            .Then()
 		                                            .Value()
 		                                            .Get())) {}

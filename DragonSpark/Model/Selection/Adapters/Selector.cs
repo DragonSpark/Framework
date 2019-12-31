@@ -11,13 +11,13 @@ namespace DragonSpark.Model.Selection.Adapters
 {
 	public class Selector<_, T> : IResult<ISelect<_, T>>, IActivateUsing<ISelect<_, T>>
 	{
+		public static implicit operator Func<_, T>(Selector<_, T> instance) => instance.Get().ToDelegate();
+
 		readonly ISelect<_, T> _subject;
 
 		public Selector(ISelect<_, T> subject) => _subject = subject;
 
 		public ISelect<_, T> Get() => _subject;
-
-		public static implicit operator Func<_, T>(Selector<_, T> instance) => instance.Get().ToDelegate();
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
 

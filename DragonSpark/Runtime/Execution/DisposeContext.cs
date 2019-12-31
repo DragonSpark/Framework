@@ -1,8 +1,8 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Runtime.Execution
 {
@@ -19,8 +19,8 @@ namespace DragonSpark.Runtime.Execution
 		                      ISelect<object, IDisposable> select)
 			: base(select.Then()
 			             .Terminate(A.Of<DisposeCommand>())
-			             .Then(ExecutionContextStore.Default.AsCommand().Then().Input().Any().Get(),
-			                  A.Of<ClearResources>())
+			             .Then(A.Command(ExecutionContextStore.Default).Then().Input().Any().Get(),
+			                   A.Of<ClearResources>())
 			             .To(x => x.Get().ToSelect())
 			             .If(contains)
 			             .To(x => x.ToCommand().Then())

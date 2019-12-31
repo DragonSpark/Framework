@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Configs;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Selections;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 
@@ -15,7 +14,8 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 		                       Start.A.Selection.Of.Type<string>().As.Sequence.Immutable) {}
 
 		public Configuration(Compose.Conditions.Extent<Array<string>> condition, Extent<Array<string>> selection)
-			: base(condition.By.Calling(x => x.Length > 0), selection.By.Returning(Quick.Default.AsDefined()),
-			       selection.By.Returning(Deployed.Default.AsDefined())) {}
+			: base(condition.By.Calling(x => x.Length > 0), 
+			       selection.By.Returning(A.Result(Quick.Default)),
+			       selection.By.Returning(A.Result(Deployed.Default))) {}
 	}
 }

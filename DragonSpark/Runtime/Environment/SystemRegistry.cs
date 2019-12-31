@@ -1,7 +1,7 @@
-using System;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
+using System;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Environment
 		public SystemRegistry(Func<IRegistry<T>> registry) : this(registry.To(SystemStores.New)) {}
 
 		public SystemRegistry(IResult<IRegistry<T>> result)
-			: this(result.Get, result.AsDefined().Then().Delegate().Selector()) {}
+			: this(result.Get, result.DefinedAsResult().Then().Delegate().Selector()) {}
 
 		public SystemRegistry(Func<IRegistry<T>> result, Func<Func<Array<T>>> get) : base(get)
 			=> _result = result;

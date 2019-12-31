@@ -7,6 +7,6 @@
 
 	public static class Extensions
 	{
-		public static IResult<T> AsDefined<T>(this IResult<T> @this) => @this;
+		
 	}
 }

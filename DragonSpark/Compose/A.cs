@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
@@ -32,6 +34,10 @@ namespace DragonSpark.Compose
 
 		public static T Of<T>() => Start.An.Instance<T>();
 
+		public static ICommand<T> Command<T>(ICommand<T> instance) => instance;
+
+		public static IResult<T> Result<T>(IResult<T> instance) => instance;
+		
 		public static T This<T>(T instance) => instance;
 
 		public static Type Type<T>() => Reflection.Types.Type<T>.Instance;

@@ -1,7 +1,6 @@
-﻿using System;
-using DragonSpark.Model.Selection;
-using DragonSpark.Reflection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
+using System;
 
 namespace DragonSpark.Compose.Selections
 {
@@ -19,13 +18,13 @@ namespace DragonSpark.Compose.Selections
 
 			Alternatives() {}
 
-			public ISelect<TIn, TOut> Throw() => DefaultComponentLocator<TOut>.Default.ToSelect(I.A<TIn>());
+			public ISelect<TIn, TOut> Throw()
+				=> Start.A.Selection<TIn>().By.Returning(A.Result(DefaultComponentLocator<TOut>.Default));
 
-			public ISelect<TIn, TOut> Default(TOut instance)
-				=> new Component<TOut>(instance.Start()).ToSelect(I.A<TIn>());
+			public ISelect<TIn, TOut> Default(TOut instance) => Default(instance.Start().ToDelegate());
 
 			public ISelect<TIn, TOut> Default(Func<TOut> result)
-				=> new Component<TOut>(result).ToSelect(I.A<TIn>());
+				=> Start.A.Selection<TIn>().By.Returning(A.Result(new Component<TOut>(result)));
 		}
 	}
 }
