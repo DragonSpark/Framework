@@ -12,6 +12,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
 </Project>

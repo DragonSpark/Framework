@@ -1,14 +1,22 @@
-﻿using DragonSpark.Composition.Compose;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using LightInject;
+using LightInject.Microsoft.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 
 namespace DragonSpark.Composition
 {
-	public static partial class Extensions
+	public static class Extensions
 	{
+		public static BuildHostContext Host(this ModelContext _)
+			=> Start.A.Selection.Of<IHostBuilder>().By.Self.To(Start.An.Extent<BuildHostContext>());
+
+		public static HostOperationsContext Operations(this BuildHostContext @this) => new HostOperationsContext(@this);
+
 		public static IConfiguration Configuration(this IServiceCollection @this)
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 			        .ImplementationFactory?.Invoke(null)
@@ -33,6 +41,37 @@ namespace DragonSpark.Composition
 			         .OfType<T>()
 			         .FirstOrDefault())
 				.To<T>();
+
+		/*sealed class Registration : IServiceConfiguration
+		{
+			readonly IServiceProviderFactory<IServiceContainer> _factory;
+
+			public Registration(IServiceProviderFactory<IServiceContainer> factory) => _factory = factory;
+
+			public void Execute(IServiceCollection parameter)
+			{
+				parameter.AddSingleton(_factory);
+			}
+		}*/
+
+		static ContainerOptions WithoutVariance(this ContainerOptions @this)
+		{
+			@this.EnableVariance = false;
+			return @this;
+		}
+
+		public static IHostBuilder UseLightInject(this IHostBuilder @this)
+			=> @this.UseLightInject(ContainerOptions.Default.Clone().WithMicrosoftSettings().WithoutVariance());
+
+		public static IHostBuilder UseLightInject(this IHostBuilder @this, ContainerOptions options)
+			=> @this.UseLightInject(new LightInjectServiceProviderFactory(options));
+
+		public static IHostBuilder UseLightInject(this IHostBuilder @this, IServiceContainer serviceContainer)
+			=> @this.UseLightInject(new LightInjectServiceProviderFactory(serviceContainer));
+
+		public static IHostBuilder UseLightInject(this IHostBuilder @this,
+		                                          IServiceProviderFactory<IServiceContainer> factory)
+			=> @this.UseServiceProviderFactory(factory);
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
 			=> new RegistrationContext<T>(@this);

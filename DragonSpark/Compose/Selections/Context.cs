@@ -28,7 +28,7 @@ namespace DragonSpark.Compose.Selections
 
 		Context() {}
 
-		public ISelect<T, T> Self => Self<T>.Default;
+		public IAlteration<T> Self => Self<T>.Default;
 
 		public ISelect<T, TypeInfo> Metadata => InstanceMetadata<T>.Default;
 		public ISelect<T, Type> Type => InstanceType<T>.Default;

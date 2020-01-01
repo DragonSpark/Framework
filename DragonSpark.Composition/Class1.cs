@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -20,21 +21,27 @@ namespace DragonSpark.Composition
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		void ConfigureServices(IServiceCollection services);
-
-		void ConfigureContainer(IServiceContainer container);
 	}
 
 	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
 
-	public sealed class ConfigureComposition<T> : IContainerConfiguration where T : ICompositionRoot
+	public static class ConfigureComposition
 	{
-		public void Execute(IServiceContainer parameter)
-		{
-			parameter.RegisterFrom<T>();
-		}
+		public static BuildHostContext WithComposition(this BuildHostContext @this)
+			=> @this.Select(Composition.WithComposition.Default);
+
+		public static BuildHostContext WithComposition<T>(this BuildHostContext @this) where T : ICompositionRoot, new()
+			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
+
+		public static BuildHostContext Configure(this BuildHostContext @this, ICommand<IHostBuilder> configuration)
+			=> @this.Get()
+			        .Then()
+			        .Terminate(configuration)
+			        .Out()
+			        .To(Start.An.Extent<BuildHostContext>());
 	}
 
-	public sealed class WithComposition : IAlteration<IHostBuilder>
+	sealed class WithComposition : IAlteration<IHostBuilder>
 	{
 		public static WithComposition Default { get; } = new WithComposition();
 
@@ -42,6 +49,24 @@ namespace DragonSpark.Composition
 
 		public IHostBuilder Get(IHostBuilder parameter) => parameter.UseLightInject();
 	}
+
+	sealed class ConfigureContainer<T> : ICommand<IHostBuilder> where T : ICompositionRoot, new()
+	{
+		public static ConfigureContainer<T> Default { get; } = new ConfigureContainer<T>();
+
+		ConfigureContainer() : this(x => x.RegisterFrom<T>()) {}
+
+		readonly Action<IServiceContainer> _configure;
+
+		public ConfigureContainer(Action<IServiceContainer> configure) => _configure = configure;
+
+		public void Execute(IHostBuilder parameter)
+		{
+			parameter.ConfigureContainer(_configure);
+		}
+	}
+
+
 
 	public class Configurator : IConfigurator
 	{
@@ -245,7 +270,8 @@ namespace DragonSpark.Composition
 		                          .Get()
 		                          .DefinedAsCondition()
 		                          .Then()
-		                          .Delegate()) {}
+		                          .Delegate()
+		                    ) {}
 	}
 
 	sealed class ServiceTypeSelector : Select<ServiceRegistration, Type>
