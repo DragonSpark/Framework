@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
 
 namespace DragonSpark.Runtime.Execution
@@ -8,9 +9,15 @@ namespace DragonSpark.Runtime.Execution
 	{
 		public static ExecutionContextLocator Default { get; } = new ExecutionContextLocator();
 
-		ExecutionContextLocator() : base(A.This(ComponentTypesDefinition.Default)
-		                                  .Select(x => x.Query().FirstAssigned())
-		                                  .Assume()
-		                                  .To(Start.An.Extent<ComponentLocator<IExecutionContext>>())) {}
+		ExecutionContextLocator()
+			: base(Start.An.Extent<FixedActivator<IExecutionContext>>()
+			            .From(A.This(ComponentTypesDefinition.Default)
+			                   .Select(x => x.Query().FirstAssigned())
+			                   .Assume()
+			                   .Select(Activator.Default.Assigned())
+			                   .Then()
+			                   .CastForResult<IExecutionContext>()
+			                   .Get())
+			      ) {}
 	}
 }

@@ -14,8 +14,6 @@ namespace DragonSpark.Compose.Extents
 
 		public T Activate() => Location<T>.Default.Activate();
 
-		public T Locate() => Location<T>.Default.Locate();
-
 		public T Singleton() => Singleton<T>.Default.Get();
 	}
 }

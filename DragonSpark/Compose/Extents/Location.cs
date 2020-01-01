@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Runtime.Activation;
-using DragonSpark.Runtime.Environment;
 
 namespace DragonSpark.Compose.Extents
 {
@@ -12,7 +11,5 @@ namespace DragonSpark.Compose.Extents
 		public T New() => New<T>.Default.Get();
 
 		public T Activate() => Activator<T>.Default.Get();
-
-		public T Locate() => ComponentLocator<T>.Default.Get();
 	}
 }
