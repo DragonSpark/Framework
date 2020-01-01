@@ -14,92 +14,20 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Services
 {
-	public static class Extensions
+	public interface IConfigurator : Composition.IConfigurator
 	{
-	}
-
-	public interface IConfigurator
-	{
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-		void ConfigureServices(IServiceCollection services);
-
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		void Configure(IApplicationBuilder builder);
 	}
 
 	public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}
 
-	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
-
-	sealed class EmptyServiceConfiguration : IServiceConfiguration
+	public class Configurator : Composition.Configurator
 	{
-		public static EmptyServiceConfiguration Default { get; } = new EmptyServiceConfiguration();
-
-		EmptyServiceConfiguration() {}
-
-		public void Execute(IServiceCollection parameter) {}
-	}
-
-	/*public class RegistrationConfiguration : IServiceConfiguration
-	{
-		readonly Action<IServiceCollection> _command;
-
-		public RegistrationConfiguration(Action<IServiceCollection> command) => _command = command;
-
-		public void Execute(ConfigureParameter parameter)
-		{
-			_command(parameter.Services);
-		}
-	}*/
-
-	public class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
-	{
-		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}
-
-		public ServiceConfiguration(Action<IServiceCollection> command) : base(command) {}
-	}
-
-	public class LocatedServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
-	{
-		public LocatedServiceConfiguration(ICommand<IServiceCollection> @default)
-			: base(/*Start.A.Result.Of.Type<IServiceConfiguration>()
-			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
-			            .Assume()
-			            .Then(@default)*/@default) {}
-	}
-
-	/*public readonly struct ConfigureParameter
-	{
-		public ConfigureParameter(IHostEnvironment environment, IConfiguration configuration,
-		                          IServiceCollection services)
-		{
-			Environment   = environment;
-			Configuration = configuration;
-			Services      = services;
-		}
-
-		public IHostEnvironment Environment { get; }
-		public IConfiguration Configuration { get; }
-
-		public IServiceCollection Services { get; }
-	}*/
-
-	public class Configurator : IConfigurator
-	{
-		readonly Action<IServiceCollection>  _configure;
 		readonly Action<IApplicationBuilder> _application;
 
 		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
-		{
-			_configure   = configure;
-			_application = application;
-		}
-
-		public void ConfigureServices(IServiceCollection services)
-		{
-			_configure(services);
-		}
+			: base(configure) => _application = application;
 
 		public void Configure(IApplicationBuilder builder)
 		{

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.Composition
 {
-	public static class Extensions
+	public static partial class Extensions
 	{
 		public static IConfiguration Configuration(this IServiceCollection @this)
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))

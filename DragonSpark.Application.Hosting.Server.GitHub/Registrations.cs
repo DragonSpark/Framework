@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Composition;
+using DragonSpark.Model.Commands;
 using DragonSpark.Services;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;

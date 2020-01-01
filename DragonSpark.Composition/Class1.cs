@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
@@ -7,11 +8,80 @@ using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using LightInject;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 
 namespace DragonSpark.Composition
 {
+	public interface IConfigurator
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		void ConfigureServices(IServiceCollection services);
+
+		void ConfigureContainer(IServiceContainer container);
+	}
+
+	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
+
+	public sealed class ConfigureComposition<T> : IContainerConfiguration where T : ICompositionRoot
+	{
+		public void Execute(IServiceContainer parameter)
+		{
+			parameter.RegisterFrom<T>();
+		}
+	}
+
+	public sealed class WithComposition : IAlteration<IHostBuilder>
+	{
+		public static WithComposition Default { get; } = new WithComposition();
+
+		WithComposition() {}
+
+		public IHostBuilder Get(IHostBuilder parameter) => parameter.UseLightInject();
+	}
+
+	public class Configurator : IConfigurator
+	{
+		readonly Action<IServiceCollection> _configure;
+
+		public Configurator(Action<IServiceCollection> configure) => _configure = configure;
+
+		public void ConfigureServices(IServiceCollection services)
+		{
+			_configure(services);
+		}
+	}
+
+	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
+
+	sealed class EmptyServiceConfiguration : IServiceConfiguration
+	{
+		public static EmptyServiceConfiguration Default { get; } = new EmptyServiceConfiguration();
+
+		EmptyServiceConfiguration() {}
+
+		public void Execute(IServiceCollection parameter) {}
+	}
+
+	public class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
+	{
+		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}
+
+		public ServiceConfiguration(Action<IServiceCollection> command) : base(command) {}
+	}
+
+	public class LocatedServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
+	{
+		public LocatedServiceConfiguration(ICommand<IServiceCollection> @default)
+			: base( /*Start.A.Result.Of.Type<IServiceConfiguration>()
+			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
+			            .Assume()
+			            .Then(@default)*/@default) {}
+	}
+
 	/*class Services : ServiceContainer, IServices, IActivateUsing<ContainerOptions>
 	{
 		public Services() : this(ContainerOptions.Default) {}

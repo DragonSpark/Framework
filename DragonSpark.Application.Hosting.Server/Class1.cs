@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
