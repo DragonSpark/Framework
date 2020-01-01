@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
@@ -8,7 +7,6 @@ using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
-using DragonSpark.Runtime.Environment;
 using LightInject;
 using System;
 using System.Linq;
@@ -24,7 +22,7 @@ namespace DragonSpark.Composition
 		public object GetService(Type serviceType) => GetInstance(serviceType);
 	}
 
-	sealed class ServiceOptions : Component<ContainerOptions>
+	/*sealed class ServiceOptions : Component<ContainerOptions>
 	{
 		public static ServiceOptions Default { get; } = new ServiceOptions();
 
@@ -36,7 +34,7 @@ namespace DragonSpark.Composition
 		public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
 
 		ServiceConfiguration() : base(EmptyCommand<IServices>.Default.Self) {}
-	}
+	}*/
 
 	public interface IRegistration : IAlteration<IServiceRegistry> {}
 

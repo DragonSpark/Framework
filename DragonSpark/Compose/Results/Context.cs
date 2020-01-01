@@ -1,8 +1,8 @@
-﻿using System;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
+using System;
 
 namespace DragonSpark.Compose.Results
 {
@@ -23,7 +23,7 @@ namespace DragonSpark.Compose.Results
 
 		Context() {}
 
-		public Location<T> Location => Location<T>.Default;
+		/*public Location<T> Location => Location<T>.Default;*/
 
 		public IResult<T> Activation() => Activator<T>.Default;
 

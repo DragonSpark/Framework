@@ -1,7 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using FluentAssertions;
-using DragonSpark.Compose;
-using DragonSpark.Testing.Objects;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Results
@@ -42,41 +41,6 @@ namespace DragonSpark.Testing.Application.Compose.Results
 			     .Get()
 			     .Should()
 			     .BeSameAs(instance);
-		}
-
-		[Fact]
-		void VerifyLocation()
-		{
-			Start.A.Result<IHelloWorld>()
-			     .By.Location.Get()
-			     .Should()
-			     .NotBeNull();
-		}
-
-		[Fact]
-		void VerifyLocationDefault()
-		{
-			Start.A.Result<int>()
-			     .By.Location
-			     .Get()
-			     .Should()
-			     .Be(0);
-
-			Start.A.Result<int>()
-			     .By.Location.Or.Default(4)
-			     .Get()
-			     .Should()
-			     .Be(4);
-		}
-
-		[Fact]
-		void VerifyLocationOrThrow()
-		{
-			Start.A.Result.Of<int>()
-			     .By.Location.Or.Throw()
-			     .Invoking(x => x.Get())
-			     .Should()
-			     .Throw<InvalidOperationException>();
 		}
 
 		[Fact]

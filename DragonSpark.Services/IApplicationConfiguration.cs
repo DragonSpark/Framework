@@ -63,10 +63,10 @@ namespace DragonSpark.Services
 	public class LocatedServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
 		public LocatedServiceConfiguration(ICommand<IServiceCollection> @default)
-			: base(Start.A.Result.Of.Type<IServiceConfiguration>()
+			: base(/*Start.A.Result.Of.Type<IServiceConfiguration>()
 			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
 			            .Assume()
-			            .Then(@default)) {}
+			            .Then(@default)*/@default) {}
 	}
 
 	/*public readonly struct ConfigureParameter
@@ -126,10 +126,10 @@ namespace DragonSpark.Services
 	public class ApplicationConfiguration : Command<IApplicationBuilder>, IApplicationConfiguration
 	{
 		public ApplicationConfiguration(ICommand<IApplicationBuilder> @default)
-			: base(Start.A.Result.Of.Type<IApplicationConfiguration>()
+			: base(/*Start.A.Result.Of.Type<IApplicationConfiguration>()
 			            .By.Location.Or.Default(EmptyApplicationConfiguration.Default)
 			            .Assume()
-			            .Then(@default)) {}
+			            .Then(@default)*/@default) {}
 	}
 
 	public class ActivatedProgram<T> : IProgram where T : ISelect<IHost, Task>
@@ -175,9 +175,9 @@ namespace DragonSpark.Services
 
 		LocatedProgram() : this(DefaultProgram.Default) {}
 
-		public LocatedProgram(IProgram @default) : base(Start.A.Result.Of.Type<IProgram>()
+		public LocatedProgram(IProgram @default) : base(/*Start.A.Result.Of.Type<IProgram>()
 		                                                     .By.Location.Or.Default(@default)
-		                                                     .Assume()) {}
+		                                                     .Assume()*/@default) {}
 	}
 
 	public sealed class DefaultProgram : IProgram
