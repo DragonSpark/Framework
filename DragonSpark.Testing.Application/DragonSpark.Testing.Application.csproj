@@ -27,6 +27,7 @@
     <ProjectReference Include="..\DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Console\DragonSpark.Application.Hosting.Console.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
+    <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
     <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Environment.Development\DragonSpark.Testing.Environment.Development.csproj" Condition="'$(Configuration)' == 'Debug'" />
     <ProjectReference Include="..\DragonSpark.Testing.Environment\DragonSpark.Testing.Environment.csproj" Condition="'$(Configuration)' == 'Release'" />

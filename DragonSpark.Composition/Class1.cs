@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
@@ -13,14 +12,14 @@ using System.Linq;
 
 namespace DragonSpark.Composition
 {
-	class Services : ServiceContainer, IServices, IActivateUsing<ContainerOptions>
+	/*class Services : ServiceContainer, IServices, IActivateUsing<ContainerOptions>
 	{
 		public Services() : this(ContainerOptions.Default) {}
 
 		public Services(ContainerOptions options) : base(options) {}
 
 		public object GetService(Type serviceType) => GetInstance(serviceType);
-	}
+	}*/
 
 	/*sealed class ServiceOptions : Component<ContainerOptions>
 	{
@@ -120,6 +119,20 @@ namespace DragonSpark.Composition
 			              .Where(_where(parameter))
 			              .Aggregate(parameter, (repository, t) => repository.Register(t)
 			                                                                 .RegisterDependencies(t));
+	}
+
+	sealed class ServiceSelector<T> : Select<IServiceProvider, T>
+	{
+		public static ServiceSelector<T> Default { get; } = new ServiceSelector<T>();
+
+		ServiceSelector() : base(x => x.Get<T>()) {}
+	}
+
+	sealed class GenericTypeDependencySelector : ValidatedAlteration<Type>, IActivateUsing<Type>
+	{
+		public GenericTypeDependencySelector(Type type)
+			: base(Start.A.Selection.Of.System.Type.By.Returning(IsGenericTypeDefinition.Default.In(type)),
+			       GenericTypeDefinition.Default.If(IsDefinedGenericType.Default)) {}
 	}
 
 	sealed class DependencyCandidates : ArrayStore<Type, Type>, IActivateUsing<Type>

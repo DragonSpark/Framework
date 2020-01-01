@@ -1,7 +1,7 @@
-﻿using System;
-using DragonSpark.Reflection.Assemblies;
+﻿using DragonSpark.Reflection.Assemblies;
+using System;
 
-namespace DragonSpark.Application
+namespace DragonSpark
 {
 	public sealed class ApplicationDetails
 	{
