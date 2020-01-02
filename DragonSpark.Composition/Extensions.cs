@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using LightInject;
-using LightInject.Microsoft.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,24 +53,7 @@ namespace DragonSpark.Composition
 			}
 		}*/
 
-		static ContainerOptions WithoutVariance(this ContainerOptions @this)
-		{
-			@this.EnableVariance = false;
-			return @this;
-		}
-
-		public static IHostBuilder UseLightInject(this IHostBuilder @this)
-			=> @this.UseLightInject(ContainerOptions.Default.Clone().WithMicrosoftSettings().WithoutVariance());
-
-		public static IHostBuilder UseLightInject(this IHostBuilder @this, ContainerOptions options)
-			=> @this.UseLightInject(new LightInjectServiceProviderFactory(options));
-
-		public static IHostBuilder UseLightInject(this IHostBuilder @this, IServiceContainer serviceContainer)
-			=> @this.UseLightInject(new LightInjectServiceProviderFactory(serviceContainer));
-
-		public static IHostBuilder UseLightInject(this IHostBuilder @this,
-		                                          IServiceProviderFactory<IServiceContainer> factory)
-			=> @this.UseServiceProviderFactory(factory);
+		
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
 			=> new RegistrationContext<T>(@this);
