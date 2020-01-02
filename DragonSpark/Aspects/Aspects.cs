@@ -6,11 +6,16 @@ namespace DragonSpark.Aspects
 {
 	public sealed class Aspects<TIn, TOut> : Select<ISelect<TIn, TOut>, IAspect<TIn, TOut>>
 	{
-		public static Aspects<TIn, TOut> Default { get; } = new Aspects<TIn, TOut>();
+		public Aspects() : this(new AspectRegistry()) {}
 
-		Aspects() : base(Start.A.Selection<ISelect<TIn, TOut>>()
-		                      .By.Type.Then()
-		                      .Select(SystemStores.New(RegisteredAspects<TIn, TOut>.Default.Stores().New)
-		                                          .Assume())) {}
+		public Aspects(IRegistry<IRegistration> registry)
+			: base(Start.A.Selection<ISelect<TIn, TOut>>()
+			            .By.Type.Then()
+			            .Select(Start
+			                    .An
+			                    .Instance(new AspectLocator<TIn, TOut>(new AspectRegistrations<TIn, TOut>(registry)))
+			                    .Stores()
+			                    .New())
+			      ) {}
 	}
 }

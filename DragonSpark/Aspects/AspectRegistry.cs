@@ -2,10 +2,5 @@
 
 namespace DragonSpark.Aspects
 {
-	public sealed class AspectRegistry : SystemRegistry<IRegistration>
-	{
-		public static AspectRegistry Default { get; } = new AspectRegistry();
-
-		AspectRegistry() {}
-	}
+	public sealed class AspectRegistry : Registry<IRegistration> {}
 }

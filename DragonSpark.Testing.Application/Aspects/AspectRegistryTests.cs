@@ -24,46 +24,38 @@ namespace DragonSpark.Testing.Application.Aspects
 		}
 
 		[Fact]
-		void After()
-		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-		}
-
-		[Fact]
-		void Before()
-		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-		}
-
-		[Fact]
 		void Configure()
 		{
 			var subject = A.Self<object>();
-			subject.Configured().Should().BeSameAs(subject);
+			new Aspects<object, object>().Get(subject).Get(subject).Should().BeSameAs(subject);
 		}
 
 		[Fact]
 		void Verify()
 		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-			AspectRegistry.Default.Execute(new Registration(typeof(Aspect<,>)));
-			AspectRegistry.Default.Get().Open().Should().HaveCount(1);
-			AspectRegistrations<string, int>.Default.Get(GenericArguments.Default.Get(A.Type<ISelect<string, int>>()))
-			                                .Open()
-			                                .Should()
-			                                .HaveCount(1);
+			var registry = new AspectRegistry();
+			registry.Get().Open().Should().BeEmpty();
+			registry.Execute(new Registration(typeof(Aspect<,>)));
+			registry.Get().Open().Should().HaveCount(1);
+			var registrations = new AspectRegistrations<string, int>(registry);
+			registrations.Get(GenericArguments.Default.Get(A.Type<ISelect<string, int>>()))
+			             .Open()
+			             .Should()
+			             .HaveCount(1);
 		}
 
 		[Fact]
 		void VerifyInvalid()
 		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-			AspectRegistry.Default.Execute(new Registration(Never<Array<Type>>.Default, typeof(Aspect<,>)));
-			AspectRegistry.Default.Get().Open().Should().HaveCount(1);
-			AspectRegistrations<string, int>.Default.Get(GenericArguments.Default.Get(A.Type<ISelect<string, int>>()))
-			                                .Open()
-			                                .Should()
-			                                .BeEmpty();
+			var registry = new AspectRegistry();
+			registry.Get().Open().Should().BeEmpty();
+			registry.Execute(new Registration(Never<Array<Type>>.Default, typeof(Aspect<,>)));
+			registry.Get().Open().Should().HaveCount(1);
+			var registrations = new AspectRegistrations<string, int>(registry);
+			registrations.Get(GenericArguments.Default.Get(A.Type<ISelect<string, int>>()))
+			             .Open()
+			             .Should()
+			             .BeEmpty();
 		}
 	}
 }

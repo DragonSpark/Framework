@@ -29,9 +29,9 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		{
 			SortSelector<Type>.Default.Get(typeof(First)).Should().Be(-10);
 
-			Types.Default.Execute(NestedTypes<ComponentTypesTests>.Default);
-
-			var types = ComponentTypesDefinition.Default.Get(typeof(IComponent)).Open();
+			var types = new ComponentTypesDefinition(NestedTypes<ComponentTypesTests>.Default)
+			            .Get(typeof(IComponent))
+			            .Open();
 			types.Should().HaveCount(4);
 			types.Should().BeEquivalentTo(typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last));
 			types.First().Should().Be(typeof(First));

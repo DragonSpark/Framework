@@ -1,23 +1,19 @@
-﻿using System;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
+using System;
 
 namespace DragonSpark.Aspects
 {
-	sealed class RegisteredAspects<TIn, TOut> : ISelect<Type, IAspect<TIn, TOut>>
+	sealed class AspectLocator<TIn, TOut> : ISelect<Type, IAspect<TIn, TOut>>
 	{
-		public static RegisteredAspects<TIn, TOut> Default { get; } = new RegisteredAspects<TIn, TOut>();
-
-		RegisteredAspects() : this(AspectRegistrations<TIn, TOut>.Default) {}
-
 		readonly ISelect<Type, Array<Type>>              _implementations;
 		readonly IArray<Array<Type>, IAspect<TIn, TOut>> _registrations;
 
-		public RegisteredAspects(IArray<Array<Type>, IAspect<TIn, TOut>> registrations)
+		public AspectLocator(IArray<Array<Type>, IAspect<TIn, TOut>> registrations)
 			: this(SelectionImplementations.Default, registrations) {}
 
-		public RegisteredAspects(ISelect<Type, Array<Type>> implementations,
+		public AspectLocator(ISelect<Type, Array<Type>> implementations,
 		                         IArray<Array<Type>, IAspect<TIn, TOut>> registrations)
 		{
 			_implementations = implementations;

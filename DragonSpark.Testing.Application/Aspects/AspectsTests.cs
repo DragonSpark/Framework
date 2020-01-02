@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using DragonSpark.Aspects;
+﻿using DragonSpark.Aspects;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Aspects
@@ -27,73 +27,77 @@ namespace DragonSpark.Testing.Application.Aspects
 		}
 
 		[Fact]
-		void After()
-		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-		}
-
-		[Fact]
-		void Before()
-		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-		}
-
-		[Fact]
 		void Verify()
 		{
-			var self   = A.Self<object>();
-			var aspect = Aspects<object, object>.Default.Get(self);
-			aspect.Should().BeSameAs(Aspects<object, object>.Default.Get(self));
+			var self    = A.Self<object>();
+			var aspects = new Aspects<object, object>();
+			var aspect  = aspects.Get(self);
+			aspect.Should().BeSameAs(aspects.Get(self));
 			aspect.Get(self).Should().BeSameAs(self);
 		}
 
 		[Fact]
 		void VerifyCast()
 		{
-			Decoration<object, object>.Default.Registered();
+			var registry = new AspectRegistry();
+			registry.Registered(Decoration<object, object>.Default);
 
-			var self   = A.Self<string>();
-			var aspect = Aspects<string, string>.Default.Get(self);
-			aspect.Should().BeSameAs(Aspects<string, string>.Default.Get(self));
+			var self    = A.Self<string>();
+			var aspects = new Aspects<string, string>(registry);
+			var aspect  = aspects.Get(self);
+			aspect.Should().BeSameAs(aspects.Get(self));
 			aspect.Get(self).Should().BeOfType<Cast<object, object, string, string>.Container>();
 		}
 
 		[Fact]
 		void VerifyRegistered()
 		{
-			AspectRegistry.Default.Get().Open().Should().BeEmpty();
-			Decoration<object, object>.Default.Registered();
-			AspectRegistry.Default.Get().Open().Should().NotBeEmpty();
+			var registry = new AspectRegistry();
 
-			var self   = A.Self<object>();
-			var aspect = Aspects<object, object>.Default.Get(self);
-			aspect.Should().BeSameAs(Aspects<object, object>.Default.Get(self));
+			registry.Get().Open().Should().BeEmpty();
+			registry.Registered(Decoration<object, object>.Default);
+			registry.Get().Open().Should().NotBeEmpty();
+
+			var self    = A.Self<object>();
+			var aspects = new Aspects<object, object>(registry);
+			var aspect  = aspects.Get(self);
+			aspect.Should().BeSameAs(aspects.Get(self));
 			aspect.Get(self).Should().BeOfType<Decorated<object, object>>();
 		}
 
 		[Fact]
 		void VerifySpecific()
 		{
-			Decoration<object, string>.Default.Registered();
+			var registry = new AspectRegistry();
+			registry.Registered(Decoration<object, string>.Default);
 
-			var general     = Start.A.Selection.Of.Type<object>().By.Self;
-			var generalized = Aspects<object, object>.Default.Get(general);
-			generalized.Should().BeSameAs(Aspects<object, object>.Default.Get(general));
-			generalized.Get(general).Should().BeSameAs(general);
+			{
+				var general     = Start.A.Selection.Of.Type<object>().By.Self;
+				var aspects     = new Aspects<object, object>(registry);
+				var generalized = aspects.Get(general);
+				generalized.Should().BeSameAs(aspects.Get(general));
+				generalized.Get(general).Should().BeSameAs(general);
+			}
 
-			var different = Start.A.Selection.Of.Type<object>().AndOf<int>().By.Cast;
-			var next      = Aspects<object, int>.Default.Get(different);
-			next.Should().BeSameAs(Aspects<object, int>.Default.Get(different));
-			next.Get(different).Should().BeSameAs(different);
+			{
+				var different = Start.A.Selection.Of.Type<object>().AndOf<int>().By.Cast;
+				var aspects   = new Aspects<object, int>(registry);
+				var next      = aspects.Get(different);
+				next.Should().BeSameAs(aspects.Get(different));
+				next.Get(different).Should().BeSameAs(different);
+			}
 
-			var specific = Start.A.Selection.Of.Type<object>().AndOf<string>().By.Cast;
-			var aspect   = Aspects<object, string>.Default.Get(specific);
-			aspect.Should().BeSameAs(Aspects<object, string>.Default.Get(specific));
-			aspect.Get(specific)
-			      .Should()
-			      .NotBeSameAs(specific)
-			      .And.Subject.Should()
-			      .BeOfType<Decorated<object, string>>();
+			{
+				var specific = Start.A.Selection.Of.Type<object>().AndOf<string>().By.Cast;
+				var aspects  = new Aspects<object, string>(registry);
+				var aspect   = aspects.Get(specific);
+				aspect.Should().BeSameAs(aspects.Get(specific));
+				aspect.Get(specific)
+				      .Should()
+				      .NotBeSameAs(specific)
+				      .And.Subject.Should()
+				      .BeOfType<Decorated<object, string>>();
+			}
 		}
 	}
 }
