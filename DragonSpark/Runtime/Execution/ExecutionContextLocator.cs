@@ -10,14 +10,14 @@ namespace DragonSpark.Runtime.Execution
 		public static ExecutionContextLocator Default { get; } = new ExecutionContextLocator();
 
 		ExecutionContextLocator()
-			: base(Start.An.Extent<FixedActivator<IExecutionContext>>()
-			            .From(A.This(ComponentTypesDefinition.Default)
-			                   .Select(x => x.Query().FirstAssigned())
-			                   .Assume()
-			                   .Select(Activator.Default.Assigned())
-			                   .Then()
-			                   .CastForResult<IExecutionContext>()
-			                   .Get())
+			: base(Start.An.Instance(ComponentTypesDefinition.Default)
+			            .Select(x => x.Query().FirstAssigned())
+			            .Assume()
+			            .Select(Activator.Default.Assigned())
+			            .Then()
+			            .CastForResult<IExecutionContext>()
+			            .Get()
+			            .To(Start.An.Extent<FixedActivator<IExecutionContext>>())
 			      ) {}
 	}
 }

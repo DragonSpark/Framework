@@ -1,10 +1,10 @@
-﻿using System;
-using System.Reflection;
-using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
+using FluentAssertions;
+using System;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Extents
@@ -68,13 +68,13 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		[Fact]
 		void VerifySourceDirect()
 		{
-			A.This(new Instance<string>("Hello World!"))
-			 .Then()
-			 .Type()
-			 .Metadata()
-			 .Selector()()
-			 .Should()
-			 .Be(Type<string>.Metadata);
+			Start.An.Instance(new Instance<string>("Hello World!"))
+			     .Then()
+			     .Type()
+			     .Metadata()
+			     .Selector()()
+			     .Should()
+			     .Be(Type<string>.Metadata);
 		}
 	}
 }

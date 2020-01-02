@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
+using System;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -9,12 +9,12 @@ namespace DragonSpark.Runtime.Activation
 		public static Singletons Default { get; } = new Singletons();
 
 		Singletons() : base(Start.A.Selection.Of.System.Type.By.Default<object>()
-		                         .Unless(A.This(HasSingletonProperty.Default),
-		                                 A.This(SingletonProperty.Default)
-		                                  .Select(SingletonPropertyDelegates.Default)
-		                                  .Then()
-		                                  .Invoke()
-		                                  .Get())
+		                         .Unless(HasSingletonProperty.Default,
+		                                 Start.An.Instance(SingletonProperty.Default)
+		                                      .Select(SingletonPropertyDelegates.Default)
+		                                      .Then()
+		                                      .Invoke()
+		                                      .Get())
 		                         .Get) {}
 	}
 }

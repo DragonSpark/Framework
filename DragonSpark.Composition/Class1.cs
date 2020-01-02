@@ -226,14 +226,14 @@ namespace DragonSpark.Composition
 
 	sealed class DependencyCandidates : ArrayStore<Type, Type>, IActivateUsing<Type>
 	{
-		public DependencyCandidates(Type type) : base(A.This(TypeMetadata.Default)
-		                                               .Select(Constructors.Default)
-		                                               .Query()
-		                                               .SelectMany(Parameters.Default.Open())
-		                                               .Select(ParameterType.Default)
-		                                               .Select(new GenericTypeDependencySelector(type))
-		                                               .Where(IsClass.Default)
-		                                               .Out()) {}
+		public DependencyCandidates(Type type) : base(Start.An.Instance(TypeMetadata.Default)
+		                                                   .Select(Constructors.Default)
+		                                                   .Query()
+		                                                   .SelectMany(Parameters.Default.Open())
+		                                                   .Select(ParameterType.Default)
+		                                                   .Select(new GenericTypeDependencySelector(type))
+		                                                   .Where(IsClass.Default)
+		                                                   .Out()) {}
 	}
 
 	class MappedRegistration : IRegistration

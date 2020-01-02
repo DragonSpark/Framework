@@ -7,12 +7,12 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	public class Specimen<T> : ISpecimenBuilder
 	{
-		readonly static Func<object, bool> Condition = A.This(IsOf<Type>.Default)
-		                                                .Then()
-		                                                .And(Start.A.Selection.Of.Any.AndOf<Type>()
-		                                                          .By.Cast.Or.Throw.Then()
-		                                                          .Select(Type<T>.Instance.Equal())
-		                                                          .Selector());
+		readonly static Func<object, bool> Condition = Start.An.Instance(IsOf<Type>.Default)
+		                                                    .Then()
+		                                                    .And(Start.A.Selection.Of.Any.AndOf<Type>()
+		                                                              .By.Cast.Or.Throw.Then()
+		                                                              .Select(Type<T>.Instance.Equal())
+		                                                              .Selector());
 
 		readonly Func<object, bool> _condition;
 		readonly NoSpecimen         _none;

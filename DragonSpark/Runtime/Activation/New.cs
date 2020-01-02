@@ -13,8 +13,8 @@ namespace DragonSpark.Runtime.Activation
 
 		New() : base(Start.A.Selection(ConstructorLocator.Default)
 		                  .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
-		                  .Unless(A.This(new ConstructorLocator(HasSingleParameterConstructor<TIn>.Default))
-		                           .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
+		                  .Unless(Start.An.Instance(new ConstructorLocator(HasSingleParameterConstructor<TIn>.Default))
+		                               .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
 		                  .Get(A.Metadata<TOut>())) {}
 	}
 

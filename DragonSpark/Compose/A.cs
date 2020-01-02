@@ -39,7 +39,7 @@ namespace DragonSpark.Compose
 
 		public static IResult<T> Result<T>(IResult<T> instance) => instance;
 
-		public static T This<T>(T instance) => instance;
+		/*public static T This<T>(T instance) => instance;*/
 
 		public static IAlteration<T> Self<T>() => Model.Selection.Self<T>.Default;
 
