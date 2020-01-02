@@ -7,7 +7,6 @@ using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime;
-using DragonSpark.Runtime.Execution;
 using System;
 
 namespace DragonSpark
@@ -56,9 +55,6 @@ namespace DragonSpark
 
 		public static ICommand<T> Assume<T>(this IResult<ICommand<T>> @this)
 			=> new DelegatedInstanceCommand<T>(@this.Get);
-
-		public static IResult<T> ToContextual<T>(this IResult<T> @this)
-			=> new Contextual<T>(@this.ToDelegateReference());
 
 		public static IResult<TOut> Select<TIn, TOut>(this IResult<TIn> @this, ISelect<TIn, TOut> select)
 			=> @this.Select(select.Get);
