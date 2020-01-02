@@ -116,28 +116,13 @@ namespace DragonSpark.Composition
 			            .Then(@default)*/@default) {}
 	}
 
-	/*class Services : ServiceContainer, IServices, IActivateUsing<ContainerOptions>
+	sealed class EnvironmentalServiceConfiguration : IServiceConfiguration
 	{
-		public Services() : this(ContainerOptions.Default) {}
-
-		public Services(ContainerOptions options) : base(options) {}
-
-		public object GetService(Type serviceType) => GetInstance(serviceType);
-	}*/
-
-	/*sealed class ServiceOptions : Component<ContainerOptions>
-	{
-		public static ServiceOptions Default { get; } = new ServiceOptions();
-
-		ServiceOptions() : base(new ContainerOptions {EnablePropertyInjection = false}.Self) {}
+		public void Execute(IServiceCollection parameter)
+		{
+			var name = parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName;
+		}
 	}
-
-	sealed class ServiceConfiguration : Component<ICommand<IServices>>
-	{
-		public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
-
-		ServiceConfiguration() : base(EmptyCommand<IServices>.Default.Self) {}
-	}*/
 
 	public interface IRegistration : IAlteration<IServiceRegistry> {}
 

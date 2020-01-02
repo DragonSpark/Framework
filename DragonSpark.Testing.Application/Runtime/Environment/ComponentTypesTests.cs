@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Runtime.Execution;
+using FluentAssertions;
+using System;
+using System.Linq;
 using Xunit;
 
 // ReSharper disable All
@@ -41,7 +41,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 
 			Types.Default.Execute(NestedTypes<ComponentTypesTests>.Default);
 
-			var types = ComponentTypes.Default.Get(typeof(IComponent)).Open();
+			var types = ComponentTypesDefinition.Default.Get(typeof(IComponent)).Open();
 			types.Should().HaveCount(4);
 			types.Should().BeEquivalentTo(typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last));
 			types.First().Should().Be(typeof(First));

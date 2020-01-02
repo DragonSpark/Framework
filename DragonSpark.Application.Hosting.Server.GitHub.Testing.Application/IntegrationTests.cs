@@ -1,4 +1,5 @@
 using DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controllers;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Services;
@@ -20,12 +21,12 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 		[InlineData("Development", "/HelloWorld")]
 		public async Task VerifyHelloWorld(string environment, string url)
 		{
-			using var host = await Compose.Start.A.Server()
-			                              .WithEnvironment(environment)
-			                              .WithConfiguration<Configurator>()
-			                              .WithComposition()
-			                              .Operations()
-			                              .Start();
+			using var host = await Start.A.Server()
+			                            .WithEnvironment(environment)
+			                            .WithConfiguration<Configurator>()
+			                            .WithComposition()
+			                            .Operations()
+			                            .Start();
 
 			var client   = host.GetTestServer().CreateClient();
 			var response = await client.GetAsync(url);
@@ -52,7 +53,8 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 	{
 		public static Registrations Default { get; } = new Registrations();
 
-		Registrations() : base(x => x.AddSingleton(Start.A.Registration.For.IssueComments()
+		Registrations() : base(x => x.AddSingleton(Start.A.Registration()
+		                                                .For.IssueComments()
 		                                                .With<CustomHandler>()
 		                                                .Get)
 		                             .AddScoped<CustomHandler>()) {}

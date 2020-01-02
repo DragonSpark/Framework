@@ -29,10 +29,10 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	{
 		public static EventMessages<T> Default { get; } = new EventMessages<T>();
 
-		EventMessages() : base(Compose.Start.A.Selection<EventMessage>()
-		                              .By.Calling(x => x.Payload)
-		                              .Then()
-		                              .Select(Serializer.Default.Get().Deserialize<T>)) {}
+		EventMessages() : base(Start.A.Selection<EventMessage>()
+		                            .By.Calling(x => x.Payload)
+		                            .Then()
+		                            .Select(Serializer.Default.Get().Deserialize<T>)) {}
 	}
 
 	public class IsAuthenticatedPayload : IsPayload
@@ -48,15 +48,15 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	sealed class IsAuthenticatedMessage : AllCondition<EventMessage>
 	{
 		public IsAuthenticatedMessage(string key)
-			: base(Compose.Start.A.Selection<EventMessage>()
-			              .By.Calling(x => x.Header.Event)
-			              .Then()
-			              .Select(Is.EqualTo(key)),
-			       Compose.Start.An.Instance(AuthenticatedMessage.Default)
-			              .AsGuard()
-			              .Then()
-			              .Select(Is.Of<AuthenticatedEventMessage>())
-			              .Selector()) {}
+			: base(Start.A.Selection<EventMessage>()
+			            .By.Calling(x => x.Header.Event)
+			            .Then()
+			            .Select(Is.EqualTo(key)),
+			       Start.An.Instance(AuthenticatedMessage.Default)
+			            .AsGuard()
+			            .Then()
+			            .Select(Is.Of<AuthenticatedEventMessage>())
+			            .Selector()) {}
 	}
 
 	sealed class AuthenticatedMessage : FixedResult<EventMessage, string>, IMessage<EventMessage>

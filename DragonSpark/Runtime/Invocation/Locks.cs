@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Runtime.Invocation
 {
@@ -22,14 +21,14 @@ namespace DragonSpark.Runtime.Invocation
 	{
 		readonly IEqualityComparer<TKey> _comparer;
 		readonly int                     _mask;
-		readonly ImmutableArray<TLock>   _stripes;
+		readonly Array<TLock>            _stripes;
 
 		public Locks(int stripes) : this(LockItem<TLock>.Default.Get(stripes), EqualityComparer<TKey>.Default) {}
 
 		public Locks((Array<TLock> Items, int Mask) item, IEqualityComparer<TKey> comparer)
 			: this(item.Mask, item.Items, comparer) {}
 
-		public Locks(int mask, ImmutableArray<TLock> stripes, IEqualityComparer<TKey> comparer)
+		public Locks(int mask, Array<TLock> stripes, IEqualityComparer<TKey> comparer)
 		{
 			_mask     = mask;
 			_stripes  = stripes;

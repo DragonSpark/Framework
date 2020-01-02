@@ -1,6 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Sequences;
 using FluentAssertions;
-using DragonSpark.Model.Commands;
 using Xunit;
 
 // ReSharper disable All
@@ -22,8 +22,8 @@ namespace DragonSpark.Testing.Application.Model.Commands
 		[Fact]
 		public void ExecuteItems()
 		{
-			var count   = 0;
-			var command = new Command<ImmutableArray<int>>(items => count = items.Length);
+			var count   = 0u;
+			var command = new Command<Array<int>>(items => count = items.Length);
 			command.Execute(1, 2, 3, 4, 5, 6);
 			count.Should()
 			     .Be(6);

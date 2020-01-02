@@ -38,22 +38,9 @@ namespace DragonSpark.Composition
 			    ??
 			    @this.Select(x => x.ImplementationInstance)
 			         .OfType<T>()
-			         .FirstOrDefault())
+			         .FirstOrDefault()
+			   )
 				.To<T>();
-
-		/*sealed class Registration : IServiceConfiguration
-		{
-			readonly IServiceProviderFactory<IServiceContainer> _factory;
-
-			public Registration(IServiceProviderFactory<IServiceContainer> factory) => _factory = factory;
-
-			public void Execute(IServiceCollection parameter)
-			{
-				parameter.AddSingleton(_factory);
-			}
-		}*/
-
-		
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
 			=> new RegistrationContext<T>(@this);
@@ -65,12 +52,12 @@ namespace DragonSpark.Composition
 			            .RegisterDependencies(to);
 		}
 
-		/*public static IServiceRepository RegisterSingleton<T>(this IServiceRepository @this)
+		public static IServiceRegistry RegisterSingleton<T>(this IServiceRegistry @this)
 		{
 			var to = typeof(T).GetGenericTypeDefinition();
 			return @this.Register(to)
 			            .RegisterDependencies(to);
-		}*/
+		}
 
 		public static IServiceRegistry RegisterDefinition<TFrom, TTo>(this IServiceRegistry @this) where TTo : TFrom
 		{

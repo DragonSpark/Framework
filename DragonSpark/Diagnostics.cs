@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
 using Polly;
 using System;
-using System.Collections.Immutable;
 
 namespace DragonSpark
 {
@@ -197,11 +197,11 @@ namespace DragonSpark
 			@this.Execute(new ExceptionParameter<TimeSpan>(result.Exception, span));
 		}
 
-		public static void Execute(this ICommand<ExceptionParameter<ImmutableArray<object>>> @this,
+		public static void Execute(this ICommand<ExceptionParameter<Array<object>>> @this,
 		                           System.Exception exception,
 		                           params object[] arguments)
 		{
-			@this.Execute(new ExceptionParameter<ImmutableArray<object>>(exception, arguments.ToImmutableArray()));
+			@this.Execute(new ExceptionParameter<Array<object>>(exception, arguments));
 		}
 
 		public static void Execute<T>(this ICommand<ExceptionParameter<T>> @this, System.Exception exception, T argument)

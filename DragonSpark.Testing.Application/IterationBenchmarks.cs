@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Testing.Objects;
+using System;
+using System.Collections.Immutable;
+using System.Linq;
 
 // ReSharper disable NotAccessedVariable
 // ReSharper disable RedundantAssignment

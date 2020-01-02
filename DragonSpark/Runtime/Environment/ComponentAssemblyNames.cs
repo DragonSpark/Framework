@@ -1,8 +1,8 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Sequences;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
@@ -14,13 +14,13 @@ namespace DragonSpark.Runtime.Environment
 		ComponentAssemblyNames() : this(EnvironmentAssemblyName.Default) {}
 
 		readonly Func<AssemblyName, IEnumerable<AssemblyName>> _expand;
-		readonly ImmutableArray<IAlteration<AssemblyName>>     _names;
+		readonly Array<IAlteration<AssemblyName>>     _names;
 
 		public ComponentAssemblyNames(params IAlteration<AssemblyName>[] names)
-			: this(ComponentAssemblyCandidates.Default.Get, names.ToImmutableArray()) {}
+			: this(ComponentAssemblyCandidates.Default.Get, names) {}
 
 		public ComponentAssemblyNames(Func<AssemblyName, IEnumerable<AssemblyName>> expand,
-		                              ImmutableArray<IAlteration<AssemblyName>> names)
+		                              Array<IAlteration<AssemblyName>> names)
 		{
 			_expand = expand;
 			_names  = names;
@@ -30,7 +30,7 @@ namespace DragonSpark.Runtime.Environment
 		{
 			foreach (var name in _expand(parameter))
 			{
-				foreach (var alteration in _names)
+				foreach (var alteration in _names.Open())
 				{
 					yield return alteration.Get(name);
 				}

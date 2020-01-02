@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using DragonSpark.Model.Sequences;
+using System;
 using System.Linq;
 
 namespace DragonSpark.Model.Selection.Conditions
 {
 	public class AllCondition<T> : ICondition<T>
 	{
-		readonly ImmutableArray<Func<T, bool>> _specifications;
+		readonly Array<Func<T, bool>> _specifications;
 
 		public AllCondition(params ISelect<T, bool>[] conditions)
-			: this(conditions.Select(x => x.ToDelegate()).ToImmutableArray()) {}
+			: this(conditions.Select(x => x.ToDelegate()).Result()) {}
 
-		public AllCondition(params Func<T, bool>[] conditions) : this(conditions.ToImmutableArray()) {}
+		public AllCondition(params Func<T, bool>[] conditions) : this(conditions.Result()) {}
 
-		public AllCondition(ImmutableArray<Func<T, bool>> specifications)
-			=> _specifications = specifications;
+		public AllCondition(Array<Func<T, bool>> specifications) => _specifications = specifications;
 
 		public bool Get(T parameter)
 		{

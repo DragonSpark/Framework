@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Runtime;
 using System;
-using System.Collections.Immutable;
 
 // ReSharper disable TooManyArguments
 
@@ -20,8 +20,8 @@ namespace DragonSpark
 		public static Action<T> ToDelegateReference<T>(this ICommand<T> @this)
 			=> Model.Commands.Delegates<T>.Default.Get(@this);
 
-		public static void Execute<T>(this ICommand<ImmutableArray<T>> @this, params T[] parameters)
-			=> @this.Execute(parameters.ToImmutableArray());
+		public static void Execute<T>(this ICommand<Array<T>> @this, params T[] parameters)
+			=> @this.Execute(parameters);
 
 		public static void Execute<T1, T2>(this ICommand<(T1, T2)> @this, T1 first, T2 second)
 			=> @this.Execute((first, second));

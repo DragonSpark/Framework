@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Sequences;
 using System;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,15 +8,14 @@ namespace DragonSpark.Services.Security
 {
 	sealed class Encryptor : IAlteration<string>
 	{
-		readonly Encoding             _encoding;
-		readonly ImmutableArray<byte> _key;
+		readonly Encoding    _encoding;
+		readonly Array<byte> _key;
 
 		public Encryptor(string key) : this(key, Encoding.ASCII) {}
 
-		public Encryptor(string key, Encoding encoding) : this(encoding.GetBytes(key)
-		                                                               .ToImmutableArray(), encoding) {}
+		public Encryptor(string key, Encoding encoding) : this(encoding.GetBytes(key), encoding) {}
 
-		public Encryptor(ImmutableArray<byte> key, Encoding encoding)
+		public Encryptor(Array<byte> key, Encoding encoding)
 		{
 			_key      = key;
 			_encoding = encoding;
@@ -26,7 +24,7 @@ namespace DragonSpark.Services.Security
 		public string Get(string parameter)
 		{
 			var key = _key;
-			using (var hmac = new HMACSHA512(key.ToArray()))
+			using (var hmac = new HMACSHA512(key))
 			{
 				return BitConverter.ToString(hmac.ComputeHash(_encoding.GetBytes(parameter)))
 				                   .Replace("-", string.Empty);

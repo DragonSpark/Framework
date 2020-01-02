@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using JetBrains.Annotations;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
+using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -13,14 +12,13 @@ namespace DragonSpark.Runtime.Environment
 	{
 		readonly ICondition<Type>                _condition;
 		readonly Func<Type, ISelect<Type, Type>> _selections;
-		readonly ImmutableArray<Type>            _types;
+		readonly Array<Type>                     _types;
 
 		[UsedImplicitly]
 		public ComponentTypesSelector(Array<Type> types)
 			: this(types, IsAssigned<Type>.Default, Selections.Default.Get) {}
 
-		public ComponentTypesSelector(ImmutableArray<Type> types,
-		                              ICondition<Type> condition,
+		public ComponentTypesSelector(Array<Type> types, ICondition<Type> condition,
 		                              Func<Type, ISelect<Type, Type>> selections)
 		{
 			_types      = types;

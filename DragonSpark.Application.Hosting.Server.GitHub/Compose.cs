@@ -1,15 +1,12 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using Octokit;
 
 namespace DragonSpark.Application.Hosting.Server.GitHub
 {
-	public sealed class Start
+	public static class Extensions
 	{
-		public static Start A { get; } = new Start();
-
-		Start() {}
-
-		public RegistrationContext Registration => RegistrationContext.Default;
+		public static RegistrationContext Registration(this ModelContext _) => RegistrationContext.Default;
 	}
 
 	public sealed class RegistrationContext
