@@ -1,23 +1,23 @@
-﻿using System;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using System;
 
 namespace DragonSpark.Runtime.Activation
 {
 	public class ServiceProvider : IServiceProvider, ICondition<Type>
 	{
+		readonly uint          _length;
+		readonly Array<object> _services;
+
+		public ServiceProvider(params object[] services) : this(services.Result()) {}
+
+		public ServiceProvider(Array<object> services) : this(services, services.Length) {}
+
 		ServiceProvider(Array<object> services, uint length)
 		{
 			_services = services;
 			_length   = length;
 		}
-
-		readonly uint          _length;
-		readonly Array<object> _services;
-
-		public ServiceProvider(params object[] services) : this(new Array<object>(services)) {}
-
-		public ServiceProvider(Array<object> services) : this(services, services.Length) {}
 
 		public bool Get(Type parameter)
 		{

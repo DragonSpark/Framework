@@ -1,11 +1,11 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Invocation;
+using System;
 
 namespace DragonSpark.Runtime.Environment
 {
-	public static class SystemStores
+	static class SystemStores
 	{
 		public static IResult<T> New<T>(Func<T> create) => new Deferred<T>(create, New<T>());
 
@@ -16,9 +16,10 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static SystemStores<T> Default { get; } = new SystemStores<T>();
 
-		SystemStores() : base(Implementations.Activator.In(A.Type<T>())
-		                                     .Then()
-		                                     .Cast<IMutable<T>>()
-		                                     .Selector()) {}
+		SystemStores() : base(Start.An.Instance(Implementations.Activator)
+		                           .In(A.Type<T>())
+		                           .Then()
+		                           .Cast<IMutable<T>>()
+		                           .Selector()) {}
 	}
 }

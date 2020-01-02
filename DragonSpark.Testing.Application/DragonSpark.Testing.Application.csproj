@@ -37,5 +37,6 @@
   <ItemGroup>
     <Folder Include="Application\Services\" />
     <Folder Include="Reflection\Members\" />
+    <Folder Include="Text\Formatting\" />
   </ItemGroup>
 </Project>
