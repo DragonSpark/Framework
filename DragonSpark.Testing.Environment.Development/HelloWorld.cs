@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Testing.Objects;
 
-namespace DragonSpark.Testing.Environment
+namespace DragonSpark.Testing.Environment.Development
 {
 	public sealed class HelloWorld : IHelloWorld
 	{

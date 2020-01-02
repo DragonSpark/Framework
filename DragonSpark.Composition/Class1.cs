@@ -8,11 +8,13 @@ using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
+using DragonSpark.Runtime.Environment;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Composition
 {
@@ -118,9 +120,19 @@ namespace DragonSpark.Composition
 
 	sealed class EnvironmentalServiceConfiguration : IServiceConfiguration
 	{
+		public static EnvironmentalServiceConfiguration Default { get; } = new EnvironmentalServiceConfiguration();
+
+		EnvironmentalServiceConfiguration() : this(EnvironmentAwareAssemblies.Default.Get) {}
+
+		readonly Func<string, IArray<Assembly>> _select;
+
+		public EnvironmentalServiceConfiguration(Func<string, IArray<Assembly>> select) => _select = select;
+
 		public void Execute(IServiceCollection parameter)
 		{
-			var name = parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName;
+			var source = _select(parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName);
+			parameter.AddSingleton(source.ToDelegate())
+			         .AddSingleton(source);
 		}
 	}
 

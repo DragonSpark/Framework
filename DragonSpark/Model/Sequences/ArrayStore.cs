@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences
 {
@@ -24,5 +24,12 @@ namespace DragonSpark.Model.Sequences
 		public ArrayStore(ISelect<_, Array<T>> source) : this(source.Get) {}
 
 		public ArrayStore(Func<_, Array<T>> source) : base(source) {}
+	}
+
+	public class ArraySelection<_, T> : Select<_, Array<T>>, IArray<_, T>
+	{
+		public ArraySelection(ISelect<_, Array<T>> @select) : base(@select) {}
+
+		public ArraySelection(Func<_, Array<T>> @select) : base(@select) {}
 	}
 }

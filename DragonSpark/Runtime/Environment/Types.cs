@@ -17,8 +17,22 @@ namespace DragonSpark.Runtime.Environment
 		                    .Selector()) {}
 	}
 
-	sealed class TypeSelection : IArray<Array<Assembly>, Type>
+	sealed class TypeSelection<T> : TypeSelection where T : class, IActivateUsing<Assembly>, IArray<Type>
 	{
-		public Array<Type> Get(Array<Assembly> parameter) => Start.An;
+		public static TypeSelection<T> Default { get; } = new TypeSelection<T>();
+
+		TypeSelection() : base(Start.An.Extent<T>().From) {}
+	}
+
+	class TypeSelection : ArraySelection<Array<Assembly>, Type>
+	{
+		public TypeSelection(Func<Assembly, IArray<Type>> select)
+			: this(Start.A.Selection<Assembly>()
+			            .As.Sequence.Array.By.Self.Query()
+			            .Select(select)
+			            .SelectMany(x => x.Get().Open())
+			            .Selector()) {}
+
+		public TypeSelection(Func<Array<Assembly>, Array<Type>> @select) : base(@select) {}
 	}
 }

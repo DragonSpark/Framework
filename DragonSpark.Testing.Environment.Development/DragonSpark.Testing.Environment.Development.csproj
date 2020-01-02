@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>DragonSpark.Testing.Environment</AssemblyName>
-    <RootNamespace>DragonSpark.Testing.Environment</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
