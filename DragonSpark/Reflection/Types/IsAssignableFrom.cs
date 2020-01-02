@@ -1,11 +1,11 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
+using System;
 
 namespace DragonSpark.Reflection.Types
 {
-	public sealed class IsAssignableFrom<T> : Condition<Type>
+	sealed class IsAssignableFrom<T> : Condition<Type>
 	{
 		public static IsAssignableFrom<T> Default { get; } = new IsAssignableFrom<T>();
 

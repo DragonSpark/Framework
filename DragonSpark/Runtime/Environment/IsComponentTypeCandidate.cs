@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Reflection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using System;
 
@@ -10,8 +10,9 @@ namespace DragonSpark.Runtime.Environment
 		public static IsComponentTypeCandidate Default { get; } = new IsComponentTypeCandidate();
 
 		IsComponentTypeCandidate() : base(CanConstruct.Default, CanActivate.Default,
-		                                  IsDecoratedWith<InfrastructureAttribute>.Default.Then().Inverse().Get()) {}
+		                                  Is.DecoratedWith<InfrastructureAttribute>()
+		                                    .Then()
+		                                    .Inverse()
+		                                    .Get()) {}
 	}
-
-	public sealed class InfrastructureAttribute : Attribute {}
 }

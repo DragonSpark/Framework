@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Reflection;
 using DragonSpark.Reflection.Types;
 using System;
 using System.Reflection;
@@ -12,10 +13,13 @@ namespace DragonSpark.Compose
 {
 	public static class Is
 	{
+		public static ICondition<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
+			=> IsDecoratedWith<T>.Default;
+
 		public static ICondition<T> Always<T>() => Model.Selection.Conditions.Always<T>.Default;
 
 		public static ICondition<object> Always() => Always<object>();
-		
+
 		public static ICondition<T> Never<T>() => Model.Selection.Conditions.Never<T>.Default;
 
 		public static ICondition<object> Never() => Always<object>();

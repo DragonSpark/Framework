@@ -1,13 +1,13 @@
-﻿using System;
-using AutoFixture.Kernel;
+﻿using AutoFixture.Kernel;
 using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
+using System;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {
 	public class Specimen<T> : ISpecimenBuilder
 	{
-		readonly static Func<object, bool> Condition = Start.An.Instance(IsOf<Type>.Default)
+		readonly static Func<object, bool> Condition = Start.An.Instance(Is.Of<Type>())
 		                                                    .Then()
 		                                                    .And(Start.A.Selection.Of.Any.AndOf<Type>()
 		                                                              .By.Cast.Or.Throw.Then()
