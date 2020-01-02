@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Services;
@@ -7,14 +8,10 @@ using Microsoft.AspNetCore.TestHost;
 
 namespace DragonSpark.Testing.Server
 {
-	public sealed class Start
+	public static class ExtensionMethods
 	{
-		public static Start A { get; } = new Start();
-
-		Start() {}
-
-		public BuildHostContext Host()
-			=> Compose.Start.A.Host().WithConfiguration(ServerConfiguration.Default);
+		public static BuildHostContext Server(this ModelContext _)
+			=> Start.A.Host().WithConfiguration(ServerConfiguration.Default);
 	}
 
 	sealed class ServerConfiguration : ICommand<IWebHostBuilder>

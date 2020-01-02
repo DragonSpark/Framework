@@ -8,6 +8,9 @@ namespace DragonSpark.Services
 {
 	public static class Extensions
 	{
+		public static BuildHostContext WithConfiguration(this BuildHostContext @this)
+			=> @this.WithConfiguration(StartupConfiguration.Default);
+
 		public static BuildHostContext WithConfiguration<T>(this BuildHostContext @this) where T : class
 			=> @this.WithConfiguration(StartupConfiguration<T>.Default);
 

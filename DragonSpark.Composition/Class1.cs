@@ -25,13 +25,21 @@ namespace DragonSpark.Composition
 
 	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
 
+	sealed class ContainerConfiguration : Command<IServiceContainer>, IContainerConfiguration
+	{
+		public ContainerConfiguration(Action<IServiceContainer> command) : base(command) {}
+	}
+
 	public static class ConfigureComposition
 	{
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
 			=> @this.Select(Composition.WithComposition.Default);
 
-		public static BuildHostContext WithComposition<T>(this BuildHostContext @this) where T : ICompositionRoot, new()
+		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this) where T : ICompositionRoot, new()
 			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
+
+		public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
+			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
 
 		public static BuildHostContext Configure(this BuildHostContext @this, ICommand<IHostBuilder> configuration)
 			=> @this.Get()
@@ -50,12 +58,15 @@ namespace DragonSpark.Composition
 		public IHostBuilder Get(IHostBuilder parameter) => parameter.UseLightInject();
 	}
 
-	sealed class ConfigureContainer<T> : ICommand<IHostBuilder> where T : ICompositionRoot, new()
+	sealed class ConfigureContainer<T> : ConfigureContainer where T : ICompositionRoot, new()
 	{
 		public static ConfigureContainer<T> Default { get; } = new ConfigureContainer<T>();
 
-		ConfigureContainer() : this(x => x.RegisterFrom<T>()) {}
+		ConfigureContainer() : base(x => x.RegisterFrom<T>()) {}
+	}
 
+	class ConfigureContainer : ICommand<IHostBuilder>
+	{
 		readonly Action<IServiceContainer> _configure;
 
 		public ConfigureContainer(Action<IServiceContainer> configure) => _configure = configure;
@@ -65,8 +76,6 @@ namespace DragonSpark.Composition
 			parameter.ConfigureContainer(_configure);
 		}
 	}
-
-
 
 	public class Configurator : IConfigurator
 	{

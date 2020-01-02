@@ -26,6 +26,9 @@ namespace DragonSpark.Services
 	{
 		readonly Action<IApplicationBuilder> _application;
 
+		public Configurator(ICommand<IServiceCollection> configure, ICommand<IApplicationBuilder> application)
+			: this(configure.Execute, application.Execute) {}
+
 		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
 			: base(configure) => _application = application;
 
