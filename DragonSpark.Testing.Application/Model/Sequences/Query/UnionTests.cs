@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Union(Sequence.From(second))
 			     .Out()
 			     .Get(first)
@@ -30,7 +30,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(4)
 			     .Union(Sequence.From(second))
 			     .Out()
@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(4)
 			     .Union(Sequence.From(second))
 			     .Skip(3)
@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .Be(first.Skip(4).Union(second).Skip(3).First());
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(4)
 			     .Union(Sequence.From(second))
 			     .FirstOrDefault()

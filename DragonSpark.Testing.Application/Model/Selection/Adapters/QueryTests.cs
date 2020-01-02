@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Application.Model.Selection.Adapters
 			var expected = numbers.Skip(3).ToArray();
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(3)
 			     .Get()
 			     .Get(numbers)

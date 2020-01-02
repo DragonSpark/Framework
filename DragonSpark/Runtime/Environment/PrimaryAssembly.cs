@@ -9,7 +9,7 @@ namespace DragonSpark.Runtime.Environment
 		public static PrimaryAssembly Default { get; } = new PrimaryAssembly();
 
 		PrimaryAssembly() : base(Start.A.Selection.Of<Assembly>()
-		                              .As.Sequence.Immutable.By.Self.Query()
+		                              .As.Sequence.Array.By.Self.Query()
 		                              .Only(x => x.Has<HostingAttribute>())
 		                              .Select(PrimaryAssemblyMessage.Default.AsGuard())
 		                              .Get(Reflection.Assemblies.Assemblies.Default)) {}

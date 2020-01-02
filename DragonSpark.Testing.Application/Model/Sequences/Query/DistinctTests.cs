@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			readonly ISelect<int[], int[]> _subject;
 
 			public Benchmarks() : this(Numbers.Distinct(), Start.A.Selection.Of.Type<int>()
-			                                                    .As.Sequence.Array.By.Self.Query()
+			                                                    .As.Sequence.Open.By.Self.Query()
 			                                                    .Distinct()
 			                                                    .Out()) {}
 
@@ -40,7 +40,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Distinct()
 			     .Out()
 			     .Get(Numbers)

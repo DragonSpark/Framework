@@ -12,12 +12,12 @@ namespace DragonSpark.Runtime.Environment
 		Assemblies() : this(PrimaryAssembly.Default, HostingAssembly.Default) {}
 
 		public Assemblies(params Assembly[] input) : base(Start.A.Selection.Of.Type<Assembly>()
-		                                                       .As.Sequence.Immutable.By.Self.Query()
+		                                                       .As.Sequence.Array.By.Self.Query()
 		                                                       .Select(AssemblyNameSelector.Default)
 		                                                       .SelectMany(ComponentAssemblyNames.Default)
 		                                                       .Select(Load.Default)
-		                                                       .WhereBy(y => y != null)
 		                                                       .Append(Sequence.From(input))
+		                                                       .WhereBy(y => y != null)
 		                                                       .Distinct()
 		                                                       .Get()
 		                                                       .In(input.Result)

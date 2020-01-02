@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = array.Skip(1).ToArray();
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(1)
 			     .Out()
 			     .Get(array)
@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = array.Skip(3).Take(2).ToArray();
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(3)
 			     .Take(2)
 			     .Out()
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = array.Take(2).ToArray();
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Take(2)
 			     .Out()
 			     .Get(array)
@@ -59,7 +59,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var array = new[] {1, 2, 3};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Out()
 			     .Get(array)
 			     .Should()

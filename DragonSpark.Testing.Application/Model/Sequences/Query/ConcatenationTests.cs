@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Append(Sequence.From(1, 2, 3))
 			     .Get(data)
 			     .Open()
@@ -32,7 +32,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBody()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Append(Sequence.From(1, 2, 3))
 			     .Get(data)
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBodyFirst()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Append(Sequence.From(1, 2, 3))
 			     .Skip(skip)
@@ -55,7 +55,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .Be(data.Skip(skip).Concat(new[] {1, 2, 3}).Skip(skip).First());
 
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Append(Sequence.From(1, 2, 3))
 			     .FirstOrDefault()

@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			readonly string[] _input;
 			readonly ISelect<string[], string[]> _link = Start.A.Selection.Of.Type<string>()
-			                                                  .As.Sequence.Array.By.Self.Query()
+			                                                  .As.Sequence.Open.By.Self.Query()
 			                                                  .Skip(skip)
 			                                                  .Take(take)
 			                                                  .WhereBy(x => x.Contains(Value))
@@ -44,7 +44,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Select(x => x.Length)
 			     .Out()
 			     .Get(Source)
@@ -58,7 +58,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var numbers = new[] {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7};
 
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .WhereBy(x => x > 5)
 			     .WhereBy(x => x < 7)
 			     .Out()
@@ -73,7 +73,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var numbers = new[] {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7};
 
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(10)
 			     .Take(12)
 			     .WhereBy(x => x > 5)
@@ -90,7 +90,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifySkipTakeWhere()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Take(take)
 			     .WhereBy(x => x.Contains("ab"))

@@ -16,4 +16,9 @@ namespace DragonSpark.Runtime.Environment
 		                    .SelectMany(x => x.Get().Open())
 		                    .Selector()) {}
 	}
+
+	sealed class TypeSelection : IArray<Array<Assembly>, Type>
+	{
+		public Array<Type> Get(Array<Assembly> parameter) => Start.An;
+	}
 }

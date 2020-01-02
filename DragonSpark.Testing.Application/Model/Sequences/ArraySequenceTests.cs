@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 		{
 			var expected = Enumerable.Range(0, 10_000).ToArray();
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Out()
 			     .Get(expected)
 			     .Should()
@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var source   = Enumerable.Range(0, 10_000).ToArray();
 			var expected = source.Skip(5000).Take(300).ToArray();
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(5000)
 			     .Take(300)
 			     .Out()

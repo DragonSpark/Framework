@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			readonly ISelect<int[], int[]> _subject;
 
 			public Benchmarks() : this(Start.A.Selection.Of.Type<int>()
-			                                .As.Sequence.Array.By.Self.Query()
+			                                .As.Sequence.Open.By.Self.Query()
 			                                .Skip(6)
 			                                .Take(5)
 			                                .Where(x => x > 2)

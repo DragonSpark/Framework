@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Compose.Selections
 {
@@ -9,11 +10,13 @@ namespace DragonSpark.Compose.Selections
 
 		SequenceExtent() {}
 
-		public Extent<T[]> Array => DefaultExtent<T[]>.Default;
+		public Extent<T[]> Open => DefaultExtent<T[]>.Default;
 
 		public Extent<IList<T>> List => DefaultExtent<IList<T>>.Default;
 
-		public Extent<Array<T>> Immutable => DefaultExtent<Array<T>>.Default;
+		public Extent<Array<T>> Array => DefaultExtent<Array<T>>.Default;
+
+		public Extent<ImmutableArray<T>> Immutable => DefaultExtent<ImmutableArray<T>>.Default;
 	}
 
 	public sealed class SequenceExtent<TIn, TOut> : Extent<TIn, IEnumerable<TOut>>
@@ -22,8 +25,10 @@ namespace DragonSpark.Compose.Selections
 
 		SequenceExtent() {}
 
-		public Extent<TIn, TOut[]> Array => DefaultExtent<TIn, TOut[]>.Default;
+		public Extent<TIn, TOut[]> Open => DefaultExtent<TIn, TOut[]>.Default;
 
-		public Extent<TIn, Array<TOut>> Immutable => DefaultExtent<TIn, Array<TOut>>.Default;
+		public Extent<TIn, Array<TOut>> Array => DefaultExtent<TIn, Array<TOut>>.Default;
+
+		public Extent<TIn, ImmutableArray<TOut>> Immutable => DefaultExtent<TIn, ImmutableArray<TOut>>.Default;
 	}
 }

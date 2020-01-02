@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Sum(x => x.Length)
 			     .Get(Source)
 			     .Should()
@@ -27,7 +27,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifySelect()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Select(x => x.Length)
 			     .Sum()
 			     .Get(Source)

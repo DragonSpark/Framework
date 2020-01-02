@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 		public static Configuration Default { get; } = new Configuration();
 
 		Configuration() : this(Start.A.Condition.Of.Type<string>().As.Sequence.Immutable,
-		                       Start.A.Selection.Of.Type<string>().As.Sequence.Immutable) {}
+		                       Start.A.Selection.Of.Type<string>().As.Sequence.Array) {}
 
 		public Configuration(Compose.Conditions.Extent<Array<string>> condition, Extent<Array<string>> selection)
 			: base(condition.By.Calling(x => x.Length > 0), 

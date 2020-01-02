@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			};
 
 			var map = Start.A.Selection.Of.Type<Entry>()
-			               .As.Sequence.Array.By.Self.Query()
+			               .As.Sequence.Open.By.Self.Query()
 			               .GroupMap(x => x.Key)
 			               .Get(entries);
 

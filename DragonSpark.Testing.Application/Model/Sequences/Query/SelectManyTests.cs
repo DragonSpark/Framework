@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			public Benchmarks() : this(Data.Hide().SelectMany(x => x.Elements),
 			                           Start.A.Selection<Numbers>()
-			                                .As.Sequence.Array.By.Self.Query()
+			                                .As.Sequence.Open.By.Self.Query()
 			                                .SelectManyBy(x => x.Elements)
 			                                .Out()) {}
 
@@ -52,7 +52,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection<Numbers>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .SelectManyBy(x => x.Elements)
 			     .Out()
 			     .Get(Data)
@@ -64,7 +64,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBody()
 		{
 			Start.A.Selection<Numbers>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(2)
 			     .SelectManyBy(x => x.Elements)
 			     .Out()
@@ -77,7 +77,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBodyFirst()
 		{
 			Start.A.Selection<Numbers>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(1)
 			     .SelectManyBy(x => x.Elements)
 			     .FirstOrDefault()
@@ -86,7 +86,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .Be(Data.Skip(1).SelectMany(x => x.Elements).First());
 
 			Start.A.Selection<Numbers>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(1)
 			     .SelectManyBy(x => x.Elements)
 			     .Skip(2)

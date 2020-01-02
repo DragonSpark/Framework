@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 		{
 			const uint Total = 10_000u;
 			readonly static ISelect<uint[], uint[]> Select = Start.A.Selection<uint>()
-			                                                      .As.Sequence.Array.By.Self.Query()
+			                                                      .As.Sequence.Open.By.Self.Query()
 			                                                      .WhereBy(x => x > 1000)
 			                                                      .Out();
 
@@ -61,7 +61,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 		{
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(300)
 			     .Take(100)
 			     .WhereBy(x => x > 100)
@@ -79,7 +79,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 		{
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(300)
 			     .Take(200)
 			     .WhereBy(x => x > 100)
@@ -102,7 +102,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var source   = Enumerable.Range(0, 1_000).ToArray();
 			var expected = source.Where(x => x > 100).ToArray();
 			var ints = Start.A.Selection<int>()
-			                .As.Sequence.Array.By.Self.Query()
+			                .As.Sequence.Open.By.Self.Query()
 			                .WhereBy(x => x > 100)
 			                .Out()
 			                .Get(source);
@@ -117,7 +117,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).ToArray();
 			Start.A.Selection<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .WhereBy(x => x > 3)
 			     .Out()
 			     .Get(numbers)
@@ -135,7 +135,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			      .Take(5)
 			      .Should()
 			      .Equal(Start.A.Selection<int>()
-			                  .As.Sequence.Array.By.Self.Query()
+			                  .As.Sequence.Open.By.Self.Query()
 			                  .WhereBy(x => x > 100)
 			                  .Skip((uint)count)
 			                  .Take(5)
@@ -149,7 +149,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();
 			var actual = Start.A.Selection<int>()
-			                  .As.Sequence.Array.By.Self.Query()
+			                  .As.Sequence.Open.By.Self.Query()
 			                  .WhereBy(x => x > 3)
 			                  .Take(1)
 			                  .Out()

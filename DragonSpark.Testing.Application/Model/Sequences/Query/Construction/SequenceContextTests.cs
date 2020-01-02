@@ -47,7 +47,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			var second = 0;
 
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Select(x =>
 			             {
 				             second++;
@@ -75,7 +75,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			                           .Get(FirstOrDefault<string>.Default)
 			                           ,
 			                           Start.A.Selection.Of.Type<int>()
-			                                .As.Sequence.Array.By.Self.Query()
+			                                .As.Sequence.Open.By.Self.Query()
 			                                .Select(x => x.ToString())
 			                                .FirstOrDefault()) {}
 
@@ -108,13 +108,13 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		void VerifyActivation()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.StoredActivation<Store<int>>()
+			     .As.Sequence.Open.By.StoredActivation<Store<int>>()
 			     .Get(data)
 			     .Instance.Should()
 			     .Equal(data);
 
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Instantiation<Store<int>>()
+			     .As.Sequence.Open.By.Instantiation<Store<int>>()
 			     .Get(data)
 			     .Instance.Should()
 			     .Equal(data);
@@ -124,7 +124,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		void VerifyComparison()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Where(x => x > 8)
 			     .Select(x => x.ToString())
 			     .Get(data)

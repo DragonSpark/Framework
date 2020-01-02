@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Objects
 	{
 		public static Sequencing<T> Default { get; } = new Sequencing<T>();
 
-		Sequencing() : this(Start.A.Selection<T>().As.Sequence.Array.By.Self.Query()) {}
+		Sequencing() : this(Start.A.Selection<T>().As.Sequence.Open.By.Self.Query()) {}
 
 		public Sequencing(Query<T[], T> sequence) : this(sequence, Objects.Near.Default, Objects.Far.Default) {}
 

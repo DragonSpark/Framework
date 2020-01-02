@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			readonly string[] _input;
 			readonly ISelect<string[], string[]> _link = Start.A.Selection.Of.Type<string>()
-			                                                  .As.Sequence.Array.By.Self.Query()
+			                                                  .As.Sequence.Open.By.Self.Query()
 			                                                  .SelectBy(x => x)
 			                                                  .WhereBy(x => x.Contains("ab"))
 			                                                  .Out();
@@ -41,7 +41,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .SelectBy(x => x.Length)
 			     .Get(Source)
 			     .Open()
@@ -53,7 +53,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifySkipTakeWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(100)
 			     .Take(900)
 			     .WhereBy(x => x.Contains("ab"))
@@ -75,7 +75,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhere()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .WhereBy(x => x.Contains("ab"))
 			     .SelectBy(x => x.Length)
 			     .Out()
@@ -88,7 +88,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhereSkip()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .WhereBy(x => x.Contains("ab"))
 			     .Skip(10)
 			     .SelectBy(x => x.Length)
@@ -102,7 +102,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Array.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Query()
 			     .WhereBy(x => x.Contains("ab"))
 			     .SelectBy(x => x.Length)
 			     .Skip(5)
