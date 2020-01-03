@@ -29,8 +29,8 @@ namespace DragonSpark.Runtime.Environment
 
 		public ISelect<Type, Type> Get(Type parameter)
 			=> _default.Get(parameter)
-			           .Unless(Start.An.Extent<Specification>().From(parameter.To(_result)))
-			           .Unless(Start.An.Extent<Specification>().From(parameter));
+			           .Unless(new Specification(_result(parameter)))
+			           .Unless(new Specification(parameter));
 
 		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>
 		{
@@ -42,7 +42,7 @@ namespace DragonSpark.Runtime.Environment
 			public static Make Instance { get; } = new Make();
 
 			Make() : this(Specifications.Instance.Get(),
-			              GenericArguments.Default.Then().Activate<GenericTypeBuilder>().Get(),
+			              GenericArguments.Default.Then().Select<GenericTypeBuilder>().Get(),
 			              IsGenericTypeDefinition.Default) {}
 
 			readonly ISelect<Type, ISelect<Type, Type>> _source;
@@ -74,7 +74,7 @@ namespace DragonSpark.Runtime.Environment
 				: base(metadata.Select(GenericInterfaceImplementations.Default)
 				               .Select(x => x.Condition.ToDelegate())
 				               .Then()
-				               .Activate<OneItemIs<Type>>()
+				               .Select<OneItemIs<Type>>()
 				               .Select(metadata.Select(GenericInterfaces.Default)
 				                               .Open()
 				                               .Select)

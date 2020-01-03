@@ -21,7 +21,7 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
 
-		public Selector<_, TTo> Activate<TTo>() where TTo : IActivateUsing<T> => Select(Activations<T, TTo>.Default);
+		public Selector<_, TTo> Select<TTo>() where TTo : IActivateUsing<T> => Select(Activations<T, TTo>.Default);
 
 		public Selector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 

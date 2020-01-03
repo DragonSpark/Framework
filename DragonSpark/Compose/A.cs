@@ -6,6 +6,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection;
 using DragonSpark.Reflection.Types;
+using DragonSpark.Runtime;
 using System;
 using System.Reflection;
 
@@ -27,6 +28,10 @@ namespace DragonSpark.Compose
 		public static ICondition<T> EqualTo<T>(T source) => new Equals<T>(source);
 
 		public static ICondition<object> Of<T>() => IsOf<T>.Default;
+
+		public static ICondition<T> Assigned<T>() => IsAssigned<T>.Default;
+
+		public static ICondition<object> Assigned() => IsAssigned.Default;
 
 		public static ICondition<Type> AssignableFrom<T>() => IsAssignableFrom<T>.Default;
 	}

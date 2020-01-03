@@ -8,7 +8,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Environment
 {
-	public sealed class ComponentTypesTests
+	public sealed class ComponentTypeLocatorsTests
 	{
 		public interface IComponent {}
 
@@ -29,9 +29,9 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		{
 			SortSelector<Type>.Default.Get(typeof(First)).Should().Be(-10);
 
-			var types = new ComponentTypesDefinition(NestedTypes<ComponentTypesTests>.Default)
-			            .Get(typeof(IComponent))
-			            .Open();
+			var types = ComponentTypeLocators.Default.Get(NestedTypes<ComponentTypeLocatorsTests>.Default.Get().Open())
+			                                .Get(typeof(IComponent))
+			                                .Open();
 			types.Should().HaveCount(4);
 			types.Should().BeEquivalentTo(typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last));
 			types.First().Should().Be(typeof(First));

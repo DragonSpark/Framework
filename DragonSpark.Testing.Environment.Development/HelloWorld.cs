@@ -4,9 +4,9 @@ namespace DragonSpark.Testing.Environment.Development
 {
 	public sealed class HelloWorld : IHelloWorld
 	{
-		public static HelloWorld Default { get; } = new HelloWorld();
+		/*public static HelloWorld Default { get; } = new HelloWorld();
 
-		HelloWorld() {}
+		HelloWorld() {}*/
 
 		public string GetMessage() => "Hello From Debug!";
 	}

@@ -5,11 +5,11 @@ using System;
 
 namespace DragonSpark.Runtime.Environment
 {
-	sealed class IsComponentTypeCandidate : AllCondition<Type>
+	sealed class IsComponentType : AllCondition<Type>
 	{
-		public static IsComponentTypeCandidate Default { get; } = new IsComponentTypeCandidate();
+		public static IsComponentType Default { get; } = new IsComponentType();
 
-		IsComponentTypeCandidate() : base(CanConstruct.Default, CanActivate.Default,
+		IsComponentType() : base(CanConstruct.Default, CanActivate.Default,
 		                                  Is.DecoratedWith<InfrastructureAttribute>()
 		                                    .Then()
 		                                    .Inverse()

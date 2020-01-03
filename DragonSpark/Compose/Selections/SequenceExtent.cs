@@ -16,6 +16,8 @@ namespace DragonSpark.Compose.Selections
 
 		public Extent<Array<T>> Array => DefaultExtent<Array<T>>.Default;
 
+		public Extent<IReadOnlyList<T>> ReadOnly => DefaultExtent<IReadOnlyList<T>>.Default;
+
 		public Extent<ImmutableArray<T>> Immutable => DefaultExtent<ImmutableArray<T>>.Default;
 	}
 

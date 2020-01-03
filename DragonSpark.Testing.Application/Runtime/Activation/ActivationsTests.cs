@@ -49,14 +49,14 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		[Fact]
 		public void VerifyReferences()
 		{
-			var source = StartReferences.Default.Then().Activate<References>().Get();
+			var source = StartReferences.Default.Then().Select<References>().Get();
 			source.Get(123).Should().BeSameAs(source.Get(123));
 		}
 
 		[Fact]
 		public void VerifyValues()
 		{
-			var          source    = StartValues.Default.Then().Activate<Values>().Get();
+			var          source    = StartValues.Default.Then().Select<Values>().Get();
 			const string parameter = "First";
 			source.Get(parameter).Should().NotBeSameAs(source.Get(parameter));
 		}

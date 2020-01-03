@@ -3,16 +3,20 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Reflection.Members;
+using DragonSpark.Reflection.Selection;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
+using JetBrains.Annotations;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -37,27 +41,36 @@ namespace DragonSpark.Composition
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
 			=> @this.Select(Composition.WithComposition.Default);
 
-		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this) where T : ICompositionRoot, new()
+		public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)
+			where T : ICompositionRoot, new()
 			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
+
+		public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
+			=> @this.ComposeUsing<ConfigureDefaultActivation>();
+
+		public static BuildHostContext RegisterModularity(this BuildHostContext @this)
+			=> @this.Configure(ApplyModularity.Default);
+
+		public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
+			where T : class, IActivateUsing<Assembly>, IArray<Type>
+			=> @this.Configure(new ApplyModularity(TypeSelection<T>.Default.Open().Get));
+
+		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
+			where T : class, ICommand<IServiceContainer>
+			=> @this.ComposeUsing(Start.An.Activation<T>().Activate());
+
+		public static BuildHostContext ComposeUsing(this BuildHostContext @this, ICommand<IServiceContainer> configure)
+			=> @this.ComposeUsing(configure.Execute);
 
 		public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
 			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
-
-		public static BuildHostContext Configure(this BuildHostContext @this, ICommand<IHostBuilder> configuration)
-			=> @this.Get()
-			        .Then()
-			        .Terminate(configuration)
-			        .Out()
-			        .To(Start.An.Extent<BuildHostContext>());
 	}
 
-	sealed class WithComposition : IAlteration<IHostBuilder>
+	sealed class WithComposition : ReferenceValueStore<IHostBuilder, IHostBuilder>, IAlteration<IHostBuilder>
 	{
 		public static WithComposition Default { get; } = new WithComposition();
 
-		WithComposition() {}
-
-		public IHostBuilder Get(IHostBuilder parameter) => parameter.UseLightInject();
+		WithComposition() : base(x => x.UseLightInject()) {}
 	}
 
 	sealed class ConfigureContainer<T> : ConfigureContainer where T : ICompositionRoot, new()
@@ -118,25 +131,69 @@ namespace DragonSpark.Composition
 			            .Then(@default)*/@default) {}
 	}
 
-	sealed class EnvironmentalServiceConfiguration : IServiceConfiguration
+	sealed class ApplyModularity : IServiceConfiguration
 	{
-		public static EnvironmentalServiceConfiguration Default { get; } = new EnvironmentalServiceConfiguration();
+		[UsedImplicitly]
+		public static ApplyModularity Default { get; } = new ApplyModularity();
 
-		EnvironmentalServiceConfiguration() : this(EnvironmentAwareAssemblies.Default.Get) {}
+		ApplyModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Open().Get) {}
 
-		readonly Func<string, IArray<Assembly>> _select;
+		readonly Func<IReadOnlyList<Type>, IComponentTypes>         _locator;
+		readonly Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> _types;
+		readonly Func<string, IReadOnlyList<Assembly>>              _select;
 
-		public EnvironmentalServiceConfiguration(Func<string, IArray<Assembly>> select) => _select = select;
+		public ApplyModularity(Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types)
+			: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Open().Get) {}
+
+		public ApplyModularity(Func<IReadOnlyList<Type>, IComponentTypes> locator,
+		                       Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types,
+		                       Func<string, IReadOnlyList<Assembly>> select)
+		{
+			_locator = locator;
+			_types   = types;
+			_select  = select;
+		}
 
 		public void Execute(IServiceCollection parameter)
 		{
-			var source = _select(parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName);
-			parameter.AddSingleton(source.ToDelegate())
-			         .AddSingleton(source);
+			var assemblies = _select(parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName);
+			var types      = _types(assemblies);
+			var locator    = _locator(types);
+
+			parameter.AddSingleton(assemblies)
+			         .AddSingleton(types)
+			         .AddSingleton(locator)
+			         .AddSingleton<IComponentType>(new ComponentType(locator));
 		}
 	}
 
 	public interface IRegistration : IAlteration<IServiceRegistry> {}
+
+	sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
+	{
+		[UsedImplicitly]
+		public static ConfigureDefaultActivation Default { get; } = new ConfigureDefaultActivation();
+
+		ConfigureDefaultActivation() : this(CanActivate.Default.Get,
+		                                    Start.A.Selection<ServiceRequest>()
+		                                         .By.Calling(x => x.ServiceType)
+		                                         .Then()
+		                                         .Activate()) {}
+
+		readonly Func<Type, string, bool>     _condition;
+		readonly Func<ServiceRequest, object> _select;
+
+		public ConfigureDefaultActivation(Func<Type, string, bool> condition, Func<ServiceRequest, object> select)
+		{
+			_condition = condition;
+			_select    = select;
+		}
+
+		public void Execute(IServiceContainer parameter)
+		{
+			parameter.RegisterFallback(_condition, _select);
+		}
+	}
 
 	class DecoratedRegistration : Alteration<IServiceRegistry>,
 	                              IRegistration,
@@ -272,7 +329,7 @@ namespace DragonSpark.Composition
 		                          .Select(ServiceTypeSelector.Default)
 		                          .Out()
 		                          .Then()
-		                          .Activate<NotHave<Type>>()
+		                          .Select<NotHave<Type>>()
 		                          .Get()
 		                          .DefinedAsCondition()
 		                          .Then()

@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Reflection.Types;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -7,6 +7,6 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static Singleton<T> Default { get; } = new Singleton<T>();
 
-		Singleton() : base(Singletons.Default.In(Type<T>.Instance).Then().Cast<T>().Selector()) {}
+		Singleton() : base(Singletons.Default.In(A.Type<T>()).Then().Cast<T>().Selector()) {}
 	}
 }

@@ -1,11 +1,15 @@
-﻿using System;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
+using DragonSpark.Runtime.Activation;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection
 {
-	public sealed class AllAssemblyTypes : ArrayInstance<Type>
+	public sealed class AllAssemblyTypes : ArrayInstance<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
 	{
-		public AllAssemblyTypes(Type referenceType) : base(referenceType.Assembly.DefinedTypes) {}
+		public AllAssemblyTypes(Type referenceType) : this(referenceType.Assembly) {}
+
+		public AllAssemblyTypes(Assembly assembly) : base(assembly.DefinedTypes) {}
 	}
 
 	public sealed class AllAssemblyTypes<T> : ArrayResult<Type>

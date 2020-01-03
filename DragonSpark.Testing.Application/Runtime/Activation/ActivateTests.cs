@@ -77,6 +77,24 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		}
 
 		[Fact]
+		void VerifyGeneralized()
+		{
+			Activator.Default.Get(typeof(Activated))
+			         .Should()
+			         .NotBeNull()
+			         .And.Subject.Should()
+			         .BeOfType<Activated>()
+			         .And.Subject.Should()
+			         .NotBeSameAs(Activator.Default.Get(typeof(Activated)));
+		}
+
+		[Fact]
+		void VerifyGeneralizedSingleton()
+		{
+			Activator.Default.Get(typeof(Singleton)).Should().BeSameAs(Singleton.Default);
+		}
+
+		[Fact]
 		void VerifyNew()
 		{
 			New<Activated>.Default.Get().Should().NotBeSameAs(New<Activated>.Default.Get());

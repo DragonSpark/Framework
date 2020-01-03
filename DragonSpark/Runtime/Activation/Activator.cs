@@ -1,7 +1,7 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -9,7 +9,7 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static Activator Default { get; } = new Activator();
 
-		Activator() : base(Start.A.Generic(typeof(ReferenceActivator<>))
+		Activator() : base(Start.A.Generic(typeof(Activator<>))
 		                        .Of.Type<object>()
 		                        .As.Result()
 		                        .Then()
@@ -20,7 +20,7 @@ namespace DragonSpark.Runtime.Activation
 		                        .To(Start.A.Selection.Of.System.Type.By.Array().Select)) {}
 	}
 
-	public sealed class Activator<T> : Result<T>, IActivator<T>
+	sealed class Activator<T> : Result<T>, IActivator<T>
 	{
 		public static Activator<T> Default { get; } = new Activator<T>();
 

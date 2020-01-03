@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition.Compose
@@ -13,5 +15,9 @@ namespace DragonSpark.Composition.Compose
 			=> _collection.AddSingleton<TResult>()
 			              .AddSingleton(x => x.GetRequiredService<TResult>().ToDelegate())
 			              .AddSingleton(x => x.GetRequiredService<TResult>().Get());
+
+		public IServiceCollection FromEnvironment()
+			=> _collection.AddSingleton(A.Type<T>(),
+			                            _collection.GetRequiredInstance<IComponentType>().Get(A.Type<T>()));
 	}
 }
