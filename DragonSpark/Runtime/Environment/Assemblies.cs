@@ -56,7 +56,8 @@ namespace DragonSpark.Runtime.Environment
 			            .Select(AssemblyNameSelector.Default)
 			            .SelectMany(names)
 			            .Select(Load.Default)
-			            .WhereBy(y => y != null)
+			            .Where()
+			            .By(y => y != null)
 			            .Distinct()
 			            .Get()) {}
 

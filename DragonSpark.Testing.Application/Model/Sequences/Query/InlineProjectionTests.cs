@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -22,8 +22,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			readonly string[] _input;
 			readonly ISelect<string[], string[]> _link = Start.A.Selection.Of.Type<string>()
 			                                                  .As.Sequence.Open.By.Self.Query()
-			                                                  .SelectBy(x => x)
-			                                                  .WhereBy(x => x.Contains("ab"))
+			                                                  .Select()
+			                                                  .By(x => x)
+			                                                  .Where()
+			                                                  .By(x => x.Contains("ab"))
 			                                                  .Out();
 
 			public Benchmarks() : this(Source.ToArray()) {}
@@ -42,7 +44,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .SelectBy(x => x.Length)
+			     .Select()
+			     .By(x => x.Length)
 			     .Get(Source)
 			     .Open()
 			     .Should()
@@ -56,8 +59,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(100)
 			     .Take(900)
-			     .WhereBy(x => x.Contains("ab"))
-			     .SelectBy(x => x.Length)
+			     .Where()
+			     .By(x => x.Contains("ab"))
+			     .Select()
+			     .By(x => x.Length)
 			     .Skip(5)
 			     .Take(10)
 			     .Out()
@@ -76,8 +81,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x.Contains("ab"))
-			     .SelectBy(x => x.Length)
+			     .Where()
+			     .By(x => x.Contains("ab"))
+			     .Select()
+			     .By(x => x.Length)
 			     .Out()
 			     .Get(Source)
 			     .Should()
@@ -89,9 +96,11 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x.Contains("ab"))
+			     .Where()
+			     .By(x => x.Contains("ab"))
 			     .Skip(10)
-			     .SelectBy(x => x.Length)
+			     .Select()
+			     .By(x => x.Length)
 			     .Out()
 			     .Get(Source)
 			     .Should()
@@ -103,8 +112,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x.Contains("ab"))
-			     .SelectBy(x => x.Length)
+			     .Where()
+			     .By(x => x.Contains("ab"))
+			     .Select()
+			     .By(x => x.Length)
 			     .Skip(5)
 			     .Take(10)
 			     .Out()

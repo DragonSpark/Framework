@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -55,7 +55,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(100)
 			     .Take(900)
-			     .WhereBy(x => x.Contains("ab"))
+			     .Where()
+			     .By(x => x.Contains("ab"))
 			     .Select(x => x.Length)
 			     .Skip(5)
 			     .Take(10)
@@ -75,7 +76,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x.Contains("ab"))
+			     .Where()
+			     .By(x => x.Contains("ab"))
 			     .Select(x => x.Length)
 			     .Out()
 			     .Get(Source)
@@ -88,7 +90,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x.Contains("ab"))
+			     .Where()
+			     .By(x => x.Contains("ab"))
 			     .Select(x => x.Length)
 			     .Skip(5)
 			     .Take(10)

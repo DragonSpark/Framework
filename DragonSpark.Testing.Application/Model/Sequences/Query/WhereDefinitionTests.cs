@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -26,7 +26,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			                                                  .As.Sequence.Open.By.Self.Query()
 			                                                  .Skip(skip)
 			                                                  .Take(take)
-			                                                  .WhereBy(x => x.Contains(Value))
+			                                                  .Where()
+			                                                  .By(x => x.Contains(Value))
 			                                                  .Out();
 
 			public Benchmarks() : this(Source.ToArray()) {}
@@ -59,8 +60,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x > 5)
-			     .WhereBy(x => x < 7)
+			     .Where()
+			     .By(x => x > 5)
+			     .Where()
+			     .By(x => x < 7)
 			     .Out()
 			     .Get(numbers)
 			     .Should()
@@ -76,8 +79,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(10)
 			     .Take(12)
-			     .WhereBy(x => x > 5)
-			     .WhereBy(x => x < 7)
+			     .Where()
+			     .By(x => x > 5)
+			     .Where()
+			     .By(x => x < 7)
 			     .Skip(3)
 			     .Take(3)
 			     .Out()
@@ -93,7 +98,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Take(take)
-			     .WhereBy(x => x.Contains("ab"))
+			     .Where()
+			     .By(x => x.Contains("ab"))
 			     .Out()
 			     .Get(Source)
 			     .Should()

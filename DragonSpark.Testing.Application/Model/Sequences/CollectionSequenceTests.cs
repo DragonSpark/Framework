@@ -27,7 +27,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			     .As.Sequence.List.By.Self.Query()
 			     .Skip(3000)
 			     .Take(1000)
-			     .WhereBy(x => x > 1000)
+			     .Where()
+			     .By(x => x > 1000)
 			     .Out()
 			     .Get(source)
 			     .Should()
@@ -45,7 +46,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			     .As.Sequence.List.By.Self.Query()
 			     .Skip(3000)
 			     .Take(2000)
-			     .WhereBy(x => x > 1000)
+			     .Where()
+			     .By(x => x > 1000)
 			     .Skip(500)
 			     .Take(1000)
 			     .Out()
@@ -66,7 +68,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = source.Where(x => x > 1000).ToArray();
 			var ints = Start.A.Selection<int>()
 			                .As.Sequence.List.By.Self.Query()
-			                .WhereBy(x => x > 1000)
+			                .Where()
+			                .By(x => x > 1000)
 			                .Out()
 			                .Get(source.ToList());
 			ints.Should().NotBeSameAs(source);
@@ -96,7 +99,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.List.By.Self.Query()
-			     .WhereBy(x => x > 3)
+			     .Where()
+			     .By(x => x > 3)
 			     .Out()
 			     .Get(numbers.ToList())
 			     .Should()
@@ -114,7 +118,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			      .Should()
 			      .Equal(Start.A.Selection<int>()
 			                  .As.Sequence.List.By.Self.Query()
-			                  .WhereBy(x => x > 1000)
+			                  .Where()
+			                  .By(x => x > 1000)
 			                  .Skip((uint)count)
 			                  .Take(5)
 			                  .Out()
@@ -128,7 +133,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();
 			var actual = Start.A.Selection<int>()
 			                  .As.Sequence.List.By.Self.Query()
-			                  .WhereBy(x => x > 3)
+			                  .Where()
+			                  .By(x => x > 3)
 			                  .Take(1)
 			                  .Out()
 			                  .Get(numbers.ToList());

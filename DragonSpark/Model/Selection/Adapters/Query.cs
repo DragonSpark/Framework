@@ -2,6 +2,9 @@
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Model.Selection.Adapters
 {
@@ -26,5 +29,27 @@ namespace DragonSpark.Model.Selection.Adapters
 		public ISelect<_, TTo> Select<TTo>(IReduce<T, TTo> select) => _node.Get(select);
 
 		public ISelect<_, T[]> Out() => _node.Get();
+	}
+
+	public sealed class SelectQueryContext<_, T>
+	{
+		readonly Query<_, T> _subject;
+
+		public SelectQueryContext(Query<_, T> query) => _subject = query;
+
+		public Query<_, TOut> By<TOut>(Expression<Func<T, TOut>> select)
+			=> _subject.Select(new Build.InlineSelect<T, TOut>(select).Returned());
+
+		public Query<_, TOut> Many<TOut>(Expression<Func<T, IEnumerable<TOut>>> select)
+			=> _subject.SelectMany(select.Compile());
+	}
+
+	public sealed class WhereQueryContext<_, T>
+	{
+		readonly Query<_, T> _subject;
+
+		public WhereQueryContext(Query<_, T> query) => _subject = query;
+
+		public Query<_, T> By(Expression<Func<T, bool>> where) => _subject.Where(where.Compile());
 	}
 }

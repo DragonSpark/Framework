@@ -105,15 +105,11 @@ namespace DragonSpark
 		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
 			=> @this.Select(select.ToDelegate());
 
-		public static Query<_, TOut> SelectBy<_, T, TOut>(this Query<_, T> @this, Expression<Func<T, TOut>> select)
-			=> @this.Select(new Build.InlineSelect<T, TOut>(select).Returned());
+		public static SelectQueryContext<_, T> Select<_, T>(this Query<_, T> @this)
+			=> new SelectQueryContext<_, T>(@this);
 
 		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, Func<T, TOut> select)
 			=> @this.Select(new Build.Select<T, TOut>(select).Returned());
-
-		public static Query<_, TOut> SelectManyBy<_, T, TOut>(this Query<_, T> @this,
-		                                                      Expression<Func<T, IEnumerable<TOut>>> select)
-			=> @this.SelectMany(select.Compile());
 
 		public static Query<_, TOut> SelectMany<_, T, TOut>(this Query<_, T> @this,
 		                                                    ISelect<T, IEnumerable<TOut>> select)
@@ -122,8 +118,7 @@ namespace DragonSpark
 		public static Query<_, TOut> SelectMany<_, T, TOut>(this Query<_, T> @this, Func<T, IEnumerable<TOut>> select)
 			=> @this.Select(new Build.SelectMany<T, TOut>(select).Returned());
 
-		public static Query<_, T> WhereBy<_, T>(this Query<_, T> @this, Expression<Func<T, bool>> where)
-			=> @this.Where(where.Compile());
+		public static WhereQueryContext<_, T> Where<_, T>(this Query<_, T> @this) => new WhereQueryContext<_, T>(@this);
 
 		public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);
 

@@ -16,7 +16,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			const uint Total = 10_000u;
 			readonly static ISelect<uint[], uint[]> Select = Start.A.Selection<uint>()
 			                                                      .As.Sequence.Open.By.Self.Query()
-			                                                      .WhereBy(x => x > 1000)
+			                                                      .Where()
+			                                                      .By(x => x > 1000)
 			                                                      .Out();
 
 			uint _count = Total;
@@ -64,7 +65,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(300)
 			     .Take(100)
-			     .WhereBy(x => x > 100)
+			     .Where()
+			     .By(x => x > 100)
 			     .Out()
 			     .Get(source)
 			     .Should()
@@ -82,7 +84,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(300)
 			     .Take(200)
-			     .WhereBy(x => x > 100)
+			     .Where()
+			     .By(x => x > 100)
 			     .Skip(50)
 			     .Take(100)
 			     .Out()
@@ -103,7 +106,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = source.Where(x => x > 100).ToArray();
 			var ints = Start.A.Selection<int>()
 			                .As.Sequence.Open.By.Self.Query()
-			                .WhereBy(x => x > 100)
+			                .Where()
+			                .By(x => x > 100)
 			                .Out()
 			                .Get(source);
 			ints.Should().NotBeSameAs(source);
@@ -118,7 +122,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .WhereBy(x => x > 3)
+			     .Where()
+			     .By(x => x > 3)
 			     .Out()
 			     .Get(numbers)
 			     .Should()
@@ -136,7 +141,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			      .Should()
 			      .Equal(Start.A.Selection<int>()
 			                  .As.Sequence.Open.By.Self.Query()
-			                  .WhereBy(x => x > 100)
+			                  .Where()
+			                  .By(x => x > 100)
 			                  .Skip((uint)count)
 			                  .Take(5)
 			                  .Out()
@@ -150,7 +156,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();
 			var actual = Start.A.Selection<int>()
 			                  .As.Sequence.Open.By.Self.Query()
-			                  .WhereBy(x => x > 3)
+			                  .Where()
+			                  .By(x => x > 3)
 			                  .Take(1)
 			                  .Out()
 			                  .Get(numbers);

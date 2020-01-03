@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using FluentAssertions;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,10 +13,10 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task Verify()
 		{
-			using var host = await DragonSpark.Compose.Start.A.Host()
-			                                  .WithComposition()
-			                                  .Operations()
-			                                  .Start();
+			using var host = await Start.A.Host()
+			                            .WithComposition()
+			                            .Operations()
+			                            .Start();
 			host.Services.GetType()
 			    .FullName.Should()
 			    .Be("LightInject.Microsoft.DependencyInjection.LightInjectServiceProvider");
@@ -24,10 +25,10 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task VerifyCompositionRoot()
 		{
-			using var host = await DragonSpark.Compose.Start.A.Host()
-			                                  .ComposeUsing<Root>()
-			                                  .Operations()
-			                                  .Start();
+			using var host = await Start.A.Host()
+			                            .ComposeUsing<Root>()
+			                            .Operations()
+			                            .Start();
 
 			host.Services.GetRequiredService<string>()
 			    .Should()
@@ -37,10 +38,10 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task VerifyConfiguration()
 		{
-			using var host = await DragonSpark.Compose.Start.A.Host()
-			                                  .Configure(x => x.AddSingleton("Hello World!"))
-			                                  .Operations()
-			                                  .Start();
+			using var host = await Start.A.Host()
+			                            .Configure(x => x.AddSingleton("Hello World!"))
+			                            .Operations()
+			                            .Start();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Hello World!");
@@ -49,11 +50,11 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task VerifyDecoration()
 		{
-			using var host = await DragonSpark.Compose.Start.A.Host()
-			                                  .Configure(x => x.AddSingleton("Hello World!"))
-			                                  .ComposeUsing(x => x.Decorate<string>((factory, s) => $"Decorated: {s}"))
-			                                  .Operations()
-			                                  .Start();
+			using var host = await Start.A.Host()
+			                            .Configure(x => x.AddSingleton("Hello World!"))
+			                            .ComposeUsing(x => x.Decorate<string>((factory, s) => $"Decorated: {s}"))
+			                            .Operations()
+			                            .Start();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Decorated: Hello World!");
@@ -62,11 +63,11 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task VerifyDecorationViaRoot()
 		{
-			using var host = await DragonSpark.Compose.Start.A.Host()
-			                                  .Configure(x => x.AddSingleton("Hello World!"))
-			                                  .ComposeUsing<Decorate>()
-			                                  .Operations()
-			                                  .Start();
+			using var host = await Start.A.Host()
+			                            .Configure(x => x.AddSingleton("Hello World!"))
+			                            .ComposeUsing<Decorate>()
+			                            .Operations()
+			                            .Start();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Decorated: Hello World!");

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -32,7 +32,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			public Benchmarks() : this(Data.Hide().SelectMany(x => x.Elements),
 			                           Start.A.Selection<Numbers>()
 			                                .As.Sequence.Open.By.Self.Query()
-			                                .SelectManyBy(x => x.Elements)
+			                                .Select()
+			                                .Many(x => x.Elements)
 			                                .Out()) {}
 
 			public Benchmarks(IEnumerable<int> classic, ISelect<Numbers[], int[]> subject)
@@ -53,7 +54,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .SelectManyBy(x => x.Elements)
+			     .Select()
+			     .Many(x => x.Elements)
 			     .Out()
 			     .Get(Data)
 			     .Should()
@@ -66,7 +68,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(2)
-			     .SelectManyBy(x => x.Elements)
+			     .Select()
+			     .Many(x => x.Elements)
 			     .Out()
 			     .Get(Data)
 			     .Should()
@@ -79,7 +82,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(1)
-			     .SelectManyBy(x => x.Elements)
+			     .Select()
+			     .Many(x => x.Elements)
 			     .FirstOrDefault()
 			     .Get(Data)
 			     .Should()
@@ -88,7 +92,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(1)
-			     .SelectManyBy(x => x.Elements)
+			     .Select()
+			     .Many(x => x.Elements)
 			     .Skip(2)
 			     .FirstOrDefault()
 			     .Get(Data)
