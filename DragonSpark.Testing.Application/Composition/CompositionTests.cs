@@ -106,9 +106,7 @@ namespace DragonSpark.Testing.Application.Composition
 		[Fact]
 		async Task VerifyActivationThrowsWithoutConfiguration()
 		{
-			using var host = await Start.A.Host()
-			                            .Operations()
-			                            .Start();
+			using var host = await Start.A.Host().Operations().Start();
 			host.Services.Invoking(x => x.GetRequiredService<Singleton>())
 			    .Should()
 			    .Throw<InvalidOperationException>();

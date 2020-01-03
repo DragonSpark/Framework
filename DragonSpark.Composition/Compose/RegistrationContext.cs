@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Composition.Compose
 {
@@ -17,7 +19,20 @@ namespace DragonSpark.Composition.Compose
 			              .AddSingleton(x => x.GetRequiredService<TResult>().Get());
 
 		public IServiceCollection FromEnvironment()
-			=> _collection.AddSingleton(A.Type<T>(),
-			                            _collection.GetRequiredInstance<IComponentType>().Get(A.Type<T>()));
+		{
+			var type           = A.Type<T>();
+			var implementation = _collection.GetRequiredInstance<IComponentType>().Get(type);
+			var result         = _collection.AddSingleton(type, new Selector(implementation).Get);
+			return result;
+		}
+
+		sealed class Selector : ISelect<IServiceProvider, object>
+		{
+			readonly Type _type;
+
+			public Selector(Type type) => _type = type;
+
+			public object Get(IServiceProvider parameter) => parameter.GetService(_type);
+		}
 	}
 }

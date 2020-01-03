@@ -49,11 +49,11 @@ namespace DragonSpark.Composition
 			=> @this.ComposeUsing<ConfigureDefaultActivation>();
 
 		public static BuildHostContext RegisterModularity(this BuildHostContext @this)
-			=> @this.Configure(ApplyModularity.Default);
+			=> @this.Configure(Composition.RegisterModularity.Default);
 
 		public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
 			where T : class, IActivateUsing<Assembly>, IArray<Type>
-			=> @this.Configure(new ApplyModularity(TypeSelection<T>.Default.Open().Get));
+			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Open().Get));
 
 		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
 			where T : class, ICommand<IServiceContainer>
@@ -131,23 +131,23 @@ namespace DragonSpark.Composition
 			            .Then(@default)*/@default) {}
 	}
 
-	sealed class ApplyModularity : IServiceConfiguration
+	sealed class RegisterModularity : IServiceConfiguration
 	{
 		[UsedImplicitly]
-		public static ApplyModularity Default { get; } = new ApplyModularity();
+		public static RegisterModularity Default { get; } = new RegisterModularity();
 
-		ApplyModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Open().Get) {}
+		RegisterModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Open().Get) {}
 
 		readonly Func<IReadOnlyList<Type>, IComponentTypes>         _locator;
 		readonly Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> _types;
 		readonly Func<string, IReadOnlyList<Assembly>>              _select;
 
-		public ApplyModularity(Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types)
+		public RegisterModularity(Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types)
 			: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Open().Get) {}
 
-		public ApplyModularity(Func<IReadOnlyList<Type>, IComponentTypes> locator,
-		                       Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types,
-		                       Func<string, IReadOnlyList<Assembly>> select)
+		public RegisterModularity(Func<IReadOnlyList<Type>, IComponentTypes> locator,
+		                          Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types,
+		                          Func<string, IReadOnlyList<Assembly>> select)
 		{
 			_locator = locator;
 			_types   = types;
@@ -191,7 +191,9 @@ namespace DragonSpark.Composition
 
 		public void Execute(IServiceContainer parameter)
 		{
-			parameter.RegisterFallback(_condition, _select);
+			parameter.RegisterInstance(parameter)
+			         .RegisterInstance(parameter.To<ServiceContainer>().ConstructorSelector)
+			         .RegisterFallback(_condition, _select);
 		}
 	}
 
