@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime;
+using DragonSpark.Services.Compose;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,14 @@ namespace DragonSpark.Services.Application
 		{
 			parameter.UseStartup<T>();
 		}
+	}
+
+	sealed class EnvironmentalStartup : Configurator
+	{
+		public static EnvironmentalStartup Default { get; } = new EnvironmentalStartup();
+
+		EnvironmentalStartup() : base(Composition.Compose.ConfigureFromEnvironment.Default.Execute,
+		                              ConfigureFromEnvironment.Default.Execute) {}
 	}
 
 

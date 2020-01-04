@@ -1,16 +1,11 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Services
 {
@@ -63,68 +58,11 @@ namespace DragonSpark.Services
 			            .Then(@default)*/@default) {}
 	}
 
-	public class ActivatedProgram<T> : IProgram where T : ISelect<IHost, Task>
+	sealed class ServerHostBuilder<T> : ISelect<Array<string>, IHost> where T : class, IConfigurator
 	{
-		protected ActivatedProgram() {}
+		public static ServerHostBuilder<T> Default { get; } = new ServerHostBuilder<T>();
 
-		public Task Get(IHost parameter) => parameter.Services.GetRequiredService<T>().Get(parameter);
-	}
-
-	public static class RegisterOption
-	{
-		public static IAlteration<IServiceCollection> Of<T>() where T : class, new() => RegisterOption<T>.Default;
-	}
-
-	sealed class RegisterOption<T> : IAlteration<IServiceCollection> where T : class, new()
-	{
-		public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
-
-		RegisterOption() : this(A.Type<T>().Name) {}
-
-		readonly string _name;
-
-		public RegisterOption(string name) => _name = name;
-
-		public IServiceCollection Get(IServiceCollection parameter)
-			=> parameter.Configure<T>(parameter.Configuration().GetSection(_name))
-			            .AddSingleton(x => x.GetRequiredService<IOptions<T>>().Value)
-			            .Return(parameter);
-	}
-
-	public interface IProgram : ISelect<IHost, Task> {}
-
-	public class Program : Select<IHost, Task>, IProgram
-	{
-		public Program(ISelect<IHost, Task> select) : base(select) {}
-
-		public Program(Func<IHost, Task> select) : base(select) {}
-	}
-
-	sealed class LocatedProgram : Program
-	{
-		public static LocatedProgram Default { get; } = new LocatedProgram();
-
-		LocatedProgram() : this(DefaultProgram.Default) {}
-
-		public LocatedProgram(IProgram @default) : base(/*Start.A.Result.Of.Type<IProgram>()
-		                                                     .By.Location.Or.Default(@default)
-		                                                     .Assume()*/@default) {}
-	}
-
-	public sealed class DefaultProgram : IProgram
-	{
-		public static DefaultProgram Default { get; } = new DefaultProgram();
-
-		DefaultProgram() {}
-
-		public Task Get(IHost parameter) => parameter.RunAsync();
-	}
-
-	sealed class HostBuilder<T> : ISelect<Array<string>, IHost> where T : class, IConfigurator
-	{
-		public static HostBuilder<T> Default { get; } = new HostBuilder<T>();
-
-		HostBuilder() {}
+		ServerHostBuilder() {}
 
 		public IHost Get(Array<string> parameter) => Host.CreateDefaultBuilder(parameter)
 		                                                 .ConfigureWebHostDefaults(builder => builder.UseStartup<T>())
