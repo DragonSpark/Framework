@@ -5,6 +5,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
 using DragonSpark.Services.Application;
+using DragonSpark.Services.Compose;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,32 +61,7 @@ namespace DragonSpark.Application.Hosting.Server
 
 	public static class Extension
 	{
-		public static ICommand<IApplicationBuilder> WithServerApplicationConfiguration(
-			this ICommand<IApplicationBuilder> @this) => @this.Then(DefaultApplicationConfiguration.Default).Get();
-
-		public static ICommand<IServiceCollection> WithServerApplicationConfiguration(
-			this ICommand<IServiceCollection> @this) => @this.Then(DefaultServiceConfiguration.Default).Get();
-
-		public static BuildHostContext WithServerApplication(this BuildHostContext @this)
-			=> @this.WithServerApplication(x => x);
-
-		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
-		                                                     Func<IServerProfile, IServerProfile> select)
-			=> @this.Apply(select(ServerApplicationProfile.Default));
-
-		/*
-
-		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
-		                                                     ICommand<IApplicationBuilder> configure)
-			=> @this.WithServerApplication(configure.Execute);
-
-		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
-		                                                     Action<IApplicationBuilder> application)
-			=> @this.WithServerApplication(DefaultServiceConfiguration.Default.Execute, application);
-
-		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
-		                                                     Action<IServiceCollection> services,
-		                                                     Action<IApplicationBuilder> application)
-			=> @this.Configure(services).WithServer(application);*/
+		public static ServerProfileContext WithServerApplication(this BuildHostContext @this)
+			=> @this.Apply(ServerApplicationProfile.Default);
 	}
 }

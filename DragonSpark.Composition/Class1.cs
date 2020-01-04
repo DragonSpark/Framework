@@ -22,28 +22,10 @@ using System.Reflection;
 
 namespace DragonSpark.Composition
 {
-	/*public interface IConfigurator
-	{
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-		void ConfigureServices(IServiceCollection services);
-	}*/
-
-	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
-
-	sealed class ContainerConfiguration : Command<IServiceContainer>, IContainerConfiguration
-	{
-		public ContainerConfiguration(Action<IServiceContainer> command) : base(command) {}
-	}
-
 	public static class ConfigureComposition
 	{
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
 			=> @this.Select(Composition.WithComposition.Default);
-
-		public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)
-			where T : ICompositionRoot, new()
-			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
 
 		public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
 			=> @this.ComposeUsing<ConfigureDefaultActivation>();
@@ -55,9 +37,15 @@ namespace DragonSpark.Composition
 			where T : class, IActivateUsing<Assembly>, IArray<Type>
 			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Open().Get));
 
-		// TODO
 		public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 			=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);
+
+		public static ICommand<IServiceCollection> ConfigureFromEnvironment(
+			this ICommand<IServiceCollection> @this) => @this.Then(Compose.ConfigureFromEnvironment.Default).Get();
+
+		public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)
+			where T : ICompositionRoot, new()
+			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
 
 		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
 			where T : class, ICommand<IServiceContainer>
@@ -96,34 +84,20 @@ namespace DragonSpark.Composition
 		}
 	}
 
-	/*public class Configurator : IConfigurator
-	{
-		readonly Action<IServiceCollection> _configure;
-
-		public Configurator(Action<IServiceCollection> configure) => _configure = configure;
-
-		public void ConfigureServices(IServiceCollection services)
-		{
-			_configure(services);
-		}
-	}*/
-
 	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
-
-	sealed class EmptyServiceConfiguration : IServiceConfiguration
-	{
-		public static EmptyServiceConfiguration Default { get; } = new EmptyServiceConfiguration();
-
-		EmptyServiceConfiguration() {}
-
-		public void Execute(IServiceCollection parameter) {}
-	}
 
 	public class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
 		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}
 
 		public ServiceConfiguration(Action<IServiceCollection> command) : base(command) {}
+	}
+
+	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
+
+	public sealed class ContainerConfiguration : Command<IServiceContainer>, IContainerConfiguration
+	{
+		public ContainerConfiguration(Action<IServiceContainer> command) : base(command) {}
 	}
 
 	sealed class RegisterModularity : IServiceConfiguration

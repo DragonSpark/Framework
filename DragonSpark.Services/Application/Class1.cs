@@ -10,33 +10,6 @@ using System;
 
 namespace DragonSpark.Services.Application
 {
-	/*sealed class EnvironmentalStartupConfiguration : Command<IWebHostBuilder>
-	{
-		public static EnvironmentalStartupConfiguration Default { get; } = new EnvironmentalStartupConfiguration();
-
-		EnvironmentalStartupConfiguration() : base(StartupConfiguration<EnvironmentalStartup>.Default) {}
-	}*/
-
-	/*sealed class StartupConfiguration<T> : ICommand<IWebHostBuilder> where T : class, IConfigurator
-	{
-		public static StartupConfiguration<T> Default { get; } = new StartupConfiguration<T>();
-
-		StartupConfiguration() {}
-
-		public void Execute(IWebHostBuilder parameter)
-		{
-			parameter.UseStartup<T>();
-		}
-	}*/
-
-	/*sealed class EnvironmentalStartup : Configurator
-	{
-		public static EnvironmentalStartup Default { get; } = new EnvironmentalStartup();
-
-		EnvironmentalStartup() : base(Composition.Compose.ConfigureFromEnvironment.Default.Execute,
-		                              ConfigureFromEnvironment.Default.Execute) {}
-	}*/
-
 	public interface IServerProfile : IServiceConfiguration, IApplicationConfiguration {}
 
 	public class ServerProfile : IServerProfile
@@ -66,6 +39,8 @@ namespace DragonSpark.Services.Application
 	sealed class ServerConfiguration : ICommand<IWebHostBuilder>
 	{
 		readonly Action<IApplicationBuilder> _configure;
+
+		public ServerConfiguration(ICommand<IApplicationBuilder> configure) : this(configure.Execute) {}
 
 		public ServerConfiguration(Action<IApplicationBuilder> configure) => _configure = configure;
 

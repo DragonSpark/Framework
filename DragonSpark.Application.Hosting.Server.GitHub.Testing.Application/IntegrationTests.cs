@@ -2,6 +2,7 @@ using DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controll
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Services;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.TestHost;
@@ -20,6 +21,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
+			                            .WithLocatedStartup()
 			                            .Operations()
 			                            .Start();
 
@@ -33,6 +35,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
+			                            .WithLocatedStartup()
 			                            .Operations()
 			                            .Start();
 
@@ -44,8 +47,6 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 			content.Should().Be("Hello World!");
 		}
 	}
-
-
 
 	sealed class Registrations : Command<IServiceCollection>
 	{

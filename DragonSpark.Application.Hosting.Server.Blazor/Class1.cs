@@ -1,7 +1,11 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Environment;
+using DragonSpark.Services;
+using DragonSpark.Services.Application;
+using DragonSpark.Services.Compose;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +16,12 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 	public sealed class BlazorApplicationAttribute : HostingAttribute
 	{
 		public BlazorApplicationAttribute() : base(A.Type<BlazorApplicationAttribute>().Assembly) {}
+	}
+
+	public static class Extensions
+	{
+		public static ServerProfileContext WithBlazorServerApplication(this BuildHostContext @this)
+			=> @this.Apply(BlazorServerProfile.Default);
 	}
 
 	sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
@@ -40,28 +50,12 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 		}
 	}
 
-	public static class Extensions
+	sealed class BlazorServerProfile : ServerProfile
 	{
-		/*public static ICommand<IApplicationBuilder> WithBlazorServerConfiguration(
-			this ICommand<IApplicationBuilder> @this) => @this.Then(DefaultApplicationConfiguration.Default)
-			                                                  .Get()
-			                                                  .WithServerApplicationConfiguration();
+		public static BlazorServerProfile Default { get; } = new BlazorServerProfile();
 
-		public static ICommand<IServiceCollection> WithBlazorServerConfiguration(
-			this ICommand<IServiceCollection> @this) => @this.Then(DefaultServiceConfiguration.Default)
-			                                                 .Get()
-			                                                 .WithServerApplicationConfiguration();
-
-		public static BuildHostContext WithBlazorServer(this BuildHostContext @this)
-			=> @this.WithBlazorServer(DefaultApplicationConfiguration.Default);
-
-		public static BuildHostContext WithBlazorServer(this BuildHostContext @this,
-		                                                ICommand<IApplicationBuilder> configure)
-			=> @this.WithBlazorServer(configure.Execute);
-
-		public static BuildHostContext WithBlazorServer(this BuildHostContext @this,
-		                                                Action<IApplicationBuilder> application)
-			=> @this.WithServerApplication(DefaultServiceConfiguration.Default.Execute, application);*/
+		BlazorServerProfile() : base(ServerApplicationProfile.Default.Then(DefaultServiceConfiguration.Default),
+		                             DefaultApplicationConfiguration.Default.Execute) {}
 	}
 
 	sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>

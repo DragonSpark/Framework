@@ -60,7 +60,7 @@ namespace DragonSpark.Composition.Compose
 		public IServiceCollection Scoped() => _collection.AddScoped(_select);
 	}
 
-	public sealed class ConfigureFromEnvironment : ICommand<IServiceCollection>
+	sealed class ConfigureFromEnvironment : ICommand<IServiceCollection>
 	{
 		public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
 

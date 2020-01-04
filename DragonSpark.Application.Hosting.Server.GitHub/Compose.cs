@@ -1,5 +1,9 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Services;
+using DragonSpark.Services.Application;
+using DragonSpark.Services.Compose;
 using Octokit;
 
 namespace DragonSpark.Application.Hosting.Server.GitHub
@@ -8,13 +12,16 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	{
 		public static RegistrationContext Registration(this ModelContext _) => RegistrationContext.Default;
 
-		/*public static BuildHostContext WithGitHubApplication(this BuildHostContext @this)
-			=> @this.WithGitHubApplication(Empty.Command<IApplicationBuilder>().WithServerApplicationConfiguration());
+		public static ServerProfileContext WithServerApplication(this BuildHostContext @this)
+			=> @this.Apply(GitHubApplicationProfile.Default);
+	}
 
-		public static BuildHostContext WithGitHubApplication(this BuildHostContext @this,
-		                                                     ICommand<IApplicationBuilder> configure)
-			=> @this.WithServerApplication(configure)
-			        .Configure(DefaultServiceConfiguration.Default);*/
+	sealed class GitHubApplicationProfile : ServerProfile
+	{
+		public static GitHubApplicationProfile Default { get; } = new GitHubApplicationProfile();
+
+		GitHubApplicationProfile() : base(ServerApplicationProfile.Default.Then(DefaultServiceConfiguration.Default),
+		                                  ServerApplicationProfile.Default.Execute) {}
 	}
 
 	public sealed class RegistrationContext

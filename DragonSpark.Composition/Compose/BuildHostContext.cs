@@ -42,6 +42,7 @@ namespace DragonSpark.Composition.Compose
 		                                                             .ToOperation();
 	}
 
+
 	public sealed class HostOperationsContext
 	{
 		readonly IOperationResult<HostBuilder, IHost> _select;
