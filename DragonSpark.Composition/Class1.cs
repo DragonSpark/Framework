@@ -55,6 +55,9 @@ namespace DragonSpark.Composition
 			where T : class, IActivateUsing<Assembly>, IArray<Type>
 			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Open().Get));
 
+		public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
+			=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);
+
 		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
 			where T : class, ICommand<IServiceContainer>
 			=> @this.ComposeUsing(Start.An.Activation<T>().Activate());

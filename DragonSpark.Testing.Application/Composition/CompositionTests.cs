@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Application.Composition
 			                            .WithEnvironment("Development")
 			                            .WithDefaultComposition()
 			                            .RegisterModularity()
-			                            .Configure(x => x.For<IHelloWorld>().FromEnvironment())
+			                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 			                            .Operations()
 			                            .Start();
 			host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
@@ -59,7 +59,7 @@ namespace DragonSpark.Testing.Application.Composition
 				                            .WithEnvironment("Production")
 				                            .WithDefaultComposition()
 				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().FromEnvironment())
+				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
 				                            .Start();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
@@ -69,7 +69,7 @@ namespace DragonSpark.Testing.Application.Composition
 				using var host = await Start.A.Host()
 				                            .WithDefaultComposition()
 				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().FromEnvironment())
+				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
 				                            .Start();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();

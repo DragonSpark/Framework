@@ -39,10 +39,12 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Environment
 			         .Return(parameter)
 			         //
 			         .For<IEventSource>()
-			         .Singleton<Relayer>()
+			         .Use<Relayer>()
+			         .Singleton()
 			         //
 			         .For<RelayOperation>()
-			         .Singleton<RelayOperations>()
+			         .Use<RelayOperations>()
+			         .Singleton()
 			         //
 			         .AddSingleton<RelayRegistration>()
 			         .AddSingleton<RegisteredSource>();
