@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
@@ -18,6 +19,9 @@ namespace DragonSpark.Composition
 	{
 		public static BuildHostContext Host(this ModelContext _)
 			=> Start.A.Selection.Of<IHostBuilder>().By.Self.To(Start.An.Extent<BuildHostContext>());
+
+		public static IAlteration<IServiceCollection> Option<T>(this VowelContext _) where T : class, new()
+			=> RegisterOption<T>.Default;
 
 		public static HostOperationsContext Operations(this BuildHostContext @this) => new HostOperationsContext(@this);
 
@@ -49,6 +53,9 @@ namespace DragonSpark.Composition
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
 			=> new RegistrationContext<T>(@this);
+
+		public static RegistrationContext ForDefinition<T>(this IServiceCollection @this) where T : class
+			=> new RegistrationContext(@this, A.Type<T>().GetGenericTypeDefinition());
 
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
 			=> @this.Select(Composition.WithComposition.Default);

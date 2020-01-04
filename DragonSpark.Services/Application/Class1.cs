@@ -17,8 +17,6 @@ namespace DragonSpark.Services.Application
 		readonly Action<IServiceCollection>  _services;
 		readonly Action<IApplicationBuilder> _application;
 
-		public ServerProfile(IServerProfile profile) : this(profile.Execute, profile.Execute) {}
-
 		public ServerProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> application)
 		{
 			_services    = services;

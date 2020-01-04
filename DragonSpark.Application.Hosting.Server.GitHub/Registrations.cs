@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +12,9 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
 		DefaultServiceConfiguration()
-			: base(RegisterOption.Of<GitHubApplicationSettings>()
-			                     .Then()
-			                     .Terminate(Registrations.Default)) {}
+			: base(Start.An.Option<GitHubApplicationSettings>()
+			            .Then()
+			            .Terminate(Registrations.Default)) {}
 	}
 
 	sealed class Registrations : Command<IServiceCollection>
@@ -23,9 +24,15 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		Registrations() : base(x => x.AddSingleton<EventMessages>()
 		                             .AddSingleton<Hasher>()
 		                             .AddSingleton<EventMessageBinder>()
-		                             .AddSingleton(typeof(FaultAwareTemplate<>))
-		                             .AddSingleton(typeof(LoggedProcessorOperation<>))
-		                             .AddSingleton(typeof(TaskInformationTemplate<>))
-		                             ) {}
+		                             //
+		                             .ForDefinition<FaultAwareTemplate<object>>()
+		                             .Singleton()
+		                             //
+		                             .ForDefinition<LoggedProcessorOperation<object>>()
+		                             .Singleton()
+		                             //
+		                             .ForDefinition<TaskInformationTemplate<object>>()
+		                             .Singleton()
+		                      ) {}
 	}
 }
