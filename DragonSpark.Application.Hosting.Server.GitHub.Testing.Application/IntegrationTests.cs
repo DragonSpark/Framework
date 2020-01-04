@@ -2,10 +2,8 @@ using DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controll
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Services;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
@@ -17,7 +15,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 	public sealed class IntegrationTests
 	{
 		[Fact]
-		public async Task Verify()
+		async Task Verify()
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
@@ -30,7 +28,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application
 
 		[Theory]
 		[InlineData("/HelloWorld")]
-		public async Task VerifyHelloWorld(string url)
+		async Task VerifyHelloWorld(string url)
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()

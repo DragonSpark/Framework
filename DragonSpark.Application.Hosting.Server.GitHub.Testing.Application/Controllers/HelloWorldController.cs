@@ -1,8 +1,10 @@
-﻿namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.Controllers
 {
-	/*[ApiController, Route("[controller]")]
+	[ApiController, Route("[controller]")]
 	public sealed class HelloWorldController : ControllerBase
 	{
 		public string Get() => "Hello World!";
-	}*/
+	}
 }
