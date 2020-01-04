@@ -14,16 +14,16 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 		public BlazorApplicationAttribute() : base(A.Type<BlazorApplicationAttribute>().Assembly) {}
 	}
 
-	public sealed class BlazorApplicationConfiguration : ICommand<IApplicationBuilder>
+	sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
-		public static BlazorApplicationConfiguration Default { get; } = new BlazorApplicationConfiguration();
+		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
 
-		BlazorApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
+		DefaultApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
 
 		readonly string                        _handler;
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public BlazorApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
+		public DefaultApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
 		{
 			_handler   = handler;
 			_endpoints = endpoints;
@@ -40,22 +40,35 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 		}
 	}
 
-	sealed class Configurator : Services.Configurator
+	public static class Extensions
 	{
-		public Configurator() : this(Registrations.Default.Execute) {}
+		/*public static ICommand<IApplicationBuilder> WithBlazorServerConfiguration(
+			this ICommand<IApplicationBuilder> @this) => @this.Then(DefaultApplicationConfiguration.Default)
+			                                                  .Get()
+			                                                  .WithServerApplicationConfiguration();
 
-		public Configurator(Action<IServiceCollection> services)
-			: base(services, DefaultApplicationConfiguration.Default.Then(BlazorApplicationConfiguration.Default)) {}
+		public static ICommand<IServiceCollection> WithBlazorServerConfiguration(
+			this ICommand<IServiceCollection> @this) => @this.Then(DefaultServiceConfiguration.Default)
+			                                                 .Get()
+			                                                 .WithServerApplicationConfiguration();
 
-		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
-			: base(configure, application) {}
+		public static BuildHostContext WithBlazorServer(this BuildHostContext @this)
+			=> @this.WithBlazorServer(DefaultApplicationConfiguration.Default);
+
+		public static BuildHostContext WithBlazorServer(this BuildHostContext @this,
+		                                                ICommand<IApplicationBuilder> configure)
+			=> @this.WithBlazorServer(configure.Execute);
+
+		public static BuildHostContext WithBlazorServer(this BuildHostContext @this,
+		                                                Action<IApplicationBuilder> application)
+			=> @this.WithServerApplication(DefaultServiceConfiguration.Default.Execute, application);*/
 	}
 
-	public sealed class Registrations : ICommand<IServiceCollection>
+	sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 	{
-		public static Registrations Default { get; } = new Registrations();
+		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
 
-		Registrations() {}
+		DefaultServiceConfiguration() {}
 
 		public void Execute(IServiceCollection parameter)
 		{

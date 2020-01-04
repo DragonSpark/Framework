@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Services;
+using DragonSpark.Services.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,22 +17,22 @@ namespace DragonSpark.Application.Hosting.Server
 		public ServerApplicationAttribute() : base(A.Type<ServerApplicationAttribute>().Assembly) {}
 	}
 
-	public sealed class DefaultApplicationConfiguration : ApplicationConfiguration
+	sealed class DefaultServiceConfiguration : ServiceConfiguration
+	{
+		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
+
+		DefaultServiceConfiguration() : base(x => x.AddControllers()) {}
+	}
+
+	sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
 		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
 
-		DefaultApplicationConfiguration() : base(ServerApplicationConfiguration.Default) {}
-	}
-
-	sealed class ServerApplicationConfiguration : ICommand<IApplicationBuilder>
-	{
-		public static ServerApplicationConfiguration Default { get; } = new ServerApplicationConfiguration();
-
-		ServerApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+		DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
 
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public ServerApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+		public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
 
 		public void Execute(IApplicationBuilder parameter)
 		{
@@ -41,20 +43,6 @@ namespace DragonSpark.Application.Hosting.Server
 		}
 	}
 
-	public sealed class DefaultServiceConfiguration : LocatedServiceConfiguration
-	{
-		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
-
-		DefaultServiceConfiguration() : base(RegistrationConfiguration.Default) {}
-	}
-
-	sealed class RegistrationConfiguration : ServiceConfiguration
-	{
-		public static RegistrationConfiguration Default { get; } = new RegistrationConfiguration();
-
-		RegistrationConfiguration() : base(x => x.AddControllers()) {}
-	}
-
 	sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
 	{
 		public static EndpointConfiguration Default { get; } = new EndpointConfiguration();
@@ -62,14 +50,42 @@ namespace DragonSpark.Application.Hosting.Server
 		EndpointConfiguration() : base(x => x.MapControllers()) {}
 	}
 
-	public class Configurator : Services.Configurator
+	public sealed class ServerApplicationProfile : ServerProfile
 	{
-		public Configurator() : this(DefaultServiceConfiguration.Default.Execute) {}
+		public static IServerProfile Default { get; } = new ServerApplicationProfile();
 
-		public Configurator(Action<IServiceCollection> services)
-			: this(services, DefaultApplicationConfiguration.Default.Execute) {}
+		ServerApplicationProfile()
+			: base(DefaultServiceConfiguration.Default.Execute, DefaultApplicationConfiguration.Default.Execute) {}
+	}
 
-		public Configurator(Action<IServiceCollection> configure, Action<IApplicationBuilder> application)
-			: base(configure, application) {}
+	public static class Extension
+	{
+		public static ICommand<IApplicationBuilder> WithServerApplicationConfiguration(
+			this ICommand<IApplicationBuilder> @this) => @this.Then(DefaultApplicationConfiguration.Default).Get();
+
+		public static ICommand<IServiceCollection> WithServerApplicationConfiguration(
+			this ICommand<IServiceCollection> @this) => @this.Then(DefaultServiceConfiguration.Default).Get();
+
+		public static BuildHostContext WithServerApplication(this BuildHostContext @this)
+			=> @this.WithServerApplication(x => x);
+
+		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
+		                                                     Func<IServerProfile, IServerProfile> select)
+			=> @this.Apply(select(ServerApplicationProfile.Default));
+
+		/*
+
+		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
+		                                                     ICommand<IApplicationBuilder> configure)
+			=> @this.WithServerApplication(configure.Execute);
+
+		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
+		                                                     Action<IApplicationBuilder> application)
+			=> @this.WithServerApplication(DefaultServiceConfiguration.Default.Execute, application);
+
+		public static BuildHostContext WithServerApplication(this BuildHostContext @this,
+		                                                     Action<IServiceCollection> services,
+		                                                     Action<IApplicationBuilder> application)
+			=> @this.Configure(services).WithServer(application);*/
 	}
 }

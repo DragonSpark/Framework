@@ -1,28 +1,27 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
-using DragonSpark.Composition.Compose;
+﻿using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Services;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Testing.Server
 {
 	public static class ExtensionMethods
 	{
-		public static BuildHostContext Server(this ModelContext _)
-			=> Start.A.Host().WithConfiguration(ServerConfiguration.Default);
+		public static BuildHostContext WithTestServer(this BuildHostContext @this)
+			=> @this.Configure(ServerConfiguration.Default);
 	}
 
-	sealed class ServerConfiguration : ICommand<IWebHostBuilder>
+	sealed class ServerConfiguration : ICommand<IHostBuilder>
 	{
 		public static ServerConfiguration Default { get; } = new ServerConfiguration();
 
 		ServerConfiguration() {}
 
-		public void Execute(IWebHostBuilder parameter)
+		public void Execute(IHostBuilder parameter)
 		{
-			parameter.UseTestServer();
+			parameter.ConfigureServices(services => services.AddSingleton<IServer, TestServer>());
 		}
 	}
 }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Hosting.Server.GitHub
 {
-	public sealed class DefaultServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
+	sealed class DefaultServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
 		[UsedImplicitly]
 		public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
@@ -13,8 +13,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		DefaultServiceConfiguration()
 			: base(RegisterOption.Of<GitHubApplicationSettings>()
 			                     .Then()
-			                     .Terminate(Registrations.Default
-			                                             .Then(Server.DefaultServiceConfiguration.Default))) {}
+			                     .Terminate(Registrations.Default)) {}
 	}
 
 	sealed class Registrations : Command<IServiceCollection>

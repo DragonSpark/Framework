@@ -7,6 +7,14 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	public static class Extensions
 	{
 		public static RegistrationContext Registration(this ModelContext _) => RegistrationContext.Default;
+
+		/*public static BuildHostContext WithGitHubApplication(this BuildHostContext @this)
+			=> @this.WithGitHubApplication(Empty.Command<IApplicationBuilder>().WithServerApplicationConfiguration());
+
+		public static BuildHostContext WithGitHubApplication(this BuildHostContext @this,
+		                                                     ICommand<IApplicationBuilder> configure)
+			=> @this.WithServerApplication(configure)
+			        .Configure(DefaultServiceConfiguration.Default);*/
 	}
 
 	public sealed class RegistrationContext

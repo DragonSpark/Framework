@@ -22,12 +22,12 @@ using System.Reflection;
 
 namespace DragonSpark.Composition
 {
-	public interface IConfigurator
+	/*public interface IConfigurator
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		void ConfigureServices(IServiceCollection services);
-	}
+	}*/
 
 	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
 
@@ -55,6 +55,7 @@ namespace DragonSpark.Composition
 			where T : class, IActivateUsing<Assembly>, IArray<Type>
 			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Open().Get));
 
+		// TODO
 		public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 			=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);
 
@@ -95,7 +96,7 @@ namespace DragonSpark.Composition
 		}
 	}
 
-	public class Configurator : IConfigurator
+	/*public class Configurator : IConfigurator
 	{
 		readonly Action<IServiceCollection> _configure;
 
@@ -105,7 +106,7 @@ namespace DragonSpark.Composition
 		{
 			_configure(services);
 		}
-	}
+	}*/
 
 	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
 
@@ -123,15 +124,6 @@ namespace DragonSpark.Composition
 		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}
 
 		public ServiceConfiguration(Action<IServiceCollection> command) : base(command) {}
-	}
-
-	public class LocatedServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
-	{
-		public LocatedServiceConfiguration(ICommand<IServiceCollection> @default)
-			: base( /*Start.A.Result.Of.Type<IServiceConfiguration>()
-			            .By.Location.Or.Default(EmptyServiceConfiguration.Default)
-			            .Assume()
-			            .Then(@default)*/@default) {}
 	}
 
 	sealed class RegisterModularity : IServiceConfiguration
