@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Environment;
+using FluentAssertions;
+using System;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Environment
@@ -25,7 +25,9 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			Start.A.Result<Assembly>()
 			     .By.Calling(() => GetType().Assembly)
 			     .ToSelect()
-			     .Select(PrimaryAssemblyMessage.Default.AsGuard())
+			     .Then()
+			     .Ensure.Assigned.Exit.OrThrow(PrimaryAssemblyMessage.Default)
+			     .Get()
 			     .Invoking(x => x.Get())
 			     .Should()
 			     .NotThrow();
@@ -37,7 +39,9 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			Start.A.Result<Assembly>()
 			     .By.Calling(() => null)
 			     .ToSelect()
-			     .Select(PrimaryAssemblyMessage.Default.AsGuard())
+			     .Then()
+			     .Ensure.Assigned.Exit.OrThrow(PrimaryAssemblyMessage.Default)
+			     .Get()
 			     .Invoking(x => x.Get())
 			     .Should()
 			     .Throw<InvalidOperationException>();

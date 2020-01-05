@@ -84,6 +84,8 @@ namespace DragonSpark
 		public static OpenArraySelector<_, T> Then<_, T>(this ISelect<_, T[]> @this)
 			=> new OpenArraySelector<_, T>(@this);
 
+		public static MessageSelector Then(this ISelect<Type, string> @this) => new MessageSelector(@this);
+
 		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
 
 		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();

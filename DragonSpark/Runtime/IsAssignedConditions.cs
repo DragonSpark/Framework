@@ -1,11 +1,10 @@
-﻿using System;
-using System.Reflection;
-using JetBrains.Annotations;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Reflection;
-using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime
 {
@@ -24,7 +23,7 @@ namespace DragonSpark.Runtime
 				              .Then()
 				              .Invoke()
 				              .Get()
-				              .In(Type<T>.Instance.Yield().Result())
+				              .In(A.Type<T>().Yield().Result())
 				              .Assume()
 				       : IsReference.Default.Get(Type)
 					       ? Start.A.Selection<T>()
@@ -33,7 +32,6 @@ namespace DragonSpark.Runtime
 					       : IsModified<T>.Default) {}
 
 		public IsAssignedConditions(ISelect<T, bool> condition)
-			: base(Start.A.Selection.Of.System.Metadata.By.Returning(condition.ToCondition())
-			            .Select(x => x.ToDelegate())) {}
+			: base(Start.A.Selection.Of.System.Metadata.By.Returning(condition).Then().Delegate()) {}
 	}
 }

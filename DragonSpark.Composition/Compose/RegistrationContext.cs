@@ -64,13 +64,16 @@ namespace DragonSpark.Composition.Compose
 	{
 		public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
 
-		ConfigureFromEnvironment() : this(A.Type<IServiceConfiguration>(),
-		                                  Start.A.Selection.Of.System.Type.By.Self.Then()
-		                                       .Activate<IServiceConfiguration>()
-		                                       .Get) {}
+		ConfigureFromEnvironment() : this(A.Type<IServiceConfiguration>(), LocateGuardMessage.Default) {}
 
 		readonly Type                              _type;
 		readonly Func<Type, IServiceConfiguration> _select;
+
+		public ConfigureFromEnvironment(Type type, ISelect<Type, string> message)
+			: this(type, Start.A.Selection.Of.System.Type.By.Self.Then()
+			                  .Activate<IServiceConfiguration>()
+			                  .Ensure.Assigned.Entry.OrThrow(message.Then().For<IServiceConfiguration>().Get())
+			      ) {}
 
 		public ConfigureFromEnvironment(Type type, Func<Type, IServiceConfiguration> select)
 		{
@@ -94,7 +97,7 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationContext(IServiceCollection collection, Type type)
 		{
 			_collection = collection;
-			_type = type;
+			_type       = type;
 		}
 
 		public IServiceCollection Singleton() => _collection.AddSingleton(_type);

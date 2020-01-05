@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	{
 		public static RegistrationContext Registration(this ModelContext _) => RegistrationContext.Default;
 
-		public static ServerProfileContext WithServerApplication(this BuildHostContext @this)
+		public static ServerProfileContext WithGitHubApplication(this BuildHostContext @this)
 			=> @this.Apply(GitHubApplicationProfile.Default);
 	}
 

@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Application.Aspects
 			                                     .Get(subject)
 			                                     .Invoking(x => x.Get(null))
 			                                     .Should()
-			                                     .Throw<InvalidOperationException>();
+			                                     .Throw<ArgumentNullException>();
 		}
 	}
 }

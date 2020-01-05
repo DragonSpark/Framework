@@ -21,8 +21,6 @@ namespace DragonSpark
 
 		public static IResult<T> Singleton<T>(this IResult<T> @this) => new DeferredSingleton<T>(@this.Get);
 
-		public static IMutable<T> Variable<T>(this IResult<T> @this) => new Variable<T>(@this.Get());
-
 		public static IResult<T> Unless<T>(this IResult<T> @this, IResult<T> assigned)
 			=> @this.Unless(IsAssigned<T>.Default, assigned);
 
@@ -78,5 +76,7 @@ namespace DragonSpark
 
 		public static ISelect<T> ToSelect<T>(this IResult<T> @this)
 			=> new Model.Selection.Adapters.Result<T>(@this.Get);
+
+		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
 	}
 }

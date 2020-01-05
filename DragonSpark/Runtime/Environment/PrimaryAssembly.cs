@@ -11,7 +11,9 @@ namespace DragonSpark.Runtime.Environment
 		PrimaryAssembly() : base(Start.A.Selection.Of<Assembly>()
 		                              .As.Sequence.Array.By.Self.Query()
 		                              .Only(x => x.Has<HostingAttribute>())
-		                              .Select(PrimaryAssemblyMessage.Default.AsGuard())
+		                              .Then()
+		                              .Ensure.Assigned.Exit.OrThrow(PrimaryAssemblyMessage.Default)
+		                              .Return()
 		                              .Get(Reflection.Assemblies.Assemblies.Default)) {}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using AutoFixture.Kernel;
 using DragonSpark.Compose;
-using DragonSpark.Reflection.Types;
 using System;
 
 namespace DragonSpark.Application.Hosting.xUnit
@@ -11,7 +10,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 		                                                    .Then()
 		                                                    .And(Start.A.Selection.Of.Any.AndOf<Type>()
 		                                                              .By.Cast.Or.Throw.Then()
-		                                                              .Select(Type<T>.Instance.Equal())
+		                                                              .Select(Is.EqualTo(A.Type<T>()))
 		                                                              .Selector());
 
 		readonly Func<object, bool> _condition;

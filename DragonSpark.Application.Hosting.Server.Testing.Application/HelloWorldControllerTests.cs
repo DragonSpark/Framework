@@ -1,3 +1,4 @@
+using DragonSpark.Application.Hosting.Server.Testing.Application.Environment;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Services;
@@ -5,9 +6,12 @@ using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
+using Dependency = DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development.Dependency;
 
 namespace DragonSpark.Application.Hosting.Server.Testing.Application
 {
@@ -23,6 +27,23 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			                            .Start();
 
 			host.Should().NotBeNull();
+		}
+
+		[Theory]
+		[InlineData("Development", typeof(Dependency))]
+		async Task VerifyEnvironment(string environment, Type expected)
+		{
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithDefaultComposition()
+			                            .RegisterModularity()
+			                            .WithEnvironment(environment)
+			                            .WithServerApplication()
+			                            .WithEnvironmentalConfiguration()
+			                            .Operations()
+			                            .Start();
+
+			host.Services.GetRequiredService<IDependency>().Should().BeOfType(expected);
 		}
 
 		[Theory]

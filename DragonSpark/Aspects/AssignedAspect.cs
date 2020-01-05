@@ -6,6 +6,6 @@ namespace DragonSpark.Aspects
 	{
 		public static AssignedAspect<TIn, TOut> Default { get; } = new AssignedAspect<TIn, TOut>();
 
-		AssignedAspect() : base(DefaultGuard<TIn>.Default.Execute) {}
+		AssignedAspect() : base(AssignedEntryGuard<TIn>.Default.Execute) {}
 	}
 }

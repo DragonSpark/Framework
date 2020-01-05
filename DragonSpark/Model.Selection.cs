@@ -4,7 +4,6 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
-using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
@@ -42,12 +41,6 @@ namespace DragonSpark
 		public static T Get<T>(this ISelect<None, T> @this) => @this.Get(None.Default);
 
 		public static IResult<T> Out<T>(this ISelect<None, T> @this) => @this.In(None.Default);
-
-		public static ISelect<TIn, TOut> Guard<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> DefaultGuard<TIn>.Default.Then().ToConfiguration().Select(@this).Get();
-
-		public static IAlteration<T> AsGuard<T>(this ISelect<T, string> @this)
-			=> new AssignedGuard<T>(@this).Then().Out();
 
 		public static ISelect<TIn, TOut> Select<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                   ISelect<Decoration<TIn, TOut>, TOut> other)

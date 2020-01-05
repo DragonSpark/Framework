@@ -1,8 +1,8 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Runtime
 {

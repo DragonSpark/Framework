@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
@@ -50,5 +51,7 @@ namespace DragonSpark.Compose
 			=> new Select<TIn, TOut>(select);
 
 		public static ISelect<TIn, TOut> Selection<TIn, TOut>(this ModelContext _, ISelect<TIn, TOut> select) => select;
+
+		public static GuardModelContext Guard(this ModelContext _) => GuardModelContext.Default;
 	}
 }

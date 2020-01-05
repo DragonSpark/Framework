@@ -15,7 +15,8 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		void VerifyGuard()
 		{
 			Start.A.Selection<string>()
-			     .By.Self.Guard()
+			     .By.Self.Then()
+			     .Ensure.Assigned.Exit.OrThrow()
 			     .Invoking(x => x.Get(null))
 			     .Should()
 			     .Throw<InvalidOperationException>();

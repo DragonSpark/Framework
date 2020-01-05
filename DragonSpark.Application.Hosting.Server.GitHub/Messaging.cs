@@ -52,19 +52,18 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 			            .By.Calling(x => x.Header.Event)
 			            .Then()
 			            .Select(Is.EqualTo(key)),
-			       Start.An.Instance(AuthenticatedMessage.Default)
-			            .AsGuard()
+			       Start.A.Condition<EventMessage>(Is.Of<AuthenticatedEventMessage>())
 			            .Then()
-			            .Select(Is.Of<AuthenticatedEventMessage>())
-			            .Selector()) {}
+			            .Ensure.Assigned.Entry.OrThrow(AuthenticatedMessage.Default)
+			      ) {}
 	}
 
-	sealed class AuthenticatedMessage : FixedResult<EventMessage, string>, IMessage<EventMessage>
+	sealed class AuthenticatedMessage : Message<EventMessage>
 	{
 		public static AuthenticatedMessage Default { get; } = new AuthenticatedMessage();
 
 		AuthenticatedMessage()
-			: base("An authenticated event message was expected, but the provided message was not properly authenticated.") {}
+			: base(_ => "An authenticated event message was expected, but the provided message was not properly authenticated.") {}
 	}
 
 	[ModelBinder(BinderType = typeof(EventMessageBinder))]

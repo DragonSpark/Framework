@@ -12,8 +12,35 @@ namespace DragonSpark.Runtime.Environment
 
 	sealed class ComponentType : Alteration<Type>, IComponentType
 	{
-		public ComponentType(IArray<Type, Type> @select) : base(@select.Query().FirstAssigned()) {}
+		public ComponentType(IArray<Type, Type> select)
+			: base(select.Query()
+			             .FirstAssigned()
+			             .Then()
+			             //.Introduce()
+			             // TODO:
+			             .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)) {}
 	}
+
+	/*sealed class Select : ISelect<Type, Type>
+	{
+		readonly IArray<Type, Type> _select;
+
+		public Select(IArray<Type, Type> select) => _select = select;
+
+		public Type Get(Type parameter)
+		{
+
+			var type = _select.Query()
+			                  .FirstAssigned()
+			                  .Get(parameter);
+
+			var other = Start.A.Selection.Of.System.Type.By.Self.Then()
+			                 .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)
+			                 .Get();
+
+			return type;
+		}
+	}*/
 
 	public interface IComponentTypes : IArray<Type, Type> {}
 
@@ -43,18 +70,4 @@ namespace DragonSpark.Runtime.Environment
 			                   )
 			      ) {}
 	}
-
-	/*sealed class ComponentTypes : IArray<IReadOnlyList<Type>, Type>
-	{
-		public static ComponentTypes Default { get; } = new ComponentTypes();
-
-		ComponentTypes() : this(IsComponentType.Default.Get) {}
-
-		readonly Func<Type, bool> _condition;
-
-		public ComponentTypes(Func<Type, bool> condition) => _condition = condition;
-
-		public Array<Type> Get(IReadOnlyList<Type> parameter)
-			=> new ComponentTypesSelector(parameter.Where(_condition).Result()).Open().Then().Sort().Out().ToDelegate();
-	}*/
 }
