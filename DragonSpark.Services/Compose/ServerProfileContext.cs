@@ -42,6 +42,10 @@ namespace DragonSpark.Services.Compose
 			                              A.Command<IApplicationBuilder>(x)
 			                               .Then(ConfigureFromEnvironment.Default)));
 
+		public ServerProfileContext WithStartup<T>() where T : class, IStartupMarker
+			=> new ServerProfileContext(_context, _profile,
+			                            new Continuation(_selector, ApplyStartupConfiguration<T>.Default));
+
 		public ServerProfileContext WithLocatedStartup()
 			=> new ServerProfileContext(_context, _profile,
 			                            new Continuation(_selector, ApplyStartupConfiguration.Default));

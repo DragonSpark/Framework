@@ -11,6 +11,11 @@ using System;
 
 namespace DragonSpark.Services
 {
+	public interface IStartupMarker
+	{
+		void Configure();
+	}
+
 	sealed class ConfigureFromEnvironment : ICommand<IApplicationBuilder>
 	{
 		public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
