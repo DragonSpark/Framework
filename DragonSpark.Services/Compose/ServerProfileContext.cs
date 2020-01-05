@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
+using DragonSpark.Runtime.Environment;
 
 namespace DragonSpark.Services.Compose
 {
 	public sealed class ServerProfileContext : IResult<BuildHostContext>,
+	                                           ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
 	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>
 	{
 		readonly BuildHostContext _context;
@@ -42,19 +45,17 @@ namespace DragonSpark.Services.Compose
 			                              A.Command<IApplicationBuilder>(x)
 			                               .Then(ConfigureFromEnvironment.Default)));
 
-		public ServerProfileContext WithStartup<T>() where T : class, IStartupMarker
-			=> new ServerProfileContext(_context, _profile,
-			                            new Continuation(_selector, ApplyStartupConfiguration<T>.Default));
+		public ServerProfileContext Named() => Named(PrimaryAssembly.Default);
 
-		public ServerProfileContext WithLocatedStartup()
-			=> new ServerProfileContext(_context, _profile,
-			                            new Continuation(_selector, ApplyStartupConfiguration.Default));
+		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
 
-		public BuildHostContext Get() => _context.WithServer(_selector.Get(_profile).Execute)
-		                                         .Configure(_profile);
+		public BuildHostContext Get() => _context.WithServer(_selector.Get(_profile).Execute).Configure(_profile);
 
 		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
 			=> new ServerProfileContext(_context, parameter(_profile), _selector);
+
+		public ServerProfileContext Get(ICommand<IWebHostBuilder> parameter)
+			=> new ServerProfileContext(_context, _profile, new Continuation(_selector, parameter));
 	}
 
 	public interface ISelector : ISelect<IServerProfile, ICommand<IWebHostBuilder>> {}

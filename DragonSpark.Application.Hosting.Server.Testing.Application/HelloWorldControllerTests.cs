@@ -19,7 +19,6 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
-			                            .WithStartup<Startup>()
 			                            .Operations()
 			                            .Start();
 
@@ -33,7 +32,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
-			                            .WithLocatedStartup()
+			                            .Named()
 			                            .Operations()
 			                            .Start();
 
@@ -44,11 +43,6 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			var content = await response.Content.ReadAsStringAsync();
 			content.Should().Be("Hello World!");
 		}
-	}
-
-	sealed class Startup : IStartupMarker
-	{
-		public void Configure() {}
 	}
 
 	[ApiController, Route("[controller]")]

@@ -1,9 +1,7 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Runtime.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,29 +49,19 @@ namespace DragonSpark.Services.Application
 		}
 	}
 
-	sealed class ApplyStartupConfiguration<T> : Command<IWebHostBuilder> where T : class, IStartupMarker
+	sealed class ApplyNameConfiguration : ICommand<IWebHostBuilder>
 	{
-		public static ApplyStartupConfiguration<T> Default { get; } = new ApplyStartupConfiguration<T>();
-
-		ApplyStartupConfiguration() : base(new ApplyStartupConfiguration(A.Type<T>().Assembly.Start())) {}
-	}
-
-	sealed class ApplyStartupConfiguration : ICommand<IWebHostBuilder>
-	{
-		public static ApplyStartupConfiguration Default { get; } = new ApplyStartupConfiguration();
-
-		ApplyStartupConfiguration() : this(PrimaryAssembly.Default) {}
-
 		readonly Func<string> _name;
 
-		public ApplyStartupConfiguration(IResult<Assembly> assembly)
+		public ApplyNameConfiguration(IResult<Assembly> assembly)
 			: this(assembly.Select(x => x.GetName().Name).Get) {}
 
-		public ApplyStartupConfiguration(Func<string> name) => _name = name;
+		public ApplyNameConfiguration(Func<string> name) => _name = name;
 
 		public void Execute(IWebHostBuilder parameter)
 		{
-			parameter.UseStartup(_name());
+			parameter.UseSetting(WebHostDefaults.ApplicationKey, _name());
+			// parameter.UseStartup(_name());
 		}
 	}
 
