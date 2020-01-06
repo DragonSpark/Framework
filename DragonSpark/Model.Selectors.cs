@@ -95,7 +95,8 @@ namespace DragonSpark
 		public static IAlteration<T> Out<T>(this CommandSelector<T> @this)
 			=> @this.ToConfiguration().Get().ToAlteration();
 
-		public static ICondition<T> Out<T>(this Selector<T, bool> @this) => @this.Get().ToCondition();
+		public static ICondition<T> Out<T>(this Selector<T, bool> @this)
+			=> @this.Get().To(x => x as ICondition<T> ?? new Model.Selection.Conditions.Condition<T>(x.Get));
 
 		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => @this.Get().ToAlteration();
 

@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
 using Xunit;

@@ -45,7 +45,7 @@ namespace DragonSpark.Compose.Selections
 
 		public ISelect<T, TOut> Returning<TOut>(IResult<TOut> result) => Calling(result.Get);
 
-		public ICondition<T> Returning(IResult<bool> condition) => Calling(condition.Get).ToCondition();
+		public ICondition<T> Returning(IResult<bool> condition) => Calling(condition.Get).Then().Out();
 
 		public IAlteration<T> Returning(T result) => Calling(new FixedResult<T, T>(result).Get);
 

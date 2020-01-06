@@ -71,6 +71,9 @@ namespace DragonSpark
 		public static ISelect<TIn, TOut> If<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, bool> @true)
 			=> Compose.Start.A.Selection<TIn>().By.Default<TOut>().Unless(@true, @this);
 
+		/**/
+
+		// TODO:
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, TOut> assigned)
 			=> @this.Unless(assigned.ToDelegate());
 
@@ -93,6 +96,8 @@ namespace DragonSpark
 		                                                        ISelect<TIn, TOut> then)
 			=> new Conditional<TIn, TOut>(unless.Get, then.Get, @this.Get);
 
+		/**/
+
 		public static Func<TIn, TOut> ToDelegate<TIn, TOut>(this ISelect<TIn, TOut> @this) => @this.Get;
 
 		public static Func<TIn, TOut> ToDelegateReference<TIn, TOut>(this ISelect<TIn, TOut> @this)
@@ -100,9 +105,6 @@ namespace DragonSpark
 
 		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this ISelect<TIn, TOut> @this) where TIn : class
 			=> new ReferenceContext<TIn, TOut>(@this);
-
-		public static ICondition<T> ToCondition<T>(this ISelect<T, bool> @this)
-			=> @this as ICondition<T> ?? new Model.Selection.Conditions.Condition<T>(@this.Get);
 
 		public static IConditional<TIn, TOut> ToConditional<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                               ICondition<TIn> condition)

@@ -78,7 +78,7 @@ namespace DragonSpark.Runtime.Environment
 				               .Select(metadata.Select(GenericInterfaces.Default)
 				                               .Open()
 				                               .Select)
-				               .Select(x => x.ToCondition())
+				               .Select(x => x.Then().Out())
 				               .Get()) {}
 		}
 	}
