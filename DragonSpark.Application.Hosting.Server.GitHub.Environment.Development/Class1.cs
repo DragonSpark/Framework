@@ -314,7 +314,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Environment
 
 			_registration.Register.Execute(source);
 
-			var result = new CloseAwareEventSource(source, _registration.Cancel.Then().Input(source));
+			var result = new CloseAwareEventSource(source, _registration.Cancel.Then().Bind(source));
 			return result;
 		}
 	}

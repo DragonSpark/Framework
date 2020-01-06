@@ -4,13 +4,13 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Runtime.Environment;
 using DragonSpark.Services.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
-using DragonSpark.Runtime.Environment;
 
 namespace DragonSpark.Services.Compose
 {
@@ -33,17 +33,18 @@ namespace DragonSpark.Services.Compose
 		}
 
 		public ServerProfileContext Then(ICommand<IServiceCollection> other)
-			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then(other), x.Execute));
+			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Add(other), x.Execute));
 
 		public ServerProfileContext Then(ICommand<IApplicationBuilder> other)
-			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then(other)));
+			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Add(other)));
 
 		public ServerProfileContext WithEnvironmentalConfiguration()
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x)
 			                               .ConfigureFromEnvironment()
 			                               .Execute,
 			                              A.Command<IApplicationBuilder>(x)
-			                               .Then(ConfigureFromEnvironment.Default)));
+			                               .Then()
+			                               .Add(ConfigureFromEnvironment.Default)));
 
 		public ServerProfileContext Named() => Named(PrimaryAssembly.Default);
 
@@ -71,7 +72,7 @@ namespace DragonSpark.Services.Compose
 			_other    = other;
 		}
 
-		public ICommand<IWebHostBuilder> Get(IServerProfile parameter) => _selector.Get(parameter).Then(_other).Get();
+		public ICommand<IWebHostBuilder> Get(IServerProfile parameter) => _selector.Get(parameter).Then().Add(_other).Get();
 	}
 
 	sealed class Selector : ISelector

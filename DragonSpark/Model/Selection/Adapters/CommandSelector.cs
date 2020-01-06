@@ -22,13 +22,13 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public CommandSelector(ICommand<T> command) : base(command) {}
 
-		public CommandSelector Input(T parameter = default)
+		public CommandSelector Bind(T parameter = default)
 			=> new CommandSelector(new FixedParameterCommand<T>(Get().Execute, parameter));
 
-		public CommandSelector Input(IResult<T> parameter)
+		public CommandSelector Bind(IResult<T> parameter)
 			=> new CommandSelector(new DelegatedParameterCommand<T>(Get().Execute, parameter.Get));
 
-		public CommandSelector<T> Then(params ICommand<T>[] commands)
+		public CommandSelector<T> Add(params ICommand<T>[] commands)
 			=> new CommandSelector<T>(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 
 		public CommandSelector<Sequences.Store<T>> Many()

@@ -54,7 +54,9 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 	{
 		public static BlazorServerProfile Default { get; } = new BlazorServerProfile();
 
-		BlazorServerProfile() : base(ServerApplicationProfile.Default.Then(DefaultServiceConfiguration.Default),
+		BlazorServerProfile() : base(A.Command<IServiceCollection>(ServerApplicationProfile.Default)
+		                              .Then()
+		                              .Add(DefaultServiceConfiguration.Default),
 		                             DefaultApplicationConfiguration.Default.Execute) {}
 	}
 

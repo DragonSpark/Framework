@@ -26,6 +26,8 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public Selector(ISelect<_, T> subject) => _subject = subject;
 
+		public GuardContext<_, T> Ensure => new GuardContext<_, T>(_subject);
+
 		public ISelect<_, T> Get() => _subject;
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
@@ -35,10 +37,10 @@ namespace DragonSpark.Model.Selection.Adapters
 		public Selector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
 		public Selector<_, TTo> Select<TTo>(Func<T, TTo> select)
-			=> new Selector<_, TTo>(new Selection<_, T, TTo>(Get().Get, select));
+			=> new Selection<_, T, TTo>(Get().Get, select).Then();
 
 		public Selector<_, T> Configure(IAssign<_, T> configuration)
-			=> new Selector<_, T>(new Configuration<_, T>(_subject, configuration));
+			=> new Configuration<_, T>(_subject, configuration).Then();
 
 		public Selector<_, T> Configure(ICommand<(_, T)> configuration)
 			=> new Selector<_, T>(new Configuration<_, T>(_subject.Get, configuration.Execute));
@@ -63,8 +65,6 @@ namespace DragonSpark.Model.Selection.Adapters
 		public Selector<_, T> Protect() => new Selector<_, T>(ProtectAlteration<_, T>.Default.Get(_subject));
 
 		public Selector<_, T> Stripe() => new Selector<_, T>(StripedAlteration<_, T>.Default.Get(_subject));
-
-		public GuardContext<_, T> Ensure => new GuardContext<_, T>(_subject);
 
 		public Selector<_, T> Try<TException>() where TException : Exception
 			=> new Selector<_, T>(new Try<TException, _, T>(Get().Get));

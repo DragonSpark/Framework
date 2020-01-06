@@ -1,9 +1,10 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Runtime;
-using System;
+using Action = System.Action;
 
 // ReSharper disable TooManyArguments
 
@@ -15,9 +16,9 @@ namespace DragonSpark
 	{
 		public static Action ToDelegate(this ICommand<None> @this) => @this.Execute;
 
-		public static Action<T> ToDelegate<T>(this ICommand<T> @this) => @this.Execute;
+		public static System.Action<T> ToDelegate<T>(this ICommand<T> @this) => @this.Execute;
 
-		public static Action<T> ToDelegateReference<T>(this ICommand<T> @this)
+		public static System.Action<T> ToDelegateReference<T>(this ICommand<T> @this)
 			=> Model.Commands.Delegates<T>.Default.Get(@this);
 
 		public static void Execute<T>(this ICommand<Array<T>> @this, params T[] parameters)
@@ -56,7 +57,12 @@ namespace DragonSpark
 			@this.Execute(None.Default);
 		}
 
-		public static ISelect<T, None> ToSelect<T>(this ICommand<T> @this)
-			=> new Model.Selection.Adapters.Action<T>(@this.Execute);
+		public static ISelect<T, None> ToSelect<T>(this ICommand<T> @this) => new Action<T>(@this.Execute);
+
+		public static CommandSelector<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
+			=> @this.Then().Add(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
+
+		public static CommandSelector<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
+			=> @this.Then().Add(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
 	}
 }

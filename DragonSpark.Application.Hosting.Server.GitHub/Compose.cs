@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Services;
 using DragonSpark.Services.Application;
 using DragonSpark.Services.Compose;
+using Microsoft.Extensions.DependencyInjection;
 using Octokit;
 
 namespace DragonSpark.Application.Hosting.Server.GitHub
@@ -20,7 +21,9 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	{
 		public static GitHubApplicationProfile Default { get; } = new GitHubApplicationProfile();
 
-		GitHubApplicationProfile() : base(ServerApplicationProfile.Default.Then(DefaultServiceConfiguration.Default),
+		GitHubApplicationProfile() : base(A.Command<IServiceCollection>(ServerApplicationProfile.Default)
+		                                   .Then()
+		                                   .Add(DefaultServiceConfiguration.Default),
 		                                  ServerApplicationProfile.Default.Execute) {}
 	}
 
