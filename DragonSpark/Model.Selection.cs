@@ -66,7 +66,7 @@ namespace DragonSpark
 			=> new DelegatedSelection<TIn, TOut>(@this, parameter);
 
 		public static ISelect<TIn, TOut> Assigned<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> @this.If(IsAssigned<TIn>.Default);
+			=> @this.If(Is.Assigned<TIn>());
 
 		public static ISelect<TIn, TOut> If<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, bool> @true)
 			=> Compose.Start.A.Selection<TIn>().By.Default<TOut>().Unless(@true, @this);
@@ -75,7 +75,7 @@ namespace DragonSpark
 			=> @this.Unless(assigned.ToDelegate());
 
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Selection<TIn, TOut> assigned)
-			=> new ValidatedResult<TIn, TOut>(IsAssigned<TOut>.Default, assigned, @this);
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>(), assigned, @this);
 
 		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                        IConditional<TIn, TOut> then)

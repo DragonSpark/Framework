@@ -19,11 +19,11 @@ namespace DragonSpark.Compose.Conditions
 
 		Context() {}
 
-		public ICondition<T> Always => Always<T>.Default;
+		public ICondition<T> Always => Is.Always<T>();
 
-		public ICondition<T> Never => Never<T>.Default;
+		public ICondition<T> Never => Is.Never<T>();
 
-		public ICondition<T> Assigned => IsAssigned<T>.Default;
+		public ICondition<T> Assigned => Is.Assigned<T>();
 
 		public ICondition<T> Calling(Func<T, bool> condition) => new Condition<T>(condition);
 	}

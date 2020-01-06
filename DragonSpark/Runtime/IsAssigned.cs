@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Runtime
 {
@@ -22,6 +23,6 @@ namespace DragonSpark.Runtime
 	{
 		protected IsAssigned(Func<TIn, TOut> select) : this(select.Start()) {}
 
-		protected IsAssigned(ISelect<TIn, TOut> source) : base(source.Select(IsAssigned.Default)) {}
+		protected IsAssigned(ISelect<TIn, TOut> source) : base(source.Select(Is.Assigned())) {}
 	}
 }

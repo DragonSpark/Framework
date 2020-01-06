@@ -69,7 +69,7 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		[Fact]
 		void VerifyGet()
 		{
-			IsAssigned<Singleton>.Default.Get(Singleton.Default).Should().BeTrue();
+			Is.Assigned().Get(Singleton.Default).Should().BeTrue();
 
 			Activator<Singleton>.Default.Get().Should().BeSameAs(Singleton.Default);
 

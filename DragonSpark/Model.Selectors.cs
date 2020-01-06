@@ -6,7 +6,6 @@ using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Operations;
 using DragonSpark.Runtime;
 using System;
@@ -45,7 +44,7 @@ namespace DragonSpark
 		public static CommandSelector Then(this ICommand @this) => new CommandSelector(@this);
 
 		public static CommandSelector<T> Then<T>(this ICommand<T> @this) => new CommandSelector<T>(@this);
-		
+
 		public static ResultInstanceSelector<None, T> Then<T>(this IResult<IResult<T>> @this)
 			=> new ResultInstanceSelector<None, T>(@this.ToSelect());
 
@@ -75,65 +74,7 @@ namespace DragonSpark
 
 		public static MessageSelector Then(this ISelect<Type, string> @this) => new MessageSelector(@this);
 
-		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
-
-		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
-
-		public static Query<None, T> Query<T>(this IResult<Array<T>> @this) => @this.ToSelect().Query();
-
-		public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.ToSelect().Query();
-
-		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
-
-		public static Query<_, T> Query<_, T>(this ISelect<_, Array<T>> @this) => @this.Open().Query();
-
-		public static Query<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
-			=> new Query<_, T>(@this.Select(Iterate<T>.Default));
-
-		public static Query<_, T> Query<_, T>(this ISelect<_, ICollection<T>> @this)
-			=> new Query<_, T>(@this.Select(CollectionSelection<T>.Default));
-
-		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
-			=> @this.Select(select.ToDelegate());
-
-		public static SelectQueryContext<_, T> Select<_, T>(this Query<_, T> @this)
-			=> new SelectQueryContext<_, T>(@this);
-
-		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, Func<T, TOut> select)
-			=> @this.Select(new Build.Select<T, TOut>(select).Returned());
-
-		public static Query<_, TOut> SelectMany<_, T, TOut>(this Query<_, T> @this,
-		                                                    ISelect<T, IEnumerable<TOut>> select)
-			=> @this.SelectMany(select.Get);
-
-		public static Query<_, TOut> SelectMany<_, T, TOut>(this Query<_, T> @this, Func<T, IEnumerable<TOut>> select)
-			=> @this.Select(new Build.SelectMany<T, TOut>(select).Returned());
-
-		public static WhereQueryContext<_, T> Where<_, T>(this Query<_, T> @this) => new WhereQueryContext<_, T>(@this);
-
-		public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);
-
-		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
-			=> @this.Select(FirstAssigned<T>.Default);
-
-		public static ISelect<_, T?> FirstAssigned<_, T>(this Query<_, T?> @this) where T : struct
-			=> @this.Select(FirstAssignedValue<T>.Default);
-
-		public static ISelect<_, int> Sum<_>(this Query<_, int> @this) => @this.Select(Sum32.Default);
-
-		public static ISelect<_, uint> Sum<_>(this Query<_, uint> @this) => @this.Select(SumUnsigned32.Default);
-
-		public static ISelect<_, long> Sum<_>(this Query<_, long> @this) => @this.Select(Sum64.Default);
-
-		public static ISelect<_, ulong> Sum<_>(this Query<_, ulong> @this) => @this.Select(SumUnsigned64.Default);
-
-		public static ISelect<_, float> Sum<_>(this Query<_, float> @this) => @this.Select(SumSingle.Default);
-
-		public static ISelect<_, double> Sum<_>(this Query<_, double> @this) => @this.Select(SumDouble.Default);
-
-		public static ISelect<_, decimal> Sum<_>(this Query<_, decimal> @this) => @this.Select(SumDecimal.Default);
-
-		public static Func<TIn, TOut> Selector<TIn, TOut>(this Selector<TIn, TOut> @this) => @this;
+		/**/
 
 		public static Action Selector(this CommandSelector @this) => @this;
 
@@ -146,6 +87,8 @@ namespace DragonSpark
 		public static Func<Array<T>> Selector<T>(this Query<None, T> @this) => @this.Get().ToResult().Get;
 
 		public static Func<_, Array<T>> Selector<_, T>(this Query<_, T> @this) => @this.Get().Get;
+
+		/**/
 
 		public static ICommand Out<T>(this CommandSelector<T> @this, T parameter) => @this.Bind(parameter).Command;
 

@@ -28,7 +28,7 @@ namespace DragonSpark.Runtime
 				       : IsReference.Default.Get(Type)
 					       ? Start.A.Selection<T>()
 					              .AndOf<object>()
-					              .By.Cast.Select(IsAssigned.Default)
+					              .By.Cast.Select(Is.Assigned())
 					       : IsModified<T>.Default) {}
 
 		public IsAssignedConditions(ISelect<T, bool> condition)

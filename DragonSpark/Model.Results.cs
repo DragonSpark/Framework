@@ -5,7 +5,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime;
 using System;
 
 namespace DragonSpark
@@ -21,7 +20,7 @@ namespace DragonSpark
 		public static IResult<T> Singleton<T>(this IResult<T> @this) => new DeferredSingleton<T>(@this.Get);
 
 		public static IResult<T> Unless<T>(this IResult<T> @this, IResult<T> assigned)
-			=> @this.Unless(IsAssigned<T>.Default, assigned);
+			=> @this.Unless(Is.Assigned<T>(), assigned);
 
 		public static IResult<T> Unless<T>(this IResult<T> @this, ICondition<T> condition, IResult<T> then)
 			=> @this.Unless(condition.ToDelegate(), then);

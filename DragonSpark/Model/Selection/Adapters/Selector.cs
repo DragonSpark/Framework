@@ -50,7 +50,7 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public Selector<_, Array<T>> Result() => Select(x => x.Yield().Result());
 
-		public Selector<_, T> Assigned() => Get().If(IsAssigned<_>.Default).Then();
+		public Selector<_, T> Assigned() => Get().If(Is.Assigned<_>()).Then();
 
 		public Selector<_, TTo> Cast<TTo>() => Select(CastOrDefault<T, TTo>.Default);
 

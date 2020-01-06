@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 
 namespace DragonSpark.Model.Results
@@ -12,8 +12,7 @@ namespace DragonSpark.Model.Results
 
 		readonly Func<T, bool> _specification;
 
-		public ValidatedResult(IResult<T> result, IResult<T> fallback)
-			: this(IsAssigned<T>.Default, result, fallback) {}
+		public ValidatedResult(IResult<T> result, IResult<T> fallback) : this(Is.Assigned<T>(), result, fallback) {}
 
 		public ValidatedResult(ICondition<T> specification, IResult<T> result, IResult<T> fallback)
 			: this(specification.Get, result.Get, fallback.Get) {}
