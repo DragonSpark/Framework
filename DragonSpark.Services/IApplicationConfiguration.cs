@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
@@ -7,34 +7,22 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Services
 {
-	sealed class ConfigureFromEnvironment : ICommand<IApplicationBuilder>
+	sealed class ConfigureFromEnvironment : SelectedCommand<IApplicationBuilder>
 	{
 		public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
 
-		ConfigureFromEnvironment() : this(A.Type<IApplicationConfiguration>(),
-		                                  Start.A.Selection.Of.System.Type.By.Self.Then()
-		                                       .Activate<IApplicationConfiguration>()
-		                                       .Get) {}
+		ConfigureFromEnvironment() : base(ServiceConfigurationLocator.Default.Get) {}
+	}
 
-		readonly Type                                  _type;
-		readonly Func<Type, IApplicationConfiguration> _select;
+	sealed class ServiceConfigurationLocator : LocateComponent<IApplicationBuilder, IApplicationConfiguration>
+	{
+		public static ServiceConfigurationLocator Default { get; } = new ServiceConfigurationLocator();
 
-		public ConfigureFromEnvironment(Type type, Func<Type, IApplicationConfiguration> select)
-		{
-			_type   = type;
-			_select = select;
-		}
-
-		public void Execute(IApplicationBuilder parameter)
-		{
-			var implementation = parameter.ApplicationServices.GetRequiredService<IComponentType>().Get(_type);
-
-			_select(implementation)?.Execute(parameter);
-		}
+		ServiceConfigurationLocator()
+			: base(x => x.ApplicationServices.GetRequiredService<IComponentType>()) {}
 	}
 
 	public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}

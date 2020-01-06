@@ -93,6 +93,11 @@ namespace DragonSpark.Composition
 		}
 	}
 
+	sealed class name
+	{
+		
+	}
+
 	sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
 	{
 		[UsedImplicitly]

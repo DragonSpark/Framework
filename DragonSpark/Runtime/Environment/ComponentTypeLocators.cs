@@ -3,12 +3,12 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
+using DragonSpark.Text;
 using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Runtime.Environment
 {
-	// TODO: consolidate all uses of IComponentType:
 	public interface IComponentType : IAlteration<Type> {}
 
 	sealed class ComponentType : Alteration<Type>, IComponentType
@@ -18,6 +18,13 @@ namespace DragonSpark.Runtime.Environment
 			             .FirstAssigned()
 			             .Then()
 			             .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)) {}
+	}
+
+	sealed class LocateComponentMessage<T> : Message<Type>
+	{
+		public static LocateComponentMessage<T> Default { get; } = new LocateComponentMessage<T>();
+
+		LocateComponentMessage() : base(x => $"Found a type of {A.Type<T>()} as {x} but could not activate it.") {}
 	}
 
 	public interface IComponentTypes : IArray<Type, Type> {}

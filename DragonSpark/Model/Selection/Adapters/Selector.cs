@@ -15,8 +15,6 @@ namespace DragonSpark.Model.Selection.Adapters
 	{
 		public MessageSelector(ISelect<Type, string> subject) : base(subject) {}
 
-		public Selector<Type, string> For<T>() => Get().In(A.Type<T>()).Then().Accept<Type>();
-
 		public Selector<T, string> Bind<T>() => Get().In(A.Type<T>()).Then().Accept<T>();
 	}
 

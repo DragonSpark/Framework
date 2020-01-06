@@ -42,7 +42,8 @@ namespace DragonSpark.Composition.Compose
 			              .AddScoped(x => x.GetRequiredService<TResult>().Get());
 	}
 
-	public sealed class RegistrationContext<TFrom, TTo> : IRegistrationContext where TTo : class, TFrom where TFrom : class
+	public sealed class RegistrationContext<TFrom, TTo> : IRegistrationContext
+		where TTo : class, TFrom where TFrom : class
 	{
 		readonly IServiceCollection _collection;
 
@@ -73,32 +74,32 @@ namespace DragonSpark.Composition.Compose
 		public IServiceCollection Scoped() => _collection.AddScoped(_select);
 	}
 
-	sealed class ConfigureFromEnvironment : ICommand<IServiceCollection>
+	sealed class ConfigureFromEnvironment : SelectedCommand<IServiceCollection>
 	{
 		public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
 
-		ConfigureFromEnvironment() : this(A.Type<IServiceConfiguration>(), LocateGuardMessage.Default) {}
+		ConfigureFromEnvironment() : base(ServiceConfigurationLocator.Default.Get) {}
+	}
 
-		readonly Type                              _type;
-		readonly Func<Type, IServiceConfiguration> _select;
+	sealed class ServiceConfigurationLocator : LocateComponent<IServiceCollection, IServiceConfiguration>
+	{
+		public static ServiceConfigurationLocator Default { get; } = new ServiceConfigurationLocator();
 
-		public ConfigureFromEnvironment(Type type, ISelect<Type, string> message)
-			: this(type, Start.A.Selection.Of.System.Type.By.Self.Then()
-			                  .Activate<IServiceConfiguration>()
-			                  .Ensure.Assigned.Entry.OrThrow(message.Then().For<IServiceConfiguration>().Get())) {}
+		ServiceConfigurationLocator() : base(x => x.GetRequiredInstance<IComponentType>()) {}
+	}
 
-		public ConfigureFromEnvironment(Type type, Func<Type, IServiceConfiguration> select)
-		{
-			_type   = type;
-			_select = select;
-		}
+	public class LocateComponent<TIn, TOut> : Select<TIn, TOut>
+	{
+		public LocateComponent(Func<TIn, IComponentType> select) : this(select.Start()) {}
 
-		public void Execute(IServiceCollection parameter)
-		{
-			var implementation = parameter.GetRequiredInstance<IComponentType>().Get(_type);
-
-			_select(implementation).Execute(parameter);
-		}
+		public LocateComponent(ISelect<TIn, IComponentType> select)
+			: base(select.Then()
+			             .Select(x => x.Get(A.Type<TOut>()))
+			             .Select(Start.A.Selection.Of.System.Type.By.Self.Then()
+			                          .Activate<TOut>()
+			                          .Ensure.Assigned.Entry.OrThrow(LocateGuardMessage.Default)
+			                          .Ensure.Assigned.Exit.OrThrow(LocateComponentMessage<TOut>.Default)
+			                          .Get())) {}
 	}
 
 	public sealed class RegistrationContext : IRegistrationContext
