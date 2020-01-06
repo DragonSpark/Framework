@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Types;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {
@@ -19,7 +19,7 @@ namespace DragonSpark.Reflection
 
 		readonly Type _type;
 
-		public ProvidedAttributes(bool inherit) : this(Type<T>.Instance, inherit) {}
+		public ProvidedAttributes(bool inherit) : this(A.Type<T>(), inherit) {}
 
 		public ProvidedAttributes(Type type, bool inherit)
 		{

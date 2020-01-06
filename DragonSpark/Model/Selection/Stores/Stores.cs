@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
+using System;
 
 namespace DragonSpark.Model.Selection.Stores
 {
@@ -8,7 +8,7 @@ namespace DragonSpark.Model.Selection.Stores
 	{
 		public static Stores<TIn, TOut> Default { get; } = new Stores<TIn, TOut>();
 
-		Stores() : base(IsValueType.Default.Get(Type<TIn>.Metadata)
+		Stores() : base(IsValueType.Default.Get(A.Metadata<TIn>())
 			                ? Selections<TIn, TOut>.Default
 			                : Start.A.Generic(typeof(ReferenceTables<,>))
 			                       .Of.Type<ISelect<Func<TIn, TOut>, ISelect<TIn, TOut>>>()

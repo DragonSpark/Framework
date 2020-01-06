@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Reflection.Types;
+using System;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 	{
 		public static ReturnType<T> Default { get; } = new ReturnType<T>();
 
-		ReturnType() : base(Type<T>.Metadata.GetDeclaredMethod(nameof(Func<object>.Invoke)).ReturnType) {}
+		ReturnType() : base(A.Metadata<T>().GetDeclaredMethod(nameof(Func<object>.Invoke)).ReturnType) {}
 	}
 }

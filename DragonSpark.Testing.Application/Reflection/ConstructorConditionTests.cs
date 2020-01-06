@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Members;
-using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime;
+using System;
+using System.Reflection;
 using Xunit;
 
 // ReSharper disable All
@@ -19,13 +19,13 @@ namespace DragonSpark.Testing.Application.Reflection
 		[Fact]
 		void Verify()
 		{
-			ConstructorCondition.Default.Get(Type<object>.Instance.GetConstructor(Empty<Type>.Array));
+			ConstructorCondition.Default.Get(A.Type<object>().GetConstructor(Empty<Type>.Array));
 		}
 
 		[Fact]
 		void VerifyOptional()
 		{
-			ConstructorCondition.Default.Get(Type<Optional>.Instance.GetConstructors().Only<ConstructorInfo>());
+			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only<ConstructorInfo>());
 		}
 	}
 }

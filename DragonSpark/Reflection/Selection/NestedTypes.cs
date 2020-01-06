@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Types;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection
 {
@@ -9,7 +9,7 @@ namespace DragonSpark.Reflection.Selection
 	{
 		public static NestedTypes<T> Default { get; } = new NestedTypes<T>();
 
-		NestedTypes() : base(new NestedTypes(Type<T>.Metadata)) {}
+		NestedTypes() : base(new NestedTypes(A.Metadata<T>())) {}
 	}
 
 	public sealed class NestedTypes : ArrayInstance<Type>

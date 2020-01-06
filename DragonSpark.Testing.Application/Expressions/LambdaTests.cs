@@ -1,8 +1,8 @@
-﻿using System;
-using FluentAssertions;
-using DragonSpark.Reflection.Types;
+﻿using DragonSpark.Compose;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Invocation.Expressions;
+using FluentAssertions;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Expressions
@@ -14,7 +14,7 @@ namespace DragonSpark.Testing.Application.Expressions
 		{
 			Lambda<Func<object>>
 				.Default
-				.Get(ConstructorExpressions.Default.Get(Type<object>.Instance.GetConstructor(Empty<Type>.Array)))
+				.Get(ConstructorExpressions.Default.Get(A.Type<object>().GetConstructor(Empty<Type>.Array)))
 				.Compile()()
 				.Should()
 				.NotBeNull();

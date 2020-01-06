@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Reflection.Types;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {
@@ -13,7 +13,7 @@ namespace DragonSpark.Reflection
 
 		IsDefined() : this(false) {}
 
-		public IsDefined(bool inherit) : this(Type<T>.Instance, inherit) {}
+		public IsDefined(bool inherit) : this(A.Type<T>(), inherit) {}
 
 		public IsDefined(Type type, bool inherit) : base(new IsDefined(type, inherit).Get) {}
 

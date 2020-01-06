@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection.Types;
+using System;
 
 namespace DragonSpark.Runtime.Objects
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Objects
 	{
 		public static InstanceType<T> Default { get; } = new InstanceType<T>();
 
-		InstanceType() : base(x => x?.GetType() ?? Type<T>.Instance) {}
+		InstanceType() : base(x => x?.GetType() ?? A.Type<T>()) {}
 	}
 }

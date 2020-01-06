@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
-using DragonSpark.Reflection.Types;
+using FluentAssertions;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Collections
@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Collections
 		[Fact]
 		void VerifyMetadata()
 		{
-			SortMetadata<TypeInfo>.Default.Get(Type<Subject>.Metadata).Should().Be(200);
+			SortMetadata<TypeInfo>.Default.Get(A.Metadata<Subject>()).Should().Be(200);
 		}
 	}
 }

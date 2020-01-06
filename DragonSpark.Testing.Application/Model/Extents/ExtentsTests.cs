@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection.Types;
 using FluentAssertions;
 using System;
 using System.Reflection;
@@ -63,7 +62,7 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		[Fact]
 		void VerifySourceDelegated()
 		{
-			6776.Start().ToSelect().Select(x => x.GetType().GetTypeInfo()).Get().Should().Be(Type<int>.Metadata);
+			6776.Start().ToSelect().Select(x => x.GetType().GetTypeInfo()).Get().Should().Be(A.Metadata<int>());
 		}
 
 		[Fact]
@@ -75,7 +74,7 @@ namespace DragonSpark.Testing.Application.Model.Extents
 			     .Metadata()
 			     .Selector()()
 			     .Should()
-			     .Be(Type<string>.Metadata);
+			     .Be(A.Metadata<string>());
 		}
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Reflection.Types;
+using System;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {
@@ -16,7 +16,7 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 	{
 		public static Parameter Default { get; } = new Parameter();
 
-		Parameter() : this(Type<object[]>.Instance) {}
+		Parameter() : this(A.Type<object[]>()) {}
 
 		public Parameter(Type parameter) : base(Expression.Parameter, parameter) {}
 	}

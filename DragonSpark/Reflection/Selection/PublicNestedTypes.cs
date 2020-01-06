@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Types;
+using System;
 
 namespace DragonSpark.Reflection.Selection
 {
@@ -8,7 +8,7 @@ namespace DragonSpark.Reflection.Selection
 	{
 		public static PublicNestedTypes<T> Default { get; } = new PublicNestedTypes<T>();
 
-		PublicNestedTypes() : base(new PublicNestedTypes(Type<T>.Instance)) {}
+		PublicNestedTypes() : base(new PublicNestedTypes(A.Type<T>())) {}
 	}
 
 	public sealed class PublicNestedTypes : ArrayInstance<Type>

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Runtime.Environment
 {
+	// TODO: consolidate all uses of IComponentType:
 	public interface IComponentType : IAlteration<Type> {}
 
 	sealed class ComponentType : Alteration<Type>, IComponentType

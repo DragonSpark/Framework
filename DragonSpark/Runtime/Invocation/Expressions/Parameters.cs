@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
-using DragonSpark.Reflection.Types;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 	{
 		public static Parameters<T> Default { get; } = new Parameters<T>();
 
-		Parameters() : base(new Parameter(Type<T>.Instance).Get) {}
+		Parameters() : base(new Parameter(A.Type<T>()).Get) {}
 	}
 }

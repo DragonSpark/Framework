@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Reflection;
-using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using System;
 using System.Collections.Concurrent;
@@ -11,7 +10,7 @@ namespace DragonSpark.Model.Selection.Stores
 	{
 		public static Tables<TIn, TOut> Default { get; } = new Tables<TIn, TOut>();
 
-		Tables() : base(IsReference.Default.Get(Type<TIn>.Instance)
+		Tables() : base(IsReference.Default.Get(A.Type<TIn>())
 			                ? Start.A.Generic(typeof(ReferenceTables<,>))
 			                       .Of.Type<ISelect<Func<TIn, TOut>, ITable<TIn, TOut>>>()
 			                       .In(An.Array(A.Type<TIn>(), A.Type<TOut>()))

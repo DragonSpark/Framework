@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Collections;
-using DragonSpark.Reflection.Types;
+using FluentAssertions;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Reflection
@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Application.Reflection
 		[Fact]
 		void Verify()
 		{
-			InnerType.Default.Get(Type<Always<TypeInfo>>.Instance).Should().Be<TypeInfo>();
+			InnerType.Default.Get(A.Type<Always<TypeInfo>>()).Should().Be<TypeInfo>();
 		}
 	}
 }

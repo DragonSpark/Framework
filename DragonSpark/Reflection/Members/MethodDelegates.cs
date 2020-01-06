@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection.Types;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Members
 {
@@ -9,6 +9,6 @@ namespace DragonSpark.Reflection.Members
 	{
 		public static MethodDelegates<T> Default { get; } = new MethodDelegates<T>();
 
-		MethodDelegates() : base(x => (T)x.CreateDelegate(Type<T>.Instance)) {}
+		MethodDelegates() : base(x => (T)x.CreateDelegate(A.Type<T>())) {}
 	}
 }
