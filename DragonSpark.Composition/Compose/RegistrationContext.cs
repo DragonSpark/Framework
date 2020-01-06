@@ -42,6 +42,19 @@ namespace DragonSpark.Composition.Compose
 			              .AddScoped(x => x.GetRequiredService<TResult>().Get());
 	}
 
+	public sealed class RegistrationContext<TFrom, TTo> : IRegistrationContext where TTo : class, TFrom where TFrom : class
+	{
+		readonly IServiceCollection _collection;
+
+		public RegistrationContext(IServiceCollection collection) => _collection = collection;
+
+		public IServiceCollection Singleton() => _collection.AddSingleton<TFrom, TTo>();
+
+		public IServiceCollection Transient() => _collection.AddTransient<TFrom, TTo>();
+
+		public IServiceCollection Scoped() => _collection.AddScoped<TFrom, TTo>();
+	}
+
 	public sealed class SelectionRegistrationContext<T> : IRegistrationContext where T : class
 	{
 		readonly IServiceCollection        _collection;
@@ -72,20 +85,19 @@ namespace DragonSpark.Composition.Compose
 		public ConfigureFromEnvironment(Type type, ISelect<Type, string> message)
 			: this(type, Start.A.Selection.Of.System.Type.By.Self.Then()
 			                  .Activate<IServiceConfiguration>()
-			                  .Ensure.Assigned.Entry.OrThrow(message.Then().For<IServiceConfiguration>().Get())
-			      ) {}
+			                  .Ensure.Assigned.Entry.OrThrow(message.Then().For<IServiceConfiguration>().Get())) {}
 
 		public ConfigureFromEnvironment(Type type, Func<Type, IServiceConfiguration> select)
 		{
 			_type   = type;
-			_select = @select;
+			_select = select;
 		}
 
 		public void Execute(IServiceCollection parameter)
 		{
 			var implementation = parameter.GetRequiredInstance<IComponentType>().Get(_type);
 
-			_select(implementation)?.Execute(parameter);
+			_select(implementation).Execute(parameter);
 		}
 	}
 
@@ -122,6 +134,9 @@ namespace DragonSpark.Composition.Compose
 
 		public ResultRegistrationContext<T, TResult> Use<TResult>() where TResult : class, IResult<T>
 			=> new ResultRegistrationContext<T, TResult>(_collection);
+
+		public RegistrationContext<T, TTo> Map<TTo>() where TTo : class, T
+			=> new RegistrationContext<T, TTo>(_collection);
 
 		public SelectionRegistrationContext<T> UseEnvironment()
 		{

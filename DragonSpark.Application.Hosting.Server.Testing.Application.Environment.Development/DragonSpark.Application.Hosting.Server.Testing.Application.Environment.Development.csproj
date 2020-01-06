@@ -6,6 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Testing.Application.Environment\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.csproj" />
+    <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
   </ItemGroup>
-
-</Project>
+ </Project>

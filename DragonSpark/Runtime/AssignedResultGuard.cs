@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
@@ -13,19 +14,10 @@ namespace DragonSpark.Runtime
 		public AssignedEntryGuard(ISelect<T, string> message) : base(message) {}
 	}
 
-	sealed class AssignedResultGuard<T> : AssignedGuard<T, InvalidOperationException>
-	{
-		/*public static AssignedResultGuard<T> Default { get; } = new AssignedResultGuard<T>();
-
-		AssignedResultGuard() : this(AssignedResultMessage.Default.Then().Bind<T>().Get()) {}*/
-
-		public AssignedResultGuard(ISelect<T, string> message) : base(message) {}
-	}
-
 	public class AssignedGuard<T, TException> : Guard<T, TException> where TException : Exception
 	{
-		readonly static ICondition<T> Condition = IsAssigned<T>.Default.Then().Inverse().Out();
+		public AssignedGuard(ISelect<T, string> message) : this(Is.Assigned<T>().Then().Inverse().Out(), message) {}
 
-		public AssignedGuard(ISelect<T, string> message) : base(Condition, message) {}
+		public AssignedGuard(ICondition<T> condition, ISelect<T, string> message) : base(condition, message) {}
 	}
 }

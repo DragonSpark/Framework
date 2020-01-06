@@ -11,7 +11,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
-using Dependency = DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development.Dependency;
 
 namespace DragonSpark.Application.Hosting.Server.Testing.Application
 {
@@ -30,7 +29,8 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 		}
 
 		[Theory]
-		[InlineData("Development", typeof(Dependency))]
+		[InlineData("Development", typeof(Environment.Development.Dependency))]
+		[InlineData("Production", typeof(Environment.Production.Dependency))]
 		async Task VerifyEnvironment(string environment, Type expected)
 		{
 			using var host = await Start.A.Host()

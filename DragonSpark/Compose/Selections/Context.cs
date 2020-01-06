@@ -58,12 +58,12 @@ namespace DragonSpark.Compose.Selections
 		public ISelect<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
 			=> new Model.Selection.Select<T, Func<TIn, TOut>>(select);
 
-		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.ToSelect(Start.An.Extent<T>());
+		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>().Return();
 
 		public ISelect<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T> => Activations<T, TOut>.Default;
 
 		public ISelect<T, TOut> Singleton<TOut>()
-			=> Runtime.Activation.Singleton<TOut>.Default.ToSelect(Start.An.Extent<T>());
+			=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>().Return();
 
 		public ISelect<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default;
 
@@ -82,9 +82,9 @@ namespace DragonSpark.Compose.Selections
 
 		public Cast<TIn, TOut> Cast => Cast<TIn, TOut>.Default;
 
-		public ISelect<TIn, TOut> Activation() => Activator<TOut>.Default.ToSelect(Start.An.Extent<TIn>());
+		public ISelect<TIn, TOut> Activation() => Activator<TOut>.Default.Then().Accept<TIn>().Return();
 
-		public ISelect<TIn, TOut> Singleton() => Singleton<TOut>.Default.ToSelect(Start.An.Extent<TIn>());
+		public ISelect<TIn, TOut> Singleton() => Singleton<TOut>.Default.Then().Accept<TIn>().Return();
 
 		public ISelect<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result);
 

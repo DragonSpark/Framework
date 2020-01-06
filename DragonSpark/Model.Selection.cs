@@ -86,7 +86,7 @@ namespace DragonSpark
 
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ICondition<TIn> condition,
 		                                                   IResult<TOut> then)
-			=> @this.Unless(condition, then.ToSelect(Compose.Start.An.Extent<TIn>()));
+			=> @this.Unless(condition, then.Then().Accept<TIn>().Return());
 
 		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                        ISelect<TIn, bool> unless,

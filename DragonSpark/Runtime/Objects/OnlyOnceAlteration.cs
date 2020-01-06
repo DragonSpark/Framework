@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Execution;
 
@@ -13,7 +12,7 @@ namespace DragonSpark.Runtime.Objects
 
 		public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter)
 			=> new First().Out()
-			              .ToSelect(Start.An.Extent<TIn>())
+			              .Then().Accept<TIn>().Return()
 			              .To(parameter.If);
 	}
 }

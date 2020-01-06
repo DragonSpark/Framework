@@ -77,6 +77,22 @@ namespace DragonSpark.Testing.Application.Composition
 		}
 
 		[Fact]
+		async Task VerifyUnexistingComponentThrows()
+		{
+			await Start.A.Host()
+			           .WithDefaultComposition()
+			           .RegisterModularity()
+			           .Configure(x => x.For<IDoesNotExist>().Invoking(y => y.UseEnvironment())
+			                            .Should()
+			                            .ThrowExactly<InvalidOperationException>()
+			                            .WithMessage("Could not locate an external/environmental component type for DragonSpark.Testing.Application.Composition.CompositionTests+IDoesNotExist.  Please ensure there is a primary assembly registered with an applied attribute of type DragonSpark.Runtime.Environment.HostingAttribute, and that there is a corresponding assembly either named <PrimaryAssemblyName>.Environment for environmental-specific components. Please also ensure that the component libraries contains one public type that implements or is of the requested type."))
+			           .Operations()
+			           .Start();
+		}
+
+		public interface IDoesNotExist {}
+
+		[Fact]
 		async Task VerifyAllAssemblyTypes()
 		{
 			using var host = await Start.A.Host()

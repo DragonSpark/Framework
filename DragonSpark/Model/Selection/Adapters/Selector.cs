@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
@@ -14,20 +15,9 @@ namespace DragonSpark.Model.Selection.Adapters
 	{
 		public MessageSelector(ISelect<Type, string> subject) : base(subject) {}
 
-		/*public Selector<T, T> Guard<T>()
-			=> Start.A.Selection<T>().By.Self.Then().Validate().EnsureAssigned(For<T>().Get());*/
+		public Selector<Type, string> For<T>() => Get().In(A.Type<T>()).Then().Accept<Type>();
 
-		/*public Selector<Type, T> Bind<T>(ISelect<Type, T> subject) => Bind(A.Type<T>());
-
-		public Selector<Type, string> Bind<T>() => Bind(A.Type<T>());
-
-		public Selector<Type, string> Bind(Type type)
-			=> new Selector<Type, string>(Get().In(type).ToSelect(Start.An.Extent<Type>()));
-		*/
-
-		public Selector<Type, string> For<T>() => Get().In(A.Type<T>()).ToSelect(Start.An.Extent<Type>()).Then();
-
-		public Selector<T, string> Bind<T>() => Get().In(A.Type<T>()).ToSelect(Start.An.Extent<T>()).Then();
+		public Selector<T, string> Bind<T>() => Get().In(A.Type<T>()).Then().Accept<T>();
 	}
 
 	public class Selector<_, T> : IResult<ISelect<_, T>>, IActivateUsing<ISelect<_, T>>
@@ -109,11 +99,14 @@ namespace DragonSpark.Model.Selection.Adapters
 		public AssignedExitGuardContext<TIn, TOut> Exit => new AssignedExitGuardContext<TIn, TOut>(_subject);
 	}
 
-	public sealed class GuardModelContext
+	public sealed class GuardModelContext<TException> where TException : Exception
 	{
-		public static GuardModelContext Default { get; } = new GuardModelContext();
+		public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();
 
 		GuardModelContext() {}
+
+		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message)
+			=> new GuardThrowContext<T, TException>(message);
 
 		/*public AssignedGuardModelContext Assigned() => Assigned(AssignedResultMessage.Default);
 
@@ -121,41 +114,16 @@ namespace DragonSpark.Model.Selection.Adapters
 			=> new AssignedGuardModelContext(message);*/
 	}
 
-	/*public sealed class AssignedGuardModelContext
+	public sealed class GuardThrowContext<T, TException> where TException : Exception
 	{
-		readonly ISelect<Type, string> _message;
+		readonly ISelect<T, string> _message;
 
-		public AssignedGuardModelContext(ISelect<Type, string> message) => _message = message;
+		public GuardThrowContext(ISelect<T, string> message) => _message = message;
 
-		public ISelect<T, string> For<T>() => _message.In(A.Type<T>()).ToSelect(Start.An.Extent<T>());
+		public CommandSelector<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
 
-		public ISelect<Type, string> Bind<T>() => _message.In(A.Type<T>()).ToSelect(Start.An.Extent<Type>());
-
-		public ICommand<T> Command<T>() => Command(For<T>());
-
-		public ICommand<T> Command<T>(ISelect<T, string> message) => new AssignedResultGuard<T>(message);
-	}*/
-
-	/*public sealed class AssignedGuardContext<T, TOut>
-	{
-		readonly Func<ICommand<T>, TOut> _out;
-
-		public AssignedGuardContext(Func<ICommand<T>, TOut> @out) => _out = @out;
-
-
-	}*/
-
-	/*public sealed class GuardEntryContext<T, _>
-	{
-		readonly ISelect<T, _> _subject;
-
-		public GuardEntryContext(ISelect<T, _> select) => _subject = select;
-
-		public AssignedGuardContext<T, Selector<T, _>> IsAssigned => new AssignedGuardContext<T, Selector<T, _>>(Using);
-
-		public Selector<T, _> Using(ICommand<T> guard)
-			=> new Selector<T, _>(guard.Then().ToConfiguration().Select(_subject).Get());
-	}*/
+		public CommandSelector<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
+	}
 
 	public sealed class AssignedEntryGuardContext<T, _>
 	{
@@ -167,25 +135,37 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public Selector<T, _> OrThrow(ISelect<Type, string> message) => OrThrow(message.Then().Bind<T>().Get());
 
-		public Selector<T, _> OrThrow(ISelect<T, string> message) => Using(new AssignedResultGuard<T>(message));
-
-		public Selector<T, _> Using(ICommand<T> guard)
-			=> guard.Then().ToConfiguration().Select(_subject).Get().Then();
+		public Selector<T, _> OrThrow(ISelect<T, string> message)
+			=> new AssignedEntryGuard<T>(message).Then().ToConfiguration().Select(_subject);
 	}
 
-	public sealed class AssignedExitGuardContext<_, T>
+	public sealed class AssignedExitGuardContext<TIn, TOut>
 	{
-		readonly ISelect<_, T> _subject;
+		readonly ISelect<TIn, TOut> _subject;
 
-		public AssignedExitGuardContext(ISelect<_, T> select) => _subject = select;
+		public AssignedExitGuardContext(ISelect<TIn, TOut> select) => _subject = select;
 
-		public Selector<_, T> OrThrow() => OrThrow(AssignedResultMessage.Default);
+		public Selector<TIn, TOut> OrThrow() => OrThrow(AssignedResultMessage.Default);
 
-		public Selector<_, T> OrThrow(ISelect<Type, string> message) => OrThrow(message.Then().Bind<T>().Get());
+		public Selector<TIn, TOut> OrThrow(IResult<string> message) => OrThrow(message.Then().Accept<Type>().Return());
 
-		public Selector<_, T> OrThrow(ISelect<T, string> message) => Using(new AssignedResultGuard<T>(message));
-
-		public Selector<_, T> Using(ICommand<T> guard)
-			=> _subject.Then().Select(guard.Then().ToConfiguration().Get()).Get().Then();
+		public Selector<TIn, TOut> OrThrow(ISelect<Type, string> message)
+			// TODO: Convert to Unless
+			/*_subject.Unless(Is.Assigned<T>().Then().Inverse().Get(),
+						                   guard.Then().ToConfiguration().Select(x => default(T)).Get())
+						           */
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>(),
+			                                  _subject,
+			                                  Start.A.Selection<TIn>()
+			                                       .AndOf<Type>()
+			                                       .By.Cast.Or.Return(A.Type<TOut>())
+			                                       .Then()
+			                                       .Terminate(Start.A.Guard<InvalidOperationException>()
+			                                                       .Displaying(message)
+			                                                       .When(Is.Always()))
+			                                       .ToConfiguration()
+			                                       .Select(x => default(TOut))
+			                                       .Get())
+				.Then();
 	}
 }

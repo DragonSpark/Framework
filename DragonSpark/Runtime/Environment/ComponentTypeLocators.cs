@@ -16,31 +16,8 @@ namespace DragonSpark.Runtime.Environment
 			: base(select.Query()
 			             .FirstAssigned()
 			             .Then()
-			             //.Introduce()
-			             // TODO:
 			             .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)) {}
 	}
-
-	/*sealed class Select : ISelect<Type, Type>
-	{
-		readonly IArray<Type, Type> _select;
-
-		public Select(IArray<Type, Type> select) => _select = select;
-
-		public Type Get(Type parameter)
-		{
-
-			var type = _select.Query()
-			                  .FirstAssigned()
-			                  .Get(parameter);
-
-			var other = Start.A.Selection.Of.System.Type.By.Self.Then()
-			                 .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)
-			                 .Get();
-
-			return type;
-		}
-	}*/
 
 	public interface IComponentTypes : IArray<Type, Type> {}
 

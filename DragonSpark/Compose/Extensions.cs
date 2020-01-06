@@ -52,6 +52,7 @@ namespace DragonSpark.Compose
 
 		public static ISelect<TIn, TOut> Selection<TIn, TOut>(this ModelContext _, ISelect<TIn, TOut> select) => select;
 
-		public static GuardModelContext Guard(this ModelContext _) => GuardModelContext.Default;
+		public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
+			=> GuardModelContext<T>.Default;
 	}
 }
