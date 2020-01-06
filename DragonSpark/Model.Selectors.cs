@@ -20,6 +20,10 @@ namespace DragonSpark
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
+		/*
+		 * https://youtu.be/oqwzuiSy9y0
+		 */
+
 		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
 		public static ConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
@@ -92,17 +96,35 @@ namespace DragonSpark
 
 		public static ICommand Out<T>(this CommandSelector<T> @this, T parameter) => @this.Bind(parameter).Command;
 
-		public static IAlteration<T> Out<T>(this CommandSelector<T> @this)
-			=> @this.ToConfiguration().Get().ToAlteration();
+		public static IAlteration<T> Out<T>(this CommandSelector<T> @this) => @this.ToConfiguration().Out();
 
 		public static ICondition<T> Out<T>(this Selector<T, bool> @this)
 			=> @this.Get().To(x => x as ICondition<T> ?? new Model.Selection.Conditions.Condition<T>(x.Get));
 
-		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => @this.Get().ToAlteration();
+		public static IConditional<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, TOut> @this, ICondition<TIn> condition)
+			=> new Conditional<TIn, TOut>(condition, @this.Get);
+
+		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this.Get().Get);
 
 		public static ISelect<_, Array<T>> Out<_, T>(this OpenArraySelector<_, T> @this) => @this.Get().Result();
 
 		public static IOperation<T> Out<T>(this Selector<T, ValueTask> @this)
 			=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
+
+		/**/
+
+		public static ICommand<T> ToCommand<T>(this ISelect<T, None> @this) => new InvokeParameterCommand<T>(@this.Get);
+
+		public static ICommand ToAction(this ISelect<None, None> @this)
+			=> new Model.Selection.Adapters.Action(@this.ToCommand().Execute);
+
+		public static IResult<T> ToResult<T>(this Selector<None, T> @this) => @this.Get().In(None.Default);
+
+		public static IResult<T> ToResult<T>(this ISelect<None, T> @this) => @this as IResult<T> ??
+		                                                                     new Model.Results.Result<T>(@this.Get);
+
+		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
+
+		public static ISelect<_, Array<T>> Return<_, T>(this Query<_, T> @this) => @this.Get();
 	}
 }

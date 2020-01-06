@@ -19,6 +19,10 @@ namespace DragonSpark
 
 		public static IResult<T> Singleton<T>(this IResult<T> @this) => new DeferredSingleton<T>(@this.Get);
 
+		/**/
+
+		// TODO:
+
 		public static IResult<T> Unless<T>(this IResult<T> @this, IResult<T> assigned)
 			=> @this.Unless(Is.Assigned<T>(), assigned);
 
@@ -35,11 +39,19 @@ namespace DragonSpark
 		public static IResult<T> Unless<T>(this IResult<T> @this, Condition condition, IResult<T> then)
 			=> new Validated<T>(condition, then, @this);
 
+		/**/
+
+		// TODO: Audit.
+
 		public static TOut Get<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this, TIn parameter)
 			=> @this.Get().Get(parameter);
 
-		public static IResult<T> Assume<T>(this IResult<IResult<T>> @this)
-			=> new Assume<T>(@this.Then().Delegate().Selector());
+		/**/
+
+		// TODO: Move to Selectors
+
+		/*public static IResult<T> Assume<T>(this IResult<IResult<T>> @this)
+			=> new Assume<T>(@this.Then().Delegate().Selector());*/
 
 		public static IResult<T> Assume<T>(this IResult<Func<T>> @this) => new Assume<T>(@this.Get);
 
@@ -61,17 +73,16 @@ namespace DragonSpark
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
 			=> @this.Query()
 			        .Select(select)
-			        .Get()
-			        .Out();
+			        .Return()
+			        .ToResult();
+
+		/**/
 
 		public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
 		public static Func<T> ToDelegateReference<T>(this IResult<T> @this)
 			=> Model.Results.Delegates<T>.Default.Get(@this);
 
-		public static ISelect<T> ToSelect<T>(this IResult<T> @this)
-			=> new Model.Selection.Adapters.Result<T>(@this.Get);
-
-		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
+		public static ISelect<T> ToSelect<T>(this IResult<T> @this) => new Model.Selection.Adapters.Result<T>(@this.Get);
 	}
 }

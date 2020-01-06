@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Compose.Extents;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
@@ -10,7 +9,6 @@ using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Objects;
 using System;
-using Action = DragonSpark.Model.Selection.Adapters.Action;
 
 namespace DragonSpark
 {
@@ -23,6 +21,7 @@ namespace DragonSpark
 		public static ISelect<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
 			=> @this.Target as ISelect<TIn, TOut> ?? new Select<TIn, TOut>(@this);
 
+		/**/
 
 		public static TOut Get<TIn, TOut, TOther>(this ISelect<TIn, TOut> @this, TIn parameter, TOther _)
 			=> @this.Get(parameter);
@@ -40,7 +39,7 @@ namespace DragonSpark
 
 		public static T Get<T>(this ISelect<None, T> @this) => @this.Get(None.Default);
 
-		public static IResult<T> Out<T>(this ISelect<None, T> @this) => @this.In(None.Default);
+		/**/
 
 		public static ISelect<TIn, TOut> Select<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                   ISelect<Decoration<TIn, TOut>, TOut> other)
@@ -55,6 +54,8 @@ namespace DragonSpark
 
 		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this, Func<TFrom, TTo> select)
 			=> new Selection<TIn, TFrom, TTo>(@this.Get, select);
+
+		/**/
 
 		public static IResult<TOut> In<TIn, TOut>(this ISelect<TIn, TOut> @this, TIn parameter)
 			=> new FixedSelection<TIn, TOut>(@this, parameter);
@@ -77,8 +78,11 @@ namespace DragonSpark
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, TOut> assigned)
 			=> @this.Unless(assigned.ToDelegate());
 
-		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Selection<TIn, TOut> assigned)
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>(), assigned, @this);
+		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TOut> assigned)
+			=> @this.Unless(assigned.Start().Then().Accept<TIn>());
+
+		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TIn, TOut> assigned)
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned, @this.Get);
 
 		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                        IConditional<TIn, TOut> then)
@@ -105,17 +109,5 @@ namespace DragonSpark
 
 		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this ISelect<TIn, TOut> @this) where TIn : class
 			=> new ReferenceContext<TIn, TOut>(@this);
-
-		public static IConditional<TIn, TOut> ToConditional<TIn, TOut>(this ISelect<TIn, TOut> @this,
-		                                                               ICondition<TIn> condition)
-			=> new Conditional<TIn, TOut>(condition, @this.Get);
-
-		public static ICommand<T> ToCommand<T>(this ISelect<T, None> @this) => new InvokeParameterCommand<T>(@this.Get);
-
-		public static ICommand ToAction(this ISelect<None, None> @this)
-			=> new Action(@this.ToCommand().Execute);
-
-		public static IResult<T> ToResult<T>(this ISelect<None, T> @this) => @this as IResult<T> ??
-		                                                                     new Model.Results.Result<T>(@this.Get);
 	}
 }

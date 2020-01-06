@@ -10,6 +10,6 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public ResultSelector(ISelect<None, T> subject) : base(subject) {}
 
-		public Selector<TIn, T> Accept<TIn>() => Start.A.Selection<TIn>().By.Returning(Get().Out()).Then();
+		public Selector<TIn, T> Accept<TIn>() => Start.A.Selection<TIn>().By.Returning(Get().ToResult()).Then();
 	}
 }
