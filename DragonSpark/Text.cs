@@ -9,9 +9,6 @@ namespace DragonSpark
 
 	public static partial class ExtensionMethods
 	{
-		/*public static IFormatter Register<T>(this ISelectFormatter<T> @this)
-			=> FormatterRegistration.Default.Append(@this);*/
-
 		public static IFormatter Append<T>(this IConditional<object, IFormattable> @this, ISelectFormatter<T> parameter)
 		{
 			var formatter = new Formatter<T>(Compose.Start.A.Selection.Of.Any.AndOf<T>()

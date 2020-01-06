@@ -90,28 +90,7 @@ namespace DragonSpark.Composition
 		public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
 			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
 
-		/*public static IServiceRegistry RegisterDefinition<T>(this IServiceRegistry @this)
-		{
-			var to = typeof(T).GetGenericTypeDefinition();
-			return @this.Register(to)
-			            .RegisterDependencies(to);
-		}
-
-		public static IServiceRegistry RegisterSingleton<T>(this IServiceRegistry @this)
-		{
-			var to = typeof(T).GetGenericTypeDefinition();
-			return @this.Register(to)
-			            .RegisterDependencies(to);
-		}
-
-		public static IServiceRegistry RegisterDefinition<TFrom, TTo>(this IServiceRegistry @this) where TTo : TFrom
-		{
-			var to = typeof(TTo).GetGenericTypeDefinition();
-			return @this.Register(to)
-			            .Register(typeof(TFrom).GetGenericTypeDefinition(), to)
-			            .RegisterDependencies(to);
-		}
-
+		/*
 		public static IServiceRegistry DecorateWithDependencies<TFrom, TTo>(this IServiceRegistry @this)
 			where TTo : TFrom
 			=> @this.Decorate<TFrom, TTo>()

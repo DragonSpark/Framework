@@ -66,8 +66,6 @@ namespace DragonSpark.Compose.Selections
 			=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>().Return();
 
 		public ISelect<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default;
-
-		/*public Location<T, TOut> Location<TOut>() => Location<T, TOut>.Default;*/
 	}
 
 	public sealed class Context<TIn, TOut>
@@ -77,8 +75,6 @@ namespace DragonSpark.Compose.Selections
 		Context() {}
 
 		public ISelect<TIn, TOut> Instantiation => New<TIn, TOut>.Default;
-
-		/*public Location<TIn, TOut> Location => Location<TIn, TOut>.Default;*/
 
 		public Cast<TIn, TOut> Cast => Cast<TIn, TOut>.Default;
 

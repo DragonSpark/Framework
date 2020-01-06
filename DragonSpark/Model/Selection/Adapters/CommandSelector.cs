@@ -34,8 +34,6 @@ namespace DragonSpark.Model.Selection.Adapters
 		public CommandSelector<Sequences.Store<T>> Many()
 			=> new CommandSelector<Sequences.Store<T>>(new ManyCommand<T>(Get()));
 
-		/*public Selector<T, None> ToSelector() => new Selector<T, None>(Get().ToSelect());*/
-
 		public AlterationSelector<T> ToConfiguration() => new AlterationSelector<T>(new Configured<T>(Get().Execute));
 	}
 }

@@ -23,8 +23,6 @@ namespace DragonSpark.Compose.Results
 
 		Context() {}
 
-		/*public Location<T> Location => Location<T>.Default;*/
-
 		public IResult<T> Activation() => Activator<T>.Default;
 
 		public IResult<T> Singleton() => Singleton<T>.Default;

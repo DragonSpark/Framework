@@ -70,9 +70,6 @@ namespace DragonSpark
 		public static Func<T> ToDelegateReference<T>(this IResult<T> @this)
 			=> Model.Results.Delegates<T>.Default.Get(@this);
 
-		/*public static ISelect<TIn, TOut> ToSelect<TIn, TOut>(this IResult<TOut> @this, Extent<TIn> _)
-			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);*/
-
 		public static ISelect<T> ToSelect<T>(this IResult<T> @this)
 			=> new Model.Selection.Adapters.Result<T>(@this.Get);
 

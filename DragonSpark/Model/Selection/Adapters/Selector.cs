@@ -105,11 +105,6 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message)
 			=> new GuardThrowContext<T, TException>(message);
-
-		/*public AssignedGuardModelContext Assigned() => Assigned(AssignedResultMessage.Default);
-
-		public AssignedGuardModelContext Assigned(ISelect<Type, string> message)
-			=> new AssignedGuardModelContext(message);*/
 	}
 
 	public sealed class GuardThrowContext<T, TException> where TException : Exception
