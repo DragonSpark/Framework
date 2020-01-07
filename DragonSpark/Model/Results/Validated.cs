@@ -6,6 +6,8 @@ namespace DragonSpark.Model.Results
 {
 	public class Validated<T> : IResult<T>
 	{
+		public static implicit operator T(Validated<T> source) => source.Get();
+
 		readonly Func<T> _source, _fallback;
 
 		readonly Func<bool> _specification;
@@ -26,7 +28,5 @@ namespace DragonSpark.Model.Results
 			var result = source();
 			return result;
 		}
-
-		public static implicit operator T(Validated<T> source) => source.Get();
 	}
 }

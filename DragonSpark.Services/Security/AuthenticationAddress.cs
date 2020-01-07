@@ -18,8 +18,6 @@ namespace DragonSpark.Services.Security
 		                                             .Assigned()
 		                                             .Then()
 		                                             .Bind(A.Of<AuthenticationBaseAddress>().Get)
-		                                             .Get()
-		                                             .ToDelegate())
-		                                    .Get) {}
+		                                           )) {}
 	}
 }

@@ -9,8 +9,6 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static GenericInterfaces Default { get; } = new GenericInterfaces();
 
-		GenericInterfaces() : base(AllInterfaces.Default.Query()
-		                                        .Where(y => y.IsGenericType)
-		                                        .Selector()) {}
+		GenericInterfaces() : base(AllInterfaces.Default.Query().Where(y => y.IsGenericType)) {}
 	}
 }

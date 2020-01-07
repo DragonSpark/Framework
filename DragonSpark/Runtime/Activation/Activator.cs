@@ -24,6 +24,6 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static Activator<T> Default { get; } = new Activator<T>();
 
-		Activator() : base(New<T>.Default.Unless(Singleton<T>.Default).Get) {}
+		Activator() : base(New<T>.Default.Unless(Singleton<T>.Default).IsAssigned()) {}
 	}
 }

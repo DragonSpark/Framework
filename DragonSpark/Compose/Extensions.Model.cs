@@ -34,6 +34,9 @@ namespace DragonSpark.Compose
 
 		public static Extents.Conditions.Extent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
 
+		public static ICondition<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
+			=> Start.A.Condition<T>().By.Calling(condition);
+
 		public static ICondition<T> Condition<T>(this ModelContext _, ICondition<T> result) => result;
 
 		public static Extents.Commands.Extent<T> Of<T>(this Extents.Commands.Context @this) => @this.Of.Type<T>();

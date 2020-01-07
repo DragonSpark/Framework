@@ -19,6 +19,8 @@ namespace DragonSpark.Compose.Model
 		public ResultDelegateContext(IResult<Func<T>> instance) : base(instance) {}
 
 		public ResultContext<T> Assume() => new Assume<T>(this).Then();
+
+		
 	}
 
 	public class CommandResultContext<T> : ResultContext<ICommand<T>>
@@ -28,9 +30,9 @@ namespace DragonSpark.Compose.Model
 		public CommandSelector<T> Assume() => new DelegatedInstanceCommand<T>(Get()).Then();
 	}
 
-	public class SuperResultContext<T> : ResultContext<IResult<T>>
+	public class NestedResultContext<T> : ResultContext<IResult<T>>
 	{
-		public SuperResultContext(IResult<IResult<T>> subject) : base(subject) {}
+		public NestedResultContext(IResult<IResult<T>> subject) : base(subject) {}
 
 		public ResultContext<T> Assume() => new Assume<T>(Delegate()).Then();
 

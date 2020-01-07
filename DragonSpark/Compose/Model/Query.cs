@@ -11,6 +11,8 @@ namespace DragonSpark.Compose.Model
 {
 	public sealed class Query<_, T> : IResult<ISelect<_, Array<T>>>
 	{
+		public static implicit operator Func<_, Array<T>>(Query<_, T> instance) => instance.Get().Get;
+
 		readonly INode<_, T> _node;
 
 		public Query(ISelect<_, T[]> subject) : this(new StartNode<_, T>(subject)) {}

@@ -20,8 +20,7 @@ namespace DragonSpark.Runtime.Environment
 			: this(Start.A.Selection<Assembly>()
 			            .As.Sequence.ReadOnly.By.Self.Query()
 			            .Select(select)
-			            .SelectMany(x => x.Get().Open())
-			            .Selector()) {}
+			            .SelectMany(x => x.Get().Open())) {}
 
 		public TypeSelection(Func<IReadOnlyList<Assembly>, Array<Type>> @select) : base(@select) {}
 	}

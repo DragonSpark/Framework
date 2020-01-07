@@ -30,8 +30,8 @@ namespace DragonSpark.Runtime.Invocation
 
 		public Deferred(IResult<T> result, IResult<T> store, ICommand<T> assign)
 			: base(result.Then()
-			             .Select(assign.Then().ToConfiguration().Get())
-			             .Get()
-			             .Unless(store)) {}
+			             .Select(assign.Then().ToConfiguration())
+			             .Unless(store)
+			             .IsAssigned()) {}
 	}
 }

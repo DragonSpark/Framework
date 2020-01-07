@@ -7,11 +7,11 @@ namespace DragonSpark.Compose.Model
 {
 	public class CommandSelector : CommandSelector<None>
 	{
+		public static implicit operator System.Action(CommandSelector instance) => instance.Get().ToDelegate();
+
 		public CommandSelector(ICommand command) : base(command) => Command = command;
 
 		public ICommand Command { get; }
-
-		public static implicit operator System.Action(CommandSelector instance) => instance.Get().ToDelegate();
 
 		public CommandSelector<object> Any() => new CommandSelector<object>(new Any(Get()));
 	}

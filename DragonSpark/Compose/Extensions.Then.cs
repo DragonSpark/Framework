@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Action = System.Action;
 using ConditionSelector = DragonSpark.Compose.Model.ConditionSelector;
 
 namespace DragonSpark.Compose
@@ -24,10 +23,11 @@ namespace DragonSpark.Compose
 		/*
 		 * https://youtu.be/oqwzuiSy9y0
 		 */
+
 		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
 
-		public static SuperResultContext<T> Then<T>(this IResult<IResult<T>> @this)
-			=> new SuperResultContext<T>(@this);
+		public static NestedResultContext<T> Then<T>(this IResult<IResult<T>> @this)
+			=> new NestedResultContext<T>(@this);
 
 		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
 			=> new ResultDelegateContext<T>(@this);
@@ -85,9 +85,6 @@ namespace DragonSpark.Compose
 		public static ResultSelectionSelector<_, T> Then<_, T>(this ISelect<_, IResult<T>> @this)
 			=> new ResultSelectionSelector<_, T>(@this);
 
-		/*public static SelectionSelector<None, TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
-			=> new SelectionSelector<None, TIn, TOut>(new ResultContext<ISelect<TIn, TOut>>(@this).Accept().Get());*/
-
 		public static SelectionSelector<_, TIn, TOut> Then<_, TIn, TOut>(this ISelect<_, ISelect<TIn, TOut>> @this)
 			=> new SelectionSelector<_, TIn, TOut>(@this);
 
@@ -99,20 +96,6 @@ namespace DragonSpark.Compose
 
 		public static OpenArraySelector<_, T> Then<_, T>(this ISelect<_, T[]> @this)
 			=> new OpenArraySelector<_, T>(@this);
-
-		/**/
-
-		public static Action Selector(this CommandSelector @this) => @this;
-
-		public static Action Selector(this CommandSelector<None> @this) => @this.Get().Execute;
-
-		public static System.Action<T> Selector<T>(this CommandSelector<T> @this) => @this;
-
-		/*public static Func<T> Selector<T>(this Selector<None, T> @this) => @this.ToResult().Get().Get;*/
-
-		/*public static Func<Array<T>> Selector<T>(this Query<None, T> @this) => @this.Get().ToResult().Get;*/
-
-		public static Func<_, Array<T>> Selector<_, T>(this Query<_, T> @this) => @this.Get().Get;
 
 		/**/
 
