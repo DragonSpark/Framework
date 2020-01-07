@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using FluentAssertions;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -22,6 +22,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Append(Sequence.From(1, 2, 3))
+			     .Get()
 			     .Get(data)
 			     .Open()
 			     .Should()
@@ -35,6 +36,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Skip(skip)
 			     .Append(Sequence.From(1, 2, 3))
+			     .Get()
 			     .Get(data)
 			     .Open()
 			     .Should()

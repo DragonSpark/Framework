@@ -21,7 +21,14 @@ namespace DragonSpark.Compose.Model
 	{
 		public SelectionDelegateResultContext(IResult<Func<TIn, TOut>> instance) : base(instance) {}
 
-		public Selector<TIn, TOut> Assume() => new Assume<TIn, TOut>(Get().Get).Then();
+		public Selector<TIn, TOut> Assume() => new DelegatedAssume<TIn, TOut>(Get().Get).Then();
+	}
+
+	public sealed class SelectionResultContext<TIn, TOut> : ResultContext<ISelect<TIn, TOut>>
+	{
+		public SelectionResultContext(IResult<ISelect<TIn, TOut>> instance) : base(instance) {}
+
+		public Selector<TIn, TOut> Assume() => new Assume<TIn, TOut>(Get()).Then();
 	}
 
 	public class ResultContext<T> // : Context<IResult<T>>

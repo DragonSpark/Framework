@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose.Model;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using System;
@@ -30,20 +28,7 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		// TODO: Audit.
-
-		public static TOut Get<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this, TIn parameter)
-			=> @this.Get().Get(parameter);
-
-		/**/
-
-		// TODO: Move to Selectors
-
-		public static ISelect<TIn, TOut> Assume<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
-			=> new Select<TIn, TOut>(@this.Get);
-
-		public static ICommand<T> Assume<T>(this IResult<ICommand<T>> @this)
-			=> new DelegatedInstanceCommand<T>(@this.Get);
+		// TODO: Move to Query
 
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
 			=> @this.Query()

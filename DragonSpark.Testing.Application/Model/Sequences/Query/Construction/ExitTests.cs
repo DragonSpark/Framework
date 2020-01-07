@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;
+using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
@@ -72,6 +72,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Select<int, string>(x => x.ToString()))
 			                                          .Get(new Build.Select<string, int>(x => x.Length))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x.ToString()).Select(x => x.Length));
@@ -80,6 +81,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			                                          .Get(new Build.Select<string, int>(x => x.Length))
 			                                          .Get(new Skip(5))
 			                                          .Get(new Take(4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x.ToString())
@@ -98,6 +100,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Select<int, string>(x => x.ToString()))
 			                                          .Get(new Skip(5))
 			                                          .Get(new Take(4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x.ToString()).Skip(5).Take(4))
@@ -111,6 +114,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Select<int, string>(x => x.ToString()))
 			                                          .Get(new Skip(5))
 			                                          .Get(new Build.Select<string, int>(x => x.Length))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x.ToString())
@@ -126,6 +130,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Select<int, string>(x => x.ToString()))
 			                                          .Get(new Skip(5))
 			                                          .Get(new Take(4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x.ToString())
@@ -169,6 +174,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Select<int, int>(x => x))
 			                                          .Get(new Build.Where<int>(x => x > 3 && x < 7))
 			                                          .Get(new Build.Where<int>(x => x == 4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Select(x => x)
@@ -195,6 +201,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Skip(skip))
 			                                          .Get(new Build.Select<int, string>(x => x.ToString()))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Skip(skip)
@@ -210,6 +217,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Skip(skip))
 			                                          .Get(new Take(take))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Skip(skip).Take(take))
@@ -249,7 +257,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			var node = new StartNode<int[], int>(A.Self<int[]>()).Get(new Skip(6))
 			                                                     .Get(new Take(5))
 			                                                     .Get(new Build.Where<int>(x => x > 2));
-			node.Get(data).Should().Equal(data.Skip(6).Take(5).Where(x => x > 2));
+			node.Get().Get(data).Should().Equal(data.Skip(6).Take(5).Where(x => x > 2));
 
 			node.Get(FirstOrDefault<int>.Default)
 			    .Get(data)
@@ -269,6 +277,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		void VerifyTake()
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Take(take))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Take(take))
@@ -281,6 +290,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Where<int>(x => x > 8))
 			                                          .Get(new Build.Select<int, string>(x => x.ToString()))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Where(x => x > 8).Select(x => x.ToString()))
@@ -295,6 +305,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Where<int>(x => x == 5))
 			                                          .Get(new Skip(2))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Where(x => x == 5).Skip(2))
@@ -335,6 +346,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Where<int>(x => x > 3 && x < 7))
 			                                          .Get(new Skip(3))
 			                                          .Get(new Build.Where<int>(x => x == 4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Where(x => x > 3 && x < 7)
@@ -345,6 +357,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			                                          .Get(new Skip(3))
 			                                          .Get(new Take(5))
 			                                          .Get(new Build.Where<int>(x => x == 4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Where(x => x > 3 && x < 7)
@@ -362,6 +375,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			new StartNode<int[], int>(A.Self<int[]>()).Get(new Build.Where<int>(x => x > 3 && x < 7))
 			                                          .Get(new Build.Where<int>(x => x == 4))
+			                                          .Get()
 			                                          .Get(data)
 			                                          .Should()
 			                                          .Equal(data.Where(x => x > 3 && x < 7)

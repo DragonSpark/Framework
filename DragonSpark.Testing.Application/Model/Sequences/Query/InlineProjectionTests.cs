@@ -46,6 +46,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .As.Sequence.Open.By.Self.Query()
 			     .Select()
 			     .By(x => x.Length)
+			     .Get()
 			     .Get(Source)
 			     .Open()
 			     .Should()

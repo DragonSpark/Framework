@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 
@@ -20,9 +21,16 @@ namespace DragonSpark.Compose.Model
 		public ResultContext<T> Assume() => new Assume<T>(this).Then();
 	}
 
-	public class ResultSelectionContext<T> : ResultContext<IResult<T>>
+	public class CommandResultContext<T> : ResultContext<ICommand<T>>
 	{
-		public ResultSelectionContext(IResult<IResult<T>> subject) : base(subject) {}
+		public CommandResultContext(IResult<ICommand<T>> instance) : base(instance) {}
+
+		public CommandSelector<T> Assume() => new DelegatedInstanceCommand<T>(Get()).Then();
+	}
+
+	public class SuperResultContext<T> : ResultContext<IResult<T>>
+	{
+		public SuperResultContext(IResult<IResult<T>> subject) : base(subject) {}
 
 		public ResultContext<T> Assume() => new Assume<T>(Delegate()).Then();
 

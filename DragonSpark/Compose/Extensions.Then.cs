@@ -26,14 +26,23 @@ namespace DragonSpark.Compose
 		 */
 		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
 
-		public static ResultSelectionContext<T> Then<T>(this ResultContext<IResult<T>> @this)
-			=> new ResultSelectionContext<T>(@this.Get());
+		public static SuperResultContext<T> Then<T>(this IResult<IResult<T>> @this)
+			=> new SuperResultContext<T>(@this);
 
 		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
 			=> new ResultDelegateContext<T>(@this);
 
+		public static SelectionResultContext<T, bool> Then<T>(this IResult<ICondition<T>> @this)
+			=> new SelectionResultContext<T, bool>(@this);
+
+		public static SelectionResultContext<TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
+			=> new SelectionResultContext<TIn, TOut>(@this);
+
 		public static SelectionDelegateResultContext<TIn, TOut> Then<TIn, TOut>(this IResult<Func<TIn, TOut>> @this)
 			=> new SelectionDelegateResultContext<TIn, TOut>(@this);
+
+		public static CommandResultContext<T> Then<T>(this IResult<ICommand<T>> @this)
+			=> new CommandResultContext<T>(@this);
 
 		/**/
 
@@ -76,8 +85,8 @@ namespace DragonSpark.Compose
 		public static ResultSelectionSelector<_, T> Then<_, T>(this ISelect<_, IResult<T>> @this)
 			=> new ResultSelectionSelector<_, T>(@this);
 
-		public static SelectionSelector<None, TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
-			=> new SelectionSelector<None, TIn, TOut>(new ResultContext<ISelect<TIn, TOut>>(@this).Accept().Get());
+		/*public static SelectionSelector<None, TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
+			=> new SelectionSelector<None, TIn, TOut>(new ResultContext<ISelect<TIn, TOut>>(@this).Accept().Get());*/
 
 		public static SelectionSelector<_, TIn, TOut> Then<_, TIn, TOut>(this ISelect<_, ISelect<TIn, TOut>> @this)
 			=> new SelectionSelector<_, TIn, TOut>(@this);
@@ -116,7 +125,7 @@ namespace DragonSpark.Compose
 			        .To(x => x as ICondition<T> ?? new DragonSpark.Model.Selection.Conditions.Condition<T>(x.Get));
 
 		public static IConditional<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, TOut> @this, ICondition<TIn> condition)
-			=> new Conditional<TIn, TOut>(condition, @this.Get);
+			=> new Conditional<TIn, TOut>(condition, @this.Get().Get);
 
 		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this.Get().Get);
 

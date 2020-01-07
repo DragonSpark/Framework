@@ -158,6 +158,8 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		public LocatedHandler(IServiceProvider locator)
 			: base(Start.A.Result<IHandler<TPayload>>()
 			            .By.Calling(locator.GetRequiredService<T>)
+			            .To(A.SelectionResult)
+			            .Then()
 			            .Assume()) {}
 	}
 

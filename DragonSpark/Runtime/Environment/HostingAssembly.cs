@@ -11,6 +11,7 @@ namespace DragonSpark.Runtime.Environment
 		HostingAssembly() : base(PrimaryAssembly.Default.Then()
 		                                        .Select(x => x.Attribute<HostingAttribute>())
 		                                        .Select(A.Result)
+		                                        .Get()
 		                                        .Then()
 		                                        .Value()) {}
 	}
