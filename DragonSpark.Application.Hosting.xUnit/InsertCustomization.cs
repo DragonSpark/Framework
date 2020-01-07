@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Kernel;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences.Collections.Commands;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {

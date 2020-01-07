@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime.Activation;
+﻿using DragonSpark.Compose;
+using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Model.Selection.Stores
 {

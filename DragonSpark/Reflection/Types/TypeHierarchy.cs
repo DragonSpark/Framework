@@ -1,7 +1,8 @@
-using System.Collections.Generic;
-using System.Reflection;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Types
 {

@@ -1,5 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
+using System;
 
 namespace DragonSpark.Model.Selection.Adapters
 {

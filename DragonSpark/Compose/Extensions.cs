@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Results;
+﻿using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
@@ -29,21 +29,21 @@ namespace DragonSpark.Compose
 		public static IResult<T> Result<T>(this ModelContext @this, Func<T> result)
 			=> @this.Result<T>().By.Calling(result);
 
-		public static Conditions.Extent<T> Of<T>(this Conditions.Context @this) => @this.Of.Type<T>();
+		public static Extents.Conditions.Extent<T> Of<T>(this Extents.Conditions.Context @this) => @this.Of.Type<T>();
 
-		public static Conditions.Extent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
+		public static Extents.Conditions.Extent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
 
 		public static ICondition<T> Condition<T>(this ModelContext _, ICondition<T> result) => result;
 
-		public static Commands.Extent<T> Of<T>(this Commands.Context @this) => @this.Of.Type<T>();
+		public static Extents.Commands.Extent<T> Of<T>(this Extents.Commands.Context @this) => @this.Of.Type<T>();
 
-		public static Commands.Extent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
+		public static Extents.Commands.Extent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
 
-		public static Action Calling(this Commands.Extent<None> _, System.Action body) => new Action(body);
+		public static Action Calling(this Extents.Commands.Extent<None> _, System.Action body) => new Action(body);
 
-		public static Selections.Extent<T> Of<T>(this Selections.Context @this) => @this.Of.Type<T>();
+		public static Extents.Selections.Extent<T> Of<T>(this Extents.Selections.Context @this) => @this.Of.Type<T>();
 
-		public static Selections.Extent<T> Selection<T>(this ModelContext @this) => @this.Selection.Of.Type<T>();
+		public static Extents.Selections.Extent<T> Selection<T>(this ModelContext @this) => @this.Selection.Of.Type<T>();
 
 		public static New<T> New<T>(this ModelContext _) => Runtime.Activation.New<T>.Default;
 

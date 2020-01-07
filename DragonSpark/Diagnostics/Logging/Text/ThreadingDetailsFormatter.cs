@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime.Execution;
+﻿using DragonSpark.Compose;
+using DragonSpark.Runtime.Execution;
 using DragonSpark.Text;
 using System.Threading;
 

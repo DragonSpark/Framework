@@ -1,4 +1,5 @@
 ﻿using AutoFixture.Xunit2;
+using DragonSpark.Compose;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DragonSpark.Testing.Application.Runtime
 		[Theory, AutoData]
 		public void PrependItem(object sut, IEnumerable<object> items)
 		{
-			var prepended = items.Append(sut);
+			var prepended = ExtensionMethods.Append(items, sut);
 			Assert.Equal(items.Count() + 1, prepended.Count());
 			Assert.Same(prepended.Last(), sut);
 		}

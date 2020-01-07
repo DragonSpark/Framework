@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Model.Selection.Alterations
 {

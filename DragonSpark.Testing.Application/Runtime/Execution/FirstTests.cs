@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
+using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Execution

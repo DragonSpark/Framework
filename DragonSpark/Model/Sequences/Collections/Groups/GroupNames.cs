@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Collections.Groups
 {

@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Model.Selection.Conditions
+﻿using DragonSpark.Compose;
+
+namespace DragonSpark.Model.Selection.Conditions
 {
 	public sealed class ConditionSelector : Select<ICondition, bool>
 	{

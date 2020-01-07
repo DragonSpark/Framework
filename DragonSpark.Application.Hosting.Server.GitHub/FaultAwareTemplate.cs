@@ -1,4 +1,5 @@
-﻿using DragonSpark.Diagnostics.Logging;
+﻿using DragonSpark.Compose;
+using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;

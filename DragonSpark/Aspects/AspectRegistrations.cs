@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Environment;
 using System;

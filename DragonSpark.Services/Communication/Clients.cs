@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using System;
 using System.Net.Http;

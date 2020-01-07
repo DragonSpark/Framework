@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime;
+using System;
 
 namespace DragonSpark.Model.Selection.Adapters
 {

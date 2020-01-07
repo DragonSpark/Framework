@@ -1,7 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Testing.Objects
 {

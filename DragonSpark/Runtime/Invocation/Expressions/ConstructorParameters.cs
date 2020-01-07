@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {
@@ -20,9 +21,8 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 		public ConstructorParameters(ParameterExpression parameter) => _parameter = parameter;
 
 		public IEnumerable<Expression> Get(ConstructorInfo parameter)
-			=> parameter.GetParameters()
-			            .Skip(1)
-			            .Select(x => Expression.Constant(x.DefaultValue, x.ParameterType))
-			            .Prepend<Expression>(_parameter);
+			=> ExtensionMethods.Prepend<Expression>(parameter.GetParameters()
+			                                        .Skip(1)
+			                                        .Select(x => Expression.Constant(x.DefaultValue, x.ParameterType)), _parameter);
 	}
 }

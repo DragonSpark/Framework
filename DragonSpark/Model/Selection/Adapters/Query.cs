@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;

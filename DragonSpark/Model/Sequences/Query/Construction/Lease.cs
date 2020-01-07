@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using DragonSpark.Compose;
+using System.Buffers;
 
 namespace DragonSpark.Model.Sequences.Query.Construction
 {

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using FluentAssertions;
 using Xunit;

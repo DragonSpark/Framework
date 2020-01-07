@@ -1,7 +1,8 @@
-﻿using System;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Activation;
+using FluentAssertions;
+using System;
 using Xunit;
 
 // ReSharper disable All

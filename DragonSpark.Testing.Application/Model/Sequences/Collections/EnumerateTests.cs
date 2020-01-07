@@ -1,7 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;

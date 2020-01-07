@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Collections;
+using FluentAssertions;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Reflection

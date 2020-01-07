@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Jobs;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 

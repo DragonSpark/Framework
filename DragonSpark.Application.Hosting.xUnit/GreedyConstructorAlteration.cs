@@ -1,4 +1,5 @@
 ﻿using AutoFixture.Kernel;
+using DragonSpark.Compose;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {

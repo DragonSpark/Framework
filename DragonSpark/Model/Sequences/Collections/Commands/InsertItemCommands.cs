@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences.Collections.Groups;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Collections.Commands
 {

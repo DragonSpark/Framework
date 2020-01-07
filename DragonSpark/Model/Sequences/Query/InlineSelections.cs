@@ -1,8 +1,9 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Sequences.Query
 {

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Diagnostics.Logging
@@ -8,7 +9,7 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Message _action;
 		readonly string  _messageTemplate;
 
-		public LogDetailed(ILogger logger, string messageTemplate) : this(logger.LogDebug, messageTemplate) {}
+		public LogDetailed(ILogger logger, string messageTemplate) : this(logger.LogDebug<object[]>, messageTemplate) {}
 
 		public LogDetailed(Message action, string messageTemplate)
 		{

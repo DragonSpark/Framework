@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 
 namespace DragonSpark.Testing.Application.Model

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime.Execution;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime.Execution;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Adapters
 {

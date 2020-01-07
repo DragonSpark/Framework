@@ -1,5 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Model.Sequences.Query.Construction
 {

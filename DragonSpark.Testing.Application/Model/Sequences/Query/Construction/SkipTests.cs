@@ -1,7 +1,8 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
+using FluentAssertions;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction

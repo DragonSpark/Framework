@@ -1,9 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
+using DragonSpark.Runtime.Activation;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Reflection.Types
 {

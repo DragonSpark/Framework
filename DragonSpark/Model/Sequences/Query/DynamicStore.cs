@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
 
 namespace DragonSpark.Model.Sequences.Query
 {

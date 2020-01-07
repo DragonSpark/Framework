@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Results;
+﻿using DragonSpark.Compose.Extents.Results;
 
 namespace DragonSpark.Compose.Extents
 {

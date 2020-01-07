@@ -1,7 +1,8 @@
-using System;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Collections.Commands;
+using System;
 
 namespace DragonSpark.Model.Sequences.Collections.Groups
 {

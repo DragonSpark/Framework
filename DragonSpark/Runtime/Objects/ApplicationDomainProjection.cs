@@ -1,5 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Compose;
 using DragonSpark.Text.Formatting;
+using System;
 
 namespace DragonSpark.Runtime.Objects
 {

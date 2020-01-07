@@ -1,6 +1,7 @@
-﻿using System;
-using FluentAssertions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Objects;
+using FluentAssertions;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Objects

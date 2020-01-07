@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 
 namespace DragonSpark.Runtime.Activation

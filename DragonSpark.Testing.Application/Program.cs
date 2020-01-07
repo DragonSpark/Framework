@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Hosting.BenchmarkDotNet;
+using DragonSpark.Compose;
 using DragonSpark.Testing.Application.Model.Sequences.Query.Construction;
 
 namespace DragonSpark.Testing.Application

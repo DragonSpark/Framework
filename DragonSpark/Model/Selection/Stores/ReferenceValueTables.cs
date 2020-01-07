@@ -1,7 +1,8 @@
-using System;
-using System.Runtime.CompilerServices;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Selection.Stores
 {

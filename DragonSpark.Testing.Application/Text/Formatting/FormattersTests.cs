@@ -1,4 +1,5 @@
-﻿using DragonSpark.Text.Formatting;
+﻿using DragonSpark.Compose;
+using DragonSpark.Text.Formatting;
 using FluentAssertions;
 using System;
 using Xunit;

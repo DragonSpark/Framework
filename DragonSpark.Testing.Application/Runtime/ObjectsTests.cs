@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
-using AutoFixture.Xunit2;
-using FluentAssertions;
+﻿using AutoFixture.Xunit2;
+using DragonSpark.Compose;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
+using FluentAssertions;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {

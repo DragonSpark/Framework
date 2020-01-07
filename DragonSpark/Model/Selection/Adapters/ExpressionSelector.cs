@@ -1,6 +1,7 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Invocation.Expressions;
+using System;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Model.Selection.Adapters
 {

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Compose;
 using DragonSpark.Testing.Objects;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Testing.Application
 {

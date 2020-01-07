@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Model.Sequences.Query.Construction
+﻿using DragonSpark.Compose;
+
+namespace DragonSpark.Model.Sequences.Query.Construction
 {
 	sealed class Content<T> : IContent<T, T>
 	{

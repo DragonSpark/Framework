@@ -1,4 +1,5 @@
-﻿using DragonSpark.Diagnostics;
+﻿using DragonSpark.Compose;
+using DragonSpark.Diagnostics;
 using DragonSpark.Model.Results;
 using Polly;
 using Refit;

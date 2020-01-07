@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Linq;
 
@@ -12,13 +13,13 @@ namespace DragonSpark.Model.Selection.Adapters
 			=> Or(others.Select(x => new Condition<T>(x)).Open<ISelect<T, bool>>());
 
 		public ConditionSelector<T> Or(params ISelect<T, bool>[] others)
-			=> new ConditionSelector<T>(new AnyCondition<T>(others.Prepend(Get()).Open()));
+			=> new ConditionSelector<T>(new AnyCondition<T>(ExtensionMethods.Prepend(others, Get()).Open()));
 
 		public ConditionSelector<T> And(params Func<T, bool>[] others)
 			=> And(others.Select(x => new Condition<T>(x)).Open<ISelect<T, bool>>());
 
 		public ConditionSelector<T> And(params ISelect<T, bool>[] others)
-			=> new ConditionSelector<T>(new AllCondition<T>(others.Prepend(Get()).Open()));
+			=> new ConditionSelector<T>(new AllCondition<T>(ExtensionMethods.Prepend(others, Get()).Open()));
 
 		public ConditionSelector<T> Inverse()
 			=> new ConditionSelector<T>(InverseConditions<T>.Default.Get(new Condition<T>(Get().Get)));
