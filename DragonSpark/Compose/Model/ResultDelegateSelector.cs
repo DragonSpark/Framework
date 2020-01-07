@@ -17,6 +17,13 @@ namespace DragonSpark.Compose.Model
 		public Selector<_, T> Invoke() => Select(Call<T>.Default);
 	}
 
+	public sealed class SelectionDelegateResultContext<TIn, TOut> : ResultContext<Func<TIn, TOut>>
+	{
+		public SelectionDelegateResultContext(IResult<Func<TIn, TOut>> instance) : base(instance) {}
+
+		public Selector<TIn, TOut> Assume() => new Assume<TIn, TOut>(Get().Get).Then();
+	}
+
 	public class ResultContext<T> // : Context<IResult<T>>
 	{
 		readonly IResult<T> _instance;

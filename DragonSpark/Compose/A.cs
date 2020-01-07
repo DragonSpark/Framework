@@ -43,6 +43,8 @@ namespace DragonSpark.Compose
 		public static T Of<T>() => Start.An.Instance<T>();
 
 		public static ICommand<T> Command<T>(ICommand<T> instance) => instance;
+		
+		public static ICondition<T> Condition<T>(ICondition<T> instance) => instance;
 
 		public static ISelect<TIn, TOut> Selection<TIn, TOut>(ISelect<TIn, TOut> instance) => instance;
 

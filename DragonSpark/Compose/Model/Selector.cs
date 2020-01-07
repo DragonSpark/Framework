@@ -11,6 +11,13 @@ using System;
 
 namespace DragonSpark.Compose.Model
 {
+	public class Selector<T> : Selector<None, T>
+	{
+		public static implicit operator Func<T>(Selector<T> instance) => instance.Get().Get;
+
+		public Selector(ISelect<None, T> subject) : base(subject) {}
+	}
+
 	public class Selector<_, T> : IResult<ISelect<_, T>>, IActivateUsing<ISelect<_, T>>
 	{
 		public static implicit operator Func<_, T>(Selector<_, T> instance) => instance.Get().ToDelegate();

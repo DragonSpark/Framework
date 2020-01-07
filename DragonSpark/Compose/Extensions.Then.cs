@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Action = System.Action;
+using ConditionSelector = DragonSpark.Compose.Model.ConditionSelector;
 
 namespace DragonSpark.Compose
 {
@@ -23,6 +24,31 @@ namespace DragonSpark.Compose
 		/*
 		 * https://youtu.be/oqwzuiSy9y0
 		 */
+		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
+
+		public static ResultSelectionContext<T> Then<T>(this ResultContext<IResult<T>> @this)
+			=> new ResultSelectionContext<T>(@this.Get());
+
+		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
+			=> new ResultDelegateContext<T>(@this);
+
+		public static SelectionDelegateResultContext<TIn, TOut> Then<TIn, TOut>(this IResult<Func<TIn, TOut>> @this)
+			=> new SelectionDelegateResultContext<TIn, TOut>(@this);
+
+		/**/
+
+		public static Selector<T> Then<T>(this ISelect<None, T> @this) => new Selector<T>(@this);
+
+		public static ConditionSelector Then(this ISelect<None, bool> @this) => new ConditionSelector(@this);
+
+		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this)
+			=> new Selector<TIn, TOut>(@this);
+
+		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new ConditionSelector<T>(@this);
+
+		public static TypeSelector<T> Then<T>(this ISelect<T, Type> @this) => new TypeSelector<T>(@this);
+
+		public static MetadataSelector<T> Then<T>(this ISelect<T, TypeInfo> @this) => new MetadataSelector<T>(@this);
 
 		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
@@ -34,25 +60,8 @@ namespace DragonSpark.Compose
 
 		public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new TaskSelector<_, T>(@this);
 
-		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> new Selector<TIn, TOut>(@this);
 
-		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new ConditionSelector<T>(@this);
-
-		public static TypeSelector<T> Then<T>(this ISelect<T, Type> @this) => new TypeSelector<T>(@this);
-
-		public static MetadataSelector<T> Then<T>(this ISelect<T, TypeInfo> @this) => new MetadataSelector<T>(@this);
-
-		/*public static ResultSelector<T> Then<T>(this IResult<T> @this) => new ResultSelector<T>(@this.ToSelect());*/
-
-		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
-
-		public static ResultSelectionContext<T> Then<T>(this ResultContext<IResult<T>> @this)
-			=> new ResultSelectionContext<T>(@this.Get());
-
-		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
-			=> new ResultDelegateContext<T>(@this);
-
+/**/
 
 		public static CommandSelector Then(this ICommand @this) => new CommandSelector(@this);
 
@@ -90,9 +99,9 @@ namespace DragonSpark.Compose
 
 		public static System.Action<T> Selector<T>(this CommandSelector<T> @this) => @this;
 
-		public static Func<T> Selector<T>(this Selector<None, T> @this) => @this.Get().ToResult().Get;
+		/*public static Func<T> Selector<T>(this Selector<None, T> @this) => @this.ToResult().Get().Get;*/
 
-		public static Func<Array<T>> Selector<T>(this Query<None, T> @this) => @this.Get().ToResult().Get;
+		/*public static Func<Array<T>> Selector<T>(this Query<None, T> @this) => @this.Get().ToResult().Get;*/
 
 		public static Func<_, Array<T>> Selector<_, T>(this Query<_, T> @this) => @this.Get().Get;
 
@@ -123,11 +132,11 @@ namespace DragonSpark.Compose
 		public static ICommand ToAction(this ISelect<None, None> @this)
 			=> new Model.Action(@this.ToCommand().Execute);
 
-		public static ResultContext<T> ToResult<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
+		public static ResultContext<T> Bind<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
 
-		public static IResult<T> ToResult<T>(this ISelect<None, T> @this)
+		/*public static IResult<T> ToResult<T>(this ISelect<None, T> @this)
 			=> @this as IResult<T> ??
-			   new DragonSpark.Model.Results.Result<T>(@this.Get);
+			   new DragonSpark.Model.Results.Result<T>(@this.Get);*/
 
 		public static T Return<T>(this ResultContext<T> @this) => @this.Get().Get();
 

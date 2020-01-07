@@ -73,7 +73,8 @@ namespace DragonSpark.Testing.Application.Model.Extents
 			     .Accept()
 			     .Type()
 			     .Metadata()
-			     .Selector()()
+			     .Bind()
+			     .Return()
 			     .Should()
 			     .Be(A.Metadata<string>());
 		}

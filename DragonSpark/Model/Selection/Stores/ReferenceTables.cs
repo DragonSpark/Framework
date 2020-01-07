@@ -18,6 +18,7 @@ namespace DragonSpark.Model.Selection.Stores
 		                                              .Then()
 		                                              .Bind(An.Array(typeof(TIn), typeof(TOut)))
 		                                              .Get()
+		                                              .Then()
 		                                              .Assume()
 		                                        ) {}
 	}

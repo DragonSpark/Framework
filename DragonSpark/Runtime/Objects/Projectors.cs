@@ -8,6 +8,10 @@ namespace DragonSpark.Runtime.Objects
 	{
 		public static Projectors Default { get; } = new Projectors();
 
-		Projectors() : base(KnownProjectors.Default.Then().Select(x => x.Open().ToStore().ToDelegate()).Get().Assume()) {}
+		Projectors() : base(KnownProjectors.Default.Then()
+		                                   .Select(x => x.Open().ToStore().ToDelegate())
+		                                   .Get()
+		                                   .Then()
+		                                   .Assume()) {}
 	}
 }

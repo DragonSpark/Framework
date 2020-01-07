@@ -12,8 +12,8 @@ namespace DragonSpark.Runtime.Objects
 		OnlyOnceAlteration() {}
 
 		public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter)
-			=> new First().ToResult()
-			              .Then()
+			=> new First().Then()
+			              .Bind()
 			              .Accept<TIn>()
 			              .Return()
 			              .To(parameter.If);
