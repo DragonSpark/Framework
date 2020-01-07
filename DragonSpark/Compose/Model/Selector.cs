@@ -4,6 +4,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Invocation;
 using DragonSpark.Runtime.Objects;
@@ -27,6 +28,8 @@ namespace DragonSpark.Compose.Model
 		public Selector(ISelect<_, T> subject) => _subject = subject;
 
 		public GuardContext<_, T> Ensure => new GuardContext<_, T>(_subject);
+
+		public ValidatedSelectionContext<_, T> Or => new ValidatedSelectionContext<_, T>(_subject);
 
 		public ISelect<_, T> Get() => _subject;
 
@@ -76,6 +79,53 @@ namespace DragonSpark.Compose.Model
 
 		public CommandSelector<_> Terminate(System.Action<T> command)
 			=> new SelectedParameterCommand<_, T>(command, _subject.Get).Then();
+	}
+
+	public sealed class ValidatedSelectionContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+
+		public ValidatedSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
+
+		public Selector<TIn, TOut> UseWhenAssigned(Func<TOut> assigned)
+			=> UseWhenAssigned(Start.A.Result(assigned).Then().Accept<TIn>());
+
+		public Selector<TIn, TOut> UseWhenAssigned(ISelect<TIn, TOut> assigned)
+			=> UseWhenAssigned(assigned.ToDelegate());
+
+		Selector<TIn, TOut> UseWhenAssigned(Func<TIn, TOut> assigned)
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned, _subject.Get).Then();
+
+		public UseValidatedSelectionContext<TIn, TOut> Use(ISelect<TIn, TOut> other)
+			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, other);
+
+		public IConditional<TIn, TOut> Use<TOther>(ISelect<TOther, TOut> other)
+			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, CastOrThrow<TIn, TOther>.Default.Select(other))
+				.WhenIsOf<TOther>();
+
+		public IConditional<TIn, TTo> Use<TTo>(IConditional<TOut, TTo> select)
+			=> new Conditional<TIn, TTo>(_subject.Select(select.Condition).Get, _subject.Select(select.Get).Get);
+	}
+
+	public sealed class UseValidatedSelectionContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+		readonly ISelect<TIn, TOut> _other;
+
+		public UseValidatedSelectionContext(ISelect<TIn, TOut> subject, ISelect<TIn, TOut> other)
+		{
+			_subject = subject;
+			_other   = other;
+		}
+
+		public IConditional<TIn, TOut> WhenIsOf<T>() => When(IsOf<TIn, T>.Default);
+
+		public IConditional<TIn, TOut> WhenAssigned() => When(Is.Assigned<TIn>());
+
+		public IConditional<TIn, TOut> When(Func<TIn, bool> condition) => When(Start.A.Condition(condition));
+
+		public IConditional<TIn, TOut> When(ICondition<TIn> condition)
+			=> new Conditional<TIn, TOut>(condition.Get, _other.Get, _subject.Get);
 	}
 
 	public sealed class GuardContext<TIn, TOut>

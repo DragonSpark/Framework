@@ -10,7 +10,7 @@ namespace DragonSpark.Services.Security
 		public static AppServiceAuthSession Default { get; } = new AppServiceAuthSession();
 
 		AppServiceAuthSession() : base(Name, Start.A.Selection(new RequestStateValue(Name))
-		                                          .Unless(AuthenticationSessionToken.Default.Get)
-		                                          .Get) {}
+		                                          .Then()
+		                                          .Or.UseWhenAssigned(AuthenticationSessionToken.Default.Get)) {}
 	}
 }

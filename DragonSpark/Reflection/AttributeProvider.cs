@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {
@@ -9,7 +9,8 @@ namespace DragonSpark.Reflection
 		public static AttributeProvider<T> Default { get; } = new AttributeProvider<T>();
 
 		AttributeProvider() : base(Start.A.Selection<T>()
-		                                .By.Metadata
-		                                .UnlessIsOf(Start.A.Selection<ICustomAttributeProvider>().By.Self)) {}
+		                                .By.Metadata.Then()
+		                                .Cast<ICustomAttributeProvider>()
+		                                .Or.Use(A.Self<ICustomAttributeProvider>())) {}
 	}
 }

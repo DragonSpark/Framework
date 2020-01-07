@@ -1,9 +1,9 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Invocation.Expressions;
+using System;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -13,8 +13,12 @@ namespace DragonSpark.Runtime.Activation
 
 		New() : base(Start.A.Selection(ConstructorLocator.Default)
 		                  .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
-		                  .Unless(Start.An.Instance(new ConstructorLocator(HasSingleParameterConstructor<TIn>.Default))
-		                               .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
+		                  .Then()
+		                  .Or.UseWhenAssigned(Start
+		                                      .An.Instance(new ConstructorLocator(HasSingleParameterConstructor<TIn>
+			                                                                          .Default))
+		                                      .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
+		                  .Get()
 		                  .Get(A.Metadata<TOut>())) {}
 	}
 

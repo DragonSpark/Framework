@@ -14,10 +14,11 @@ namespace DragonSpark.Services.Security
 		AuthenticationAddress() : base(Start.An.Instance<CurrentRequestUri>()
 		                                    .Select(Authority.Default)
 		                                    .Select(Uris.Default)
-		                                    .Unless(A.Of<Uris>()
-		                                             .Assigned()
-		                                             .Then()
-		                                             .Bind(A.Of<AuthenticationBaseAddress>().Get)
-		                                           )) {}
+		                                    .Then()
+		                                    .Or.UseWhenAssigned(A.Of<Uris>()
+		                                                         .Assigned()
+		                                                         .Then()
+		                                                         .Bind(A.Of<AuthenticationBaseAddress>().Get)
+		                                                       )) {}
 	}
 }

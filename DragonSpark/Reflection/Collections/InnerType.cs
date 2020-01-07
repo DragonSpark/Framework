@@ -1,10 +1,10 @@
-using System;
-using System.Reflection;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Collections
 {
@@ -39,7 +39,7 @@ namespace DragonSpark.Reflection.Collections
 				var result = _condition(info)
 					             ? _select(info.GenericTypeArguments)
 					             : info.IsArray
-						             ? info.GetElementType()
+						             ? (info.GetElementType() ?? throw new InvalidOperationException())
 						                   .GetTypeInfo()
 						             : null;
 				if (result != null)

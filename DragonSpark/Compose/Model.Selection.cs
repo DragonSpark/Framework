@@ -1,12 +1,8 @@
 ﻿using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Types;
-using DragonSpark.Runtime.Objects;
 using System;
 
 namespace DragonSpark.Compose
@@ -40,14 +36,6 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static ISelect<TIn, TOut> Select<TIn, TOut>(this ISelect<TIn, TOut> @this,
-		                                                   ISelect<Decoration<TIn, TOut>, TOut> other)
-			=> new Decorator<TIn, TOut>(other, @this);
-
-		public static IConditional<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this,
-		                                                             IConditional<TFrom, TTo> select)
-			=> new Conditional<TIn, TTo>(@this.Select(select.Condition).Get, @this.Select(select.Get).Get);
-
 		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this,
 		                                                        ISelect<TFrom, TTo> select) => @this.Select(select.Get);
 
@@ -59,38 +47,12 @@ namespace DragonSpark.Compose
 		public static ISelect<TIn, TOut> Assigned<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			=> @this.If(Is.Assigned<TIn>());
 
+		// TODO: Audit.
 		public static ISelect<TIn, TOut> If<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, bool> @true)
-			=> Compose.Start.A.Selection<TIn>().By.Default<TOut>().Unless(@true, @this);
+			=> Compose.Start.A.Selection<TIn>().By.Default<TOut>().Then().Or.Use(@this).When(@true.Then().Out());
 
 		/**/
 
-		// TODO:
-		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, TOut> assigned)
-			=> @this.Unless(assigned.ToDelegate());
-
-		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TOut> assigned)
-			=> @this.Unless(Compose.Start.A.Result(assigned).Then().Accept<TIn>());
-
-		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TIn, TOut> assigned)
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned, @this.Get);
-
-		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
-		                                                        IConditional<TIn, TOut> then)
-			=> @this.Unless(then.Condition, then);
-
-		public static ISelect<TIn, TOut> UnlessIsOf<TIn, TOut, T>(this ISelect<TIn, TOut> @this, ISelect<T, TOut> then)
-			=> @this.Unless(IsOf<TIn, T>.Default, CastOrThrow<TIn, T>.Default.Select(then));
-
-		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, ICondition<TIn> condition,
-		                                                   IResult<TOut> then)
-			=> @this.Unless(condition, then.Then().Accept<TIn>().Return());
-
-		public static IConditional<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this,
-		                                                        ISelect<TIn, bool> unless,
-		                                                        ISelect<TIn, TOut> then)
-			=> new Conditional<TIn, TOut>(unless.Get, then.Get, @this.Get);
-
-		/**/
 
 		public static Func<TIn, TOut> ToDelegate<TIn, TOut>(this ISelect<TIn, TOut> @this) => @this.Get;
 

@@ -13,7 +13,7 @@ namespace DragonSpark.Compose
 		{
 			var formatter = new Formatter<T>(Compose.Start.A.Selection.Of.Any.AndOf<T>()
 			                                        .By.Cast.Or.Throw.Select(new Formatters<T>(parameter)));
-			var result = new Formatter(@this.Unless(formatter));
+			var result = new Formatter(@this.Then().Or.Use(A.Selection(formatter)).WhenIsOf<T>());
 			return result;
 		}
 

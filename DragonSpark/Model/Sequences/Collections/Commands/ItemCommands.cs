@@ -9,6 +9,6 @@ namespace DragonSpark.Model.Sequences.Collections.Commands
 	{
 		public static ItemCommands<T> Default { get; } = new ItemCommands<T>();
 
-		ItemCommands() : base(AddItemCommands<T>.Default.Select(InsertItemCommands<T>.Default).Get) {}
+		ItemCommands() : base(AddItemCommands<T>.Default.Then().Introduce().Select(InsertItemCommands<T>.Default)) {}
 	}
 }

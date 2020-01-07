@@ -16,7 +16,11 @@ namespace DragonSpark.Reflection.Types
 		public GenericInterfaceImplementations(ISelect<Type, Type> definition)
 			: base(GenericInterfaces.Default.Query()
 			                        .GroupMap(definition.ToDelegate())
-			                        .Select(definition.Unless(IsGenericTypeDefinition.Default, A.Self<Type>()).Select)
+			                        .Select(definition.Then()
+			                                          .Or.Use(A.Self<Type>())
+			                                          .When(IsGenericTypeDefinition.Default)
+			                                          .Then()
+			                                          .Or.Use)
 			                        .Get) {}
 	}
 }

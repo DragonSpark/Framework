@@ -57,6 +57,7 @@ namespace DragonSpark.Compose
 			@this.Execute(None.Default);
 		}
 
+		// TODO:
 		public static ISelect<T, None> ToSelect<T>(this ICommand<T> @this) => new Action<T>(@this.Execute);
 
 		public static CommandSelector<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)

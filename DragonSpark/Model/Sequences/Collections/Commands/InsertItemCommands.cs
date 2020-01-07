@@ -24,10 +24,13 @@ namespace DragonSpark.Model.Sequences.Collections.Commands
 			_index     = index;
 		}
 
-		public ICommand<T> Get(Decoration<IList<T>, ICommand<T>> parameter)
-			=> parameter.Result
+		public ICommand<T> Get((IList<T>, ICommand<T>) parameter)
+			=> parameter.Item2
 			            .ToSelect()
-			            .Unless(_condition, new InsertItemCommand<T>(parameter.Parameter, _index).ToSelect())
+			            .Then()
+			            .Or
+			            .Use(new InsertItemCommand<T>(parameter.Item1, _index).ToSelect())
+			            .When(_condition)
 			            .ToCommand();
 	}
 }
