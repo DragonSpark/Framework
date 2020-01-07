@@ -43,14 +43,20 @@ namespace DragonSpark.Compose
 
 		public static MetadataSelector<T> Then<T>(this ISelect<T, TypeInfo> @this) => new MetadataSelector<T>(@this);
 
-		public static ResultSelector<T> Then<T>(this IResult<T> @this) => new ResultSelector<T>(@this.ToSelect());
+		/*public static ResultSelector<T> Then<T>(this IResult<T> @this) => new ResultSelector<T>(@this.ToSelect());*/
+
+		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
+
+		public static ResultSelectionContext<T> Then<T>(this ResultContext<IResult<T>> @this)
+			=> new ResultSelectionContext<T>(@this.Get());
+
+		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
+			=> new ResultDelegateContext<T>(@this);
+
 
 		public static CommandSelector Then(this ICommand @this) => new CommandSelector(@this);
 
 		public static CommandSelector<T> Then<T>(this ICommand<T> @this) => new CommandSelector<T>(@this);
-
-		public static ResultSelectionSelector<None, T> Then<T>(this IResult<IResult<T>> @this)
-			=> new ResultSelectionSelector<None, T>(@this.ToSelect());
 
 		public static CommandInstanceSelector<_, T> Then<_, T>(this ISelect<_, ICommand<T>> @this)
 			=> new CommandInstanceSelector<_, T>(@this);
@@ -62,7 +68,7 @@ namespace DragonSpark.Compose
 			=> new ResultSelectionSelector<_, T>(@this);
 
 		public static SelectionSelector<None, TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
-			=> @this.ToSelect().Then();
+			=> new SelectionSelector<None, TIn, TOut>(new ResultContext<ISelect<TIn, TOut>>(@this).Accept().Get());
 
 		public static SelectionSelector<_, TIn, TOut> Then<_, TIn, TOut>(this ISelect<_, ISelect<TIn, TOut>> @this)
 			=> new SelectionSelector<_, TIn, TOut>(@this);
@@ -75,8 +81,6 @@ namespace DragonSpark.Compose
 
 		public static OpenArraySelector<_, T> Then<_, T>(this ISelect<_, T[]> @this)
 			=> new OpenArraySelector<_, T>(@this);
-
-		public static MessageSelector Then(this ISelect<Type, string> @this) => new MessageSelector(@this);
 
 		/**/
 
@@ -119,11 +123,13 @@ namespace DragonSpark.Compose
 		public static ICommand ToAction(this ISelect<None, None> @this)
 			=> new Model.Action(@this.ToCommand().Execute);
 
-		public static IResult<T> ToResult<T>(this Selector<None, T> @this) => @this.Get().In(None.Default);
+		public static ResultContext<T> ToResult<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
 
 		public static IResult<T> ToResult<T>(this ISelect<None, T> @this)
 			=> @this as IResult<T> ??
 			   new DragonSpark.Model.Results.Result<T>(@this.Get);
+
+		public static T Return<T>(this ResultContext<T> @this) => @this.Get().Get();
 
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
 

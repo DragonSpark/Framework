@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Compose.Model
 {
-	public class Query<_, T> : IResult<ISelect<_, Array<T>>>
+	public sealed class Query<_, T> : IResult<ISelect<_, Array<T>>>
 	{
 		readonly INode<_, T> _node;
 

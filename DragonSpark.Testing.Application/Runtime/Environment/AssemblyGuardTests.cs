@@ -24,8 +24,8 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		{
 			Start.A.Result<Assembly>()
 			     .By.Calling(() => GetType().Assembly)
-			     .ToSelect()
 			     .Then()
+			     .Accept()
 			     .Ensure.Assigned.Exit.OrThrow(PrimaryAssemblyMessage.Default)
 			     .Get()
 			     .Invoking(x => x.Get())
@@ -38,8 +38,8 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		{
 			Start.A.Result<Assembly>()
 			     .By.Calling(() => null)
-			     .ToSelect()
 			     .Then()
+			     .Accept()
 			     .Ensure.Assigned.Exit.OrThrow(PrimaryAssemblyMessage.Default)
 			     .Get()
 			     .Invoking(x => x.Get())

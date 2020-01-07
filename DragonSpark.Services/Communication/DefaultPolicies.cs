@@ -10,6 +10,6 @@ namespace DragonSpark.Services.Communication
 	{
 		public static DefaultPolicies Default { get; } = new DefaultPolicies();
 
-		DefaultPolicies() : base(ResourcePolicies.Default.In(Policy.Handle<ApiException>)) {}
+		DefaultPolicies() : base(ResourcePolicies.Default.Then().Bind(Policy.Handle<ApiException>)) {}
 	}
 }

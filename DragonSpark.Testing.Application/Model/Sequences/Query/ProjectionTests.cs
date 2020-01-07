@@ -85,6 +85,27 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			     .Equal(Source.Where(x => x.Contains("ab")).Select(x => x.Length));
 		}
 
+		// TODO: verify.
+
+		/*[Fact]
+		void VerifyWhere()
+		{
+			Enumerable.Range(0, 10_000)
+			          .AsParallel()
+			          .ForAll(_ =>
+			                  {
+				                  Start.A.Selection.Of.Type<string>()
+				                       .As.Sequence.Open.By.Self.Query()
+				                       .Where(x => x.Contains("ab"))
+				                       .Out()
+				                       .Get(Source)
+				                       .Should()
+				                       .Equal(Source.Where(x => x.Contains("ab")), $"Iteration: {_}");
+			                  });
+		}*/
+
+
+
 		[Fact]
 		void VerifyWhereSkipTake()
 		{

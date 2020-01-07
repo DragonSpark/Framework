@@ -1,11 +1,11 @@
-﻿using System;
-using JetBrains.Annotations;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime.Activation;
+using JetBrains.Annotations;
+using System;
 
 namespace DragonSpark.Runtime.Invocation
 {
@@ -24,12 +24,14 @@ namespace DragonSpark.Runtime.Invocation
 
 	public class Deferred<T> : Result<T>
 	{
-		public Deferred(Func<T> result, IMutable<T> mutable) : this(result.Start(), mutable) {}
+		public Deferred(Func<T> result, IMutable<T> mutable) : this(Start.A.Result(result), mutable) {}
 
 		public Deferred(IResult<T> result, IMutable<T> mutable) : this(result, mutable, mutable) {}
 
 		public Deferred(IResult<T> result, IResult<T> store, ICommand<T> assign)
-			: base(result.Select(assign.Then().ToConfiguration().Get())
+			: base(result.Then()
+			             .Select(assign.Then().ToConfiguration().Get())
+			             .Get()
 			             .Unless(store)) {}
 	}
 }

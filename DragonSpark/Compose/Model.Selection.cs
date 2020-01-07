@@ -56,15 +56,6 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static IResult<TOut> In<TIn, TOut>(this ISelect<TIn, TOut> @this, TIn parameter)
-			=> new FixedSelection<TIn, TOut>(@this, parameter);
-
-		public static IResult<TOut> In<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TIn> parameter)
-			=> new DelegatedSelection<TIn, TOut>(@this.Get, parameter);
-
-		public static IResult<TOut> In<TIn, TOut>(this ISelect<TIn, TOut> @this, IResult<TIn> parameter)
-			=> new DelegatedSelection<TIn, TOut>(@this, parameter);
-
 		public static ISelect<TIn, TOut> Assigned<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			=> @this.If(Is.Assigned<TIn>());
 
@@ -78,7 +69,7 @@ namespace DragonSpark.Compose
 			=> @this.Unless(assigned.ToDelegate());
 
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TOut> assigned)
-			=> @this.Unless(assigned.Start().Then().Accept<TIn>());
+			=> @this.Unless(Compose.Start.A.Result(assigned).Then().Accept<TIn>());
 
 		public static ISelect<TIn, TOut> Unless<TIn, TOut>(this ISelect<TIn, TOut> @this, Func<TIn, TOut> assigned)
 			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned, @this.Get);

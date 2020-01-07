@@ -13,8 +13,8 @@ namespace DragonSpark.Testing.Objects
 		ArrayEnumerations() : this(10_000u) {}
 
 		[UsedImplicitly]
-		public ArrayEnumerations(uint count) :
-			this(FixtureInstance.Default.ToSelect().Select(new Many<T>(count)).Get()) {}
+		public ArrayEnumerations(uint count)
+			: this(FixtureInstance.Default.Then().Select(new Many<T>(count)).Get().Get()) {}
 
 		public ArrayEnumerations(IEnumerable<T> source) : base(source.ToArray()) {}
 	}

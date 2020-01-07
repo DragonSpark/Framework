@@ -10,7 +10,8 @@ using Action = DragonSpark.Compose.Model.Action;
 
 namespace DragonSpark.Compose
 {
-	public static class Extensions
+	// ReSharper disable once MismatchedFileName
+	public static partial class Extensions
 	{
 		public static Extents.Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
 

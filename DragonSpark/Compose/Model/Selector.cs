@@ -11,13 +11,6 @@ using System;
 
 namespace DragonSpark.Compose.Model
 {
-	public sealed class MessageSelector : Selector<Type, string>
-	{
-		public MessageSelector(ISelect<Type, string> subject) : base(subject) {}
-
-		public Selector<T, string> Bind<T>() => Get().In(A.Type<T>()).Then().Accept<T>();
-	}
-
 	public class Selector<_, T> : IResult<ISelect<_, T>>, IActivateUsing<ISelect<_, T>>
 	{
 		public static implicit operator Func<_, T>(Selector<_, T> instance) => instance.Get().ToDelegate();
@@ -31,6 +24,8 @@ namespace DragonSpark.Compose.Model
 		public ISelect<_, T> Get() => _subject;
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
+
+		/**/
 
 		public Selector<_, TTo> Select<TTo>() where TTo : IActivateUsing<T> => Select(Activations<T, TTo>.Default);
 

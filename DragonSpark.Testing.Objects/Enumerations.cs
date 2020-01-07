@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Objects
 
 	public class Enumerations<T>
 	{
-		public Enumerations(uint count) : this(FixtureInstance.Default.ToSelect().Select(new Many<T>(count)).Get()) {}
+		public Enumerations(uint count) : this(FixtureInstance.Default.Then().Select(new Many<T>(count)).Get().Get()) {}
 
 		public Enumerations(IEnumerable<T> source)
 			: this(source, Objects.Near.Default, Objects.Far.Default) {}

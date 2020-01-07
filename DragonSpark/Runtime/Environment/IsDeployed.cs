@@ -12,6 +12,6 @@ namespace DragonSpark.Runtime.Environment
 		IsDeployed() : this(IsAssemblyDeployed.Default, PrimaryAssembly.Default) {}
 
 		public IsDeployed(ICondition<Assembly> condition, IResult<Assembly> result)
-			: base(condition.In(result).Singleton().Get) {}
+			: base(condition.Then().Bind(result).Singleton()) {}
 	}
 }

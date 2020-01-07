@@ -55,7 +55,7 @@ namespace DragonSpark.Services.Application
 		readonly Func<string> _name;
 
 		public ApplyNameConfiguration(IResult<Assembly> assembly)
-			: this(assembly.Select(x => x.GetName().Name).Get) {}
+			: this(assembly.Then().Select(x => x.GetName().Name)) {}
 
 		public ApplyNameConfiguration(Func<string> name) => _name = name;
 

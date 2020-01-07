@@ -8,6 +8,10 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static HostingAssembly Default { get; } = new HostingAssembly();
 
-		HostingAssembly() : base(PrimaryAssembly.Default.Select(x => x.Attribute<HostingAttribute>().Get())) {}
+		HostingAssembly() : base(PrimaryAssembly.Default.Then()
+		                                        .Select(x => x.Attribute<HostingAttribute>())
+		                                        .Select(A.Result)
+		                                        .Then()
+		                                        .Value()) {}
 	}
 }

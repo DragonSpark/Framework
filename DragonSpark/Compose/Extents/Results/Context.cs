@@ -40,6 +40,6 @@ namespace DragonSpark.Compose.Extents.Results
 		public IResult<T> Using<TResult>() where TResult : class, IResult<T>
 			=> Activator<TResult>.Default.Get().To(Using);
 
-		public IResult<T> Calling(Func<T> select) => new Result<T>(select);
+		public IResult<T> Calling(Func<T> select) => select.Target as IResult<T> ?? new Result<T>(select);
 	}
 }

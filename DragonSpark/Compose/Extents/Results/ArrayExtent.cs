@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Runtime.Activation;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Compose.Extents.Results
 {
@@ -7,8 +7,12 @@ namespace DragonSpark.Compose.Extents.Results
 	{
 		public static ArrayExtent<T> Default { get; } = new ArrayExtent<T>();
 
-		ArrayExtent() {}
+		ArrayExtent() : this(Start.A.Selection.Of.Type<int>().AndOf<T[]>().By.Instantiation.Then()) {}
 
-		public IResult<T[]> New(uint size) => New<int, T[]>.Default.In((int)size);
+		readonly OpenArraySelector<int, T> _select;
+
+		public ArrayExtent(OpenArraySelector<int, T> select) => _select = select;
+
+		public IResult<T[]> New(uint size) => _select.Bind((int)size).Cast<T[]>().Get();
 	}
 }

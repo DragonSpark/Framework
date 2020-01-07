@@ -13,9 +13,12 @@ namespace DragonSpark.Model.Selection.Stores
 		Tables() : base(IsReference.Default.Get(A.Type<TIn>())
 			                ? Start.A.Generic(typeof(ReferenceTables<,>))
 			                       .Of.Type<ISelect<Func<TIn, TOut>, ITable<TIn, TOut>>>()
-			                       .In(An.Array(A.Type<TIn>(), A.Type<TOut>()))
+			                       .Then()
+			                       .Bind(An.Array(A.Type<TIn>(), A.Type<TOut>()))
+			                       .Get()
+			                       .Then()
 			                       .Assume()
-			                       .Assume()
+			                       .Return()
 			                : Start.An.Instance(Activations<Func<TIn, TOut>, ConcurrentTables<TIn, TOut>>.Default)
 			                       .Select(x => x.Get(new ConcurrentDictionary<TIn, TOut>()))) {}
 	}

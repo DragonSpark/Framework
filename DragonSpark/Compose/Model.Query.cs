@@ -17,9 +17,9 @@ namespace DragonSpark.Compose
 
 		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
 
-		public static Query<None, T> Query<T>(this IResult<Array<T>> @this) => @this.ToSelect().Query();
+		public static Query<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
 
-		public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.ToSelect().Query();
+		public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();
 
 		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
 
@@ -32,7 +32,7 @@ namespace DragonSpark.Compose
 			=> new Query<_, T>(@this.Select(CollectionSelection<T>.Default));
 
 		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
-			=> @this.Select(select.ToDelegate());
+			=> @this.Select(select.Get);
 
 		public static SelectQueryContext<_, T> Select<_, T>(this Query<_, T> @this)
 			=> new SelectQueryContext<_, T>(@this);

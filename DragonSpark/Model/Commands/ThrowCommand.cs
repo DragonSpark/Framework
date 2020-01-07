@@ -22,7 +22,7 @@ namespace DragonSpark.Model.Commands
 	{
 		readonly Func<TException> _exception;
 
-		public ThrowCommand(TException exception) : this(exception.Start()) {}
+		public ThrowCommand(TException exception) : this(Start.A.Result(exception)) {}
 
 		public ThrowCommand(IResult<TException> result) : this(result.Get) {}
 

@@ -21,7 +21,7 @@ namespace DragonSpark.Runtime.Environment
 		public Assemblies(ISelect<Array<Assembly>, Array<Assembly>> select) : this(select, DefaultAssemblies.Default) {}
 
 		public Assemblies(ISelect<Array<Assembly>, Array<Assembly>> select, IArray<Assembly> parameter)
-			: base(select.In(parameter)) {}
+			: base(select.Then().Bind(parameter)) {}
 	}
 
 	sealed class EnvironmentAwareAssemblies : ISelect<string, IReadOnlyList<Assembly>>
