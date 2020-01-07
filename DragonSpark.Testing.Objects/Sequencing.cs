@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Testing.Objects

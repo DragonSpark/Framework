@@ -1,8 +1,7 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class AlterationSelector<T> : Selector<T, T>
 	{

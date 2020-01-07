@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
+using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class SelectionSelector<_, TIn, TOut> : Selector<_, ISelect<TIn, TOut>>
 	{

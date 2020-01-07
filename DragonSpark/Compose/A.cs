@@ -17,11 +17,11 @@ namespace DragonSpark.Compose
 		public static ICondition<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
 			=> IsDecoratedWith<T>.Default;
 
-		public static ICondition<T> Always<T>() => Model.Selection.Conditions.Always<T>.Default;
+		public static ICondition<T> Always<T>() => DragonSpark.Model.Selection.Conditions.Always<T>.Default;
 
 		public static ICondition<object> Always() => Always<object>();
 
-		public static ICondition<T> Never<T>() => Model.Selection.Conditions.Never<T>.Default;
+		public static ICondition<T> Never<T>() => DragonSpark.Model.Selection.Conditions.Never<T>.Default;
 
 		public static ICondition<object> Never() => Always<object>();
 
@@ -38,7 +38,7 @@ namespace DragonSpark.Compose
 
 	public static class A
 	{
-		public static T Default<T>() => Model.Results.Default<T>.Instance.Get();
+		public static T Default<T>() => DragonSpark.Model.Results.Default<T>.Instance.Get();
 
 		public static T Of<T>() => Start.An.Instance<T>();
 
@@ -48,7 +48,7 @@ namespace DragonSpark.Compose
 
 		public static IResult<T> Result<T>(IResult<T> instance) => instance;
 
-		public static IAlteration<T> Self<T>() => Model.Selection.Self<T>.Default;
+		public static IAlteration<T> Self<T>() => DragonSpark.Model.Selection.Self<T>.Default;
 
 		public static Type Type<T>() => Reflection.Types.Type<T>.Instance;
 

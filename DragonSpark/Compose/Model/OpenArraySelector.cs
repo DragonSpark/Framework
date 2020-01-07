@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Query;
 using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class OpenArraySelector<_, T> : CollectionSelector<_, T>
 	{

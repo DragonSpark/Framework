@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Collections;
 using System.Collections.Generic;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class CollectionSelector<_, T> : SequenceSelector<_, T>
 	{

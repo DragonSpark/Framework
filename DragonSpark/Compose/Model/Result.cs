@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
-	public class Result<T> : Results.Result<T>, ISelect<T>
+	public class Result<T> : DragonSpark.Model.Results.Result<T>, ISelect<T>
 	{
 		readonly Func<T> _source;
 

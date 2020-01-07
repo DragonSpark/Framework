@@ -1,5 +1,5 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class Query<_, T> : IResult<ISelect<_, Array<T>>>
 	{
@@ -15,11 +15,11 @@ namespace DragonSpark.Model.Selection.Adapters
 
 		public Query(ISelect<_, T[]> subject) : this(new StartNode<_, T>(subject)) {}
 
-		public Query(ISelect<_, Sequences.Store<T>> subject) : this(new Node<_, T>(subject)) {}
+		public Query(ISelect<_, DragonSpark.Model.Sequences.Store<T>> subject) : this(new Node<_, T>(subject)) {}
 
 		public Query(INode<_, T> node) => _node = node;
 
-		public ISelect<_, Array<T>> Get() => Out().Select(Sequences.Result<T>.Default);
+		public ISelect<_, Array<T>> Get() => Out().Select(DragonSpark.Model.Sequences.Result<T>.Default);
 
 		public Query<_, T> Select(IPartition partition) => new Query<_, T>(_node.Get(partition));
 

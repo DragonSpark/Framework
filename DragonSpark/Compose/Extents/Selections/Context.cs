@@ -33,9 +33,10 @@ namespace DragonSpark.Compose.Extents.Selections
 		public ISelect<T, TypeInfo> Metadata => InstanceMetadata<T>.Default;
 		public ISelect<T, Type> Type => InstanceType<T>.Default;
 
-		public ISelect<T, T> Default() => Model.Selection.Default<T>.Instance;
+		public ISelect<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance;
 
-		public ISelect<T, TOut> Calling<TOut>(Func<T, TOut> select) => new Model.Selection.Select<T, TOut>(select);
+		public ISelect<T, TOut> Calling<TOut>(Func<T, TOut> select)
+			=> new DragonSpark.Model.Selection.Select<T, TOut>(select);
 
 		public ISelect<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result);
 
@@ -56,7 +57,7 @@ namespace DragonSpark.Compose.Extents.Selections
 		public ISelect<T, Array<T>> Array() => Self.Select(Yield<T>.Default).Result();
 
 		public ISelect<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
-			=> new Model.Selection.Select<T, Func<TIn, TOut>>(select);
+			=> new DragonSpark.Model.Selection.Select<T, Func<TIn, TOut>>(select);
 
 		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>().Return();
 

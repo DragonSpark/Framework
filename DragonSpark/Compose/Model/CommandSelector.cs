@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class CommandSelector : CommandSelector<None>
 	{
@@ -31,8 +31,8 @@ namespace DragonSpark.Model.Selection.Adapters
 		public CommandSelector<T> Add(params ICommand<T>[] commands)
 			=> new CommandSelector<T>(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 
-		public CommandSelector<Sequences.Store<T>> Many()
-			=> new CommandSelector<Sequences.Store<T>>(new ManyCommand<T>(Get()));
+		public CommandSelector<DragonSpark.Model.Sequences.Store<T>> Many()
+			=> new CommandSelector<DragonSpark.Model.Sequences.Store<T>>(new ManyCommand<T>(Get()));
 
 		public AlterationSelector<T> ToConfiguration() => new AlterationSelector<T>(new Configured<T>(Get().Execute));
 	}

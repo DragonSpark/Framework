@@ -29,9 +29,9 @@ namespace DragonSpark.Compose.Extents.Results
 
 		public IResult<T> Instantiation() => New<T>.Default;
 
-		public IResult<T> Default() => Model.Results.Default<T>.Instance;
+		public IResult<T> Default() => DragonSpark.Model.Results.Default<T>.Instance;
 
-		public IResult<T> Using(T instance) => new Model.Results.Instance<T>(instance);
+		public IResult<T> Using(T instance) => new DragonSpark.Model.Results.Instance<T>(instance);
 
 		public IResult<T> Using(ISelect<None, T> source) => new Result<T>(source.Get);
 

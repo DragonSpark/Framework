@@ -1,9 +1,10 @@
-﻿using DragonSpark.Reflection.Types;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Reflection.Types;
 using System;
 using System.Reflection;
 using Activator = DragonSpark.Runtime.Activation.Activator;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class TypeSelector<T> : Selector<T, Type>
 	{

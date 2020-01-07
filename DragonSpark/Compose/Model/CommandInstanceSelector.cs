@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class CommandInstanceSelector<TIn, T> : Selector<TIn, ICommand<T>>
 	{

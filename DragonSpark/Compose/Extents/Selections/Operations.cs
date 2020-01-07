@@ -1,7 +1,7 @@
-﻿using DragonSpark.Diagnostics.Logging;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Adapters;
 using System;
 using System.Threading.Tasks;
 

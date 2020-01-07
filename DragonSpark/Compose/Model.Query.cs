@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
@@ -122,7 +122,7 @@ namespace DragonSpark.Compose
 			=> @this.Select(new GroupMap<T, TKey>(key, comparer));
 
 		public static ISelect<_, T> Only<_, T>(this Query<_, T> @this)
-			=> @this.Select(Model.Sequences.Query.Only<T>.Default);
+			=> @this.Select(DragonSpark.Model.Sequences.Query.Only<T>.Default);
 
 		public static ISelect<_, T> Only<_, T>(this Query<_, T> @this, Func<T, bool> where)
 			=> @this.Select(new Only<T>(where));

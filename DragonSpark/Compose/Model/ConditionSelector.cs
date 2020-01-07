@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class ConditionSelector<T> : Selector<T, bool>
 	{

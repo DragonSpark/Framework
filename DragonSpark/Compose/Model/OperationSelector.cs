@@ -1,10 +1,9 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Adapters;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Compose.Model
 {
 	public class OperationSelector<_, T> : Selector<_, ValueTask<T>>
 	{

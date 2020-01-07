@@ -1,9 +1,9 @@
-﻿using System;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
-	public class Condition<T> : Conditions.Condition<T>
+	public class Condition<T> : DragonSpark.Model.Selection.Conditions.Condition<T>
 	{
 		public Condition(Func<T, bool> @delegate) : base(@delegate) {}
 

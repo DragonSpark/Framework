@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection.Adapters;
+﻿using DragonSpark.Compose.Model;
 using System;
 using System.Threading.Tasks;
 

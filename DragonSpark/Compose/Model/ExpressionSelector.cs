@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Invocation.Expressions;
 using System;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class ExpressionSelector<_, T> : Selector<_, Expression<T>>
 	{

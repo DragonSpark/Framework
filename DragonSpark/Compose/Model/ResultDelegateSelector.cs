@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Invocation;
+using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class ResultDelegateSelector<_, T> : Selector<_, Func<T>>
 	{

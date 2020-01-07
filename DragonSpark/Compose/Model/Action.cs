@@ -1,6 +1,7 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class Action<T> : Command<T>, IAction<T>
 	{

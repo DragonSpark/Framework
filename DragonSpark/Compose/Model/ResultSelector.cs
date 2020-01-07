@@ -1,7 +1,8 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	public class ResultSelector<T> : Selector<None, T>
 	{

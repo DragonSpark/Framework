@@ -1,12 +1,12 @@
 ﻿using DragonSpark.Compose.Extents.Results;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using System;
-using Action = DragonSpark.Model.Selection.Adapters.Action;
+using Action = DragonSpark.Compose.Model.Action;
 
 namespace DragonSpark.Compose
 {

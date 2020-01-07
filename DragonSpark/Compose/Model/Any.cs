@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Model.Selection.Adapters
+namespace DragonSpark.Compose.Model
 {
 	sealed class Any : ICommand<object>
 	{
