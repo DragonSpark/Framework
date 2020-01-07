@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Model.Operations;
 using FluentAssertions;
-using DragonSpark.Operations;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Operations

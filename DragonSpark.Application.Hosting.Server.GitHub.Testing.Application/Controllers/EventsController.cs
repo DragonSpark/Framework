@@ -1,4 +1,4 @@
-﻿using DragonSpark.Operations;
+﻿using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Octokit;
 using System.Threading.Tasks;

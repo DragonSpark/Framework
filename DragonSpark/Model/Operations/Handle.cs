@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
+using System;
 using System.Threading.Tasks;
-using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Operations
+namespace DragonSpark.Model.Operations
 {
 	public sealed class Handle<TIn, TOut> : ISelect<Task<TIn>, TOut>
 	{

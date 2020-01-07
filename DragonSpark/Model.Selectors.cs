@@ -1,12 +1,12 @@
 ﻿using DragonSpark.Compose.Selections;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Operations;
 using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;

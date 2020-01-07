@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using System.Threading.Tasks;
 
-namespace DragonSpark.Operations
+namespace DragonSpark.Model.Operations
 {
 	public sealed class SelectTask<T> : Select<ValueTask<T>, Task<T>>
 	{

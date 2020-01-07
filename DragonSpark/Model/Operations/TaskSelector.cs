@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
+using System;
+using System.Threading.Tasks;
 
-namespace DragonSpark.Operations
+namespace DragonSpark.Model.Operations
 {
 	public class TaskSelector<_, T> : Selector<_, Task<T>>
 	{

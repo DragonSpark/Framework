@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using DragonSpark.Operations;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Operations
+namespace DragonSpark.Model.Operations
 {
 	public interface IOperationResult<in TIn, TOut> : ISelect<TIn, ValueTask<TOut>> {}
 

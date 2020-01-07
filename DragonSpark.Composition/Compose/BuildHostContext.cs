@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Operations;
 using DragonSpark.Runtime.Activation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
