@@ -1,6 +1,5 @@
-﻿using System;
-using DragonSpark.Runtime;
-using DragonSpark.Runtime.Activation;
+﻿using DragonSpark.Runtime.Activation;
+using System;
 
 namespace DragonSpark.Model.Commands
 {

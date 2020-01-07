@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using DragonSpark.Model;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {

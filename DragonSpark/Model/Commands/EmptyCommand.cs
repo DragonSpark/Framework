@@ -1,5 +1,3 @@
-using DragonSpark.Runtime;
-
 namespace DragonSpark.Model.Commands
 {
 	public sealed class EmptyCommand<T> : ICommand<T>

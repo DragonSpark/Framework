@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
 using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Objects

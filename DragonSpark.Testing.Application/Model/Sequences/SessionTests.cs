@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime;
 
 // ReSharper disable ImpureMethodCallOnReadonlyValueField
 

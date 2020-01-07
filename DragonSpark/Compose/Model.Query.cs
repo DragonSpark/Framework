@@ -1,10 +1,10 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
-using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 

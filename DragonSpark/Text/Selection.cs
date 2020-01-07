@@ -1,7 +1,7 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
+using System;
 
 namespace DragonSpark.Text
 {

@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Runtime.Execution
 {

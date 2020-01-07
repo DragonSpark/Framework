@@ -1,6 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using DragonSpark.Compose;
-using DragonSpark.Runtime;
+using DragonSpark.Model;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
 using System;

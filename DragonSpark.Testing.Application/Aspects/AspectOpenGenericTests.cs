@@ -1,9 +1,9 @@
-﻿using System;
-using FluentAssertions;
-using JetBrains.Annotations;
-using DragonSpark.Aspects;
+﻿using DragonSpark.Model.Aspects;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using FluentAssertions;
+using JetBrains.Annotations;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Aspects

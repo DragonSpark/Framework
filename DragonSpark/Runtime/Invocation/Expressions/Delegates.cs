@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using System.Linq.Expressions;
 

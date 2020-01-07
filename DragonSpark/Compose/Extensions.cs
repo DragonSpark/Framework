@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Compose.Extents.Results;
+using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
 using System;
 using Action = DragonSpark.Model.Selection.Adapters.Action;

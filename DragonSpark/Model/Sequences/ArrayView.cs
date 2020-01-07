@@ -1,6 +1,4 @@
-﻿using DragonSpark.Runtime;
-
-namespace DragonSpark.Model.Sequences
+﻿namespace DragonSpark.Model.Sequences
 {
 	public readonly struct ArrayView<T>
 	{

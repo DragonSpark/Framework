@@ -1,7 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Runtime.Objects;
+using System;
 using System.Collections.Generic;
-using DragonSpark.Runtime;
-using DragonSpark.Runtime.Objects;
 
 namespace DragonSpark.Model.Sequences.Collections
 {

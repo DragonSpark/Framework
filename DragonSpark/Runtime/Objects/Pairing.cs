@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime.Invocation;
+﻿using DragonSpark.Model;
+using DragonSpark.Runtime.Invocation;
 
 namespace DragonSpark.Runtime.Objects
 {

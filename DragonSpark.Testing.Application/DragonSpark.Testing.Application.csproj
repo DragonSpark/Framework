@@ -2,14 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <!--<PlatformTarget Condition="'$(BuildingInsideVisualStudio)' != ''">x64</PlatformTarget>-->
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <startupobject>DragonSpark.Testing.Application.Program</startupobject>
     <GenerateProgramFile>false</GenerateProgramFile>
-
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="BenchmarkDotNet.Artifacts\**" />
@@ -22,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Humanizer.Core" Version="2.7.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj" />
@@ -32,10 +30,5 @@
     <ProjectReference Include="..\DragonSpark.Testing.Environment\DragonSpark.Testing.Environment.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Application\Services\" />
-    <Folder Include="Reflection\Members\" />
-    <Folder Include="Text\Formatting\" />
   </ItemGroup>
 </Project>

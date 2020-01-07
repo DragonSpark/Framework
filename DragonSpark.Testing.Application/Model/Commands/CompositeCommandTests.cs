@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
-using DragonSpark.Runtime;
 using FluentAssertions;
 using Xunit;
 

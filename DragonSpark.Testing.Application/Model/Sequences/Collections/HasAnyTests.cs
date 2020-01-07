@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Sequences.Collections;
-using DragonSpark.Runtime;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Collections

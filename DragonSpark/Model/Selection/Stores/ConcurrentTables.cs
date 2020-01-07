@@ -1,8 +1,7 @@
+using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime.Activation;
 using System;
 using System.Collections.Concurrent;
-using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime;
-using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Model.Selection.Stores
 {

@@ -1,6 +1,4 @@
-﻿using DragonSpark.Runtime;
-
-namespace DragonSpark.Model.Selection.Conditions
+﻿namespace DragonSpark.Model.Selection.Conditions
 {
 	public interface ICondition : ICondition<None> {}
 

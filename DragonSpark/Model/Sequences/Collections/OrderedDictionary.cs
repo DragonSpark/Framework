@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Humanizer;
 
 // ReSharper disable ComplexConditionExpression
 
@@ -179,8 +178,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		{
 			if (index < 0 || index >= _delegatedKeyedCollection.Count)
 			{
-				throw new ArgumentException("The index was outside the bounds of the dictionary: {0}"
-					                            .FormatWith(index));
+				throw new ArgumentException($"The index was outside the bounds of the dictionary: {index}");
 			}
 
 			return _delegatedKeyedCollection[index];
@@ -198,7 +196,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		{
 			if (index < 0 || index >= _delegatedKeyedCollection.Count)
 			{
-				throw new ArgumentException("The index is outside the bounds of the dictionary: {0}".FormatWith(index));
+				throw new ArgumentException($"The index is outside the bounds of the dictionary: {index}");
 			}
 
 			var kvp = new KeyValuePair<TKey, TValue>(_delegatedKeyedCollection[index].Key, value);
@@ -225,8 +223,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		{
 			if (index < 0 || index >= _delegatedKeyedCollection.Count)
 			{
-				throw new ArgumentException("The index was outside the bounds of the dictionary: {0}"
-					                            .FormatWith(index));
+				throw new ArgumentException($"The index was outside the bounds of the dictionary: {index}");
 			}
 
 			_delegatedKeyedCollection.RemoveAt(index);
@@ -240,7 +237,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		{
 			if (_delegatedKeyedCollection.Contains(key) == false)
 			{
-				throw new ArgumentException("The given key is not present in the dictionary: {0}".FormatWith(key));
+				throw new ArgumentException($"The given key is not present in the dictionary: {key}");
 			}
 
 			var kvp = _delegatedKeyedCollection[key];

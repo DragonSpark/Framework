@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;

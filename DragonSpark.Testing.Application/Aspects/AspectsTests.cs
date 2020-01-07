@@ -1,5 +1,5 @@
-﻿using DragonSpark.Aspects;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Aspects;
 using DragonSpark.Model.Selection;
 using FluentAssertions;
 using Xunit;

@@ -1,6 +1,4 @@
-﻿using DragonSpark.Runtime;
-
-namespace DragonSpark.Model.Commands
+﻿namespace DragonSpark.Model.Commands
 {
 	public interface ICommand : ICommand<None> {}
 

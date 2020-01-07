@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Objects;
 using DragonSpark.Text;
 using DragonSpark.Text.Formatting;

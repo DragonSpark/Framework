@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose.Extents.Selections;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
@@ -7,7 +8,6 @@ using DragonSpark.Model.Selection.Adapters;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

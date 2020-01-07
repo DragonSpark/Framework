@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
 using System;
 
