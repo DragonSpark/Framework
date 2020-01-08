@@ -15,7 +15,7 @@ namespace DragonSpark.Services.Security
 		                                    .Select(Authority.Default)
 		                                    .Select(Uris.Default)
 		                                    .Then()
-		                                    .Or.UseWhenAssigned(A.Of<Uris>()
+		                                    .Otherwise.UseWhenAssigned(A.Of<Uris>()
 		                                                         .Assigned()
 		                                                         .Then()
 		                                                         .Bind(A.Of<AuthenticationBaseAddress>().Get)

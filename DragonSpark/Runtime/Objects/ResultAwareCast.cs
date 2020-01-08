@@ -11,7 +11,7 @@ namespace DragonSpark.Runtime.Objects
 		ResultAwareCast() : base(Start.A.Selection<TFrom>()
 		                              .AndOf<TTo>()
 		                              .By.Cast.Then()
-		                              .Or.Use(CastOrThrow<TFrom, IResult<TTo>>.Default.Then()
+		                              .Otherwise.Use(CastOrThrow<TFrom, IResult<TTo>>.Default.Then()
 		                                                                      .Value()
 		                                                                      .Get())
 		                              .When(CanCast<TFrom, IResult<TTo>>.Default)) {}

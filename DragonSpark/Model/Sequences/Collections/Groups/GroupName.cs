@@ -11,8 +11,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 
 		public bool Equals(GroupName other) => string.Equals(Name, other.Name);
 
-		public override bool Equals(object obj)
-			=> !ReferenceEquals(null, obj) && obj is GroupName phase && Equals(phase);
+		public override bool Equals(object obj) => obj is GroupName phase && Equals(phase);
 
 		public override int GetHashCode() => Name != null ? Name.GetHashCode() : 0;
 	}
@@ -23,6 +22,6 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 			: base(Start.A.Selection<T>()
 			            .By.Returning(defaultName)
 			            .Then()
-			            .Or.UseWhenAssigned(new MetadataGroupName<T>(names))) {}
+			            .Otherwise.UseWhenAssigned(new MetadataGroupName<T>(names))) {}
 	}
 }

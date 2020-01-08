@@ -17,10 +17,10 @@ namespace DragonSpark.Reflection.Types
 			: base(GenericInterfaces.Default.Query()
 			                        .GroupMap(definition.ToDelegate())
 			                        .Select(definition.Then()
-			                                          .Or.Use(A.Self<Type>())
+			                                          .Otherwise.Use(A.Self<Type>())
 			                                          .When(IsGenericTypeDefinition.Default)
 			                                          .Then()
-			                                          .Or.Use)
+			                                          .Otherwise.Use)
 			                        .Get) {}
 	}
 }

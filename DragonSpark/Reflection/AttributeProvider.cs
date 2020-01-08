@@ -11,6 +11,6 @@ namespace DragonSpark.Reflection
 		AttributeProvider() : base(Start.A.Selection<T>()
 		                                .By.Metadata.Then()
 		                                .Cast<ICustomAttributeProvider>()
-		                                .Or.Use(A.Self<ICustomAttributeProvider>())) {}
+		                                .Otherwise.Use(A.Self<ICustomAttributeProvider>())) {}
 	}
 }

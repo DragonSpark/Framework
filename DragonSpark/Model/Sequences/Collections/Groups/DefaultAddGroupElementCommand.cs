@@ -10,7 +10,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 		                                     IGroupCollection<T> collection)
 			: base(new AddGroupElementCommand<T>(collection, new GroupName<T>(defaultName, names))
 			       .ToSelect()
-			       .Then().Or.Use(new GroupingAwareCommand<T>(collection).ToSelect())
+			       .Then().Otherwise.Use(new GroupingAwareCommand<T>(collection).ToSelect())
 			       .ToCommand()) {}
 	}
 }

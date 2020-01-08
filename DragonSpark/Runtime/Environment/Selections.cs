@@ -16,7 +16,7 @@ namespace DragonSpark.Runtime.Environment
 
 		Selections() : this(Start.A.Selection.Of.System.Type.By.Returning(Default<Type, Type>.Instance)
 		                         .Then()
-		                         .Or.Use(Make.Instance)
+		                         .Otherwise.Use(Make.Instance)
 		                         .When(IsDefinedGenericType.Default),
 		                    ResultDefinition.Default.Get) {}
 
@@ -32,8 +32,8 @@ namespace DragonSpark.Runtime.Environment
 		public ISelect<Type, Type> Get(Type parameter)
 			=> _default.Get(parameter)
 			           .Then()
-			           .Or.UseWhenAssigned(new Specification(_result(parameter)))
-			           .Or.UseWhenAssigned(new Specification(parameter))
+			           .Otherwise.UseWhenAssigned(new Specification(_result(parameter)))
+			           .Otherwise.UseWhenAssigned(new Specification(parameter))
 			           .Get();
 
 		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>

@@ -29,7 +29,7 @@ namespace DragonSpark.Compose.Model
 
 		public GuardContext<_, T> Ensure => new GuardContext<_, T>(_subject);
 
-		public ValidatedSelectionContext<_, T> Or => new ValidatedSelectionContext<_, T>(_subject);
+		public ValidatedSelectionContext<_, T> Otherwise => new ValidatedSelectionContext<_, T>(_subject);
 
 		public ISelect<_, T> Get() => _subject;
 

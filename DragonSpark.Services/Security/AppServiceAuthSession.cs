@@ -11,6 +11,6 @@ namespace DragonSpark.Services.Security
 
 		AppServiceAuthSession() : base(Name, Start.A.Selection(new RequestStateValue(Name))
 		                                          .Then()
-		                                          .Or.UseWhenAssigned(AuthenticationSessionToken.Default.Get)) {}
+		                                          .Otherwise.UseWhenAssigned(AuthenticationSessionToken.Default.Get)) {}
 	}
 }

@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Activation
 		New() : base(Start.A.Selection(ConstructorLocator.Default)
 		                  .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
 		                  .Then()
-		                  .Or.UseWhenAssigned(Start
+		                  .Otherwise.UseWhenAssigned(Start
 		                                      .An.Instance(new ConstructorLocator(HasSingleParameterConstructor<TIn>
 			                                                                          .Default))
 		                                      .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
