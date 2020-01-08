@@ -7,6 +7,7 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public partial class Extensions
 	{
+		// TODO: move to selectors (need to fix query first):
 		public static ResultContext<T> Bind<_, T>(this Selector<_, T> @this, _ parameter)
 			=> new FixedSelection<_, T>(@this, parameter).Then();
 

@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Invocation.Expressions;
-using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -11,28 +11,28 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static ISelect<TIn, TOut> Default { get; } = new New<TIn, TOut>();
 
-		New() : base(Start.A.Selection(ConstructorLocator.Default)
-		                  .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
-		                  .Then()
-		                  .Otherwise.UseWhenAssigned(Start
-		                                      .An.Instance(new ConstructorLocator(HasSingleParameterConstructor<TIn>
-			                                                                          .Default))
-		                                      .Select(ParameterConstructors<TIn, TOut>.Default.Assigned()))
-		                  .Get()
-		                  .Get(A.Metadata<TOut>())) {}
+		New() : this(new ConstructorLocator(HasSingleParameterConstructor<TIn>.Default)) {}
+
+		public New(ISelect<TypeInfo, ConstructorInfo> constructor)
+			: base(Start.A.Selection(ConstructorLocator.Default)
+			            .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
+			            .Then()
+			            .Use.UseWhenAssigned(Start.A.Selection(constructor)
+			                                            .Select(A.Selection(ParameterConstructors<TIn, TOut>.Default)
+			                                                     .Then()
+			                                                     .Assigned()
+			                                                     .Return()))
+			            .Return(A.Metadata<TOut>())) {}
 	}
 
 	public sealed class New<T> : FixedActivator<T>
 	{
-		public static implicit operator Func<T>(New<T> instance) => instance.Get;
-
 		public static New<T> Default { get; } = new New<T>();
 
 		New() : base(Start.A.Selection(TypeMetadata.Default)
 		                  .Select(ConstructorLocator.Default)
 		                  .Select(Constructors<T>.Default)
 		                  .Then()
-		                  .Invoke()
-		                  .Get()) {}
+		                  .Invoke()) {}
 	}
 }

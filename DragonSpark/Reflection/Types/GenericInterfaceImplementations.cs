@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
@@ -11,16 +11,16 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static GenericInterfaceImplementations Default { get; } = new GenericInterfaceImplementations();
 
-		GenericInterfaceImplementations() : this(GenericTypeDefinition.Default) {}
+		GenericInterfaceImplementations() : this(GenericTypeDefinition.Default.Then()) {}
 
-		public GenericInterfaceImplementations(ISelect<Type, Type> definition)
+		public GenericInterfaceImplementations(Selector<Type, Type> definition)
 			: base(GenericInterfaces.Default.Query()
-			                        .GroupMap(definition.ToDelegate())
-			                        .Select(definition.Then()
-			                                          .Otherwise.Use(A.Self<Type>())
-			                                          .When(IsGenericTypeDefinition.Default)
-			                                          .Then()
-			                                          .Otherwise.Use)
-			                        .Get) {}
+			                        .GroupMap(definition.Get())
+			                        .Select(definition.Use.UnlessCalling(A.Self<Type>())
+			                                          .Allows(IsGenericTypeDefinition.Default)
+			                                          .Use.UnlessCalling)
+			                        .Select(A.ConditionalResult<Type, Array<Type>>)
+			                        .Then()
+			                        .Value()) {}
 	}
 }

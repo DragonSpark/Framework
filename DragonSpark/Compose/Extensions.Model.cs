@@ -59,4 +59,25 @@ namespace DragonSpark.Compose
 		public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
 			=> GuardModelContext<T>.Default;
 	}
+
+	public sealed class GuardModelContext<TException> where TException : Exception
+	{
+		public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();
+
+		GuardModelContext() {}
+
+		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message)
+			=> new GuardThrowContext<T, TException>(message);
+	}
+
+	public sealed class GuardThrowContext<T, TException> where TException : Exception
+	{
+		readonly ISelect<T, string> _message;
+
+		public GuardThrowContext(ISelect<T, string> message) => _message = message;
+
+		public CommandSelector<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
+
+		public CommandSelector<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
+	}
 }

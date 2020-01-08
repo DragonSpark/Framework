@@ -17,14 +17,14 @@ namespace DragonSpark.Runtime.Environment
 			: base(select.Query()
 			             .FirstAssigned()
 			             .Then()
-			             .Ensure.Assigned.Exit.OrThrow(LocateGuardMessage.Default)) {}
+			             .Ensure.Output.IsAssigned.OrThrow(LocateGuardMessage.Default)) {}
 	}
 
 	sealed class LocateComponentMessage<T> : Message<Type>
 	{
 		public static LocateComponentMessage<T> Default { get; } = new LocateComponentMessage<T>();
 
-		LocateComponentMessage() : base(x => $"Found a type of {A.Type<T>()} as {x} but could not activate it.") {}
+		LocateComponentMessage() : base(x => $"A request was made to locate a type of {A.Type<T>()}.  Its implementation type of {x} was located, but it could not be activated.") {}
 	}
 
 	public interface IComponentTypes : IArray<Type, Type> {}

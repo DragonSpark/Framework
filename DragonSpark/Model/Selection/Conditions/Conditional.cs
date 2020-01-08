@@ -17,8 +17,7 @@ namespace DragonSpark.Model.Selection.Conditions
 
 		public Conditional(ICondition<TIn> condition, ISelect<TIn, TOut> select) : this(condition, select.Get) {}
 
-		public Conditional(ICondition<TIn> condition, Func<TIn, TOut> source)
-			: this(condition, source, Fallback) {}
+		public Conditional(ICondition<TIn> condition, Func<TIn, TOut> source) : this(condition, source, Fallback) {}
 
 		public Conditional(ICondition<TIn> condition, Func<TIn, TOut> source, Func<TIn, TOut> fallback)
 			: base(condition.Get, source, fallback) => Condition = condition;

@@ -11,6 +11,8 @@ namespace DragonSpark.Compose
 
 		public static ISelect<TIn, IResult<TOut>> DefinedAsResult<TIn, TOut>(this ISelect<TIn, IResult<TOut>> @this) => @this;
 
+		public static ISelect<_, IResult<ISelect<TIn, TOut>>> DefinedAsResult<_, TIn, TOut>(this ISelect<_, IResult<ISelect<TIn, TOut>>> @this) => @this;
+
 		public static IResult<IResult<T>> DefinedAsResult<T>(this IResult<IResult<T>> @this) => @this;
 
 		public static IResult<ISelect<TIn, TOut>> DefinedAsSelection<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this) => @this;

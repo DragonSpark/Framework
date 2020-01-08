@@ -19,7 +19,7 @@ namespace DragonSpark.Runtime.Invocation
 			: this(select, assignable, assignable) {}
 
 		public Deferred(ISelect<TIn, TOut> select, IAssign<TIn, TOut> assign, ISelect<TIn, TOut> source)
-			: base(new Configuration<TIn, TOut>(select, assign).Then().Otherwise.UseWhenAssigned(source)) {}
+			: base(new Configuration<TIn, TOut>(select, assign).Then().Use.UseWhenAssigned(source)) {}
 	}
 
 	public class Deferred<T> : Result<T>

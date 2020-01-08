@@ -81,7 +81,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub.Environment
 
 			var url = new Url(_location).SetQueryParams(message.Query).ToUri();
 
-			var body    = message.Body.ToString(Formatting.None) ?? string.Empty;
+			var body    = message.Body.ToString(Formatting.None);
 			var content = new StringContent(body);
 
 			foreach (var (key, value) in message.Properties)

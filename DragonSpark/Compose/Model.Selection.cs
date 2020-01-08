@@ -44,16 +44,14 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static ISelect<TIn, TOut> Assigned<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> @this.If(Is.Assigned<TIn>());
-
 		// TODO: Audit.
 		public static ISelect<TIn, TOut> If<TIn, TOut>(this ISelect<TIn, TOut> @this, ISelect<TIn, bool> @true)
 			=> Compose.Start.A.Selection<TIn>()
 			          .By.Default<TOut>()
 			          .Then()
-			          .Otherwise.Use(@this)
-			          .When(@true.Then().Out());
+			          .Use.UnlessCalling(@this)
+			          .Allows(@true.Get)
+			          .Get();
 
 		/**/
 

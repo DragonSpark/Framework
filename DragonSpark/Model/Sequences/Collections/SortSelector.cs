@@ -10,11 +10,11 @@ namespace DragonSpark.Model.Sequences.Collections
 		SortSelector() : base(Start.A.Selection.Of<T>()
 		                           .By.Returning(-1)
 		                           .Then()
-		                           .Otherwise.UseWhenAssigned(SortMetadata<T>.Default)
-		                           .Otherwise.Use(Start.A.Selection<ISortAware>()
-		                                        .By.Self.DefinedAsResult()
-		                                        .Then()
-		                                        .Value()
-		                                        .Get())) {}
+		                           .Use.UseWhenAssigned(SortMetadata<T>.Default)
+		                           .Use.UnlessCalling(Start.A.Selection<ISortAware>()
+		                                                      .By.Self.Select(A.Result)
+		                                                      .Then()
+		                                                      .Value()
+		                                                      .Get())) {}
 	}
 }

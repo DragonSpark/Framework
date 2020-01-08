@@ -16,25 +16,24 @@ namespace DragonSpark.Runtime.Environment
 
 		Selections() : this(Start.A.Selection.Of.System.Type.By.Returning(Default<Type, Type>.Instance)
 		                         .Then()
-		                         .Otherwise.Use(Make.Instance)
-		                         .When(IsDefinedGenericType.Default),
+		                         .Use.UnlessCalling(Make.Instance)
+		                         .Allows(IsDefinedGenericType.Default),
 		                    ResultDefinition.Default.Get) {}
 
-		readonly ISelect<Type, ISelect<Type, Type>> _default;
-		readonly Func<Type, Type>                   _result;
+		readonly Func<Type, ISelect<Type, Type>> _default;
+		readonly Func<Type, Type>                _result;
 
-		public Selections(ISelect<Type, ISelect<Type, Type>> @default, Func<Type, Type> result)
+		public Selections(Func<Type, ISelect<Type, Type>> @default, Func<Type, Type> result)
 		{
 			_default = @default;
 			_result  = result;
 		}
 
 		public ISelect<Type, Type> Get(Type parameter)
-			=> _default.Get(parameter)
-			           .Then()
-			           .Otherwise.UseWhenAssigned(new Specification(_result(parameter)))
-			           .Otherwise.UseWhenAssigned(new Specification(parameter))
-			           .Get();
+			=> _default(parameter).Then()
+			                      .Use.UseWhenAssigned(new Specification(_result(parameter)))
+			                      .Use.UseWhenAssigned(new Specification(parameter))
+			                      .Get();
 
 		sealed class Specification : Conditional<Type, Type>, IActivateUsing<Type>
 		{

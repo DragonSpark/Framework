@@ -27,16 +27,15 @@ namespace DragonSpark.Compose.Model
 
 		public Selector(ISelect<_, T> subject) => _subject = subject;
 
-		public GuardContext<_, T> Ensure => new GuardContext<_, T>(_subject);
+		public ConditionalSelectionContext<_, T> Ensure => new ConditionalSelectionContext<_, T>(_subject);
 
-		public ValidatedSelectionContext<_, T> Otherwise => new ValidatedSelectionContext<_, T>(_subject);
-
-		public ISelect<_, T> Get() => _subject;
+		public ValidatedSelectionContext<_, T> Use => new ValidatedSelectionContext<_, T>(_subject);
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
 
 		/**/
 
+		// TODO: StoredActivation.
 		public Selector<_, TTo> Select<TTo>() where TTo : IActivateUsing<T> => Select(Activations<T, TTo>.Default);
 
 		public Selector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
@@ -55,6 +54,8 @@ namespace DragonSpark.Compose.Model
 		public Selector<_, Array<T>> Result() => Select(x => x.Yield().Result());
 
 		public Selector<_, T> Assigned() => Get().If(Is.Assigned<_>()).Then();
+
+		public Selector<_, TTo> Default<TTo>() => Select(Default<T, TTo>.Instance);
 
 		public Selector<_, TTo> Cast<TTo>() => Select(CastOrDefault<T, TTo>.Default);
 
@@ -79,6 +80,8 @@ namespace DragonSpark.Compose.Model
 
 		public CommandSelector<_> Terminate(System.Action<T> command)
 			=> new SelectedParameterCommand<_, T>(command, _subject.Get).Then();
+
+		public ISelect<_, T> Get() => _subject;
 	}
 
 	public sealed class ValidatedSelectionContext<TIn, TOut>
@@ -87,30 +90,41 @@ namespace DragonSpark.Compose.Model
 
 		public ValidatedSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
 
-		public Selector<TIn, TOut> UseWhenAssigned(Func<TOut> assigned)
-			=> UseWhenAssigned(Start.A.Result(assigned).Then().Accept<TIn>());
-
 		public Selector<TIn, TOut> UseWhenAssigned(ISelect<TIn, TOut> assigned)
-			=> UseWhenAssigned(assigned.ToDelegate());
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned.Get, _subject.Get).Then();
 
-		Selector<TIn, TOut> UseWhenAssigned(Func<TIn, TOut> assigned)
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned, _subject.Get).Then();
+		/*public Selector<TIn, TOut> UseWhenAssigned(Func<TOut> assigned)
+			=> UseWhenAssigned(Start.A.Result(assigned).Then().Accept<TIn>());*/
 
-		public UseValidatedSelectionContext<TIn, TOut> Use(ISelect<TIn, TOut> other)
+		public UseValidatedSelectionContext<TIn, TOut> UnlessCalling(ISelect<TIn, TOut> other)
 			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, other);
 
-		public IConditional<TIn, TOut> Use<TOther>(ISelect<TOther, TOut> other)
-			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, CastOrThrow<TIn, TOther>.Default.Select(other))
-				.WhenIsOf<TOther>();
-
-		public IConditional<TIn, TTo> Use<TTo>(IConditional<TOut, TTo> select)
-			=> new Conditional<TIn, TTo>(_subject.Select(select.Condition).Get, _subject.Select(select.Get).Get);
+		public ConditionalSelector<TIn, TOut> UnlessCalling<TOther>(ISelect<TOther, TOut> other)
+			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, CastOrThrow<TIn, TOther>.Default.Select(other)).IsOf<TOther>();
+		public ConditionalSelector<TIn, TTo> UnlessCalling<TTo>(IConditional<TOut, TTo> select)
+			=> new Conditional<TIn, TTo>(_subject.Select(select.Condition).Get,
+			                             _subject.Select(select.Get).Get).Then();
 	}
+
+	/*public sealed class Parameter<TIn, TOut> : IResult<Func<TIn, TOut>>
+	{
+		public static implicit operator Parameter<TIn, TOut>(Selector<TIn, TOut> instance) => new Parameter<TIn, TOut>(instance);
+
+		public static implicit operator Parameter<TIn, TOut>(Func<TIn, TOut> instance) => new Parameter<TIn, TOut>(instance);
+
+		public static implicit operator Func<TIn, TOut>(Parameter<TIn, TOut> instance) => instance.Get();
+
+		readonly Func<TIn, TOut> _select;
+
+		public Parameter(Func<TIn, TOut> select) => _select = @select;
+
+		public Func<TIn, TOut> Get() => _select;
+	}*/
 
 	public sealed class UseValidatedSelectionContext<TIn, TOut>
 	{
-		readonly ISelect<TIn, TOut> _subject;
 		readonly ISelect<TIn, TOut> _other;
+		readonly ISelect<TIn, TOut> _subject;
 
 		public UseValidatedSelectionContext(ISelect<TIn, TOut> subject, ISelect<TIn, TOut> other)
 		{
@@ -118,76 +132,172 @@ namespace DragonSpark.Compose.Model
 			_other   = other;
 		}
 
-		public IConditional<TIn, TOut> WhenIsOf<T>() => When(IsOf<TIn, T>.Default);
+		public ConditionalSelector<TIn, TOut> IsOf<T>() => Allows(IsOf<TIn, T>.Default);
 
-		public IConditional<TIn, TOut> WhenAssigned() => When(Is.Assigned<TIn>());
+		public ConditionalSelector<TIn, TOut> IsAssigned() => Allows(Is.Assigned<TIn>());
 
-		public IConditional<TIn, TOut> When(Func<TIn, bool> condition) => When(Start.A.Condition(condition));
+		public ConditionalSelector<TIn, TOut> Allows(Func<TIn, bool> condition)
+			=> Allows(Start.A.Condition(condition));
 
-		public IConditional<TIn, TOut> When(ICondition<TIn> condition)
-			=> new Conditional<TIn, TOut>(condition.Get, _other.Get, _subject.Get);
+		public ConditionalSelector<TIn, TOut> Allows(ICondition<TIn> condition)
+			=> new Conditional<TIn, TOut>(condition.Get, _other.Get, _subject.Get).Then();
 	}
 
-	public sealed class GuardContext<TIn, TOut>
+	public sealed class ConditionalSelectionContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;
 
-		public GuardContext(ISelect<TIn, TOut> select) => _subject = select;
+		public ConditionalSelectionContext(ISelect<TIn, TOut> select) => _subject = select;
 
-		public AssignedGuardContext<TIn, TOut> Assigned => new AssignedGuardContext<TIn, TOut>(_subject);
+		public ConditionalInputSelectionContext<TIn, TOut> Input
+			=> new ConditionalInputSelectionContext<TIn, TOut>(_subject);
+
+		public ConditionalOutputSelectionContext<TIn, TOut> Output
+			=> new ConditionalOutputSelectionContext<TIn, TOut>(_subject);
 	}
 
-	public sealed class AssignedGuardContext<TIn, TOut>
+	public sealed class ConditionalInputSelectionContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;
 
-		public AssignedGuardContext(ISelect<TIn, TOut> subject) => _subject = subject;
+		public ConditionalInputSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
 
-		public AssignedEntryGuardContext<TIn, TOut> Entry => new AssignedEntryGuardContext<TIn, TOut>(_subject);
+		public AssignedInputConditionSelectionContext<TIn, TOut> IsAssigned
+			=> new AssignedInputConditionSelectionContext<TIn, TOut>(_subject);
 
-		public AssignedExitGuardContext<TIn, TOut> Exit => new AssignedExitGuardContext<TIn, TOut>(_subject);
+		public InputConditionSelectionContext<TIn, TOut> IsOf<T>() => Is(IsOf<TIn, T>.Default);
+
+		public InputConditionSelectionContext<TIn, TOut> Is(ISelect<TIn, bool> condition)
+			=> new InputConditionSelectionContext<TIn, TOut>(_subject, condition);
 	}
 
-	public sealed class GuardModelContext<TException> where TException : Exception
+	public sealed class AssignedInputConditionSelectionContext<TIn, TOut>
 	{
-		public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();
+		public AssignedInputConditionSelectionContext(ISelect<TIn, TOut> otherwise)
+			: this(new AssignedInputOtherwiseContext<TIn, TOut>(otherwise)) {}
 
-		GuardModelContext() {}
+		public AssignedInputConditionSelectionContext(AssignedInputOtherwiseContext<TIn, TOut> otherwise)
+			=> Otherwise = otherwise;
 
-		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message)
-			=> new GuardThrowContext<T, TException>(message);
+		public AssignedInputOtherwiseContext<TIn, TOut> Otherwise { get; }
 	}
 
-	public sealed class GuardThrowContext<T, TException> where TException : Exception
+	public sealed class InputConditionSelectionContext<TIn, TOut>
 	{
-		readonly ISelect<T, string> _message;
+		public InputConditionSelectionContext(ISelect<TIn, TOut> subject, ISelect<TIn, bool> condition)
+			: this(new OtherwiseThrowInputContext<TIn, TOut>(subject, condition)) {}
 
-		public GuardThrowContext(ISelect<T, string> message) => _message = message;
+		public InputConditionSelectionContext(OtherwiseThrowInputContext<TIn, TOut> otherwise)
+			=> Otherwise = otherwise;
 
-		public CommandSelector<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
-
-		public CommandSelector<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
+		public OtherwiseThrowInputContext<TIn, TOut> Otherwise { get; }
 	}
 
-	public sealed class AssignedEntryGuardContext<T, _>
+	public sealed class AssignedInputOtherwiseContext<TIn, TOut> : InputOtherwiseContext<TIn, TOut>
 	{
-		readonly ISelect<T, _> _subject;
+		public AssignedInputOtherwiseContext(ISelect<TIn, TOut> subject) : base(subject, Is.Assigned<TIn>()) {}
 
-		public AssignedEntryGuardContext(ISelect<T, _> select) => _subject = select;
+		public ConditionalSelector<TIn, TOut> Throw() => Throw(AssignedArgumentMessage.Default);
 
-		public Selector<T, _> OrThrow() => OrThrow(AssignedResultMessage.Default);
+		public ConditionalSelector<TIn, TOut> Throw(IResult<string> message)
+			=> Throw(message.Then().Accept<Type>().Return());
 
-		public Selector<T, _> OrThrow(ISelect<Type, string> message) => OrThrow(message.Then().Bind<T>().Get());
+		public ConditionalSelector<TIn, TOut> Throw(ISelect<Type, string> message)
+			=> Throw(message.Then().Bind<TIn>().Get());
 
-		public Selector<T, _> OrThrow(ISelect<T, string> message)
-			=> new AssignedEntryGuard<T>(message).Then().ToConfiguration().Select(_subject);
+		public ConditionalSelector<TIn, TOut> Throw(ISelect<TIn, string> message)
+			=> new AssignedThrowContext<TIn, TOut>(this).WithMessage(message);
 	}
 
-	public sealed class AssignedExitGuardContext<TIn, TOut>
+	public class OtherwiseThrowInputContext<TIn, TOut> : InputOtherwiseContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, bool> _condition;
+
+		public OtherwiseThrowInputContext(ISelect<TIn, TOut> subject, ISelect<TIn, bool> condition)
+			: base(subject, condition) => _condition = condition;
+
+		public OtherwiseThrowContext<TIn, TOut> Throw<TException>() where TException : Exception
+			=> new OtherwiseThrowContext<TIn, TOut>(this, new Select<TException>(_condition).Get);
+
+		sealed class Select<T> : ISelect<ISelect<TIn, string>, ICommand<TIn>> where T : Exception
+		{
+			readonly ISelect<TIn, bool> _condition;
+
+			public Select(ISelect<TIn, bool> condition) => _condition = condition;
+
+			public ICommand<TIn> Get(ISelect<TIn, string> parameter) => new Guard<TIn, T>(_condition.Get, parameter);
+		}
+	}
+
+	public class InputOtherwiseContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, bool> _condition;
+		readonly ISelect<TIn, TOut> _subject;
+
+		public InputOtherwiseContext(ISelect<TIn, TOut> subject, ISelect<TIn, bool> condition)
+		{
+			_subject   = subject;
+			_condition = condition;
+		}
+
+		public ConditionalSelector<TIn, TOut> ReturnDefault() => Use(Start.A.Selection<TIn>().By.Default<TOut>());
+
+		public ConditionalSelector<TIn, TOut> Use(ISelect<TIn, TOut> instead) => Use(instead.Get);
+
+		public ConditionalSelector<TIn, TOut> Use(Func<TIn, TOut> instead)
+			=> new Conditional<TIn, TOut>(_condition.Get, _subject.Get, instead).Then();
+
+		public ConditionalSelector<TIn, TOut> Use(ICommand<TIn> instead) => Use(instead.Then()
+		                                                                               .ToConfiguration()
+		                                                                               .Default<TOut>());
+	}
+
+	sealed class AssignedThrowContext<TIn, TOut> : OtherwiseThrowContext<TIn, TOut>
+	{
+		public AssignedThrowContext(InputOtherwiseContext<TIn, TOut> input)
+			: base(input, x => new AssignedEntryGuard<TIn>(x)) {}
+	}
+
+	public class OtherwiseThrowContext<TIn, TOut>
+	{
+		readonly Func<ISelect<TIn, string>, ICommand<TIn>> _guard;
+		readonly InputOtherwiseContext<TIn, TOut>          _input;
+
+		public OtherwiseThrowContext(InputOtherwiseContext<TIn, TOut> input,
+		                             Func<ISelect<TIn, string>, ICommand<TIn>> guard)
+		{
+			_input = input;
+			_guard = guard;
+		}
+
+		public ConditionalSelector<TIn, TOut> WithMessage(ISelect<TIn, string> message) => _input.Use(_guard(message));
+	}
+
+	public sealed class ConditionalSelector<TIn, TOut> : Selector<TIn, TOut>, IResult<IConditional<TIn, TOut>>
+	{
+		public static implicit operator Func<TIn, TOut>(ConditionalSelector<TIn, TOut> instance) => instance.Get().Get;
+
+		readonly IConditional<TIn, TOut> _subject;
+
+		public ConditionalSelector(IConditional<TIn, TOut> subject) : base(subject) => _subject = subject;
+
+		public new IConditional<TIn, TOut> Get() => _subject;
+	}
+
+	public sealed class ConditionalOutputSelectionContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;
 
-		public AssignedExitGuardContext(ISelect<TIn, TOut> select) => _subject = select;
+		public ConditionalOutputSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
+
+		public AssignedOutputGuardContext<TIn, TOut> IsAssigned => new AssignedOutputGuardContext<TIn, TOut>(_subject);
+	}
+
+	public sealed class AssignedOutputGuardContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+
+		public AssignedOutputGuardContext(ISelect<TIn, TOut> select) => _subject = select;
 
 		public Selector<TIn, TOut> OrThrow() => OrThrow(AssignedResultMessage.Default);
 
@@ -198,8 +308,8 @@ namespace DragonSpark.Compose.Model
 			/*_subject.Unless(Is.Assigned<T>().Then().Inverse().Get(),
 						                   guard.Then().ToConfiguration().Select(x => default(T)).Get())
 						           */
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>(),
-			                                  _subject,
+			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get,
+			                                  _subject.Get,
 			                                  Start.A.Selection<TIn>()
 			                                       .AndOf<Type>()
 			                                       .By.Cast.Or.Return(A.Type<TOut>())
@@ -208,8 +318,7 @@ namespace DragonSpark.Compose.Model
 			                                                       .Displaying(message)
 			                                                       .When(Is.Always()))
 			                                       .ToConfiguration()
-			                                       .Select(x => default(TOut))
-			                                       .Get())
+			                                       .Default<TOut>())
 				.Then();
 	}
 }

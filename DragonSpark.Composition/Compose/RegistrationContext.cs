@@ -97,8 +97,8 @@ namespace DragonSpark.Composition.Compose
 			             .Select(x => x.Get(A.Type<TOut>()))
 			             .Select(Start.A.Selection.Of.System.Type.By.Self.Then()
 			                          .Activate<TOut>()
-			                          .Ensure.Assigned.Entry.OrThrow(LocateGuardMessage.Default)
-			                          .Ensure.Assigned.Exit.OrThrow(LocateComponentMessage<TOut>.Default)
+			                          .Ensure.Input.IsAssigned.Otherwise.Throw(LocateGuardMessage.Default)
+			                          .Ensure.Output.IsAssigned.OrThrow(LocateComponentMessage<TOut>.Default)
 			                          .Get())) {}
 	}
 

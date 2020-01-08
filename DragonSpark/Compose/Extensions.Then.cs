@@ -50,8 +50,10 @@ namespace DragonSpark.Compose
 
 		public static ConditionSelector Then(this ISelect<None, bool> @this) => new ConditionSelector(@this);
 
-		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> new Selector<TIn, TOut>(@this);
+		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this) => new Selector<TIn, TOut>(@this);
+
+		public static ConditionalSelector<TIn, TOut> Then<TIn, TOut>(this IConditional<TIn, TOut> @this)
+			=> new ConditionalSelector<TIn, TOut>(@this);
 
 		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new ConditionSelector<T>(@this);
 
@@ -68,7 +70,6 @@ namespace DragonSpark.Compose
 			=> new OperationSelector<_, T>(@this);
 
 		public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new TaskSelector<_, T>(@this);
-
 
 /**/
 
@@ -119,20 +120,19 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static ICommand<T> ToCommand<T>(this ISelect<T, None> @this) => new InvokeParameterCommand<T>(@this.Get);
+		public static ICommand<T> ToCommand<T>(this Selector<T, None> @this)
+			=> new InvokeParameterCommand<T>(@this.Get().Get);
 
-		public static ICommand ToAction(this ISelect<None, None> @this)
-			=> new Model.Action(@this.ToCommand().Execute);
+		/*public static ICommand ToAction(this ISelect<None, None> @this)
+			=> new Model.Action(@this.ToCommand().Execute);*/
 
 		public static ResultContext<T> Bind<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
-
-		/*public static IResult<T> ToResult<T>(this ISelect<None, T> @this)
-			=> @this as IResult<T> ??
-			   new DragonSpark.Model.Results.Result<T>(@this.Get);*/
 
 		public static T Return<T>(this ResultContext<T> @this) => @this.Get().Get();
 
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
+
+		public static T Return<_, T>(this Selector<_, T> @this, _ parameter) => @this.Get().Get(parameter);
 
 		public static ISelect<_, Array<T>> Return<_, T>(this Query<_, T> @this) => @this.Get();
 	}

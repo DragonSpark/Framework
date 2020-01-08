@@ -19,8 +19,6 @@ namespace DragonSpark.Compose.Model
 		public ResultDelegateContext(IResult<Func<T>> instance) : base(instance) {}
 
 		public ResultContext<T> Assume() => new Assume<T>(this).Then();
-
-		
 	}
 
 	public class CommandResultContext<T> : ResultContext<ICommand<T>>

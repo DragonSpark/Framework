@@ -28,9 +28,9 @@ namespace DragonSpark.Model.Sequences.Collections.Commands
 			=> parameter.Item2
 			            .ToSelect()
 			            .Then()
-			            .Otherwise
-			            .Use(new InsertItemCommand<T>(parameter.Item1, _index).ToSelect())
-			            .When(_condition)
+			            .Use
+			            .UnlessCalling(new InsertItemCommand<T>(parameter.Item1, _index).ToSelect())
+			            .Allows(_condition)
 			            .ToCommand();
 	}
 }
