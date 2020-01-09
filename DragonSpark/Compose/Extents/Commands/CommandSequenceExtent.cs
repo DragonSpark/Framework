@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Compose.Extents.Commands
 {
-	public sealed class SequenceCommandExtent<T> : CommandExtent<IEnumerable<T>>
+	public sealed class CommandSequenceExtent<T> : CommandExtent<IEnumerable<T>>
 	{
-		public static SequenceCommandExtent<T> Default { get; } = new SequenceCommandExtent<T>();
+		public static CommandSequenceExtent<T> Default { get; } = new CommandSequenceExtent<T>();
 
-		SequenceCommandExtent() {}
+		CommandSequenceExtent() {}
 
 		public CommandExtent<T[]> Array => DefaultCommandExtent<T[]>.Default;
 

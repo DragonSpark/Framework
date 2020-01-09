@@ -45,7 +45,7 @@ namespace DragonSpark.Compose.Extents.Conditions
 
 			Selections() {}
 
-			public SequenceConditionExtent<T> Sequence => SequenceConditionExtent<T>.Default;
+			public ConditionSequenceExtent<T> Sequence => ConditionSequenceExtent<T>.Default;
 			public ConditionExtent<Func<T>> Delegate => DefaultConditionExtent<Func<T>>.Default;
 			public ConditionExtent<ICondition<T>> Condition => DefaultConditionExtent<ICondition<T>>.Default;
 			public ConditionExtent<IResult<T>> Result => DefaultConditionExtent<IResult<T>>.Default;
