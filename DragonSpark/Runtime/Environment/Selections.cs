@@ -48,7 +48,7 @@ namespace DragonSpark.Runtime.Environment
 			public static Make Instance { get; } = new Make();
 
 			Make() : this(Specifications.Instance.Get(),
-			              GenericArguments.Default.Then().Select<GenericTypeBuilder>().Get(),
+			              GenericArguments.Default.Then().StoredActivation<GenericTypeBuilder>().Get(),
 			              IsGenericTypeDefinition.Default) {}
 
 			readonly ISelect<Type, ISelect<Type, Type>> _source;
@@ -80,7 +80,7 @@ namespace DragonSpark.Runtime.Environment
 				: base(metadata.Select(GenericInterfaceImplementations.Default)
 				               .Select(x => x.Condition.ToDelegate())
 				               .Then()
-				               .Select<OneItemIs<Type>>()
+				               .StoredActivation<OneItemIs<Type>>()
 				               .Select(metadata.Select(GenericInterfaces.Default)
 				                               .Open()
 				                               .Select)

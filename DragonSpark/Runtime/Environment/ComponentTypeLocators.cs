@@ -46,7 +46,7 @@ namespace DragonSpark.Runtime.Environment
 			            .Where(condition)
 			            .Get()
 			            .Then()
-			            .Select<TypeCandidates>()
+			            .StoredActivation<TypeCandidates>()
 			            .Select(x => x.Open()
 			                          .Then()
 			                          .Sort()
