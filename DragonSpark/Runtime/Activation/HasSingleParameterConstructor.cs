@@ -21,7 +21,7 @@ namespace DragonSpark.Runtime.Activation
 			                              .Then()
 			                              .Metadata()
 			                              .Select(IsAssignableFrom<T>.Default)
-			                              .Assigned()
+			                              .EnsureAssignedOrDefault()
 			                              .Get())
 			                 .Then()
 			                 .And(parameters.Then().Select(RemainingParametersAreOptional.Default))) {}

@@ -20,7 +20,7 @@ namespace DragonSpark.Runtime.Activation
 			            .Unless.Using(Start.A.Selection(constructor)
 			                                  .Select(A.Selection(ParameterConstructors<TIn, TOut>.Default)
 			                                           .Then()
-			                                           .Assigned()
+			                                           .EnsureAssignedOrDefault()
 			                                           .Return()))
 			            .ResultsInAssigned()
 			            .Return(A.Metadata<TOut>())) {}

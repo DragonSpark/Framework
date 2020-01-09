@@ -11,6 +11,7 @@ namespace DragonSpark.Runtime.Objects
 
 		OncePerParameter() {}
 
-		public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter) => parameter.If(new First<TIn>());
+		public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter)
+			=> parameter.Then().OrDefault(new First<TIn>()).Get();
 	}
 }

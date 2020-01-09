@@ -64,10 +64,14 @@ namespace DragonSpark.Runtime.Environment
 				_valid         = valid;
 			}
 
-			public ISelect<Type, Type> Get(Type parameter) => _valid.Then()
-			                                                        .And(_specification.Get(parameter))
-			                                                        .Out()
-			                                                        .To(_source.Get(parameter).If);
+			public ISelect<Type, Type> Get(Type parameter)
+				=> _source.Get(parameter)
+				          .Then()
+				          .Ensure.Input.Is(_valid.Then()
+				                                 .And(_specification.Get(parameter))
+				                                 .Out())
+				          .Otherwise.UseDefault()
+				          .Get();
 		}
 
 		sealed class Specifications : Instance<ISelect<Type, ICondition<Type>>>

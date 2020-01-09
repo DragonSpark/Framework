@@ -16,6 +16,7 @@ namespace DragonSpark.Runtime.Objects
 			              .Bind()
 			              .Accept<TIn>()
 			              .Return()
-			              .To(parameter.If);
+			              .To(parameter.Then().OrDefault)
+			              .Get();
 	}
 }
