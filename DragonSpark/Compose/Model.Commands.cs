@@ -16,7 +16,7 @@ namespace DragonSpark.Compose
 		public static System.Action<T> ToDelegate<T>(this ICommand<T> @this) => @this.Execute;
 
 		public static System.Action<T> ToDelegateReference<T>(this ICommand<T> @this)
-			=> DragonSpark.Model.Commands.Delegates<T>.Default.Get(@this);
+			=> Delegates<T>.Default.Get(@this);
 
 		public static void Execute<T>(this ICommand<Array<T>> @this, params T[] parameters)
 			=> @this.Execute(parameters);
