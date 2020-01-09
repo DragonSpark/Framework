@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Compose.Extents.Conditions
 {
-	public sealed class ConditionSequenceExtent<T> : ConditionExtent<IEnumerable<T>>
+	public sealed class SequenceConditionExtent<T> : ConditionExtent<IEnumerable<T>>
 	{
-		public static ConditionSequenceExtent<T> Default { get; } = new ConditionSequenceExtent<T>();
+		public static SequenceConditionExtent<T> Default { get; } = new SequenceConditionExtent<T>();
 
-		ConditionSequenceExtent() {}
+		SequenceConditionExtent() {}
 
 		public ConditionExtent<T[]> Array => DefaultConditionExtent<T[]>.Default;
 

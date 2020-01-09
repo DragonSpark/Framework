@@ -30,7 +30,7 @@ namespace DragonSpark.Testing.Application.Compose
 			var instance = new Instance();
 
 			Start.A.Result(instance)
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -67,7 +67,7 @@ namespace DragonSpark.Testing.Application.Compose
 
 			Start.An.Extent<Instance>()
 			     .Into.Result.Using(instance)
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -77,11 +77,9 @@ namespace DragonSpark.Testing.Application.Compose
 		{
 			var instance = new Instance();
 
-			Start.A.Result
-			     .Of<Instance>()
-			     .By
-			     .Calling(instance.Self)
-			     .Get()
+			Start.A.Result.Of<Instance>()
+			     .By.Calling(instance.Self)
+			     .Return()
 			     .Should()
 			     .BeSameAs(instance);
 		}

@@ -37,7 +37,7 @@ namespace DragonSpark.Compose.Extents.Selections
 		public ISelect<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance;
 
 		public ISelect<T, TOut> Calling<TOut>(Func<T, TOut> select)
-			=> new DragonSpark.Model.Selection.Select<T, TOut>(select);
+			=> select.Target as ISelect<T, TOut> ?? new DragonSpark.Model.Selection.Select<T, TOut>(select);
 
 		public ISelect<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result);
 

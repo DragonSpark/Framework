@@ -5,7 +5,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Results
 {
-	public sealed class ContextTests
+	public sealed class ResultContextTests
 	{
 		sealed class Subject {}
 
@@ -21,13 +21,13 @@ namespace DragonSpark.Testing.Application.Compose.Results
 		{
 			Start.A.Result<Subject>()
 			     .By.Activation()
-			     .Get()
+			     .Return()
 			     .Should()
 			     .NotBeNull();
 
 			Start.A.Result<SubjectSingleton>()
 			     .By.Activation()
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeSameAs(SubjectSingleton.Default);
 		}
@@ -38,7 +38,7 @@ namespace DragonSpark.Testing.Application.Compose.Results
 			var instance = Array.Empty<Subject>();
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.By.Using(instance)
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -51,7 +51,7 @@ namespace DragonSpark.Testing.Application.Compose.Results
 			var instance = result.Get();
 			instance.Should()
 			        .NotBeNull();
-			result.Get().Should().NotBeSameAs(instance);
+			result.Return().Should().NotBeSameAs(instance);
 		}
 
 		[Fact]
@@ -59,7 +59,7 @@ namespace DragonSpark.Testing.Application.Compose.Results
 		{
 			Start.A.Result.Of<SubjectSingleton>()
 			     .By.Singleton()
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeSameAs(SubjectSingleton.Default);
 		}

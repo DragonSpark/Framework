@@ -8,6 +8,9 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
+		public static ResultContext<T> Start<T>(this Func<T> @this)
+			=> Compose.Start.A.Result.Of.Type<T>().By.Calling(@this);
+
 		public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
 		public static ValidatedResultContext<T> Unless<T>(this IResult<T> @this, IResult<T> other)

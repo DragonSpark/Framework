@@ -47,7 +47,7 @@ namespace DragonSpark.Compose.Extents.Commands
 
 			Selections() {}
 
-			public CommandSequenceExtent<T> Sequence => CommandSequenceExtent<T>.Default;
+			public SequenceCommandExtent<T> Sequence => SequenceCommandExtent<T>.Default;
 			public CommandExtent<Func<T>> Delegate => DefaultCommandExtent<Func<T>>.Default;
 			public CommandExtent<ICondition<T>> Condition => DefaultCommandExtent<ICondition<T>>.Default;
 			public CommandExtent<IResult<T>> Result => DefaultCommandExtent<IResult<T>>.Default;

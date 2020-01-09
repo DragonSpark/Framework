@@ -3,7 +3,8 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public class OutputOtherwiseThrowContext<TIn, TOut>
 	{
 		readonly Func<ISelect<TIn, string>, ICommand<TIn>> _guard;
@@ -18,8 +19,10 @@ namespace DragonSpark.Compose.Model.Validation {
 
 		public Selector<TIn, TOut> WithMessage(string message) => WithMessage(Start.A.Result(message));
 
-		public Selector<TIn, TOut> WithMessage(IResult<string> message)
-			=> WithMessage(message.Then().Accept<TIn>().Return());
+		public Selector<TIn, TOut> WithMessage(IResult<string> message) => WithMessage(message.Get);
+
+		public Selector<TIn, TOut> WithMessage(Func<string> message)
+			=> WithMessage(message.Start().Accept<TIn>().Return());
 
 		public Selector<TIn, TOut> WithMessage(ISelect<TIn, string> message) => _input.Use(_guard(message));
 	}

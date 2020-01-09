@@ -14,7 +14,7 @@ namespace DragonSpark.Compose
 			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);
 
 		public static ISelect<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
-			=> @this.Target as ISelect<TIn, TOut> ?? new Select<TIn, TOut>(@this);
+			=> Compose.Start.A.Selection<TIn>().By.Calling(@this);
 
 		/**/
 

@@ -19,8 +19,10 @@ namespace DragonSpark.Compose.Model.Validation
 
 		public ConditionalSelector<TIn, TOut> WithMessage(string message) => WithMessage(Start.A.Result(message));
 
-		public ConditionalSelector<TIn, TOut> WithMessage(IResult<string> message)
-			=> WithMessage(message.Then().Accept<TIn>().Return());
+		public ConditionalSelector<TIn, TOut> WithMessage(IResult<string> message) => WithMessage(message.Get);
+
+		public ConditionalSelector<TIn, TOut> WithMessage(Func<string> message)
+			=> WithMessage(message.Start().Accept<TIn>().Return());
 
 		public ConditionalSelector<TIn, TOut> WithMessage(ISelect<TIn, string> message) => _input.Use(_guard(message));
 	}

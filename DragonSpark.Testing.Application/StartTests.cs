@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application
@@ -20,13 +20,13 @@ namespace DragonSpark.Testing.Application
 		{
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.New(0)
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeEmpty();
 
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.New(4)
-			     .Get()
+			     .Return()
 			     .Should()
 			     .HaveCount(4);
 		}
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Application
 		{
 			Start.A.Result<Subject>()
 			     .By.Default()
-			     .Get()
+			     .Return()
 			     .Should()
 			     .BeNull();
 		}
@@ -45,9 +45,9 @@ namespace DragonSpark.Testing.Application
 		void VerifySingleton()
 		{
 			var source = Start.A.Result<SingletonSubject>().By.Activation();
-			var first  = source.Get();
+			var first  = source.Return();
 			first.Should().Be(SingletonSubject.Default);
-			source.Get().Should().BeSameAs(first);
+			source.Return().Should().BeSameAs(first);
 		}
 
 		[Fact]
@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Application
 			var source = Start.A.Result<Subject>().By.Activation();
 			var first  = source.Get();
 			first.Should().NotBeNull();
-			source.Get().Should().NotBeNull().And.Subject.Should().NotBeSameAs(first);
+			source.Return().Should().NotBeNull().And.Subject.Should().NotBeSameAs(first);
 		}
 	}
 }

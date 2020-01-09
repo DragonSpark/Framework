@@ -63,7 +63,7 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		[Fact]
 		void VerifySourceDelegated()
 		{
-			Start.A.Result(6776).Then().Select(x => x.GetType().GetTypeInfo()).Return().Should().Be(A.Metadata<int>());
+			Start.A.Result(6776).Select(x => x.GetType().GetTypeInfo()).Return().Should().Be(A.Metadata<int>());
 		}
 
 		[Fact]

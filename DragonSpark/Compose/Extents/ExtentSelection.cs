@@ -8,7 +8,7 @@ namespace DragonSpark.Compose.Extents
 
 		ExtentSelection() {}
 
-		public Context<T> Result => Context<T>.Instance;
+		public ResultContext<T> Result => ResultContext<T>.Instance;
 
 		public Conditions.ConditionContext<T> Condition => Conditions.ConditionContext<T>.Instance;
 

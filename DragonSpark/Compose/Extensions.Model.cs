@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
@@ -21,13 +20,13 @@ namespace DragonSpark.Compose
 
 		public static T Instance<T>(this VowelContext _, T instance) => instance;
 
-		public static Extent<T> Of<T>(this Context @this) => @this.Of.Type<T>();
+		public static ResultExtent<T> Of<T>(this ResultContext @this) => @this.Of.Type<T>();
 
-		public static Extent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
+		public static ResultExtent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
 
-		public static IResult<T> Result<T>(this ModelContext @this, T instance) => @this.Result<T>().By.Using(instance);
+		public static Model.ResultContext<T> Result<T>(this ModelContext @this, T instance) => @this.Result<T>().By.Using(instance);
 
-		public static IResult<T> Result<T>(this ModelContext @this, Func<T> result)
+		public static Model.ResultContext<T> Result<T>(this ModelContext @this, Func<T> result)
 			=> @this.Result<T>().By.Calling(result);
 
 		public static Extents.Conditions.ConditionExtent<T> Of<T>(this Extents.Conditions.ConditionContext @this) => @this.Of.Type<T>();

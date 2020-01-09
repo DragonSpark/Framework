@@ -24,7 +24,7 @@ namespace DragonSpark.Runtime.Invocation
 
 	public class Deferred<T> : Result<T>
 	{
-		public Deferred(Func<T> result, IMutable<T> mutable) : this(Start.A.Result(result), mutable) {}
+		public Deferred(Func<T> result, IMutable<T> mutable) : this(Start.A.Result(result).Get(), mutable) {}
 
 		public Deferred(IResult<T> result, IMutable<T> mutable) : this(result, mutable, mutable) {}
 

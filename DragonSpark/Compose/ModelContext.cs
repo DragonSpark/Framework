@@ -11,7 +11,7 @@ namespace DragonSpark.Compose
 
 		public ConditionContext Condition => ConditionContext.Default;
 
-		public Extents.Results.Context Result => Extents.Results.Context.Default;
+		public Extents.Results.ResultContext Result => Extents.Results.ResultContext.Default;
 
 		public Extents.Commands.CommandContext Command => Extents.Commands.CommandContext.Default;
 
