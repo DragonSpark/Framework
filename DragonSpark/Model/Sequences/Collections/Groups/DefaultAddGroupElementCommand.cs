@@ -9,9 +9,9 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 		public DefaultAddGroupElementCommand(GroupName defaultName, IConditional<string, GroupName> names,
 		                                     IGroupCollection<T> collection)
 			: base(new AddGroupElementCommand<T>(collection, new GroupName<T>(defaultName, names))
-			       .ToSelect()
 			       .Then()
-			       .Unless.Input.IsOf(new GroupingAwareCommand<T>(collection).ToSelect())
+			       .Selection()
+			       .Unless.Input.IsOf(new GroupingAwareCommand<T>(collection).Then().Selection().Get())
 			       .ToCommand()) {}
 	}
 }

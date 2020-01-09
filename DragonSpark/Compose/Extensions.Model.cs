@@ -76,8 +76,8 @@ namespace DragonSpark.Compose
 
 		public GuardThrowContext(ISelect<T, string> message) => _message = message;
 
-		public CommandSelector<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
+		public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
 
-		public CommandSelector<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
+		public CommandContext<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
 	}
 }

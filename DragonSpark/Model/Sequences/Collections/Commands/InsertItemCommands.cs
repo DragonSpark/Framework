@@ -26,10 +26,10 @@ namespace DragonSpark.Model.Sequences.Collections.Commands
 
 		public ICommand<T> Get((IList<T>, ICommand<T>) parameter)
 			=> parameter.Item2
-			            .ToSelect()
 			            .Then()
+			            .Selection()
 			            .Unless.Input.Is(_condition)
-			            .ThenUse(new InsertItemCommand<T>(parameter.Item1, _index).ToSelect())
+			            .ThenUse(new InsertItemCommand<T>(parameter.Item1, _index).Then().Selection())
 			            .ToCommand();
 	}
 }

@@ -17,7 +17,7 @@ namespace DragonSpark.Compose
 			=> @this.ToOrderedDictionary().AsReadOnly().ToStore();
 
 		public static ISelect<T, TIn, TOut> ToSelect<T, TIn, TOut>(this IEnumerable<Pair<T, Func<TIn, TOut>>> @this)
-			=> new Select<T, TIn, TOut>(@this.ToStore().ToDelegate());
+			=> new Select<T, TIn, TOut>(@this.ToStore().Get);
 
 		public static IConditional<TIn, TOut> ToStore<TIn, TOut>(this IReadOnlyDictionary<TIn, TOut> @this)
 			=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);

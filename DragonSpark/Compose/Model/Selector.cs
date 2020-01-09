@@ -74,11 +74,11 @@ namespace DragonSpark.Compose.Model
 		public Selector<_, T> Try<TException>() where TException : Exception
 			=> new Try<TException, _, T>(Get().Get).Then();
 
-		public CommandSelector<_> Terminate() => new InvokeParameterCommand<_, T>(Get().Get).Then();
+		public CommandContext<_> Terminate() => new InvokeParameterCommand<_, T>(Get().Get).Then();
 
-		public CommandSelector<_> Terminate(ICommand<T> command) => Terminate(command.Execute);
+		public CommandContext<_> Terminate(ICommand<T> command) => Terminate(command.Execute);
 
-		public CommandSelector<_> Terminate(System.Action<T> command)
+		public CommandContext<_> Terminate(System.Action<T> command)
 			=> new SelectedParameterCommand<_, T>(command, _subject.Get).Then();
 
 		public ISelect<_, T> Get() => _subject;
@@ -114,8 +114,10 @@ namespace DragonSpark.Compose.Model
 			_condition = condition;
 		}
 
-		public ConditionalSelector<TIn, TOut> ThenUse(ISelect<TIn, TOut> instead)
-			=> new Conditional<TIn, TOut>(_condition, instead.Get, _subject.Get).Then();
+		public ConditionalSelector<TIn, TOut> ThenUse(ISelect<TIn, TOut> instead) => ThenUse(instead.Get);
+
+		public ConditionalSelector<TIn, TOut> ThenUse(Func<TIn, TOut> instead)
+			=> new Conditional<TIn, TOut>(_condition, instead, _subject.Get).Then();
 	}
 
 	public sealed class UnlessInputContext<TIn, TOut>
@@ -124,7 +126,9 @@ namespace DragonSpark.Compose.Model
 
 		public UnlessInputContext(ISelect<TIn, TOut> subject) => _subject = subject;
 
-		public Selector<TIn, TOut> IsOf<TOther>(ISelect<TOther, TOut> other)
+		public Selector<TIn, TOut> IsOf<TOther>(ISelect<TOther, TOut> other) => IsOf(other.ToDelegate());
+
+		public Selector<TIn, TOut> IsOf<TOther>(Func<TOther, TOut> other)
 			=> IsOf<TOther>().ThenUse(CastOrThrow<TIn, TOther>.Default.Select(other));
 
 		public UnlessResultContext<TIn, TOut> IsOf<T>() => Is(IsOf<TIn, T>.Default);
@@ -313,21 +317,16 @@ namespace DragonSpark.Compose.Model
 		public Selector<TIn, TOut> OrThrow(IResult<string> message) => OrThrow(message.Then().Accept<Type>().Return());
 
 		public Selector<TIn, TOut> OrThrow(ISelect<Type, string> message)
-			// TODO: Convert to Unless
-			/*_subject.Unless(Is.Assigned<T>().Then().Inverse().Get(),
-						                   guard.Then().ToConfiguration().Select(x => default(T)).Get())
-						           */
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get,
-			                                  _subject.Get,
-			                                  Start.A.Selection<TIn>()
-			                                       .AndOf<Type>()
-			                                       .By.Cast.Or.Return(A.Type<TOut>())
-			                                       .Then()
-			                                       .Terminate(Start.A.Guard<InvalidOperationException>()
-			                                                       .Displaying(message)
-			                                                       .When(Is.Always()))
-			                                       .ToConfiguration()
-			                                       .Default<TOut>())
-				.Then();
+			=> Start.A.Selection<TIn>()
+			        .AndOf<Type>()
+			        .By.Cast.Or.Return(A.Type<TOut>())
+			        .Then()
+			        .Terminate(Start.A.Guard<InvalidOperationException>()
+			                        .Displaying(message)
+			                        .When(Is.Always()))
+			        .ToConfiguration()
+			        .Default<TOut>()
+			        .Unless.Using(_subject)
+			        .ResultsInAssigned();
 	}
 }

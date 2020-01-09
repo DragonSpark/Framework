@@ -73,9 +73,9 @@ namespace DragonSpark.Compose
 
 /**/
 
-		public static CommandSelector Then(this ICommand @this) => new CommandSelector(@this);
+		public static CommandContext Then(this ICommand @this) => new CommandContext(@this);
 
-		public static CommandSelector<T> Then<T>(this ICommand<T> @this) => new CommandSelector<T>(@this);
+		public static CommandContext<T> Then<T>(this ICommand<T> @this) => new CommandContext<T>(@this);
 
 		public static CommandInstanceSelector<_, T> Then<_, T>(this ISelect<_, ICommand<T>> @this)
 			=> new CommandInstanceSelector<_, T>(@this);
@@ -100,9 +100,9 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static ICommand Out<T>(this CommandSelector<T> @this, T parameter) => @this.Bind(parameter).Command;
+		public static ICommand Out<T>(this CommandContext<T> @this, T parameter) => @this.Bind(parameter).Command;
 
-		public static IAlteration<T> Out<T>(this CommandSelector<T> @this) => @this.ToConfiguration().Out();
+		public static IAlteration<T> Out<T>(this CommandContext<T> @this) => @this.ToConfiguration().Out();
 
 		public static ICondition<T> Out<T>(this Selector<T, bool> @this)
 			=> @this.Get()

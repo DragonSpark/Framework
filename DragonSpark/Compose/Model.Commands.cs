@@ -4,7 +4,6 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
-using Action = System.Action;
 
 // ReSharper disable TooManyArguments
 
@@ -14,8 +13,6 @@ namespace DragonSpark.Compose
 
 	public static partial class ExtensionMethods
 	{
-		public static Action ToDelegate(this ICommand<None> @this) => @this.Execute;
-
 		public static System.Action<T> ToDelegate<T>(this ICommand<T> @this) => @this.Execute;
 
 		public static System.Action<T> ToDelegateReference<T>(this ICommand<T> @this)
@@ -30,11 +27,10 @@ namespace DragonSpark.Compose
 		public static void Execute<T1, T2, T3>(this ICommand<(T1, T2, T3)> @this, T1 first, T2 second, T3 third)
 			=> @this.Execute((first, second, third));
 
-		public static IAssign<TIn, TOut> ToAssignment<TIn, TOut>(this ISelect<TIn, IMembership<TOut>> @this)
-			=> @this.Select(x => x.Add).Then().ToAssignment();
-
-		public static void Assign<TKey, TValue>(this IAssign<TKey, TValue> @this, TKey key, TValue value)
-			=> @this.Execute(Pairs.Create(key, value));
+		public static void Execute(this ICommand<None> @this)
+		{
+			@this.Execute(None.Default);
+		}
 
 		public static ICommand<T> Pass<T>(this ICommand<T> @this, T parameter)
 		{
@@ -52,18 +48,16 @@ namespace DragonSpark.Compose
 			return @this;
 		}
 
-		public static void Execute(this ICommand<None> @this)
-		{
-			@this.Execute(None.Default);
-		}
+		public static IAssign<TIn, TOut> ToAssignment<TIn, TOut>(this ISelect<TIn, IMembership<TOut>> @this)
+			=> @this.Select(x => x.Add).Then().ToAssignment();
 
-		// TODO:
-		public static ISelect<T, None> ToSelect<T>(this ICommand<T> @this) => new Action<T>(@this.Execute);
+		public static void Assign<TKey, TValue>(this IAssign<TKey, TValue> @this, TKey key, TValue value)
+			=> @this.Execute(Pairs.Create(key, value));
 
-		public static CommandSelector<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
+		public static CommandContext<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
 			=> @this.Then().Add(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
 
-		public static CommandSelector<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
+		public static CommandContext<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
 			=> @this.Then().Add(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
 	}
 }
