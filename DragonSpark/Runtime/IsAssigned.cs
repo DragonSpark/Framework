@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System;
@@ -19,10 +20,10 @@ namespace DragonSpark.Runtime
 		IsAssigned() : base(IsAssignedConditions<T>.Default.Get(typeof(T))) {}
 	}
 
-	public class IsAssigned<TIn, TOut> : Condition<TIn> where TOut : class
+	public class IsAssigned<TIn, TOut> : Model.Selection.Conditions.Condition<TIn> where TOut : class
 	{
 		protected IsAssigned(Func<TIn, TOut> select) : this(select.Start()) {}
 
-		protected IsAssigned(ISelect<TIn, TOut> source) : base(source.Select(Is.Assigned().Get())) {}
+		protected IsAssigned(Selector<TIn, TOut> source) : base(source.Select<bool>(Is.Assigned())) {}
 	}
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores
 {
@@ -13,8 +13,7 @@ namespace DragonSpark.Model.Selection.Stores
 		public Lookup(IDictionary<TIn, TOut> dictionary) : this(dictionary.AsReadOnly()) {}
 
 		public Lookup(IReadOnlyDictionary<TIn, TOut> store) : this(store, Start.A.Selection<TIn>()
-		                                                                       .By.Default<TOut>()
-		                                                                       .Get) {}
+		                                                                       .By.Default<TOut>()) {}
 
 		public Lookup(IReadOnlyDictionary<TIn, TOut> store, Func<TIn, TOut> @default)
 			: base(store.ContainsKey, new TableValueAdapter<TIn, TOut>(store, @default).Get) {}

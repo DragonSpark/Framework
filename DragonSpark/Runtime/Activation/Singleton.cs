@@ -7,6 +7,6 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static Singleton<T> Default { get; } = new Singleton<T>();
 
-		Singleton() : base(Singletons.Default.Then().Bind(A.Type<T>()).Cast<T>()) {}
+		Singleton() : base(Singletons.Default.Then().Bind<T>()) {}
 	}
 }

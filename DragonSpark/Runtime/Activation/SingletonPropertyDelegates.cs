@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Activation
 {
@@ -13,8 +13,8 @@ namespace DragonSpark.Runtime.Activation
 		SingletonPropertyDelegates() : base(Start.A.Selection<PropertyInfo>()
 		                                         .By.Calling(x => x.GetMethod)
 		                                         .Select(MethodDelegates<Func<object>>.Default)
+		                                         .Get()
 		                                         .Then()
-		                                         .Singleton()
-		                                         .Get()) {}
+		                                         .Singleton()) {}
 	}
 }

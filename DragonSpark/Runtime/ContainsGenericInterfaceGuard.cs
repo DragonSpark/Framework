@@ -11,9 +11,9 @@ namespace DragonSpark.Runtime
 		public ContainsGenericInterfaceGuard(Type type) : this(type, new ExpectedTypeMessage(type)) {}
 
 		public ContainsGenericInterfaceGuard(Type type, ISelect<Type, string> message)
-			: this(new ContainsGenericInterface(type).Then().Inverse().Out().Get, message) {}
+			: this(new ContainsGenericInterface(type).Then().Inverse().Get().Get, message.Get) {}
 
-		public ContainsGenericInterfaceGuard(Func<Type, bool> condition, ISelect<Type, string> message)
+		public ContainsGenericInterfaceGuard(Func<Type, bool> condition, Func<Type, string> message)
 			: base(condition, message) {}
 	}
 }

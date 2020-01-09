@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Objects;
 using System;
 
@@ -18,15 +19,15 @@ namespace DragonSpark.Compose.Extents.Selections
 
 			Alternatives() {}
 
-			public ISelect<TIn, TOut> Throw => CastOrDefault<TIn, TOut>.Default;
+			public Selector<TIn, TOut> Throw => CastOrDefault<TIn, TOut>.Default.Then();
 
-			public ISelect<TIn, TOut> Result => ResultAwareCast<TIn, TOut>.Default;
+			public Selector<TIn, TOut> Result => ResultAwareCast<TIn, TOut>.Default.Then();
 
-			public ISelect<TIn, TOut> Return(TOut result)
-				=> new CastOrDefault<TIn, TOut>(new FixedResult<TIn, TOut>(result).Get);
+			public Selector<TIn, TOut> Return(TOut result)
+				=> new CastOrDefault<TIn, TOut>(new FixedResult<TIn, TOut>(result).Get).Then();
 
-			public ISelect<TIn, TOut> Return(Func<TOut> result)
-				=> new CastOrDefault<TIn, TOut>(new DelegatedResult<TIn, TOut>(result).Get);
+			public Selector<TIn, TOut> Return(Func<TOut> result)
+				=> new CastOrDefault<TIn, TOut>(new DelegatedResult<TIn, TOut>(result).Get).Then();
 		}
 	}
 }

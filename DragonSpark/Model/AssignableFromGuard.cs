@@ -11,9 +11,9 @@ namespace DragonSpark.Model
 		public AssignableFromGuard(Type type) : this(type, new ExpectedTypeMessage(type)) {}
 
 		public AssignableFromGuard(Type type, ISelect<Type, string> message)
-			: this(new IsAssignableFrom(type).Then().Inverse().Out(), message) {}
+			: this(new IsAssignableFrom(type).Then().Inverse().Out(), message.Get) {}
 
-		public AssignableFromGuard(ICondition<Type> condition, ISelect<Type, string> message)
+		public AssignableFromGuard(ICondition<Type> condition, Func<Type, string> message)
 			: base(condition, message) {}
 	}
 }

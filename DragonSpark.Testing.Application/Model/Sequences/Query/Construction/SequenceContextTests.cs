@@ -109,13 +109,13 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.StoredActivation<Store<int>>()
-			     .Get(data)
+			     .Return(data)
 			     .Instance.Should()
 			     .Equal(data);
 
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Instantiation<Store<int>>()
-			     .Get(data)
+			     .Return(data)
 			     .Instance.Should()
 			     .Equal(data);
 		}

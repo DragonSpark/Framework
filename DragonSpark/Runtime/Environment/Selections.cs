@@ -15,7 +15,6 @@ namespace DragonSpark.Runtime.Environment
 		public static Selections Default { get; } = new Selections();
 
 		Selections() : this(Start.A.Selection.Of.System.Type.By.Returning(Default<Type, Type>.Instance)
-		                         .Then()
 		                         .Unless.Input.Is(IsDefinedGenericType.Default)
 		                         .ThenUse(Make.Instance),
 		                    ResultDefinition.Default.Get) {}

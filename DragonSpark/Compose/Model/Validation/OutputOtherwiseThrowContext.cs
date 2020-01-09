@@ -7,11 +7,11 @@ namespace DragonSpark.Compose.Model.Validation
 {
 	public class OutputOtherwiseThrowContext<TIn, TOut>
 	{
-		readonly Func<ISelect<TIn, string>, ICommand<TIn>> _guard;
+		readonly Func<Func<TIn, string>, ICommand<TIn>> _guard;
 		readonly OutputOtherwiseContext<TIn, TOut>         _input;
 
 		public OutputOtherwiseThrowContext(OutputOtherwiseContext<TIn, TOut> input,
-		                                   Func<ISelect<TIn, string>, ICommand<TIn>> guard)
+		                                   Func<Func<TIn, string>, ICommand<TIn>> guard)
 		{
 			_input = input;
 			_guard = guard;
@@ -22,8 +22,10 @@ namespace DragonSpark.Compose.Model.Validation
 		public Selector<TIn, TOut> WithMessage(IResult<string> message) => WithMessage(message.Get);
 
 		public Selector<TIn, TOut> WithMessage(Func<string> message)
-			=> WithMessage(message.Start().Accept<TIn>().Return());
+			=> WithMessage(message.Start().Accept<TIn>());
 
-		public Selector<TIn, TOut> WithMessage(ISelect<TIn, string> message) => _input.Use(_guard(message));
+		public Selector<TIn, TOut> WithMessage(ISelect<TIn, string> message) => WithMessage(message.Get);
+
+		public Selector<TIn, TOut> WithMessage(Func<TIn, string> message) => _input.Use(_guard(message));
 	}
 }

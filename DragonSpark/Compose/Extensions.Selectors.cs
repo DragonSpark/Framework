@@ -17,7 +17,9 @@ namespace DragonSpark.Compose
 		public static ResultContext<T> Bind<_, T>(this Selector<_, T> @this, IResult<_> parameter)
 			=> @this.Bind(parameter.Get);
 
-		public static Selector<T, string> Bind<T>(this Selector<Type, string> @this)
+		public static Selector<T, string> Out<T>(this Selector<Type, string> @this)
 			=> @this.Bind(A.Type<T>()).Accept<T>();
+
+		public static ResultContext<T> Bind<T>(this Selector<Type, object> @this) => @this.Bind(A.Type<T>()).Cast<T>();
 	}
 }

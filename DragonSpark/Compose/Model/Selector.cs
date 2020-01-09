@@ -60,7 +60,7 @@ namespace DragonSpark.Compose.Model
 		public Selector<TIn, TOut> OrDefault(Func<TIn, bool> use)
 			=> OrDefault(use, Start.A.Selection<TIn>().By.Default<TOut>());
 
-		public Selector<TIn, TOut> OrDefault(Func<TIn, bool> use, ISelect<TIn, TOut> @default)
+		public Selector<TIn, TOut> OrDefault(Func<TIn, bool> use, Func<TIn, TOut> @default)
 			=> Ensure.Input.Is(use)
 			         .Otherwise.Use(@default);
 

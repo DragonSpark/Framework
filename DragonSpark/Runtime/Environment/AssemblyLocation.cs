@@ -12,6 +12,7 @@ namespace DragonSpark.Runtime.Environment
 		AssemblyLocation() : base(Start.A.Selection<Assembly>()
 		                               .By.Calling(x => x.CodeBase)
 		                               .Select(Start.An.Extent<Uri>().New)
+		                               .Get()
 		                               .Get) {}
 	}
 }

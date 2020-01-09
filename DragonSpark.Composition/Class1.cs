@@ -93,10 +93,7 @@ namespace DragonSpark.Composition
 		}
 	}
 
-	sealed class name
-	{
-		
-	}
+	sealed class name {}
 
 	sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
 	{
@@ -106,6 +103,7 @@ namespace DragonSpark.Composition
 		ConfigureDefaultActivation() : this(CanActivate.Default.Get,
 		                                    Start.A.Selection<ServiceRequest>()
 		                                         .By.Calling(x => x.ServiceType)
+		                                         .Get()
 		                                         .Then()
 		                                         .Activate()) {}
 

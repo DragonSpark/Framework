@@ -14,7 +14,7 @@ namespace DragonSpark.Compose
 	{
 		public static Pair<Type, Func<string, Func<object, IProjection>>> Entry<T>(this IFormattedProjection<T> @this)
 			=> Pairs.Create(A.Type<T>(),
-			                @this.Select(Compose.Start.A.Selection.Of.Any.AndOf<T>().By.Cast.Or.Throw.Select)
+			                @this.Select(Compose.Start.A.Selection.Of.Any.AndOf<T>().By.Cast.Or.Throw.Get().Select)
 			                     .Select(x => x.ToDelegate())
 			                     .ToDelegate());
 

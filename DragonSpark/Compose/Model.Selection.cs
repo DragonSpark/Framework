@@ -10,10 +10,10 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		public static ISelect<TIn, TOut> Start<TIn, TOut>(this TOut @this, Extent<TIn> _)
+		public static Selector<TIn, TOut> Start<TIn, TOut>(this TOut @this, Extent<TIn> _)
 			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);
 
-		public static ISelect<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
+		public static Selector<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
 			=> Compose.Start.A.Selection<TIn>().By.Calling(@this);
 
 		/**/
@@ -49,7 +49,7 @@ namespace DragonSpark.Compose
 		public static Func<TIn, TOut> ToDelegateReference<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			=> Delegates<TIn, TOut>.Default.Get(@this);
 
-		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this ISelect<TIn, TOut> @this) where TIn : class
-			=> new ReferenceContext<TIn, TOut>(@this);
+		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this Selector<TIn, TOut> @this) where TIn : class
+			=> new ReferenceContext<TIn, TOut>(@this.Get());
 	}
 }

@@ -33,7 +33,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public IOperation<T> WithArguments(Func<(T Parameter, ValueTask Task), TParameter> @delegate)
 			=> _operation.Then()
-			             .Configure(@delegate.Start().Then().Terminate(_log).Get())
+			             .Configure(@delegate.Start().Terminate(_log).Get())
 			             .Out();
 
 		public IOperation<T> WithArguments(Func<T, TParameter> @delegate)

@@ -12,7 +12,8 @@ namespace DragonSpark.Compose
 		public static IFormatter Append<T>(this IConditional<object, IFormattable> @this, ISelectFormatter<T> parameter)
 		{
 			var formatter = new Formatter<T>(Compose.Start.A.Selection.Of.Any.AndOf<T>()
-			                                        .By.Cast.Or.Throw.Select(new Formatters<T>(parameter)));
+			                                        .By.Cast.Or.Throw.Select(new Formatters<T>(parameter))
+			                                        .Get());
 			var result = new Formatter(@this.Then().Unless.Input.IsOf<T>().ThenUse(A.Selection(formatter)).Get());
 			return result;
 		}

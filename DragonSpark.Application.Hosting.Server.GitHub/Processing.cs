@@ -148,8 +148,8 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	sealed class ValidatedHandler<T> : Validated<T, ValueTask>, IHandler<T> where T : ActivityPayload
 	{
 		public ValidatedHandler(ICondition<T> condition, ISelect<T, ValueTask> handler)
-			: base(condition, handler, Start.A.Selection<T>()
-			                                .By.Calling(_ => new ValueTask(Task.CompletedTask))) {}
+			: base(condition.Get, handler.Get, Start.A.Selection<T>()
+			                                        .By.Calling(_ => new ValueTask(Task.CompletedTask))) {}
 	}
 
 	sealed class LocatedHandler<T, TPayload> : Select<TPayload, ValueTask> where T : class, IHandler<TPayload>

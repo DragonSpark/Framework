@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Execution
@@ -48,7 +48,7 @@ namespace DragonSpark.Testing.Application.Runtime.Execution
 		[Fact]
 		void VerifyBasic()
 		{
-			Start.A.Selection<int>().AndOf<Counter>().By.Instantiation.Get(1);
+			Start.A.Selection<int>().AndOf<Counter>().By.Instantiation.Return(1);
 		}
 	}
 }

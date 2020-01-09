@@ -21,7 +21,6 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 		public GroupName(GroupName defaultName, ISelect<string, GroupName> names)
 			: base(Start.A.Selection<T>()
 			            .By.Returning(defaultName)
-			            .Then()
 			            .Unless.Using(new MetadataGroupName<T>(names))
 			            .ResultsInAssigned()) {}
 	}

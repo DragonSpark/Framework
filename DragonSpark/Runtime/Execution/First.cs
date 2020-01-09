@@ -21,7 +21,7 @@ namespace DragonSpark.Runtime.Execution
 	{
 		public First() : base(Start.A.Selection<T>()
 		                           .AndOf<First>()
-		                           .By.Activation()
+		                           .By.Activation().Get()
 		                           .ToTable()
 		                           .Select(ConditionSelector.Default)) {}
 	}

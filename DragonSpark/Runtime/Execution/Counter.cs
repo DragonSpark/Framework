@@ -21,7 +21,8 @@ namespace DragonSpark.Runtime.Execution
 	{
 		public Counter() : base(Start.A.Selection<T>()
 		                             .AndOf<Counter>()
-		                             .By.Instantiation.ToTable()
+		                             .By.Instantiation.Get()
+		                             .ToTable()
 		                             .Select(x => x.Count())) {}
 	}
 }

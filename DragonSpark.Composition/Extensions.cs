@@ -18,7 +18,7 @@ namespace DragonSpark.Composition
 	public static class Extensions
 	{
 		public static BuildHostContext Host(this ModelContext _)
-			=> Start.A.Selection.Of<IHostBuilder>().By.Self.To(Start.An.Extent<BuildHostContext>());
+			=> Start.A.Selection.Of<IHostBuilder>().By.Self.Get().To(Start.An.Extent<BuildHostContext>());
 
 		public static IAlteration<IServiceCollection> Option<T>(this VowelContext _) where T : class, new()
 			=> RegisterOption<T>.Default;

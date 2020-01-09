@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using System.IO;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Assemblies
 {
@@ -11,7 +11,6 @@ namespace DragonSpark.Reflection.Assemblies
 
 		Load() : base(Start.A.Selection<AssemblyName>()
 		                   .By.Calling(Assembly.Load)
-		                   .Then()
 		                   .Try<FileNotFoundException>()
 		                   .Get()) {}
 	}

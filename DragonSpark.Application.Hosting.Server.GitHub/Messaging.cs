@@ -31,7 +31,6 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 
 		EventMessages() : base(Start.A.Selection<EventMessage>()
 		                            .By.Calling(x => x.Payload)
-		                            .Then()
 		                            .Select(Serializer.Default.Get().Deserialize<T>)) {}
 	}
 
@@ -50,7 +49,6 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 		public IsAuthenticatedMessage(string key)
 			: base(Start.A.Selection<EventMessage>()
 			            .By.Calling(x => x.Header.Event)
-			            .Then()
 			            .Select(Is.EqualTo(key)),
 			       Start.A.Condition<EventMessage>(Is.Of<AuthenticatedEventMessage>())
 			            .Ensure.Input.IsAssigned.Otherwise.Throw(AuthenticatedMessage.Default)

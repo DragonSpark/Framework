@@ -111,7 +111,7 @@ namespace DragonSpark.Compose
 		public static IConditional<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, TOut> @this, ICondition<TIn> condition)
 			=> new Conditional<TIn, TOut>(condition, @this.Get().Get);
 
-		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this.Get().Get);
+		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this);
 
 		public static ISelect<_, Array<T>> Out<_, T>(this OpenArraySelector<_, T> @this) => @this.Get().Result();
 
@@ -121,7 +121,7 @@ namespace DragonSpark.Compose
 		/**/
 
 		public static ICommand<T> ToCommand<T>(this Selector<T, None> @this)
-			=> new InvokeParameterCommand<T>(@this.Get().Get);
+			=> new InvokeParameterCommand<T>(@this);
 
 		public static ResultContext<T> Bind<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
 

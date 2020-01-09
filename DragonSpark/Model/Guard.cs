@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
@@ -11,13 +10,12 @@ namespace DragonSpark.Model
 		readonly Func<T, bool>       _condition;
 		readonly Func<T, TException> _exception;
 
-		public Guard(ICondition<T> condition, ISelect<T, string> message) : this(condition.Get, message) {}
+		public Guard(ICondition<T> condition, Func<T, string> message) : this(condition.Get, message) {}
 
-		public Guard(Func<T, bool> condition, ISelect<T, string> message)
+		public Guard(Func<T, bool> condition, Func<T, string> message)
 			: this(condition, Start.A.Selection<string>()
 			                       .AndOf<TException>()
-			                       .By.Instantiation.To(message.Select)
-			                       .Get) {}
+			                       .By.Instantiation.To(message.Start().Select)) {}
 
 		public Guard(Func<T, bool> condition, Func<T, TException> exception)
 		{

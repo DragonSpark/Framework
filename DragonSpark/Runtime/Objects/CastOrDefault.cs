@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Runtime.Objects
 {
@@ -8,7 +8,7 @@ namespace DragonSpark.Runtime.Objects
 	{
 		public static CastOrDefault<TFrom, TTo> Default { get; } = new CastOrDefault<TFrom, TTo>();
 
-		CastOrDefault() : this(Start.A.Selection<TFrom>().By.Default<TTo>().Get) {}
+		CastOrDefault() : this(Start.A.Selection<TFrom>().By.Default<TTo>().Get().Get) {}
 
 		readonly Func<TFrom, TTo> _default;
 

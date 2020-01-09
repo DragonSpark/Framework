@@ -6,7 +6,7 @@ namespace DragonSpark.Compose.Extents.Results
 	{
 		public static ArrayResultExtent<T> Default { get; } = new ArrayResultExtent<T>();
 
-		ArrayResultExtent() : this(Start.A.Selection.Of.Type<int>().AndOf<T[]>().By.Instantiation.Then()) {}
+		ArrayResultExtent() : this(Start.A.Selection.Of.Type<int>().AndOf<T[]>().By.Instantiation.Get().Then()) {}
 
 		readonly OpenArraySelector<int, T> _select;
 

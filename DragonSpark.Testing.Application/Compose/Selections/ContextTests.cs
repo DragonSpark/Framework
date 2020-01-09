@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Selections
@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Application.Compose.Selections
 			var parameter = new object();
 			var result    = new Subject();
 
-			var subject = Start.A.Selection.Of.Any.AndOf<Subject>().By.Cast.Or.Return(result);
+			var subject = Start.A.Selection.Of.Any.AndOf<Subject>().By.Cast.Or.Return(result).Get();
 			subject.Get(parameter).Should().BeSameAs(result);
 			subject.Get(instance).Should().BeSameAs(instance);
 		}
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Application.Compose.Selections
 		[Fact]
 		void VerifyParameter()
 		{
-			Start.A.Selection.Of.Any.By.Returning(4)
+			Start.A.Selection.Of.Any.By.Returning(4).Get()
 			     .Get(new object())
 			     .Should()
 			     .Be(4);

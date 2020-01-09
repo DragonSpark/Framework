@@ -9,7 +9,7 @@ namespace DragonSpark.Model.Selection.Conditions
 		readonly IConditional<TTo, TOut> _source;
 
 		public SelectedConditional(IConditional<TTo, TOut> source, Func<TFrom, TTo> select)
-			: this(new Condition<TFrom>(select.Start().Select(source.Condition).Get), source, select) {}
+			: this(new Condition<TFrom>(select.Start().Select(source.Condition)), source, select) {}
 
 		public SelectedConditional(ICondition<TFrom> condition, IConditional<TTo, TOut> source, Func<TFrom, TTo> select)
 		{

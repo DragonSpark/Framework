@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
+using System;
 
 namespace DragonSpark.Model.Aspects
 {
@@ -9,13 +10,13 @@ namespace DragonSpark.Model.Aspects
 		public Aspects() : this(new AspectRegistry()) {}
 
 		public Aspects(IRegistry<IRegistration> registry)
+			: this(new AspectLocator<TIn, TOut>(new AspectRegistrations<TIn, TOut>(registry))) {}
+
+		public Aspects(ISelect<Type, IAspect<TIn, TOut>> locator)
 			: base(Start.A.Selection<ISelect<TIn, TOut>>()
-			            .By.Type.Then()
-			            .Select(Start
-			                    .An
-			                    .Instance(new AspectLocator<TIn, TOut>(new AspectRegistrations<TIn, TOut>(registry)))
-			                    .Stores()
-			                    .New())
+			            .By.Type.Select(locator.Then()
+			                                   .Stores()
+			                                   .New())
 			      ) {}
 	}
 }

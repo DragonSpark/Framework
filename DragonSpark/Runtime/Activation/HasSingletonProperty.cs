@@ -7,6 +7,6 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static HasSingletonProperty Default { get; } = new HasSingletonProperty();
 
-		HasSingletonProperty() : base(SingletonProperty.Default) {}
+		HasSingletonProperty() : base(SingletonProperty.Default.Get) {}
 	}
 }

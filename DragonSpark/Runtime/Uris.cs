@@ -1,6 +1,6 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
+using System;
 
 namespace DragonSpark.Runtime
 {
@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime
 	{
 		public static Uris Default { get; } = new Uris();
 
-		Uris() : base(Start.A.Selection<string>().AndOf<Uri>().By.Instantiation.Get) {}
+		Uris() : base(Start.A.Selection<string>().AndOf<Uri>().By.Instantiation) {}
 	}
 }

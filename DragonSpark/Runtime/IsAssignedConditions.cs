@@ -34,6 +34,6 @@ namespace DragonSpark.Runtime
 					       : IsModified<T>.Default) {}
 
 		public IsAssignedConditions(ISelect<T, bool> condition)
-			: base(Start.A.Selection.Of.System.Metadata.By.Returning(condition).Then().Delegate()) {}
+			: base(Start.A.Selection.Of.System.Metadata.By.Returning(condition).Get().Then().Delegate()) {}
 	}
 }

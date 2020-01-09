@@ -2,9 +2,7 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Objects;
 using System;
@@ -29,45 +27,46 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		Context() {}
 
-		public IAlteration<T> Self => Self<T>.Default;
+		public AlterationSelector<T> Self => new AlterationSelector<T>(Self<T>.Default);
 
 		public Selector<T, TypeInfo> Metadata => InstanceMetadata<T>.Default.Then();
-		public ISelect<T, Type> Type => InstanceType<T>.Default;
 
-		public ISelect<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance;
+		public Selector<T, Type> Type => InstanceType<T>.Default.Then();
 
-		public ISelect<T, TOut> Calling<TOut>(Func<T, TOut> select)
-			=> select.Target as ISelect<T, TOut> ?? new DragonSpark.Model.Selection.Select<T, TOut>(select);
+		public Selector<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance.Then();
 
-		public ISelect<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result);
+		public Selector<T, TOut> Calling<TOut>(Func<T, TOut> select)
+			=> new Selector<T, TOut>(select.Target as ISelect<T, TOut> ?? new Select<T, TOut>(select));
 
-		public IAlteration<T> Calling(Func<T, T> result) => new Alteration<T>(result);
+		public Selector<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result).Then();
 
-		public ISelect<T, TOut> Returning<TOut>(TOut result) => new FixedResult<T, TOut>(result);
+		public AlterationSelector<T> Calling(Func<T, T> result) => new AlterationSelector<T>(new Alteration<T>(result));
 
-		public ISelect<T, TOut> Returning<TOut>(IResult<TOut> result) => Calling(result.Get);
+		public Selector<T, TOut> Returning<TOut>(TOut result) => new FixedResult<T, TOut>(result).Then();
 
-		public ICondition<T> Returning(IResult<bool> condition) => Calling(condition.Get).Then().Out();
+		public Selector<T, TOut> Returning<TOut>(IResult<TOut> result) => Calling(result.Get);
 
-		public IAlteration<T> Returning(T result) => Calling(new FixedResult<T, T>(result).Get);
+		public ConditionSelector<T> Returning(IResult<bool> condition) => Calling(condition.Get).Out().Then();
 
-		public ISelect<T, TOut> Default<TOut>() => Default<T, TOut>.Instance;
+		public AlterationSelector<T> Returning(T result) => Calling(new FixedResult<T, T>(result).Get);
 
-		public ISelect<T, TOut> Cast<TOut>() where TOut : T => CastOrDefault<T, TOut>.Default;
+		public Selector<T, TOut> Default<TOut>() => Default<T, TOut>.Instance.Then();
 
-		public ISelect<T, Array<T>> Array() => Self.Select(Yield<T>.Default).Result();
+		public Selector<T, TOut> Cast<TOut>() where TOut : T => CastOrDefault<T, TOut>.Default.Then();
 
-		public ISelect<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
-			=> new DragonSpark.Model.Selection.Select<T, Func<TIn, TOut>>(select);
+		public Selector<T, Array<T>> Array() => Self.Result();
 
-		public ISelect<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>().Return();
+		public Selector<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
+			=> new Select<T, Func<TIn, TOut>>(select).Then();
 
-		public ISelect<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T> => Activations<T, TOut>.Default;
+		public Selector<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>();
 
-		public ISelect<T, TOut> Singleton<TOut>()
-			=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>().Return();
+		public Selector<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T> => Activations<T, TOut>.Default.Then();
 
-		public ISelect<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default;
+		public Selector<T, TOut> Singleton<TOut>()
+			=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>();
+
+		public Selector<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default.Then();
 	}
 
 	public sealed class Context<TIn, TOut>
@@ -76,16 +75,16 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		Context() {}
 
-		public ISelect<TIn, TOut> Instantiation => New<TIn, TOut>.Default;
+		public Selector<TIn, TOut> Instantiation => New<TIn, TOut>.Default.Then();
 
 		public Cast<TIn, TOut> Cast => Cast<TIn, TOut>.Default;
 
-		public ISelect<TIn, TOut> Activation() => Activator<TOut>.Default.Then().Accept<TIn>().Return();
+		public Selector<TIn, TOut> Activation() => Activator<TOut>.Default.Then().Accept<TIn>().Return().Then();
 
-		public ISelect<TIn, TOut> Singleton() => Singleton<TOut>.Default.Then().Accept<TIn>().Return();
+		public Selector<TIn, TOut> Singleton() => Singleton<TOut>.Default.Then().Accept<TIn>().Return().Then();
 
-		public ISelect<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result);
+		public Selector<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result).Then();
 
-		public ISelect<TIn, TOut> Returning(Func<TOut> result) => new DelegatedResult<TIn, TOut>(result);
+		public Selector<TIn, TOut> Returning(Func<TOut> result) => new DelegatedResult<TIn, TOut>(result).Then();
 	}
 }

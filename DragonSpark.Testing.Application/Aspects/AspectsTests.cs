@@ -72,7 +72,7 @@ namespace DragonSpark.Testing.Application.Aspects
 			registry.Registered(Decoration<object, string>.Default);
 
 			{
-				var general     = Start.A.Selection.Of.Type<object>().By.Self;
+				var general     = Start.A.Selection.Of.Type<object>().By.Self.Get();
 				var aspects     = new Aspects<object, object>(registry);
 				var generalized = aspects.Get(general);
 				generalized.Should().BeSameAs(aspects.Get(general));

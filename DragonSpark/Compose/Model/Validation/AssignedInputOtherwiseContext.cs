@@ -15,7 +15,7 @@ namespace DragonSpark.Compose.Model.Validation
 			=> Throw(message.Then().Accept<Type>().Return());
 
 		public ConditionalSelector<TIn, TOut> Throw(ISelect<Type, string> message)
-			=> Throw(message.Then().Bind<TIn>().Get());
+			=> Throw(message.Then().Out<TIn>().Get());
 
 		public ConditionalSelector<TIn, TOut> Throw(ISelect<TIn, string> message)
 			=> new AssignedInputThrowContext<TIn, TOut>(this).WithMessage(message);

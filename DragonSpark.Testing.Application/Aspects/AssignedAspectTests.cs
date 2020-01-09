@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Application.Aspects
 			var registry = new AspectRegistry();
 			registry.Execute(new Registration(typeof(AssignedAspect<,>)));
 
-			var subject = Start.A.Selection<string>().By.Self;
+			var subject = Start.A.Selection<string>().By.Self.Get();
 			subject.Invoking(x => x.Get(null)).Should().NotThrow();
 
 			new Aspects<string, string>(registry).Get(subject)

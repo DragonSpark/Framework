@@ -10,8 +10,8 @@ namespace DragonSpark.Text
 		public Selection(ISelect<TIn, TOut> @default, params Pair<string, Func<TIn, TOut>>[] pairs)
 			: base(Start.A.Selection.Of<string>()
 			            .By.Returning(@default.ToDelegate())
-			            .Then()
-			            .Unless.Using(pairs.ToSelect()).ResultsInAssigned()
+			            .Unless.Using(pairs.ToSelect())
+			            .ResultsInAssigned()
 			            .Get()
 			            .To(NullOrEmpty.Default.Select)) {}
 	}

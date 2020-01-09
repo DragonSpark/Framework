@@ -1,11 +1,11 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using System;
 
 namespace DragonSpark.Model.Selection.Conditions
 {
 	public class Conditional<TIn, TOut> : Validated<TIn, TOut>, IConditional<TIn, TOut>
 	{
-		readonly static Func<TIn, TOut> Fallback = Start.A.Selection<TIn>().By.Default<TOut>().Get;
+		readonly static Func<TIn, TOut> Fallback = Start.A.Selection<TIn>().By.Default<TOut>().Return;
 
 		public Conditional(ICondition<TIn> condition, IConditional<TIn, TOut> source)
 			: this(source.Condition.Then().Or(condition), source.Get) {}

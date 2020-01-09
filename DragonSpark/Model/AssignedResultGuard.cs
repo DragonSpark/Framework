@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
@@ -9,24 +8,24 @@ namespace DragonSpark.Model
 	{
 		public static AssignedEntryGuard<T> Default { get; } = new AssignedEntryGuard<T>();
 
-		AssignedEntryGuard() : this(AssignedArgumentMessage.Default.Then().Bind<T>().Get()) {}
+		AssignedEntryGuard() : this(AssignedArgumentMessage.Default.Then().Out<T>()) {}
 
-		public AssignedEntryGuard(ISelect<T, string> message) : base(message) {}
+		public AssignedEntryGuard(Func<T, string> message) : base(message) {}
 	}
 
 	sealed class AssignedResultGuard<T> : AssignedGuard<T, InvalidOperationException>
 	{
 		public static AssignedResultGuard<T> Default { get; } = new AssignedResultGuard<T>();
 
-		AssignedResultGuard() : base(AssignedResultMessage.Default.Then().Bind<T>().Get()) {}
+		AssignedResultGuard() : base(AssignedResultMessage.Default.Then().Out<T>()) {}
 
-		public AssignedResultGuard(ICondition<T> condition, ISelect<T, string> message) : base(condition, message) {}
+		public AssignedResultGuard(ICondition<T> condition, Func<T, string> message) : base(condition, message) {}
 	}
 
 	public class AssignedGuard<T, TException> : Guard<T, TException> where TException : Exception
 	{
-		public AssignedGuard(ISelect<T, string> message) : this(Is.Assigned<T>().Inverse().Out(), message) {}
+		public AssignedGuard(Func<T, string> message) : this(Is.Assigned<T>().Inverse().Out(), message) {}
 
-		public AssignedGuard(ICondition<T> condition, ISelect<T, string> message) : base(condition, message) {}
+		public AssignedGuard(ICondition<T> condition, Func<T, string> message) : base(condition, message) {}
 	}
 }

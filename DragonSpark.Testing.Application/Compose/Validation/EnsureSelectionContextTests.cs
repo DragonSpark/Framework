@@ -11,8 +11,7 @@ namespace DragonSpark.Testing.Application.Compose.Validation
 		void Verify()
 		{
 			var selector = Start.A.Selection.Of.Type<int>()
-			                    .By.Self.Then()
-			                    .Ensure.Output.Is(x => x > 3)
+			                    .By.Self.Ensure.Output.Is(x => x > 3)
 			                    .Otherwise.Throw<ArgumentOutOfRangeException>()
 			                    .WithMessage("Not greater than Three.")
 			                    .Get();
@@ -28,8 +27,7 @@ namespace DragonSpark.Testing.Application.Compose.Validation
 		void VerifyUseDefault()
 		{
 			var selector = Start.A.Selection.Of.Type<int>()
-			                    .By.Self.Then()
-			                    .Ensure.Output.Is(x => x > 3)
+			                    .By.Self.Ensure.Output.Is(x => x > 3)
 			                    .Otherwise.UseDefault()
 			                    .Get();
 			selector.Get(3).Should().Be(default);
@@ -40,8 +38,7 @@ namespace DragonSpark.Testing.Application.Compose.Validation
 		void VerifyUse()
 		{
 			var selector = Start.A.Selection.Of.Type<int>()
-			                    .By.Self.Then()
-			                    .Ensure.Output.Is(x => x > 3)
+			                    .By.Self.Ensure.Output.Is(x => x > 3)
 			                    .Otherwise.Use(x => x + 10)
 			                    .Get();
 			selector.Get(3).Should().Be(13);

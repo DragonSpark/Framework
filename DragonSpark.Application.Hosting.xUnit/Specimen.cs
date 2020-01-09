@@ -8,9 +8,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 	{
 		readonly static Func<object, bool> Condition = Is.Of<Type>()
 		                                                 .And(Start.A.Selection.Of.Any.AndOf<Type>()
-		                                                           .By.Cast.Or.Throw.Then()
-		                                                           .Select(Is.EqualTo(A.Type<T>()))
-		                                                           .Selector());
+		                                                           .By.Cast.Or.Throw.Select(Is.EqualTo(A.Type<T>())));
 
 		readonly Func<object, bool> _condition;
 		readonly NoSpecimen         _none;

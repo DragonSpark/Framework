@@ -24,7 +24,8 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public static LocateComponentMessage<T> Default { get; } = new LocateComponentMessage<T>();
 
-		LocateComponentMessage() : base(x => $"A request was made to locate a type of {A.Type<T>()}.  Its implementation type of {x} was located, but it could not be activated.") {}
+		LocateComponentMessage() :
+			base(x => $"A request was made to locate a type of {A.Type<T>()}.  Its implementation type of {x} was located, but it could not be activated.") {}
 	}
 
 	public interface IComponentTypes : IArray<Type, Type> {}
@@ -42,7 +43,8 @@ namespace DragonSpark.Runtime.Environment
 
 		public ComponentTypeLocators(Func<Type, bool> condition)
 			: base(Start.A.Selection<Type>()
-			            .As.Sequence.ReadOnly.By.Self.Query()
+			            .As.Sequence.ReadOnly.By.Self.Get()
+			            .Query()
 			            .Where(condition)
 			            .Get()
 			            .Then()

@@ -65,15 +65,17 @@ namespace DragonSpark.Compose
 
 		GuardModelContext() {}
 
-		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message)
+		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message) => Displaying<T>(message.Get);
+
+		public GuardThrowContext<T, TException> Displaying<T>(Func<T, string> message)
 			=> new GuardThrowContext<T, TException>(message);
 	}
 
 	public sealed class GuardThrowContext<T, TException> where TException : Exception
 	{
-		readonly ISelect<T, string> _message;
+		readonly Func<T, string> _message;
 
-		public GuardThrowContext(ISelect<T, string> message) => _message = message;
+		public GuardThrowContext(Func<T, string> message) => _message = message;
 
 		public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Inverse().Out());
 

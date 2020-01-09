@@ -14,14 +14,13 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		void VerifyGuard()
 		{
 			Start.A.Selection<string>()
-			     .By.Self.Then()
-			     .Ensure.Output.IsAssigned.Otherwise.Throw()
+			     .By.Self.Ensure.Output.IsAssigned.Otherwise.Throw()
 			     .Get()
 			     .Invoking(x => x.Get(null))
 			     .Should()
 			     .Throw<InvalidOperationException>();
 			Start.A.Selection<string>()
-			     .By.Self.Invoking(x => x.Get(null))
+			     .By.Self.Invoking(x => x.Return(null))
 			     .Should()
 			     .NotThrow();
 		}

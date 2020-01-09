@@ -19,11 +19,11 @@ namespace DragonSpark.Compose.Model.Validation
 			=> Throw(Start.A.Selection<TIn>()
 			              .AndOf<Type>()
 			              .By.Cast.Or.Return(A.Type<TOut>())
-			              .Then()
-			              .Select(message)
-			              .Get());
+			              .Select(message));
 
-		public Selector<TIn, TOut> Throw(ISelect<TIn, string> message)
+		public Selector<TIn, TOut> Throw(ISelect<TIn, string> message) => Throw(message.Get);
+
+		public Selector<TIn, TOut> Throw(Func<TIn, string> message)
 			=> new AssignedOutputThrowContext<TIn, TOut>(this).WithMessage(message);
 	}
 }

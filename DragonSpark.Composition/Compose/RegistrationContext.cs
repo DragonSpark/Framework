@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
@@ -92,14 +93,14 @@ namespace DragonSpark.Composition.Compose
 	{
 		public LocateComponent(Func<TIn, IComponentType> select) : this(select.Start()) {}
 
-		public LocateComponent(ISelect<TIn, IComponentType> select)
-			: base(select.Then()
-			             .Select(x => x.Get(A.Type<TOut>()))
-			             .Select(Start.A.Selection.Of.System.Type.By.Self.Then()
+		public LocateComponent(Selector<TIn, IComponentType> select)
+			: base(select.Select(x => x.Get(A.Type<TOut>()))
+			             .Select(Start.A.Selection.Of.System.Type.By.Self.Get()
+			                          .Then()
 			                          .Activate<TOut>()
 			                          .Ensure.Input.IsAssigned.Otherwise.Throw(LocateGuardMessage.Default)
 			                          .Ensure.Output.IsAssigned.Otherwise.Throw(LocateComponentMessage<TOut>.Default)
-			                          .Get())) {}
+			                    )) {}
 	}
 
 	public sealed class RegistrationContext : IRegistrationContext
