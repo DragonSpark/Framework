@@ -27,7 +27,8 @@ namespace DragonSpark.Model
 
 		public void Execute(T parameter)
 		{
-			if (_condition(parameter))
+			var condition = _condition(parameter);
+			if (condition)
 			{
 				throw _exception(parameter);
 			}

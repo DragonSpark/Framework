@@ -17,7 +17,7 @@ namespace DragonSpark.Runtime.Environment
 			: base(select.Query()
 			             .FirstAssigned()
 			             .Then()
-			             .Ensure.Output.IsAssigned.OrThrow(LocateGuardMessage.Default)) {}
+			             .Ensure.Output.IsAssigned.Otherwise.Throw(LocateGuardMessage.Default)) {}
 	}
 
 	sealed class LocateComponentMessage<T> : Message<Type>

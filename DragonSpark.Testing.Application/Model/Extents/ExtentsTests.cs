@@ -15,7 +15,7 @@ namespace DragonSpark.Testing.Application.Model.Extents
 		{
 			Start.A.Selection<string>()
 			     .By.Self.Then()
-			     .Ensure.Output.IsAssigned.OrThrow()
+			     .Ensure.Output.IsAssigned.Otherwise.Throw()
 			     .Get()
 			     .Invoking(x => x.Get(null))
 			     .Should()
