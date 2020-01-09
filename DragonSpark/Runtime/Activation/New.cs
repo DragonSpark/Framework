@@ -17,11 +17,12 @@ namespace DragonSpark.Runtime.Activation
 			: base(Start.A.Selection(ConstructorLocator.Default)
 			            .Select(new ParameterConstructors<TIn, TOut>(ConstructorExpressions.Default))
 			            .Then()
-			            .Use.UseWhenAssigned(Start.A.Selection(constructor)
-			                                            .Select(A.Selection(ParameterConstructors<TIn, TOut>.Default)
-			                                                     .Then()
-			                                                     .Assigned()
-			                                                     .Return()))
+			            .Unless.Using(Start.A.Selection(constructor)
+			                                  .Select(A.Selection(ParameterConstructors<TIn, TOut>.Default)
+			                                           .Then()
+			                                           .Assigned()
+			                                           .Return()))
+			            .ResultsInAssigned()
 			            .Return(A.Metadata<TOut>())) {}
 	}
 

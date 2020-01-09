@@ -10,12 +10,12 @@ namespace DragonSpark.Runtime.Activation
 
 		Singletons() : base(Start.A.Selection.Of.System.Type.By.Default<object>()
 		                         .Then()
-		                         .Use.UnlessCalling(Start.An.Instance(SingletonProperty.Default)
-		                                             .Select(SingletonPropertyDelegates.Default)
-		                                             .Then()
-		                                             .Invoke()
-		                                             .Get())
-		                         .Allows(HasSingletonProperty.Default)
+		                         .Unless.Input.Is(HasSingletonProperty.Default)
+		                         .ThenUse(Start.An.Instance(SingletonProperty.Default)
+		                                       .Select(SingletonPropertyDelegates.Default)
+		                                       .Then()
+		                                       .Invoke()
+		                                       .Get())
 		                         .Get()
 		                         .Get) {}
 	}

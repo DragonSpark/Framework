@@ -29,7 +29,7 @@ namespace DragonSpark.Compose.Model
 
 		public ConditionalSelectionContext<_, T> Ensure => new ConditionalSelectionContext<_, T>(_subject);
 
-		public ValidatedSelectionContext<_, T> Use => new ValidatedSelectionContext<_, T>(_subject);
+		public UnlessContext<_, T> Unless => new UnlessContext<_, T>(_subject);
 
 		public TypeSelector<_> Type() => new TypeSelector<_>(_subject.Select(InstanceType<T>.Default));
 
@@ -84,63 +84,72 @@ namespace DragonSpark.Compose.Model
 		public ISelect<_, T> Get() => _subject;
 	}
 
-	public sealed class ValidatedSelectionContext<TIn, TOut>
+	public sealed class UnlessUsingContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;
-
-		public ValidatedSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
-
-		public Selector<TIn, TOut> UseWhenAssigned(ISelect<TIn, TOut> assigned)
-			=> new ValidatedResult<TIn, TOut>(Is.Assigned<TOut>().Get, assigned.Get, _subject.Get).Then();
-
-		/*public Selector<TIn, TOut> UseWhenAssigned(Func<TOut> assigned)
-			=> UseWhenAssigned(Start.A.Result(assigned).Then().Accept<TIn>());*/
-
-		public UseValidatedSelectionContext<TIn, TOut> UnlessCalling(ISelect<TIn, TOut> other)
-			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, other);
-
-		public ConditionalSelector<TIn, TOut> UnlessCalling<TOther>(ISelect<TOther, TOut> other)
-			=> new UseValidatedSelectionContext<TIn, TOut>(_subject, CastOrThrow<TIn, TOther>.Default.Select(other)).IsOf<TOther>();
-		public ConditionalSelector<TIn, TTo> UnlessCalling<TTo>(IConditional<TOut, TTo> select)
-			=> new Conditional<TIn, TTo>(_subject.Select(select.Condition).Get,
-			                             _subject.Select(select.Get).Get).Then();
-	}
-
-	/*public sealed class Parameter<TIn, TOut> : IResult<Func<TIn, TOut>>
-	{
-		public static implicit operator Parameter<TIn, TOut>(Selector<TIn, TOut> instance) => new Parameter<TIn, TOut>(instance);
-
-		public static implicit operator Parameter<TIn, TOut>(Func<TIn, TOut> instance) => new Parameter<TIn, TOut>(instance);
-
-		public static implicit operator Func<TIn, TOut>(Parameter<TIn, TOut> instance) => instance.Get();
-
-		readonly Func<TIn, TOut> _select;
-
-		public Parameter(Func<TIn, TOut> select) => _select = @select;
-
-		public Func<TIn, TOut> Get() => _select;
-	}*/
-
-	public sealed class UseValidatedSelectionContext<TIn, TOut>
-	{
 		readonly ISelect<TIn, TOut> _other;
-		readonly ISelect<TIn, TOut> _subject;
 
-		public UseValidatedSelectionContext(ISelect<TIn, TOut> subject, ISelect<TIn, TOut> other)
+		public UnlessUsingContext(ISelect<TIn, TOut> subject, ISelect<TIn, TOut> other)
 		{
 			_subject = subject;
 			_other   = other;
 		}
 
-		public ConditionalSelector<TIn, TOut> IsOf<T>() => Allows(IsOf<TIn, T>.Default);
+		public Selector<TIn, TOut> IsOf<T>() => Results(IsOf<TOut, T>.Default.Get);
 
-		public ConditionalSelector<TIn, TOut> IsAssigned() => Allows(Is.Assigned<TIn>());
+		public Selector<TIn, TOut> ResultsInAssigned() => Results(Is.Assigned<TOut>().Get);
 
-		public ConditionalSelector<TIn, TOut> Allows(Func<TIn, bool> condition)
-			=> Allows(Start.A.Condition(condition));
+		public Selector<TIn, TOut> Results(Func<TOut, bool> @in)
+			=> new ValidatedResult<TIn, TOut>(@in, _other.Get, _subject.Get).Then();
+	}
 
-		public ConditionalSelector<TIn, TOut> Allows(ICondition<TIn> condition)
-			=> new Conditional<TIn, TOut>(condition.Get, _other.Get, _subject.Get).Then();
+	public sealed class UnlessResultContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+		readonly Func<TIn, bool>    _condition;
+
+		public UnlessResultContext(ISelect<TIn, TOut> subject, Func<TIn, bool> condition)
+		{
+			_subject   = subject;
+			_condition = condition;
+		}
+
+		public ConditionalSelector<TIn, TOut> ThenUse(ISelect<TIn, TOut> instead)
+			=> new Conditional<TIn, TOut>(_condition, instead.Get, _subject.Get).Then();
+	}
+
+	public sealed class UnlessInputContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+
+		public UnlessInputContext(ISelect<TIn, TOut> subject) => _subject = subject;
+
+		public Selector<TIn, TOut> IsOf<TOther>(ISelect<TOther, TOut> other)
+			=> IsOf<TOther>().ThenUse(CastOrThrow<TIn, TOther>.Default.Select(other));
+
+		public UnlessResultContext<TIn, TOut> IsOf<T>() => Is(IsOf<TIn, T>.Default);
+
+		public UnlessResultContext<TIn, TOut> IsUnassigned() => Is(Compose.Is.Assigned<TIn>().Then().Inverse());
+
+		public UnlessResultContext<TIn, TOut> Is(ICondition<TIn> condition) => Is(condition.Get);
+
+		public UnlessResultContext<TIn, TOut> Is(Func<TIn, bool> condition)
+			=> new UnlessResultContext<TIn, TOut>(_subject, condition);
+	}
+
+	public sealed class UnlessContext<TIn, TOut>
+	{
+		readonly ISelect<TIn, TOut> _subject;
+
+		public UnlessContext(ISelect<TIn, TOut> subject) => _subject = subject;
+
+		public UnlessInputContext<TIn, TOut> Input => new UnlessInputContext<TIn, TOut>(_subject);
+
+		public UnlessUsingContext<TIn, TOut> Using(ISelect<TIn, TOut> instead)
+			=> new UnlessUsingContext<TIn, TOut>(_subject, instead);
+
+		public ConditionalSelector<TIn, TTo> UsingWhen<TTo>(IConditional<TOut, TTo> select)
+			=> new Conditional<TIn, TTo>(_subject.Select(select.Condition).Get, _subject.Select(select).Get).Then();
 	}
 
 	public sealed class ConditionalSelectionContext<TIn, TOut>

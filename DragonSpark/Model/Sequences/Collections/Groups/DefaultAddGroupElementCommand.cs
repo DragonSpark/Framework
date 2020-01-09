@@ -11,7 +11,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 			: base(new AddGroupElementCommand<T>(collection, new GroupName<T>(defaultName, names))
 			       .ToSelect()
 			       .Then()
-			       .Use.UnlessCalling(new GroupingAwareCommand<T>(collection).ToSelect())
+			       .Unless.Input.IsOf(new GroupingAwareCommand<T>(collection).ToSelect())
 			       .ToCommand()) {}
 	}
 }

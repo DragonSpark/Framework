@@ -11,6 +11,7 @@ namespace DragonSpark.Runtime.Invocation
 		                                                      .ToDelegate()
 		                                                      .To(Start.An.Extent<Stripe<TIn, TOut>>())
 		                                                      .Then()
-		                                                      .Use.UseWhenAssigned(select)) {}
+		                                                      .Unless.Using(select)
+		                                                      .ResultsInAssigned()) {}
 	}
 }

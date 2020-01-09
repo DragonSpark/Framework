@@ -11,7 +11,7 @@ namespace DragonSpark.Text
 			: base(Start.A.Selection.Of<string>()
 			            .By.Returning(@default.ToDelegate())
 			            .Then()
-			            .Use.UseWhenAssigned(pairs.ToSelect())
+			            .Unless.Using(pairs.ToSelect()).ResultsInAssigned()
 			            .Get()
 			            .To(NullOrEmpty.Default.Select)) {}
 	}

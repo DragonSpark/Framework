@@ -16,9 +16,9 @@ namespace DragonSpark.Reflection.Types
 		public GenericInterfaceImplementations(Selector<Type, Type> definition)
 			: base(GenericInterfaces.Default.Query()
 			                        .GroupMap(definition.Get())
-			                        .Select(definition.Use.UnlessCalling(A.Self<Type>())
-			                                          .Allows(IsGenericTypeDefinition.Default)
-			                                          .Use.UnlessCalling)
+			                        .Select(definition.Unless.Input.Is(IsGenericTypeDefinition.Default)
+			                                          .ThenUse(A.Self<Type>())
+			                                          .Unless.UsingWhen)
 			                        .Select(A.ConditionalResult<Type, Array<Type>>)
 			                        .Then()
 			                        .Value()) {}

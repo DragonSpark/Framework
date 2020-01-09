@@ -49,8 +49,8 @@ namespace DragonSpark.Compose
 			=> Compose.Start.A.Selection<TIn>()
 			          .By.Default<TOut>()
 			          .Then()
-			          .Use.UnlessCalling(@this)
-			          .Allows(@true.Get)
+			          .Unless.Input.Is(@true.Get)
+			          .ThenUse(@this)
 			          .Get();
 
 		/**/
