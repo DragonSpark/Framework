@@ -46,7 +46,7 @@ namespace DragonSpark.Compose.Model
 
 		public ResultContext<T> IsAssigned() => Is(IsAssigned<T>.Default);
 
-		public ResultContext<T> Is(Func<T, bool> condition) => Is(Start.A.Condition(condition));
+		public ResultContext<T> Is(Func<T, bool> condition) => Is(Start.A.Condition(condition).Out());
 
 		public ResultContext<T> Is(ICondition<T> condition)
 			=> new ValidatedResult<T>(condition, _other, _subject).Then();

@@ -3,10 +3,11 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public sealed class AssignedInputOtherwiseContext<TIn, TOut> : InputOtherwiseContext<TIn, TOut>
 	{
-		public AssignedInputOtherwiseContext(ISelect<TIn, TOut> subject) : base(subject, Is.Assigned<TIn>().Get) {}
+		public AssignedInputOtherwiseContext(ISelect<TIn, TOut> subject) : base(subject, Is.Assigned<TIn>()) {}
 
 		public ConditionalSelector<TIn, TOut> Throw() => Throw(AssignedArgumentMessage.Default);
 

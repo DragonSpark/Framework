@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Extents
@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Application.Compose.Extents
 		void VerifyCondition()
 		{
 			var parameter = new object();
-			Start.An.Extent.Of.Any.Into.Condition.Always
+			Start.An.Extent.Of.Any.Into.Condition.Always.Get()
 			     .Get(parameter)
 			     .Should()
 			     .BeTrue();

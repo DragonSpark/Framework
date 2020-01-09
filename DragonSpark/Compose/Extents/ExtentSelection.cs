@@ -10,9 +10,9 @@ namespace DragonSpark.Compose.Extents
 
 		public Context<T> Result => Context<T>.Instance;
 
-		public Conditions.Context<T> Condition => Conditions.Context<T>.Instance;
+		public Conditions.ConditionContext<T> Condition => Conditions.ConditionContext<T>.Instance;
 
-		public Commands.Context<T> Command => Commands.Context<T>.Instance;
+		public Commands.CommandContext<T> Command => Commands.CommandContext<T>.Instance;
 
 		public Selections.Context<T> Selection => Selections.Context<T>.Instance;
 	}

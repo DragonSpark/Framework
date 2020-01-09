@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
@@ -30,7 +31,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public IAlteration<T> Self => Self<T>.Default;
 
-		public ISelect<T, TypeInfo> Metadata => InstanceMetadata<T>.Default;
+		public Selector<T, TypeInfo> Metadata => InstanceMetadata<T>.Default.Then();
 		public ISelect<T, Type> Type => InstanceType<T>.Default;
 
 		public ISelect<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance;

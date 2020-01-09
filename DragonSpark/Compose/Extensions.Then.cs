@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using ConditionSelector = DragonSpark.Compose.Model.ConditionSelector;
+using NestedConditionSelector = DragonSpark.Compose.Model.NestedConditionSelector;
 
 namespace DragonSpark.Compose
 {
@@ -48,7 +48,7 @@ namespace DragonSpark.Compose
 
 		public static Selector<T> Then<T>(this ISelect<None, T> @this) => new Selector<T>(@this);
 
-		public static ConditionSelector Then(this ISelect<None, bool> @this) => new ConditionSelector(@this);
+		public static NestedConditionSelector Then(this ISelect<None, bool> @this) => new NestedConditionSelector(@this);
 
 		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this) => new Selector<TIn, TOut>(@this);
 
@@ -63,8 +63,8 @@ namespace DragonSpark.Compose
 
 		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
-		public static ConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
-			=> new ConditionSelector<_, T>(@this);
+		public static NestedConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
+			=> new NestedConditionSelector<_, T>(@this);
 
 		public static OperationSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this)
 			=> new OperationSelector<_, T>(@this);
@@ -122,9 +122,6 @@ namespace DragonSpark.Compose
 
 		public static ICommand<T> ToCommand<T>(this Selector<T, None> @this)
 			=> new InvokeParameterCommand<T>(@this.Get().Get);
-
-		/*public static ICommand ToAction(this ISelect<None, None> @this)
-			=> new Model.Action(@this.ToCommand().Execute);*/
 
 		public static ResultContext<T> Bind<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
 

@@ -23,6 +23,6 @@ namespace DragonSpark.Runtime
 	{
 		protected IsAssigned(Func<TIn, TOut> select) : this(select.Start()) {}
 
-		protected IsAssigned(ISelect<TIn, TOut> source) : base(source.Select(Is.Assigned())) {}
+		protected IsAssigned(ISelect<TIn, TOut> source) : base(source.Select(Is.Assigned().Get())) {}
 	}
 }

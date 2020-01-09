@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -17,23 +18,23 @@ namespace DragonSpark.Compose
 		public static ICondition<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
 			=> IsDecoratedWith<T>.Default;
 
-		public static ICondition<T> Always<T>() => DragonSpark.Model.Selection.Conditions.Always<T>.Default;
+		public static ConditionSelector<T> Always<T>() => DragonSpark.Model.Selection.Conditions.Always<T>.Default.Then();
 
-		public static ICondition<object> Always() => Always<object>();
+		public static ConditionSelector<object> Always() => Always<object>();
 
-		public static ICondition<T> Never<T>() => DragonSpark.Model.Selection.Conditions.Never<T>.Default;
+		public static ConditionSelector<T> Never<T>() => DragonSpark.Model.Selection.Conditions.Never<T>.Default.Then();
 
-		public static ICondition<object> Never() => Always<object>();
+		public static ConditionSelector<object> Never() => Always<object>();
 
-		public static ICondition<T> EqualTo<T>(T source) => new Equals<T>(source);
+		public static ConditionSelector<T> EqualTo<T>(T source) => new Equals<T>(source).Then();
 
-		public static ICondition<object> Of<T>() => IsOf<T>.Default;
+		public static ConditionSelector<object> Of<T>() => IsOf<T>.Default.Then();
 
-		public static ICondition<T> Assigned<T>() => IsAssigned<T>.Default;
+		public static ConditionSelector<T> Assigned<T>() => IsAssigned<T>.Default.Then();
 
-		public static ICondition<object> Assigned() => IsAssigned.Default;
+		public static ConditionSelector<object> Assigned() => IsAssigned.Default.Then();
 
-		public static ICondition<Type> AssignableFrom<T>() => IsAssignableFrom<T>.Default;
+		public static ConditionSelector<Type> AssignableFrom<T>() => IsAssignableFrom<T>.Default.Then();
 	}
 
 	public static class A

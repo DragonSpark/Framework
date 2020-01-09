@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 	{
 		public static IHandlerRegistration<TPayload> Default { get; } = new HandlerRegistration<T, TPayload>();
 
-		HandlerRegistration() : this(Is.Always()) {}
+		HandlerRegistration() : this(Is.Always().Out()) {}
 
 		readonly ICondition<TPayload> _condition;
 

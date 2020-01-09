@@ -1,15 +1,9 @@
-﻿using DragonSpark.Model.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DragonSpark.Model
 {
-	public static class Empty
-	{
-		public static ICommand<T> Command<T>() => EmptyCommand<T>.Default;
-	}
-
 	public static class Empty<T>
 	{
 		public static T[] Array { get; } = System.Array.Empty<T>();

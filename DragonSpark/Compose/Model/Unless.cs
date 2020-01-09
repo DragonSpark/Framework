@@ -19,7 +19,7 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<TIn, TOut> IsOf<T>() => Results(IsOf<TOut, T>.Default.Get);
 
-		public Selector<TIn, TOut> ResultsInAssigned() => Results(Is.Assigned<TOut>().Get);
+		public Selector<TIn, TOut> ResultsInAssigned() => Results(Is.Assigned<TOut>());
 
 		public Selector<TIn, TOut> Results(Func<TOut, bool> @in)
 			=> new ValidatedResult<TIn, TOut>(@in, _other.Get, _subject.Get).Then();
@@ -55,7 +55,7 @@ namespace DragonSpark.Compose.Model
 
 		public UnlessResultContext<TIn, TOut> IsOf<T>() => Is(IsOf<TIn, T>.Default);
 
-		public UnlessResultContext<TIn, TOut> IsUnassigned() => Is(Compose.Is.Assigned<TIn>().Then().Inverse());
+		public UnlessResultContext<TIn, TOut> IsUnassigned() => Is(Compose.Is.Assigned<TIn>().Inverse());
 
 		public UnlessResultContext<TIn, TOut> Is(ISelect<TIn, bool> condition) => Is(condition.Get);
 

@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace DragonSpark.Compose.Model
 {
-	public class ConditionSelector : ConditionSelector<None>
+	public class NestedConditionSelector : ConditionSelector<None>
 	{
-		public static implicit operator Func<bool>(ConditionSelector instance) => instance.Get().Get;
+		public static implicit operator Func<bool>(NestedConditionSelector instance) => instance.Get().Get;
 
-		public ConditionSelector(ISelect<None, bool> subject) : base(subject) {}
+		public NestedConditionSelector(ISelect<None, bool> subject) : base(subject) {}
 	}
 
 	public class ConditionSelector<T> : Selector<T, bool>
@@ -33,8 +33,8 @@ namespace DragonSpark.Compose.Model
 			=> new ConditionSelector<T>(InverseConditions<T>.Default.Get(new Condition<T>(Get().Get)));
 	}
 
-	public class ConditionSelector<_, T> : SelectionSelector<_, T, bool>
+	public class NestedConditionSelector<_, T> : SelectionSelector<_, T, bool>
 	{
-		public ConditionSelector(ISelect<_, ISelect<T, bool>> subject) : base(subject) {}
+		public NestedConditionSelector(ISelect<_, ISelect<T, bool>> subject) : base(subject) {}
 	}
 }

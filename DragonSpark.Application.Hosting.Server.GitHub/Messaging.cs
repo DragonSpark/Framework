@@ -53,7 +53,6 @@ namespace DragonSpark.Application.Hosting.Server.GitHub
 			            .Then()
 			            .Select(Is.EqualTo(key)),
 			       Start.A.Condition<EventMessage>(Is.Of<AuthenticatedEventMessage>())
-			            .Then()
 			            .Ensure.Input.IsAssigned.Otherwise.Throw(AuthenticatedMessage.Default)
 			      ) {}
 	}

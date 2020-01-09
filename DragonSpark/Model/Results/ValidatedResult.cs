@@ -12,7 +12,8 @@ namespace DragonSpark.Model.Results
 
 		readonly Func<T, bool> _specification;
 
-		public ValidatedResult(IResult<T> result, IResult<T> fallback) : this(Is.Assigned<T>(), result, fallback) {}
+		public ValidatedResult(IResult<T> result, IResult<T> fallback)
+			: this(Is.Assigned<T>(), result.Get, fallback.Get) {}
 
 		public ValidatedResult(ICondition<T> specification, IResult<T> result, IResult<T> fallback)
 			: this(specification.Get, result.Get, fallback.Get) {}

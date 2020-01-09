@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
@@ -11,14 +10,14 @@ namespace DragonSpark.Runtime.Environment
 {
 	sealed class TypeCandidates : ISelect<Type, IEnumerable<Type>>, IActivateUsing<Array<Type>>
 	{
-		readonly ICondition<Type>                _condition;
+		readonly Func<Type, bool>                _condition;
 		readonly Func<Type, ISelect<Type, Type>> _selections;
 		readonly Array<Type>                     _types;
 
 		[UsedImplicitly]
 		public TypeCandidates(Array<Type> types) : this(types, Is.Assigned(), Selections.Default.Get) {}
 
-		public TypeCandidates(Array<Type> types, ICondition<Type> condition,
+		public TypeCandidates(Array<Type> types, Func<Type, bool> condition,
 		                      Func<Type, ISelect<Type, Type>> selections)
 		{
 			_types      = types;
@@ -33,7 +32,7 @@ namespace DragonSpark.Runtime.Environment
 			for (var i = 0u; i < length; i++)
 			{
 				var type = select.Get(_types[i]);
-				if (_condition.Get(type))
+				if (_condition(type))
 				{
 					yield return type;
 				}

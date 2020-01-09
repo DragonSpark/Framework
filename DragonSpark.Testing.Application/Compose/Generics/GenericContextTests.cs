@@ -7,7 +7,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Generics
 {
-	public sealed class ContextTests
+	public sealed class GenericContextTests
 	{
 		sealed class Subject<T> : IResult<string>
 		{
@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Application.Compose.Generics
 		{
 			const uint start      = 6776u;
 			const int  parameter  = 123;
-			var        parameters = typeof(ContextTests);
+			var        parameters = typeof(GenericContextTests);
 			var        expected   = start + parameter + parameters.AssemblyQualifiedName.Length;
 			Start
 				.A.Generic(typeof(SelectedSubject<>))

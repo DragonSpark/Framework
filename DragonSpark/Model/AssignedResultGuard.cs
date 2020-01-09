@@ -25,7 +25,7 @@ namespace DragonSpark.Model
 
 	public class AssignedGuard<T, TException> : Guard<T, TException> where TException : Exception
 	{
-		public AssignedGuard(ISelect<T, string> message) : this(Is.Assigned<T>().Then().Inverse().Out(), message) {}
+		public AssignedGuard(ISelect<T, string> message) : this(Is.Assigned<T>().Inverse().Out(), message) {}
 
 		public AssignedGuard(ICondition<T> condition, ISelect<T, string> message) : base(condition, message) {}
 	}

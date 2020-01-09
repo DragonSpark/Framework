@@ -30,20 +30,20 @@ namespace DragonSpark.Compose
 		public static IResult<T> Result<T>(this ModelContext @this, Func<T> result)
 			=> @this.Result<T>().By.Calling(result);
 
-		public static Extents.Conditions.Extent<T> Of<T>(this Extents.Conditions.Context @this) => @this.Of.Type<T>();
+		public static Extents.Conditions.ConditionExtent<T> Of<T>(this Extents.Conditions.ConditionContext @this) => @this.Of.Type<T>();
 
-		public static Extents.Conditions.Extent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
+		public static Extents.Conditions.ConditionExtent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
 
-		public static ICondition<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
+		public static ConditionSelector<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
 			=> Start.A.Condition<T>().By.Calling(condition);
 
 		public static ICondition<T> Condition<T>(this ModelContext _, ICondition<T> result) => result;
 
-		public static Extents.Commands.Extent<T> Of<T>(this Extents.Commands.Context @this) => @this.Of.Type<T>();
+		public static Extents.Commands.CommandExtent<T> Of<T>(this Extents.Commands.CommandContext @this) => @this.Of.Type<T>();
 
-		public static Extents.Commands.Extent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
+		public static Extents.Commands.CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
 
-		public static Action Calling(this Extents.Commands.Extent<None> _, System.Action body) => new Action(body);
+		public static Action Calling(this Extents.Commands.CommandExtent<None> _, System.Action body) => new Action(body);
 
 		public static Extents.Selections.Extent<T> Of<T>(this Extents.Selections.Context @this) => @this.Of.Type<T>();
 
@@ -76,7 +76,7 @@ namespace DragonSpark.Compose
 
 		public GuardThrowContext(ISelect<T, string> message) => _message = message;
 
-		public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Then().Inverse().Out());
+		public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Inverse().Out());
 
 		public CommandContext<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
 	}

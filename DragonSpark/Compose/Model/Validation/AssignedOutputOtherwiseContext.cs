@@ -3,11 +3,12 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public sealed class AssignedOutputOtherwiseContext<TIn, TOut> : OutputOtherwiseContext<TIn, TOut>
 	{
 		public AssignedOutputOtherwiseContext(ISelect<TIn, TOut> subject)
-			: base(subject, Is.Assigned<TOut>().Get) {}
+			: base(subject, Is.Assigned<TOut>()) {}
 
 		public Selector<TIn, TOut> Throw() => Throw(AssignedResultMessage.Default);
 

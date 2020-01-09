@@ -35,6 +35,8 @@ namespace DragonSpark.Compose.Model
 		public Selector<TIn, TTo> StoredActivation<TTo>() where TTo : IActivateUsing<TOut>
 			=> Select(Activations<TOut, TTo>.Default);
 
+		public Selector<TIn, TTo> Select<TTo>(Selector<TOut, TTo> select) => Select(select.Get());
+
 		public Selector<TIn, TTo> Select<TTo>(ISelect<TOut, TTo> select) => Select(select.Get);
 
 		public Selector<TIn, TTo> Select<TTo>(Func<TOut, TTo> select)
@@ -51,7 +53,7 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<TIn, Array<TOut>> Result() => Select(x => x.Yield().Result());
 
-		public Selector<TIn, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>().Get);
+		public Selector<TIn, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>());
 
 		public Selector<TIn, TOut> OrDefault(ISelect<TIn, bool> use) => OrDefault(use.Get);
 
