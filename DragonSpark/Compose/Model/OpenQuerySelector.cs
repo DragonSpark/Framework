@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Query;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
@@ -18,25 +20,6 @@ namespace DragonSpark.Compose.Model
 		public T[] Get(T[] parameter) => parameter.Where(_condition).ToArray();
 	}
 
-	/*class GroupMapQuery<TIn, TOut> : IOpenQuery<TIn, TOut>
-	{
-		readonly Func<TIn, TOut>        _key;
-		readonly IEqualityComparer<TIn> _comparer;
-
-		public GroupMapQuery(Func<TIn, TOut> key) : this(key, EqualityComparer<TIn>.Default) {}
-
-		public GroupMapQuery(Func<TIn, TOut> key, IEqualityComparer<TIn> comparer)
-		{
-			_key      = key;
-			_comparer = comparer;
-		}
-
-		public TOut[] Get(TIn[] parameter)
-		{
-			return System.Linq.Enumerable.GroupBy(parameter);
-		}
-	}*/
-
 	sealed class OpenQuerySelect<TIn, TOut> : IOpenQuery<TIn, TOut>
 	{
 		readonly Func<TIn, TOut> _select;
@@ -46,21 +29,21 @@ namespace DragonSpark.Compose.Model
 		public TOut[] Get(TIn[] parameter) => parameter.Select(_select).ToArray();
 	}
 
-	sealed class OpenQuery<TIn, TOut> : Select<TIn[], TOut[]>, IOpenQuery<TIn, TOut>
+	sealed class OpenQuery<TIn, TOut> : DragonSpark.Model.Selection.Select<TIn[], TOut[]>, IOpenQuery<TIn, TOut>
 	{
 		public OpenQuery(Func<TIn[], TOut[]> select) : base(select) {}
 	}
 
 	public interface IOpenReduce<in TIn, out TOut> : ISelect<TIn[], TOut> {}
 
-	sealed class OpenReduce<TIn, TOut> : Select<TIn[], TOut>, IOpenReduce<TIn, TOut>
+	sealed class OpenReduce<TIn, TOut> : DragonSpark.Model.Selection.Select<TIn[], TOut>, IOpenReduce<TIn, TOut>
 	{
 		public OpenReduce(Func<TIn[], TOut> select) : base(select) {}
 	}
 
 	public interface ISequenceQuery<in TIn, out TOut> : ISelect<IEnumerable<TIn>, TOut[]> {}
 
-	sealed class SequenceQuery<TIn, TOut> : Select<IEnumerable<TIn>, TOut[]>,
+	sealed class SequenceQuery<TIn, TOut> : DragonSpark.Model.Selection.Select<IEnumerable<TIn>, TOut[]>,
 	                                        ISequenceQuery<TIn, TOut>
 	{
 		public SequenceQuery(Func<IEnumerable<TIn>, TOut[]> select) : base(select) {}
@@ -68,10 +51,83 @@ namespace DragonSpark.Compose.Model
 
 	public interface ISequenceReduce<TIn, out TOut> : ISelect<IEnumerable<TIn>, TOut> {}
 
-	sealed class SequenceReduce<TIn, TOut> : Select<IEnumerable<TIn>, TOut>,
+	sealed class SequenceReduce<TIn, TOut> : DragonSpark.Model.Selection.Select<IEnumerable<TIn>, TOut>,
 	                                         ISequenceReduce<TIn, TOut>
 	{
 		public SequenceReduce(Func<IEnumerable<TIn>, TOut> select) : base(select) {}
+	}
+
+	public sealed class FirstAssigned<T> : FirstWhere<T>
+	{
+		public static FirstAssigned<T> Default { get; } = new FirstAssigned<T>();
+
+		FirstAssigned() : base(Is.Assigned<T>()) {}
+
+		public FirstAssigned(ISelect<T, bool> @where) : base(Is.Assigned<T>().And(where)) {}
+	}
+
+	public class FirstWhere<T> : IOpenReduce<T, T>
+	{
+		readonly Func<T>       _default;
+		readonly Func<T, bool> _where;
+
+		public FirstWhere(ICondition<T> where) : this(where.Get) {}
+
+		public FirstWhere(Func<T, bool> where) : this(where, () => default) {}
+
+		public FirstWhere(Func<T, bool> where, Func<T> @default)
+		{
+			_where   = where;
+			_default = @default;
+		}
+
+		public T Get(T[] parameter)
+		{
+			var length = parameter.Length;
+			for (var i = 0u; i < length; i++)
+			{
+				var item = parameter[i];
+				if (_where(item))
+				{
+					return item;
+				}
+			}
+
+			return _default();
+		}
+	}
+
+	public class One<T> : IOpenReduce<T, T>
+	{
+		readonly Func<T>                          _default;
+		readonly Func<ArrayView<T>, ArrayView<T>> _where;
+
+		public One(Func<T, bool> where) : this(where, A.Default<T>) {}
+
+		public One(Func<T, bool> where, Func<T> @default)
+			: this(new Where<T>(where, Selection.Default, 2).Get, @default) {}
+
+		public One(Func<ArrayView<T>, ArrayView<T>> where, Func<T> @default)
+		{
+			_where   = where;
+			_default = @default;
+		}
+
+		public T Get(T[] parameter)
+		{
+			var view   = _where(new ArrayView<T>(parameter, 0, (uint)parameter.Length));
+			var result = view.Length == 1 ? view.Array[0] : _default();
+			return result;
+		}
+	}
+
+	public sealed class Only<T> : One<T>
+	{
+		public static Only<T> Default { get; } = new Only<T>();
+
+		Only() : this(Always<T>.Default.Get) {}
+
+		public Only(Func<T, bool> where) : base(where) {}
 	}
 
 	// TODO: name
@@ -124,7 +180,13 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<_, TOut> Reduce<TOut>(IOpenReduce<T, TOut> query) => _selector.Select(query);
 
-		public Selector<_, T> Only() => Reduce(x => x.Only());
+		public Selector<_, T> FirstAssigned(ISelect<T, bool> where) => Reduce(new FirstAssigned<T>(where));
+
+		public Selector<_, T> FirstAssigned() => Reduce(FirstAssigned<T>.Default);
+
+		public Selector<_, T> Only(Func<T, bool> where) => Reduce(new Only<T>(where));
+
+		public Selector<_, T> Only() => Reduce(Only<T>.Default);
 
 		public ISelect<_, T[]> Out() => _selector.Get();
 

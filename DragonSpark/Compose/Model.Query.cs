@@ -14,14 +14,12 @@ namespace DragonSpark.Compose
 	{
 		/**/
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
-
 		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
 
 		public static OpenQuerySelector<_, T> Query<_, T>(this ISelect<_, Array<T>> @this)
 			=> new OpenQuerySelector<_, T>(new Selector<_, T[]>(@this.Open()));
 
-		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
+		public static OpenQuerySelector<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Query();
 
 		public static OpenQuerySelector<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
 
@@ -55,12 +53,9 @@ namespace DragonSpark.Compose
 
 		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);*/
 
-		public static ISelect<_, T> FirstAssigned<_, T>(this OpenQuerySelector<_, T> @this) where T : class
-			=> @this.Reduce(x => FirstAssigned<T>.Default.Get(x)).Get();
-
 
 		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
-			=> @this.Select(FirstAssigned<T>.Default);
+			=> @this.Select(DragonSpark.Model.Sequences.Query.FirstAssigned<T>.Default);
 
 
 		public static ISelect<_, T?> FirstAssigned<_, T>(this Query<_, T?> @this) where T : struct
@@ -132,13 +127,13 @@ namespace DragonSpark.Compose
 			=> @this.Select(DragonSpark.Model.Sequences.Query.Only<T>.Default);
 
 		public static ISelect<_, T> Only<_, T>(this Query<_, T> @this, Func<T, bool> where)
-			=> @this.Select(new Only<T>(where));
+			=> @this.Select(new DragonSpark.Model.Sequences.Query.Only<T>(where));
 
 		public static ISelect<_, T> FirstOrDefault<_, T>(this Query<_, T> @this)
 			=> @this.Select(FirstOrDefault<T>.Default);
 
 		public static ISelect<_, T> FirstOrDefault<_, T>(this Query<_, T> @this, Func<T, bool> where)
-			=> @this.Select(new FirstWhere<T>(where));
+			=> @this.Select(new DragonSpark.Model.Sequences.Query.FirstWhere<T>(where));
 
 		public static ISelect<_, T> Single<_, T>(this Query<_, T> @this) => @this.Select(Single<T>.Default);
 

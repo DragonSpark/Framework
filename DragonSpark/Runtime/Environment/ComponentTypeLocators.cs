@@ -16,7 +16,6 @@ namespace DragonSpark.Runtime.Environment
 		public ComponentType(IArray<Type, Type> select)
 			: base(select.Query()
 			             .FirstAssigned()
-			             .Then()
 			             .Ensure.Output.IsAssigned.Otherwise.Throw(LocateGuardMessage.Default)) {}
 	}
 

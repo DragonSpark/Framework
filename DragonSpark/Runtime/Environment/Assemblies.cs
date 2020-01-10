@@ -5,6 +5,7 @@ using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,13 +54,11 @@ namespace DragonSpark.Runtime.Environment
 		public AssemblySelector(ISelect<AssemblyName, IEnumerable<AssemblyName>> names)
 			: this(Start.A.Selection.Of.Type<Assembly>()
 			            .As.Sequence.Array.By.Self.Query()
-			            .Select(AssemblyNameSelector.Default)
-			            .SelectMany(names)
-			            .Select(Load.Default)
-			            .Where()
-			            .By(y => y != null)
-			            .Distinct()
-			            .Get()) {}
+			            .Select(AssemblyNameSelector.Default.Get)
+			            .Query(x => x.SelectMany(names.ToDelegateReference()).ToArray()) // TODO: blah
+			            .Select(Load.Default.Get)
+			            .Where(y => y != null)
+			            .Query(x => x.Distinct().ToArray())) {}
 
 		[UsedImplicitly]
 		public AssemblySelector(ISelect<Array<Assembly>, Array<Assembly>> select) : this(select.Get) {}
