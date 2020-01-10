@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Application.Model.Extents
 			     .Should()
 			     .Throw<InvalidOperationException>();
 			Start.A.Selection<string>()
-			     .By.Self.Invoking(x => x.Return(null))
+			     .By.Self.Invoking(x => x.Get().Get(null))
 			     .Should()
 			     .NotThrow();
 		}

@@ -23,7 +23,7 @@ namespace DragonSpark.Runtime.Activation
 			                                           .EnsureAssignedOrDefault()
 			                                           .Return()))
 			            .ResultsInAssigned()
-			            .Return(A.Metadata<TOut>())) {}
+			            .Get(A.Metadata<TOut>())) {}
 	}
 
 	public sealed class New<T> : FixedActivator<T>

@@ -38,6 +38,11 @@ namespace DragonSpark.Compose.Model
 		public SequenceReduce(Func<Enumerable.ValueEnumerableWrapper<TIn>, TOut> select) : base(select) {}
 	}
 
+	public interface IQuerySelector<in _, T> : IResult<ISelect<_, Array<T>>>
+	{
+
+	}
+
 	// TODO: name
 	public sealed class SequenceQuerySelector<_, T> : IResult<ISelect<_, Array<T>>>
 	{
@@ -59,7 +64,9 @@ namespace DragonSpark.Compose.Model
 		public Selector<_, TOut> Reduce<TOut>(ISequenceReduce<T, TOut> query)
 			=> _selector.Select(x => x.AsValueEnumerable()).Select(query);
 
-		public ISelect<_, Array<T>> Get() => _selector.Get().Result();
+		public ISelect<_, T[]> Out() => _selector.Get().Open();
+
+		public ISelect<_, Array<T>> Get() => _selector.Select(DragonSpark.Model.Sequences.Result<T>.Default).Get();
 	}
 
 	// TODO: name
@@ -83,6 +90,8 @@ namespace DragonSpark.Compose.Model
 		public Selector<_, TOut> Reduce<TOut>(IOpenReduce<T, TOut> query)
 			=> _selector.Select(x => x.AsValueEnumerable()).Select(query);
 
-		public ISelect<_, Array<T>> Get() => _selector.Get().Result();
+		public ISelect<_, T[]> Out() => _selector.Get();
+
+		public ISelect<_, Array<T>> Get() => _selector.Select(DragonSpark.Model.Sequences.Result<T>.Default).Get();
 	}
 }

@@ -7,6 +7,6 @@ namespace DragonSpark.Model.Aspects
 	static class Implementations
 	{
 		public static Func<object, Array<Type>> Arguments { get; }
-			= Start.A.Selection.Of.Any.By.Type.Select(AspectImplementationArguments.Default).Return;
+			= Start.A.Selection.Of.Any.By.Type.Select(AspectImplementationArguments.Default).Get().Get;
 	}
 }

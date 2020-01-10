@@ -48,9 +48,11 @@ namespace DragonSpark.Compose
 
 		public static Selector<T> Then<T>(this ISelect<None, T> @this) => new Selector<T>(@this);
 
-		public static NestedConditionSelector Then(this ISelect<None, bool> @this) => new NestedConditionSelector(@this);
+		public static NestedConditionSelector Then(this ISelect<None, bool> @this)
+			=> new NestedConditionSelector(@this);
 
-		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this) => new Selector<TIn, TOut>(@this);
+		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this)
+			=> new Selector<TIn, TOut>(@this);
 
 		public static ConditionalSelector<TIn, TOut> Then<TIn, TOut>(this IConditional<TIn, TOut> @this)
 			=> new ConditionalSelector<TIn, TOut>(@this);
@@ -128,8 +130,6 @@ namespace DragonSpark.Compose
 		public static T Return<T>(this ResultContext<T> @this) => @this.Get().Get();
 
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
-
-		public static T Return<_, T>(this Selector<_, T> @this, _ parameter) => @this.Get().Get(parameter);
 
 		public static ISelect<_, Array<T>> Return<_, T>(this Query<_, T> @this) => @this.Get();
 	}

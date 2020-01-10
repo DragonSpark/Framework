@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Selection.Conditions
 {
 	public class Conditional<TIn, TOut> : Validated<TIn, TOut>, IConditional<TIn, TOut>
 	{
-		readonly static Func<TIn, TOut> Fallback = Start.A.Selection<TIn>().By.Default<TOut>().Return;
+		readonly static Func<TIn, TOut> Fallback = Start.A.Selection<TIn>().By.Default<TOut>().Get().Get;
 
 		public Conditional(ICondition<TIn> condition, IConditional<TIn, TOut> source)
 			: this(source.Condition.Then().Or(condition), source.Get) {}

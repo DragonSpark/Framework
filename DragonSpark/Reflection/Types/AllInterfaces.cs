@@ -11,7 +11,9 @@ namespace DragonSpark.Reflection.Types
 
 		AllInterfaces() : base(TypeMetadata.Default.Select(Interfaces.Default)
 		                                   .Query()
-		                                   .Where(y => y.IsInterface)
-		                                   .Distinct()) {}
+		                                   .Select(x => x.Where(y => y.IsInterface)
+		                                                 .Distinct()
+		                                                 .ToArray())
+		                      ) {}
 	}
 }

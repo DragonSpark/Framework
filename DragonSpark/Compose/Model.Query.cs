@@ -17,8 +17,11 @@ namespace DragonSpark.Compose
 
 /**/
 
+		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
 
 		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
+
+		public static Query<_, T> Query<_, T>(this ISelect<_, Array<T>> @this) => @this.Open().Query();
 
 		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
 
@@ -26,15 +29,16 @@ namespace DragonSpark.Compose
 
 		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
+		public static SequenceQuerySelector<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
+			=> @this.Then().Query();
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, Array<T>> @this) => @this.Open().Query();
+		public static SequenceQuerySelector<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
+			=> new SequenceQuerySelector<_, T>(@this);
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
-			=> new Query<_, T>(@this.Select(Iterate<T>.Default));
+		/*public static Query<_, T> Query<_, T>(this ISelect<_, ICollection<T>> @this)
+			=> new Query<_, T>(@this.Select(CollectionSelection<T>.Default));*/
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, ICollection<T>> @this)
-			=> new Query<_, T>(@this.Select(CollectionSelection<T>.Default));
+	/**/
 
 		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
 			=> @this.Select(select.Get);

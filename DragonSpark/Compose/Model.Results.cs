@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose.Model;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System;
 
@@ -13,8 +14,12 @@ namespace DragonSpark.Compose
 
 		public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
-		public static ValidatedResultContext<T> Unless<T>(this IResult<T> @this, IResult<T> other)
-			=> @this.Then().Unless(other);
+		public static TOut Get<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this, TIn parameter)
+			=> @this.Get().Get(parameter);
+
+
+		/*public static ValidatedResultContext<T> Unless<T>(this IResult<T> @this, IResult<T> other)
+			=> @this.Then().Unless(other);*/
 
 		// TODO: Move to Query
 
