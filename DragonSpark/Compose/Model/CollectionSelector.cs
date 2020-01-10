@@ -10,6 +10,8 @@ namespace DragonSpark.Compose.Model
 
 		public CollectionSelector(ISelect<_, ICollection<T>> subject) : base(subject) => _subject = subject;
 
+		public Selector<_, ICollection<T>> Subject => new Selector<_, ICollection<T>>(_subject);
+
 		public ConditionSelector<_> HasAny() => new ConditionSelector<_>(_subject.Select(HasAny<T>.Default));
 
 		public ConditionSelector<_> HasNone() => new ConditionSelector<_>(_subject.Select(HasNone<T>.Default));

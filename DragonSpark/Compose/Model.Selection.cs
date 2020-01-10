@@ -18,6 +18,14 @@ namespace DragonSpark.Compose
 
 		/**/
 
+		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this,
+		                                                        ISelect<TFrom, TTo> select) => @this.Select(select.Get);
+
+		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this, Func<TFrom, TTo> select)
+			=> new Selection<TIn, TFrom, TTo>(@this.Get, select);
+
+		/**/
+
 		public static TOut Get<TIn, TOut, TOther>(this ISelect<TIn, TOut> @this, TIn parameter, TOther _)
 			=> @this.Get(parameter);
 
@@ -36,20 +44,9 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this,
-		                                                        ISelect<TFrom, TTo> select) => @this.Select(select.Get);
-
-		public static ISelect<TIn, TTo> Select<TIn, TFrom, TTo>(this ISelect<TIn, TFrom> @this, Func<TFrom, TTo> select)
-			=> new Selection<TIn, TFrom, TTo>(@this.Get, select);
-
-		/**/
-
 		public static Func<TIn, TOut> ToDelegate<TIn, TOut>(this ISelect<TIn, TOut> @this) => @this.Get;
 
 		public static Func<TIn, TOut> ToDelegateReference<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			=> Delegates<TIn, TOut>.Default.Get(@this);
-
-		public static ReferenceContext<TIn, TOut> Stores<TIn, TOut>(this Selector<TIn, TOut> @this) where TIn : class
-			=> new ReferenceContext<TIn, TOut>(@this.Get());
 	}
 }

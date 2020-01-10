@@ -35,6 +35,14 @@ namespace DragonSpark.Compose.Model
 		public Selector<TIn, TTo> StoredActivation<TTo>() where TTo : IActivateUsing<TOut>
 			=> Select(Activations<TOut, TTo>.Default);
 
+		public ResultContext<TOut> Bind(TIn parameter)
+			=> new FixedSelection<TIn, TOut>(_subject, parameter).Then();
+
+		public ResultContext<TOut> Bind(IResult<TIn> parameter) => Bind(parameter.Get);
+
+		public ResultContext<TOut> Bind(Func<TIn> parameter)
+			=> new DelegatedSelection<TIn, TOut>(_subject.Get, parameter).Then();
+
 		public Selector<TIn, TTo> Select<TTo>(Selector<TOut, TTo> select) => Select(select.Get());
 
 		public Selector<TIn, TTo> Select<TTo>(ISelect<TOut, TTo> select) => Select(select.Get);

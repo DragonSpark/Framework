@@ -10,6 +10,8 @@ namespace DragonSpark.Compose.Model
 
 		public OpenArraySelector(ISelect<_, T[]> subject) : base(subject) => _subject = subject;
 
+		public new Selector<_, T[]> Subject => new Selector<_, T[]>(_subject);
+
 		public ConditionSelector<_> AllAre(Func<T, bool> condition)
 			=> new ConditionSelector<_>(_subject.Select(new AllItemsAre<T>(condition)));
 
