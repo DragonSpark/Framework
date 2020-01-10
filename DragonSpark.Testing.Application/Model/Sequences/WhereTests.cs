@@ -3,9 +3,11 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
-using System;
+using NetFabric.Hyperlinq;
 using System.Linq;
 using Xunit;
+using Array = System.Array;
+using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Testing.Application.Model.Sequences
 {
@@ -47,10 +49,12 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 		{
 			const uint count = 1_000u;
 			var array = Numbers.Default.Open()
-			                   .Query()
-			                   .Skip(count - 5)
-			                   .Take(5)
-			                   .Out()
+			                   .Then()
+			                   .Subject.Select(x => x.AsValueEnumerable()
+			                                         .Skip((int)(count - 5))
+			                                         .Take(5)
+			                                         .ToArray())
+			                   .Return()
 			                   .Get(count);
 			array.Should().HaveCount(5);
 

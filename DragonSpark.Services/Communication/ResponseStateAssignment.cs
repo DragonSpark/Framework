@@ -27,7 +27,7 @@ namespace DragonSpark.Services.Communication
 		{
 			_handler(parameter.Value)
 				.CookieContainer
-				.Add(parameter.Value.BaseAddress, _state(parameter.Key));
+				.Add(parameter.Value.BaseAddress, _state(parameter.Key) ?? throw new InvalidOperationException());
 		}
 	}
 }

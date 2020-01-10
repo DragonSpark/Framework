@@ -3,7 +3,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Invocation;
 using DragonSpark.Runtime.Objects;
@@ -59,7 +58,7 @@ namespace DragonSpark.Compose.Model
 		public Selector<TIn, TOut> Configure<TOther>(IAssign<TIn, TOther> configuration)
 			=> new Configuration<TIn, TOut, TOther>(_subject, configuration).Then();
 
-		public Selector<TIn, Array<TOut>> Result() => Select(x => x.Yield().Result());
+		public SequenceSelector<TIn, TOut> Yield() => new SequenceSelector<TIn, TOut>(Select(x => x.Yield()).Get());
 
 		public Selector<TIn, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>());
 

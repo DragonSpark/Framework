@@ -2,7 +2,6 @@
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using System;
@@ -13,13 +12,19 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
+		/*public static OpenQuerySelection<_, T> Query<_, T>(this Selector<_, T[]> @this)
+			=> new OpenQuerySelection<_, T>(@this);*/
+
+/**/
+
+
 		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
 
 		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
 
 		public static Query<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
 
-		public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();
+		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
 		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
 
@@ -49,7 +54,7 @@ namespace DragonSpark.Compose
 
 		public static WhereQueryContext<_, T> Where<_, T>(this Query<_, T> @this) => new WhereQueryContext<_, T>(@this);
 
-		public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);
+		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);*/
 
 		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
 			=> @this.Select(FirstAssigned<T>.Default);
