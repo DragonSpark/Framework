@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences;
 using FluentAssertions;
 using System.Linq;
 using Xunit;
@@ -21,7 +20,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Append(Sequence.From(1, 2, 3))
+			     .Query(x => x.Append(1, 2, 3).ToArray())
 			     .Get()
 			     .Get(data)
 			     .Open()
@@ -34,8 +33,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(skip)
-			     .Append(Sequence.From(1, 2, 3))
+			     .Query(x => x.Skip(skip)
+			                  .Append(1, 2, 3)
+			                  .ToArray())
 			     .Get()
 			     .Get(data)
 			     .Open()
@@ -48,19 +48,19 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(skip)
-			     .Append(Sequence.From(1, 2, 3))
-			     .Skip(skip)
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(skip)
+			                   .Append(1, 2, 3)
+			                   .Skip(skip)
+			                   .FirstOrDefault())
 			     .Get(data)
 			     .Should()
 			     .Be(data.Skip(skip).Concat(new[] {1, 2, 3}).Skip(skip).First());
 
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(skip)
-			     .Append(Sequence.From(1, 2, 3))
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(skip)
+			                   .Append(1, 2, 3)
+			                   .FirstOrDefault())
 			     .Get(data)
 			     .Should()
 			     .Be(data.Skip(skip).Concat(new[] {1, 2, 3}).First());

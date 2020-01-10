@@ -26,8 +26,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = source.Skip(5000).Take(300).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(5000)
-			     .Take(300)
+			     .Query(x => x.Skip(5000)
+			                  .Take(300)
+			                  .ToArray())
 			     .Out()
 			     .Get(source)
 			     .Should()

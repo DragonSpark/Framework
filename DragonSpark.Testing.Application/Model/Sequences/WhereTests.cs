@@ -18,8 +18,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			const uint Total = 10_000u;
 			readonly static ISelect<uint[], uint[]> Select = Start.A.Selection<uint>()
 			                                                      .As.Sequence.Open.By.Self.Query()
-			                                                      .Where()
-			                                                      .By(x => x > 1000)
+			                                                      .Query(x => x.Where(y => y > 1000).ToArray())
 			                                                      .Out();
 
 			uint _count = Total;
@@ -67,10 +66,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(300)
-			     .Take(100)
-			     .Where()
-			     .By(x => x > 100)
+			     .Query(x => x.Skip(300)
+			                  .Take(100)
+			                  .Where(y => y > 100)
+			                  .ToArray())
 			     .Out()
 			     .Get(source)
 			     .Should()
@@ -86,12 +85,12 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(300)
-			     .Take(200)
-			     .Where()
-			     .By(x => x > 100)
-			     .Skip(50)
-			     .Take(100)
+			     .Query(x => x.Skip(300)
+			                  .Take(200)
+			                  .Where(i => i > 100)
+			                  .Skip(50)
+			                  .Take(100)
+			                  .ToArray())
 			     .Out()
 			     .Get(source)
 			     .Should()
@@ -110,8 +109,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = source.Where(x => x > 100).ToArray();
 			var ints = Start.A.Selection<int>()
 			                .As.Sequence.Open.By.Self.Query()
-			                .Where()
-			                .By(x => x > 100)
+			                .Query(x => x.Where(y => y > 100).ToArray())
 			                .Out()
 			                .Get(source);
 			ints.Should().NotBeSameAs(source);
@@ -126,8 +124,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Where()
-			     .By(x => x > 3)
+			     .Where(x => x > 3)
 			     .Out()
 			     .Get(numbers)
 			     .Should()
@@ -142,13 +139,14 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			source.Where(x => x > 100)
 			      .Skip(count)
 			      .Take(5)
+			      .ToArray()
 			      .Should()
 			      .Equal(Start.A.Selection<int>()
 			                  .As.Sequence.Open.By.Self.Query()
-			                  .Where()
-			                  .By(x => x > 100)
-			                  .Skip((uint)count)
-			                  .Take(5)
+			                  .Query(x => x.Where(i => i > 100)
+			                               .Skip(count)
+			                               .Take(5)
+			                               .ToArray())
 			                  .Out()
 			                  .Get(source));
 		}
@@ -160,9 +158,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();
 			var actual = Start.A.Selection<int>()
 			                  .As.Sequence.Open.By.Self.Query()
-			                  .Where()
-			                  .By(x => x > 3)
-			                  .Take(1)
+			                  .Query(x => x.Where(y => y > 3)
+			                               .Take(1)
+			                               .ToArray())
 			                  .Out()
 			                  .Get(numbers);
 			actual.Should().Equal(expected);

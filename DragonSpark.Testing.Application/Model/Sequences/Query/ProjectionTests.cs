@@ -53,13 +53,13 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(100)
-			     .Take(900)
-			     .Where()
-			     .By(x => x.Contains("ab"))
-			     .Select(x => x.Length)
-			     .Skip(5)
-			     .Take(10)
+			     .Query(x => x.Skip(100)
+			                  .Take(900)
+			                  .Where(y => y.Contains("ab"))
+			                  .Select(s => s.Length)
+			                  .Skip(5)
+			                  .Take(10)
+			                  .ToArray())
 			     .Out()
 			     .Get(Source)
 			     .Should()
@@ -76,9 +76,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Where()
-			     .By(x => x.Contains("ab"))
-			     .Select(x => x.Length)
+			     .Query(x => x.Where(s => s.Contains("ab"))
+			                  .Select(s => s.Length)
+			                  .ToArray())
 			     .Out()
 			     .Get(Source)
 			     .Should()
@@ -104,18 +104,16 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			                  });
 		}*/
 
-
-
 		[Fact]
 		void VerifyWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Where()
-			     .By(x => x.Contains("ab"))
-			     .Select(x => x.Length)
-			     .Skip(5)
-			     .Take(10)
+			     .Query(x => x.Where(s => s.Contains("ab"))
+			                  .Select(s => s.Length)
+			                  .Skip(5)
+			                  .Take(10)
+			                  .ToArray())
 			     .Out()
 			     .Get(Source)
 			     .Should()

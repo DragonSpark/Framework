@@ -28,9 +28,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 
 			public Benchmarks() : this(Start.A.Selection.Of.Type<int>()
 			                                .As.Sequence.Open.By.Self.Query()
-			                                .Skip(6)
-			                                .Take(5)
-			                                .Where(x => x > 2)
+			                                .Query(x => x.Skip(6)
+			                                             .Take(5)
+			                                             .Where(i => i > 2)
+			                                             .ToArray())
 			                                .Out(),
 			                           data.Skip(6).Take(5).Where(x => x > 2)) {}
 

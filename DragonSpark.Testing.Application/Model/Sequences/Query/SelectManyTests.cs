@@ -32,8 +32,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			public Benchmarks() : this(Data.Hide().SelectMany(x => x.Elements),
 			                           Start.A.Selection<Numbers>()
 			                                .As.Sequence.Open.By.Self.Query()
-			                                .Select()
-			                                .Many(x => x.Elements)
+			                                .Query(x => x.SelectMany(numbers => numbers.Elements).ToArray())
 			                                .Out()) {}
 
 			public Benchmarks(IEnumerable<int> classic, ISelect<Numbers[], int[]> subject)
@@ -54,8 +53,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Select()
-			     .Many(x => x.Elements)
+			     .Query(x => x.SelectMany(y => y.Elements).ToArray())
 			     .Out()
 			     .Get(Data)
 			     .Should()
@@ -67,9 +65,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(2)
-			     .Select()
-			     .Many(x => x.Elements)
+			     .Query(x => x.Skip(2)
+			                  .SelectMany(y => y.Elements)
+			                  .ToArray())
 			     .Out()
 			     .Get(Data)
 			     .Should()
@@ -81,21 +79,19 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(1)
-			     .Select()
-			     .Many(x => x.Elements)
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(1)
+			                   .SelectMany(y => y.Elements)
+			                   .FirstOrDefault())
 			     .Get(Data)
 			     .Should()
 			     .Be(Data.Skip(1).SelectMany(x => x.Elements).First());
 
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(1)
-			     .Select()
-			     .Many(x => x.Elements)
-			     .Skip(2)
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(1)
+			                   .SelectMany(y => y.Elements)
+			                   .Skip(2)
+			                   .FirstOrDefault())
 			     .Get(Data)
 			     .Should()
 			     .Be(Data.Skip(1).SelectMany(x => x.Elements).Skip(2).First());

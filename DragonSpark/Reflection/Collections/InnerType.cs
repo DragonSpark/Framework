@@ -21,7 +21,7 @@ namespace DragonSpark.Reflection.Collections
 
 		public InnerType(ICondition<TypeInfo> condition)
 			: this(HasGenericArguments.Default.Then().And(condition), TypeHierarchy.Default.Get,
-			       Start.A.Selection<Type>().As.Sequence.Open.By.Self.Query().Only().Then().Metadata()) {}
+			       Start.A.Selection<Type>().As.Sequence.Open.By.Self.Query().Only().Get().Then().Metadata()) {} // TODO: Get/Then
 
 		public InnerType(Func<TypeInfo, bool> condition, Func<TypeInfo, Array<TypeInfo>> hierarchy,
 		                 Func<Type[], TypeInfo> select)

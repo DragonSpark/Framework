@@ -14,14 +14,16 @@ namespace DragonSpark.Compose
 	{
 		/**/
 
-		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
+		public static OpenQuerySelector<_, T> Query<_, T>(this Selector<_, T[]> @this)
+			=> new OpenQuerySelector<_, T>(@this);
 
 		public static OpenQuerySelector<_, T> Query<_, T>(this ISelect<_, Array<T>> @this)
 			=> new OpenQuerySelector<_, T>(new Selector<_, T[]>(@this.Open()));
 
 		public static OpenQuerySelector<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Query();
 
-		public static OpenQuerySelector<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
+		public static OpenQuerySelector<None, T> Query<T>(this IResult<Array<T>> @this)
+			=> @this.Then().Accept().Get().Query();
 
 		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
@@ -53,10 +55,8 @@ namespace DragonSpark.Compose
 
 		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);*/
 
-
 		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
 			=> @this.Select(DragonSpark.Model.Sequences.Query.FirstAssigned<T>.Default);
-
 
 		public static ISelect<_, T?> FirstAssigned<_, T>(this Query<_, T?> @this) where T : struct
 			=> @this.Select(FirstAssignedValue<T>.Default);
@@ -85,14 +85,14 @@ namespace DragonSpark.Compose
 			=> @this.Union(others, EqualityComparer<T>.Default);
 
 		public static Query<_, T> Union<_, T>(this Query<_, T> @this, ISequence<T> others,
-											  IEqualityComparer<T> comparer)
+		                                      IEqualityComparer<T> comparer)
 			=> @this.Select(new Build.Union<T>(others, comparer).Returned());
 
 		public static Query<_, T> Intersect<_, T>(this Query<_, T> @this, ISequence<T> others)
 			=> @this.Intersect(others, EqualityComparer<T>.Default);
 
 		public static Query<_, T> Intersect<_, T>(this Query<_, T> @this, ISequence<T> others,
-												  IEqualityComparer<T> comparer)
+		                                          IEqualityComparer<T> comparer)
 			=> @this.Select(new Build.Intersect<T>(others, comparer).Returned());
 
 		public static Query<_, T> Distinct<_, T>(this Query<_, T> @this) => @this.Select(Build.Distinct<T>.Default);
@@ -120,8 +120,26 @@ namespace DragonSpark.Compose
 			=> @this.GroupMap(key, EqualityComparer<TKey>.Default);
 
 		public static ISelect<_, IArrayMap<TKey, T>> GroupMap<_, T, TKey>(this Query<_, T> @this, Func<T, TKey> key,
-																		  IEqualityComparer<TKey> comparer)
+		                                                                  IEqualityComparer<TKey> comparer)
 			=> @this.Select(new GroupMap<T, TKey>(key, comparer));
+
+
+		public static ISelect<_, IArrayMap<TKey, T>> GroupMap<_, T, TKey>(
+			this ISelect<_, T> @this, ISelect<T, TKey> key) => @this.GroupMap(key, EqualityComparer<TKey>.Default);
+
+		public static ISelect<_, IArrayMap<TKey, T>> GroupMap<_, T, TKey>(
+			this ISelect<_, T> @this, ISelect<T, TKey> key, IEqualityComparer<TKey> comparer)
+			=> @this.GroupMap(key.Get, comparer);
+
+		public static ISelect<_, IArrayMap<TKey, T>> GroupMap<_, T, TKey>(this ISelect<_, T> @this, Func<T, TKey> key)
+			=> @this.GroupMap(key, EqualityComparer<TKey>.Default);
+
+		public static ISelect<_, IArrayMap<TKey, T>> GroupMap<_, T, TKey>(this ISelect<_, T> @this, Func<T, TKey> key,
+		                                                                  IEqualityComparer<TKey> comparer)
+			=> @this.Select(new GroupMapAdapter<T, TKey>(new GroupMap<T, TKey>(key, comparer)).Get);
+
+
+/*Select(new GroupMapAdapter<,>(new GroupMap<Type, Type>(definition.Get().Get)))*/
 
 		public static ISelect<_, T> Only<_, T>(this Query<_, T> @this)
 			=> @this.Select(DragonSpark.Model.Sequences.Query.Only<T>.Default);

@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using DragonSpark.Compose;
 using FluentAssertions;
-using DragonSpark.Compose;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Selection.Adapters
@@ -16,8 +16,7 @@ namespace DragonSpark.Testing.Application.Model.Selection.Adapters
 
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(3)
-			     .Get()
+			     .Query(x => x.Skip(3).ToArray())
 			     .Get(numbers)
 			     .Open()
 			     .Should()

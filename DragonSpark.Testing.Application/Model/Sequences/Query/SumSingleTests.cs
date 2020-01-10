@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using FluentAssertions;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Testing.Objects;
+using FluentAssertions;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Sum(x => (float)x.Length)
+			     .Reduce(x => x.Sum(y => (float)y.Length))
 			     .Get(Source)
 			     .Should()
 			     .Be(Source.Sum(x => (float)x.Length));
@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Select(x => (float)x.Length)
-			     .Sum()
+			     .Reduce(x => x.Sum())
 			     .Get(Source)
 			     .Should()
 			     .Be(Source.Sum(x => (float)x.Length));

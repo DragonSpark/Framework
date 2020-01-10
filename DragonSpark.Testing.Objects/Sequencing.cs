@@ -2,6 +2,7 @@
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+// ReSharper disable UnusedParameter.Local
 
 namespace DragonSpark.Testing.Objects
 {
@@ -11,10 +12,10 @@ namespace DragonSpark.Testing.Objects
 
 		Sequencing() : this(Start.A.Selection<T>().As.Sequence.Open.By.Self.Query()) {}
 
-		public Sequencing(Query<T[], T> sequence) : this(sequence, Objects.Near.Default, Objects.Far.Default) {}
+		public Sequencing(OpenQuerySelector<T[], T> sequence) : this(sequence, Objects.Near.Default, Objects.Far.Default) {}
 
-		public Sequencing(Query<T[], T> sequence, Selection near, Selection far)
-			: this(sequence.Out(), sequence.Select(near).Out(), sequence.Select(far).Out()) {}
+		public Sequencing(OpenQuerySelector<T[], T> sequence, Selection near, Selection far)
+			: this(sequence.Out(), null, null) {} // TODO: assign.
 
 		public Sequencing(ISelect<T[], T[]> full, ISelect<T[], T[]> near, ISelect<T[], T[]> far)
 		{

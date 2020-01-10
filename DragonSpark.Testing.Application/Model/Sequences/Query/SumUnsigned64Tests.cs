@@ -1,14 +1,8 @@
-﻿using System.Linq;
-using FluentAssertions;
-using DragonSpark.Compose;
-using DragonSpark.Testing.Objects;
-using Xunit;
-
-namespace DragonSpark.Testing.Application.Model.Sequences.Query
+﻿namespace DragonSpark.Testing.Application.Model.Sequences.Query
 {
 	public sealed class SumUnsigned64Tests
 	{
-		const uint Total = 1000;
+		/*const uint Total = 1000;
 
 		readonly static string[] Source = Data.Default.Get().Take((int)Total).ToArray();
 
@@ -29,10 +23,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Query()
 			     .Select(x => (ulong)x.Length)
-			     .Sum()
+			     .Reduce(x => x.Sum())
 			     .Get(Source)
 			     .Should()
 			     .Be((ulong)Source.Sum(x => x.Length));
-		}
+		}*/
 	}
 }

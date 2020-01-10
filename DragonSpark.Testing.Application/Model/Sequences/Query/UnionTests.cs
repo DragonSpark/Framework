@@ -1,7 +1,6 @@
-﻿using System.Linq;
+﻿using DragonSpark.Compose;
 using FluentAssertions;
-using DragonSpark.Compose;
-using DragonSpark.Model.Sequences;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -16,7 +15,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Union(Sequence.From(second))
+			     .Query(x => x.Union(second).ToArray())
 			     .Out()
 			     .Get(first)
 			     .Should()
@@ -31,8 +30,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(4)
-			     .Union(Sequence.From(second))
+			     .Query(x => x.Skip(4)
+			                  .Union(second)
+			                  .ToArray())
 			     .Out()
 			     .Get(first)
 			     .Should()
@@ -47,19 +47,19 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(4)
-			     .Union(Sequence.From(second))
-			     .Skip(3)
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(4)
+			                   .Union(second)
+			                   .Skip(3)
+			                   .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(4).Union(second).Skip(3).First());
 
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Query()
-			     .Skip(4)
-			     .Union(Sequence.From(second))
-			     .FirstOrDefault()
+			     .Reduce(x => x.Skip(4)
+			                   .Union(second)
+			                   .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(4).Union(second).First());
