@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Testing.Environment.Development;
 using DragonSpark.Testing.Objects;
@@ -7,7 +8,6 @@ using FluentAssertions;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Application.Composition
 			                            .RegisterModularity()
 			                            .Operations()
 			                            .Start();
-			host.Services.GetRequiredService<IReadOnlyList<Assembly>>().Should().NotBeNull();
+			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
 		[Fact]
@@ -99,7 +99,7 @@ namespace DragonSpark.Testing.Application.Composition
 			                            .RegisterModularity<AllAssemblyTypes>()
 			                            .Operations()
 			                            .Start();
-			host.Services.GetRequiredService<IReadOnlyList<Assembly>>().Should().NotBeNull();
+			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
 		[Fact]

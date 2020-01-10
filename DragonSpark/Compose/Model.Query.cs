@@ -71,8 +71,6 @@ namespace DragonSpark.Compose
 
 		public static ISelect<_, decimal> Sum<_>(this Query<_, decimal> @this) => @this.Select(SumDecimal.Default);
 
-		public static Func<TIn, TOut> Selector<TIn, TOut>(this Selector<TIn, TOut> @this) => @this;
-
 		public static Query<_, T> Select<_, T>(this Query<_, T> @this, Selection selection)
 			=> @this.Skip(selection.Start).Take(selection.Length);
 

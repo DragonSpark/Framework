@@ -11,6 +11,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		void Verify()
 		{
 			EnvironmentAwareAssemblies.Default.Get("Production")
+			                          .Open()
 			                          .Should()
 			                          .Equal(typeof(Testing.Environment.HelloWorld).Assembly,
 			                                 typeof(EnvironmentAwareAssembliesTests).Assembly,
@@ -21,6 +22,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		void VerifyDevelopment()
 		{
 			EnvironmentAwareAssemblies.Default.Get("Development")
+			                          .Open()
 			                          .Should()
 			                          .Equal(typeof(Testing.Environment.Development.HelloWorld).Assembly,
 			                                 typeof(Testing.Environment.HelloWorld).Assembly,

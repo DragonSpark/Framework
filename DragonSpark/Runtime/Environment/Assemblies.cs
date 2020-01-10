@@ -24,13 +24,13 @@ namespace DragonSpark.Runtime.Environment
 			: base(select.Then().Bind(parameter)) {}
 	}
 
-	sealed class EnvironmentAwareAssemblies : ISelect<string, IReadOnlyList<Assembly>>
+	sealed class EnvironmentAwareAssemblies : IArray<string, Assembly>
 	{
 		public static EnvironmentAwareAssemblies Default { get; } = new EnvironmentAwareAssemblies();
 
 		EnvironmentAwareAssemblies() {}
 
-		public IReadOnlyList<Assembly> Get(string parameter)
+		public Array<Assembly> Get(string parameter)
 		{
 			var names = new ComponentAssemblyNames(new SpecificEnvironmentAssemblyName(parameter),
 			                                       EnvironmentAssemblyName.Default);

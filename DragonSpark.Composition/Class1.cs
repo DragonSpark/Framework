@@ -2,6 +2,7 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Stores;
+using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
@@ -10,7 +11,6 @@ using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Composition
@@ -52,7 +52,7 @@ namespace DragonSpark.Composition
 
 	public interface IContainerConfiguration : ICommand<IServiceContainer> {}
 
-	public sealed class ContainerConfiguration : Command<IServiceContainer>, IContainerConfiguration
+	public class ContainerConfiguration : Command<IServiceContainer>, IContainerConfiguration
 	{
 		public ContainerConfiguration(Action<IServiceContainer> command) : base(command) {}
 	}
@@ -62,18 +62,17 @@ namespace DragonSpark.Composition
 		[UsedImplicitly]
 		public static RegisterModularity Default { get; } = new RegisterModularity();
 
-		RegisterModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Open().Get) {}
+		RegisterModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Get) {}
 
-		readonly Func<IReadOnlyList<Type>, IComponentTypes>         _locator;
-		readonly Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> _types;
-		readonly Func<string, IReadOnlyList<Assembly>>              _select;
+		readonly Func<Array<Type>, IComponentTypes> _locator;
+		readonly Func<Array<Assembly>, Array<Type>> _types;
+		readonly Func<string, Array<Assembly>>      _select;
 
-		public RegisterModularity(Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types)
-			: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Open().Get) {}
+		public RegisterModularity(Func<Array<Assembly>, Array<Type>> types)
+			: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Get) {}
 
-		public RegisterModularity(Func<IReadOnlyList<Type>, IComponentTypes> locator,
-		                          Func<IReadOnlyList<Assembly>, IReadOnlyList<Type>> types,
-		                          Func<string, IReadOnlyList<Assembly>> select)
+		public RegisterModularity(Func<Array<Type>, IComponentTypes> locator, Func<Array<Assembly>, Array<Type>> types,
+		                          Func<string, Array<Assembly>> select)
 		{
 			_locator = locator;
 			_types   = types;
@@ -86,14 +85,12 @@ namespace DragonSpark.Composition
 			var types      = _types(assemblies);
 			var locator    = _locator(types);
 
-			parameter.AddSingleton(assemblies)
-			         .AddSingleton(types)
+			parameter.AddSingleton<IArray<Assembly>>(new ArrayInstance<Assembly>(assemblies))
+			         .AddSingleton<IArray<Type>>(new ArrayInstance<Type>(types))
 			         .AddSingleton(locator)
 			         .AddSingleton<IComponentType>(new ComponentType(locator));
 		}
 	}
-
-	sealed class name {}
 
 	sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
 	{

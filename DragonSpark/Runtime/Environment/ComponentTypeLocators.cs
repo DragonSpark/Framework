@@ -5,7 +5,6 @@ using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Text;
 using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Runtime.Environment
 {
@@ -35,7 +34,7 @@ namespace DragonSpark.Runtime.Environment
 		public ComponentTypes(ISelect<Type, Array<Type>> source) : base(source) {}
 	}
 
-	sealed class ComponentTypeLocators : Select<IReadOnlyList<Type>, IComponentTypes>
+	sealed class ComponentTypeLocators : Select<Array<Type>, IComponentTypes>
 	{
 		public static ComponentTypeLocators Default { get; } = new ComponentTypeLocators();
 
@@ -43,7 +42,7 @@ namespace DragonSpark.Runtime.Environment
 
 		public ComponentTypeLocators(Func<Type, bool> condition)
 			: base(Start.A.Selection<Type>()
-			            .As.Sequence.ReadOnly.By.Self.Get()
+			            .As.Sequence.Array.By.Self.Get()
 			            .Query()
 			            .Where(condition)
 			            .Get()

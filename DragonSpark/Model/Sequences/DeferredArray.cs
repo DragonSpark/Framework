@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Runtime.Activation;
+using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Model.Sequences
 {

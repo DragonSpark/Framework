@@ -2,7 +2,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
@@ -14,15 +13,15 @@ namespace DragonSpark.Runtime.Environment
 		TypeSelection() : base(Start.An.Extent<T>().From) {}
 	}
 
-	class TypeSelection : ArraySelection<IReadOnlyList<Assembly>, Type>
+	class TypeSelection : ArraySelection<Array<Assembly>, Type>
 	{
 		public TypeSelection(Func<Assembly, IArray<Type>> select)
 			: this(Start.A.Selection<Assembly>()
-			            .As.Sequence.ReadOnly.By.Self.Get()
+			            .As.Sequence.Array.By.Self.Get()
 			            .Query()
 			            .Select(select)
 			            .SelectMany(x => x.Get().Open())) {}
 
-		public TypeSelection(Func<IReadOnlyList<Assembly>, Array<Type>> @select) : base(@select) {}
+		public TypeSelection(Func<Array<Assembly>, Array<Type>> select) : base(select) {}
 	}
 }

@@ -68,7 +68,7 @@ namespace DragonSpark.Composition
 
 		public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
 			where T : class, IActivateUsing<Assembly>, IArray<Type>
-			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Open().Get));
+			=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Get));
 
 		public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 			=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);

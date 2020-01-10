@@ -1,10 +1,8 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Compose
@@ -18,25 +16,12 @@ namespace DragonSpark.Compose
 
 		public static ISelect<_, Array<T>> Result<_, T>(this ISelect<_, IEnumerable<T>> @this) => @this.Query().Get();
 
-		public static IArray<_, T> ToStore<_, T>(this ISelect<_, Array<T>> @this) => @this.ToDelegate().ToStore();
-
-		public static IArray<_, T> ToStore<_, T>(this Func<_, Array<T>> @this) => new ArrayStore<_, T>(@this);
-
-		public static ISequence<T> And<T>(this IResult<T> @this, params IResult<T>[] others)
-			=> Sequence.Using(others.Prepend(@this).ToArray());
-
-		public static ISequence<T> And<T>(this T[] @this, params T[] others)
-			=> Sequence.From(@this.Concat(others).ToArray());
-
-		public static ISequence<T> And<T>(this T @this, params T[] others)
-			=> Sequence.From(others.Prepend(@this).ToArray());
-
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] ToArray<T>(in this ArrayView<T> @this)
 			=> @this.Length == 0 ? Empty<T>.Array : @this.Array.CopyInto(new T[@this.Length], @this.Start, @this.Length);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static DragonSpark.Model.Sequences.Store<T> ToStore<T>(in this ArrayView<T> @this, IStores<T> stores)
+		public static Store<T> ToStore<T>(in this ArrayView<T> @this, IStores<T> stores)
 		{
 			var result = stores.Get(@this.Length);
 			@this.Array.CopyInto(result.Instance, @this.Start, @this.Length);
