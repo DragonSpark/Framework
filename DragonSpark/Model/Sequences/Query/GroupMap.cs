@@ -10,6 +10,8 @@ namespace DragonSpark.Model.Sequences.Query
 		readonly IEqualityComparer<TKey> _comparer;
 		readonly Func<T, TKey>           _key;
 
+		public GroupMap(Func<T, TKey> key) : this(key, EqualityComparer<TKey>.Default) {}
+
 		public GroupMap(Func<T, TKey> key, IEqualityComparer<TKey> comparer)
 		{
 			_key      = key;

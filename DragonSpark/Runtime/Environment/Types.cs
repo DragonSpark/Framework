@@ -2,6 +2,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
@@ -19,8 +20,10 @@ namespace DragonSpark.Runtime.Environment
 			: this(Start.A.Selection<Assembly>()
 			            .As.Sequence.Array.By.Self.Get()
 			            .Query()
-			            .Select(select)
-			            .SelectMany(x => x.Get().Open())) {}
+			            .Query(x => x.Select(select) // TODO: hyperlinq?
+			                          .SelectMany(y => y.Get().Open())
+			                          .ToArray())
+			       /*.SelectMany(x => x.Get().Open())*/) {}
 
 		public TypeSelection(Func<Array<Assembly>, Array<Type>> select) : base(select) {}
 	}

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System;
 
 namespace DragonSpark.Reflection.Types
@@ -11,7 +12,8 @@ namespace DragonSpark.Reflection.Types
 
 		AllInterfaces() : base(TypeMetadata.Default.Select(Interfaces.Default)
 		                                   .Query()
-		                                   .Select(x => x.Where(y => y.IsInterface)
+		                                   .Select(x => x.AsValueEnumerable()
+		                                                 .Where(y => y.IsInterface)
 		                                                 .Distinct()
 		                                                 .ToArray())
 		                      ) {}

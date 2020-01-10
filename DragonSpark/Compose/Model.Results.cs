@@ -26,7 +26,7 @@ namespace DragonSpark.Compose
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
 			=> @this.Query()
 			        .Select(select)
-			        .Return()
+			        .Get()
 			        .Then()
 			        .Bind()
 			        .Get();

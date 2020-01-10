@@ -12,20 +12,18 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		/*public static OpenQuerySelection<_, T> Query<_, T>(this Selector<_, T[]> @this)
-			=> new OpenQuerySelection<_, T>(@this);*/
-
-/**/
+		/**/
 
 		public static Query<_, T> Query<_, T>(this ISelect<_, T[]> @this) => new Query<_, T>(@this);
 
 		public static Query<_, T> Query<_, T>(this Selector<_, T[]> @this) => new Query<_, T>(@this.Get());
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, Array<T>> @this) => @this.Open().Query();
+		public static OpenQuerySelector<_, T> Query<_, T>(this ISelect<_, Array<T>> @this)
+			=> new OpenQuerySelector<_, T>(new Selector<_, T[]>(@this.Open()));
 
 		public static Query<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Open().Query();
 
-		public static Query<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
+		public static OpenQuerySelector<None, T> Query<T>(this IResult<Array<T>> @this) => @this.Then().Accept().Get().Query();
 
 		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
@@ -35,10 +33,7 @@ namespace DragonSpark.Compose
 		public static SequenceQuerySelector<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
 			=> new SequenceQuerySelector<_, T>(@this);
 
-		/*public static Query<_, T> Query<_, T>(this ISelect<_, ICollection<T>> @this)
-			=> new Query<_, T>(@this.Select(CollectionSelection<T>.Default));*/
-
-	/**/
+		/**/
 
 		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
 			=> @this.Select(select.Get);
@@ -60,8 +55,13 @@ namespace DragonSpark.Compose
 
 		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);*/
 
+		public static ISelect<_, T> FirstAssigned<_, T>(this OpenQuerySelector<_, T> @this) where T : class
+			=> @this.Reduce(x => FirstAssigned<T>.Default.Get(x)).Get();
+
+
 		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
 			=> @this.Select(FirstAssigned<T>.Default);
+
 
 		public static ISelect<_, T?> FirstAssigned<_, T>(this Query<_, T?> @this) where T : struct
 			=> @this.Select(FirstAssignedValue<T>.Default);

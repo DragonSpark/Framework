@@ -21,7 +21,7 @@ namespace DragonSpark.Runtime.Activation
 			            .Value()
 			            .Query()
 			            .Where(IsSingletonProperty.Default)
-			            .FirstAssigned()
+			            .FirstAssigned() // TODO: combine condition.
 			            .Get) {}
 	}
 }

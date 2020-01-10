@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System;
 
 namespace DragonSpark.Reflection.Types
@@ -9,6 +10,7 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static GenericInterfaces Default { get; } = new GenericInterfaces();
 
-		GenericInterfaces() : base(AllInterfaces.Default.Query().Where(y => y.IsGenericType)) {}
+		GenericInterfaces() : base(AllInterfaces.Default.Query()
+		                                        .Query(x => x.Where(y => y.IsGenericType).ToArray())) {}
 	}
 }

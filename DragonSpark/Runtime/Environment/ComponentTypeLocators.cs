@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Text;
+using NetFabric.Hyperlinq;
 using System;
 
 namespace DragonSpark.Runtime.Environment
@@ -44,7 +45,7 @@ namespace DragonSpark.Runtime.Environment
 			: base(Start.A.Selection<Type>()
 			            .As.Sequence.Array.By.Self.Get()
 			            .Query()
-			            .Where(condition)
+			            .Query(x => x.AsValueEnumerable().Where(condition).ToArray())
 			            .Get()
 			            .Then()
 			            .StoredActivation<TypeCandidates>()
