@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		}*/
 
 		[Fact]
-		void Verify() // TODO:
+		void Verify() // TODO: GroupMap
 		{
 			/*var entries = new[]
 			{

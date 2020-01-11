@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Application
 	{
 		static void Main(params string[] arguments)
 		{
-			Configuration.Default.Get(arguments).To(Run.A<IterationBenchmarks>);
+			Configuration.Default.Get(arguments).To(Run.A<ValueIterationBenchmarks>);
 		}
 	}
 }

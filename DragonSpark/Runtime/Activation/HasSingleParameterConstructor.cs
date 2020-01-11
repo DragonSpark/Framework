@@ -23,7 +23,7 @@ namespace DragonSpark.Runtime.Activation
 			                              .Select(IsAssignableFrom<T>.Default)
 			                              .EnsureAssignedOrDefault()
 			                              .Get())
-			                 .Get() // TODO.
+			                 .Get() // TODO: get/then
 			                 .Then()
 			                 .And(parameters.Then().Select(RemainingParametersAreOptional.Default))) {}
 	}

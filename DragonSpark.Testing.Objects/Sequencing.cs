@@ -12,9 +12,9 @@ namespace DragonSpark.Testing.Objects
 
 		Sequencing() : this(Start.A.Selection<T>().As.Sequence.Open.By.Self.Query()) {}
 
-		public Sequencing(OpenQuerySelector<T[], T> sequence) : this(sequence, Objects.Near.Default, Objects.Far.Default) {}
+		public Sequencing(MaterializedQuery<T[], T> sequence) : this(sequence, Objects.Near.Default, Objects.Far.Default) {}
 
-		public Sequencing(OpenQuerySelector<T[], T> sequence, Selection near, Selection far)
+		public Sequencing(MaterializedQuery<T[], T> sequence, Selection near, Selection far)
 			: this(sequence.Out(), null, null) {} // TODO: assign.
 
 		public Sequencing(ISelect<T[], T[]> full, ISelect<T[], T[]> near, ISelect<T[], T[]> far)

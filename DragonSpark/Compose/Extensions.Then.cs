@@ -24,6 +24,8 @@ namespace DragonSpark.Compose
 		 * https://youtu.be/oqwzuiSy9y0
 		 */
 
+		// TODO: Migrate to Selectors
+
 		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
 
 		public static NestedResultContext<T> Then<T>(this IResult<IResult<T>> @this)
@@ -131,6 +133,6 @@ namespace DragonSpark.Compose
 
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
 
-		public static ISelect<_, Array<T>> Return<_, T>(this Query<_, T> @this) => @this.Get();
+		/*public static ISelect<_, Array<T>> Return<_, T>(this Query<_, T> @this) => @this.Get();*/
 	}
 }

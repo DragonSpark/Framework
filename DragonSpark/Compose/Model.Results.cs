@@ -17,8 +17,6 @@ namespace DragonSpark.Compose
 		public static TOut Get<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this, TIn parameter)
 			=> @this.Get().Get(parameter);
 
-		// TODO: Move to Query
-
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
 			=> @this.Query()
 			        .Select(select)

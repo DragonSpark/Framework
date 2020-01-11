@@ -62,6 +62,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			     .Get(Data.Default.Get());
 
 			// second.Should().Be(2); // TODO: Re-assert.
+
+			second.Should().NotBe(0);
 		}
 
 		public class Benchmarks

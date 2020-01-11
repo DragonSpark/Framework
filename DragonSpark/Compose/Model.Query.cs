@@ -3,8 +3,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Model.Sequences.Query;
-using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Compose
@@ -14,28 +12,28 @@ namespace DragonSpark.Compose
 	{
 		/**/
 
-		public static OpenQuerySelector<_, T> Query<_, T>(this Selector<_, T[]> @this)
-			=> new OpenQuerySelector<_, T>(@this);
+		public static MaterializedQuery<_, T> Query<_, T>(this Selector<_, T[]> @this)
+			=> new MaterializedQuery<_, T>(@this);
 
-		public static OpenQuerySelector<_, T> Query<_, T>(this ISelect<_, Array<T>> @this)
-			=> new OpenQuerySelector<_, T>(new Selector<_, T[]>(@this.Open()));
+		public static MaterializedQuery<_, T> Query<_, T>(this ISelect<_, Array<T>> @this)
+			=> new MaterializedQuery<_, T>(new Selector<_, T[]>(@this.Open()));
 
-		public static OpenQuerySelector<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Query();
+		public static MaterializedQuery<_, T> Query<_, T>(this Selector<_, Array<T>> @this) => @this.Get().Query();
 
-		public static OpenQuerySelector<None, T> Query<T>(this IResult<Array<T>> @this)
+		public static MaterializedQuery<None, T> Query<T>(this IResult<Array<T>> @this)
 			=> @this.Then().Accept().Get().Query();
 
 		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
-		public static SequenceQuerySelector<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
+		public static Query<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
 			=> @this.Then().Query();
 
-		public static SequenceQuerySelector<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
-			=> new SequenceQuerySelector<_, T>(@this);
+		public static Query<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
+			=> new Query<_, T>(@this);
 
 		/**/
 
-		public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
+		/*public static Query<_, TOut> Select<_, T, TOut>(this Query<_, T> @this, ISelect<T, TOut> select)
 			=> @this.Select(select.Get);
 
 		public static SelectQueryContext<_, T> Select<_, T>(this Query<_, T> @this)
@@ -53,7 +51,7 @@ namespace DragonSpark.Compose
 
 		public static WhereQueryContext<_, T> Where<_, T>(this Query<_, T> @this) => new WhereQueryContext<_, T>(@this);
 
-		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);*/
+		/*public static Query<_, T> Where<_, T>(this Query<_, T> @this, ICondition<T> where) => @this.Where(where.Get);#1#
 
 		public static ISelect<_, T> FirstAssigned<_, T>(this Query<_, T> @this) where T : class
 			=> @this.Select(DragonSpark.Model.Sequences.Query.FirstAssigned<T>.Default);
@@ -139,7 +137,7 @@ namespace DragonSpark.Compose
 			=> @this.Select(new GroupMapAdapter<T, TKey>(new GroupMap<T, TKey>(key, comparer)).Get);
 
 
-/*Select(new GroupMapAdapter<,>(new GroupMap<Type, Type>(definition.Get().Get)))*/
+/*Select(new GroupMapAdapter<,>(new GroupMap<Type, Type>(definition.Get().Get)))#1#
 
 		public static ISelect<_, T> Only<_, T>(this Query<_, T> @this)
 			=> @this.Select(DragonSpark.Model.Sequences.Query.Only<T>.Default);
@@ -177,6 +175,6 @@ namespace DragonSpark.Compose
 			=> @this.Select(new SumDouble<T>(select));
 
 		public static ISelect<_, decimal> Sum<_, T>(this Query<_, T> @this, Func<T, decimal> select)
-			=> @this.Select(new SumDecimal<T>(select));
+			=> @this.Select(new SumDecimal<T>(select));*/
 	}
 }

@@ -82,8 +82,6 @@ namespace DragonSpark.Compose.Model
 		readonly Func<T>       _default;
 		readonly Func<T, bool> _where;
 
-		public FirstWhere(ICondition<T> where) : this(where.Get) {}
-
 		public FirstWhere(Func<T, bool> where) : this(where, () => default) {}
 
 		public FirstWhere(Func<T, bool> where, Func<T> @default)
@@ -141,20 +139,19 @@ namespace DragonSpark.Compose.Model
 		public Only(Func<T, bool> where) : base(where) {}
 	}
 
-	// TODO: name
-	public sealed class SequenceQuerySelector<_, T> : IResult<ISelect<_, Array<T>>>
+	public sealed class Query<_, T> : IResult<ISelect<_, Array<T>>>
 	{
-		public static implicit operator Func<_, Array<T>>(SequenceQuerySelector<_, T> instance) => instance.Get().Get;
+		public static implicit operator Func<_, Array<T>>(Query<_, T> instance) => instance.Get().Get;
 
 		readonly Selector<_, IEnumerable<T>> _selector;
 
-		public SequenceQuerySelector(Selector<_, IEnumerable<T>> selector) => _selector = selector;
+		public Query(Selector<_, IEnumerable<T>> selector) => _selector = selector;
 
-		public OpenQuerySelector<_, TOut> Select<TOut>(Func<IEnumerable<T>, TOut[]> select)
+		public MaterializedQuery<_, TOut> Select<TOut>(Func<IEnumerable<T>, TOut[]> select)
 			=> Select(new SequenceQuery<T, TOut>(select));
 
-		public OpenQuerySelector<_, TOut> Select<TOut>(ISequenceQuery<T, TOut> query)
-			=> new OpenQuerySelector<_, TOut>(_selector.Select(query));
+		public MaterializedQuery<_, TOut> Select<TOut>(ISequenceQuery<T, TOut> query)
+			=> new MaterializedQuery<_, TOut>(_selector.Select(query));
 
 		public Selector<_, TOut> Reduce<TOut>(Func<IEnumerable<T>, TOut> select)
 			=> Reduce(new SequenceReduce<T, TOut>(select));
@@ -167,27 +164,26 @@ namespace DragonSpark.Compose.Model
 		public ISelect<_, Array<T>> Get() => _selector.Select(DragonSpark.Model.Sequences.Result<T>.Default).Get();
 	}
 
-	// TODO: name
-	public sealed class OpenQuerySelector<_, T> : IResult<ISelect<_, Array<T>>>
+	public sealed class MaterializedQuery<_, T> : IResult<ISelect<_, Array<T>>>
 	{
-		public static implicit operator Func<_, Array<T>>(OpenQuerySelector<_, T> instance) => instance.Get().Get;
+		public static implicit operator Func<_, Array<T>>(MaterializedQuery<_, T> instance) => instance.Get().Get;
 
 		readonly Selector<_, T[]> _selector;
 
-		public OpenQuerySelector(Selector<_, T[]> selector) => _selector = selector;
+		public MaterializedQuery(Selector<_, T[]> selector) => _selector = selector;
 
-		public OpenQuerySelector<_, TOut> Query<TOut>(Func<T[], TOut[]> select)
+		public MaterializedQuery<_, TOut> Query<TOut>(Func<T[], TOut[]> select)
 			=> Query(new OpenQuery<T, TOut>(select));
 
-		public OpenQuerySelector<_, TOut> Query<TOut>(IOpenQuery<T, TOut> query)
-			=> new OpenQuerySelector<_, TOut>(_selector.Select(query));
+		public MaterializedQuery<_, TOut> Query<TOut>(IOpenQuery<T, TOut> query)
+			=> new MaterializedQuery<_, TOut>(_selector.Select(query));
 
-		public OpenQuerySelector<_, TOut> Select<TOut>(Func<T, TOut> select)
+		public MaterializedQuery<_, TOut> Select<TOut>(Func<T, TOut> select)
 			=> Query(new OpenQuerySelect<T, TOut>(select));
 
-		public OpenQuerySelector<_, T> Where(Func<T, bool> condition) => Query(new OpenWhereQuery<T>(condition));
+		public MaterializedQuery<_, T> Where(Func<T, bool> condition) => Query(new OpenWhereQuery<T>(condition));
 
-		public OpenQuerySelector<_, T> Distinct() => Query(x => x.AsValueEnumerable().Distinct().ToArray());
+		public MaterializedQuery<_, T> Distinct() => Query(x => x.AsValueEnumerable().Distinct().ToArray());
 
 		public Selector<_, TOut> Reduce<TOut>(Func<T[], TOut> select) => Reduce(new OpenReduce<T, TOut>(select));
 
