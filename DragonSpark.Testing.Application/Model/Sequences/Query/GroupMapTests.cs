@@ -1,10 +1,13 @@
-﻿using Xunit;
+﻿using DragonSpark.Compose;
+using FluentAssertions;
+using System.Linq;
+using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
 {
 	public sealed class GroupMapTests
 	{
-		/*readonly struct Entry
+		readonly struct Entry
 		{
 			public Entry(string key, int value)
 			{
@@ -15,12 +18,12 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			public string Key { get; }
 
 			public int Value { get; }
-		}*/
+		}
 
 		[Fact]
-		void Verify() // TODO: GroupMap
+		void Verify()
 		{
-			/*var entries = new[]
+			var entries = new[]
 			{
 				new Entry("One", 1),
 				new Entry("Two", 2),
@@ -32,7 +35,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			};
 
 			var map = Start.A.Selection.Of.Type<Entry>()
-			               .As.Sequence.Open.By.Self.Get()
+			               .As.Sequence.Array.By.Self.Then()
 			               .GroupMap(x => x.Key)
 			               .Get(entries);
 
@@ -41,7 +44,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			var array = map.Get("Two");
 			array.Length.Should().Be(2);
-			array.Open().Sum(x => x.Value).Should().Be(4);*/
+			array.Open().Sum(x => x.Value).Should().Be(4);
 		}
 	}
 }

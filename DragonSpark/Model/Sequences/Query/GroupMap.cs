@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Model.Sequences.Query
 {
-	sealed class GroupMap<T, TKey> : ISelect<T[], IArrayMap<TKey, T>>
+	sealed class GroupMap<T, TKey> : IReduce<T, IArrayMap<TKey, T>>
 	{
 		readonly IEqualityComparer<TKey> _comparer;
 		readonly Func<T, TKey>           _key;
