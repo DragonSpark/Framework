@@ -11,7 +11,9 @@ namespace DragonSpark.Reflection.Types
 		public static GenericInterfaces Default { get; } = new GenericInterfaces();
 
 		GenericInterfaces() : base(AllInterfaces.Default.Then()
-		                                        .Open() // TODO remove.
-		                                        .Select(x => x.Where(y => y.IsGenericType).Result())) {}
+		                                        .Select(x => x.AsValueEnumerable()
+		                                                      .Where(y => y.IsGenericType)
+		                                                      .ToArray()
+		                                                      .Result())) {}
 	}
 }

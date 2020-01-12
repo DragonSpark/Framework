@@ -20,7 +20,7 @@ namespace DragonSpark.Runtime.Activation
 			                              .Select(IsAssignableFrom<T>.Default)
 			                              .EnsureAssignedOrDefault()
 			                              .Get())
-			                 .Get() // TODO: get/then
+			                 .Get() // TODO: Get/Then
 			                 .Then()
 			                 .And(parameters.Subject.Select(RemainingParametersAreOptional.Default))) {}
 	}

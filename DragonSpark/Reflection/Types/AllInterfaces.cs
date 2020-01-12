@@ -12,11 +12,11 @@ namespace DragonSpark.Reflection.Types
 
 		AllInterfaces() : base(TypeMetadata.Default.Then()
 		                                   .Select(Interfaces.Default)
-		                                   .Open() // TODO: Remove
 		                                   .Select(x => x.AsValueEnumerable()
 		                                                 .Where(y => y.IsInterface)
 		                                                 .Distinct()
+		                                                 .ToArray()
 		                                                 .Result())
-		                                   ) {}
+		                      ) {}
 	}
 }

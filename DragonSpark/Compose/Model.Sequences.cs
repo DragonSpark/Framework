@@ -11,12 +11,10 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		// TODO: Remove?
-
 		public static ISelect<_, T[]> Open<_, T>(this ISelect<_, IEnumerable<T>> @this) => @this.Select(x => x.Open());
 
 		public static ISelect<_, T[]> Open<_, T>(this ISelect<_, Array<T>> @this) => @this.Select(x => x.Open());
-		
+
 		/**/
 
 		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this) => @this.Select(x => x.Open());

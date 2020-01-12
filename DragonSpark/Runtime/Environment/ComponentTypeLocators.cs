@@ -50,8 +50,7 @@ namespace DragonSpark.Runtime.Environment
 			                          .Sort()
 			                          .Result()
 			                          .Get()
-			                          .To(Start.An.Extent<ComponentTypes>())
-			                   )
+			                          .To(Start.An.Extent<ComponentTypes>()))
 			      ) {}
 	}
 }

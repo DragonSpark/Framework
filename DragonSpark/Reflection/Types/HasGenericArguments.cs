@@ -8,6 +8,6 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static HasGenericArguments Default { get; } = new HasGenericArguments();
 
-		HasGenericArguments() : base(IsGenericType.Default.Get, GenericArguments.Default.Open().Then().HasAny()) {}
+		HasGenericArguments() : base(IsGenericType.Default.Get, GenericArguments.Default.Then().HasAny()) {}
 	}
 }
