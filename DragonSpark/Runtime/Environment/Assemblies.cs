@@ -53,7 +53,7 @@ namespace DragonSpark.Runtime.Environment
 			: this(Start.A.Selection.Of.Type<Assembly>()
 			            .As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
 
-		public AssemblySelector(Func<Array<Assembly>, IEnumerable<Assembly>> select) => _select = select;
+		public AssemblySelector(Func<Array<Assembly>, Assembly[]> select) => _select = select;
 
 		public Array<Assembly> Get(Array<Assembly> parameter)
 			=> _select(parameter)?.Union(parameter.Open()).Result() ?? throw new InvalidOperationException();

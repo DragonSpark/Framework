@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Reflection.Members;
-using DragonSpark.Reflection.Types;
 using System.Reflection;
 
 namespace DragonSpark.Runtime.Activation
@@ -17,10 +16,8 @@ namespace DragonSpark.Runtime.Activation
 			                 .Select(Start.An.Instance(ParameterType.Default)
 			                              .Then()
 			                              .Metadata()
-			                              .Select(IsAssignableFrom<T>.Default)
-			                              .EnsureAssignedOrDefault()
-			                              .Get())
-			                 .Get() // TODO: Get/Then
+			                              .Select(Is.AssignableFrom<T>().Get())
+			                              .EnsureAssignedOrDefault())
 			                 .Then()
 			                 .And(parameters.Subject.Select(RemainingParametersAreOptional.Default))) {}
 	}

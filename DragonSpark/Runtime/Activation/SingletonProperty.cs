@@ -18,7 +18,6 @@ namespace DragonSpark.Runtime.Activation
 		public SingletonProperty(IResult<Array<string>> candidates)
 			: base(Start.A.Selection.Of.System.Type.By.Delegate<string, PropertyInfo>(x => x.GetProperty)
 			            .Select(candidates.Select)
-			            .Get() // TODO: Get/Then
 			            .Then()
 			            .Value()
 			            .Select(Query.Instance)) {}
