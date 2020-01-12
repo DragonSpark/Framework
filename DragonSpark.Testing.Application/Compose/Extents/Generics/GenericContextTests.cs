@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
-using JetBrains.Annotations;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
+using FluentAssertions;
+using JetBrains.Annotations;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Generics
+namespace DragonSpark.Testing.Application.Compose.Extents.Generics
 {
 	public sealed class GenericContextTests
 	{

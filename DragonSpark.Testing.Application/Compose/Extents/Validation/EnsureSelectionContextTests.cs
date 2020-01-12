@@ -3,7 +3,7 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Validation
+namespace DragonSpark.Testing.Application.Compose.Extents.Validation
 {
 	public sealed class EnsureSelectionContextTests
 	{

@@ -25,11 +25,10 @@ namespace DragonSpark.Compose
 
 		/*public static Query<None, T> Query<T>(this IResult<IEnumerable<T>> @this) => @this.Then().Accept().Get().Query();*/
 
-		public static Query<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this)
-			=> @this.Then().Query();
+		public static SequencedQuery<_, T> Query<_, T>(this ISelect<_, IEnumerable<T>> @this) => @this.Then().Query();
 
-		public static Query<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
-			=> new Query<_, T>(@this);
+		public static SequencedQuery<_, T> Query<_, T>(this Selector<_, IEnumerable<T>> @this)
+			=> new SequencedQuery<_, T>(@this);
 
 		/**/
 

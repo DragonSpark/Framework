@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Commands
+namespace DragonSpark.Testing.Application.Compose.Extents.Commands
 {
 	public sealed class CommandContextTests
 	{

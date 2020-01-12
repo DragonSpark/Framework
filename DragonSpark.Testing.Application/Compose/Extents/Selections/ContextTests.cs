@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Selections
+namespace DragonSpark.Testing.Application.Compose.Extents.Selections
 {
 	public sealed class ContextTests
 	{

@@ -28,9 +28,9 @@ namespace DragonSpark.Reflection.Types
 
 		sealed class Context : ISelect<Array<Type>, IArrayMap<Type, Type>>
 		{
-			readonly IReduce<Type, IArrayMap<Type, Type>> _reduce;
+			readonly ISelect<Type[], IArrayMap<Type, Type>> _reduce;
 
-			public Context(IReduce<Type, IArrayMap<Type, Type>> reduce) => _reduce = reduce;
+			public Context(ISelect<Type[], IArrayMap<Type, Type>> reduce) => _reduce = reduce;
 
 			public IArrayMap<Type, Type> Get(Array<Type> parameter) => _reduce.Get(parameter.Open());
 		}

@@ -3,7 +3,7 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Results
+namespace DragonSpark.Testing.Application.Compose.Extents.Results
 {
 	public sealed class ResultContextTests
 	{

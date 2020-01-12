@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Conditions;
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Application.Compose.Conditions
+namespace DragonSpark.Testing.Application.Compose.Extents.Conditions
 {
 	public sealed class ConditionContextTests
 	{
