@@ -10,7 +10,8 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static GenericInterfaces Default { get; } = new GenericInterfaces();
 
-		GenericInterfaces() : base(AllInterfaces.Default.Query()
-		                                        .Query(x => x.Where(y => y.IsGenericType).ToArray())) {}
+		GenericInterfaces() : base(AllInterfaces.Default.Then()
+		                                        .Open() // TODO remove.
+		                                        .Select(x => x.Where(y => y.IsGenericType).Result())) {}
 	}
 }

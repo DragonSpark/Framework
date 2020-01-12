@@ -21,10 +21,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 
 			readonly string[] _input;
 			readonly ISelect<string[], string[]> _link = Start.A.Selection.Of.Type<string>()
-			                                                  .As.Sequence.Open.By.Self.Query()
-			                                                  .Select(x => x)
-			                                                  .Where(x => x.Contains("ab"))
-			                                                  .Out();
+			                                                  .As.Sequence.Open.By.Self
+			                                                  .Select(x => x.Where(y => y.Contains("ab")).ToArray())
+			                                                  .Get();
 
 			public Benchmarks() : this(Source.ToArray()) {}
 
@@ -41,9 +40,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Select(x => x.Length)
-			     .Get()
+			     .As.Sequence.Open.By.Self.Select(x => x.Select(y => y.Length))
 			     .Get(Source)
 			     .Open()
 			     .Should()
@@ -54,15 +51,13 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifySkipTakeWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Skip(100)
-			                  .Take(900)
-			                  .Where(s => s.Contains("ab"))
-			                  .Select(s => s.Length)
-			                  .Skip(5)
-			                  .Take(10)
-			                  .ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(100)
+			                                            .Take(900)
+			                                            .Where(s => s.Contains("ab"))
+			                                            .Select(s => s.Length)
+			                                            .Skip(5)
+			                                            .Take(10)
+			                                            .ToArray())
 			     .Get(Source)
 			     .Should()
 			     .Equal(Source.Skip(100)
@@ -77,11 +72,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhere()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Where(s => s.Contains("ab"))
-			                  .Select(s => s.Length)
-			                  .ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Where(s => s.Contains("ab"))
+			                                            .Select(s => s.Length)
+			                                            .ToArray())
 			     .Get(Source)
 			     .Should()
 			     .Equal(Source.Where(x => x.Contains("ab")).Select(x => x.Length));
@@ -91,12 +84,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhereSkip()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Where(s => s.Contains("ab"))
-			                  .Skip(10)
-			                  .Select(s => s.Length)
-			                  .ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Where(s => s.Contains("ab"))
+			                                            .Skip(10)
+			                                            .Select(s => s.Length)
+			                                            .ToArray())
 			     .Get(Source)
 			     .Should()
 			     .Equal(Source.Where(x => x.Contains("ab")).Skip(10).Select(x => x.Length));
@@ -106,13 +97,11 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Where(y => y.Contains("ab"))
-			                  .Select(y => y.Length)
-			                  .Skip(5)
-			                  .Take(10)
-			                  .ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Where(y => y.Contains("ab"))
+			                                            .Select(y => y.Length)
+			                                            .Skip(5)
+			                                            .Take(10)
+			                                            .ToArray())
 			     .Get(Source)
 			     .Should()
 			     .Equal(Source.Where(x => x.Contains("ab")).Select(x => x.Length).Skip(5).Take(10));

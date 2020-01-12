@@ -19,11 +19,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Append(1, 2, 3).ToArray())
-			     .Get()
+			     .As.Sequence.Open.By.Self.Select(x => x.Append(1, 2, 3).ToArray())
 			     .Get(data)
-			     .Open()
 			     .Should()
 			     .Equal(data.Concat(new[] {1, 2, 3}));
 		}
@@ -32,13 +29,8 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBody()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Skip(skip)
-			                  .Append(1, 2, 3)
-			                  .ToArray())
-			     .Get()
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip).Append(1, 2, 3).ToArray())
 			     .Get(data)
-			     .Open()
 			     .Should()
 			     .Equal(data.Skip(skip).Concat(new[] {1, 2, 3}));
 		}
@@ -47,20 +39,13 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void VerifyBodyFirst()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(skip)
-			                   .Append(1, 2, 3)
-			                   .Skip(skip)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip).Append(1, 2, 3).Skip(skip).FirstOrDefault())
 			     .Get(data)
 			     .Should()
 			     .Be(data.Skip(skip).Concat(new[] {1, 2, 3}).Skip(skip).First());
 
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(skip)
-			                   .Append(1, 2, 3)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip).Append(1, 2, 3).FirstOrDefault())
 			     .Get(data)
 			     .Should()
 			     .Be(data.Skip(skip).Concat(new[] {1, 2, 3}).First());

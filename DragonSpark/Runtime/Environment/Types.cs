@@ -18,12 +18,10 @@ namespace DragonSpark.Runtime.Environment
 	{
 		public TypeSelection(Func<Assembly, IArray<Type>> select)
 			: this(Start.A.Selection<Assembly>()
-			            .As.Sequence.Array.By.Self.Get()
-			            .Query()
-			            .Query(x => x.Select(select) // TODO: hyperlinq?
+			            .As.Sequence.Array.By.Self.Open()
+			            .Select(x => x.Select(select)
 			                          .SelectMany(y => y.Get().Open())
-			                          .ToArray())
-			       /*.SelectMany(x => x.Get().Open())*/) {}
+			                          .Result())) {}
 
 		public TypeSelection(Func<Array<Assembly>, Array<Type>> select) : base(select) {}
 	}

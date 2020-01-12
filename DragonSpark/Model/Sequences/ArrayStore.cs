@@ -20,7 +20,7 @@ namespace DragonSpark.Model.Sequences
 
 	public class ArrayStore<_, T> : Store<_, Array<T>>, IArray<_, T>
 	{
-		public ArrayStore(ISelect<_, IEnumerable<T>> source) : this(source.Result()) {}
+		public ArrayStore(ISelect<_, IEnumerable<T>> source) : this(source.Then().Result()) {}
 
 		public ArrayStore(ISelect<_, Array<T>> source) : this(source.Get) {}
 

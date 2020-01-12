@@ -2,6 +2,7 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System;
 
 namespace DragonSpark.Compose
@@ -18,11 +19,8 @@ namespace DragonSpark.Compose
 			=> @this.Get().Get(parameter);
 
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
-			=> @this.Query()
-			        .Select(select)
-			        .Get()
-			        .Then()
-			        .Bind()
+			=> @this.Then()
+			        .Select(x => x.Open().Select(select).ToArray().Result())
 			        .Get();
 	}
 }

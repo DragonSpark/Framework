@@ -1,13 +1,10 @@
-﻿using BenchmarkDotNet.Attributes;
-using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Model.Sequences.Query.Construction;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
 using Humanizer;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -47,51 +44,20 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 			var second = 0;
 
 			Start.A.Selection.Of.Type<string>()
-			     .As.Sequence.Open.By.Self.Query()
+			     .As.Sequence.Open.By.Self.Select(x =>
+			                                      {
+				                                      second++;
+				                                      return x;
+			                                      })
 			     .Select(x =>
 			             {
 				             second++;
 				             return x;
 			             })
-			     .Select(x =>
-			             {
-				             second++;
-				             return x;
-			             })
-			     .FirstOrDefault()
+			     .Select(x => x.FirstOrDefault())
 			     .Get(Data.Default.Get());
 
-			// second.Should().Be(2); // TODO: Re-assert.
-
-			second.Should().NotBe(0);
-		}
-
-		public class Benchmarks
-		{
-			// ReSharper disable once NotAccessedField.Local
-			readonly Func<int[], string>    _current;
-			readonly ISelect<int[], string> _subject;
-
-			public Benchmarks() : this(new StartNode<int[], int>(A.Self<int[]>())
-			                           .Get(new Build.Select<int, string>(x => x.ToString()))
-			                           .Get(FirstOrDefault<string>.Default)
-			                           ,
-			                           Start.A.Selection.Of.Type<int>()
-			                                .As.Sequence.Open.By.Self.Query()
-			                                .Select(x => x.ToString())
-			                                .FirstOrDefault()) {}
-
-			public Benchmarks(ISelect<int[], string> subject, Func<int[], string> current)
-			{
-				_subject = subject;
-				_current = current;
-			}
-
-			[Benchmark(Baseline = true)]
-			public string Classic() => data.Select(x => x.ToString()).FirstOrDefault();
-
-			[Benchmark]
-			public string Proposed() => _subject.Get(data);
+			second.Should().Be(2);
 		}
 
 		[Fact]
@@ -127,12 +93,10 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query.Construction
 		void VerifyComparison()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Where(x => x > 8)
-			     .Select(x => x.ToString())
-			     .Get()
+			     .As.Sequence.Open.By.Self.Select(x => x.Where(y => y > 8)
+			                                            .Select(y => y.ToString())
+			                                            .ToArray())
 			     .Get(data)
-			     .Open()
 			     .Should()
 			     .Equal(data.Where(x => x > 8).Select(x => x.ToString()));
 		}

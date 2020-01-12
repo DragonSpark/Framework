@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
-using FluentAssertions;
+﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sequences.Query
@@ -19,9 +19,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			readonly ISelect<int[], int[]> _subject;
 
 			public Benchmarks() : this(Numbers.Distinct(), Start.A.Selection.Of.Type<int>()
-			                                                    .As.Sequence.Open.By.Self.Query()
-			                                                    .Distinct()
-			                                                    .Out()) {}
+			                                                    .As.Sequence.Open.By.Self
+			                                                    .Select(x => x.Distinct().ToArray())
+			                                                    .Get()) {}
 
 			public Benchmarks(IEnumerable<int> classic, ISelect<int[], int[]> subject)
 			{
@@ -40,9 +40,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 		void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Distinct()
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Distinct().ToArray())
 			     .Get(Numbers)
 			     .Should()
 			     .Equal(Numbers.Distinct());

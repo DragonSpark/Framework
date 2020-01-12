@@ -7,8 +7,6 @@ namespace DragonSpark.Testing.Objects
 	{
 		public static Data Default { get; } = new Data();
 
-		Data() : base(FixtureInstance.Default.Many<string>(10_000)
-		                             .Result()
-		                             .Get()) {}
+		Data() : base(FixtureInstance.Default.Many<string>(10_000).Select(x => x.Result()).Get()) {}
 	}
 }

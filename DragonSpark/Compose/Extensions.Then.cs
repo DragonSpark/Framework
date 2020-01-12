@@ -96,11 +96,18 @@ namespace DragonSpark.Compose
 		public static ExpressionSelector<T> Then<T>(this ISelect<T, Expression> @this)
 			=> new ExpressionSelector<T>(@this);
 
+
+		public static SequenceSelector<_, T> Then<_, T>(this ISelect<_, IEnumerable<T>> @this)
+			=> new SequenceSelector<_, T>(@this);
+
 		public static CollectionSelector<_, T> Then<_, T>(this ISelect<_, ICollection<T>> @this)
 			=> new CollectionSelector<_, T>(@this);
 
 		public static OpenArraySelector<_, T> Then<_, T>(this ISelect<_, T[]> @this)
 			=> new OpenArraySelector<_, T>(@this);
+
+		public static ArraySelector<_, T> Then<_, T>(this ISelect<_, Array<T>> @this)
+			=> new ArraySelector<_, T>(@this);
 
 		/**/
 
@@ -117,7 +124,7 @@ namespace DragonSpark.Compose
 
 		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this);
 
-		public static ISelect<_, Array<T>> Out<_, T>(this OpenArraySelector<_, T> @this) => @this.Get().Result();
+		/*public static ISelect<_, Array<T>> Out<_, T>(this OpenArraySelector<_, T> @this) => @this.Get().Result();*/
 
 		public static IOperation<T> Out<T>(this Selector<T, ValueTask> @this)
 			=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));

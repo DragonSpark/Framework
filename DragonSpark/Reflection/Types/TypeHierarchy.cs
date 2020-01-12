@@ -10,7 +10,7 @@ namespace DragonSpark.Reflection.Types
 	{
 		public static TypeHierarchy Default { get; } = new TypeHierarchy();
 
-		TypeHierarchy() : base(Hierarchy.Instance.Result().Get) {}
+		TypeHierarchy() : base(Hierarchy.Instance.Then().Result()) {}
 
 		sealed class Hierarchy : ISelect<TypeInfo, IEnumerable<TypeInfo>>
 		{

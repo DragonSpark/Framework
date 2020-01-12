@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System;
@@ -10,11 +11,22 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
+		// TODO: Remove?
+
 		public static ISelect<_, T[]> Open<_, T>(this ISelect<_, IEnumerable<T>> @this) => @this.Select(x => x.Open());
 
 		public static ISelect<_, T[]> Open<_, T>(this ISelect<_, Array<T>> @this) => @this.Select(x => x.Open());
+		
+		/**/
 
-		public static ISelect<_, Array<T>> Result<_, T>(this ISelect<_, IEnumerable<T>> @this) => @this.Query().Get();
+		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this) => @this.Select(x => x.Open());
+
+		public static Selector<_, T[]> Open<_, T>(this Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
+
+		public static Selector<_, TTo> Select<_, T, TTo>(this Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
+			=> @this.Open().Select(select);
+
+		/**/
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] ToArray<T>(in this ArrayView<T> @this)

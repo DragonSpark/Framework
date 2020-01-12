@@ -7,6 +7,6 @@ namespace DragonSpark.Testing.Objects
 	{
 		public static Numbers Default { get; } = new Numbers();
 
-		Numbers() : base(Start.An.Extent<ClassicTake<int>>().From(AllNumbers.Default.ToDelegate()).Result().Get) {}
+		Numbers() : base(Start.An.Extent<ClassicTake<int>>().From(AllNumbers.Default.ToDelegate()).Then().Result()) {}
 	}
 }

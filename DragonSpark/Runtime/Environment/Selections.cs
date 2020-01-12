@@ -47,7 +47,7 @@ namespace DragonSpark.Runtime.Environment
 			public static Make Instance { get; } = new Make();
 
 			Make() : this(Specifications.Instance.Get(),
-			              GenericArguments.Default.Then().StoredActivation<GenericTypeBuilder>().Get(),
+			              GenericArguments.Default.Then().Subject.StoredActivation<GenericTypeBuilder>().Get(),
 			              IsGenericTypeDefinition.Default) {}
 
 			readonly ISelect<Type, ISelect<Type, Type>> _source;

@@ -14,9 +14,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Intersect(second).ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Intersect(second).ToArray())
 			     .Get(first)
 			     .Should()
 			     .Equal(first.Intersect(second));
@@ -29,11 +27,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Skip(3)
-			                  .Intersect(second)
-			                  .ToArray())
-			     .Out()
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(3)
+			                                            .Intersect(second)
+			                                            .ToArray())
 			     .Get(first)
 			     .Should()
 			     .Equal(first.Skip(3).Intersect(second));
@@ -46,20 +42,18 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(2)
-			                   .Intersect(second)
-			                   .Skip(1)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(2)
+			                                            .Intersect(second)
+			                                            .Skip(1)
+			                                            .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(2).Intersect(second).Skip(1).First());
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(2)
-			                   .Intersect(second)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(2)
+			                                            .Intersect(second)
+			                                            .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(2).Intersect(second).First());

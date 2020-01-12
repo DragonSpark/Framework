@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Environment
 	sealed class ComponentType : Alteration<Type>, IComponentType
 	{
 		public ComponentType(IArray<Type, Type> select)
-			: base(select.Query()
+			: base(select.Then()
 			             .FirstAssigned()
 			             .Ensure.Output.IsAssigned.Otherwise.Throw(LocateGuardMessage.Default)) {}
 	}
@@ -42,16 +42,14 @@ namespace DragonSpark.Runtime.Environment
 
 		public ComponentTypeLocators(Func<Type, bool> condition)
 			: base(Start.A.Selection<Type>()
-			            .As.Sequence.Array.By.Self.Get()
-			            .Query()
-			            .Query(x => x.AsValueEnumerable().Where(condition).ToArray())
-			            .Get()
-			            .Then()
+			            .As.Sequence.Array.By.Self.Open()
+			            .Select(x => x.Where(condition).ToArray().Result())
 			            .StoredActivation<TypeCandidates>()
 			            .Select(x => x.Open()
 			                          .Then()
 			                          .Sort()
-			                          .Out()
+			                          .Result()
+			                          .Get()
 			                          .To(Start.An.Extent<ComponentTypes>())
 			                   )
 			      ) {}

@@ -14,8 +14,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Union(second).ToArray())
+			     .As.Sequence.Open.By.Self.Select(x => x.Union(second).ToArray())
 			     .Out()
 			     .Get(first)
 			     .Should()
@@ -29,10 +28,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Query(x => x.Skip(4)
-			                  .Union(second)
-			                  .ToArray())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(4)
+			                                            .Union(second)
+			                                            .ToArray())
 			     .Out()
 			     .Get(first)
 			     .Should()
@@ -46,20 +44,18 @@ namespace DragonSpark.Testing.Application.Model.Sequences.Query
 			var second = new[] {4, 5, 6, 7, 8};
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(4)
-			                   .Union(second)
-			                   .Skip(3)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(4)
+			                                            .Union(second)
+			                                            .Skip(3)
+			                                            .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(4).Union(second).Skip(3).First());
 
 			Start.A.Selection<int>()
-			     .As.Sequence.Open.By.Self.Query()
-			     .Reduce(x => x.Skip(4)
-			                   .Union(second)
-			                   .FirstOrDefault())
+			     .As.Sequence.Open.By.Self.Select(x => x.Skip(4)
+			                                            .Union(second)
+			                                            .FirstOrDefault())
 			     .Get(first)
 			     .Should()
 			     .Be(first.Skip(4).Union(second).First());

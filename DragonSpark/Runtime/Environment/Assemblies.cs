@@ -2,10 +2,8 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
-using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace DragonSpark.Runtime.Environment
 		public Assemblies(ISelect<Array<Assembly>, Array<Assembly>> select) : this(select, DefaultAssemblies.Default) {}
 
 		public Assemblies(ISelect<Array<Assembly>, Array<Assembly>> select, IArray<Assembly> parameter)
-			: base(select.Then().Bind(parameter)) {}
+			: base(select.Then().Subject.Bind(parameter)) {}
 	}
 
 	sealed class EnvironmentAwareAssemblies : IArray<string, Assembly>
@@ -48,25 +46,17 @@ namespace DragonSpark.Runtime.Environment
 
 		AssemblySelector() : this(ComponentAssemblyNames.Default) {}
 
-		readonly Func<Array<Assembly>, Array<Assembly>> _select;
+		readonly Func<Array<Assembly>, IEnumerable<Assembly>> _select;
 
 		[UsedImplicitly]
 		public AssemblySelector(ISelect<AssemblyName, IEnumerable<AssemblyName>> names)
 			: this(Start.A.Selection.Of.Type<Assembly>()
-			            .As.Sequence.Array.By.Self.Query()
-			            .Select(AssemblyNameSelector.Default.Get)
-			            .Query(x => x.SelectMany(names.ToDelegateReference()).ToArray()) // TODO: blah
-			            .Select(Load.Default.Get)
-			            .Where(y => y != null)
-			            .Query(x => x.Distinct().ToArray())) {}
+			            .As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
 
-		[UsedImplicitly]
-		public AssemblySelector(ISelect<Array<Assembly>, Array<Assembly>> select) : this(select.Get) {}
-
-		public AssemblySelector(Func<Array<Assembly>, Array<Assembly>> select) => _select = @select;
+		public AssemblySelector(Func<Array<Assembly>, IEnumerable<Assembly>> select) => _select = select;
 
 		public Array<Assembly> Get(Array<Assembly> parameter)
-			=> _select(parameter).Open().Union(parameter.Open()).Result();
+			=> _select(parameter)?.Union(parameter.Open()).Result() ?? throw new InvalidOperationException();
 	}
 
 	sealed class DefaultAssemblies : ArrayInstance<Assembly>
