@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
-using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
@@ -89,10 +88,8 @@ namespace DragonSpark.Compose
 			return true;
 		}
 
-		public static T Only<T>(this IEnumerable<T> @this) => OnlyElement<T>.Default.Get(@this);
-
-		public static T Only<T>(this IEnumerable<T> @this, Func<T, bool> where)
-			=> Compose.Start.An.Extent<OnlyElement<T>>().From(where).Get(@this);
+		public static T Only<T>(this IEnumerable<T> @this)
+			=> DragonSpark.Model.Sequences.Query.Only<T>.Default.Get(@this);
 
 		public static void ForEach<TIn, TOut>(this IEnumerable<TIn> @this, Func<TIn, TOut> select)
 		{

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Reflection.Assemblies;
 using NetFabric.Hyperlinq;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
-	sealed class AssemblySelectorQuery : ISelect<Assembly[], Assembly[]>
+	sealed class AssemblySelectorQuery : IMaterialize<Assembly>
 	{
 		readonly Func<Assembly, AssemblyName>                  _name;
 		readonly Func<AssemblyName, IEnumerable<AssemblyName>> _names;

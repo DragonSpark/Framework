@@ -104,7 +104,7 @@ namespace DragonSpark.Testing.Application.Runtime
 		[Fact]
 		public void Only()
 		{
-			var sut = new[] {2, 3, 5}.Only(i => i == 3);
+			var sut = new[] {2, 3, 5}.Where(i => i == 3).Only();
 			Assert.Equal(3, sut);
 		}
 

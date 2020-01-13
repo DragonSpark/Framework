@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Query;
 using NetFabric.Hyperlinq;
 using System;
 using System.Reflection;
@@ -22,7 +22,7 @@ namespace DragonSpark.Runtime.Activation
 			            .Value()
 			            .Select(Query.Instance)) {}
 
-		sealed class Query : ISelect<PropertyInfo[], PropertyInfo>
+		sealed class Query : IReduce<PropertyInfo, PropertyInfo>
 		{
 			public static Query Instance { get; } = new Query();
 
