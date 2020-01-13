@@ -4,13 +4,13 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Services.Application;
-using DragonSpark.Services.Compose;
+using DragonSpark.Server.Application;
+using DragonSpark.Server.Compose;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Services
+namespace DragonSpark.Server
 {
 	public static class Extensions
 	{

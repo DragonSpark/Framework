@@ -4,7 +4,7 @@ using DragonSpark.Model.Results;
 using Polly;
 using Refit;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	public sealed class DefaultPolicies : Result<PolicyBuilder>
 	{

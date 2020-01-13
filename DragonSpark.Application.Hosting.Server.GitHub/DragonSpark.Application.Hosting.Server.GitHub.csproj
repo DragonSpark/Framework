@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server\DragonSpark.Application.Hosting.Server.csproj" />
-    <ProjectReference Include="..\DragonSpark.Services\DragonSpark.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

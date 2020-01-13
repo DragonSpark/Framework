@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Runtime;
 
-namespace DragonSpark.Services.Security
+namespace DragonSpark.Server.Security
 {
 	sealed class AuthenticationBaseAddress : EnvironmentVariable
 	{

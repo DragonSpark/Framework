@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Services.Application
+namespace DragonSpark.Server.Application
 {
 	public interface IServerProfile : IServiceConfiguration, IApplicationConfiguration {}
 

@@ -1,7 +1,7 @@
 ﻿using Refit;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Services.Security
+namespace DragonSpark.Server.Security
 {
 	interface IAuthentication
 	{

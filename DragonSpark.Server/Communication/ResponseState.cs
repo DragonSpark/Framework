@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	class ResponseState : ISelect<IRequestCookieCollection, Cookie>
 	{

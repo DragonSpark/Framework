@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	class ResponseStateAssignment : IAssign<HttpRequest, HttpClient>
 	{

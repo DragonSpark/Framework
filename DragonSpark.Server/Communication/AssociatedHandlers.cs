@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Stores;
 using System.Net.Http;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	sealed class AssociatedHandlers : ReferenceValueTable<HttpClient, System.Net.Http.HttpClientHandler>
 	{

@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Services;
-using DragonSpark.Services.Application;
-using DragonSpark.Services.Compose;
+using DragonSpark.Server;
+using DragonSpark.Server.Application;
+using DragonSpark.Server.Compose;
 using Microsoft.Extensions.DependencyInjection;
 using Octokit;
 

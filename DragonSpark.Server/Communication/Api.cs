@@ -2,7 +2,7 @@
 using Refit;
 using System.Net.Http;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	public sealed class Api<T> : Select<HttpClient, T>
 	{

@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DragonSpark.Services.Security
+namespace DragonSpark.Server.Security
 {
 	sealed class Encryptor : IAlteration<string>
 	{

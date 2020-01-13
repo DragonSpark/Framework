@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	sealed class Request<T> : Select<Task<T>, T>
 	{

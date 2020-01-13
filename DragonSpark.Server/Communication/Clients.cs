@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Stores;
 using System;
 using System.Net.Http;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	sealed class Clients : ISelect<Uri, HttpClient>
 	{

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Services
+namespace DragonSpark.Server
 {
 	sealed class ConfigureFromEnvironment : SelectedCommand<IApplicationBuilder>
 	{

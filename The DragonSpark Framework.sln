@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application Hosting", "Application Hosting", "{D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Services", "DragonSpark.Services\DragonSpark.Services.csproj", "{9D58C0E1-D21D-4E46-A3A7-B7BBE43FC6C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Server", "DragonSpark.Server\DragonSpark.Server.csproj", "{9D58C0E1-D21D-4E46-A3A7-B7BBE43FC6C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.BenchmarkDotNet", "DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj", "{FEBB32A2-7B54-43C6-B345-96AD1DFAAA27}"
 EndProject
@@ -55,11 +55,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Testing.Server", "DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj", "{C8E96381-C9AB-4D29-BA7C-A107A6DF3087}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.csproj", "{FB52AAAD-1CFB-476A-8702-B1F93A4F1F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.csproj", "{FB52AAAD-1CFB-476A-8702-B1F93A4F1F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development.csproj", "{8CBFBE82-7D65-4747-993E-4B700430E072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development.csproj", "{8CBFBE82-7D65-4747-993E-4B700430E072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production.csproj", "{4FC18524-4117-40EE-A696-97F279DA7639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production", "DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production\DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Production.csproj", "{4FC18524-4117-40EE-A696-97F279DA7639}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}"
 EndProject

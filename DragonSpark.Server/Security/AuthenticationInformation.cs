@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DragonSpark.Services.Security
+namespace DragonSpark.Server.Security
 {
 	public sealed class AuthenticationInformation
 	{

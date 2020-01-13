@@ -1,7 +1,7 @@
 using DragonSpark.Application.Hosting.Server.Testing.Application.Environment;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Services;
+using DragonSpark.Server;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	sealed class RequestStateValue : ISelect<IRequestCookieCollection, string>
 	{

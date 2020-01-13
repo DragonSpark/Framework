@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Services.Communication
+namespace DragonSpark.Server.Communication
 {
 	public static class ExtensionMethods
 	{

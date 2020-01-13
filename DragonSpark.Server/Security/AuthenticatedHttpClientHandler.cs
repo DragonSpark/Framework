@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Services.Security
+namespace DragonSpark.Server.Security
 {
 	sealed class AuthenticatedHttpClientHandler : Communication.HttpClientHandler
 	{
