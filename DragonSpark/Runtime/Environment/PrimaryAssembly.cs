@@ -11,7 +11,7 @@ namespace DragonSpark.Runtime.Environment
 
 		PrimaryAssembly() : base(Start.A.Selection.Of<Assembly>()
 		                              .As.Sequence.Array.By.Self.Open()
-		                              .Select(x => x.Where(y => y.Has<HostingAttribute>()).Only())
+		                              .Select(x => x.SingleOrDefault(y => y.Has<HostingAttribute>()))
 		                              .Ensure.Output.IsAssigned.Otherwise.Throw(PrimaryAssemblyMessage.Default)
 		                              .Get(Reflection.Assemblies.Assemblies.Default)) {}
 	}
