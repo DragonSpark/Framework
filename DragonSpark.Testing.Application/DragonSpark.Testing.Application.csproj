@@ -7,6 +7,7 @@
     <IsPackable>false</IsPackable>
     <startupobject>DragonSpark.Testing.Application.Program</startupobject>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <NoWarn>IDE0051</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="BenchmarkDotNet.Artifacts\**" />
