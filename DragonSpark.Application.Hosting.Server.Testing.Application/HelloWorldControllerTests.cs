@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 	public sealed class HelloWorldControllerTests
 	{
 		[Fact]
-		async Task Verify()
+		public async Task Verify()
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
@@ -31,7 +31,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 		[Theory]
 		[InlineData("Development", typeof(Environment.Development.Dependency))]
 		[InlineData("Production", typeof(Environment.Production.Dependency))]
-		async Task VerifyEnvironment(string environment, Type expected)
+		public async Task VerifyEnvironment(string environment, Type expected)
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
@@ -49,7 +49,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 
 		[Theory]
 		[InlineData("/HelloWorld")]
-		async Task VerifyHelloWorld(string url)
+		public async Task VerifyHelloWorld(string url)
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
