@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
@@ -14,22 +15,22 @@ using System.Reflection;
 
 namespace DragonSpark.Server.Compose
 {
-	public sealed class ServerProfileContext :// IResult<BuildHostContext>,
-	                                           ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
+	public sealed class ServerProfileContext : ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
 	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>
 	{
-		readonly BuildHostContext _context;
-		readonly IServerProfile   _profile;
-		readonly ISelector        _selector;
+		readonly BuildHostContext                _context;
+		readonly IServerProfile                  _profile;
+		readonly CommandContext<IWebHostBuilder> _configure;
 
 		public ServerProfileContext(BuildHostContext context, IServerProfile profile)
-			: this(context, profile, new Selector(profile)) {}
+			: this(context, profile, Start.A.Command<IWebHostBuilder>().By.Empty) {}
 
-		public ServerProfileContext(BuildHostContext context, IServerProfile profile, ISelector selector)
+		public ServerProfileContext(BuildHostContext context, IServerProfile profile,
+		                            CommandContext<IWebHostBuilder> configure)
 		{
-			_context  = context;
-			_profile  = profile;
-			_selector = selector;
+			_context   = context;
+			_profile   = profile;
+			_configure = configure;
 		}
 
 		public ServerProfileContext Then(ICommand<IServiceCollection> other)
@@ -50,25 +51,25 @@ namespace DragonSpark.Server.Compose
 
 		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
 
-		
-		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute, 
-		                                                       _selector.Get(_profile).Execute);
+		public BuildServerContext As
+			=> new BuildServerContext(_context, _profile.Execute,
+			                          new ServerConfiguration(_profile).Then().Add(_configure.Get()));
 
 		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
-			=> new ServerProfileContext(_context, parameter(_profile), _selector);
+			=> new ServerProfileContext(_context, parameter(_profile), _configure);
 
 		public ServerProfileContext Get(ICommand<IWebHostBuilder> parameter)
-			=> new ServerProfileContext(_context, _profile, new Continuation(_selector, parameter));
+			=> new ServerProfileContext(_context, _profile, _configure.Add(parameter));
 	}
 
 	public sealed class BuildServerContext
 	{
-		readonly BuildHostContext           _context;
-		readonly Action<IServiceCollection> _services;
-		readonly Action<IWebHostBuilder>    _application;
+		readonly BuildHostContext                  _context;
+		readonly System.Action<IServiceCollection> _services;
+		readonly System.Action<IWebHostBuilder>    _application;
 
-		public BuildServerContext(BuildHostContext context, Action<IServiceCollection> services,
-		                          Action<IWebHostBuilder> application)
+		public BuildServerContext(BuildHostContext context, System.Action<IServiceCollection> services,
+		                          System.Action<IWebHostBuilder> application)
 		{
 			_context     = context;
 			_services    = services;
@@ -78,29 +79,7 @@ namespace DragonSpark.Server.Compose
 		public BuildHostContext Application()
 			=> _context.Select(new ApplicationWebHostConfiguration(_application)).Configure(_services);
 
-		public BuildHostContext General()
+		public BuildHostContext Is()
 			=> _context.Select(new WebHostConfiguration(_application)).Configure(_services);
-	}
-
-	public interface ISelector : ISelect<IServerProfile, ICommand<IWebHostBuilder>> {}
-
-	sealed class Continuation : ISelector
-	{
-		readonly ISelector                 _selector;
-		readonly ICommand<IWebHostBuilder> _next;
-
-		public Continuation(ISelector selector, ICommand<IWebHostBuilder> next)
-		{
-			_selector = selector;
-			_next     = next;
-		}
-
-		public ICommand<IWebHostBuilder> Get(IServerProfile parameter)
-			=> _selector.Get(parameter).Then().Add(_next).Get();
-	}
-
-	sealed class Selector : FixedResult<IServerProfile, ICommand<IWebHostBuilder>>, ISelector
-	{
-		public Selector(IServerProfile profile) : base(new ServerConfiguration(profile)) {}
 	}
 }

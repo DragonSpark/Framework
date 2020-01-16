@@ -81,7 +81,8 @@ namespace DragonSpark.Composition
 
 		public void Execute(IServiceCollection parameter)
 		{
-			var assemblies = _select(parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName);
+			var name       = parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName;
+			var assemblies = _select(name);
 			var types      = _types(assemblies);
 			var locator    = _locator(types);
 

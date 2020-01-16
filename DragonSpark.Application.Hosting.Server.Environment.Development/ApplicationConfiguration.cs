@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace DragonSpark.Application.Hosting.Server.Environment
+namespace DragonSpark.Application.Hosting.Server.Environment.Development
 {
 	public sealed class ApplicationConfiguration : IApplicationConfiguration
 	{

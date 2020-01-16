@@ -4,8 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <OutputType>Library</OutputType>
-    <AssemblyName>DragonSpark.Application.Hosting.Server.Environment</AssemblyName>
-    <RootNamespace>DragonSpark.Application.Hosting.Server.Environment</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

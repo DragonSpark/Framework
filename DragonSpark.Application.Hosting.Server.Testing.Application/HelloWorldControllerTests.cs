@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
-			                            .As.General()
+			                            .As.Is()
 			                            .Operations()
 			                            .Start();
 
@@ -40,7 +40,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			                            .WithEnvironment(environment)
 			                            .WithServerApplication()
 			                            .WithEnvironmentalConfiguration()
-			                            .As.General()
+			                            .As.Is()
 			                            .Operations()
 			                            .Start();
 
@@ -55,7 +55,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			                            .WithTestServer()
 			                            .WithServerApplication()
 			                            .NamedFromPrimaryAssembly()
-			                            .As.General()
+			                            .As.Is()
 			                            .Operations()
 			                            .Start();
 
