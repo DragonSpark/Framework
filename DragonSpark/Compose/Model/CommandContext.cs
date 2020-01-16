@@ -28,7 +28,7 @@ namespace DragonSpark.Compose.Model
 		public CommandContext Bind(IResult<T> parameter)
 			=> new CommandContext(new DelegatedParameterCommand<T>(Get().Execute, parameter.Get));
 
-		public CommandContext<T> Add(params ICommand<T>[] commands)
+		public CommandContext<T> Add(params ICommand<T>[] commands) // TODO: Append
 			=> new CommandContext<T>(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 
 		public CommandContext<DragonSpark.Model.Sequences.Store<T>> Many()

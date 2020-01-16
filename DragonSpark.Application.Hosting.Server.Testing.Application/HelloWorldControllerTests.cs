@@ -1,7 +1,6 @@
 using DragonSpark.Application.Hosting.Server.Testing.Application.Environment;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Server;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
+			                            .As.General()
 			                            .Operations()
 			                            .Start();
 
@@ -40,6 +40,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			                            .WithEnvironment(environment)
 			                            .WithServerApplication()
 			                            .WithEnvironmentalConfiguration()
+			                            .As.General()
 			                            .Operations()
 			                            .Start();
 
@@ -53,7 +54,8 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithServerApplication()
-			                            .Named()
+			                            .NamedFromPrimaryAssembly()
+			                            .As.General()
 			                            .Operations()
 			                            .Start();
 

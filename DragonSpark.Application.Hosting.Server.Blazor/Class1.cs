@@ -28,25 +28,19 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 	{
 		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
 
-		DefaultApplicationConfiguration() : this("/Error", EndpointConfiguration.Default.Execute) {}
+		DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
 
-		readonly string                        _handler;
 		readonly Action<IEndpointRouteBuilder> _endpoints;
 
-		public DefaultApplicationConfiguration(string handler, Action<IEndpointRouteBuilder> endpoints)
-		{
-			_handler   = handler;
-			_endpoints = endpoints;
-		}
+		public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints)
+			=> _endpoints = endpoints;
 
 		public void Execute(IApplicationBuilder parameter)
 		{
 			parameter.UseHttpsRedirection()
 			         .UseStaticFiles()
 			         .UseRouting()
-			         .UseEndpoints(_endpoints)
-			         .UseExceptionHandler(_handler)
-			         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+			         .UseEndpoints(_endpoints);
 		}
 	}
 
@@ -54,9 +48,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 	{
 		public static BlazorServerProfile Default { get; } = new BlazorServerProfile();
 
-		BlazorServerProfile() : base(A.Command<IServiceCollection>(ServerApplicationProfile.Default)
-		                              .Then()
-		                              .Add(DefaultServiceConfiguration.Default),
+		BlazorServerProfile() : base(DefaultServiceConfiguration.Default.Execute,
 		                             DefaultApplicationConfiguration.Default.Execute) {}
 	}
 

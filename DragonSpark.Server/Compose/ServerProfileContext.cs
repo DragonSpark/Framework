@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace DragonSpark.Server.Compose
 {
-	public sealed class ServerProfileContext : IResult<BuildHostContext>,
+	public sealed class ServerProfileContext :// IResult<BuildHostContext>,
 	                                           ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
 	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>
 	{
@@ -46,11 +46,13 @@ namespace DragonSpark.Server.Compose
 			                               .Then()
 			                               .Add(ConfigureFromEnvironment.Default)));
 
-		public ServerProfileContext Named() => Named(PrimaryAssembly.Default);
+		public ServerProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
 
 		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
 
-		public BuildHostContext Get() => _context.WithServer(_selector.Get(_profile).Execute).Configure(_profile);
+		
+		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute, 
+		                                                       _selector.Get(_profile).Execute);
 
 		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
 			=> new ServerProfileContext(_context, parameter(_profile), _selector);
@@ -59,28 +61,46 @@ namespace DragonSpark.Server.Compose
 			=> new ServerProfileContext(_context, _profile, new Continuation(_selector, parameter));
 	}
 
+	public sealed class BuildServerContext
+	{
+		readonly BuildHostContext           _context;
+		readonly Action<IServiceCollection> _services;
+		readonly Action<IWebHostBuilder>    _application;
+
+		public BuildServerContext(BuildHostContext context, Action<IServiceCollection> services,
+		                          Action<IWebHostBuilder> application)
+		{
+			_context     = context;
+			_services    = services;
+			_application = application;
+		}
+
+		public BuildHostContext Application()
+			=> _context.Select(new ApplicationWebHostConfiguration(_application)).Configure(_services);
+
+		public BuildHostContext General()
+			=> _context.Select(new WebHostConfiguration(_application)).Configure(_services);
+	}
+
 	public interface ISelector : ISelect<IServerProfile, ICommand<IWebHostBuilder>> {}
 
 	sealed class Continuation : ISelector
 	{
 		readonly ISelector                 _selector;
-		readonly ICommand<IWebHostBuilder> _other;
+		readonly ICommand<IWebHostBuilder> _next;
 
-		public Continuation(ISelector selector, ICommand<IWebHostBuilder> other)
+		public Continuation(ISelector selector, ICommand<IWebHostBuilder> next)
 		{
 			_selector = selector;
-			_other    = other;
+			_next     = next;
 		}
 
-		public ICommand<IWebHostBuilder> Get(IServerProfile parameter) => _selector.Get(parameter).Then().Add(_other).Get();
+		public ICommand<IWebHostBuilder> Get(IServerProfile parameter)
+			=> _selector.Get(parameter).Then().Add(_next).Get();
 	}
 
-	sealed class Selector : ISelector
+	sealed class Selector : FixedResult<IServerProfile, ICommand<IWebHostBuilder>>, ISelector
 	{
-		readonly IServerProfile _profile;
-
-		public Selector(IServerProfile profile) => _profile = profile;
-
-		public ICommand<IWebHostBuilder> Get(IServerProfile parameter) => new ServerConfiguration(_profile);
+		public Selector(IServerProfile profile) : base(new ServerConfiguration(profile)) {}
 	}
 }

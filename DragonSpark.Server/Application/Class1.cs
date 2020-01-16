@@ -62,7 +62,6 @@ namespace DragonSpark.Server.Application
 		public void Execute(IWebHostBuilder parameter)
 		{
 			parameter.UseSetting(WebHostDefaults.ApplicationKey, _name());
-			// parameter.UseStartup(_name());
 		}
 	}
 
@@ -73,5 +72,14 @@ namespace DragonSpark.Server.Application
 		public WebHostConfiguration(Action<IWebHostBuilder> configure) => _configure = configure;
 
 		public IHostBuilder Get(IHostBuilder parameter) => parameter.ConfigureWebHost(_configure);
+	}
+
+	sealed class ApplicationWebHostConfiguration : IAlteration<IHostBuilder>
+	{
+		readonly Action<IWebHostBuilder> _configure;
+
+		public ApplicationWebHostConfiguration(Action<IWebHostBuilder> configure) => _configure = configure;
+
+		public IHostBuilder Get(IHostBuilder parameter) => parameter.ConfigureWebHostDefaults(_configure);
 	}
 }

@@ -7,9 +7,9 @@ using System;
 
 namespace DragonSpark.Application.Hosting.Server.Environment
 {
-	[UsedImplicitly]
 	public sealed class ApplicationConfiguration : IApplicationConfiguration
 	{
+		[UsedImplicitly]
 		public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
 
 		ApplicationConfiguration() {}
