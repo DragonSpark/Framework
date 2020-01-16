@@ -1,8 +1,11 @@
 using DragonSpark.Application.Hosting.Server.Testing.Application.Environment;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Server;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,5 +75,15 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 	public sealed class HelloWorldController : ControllerBase
 	{
 		public string Get() => "Hello World!";
+	}
+
+	public sealed class EmptyApplicationConfiguration : IApplicationConfiguration
+	{
+		[UsedImplicitly]
+		public static EmptyApplicationConfiguration Default { get; } = new EmptyApplicationConfiguration();
+
+		EmptyApplicationConfiguration() {}
+
+		public void Execute(IApplicationBuilder parameter) {}
 	}
 }
