@@ -34,10 +34,10 @@ namespace DragonSpark.Server.Compose
 		}
 
 		public ServerProfileContext Then(ICommand<IServiceCollection> other)
-			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Add(other), x.Execute));
+			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
 		public ServerProfileContext Then(ICommand<IApplicationBuilder> other)
-			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Add(other)));
+			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
 
 		public ServerProfileContext WithEnvironmentalConfiguration()
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x)
@@ -45,21 +45,20 @@ namespace DragonSpark.Server.Compose
 			                               .Execute,
 			                              A.Command<IApplicationBuilder>(x)
 			                               .Then()
-			                               .Add(ConfigureFromEnvironment.Default)));
+			                               .Append(ConfigureFromEnvironment.Default)));
 
 		public ServerProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
 
 		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
 
-		public BuildServerContext As
-			=> new BuildServerContext(_context, _profile.Execute,
-			                          new ServerConfiguration(_profile).Then().Add(_configure.Get()));
+		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
+		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
 
 		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
 			=> new ServerProfileContext(_context, parameter(_profile), _configure);
 
 		public ServerProfileContext Get(ICommand<IWebHostBuilder> parameter)
-			=> new ServerProfileContext(_context, _profile, _configure.Add(parameter));
+			=> new ServerProfileContext(_context, _profile, _configure.Append(parameter));
 	}
 
 	public sealed class BuildServerContext

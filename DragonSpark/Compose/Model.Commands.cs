@@ -55,9 +55,9 @@ namespace DragonSpark.Compose
 			=> @this.Execute(Pairs.Create(key, value));
 
 		public static CommandContext<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
-			=> @this.Then().Add(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
+			=> @this.Then().Append(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
 
 		public static CommandContext<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
-			=> @this.Then().Add(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
+			=> @this.Then().Append(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
 	}
 }
