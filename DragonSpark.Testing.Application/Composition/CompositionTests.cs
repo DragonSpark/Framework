@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Application.Composition
 			                            .Start();
 			host.Services.GetType()
 			    .FullName.Should()
-			    .Be("LightInject.Microsoft.DependencyInjection.LightInjectServiceProvider");
+			    .Be("DragonSpark.Composition.WithComposition+Provider");
 		}
 
 		[Fact]
