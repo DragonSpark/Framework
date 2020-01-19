@@ -4,9 +4,4 @@
 	{
 		T Get();
 	}
-
-	public static class Extensions
-	{
-		
-	}
 }

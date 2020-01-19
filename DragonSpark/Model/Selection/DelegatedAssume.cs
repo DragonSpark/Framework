@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Results;
-using System;
+﻿using System;
 
 namespace DragonSpark.Model.Selection
 {
@@ -10,14 +9,5 @@ namespace DragonSpark.Model.Selection
 		public DelegatedAssume(Func<Func<TIn, TOut>> source) => _source = source;
 
 		public TOut Get(TIn parameter) => _source()(parameter);
-	}
-
-	public class Assume<TIn, TOut> : ISelect<TIn, TOut>
-	{
-		readonly IResult<ISelect<TIn, TOut>> _source;
-
-		public Assume(IResult<ISelect<TIn, TOut>> source) => _source = source;
-
-		public TOut Get(TIn parameter) => _source.Get().Get(parameter);
 	}
 }

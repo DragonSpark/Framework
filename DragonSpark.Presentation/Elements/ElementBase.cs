@@ -29,29 +29,4 @@ namespace DragonSpark.Presentation.Elements
 			builder.CloseElement();
 		}
 	}
-
-	public enum HeadingSize
-	{
-		Highest = 1, Higher = 2, High = 3, Low = 4, Lower = 5, Lowest = 6
-	}
-
-	public sealed class Heading : ElementBase
-	{
-		public Heading() : base("h") {}
-
-		protected override string Name(string name) => $"{name}{((int)Size).ToString()}";
-
-		[Parameter]
-		public HeadingSize Size { get; set; } = HeadingSize.Highest;
-	}
-
-	public sealed class Paragraph : ElementBase
-	{
-		public Paragraph() : base("p") {}
-	}
-
-	public sealed class Container : ElementBase
-	{
-		public Container() : base("div") {}
-	}
 }

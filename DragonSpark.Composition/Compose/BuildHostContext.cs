@@ -41,14 +41,4 @@ namespace DragonSpark.Composition.Compose
 		                                                             .StartAsync()
 		                                                             .ToOperation();
 	}
-
-
-	public sealed class HostOperationsContext
-	{
-		readonly IOperationResult<HostBuilder, IHost> _select;
-
-		public HostOperationsContext(IOperationResult<HostBuilder, IHost> select) => _select = select;
-
-		public ValueTask<IHost> Start() => _select.Get(new HostBuilder());
-	}
 }

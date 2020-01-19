@@ -1,5 +1,4 @@
 ﻿using System;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Commands
 {
@@ -15,19 +14,5 @@ namespace DragonSpark.Model.Commands
 		}
 
 		public void Execute(TFrom parameter) => _source(_select(parameter));
-	}
-
-	public class SelectedCommand<T> : ICommand<T>
-	{
-		readonly Func<T, ICommand<T>> _select;
-
-		public SelectedCommand(ISelect<T, ICommand<T>> select) : this(select.Get) {}
-
-		public SelectedCommand(Func<T, ICommand<T>> select) => _select = select;
-
-		public void Execute(T parameter)
-		{
-			_select(parameter).Execute(parameter);
-		}
 	}
 }

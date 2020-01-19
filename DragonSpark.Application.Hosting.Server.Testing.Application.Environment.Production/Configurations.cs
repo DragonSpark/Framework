@@ -18,6 +18,4 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Environment
 			         .Singleton();
 		}
 	}
-
-	public sealed class Dependency : IDependency {}
 }

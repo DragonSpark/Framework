@@ -4,7 +4,7 @@ using System;
 namespace DragonSpark.Compose
 {
 	// ReSharper disable once MismatchedFileName
-	public partial class Extensions
+	public partial class ExtensionMethods
 	{
 		public static ResultContext<T> Bind<T>(this Selector<Type, object> @this) => @this.Bind(A.Type<T>()).Cast<T>();
 

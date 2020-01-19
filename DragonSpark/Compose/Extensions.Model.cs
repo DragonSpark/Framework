@@ -10,7 +10,7 @@ using Action = DragonSpark.Compose.Model.Action;
 namespace DragonSpark.Compose
 {
 	// ReSharper disable once MismatchedFileName
-	public static partial class Extensions
+	public static partial class ExtensionMethods
 	{
 		public static Extents.Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
 
@@ -34,7 +34,7 @@ namespace DragonSpark.Compose
 		public static Extents.Conditions.ConditionExtent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
 
 		public static ConditionSelector<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
-			=> Start.A.Condition<T>().By.Calling(condition);
+			=> Compose.Start.A.Condition<T>().By.Calling(condition);
 
 		public static ICondition<T> Condition<T>(this ModelContext _, ICondition<T> result) => result;
 
@@ -57,28 +57,5 @@ namespace DragonSpark.Compose
 
 		public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
 			=> GuardModelContext<T>.Default;
-	}
-
-	public sealed class GuardModelContext<TException> where TException : Exception
-	{
-		public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();
-
-		GuardModelContext() {}
-
-		public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message) => Displaying<T>(message.Get);
-
-		public GuardThrowContext<T, TException> Displaying<T>(Func<T, string> message)
-			=> new GuardThrowContext<T, TException>(message);
-	}
-
-	public sealed class GuardThrowContext<T, TException> where TException : Exception
-	{
-		readonly Func<T, string> _message;
-
-		public GuardThrowContext(Func<T, string> message) => _message = message;
-
-		public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Inverse().Out());
-
-		public CommandContext<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
 	}
 }

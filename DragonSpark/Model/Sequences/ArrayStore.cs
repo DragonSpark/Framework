@@ -26,11 +26,4 @@ namespace DragonSpark.Model.Sequences
 
 		public ArrayStore(Func<_, Array<T>> source) : base(source) {}
 	}
-
-	public class ArraySelection<_, T> : Select<_, Array<T>>, IArray<_, T>
-	{
-		public ArraySelection(ISelect<_, Array<T>> @select) : base(@select) {}
-
-		public ArraySelection(Func<_, Array<T>> @select) : base(@select) {}
-	}
 }
