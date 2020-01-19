@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System;
 
-namespace DragonSpark.Server.Application {
+namespace DragonSpark.Server.Application
+{
 	sealed class ServerConfiguration : ICommand<IWebHostBuilder>
 	{
 		readonly Action<IApplicationBuilder> _configure;

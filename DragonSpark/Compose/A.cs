@@ -25,7 +25,8 @@ namespace DragonSpark.Compose
 		public static IResult<ISelect<TIn, TOut>> SelectionResult<TIn, TOut>(IResult<ISelect<TIn, TOut>> instance)
 			=> instance;
 
-		public static IResult<IConditional<TIn, TOut>> ConditionalResult<TIn, TOut>(IResult<IConditional<TIn, TOut>> @this) => @this;
+		public static IResult<IConditional<TIn, TOut>> ConditionalResult<TIn, TOut>(
+			IResult<IConditional<TIn, TOut>> @this) => @this;
 
 		public static IAlteration<T> Self<T>() => DragonSpark.Model.Selection.Self<T>.Default;
 

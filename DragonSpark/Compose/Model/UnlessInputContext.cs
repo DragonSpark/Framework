@@ -3,7 +3,8 @@ using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Objects;
 using System;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public sealed class UnlessInputContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;

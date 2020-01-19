@@ -9,7 +9,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Message _action;
 		readonly string  _messageTemplate;
 
-		public LogWarning(ILogger logger, string messageTemplate) : this(logger.LogWarning<object[]>, messageTemplate) {}
+		public LogWarning(ILogger logger, string messageTemplate) :
+			this(logger.LogWarning<object[]>, messageTemplate) {}
 
 		public LogWarning(Message action, string messageTemplate)
 		{

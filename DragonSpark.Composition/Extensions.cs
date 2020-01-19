@@ -74,7 +74,8 @@ namespace DragonSpark.Composition
 			=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);
 
 		public static ICommand<IServiceCollection> ConfigureFromEnvironment(
-			this ICommand<IServiceCollection> @this) => @this.Then().Append(Compose.ConfigureFromEnvironment.Default).Get();
+			this ICommand<IServiceCollection> @this)
+			=> @this.Then().Append(Compose.ConfigureFromEnvironment.Default).Get();
 
 		public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)
 			where T : ICompositionRoot, new()

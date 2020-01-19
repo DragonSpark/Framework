@@ -6,13 +6,15 @@ using DragonSpark.Runtime;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Compose {
+namespace DragonSpark.Compose
+{
 	public static class Is
 	{
 		public static ICondition<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
 			=> IsDecoratedWith<T>.Default;
 
-		public static ConditionSelector<T> Always<T>() => DragonSpark.Model.Selection.Conditions.Always<T>.Default.Then();
+		public static ConditionSelector<T> Always<T>()
+			=> DragonSpark.Model.Selection.Conditions.Always<T>.Default.Then();
 
 		public static ConditionSelector<object> Always() => Always<object>();
 

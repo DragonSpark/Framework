@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public class NestedResultContext<T> : ResultContext<IResult<T>>
 	{
 		public NestedResultContext(IResult<IResult<T>> subject) : base(subject) {}

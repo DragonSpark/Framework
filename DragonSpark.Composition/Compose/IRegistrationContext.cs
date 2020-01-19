@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition.Compose {
+namespace DragonSpark.Composition.Compose
+{
 	public interface IRegistrationContext
 	{
 		IServiceCollection Singleton();

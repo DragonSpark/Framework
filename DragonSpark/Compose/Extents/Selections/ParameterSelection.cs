@@ -2,7 +2,8 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections {
+namespace DragonSpark.Compose.Extents.Selections
+{
 	sealed class ParameterSelection<TIn, TOut> : ISelect<(TIn Parameter, ValueTask Task), TOut>
 	{
 		readonly Func<TIn, TOut> _select;

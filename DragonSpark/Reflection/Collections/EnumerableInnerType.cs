@@ -1,5 +1,5 @@
-using System.Reflection;
 using DragonSpark.Model.Selection.Alterations;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Collections
 {

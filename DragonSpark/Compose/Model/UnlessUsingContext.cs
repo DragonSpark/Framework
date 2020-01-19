@@ -6,8 +6,8 @@ namespace DragonSpark.Compose.Model
 {
 	public sealed class UnlessUsingContext<TIn, TOut>
 	{
-		readonly ISelect<TIn, TOut> _subject;
 		readonly ISelect<TIn, TOut> _other;
+		readonly ISelect<TIn, TOut> _subject;
 
 		public UnlessUsingContext(ISelect<TIn, TOut> subject, ISelect<TIn, TOut> other)
 		{

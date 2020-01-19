@@ -1,5 +1,5 @@
-﻿using System.IO;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection.Stores;
+using System.IO;
 
 namespace DragonSpark.Runtime
 {

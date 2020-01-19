@@ -66,16 +66,6 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		}
 
 		[Fact]
-		void VerifyGet()
-		{
-			Is.Assigned().Get().Get(Singleton.Default).Should().BeTrue();
-
-			Activator<Singleton>.Default.Get().Should().BeSameAs(Singleton.Default);
-
-			Activator<Singleton>.Default.Get().Should().BeSameAs(Activator<Singleton>.Default.Get());
-		}
-
-		[Fact]
 		void VerifyGeneralized()
 		{
 			Activator.Default.Get(typeof(Activated))
@@ -91,6 +81,16 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 		void VerifyGeneralizedSingleton()
 		{
 			Activator.Default.Get(typeof(Singleton)).Should().BeSameAs(Singleton.Default);
+		}
+
+		[Fact]
+		void VerifyGet()
+		{
+			Is.Assigned().Get().Get(Singleton.Default).Should().BeTrue();
+
+			Activator<Singleton>.Default.Get().Should().BeSameAs(Singleton.Default);
+
+			Activator<Singleton>.Default.Get().Should().BeSameAs(Activator<Singleton>.Default.Get());
 		}
 
 		[Fact]

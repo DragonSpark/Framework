@@ -1,5 +1,5 @@
-using System;
 using DragonSpark.Model.Results;
+using System;
 
 namespace DragonSpark.Runtime.Environment
 {

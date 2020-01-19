@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public sealed class UnlessContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;

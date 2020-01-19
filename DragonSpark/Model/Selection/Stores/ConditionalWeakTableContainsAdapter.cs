@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using DragonSpark.Model.Selection.Conditions;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Selection.Stores
 {

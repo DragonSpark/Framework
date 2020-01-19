@@ -2,7 +2,8 @@
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition.Compose {
+namespace DragonSpark.Composition.Compose
+{
 	public sealed class ResultRegistrationContext<T, TResult> : IRegistrationContext
 		where T : class where TResult : class, IResult<T>
 	{

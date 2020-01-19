@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Runtime.Activation;
+﻿using DragonSpark.Runtime.Activation;
+using FluentAssertions;
 using Xunit;
 
 // ReSharper disable All

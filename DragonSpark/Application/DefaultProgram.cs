@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application {
+namespace DragonSpark.Application
+{
 	public sealed class DefaultProgram : IProgram
 	{
 		public static DefaultProgram Default { get; } = new DefaultProgram();

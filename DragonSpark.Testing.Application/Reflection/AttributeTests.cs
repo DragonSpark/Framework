@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Reflection;
 using FluentAssertions;
-using DragonSpark.Reflection;
+using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Reflection

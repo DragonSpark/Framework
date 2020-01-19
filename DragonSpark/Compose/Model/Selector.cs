@@ -99,7 +99,4 @@ namespace DragonSpark.Compose.Model
 
 		public ISelect<TIn, TOut> Get() => _subject;
 	}
-
-
-
 }

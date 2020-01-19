@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose {
+namespace DragonSpark.Compose
+{
 	public sealed class GuardModelContext<TException> where TException : Exception
 	{
 		public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();

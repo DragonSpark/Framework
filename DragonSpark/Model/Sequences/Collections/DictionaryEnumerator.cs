@@ -17,7 +17,8 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public bool MoveNext() => _impl.MoveNext();
 
-		public DictionaryEntry Entry => new DictionaryEntry(_impl.Current.Key ?? throw new InvalidOperationException(), _impl.Current.Value);
+		public DictionaryEntry Entry
+			=> new DictionaryEntry(_impl.Current.Key ?? throw new InvalidOperationException(), _impl.Current.Value);
 
 		public object Key => _impl.Current.Key;
 		public object Value => _impl.Current.Value;

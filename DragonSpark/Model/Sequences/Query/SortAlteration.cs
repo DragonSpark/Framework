@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Query
 {

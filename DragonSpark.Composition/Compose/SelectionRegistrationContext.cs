@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Composition.Compose {
+namespace DragonSpark.Composition.Compose
+{
 	public sealed class SelectionRegistrationContext<T> : IRegistrationContext where T : class
 	{
 		readonly IServiceCollection        _collection;

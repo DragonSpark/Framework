@@ -3,7 +3,8 @@ using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
-namespace DragonSpark.Compose {
+namespace DragonSpark.Compose
+{
 	public sealed class GuardThrowContext<T, TException> where TException : Exception
 	{
 		readonly Func<T, string> _message;

@@ -18,9 +18,9 @@ namespace DragonSpark.Server.Compose
 	public sealed class ServerProfileContext : ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
 	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>
 	{
+		readonly CommandContext<IWebHostBuilder> _configure;
 		readonly BuildHostContext                _context;
 		readonly IServerProfile                  _profile;
-		readonly CommandContext<IWebHostBuilder> _configure;
 
 		public ServerProfileContext(BuildHostContext context, IServerProfile profile)
 			: this(context, profile, Start.A.Command<IWebHostBuilder>().By.Empty) {}
@@ -32,6 +32,9 @@ namespace DragonSpark.Server.Compose
 			_profile   = profile;
 			_configure = configure;
 		}
+
+		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
+		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
 
 		public ServerProfileContext Then(ICommand<IServiceCollection> other)
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
@@ -50,9 +53,6 @@ namespace DragonSpark.Server.Compose
 		public ServerProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
 
 		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
-
-		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
-		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
 
 		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
 			=> new ServerProfileContext(_context, parameter(_profile), _configure);

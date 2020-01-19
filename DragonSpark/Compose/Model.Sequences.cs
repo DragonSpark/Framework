@@ -17,7 +17,8 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this) => @this.Select(x => x.Open());
+		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this)
+			=> @this.Select(x => x.Open());
 
 		public static Selector<_, T[]> Open<_, T>(this Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
 
@@ -28,7 +29,9 @@ namespace DragonSpark.Compose
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] ToArray<T>(in this ArrayView<T> @this)
-			=> @this.Length == 0 ? Empty<T>.Array : @this.Array.CopyInto(new T[@this.Length], @this.Start, @this.Length);
+			=> @this.Length == 0
+				   ? Empty<T>.Array
+				   : @this.Array.CopyInto(new T[@this.Length], @this.Start, @this.Length);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Store<T> ToStore<T>(in this ArrayView<T> @this, IStores<T> stores)

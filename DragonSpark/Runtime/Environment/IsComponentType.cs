@@ -10,9 +10,9 @@ namespace DragonSpark.Runtime.Environment
 		public static IsComponentType Default { get; } = new IsComponentType();
 
 		IsComponentType() : base(CanConstruct.Default, CanActivate.Default,
-		                                  Is.DecoratedWith<InfrastructureAttribute>()
-		                                    .Then()
-		                                    .Inverse()
-		                                    .Get()) {}
+		                         Is.DecoratedWith<InfrastructureAttribute>()
+		                           .Then()
+		                           .Inverse()
+		                           .Get()) {}
 	}
 }

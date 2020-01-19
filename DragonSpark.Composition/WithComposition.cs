@@ -46,8 +46,8 @@ namespace DragonSpark.Composition
 
 		sealed class Selector : IConstructorDependencySelector
 		{
-			readonly IConstructorDependencySelector _selector;
 			readonly IServiceRegistry               _registry;
+			readonly IConstructorDependencySelector _selector;
 			readonly Array<Type>                    _types;
 
 			public Selector(ServiceContainer container)
@@ -122,9 +122,9 @@ namespace DragonSpark.Composition
 
 		sealed class Provider : IServiceProvider
 		{
-			readonly IServiceProvider _provider;
-			readonly ICondition<Type> _condition;
 			readonly IActivator       _activator;
+			readonly ICondition<Type> _condition;
+			readonly IServiceProvider _provider;
 
 			public Provider(IServiceProvider provider) : this(provider, CanActivate.Default, Activator.Default) {}
 

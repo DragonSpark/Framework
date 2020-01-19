@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Reflection;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition {
+namespace DragonSpark.Composition
+{
 	public interface IServiceConfiguration : ICommand<IServiceCollection> {}
 }

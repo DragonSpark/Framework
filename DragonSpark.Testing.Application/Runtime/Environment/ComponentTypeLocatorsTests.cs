@@ -30,8 +30,8 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			SortSelector<Type>.Default.Get(typeof(First)).Should().Be(-10);
 
 			var types = ComponentTypeLocators.Default.Get(NestedTypes<ComponentTypeLocatorsTests>.Default.Get().Open())
-			                                .Get(typeof(IComponent))
-			                                .Open();
+			                                 .Get(typeof(IComponent))
+			                                 .Open();
 			types.Should().HaveCount(4);
 			types.Should().BeEquivalentTo(typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last));
 			types.First().Should().Be(typeof(First));

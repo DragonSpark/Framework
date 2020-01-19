@@ -43,7 +43,7 @@ namespace DragonSpark.Testing.Application.Runtime
 		[Theory, AutoData]
 		void Adding(object[] sut, object item)
 		{
-			var items = Enumerable.Append(sut, item);
+			var items = sut.Append(item);
 			Assert.Equal(item, items.Last());
 			Assert.Equal(sut.First(), items.First());
 		}

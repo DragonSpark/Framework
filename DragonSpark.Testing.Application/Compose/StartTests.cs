@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using DragonSpark.Compose;
+using FluentAssertions;
 using JetBrains.Annotations;
-using DragonSpark.Compose;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose

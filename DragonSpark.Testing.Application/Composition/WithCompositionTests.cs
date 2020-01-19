@@ -11,6 +11,22 @@ namespace DragonSpark.Testing.Application.Composition
 {
 	public sealed class WithCompositionTests
 	{
+		sealed class Instances : Select<int, object>
+		{
+			public static Instances Default { get; } = new Instances();
+
+			Instances() : base(_ => new object()) {}
+		}
+
+		sealed class Selection : Select<int, object>
+		{
+			public static Selection Default { get; } = new Selection();
+
+			Selection() : this(Instances.Default.Get) {}
+
+			public Selection(Func<int, object> select) : base(select) {}
+		}
+
 		[Fact]
 		public async Task Verify()
 		{
@@ -45,22 +61,6 @@ namespace DragonSpark.Testing.Application.Composition
 			                            .Start();
 
 			host.Services.GetRequiredService<Selection>().Should().NotBeSameAs(Selection.Default);
-		}
-
-		sealed class Instances : Select<int, object>
-		{
-			public static Instances Default { get; } = new Instances();
-
-			Instances() : base(_ => new object()) {}
-		}
-
-		sealed class Selection : Select<int, object>
-		{
-			public static Selection Default { get; } = new Selection();
-
-			Selection() : this(Instances.Default.Get) {}
-
-			public Selection(Func<int, object> @select) : base(@select) {}
 		}
 	}
 }

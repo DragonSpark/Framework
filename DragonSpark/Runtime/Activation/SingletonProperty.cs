@@ -28,8 +28,9 @@ namespace DragonSpark.Runtime.Activation
 
 			Query() : this(IsSingletonProperty.Default.Get, Is.Assigned()) {}
 
-			readonly Func<PropertyInfo, bool> _is;
 			readonly Func<PropertyInfo, bool> _assigned;
+
+			readonly Func<PropertyInfo, bool> _is;
 
 			public Query(Func<PropertyInfo, bool> @is, Func<PropertyInfo, bool> assigned)
 			{

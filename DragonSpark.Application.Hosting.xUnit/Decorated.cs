@@ -10,6 +10,20 @@ namespace DragonSpark.Application.Hosting.xUnit
 
 	sealed class Decorated : IMethodInfo
 	{
+		static Exception Unwrap(Exception ex)
+		{
+			while (true)
+			{
+				var tiex = ex as TargetInvocationException;
+				if (tiex == null)
+				{
+					return ex;
+				}
+
+				ex = tiex.InnerException;
+			}
+		}
+
 		readonly IMethodInfo _method;
 
 		public Decorated(IMethodInfo method) => _method = method;
@@ -48,19 +62,5 @@ namespace DragonSpark.Application.Hosting.xUnit
 		public ITypeInfo ReturnType => _method.ReturnType;
 
 		public ITypeInfo Type => _method.Type;
-
-		static Exception Unwrap(Exception ex)
-		{
-			while (true)
-			{
-				var tiex = ex as TargetInvocationException;
-				if (tiex == null)
-				{
-					return ex;
-				}
-
-				ex = tiex.InnerException;
-			}
-		}
 	}
 }

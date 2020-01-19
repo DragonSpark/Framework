@@ -8,9 +8,9 @@ namespace DragonSpark.Compose.Model
 {
 	public class ResultContext<T>
 	{
-		readonly IResult<T> _instance;
-
 		public static implicit operator Func<T>(ResultContext<T> instance) => instance.Get().Get;
+
+		readonly IResult<T> _instance;
 
 		public ResultContext(IResult<T> instance) => _instance = instance;
 

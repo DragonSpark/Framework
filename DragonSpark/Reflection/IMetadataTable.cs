@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection.Stores;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {

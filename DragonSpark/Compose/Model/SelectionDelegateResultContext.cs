@@ -2,7 +2,8 @@
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public sealed class SelectionDelegateResultContext<TIn, TOut> : ResultContext<Func<TIn, TOut>>
 	{
 		public SelectionDelegateResultContext(IResult<Func<TIn, TOut>> instance) : base(instance) {}

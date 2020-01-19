@@ -3,7 +3,8 @@ using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public class ConditionSelector<T> : Selector<T, bool>
 	{
 		public static implicit operator Func<T, bool>(ConditionSelector<T> instance) => instance.Get().Get;

@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
+using System;
 
 namespace DragonSpark.Reflection.Selection
 {

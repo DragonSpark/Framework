@@ -66,9 +66,9 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(300)
-			                  .Take(100)
-			                  .Where(y => y > 100)
-			                  .ToArray())
+			                                            .Take(100)
+			                                            .Where(y => y > 100)
+			                                            .ToArray())
 			     .Out()
 			     .Get(source)
 			     .Should()

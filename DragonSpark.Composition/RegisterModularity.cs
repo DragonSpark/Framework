@@ -7,7 +7,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Composition {
+namespace DragonSpark.Composition
+{
 	sealed class RegisterModularity : IServiceConfiguration
 	{
 		[UsedImplicitly]
@@ -16,8 +17,8 @@ namespace DragonSpark.Composition {
 		RegisterModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Get) {}
 
 		readonly Func<Array<Type>, IComponentTypes> _locator;
-		readonly Func<Array<Assembly>, Array<Type>> _types;
 		readonly Func<string, Array<Assembly>>      _select;
+		readonly Func<Array<Assembly>, Array<Type>> _types;
 
 		public RegisterModularity(Func<Array<Assembly>, Array<Type>> types)
 			: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Get) {}

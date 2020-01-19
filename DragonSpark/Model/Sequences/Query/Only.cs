@@ -21,8 +21,8 @@ namespace DragonSpark.Model.Sequences.Query
 		public T Get(IEnumerable<T> parameter)
 		{
 			using var enumerator = parameter.GetEnumerator();
-			var first = enumerator.MoveNext() ? enumerator.Current : default;
-			var result = !enumerator.MoveNext() ? first : default;
+			var       first      = enumerator.MoveNext() ? enumerator.Current : default;
+			var       result     = !enumerator.MoveNext() ? first : default;
 			return result;
 		}
 	}

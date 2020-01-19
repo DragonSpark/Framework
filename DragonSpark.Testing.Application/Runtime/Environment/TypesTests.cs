@@ -15,7 +15,5 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 		{
 			public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter)) {}
 		}
-
-
 	}
 }

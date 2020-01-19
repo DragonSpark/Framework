@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<_, T> FirstAssigned() => FirstOrDefault(y => !(y is null));
 
-		public Selector<_, T> Only() => Select(DragonSpark.Model.Sequences.Query.Only<T>.Default);
+		public Selector<_, T> Only() => Select(Only<T>.Default);
 
 		public Selector<_, T> FirstOrDefault(Func<T, bool> where) => Select(x => x.FirstOrDefault(where));
 

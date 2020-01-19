@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences.Collections;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using JetBrains.Annotations;
-using DragonSpark.Model.Sequences.Collections;
 
 namespace DragonSpark.Runtime
 {

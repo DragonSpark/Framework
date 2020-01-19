@@ -1,6 +1,6 @@
+using DragonSpark.Reflection.Types;
 using System.Collections.Generic;
 using System.Reflection;
-using DragonSpark.Reflection.Types;
 
 namespace DragonSpark.Reflection.Collections
 {

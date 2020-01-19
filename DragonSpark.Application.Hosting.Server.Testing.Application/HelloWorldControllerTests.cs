@@ -9,26 +9,14 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
+using Dependency = DragonSpark.Application.Hosting.Server.Testing.Application.Environment.Development.Dependency;
 
 namespace DragonSpark.Application.Hosting.Server.Testing.Application
 {
 	public sealed class HelloWorldControllerTests
 	{
-		[Fact]
-		public async Task Verify()
-		{
-			using var host = await Start.A.Host()
-			                            .WithTestServer()
-			                            .WithServerApplication()
-			                            .As.Is()
-			                            .Operations()
-			                            .Start();
-
-			host.Should().NotBeNull();
-		}
-
 		[Theory]
-		[InlineData("Development", typeof(Environment.Development.Dependency))]
+		[InlineData("Development", typeof(Dependency))]
 		[InlineData("Production", typeof(Environment.Production.Dependency))]
 		public async Task VerifyEnvironment(string environment, Type expected)
 		{
@@ -64,6 +52,19 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 
 			var content = await response.Content.ReadAsStringAsync();
 			content.Should().Be("Hello World!");
+		}
+
+		[Fact]
+		public async Task Verify()
+		{
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithServerApplication()
+			                            .As.Is()
+			                            .Operations()
+			                            .Start();
+
+			host.Should().NotBeNull();
 		}
 	}
 }

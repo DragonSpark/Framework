@@ -56,6 +56,7 @@ namespace DragonSpark.Compose.Extents.Generics
 
 		public GenericExtent<T1, T2, T3, T4, T[]> Array() => new GenericExtent<T1, T2, T3, T4, T[]>(_definition);
 
-		public GenericExtent<T1, T2, T3, T4, Array<T>> Immutable() => new GenericExtent<T1, T2, T3, T4, Array<T>>(_definition);
+		public GenericExtent<T1, T2, T3, T4, Array<T>> Immutable()
+			=> new GenericExtent<T1, T2, T3, T4, Array<T>>(_definition);
 	}
 }

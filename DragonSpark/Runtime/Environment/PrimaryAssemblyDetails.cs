@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Reflection.Assemblies;
+using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {

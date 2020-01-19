@@ -19,6 +19,14 @@ namespace DragonSpark.Runtime.Invocation
 	/// <typeparam name="TLock"></typeparam>
 	public class Locks<TKey, TLock> : ISelect<TKey, TLock>
 	{
+		// ReSharper disable once ComplexConditionExpression
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static int SmearHashCode(int hashCode)
+		{
+			hashCode ^= (hashCode >> 20) ^ (hashCode >> 12);
+			return hashCode ^ (hashCode >> 7) ^ (hashCode >> 4);
+		}
+
 		readonly IEqualityComparer<TKey> _comparer;
 		readonly int                     _mask;
 		readonly Array<TLock>            _stripes;
@@ -35,17 +43,9 @@ namespace DragonSpark.Runtime.Invocation
 			_comparer = comparer;
 		}
 
-		public TLock Get(TKey parameter) => _stripes[GetStripe(parameter)];
-
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		int GetStripe(TKey key) => SmearHashCode(_comparer.GetHashCode(key) & int.MaxValue) & _mask;
 
-		// ReSharper disable once ComplexConditionExpression
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static int SmearHashCode(int hashCode)
-		{
-			hashCode ^= (hashCode >> 20) ^ (hashCode >> 12);
-			return hashCode ^ (hashCode >> 7) ^ (hashCode >> 4);
-		}
+		public TLock Get(TKey parameter) => _stripes[GetStripe(parameter)];
 	}
 }

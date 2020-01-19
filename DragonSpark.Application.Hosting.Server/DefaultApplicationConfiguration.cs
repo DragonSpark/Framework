@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using System;
 
-namespace DragonSpark.Application.Hosting.Server {
+namespace DragonSpark.Application.Hosting.Server
+{
 	sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 	{
 		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DragonSpark.Model.Sequences.Collections
 {

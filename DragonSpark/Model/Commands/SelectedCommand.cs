@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Model.Commands {
+namespace DragonSpark.Model.Commands
+{
 	public class SelectedCommand<T> : ICommand<T>
 	{
 		readonly Func<T, ICommand<T>> _select;

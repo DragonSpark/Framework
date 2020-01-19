@@ -1,4 +1,7 @@
-﻿using DragonSpark.Compose.Extents.Results;
+﻿using DragonSpark.Compose.Extents.Commands;
+using DragonSpark.Compose.Extents.Conditions;
+using DragonSpark.Compose.Extents.Results;
+using DragonSpark.Compose.Extents.Selections;
 
 namespace DragonSpark.Compose.Extents
 {
@@ -10,10 +13,10 @@ namespace DragonSpark.Compose.Extents
 
 		public ResultContext<T> Result => ResultContext<T>.Instance;
 
-		public Conditions.ConditionContext<T> Condition => Conditions.ConditionContext<T>.Instance;
+		public ConditionContext<T> Condition => ConditionContext<T>.Instance;
 
-		public Commands.CommandContext<T> Command => Commands.CommandContext<T>.Instance;
+		public CommandContext<T> Command => CommandContext<T>.Instance;
 
-		public Selections.Context<T> Selection => Selections.Context<T>.Instance;
+		public Context<T> Selection => Context<T>.Instance;
 	}
 }

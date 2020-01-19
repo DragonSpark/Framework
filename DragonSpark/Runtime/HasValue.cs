@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Runtime
 {

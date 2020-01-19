@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using DragonSpark.Runtime.Activation;
+﻿using DragonSpark.Runtime.Activation;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Text.Formatting
 {

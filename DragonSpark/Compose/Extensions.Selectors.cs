@@ -16,6 +16,5 @@ namespace DragonSpark.Compose
 
 		public static TOut Get<TIn, TOut>(this Selector<TIn, TOut> @this, TIn parameter)
 			=> @this.Get().Get(parameter);
-
 	}
 }

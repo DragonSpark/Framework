@@ -8,6 +8,21 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	public class PriorityOrderer : ITestCaseOrderer
 	{
+		static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
+		{
+			TValue result;
+
+			if (dictionary.TryGetValue(key, out result))
+			{
+				return result;
+			}
+
+			result          = new TValue();
+			dictionary[key] = result;
+
+			return result;
+		}
+
 		public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases)
 			where TTestCase : ITestCase
 		{
@@ -36,21 +51,6 @@ namespace DragonSpark.Application.Hosting.xUnit
 					yield return testCase;
 				}
 			}
-		}
-
-		static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
-		{
-			TValue result;
-
-			if (dictionary.TryGetValue(key, out result))
-			{
-				return result;
-			}
-
-			result          = new TValue();
-			dictionary[key] = result;
-
-			return result;
 		}
 	}
 }

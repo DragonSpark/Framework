@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Runtime.Invocation.Expressions;
+﻿using DragonSpark.Runtime.Invocation.Expressions;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Expressions

@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using System.Reflection;
 
 namespace DragonSpark.Reflection
 {

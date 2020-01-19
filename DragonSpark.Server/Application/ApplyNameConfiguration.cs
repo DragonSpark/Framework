@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Server.Application {
+namespace DragonSpark.Server.Application
+{
 	sealed class ApplyNameConfiguration : ICommand<IWebHostBuilder>
 	{
 		readonly Func<string> _name;

@@ -1,7 +1,7 @@
+using DragonSpark.Model.Selection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Runtime.Environment
 {

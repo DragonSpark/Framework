@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Compose;
 using System;
 
-namespace DragonSpark.Model {
+namespace DragonSpark.Model
+{
 	sealed class AssignedEntryGuard<T> : AssignedGuard<T, ArgumentNullException>
 	{
 		public static AssignedEntryGuard<T> Default { get; } = new AssignedEntryGuard<T>();

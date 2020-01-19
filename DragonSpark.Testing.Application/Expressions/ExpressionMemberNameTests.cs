@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Runtime.Invocation.Expressions;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using DragonSpark.Runtime.Invocation.Expressions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Expressions

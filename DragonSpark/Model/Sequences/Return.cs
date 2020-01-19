@@ -1,5 +1,5 @@
-﻿using System.Buffers;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
+using System.Buffers;
 
 namespace DragonSpark.Model.Sequences
 {

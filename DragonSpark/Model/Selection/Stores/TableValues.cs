@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
+using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores
 {

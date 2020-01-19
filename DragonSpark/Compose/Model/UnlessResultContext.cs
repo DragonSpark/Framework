@@ -2,11 +2,12 @@
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public sealed class UnlessResultContext<TIn, TOut>
 	{
-		readonly ISelect<TIn, TOut> _subject;
 		readonly Func<TIn, bool>    _condition;
+		readonly ISelect<TIn, TOut> _subject;
 
 		public UnlessResultContext(ISelect<TIn, TOut> subject, Func<TIn, bool> condition)
 		{

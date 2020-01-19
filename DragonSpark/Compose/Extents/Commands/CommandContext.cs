@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
+using System;
 
 namespace DragonSpark.Compose.Extents.Commands
 {
@@ -19,6 +20,6 @@ namespace DragonSpark.Compose.Extents.Commands
 
 		public Model.CommandContext<T> Empty { get; } = EmptyCommand<T>.Default.Then();
 
-		public Model.CommandContext<T> Calling(System.Action<T> body) => new Model.CommandContext<T>(new Command<T>(body));
+		public Model.CommandContext<T> Calling(Action<T> body) => new Model.CommandContext<T>(new Command<T>(body));
 	}
 }

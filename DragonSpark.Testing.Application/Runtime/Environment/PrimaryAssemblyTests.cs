@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Runtime.Environment;
+﻿using DragonSpark.Runtime.Environment;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Environment

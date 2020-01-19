@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace DragonSpark.Composition.Compose
 {
 	public sealed class BuildHostContext : Instance<IAlteration<IHostBuilder>>,
-										   IOperationResult<HostBuilder, IHost>,
+	                                       IOperationResult<HostBuilder, IHost>,
 	                                       IActivateUsing<IAlteration<IHostBuilder>>
 	{
 		readonly IAlteration<IHostBuilder> _select;
 
-		public BuildHostContext(IAlteration<IHostBuilder> select) : base(select) => _select = @select;
+		public BuildHostContext(IAlteration<IHostBuilder> select) : base(select) => _select = select;
 
 		public BuildHostContext WithEnvironment(string name) => Select(ConfigureEnvironment.Defaults.Get(name));
 

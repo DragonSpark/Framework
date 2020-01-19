@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Runtime.Invocation
 {

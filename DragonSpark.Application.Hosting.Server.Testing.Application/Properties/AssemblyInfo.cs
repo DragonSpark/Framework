@@ -10,4 +10,5 @@ using Xunit;
 [assembly: AssemblyCulture("")]
 
 [assembly: XunitTestingApplication]
-[assembly: TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]
+[assembly:
+	TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]

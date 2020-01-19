@@ -24,9 +24,9 @@ namespace DragonSpark.Compose.Extents.Generics
 
 		public Selections As => new Selections(_definition);
 
-		public Func<T> Get(Array<Type> parameter) => new Generic<T>(_definition).Get(parameter);
-
 		public GenericExtent<T1, T> WithParameterOf<T1>() => new GenericExtent<T1, T>(_definition);
+
+		public Func<T> Get(Array<Type> parameter) => new Generic<T>(_definition).Get(parameter);
 
 		public class Selections
 		{
@@ -52,11 +52,11 @@ namespace DragonSpark.Compose.Extents.Generics
 
 		public GenericExtent(Type definition) => _definition = definition;
 
-		public Func<T1, T> Get(Array<Type> parameter) => new Generic<T1, T>(_definition).Get(parameter);
-
 		public Selections As() => new Selections(_definition);
 
 		public GenericExtent<T1, T2, T> AndOf<T2>() => new GenericExtent<T1, T2, T>(_definition);
+
+		public Func<T1, T> Get(Array<Type> parameter) => new Generic<T1, T>(_definition).Get(parameter);
 
 		public class Selections
 		{
@@ -82,11 +82,11 @@ namespace DragonSpark.Compose.Extents.Generics
 
 		public GenericExtent(Type definition) => _definition = definition;
 
-		public Func<T1, T2, T> Get(Array<Type> parameter) => new Generic<T1, T2, T>(_definition).Get(parameter);
-
 		public Selections As() => new Selections(_definition);
 
 		public GenericExtent<T1, T2, T3, T> AndOf<T3>() => new GenericExtent<T1, T2, T3, T>(_definition);
+
+		public Func<T1, T2, T> Get(Array<Type> parameter) => new Generic<T1, T2, T>(_definition).Get(parameter);
 
 		public class Selections
 		{
@@ -98,7 +98,8 @@ namespace DragonSpark.Compose.Extents.Generics
 
 			public GenericExtent<T1, T2, Func<T>> Delegate() => new GenericExtent<T1, T2, Func<T>>(_definition);
 
-			public GenericExtent<T1, T2, ICondition<T>> Condition() => new GenericExtent<T1, T2, ICondition<T>>(_definition);
+			public GenericExtent<T1, T2, ICondition<T>> Condition()
+				=> new GenericExtent<T1, T2, ICondition<T>>(_definition);
 
 			public GenericExtent<T1, T2, IResult<T>> Result() => new GenericExtent<T1, T2, IResult<T>>(_definition);
 
@@ -114,9 +115,9 @@ namespace DragonSpark.Compose.Extents.Generics
 
 		public Selections As => new Selections(_definition);
 
-		public Func<T1, T2, T3, T> Get(Array<Type> parameter) => new Generic<T1, T2, T3, T>(_definition).Get(parameter);
-
 		public GenericExtent<T1, T2, T3, T4, T> AndOf<T4>() => new GenericExtent<T1, T2, T3, T4, T>(_definition);
+
+		public Func<T1, T2, T3, T> Get(Array<Type> parameter) => new Generic<T1, T2, T3, T>(_definition).Get(parameter);
 
 		public class Selections
 		{
@@ -124,15 +125,19 @@ namespace DragonSpark.Compose.Extents.Generics
 
 			public Selections(Type definition) => _definition = definition;
 
-			public GenericSequenceExtent<T1, T2, T3, T> Sequence() => new GenericSequenceExtent<T1, T2, T3, T>(_definition);
+			public GenericSequenceExtent<T1, T2, T3, T> Sequence()
+				=> new GenericSequenceExtent<T1, T2, T3, T>(_definition);
 
 			public GenericExtent<T1, T2, T3, Func<T>> Delegate() => new GenericExtent<T1, T2, T3, Func<T>>(_definition);
 
-			public GenericExtent<T1, T2, T3, ICondition<T>> Condition() => new GenericExtent<T1, T2, T3, ICondition<T>>(_definition);
+			public GenericExtent<T1, T2, T3, ICondition<T>> Condition()
+				=> new GenericExtent<T1, T2, T3, ICondition<T>>(_definition);
 
-			public GenericExtent<T1, T2, T3, IResult<T>> Result() => new GenericExtent<T1, T2, T3, IResult<T>>(_definition);
+			public GenericExtent<T1, T2, T3, IResult<T>> Result()
+				=> new GenericExtent<T1, T2, T3, IResult<T>>(_definition);
 
-			public GenericExtent<T1, T2, T3, ICommand<T>> Command() => new GenericExtent<T1, T2, T3, ICommand<T>>(_definition);
+			public GenericExtent<T1, T2, T3, ICommand<T>> Command()
+				=> new GenericExtent<T1, T2, T3, ICommand<T>>(_definition);
 		}
 	}
 
@@ -153,14 +158,17 @@ namespace DragonSpark.Compose.Extents.Generics
 
 			public Selections(Type definition) => _definition = definition;
 
-			public GenericSequenceExtent<T1, T2, T3, T4, T> Sequence() => new GenericSequenceExtent<T1, T2, T3, T4, T>(_definition);
+			public GenericSequenceExtent<T1, T2, T3, T4, T> Sequence()
+				=> new GenericSequenceExtent<T1, T2, T3, T4, T>(_definition);
 
-			public GenericExtent<T1, T2, T3, T4, Func<T>> Delegate() => new GenericExtent<T1, T2, T3, T4, Func<T>>(_definition);
+			public GenericExtent<T1, T2, T3, T4, Func<T>> Delegate()
+				=> new GenericExtent<T1, T2, T3, T4, Func<T>>(_definition);
 
 			public GenericExtent<T1, T2, T3, T4, ICondition<T>> Condition()
 				=> new GenericExtent<T1, T2, T3, T4, ICondition<T>>(_definition);
 
-			public GenericExtent<T1, T2, T3, T4, IResult<T>> Result() => new GenericExtent<T1, T2, T3, T4, IResult<T>>(_definition);
+			public GenericExtent<T1, T2, T3, T4, IResult<T>> Result()
+				=> new GenericExtent<T1, T2, T3, T4, IResult<T>>(_definition);
 
 			public GenericExtent<T1, T2, T3, T4, ICommand<T>> Command()
 				=> new GenericExtent<T1, T2, T3, T4, ICommand<T>>(_definition);

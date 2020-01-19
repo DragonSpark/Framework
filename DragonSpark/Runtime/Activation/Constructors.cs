@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Runtime.Invocation.Expressions;
+using System;
 using System.Reflection;
-using DragonSpark.Runtime.Invocation.Expressions;
 
 namespace DragonSpark.Runtime.Activation
 {

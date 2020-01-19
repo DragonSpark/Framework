@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection.Stores;
+using System;
 
 namespace DragonSpark.Model.Commands
 {

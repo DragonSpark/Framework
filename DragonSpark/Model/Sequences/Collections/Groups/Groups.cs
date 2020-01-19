@@ -8,7 +8,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 	class Groups<T> : IArray<IGroup<T>>
 	{
 		readonly Func<GroupName, IGroup<T>> _factory;
-		readonly Array<GroupName>  _phases;
+		readonly Array<GroupName>           _phases;
 
 		public Groups(IEnumerable<GroupName> phases) : this(phases, x => new Group<T>(x)) {}
 

@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Environment
 		ComponentAssemblyNames() : this(EnvironmentAssemblyName.Default) {}
 
 		readonly Func<AssemblyName, IEnumerable<AssemblyName>> _expand;
-		readonly Array<IAlteration<AssemblyName>>     _names;
+		readonly Array<IAlteration<AssemblyName>>              _names;
 
 		public ComponentAssemblyNames(params IAlteration<AssemblyName>[] names)
 			: this(ComponentAssemblyCandidates.Default.Get, names) {}

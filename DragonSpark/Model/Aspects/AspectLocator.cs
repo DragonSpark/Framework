@@ -14,7 +14,7 @@ namespace DragonSpark.Model.Aspects
 			: this(SelectionImplementations.Default, registrations) {}
 
 		public AspectLocator(ISelect<Type, Array<Type>> implementations,
-		                         IArray<Array<Type>, IAspect<TIn, TOut>> registrations)
+		                     IArray<Array<Type>, IAspect<TIn, TOut>> registrations)
 		{
 			_implementations = implementations;
 			_registrations   = registrations;

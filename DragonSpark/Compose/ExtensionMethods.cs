@@ -4,6 +4,7 @@ using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
 using Polly;
 using System;
+using Exception = System.Exception;
 
 namespace DragonSpark.Compose
 {
@@ -26,17 +27,19 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogTrace(@this, template, first, second, third);
 		}
 
-		public static void LogTrace<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogTrace<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogTrace(@this, exception, template, parameter);
 		}
 
-		public static void LogTrace<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogTrace<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                    T2 second)
 		{
 			LoggerExtensions.LogTrace(@this, exception, template, first, second);
 		}
 
-		public static void LogTrace<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogTrace<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
+		                                        T2 second, T3 third)
 		{
 			LoggerExtensions.LogTrace(@this, exception, template, first, second, third);
 		}
@@ -56,17 +59,19 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogDebug(@this, template, first, second, third);
 		}
 
-		public static void LogDebug<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogDebug<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogDebug(@this, exception, template, parameter);
 		}
 
-		public static void LogDebug<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogDebug<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                    T2 second)
 		{
 			LoggerExtensions.LogDebug(@this, exception, template, first, second);
 		}
 
-		public static void LogDebug<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogDebug<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
+		                                        T2 second, T3 third)
 		{
 			LoggerExtensions.LogDebug(@this, exception, template, first, second, third);
 		}
@@ -81,22 +86,25 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogInformation(@this, template, first, second);
 		}
 
-		public static void LogInformation<T1, T2, T3>(this ILogger @this, string template, T1 first, T2 second, T3 third)
+		public static void LogInformation<T1, T2, T3>(this ILogger @this, string template, T1 first, T2 second,
+		                                              T3 third)
 		{
 			LoggerExtensions.LogInformation(@this, template, first, second, third);
 		}
 
-		public static void LogInformation<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogInformation<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogInformation(@this, exception, template, parameter);
 		}
 
-		public static void LogInformation<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogInformation<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                          T2 second)
 		{
 			LoggerExtensions.LogInformation(@this, exception, template, first, second);
 		}
 
-		public static void LogInformation<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogInformation<T1, T2, T3>(this ILogger @this, Exception exception, string template,
+		                                              T1 first, T2 second, T3 third)
 		{
 			LoggerExtensions.LogInformation(@this, exception, template, first, second, third);
 		}
@@ -116,17 +124,19 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogWarning(@this, template, first, second, third);
 		}
 
-		public static void LogWarning<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogWarning<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogWarning(@this, exception, template, parameter);
 		}
 
-		public static void LogWarning<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogWarning<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                      T2 second)
 		{
 			LoggerExtensions.LogWarning(@this, exception, template, first, second);
 		}
 
-		public static void LogWarning<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogWarning<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
+		                                          T2 second, T3 third)
 		{
 			LoggerExtensions.LogWarning(@this, exception, template, first, second, third);
 		}
@@ -146,17 +156,19 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogError(@this, template, first, second, third);
 		}
 
-		public static void LogError<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogError<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogError(@this, exception, template, parameter);
 		}
 
-		public static void LogError<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogError<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                    T2 second)
 		{
 			LoggerExtensions.LogError(@this, exception, template, first, second);
 		}
 
-		public static void LogError<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogError<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
+		                                        T2 second, T3 third)
 		{
 			LoggerExtensions.LogError(@this, exception, template, first, second, third);
 		}
@@ -176,17 +188,19 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogCritical(@this, template, first, second, third);
 		}
 
-		public static void LogCritical<T>(this ILogger @this, System.Exception exception, string template, T parameter)
+		public static void LogCritical<T>(this ILogger @this, Exception exception, string template, T parameter)
 		{
 			LoggerExtensions.LogCritical(@this, exception, template, parameter);
 		}
 
-		public static void LogCritical<T1, T2>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second)
+		public static void LogCritical<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
+		                                       T2 second)
 		{
 			LoggerExtensions.LogCritical(@this, exception, template, first, second);
 		}
 
-		public static void LogCritical<T1, T2, T3>(this ILogger @this, System.Exception exception, string template, T1 first, T2 second, T3 third)
+		public static void LogCritical<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
+		                                           T2 second, T3 third)
 		{
 			LoggerExtensions.LogCritical(@this, exception, template, first, second, third);
 		}
@@ -198,25 +212,25 @@ namespace DragonSpark.Compose
 		}
 
 		public static void Execute(this ICommand<ExceptionParameter<Array<object>>> @this,
-		                           System.Exception exception,
+		                           Exception exception,
 		                           params object[] arguments)
 		{
 			@this.Execute(new ExceptionParameter<Array<object>>(exception, arguments));
 		}
 
-		public static void Execute<T>(this ICommand<ExceptionParameter<T>> @this, System.Exception exception, T argument)
+		public static void Execute<T>(this ICommand<ExceptionParameter<T>> @this, Exception exception, T argument)
 		{
 			@this.Execute(new ExceptionParameter<T>(exception, argument));
 		}
 
 		public static void Execute<T1, T2>(this ICommand<ExceptionParameter<ValueTuple<T1, T2>>> @this,
-		                                   System.Exception exception, T1 first, T2 second)
+		                                   Exception exception, T1 first, T2 second)
 		{
 			@this.Execute(new ExceptionParameter<ValueTuple<T1, T2>>(exception, (first, second)));
 		}
 
 		public static void Execute<T1, T2, T3>(this ICommand<ExceptionParameter<ValueTuple<T1, T2, T3>>> @this,
-		                                       System.Exception exception, T1 first, T2 second, T3 third)
+		                                       Exception exception, T1 first, T2 second, T3 third)
 		{
 			@this.Execute(new ExceptionParameter<ValueTuple<T1, T2, T3>>(exception, (first, second, third)));
 		}

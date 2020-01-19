@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq.Expressions;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Linq.Expressions;
 
 namespace DragonSpark.Runtime.Invocation.Expressions
 {

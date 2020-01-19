@@ -2,7 +2,8 @@
 using DragonSpark.Text;
 using System;
 
-namespace DragonSpark.Runtime.Environment {
+namespace DragonSpark.Runtime.Environment
+{
 	sealed class LocateComponentMessage<T> : Message<Type>
 	{
 		public static LocateComponentMessage<T> Default { get; } = new LocateComponentMessage<T>();

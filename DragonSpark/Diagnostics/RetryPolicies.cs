@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
 using Polly;
 using Polly.Retry;
-using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Diagnostics
 {

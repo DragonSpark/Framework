@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection
 {

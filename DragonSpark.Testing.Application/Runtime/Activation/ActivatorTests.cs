@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using Moq;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Runtime.Activation;
+using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Activation

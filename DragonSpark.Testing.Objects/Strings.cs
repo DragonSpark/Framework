@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using AutoFixture;
+﻿using AutoFixture;
 using DragonSpark.Model.Results;
+using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Objects
 {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AutoFixture;
+using System;
 using System.Linq;
 using System.Threading;
-using AutoFixture;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {

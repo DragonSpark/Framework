@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Selection.Stores
 {

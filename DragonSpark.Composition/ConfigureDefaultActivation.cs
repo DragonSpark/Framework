@@ -5,7 +5,8 @@ using JetBrains.Annotations;
 using LightInject;
 using System;
 
-namespace DragonSpark.Composition {
+namespace DragonSpark.Composition
+{
 	sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
 	{
 		[UsedImplicitly]

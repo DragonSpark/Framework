@@ -23,7 +23,8 @@ namespace DragonSpark.Testing.Application.Compose.Extents.Selections
 		[Fact]
 		void VerifyParameter()
 		{
-			Start.A.Selection.Of.Any.By.Returning(4).Get()
+			Start.A.Selection.Of.Any.By.Returning(4)
+			     .Get()
 			     .Get(new object())
 			     .Should()
 			     .Be(4);

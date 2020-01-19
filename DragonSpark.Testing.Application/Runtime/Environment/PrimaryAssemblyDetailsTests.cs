@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using FluentAssertions;
-using DragonSpark.Reflection.Assemblies;
+﻿using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Environment;
+using FluentAssertions;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Environment

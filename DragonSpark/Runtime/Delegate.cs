@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace DragonSpark.Runtime {
+namespace DragonSpark.Runtime
+{
 	public static class Delegate
 	{
 		public static Func<T, T> Self<T>() => Delegates<T>.Self;

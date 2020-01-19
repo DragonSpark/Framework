@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using FluentAssertions;
 using Moq;
-using DragonSpark.Model.Selection.Conditions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Specifications

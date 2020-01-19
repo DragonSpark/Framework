@@ -2,20 +2,21 @@
 using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 using System.Linq;
-using Enumerable = NetFabric.Hyperlinq.Enumerable;
+using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Testing.Application
 {
 	// ReSharper disable PossibleMultipleEnumeration
 	public class ValueIterationBenchmarks
 	{
-		readonly IEnumerable<int> _sequence;
-		readonly int[]            _open;
+		// ReSharper disable once UnusedParameter.Local
+		static void Call(int parameter) {}
 
 		readonly IEnumerable<int> _enumerable;
+		readonly int[]            _open;
+		readonly IEnumerable<int> _sequence;
 
-		public ValueIterationBenchmarks() : this(System.Linq.Enumerable.Range(0, 100)) {}
-
+		public ValueIterationBenchmarks() : this(Enumerable.Range(0, 100)) {}
 
 		public ValueIterationBenchmarks(IEnumerable<int> array) : this(array, array.ToArray()) {}
 
@@ -43,7 +44,7 @@ namespace DragonSpark.Testing.Application
 		[Benchmark]
 		public void Sequence()
 		{
-			foreach (var element in Enumerable.AsValueEnumerable(_sequence))
+			foreach (var element in _sequence.AsValueEnumerable())
 			{
 				Call(element);
 			}
@@ -66,8 +67,5 @@ namespace DragonSpark.Testing.Application
 				Call(element);
 			}
 		}
-
-		// ReSharper disable once UnusedParameter.Local
-		static void Call(int parameter) {}
 	}
 }

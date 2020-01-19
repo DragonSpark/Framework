@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Model.Results;
+using System;
 using System.Linq.Expressions;
-using DragonSpark.Model.Results;
 
 namespace DragonSpark.Testing.Objects
 {

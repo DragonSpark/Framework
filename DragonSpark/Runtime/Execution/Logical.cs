@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using DragonSpark.Model.Results;
 using JetBrains.Annotations;
-using DragonSpark.Model.Results;
+using System.Threading;
 
 namespace DragonSpark.Runtime.Execution
 {

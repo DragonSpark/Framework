@@ -9,7 +9,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Exception _action;
 		readonly string    _messageTemplate;
 
-		public LogErrorException(ILogger logger, string messageTemplate) : this(logger.LogError<object[]>, messageTemplate) {}
+		public LogErrorException(ILogger logger, string messageTemplate) : this(logger.LogError<object[]>,
+		                                                                        messageTemplate) {}
 
 		public LogErrorException(Exception action, string messageTemplate)
 		{

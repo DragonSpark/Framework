@@ -9,7 +9,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Message _action;
 		readonly string  _messageTemplate;
 
-		public LogCritical(ILogger logger, string messageTemplate) : this(logger.LogCritical<object[]>, messageTemplate) {}
+		public LogCritical(ILogger logger, string messageTemplate) :
+			this(logger.LogCritical<object[]>, messageTemplate) {}
 
 		public LogCritical(Message action, string messageTemplate)
 		{

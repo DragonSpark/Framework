@@ -68,7 +68,7 @@ namespace DragonSpark.Testing.Application.Model.Sequences
 			                .As.Sequence.List.By.Self
 			                .Select(x => x.Where(y => y > 1000).ToArray())
 			                .Get(source.ToList())
-			                ;
+				;
 			ints.Should().NotBeSameAs(source);
 			ints.Should().Equal(expected);
 			ints.Should().HaveCountGreaterThan(5000);

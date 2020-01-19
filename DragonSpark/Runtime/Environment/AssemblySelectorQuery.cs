@@ -10,9 +10,9 @@ namespace DragonSpark.Runtime.Environment
 {
 	sealed class AssemblySelectorQuery : IMaterialize<Assembly>
 	{
+		readonly Func<AssemblyName, Assembly>                  _load;
 		readonly Func<Assembly, AssemblyName>                  _name;
 		readonly Func<AssemblyName, IEnumerable<AssemblyName>> _names;
-		readonly Func<AssemblyName, Assembly>                  _load;
 
 		public AssemblySelectorQuery(Func<AssemblyName, IEnumerable<AssemblyName>> names)
 			: this(AssemblyNameSelector.Default.Get, names, Load.Default.Get) {}

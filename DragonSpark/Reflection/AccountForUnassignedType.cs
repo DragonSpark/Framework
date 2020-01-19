@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection.Alterations;
+using System;
 using System.Reflection;
-using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Reflection
 {

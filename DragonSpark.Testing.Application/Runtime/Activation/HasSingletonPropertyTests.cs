@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using DragonSpark.Runtime.Activation;
+using FluentAssertions;
 using JetBrains.Annotations;
-using DragonSpark.Runtime.Activation;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Activation

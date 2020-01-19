@@ -2,7 +2,8 @@
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public class OtherwiseThrowOutputContext<TIn, TOut> : OutputOtherwiseContext<TIn, TOut>
 	{
 		public OtherwiseThrowOutputContext(ISelect<TIn, TOut> subject, Func<TOut, bool> condition)

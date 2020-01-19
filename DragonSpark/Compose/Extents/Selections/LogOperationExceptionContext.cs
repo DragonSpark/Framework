@@ -4,11 +4,12 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections {
+namespace DragonSpark.Compose.Extents.Selections
+{
 	public sealed class LogOperationExceptionContext<TIn, TOut>
 	{
-		readonly ISelect<TIn, ValueTask> _operation;
 		readonly ILogException<TOut>     _log;
+		readonly ISelect<TIn, ValueTask> _operation;
 
 		public LogOperationExceptionContext(ISelect<TIn, ValueTask> operation, ILogException<TOut> log)
 		{

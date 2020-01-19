@@ -1,6 +1,6 @@
+using DragonSpark.Model.Commands;
 using System;
 using System.Collections.Generic;
-using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Model.Sequences.Collections.Commands
 {

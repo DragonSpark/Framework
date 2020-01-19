@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 
-namespace DragonSpark.Application {
+namespace DragonSpark.Application
+{
 	public sealed class ProgramLocationByContext
 	{
 		public static ProgramLocationByContext Default { get; } = new ProgramLocationByContext();

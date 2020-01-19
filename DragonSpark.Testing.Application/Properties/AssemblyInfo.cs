@@ -32,4 +32,5 @@ using Xunit;
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: XunitTestingApplication]
 
-[assembly: TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]
+[assembly:
+	TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]

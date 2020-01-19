@@ -3,7 +3,8 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace DragonSpark.Application.Hosting.Server.Blazor {
+namespace DragonSpark.Application.Hosting.Server.Blazor
+{
 	sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
 	{
 		public static EndpointConfiguration Default { get; } = new EndpointConfiguration();

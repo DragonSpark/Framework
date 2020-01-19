@@ -8,6 +8,5 @@ namespace DragonSpark.Server
 	{
 		public static ServerProfileContext Apply(this BuildHostContext @this, IServerProfile profile)
 			=> new ServerProfileContext(@this, profile);
-
 	}
 }

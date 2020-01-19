@@ -4,7 +4,8 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
 using System;
 
-namespace DragonSpark.Composition.Compose {
+namespace DragonSpark.Composition.Compose
+{
 	public class LocateComponent<TIn, TOut> : Select<TIn, TOut>
 	{
 		public LocateComponent(Func<TIn, IComponentType> select) : this(select.Start()) {}

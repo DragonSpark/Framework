@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Model.Selection
 {

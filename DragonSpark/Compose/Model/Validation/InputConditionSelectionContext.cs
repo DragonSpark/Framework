@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public sealed class InputConditionSelectionContext<TIn, TOut>
 	{
 		public InputConditionSelectionContext(ISelect<TIn, TOut> subject, Func<TIn, bool> condition)

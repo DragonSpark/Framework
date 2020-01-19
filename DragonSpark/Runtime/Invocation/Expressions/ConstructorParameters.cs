@@ -22,7 +22,9 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 
 		public IEnumerable<Expression> Get(ConstructorInfo parameter)
 			=> ExtensionMethods.Prepend<Expression>(parameter.GetParameters()
-			                                        .Skip(1)
-			                                        .Select(x => Expression.Constant(x.DefaultValue, x.ParameterType)), _parameter);
+			                                                 .Skip(1)
+			                                                 .Select(x => Expression.Constant(x.DefaultValue,
+			                                                                                  x.ParameterType)),
+			                                        _parameter);
 	}
 }

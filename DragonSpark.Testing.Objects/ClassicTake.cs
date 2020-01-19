@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Runtime.Activation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DragonSpark.Model.Selection;
-using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Testing.Objects
 {

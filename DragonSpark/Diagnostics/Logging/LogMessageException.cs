@@ -9,7 +9,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Exception _action;
 		readonly string    _messageTemplate;
 
-		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation<object[]>, messageTemplate) {}
+		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation<object[]>,
+		                                                                          messageTemplate) {}
 
 		public LogMessageException(Exception action, string messageTemplate)
 		{
@@ -28,7 +29,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Exception<T> _action;
 		readonly string       _messageTemplate;
 
-		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation, messageTemplate) {}
+		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation,
+		                                                                          messageTemplate) {}
 
 		public LogMessageException(Exception<T> action, string messageTemplate)
 		{
@@ -47,7 +49,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Exception<T1, T2> _action;
 		readonly string            _messageTemplate;
 
-		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation, messageTemplate) {}
+		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation,
+		                                                                          messageTemplate) {}
 
 		public LogMessageException(Exception<T1, T2> action, string messageTemplate)
 		{
@@ -66,7 +69,8 @@ namespace DragonSpark.Diagnostics.Logging
 		readonly Exception<T1, T2, T3> _action;
 		readonly string                _messageTemplate;
 
-		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation, messageTemplate) {}
+		public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation,
+		                                                                          messageTemplate) {}
 
 		public LogMessageException(Exception<T1, T2, T3> action, string messageTemplate)
 		{

@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DragonSpark.Runtime.Environment {
+namespace DragonSpark.Runtime.Environment
+{
 	sealed class AssemblySelector : IAlteration<Array<Assembly>>,
 	                                IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
 	{

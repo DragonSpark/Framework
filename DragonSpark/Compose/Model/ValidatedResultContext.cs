@@ -3,11 +3,12 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
 using System;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public sealed class ValidatedResultContext<T>
 	{
-		readonly IResult<T> _subject;
 		readonly IResult<T> _other;
+		readonly IResult<T> _subject;
 
 		public ValidatedResultContext(IResult<T> subject, IResult<T> other)
 		{

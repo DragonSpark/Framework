@@ -3,14 +3,16 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections {
+namespace DragonSpark.Compose.Extents.Selections
+{
 	sealed class LogOperationExceptionBinding<TIn, TOut> : IOperation<TIn>
 	{
+		readonly ILogException<TOut>     _log;
 		readonly ISelect<TIn, ValueTask> _operation;
 		readonly Parameter<TIn, TOut>    _select;
-		readonly ILogException<TOut>     _log;
 
-		public LogOperationExceptionBinding(ISelect<TIn, ValueTask> operation, Parameter<TIn, TOut> select, ILogException<TOut> log)
+		public LogOperationExceptionBinding(ISelect<TIn, ValueTask> operation, Parameter<TIn, TOut> select,
+		                                    ILogException<TOut> log)
 		{
 			_operation = operation;
 			_select    = select;

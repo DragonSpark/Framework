@@ -2,7 +2,8 @@
 using DragonSpark.Reflection.Types;
 using System;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public sealed class ConditionalOutputSelectionContext<TIn, TOut>
 	{
 		readonly ISelect<TIn, TOut> _subject;

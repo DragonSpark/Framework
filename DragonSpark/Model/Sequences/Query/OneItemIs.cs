@@ -1,7 +1,7 @@
-﻿using System;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Invocation;
+using System;
 
 namespace DragonSpark.Model.Sequences.Query
 {

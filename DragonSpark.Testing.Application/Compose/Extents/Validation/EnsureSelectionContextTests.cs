@@ -24,17 +24,6 @@ namespace DragonSpark.Testing.Application.Compose.Extents.Validation
 		}
 
 		[Fact]
-		void VerifyUseDefault()
-		{
-			var selector = Start.A.Selection.Of.Type<int>()
-			                    .By.Self.Ensure.Output.Is(x => x > 3)
-			                    .Otherwise.UseDefault()
-			                    .Get();
-			selector.Get(3).Should().Be(default);
-			selector.Get(4).Should().Be(4);
-		}
-
-		[Fact]
 		void VerifyUse()
 		{
 			var selector = Start.A.Selection.Of.Type<int>()
@@ -42,6 +31,17 @@ namespace DragonSpark.Testing.Application.Compose.Extents.Validation
 			                    .Otherwise.Use(x => x + 10)
 			                    .Get();
 			selector.Get(3).Should().Be(13);
+			selector.Get(4).Should().Be(4);
+		}
+
+		[Fact]
+		void VerifyUseDefault()
+		{
+			var selector = Start.A.Selection.Of.Type<int>()
+			                    .By.Self.Ensure.Output.Is(x => x > 3)
+			                    .Otherwise.UseDefault()
+			                    .Get();
+			selector.Get(3).Should().Be(default);
 			selector.Get(4).Should().Be(4);
 		}
 	}

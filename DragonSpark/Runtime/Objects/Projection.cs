@@ -20,9 +20,9 @@ namespace DragonSpark.Runtime.Objects
 			InstanceType = instanceType;
 		}
 
-		public Type InstanceType { get; }
-
 		public override string ToString() => _text;
+
+		public Type InstanceType { get; }
 	}
 
 	public class Projection<T> : ISelect<T, IProjection>

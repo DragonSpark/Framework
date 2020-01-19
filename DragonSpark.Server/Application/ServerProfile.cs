@@ -6,8 +6,8 @@ namespace DragonSpark.Server.Application
 {
 	public class ServerProfile : IServerProfile
 	{
-		readonly Action<IServiceCollection>  _services;
 		readonly Action<IApplicationBuilder> _application;
+		readonly Action<IServiceCollection>  _services;
 
 		public ServerProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> application)
 		{

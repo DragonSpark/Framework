@@ -1,6 +1,6 @@
-﻿using System.IO;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Invocation;
+using System.IO;
 
 namespace DragonSpark.Runtime.Environment
 {

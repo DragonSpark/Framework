@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Text;
 using System;
 
-namespace DragonSpark.Model {
+namespace DragonSpark.Model
+{
 	sealed class AssignedArgumentMessage : Message<Type>
 	{
 		public static AssignedArgumentMessage Default { get; } = new AssignedArgumentMessage();

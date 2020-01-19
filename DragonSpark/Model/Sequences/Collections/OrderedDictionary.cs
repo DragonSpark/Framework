@@ -66,6 +66,16 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </summary>
 		public IEqualityComparer<TKey> Comparer { get; private set; }
 
+		void Initialize(IEqualityComparer<TKey> comparer = null)
+		{
+			Comparer = comparer;
+			_delegatedKeyedCollection = comparer != null
+				                            ? new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>(x => x.Key,
+				                                                                                             comparer)
+				                            : new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>
+				                            >(x => x.Key);
+		}
+
 		/// <summary>
 		/// Gets or sets the value associated with the specified key.
 		/// </summary>
@@ -398,15 +408,5 @@ namespace DragonSpark.Model.Sequences.Collections
 		bool ICollection.IsSynchronized => ((ICollection)_delegatedKeyedCollection).IsSynchronized;
 
 		object ICollection.SyncRoot => ((ICollection)_delegatedKeyedCollection).SyncRoot;
-
-		void Initialize(IEqualityComparer<TKey> comparer = null)
-		{
-			Comparer = comparer;
-			_delegatedKeyedCollection = comparer != null
-				                            ? new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>(x => x.Key,
-				                                                                                             comparer)
-				                            : new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>
-				                            >(x => x.Key);
-		}
 	}
 }

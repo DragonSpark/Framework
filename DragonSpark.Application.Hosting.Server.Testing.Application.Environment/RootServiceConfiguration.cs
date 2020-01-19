@@ -3,7 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Hosting.Server.Testing.Application.Environment
 {
-	public sealed class RootServiceConfiguration : IServiceConfiguration {
+	public sealed class RootServiceConfiguration : IServiceConfiguration
+	{
 		public static RootServiceConfiguration Default { get; } = new RootServiceConfiguration();
 
 		RootServiceConfiguration() {}

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Runtime.Environment;
+using DragonSpark.Testing.Environment;
 using FluentAssertions;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			EnvironmentAwareAssemblies.Default.Get("Production")
 			                          .Open()
 			                          .Should()
-			                          .Equal(typeof(Testing.Environment.HelloWorld).Assembly,
+			                          .Equal(typeof(HelloWorld).Assembly,
 			                                 typeof(EnvironmentAwareAssembliesTests).Assembly,
 			                                 typeof(XunitTestingApplicationAttribute).Assembly);
 		}
@@ -25,7 +26,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 			                          .Open()
 			                          .Should()
 			                          .Equal(typeof(Testing.Environment.Development.HelloWorld).Assembly,
-			                                 typeof(Testing.Environment.HelloWorld).Assembly,
+			                                 typeof(HelloWorld).Assembly,
 			                                 typeof(EnvironmentAwareAssembliesTests).Assembly,
 			                                 typeof(XunitTestingApplicationAttribute).Assembly);
 		}

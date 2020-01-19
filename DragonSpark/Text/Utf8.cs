@@ -7,28 +7,6 @@ namespace DragonSpark.Text
 {
 	public sealed class Utf8
 	{
-		const char HighSurrogateStart = '\ud800',
-		           HighSurrogateEnd   = '\udbff',
-		           LowSurrogateStart  = '\udc00',
-		           LowSurrogateEnd    = '\udfff';
-		public static Utf8 Default { get; } = new Utf8();
-
-		Utf8() {}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public int Get(in ReadOnlySpan<char> source, in Span<byte> destination)
-		{
-			var status = Get(source, destination, out var result);
-			return status == OperationStatus.Done
-				       ? result
-				       : throw new
-					         InvalidOperationException($"[{status}] Could not successfully convert value to Utf-8 data: {source.ToString()}");
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public OperationStatus Get(in ReadOnlySpan<char> source, in Span<byte> destination, out int written)
-			=> Get(MemoryMarshal.AsBytes(source), destination, out written);
-
 		// ReSharper disable once CyclomaticComplexity
 		// ReSharper disable once MethodTooLong
 		// ReSharper disable once CognitiveComplexity
@@ -39,7 +17,8 @@ namespace DragonSpark.Text
 		/// <param name="destination"></param>
 		/// <param name="written"></param>
 		/// <returns></returns>
-		public static unsafe OperationStatus Get(in ReadOnlySpan<byte> source, in Span<byte> destination, out int written)
+		public static unsafe OperationStatus Get(in ReadOnlySpan<byte> source, in Span<byte> destination,
+		                                         out int written)
 		{
 			fixed (byte* chars = &MemoryMarshal.GetReference(source))
 			fixed (byte* bytes = &MemoryMarshal.GetReference(destination))
@@ -57,7 +36,9 @@ namespace DragonSpark.Text
 
 					var pStop = pSrc + available - 5;
 					if (pSrc >= pStop)
+					{
 						break;
+					}
 
 					do
 					{
@@ -153,20 +134,20 @@ namespace DragonSpark.Text
 								*pTarget = (byte)(unchecked((sbyte)0xF0) | (ch >> 18));
 								pTarget++;
 
-								chd = unchecked((sbyte)0x80) | (ch >> 12) & 0x3F;
+								chd = unchecked((sbyte)0x80) | ((ch >> 12) & 0x3F);
 							}
 
 							*pTarget = (byte)chd;
 							pStop--;
 							pTarget++;
 
-							chd = unchecked((sbyte)0x80) | (ch >> 6) & 0x3F;
+							chd = unchecked((sbyte)0x80) | ((ch >> 6) & 0x3F);
 						}
 
 						*pTarget = (byte)chd;
 						pStop--;
 
-						*(pTarget + 1) = (byte)(unchecked((sbyte)0x80) | ch & 0x3F);
+						*(pTarget + 1) = (byte)(unchecked((sbyte)0x80) | (ch & 0x3F));
 
 						pTarget += 2;
 					} while (pSrc < pStop);
@@ -180,7 +161,9 @@ namespace DragonSpark.Text
 					if (ch <= 0x7F)
 					{
 						if (pAllocatedBufferEnd - pTarget <= 0)
+						{
 							goto DestinationFull;
+						}
 
 						*pTarget = (byte)ch;
 						pTarget++;
@@ -191,7 +174,9 @@ namespace DragonSpark.Text
 					if (ch <= 0x7FF)
 					{
 						if (pAllocatedBufferEnd - pTarget <= 1)
+						{
 							goto DestinationFull;
+						}
 
 						chd = unchecked((sbyte)0xC0) | (ch >> 6);
 					}
@@ -200,14 +185,18 @@ namespace DragonSpark.Text
 						if (!IsOrWithin(ch, HighSurrogateStart, LowSurrogateEnd))
 						{
 							if (pAllocatedBufferEnd - pTarget <= 2)
+							{
 								goto DestinationFull;
+							}
 
 							chd = unchecked((sbyte)0xE0) | (ch >> 12);
 						}
 						else
 						{
 							if (pAllocatedBufferEnd - pTarget <= 3)
+							{
 								goto DestinationFull;
+							}
 
 							if (ch > HighSurrogateEnd)
 							{
@@ -215,7 +204,9 @@ namespace DragonSpark.Text
 							}
 
 							if (pSrc >= pEnd)
+							{
 								goto NeedMoreData;
+							}
 
 							chd = *pSrc;
 
@@ -234,17 +225,17 @@ namespace DragonSpark.Text
 							*pTarget = (byte)(unchecked((sbyte)0xF0) | (ch >> 18));
 							pTarget++;
 
-							chd = unchecked((sbyte)0x80) | (ch >> 12) & 0x3F;
+							chd = unchecked((sbyte)0x80) | ((ch >> 12) & 0x3F);
 						}
 
 						*pTarget = (byte)chd;
 						pTarget++;
 
-						chd = unchecked((sbyte)0x80) | (ch >> 6) & 0x3F;
+						chd = unchecked((sbyte)0x80) | ((ch >> 6) & 0x3F);
 					}
 
 					*pTarget       = (byte)chd;
-					*(pTarget + 1) = (byte)(unchecked((sbyte)0x80) | ch & 0x3F);
+					*(pTarget + 1) = (byte)(unchecked((sbyte)0x80) | (ch & 0x3F));
 
 					pTarget += 2;
 				}
@@ -269,5 +260,27 @@ namespace DragonSpark.Text
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		static bool IsOrWithin(int value, int lowerBound, int upperBound)
 			=> (uint)(value - lowerBound) <= (uint)(upperBound - lowerBound);
+
+		const char HighSurrogateStart = '\ud800',
+		           HighSurrogateEnd   = '\udbff',
+		           LowSurrogateStart  = '\udc00',
+		           LowSurrogateEnd    = '\udfff';
+		public static Utf8 Default { get; } = new Utf8();
+
+		Utf8() {}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public int Get(in ReadOnlySpan<char> source, in Span<byte> destination)
+		{
+			var status = Get(source, destination, out var result);
+			return status == OperationStatus.Done
+				       ? result
+				       : throw new
+					         InvalidOperationException($"[{status}] Could not successfully convert value to Utf-8 data: {source.ToString()}");
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public OperationStatus Get(in ReadOnlySpan<char> source, in Span<byte> destination, out int written)
+			=> Get(MemoryMarshal.AsBytes(source), destination, out written);
 	}
 }

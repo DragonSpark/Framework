@@ -61,7 +61,8 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public Selector<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>();
 
-		public Selector<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T> => Activations<T, TOut>.Default.Then();
+		public Selector<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T>
+			=> Activations<T, TOut>.Default.Then();
 
 		public Selector<T, TOut> Singleton<TOut>()
 			=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>();

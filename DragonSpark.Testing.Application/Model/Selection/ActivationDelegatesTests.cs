@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Selection

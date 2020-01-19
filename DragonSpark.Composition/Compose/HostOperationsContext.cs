@@ -2,7 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Composition.Compose {
+namespace DragonSpark.Composition.Compose
+{
 	public sealed class HostOperationsContext
 	{
 		readonly IOperationResult<HostBuilder, IHost> _select;

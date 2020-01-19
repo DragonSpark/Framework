@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Kernel;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {

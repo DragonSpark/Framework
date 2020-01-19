@@ -10,7 +10,8 @@ namespace DragonSpark.Testing.Application.Compose.Extents.Conditions
 		[Fact]
 		void Verify()
 		{
-			Start.A.Condition.Of.Any.By.Always.Get().Should()
+			Start.A.Condition.Of.Any.By.Always.Get()
+			     .Should()
 			     .BeSameAs(Always<object>.Default);
 		}
 

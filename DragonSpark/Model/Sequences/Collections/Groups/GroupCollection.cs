@@ -1,11 +1,12 @@
 using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Query;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Model.Sequences.Collections.Groups
 {
-	public class GroupCollection<T> : Model.Selection.Select<GroupName, IList<T>>, IGroupCollection<T>
+	public class GroupCollection<T> : Select<GroupName, IList<T>>, IGroupCollection<T>
 	{
 		public GroupCollection(IEnumerable<IGroup<T>> groups) : this(groups, GroupPairs<T>.Default) {}
 

@@ -4,7 +4,8 @@ using DragonSpark.Model.Sequences.Query;
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public class ArraySelector<_, T> : OpenArraySelector<_, T>
 	{
 		readonly ISelect<_, Array<T>> _subject;

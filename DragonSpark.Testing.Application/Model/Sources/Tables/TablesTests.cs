@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection.Stores;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Model.Sources.Tables

@@ -12,5 +12,4 @@ namespace DragonSpark.Compose.Model
 
 		public IArrayMap<TKey, T> Get(Array<T> parameter) => _reduce.Get(parameter);
 	}
-
 }

@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using DragonSpark.Runtime;
+﻿using DragonSpark.Runtime;
+using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Reflection

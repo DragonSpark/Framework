@@ -2,7 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Composition {
+namespace DragonSpark.Composition
+{
 	public class ServiceConfiguration : Command<IServiceCollection>, IServiceConfiguration
 	{
 		public ServiceConfiguration(ICommand<IServiceCollection> command) : base(command) {}

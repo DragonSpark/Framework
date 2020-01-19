@@ -24,6 +24,7 @@ namespace DragonSpark.Compose.Extents.Conditions
 
 		public ConditionSelector<T> Assigned => Is.Assigned<T>();
 
-		public ConditionSelector<T> Calling(Func<T, bool> condition) => new DragonSpark.Model.Selection.Conditions.Condition<T>(condition).Then();
+		public ConditionSelector<T> Calling(Func<T, bool> condition)
+			=> new DragonSpark.Model.Selection.Conditions.Condition<T>(condition).Then();
 	}
 }

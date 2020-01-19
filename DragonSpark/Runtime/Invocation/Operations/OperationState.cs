@@ -1,5 +1,5 @@
-﻿using System.Threading;
-using DragonSpark.Runtime.Execution;
+﻿using DragonSpark.Runtime.Execution;
+using System.Threading;
 
 namespace DragonSpark.Runtime.Invocation.Operations
 {

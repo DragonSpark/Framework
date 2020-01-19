@@ -5,18 +5,19 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using HttpClientHandler = DragonSpark.Server.Communication.HttpClientHandler;
 
 namespace DragonSpark.Server.Security
 {
-	sealed class AuthenticatedHttpClientHandler : Communication.HttpClientHandler
+	sealed class AuthenticatedHttpClientHandler : HttpClientHandler
 	{
 		readonly string        _apiKey;
 		readonly Alter<string> _secret;
 
-		public AuthenticatedHttpClientHandler(ILogger<Communication.HttpClientHandler> logger, string apiKey,
+		public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
 		                                      string secret) : this(logger, apiKey, new Encryptor(secret).Get) {}
 
-		public AuthenticatedHttpClientHandler(ILogger<Communication.HttpClientHandler> logger, string apiKey,
+		public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
 		                                      Alter<string> secret) : base(logger)
 		{
 			_apiKey = apiKey;

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Runtime.Invocation
 {
@@ -11,6 +11,17 @@ namespace DragonSpark.Runtime.Invocation
 	// ReSharper disable once PossibleInfiniteInheritance
 	sealed class LockItem<T> : ISelect<int, (Array<T> Items, int Mask)>
 	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static int GetStripeMask(int stripes)
+		{
+			stripes |= stripes >> 1;
+			stripes |= stripes >> 2;
+			stripes |= stripes >> 4;
+			stripes |= stripes >> 8;
+			stripes |= stripes >> 16;
+			return stripes;
+		}
+
 		public static LockItem<T> Default { get; } = new LockItem<T>();
 
 		LockItem() : this(Repeat<T>.Default.Get) {}
@@ -24,17 +35,6 @@ namespace DragonSpark.Runtime.Invocation
 			var mask   = GetStripeMask(parameter);
 			var result = (_create((uint)mask + 1), mask);
 			return result;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static int GetStripeMask(int stripes)
-		{
-			stripes |= stripes >> 1;
-			stripes |= stripes >> 2;
-			stripes |= stripes >> 4;
-			stripes |= stripes >> 8;
-			stripes |= stripes >> 16;
-			return stripes;
 		}
 	}
 }

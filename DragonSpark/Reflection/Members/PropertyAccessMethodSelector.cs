@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Members
 {

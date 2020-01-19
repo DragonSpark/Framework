@@ -2,7 +2,8 @@
 using DragonSpark.Model.Selection.Conditions;
 using System;
 
-namespace DragonSpark.Model {
+namespace DragonSpark.Model
+{
 	public class AssignedGuard<T, TException> : Guard<T, TException> where TException : Exception
 	{
 		public AssignedGuard(Func<T, string> message) : this(Is.Assigned<T>().Inverse().Out(), message) {}

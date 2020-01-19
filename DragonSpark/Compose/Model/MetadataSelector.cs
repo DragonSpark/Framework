@@ -2,7 +2,8 @@
 using DragonSpark.Reflection.Types;
 using System.Reflection;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public class MetadataSelector<T> : Selector<T, TypeInfo>
 	{
 		public MetadataSelector(ISelect<T, TypeInfo> subject) : base(subject) {}

@@ -23,7 +23,8 @@ namespace DragonSpark.Application.Hosting.Server.Environment.Development
 			}
 			else
 			{
-				throw new InvalidOperationException("A call was made into an assembly component designed for development purposes, but IApplicationBuilder.IsDevelopment states that it is not.");
+				throw new
+					InvalidOperationException("A call was made into an assembly component designed for development purposes, but IApplicationBuilder.IsDevelopment states that it is not.");
 			}
 		}
 	}

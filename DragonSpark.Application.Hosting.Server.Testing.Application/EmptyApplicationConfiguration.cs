@@ -2,7 +2,8 @@ using DragonSpark.Server;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 
-namespace DragonSpark.Application.Hosting.Server.Testing.Application {
+namespace DragonSpark.Application.Hosting.Server.Testing.Application
+{
 	public sealed class EmptyApplicationConfiguration : IApplicationConfiguration
 	{
 		[UsedImplicitly]

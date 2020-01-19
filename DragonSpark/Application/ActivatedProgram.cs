@@ -3,7 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application {
+namespace DragonSpark.Application
+{
 	public class ActivatedProgram<T> : IProgram where T : ISelect<IHost, Task>
 	{
 		protected ActivatedProgram() {}

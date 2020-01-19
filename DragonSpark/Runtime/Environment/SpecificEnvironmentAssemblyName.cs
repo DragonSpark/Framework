@@ -1,7 +1,8 @@
 using DragonSpark.Model.Selection.Alterations;
 using System.Reflection;
 
-namespace DragonSpark.Runtime.Environment {
+namespace DragonSpark.Runtime.Environment
+{
 	sealed class SpecificEnvironmentAssemblyName : IAlteration<AssemblyName>
 	{
 		readonly string _format;

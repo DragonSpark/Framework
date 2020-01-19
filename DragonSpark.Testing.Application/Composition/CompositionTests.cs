@@ -16,6 +16,33 @@ namespace DragonSpark.Testing.Application.Composition
 {
 	public sealed class CompositionTests
 	{
+		public interface IDoesNotExist {}
+
+		sealed class Singleton
+		{
+			public static Singleton Default { get; } = new Singleton();
+
+			Singleton() {}
+		}
+
+		sealed class Activated {}
+
+		sealed class Decorate : ICompositionRoot
+		{
+			public void Compose(IServiceRegistry serviceRegistry)
+			{
+				serviceRegistry.Decorate<string>((factory, s) => $"Decorated: {s}");
+			}
+		}
+
+		sealed class Root : ICompositionRoot
+		{
+			public void Compose(IServiceRegistry serviceRegistry)
+			{
+				serviceRegistry.RegisterInstance($"Hello World from {nameof(Root)}!");
+			}
+		}
+
 		[Fact]
 		async Task Verify()
 		{
@@ -26,80 +53,6 @@ namespace DragonSpark.Testing.Application.Composition
 			host.Services.GetType()
 			    .FullName.Should()
 			    .Be("DragonSpark.Composition.WithComposition+Provider");
-		}
-
-		[Fact]
-		async Task VerifyAssemblies()
-		{
-			using var host = await Start.A.Host()
-			                            .RegisterModularity()
-			                            .Operations()
-			                            .Start();
-			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
-		}
-
-		[Fact]
-		async Task VerifyDevelopmentEnvironmentalRegistration()
-		{
-			using var host = await Start.A.Host()
-			                            .WithEnvironment("Development")
-			                            .WithDefaultComposition()
-			                            .RegisterModularity()
-			                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
-			                            .Operations()
-			                            .Start();
-			host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
-		}
-
-		[Fact]
-		async Task VerifyEnvironmentalRegistration()
-		{
-			{
-				using var host = await Start.A.Host()
-				                            .WithEnvironment("Production")
-				                            .WithDefaultComposition()
-				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
-				                            .Operations()
-				                            .Start();
-				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
-			}
-
-			{
-				using var host = await Start.A.Host()
-				                            .WithDefaultComposition()
-				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
-				                            .Operations()
-				                            .Start();
-				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
-			}
-		}
-
-		[Fact]
-		async Task VerifyUnexistingComponentThrows()
-		{
-			await Start.A.Host()
-			           .WithDefaultComposition()
-			           .RegisterModularity()
-			           .Configure(x => x.For<IDoesNotExist>().Invoking(y => y.UseEnvironment())
-			                            .Should()
-			                            .ThrowExactly<InvalidOperationException>()
-			                            .WithMessage("Could not locate an external/environmental component type for DragonSpark.Testing.Application.Composition.CompositionTests+IDoesNotExist.  Please ensure there is a primary assembly registered with an applied attribute of type DragonSpark.Runtime.Environment.HostingAttribute, and that there is a corresponding assembly either named <PrimaryAssemblyName>.Environment for environmental-specific components. Please also ensure that the component libraries contains one public type that implements or is of the requested type."))
-			           .Operations()
-			           .Start();
-		}
-
-		public interface IDoesNotExist {}
-
-		[Fact]
-		async Task VerifyAllAssemblyTypes()
-		{
-			using var host = await Start.A.Host()
-			                            .RegisterModularity<AllAssemblyTypes>()
-			                            .Operations()
-			                            .Start();
-			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
 		[Fact]
@@ -130,6 +83,26 @@ namespace DragonSpark.Testing.Application.Composition
 			host.Services.Invoking(x => x.GetRequiredService<Activated>())
 			    .Should()
 			    .Throw<InvalidOperationException>();
+		}
+
+		[Fact]
+		async Task VerifyAllAssemblyTypes()
+		{
+			using var host = await Start.A.Host()
+			                            .RegisterModularity<AllAssemblyTypes>()
+			                            .Operations()
+			                            .Start();
+			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
+		}
+
+		[Fact]
+		async Task VerifyAssemblies()
+		{
+			using var host = await Start.A.Host()
+			                            .RegisterModularity()
+			                            .Operations()
+			                            .Start();
+			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
 		[Fact]
@@ -183,29 +156,58 @@ namespace DragonSpark.Testing.Application.Composition
 			    .Be("Decorated: Hello World!");
 		}
 
-		sealed class Singleton
+		[Fact]
+		async Task VerifyDevelopmentEnvironmentalRegistration()
 		{
-			public static Singleton Default { get; } = new Singleton();
-
-			Singleton() {}
+			using var host = await Start.A.Host()
+			                            .WithEnvironment("Development")
+			                            .WithDefaultComposition()
+			                            .RegisterModularity()
+			                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+			                            .Operations()
+			                            .Start();
+			host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
 		}
 
-		sealed class Activated {}
-
-		sealed class Decorate : ICompositionRoot
+		[Fact]
+		async Task VerifyEnvironmentalRegistration()
 		{
-			public void Compose(IServiceRegistry serviceRegistry)
 			{
-				serviceRegistry.Decorate<string>((factory, s) => $"Decorated: {s}");
+				using var host = await Start.A.Host()
+				                            .WithEnvironment("Production")
+				                            .WithDefaultComposition()
+				                            .RegisterModularity()
+				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+				                            .Operations()
+				                            .Start();
+				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
+			}
+
+			{
+				using var host = await Start.A.Host()
+				                            .WithDefaultComposition()
+				                            .RegisterModularity()
+				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+				                            .Operations()
+				                            .Start();
+				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
 			}
 		}
 
-		sealed class Root : ICompositionRoot
+		[Fact]
+		async Task VerifyUnexistingComponentThrows()
 		{
-			public void Compose(IServiceRegistry serviceRegistry)
-			{
-				serviceRegistry.RegisterInstance($"Hello World from {nameof(Root)}!");
-			}
+			await Start.A.Host()
+			           .WithDefaultComposition()
+			           .RegisterModularity()
+			           .Configure(x => x.For<IDoesNotExist>()
+			                            .Invoking(y => y.UseEnvironment())
+			                            .Should()
+			                            .ThrowExactly<InvalidOperationException>()
+			                            .WithMessage(
+			                                         "Could not locate an external/environmental component type for DragonSpark.Testing.Application.Composition.CompositionTests+IDoesNotExist.  Please ensure there is a primary assembly registered with an applied attribute of type DragonSpark.Runtime.Environment.HostingAttribute, and that there is a corresponding assembly either named <PrimaryAssemblyName>.Environment for environmental-specific components. Please also ensure that the component libraries contains one public type that implements or is of the requested type."))
+			           .Operations()
+			           .Start();
 		}
 	}
 }

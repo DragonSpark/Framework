@@ -2,16 +2,18 @@
 using DragonSpark.Server.Application;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace DragonSpark.Server.Compose {
+namespace DragonSpark.Server.Compose
+{
 	public sealed class BuildServerContext
 	{
-		readonly BuildHostContext                  _context;
-		readonly System.Action<IServiceCollection> _services;
-		readonly System.Action<IWebHostBuilder>    _application;
+		readonly Action<IWebHostBuilder>    _application;
+		readonly BuildHostContext           _context;
+		readonly Action<IServiceCollection> _services;
 
-		public BuildServerContext(BuildHostContext context, System.Action<IServiceCollection> services,
-		                          System.Action<IWebHostBuilder> application)
+		public BuildServerContext(BuildHostContext context, Action<IServiceCollection> services,
+		                          Action<IWebHostBuilder> application)
 		{
 			_context     = context;
 			_services    = services;

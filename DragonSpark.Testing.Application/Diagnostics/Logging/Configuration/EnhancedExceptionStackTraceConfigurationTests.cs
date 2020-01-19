@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Diagnostics;
-using FluentAssertions;
 using Xunit;
 
 namespace DragonSpark.Testing.Application.Diagnostics.Logging.Configuration

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences;
+using System;
 using System.Linq;
 using System.Reflection;
-using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Reflection.Assemblies
 {

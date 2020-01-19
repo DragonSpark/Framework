@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Server.Application;
 
-namespace DragonSpark.Application.Hosting.Server.Blazor {
+namespace DragonSpark.Application.Hosting.Server.Blazor
+{
 	sealed class BlazorServerProfile : ServerProfile
 	{
 		public static BlazorServerProfile Default { get; } = new BlazorServerProfile();

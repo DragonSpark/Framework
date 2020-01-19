@@ -8,7 +8,7 @@ namespace DragonSpark.Compose.Model.Validation
 	public class OutputOtherwiseThrowContext<TIn, TOut>
 	{
 		readonly Func<Func<TIn, string>, ICommand<TIn>> _guard;
-		readonly OutputOtherwiseContext<TIn, TOut>         _input;
+		readonly OutputOtherwiseContext<TIn, TOut>      _input;
 
 		public OutputOtherwiseThrowContext(OutputOtherwiseContext<TIn, TOut> input,
 		                                   Func<Func<TIn, string>, ICommand<TIn>> guard)

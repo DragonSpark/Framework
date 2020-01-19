@@ -12,8 +12,8 @@ namespace DragonSpark.Testing.Application.Text.Formatting
 		void Verify()
 		{
 			var formatter = DefaultSystemFormatter.Default.Append(ApplicationDomainFormatter.Default);
-			var sut = formatter.Get(AppDomain.CurrentDomain);
-			var provider = new FormatProvider(formatter);
+			var sut       = formatter.Get(AppDomain.CurrentDomain);
+			var provider  = new FormatProvider(formatter);
 			sut.ToString("F", provider).Should().Be(AppDomain.CurrentDomain.FriendlyName);
 			sut.ToString("I", provider).Should().Be(AppDomain.CurrentDomain.Id.ToString());
 			var @default = DefaultApplicationDomainFormatter.Default.Get(AppDomain.CurrentDomain);

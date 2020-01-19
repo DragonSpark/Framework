@@ -1,4 +1,8 @@
-﻿using DragonSpark.Compose.Extents.Conditions;
+﻿using DragonSpark.Compose.Extents.Commands;
+using DragonSpark.Compose.Extents.Conditions;
+using DragonSpark.Compose.Extents.Generics;
+using DragonSpark.Compose.Extents.Results;
+using DragonSpark.Compose.Extents.Selections;
 using System;
 
 namespace DragonSpark.Compose
@@ -11,12 +15,12 @@ namespace DragonSpark.Compose
 
 		public ConditionContext Condition => ConditionContext.Default;
 
-		public Extents.Results.ResultContext Result => Extents.Results.ResultContext.Default;
+		public ResultContext Result => ResultContext.Default;
 
-		public Extents.Commands.CommandContext Command => Extents.Commands.CommandContext.Default;
+		public CommandContext Command => CommandContext.Default;
 
-		public Extents.Selections.Context Selection => Extents.Selections.Context.Default;
+		public Context Selection => Context.Default;
 
-		public Extents.Generics.GenericContext Generic(Type definition) => new Extents.Generics.GenericContext(definition);
+		public GenericContext Generic(Type definition) => new GenericContext(definition);
 	}
 }

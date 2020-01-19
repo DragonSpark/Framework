@@ -4,11 +4,12 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections {
+namespace DragonSpark.Compose.Extents.Selections
+{
 	public sealed class LogOperationContext<T, TParameter>
 	{
-		readonly ISelect<T, ValueTask>   _operation;
 		readonly ILogMessage<TParameter> _log;
+		readonly ISelect<T, ValueTask>   _operation;
 
 		public LogOperationContext(ISelect<T, ValueTask> operation, ILogMessage<TParameter> log)
 		{

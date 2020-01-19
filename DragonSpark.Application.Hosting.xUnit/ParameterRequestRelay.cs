@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using AutoFixture.Kernel;
+﻿using AutoFixture.Kernel;
+using System.Reflection;
 
 namespace DragonSpark.Application.Hosting.xUnit
 {

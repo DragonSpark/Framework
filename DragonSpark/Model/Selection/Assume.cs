@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Model.Selection {
+namespace DragonSpark.Model.Selection
+{
 	public class Assume<TIn, TOut> : ISelect<TIn, TOut>
 	{
 		readonly IResult<ISelect<TIn, TOut>> _source;

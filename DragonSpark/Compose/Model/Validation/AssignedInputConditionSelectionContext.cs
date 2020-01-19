@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Compose.Model.Validation {
+namespace DragonSpark.Compose.Model.Validation
+{
 	public sealed class AssignedInputConditionSelectionContext<TIn, TOut>
 	{
 		public AssignedInputConditionSelectionContext(ISelect<TIn, TOut> otherwise)

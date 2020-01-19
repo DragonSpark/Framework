@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Results;
 using System;
 
-namespace DragonSpark.Compose.Model {
+namespace DragonSpark.Compose.Model
+{
 	public class ResultDelegateContext<T> : ResultContext<Func<T>>
 	{
 		public ResultDelegateContext(IResult<Func<T>> instance) : base(instance) {}

@@ -1,7 +1,7 @@
-using System;
-using System.Reflection;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
+using System;
+using System.Reflection;
 
 namespace DragonSpark.Reflection.Types
 {

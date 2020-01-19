@@ -14,6 +14,9 @@ namespace DragonSpark.Testing.Application
 {
 	public class IterationBenchmarks
 	{
+		// ReSharper disable once UnusedParameter.Local
+		static void Call(string parameter) {}
+
 		readonly Array<string>          _array;
 		readonly ImmutableArray<string> _immutable;
 		readonly string[]               _open;
@@ -84,8 +87,5 @@ namespace DragonSpark.Testing.Application
 				Call(arraySpan[i]);
 			}
 		}
-
-		// ReSharper disable once UnusedParameter.Local
-		static void Call(string parameter) {}
 	}
 }

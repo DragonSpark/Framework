@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Runtime.Invocation.Operations
 {

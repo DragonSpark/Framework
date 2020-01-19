@@ -1,5 +1,5 @@
-﻿using System;
-using DragonSpark.Text;
+﻿using DragonSpark.Text;
+using System;
 
 namespace DragonSpark.Testing.Objects
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using AutoFixture;
+﻿using AutoFixture;
 using BenchmarkDotNet.Attributes;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Testing.Application
 {
