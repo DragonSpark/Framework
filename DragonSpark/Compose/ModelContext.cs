@@ -19,7 +19,7 @@ namespace DragonSpark.Compose
 
 		public CommandContext Command => CommandContext.Default;
 
-		public Context Selection => Context.Default;
+		public SelectionContext Selection => SelectionContext.Default;
 
 		public GenericContext Generic(Type definition) => new GenericContext(definition);
 	}

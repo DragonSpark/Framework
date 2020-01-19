@@ -10,22 +10,22 @@ using System.Reflection;
 
 namespace DragonSpark.Compose.Extents.Selections
 {
-	public sealed class Context
+	public sealed class SelectionContext
 	{
-		public static Context Default { get; } = new Context();
+		public static SelectionContext Default { get; } = new SelectionContext();
 
-		Context() : this(Extent.Default) {}
+		SelectionContext() : this(SelectionExtent.Default) {}
 
-		public Context(Extent extent) => Of = extent;
+		public SelectionContext(SelectionExtent extent) => Of = extent;
 
-		public Extent Of { get; }
+		public SelectionExtent Of { get; }
 	}
 
-	public sealed class Context<T>
+	public sealed class SelectionContext<T>
 	{
-		public static Context<T> Instance { get; } = new Context<T>();
+		public static SelectionContext<T> Instance { get; } = new SelectionContext<T>();
 
-		Context() {}
+		SelectionContext() {}
 
 		public AlterationSelector<T> Self => new AlterationSelector<T>(Self<T>.Default);
 
@@ -70,11 +70,11 @@ namespace DragonSpark.Compose.Extents.Selections
 		public Selector<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default.Then();
 	}
 
-	public sealed class Context<TIn, TOut>
+	public sealed class SelectionContext<TIn, TOut>
 	{
-		public static Context<TIn, TOut> Instance { get; } = new Context<TIn, TOut>();
+		public static SelectionContext<TIn, TOut> Instance { get; } = new SelectionContext<TIn, TOut>();
 
-		Context() {}
+		SelectionContext() {}
 
 		public Selector<TIn, TOut> Instantiation => New<TIn, TOut>.Default.Then();
 

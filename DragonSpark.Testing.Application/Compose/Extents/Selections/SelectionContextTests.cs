@@ -4,7 +4,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Application.Compose.Extents.Selections
 {
-	public sealed class ContextTests
+	public sealed class SelectionContextTests
 	{
 		sealed class Subject {}
 

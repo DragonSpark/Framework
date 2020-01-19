@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 		Configuration() : this(Start.A.Condition.Of.Type<string>().As.Sequence.Immutable,
 		                       Start.A.Selection.Of.Type<string>().As.Sequence.Array) {}
 
-		public Configuration(ConditionExtent<Array<string>> condition, Extent<Array<string>> selection)
+		public Configuration(ConditionExtent<Array<string>> condition, SelectionExtent<Array<string>> selection)
 			: base(condition.By.Calling(x => x.Length > 0),
 			       selection.By.Returning(A.Result(Quick.Default)),
 			       selection.By.Returning(A.Result(Deployed.Default))) {}

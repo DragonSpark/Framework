@@ -17,6 +17,6 @@ namespace DragonSpark.Compose.Extents
 
 		public CommandContext<T> Command => CommandContext<T>.Instance;
 
-		public Context<T> Selection => Context<T>.Instance;
+		public SelectionContext<T> Selection => SelectionContext<T>.Instance;
 	}
 }

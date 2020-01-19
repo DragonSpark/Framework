@@ -17,7 +17,7 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		public static Extents.Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
+		public static Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
 
 		public static Instance<T> Activation<T>(this VowelContext _) => Extents.Instance<T>.Implementation;
 
@@ -50,9 +50,9 @@ namespace DragonSpark.Compose
 
 		public static Action Calling(this CommandExtent<None> _, System.Action body) => new Action(body);
 
-		public static Extents.Selections.Extent<T> Of<T>(this Context @this) => @this.Of.Type<T>();
+		public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();
 
-		public static Extents.Selections.Extent<T> Selection<T>(this ModelContext @this)
+		public static SelectionExtent<T> Selection<T>(this ModelContext @this)
 			=> @this.Selection.Of.Type<T>();
 
 		public static New<T> New<T>(this ModelContext _) => Runtime.Activation.New<T>.Default;
