@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
@@ -20,8 +19,8 @@ namespace DragonSpark.Composition
 		public static BuildHostContext Host(this ModelContext _)
 			=> Start.A.Selection.Of<IHostBuilder>().By.Self.Get().To(Start.An.Extent<BuildHostContext>());
 
-		public static IAlteration<IServiceCollection> Option<T>(this VowelContext _) where T : class, new()
-			=> RegisterOption<T>.Default;
+		public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class, new()
+			=> RegisterOption<T>.Default.Get(@this);
 
 		public static HostOperationsContext Operations(this BuildHostContext @this) => new HostOperationsContext(@this);
 
@@ -29,6 +28,9 @@ namespace DragonSpark.Composition
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 			        .ImplementationFactory?.Invoke(null)
 			        .To<IConfiguration>();
+
+		public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
+			=> new DeferredService<T>(@this).Then().Singleton();
 
 		public static T GetInstance<T>(this IServiceCollection @this) where T : class
 			=> (@this.Where(x => x.ServiceType == typeof(T))

@@ -7,6 +7,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Compose
 {
@@ -17,6 +18,13 @@ namespace DragonSpark.Compose
 		public static T With<T>(this T @this, Action<T> action)
 		{
 			action(@this);
+			return @this;
+		}
+
+
+		public static (T1, T2) With<T1, T2>(this (T1, T2) @this, Action<T1, T2> action)
+		{
+			action(@this.Item1, @this.Item2);
 			return @this;
 		}
 
@@ -88,6 +96,18 @@ namespace DragonSpark.Compose
 			yield return @this;
 
 			yield return other;
+		}
+
+		public static ValueTask Disposed(this IDisposable @this)
+		{
+			if (@this is IAsyncDisposable disposable)
+			{
+				return disposable.DisposeAsync();
+			}
+
+			@this.Dispose();
+
+			return new ValueTask(Task.CompletedTask);
 		}
 
 		public static IDisposable ToDisposable(this object @this) => @this as IDisposable ?? EmptyDisposable.Default;
