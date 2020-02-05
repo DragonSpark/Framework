@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace DragonSpark.Server.Entities {
+namespace DragonSpark.Server.Entities
+{
 	public class StorageBuilder<T> : IDesignTimeDbContextFactory<T> where T : DbContext
 	{
 		readonly Action<DbContextOptionsBuilder> _configure;
