@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Server.Security;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -50,7 +52,10 @@ namespace DragonSpark.Server.Entities
 			parameter.AddDbContext<T>(new ConfigureSqlServer<T>(parameter.Configuration()
 			                                                             .GetConnectionString(_name)).Execute)
 			         .AddDefaultIdentity<TUser>(_identity)
-			         .AddEntityFrameworkStores<T>();
+			         .AddEntityFrameworkStores<T>()
+			         .Return(parameter)
+			         .AddScoped<AuthenticationStateProvider, Revalidation<TUser>>()
+			         .AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
 		}
 	}
 }

@@ -21,6 +21,8 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 			parameter.UseHttpsRedirection()
 			         .UseStaticFiles()
 			         .UseRouting()
+			         .UseAuthentication()
+			         .UseAuthorization()
 			         .UseEndpoints(_endpoints);
 		}
 	}
