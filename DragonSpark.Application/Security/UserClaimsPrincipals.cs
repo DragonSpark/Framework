@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Application.Security
 {
 	public class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : class
 	{
@@ -14,10 +14,7 @@ namespace DragonSpark.Server.Security
 
 		public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor,
 		                            string applicationName)
-			: base(userManager, optionsAccessor)
-		{
-			_applicationName = applicationName;
-		}
+			: base(userManager, optionsAccessor) => _applicationName = applicationName;
 
 		protected override async Task<ClaimsIdentity> GenerateClaimsAsync(T user)
 		{

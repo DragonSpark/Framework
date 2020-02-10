@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Server.Security
+namespace DragonSpark.Application.Security
 {
 	public sealed class Revalidation<T> : RevalidatingServerAuthenticationStateProvider where T : class
 	{

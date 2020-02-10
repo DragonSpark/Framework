@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
 
-namespace DragonSpark.Server.Entities
+namespace DragonSpark.Application.Entities
 {
 	sealed class ConnectionString<T> : ISelect<IConfiguration, string>
 	{

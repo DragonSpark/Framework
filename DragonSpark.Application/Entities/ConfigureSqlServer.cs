@@ -1,15 +1,13 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Server.Security;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Server.Entities
+namespace DragonSpark.Application.Entities
 {
 	sealed class ConfigureSqlServer<T> : ICommand<DbContextOptionsBuilder>
 	{
@@ -34,23 +32,22 @@ namespace DragonSpark.Server.Entities
 		}
 	}
 
-	sealed class ConfigureSqlServer<T, TUser> : ICommand<IServiceCollection> where T : DbContext where TUser : class
+
+
+	sealed class ConfigureIdentityStorage<T, TUser> : ICommand<IServiceCollection> where T : DbContext where TUser : class
 	{
+		readonly IStorageConfiguration _storage;
 		readonly Action<IdentityOptions> _identity;
-		readonly string                  _name;
 
-		public ConfigureSqlServer(Action<IdentityOptions> identity) : this(identity, ConnectionName<T>.Default) {}
-
-		public ConfigureSqlServer(Action<IdentityOptions> identity, string name)
+		public ConfigureIdentityStorage(IStorageConfiguration storage, Action<IdentityOptions> identity)
 		{
+			_storage = storage;
 			_identity = identity;
-			_name     = name;
 		}
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.AddDbContext<T>(new ConfigureSqlServer<T>(parameter.Configuration()
-			                                                             .GetConnectionString(_name)).Execute)
+			parameter.AddDbContext<T>(_storage.Get(parameter))
 			         .AddDefaultIdentity<TUser>(_identity)
 			         .AddEntityFrameworkStores<T>()
 			         .Return(parameter)

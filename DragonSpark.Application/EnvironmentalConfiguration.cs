@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace DragonSpark.Server.Entities
+namespace DragonSpark.Application
 {
 	sealed class EnvironmentalConfiguration : Result<IConfiguration>
 	{

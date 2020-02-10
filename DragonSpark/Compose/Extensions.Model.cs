@@ -4,12 +4,11 @@ using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
 using DragonSpark.Compose.Model;
-using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using System;
-using Action = DragonSpark.Compose.Model.Action;
 using CommandContext = DragonSpark.Compose.Extents.Commands.CommandContext;
 
 namespace DragonSpark.Compose
@@ -47,8 +46,8 @@ namespace DragonSpark.Compose
 		public static CommandExtent<T> Of<T>(this CommandContext @this) => @this.Of.Type<T>();
 
 		public static CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
-
-		public static Action Calling(this CommandExtent<None> _, System.Action body) => new Action(body);
+		public static ICommand<T> Command<T>(this ModelContext @this, System.Action<T> action)
+			=> @this.Command.Of.Type<T>().By.Calling(action).Get();
 
 		public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();
 

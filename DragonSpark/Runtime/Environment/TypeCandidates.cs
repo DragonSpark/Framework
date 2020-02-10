@@ -17,8 +17,7 @@ namespace DragonSpark.Runtime.Environment
 		[UsedImplicitly]
 		public TypeCandidates(Array<Type> types) : this(types, Is.Assigned(), Selections.Default.Get) {}
 
-		public TypeCandidates(Array<Type> types, Func<Type, bool> condition,
-		                      Func<Type, ISelect<Type, Type>> selections)
+		public TypeCandidates(Array<Type> types, Func<Type, bool> condition, Func<Type, ISelect<Type, Type>> selections)
 		{
 			_types      = types;
 			_condition  = condition;
