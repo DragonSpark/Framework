@@ -1,8 +1,6 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,26 +15,6 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 {
 	public sealed class UserSynchronizerTests
 	{
-		[Fact]
-		public async Task Verify()
-		{
-			using var host = await Start.A.Host()
-			                            .WithTestServer()
-			                            .WithServerApplication()
-			                            .Then(x => x.WithIdentity<User>()
-			                                        .StoredIn<ApplicationStorage>()
-			                                        .Using.Memory()) // TODO: Report
-			                            .As.Is()
-			                            .Operations()
-			                            .Start();
-
-			var users = host.Services.GetRequiredService<UserManager<User>>();
-			users.Should().NotBeNull();
-
-			/*var synchronized = await Subject.Default.Get((ClaimsPrincipal.Current, new Destination<User>()));
-			synchronized.Should().BeTrue();*/
-		}
-
 		sealed class Subject : UserSynchronizer<User>
 		{
 			[UsedImplicitly]
@@ -84,36 +61,25 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 
 			StorageBuilder() : base(InMemoryConfiguration.Default.Execute) {}
 		}
-	}
 
-	sealed class InMemoryConfiguration : ICommand<DbContextOptionsBuilder>
-	{
-		public static InMemoryConfiguration Default { get; } = new InMemoryConfiguration();
-
-		InMemoryConfiguration() {}
-
-		public void Execute(DbContextOptionsBuilder parameter)
+		[Fact]
+		public async Task Verify()
 		{
-			parameter.UseInMemoryDatabase(Guid.NewGuid().ToString())
-			         .EnableSensitiveDataLogging();
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithServerApplication()
+			                            .Then(x => x.WithIdentity<User>()
+			                                        .StoredIn<ApplicationStorage>()
+			                                        .Using.Memory()) // TODO: Report
+			                            .As.Is()
+			                            .Operations()
+			                            .Start();
+
+			var users = host.Services.GetRequiredService<UserManager<User>>();
+			users.Should().NotBeNull();
+
+			/*var synchronized = await Subject.Default.Get((ClaimsPrincipal.Current, new Destination<User>()));
+			synchronized.Should().BeTrue();*/
 		}
-	}
-
-	sealed class InMemoryStorageConfiguration : IStorageConfiguration
-	{
-		public static InMemoryStorageConfiguration Default { get; } = new InMemoryStorageConfiguration();
-
-		InMemoryStorageConfiguration() {}
-
-		public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
-			=> InMemoryConfiguration.Default.Execute;
-	}
-
-	public static class Extensions
-	{
-		public static IServiceCollection Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this)
-			where T : IdentityDbContext<TUser>
-			where TUser : IdentityUser
-			=> @this.Configuration(InMemoryStorageConfiguration.Default);
 	}
 }

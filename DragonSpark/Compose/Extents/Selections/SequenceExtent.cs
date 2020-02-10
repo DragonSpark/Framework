@@ -29,6 +29,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public SelectionExtent<TIn, Array<TOut>> Array => DefaultSelectionExtent<TIn, Array<TOut>>.Default;
 
-		public SelectionExtent<TIn, ImmutableArray<TOut>> Immutable => DefaultSelectionExtent<TIn, ImmutableArray<TOut>>.Default;
+		public SelectionExtent<TIn, ImmutableArray<TOut>> Immutable
+			=> DefaultSelectionExtent<TIn, ImmutableArray<TOut>>.Default;
 	}
 }

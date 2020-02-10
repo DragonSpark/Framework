@@ -14,7 +14,8 @@ namespace DragonSpark.Application
 		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this)
 			where T : IdentityUser => @this.WithIdentity<T>(options => {});
 
-		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this, Action<IdentityOptions> configure)
+		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this,
+		                                                 Action<IdentityOptions> configure)
 			where T : IdentityUser
 			=> new IdentityContext<T>(@this, configure);
 

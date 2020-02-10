@@ -7,8 +7,6 @@ using System.Linq;
 
 namespace DragonSpark.Application
 {
-	public interface ITransactional<T> : ISelect<(Array<T> Stored, Array<T> Updated), Transactions<T>> {}
-
 	public class Transactional<T> : ITransactional<T> where T : class
 	{
 		readonly IEqualityComparer<T>   _equals;
@@ -23,30 +21,6 @@ namespace DragonSpark.Application
 			_equals   = equals;
 			_modified = modified;
 			_select   = select;
-		}
-
-		sealed class Selector : ISelect<(T, T[]), (T, T)>
-		{
-			readonly IEqualityComparer<T> _equals;
-
-			public Selector(IEqualityComparer<T> equals) => _equals = @equals;
-
-			public (T, T) Get((T, T[]) parameter) => (parameter.Item1, Other(parameter.Item2, parameter.Item1));
-
-			T Other(T[] source, T identity)
-			{
-				var length = source.Length;
-				for (var i = 0u; i < length; i++)
-				{
-					var current = source[i];
-					if (_equals.Equals(current, identity))
-					{
-						return current;
-					}
-				}
-
-				throw new InvalidOperationException("Element not found.");
-			}
 		}
 
 		public Transactions<T> Get((Array<T> Stored, Array<T> Updated) parameter)
@@ -66,23 +40,29 @@ namespace DragonSpark.Application
 			var result = new Transactions<T>(add, update, delete);
 			return result;
 		}
-	}
 
-	public readonly struct Transactions<T>
-	{
-		public Transactions(Array<T> add, Array<(T Stored, T Current)> update, Array<T> delete)
+		sealed class Selector : ISelect<(T, T[]), (T, T)>
 		{
-			Add    = add;
-			Update = update;
-			Delete = delete;
+			readonly IEqualityComparer<T> _equals;
+
+			public Selector(IEqualityComparer<T> equals) => _equals = equals;
+
+			T Other(T[] source, T identity)
+			{
+				var length = source.Length;
+				for (var i = 0u; i < length; i++)
+				{
+					var current = source[i];
+					if (_equals.Equals(current, identity))
+					{
+						return current;
+					}
+				}
+
+				throw new InvalidOperationException("Element not found.");
+			}
+
+			public (T, T) Get((T, T[]) parameter) => (parameter.Item1, Other(parameter.Item2, parameter.Item1));
 		}
-
-		public Array<T> Add { get; }
-
-		public Array<(T Stored, T Current)> Update { get; }
-
-		public Array<T> Delete { get; }
-
-		public bool Any() => Add.Length > 0 || Update.Length > 0 || Delete.Length > 0;
 	}
 }

@@ -13,6 +13,43 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 {
 	public sealed class DependencyRegistrationContextTests
 	{
+		sealed class Subject
+		{
+			public Subject(Other other) => Other = other;
+
+			public Other Other { get; }
+		}
+
+		sealed class Other {}
+
+		sealed class Multiple
+		{
+			public Multiple(Subject subject, Other other)
+			{
+				Subject = subject;
+				Other   = other;
+			}
+
+			public Subject Subject { get; }
+
+			public Other Other { get; }
+		}
+
+		sealed class Multiple<T>
+		{
+			public Multiple(Subject subject, Other other, List<T> list)
+			{
+				Subject = subject;
+				Other   = other;
+				List    = list;
+			}
+
+			public Subject Subject { get; }
+
+			public Other Other { get; }
+			public List<T> List { get; }
+		}
+
 		[Fact]
 		async Task Verify()
 		{
@@ -29,23 +66,6 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 			    .And.Subject.To<Subject>()
 			    .Other.Should()
 			    .NotBeNull();
-		}
-
-		[Fact]
-		async Task VerifyMultiple()
-		{
-			using var host = await Start.A.Host()
-			                            .WithComposition()
-			                            .Configure(x => x.For<Multiple>()
-			                                             .As.WithDependencies.Singleton())
-			                            .Operations()
-			                            .Start();
-
-			var multiple = host.Services.GetRequiredService<Multiple>();
-			multiple.Should().NotBeNull();
-			multiple.Other.Should().NotBeNull();
-			multiple.Subject.Should().NotBeNull();
-			multiple.Subject.Other.Should().BeSameAs(multiple.Other);
 		}
 
 		[Fact]
@@ -87,41 +107,21 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 			multiple.List.Should().NotBeNull();
 		}
 
-		sealed class Subject
+		[Fact]
+		async Task VerifyMultiple()
 		{
-			public Subject(Other other) => Other = other;
+			using var host = await Start.A.Host()
+			                            .WithComposition()
+			                            .Configure(x => x.For<Multiple>()
+			                                             .As.WithDependencies.Singleton())
+			                            .Operations()
+			                            .Start();
 
-			public Other Other { get; }
-		}
-
-		sealed class Other {}
-
-		sealed class Multiple
-		{
-			public Multiple(Subject subject, Other other)
-			{
-				Subject = subject;
-				Other   = other;
-			}
-
-			public Subject Subject { get; }
-
-			public Other Other { get; }
-		}
-
-		sealed class Multiple<T>
-		{
-			public Multiple(Subject subject, Other other, List<T> list)
-			{
-				Subject = subject;
-				Other   = other;
-				List    = list;
-			}
-
-			public Subject Subject { get; }
-
-			public Other Other { get; }
-			public List<T> List { get; }
+			var multiple = host.Services.GetRequiredService<Multiple>();
+			multiple.Should().NotBeNull();
+			multiple.Other.Should().NotBeNull();
+			multiple.Subject.Should().NotBeNull();
+			multiple.Subject.Other.Should().BeSameAs(multiple.Other);
 		}
 	}
 }

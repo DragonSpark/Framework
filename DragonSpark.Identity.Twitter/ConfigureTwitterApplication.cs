@@ -3,7 +3,8 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Identity.Twitter {
+namespace DragonSpark.Identity.Twitter
+{
 	sealed class ConfigureTwitterApplication : ICommand<IServiceCollection>
 	{
 		public static ConfigureTwitterApplication Default { get; } = new ConfigureTwitterApplication();

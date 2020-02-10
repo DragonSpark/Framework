@@ -5,15 +5,15 @@ namespace DragonSpark.Model.Sequences.Collections
 {
 	public sealed class DelegatedEqualityComparer<T, TKey> : IEqualityComparer<T>
 	{
-		readonly Func<T, TKey>           _key;
 		readonly IEqualityComparer<TKey> _equals;
+		readonly Func<T, TKey>           _key;
 
 		public DelegatedEqualityComparer(Func<T, TKey> key) : this(key, EqualityComparer<TKey>.Default) {}
 
 		public DelegatedEqualityComparer(Func<T, TKey> key, IEqualityComparer<TKey> equals)
 		{
 			_key    = key;
-			_equals = @equals;
+			_equals = equals;
 		}
 
 		public bool Equals(T x, T y) => _equals.Equals(_key(x), _key(y));

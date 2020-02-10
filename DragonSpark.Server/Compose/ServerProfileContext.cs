@@ -41,8 +41,8 @@ namespace DragonSpark.Server.Compose
 		public ServerProfileContext Then(ICommand<IServiceCollection> other)
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
-
 		public ServerProfileContext Then(System.Action<IApplicationBuilder> other) => Then(Start.A.Command(other));
+
 		public ServerProfileContext Then(ICommand<IApplicationBuilder> other)
 			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
 

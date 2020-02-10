@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using System;
 
-namespace DragonSpark.Identity.Twitter {
+namespace DragonSpark.Identity.Twitter
+{
 	sealed class ConfigureTwitterAuthentication : ICommand<TwitterOptions>
 	{
 		readonly Func<TwitterApplicationSettings> _settings;

@@ -14,16 +14,17 @@ namespace DragonSpark.Application.Security
 {
 	public sealed class Revalidation<T> : RevalidatingServerAuthenticationStateProvider where T : class
 	{
-		readonly IServiceScopeFactory _scopes;
 		readonly IdentityOptions      _options;
+		readonly IServiceScopeFactory _scopes;
 
 		// ReSharper disable once TooManyDependencies
-		public Revalidation(ILoggerFactory loggerFactory, IServiceScopeFactory scopes, IOptions<IdentityOptions> options)
+		public Revalidation(ILoggerFactory loggerFactory, IServiceScopeFactory scopes,
+		                    IOptions<IdentityOptions> options)
 			: this(loggerFactory, scopes, options.Value, TimeSpan.FromMinutes(30)) {}
 
 		// ReSharper disable once TooManyDependencies
 		public Revalidation(ILoggerFactory loggerFactory, IServiceScopeFactory scopes, IdentityOptions options,
-		                   TimeSpan interval)
+		                    TimeSpan interval)
 			: base(loggerFactory)
 		{
 			_scopes              = scopes;

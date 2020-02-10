@@ -11,62 +11,6 @@ namespace DragonSpark.Testing.Application.Composition
 {
 	public sealed class DependencyCandidatesTests
 	{
-		[Fact]
-		void Verify()
-		{
-			DependencyCandidates.Default.Get(typeof(Subject))
-			                    .Open()
-			                    .Only()
-			                    .Should()
-			                    .Be(typeof(Other));
-		}
-
-		[Fact]
-		void VerifyMultiple()
-		{
-			DependencyCandidates.Default.Get(typeof(Multiple))
-			                    .Open()
-			                    .Should()
-			                    .Equal(typeof(Subject), typeof(Other));
-		}
-
-		[Fact]
-		void VerifyMultipleWithInterface()
-		{
-			DependencyCandidates.Default.Get(typeof(MultipleWithInterface))
-			                    .Open()
-			                    .Should()
-			                    .Equal(typeof(Subject), typeof(Other));
-		}
-
-		[Fact]
-		void VerifyMultipleWithDelegate()
-		{
-			DependencyCandidates.Default.Get(typeof(MultipleWithDelegate))
-			                    .Open()
-			                    .Should()
-			                    .Equal(typeof(Subject), typeof(Other));
-		}
-
-
-		[Fact]
-		void VerifyMultipleGeneric()
-		{
-			DependencyCandidates.Default.Get(typeof(Multiple<object>))
-			                    .Open()
-			                    .Should()
-			                    .Equal(typeof(Subject), typeof(Other), typeof(List<object>));
-		}
-
-		[Fact]
-		void VerifyMultipleDefinition()
-		{
-			DependencyCandidates.Default.Get(typeof(Multiple<>))
-			                    .Open()
-			                    .Should()
-			                    .Equal(typeof(Subject), typeof(Other), typeof(List<>));
-		}
-
 		sealed class Subject
 		{
 			public Subject(Other other) => Other = other;
@@ -133,6 +77,61 @@ namespace DragonSpark.Testing.Application.Composition
 
 			public Other Other { get; }
 			public List<T> List { get; }
+		}
+
+		[Fact]
+		void Verify()
+		{
+			DependencyCandidates.Default.Get(typeof(Subject))
+			                    .Open()
+			                    .Only()
+			                    .Should()
+			                    .Be(typeof(Other));
+		}
+
+		[Fact]
+		void VerifyMultiple()
+		{
+			DependencyCandidates.Default.Get(typeof(Multiple))
+			                    .Open()
+			                    .Should()
+			                    .Equal(typeof(Subject), typeof(Other));
+		}
+
+		[Fact]
+		void VerifyMultipleDefinition()
+		{
+			DependencyCandidates.Default.Get(typeof(Multiple<>))
+			                    .Open()
+			                    .Should()
+			                    .Equal(typeof(Subject), typeof(Other), typeof(List<>));
+		}
+
+		[Fact]
+		void VerifyMultipleGeneric()
+		{
+			DependencyCandidates.Default.Get(typeof(Multiple<object>))
+			                    .Open()
+			                    .Should()
+			                    .Equal(typeof(Subject), typeof(Other), typeof(List<object>));
+		}
+
+		[Fact]
+		void VerifyMultipleWithDelegate()
+		{
+			DependencyCandidates.Default.Get(typeof(MultipleWithDelegate))
+			                    .Open()
+			                    .Should()
+			                    .Equal(typeof(Subject), typeof(Other));
+		}
+
+		[Fact]
+		void VerifyMultipleWithInterface()
+		{
+			DependencyCandidates.Default.Get(typeof(MultipleWithInterface))
+			                    .Open()
+			                    .Should()
+			                    .Equal(typeof(Subject), typeof(Other));
 		}
 	}
 }

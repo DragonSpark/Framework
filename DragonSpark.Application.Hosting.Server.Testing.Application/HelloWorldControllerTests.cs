@@ -15,9 +15,8 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 {
 	public sealed class HelloWorldControllerTests
 	{
-		[Theory]
-		[InlineData("Development", typeof(Dependency))]
-		[InlineData("Production", typeof(Environment.Production.Dependency))]
+		[Theory, InlineData("Development", typeof(Dependency)),
+		 InlineData("Production", typeof(Environment.Production.Dependency))]
 		public async Task VerifyEnvironment(string environment, Type expected)
 		{
 			using var host = await Start.A.Host()
@@ -34,8 +33,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 			host.Services.GetRequiredService<IDependency>().Should().BeOfType(expected);
 		}
 
-		[Theory]
-		[InlineData("/HelloWorld")]
+		[Theory, InlineData("/HelloWorld")]
 		public async Task VerifyHelloWorld(string url)
 		{
 			using var host = await Start.A.Host()

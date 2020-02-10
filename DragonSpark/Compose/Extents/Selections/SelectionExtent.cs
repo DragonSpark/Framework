@@ -73,7 +73,10 @@ namespace DragonSpark.Compose.Extents.Selections
 
 			public SequenceExtent<TIn, TOut> Sequence => SequenceExtent<TIn, TOut>.Default;
 			public SelectionExtent<TIn, Func<TOut>> Delegate => DefaultSelectionExtent<TIn, Func<TOut>>.Default;
-			public SelectionExtent<TIn, ICondition<TOut>> Condition => DefaultSelectionExtent<TIn, ICondition<TOut>>.Default;
+
+			public SelectionExtent<TIn, ICondition<TOut>> Condition
+				=> DefaultSelectionExtent<TIn, ICondition<TOut>>.Default;
+
 			public SelectionExtent<TIn, IResult<TOut>> Result => DefaultSelectionExtent<TIn, IResult<TOut>>.Default;
 			public SelectionExtent<TIn, ICommand<TOut>> Command => DefaultSelectionExtent<TIn, ICommand<TOut>>.Default;
 		}

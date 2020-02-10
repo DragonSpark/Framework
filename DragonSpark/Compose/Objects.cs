@@ -21,7 +21,6 @@ namespace DragonSpark.Compose
 			return @this;
 		}
 
-
 		public static (T1, T2) With<T1, T2>(this (T1, T2) @this, Action<T1, T2> action)
 		{
 			action(@this.Item1, @this.Item2);

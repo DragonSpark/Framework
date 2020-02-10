@@ -46,6 +46,7 @@ namespace DragonSpark.Compose
 		public static CommandExtent<T> Of<T>(this CommandContext @this) => @this.Of.Type<T>();
 
 		public static CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
+
 		public static ICommand<T> Command<T>(this ModelContext @this, System.Action<T> action)
 			=> @this.Command.Of.Type<T>().By.Calling(action).Get();
 
