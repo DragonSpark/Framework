@@ -16,6 +16,9 @@ namespace DragonSpark.Composition.Compose
 
 		public RegistrationContext(IServiceCollection collection) => _collection = collection;
 
+		public IRegistrationContext WithDependencies
+			=> new DependencyRegistrationContext(_collection, this, A.Type<TTo>());
+
 		public IServiceCollection Singleton() => _collection.AddSingleton<TFrom, TTo>();
 
 		public IServiceCollection Transient() => _collection.AddTransient<TFrom, TTo>();
@@ -33,6 +36,8 @@ namespace DragonSpark.Composition.Compose
 			_collection = collection;
 			_type       = type;
 		}
+
+		public IRegistrationContext WithDependencies => new DependencyRegistrationContext(_collection, this, _type);
 
 		public IServiceCollection Singleton() => _collection.AddSingleton(_type);
 
@@ -59,6 +64,8 @@ namespace DragonSpark.Composition.Compose
 
 		public RegistrationContext<T, TTo> Map<TTo>() where TTo : class, T
 			=> new RegistrationContext<T, TTo>(_collection);
+
+		public RegistrationContext As => new RegistrationContext(_collection, A.Type<T>());
 
 		public SelectionRegistrationContext<T> UseEnvironment()
 		{
