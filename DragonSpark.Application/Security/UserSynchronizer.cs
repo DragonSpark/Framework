@@ -1,7 +1,4 @@
-﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -11,24 +8,23 @@ namespace DragonSpark.Application.Security
 	{
 		readonly UserManager<T>        _users;
 		readonly ITransactional<Claim> _transactional;
-		readonly Func<Claim, bool>     _where;
+		readonly IClaims _claims;
 
-		public UserSynchronizer(UserManager<T> users, Func<Claim, bool> where)
-			: this(users, ClaimsTransactional.Default, where) {}
+		public UserSynchronizer(UserManager<T> users, IClaims claims)
+			: this(users, ClaimsTransactional.Default, claims) {}
 
-		public UserSynchronizer(UserManager<T> users, ITransactional<Claim> transactional, Func<Claim, bool> where)
+		public UserSynchronizer(UserManager<T> users, ITransactional<Claim> transactional, IClaims claims)
 		{
 			_users         = users;
 			_transactional = transactional;
-			_where         = where;
+			_claims = claims;
 		}
 
 		public async ValueTask<bool> Get((Stored<T> Stored, ClaimsPrincipal Source) parameter)
 		{
 			var ((user, principal), source) = parameter;
 
-			var transactions = _transactional.Get((principal.Claims.Where(_where).Result(),
-			                                       source.Claims.Where(_where).Result()));
+			var transactions = _transactional.Get((_claims.Get(principal.Claims), _claims.Get(source.Claims)));
 
 			if (transactions.Add.Length > 0)
 			{

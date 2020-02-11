@@ -199,12 +199,12 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 
 		sealed class Subject : UserSynchronizer<User>
 		{
-			public Subject(UserManager<User> users) : base(users, x => x.Type.StartsWith(ClaimNamespace.Default)) {}
+			public Subject(UserManager<User> users)
+				: base(users, new Claims(x => x.Type.StartsWith(ClaimNamespace.Default))) {}
 		}
 
 		sealed class DisplayNameClaim : Claim
 		{
-			[UsedImplicitly]
 			public static DisplayNameClaim Default { get; } = new DisplayNameClaim();
 
 			DisplayNameClaim() : base("displayName") {}
@@ -229,7 +229,6 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 
 		sealed class User : IdentityUser
 		{
-			[UsedImplicitly]
 			public string DisplayName { get; set; }
 		}
 

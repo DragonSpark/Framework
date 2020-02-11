@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Security
 		}
 
 		public ValueTask<IdentityResult> Get((ExternalLoginInfo Login, T User) parameter)
-			=> _users.AddClaimsAsync(parameter.User, _claims.Get(parameter.Login).Open())
+			=> _users.AddClaimsAsync(parameter.User, _claims.Get(parameter.Login.Principal.Claims).Open())
 			         .ToOperation();
 	}
 }
