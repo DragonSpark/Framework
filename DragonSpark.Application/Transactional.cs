@@ -23,16 +23,16 @@ namespace DragonSpark.Application
 			_select   = select;
 		}
 
-		public Transactions<T> Get((Array<T> Stored, Array<T> Updated) parameter)
+		public Transactions<T> Get((Array<T> Stored, Array<T> Source) parameter)
 		{
-			var (existing, input) = parameter;
+			var (first, second) = parameter;
 
-			var stored  = existing.Open();
-			var updated = input.Open();
-			var add     = updated.Except(stored, _equals).Result();
-			var delete  = stored.Except(updated, _equals).Result();
-			var both    = stored.Union(updated, _equals).ToArray();
-			var update = both.Introduce(updated.Union(stored, _equals).ToArray())
+			var stored  = first.Open();
+			var source = second.Open();
+			var add     = source.Except(stored, _equals).Result();
+			var delete  = stored.Except(source, _equals).Result();
+			var both    = stored.Union(source, _equals).ToArray();
+			var update = both.Introduce(source.Union(stored, _equals).ToArray())
 			                 .Select(_select)
 			                 .Where(_modified)
 			                 .Result();

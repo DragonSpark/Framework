@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 			using var host = await Start.A.Host()
 			                            .WithComposition()
 			                            .Configure(x => x.For<Subject>()
-			                                             .As.WithDependencies.Singleton())
+			                                             .Register.WithDependencies.Singleton())
 			                            .Operations()
 			                            .Start();
 
@@ -73,7 +73,7 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
-			                            .Configure(x => x.For<Multiple<int>>().As.WithDependencies.Singleton())
+			                            .Configure(x => x.For<Multiple<int>>().Register.WithDependencies.Singleton())
 			                            .Operations()
 			                            .Start();
 
@@ -113,7 +113,7 @@ namespace DragonSpark.Testing.Application.Composition.Compose
 			using var host = await Start.A.Host()
 			                            .WithComposition()
 			                            .Configure(x => x.For<Multiple>()
-			                                             .As.WithDependencies.Singleton())
+			                                             .Register.WithDependencies.Singleton())
 			                            .Operations()
 			                            .Start();
 

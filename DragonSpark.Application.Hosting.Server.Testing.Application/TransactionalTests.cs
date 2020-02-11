@@ -99,9 +99,9 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 
 			var transactions = Transactional.Default.Get((stored, current));
 			transactions.Add.Open().Only().Should().BeSameAs(current[2]);
-			var only = transactions.Update.Open().Only();
-			only.Stored.Should().BeSameAs(stored[2]);
-			only.Current.Should().BeSameAs(current[1]);
+			var (subject, source) = transactions.Update.Open().Only();
+			subject.Should().BeSameAs(stored[2]);
+			source.Should().BeSameAs(current[1]);
 			transactions.Delete.Open().Only().Should().BeSameAs(stored[0]);
 		}
 
@@ -154,9 +154,9 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application
 
 			var transactions = Transactional.Default.Get((stored, current));
 			transactions.Add.Open().Should().BeEmpty();
-			var only = transactions.Update.Open().Only();
-			only.Stored.Should().BeSameAs(stored[3]);
-			only.Current.Should().BeSameAs(current[3]);
+			var (subject, source) = transactions.Update.Open().Only();
+			subject.Should().BeSameAs(stored[3]);
+			source.Should().BeSameAs(current[3]);
 			transactions.Delete.Open().Should().BeEmpty();
 		}
 	}

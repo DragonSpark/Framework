@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Security
 			var user      = await _users.Users.SingleAsync(x => x.Id == id);
 			var principal = await _authentication.CreateUserPrincipalAsync(user);
 
-			if (await _synchronizer.Get((parameter.Principal, new Destination<T>(_users, user, principal))))
+			if (await _synchronizer.Get((new Stored<T>(user, principal), parameter.Principal)))
 			{
 				await _authentication.RefreshSignInAsync(user);
 			}

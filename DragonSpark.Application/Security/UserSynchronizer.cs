@@ -9,40 +9,44 @@ namespace DragonSpark.Application.Security
 {
 	public class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
 	{
+		readonly UserManager<T>        _users;
 		readonly ITransactional<Claim> _transactional;
 		readonly Func<Claim, bool>     _where;
 
-		public UserSynchronizer(Func<Claim, bool> where) : this(ClaimsTransactional.Default, where) {}
+		public UserSynchronizer(UserManager<T> users, Func<Claim, bool> where)
+			: this(users, ClaimsTransactional.Default, where) {}
 
-		public UserSynchronizer(ITransactional<Claim> transactional, Func<Claim, bool> where)
+		public UserSynchronizer(UserManager<T> users, ITransactional<Claim> transactional, Func<Claim, bool> where)
 		{
+			_users         = users;
 			_transactional = transactional;
 			_where         = where;
 		}
 
-		public async ValueTask<bool> Get((ClaimsPrincipal Source, Destination<T> Destination) parameter)
+		public async ValueTask<bool> Get((Stored<T> Stored, ClaimsPrincipal Source) parameter)
 		{
-			var (source, (manager, user, principal)) = parameter;
+			var ((user, principal), source) = parameter;
 
-			var transactions = _transactional.Get((source.Claims.Where(_where).Result(),
-			                                       principal.Claims.Where(_where).Result()));
+			var transactions = _transactional.Get((principal.Claims.Where(_where).Result(),
+			                                       source.Claims.Where(_where).Result()));
 
 			if (transactions.Add.Length > 0)
 			{
-				await manager.AddClaimsAsync(user, transactions.Add.Open());
+				await _users.AddClaimsAsync(user, transactions.Add.Open());
 			}
 
 			foreach (var (existing, input) in transactions.Update.Open())
 			{
-				await manager.ReplaceClaimAsync(user, existing, input);
+				await _users.ReplaceClaimAsync(user, existing, input);
 			}
 
 			if (transactions.Delete.Length > 0)
 			{
-				await manager.RemoveClaimsAsync(user, transactions.Delete.Open());
+				await _users.RemoveClaimsAsync(user, transactions.Delete.Open());
 			}
 
-			return transactions.Any();
+			var result = transactions.Any();
+			return result;
 		}
 	}
 }

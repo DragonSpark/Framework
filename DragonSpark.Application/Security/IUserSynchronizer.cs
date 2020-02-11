@@ -4,6 +4,6 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security
 {
-	public interface IUserSynchronizer<T> : IOperationResult<(ClaimsPrincipal Source, Destination<T> Destination), bool>
+	public interface IUserSynchronizer<T> : IOperationResult<(Stored<T> Stored, ClaimsPrincipal Source), bool>
 		where T : IdentityUser {}
 }

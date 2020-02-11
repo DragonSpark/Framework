@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,12 +17,189 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 {
 	public sealed class UserSynchronizerTests
 	{
+		[Fact]
+		public async Task VerifyAdd()
+		{
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithServerApplication()
+			                            .Then(x => x.WithIdentity<User>()
+			                                        .StoredIn<ApplicationStorage>()
+			                                        .Using.Memory()
+			                                        .For<Subject>()
+			                                        .Register.Scoped())
+			                            .As.Is()
+			                            .Operations()
+			                            .Start();
+
+			var id = Guid.NewGuid().ToString();
+
+			using var scope   = host.Services.CreateScope();
+			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+			var       context = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
+			{
+				var create = await users.CreateAsync(new User
+				{
+					Id          = id,
+					UserName    = "SubjectUser",
+					DisplayName = "Display Name!"
+				});
+				create.Succeeded.Should().BeTrue();
+				context.Users.Local.Should().NotBeEmpty();
+			}
+
+			{
+				var subject = scope.ServiceProvider.GetRequiredService<Subject>();
+
+				const string expected = "Hello World! NEW!";
+				var source = new ClaimsPrincipal(new ClaimsIdentity(new[]
+				{
+					new System.Security.Claims.Claim(ClaimTypes.Name, id),
+					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
+				}, "AuthenticationTesting"));
+				var user = await context.Users.SingleAsync(x => x.Id == id);
+				{
+					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
+					                           .CreateUserPrincipalAsync(user);
+					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					synchronized.Should().BeTrue();
+				}
+
+				var claims = await users.GetClaimsAsync(user);
+				claims.Only().Value.Should().Be(expected);
+			}
+			{
+				var set = scope.ServiceProvider.GetRequiredService<ApplicationStorage>().Users;
+				set.Local.Should().NotBeEmpty();
+				set.Only().Id.Should().Be(id);
+			}
+		}
+
+
+		[Fact]
+		public async Task VerifyModified()
+		{
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithServerApplication()
+			                            .Then(x => x.WithIdentity<User>()
+			                                        .StoredIn<ApplicationStorage>()
+			                                        .Using.Memory()
+			                                        .For<Subject>()
+			                                        .Register.Scoped())
+			                            .As.Is()
+			                            .Operations()
+			                            .Start();
+
+			var id = Guid.NewGuid().ToString();
+
+			using var scope   = host.Services.CreateScope();
+			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+			var       context = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
+			{
+				var create = await users.CreateAsync(new User
+				{
+					Id          = id,
+					UserName    = "SubjectUser",
+					DisplayName = "Display Name!"
+				});
+				create.Succeeded.Should().BeTrue();
+				context.Users.Local.Should().NotBeEmpty();
+			}
+
+			{
+				var user = await context.Users.SingleAsync(x => x.Id == id);
+				await users.AddClaimAsync(user,
+				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
+			}
+
+
+			{
+				var subject = scope.ServiceProvider.GetRequiredService<Subject>();
+
+				const string expected = "Hello World! NEW!";
+				var source = new ClaimsPrincipal(new ClaimsIdentity(new[]
+				{
+					new System.Security.Claims.Claim(ClaimTypes.Name, id),
+					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
+				}, "AuthenticationTesting"));
+				var user = await context.Users.SingleAsync(x => x.Id == id);
+				{
+					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
+					                           .CreateUserPrincipalAsync(user);
+					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					synchronized.Should().BeTrue();
+				}
+
+				var claims = await users.GetClaimsAsync(user);
+				claims.Only().Value.Should().Be(expected);
+			}
+		}
+
+
+		[Fact]
+		public async Task VerifyUnmodified()
+		{
+			using var host = await Start.A.Host()
+			                            .WithTestServer()
+			                            .WithServerApplication()
+			                            .Then(x => x.WithIdentity<User>()
+			                                        .StoredIn<ApplicationStorage>()
+			                                        .Using.Memory()
+			                                        .For<Subject>()
+			                                        .Register.Scoped())
+			                            .As.Is()
+			                            .Operations()
+			                            .Start();
+
+			var id = Guid.NewGuid().ToString();
+
+			using var scope   = host.Services.CreateScope();
+			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+			var       context = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
+			{
+				var create = await users.CreateAsync(new User
+				{
+					Id          = id,
+					UserName    = "SubjectUser",
+					DisplayName = "Display Name!"
+				});
+				create.Succeeded.Should().BeTrue();
+				context.Users.Local.Should().NotBeEmpty();
+			}
+
+			{
+				var user = await context.Users.SingleAsync(x => x.Id == id);
+				await users.AddClaimAsync(user,
+				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
+			}
+
+
+			{
+				var subject = scope.ServiceProvider.GetRequiredService<Subject>();
+
+				const string expected = "Hello World!";
+				var source = new ClaimsPrincipal(new ClaimsIdentity(new[]
+				{
+					new System.Security.Claims.Claim(ClaimTypes.Name, id),
+					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
+				}, "AuthenticationTesting"));
+				var user = await context.Users.SingleAsync(x => x.Id == id);
+				{
+					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
+					                           .CreateUserPrincipalAsync(user);
+					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					synchronized.Should().BeFalse();
+				}
+
+				var claims = await users.GetClaimsAsync(user);
+				claims.Only().Value.Should().Be(expected);
+			}
+		}
+
 		sealed class Subject : UserSynchronizer<User>
 		{
-			[UsedImplicitly]
-			public static Subject Default { get; } = new Subject();
-
-			Subject() : base(x => x.Type.StartsWith(ClaimNamespace.Default)) {}
+			public Subject(UserManager<User> users) : base(users, x => x.Type.StartsWith(ClaimNamespace.Default)) {}
 		}
 
 		sealed class DisplayNameClaim : Claim
@@ -60,26 +239,6 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Application.Security
 			public static StorageBuilder Default { get; } = new StorageBuilder();
 
 			StorageBuilder() : base(InMemoryConfiguration.Default.Execute) {}
-		}
-
-		[Fact]
-		public async Task Verify()
-		{
-			using var host = await Start.A.Host()
-			                            .WithTestServer()
-			                            .WithServerApplication()
-			                            .Then(x => x.WithIdentity<User>()
-			                                        .StoredIn<ApplicationStorage>()
-			                                        .Using.Memory()) // TODO: Report
-			                            .As.Is()
-			                            .Operations()
-			                            .Start();
-
-			var users = host.Services.GetRequiredService<UserManager<User>>();
-			users.Should().NotBeNull();
-
-			/*var synchronized = await Subject.Default.Get((ClaimsPrincipal.Current, new Destination<User>()));
-			synchronized.Should().BeTrue();*/
 		}
 	}
 }

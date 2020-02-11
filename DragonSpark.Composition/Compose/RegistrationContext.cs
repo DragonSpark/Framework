@@ -59,7 +59,7 @@ namespace DragonSpark.Composition.Compose
 			_generic    = generic;
 		}
 
-		public RegistrationContext As => new RegistrationContext(_collection, A.Type<T>());
+		public RegistrationContext Register => new RegistrationContext(_collection, A.Type<T>());
 
 		public ResultRegistrationContext<T, TResult> Use<TResult>() where TResult : class, IResult<T>
 			=> new ResultRegistrationContext<T, TResult>(_collection);

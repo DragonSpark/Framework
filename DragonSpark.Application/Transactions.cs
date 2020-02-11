@@ -4,7 +4,7 @@ namespace DragonSpark.Application
 {
 	public readonly struct Transactions<T>
 	{
-		public Transactions(Array<T> add, Array<(T Stored, T Current)> update, Array<T> delete)
+		public Transactions(Array<T> add, Array<(T Stored, T Source)> update, Array<T> delete)
 		{
 			Add    = add;
 			Update = update;
@@ -13,7 +13,7 @@ namespace DragonSpark.Application
 
 		public Array<T> Add { get; }
 
-		public Array<(T Stored, T Current)> Update { get; }
+		public Array<(T Stored, T Source)> Update { get; }
 
 		public Array<T> Delete { get; }
 
