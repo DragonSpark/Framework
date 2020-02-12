@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,8 @@ namespace DragonSpark.Testing.Server
 
 		public void Execute(IHostBuilder parameter)
 		{
-			parameter.ConfigureServices(services => services.AddSingleton<IServer, TestServer>());
+			parameter.ConfigureServices(services => services.AddSingleton<IServer, TestServer>()
+			                                                .AddScoped<IHttpContextAccessor, Accessor>());
 		}
 	}
 }

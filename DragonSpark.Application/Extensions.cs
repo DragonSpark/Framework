@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Application.Entities;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -7,10 +9,6 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		/*public static EntityConfigurationContext<T> StoreEntitiesUsing<T>(this IServiceCollection @this)
-			where T : DbContext
-			=> new EntityConfigurationContext<T>(@this);*/
-
 		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this)
 			where T : IdentityUser => @this.WithIdentity<T>(options => {});
 
@@ -19,6 +17,17 @@ namespace DragonSpark.Application
 			where T : IdentityUser
 			=> new IdentityContext<T>(@this, configure);
 
-		public static string UniqueId(this ExternalLoginInfo @this) => Security.UniqueId.Default.Get(@this);
+		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
+
+		public static string Value(this ModelBindingContext @this, IResult<string> key)
+			=> @this.ValueProvider.Get(key);
+
+		public static string Get(this IValueProvider @this, IResult<string> key)
+		{
+			var name   = key.Get();
+			var value  = @this.GetValue(name);
+			var result = value != ValueProviderResult.None ? value.FirstValue : null;
+			return result;
+		}
 	}
 }

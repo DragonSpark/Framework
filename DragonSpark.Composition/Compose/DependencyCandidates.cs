@@ -13,32 +13,29 @@ namespace DragonSpark.Composition.Compose
 	{
 		public static DependencyCandidates Default { get; } = new DependencyCandidates();
 
-		DependencyCandidates() : base(x => Constructors.Default.Select(new Plan(x)).Get(x)) {}
+		DependencyCandidates() : base(x => Constructors.Default.Select(new Select(x)).Get(x)) {}
 
-		sealed class Plan : IArray<ICollection<ConstructorInfo>, Type>
+		sealed class Select : IArray<IEnumerable<ConstructorInfo>, Type>
 		{
-			readonly Func<ConstructorInfo, ParameterInfo[]> _parameters;
-			readonly Func<ParameterInfo, Type>              _select;
-			readonly Func<Type, bool>                       _where;
+			readonly Func<ParameterInfo, Type> _select;
+			readonly Func<Type, bool>          _where;
 
-			public Plan(Type source)
-				: this(Parameters.Default.Open().Get,
-				       ParameterType.Default.Select(new GenericTypeDependencySelector(source)).Get,
+			public Select(Type source)
+				: this(ParameterType.Default.Select(new GenericTypeDependencySelector(source)).Get,
 				       IsClass.Default.Then().And(Is.AssignableFrom<Delegate>().Inverse()).Get) {}
 
-			public Plan(Func<ConstructorInfo, ParameterInfo[]> parameters, Func<ParameterInfo, Type> select,
-			            Func<Type, bool> where)
+			public Select(Func<ParameterInfo, Type> select, Func<Type, bool> where)
 			{
-				_parameters = parameters;
-				_select     = select;
-				_where      = where;
+				_select = select;
+				_where  = where;
 			}
 
-			public Array<Type> Get(ICollection<ConstructorInfo> parameter) => parameter.SelectMany(_parameters)
-			                                                                           .Select(_select)
-			                                                                           .Where(_where)
-			                                                                           .Distinct()
-			                                                                           .ToArray();
+			public Array<Type> Get(IEnumerable<ConstructorInfo> parameter)
+				=> parameter.SelectMany(x => x.GetParameters())
+				            .Select(_select)
+				            .Where(_where)
+				            .Distinct()
+				            .ToArray();
 		}
 	}
 }

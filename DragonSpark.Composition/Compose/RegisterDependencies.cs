@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.DependencyInjection;
-using NetFabric.Hyperlinq;
 using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose
 {
@@ -27,9 +27,13 @@ namespace DragonSpark.Composition.Compose
 
 		public void Execute(Type parameter)
 		{
-			foreach (var candidate in _candidates.Get(parameter).Open().Where(_can))
+			var set = new HashSet<Type>();
+			foreach (var candidate in _candidates.Get(parameter).Open())
 			{
-				_apply(candidate);
+				if (set.Add(candidate) && _can(candidate))
+				{
+					_apply(candidate);
+				}
 			}
 		}
 	}

@@ -1,18 +1,18 @@
-﻿using DragonSpark.Application.Hosting.Server;
-using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Hosting.Server.Blazor;
+using DragonSpark.Application.Security.Identity;
+using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
+using Claims = DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Application.Testing.Security
 {
@@ -23,7 +23,7 @@ namespace DragonSpark.Application.Testing.Security
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
-			                            .WithServerApplication()
+			                            .WithBlazorServerApplication()
 			                            .Then(x => x.For<Subject>()
 			                                        .Register.Scoped()
 			                                        .WithIdentity<User>()
@@ -41,8 +41,8 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var create = await users.CreateAsync(new User
 				{
-					Id          = id,
-					UserName    = "SubjectUser"
+					Id       = id,
+					UserName = "SubjectUser"
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
@@ -75,13 +75,12 @@ namespace DragonSpark.Application.Testing.Security
 			}
 		}
 
-
 		[Fact]
 		public async Task VerifyModified()
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
-			                            .WithServerApplication()
+			                            .WithBlazorServerApplication()
 			                            .Then(x => x.WithIdentity<User>()
 			                                        .StoredIn<ApplicationStorage>()
 			                                        .Using.Memory()
@@ -99,8 +98,8 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var create = await users.CreateAsync(new User
 				{
-					Id          = id,
-					UserName    = "SubjectUser"
+					Id       = id,
+					UserName = "SubjectUser"
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
@@ -111,7 +110,6 @@ namespace DragonSpark.Application.Testing.Security
 				await users.AddClaimAsync(user,
 				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
 			}
-
 
 			{
 				var subject = scope.ServiceProvider.GetRequiredService<Subject>();
@@ -135,13 +133,12 @@ namespace DragonSpark.Application.Testing.Security
 			}
 		}
 
-
 		[Fact]
 		public async Task VerifyUnmodified()
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
-			                            .WithServerApplication()
+			                            .WithBlazorServerApplication()
 			                            .Then(x => x.WithIdentity<User>()
 			                                        .StoredIn<ApplicationStorage>()
 			                                        .Using.Memory()
@@ -159,8 +156,8 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var create = await users.CreateAsync(new User
 				{
-					Id          = id,
-					UserName    = "SubjectUser"
+					Id       = id,
+					UserName = "SubjectUser"
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
@@ -171,7 +168,6 @@ namespace DragonSpark.Application.Testing.Security
 				await users.AddClaimAsync(user,
 				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
 			}
-
 
 			{
 				var subject = scope.ServiceProvider.GetRequiredService<Subject>();
@@ -199,43 +195,6 @@ namespace DragonSpark.Application.Testing.Security
 		{
 			public Subject(UserManager<User> users)
 				: base(users, new Claims(x => x.Type.StartsWith(ClaimNamespace.Default))) {}
-		}
-
-		sealed class DisplayNameClaim : Claim
-		{
-			public static DisplayNameClaim Default { get; } = new DisplayNameClaim();
-
-			DisplayNameClaim() : base("displayName") {}
-		}
-
-		class Claim : Text.Text
-		{
-			protected Claim(string name) : base($"{ClaimNamespace.Default}:{name}") {}
-		}
-
-		sealed class ClaimNamespace : Text.Text
-		{
-			public static ClaimNamespace Default { get; } = new ClaimNamespace();
-
-			ClaimNamespace() : base("urn:testing") {}
-		}
-
-		sealed class ApplicationStorage : IdentityDbContext<User>
-		{
-			public ApplicationStorage(DbContextOptions<ApplicationStorage> options) : base(options) {}
-		}
-
-		sealed class User : IdentityUser
-		{
-
-		}
-
-		sealed class StorageBuilder : StorageBuilder<ApplicationStorage>
-		{
-			[UsedImplicitly]
-			public static StorageBuilder Default { get; } = new StorageBuilder();
-
-			StorageBuilder() : base(InMemoryConfiguration.Default.Execute) {}
 		}
 	}
 }
