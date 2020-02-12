@@ -6,7 +6,7 @@ using System;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public class IdentityRegistration<T> : ICommand<IServiceCollection> where T : IdentityUser
+	sealed class IdentityRegistration<T> : ICommand<IServiceCollection> where T : IdentityUser
 	{
 		readonly IClaims                    _claims;
 		readonly Func<ExternalLoginInfo, T> _new;

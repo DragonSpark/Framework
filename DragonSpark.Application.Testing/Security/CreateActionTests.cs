@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Hosting.Server.Blazor;
-using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
@@ -14,6 +13,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
+using Claims = DragonSpark.Application.Testing.Objects.Claims;
 
 namespace DragonSpark.Application.Testing.Security
 {
@@ -26,8 +26,9 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
 			                            .WithBlazorServerApplication()
-			                            .Then(Registration.Default)
-			                            .WithIdentity<User>()
+			                            .WithIdentity()
+			                            .CreatedWith(NewUser.Default)
+			                            .Having(Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
 			                            .As.Is()
@@ -75,8 +76,9 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
 			                            .WithBlazorServerApplication()
-			                            .Then(Registration.Default)
-			                            .WithIdentity<User>()
+			                            .WithIdentity()
+			                            .CreatedWith(NewUser.Default)
+			                            .Having(Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
 			                            .Then(x => x.AddSingleton<IExternalSignin>(ExternalSignIn.Default))
@@ -132,13 +134,6 @@ namespace DragonSpark.Application.Testing.Security
 				var claims = await users.GetClaimsAsync(user);
 				claims.Only().Should().BeEquivalentTo(claim);
 			}
-		}
-
-		sealed class Registration : IdentityRegistration<User>
-		{
-			public static Registration Default { get; } = new Registration();
-
-			Registration() : base(Objects.Claims.Default, NewUser.Default.Get) {}
 		}
 	}
 }

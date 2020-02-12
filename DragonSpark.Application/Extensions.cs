@@ -9,13 +9,12 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		public static IdentityContext<T> WithIdentity<T>(this ApplicationProfileContext @this)
-			where T : IdentityUser => @this.WithIdentity<T>(options => {});
+		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
+			=> @this.WithIdentity(options => {});
 
-		public static IdentityContext<T> WithIdentity<T>(this ApplicationProfileContext @this,
-		                                                 Action<IdentityOptions> configure)
-			where T : IdentityUser
-			=> new IdentityContext<T>(@this, configure);
+		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
+		                                           Action<IdentityOptions> configure)
+			=> new IdentityContext(@this, configure);
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
 
