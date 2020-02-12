@@ -26,6 +26,7 @@ namespace DragonSpark.Reflection.Types
 		public Expression Get(Type parameter)
 		{
 			var constructor = parameter.GetTypeInfo().DeclaredConstructors.Only() ??
+			                  // ReSharper disable once ConstantNullCoalescingCondition // TODO
 			                  parameter.GetConstructors().Only() ??
 			                  parameter.GetConstructor(_types);
 			var types      = constructor.GetParameters().Select(x => x.ParameterType);
