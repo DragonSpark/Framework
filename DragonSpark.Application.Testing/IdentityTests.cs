@@ -41,7 +41,7 @@ namespace DragonSpark.Application.Testing
 			                            .WithDefaultComposition()
 			                            .RegisterModularity()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			await using var context = StorageBuilder.Default.Get();
 		}

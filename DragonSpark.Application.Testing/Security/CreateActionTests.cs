@@ -32,7 +32,7 @@ namespace DragonSpark.Application.Testing.Security
 			                                        .Using.Memory())
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			using var scope = host.Services.CreateScope();
 
@@ -82,7 +82,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .Then(x => x.AddSingleton<IExternalSignin>(ExternalSignIn.Default))
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			using var scope = host.Services.CreateScope();
 

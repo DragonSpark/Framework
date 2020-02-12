@@ -58,7 +58,7 @@ namespace DragonSpark.Testing.Composition.Compose
 			                            .Configure(x => x.For<Subject>()
 			                                             .Register.WithDependencies.Singleton())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<Subject>()
 			    .Should()
@@ -75,7 +75,7 @@ namespace DragonSpark.Testing.Composition.Compose
 			                            .WithComposition()
 			                            .Configure(x => x.For<Multiple<int>>().Register.WithDependencies.Singleton())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var multiple = host.Services.GetRequiredService<Multiple<int>>();
 			multiple.Should().NotBeNull();
@@ -97,7 +97,7 @@ namespace DragonSpark.Testing.Composition.Compose
 			                            .Configure(x => x.ForDefinition<Multiple<object>>()
 			                                             .WithDependencies.Singleton())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var multiple = host.Services.GetRequiredService<Multiple<int>>();
 			multiple.Should().NotBeNull();
@@ -115,7 +115,7 @@ namespace DragonSpark.Testing.Composition.Compose
 			                            .Configure(x => x.For<Multiple>()
 			                                             .Register.WithDependencies.Singleton())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var multiple = host.Services.GetRequiredService<Multiple>();
 			multiple.Should().NotBeNull();

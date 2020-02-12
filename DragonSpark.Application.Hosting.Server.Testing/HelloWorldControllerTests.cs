@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing
 			                            .WithEnvironmentalConfiguration()
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<IDependency>().Should().BeOfType(expected);
 		}
@@ -42,7 +42,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing
 			                            .NamedFromPrimaryAssembly()
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var client   = host.GetTestServer().CreateClient();
 			var response = await client.GetAsync(url);
@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing
 			                            .WithServerApplication()
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Should().NotBeNull();
 		}

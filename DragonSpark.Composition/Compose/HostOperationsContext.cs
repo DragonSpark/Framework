@@ -10,6 +10,6 @@ namespace DragonSpark.Composition.Compose
 
 		public HostOperationsContext(IOperationResult<HostBuilder, IHost> select) => _select = select;
 
-		public ValueTask<IHost> Start() => _select.Get(new HostBuilder());
+		public ValueTask<IHost> Run() => _select.Get(new HostBuilder());
 	}
 }

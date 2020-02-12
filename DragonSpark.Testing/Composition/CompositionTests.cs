@@ -49,7 +49,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .WithComposition()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetType()
 			    .FullName.Should()
 			    .Be("DragonSpark.Composition.WithComposition+Provider");
@@ -61,7 +61,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .WithDefaultComposition()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<Singleton>().Should().BeSameAs(Singleton.Default);
 
@@ -75,7 +75,7 @@ namespace DragonSpark.Testing.Composition
 		[Fact]
 		async Task VerifyActivationThrowsWithoutConfiguration()
 		{
-			using var host = await Start.A.Host().Operations().Start();
+			using var host = await Start.A.Host().Operations().Run();
 			host.Services.Invoking(x => x.GetRequiredService<Singleton>())
 			    .Should()
 			    .Throw<InvalidOperationException>();
@@ -91,7 +91,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .RegisterModularity<AllAssemblyTypes>()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
@@ -101,7 +101,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .RegisterModularity()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
 		}
 
@@ -111,7 +111,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .ComposeUsingRoot<Root>()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<string>()
 			    .Should()
@@ -124,7 +124,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .Configure(x => x.AddSingleton("Hello World!"))
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Hello World!");
@@ -137,7 +137,7 @@ namespace DragonSpark.Testing.Composition
 			                            .Configure(x => x.AddSingleton("Hello World!"))
 			                            .ComposeUsing(x => x.Decorate<string>((factory, s) => $"Decorated: {s}"))
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Decorated: Hello World!");
@@ -150,7 +150,7 @@ namespace DragonSpark.Testing.Composition
 			                            .Configure(x => x.AddSingleton("Hello World!"))
 			                            .ComposeUsingRoot<Decorate>()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<string>()
 			    .Should()
 			    .Be("Decorated: Hello World!");
@@ -165,7 +165,7 @@ namespace DragonSpark.Testing.Composition
 			                            .RegisterModularity()
 			                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
 		}
 
@@ -179,7 +179,7 @@ namespace DragonSpark.Testing.Composition
 				                            .RegisterModularity()
 				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
-				                            .Start();
+				                            .Run();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
 			}
 
@@ -189,7 +189,7 @@ namespace DragonSpark.Testing.Composition
 				                            .RegisterModularity()
 				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
-				                            .Start();
+				                            .Run();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
 			}
 		}
@@ -206,7 +206,7 @@ namespace DragonSpark.Testing.Composition
 			                               .WithMessage(
 			                                            "Could not locate an external/environmental component type for DragonSpark.Testing.Composition.CompositionTests+IDoesNotExist.  Please ensure there is a primary assembly registered with an applied attribute of type DragonSpark.Runtime.Environment.HostingAttribute, and that there is a corresponding assembly either named <PrimaryAssemblyName>.Environment for environmental-specific components. Please also ensure that the component libraries contains one public type that implements or is of the requested type."))
 			              .Operations()
-			              .Start()
+			              .Run()
 			              .ConfigureAwait(false);
 	}
 }

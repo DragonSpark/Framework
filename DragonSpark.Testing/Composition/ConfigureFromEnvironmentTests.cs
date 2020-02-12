@@ -18,7 +18,7 @@ namespace DragonSpark.Testing.Composition
 			                            .RegisterModularity()
 			                            .ConfigureFromEnvironment()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 			host.Services.GetRequiredService<string>().Should().Be("Hello World!  Configured from Development.");
 		}
 	}

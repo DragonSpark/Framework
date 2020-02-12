@@ -31,7 +31,7 @@ namespace DragonSpark.Application.Testing.Security
 			                                        .Using.Memory())
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
 
@@ -88,7 +88,7 @@ namespace DragonSpark.Application.Testing.Security
 			                                        .Register.Scoped())
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
 
@@ -146,7 +146,7 @@ namespace DragonSpark.Application.Testing.Security
 			                                        .Register.Scoped())
 			                            .As.Is()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
 

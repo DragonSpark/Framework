@@ -34,7 +34,7 @@ namespace DragonSpark.Testing.Composition
 			                            .WithDefaultComposition()
 			                            .Configure(x => x.AddSingleton<Selection>())
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<Selection>().Should().BeSameAs(Selection.Default);
 		}
@@ -45,7 +45,7 @@ namespace DragonSpark.Testing.Composition
 			using var host = await Start.A.Host()
 			                            .WithDefaultComposition()
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<Selection>().Should().BeSameAs(Selection.Default);
 		}
@@ -58,7 +58,7 @@ namespace DragonSpark.Testing.Composition
 			                            .Configure(x => x.AddSingleton<Selection>()
 			                                             .AddSingleton(Instances.Default.ToDelegate()))
 			                            .Operations()
-			                            .Start();
+			                            .Run();
 
 			host.Services.GetRequiredService<Selection>().Should().NotBeSameAs(Selection.Default);
 		}
