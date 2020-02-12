@@ -1,18 +1,18 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this)
+		public static IdentityContext<T> WithIdentity<T>(this ServerProfileContext @this)
 			where T : IdentityUser => @this.WithIdentity<T>(options => {});
 
-		public static IdentityContext<T> WithIdentity<T>(this IServiceCollection @this,
+		public static IdentityContext<T> WithIdentity<T>(this ServerProfileContext @this,
 		                                                 Action<IdentityOptions> configure)
 			where T : IdentityUser
 			=> new IdentityContext<T>(@this, configure);

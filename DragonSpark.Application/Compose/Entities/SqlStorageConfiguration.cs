@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Compose.Entities
 {
 	sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbContext
 	{
@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Entities
 
 		readonly string _name;
 
-		public SqlStorageConfiguration(string name) => _name = name;
+		public SqlStorageConfiguration(string name) => this._name = name;
 
 		public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
 			=> new ConfigureSqlServer<T>(parameter.Configuration().GetConnectionString(_name)).Execute;

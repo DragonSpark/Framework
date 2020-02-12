@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace DragonSpark.Server.Application
+namespace DragonSpark.Application.Compose
 {
 	sealed class ApplicationWebHostConfiguration : IAlteration<IHostBuilder>
 	{

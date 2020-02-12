@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Compose.Entities
 {
 	sealed class ConnectionName<T> : Text.Text
 	{

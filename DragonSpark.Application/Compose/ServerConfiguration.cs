@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System;
 
-namespace DragonSpark.Server.Application
+namespace DragonSpark.Application.Compose
 {
 	sealed class ServerConfiguration : ICommand<IWebHostBuilder>
 	{

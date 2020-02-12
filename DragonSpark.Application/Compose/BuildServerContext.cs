@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Composition.Compose;
-using DragonSpark.Server.Application;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Server.Compose
+namespace DragonSpark.Application.Compose
 {
 	public sealed class BuildServerContext
 	{

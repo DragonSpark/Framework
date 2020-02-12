@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Compose.Entities
 {
 	sealed class ConfigureSqlServer<T> : ICommand<DbContextOptionsBuilder>
 	{

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 
-namespace DragonSpark.Server
+namespace DragonSpark.Application
 {
 	public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}
 }

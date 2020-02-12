@@ -1,6 +1,5 @@
-﻿using DragonSpark.Composition.Compose;
-using DragonSpark.Server.Application;
-using DragonSpark.Server.Compose;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Composition.Compose;
 
 namespace DragonSpark.Server
 {

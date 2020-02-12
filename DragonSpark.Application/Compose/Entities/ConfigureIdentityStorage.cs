@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Compose.Entities
 {
 	sealed class ConfigureIdentityStorage<T, TUser> : ICommand<IServiceCollection>
 		where T : DbContext where TUser : class

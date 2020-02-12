@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using Microsoft.Extensions.DependencyInjection;
+﻿using DragonSpark.Application.Compose;
 using System.Security.Claims;
 
 namespace DragonSpark.Identity.Twitter
@@ -8,7 +7,7 @@ namespace DragonSpark.Identity.Twitter
 	{
 		public static Claim DisplayName(this ClaimsPrincipal @this) => @this.FindFirst(Twitter.DisplayName.Default);
 
-		public static IServiceCollection WithTwitterAuthentication(this IServiceCollection @this)
-			=> ConfigureTwitterApplication.Default.Parameter(@this);
+		public static ServerProfileContext WithTwitterAuthentication(this ServerProfileContext @this)
+			=> @this.Then(ConfigureTwitterApplication.Default);
 	}
 }

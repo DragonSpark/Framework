@@ -1,4 +1,4 @@
-﻿using DragonSpark.Server.Application;
+﻿using DragonSpark.Application.Compose;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor
 {

@@ -6,14 +6,13 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
-using DragonSpark.Server.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Server.Compose
+namespace DragonSpark.Application.Compose
 {
 	public sealed class ServerProfileContext : ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
 	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>

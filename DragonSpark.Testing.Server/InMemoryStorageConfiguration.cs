@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Compose.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

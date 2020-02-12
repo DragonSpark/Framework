@@ -1,6 +1,6 @@
-﻿using DragonSpark.Composition.Compose;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Server;
-using DragonSpark.Server.Compose;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor
 {

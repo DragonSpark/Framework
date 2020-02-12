@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Server.Application
+namespace DragonSpark.Application.Compose
 {
 	public class ServerProfile : IServerProfile
 	{

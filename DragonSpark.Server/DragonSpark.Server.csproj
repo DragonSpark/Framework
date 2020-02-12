@@ -21,4 +21,8 @@
     <PackageReference Include="Refit" Version="5.0.23" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\" />
+  </ItemGroup>
+
 </Project>
