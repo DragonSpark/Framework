@@ -9,10 +9,10 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		public static IdentityContext<T> WithIdentity<T>(this ServerProfileContext @this)
+		public static IdentityContext<T> WithIdentity<T>(this ApplicationProfileContext @this)
 			where T : IdentityUser => @this.WithIdentity<T>(options => {});
 
-		public static IdentityContext<T> WithIdentity<T>(this ServerProfileContext @this,
+		public static IdentityContext<T> WithIdentity<T>(this ApplicationProfileContext @this,
 		                                                 Action<IdentityOptions> configure)
 			where T : IdentityUser
 			=> new IdentityContext<T>(@this, configure);

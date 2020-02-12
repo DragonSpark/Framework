@@ -6,10 +6,10 @@ namespace DragonSpark.Application.Compose.Entities
 {
 	public sealed class EntityStorageContext<T, TUser> where T : IdentityDbContext<TUser> where TUser : IdentityUser
 	{
-		readonly ServerProfileContext _collection;
+		readonly ApplicationProfileContext _collection;
 		readonly Action<IdentityOptions> _configure;
 
-		public EntityStorageContext(ServerProfileContext collection, Action<IdentityOptions> configure)
+		public EntityStorageContext(ApplicationProfileContext collection, Action<IdentityOptions> configure)
 		{
 			_collection = collection;
 			_configure  = configure;

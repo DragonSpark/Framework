@@ -5,7 +5,7 @@ namespace DragonSpark.Server
 {
 	public static class Extensions
 	{
-		public static ServerProfileContext Apply(this BuildHostContext @this, IServerProfile profile)
-			=> new ServerProfileContext(@this, profile);
+		public static ApplicationProfileContext Apply(this BuildHostContext @this, IServerProfile profile)
+			=> new ApplicationProfileContext(@this, profile);
 	}
 }

@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Server
 		public static BuildHostContext WithTestServer(this BuildHostContext @this)
 			=> @this.Configure(ServerConfiguration.Default);
 
-		public static ServerProfileContext Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this)
+		public static ApplicationProfileContext Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this)
 			where T : IdentityDbContext<TUser>
 			where TUser : IdentityUser
 			=> @this.Configuration(InMemoryStorageConfiguration.Default);

@@ -14,17 +14,17 @@ using System.Reflection;
 
 namespace DragonSpark.Application.Compose
 {
-	public sealed class ServerProfileContext : ISelect<ICommand<IWebHostBuilder>, ServerProfileContext>,
-	                                           ISelect<Func<IServerProfile, IServerProfile>, ServerProfileContext>
+	public sealed class ApplicationProfileContext : ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,
+	                                           ISelect<Func<IServerProfile, IServerProfile>, ApplicationProfileContext>
 	{
 		readonly CommandContext<IWebHostBuilder> _configure;
 		readonly BuildHostContext                _context;
 		readonly IServerProfile                  _profile;
 
-		public ServerProfileContext(BuildHostContext context, IServerProfile profile)
+		public ApplicationProfileContext(BuildHostContext context, IServerProfile profile)
 			: this(context, profile, Start.A.Command<IWebHostBuilder>().By.Empty) {}
 
-		public ServerProfileContext(BuildHostContext context, IServerProfile profile,
+		public ApplicationProfileContext(BuildHostContext context, IServerProfile profile,
 		                            CommandContext<IWebHostBuilder> configure)
 		{
 			_context   = context;
@@ -35,17 +35,17 @@ namespace DragonSpark.Application.Compose
 		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
 		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
 
-		public ServerProfileContext Then(System.Action<IServiceCollection> other) => Then(Start.A.Command(other));
+		public ApplicationProfileContext Then(System.Action<IServiceCollection> other) => Then(Start.A.Command(other));
 
-		public ServerProfileContext Then(ICommand<IServiceCollection> other)
+		public ApplicationProfileContext Then(ICommand<IServiceCollection> other)
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
-		public ServerProfileContext Then(System.Action<IApplicationBuilder> other) => Then(Start.A.Command(other));
+		public ApplicationProfileContext Then(System.Action<IApplicationBuilder> other) => Then(Start.A.Command(other));
 
-		public ServerProfileContext Then(ICommand<IApplicationBuilder> other)
+		public ApplicationProfileContext Then(ICommand<IApplicationBuilder> other)
 			=> Get(x => new ServerProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
 
-		public ServerProfileContext WithEnvironmentalConfiguration()
+		public ApplicationProfileContext WithEnvironmentalConfiguration()
 			=> Get(x => new ServerProfile(A.Command<IServiceCollection>(x)
 			                               .ConfigureFromEnvironment()
 			                               .Execute,
@@ -53,14 +53,14 @@ namespace DragonSpark.Application.Compose
 			                               .Then()
 			                               .Append(ConfigureFromEnvironment.Default)));
 
-		public ServerProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
+		public ApplicationProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
 
-		public ServerProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
+		public ApplicationProfileContext Named(IResult<Assembly> assembly) => Get(new ApplyNameConfiguration(assembly));
 
-		public ServerProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
-			=> new ServerProfileContext(_context, parameter(_profile), _configure);
+		public ApplicationProfileContext Get(Func<IServerProfile, IServerProfile> parameter)
+			=> new ApplicationProfileContext(_context, parameter(_profile), _configure);
 
-		public ServerProfileContext Get(ICommand<IWebHostBuilder> parameter)
-			=> new ServerProfileContext(_context, _profile, _configure.Append(parameter));
+		public ApplicationProfileContext Get(ICommand<IWebHostBuilder> parameter)
+			=> new ApplicationProfileContext(_context, _profile, _configure.Append(parameter));
 	}
 }

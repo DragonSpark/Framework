@@ -7,7 +7,7 @@ namespace DragonSpark.Identity.Twitter
 	{
 		public static Claim DisplayName(this ClaimsPrincipal @this) => @this.FindFirst(Twitter.DisplayName.Default);
 
-		public static ServerProfileContext WithTwitterAuthentication(this ServerProfileContext @this)
+		public static ApplicationProfileContext WithTwitterAuthentication(this ApplicationProfileContext @this)
 			=> @this.Then(ConfigureTwitterApplication.Default);
 	}
 }
