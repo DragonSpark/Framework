@@ -15,7 +15,6 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public string LoginProvider { get; private set; }
 
-		// TODO: ON???
 		public IActionResult OnGet() => RedirectToPage("./Login");
 
 		public IActionResult OnPost(ProviderContext context) => _actions.Get(context);
@@ -34,7 +33,4 @@ namespace DragonSpark.Application.Security.Identity.Model
 		}
 	}
 
-	// TODO: Assign binder in configuration.
-
-	/**/
 }

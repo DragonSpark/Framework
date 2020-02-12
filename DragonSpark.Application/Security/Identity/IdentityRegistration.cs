@@ -19,8 +19,8 @@ namespace DragonSpark.Application.Security.Identity
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Scan(y => y.FromAssemblyOf<IdentityRegistration<T>>()
-			                     .AddClasses(z => z.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace,
+			parameter.Scan(x => x.FromAssemblyOf<IdentityRegistration<T>>()
+			                     .AddClasses(y => y.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace,
 			                                                          typeof(ExternalLoginModel<T>).Namespace))
 			                     .AsSelf()
 			                     .AsMatchingInterface()
@@ -30,7 +30,8 @@ namespace DragonSpark.Application.Security.Identity
 			         .AddScoped<IUserSynchronization, UserSynchronization<T>>()
 			         .AddScoped<ICreateAction, CreateAction<T>>()
 			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
-			         .AddScoped<IAuthenticateAction, AuthenticateAction<T>>();
+			         .AddScoped<IAuthenticateAction, AuthenticateAction<T>>()
+			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider<T>.Default));
 		}
 	}
 }
