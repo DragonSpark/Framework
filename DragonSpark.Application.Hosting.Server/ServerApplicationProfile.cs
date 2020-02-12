@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Application.Hosting.Server
 {
-	public sealed class ServerApplicationProfile : ServerProfile
+	public sealed class ServerApplicationProfile : ApplicationProfile
 	{
-		public static IServerProfile Default { get; } = new ServerApplicationProfile();
+		public static IApplicationProfile Default { get; } = new ServerApplicationProfile();
 
 		ServerApplicationProfile()
 			: base(DefaultServiceConfiguration.Default.Execute, DefaultApplicationConfiguration.Default.Execute) {}

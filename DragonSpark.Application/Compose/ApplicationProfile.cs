@@ -4,12 +4,12 @@ using System;
 
 namespace DragonSpark.Application.Compose
 {
-	public class ServerProfile : IServerProfile
+	public class ApplicationProfile : IApplicationProfile
 	{
 		readonly Action<IApplicationBuilder> _application;
 		readonly Action<IServiceCollection>  _services;
 
-		public ServerProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> application)
+		public ApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> application)
 		{
 			_services    = services;
 			_application = application;
