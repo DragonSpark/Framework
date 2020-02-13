@@ -20,10 +20,9 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public IActionResult OnPost(ProviderContext context) => _actions.Get(context);
 
 		public async Task<IActionResult> OnGetCallback(CallbackContext context)
-			=> await _actions.Get(context) ??
-			   (await _actions.Get((ModelState, context.Login))
-				    ? LocalRedirect(context.Origin)
-				    : Bind(context.Login));
+			=> await _actions.Get(context) ?? (await _actions.Get((ModelState, context.Login))
+				                                   ? LocalRedirect(context.Origin)
+				                                   : Bind(context.Login));
 
 		IActionResult Bind(UserLoginInfo login)
 		{

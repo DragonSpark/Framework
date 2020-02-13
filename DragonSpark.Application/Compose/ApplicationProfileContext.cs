@@ -15,17 +15,18 @@ using System.Reflection;
 namespace DragonSpark.Application.Compose
 {
 	public sealed class ApplicationProfileContext : ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,
-	                                           ISelect<Func<IApplicationProfile, IApplicationProfile>, ApplicationProfileContext>
+	                                                ISelect<Func<IApplicationProfile, IApplicationProfile>,
+		                                                ApplicationProfileContext>
 	{
 		readonly CommandContext<IWebHostBuilder> _configure;
 		readonly BuildHostContext                _context;
-		readonly IApplicationProfile                  _profile;
+		readonly IApplicationProfile             _profile;
 
 		public ApplicationProfileContext(BuildHostContext context, IApplicationProfile profile)
 			: this(context, profile, Start.A.Command<IWebHostBuilder>().By.Empty) {}
 
 		public ApplicationProfileContext(BuildHostContext context, IApplicationProfile profile,
-		                            CommandContext<IWebHostBuilder> configure)
+		                                 CommandContext<IWebHostBuilder> configure)
 		{
 			_context   = context;
 			_profile   = profile;
@@ -47,11 +48,9 @@ namespace DragonSpark.Application.Compose
 
 		public ApplicationProfileContext WithEnvironmentalConfiguration()
 			=> Get(x => new ApplicationProfile(A.Command<IServiceCollection>(x)
-			                               .ConfigureFromEnvironment()
-			                               .Execute,
-			                              A.Command<IApplicationBuilder>(x)
-			                               .Then()
-			                               .Append(ConfigureFromEnvironment.Default)));
+			                                    .ConfigureFromEnvironment()
+			                                    .Execute,
+			                                   ConfigureFromEnvironment.Default.Then().Append(x)));
 
 		public ApplicationProfileContext NamedFromPrimaryAssembly() => Named(PrimaryAssembly.Default);
 

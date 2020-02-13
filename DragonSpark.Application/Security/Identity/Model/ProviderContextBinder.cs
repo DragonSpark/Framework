@@ -8,18 +8,18 @@ namespace DragonSpark.Application.Security.Identity.Model
 {
 	sealed class ProviderContextBinder : IModelBinder
 	{
+		readonly Text.Text         _provider, _returnUrl;
+		readonly IUrlHelperFactory _urls;
+
+		[UsedImplicitly]
+		public ProviderContextBinder(IUrlHelperFactory urls) : this(urls, ProviderName.Default, ReturnUrl.Default) {}
+
 		ProviderContextBinder(IUrlHelperFactory urls, Text.Text provider, Text.Text returnUrl)
 		{
 			_urls      = urls;
 			_provider  = provider;
 			_returnUrl = returnUrl;
 		}
-
-		readonly Text.Text         _provider, _returnUrl;
-		readonly IUrlHelperFactory _urls;
-
-		[UsedImplicitly]
-		public ProviderContextBinder(IUrlHelperFactory urls) : this(urls, ProviderName.Default, ReturnUrl.Default) {}
 
 		public Task BindModelAsync(ModelBindingContext bindingContext)
 		{
