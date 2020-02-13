@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public string LoginProvider { get; private set; }
 
-		public IActionResult OnGet() => RedirectToPage("./Login");
+		public IActionResult OnGet(ProviderContext context) => _actions.Get(context);
 
 		public IActionResult OnPost(ProviderContext context) => _actions.Get(context);
 
