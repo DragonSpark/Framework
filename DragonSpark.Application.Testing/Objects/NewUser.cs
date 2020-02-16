@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Testing.Objects {
+namespace DragonSpark.Application.Testing.Objects
+{
 	sealed class NewUser : ISelect<ExternalLoginInfo, User>
 	{
 		public static NewUser Default { get; } = new NewUser();

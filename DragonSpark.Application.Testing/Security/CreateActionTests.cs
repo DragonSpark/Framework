@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Hosting.Server.Blazor;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
@@ -6,7 +7,6 @@ using DragonSpark.Composition;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -37,7 +37,7 @@ namespace DragonSpark.Application.Testing.Security
 
 			using var scope = host.Services.CreateScope();
 
-			var model = scope.ServiceProvider.GetRequiredService<ExternalLoginModelActions<User>>();
+			var model = scope.ServiceProvider.GetRequiredService<ICreateAction>();
 
 			var storage = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
 
@@ -50,12 +50,11 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				new System.Security.Claims.Claim(ClaimTypes.Name, id), claim
 			}, "AuthenticationTesting"));
-			var errors  = new ModelStateDictionary();
 			var login   = new ExternalLoginInfo(source, "UnitTesting", id, "Display Name");
-			var request = await model.Get((errors, login));
+			var request = await model.Get(login);
 
-			request.Should().BeTrue();
-			errors.Should().BeEmpty();
+			request.Succeeded.Should().BeTrue();
+
 
 			var user = await storage.Users.SingleAsync(x => x.Id == login.UniqueId());
 			user.Should().NotBeNull();

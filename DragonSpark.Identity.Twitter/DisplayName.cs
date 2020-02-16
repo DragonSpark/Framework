@@ -6,4 +6,11 @@
 
 		DisplayName() : base(nameof(DisplayName).ToLower()) {}
 	}
+
+	public sealed class ScreenName : TwitterClaim
+	{
+		public static ScreenName Default { get; } = new ScreenName();
+
+		ScreenName() : base(nameof(ScreenName).ToLower()) {}
+	}
 }
