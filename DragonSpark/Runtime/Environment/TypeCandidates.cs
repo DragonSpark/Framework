@@ -28,7 +28,7 @@ namespace DragonSpark.Runtime.Environment
 		{
 			var select = _selections(parameter);
 			var length = _types.Length;
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				var type = select.Get(_types[i]);
 				if (_condition(type))

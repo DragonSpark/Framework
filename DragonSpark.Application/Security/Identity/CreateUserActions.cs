@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Security.Identity
 		public async ValueTask<IdentityResult> Get((ExternalLoginInfo Login, T User) parameter)
 		{
 			var length = _actions.Length;
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				var current = await _actions[i].Get(parameter);
 				if (!current.Succeeded)

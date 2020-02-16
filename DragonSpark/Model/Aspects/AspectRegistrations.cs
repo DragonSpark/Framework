@@ -31,7 +31,7 @@ namespace DragonSpark.Model.Aspects
 			var       source        = elements.Store;
 			var       count         = 0u;
 
-			for (var i = 0u; i < to; i++)
+			for (var i = 0; i < to; i++)
 			{
 				var registration = registrations[i];
 				if (registration.Condition.Get(parameter))

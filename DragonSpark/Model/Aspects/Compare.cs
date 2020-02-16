@@ -34,7 +34,7 @@ namespace DragonSpark.Model.Aspects
 		{
 			if (parameter.Length == _length)
 			{
-				for (var i = 0u; i < _length; i++)
+				for (var i = 0; i < _length; i++)
 				{
 					if (!_conditions[i].Get(parameter[i]))
 					{

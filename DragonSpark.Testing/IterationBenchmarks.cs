@@ -37,7 +37,7 @@ namespace DragonSpark.Testing
 		{
 			var array  = _array;
 			var length = array.Length;
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				Call(array[i]);
 			}

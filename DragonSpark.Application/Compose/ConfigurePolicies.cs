@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Compose
 		{
 			var policies = _policies.Open();
 			var length   = policies.Length;
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				_policies[i](parameter);
 			}

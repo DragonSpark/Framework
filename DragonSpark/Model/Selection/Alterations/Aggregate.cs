@@ -12,7 +12,7 @@ namespace DragonSpark.Model.Selection.Alterations
 		{
 			var count  = _items.Length;
 			var result = parameter;
-			for (var i = 0u; i < count; i++)
+			for (var i = 0; i < count; i++)
 			{
 				result = _items[i].Get(result);
 			}

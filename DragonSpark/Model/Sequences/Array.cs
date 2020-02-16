@@ -1,6 +1,8 @@
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences
 {
@@ -26,9 +28,18 @@ namespace DragonSpark.Model.Sequences
 
 		public uint Length { get; }
 
-		public ref readonly T this[uint index] => ref _reference[index];
-
-		public ref readonly T this[int index] => ref _reference[index];
+		public ref readonly T this[int index]
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get
+			{
+				// ATTRIBUTION: https://twitter.com/SergioPedri/status/1228752877604265985
+				var     view   = Unsafe.As<RawData>(_reference);
+				ref var item   = ref Unsafe.As<byte, T>(ref view.Data);
+				ref var result = ref Unsafe.Add(ref item, index);
+				return ref result;
+			}
+		}
 
 		[Pure]
 		public T[] Copy() => Arrays<T>.Default.Get(_reference);
@@ -37,6 +48,16 @@ namespace DragonSpark.Model.Sequences
 		public ImmutableArray<T> Get() => ImmutableArray.Create(_reference);
 
 		[Pure]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public T[] Open() => _reference;
+
+		sealed class RawData
+		{
+#pragma warning disable 649
+			public IntPtr Length;
+#pragma warning restore 649
+
+			public byte Data;
+		}
 	}
 }

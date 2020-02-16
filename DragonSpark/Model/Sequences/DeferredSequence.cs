@@ -19,7 +19,7 @@ namespace DragonSpark.Model.Sequences
 		{
 			var length = _results.Length;
 			var result = _stores.Get(length);
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				result.Instance[i] = _results[i].Get();
 			}

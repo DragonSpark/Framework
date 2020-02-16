@@ -13,7 +13,7 @@ namespace DragonSpark.Model.Commands
 		public void Execute(T parameter)
 		{
 			var length = _items.Length;
-			for (var i = 0u; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				_items[i].Execute(parameter);
 			}

@@ -22,7 +22,7 @@ namespace DragonSpark.Runtime.Activation
 
 		public bool Get(Type parameter)
 		{
-			for (var i = 0u; i < _length; i++)
+			for (var i = 0; i < _length; i++)
 			{
 				if (parameter.IsInstanceOfType(_services[i]))
 				{
@@ -35,7 +35,7 @@ namespace DragonSpark.Runtime.Activation
 
 		public object GetService(Type serviceType)
 		{
-			for (var i = 0u; i < _length; i++)
+			for (var i = 0; i < _length; i++)
 			{
 				var item = _services[i];
 				if (serviceType.IsInstanceOfType(item))

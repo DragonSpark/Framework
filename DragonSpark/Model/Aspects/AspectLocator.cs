@@ -27,7 +27,7 @@ namespace DragonSpark.Model.Aspects
 			if (implementations.Length > 0)
 			{
 				var store = new DynamicStore<IAspect<TIn, TOut>>(32);
-				for (var i = 0u; i < length; i++)
+				for (var i = 0; i < length; i++)
 				{
 					var registrations = _registrations.Get(implementations[i].GenericTypeArguments);
 					store = store.Add(new Store<IAspect<TIn, TOut>>(registrations));
