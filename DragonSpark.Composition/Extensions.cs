@@ -95,5 +95,8 @@ namespace DragonSpark.Composition
 
 		public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
 			=> @this.ComposeUsing(new Decorate<T>(configure));
+
+		public static BuildHostContext Decorate<TFrom, TTo>(this BuildHostContext @this) where TTo : TFrom
+			=> @this.ComposeUsing(Composition.Decorate<TFrom, TTo>.Default);
 	}
 }

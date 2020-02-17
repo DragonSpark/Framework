@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
@@ -20,8 +19,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask Get(ExternalLoginInfo parameter)
 		{
-			var id        = parameter.UniqueId();
-			var user      = await _users.Users.SingleAsync(x => x.Id == id);
+			var user      = await _users.GetUser(parameter);
 			var principal = await _authentication.CreateUserPrincipalAsync(user);
 
 			if (await _synchronizer.Get((new Stored<T>(user, principal), parameter.Principal)))

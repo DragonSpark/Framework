@@ -15,4 +15,16 @@ namespace DragonSpark.Composition
 			parameter.Decorate(_configure);
 		}
 	}
+
+	sealed class Decorate<TFrom, TTo> : ICommand<IServiceContainer> where TTo : TFrom
+	{
+		public static Decorate<TFrom,TTo> Default { get; } = new Decorate<TFrom,TTo>();
+
+		Decorate() {}
+
+		public void Execute(IServiceContainer parameter)
+		{
+			parameter.Decorate<TFrom, TTo>();
+		}
+	}
 }

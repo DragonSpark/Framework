@@ -21,36 +21,54 @@ namespace DragonSpark.Application.Security.Identity.Model
 			                  .ToOperation();
 	}
 
-	sealed class AuthenticateAction<T> : IAuthenticateAction where T : IdentityUser
-	{
-		readonly IExternalSignin                _signin;
-		readonly IUserSynchronization           _synchronization;
-		readonly ILogger<AuthenticateAction<T>> _log;
+	public interface IAuthentication : IOperationResult<ExternalLoginInfo, SignInResult> {}
 
-		public AuthenticateAction(IExternalSignin signin, IUserSynchronization synchronization,
-		                          ILogger<AuthenticateAction<T>> log)
+	sealed class Authentication : IAuthentication
+	{
+		readonly IExternalSignin         _signin;
+		readonly IUserSynchronization    _synchronization;
+		readonly ILogger<Authentication> _log;
+
+		public Authentication(IExternalSignin signin, IUserSynchronization synchronization,
+		                      ILogger<Authentication> log)
 		{
 			_signin          = signin;
 			_synchronization = synchronization;
 			_log             = log;
 		}
 
+		public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
+		{
+			var result = await _signin.Get(parameter);
+
+			if (result.Succeeded)
+			{
+				_log.LogInformation("[{Id}] {Name} logged in with {LoginProvider} provider.",
+				                    parameter.ProviderKey, parameter.Principal.Identity.Name, parameter.LoginProvider);
+
+				await _synchronization.Get(parameter);
+			}
+
+			return result;
+		}
+	}
+
+	sealed class AuthenticateAction : IAuthenticateAction
+	{
+		readonly IAuthentication _authentication;
+
+		public AuthenticateAction(IAuthentication authentication) => _authentication = authentication;
+
 		public async ValueTask<IActionResult> Get(CallbackContext parameter)
 		{
 			var (login, origin) = parameter;
 
-			var result = await _signin.Get(login);
-			if (result.Succeeded)
-			{
-				_log.LogInformation("[{Id}] {Name} logged in with {LoginProvider} provider.",
-				                    login.ProviderKey, login.Principal.Identity.Name, login.LoginProvider);
-
-				await _synchronization.Get(login);
-
-				return new LocalRedirectResult(origin);
-			}
-
-			return result.IsLockedOut ? new RedirectToPageResult("./Lockout") : null;
+			var result = await _authentication.Get(login);
+			return result.Succeeded
+				       ? (IActionResult)new LocalRedirectResult(origin)
+				       : result.IsLockedOut
+					       ? new RedirectToPageResult("./Lockout")
+					       : null;
 		}
 	}
 }
