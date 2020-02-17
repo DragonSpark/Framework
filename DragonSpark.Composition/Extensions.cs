@@ -92,5 +92,8 @@ namespace DragonSpark.Composition
 
 		public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
 			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
+
+		public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
+			=> @this.ComposeUsing(new Decorate<T>(configure));
 	}
 }

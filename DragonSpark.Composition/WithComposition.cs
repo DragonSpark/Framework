@@ -26,23 +26,105 @@ namespace DragonSpark.Composition
 		sealed class Select : IAlteration<IHostBuilder>
 		{
 			public static Select Instance { get; } = new Select();
+			readonly FieldInfo _provider;
 
-			Select() {}
+			Select() : this(typeof(ServiceContainer).GetField("constructionInfoProvider",
+			                                                  BindingFlags.Instance | BindingFlags.NonPublic)) {}
+
+			public Select(FieldInfo provider) => _provider = provider;
 
 			public IHostBuilder Get(IHostBuilder parameter)
 			{
 				var root = new ServiceContainer(ContainerOptions.Default.Clone()
 				                                                .WithMicrosoftSettings()
 				                                                .WithAspNetCoreSettings());
-
 				root.ConstructorDependencySelector = new Selector(root);
+
+				var current = _provider.GetValue(root).To<Lazy<IConstructionInfoProvider>>();
+
+				_provider.SetValue(root, new Lazy<IConstructionInfoProvider>(new Construction(current.Value)));
 
 				var @default = new LightInjectServiceProviderFactory(root);
 				var factory  = new Factory(@default);
 				var result   = parameter.UseServiceProviderFactory(factory);
 				return result;
 			}
+
+			sealed class Construction : IConstructionInfoProvider
+			{
+				readonly IConstructionInfoProvider _provider;
+				readonly ICondition<Type> _condition;
+				readonly IActivator _activator;
+
+				public Construction(IConstructionInfoProvider provider)
+					: this(provider, CanActivate.Default, Activator.Default) {}
+
+				public Construction(IConstructionInfoProvider provider, ICondition<Type> condition,
+				                    IActivator activator)
+				{
+					_provider = provider;
+					_condition = condition;
+					_activator = activator;
+				}
+
+				public ConstructionInfo GetConstructionInfo(Registration registration)
+				{
+					try
+					{
+						return _provider.GetConstructionInfo(registration);
+					}
+					catch (InvalidOperationException)
+					{
+						if (_condition.Get(registration.ImplementingType))
+						{
+							var instance = _activator.Get(registration.ImplementingType);
+							registration.FactoryExpression = new Func<IServiceFactory, object>(instance.Accept);
+							if (registration is ServiceRegistration service)
+							{
+								service.Value = instance;
+							}
+							return new ConstructionInfo{FactoryDelegate = registration.FactoryExpression};
+						}
+
+						throw;
+					}
+				}
+			}
 		}
+
+		/*sealed class Constructors : IConstructorSelector
+		{
+			readonly IConstructorSelector _selector;
+			readonly ICondition<Type> _condition;
+			readonly IActivator _activator;
+
+			public Constructors(IConstructorSelector selector)
+				: this(selector, CanActivate.Default, Activator.Default) {}
+
+			public Constructors(IConstructorSelector selector, ICondition<Type> condition, IActivator activator)
+			{
+				_selector = selector;
+				_condition = condition;
+				_activator = activator;
+			}
+
+			public ConstructorInfo Execute(Type implementingType)
+			{
+				try
+				{
+					return _selector.Execute(implementingType);
+				}
+				catch (InvalidOperationException)
+				{
+					if (_condition.Get(implementingType))
+					{
+						return new Construcinf;
+					}
+
+					throw;
+				}
+			}
+		}*/
 
 		sealed class Selector : IConstructorDependencySelector
 		{
@@ -50,9 +132,8 @@ namespace DragonSpark.Composition
 			readonly IConstructorDependencySelector _selector;
 			readonly Array<Type>                    _types;
 
-			public Selector(ServiceContainer container)
-				: this(container.ConstructorDependencySelector, container,
-				       An.Array(typeof(Func<,>), typeof(Func<,,>))) {}
+			public Selector(ServiceContainer container) : this(container.ConstructorDependencySelector, container,
+			                                                   An.Array(typeof(Func<,>), typeof(Func<,,>))) {}
 
 			public Selector(IConstructorDependencySelector selector, IServiceRegistry registry, Array<Type> types)
 			{

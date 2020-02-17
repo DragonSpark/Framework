@@ -14,9 +14,9 @@ using System.Reflection;
 
 namespace DragonSpark.Application.Compose
 {
-	public sealed class ApplicationProfileContext : ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,
-	                                                ISelect<Func<IApplicationProfile, IApplicationProfile>,
-		                                                ApplicationProfileContext>
+	public sealed class ApplicationProfileContext
+		: ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,
+		  ISelect<Func<IApplicationProfile, IApplicationProfile>, ApplicationProfileContext>
 	{
 		readonly CommandContext<IWebHostBuilder> _configure;
 		readonly BuildHostContext                _context;
@@ -35,6 +35,9 @@ namespace DragonSpark.Application.Compose
 
 		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
 		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
+
+		public ApplicationProfileContext Configure(Func<BuildHostContext, BuildHostContext> context)
+			=> new ApplicationProfileContext(context(_context), _profile, _configure);
 
 		public ApplicationProfileContext Then(System.Action<IServiceCollection> other) => Then(Start.A.Command(other));
 
