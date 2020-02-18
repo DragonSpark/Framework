@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class CreateUser<T> : ICreateUser<T> where T : class
+	[UsedImplicitly]
+	sealed class CreateUser<T> : ICreateUser<T> where T : IdentityUser
 	{
 		readonly CreateUserActions<T>       _actions;
 		readonly Func<ExternalLoginInfo, T> _create;

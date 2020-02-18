@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities {
+namespace DragonSpark.Application.Entities
+{
 	sealed class Initializer : IInitializer
 	{
 		public static Initializer Default { get; } = new Initializer();

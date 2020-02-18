@@ -29,6 +29,7 @@ namespace DragonSpark.Application.Security.Identity
 			         .AddSingleton(_new)
 			         .AddScoped<IUserSynchronization, UserSynchronization<T>>()
 			         .AddScoped<ICreateAction, CreateAction<T>>()
+			         .Decorate<ICreateAction, SynchronizedCreateAction>()
 			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
 			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider<T>.Default));
 		}
