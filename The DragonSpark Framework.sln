@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Testing", "DragonSpark.Application.Testing\DragonSpark.Application.Testing.csproj", "{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +167,10 @@ Global
 		{4FC18524-4117-40EE-A696-97F279DA7639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FC18524-4117-40EE-A696-97F279DA7639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FC18524-4117-40EE-A696-97F279DA7639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +195,7 @@ Global
 		{8CBFBE82-7D65-4747-993E-4B700430E072} = {7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}
 		{4FC18524-4117-40EE-A696-97F279DA7639} = {7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}
 		{7D3ED06D-8BE3-43EC-9A24-F42E2B93491A} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
+		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7E910BA-B9EE-40A8-9C18-08D091DA997F}
