@@ -159,5 +159,10 @@ namespace DragonSpark.Application.Testing
 			source.Should().BeSameAs(current[3]);
 			transactions.Delete.Open().Should().BeEmpty();
 		}
+
+		sealed class ApplicationStorage : ApplicationStorage
+		{
+
+		}
 	}
 }
