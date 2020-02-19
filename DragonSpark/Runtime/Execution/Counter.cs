@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using System.Threading;
 
 namespace DragonSpark.Runtime.Execution
@@ -17,6 +18,7 @@ namespace DragonSpark.Runtime.Execution
 		}
 	}
 
+	[UsedImplicitly]
 	sealed class Counter<T> : Select<T, int>
 	{
 		public Counter() : base(Start.A.Selection<T>()

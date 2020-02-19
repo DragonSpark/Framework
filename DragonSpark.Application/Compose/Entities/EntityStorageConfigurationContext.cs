@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 
@@ -20,6 +22,7 @@ namespace DragonSpark.Application.Compose.Entities
 		public ApplicationProfileContext SqlServer() => Configuration(SqlStorageConfiguration<T>.Default);
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
-			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure));
+			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
+			           .Configure(x => x.Decorate<T>(Initialized<T>.Default.Get));
 	}
 }

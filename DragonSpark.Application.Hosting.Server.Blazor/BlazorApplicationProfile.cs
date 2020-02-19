@@ -7,6 +7,6 @@ namespace DragonSpark.Application.Hosting.Server.Blazor
 		public static BlazorApplicationProfile Default { get; } = new BlazorApplicationProfile();
 
 		BlazorApplicationProfile() : base(DefaultServiceConfiguration.Default.Execute,
-		                             DefaultApplicationConfiguration.Default.Execute) {}
+		                                  DefaultApplicationConfiguration.Default.Execute) {}
 	}
 }
