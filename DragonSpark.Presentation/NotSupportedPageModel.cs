@@ -22,12 +22,4 @@ namespace DragonSpark.Presentation
 
 		public IActionResult OnPost() => RedirectToPage(Url.Content(_page), _routes);
 	}
-
-
-	public sealed class DisplayPageModel : PageModel
-	{
-		public IActionResult OnGet() => Page();
-
-		public IActionResult OnPost() => Page();
-	}
 }
