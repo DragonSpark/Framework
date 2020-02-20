@@ -8,9 +8,7 @@ namespace DragonSpark.Application.Compose.Entities
 {
 	sealed class Initialized<T> : IAlteration<T> where T : DbContext
 	{
-		public static Initialized<T> Default { get; } = new Initialized<T>();
-
-		Initialized() : this(new First()) {}
+		public Initialized() : this(new First()) {}
 
 		readonly ICondition _condition;
 

@@ -23,6 +23,6 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
 			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
-			           .Configure(x => x.Decorate<T>(Initialized<T>.Default.Get));
+			           .Configure(x => x.Decorate<T>(new Initialized<T>().Get));
 	}
 }
