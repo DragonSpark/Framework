@@ -10,8 +10,8 @@ namespace DragonSpark.Compose
 {
 	public static class Is
 	{
-		public static ICondition<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
-			=> IsDecoratedWith<T>.Default;
+		public static ConditionSelector<ICustomAttributeProvider> DecoratedWith<T>() where T : Attribute
+			=> IsDecoratedWith<T>.Default.Then();
 
 		public static ConditionSelector<T> Always<T>()
 			=> DragonSpark.Model.Selection.Conditions.Always<T>.Default.Then();

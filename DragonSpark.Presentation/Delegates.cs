@@ -24,20 +24,29 @@ namespace DragonSpark.Presentation
 		[UsedImplicitly]
 		public static Delegates<T> Default { get; } = new Delegates<T>();
 
-		Delegates() : this(PropertyDelegate<T, IOperation>.Default.Get, A.Type<T>().GetRuntimeProperties().Result()) {}
+		Delegates() : this(Start.A.Selection<PropertyInfo>()
+		                        .By.Calling(x => x.PropertyType)
+		                        .Select(Is.AssignableFrom<IViewProperty>())
+		                        .Then()
+		                        .And(Is.DecoratedWith<ParameterAttribute>()),
+		                   PropertyDelegate<T, IOperation>.Default.Get,
+		                   A.Type<T>().GetRuntimeProperties().Result()) {}
 
+		readonly Func<PropertyInfo, bool>                            _where;
 		readonly Func<PropertyInfo, Func<ComponentBase, IOperation>> _select;
 		readonly Array<PropertyInfo>                                 _properties;
 
-		public Delegates(Func<PropertyInfo, Func<ComponentBase, IOperation>> select, Array<PropertyInfo> properties)
+		public Delegates(Func<PropertyInfo, bool> where, Func<PropertyInfo, Func<ComponentBase, IOperation>> select,
+		                 Array<PropertyInfo> properties)
 		{
+			_where      = @where;
 			_select     = select;
 			_properties = properties;
 		}
 
 		public Array<Func<ComponentBase, IOperation>> Get() => _properties.Open()
 		                                                                  .AsValueEnumerable()
-		                                                                  .Where(x => x.Has<ParameterAttribute>())
+		                                                                  .Where(_where)
 		                                                                  .Select(_select)
 		                                                                  .ToList()
 		                                                                  .Result();
