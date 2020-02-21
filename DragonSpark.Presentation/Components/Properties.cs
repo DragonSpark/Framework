@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using System;
 
-namespace DragonSpark.Presentation
+namespace DragonSpark.Presentation.Components
 {
 	sealed class Properties : IProperties
 	{

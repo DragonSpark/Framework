@@ -10,7 +10,7 @@ using System;
 using System.Reflection;
 using A = DragonSpark.Compose.A;
 
-namespace DragonSpark.Presentation
+namespace DragonSpark.Presentation.Components
 {
 	sealed class Delegates : Generic<IArray<Func<ComponentBase, IOperation>>>
 	{

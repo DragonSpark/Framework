@@ -1,11 +1,8 @@
-﻿using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation
+namespace DragonSpark.Presentation.Components
 {
-	public interface IViewProperty : IOperation {}
-
-	public sealed class ViewProperty<T> : IViewProperty
+	public sealed class ViewProperty<T> : IViewProperty, ISource<T>
 	{
 		public static implicit operator ViewProperty<T>(ValueTask<T> instance) => new ViewProperty<T>(instance);
 
@@ -19,7 +16,7 @@ namespace DragonSpark.Presentation
 
 		public async ValueTask Get()
 		{
-			Value = await _source;
+			Value    = await _source;
 			HasValue = true;
 		}
 

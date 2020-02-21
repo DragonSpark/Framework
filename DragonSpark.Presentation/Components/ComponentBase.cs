@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Radzen.Blazor;
+using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation
+namespace DragonSpark.Presentation.Components
 {
 	public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	{
@@ -17,5 +18,20 @@ namespace DragonSpark.Presentation
 				await operation(this).Get().ConfigureAwait(false);
 			}
 		}
+	}
+
+	public sealed class Instance<T>
+	{
+		public T Value { get; set; }
+	}
+
+	/*public class InputForm : Form<string>
+	{
+
+	}*/
+
+	public class Form<T> : RadzenTemplateForm<Instance<T>>
+	{
+		
 	}
 }

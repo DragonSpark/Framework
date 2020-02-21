@@ -5,7 +5,8 @@ using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
 using System;
 
-namespace DragonSpark.Presentation {
+namespace DragonSpark.Presentation.Components
+{
 	sealed class Operations : ISelect<Type, Array<Func<ComponentBase, IOperation>>>
 	{
 		public static Operations Default { get; } = new Operations();
