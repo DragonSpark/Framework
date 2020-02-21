@@ -13,4 +13,8 @@
     <Folder Include="Identity\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Radzen.Blazor" Version="2.2.0" />
+  </ItemGroup>
+
 </Project>
