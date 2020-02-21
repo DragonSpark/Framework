@@ -3,12 +3,13 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using System;
 
-namespace DragonSpark.Presentation {
+namespace DragonSpark.Presentation
+{
 	sealed class Properties : IProperties
 	{
 		public static Properties Default { get; } = new Properties();
 
-		Properties() : this(Operations.Default.Then().Subject.Stores().Reference().Get) {}
+		Properties() : this(Operations.Default.Then().Subject.Stores().New().Get) {}
 
 		readonly Func<Type, Array<Func<ComponentBase, IOperation>>> _delegates;
 

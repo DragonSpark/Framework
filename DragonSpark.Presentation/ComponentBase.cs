@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation {
+namespace DragonSpark.Presentation
+{
 	public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	{
 		readonly IProperties _properties;
