@@ -1,5 +1,4 @@
-﻿using Radzen.Blazor;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
@@ -18,20 +17,5 @@ namespace DragonSpark.Presentation.Components
 				await operation(this).Get().ConfigureAwait(false);
 			}
 		}
-	}
-
-	public sealed class Instance<T>
-	{
-		public T Value { get; set; }
-	}
-
-	/*public class InputForm : Form<string>
-	{
-
-	}*/
-
-	public class Form<T> : RadzenTemplateForm<Instance<T>>
-	{
-		
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Compose
 {
@@ -7,6 +8,7 @@ namespace DragonSpark.Compose
 	{
 		public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new ValueTask<T>(@this);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask<T> ToOperation<T>(this T @this) => new ValueTask<T>(@this);
 	}
 }

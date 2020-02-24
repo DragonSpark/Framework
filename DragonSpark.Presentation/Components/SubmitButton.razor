@@ -1,0 +1,28 @@
+﻿@using JetBrains.Annotations
+@* ReSharper disable once ArrangeRedundantParentheses *@
+<RadzenButton Text="@Text" Icon="@Icon" ButtonType="ButtonType.Submit" Disabled="@(!Monitor.IsValid)"/>
+
+@code {
+
+    Action _changed;
+
+    [Parameter]
+    public string Icon { get; [UsedImplicitly] set; }
+
+    [Parameter]
+    public string Text { get; [UsedImplicitly] set; }
+
+    [CascadingParameter]
+    OperationMonitor Monitor { get; [UsedImplicitly] set; }
+
+    protected override void OnInitialized()
+    {
+        _changed = StateHasChanged;
+        Monitor.EditContext.OnValidationStateChanged += Changed;
+    }
+
+    void Changed(object sender, EventArgs e)
+    {
+        InvokeAsync(_changed);
+    }
+}

@@ -1,9 +1,14 @@
-﻿@typeparam TItem
-<RadzenTemplateForm TItem="Instance<TItem>" Data="Source" Submit="Submit">
-   @ChildContent(Source)
+﻿@using JetBrains.Annotations
+@typeparam TItem
+
+<RadzenTemplateForm @ref="_form" TItem="Instance<TItem>" Data="Source" Submit="OnSubmit">
+    <OperationMonitor ChildContent="@ChildContent(Source)" />
 </RadzenTemplateForm>
 
 @code {
+
+    [UsedImplicitly]
+    RadzenTemplateForm<Instance<TItem>> _form;
 
     [Parameter]
     public RenderFragment<Instance<TItem>> ChildContent { get; set; }
@@ -13,4 +18,18 @@
 
     [Parameter]
     public EventCallback<Instance<TItem>> Submit { get; set; }
+
+    [UsedImplicitly]
+    Task OnSubmit(Instance<TItem> parameter)
+    {
+        //Submit.InvokeAsync(parameter);
+        /*var identifier = _form.EditContext.Field(nameof(Instance<TItem>.Value));
+        new ValidationMessageStore(_form.EditContext).Add(in identifier, "Hello world!");
+
+        return _form.InvalidSubmit.InvokeAsync(new FormInvalidSubmitEventArgs
+        {
+            Errors = _form.EditContext.GetValidationMessages().Open()
+        });*/
+        return Task.CompletedTask;
+    }
 }

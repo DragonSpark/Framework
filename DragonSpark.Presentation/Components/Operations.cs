@@ -11,7 +11,7 @@ namespace DragonSpark.Presentation.Components
 	{
 		public static Operations Default { get; } = new Operations();
 
-		Operations() : this(Delegates.Default) {}
+		Operations() : this(Delegates.Default) { }
 
 		readonly IGeneric<IArray<Func<ComponentBase, IOperation>>> _generic;
 
