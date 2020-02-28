@@ -8,7 +8,11 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		public static OperationValidation Default { get; } = new OperationValidation();
 
-		OperationValidation() {}
+		OperationValidation() : this("boo") {}
+
+		readonly string _target;
+
+		public OperationValidation(string target) => _target = target;
 
 		public async ValueTask<bool> Get(FieldIdentifier parameter)
 		{
@@ -16,7 +20,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			return parameter.Model.GetType()
 			                .GetProperty(parameter.FieldName)
 			                .GetValue(parameter.Model)
-			                .To<string>() == "boo";
+			                .To<string>() == _target;
 		}
 	}
 }

@@ -12,8 +12,11 @@ namespace DragonSpark.Presentation
 
 		public static OperationView<T> AsView<T>(this IOperationResult<T> @this) => new OperationView<T>(@this);
 
+		// ReSharper disable once TooManyArguments
 		public static FieldValidationDefinition AsDefinition(this IOperationResult<FieldIdentifier, bool> @this,
-		                                                     string errorText, string loadingText = "Loading...")
-			=> new FieldValidationDefinition(@this, errorText, loadingText);
+		                                                     string invalid, string loading = "Loading...",
+		                                                     string error =
+			                                                     "There was a problem validating this field.")
+			=> new FieldValidationDefinition(@this, new FieldValidationMessages(invalid, loading, error));
 	}
 }

@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.Extensions.Logging;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		public FieldIdentifier Identifier { get; private set; }
 
+		[Inject]
+		public ILogger<FieldValidator> Logger { get; [UsedImplicitly]set; }
+
 		[CascadingParameter, UsedImplicitly]
 		IRadzenForm Form { get; set; }
 
@@ -49,8 +53,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			Identifier = Form.FindComponent(Component).FieldIdentifier;
 			Monitor.Execute(this);
 
-			Validation = new FieldValidationContext(Identifier, Definitions.Result(),
-			                                        new ValidationMessageStore(Monitor.EditContext));
+			Validation = new FieldValidationContext(this, Definitions.Result(), Monitor.EditContext);
 		}
 
 		public void Reset()
@@ -71,7 +74,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		protected override string GetComponentCssClass()
 			=> $"ui-message ui-messages-{(Validation.Active ? "active" : "error")} {(Popup ? "ui-message-popup" : string.Empty)}";
 
-		public async Task Validate()
+		async Task Validate()
 		{
 			await Validation.Get();
 
