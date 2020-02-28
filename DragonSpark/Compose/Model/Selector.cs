@@ -19,7 +19,9 @@ namespace DragonSpark.Compose.Model
 
 	public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<ISelect<TIn, TOut>>
 	{
-		public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance.Get().ToDelegate();
+		public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance.Get().Get;
+
+		public static implicit operator NetFabric.Hyperlinq.Selector<TIn, TOut>(Selector<TIn, TOut> instance) => instance.Get().Get;
 
 		readonly ISelect<TIn, TOut> _subject;
 

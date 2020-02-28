@@ -32,11 +32,11 @@ namespace DragonSpark.Presentation.Components
 		                   PropertyDelegate<T, IOperation>.Default.Get,
 		                   A.Type<T>().GetRuntimeProperties().Result()) {}
 
-		readonly Func<PropertyInfo, bool>                            _where;
-		readonly Func<PropertyInfo, Func<ComponentBase, IOperation>> _select;
+		readonly Predicate<PropertyInfo> _where;
+		readonly Selector<PropertyInfo, Func<ComponentBase, IOperation>> _select;
 		readonly Array<PropertyInfo>                                 _properties;
 
-		public Delegates(Func<PropertyInfo, bool> where, Func<PropertyInfo, Func<ComponentBase, IOperation>> select,
+		public Delegates(Predicate<PropertyInfo> where, Selector<PropertyInfo, Func<ComponentBase, IOperation>> select,
 		                 Array<PropertyInfo> properties)
 		{
 			_where      = @where;
@@ -45,7 +45,6 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		public Array<Func<ComponentBase, IOperation>> Get() => _properties.Open()
-		                                                                  .AsValueEnumerable()
 		                                                                  .Where(_where)
 		                                                                  .Select(_select)
 		                                                                  .ToList()

@@ -19,6 +19,10 @@ namespace DragonSpark.Compose
 			=> @this.Get().Get(parameter);
 
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
+			=> @this.Select(new NetFabric.Hyperlinq.Selector<TFrom, TTo>(select));
+
+		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this,
+		                                                     NetFabric.Hyperlinq.Selector<TFrom, TTo> select)
 			=> @this.Then()
 			        .Select(x => x.Open().Select(select).ToArray().Result())
 			        .Get();

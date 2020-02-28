@@ -12,7 +12,7 @@ namespace DragonSpark.Runtime.Environment
 
 		ComponentTypeLocators() : this(IsComponentType.Default.Get) {}
 
-		public ComponentTypeLocators(Func<Type, bool> condition)
+		public ComponentTypeLocators(Predicate<Type> condition)
 			: base(Start.A.Selection<Type>()
 			            .As.Sequence.Array.By.Self.Open()
 			            .Select(x => x.Where(condition).ToArray().Result())

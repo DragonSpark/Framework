@@ -7,6 +7,8 @@ namespace DragonSpark.Compose.Model
 {
 	public class ConditionSelector<T> : Selector<T, bool>
 	{
+		public static implicit operator Predicate<T>(ConditionSelector<T> instance) => instance.Get().Get;
+
 		public static implicit operator Func<T, bool>(ConditionSelector<T> instance) => instance.Get().Get;
 
 		public ConditionSelector(ISelect<T, bool> subject) : base(subject) {}

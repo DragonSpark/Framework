@@ -12,8 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.1.6" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.2" />
-    <PackageReference Include="NetFabric.Hyperlinq" Version="3.0.0-beta6" />
+    <PackageReference Include="NetFabric.Hyperlinq" Version="3.0.0-beta8" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <!--<PackageReference Include="ErrorProne.NET" Version="0.1.5898.41180" />
     <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2">
