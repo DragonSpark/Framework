@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class OperationView<T> : IOperationResult<T> // TODO: Needed?
+	public sealed class OperationView<T> : IOperationResult<T>
 	{
-		readonly IOperationResult<T>      _view;
+		readonly IOperationResult<T>           _view;
 		readonly ConcurrentStack<ValueTask<T>> _operations;
 
 		public OperationView(IOperationResult<T> view) : this(view, new ConcurrentStack<ValueTask<T>>()) {}
@@ -31,8 +31,7 @@ namespace DragonSpark.Presentation.Components
 		}
 	}
 
-
-	public sealed class OperationView<TIn, TOut> : IOperationResult<TIn, TOut> // TODO: Needed?
+	public sealed class OperationView<TIn, TOut> : IOperationResult<TIn, TOut>
 	{
 		readonly IOperationResult<TIn, TOut>      _view;
 		readonly ConcurrentStack<ValueTask<TOut>> _operations;

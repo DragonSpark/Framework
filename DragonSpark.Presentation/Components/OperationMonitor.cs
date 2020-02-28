@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
+using DragonSpark.Presentation.Components.Forms;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -26,19 +28,12 @@ namespace DragonSpark.Presentation.Components
 		[CascadingParameter]
 		public EditContext EditContext { get; [UsedImplicitly] set; }
 
-		public bool IsValid
-		{
-			get
-			{
-				var result = !EditContext.GetValidationMessages()
-				                         .AsValueEnumerable()
-				                         .Any()
-				             &&
-				             _identifiers.SelectMany(x => x.Value)
-				                         .All(x => x.Valid.HasValue && x.Valid.Value);
-				return result;
-			}
-		}
+		public bool IsValid => !EditContext.GetValidationMessages()
+		                                   .AsValueEnumerable()
+		                                   .Any()
+		                       &&
+		                       _identifiers.SelectMany(x => x.Value)
+		                                   .All(x => x.Valid.GetValueOrDefault(false));
 
 		protected override void OnInitialized()
 		{
@@ -74,9 +69,9 @@ namespace DragonSpark.Presentation.Components
 
 		void Changed(object sender, ValidationStateChangedEventArgs e)
 		{
-			foreach (var validator in _identifiers.SelectMany(x => x.Value))
+			foreach (var command in _identifiers.SelectMany(x => x.Value))
 			{
-				validator.Refresh();
+				command.Execute();
 			}
 		}
 
