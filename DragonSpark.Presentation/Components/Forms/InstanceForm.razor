@@ -1,5 +1,4 @@
-﻿@using DragonSpark.Compose
-@using JetBrains.Annotations
+﻿@using JetBrains.Annotations
 @typeparam TItem
 
 <Form @ref="_form" TItem="Instance<TItem>" Data="Source" Submit="OnSubmit">
@@ -23,6 +22,7 @@
     [Parameter]
     public EventCallback<Instance<TItem>> Submit { get; set; }
 
+    [UsedImplicitly]
     async Task OnSubmit(Instance<TItem> parameter)
     {
         var valid = await _monitor.Validate();
