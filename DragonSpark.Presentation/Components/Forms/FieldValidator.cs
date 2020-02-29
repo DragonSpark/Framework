@@ -20,7 +20,9 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		readonly Func<Task> _validate;
 
-		public FieldValidator() => _validate = Validate;
+		EditContext _editContext;
+
+		public FieldValidator() => _validate = Refresh;
 
 		[Parameter, UsedImplicitly]
 		public bool Popup { get; set; }
@@ -34,26 +36,46 @@ namespace DragonSpark.Presentation.Components.Forms
 		public FieldIdentifier Identifier { get; private set; }
 
 		[Inject]
-		public ILogger<FieldValidator> Logger { get; [UsedImplicitly]set; }
-
-		[CascadingParameter, UsedImplicitly]
-		IRadzenForm Form { get; set; }
-
+		internal ILogger<FieldValidator> Logger { get; [UsedImplicitly] set; }
+		
 		[CascadingParameter, UsedImplicitly]
 		OperationMonitor Monitor { get; set; }
 
 		FieldValidationContext Validation { get; set; }
 
-		public bool? Valid => !Validation.Active ? Validation.Text == null : (bool?)null;
+		[CascadingParameter, UsedImplicitly]
+		public EditContext EditContext
+		{
+			get => _editContext;
+			set
+			{
+
+				if (_editContext != value)
+				{
+					var register = _editContext != null;
+					_editContext = value;
+					if (register)
+					{
+						Register();
+					}
+				}
+			}
+		}
+
+		public bool? Valid => Validation.Valid;
 
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
 
-			Identifier = Form.FindComponent(Component).FieldIdentifier;
-			Monitor.Execute(this);
+			Register();
+		}
 
-			Validation = new FieldValidationContext(this, Definitions.Result(), Monitor.EditContext);
+		void Register()
+		{
+			Identifier = new FieldIdentifier(EditContext.Model, Component);
+			Validation = new FieldValidationContext(this, Definitions.Result(), EditContext);
+			Monitor.Execute(this);
 		}
 
 		public void Reset()
@@ -72,13 +94,31 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 
 		protected override string GetComponentCssClass()
-			=> $"ui-message ui-messages-{(Validation.Active ? "active" : "error")} {(Popup ? "ui-message-popup" : string.Empty)}";
+			=> $"ui-message ui-messages-{(Validation.Valid.HasValue ? "error" : "active")} {(Popup ? "ui-message-popup" : string.Empty)}";
 
-		async Task Validate()
+		public async ValueTask<bool> Validate()
+		{
+			if (Valid.GetValueOrDefault(false))
+			{
+				return true;
+			}
+
+			await Validation.Get().ConfigureAwait(false);
+
+			if (!Valid.HasValue)
+			{
+				throw new
+					InvalidOperationException($"An attempt was made to validate a field '{Component}' but a validation result could not be attained.");
+			}
+
+			return Valid.Value;
+		}
+
+		async Task Refresh()
 		{
 			await Validation.Get();
 
-			Monitor.Refresh();
+			EditContext.NotifyValidationStateChanged();
 		}
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)

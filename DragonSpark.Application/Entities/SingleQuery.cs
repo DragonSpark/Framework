@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities {
+namespace DragonSpark.Application.Entities
+{
 	public class SingleQuery<TKey, TEntity> : IOperationResult<TKey, TEntity>
 	{
 		readonly IQueryable<TEntity>   _queryable;

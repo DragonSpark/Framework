@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public sealed class FieldValidationContext : IOperation, ICommand
+	sealed class FieldValidationContext : IOperation, ICommand
 	{
 		readonly FieldValidator                   _owner;
 		readonly Array<FieldValidationDefinition> _definitions;
@@ -44,7 +44,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		ValidationResult? Result { get; set; }
 
-		public bool Active => Current != null;
+		public bool? Valid => Current == null ? Result.HasValue && Result.Value.Valid : (bool?)null;
 
 		public string Text => Current?.Messages.Loading ??
 		                      (Result.HasValue && !Result.Value.Valid ? Result.Value.Message : null);

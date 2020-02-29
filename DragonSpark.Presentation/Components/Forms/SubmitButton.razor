@@ -5,7 +5,8 @@
 @code {
 
     Action _changed;
-
+    EditContext _editContext;
+    
     [Parameter]
     public string Icon { get; [UsedImplicitly] set; }
 
@@ -15,10 +16,30 @@
     [CascadingParameter]
     OperationMonitor Monitor { get; [UsedImplicitly] set; }
 
+    [CascadingParameter, UsedImplicitly]
+    EditContext EditContext
+    {
+        get => _editContext;
+        set
+        {
+            if (_editContext != value)
+            {
+                if (_editContext != null)
+                {
+                    _editContext.OnValidationStateChanged -= Changed;
+                }
+
+                if ((_editContext = value) != null)
+                {
+                    EditContext.OnValidationStateChanged += Changed;
+                }
+            }
+        }
+    }
+
     protected override void OnInitialized()
     {
         _changed = StateHasChanged;
-        Monitor.EditContext.OnValidationStateChanged += Changed;
     }
 
     void Changed(object sender, EventArgs e)

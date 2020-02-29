@@ -10,12 +10,15 @@ using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
 	public sealed class OperationMonitor : RadzenComponent, IDisposable, ICommand<FieldValidator>
 	{
 		readonly IDictionary<FieldIdentifier, List<FieldValidator>> _identifiers;
+
+		EditContext _editContext;
 
 		public OperationMonitor() : this(new Dictionary<FieldIdentifier, List<FieldValidator>>()) {}
 
@@ -25,28 +28,59 @@ namespace DragonSpark.Presentation.Components
 		[Parameter]
 		public RenderFragment ChildContent { get; set; }
 
-		[CascadingParameter]
-		public EditContext EditContext { get; [UsedImplicitly] set; }
-
-		public bool IsValid => !EditContext.GetValidationMessages()
-		                                   .AsValueEnumerable()
-		                                   .Any()
-		                       &&
-		                       _identifiers.SelectMany(x => x.Value)
-		                                   .All(x => x.Valid.GetValueOrDefault(false));
-
-		protected override void OnInitialized()
+		[CascadingParameter, UsedImplicitly]
+		EditContext EditContext
 		{
-			Debounce(() =>
-			         {
-				         EditContext.OnFieldChanged           += Changed;
-				         EditContext.OnValidationStateChanged += Changed;
-			         });
+			get => _editContext;
+			set
+			{
+				if (_editContext != value)
+				{
+					if (_editContext != null)
+					{
+						_editContext.OnFieldChanged           -= Changed;
+						_editContext.OnValidationStateChanged -= Changed;
+						_identifiers.Clear();
+					}
+
+					if ((_editContext = value) != null)
+					{
+						Debounce(() =>
+						         {
+							         EditContext.OnFieldChanged           += Changed;
+							         EditContext.OnValidationStateChanged += Changed;
+						         }, 1000);
+					}
+				}
+			}
 		}
 
-		public void Refresh()
+		public bool IsValid
 		{
-			EditContext.NotifyValidationStateChanged();
+			get
+			{
+				var b = !EditContext.GetValidationMessages()
+				                    .AsValueEnumerable()
+				                    .Any();
+				var all = _identifiers.SelectMany(x => x.Value)
+				                      .All(x => x.Valid.GetValueOrDefault(false));
+				return b
+				       &&
+				       all;
+			}
+		}
+
+		public async ValueTask<bool> Validate()
+		{
+			foreach (var validator in _identifiers.SelectMany(x => x.Value))
+			{
+				if (!await validator.Validate())
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		void Changed(object sender, FieldChangedEventArgs e)
@@ -84,15 +118,6 @@ namespace DragonSpark.Presentation.Components
 			builder.CloseComponent();
 		}
 
-		public void Dispose()
-		{
-			if (EditContext != null)
-			{
-				EditContext.OnFieldChanged           -= Changed;
-				EditContext.OnValidationStateChanged -= Changed;
-			}
-		}
-
 		public void Execute(FieldValidator parameter)
 		{
 			List(parameter.Identifier).Add(parameter);
@@ -108,6 +133,11 @@ namespace DragonSpark.Presentation.Components
 			var result = new List<FieldValidator>();
 			_identifiers[key] = result;
 			return result;
+		}
+
+		public void Dispose()
+		{
+			EditContext = null;
 		}
 	}
 }
