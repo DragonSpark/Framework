@@ -37,7 +37,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		[Inject]
 		internal ILogger<FieldValidator> Logger { get; [UsedImplicitly] set; }
-		
+
 		[CascadingParameter, UsedImplicitly]
 		OperationMonitor Monitor { get; set; }
 
