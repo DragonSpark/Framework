@@ -20,6 +20,7 @@ namespace DragonSpark.Presentation.Components
 
 		EditContext _editContext;
 
+		[UsedImplicitly]
 		public OperationMonitor() : this(new Dictionary<FieldIdentifier, List<FieldValidator>>()) {}
 
 		public OperationMonitor(IDictionary<FieldIdentifier, List<FieldValidator>> identifiers)
@@ -28,7 +29,7 @@ namespace DragonSpark.Presentation.Components
 		[Parameter]
 		public RenderFragment ChildContent { get; set; }
 
-		[CascadingParameter, UsedImplicitly]
+		[CascadingParameter]
 		EditContext EditContext
 		{
 			get => _editContext;
@@ -49,26 +50,18 @@ namespace DragonSpark.Presentation.Components
 						         {
 							         EditContext.OnFieldChanged           += Changed;
 							         EditContext.OnValidationStateChanged += Changed;
-						         }, 1000);
+						         });
 					}
 				}
 			}
 		}
 
-		public bool IsValid
-		{
-			get
-			{
-				var b = !EditContext.GetValidationMessages()
-				                    .AsValueEnumerable()
-				                    .Any();
-				var all = _identifiers.SelectMany(x => x.Value)
-				                      .All(x => x.Valid.GetValueOrDefault(false));
-				return b
-				       &&
-				       all;
-			}
-		}
+		public bool IsValid => !EditContext.GetValidationMessages()
+		                                   .AsValueEnumerable()
+		                                   .Any()
+		                       &&
+		                       _identifiers.SelectMany(x => x.Value)
+		                                   .All(x => x.Valid.GetValueOrDefault(false));
 
 		public async ValueTask<bool> Validate()
 		{

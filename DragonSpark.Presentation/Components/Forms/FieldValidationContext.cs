@@ -1,66 +1,45 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	sealed class FieldValidationContext : IOperation, ICommand
+	sealed class FieldValidationContext : IOperation<FieldValidator>, ICommand<FieldIdentifier>
 	{
-		readonly FieldValidator                   _owner;
-		readonly Array<FieldValidationDefinition> _definitions;
-		readonly ValidationMessageStore           _store;
-		FieldValidationDefinition                 _current;
+		readonly IValidationDefinition  _view;
+		readonly ValidationMessageStore _store;
 
-		public FieldValidationContext(FieldValidator owner, Array<FieldValidationDefinition> definitions,
-		                              EditContext context)
-			: this(owner, definitions, new ValidationMessageStore(context)) {}
+		public FieldValidationContext(IValidationDefinition view, EditContext context)
+			: this(view, new ValidationMessageStore(context)) {}
 
-		public FieldValidationContext(FieldValidator owner, Array<FieldValidationDefinition> definitions,
-		                              ValidationMessageStore store)
+		public FieldValidationContext(IValidationDefinition view, ValidationMessageStore store)
 		{
-			_owner       = owner;
-			_definitions = definitions;
-			_store       = store;
-		}
-
-		FieldValidationDefinition Current
-		{
-			get => _current;
-			set
-			{
-				var refresh = value != null && _current != null;
-				_current = value;
-				if (refresh)
-				{
-					_owner.Execute();
-				}
-			}
+			_view  = view;
+			_store = store;
 		}
 
 		ValidationResult? Result { get; set; }
 
-		public bool? Valid => Current == null ? Result.HasValue && Result.Value.Valid : (bool?)null;
+		public bool? Valid => _view.IsActive ? null : Result?.Valid;
 
-		public string Text => Current?.Messages.Loading ??
-		                      (Result.HasValue && !Result.Value.Valid ? Result.Value.Message : null);
+		public string Text => _view.IsActive
+			                      ? _view.Messages.Loading
+			                      : Result.HasValue && !Result.Value.Valid
+				                      ? Result?.Message
+				                      : null;
 
-		public async ValueTask Get()
+		public async ValueTask Get(FieldValidator parameter)
 		{
 			try
 			{
-				foreach (var definition in _definitions.Open())
+				var result = await _view.Get(parameter);
+				if (!result.Valid)
 				{
-					Current = definition;
-					if (!await definition.Operation.Get(_owner.Identifier))
-					{
-						Invalidate(definition.Messages.Invalid);
-						return;
-					}
+					Invalidate(parameter.Identifier, result.Message);
+					return;
 				}
 
 				Result = ValidationResult.Success;
@@ -68,30 +47,23 @@ namespace DragonSpark.Presentation.Components.Forms
 			// ReSharper disable once CatchAllClause
 			catch (Exception error)
 			{
-				Invalidate(Current.Messages.Error);
-				_owner.Logger.LogError(error,
-				                       "An exception occurred while performing a long-running validation operation on field '{Field}' using operation of type '{Operation}'.",
-				                       _owner.Identifier.FieldName, Current.Operation.GetType());
-			}
-			finally
-			{
-				Current = null;
+				Invalidate(parameter.Identifier, _view.Messages.Error);
+				parameter.Logger.LogError(error,
+				                          "An exception occurred while performing an operation to validate '{Field}'.",
+				                          parameter.Identifier.FieldName);
 			}
 		}
 
-		void Invalidate(string message)
+		void Invalidate(FieldIdentifier identifier, string message)
 		{
 			Result = new ValidationResult(false, message);
-			_store.Add(_owner.Identifier, message);
+			_store.Add(identifier, message);
 		}
 
-		public void Execute(None parameter)
+		public void Execute(FieldIdentifier parameter)
 		{
-			_store.Clear(_owner.Identifier);
-
-			// TODO: Cancel?
-			Result  = null;
-			Current = null;
+			Result = null;
+			_store.Clear(parameter);
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
@@ -28,7 +26,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		public bool Popup { get; set; }
 
 		[Parameter, UsedImplicitly]
-		public List<FieldValidationDefinition> Definitions { get; set; }
+		public IValidationDefinition Definition { get; set; }
 
 		[Parameter, UsedImplicitly]
 		public string Component { get; set; }
@@ -41,7 +39,8 @@ namespace DragonSpark.Presentation.Components.Forms
 		[CascadingParameter, UsedImplicitly]
 		OperationMonitor Monitor { get; set; }
 
-		FieldValidationContext Validation { get; set; }
+		FieldValidationContext Context { get; set; }
+
 
 		[CascadingParameter, UsedImplicitly]
 		public EditContext EditContext
@@ -62,7 +61,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			}
 		}
 
-		public bool? Valid => Validation.Valid;
+		public bool? Valid => Context.Valid;
 
 		protected override void OnInitialized()
 		{
@@ -74,13 +73,13 @@ namespace DragonSpark.Presentation.Components.Forms
 		void Register()
 		{
 			Identifier = new FieldIdentifier(EditContext.Model, Component);
-			Validation = new FieldValidationContext(this, Definitions.Result(), EditContext);
+			Context = new FieldValidationContext(Definition, EditContext);
 			Monitor.Execute(this);
 		}
 
 		public void Reset()
 		{
-			Validation.Execute();
+			Context.Execute(Identifier);
 		}
 
 		public void Start()
@@ -94,7 +93,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 
 		protected override string GetComponentCssClass()
-			=> $"ui-message ui-messages-{(Validation.Valid.HasValue ? "error" : "active")} {(Popup ? "ui-message-popup" : string.Empty)}";
+			=> $"ui-message ui-messages-{(Context.Valid.HasValue ? "error" : "active")} {(Popup ? "ui-message-popup" : string.Empty)}";
 
 		public async ValueTask<bool> Validate()
 		{
@@ -103,7 +102,7 @@ namespace DragonSpark.Presentation.Components.Forms
 				return true;
 			}
 
-			await Validation.Get().ConfigureAwait(false);
+			await Context.Get(this).ConfigureAwait(false);
 
 			if (!Valid.HasValue)
 			{
@@ -116,7 +115,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		async Task Refresh()
 		{
-			await Validation.Get();
+			await Context.Get(this);
 
 			EditContext.NotifyValidationStateChanged();
 		}
@@ -125,7 +124,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			if (Visible)
 			{
-				var text = Validation.Text;
+				var text = Context.Text;
 				if (text != null)
 				{
 					builder.OpenElement(0, "div");
