@@ -4,9 +4,9 @@
     <p Style="margin-bottom: 25px;">@Content</p>
     <div class="row">
         <div class="col-md-12">
-            <RadzenButton Text="Ok" Click="Accept" Style="margin-bottom: 10px; width: 150px" />
             <RadzenButton id="@UniqueID" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Secondary"
-                           Style="margin-bottom: 10px; width: 150px" />
+                          Style="margin-bottom: 10px; width: 150px" />
+            <RadzenButton Text="Ok" Click="Accept" Style="margin-bottom: 10px; width: 150px" />
         </div>
     </div>
     <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
