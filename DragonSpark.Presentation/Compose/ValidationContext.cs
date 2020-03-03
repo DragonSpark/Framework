@@ -1,5 +1,8 @@
 ﻿using DragonSpark.Model.Operations;
+using DragonSpark.Presentation.Components.Forms;
 using Microsoft.AspNetCore.Components.Forms;
+using NetFabric.Hyperlinq;
+using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Presentation.Compose
 {
@@ -11,5 +14,10 @@ namespace DragonSpark.Presentation.Compose
 
 		public ValidationDefinitionContext Using(IOperationResult<FieldIdentifier, bool> operation)
 			=> new ValidationDefinitionContext(operation);
+
+		public IFieldValidator Using(params ValidationAttribute[] attributes)
+			=> Using(attributes.Select(x => x.Adapt()).ToArray());
+
+		public IFieldValidator Using(params IFieldValidator[] validators) => new CompositeFieldValidator(validators);
 	}
 }
