@@ -1,0 +1,30 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime;
+
+@code {
+
+    // ATTRIBUTION: https://github.com/dotnet/aspnetcore/issues/16218#issuecomment-552052798
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Type { get; set; } = "text/javascript";
+
+    protected override bool ShouldRender() => false; // important!!
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender && ChildContent != null && Type == "text/javascript")
+        {
+            var script = ChildContent.Text();
+            if (!string.IsNullOrWhiteSpace(script))
+            {
+                await JSRuntime.InvokeVoidAsync("eval", script);
+            }
+        }
+    }
+}

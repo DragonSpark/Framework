@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	/// <summary>
-	/// ATTRIBUTION: https://www.nuget.org/packages/Radzen.Blazor/
-	/// </summary>
 	public class FieldValidator : RadzenComponent, ICommand
 	{
 		readonly Func<Task> _validate;

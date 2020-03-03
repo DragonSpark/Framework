@@ -2,6 +2,7 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Presentation
@@ -19,5 +20,7 @@ namespace DragonSpark.Presentation
 		                                                                .GetProperty(@this.FieldName)
 		                                                                .GetValue(@this.Model)
 		                                                                .To<T>(); // TODO: Optimize with delegate.
+
+		public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 	}
 }

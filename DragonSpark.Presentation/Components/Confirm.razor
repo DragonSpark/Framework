@@ -1,0 +1,44 @@
+﻿@inject DialogService Dialogs
+@inherits RadzenComponent
+<RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
+    <p Style="margin-bottom: 25px;">@Content</p>
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenButton Text="Ok" Click="Accept" Style="margin-bottom: 10px; width: 150px" />
+            <RadzenButton id="@UniqueID" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Secondary"
+                           Style="margin-bottom: 10px; width: 150px" />
+        </div>
+    </div>
+    <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
+</RadzenCard>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Cancel = Cancel.HasDelegate ? Cancel :  EventCallback.Factory.Create<MouseEventArgs>(this, _ => Dialogs.Close());
+    }
+
+
+    [Parameter]
+    public string Content { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> Accept { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> Cancel { get; set; }
+
+    void LogKeyPressed(KeyboardEventArgs eventArgs)
+    {
+        switch (eventArgs.Code)
+        {
+            case "Escape":
+                Dialogs.Close();
+                break;
+        }
+    }
+
+}
