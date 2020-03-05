@@ -1,12 +1,12 @@
 ﻿@using JetBrains.Annotations
 @* ReSharper disable once ArrangeRedundantParentheses *@
-<RadzenButton Text="@Text" Icon="@Icon" ButtonType="ButtonType.Submit" Disabled="@(!Monitor.IsValid)"/>
+<ButtonComponent Text="@Text" Icon="@Icon" ButtonType="ButtonType.Submit" Disabled="@(!Monitor.IsValid)"/>
 
 @code {
 
     Action _changed;
     EditContext _editContext;
-    
+
     [Parameter]
     public string Icon { get; [UsedImplicitly] set; }
 

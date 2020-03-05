@@ -4,9 +4,9 @@
     <p Style="margin-bottom: 25px;">@Content</p>
     <div class="row">
         <div class="col-md-12">
-            <RadzenButton id="@UniqueID" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Secondary"
+            <ButtonComponent id="@UniqueID" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Secondary"
                           Style="margin-bottom: 10px; width: 150px" />
-            <RadzenButton Text="Ok" Click="Accept" Style="margin-bottom: 10px; width: 150px" />
+            <ButtonComponent Text="Ok" Click="Accept" Style="margin-bottom: 10px; width: 150px" />
         </div>
     </div>
     <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
@@ -18,7 +18,7 @@
     {
         base.OnInitialized();
 
-        Cancel = Cancel.HasDelegate ? Cancel :  EventCallback.Factory.Create<MouseEventArgs>(this, _ => Dialogs.Close());
+        Cancel = Cancel.HasDelegate ? Cancel :  EventCallback.Factory.Create<MouseEventArgs>(this, () => Dialogs.Close());
     }
 
 

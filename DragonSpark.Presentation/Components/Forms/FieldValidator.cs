@@ -15,7 +15,8 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		readonly Func<Task> _validate;
 
-		EditContext _editContext;
+		EditContext            _editContext;
+		FieldValidationContext _context;
 
 		public FieldValidator() => _validate = Refresh;
 
@@ -36,8 +37,15 @@ namespace DragonSpark.Presentation.Components.Forms
 		[CascadingParameter, UsedImplicitly]
 		OperationMonitor Monitor { get; set; }
 
-		FieldValidationContext Context { get; set; }
-
+		FieldValidationContext Context
+		{
+			get => _context;
+			set
+			{
+				_context?.Execute(Identifier);
+				_context = value;
+			}
+		}
 
 		[CascadingParameter, UsedImplicitly]
 		public EditContext EditContext
@@ -45,7 +53,6 @@ namespace DragonSpark.Presentation.Components.Forms
 			get => _editContext;
 			set
 			{
-
 				if (_editContext != value)
 				{
 					var register = _editContext != null;
@@ -69,8 +76,8 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		void Register()
 		{
+			Context    = new FieldValidationContext(Definition, EditContext);
 			Identifier = new FieldIdentifier(EditContext.Model, Component);
-			Context = new FieldValidationContext(Definition, EditContext);
 			Monitor.Execute(this);
 		}
 
