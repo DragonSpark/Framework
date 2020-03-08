@@ -6,31 +6,21 @@
 @inject DialogService Dialogs
 @inject Callbacks Callbacks
 
-<RadzenGrid @ref="_grid" AllowFiltering="true" AllowPaging="true" PageSize="3" AllowSorting="true"
-             Data="@Query" TItem="TEntity" style="margin-bottom: 20px">
+<RadzenGrid TItem="TEntity" @ref="_grid" AllowFiltering="true" AllowPaging="true" PageSize="@PageSize" AllowSorting="true"
+             Data="@Query" style="margin-bottom: 20px" Template="@Details">
     <Columns>
+
         @Columns
 
-        <RadzenGridColumn TItem="TEntity" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+        <RadzenGridColumn TItem="TEntity" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
             <Template Context="item">
-                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(_ => StartEdit(item))" title="Edit the properties of this entity." />
+                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(_ => _editor.Open(item))" title="Edit the properties of this entity."/>
             </Template>
-            @*<EditTemplate Context="item">
-                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@(_ => SaveRow(item))" title="Save edits and return to viewing mode." />
-
-                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(_ => CancelEdit(item))"
-                                  title="Cancel this operation."
-                                  />
-                </EditTemplate>*@
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="TEntity" Context="item" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
-            @*
-                <EditTemplate Context="item">
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(_ => DeleteRow(item))" />
-                </EditTemplate>*@
+        <RadzenGridColumn TItem="TEntity" Context="item" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
             <Template Context="item">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(_ => _delete.Open(item))"
-                              title="Delete this entity." />
+                              title="Delete this entity."/>
             </Template>
         </RadzenGridColumn>
     </Columns>
@@ -78,6 +68,12 @@
     [Parameter, UsedImplicitly]
     public Func<TEntity, string> Name { get; set; } = _ => $"{A.Type<TEntity>().Name}";
 
+    [Parameter]
+    public int PageSize { get; set; } = 10;
+
+    [Parameter]
+    public RenderFragment<TEntity> Details { get; set; }
+
     [Parameter, UsedImplicitly]
     public RenderFragment Columns { get; set; }
 
@@ -90,6 +86,7 @@
     [Parameter, UsedImplicitly]
     public DbContext Storage { get; set; }
 
+    [UsedImplicitly]
     ValueTask<bool> ConfirmCreate() => _newForm.EditContext.Validate().ToOperation();
 
     async Task CompleteCreate(TEntity entity)
@@ -101,12 +98,7 @@
         _grid.Reload();
     }
 
-    Task StartEdit(TEntity entity)
-    {
-        _grid.EditRow(entity);
-        return _editor.Open(entity);
-    }
-
+    [UsedImplicitly]
     ValueTask<bool> ConfirmEdit() => _editForm.EditContext.Validate().ToOperation();
 
     [UsedImplicitly]
