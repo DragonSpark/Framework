@@ -1,0 +1,25 @@
+﻿@using JetBrains.Annotations
+@typeparam T
+
+
+@inject DialogService Dialogs
+
+
+@code {
+
+    [Parameter, UsedImplicitly]
+    public string Title { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public RenderFragment<DialogParameter<T>> ChildContent { get; set; }
+
+    public Task Open(T entity) => Dialogs.OpenAsync(Title, x => ChildContent(DialogParameter.From(x, entity)),
+                                                    new DialogOptions {Width = "unset"});
+
+    public Task Close()
+    {
+        Dialogs.Close();
+        return Task.CompletedTask;
+    }
+
+}

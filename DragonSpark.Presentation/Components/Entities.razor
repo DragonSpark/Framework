@@ -1,0 +1,137 @@
+﻿@using DragonSpark.Compose
+@using JetBrains.Annotations
+@using Microsoft.EntityFrameworkCore
+@typeparam TEntity
+
+@inject DialogService Dialogs
+@inject Callbacks Callbacks
+
+<RadzenGrid @ref="_grid" AllowFiltering="true" AllowPaging="true" PageSize="3" AllowSorting="true"
+             Data="@Query" TItem="TEntity" style="margin-bottom: 20px">
+    <Columns>
+        @Columns
+
+        <RadzenGridColumn TItem="TEntity" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="item">
+                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(_ => StartEdit(item))" title="Edit the properties of this entity." />
+            </Template>
+            @*<EditTemplate Context="item">
+                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@(_ => SaveRow(item))" title="Save edits and return to viewing mode." />
+
+                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(_ => CancelEdit(item))"
+                                  title="Cancel this operation."
+                                  />
+                </EditTemplate>*@
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="TEntity" Context="item" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            @*
+                <EditTemplate Context="item">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(_ => DeleteRow(item))" />
+                </EditTemplate>*@
+            <Template Context="item">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(_ => _delete.Open(item))"
+                              title="Delete this entity." />
+            </Template>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+
+<RadzenButton Text="New" Click="@(_ => _new.Open(Create()))" />
+
+
+<DialogContext T="TEntity" @ref="_new" Title="@($"Create {A.Type<TEntity>().Name}")" Context="parameter">
+    <Confirm Confirmation="ConfirmCreate" Accept="@Callbacks.Get(this, () => CompleteCreate(parameter.Context))">
+        <RadzenTemplateForm TItem="TEntity" @ref="_newForm" Data="parameter.Context">
+            @EditContent(parameter.Context)
+        </RadzenTemplateForm>
+    </Confirm>
+</DialogContext>
+
+<DialogContext T="TEntity" @ref="_editor" Title="@($"Edit {A.Type<TEntity>().Name}")" Context="parameter">
+    <Confirm Confirmation="ConfirmEdit" Accept="@Callbacks.Get(this, () => CompleteEdit(parameter.Context))" Cancel="@(() => CancelEdit(parameter.Context))">
+        <RadzenTemplateForm TItem="TEntity" @ref="_editForm" Data="parameter.Context">
+            @EditContent(parameter.Context)
+        </RadzenTemplateForm>
+    </Confirm>
+</DialogContext>
+
+<DialogContext T="TEntity" @ref="_delete" Title="@($"Delete {A.Type<TEntity>().Name}")" Context="parameter">
+    <Confirm Accept="@Callbacks.Get(this, () => Delete(parameter.Context))">
+        Delete entry named '@Name(parameter.Context)'?  This cannot be undone.
+    </Confirm>
+</DialogContext>
+
+@code {
+
+    [UsedImplicitly]
+    RadzenTemplateForm<TEntity> _newForm, _editForm;
+
+    [UsedImplicitly]
+    DialogContext<TEntity> _delete, _editor, _new;
+
+    [UsedImplicitly]
+    RadzenGrid<TEntity> _grid;
+
+    [Parameter, UsedImplicitly]
+    public Func<TEntity> Create { get; set; } = Start.An.Instance<TEntity>;
+
+    [Parameter, UsedImplicitly]
+    public Func<TEntity, string> Name { get; set; } = _ => $"{A.Type<TEntity>().Name}";
+
+    [Parameter, UsedImplicitly]
+    public RenderFragment Columns { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public RenderFragment<TEntity> EditContent { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public IQueryable<TEntity> Query { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public DbContext Storage { get; set; }
+
+    ValueTask<bool> ConfirmCreate() => _newForm.EditContext.Validate().ToOperation();
+
+    async Task CompleteCreate(TEntity entity)
+    {
+        Storage.Add(entity);
+
+        await Storage.SaveChangesAsync();
+
+        _grid.Reload();
+    }
+
+    Task StartEdit(TEntity entity)
+    {
+        _grid.EditRow(entity);
+        return _editor.Open(entity);
+    }
+
+    ValueTask<bool> ConfirmEdit() => _editForm.EditContext.Validate().ToOperation();
+
+    [UsedImplicitly]
+    Task CompleteEdit(TEntity entity)
+    {
+        Storage.Update(entity);
+        _grid.UpdateRow(entity);
+        return Storage.SaveChangesAsync();
+    }
+
+    [UsedImplicitly]
+    void CancelEdit(TEntity entity)
+    {
+        _grid.CancelEditRow(entity);
+
+        var entry = Storage.Entry(entity);
+        entry.CurrentValues.SetValues(entry.OriginalValues);
+        entry.State = EntityState.Unchanged;
+    }
+
+    [UsedImplicitly]
+    async Task Delete(TEntity entity)
+    {
+        Storage.Set<TEntity>().Remove(entity);
+        await Storage.SaveChangesAsync();
+        _grid.Reload();
+    }
+}
