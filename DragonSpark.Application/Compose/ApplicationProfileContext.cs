@@ -6,6 +6,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,5 +65,39 @@ namespace DragonSpark.Application.Compose
 
 		public ApplicationProfileContext Get(ICommand<IWebHostBuilder> parameter)
 			=> new ApplicationProfileContext(_context, _profile, _configure.Append(parameter));
+	}
+
+	public sealed class AuthenticationContext : IResult<ApplicationProfileContext>
+	{
+		readonly ApplicationProfileContext _subject;
+		readonly CommandContext<AuthenticationBuilder> _configure;
+
+		public AuthenticationContext(ApplicationProfileContext subject)
+			: this(subject, Start.A.Command<AuthenticationBuilder>().By.Empty) {}
+
+		public AuthenticationContext(ApplicationProfileContext subject, CommandContext<AuthenticationBuilder> configure)
+		{
+			_subject = subject;
+			_configure = configure;
+		}
+
+		public AuthenticationContext Then(ICommand<AuthenticationBuilder> command) => Then(command.Execute);
+
+		public AuthenticationContext Then(System.Action<AuthenticationBuilder> command)
+			=> new AuthenticationContext(_subject, _configure.Append(command));
+
+		public ApplicationProfileContext Get() => _subject.Then(new AuthenticationContextCommand(_configure));
+	}
+
+	sealed class AuthenticationContextCommand : ICommand<IServiceCollection>
+	{
+		readonly System.Action<AuthenticationBuilder> _command;
+
+		public AuthenticationContextCommand(System.Action<AuthenticationBuilder> command) => _command = command;
+
+		public void Execute(IServiceCollection parameter)
+		{
+			_command(parameter.AddAuthentication());
+		}
 	}
 }

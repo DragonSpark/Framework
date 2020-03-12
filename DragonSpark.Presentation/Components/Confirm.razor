@@ -16,15 +16,17 @@
 
 @code {
 
+    [UsedImplicitly]
     async Task OnAccept(MouseEventArgs parameter)
     {
         if (await Confirmation())
         {
             await Accept.InvokeAsync(parameter);
-            Dialogs.Close();   
+            Dialogs.Close();
         }
     }
 
+    [UsedImplicitly]
     async Task OnCancel(MouseEventArgs parameter)
     {
         await Cancel.InvokeAsync(parameter);

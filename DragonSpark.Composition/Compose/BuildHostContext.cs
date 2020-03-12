@@ -15,8 +15,7 @@ namespace DragonSpark.Composition.Compose
 	                                       IOperationResult<HostBuilder, IHost>,
 	                                       IActivateUsing<IAlteration<IHostBuilder>>
 	{
-		public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context)
-			=> context.Get().ToDelegate();
+		public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context) => context.Get().Get;
 
 		readonly IAlteration<IHostBuilder> _select;
 

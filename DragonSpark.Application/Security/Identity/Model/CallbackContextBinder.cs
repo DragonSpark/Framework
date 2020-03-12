@@ -11,16 +11,6 @@ namespace DragonSpark.Application.Security.Identity.Model
 		static ModelBindingResult Redirect(string message, string origin)
 			=> ModelBindingResult.Success(new LoginErrorRedirect(message, origin));
 
-		// ReSharper disable once TooManyDependencies
-		CallbackContextBinder(IUrlHelperFactory urls, SignInManager<T> authentication, Text.Text returnUrl,
-		                      Text.Text errorMessage)
-		{
-			_authentication = authentication;
-			_urls           = urls;
-			_returnUrl      = returnUrl;
-			_errorMessage   = errorMessage;
-		}
-
 		readonly SignInManager<T>  _authentication;
 		readonly Text.Text         _returnUrl, _errorMessage;
 		readonly IUrlHelperFactory _urls;
@@ -28,6 +18,16 @@ namespace DragonSpark.Application.Security.Identity.Model
 		[UsedImplicitly]
 		public CallbackContextBinder(IUrlHelperFactory urls, SignInManager<T> authentication)
 			: this(urls, authentication, ReturnUrl.Default, RemoteError.Default) {}
+
+		// ReSharper disable once TooManyDependencies
+		internal CallbackContextBinder(IUrlHelperFactory urls, SignInManager<T> authentication, Text.Text returnUrl,
+		                               Text.Text errorMessage)
+		{
+			_authentication = authentication;
+			_urls           = urls;
+			_returnUrl      = returnUrl;
+			_errorMessage   = errorMessage;
+		}
 
 		public async Task BindModelAsync(ModelBindingContext bindingContext)
 		{

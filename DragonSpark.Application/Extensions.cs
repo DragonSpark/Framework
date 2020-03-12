@@ -23,6 +23,9 @@ namespace DragonSpark.Application
 		                                           Action<IdentityOptions> configure)
 			=> new IdentityContext(@this, configure);
 
+		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this)
+			=> new AuthenticationContext(@this);
+
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
 		                                                       params ICommand<AuthorizationOptions>[] policies)
 			=> @this.AuthorizeUsing(policies.Select(x => x.ToDelegate()).ToArray());

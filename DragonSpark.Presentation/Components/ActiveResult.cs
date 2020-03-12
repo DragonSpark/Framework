@@ -2,13 +2,13 @@
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class ViewProperty<T> : IViewProperty, ISource<T>
+	public sealed class ActiveResult<T> : IViewProperty, ISource<T>
 	{
-		public static implicit operator ViewProperty<T>(ValueTask<T> instance) => new ViewProperty<T>(instance);
+		public static implicit operator ActiveResult<T>(ValueTask<T> instance) => new ActiveResult<T>(instance);
 
 		readonly ValueTask<T> _source;
 
-		public ViewProperty(ValueTask<T> source) => _source = source;
+		public ActiveResult(ValueTask<T> source) => _source = source;
 
 		public T Value { get; private set; }
 
