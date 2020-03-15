@@ -1,13 +1,11 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using NetFabric.Hyperlinq;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -27,12 +25,12 @@ namespace DragonSpark.Application
 			=> new AuthenticationContext(@this);
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       params ICommand<AuthorizationOptions>[] policies)
-			=> @this.AuthorizeUsing(policies.Select(x => x.ToDelegate()).ToArray());
+		                                                       ICommand<AuthorizationOptions> policy)
+			=> @this.AuthorizeUsing(policy.Execute);
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       params Action<AuthorizationOptions>[] policies)
-			=> @this.Then(new AuthorizeConfiguration(new ConfigurePolicies(policies).Execute));
+		                                                       Action<AuthorizationOptions> policy)
+			=> @this.Then(new AuthorizeConfiguration(policy));
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
 
@@ -50,6 +48,10 @@ namespace DragonSpark.Application
 			var result = @this.HasClaim(x => x.Type == type);
 			return result;
 		}
+
+		public static Claim Claim(this Text.Text @this, Claim claim) => @this.Claim(claim.Value);
+
+		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
 
 		public static string Value(this ModelBindingContext @this, IResult<string> key)
 			=> @this.ValueProvider.Get(key);

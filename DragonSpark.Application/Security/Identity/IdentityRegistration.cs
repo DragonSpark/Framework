@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
+using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,13 +9,15 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class IdentityRegistration<T> : ICommand<IServiceCollection> where T : IdentityUser
 	{
+		readonly IAppliedPrincipal          _principal;
 		readonly IClaims                    _claims;
 		readonly Func<ExternalLoginInfo, T> _new;
 
-		public IdentityRegistration(IClaims claims, Func<ExternalLoginInfo, T> @new)
+		public IdentityRegistration(IAppliedPrincipal principal, IClaims claims, Func<ExternalLoginInfo, T> @new)
 		{
-			_claims = claims;
-			_new    = @new;
+			_principal = principal;
+			_claims    = claims;
+			_new       = @new;
 		}
 
 		public void Execute(IServiceCollection parameter)
@@ -31,7 +34,12 @@ namespace DragonSpark.Application.Security.Identity
 			         .AddScoped<ICreateAction, CreateAction<T>>()
 			         .Decorate<ICreateAction, SynchronizedCreateAction>()
 			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
-			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider<T>.Default));
+			         // Profile:
+			         .AddSingleton(_principal)
+			         .AddScoped<IAuthenticationProfile, AuthenticationProfile<T>>()
+			         .Decorate<IAuthenticationProfile, AuthenticationProfile>()
+			         //
+			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider.Default));
 		}
 	}
 }

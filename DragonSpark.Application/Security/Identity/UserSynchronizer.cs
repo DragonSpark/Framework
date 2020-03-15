@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Security.Identity
 	{
 		readonly UserManager<T>        _users;
 		readonly ITransactional<Claim> _transactional;
-		readonly IClaims _claims;
+		readonly IClaims               _claims;
 
 		public UserSynchronizer(UserManager<T> users, IClaims claims)
 			: this(users, ClaimsTransactional.Default, claims) {}
@@ -17,7 +17,7 @@ namespace DragonSpark.Application.Security.Identity
 		{
 			_users         = users;
 			_transactional = transactional;
-			_claims = claims;
+			_claims        = claims;
 		}
 
 		public async ValueTask<bool> Get((Stored<T> Stored, ClaimsPrincipal Source) parameter)

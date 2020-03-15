@@ -1,5 +1,7 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security.Identity.Profile;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +10,19 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
+	interface IAppliedAuthentication : IAlteration<ExternalLoginInfo> {}
+
+	sealed class AppliedAuthentication : IAppliedAuthentication
+	{
+		readonly IAppliedPrincipal _principal;
+
+		public AppliedAuthentication(IAppliedPrincipal principal) => _principal = principal;
+
+		public ExternalLoginInfo Get(ExternalLoginInfo parameter)
+			=> new ExternalLoginInfo(_principal.Get(parameter), parameter.LoginProvider, parameter.ProviderKey,
+			                         parameter.ProviderDisplayName);
+	}
+
 	interface IExternalSignin : IOperationResult<ExternalLoginInfo, SignInResult> {}
 
 	sealed class ExternalSignin<T> : IExternalSignin where T : class
@@ -17,7 +32,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public ExternalSignin(SignInManager<T> authentication) => _authentication = authentication;
 
 		public ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
-			=> _authentication.ExternalLoginSignInAsync(parameter.LoginProvider, parameter.ProviderKey, false, true)
+			=> _authentication.ExternalLoginSignInAsync(parameter.LoginProvider, parameter.ProviderKey, true, true)
 			                  .ToOperation();
 	}
 

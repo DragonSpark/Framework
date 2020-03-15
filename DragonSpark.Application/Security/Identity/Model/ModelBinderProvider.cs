@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public sealed class ModelBinderProvider<T> : IModelBinderProvider where T : class
+	public sealed class ModelBinderProvider : IModelBinderProvider
 	{
-		public static ModelBinderProvider<T> Default { get; } = new ModelBinderProvider<T>();
+		public static ModelBinderProvider Default { get; } = new ModelBinderProvider();
 
 		ModelBinderProvider() : this(new Dictionary<Type, Type>
 		{
-			[A.Type<CallbackContext>()] = A.Type<CallbackContextBinder<T>>(),
+			[A.Type<CallbackContext>()] = A.Type<CallbackContextBinder>(),
 			[A.Type<ProviderContext>()] = A.Type<ProviderContextBinder>()
 		}) {}
 

@@ -1,32 +1,32 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Application.Security.Identity.Profile;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	sealed class CallbackContextBinder<T> : IModelBinder where T : class
+	sealed class CallbackContextBinder : IModelBinder
 	{
 		static ModelBindingResult Redirect(string message, string origin)
 			=> ModelBindingResult.Success(new LoginErrorRedirect(message, origin));
 
-		readonly SignInManager<T>  _authentication;
-		readonly Text.Text         _returnUrl, _errorMessage;
-		readonly IUrlHelperFactory _urls;
+		readonly IUrlHelperFactory      _urls;
+		readonly IAuthenticationProfile _profile;
+		readonly Text.Text              _returnUrl, _errorMessage;
 
 		[UsedImplicitly]
-		public CallbackContextBinder(IUrlHelperFactory urls, SignInManager<T> authentication)
-			: this(urls, authentication, ReturnUrl.Default, RemoteError.Default) {}
+		public CallbackContextBinder(IUrlHelperFactory urls, IAuthenticationProfile profile)
+			: this(urls, profile, ReturnUrl.Default, RemoteError.Default) {}
 
 		// ReSharper disable once TooManyDependencies
-		internal CallbackContextBinder(IUrlHelperFactory urls, SignInManager<T> authentication, Text.Text returnUrl,
+		internal CallbackContextBinder(IUrlHelperFactory urls, IAuthenticationProfile profile, Text.Text returnUrl,
 		                               Text.Text errorMessage)
 		{
-			_authentication = authentication;
-			_urls           = urls;
-			_returnUrl      = returnUrl;
-			_errorMessage   = errorMessage;
+			_urls         = urls;
+			_profile      = profile;
+			_returnUrl    = returnUrl;
+			_errorMessage = errorMessage;
 		}
 
 		public async Task BindModelAsync(ModelBindingContext bindingContext)
@@ -42,16 +42,11 @@ namespace DragonSpark.Application.Security.Identity.Model
 				return;
 			}
 
-			var login = await _authentication.GetExternalLoginInfoAsync();
-			if (login == null)
-			{
-				bindingContext.Result = Redirect("Error loading external login information.", origin);
-				return;
-			}
+			var login = await _profile.Get();
 
-			var instance = new CallbackContext(login, origin);
-
-			bindingContext.Result = ModelBindingResult.Success(instance);
+			bindingContext.Result = login != null
+				                        ? ModelBindingResult.Success(new CallbackContext(login, origin))
+				                        : Redirect("Error loading external login information.", origin);
 		}
 	}
 }
