@@ -1,28 +1,25 @@
 ﻿using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Profile;
 using Microsoft.AspNetCore.Identity;
+using System;
 
-namespace DragonSpark.Application.Compose.Entities {
+namespace DragonSpark.Application.Compose.Entities
+{
 	public sealed class IdentityClaimsContext<T> where T : IdentityUser
 	{
-		readonly IdentityClaimsContextParameter<T> _context;
-		readonly IAppliedPrincipal                 _principal;
+		readonly ApplicationProfileContext  _context;
+		readonly Action<IdentityOptions>    _configure;
+		readonly Func<ExternalLoginInfo, T> _create;
 
-		public IdentityClaimsContext(IdentityClaimsContextParameter<T> context)
-			: this(context, DefaultAppliedPrincipal.Default) {}
-
-		public IdentityClaimsContext(IdentityClaimsContextParameter<T> context, IAppliedPrincipal principal)
+		public IdentityClaimsContext(ApplicationProfileContext context, Action<IdentityOptions> configure,
+		                             Func<ExternalLoginInfo, T> create)
 		{
 			_context   = context;
-			_principal = principal;
+			_configure = configure;
+			_create    = create;
 		}
 
-		public IdentityClaimsContext<T> Using(IAppliedPrincipal principal)
-			=> new IdentityClaimsContext<T>(_context, principal);
-
 		public ConfiguredIdentityContext<T> Having(IClaims claims)
-			=> new ConfiguredIdentityContext<T>(_context.Context.Then(new IdentityRegistration<T>(_principal, claims,
-			                                                                                      _context.Create)),
-			                                    _context.Configure);
+			=> new ConfiguredIdentityContext<T>(_context.Then(new IdentityRegistration<T>(claims, _create)),
+			                                    _configure);
 	}
 }

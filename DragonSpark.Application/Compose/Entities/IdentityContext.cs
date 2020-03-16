@@ -19,6 +19,6 @@ namespace DragonSpark.Application.Compose.Entities
 			=> CreatedWith(create.Get);
 
 		public IdentityClaimsContext<T> CreatedWith<T>(Func<ExternalLoginInfo, T> create) where T : IdentityUser
-			=> new IdentityClaimsContext<T>(new IdentityClaimsContextParameter<T>(_context, _configure, create));
+			=> new IdentityClaimsContext<T>(_context, _configure, create);
 	}
 }

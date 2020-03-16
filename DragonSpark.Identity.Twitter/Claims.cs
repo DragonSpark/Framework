@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
+﻿using DragonSpark.Application.Security.Identity;
 
 namespace DragonSpark.Identity.Twitter
 {

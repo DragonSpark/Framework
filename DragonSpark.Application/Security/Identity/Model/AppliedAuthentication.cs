@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.Security.Identity.Model {
+namespace DragonSpark.Application.Security.Identity.Model
+{
 	sealed class AppliedAuthentication : IAppliedAuthentication
 	{
 		readonly IAppliedPrincipal _principal;

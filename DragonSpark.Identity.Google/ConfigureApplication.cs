@@ -1,4 +1,6 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application;
+using DragonSpark.Application.Security.Identity;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +19,9 @@ namespace DragonSpark.Identity.Google
 			parameter.Services.Register<GoogleApplicationSettings>()
 			         .Return(parameter)
 			         .Pair(parameter.Services.Deferred<GoogleApplicationSettings>())
-			         .With((x, y) => x.AddGoogle(new ConfigureAuthentication(y).Execute));
+			         .With((x, y) => x.AddGoogle(new ConfigureAuthentication(y).Execute))
+			         .Return(parameter.Services)
+			         .AddSingleton(DefaultNameClaim.Default.DisplayName("Google"));
 		}
 	}
 }

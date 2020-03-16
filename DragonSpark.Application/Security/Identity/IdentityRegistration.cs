@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
-using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,13 +8,11 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class IdentityRegistration<T> : ICommand<IServiceCollection> where T : IdentityUser
 	{
-		readonly IAppliedPrincipal          _principal;
 		readonly IClaims                    _claims;
 		readonly Func<ExternalLoginInfo, T> _new;
 
-		public IdentityRegistration(IAppliedPrincipal principal, IClaims claims, Func<ExternalLoginInfo, T> @new)
+		public IdentityRegistration(IClaims claims, Func<ExternalLoginInfo, T> @new)
 		{
-			_principal = principal;
 			_claims    = claims;
 			_new       = @new;
 		}
@@ -35,7 +32,6 @@ namespace DragonSpark.Application.Security.Identity
 			         .Decorate<ICreateAction, SynchronizedCreateAction>()
 			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
 			         // Profile:
-			         .AddSingleton(_principal)
 			         .AddScoped<IAuthenticationProfile, AuthenticationProfile<T>>()
 			         .Decorate<IAuthenticationProfile, AuthenticationProfile>()
 			         //

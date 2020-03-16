@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,9 @@ namespace DragonSpark.Identity.Twitter
 			parameter.Services.Register<TwitterApplicationSettings>()
 			         .Return(parameter)
 			         .Pair(parameter.Services.Deferred<TwitterApplicationSettings>())
-			         .With((x, y) => x.AddTwitter(new ConfigureTwitterAuthentication(y).Execute));
+			         .With((x, y) => x.AddTwitter(new ConfigureTwitterAuthentication(y).Execute))
+			         .Return(parameter.Services)
+			         .AddSingleton(DisplayName.Default.DisplayName("Twitter"));
 		}
 	}
 }

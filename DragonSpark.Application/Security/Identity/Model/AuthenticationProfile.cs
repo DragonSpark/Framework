@@ -1,9 +1,8 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Profile
+namespace DragonSpark.Application.Security.Identity.Model
 {
 	sealed class AuthenticationProfile : IAuthenticationProfile
 	{

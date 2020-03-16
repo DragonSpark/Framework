@@ -2,9 +2,11 @@
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Runtime;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enumerable = NetFabric.Hyperlinq.Enumerable;
 
 // ReSharper disable TooManyArguments
 // ReSharper disable once PossibleInvalidOperationException
@@ -18,8 +20,9 @@ namespace DragonSpark.Compose
 
 		public static Array<T> Result<T>(this IEnumerable<T> @this) => @this.Open();
 
-		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this, T2 instance)
-			=> @this.Introduce(instance, tuple => tuple.Item1.Get(tuple.Item2));
+		public static Enumerable.ValueEnumerableWrapper<T1> Get<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this,
+		                                                                T2 parameter)
+			=> @this.Introduce(parameter, tuple => tuple.Item1.Get(tuple.Item2)).AsValueEnumerable();
 
 		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<Func<T2, T1>> @this, T2 instance)
 			=> @this.Introduce(instance, tuple => tuple.Item1(tuple.Item2));

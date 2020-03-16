@@ -12,6 +12,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
+using ClaimNamespace = DragonSpark.Application.Testing.Objects.ClaimNamespace;
 using Claims = DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Application.Testing.Security

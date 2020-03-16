@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Threading.Tasks;

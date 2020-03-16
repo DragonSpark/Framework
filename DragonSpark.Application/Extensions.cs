@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
+using DragonSpark.Application.Security.Identity.Model.Claims;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +53,10 @@ namespace DragonSpark.Application
 		public static Claim Claim(this Text.Text @this, Claim claim) => @this.Claim(claim.Value);
 
 		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
+
+		public static IClaimRegistration DisplayName(this Text.Text @this, string key)
+			=> new ClaimRegistration(key, new ExternalClaim(@this, Security.Identity.DisplayName.Default));
+
 
 		public static string Value(this ModelBindingContext @this, IResult<string> key)
 			=> @this.ValueProvider.Get(key);
