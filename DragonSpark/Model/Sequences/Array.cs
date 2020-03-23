@@ -6,6 +6,11 @@ using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences
 {
+	public static class Array
+	{
+		public static Array<T> Of<T>(params T[] elements) => elements;
+	}
+
 	public readonly struct Array<T> : IResult<ImmutableArray<T>>
 	{
 		public static implicit operator ImmutableArray<T>(Array<T> source) => source.Get();

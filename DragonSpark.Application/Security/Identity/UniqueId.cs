@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class UniqueId : ISelect<ExternalLoginInfo, string>
+	public sealed class UniqueId : ISelect<ExternalLoginInfo, string>
 	{
 		public static UniqueId Default { get; } = new UniqueId();
 

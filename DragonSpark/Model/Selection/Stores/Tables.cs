@@ -3,6 +3,7 @@ using DragonSpark.Reflection;
 using DragonSpark.Runtime.Activation;
 using System;
 using System.Collections.Concurrent;
+using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Model.Selection.Stores
 {
@@ -14,7 +15,7 @@ namespace DragonSpark.Model.Selection.Stores
 			                ? Start.A.Generic(typeof(ReferenceTables<,>))
 			                       .Of.Type<ISelect<Func<TIn, TOut>, ITable<TIn, TOut>>>()
 			                       .Then()
-			                       .Bind(An.Array(A.Type<TIn>(), A.Type<TOut>()))
+			                       .Bind(Array.Of(A.Type<TIn>(), A.Type<TOut>()))
 			                       .Get()
 			                       .Then()
 			                       .Assume()

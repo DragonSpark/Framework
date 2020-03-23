@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity;
 
-namespace DragonSpark.Identity.Twitter
+namespace DragonSpark.Identity.Twitter.Claims
 {
 	public sealed class Claims : Application.Security.Identity.Claims
 	{

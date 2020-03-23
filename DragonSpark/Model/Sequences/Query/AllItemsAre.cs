@@ -10,6 +10,6 @@ namespace DragonSpark.Model.Sequences.Query
 		public AllItemsAre(Func<T, bool> specification) : this(new Predicate<T>(specification)) {}
 
 		public AllItemsAre(Predicate<T> specification)
-			: base(new Invocation0<T[], Predicate<T>, bool>(Array.TrueForAll, specification).Get) {}
+			: base(new Invocation0<T[], Predicate<T>, bool>(System.Array.TrueForAll, specification).Get) {}
 	}
 }

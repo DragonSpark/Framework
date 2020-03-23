@@ -22,8 +22,7 @@
 
 		bool Equals(Selection other) => Start == other.Start && Length == other.Length;
 
-		public override bool Equals(object obj)
-			=> !ReferenceEquals(null, obj) && obj is Selection other && Equals(other);
+		public override bool Equals(object obj) => obj is Selection other && Equals(other);
 
 		public override int GetHashCode()
 		{

@@ -53,7 +53,7 @@ namespace DragonSpark.Model.Sequences
 				var item     = items[i];
 				var amount   = item.Length;
 				var instance = item.Instance;
-				Array.Copy(instance, 0, destination, offset, amount);
+				System.Array.Copy(instance, 0, destination, offset, amount);
 				offset += amount;
 				_item.Execute(instance);
 			}

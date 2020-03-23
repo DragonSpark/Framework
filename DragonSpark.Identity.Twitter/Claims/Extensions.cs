@@ -1,13 +1,9 @@
 ﻿using DragonSpark.Application.Compose;
-using System.Security.Claims;
 
-namespace DragonSpark.Identity.Twitter
+namespace DragonSpark.Identity.Twitter.Claims
 {
 	public static class Extensions
 	{
-		public static Claim DisplayName(this ClaimsPrincipal @this)
-			=> @this.FindFirst(Twitter.DisplayName.Default) ?? @this.FindFirst(ClaimTypes.Name);
-
 		public static AuthenticationContext UsingTwitter(this AuthenticationContext @this)
 			=> @this.Then(ConfigureTwitterApplication.Default);
 	}

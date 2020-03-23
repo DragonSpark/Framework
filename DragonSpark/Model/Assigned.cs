@@ -24,8 +24,7 @@
 
 		bool Equals(Assigned<T> other) => Instance.Equals(other.Instance);
 
-		public override bool Equals(object obj)
-			=> !ReferenceEquals(null, obj) && obj is Assigned<T> other && Equals(other);
+		public override bool Equals(object obj) => obj is Assigned<T> other && Equals(other);
 
 		public static bool operator ==(Assigned<T> left, Assigned<T> right) => left.Equals(right);
 

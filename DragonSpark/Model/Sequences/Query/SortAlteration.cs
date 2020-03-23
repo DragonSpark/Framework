@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences.Collections;
-using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Query
@@ -17,7 +16,7 @@ namespace DragonSpark.Model.Sequences.Query
 
 		public T[] Get(T[] parameter)
 		{
-			Array.Sort(parameter, _comparer);
+			System.Array.Sort(parameter, _comparer);
 			return parameter;
 		}
 	}

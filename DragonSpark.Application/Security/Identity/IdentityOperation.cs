@@ -1,19 +1,17 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class CreateUserActions<T> : IIdentityOperation<T> where T : class
+	sealed class IdentityOperation<T> : IIdentityOperation<T> where T : class
 	{
 		readonly Array<IIdentityOperation<T>> _actions;
 
-		public CreateUserActions(CreateUserOperation<T> create, AddLoginOperation<T> login,
-		                         AddClaimsOperation<T> claims)
-			: this(An.Array<IIdentityOperation<T>>(create, login, claims)) {}
+		public IdentityOperation(CreateUserOperation<T> create, AddLoginOperation<T> login)
+			: this(Array.Of<IIdentityOperation<T>>(create, login)) {}
 
-		public CreateUserActions(Array<IIdentityOperation<T>> actions) => _actions = actions;
+		public IdentityOperation(IIdentityOperation<T>[] actions) => _actions = actions;
 
 		public async ValueTask<IdentityResult> Get((ExternalLoginInfo Login, T User) parameter)
 		{

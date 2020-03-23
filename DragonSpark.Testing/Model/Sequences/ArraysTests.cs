@@ -4,9 +4,9 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
-using System;
 using System.Linq;
 using Xunit;
+using Array = System.Array;
 
 namespace DragonSpark.Testing.Model.Sequences
 {

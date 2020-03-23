@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Activator = DragonSpark.Runtime.Activation.Activator;
+using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Composition
 {
@@ -133,7 +134,7 @@ namespace DragonSpark.Composition
 			readonly Array<Type>                    _types;
 
 			public Selector(ServiceContainer container) : this(container.ConstructorDependencySelector, container,
-			                                                   An.Array(typeof(Func<,>), typeof(Func<,,>))) {}
+			                                                   Array.Of(typeof(Func<,>), typeof(Func<,,>))) {}
 
 			public Selector(IConstructorDependencySelector selector, IServiceRegistry registry, Array<Type> types)
 			{

@@ -20,6 +20,8 @@ namespace DragonSpark.Compose
 
 		public static Array<T> Result<T>(this IEnumerable<T> @this) => @this.Open();
 
+		public static IArray<T> Promote<T>(this Array<T> @this) => new ArrayInstance<T>(@this);
+
 		public static Enumerable.ValueEnumerableWrapper<T1> Get<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this,
 		                                                                T2 parameter)
 			=> @this.Introduce(parameter, tuple => tuple.Item1.Get(tuple.Item2)).AsValueEnumerable();

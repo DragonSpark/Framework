@@ -8,10 +8,10 @@ namespace DragonSpark.Application.Security.Identity
 	[UsedImplicitly]
 	sealed class CreateUser<T> : ICreateUser<T> where T : IdentityUser
 	{
-		readonly CreateUserActions<T>       _actions;
+		readonly IIdentityOperation<T>       _actions;
 		readonly Func<ExternalLoginInfo, T> _create;
 
-		public CreateUser(CreateUserActions<T> actions, Func<ExternalLoginInfo, T> create)
+		public CreateUser(IIdentityOperation<T> actions, Func<ExternalLoginInfo, T> create)
 		{
 			_actions = actions;
 			_create  = create;

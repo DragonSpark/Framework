@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
 using System;
+using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Model.Selection.Stores
 {
@@ -16,7 +17,7 @@ namespace DragonSpark.Model.Selection.Stores
 		                                              .Of.Type<ITable<TIn, TOut>>()
 		                                              .WithParameterOf<Func<TIn, TOut>>()
 		                                              .Then()
-		                                              .Bind(An.Array(typeof(TIn), typeof(TOut)))
+		                                              .Bind(Array.Of(typeof(TIn), typeof(TOut)))
 		                                              .Get()
 		                                              .Then()
 		                                              .Assume()

@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Identity.Twitter
+﻿namespace DragonSpark.Identity.Twitter.Claims
 {
 	public class TwitterClaim : Text.Text
 	{

@@ -398,7 +398,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			set => this[(TKey)key] = (TValue)value;
 		}
 
-		void ICollection.CopyTo(Array array, int index)
+		void ICollection.CopyTo(System.Array array, int index)
 		{
 			((ICollection)_delegatedKeyedCollection).CopyTo(array, index);
 		}

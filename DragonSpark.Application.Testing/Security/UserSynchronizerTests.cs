@@ -63,7 +63,10 @@ namespace DragonSpark.Application.Testing.Security
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);
-					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
+					                                                                      string.Empty, string.Empty),
+					                                                new Stored<User>(user, principal), source);
+					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
 
@@ -127,7 +130,10 @@ namespace DragonSpark.Application.Testing.Security
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);
-					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
+					                                                                      string.Empty, string.Empty),
+					                                                new Stored<User>(user, principal), source);
+					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
 
@@ -186,7 +192,10 @@ namespace DragonSpark.Application.Testing.Security
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);
-					var synchronized = await subject.Get((new Stored<User>(user, principal), source));
+					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
+					                                                                      string.Empty, string.Empty),
+					                                                new Stored<User>(user, principal), source);
+					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeFalse();
 				}
 
@@ -197,8 +206,8 @@ namespace DragonSpark.Application.Testing.Security
 
 		sealed class Subject : UserSynchronizer<User>
 		{
-			public Subject(UserManager<User> users)
-				: base(users, new Claims(x => x.Type.StartsWith(ClaimNamespace.Default))) {}
+			public Subject(UserManager<User> users) : base(new Claims(x => x.Type.StartsWith(ClaimNamespace.Default)),
+			                                               new ClaimTransactions<User>(users)) {}
 		}
 	}
 }

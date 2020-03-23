@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using System;
 
@@ -14,6 +15,8 @@ namespace DragonSpark.Application.Compose.Entities
 			_context   = context;
 			_configure = configure;
 		}
+
+		public IdentityClaimsContext<T> Using<T>() where T : IdentityUser, new() => CreatedWith(New<T>.Default);
 
 		public IdentityClaimsContext<T> CreatedWith<T>(ISelect<ExternalLoginInfo, T> create) where T : IdentityUser
 			=> CreatedWith(create.Get);

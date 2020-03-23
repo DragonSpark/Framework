@@ -6,40 +6,27 @@ namespace DragonSpark.Application.Security.Identity
 {
 	public class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
 	{
-		readonly UserManager<T>        _users;
 		readonly ITransactional<Claim> _transactional;
 		readonly IClaims               _claims;
+		readonly IClaimTransactions<T> _transactions;
 
-		public UserSynchronizer(UserManager<T> users, IClaims claims)
-			: this(users, ClaimsTransactional.Default, claims) {}
+		public UserSynchronizer(IClaims claims, IClaimTransactions<T> transactions)
+			: this(ClaimsTransactional.Default, claims, transactions) {}
 
-		public UserSynchronizer(UserManager<T> users, ITransactional<Claim> transactional, IClaims claims)
+		public UserSynchronizer(ITransactional<Claim> transactional, IClaims claims, IClaimTransactions<T> transactions)
 		{
-			_users         = users;
 			_transactional = transactional;
 			_claims        = claims;
+			_transactions = transactions;
 		}
 
-		public async ValueTask<bool> Get((Stored<T> Stored, ClaimsPrincipal Source) parameter)
+		public async ValueTask<bool> Get(Synchronization<T> parameter)
 		{
-			var ((user, principal), source) = parameter;
+			var (_, (_, principal), source) = parameter;
 
 			var transactions = _transactional.Get((_claims.Get(principal.Claims), _claims.Get(source.Claims)));
 
-			if (transactions.Add.Length > 0)
-			{
-				await _users.AddClaimsAsync(user, transactions.Add.Open());
-			}
-
-			foreach (var (existing, input) in transactions.Update.Open())
-			{
-				await _users.ReplaceClaimAsync(user, existing, input);
-			}
-
-			if (transactions.Delete.Length > 0)
-			{
-				await _users.RemoveClaimsAsync(user, transactions.Delete.Open());
-			}
+			await _transactions.Get((parameter, transactions));
 
 			var result = transactions.Any();
 			return result;

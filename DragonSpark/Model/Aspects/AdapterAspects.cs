@@ -4,12 +4,13 @@ using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
 using System;
 using System.Linq;
+using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Model.Aspects
 {
 	sealed class AdapterAspects<TIn, TOut> : ISelect<object, IAspect<TIn, TOut>>
 	{
-		readonly static Array<Type> Types = An.Array(A.Type<TIn>(), A.Type<TOut>());
+		readonly static Array<Type> Types = Array.Of(A.Type<TIn>(), A.Type<TOut>());
 
 		public static AdapterAspects<TIn, TOut> Default { get; } = new AdapterAspects<TIn, TOut>();
 

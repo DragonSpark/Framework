@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Security.Identity.Model.Claims;
+using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -54,8 +54,9 @@ namespace DragonSpark.Application
 
 		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
 
-		public static IClaimRegistration DisplayName(this Text.Text @this, string key)
-			=> new ClaimRegistration(key, new ExternalClaim(@this, Security.Identity.DisplayName.Default));
+		public static IUserMapping Promote<T>(this IAssignment<T> @this, string key, bool required = false)
+			where T : IdentityUser
+			=> new UserMapping<T>(@this, key, required);
 
 
 		public static string Value(this ModelBindingContext @this, IResult<string> key)

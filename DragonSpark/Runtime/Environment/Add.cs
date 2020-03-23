@@ -1,7 +1,7 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
-using System;
+using Array = System.Array;
 
 namespace DragonSpark.Runtime.Environment
 {

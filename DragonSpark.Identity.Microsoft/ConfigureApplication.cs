@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Application.Security.Identity;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -21,7 +19,7 @@ namespace DragonSpark.Identity.Microsoft
 			         .Pair(parameter.Services.Deferred<MicrosoftApplicationSettings>())
 			         .With((x, y) => x.AddMicrosoftAccount(new ConfigureAuthentication(y).Execute))
 			         .Return(parameter.Services)
-			         .AddSingleton(DefaultNameClaim.Default.DisplayName("Microsoft"));
+			         ;
 		}
 	}
 }
