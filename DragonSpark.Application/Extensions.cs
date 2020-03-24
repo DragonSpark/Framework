@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
 {
@@ -39,7 +40,7 @@ namespace DragonSpark.Application
 			where T : IdentityUser
 		{
 			var id     = login.UniqueId();
-			var result = await @this.Users.SingleAsync(x => x.Id == id);
+			var result = await @this.Users.SingleAsync(x => x.UserName == id);
 			return result;
 		}
 

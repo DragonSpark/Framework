@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithDefaultComposition()
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
-			                            .CreatedWith(NewUser.Default)
+			                            .Using<User>()
 			                            .Having(Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
@@ -56,7 +56,7 @@ namespace DragonSpark.Application.Testing.Security
 			request.Succeeded.Should().BeTrue();
 
 
-			var user = await storage.Users.SingleAsync(x => x.Id == login.UniqueId());
+			var user = await storage.Users.SingleAsync(x => x.UserName == login.UniqueId());
 			user.Should().NotBeNull();
 
 			var users  = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -76,7 +76,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithDefaultComposition()
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
-			                            .CreatedWith(NewUser.Default)
+			                            .Using<User>()
 			                            .Having(Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
@@ -103,8 +103,7 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var @new = new User
 				{
-					Id       = login.UniqueId(),
-					UserName = "SubjectUser"
+					UserName = login.UniqueId()
 				};
 				var create = await users.CreateAsync(@new);
 				create.Succeeded.Should().BeTrue();
@@ -113,7 +112,7 @@ namespace DragonSpark.Application.Testing.Security
 			}
 
 			{
-				var user = await storage.Users.SingleAsync(x => x.Id == login.UniqueId());
+				var user = await storage.Users.SingleAsync(x => x.UserName == login.UniqueId());
 				user.Should().NotBeNull();
 
 				var claims = await users.GetClaimsAsync(user);
@@ -127,7 +126,7 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				request.Should().NotBeNull();
 
-				var user = await storage.Users.SingleAsync(x => x.Id == login.UniqueId());
+				var user = await storage.Users.SingleAsync(x => x.UserName == login.UniqueId());
 				user.Should().NotBeNull();
 
 				var claims = await users.GetClaimsAsync(user);

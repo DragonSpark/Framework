@@ -10,21 +10,14 @@ namespace DragonSpark.Application.Security.Identity
 
 		New() : this(UniqueId.Default.Get) {}
 
-		readonly Func<ExternalLoginInfo, string> _identifier, _name;
+		readonly Func<ExternalLoginInfo, string> _name;
 
-		public New(Func<ExternalLoginInfo, string> identifier) : this(identifier, identifier) {}
-
-		public New(Func<ExternalLoginInfo, string> identifier, Func<ExternalLoginInfo, string> name)
-		{
-			_identifier = identifier;
-			_name       = name;
-		}
+		public New(Func<ExternalLoginInfo, string> name) => _name = name;
 
 		public T Get(ExternalLoginInfo parameter)
 		{
 			var result = new T
 			{
-				Id       = _identifier(parameter),
 				UserName = _name(parameter)
 			};
 			return result;

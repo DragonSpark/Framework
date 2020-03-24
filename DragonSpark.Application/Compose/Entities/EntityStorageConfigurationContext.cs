@@ -1,13 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Compose.Entities
 {
 	public sealed class EntityStorageConfigurationContext<T, TUser>
-		where T : IdentityDbContext<TUser>
+		where T : Security.Identity.IdentityDbContext<TUser>
 		where TUser : IdentityUser
 	{
 		readonly ApplicationProfileContext    _context;

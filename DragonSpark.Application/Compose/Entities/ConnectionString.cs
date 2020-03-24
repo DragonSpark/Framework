@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 		readonly string _name;
 
-		public ConnectionString(string name) => this._name = name;
+		public ConnectionString(string name) => _name = name;
 
 		public string Get(IConfiguration parameter) => parameter.GetConnectionString(_name);
 	}

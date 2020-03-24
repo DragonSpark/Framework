@@ -2,6 +2,7 @@
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using System;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Compose.Entities
 {

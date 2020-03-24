@@ -1,8 +1,7 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Composition.Compose;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Testing.Server
 {
@@ -12,7 +11,7 @@ namespace DragonSpark.Testing.Server
 			=> @this.Configure(ServerConfiguration.Default);
 
 		public static ApplicationProfileContext Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this)
-			where T : IdentityDbContext<TUser>
+			where T : Application.Security.Identity.IdentityDbContext<TUser>
 			where TUser : IdentityUser
 			=> @this.Configuration(InMemoryStorageConfiguration.Default);
 	}

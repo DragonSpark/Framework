@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 		readonly string _name;
 
-		public SqlStorageConfiguration(string name) => this._name = name;
+		public SqlStorageConfiguration(string name) => _name = name;
 
 		public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
 			=> new ConfigureSqlServer<T>(parameter.Configuration().GetConnectionString(_name)).Execute;

@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Entities
 {
-	public class Storage<T> : IdentityDbContext<T> where T : IdentityUser
+	public class Storage<T> : Security.Identity.IdentityDbContext<T> where T : IdentityUser
 	{
 		readonly IInitializer _initializer;
 

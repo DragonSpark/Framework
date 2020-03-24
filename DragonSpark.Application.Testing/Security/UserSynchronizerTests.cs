@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithTestServer()
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
-			                            .CreatedWith(NewUser.Default)
+			                            .Using<User>()
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
@@ -36,15 +36,16 @@ namespace DragonSpark.Application.Testing.Security
 			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
+			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
 			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 			var       context = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
 			{
+
 				var create = await users.CreateAsync(new User
 				{
-					Id       = id,
-					UserName = "SubjectUser"
+					UserName = uniqueId
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
@@ -59,7 +60,7 @@ namespace DragonSpark.Application.Testing.Security
 					new System.Security.Claims.Claim(ClaimTypes.Name, id),
 					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
 				}, "AuthenticationTesting"));
-				var user = await context.Users.SingleAsync(x => x.Id == id);
+				var user = await context.Users.SingleAsync(x => x.UserName == uniqueId);
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);
@@ -76,7 +77,7 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var set = scope.ServiceProvider.GetRequiredService<ApplicationStorage>().Users;
 				set.Local.Should().NotBeEmpty();
-				set.Only().Id.Should().Be(id);
+				set.Only().UserName.Should().Be(uniqueId);
 			}
 		}
 
@@ -87,7 +88,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithTestServer()
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
-			                            .CreatedWith(NewUser.Default)
+			                            .Using<User>()
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
@@ -97,6 +98,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
+			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
 			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -104,15 +106,14 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var create = await users.CreateAsync(new User
 				{
-					Id       = id,
-					UserName = "SubjectUser"
+					UserName = uniqueId
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
 			}
 
 			{
-				var user = await context.Users.SingleAsync(x => x.Id == id);
+				var user = await context.Users.SingleAsync(x => x.UserName == uniqueId);
 				await users.AddClaimAsync(user,
 				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
 			}
@@ -126,7 +127,7 @@ namespace DragonSpark.Application.Testing.Security
 					new System.Security.Claims.Claim(ClaimTypes.Name, id),
 					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
 				}, "AuthenticationTesting"));
-				var user = await context.Users.SingleAsync(x => x.Id == id);
+				var user = await context.Users.SingleAsync(x => x.UserName == uniqueId);
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);
@@ -149,7 +150,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .WithTestServer()
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
-			                            .CreatedWith(NewUser.Default)
+			                            .Using<User>()
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
@@ -159,6 +160,7 @@ namespace DragonSpark.Application.Testing.Security
 			                            .Run();
 
 			var id = Guid.NewGuid().ToString();
+			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
 			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -166,15 +168,14 @@ namespace DragonSpark.Application.Testing.Security
 			{
 				var create = await users.CreateAsync(new User
 				{
-					Id       = id,
-					UserName = "SubjectUser"
+					UserName = uniqueId
 				});
 				create.Succeeded.Should().BeTrue();
 				context.Users.Local.Should().NotBeEmpty();
 			}
 
 			{
-				var user = await context.Users.SingleAsync(x => x.Id == id);
+				var user = await context.Users.SingleAsync(x => x.UserName == uniqueId);
 				await users.AddClaimAsync(user,
 				                          new System.Security.Claims.Claim(DisplayNameClaim.Default, "Hello World!"));
 			}
@@ -188,7 +189,7 @@ namespace DragonSpark.Application.Testing.Security
 					new System.Security.Claims.Claim(ClaimTypes.Name, id),
 					new System.Security.Claims.Claim(DisplayNameClaim.Default, expected)
 				}, "AuthenticationTesting"));
-				var user = await context.Users.SingleAsync(x => x.Id == id);
+				var user = await context.Users.SingleAsync(x => x.UserName == uniqueId);
 				{
 					var principal = await scope.ServiceProvider.GetRequiredService<SignInManager<User>>()
 					                           .CreateUserPrincipalAsync(user);

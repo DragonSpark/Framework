@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Profile {
+namespace DragonSpark.Application.Security.Identity.Profile
+{
 	sealed class UserMapping<T> : IUserMapping where T : IdentityUser
 	{
 		readonly IAssignment<T> _assignment;
