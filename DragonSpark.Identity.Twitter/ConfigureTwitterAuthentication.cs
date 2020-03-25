@@ -1,6 +1,5 @@
-﻿using DragonSpark.Identity.Twitter.Claims;
+﻿using DragonSpark.Application.Security;
 using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using System;
 
@@ -9,8 +8,13 @@ namespace DragonSpark.Identity.Twitter
 	sealed class ConfigureTwitterAuthentication : ICommand<TwitterOptions>
 	{
 		readonly Func<TwitterApplicationSettings> _settings;
+		readonly IClaimAction                     _action;
 
-		public ConfigureTwitterAuthentication(Func<TwitterApplicationSettings> settings) => _settings = settings;
+		public ConfigureTwitterAuthentication(Func<TwitterApplicationSettings> settings, IClaimAction action)
+		{
+			_settings = settings;
+			_action   = action;
+		}
 
 		public void Execute(TwitterOptions parameter)
 		{
@@ -18,13 +22,8 @@ namespace DragonSpark.Identity.Twitter
 			parameter.ConsumerKey         = settings.Key;
 			parameter.ConsumerSecret      = settings.Secret;
 			parameter.RetrieveUserDetails = true;
-			parameter.ClaimActions.MapJsonKey(DisplayName.Default, "name", "string");
-			parameter.ClaimActions.MapJsonKey(Description.Default, "description", "string");
-			parameter.ClaimActions.MapCustomJson(Website.Default, "url", root => root.GetProperty("entities")
-			                                                                         .GetProperty("url")
-			                                                                         .GetProperty("urls")[0]
-			                                                                         .GetString("expanded_url"));
-			parameter.ClaimActions.MapJsonKey(ImagePath.Default, "profile_image_url_https", "url");
+
+			_action.Execute(parameter.ClaimActions);
 		}
 	}
 }

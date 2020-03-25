@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -8,18 +9,18 @@ namespace DragonSpark.Identity.Twitter
 {
 	sealed class ConfigureTwitterApplication : ICommand<AuthenticationBuilder>
 	{
-		public static ConfigureTwitterApplication Default { get; } = new ConfigureTwitterApplication();
+		readonly IClaimAction _action;
 
-		ConfigureTwitterApplication() {}
+		public ConfigureTwitterApplication(IClaimAction action) => _action = action;
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
+			var settings       = parameter.Services.Deferred<TwitterApplicationSettings>();
+			var authentication = new ConfigureTwitterAuthentication(settings, _action);
 			parameter.Services.Register<TwitterApplicationSettings>()
 			         .Return(parameter)
-			         .Pair(parameter.Services.Deferred<TwitterApplicationSettings>())
-			         .With((x, y) => x.AddTwitter(new ConfigureTwitterAuthentication(y).Execute))
-			         .Return(parameter.Services)
-			         ;
+			         .AddTwitter(authentication.Execute)
+				;
 		}
 	}
 }
