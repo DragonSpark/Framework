@@ -2,5 +2,5 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities {
-	public interface IInitializer<T> : IAlteration<T> where T : DbContext {}
+	public interface IStorageInitializer<T> : IAlteration<T> where T : DbContext {}
 }

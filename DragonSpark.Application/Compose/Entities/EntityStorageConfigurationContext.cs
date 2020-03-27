@@ -10,8 +10,8 @@ namespace DragonSpark.Application.Compose.Entities
 		where T : Security.Identity.IdentityDbContext<TUser>
 		where TUser : IdentityUser
 	{
-		readonly ApplicationProfileContext    _context;
-		readonly Action<IdentityOptions> _configure;
+		readonly ApplicationProfileContext _context;
+		readonly Action<IdentityOptions>   _configure;
 
 		public EntityStorageConfigurationContext(ApplicationProfileContext context, Action<IdentityOptions> configure)
 		{
@@ -23,6 +23,6 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
 			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
-			           .Configure(x => x.Decorate<T>(new Initialized<T>().Get));
+			           .Configure(x => x.Decorate<T>(ConfiguredContexts<T>.Default.Then().OnceStriped().Get().Get));
 	}
 }
