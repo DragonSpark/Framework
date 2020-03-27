@@ -15,10 +15,9 @@ namespace DragonSpark.Application.Compose.Entities
 		{
 			var (factory, current) = parameter;
 
-			using (var scope = factory.BeginScope())
-			{
-				return scope.GetInstance<IStorageInitializer<T>>().Get(current);
-			}
+			using var scope = factory.BeginScope();
+			var result = scope.GetInstance<IStorageInitializer<T>>().Get(current);
+			return result;
 		}
 	}
 }
