@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Security
 {
 	public class ProviderDefinition
 	{
-		protected ProviderDefinition(string name, params IUserMapping[] definitions)
+		public ProviderDefinition(string name, params IUserMapping[] definitions)
 			: this(name, definitions.Result()) {}
 
 		protected ProviderDefinition(string name, Array<IUserMapping> profileMappings)

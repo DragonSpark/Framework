@@ -114,12 +114,10 @@ namespace DragonSpark.Compose
 
 		public static IEnumerable<T> Hide<T>(this IEnumerable<T> @this)
 		{
-			using (var enumerator = @this.GetEnumerator())
+			using var enumerator = @this.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				while (enumerator.MoveNext())
-				{
-					yield return enumerator.Current;
-				}
+				yield return enumerator.Current;
 			}
 		}
 
