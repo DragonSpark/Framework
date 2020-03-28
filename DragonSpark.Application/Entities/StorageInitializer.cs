@@ -1,15 +1,35 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace DragonSpark.Application.Entities
 {
 	sealed class StorageInitializer<T> : IStorageInitializer<T> where T : DbContext
 	{
-		readonly Array<IInitializer<T>> _initializers;
+		readonly IMemoryCache _cache;
+		readonly Func<T, T> _select;
+		readonly object _key;
 
-		public StorageInitializer(params IInitializer<T>[] initializers) => _initializers = initializers;
+		public StorageInitializer(IMemoryCache cache, params IInitializer<T>[] initializers)
+			: this(cache, initializers.Alter, A.Type<StorageInitializer<T>>()) {}
 
-		public T Get(T parameter) => _initializers.Open().Alter(parameter);
+		StorageInitializer(IMemoryCache cache, Func<T, T> select, object key)
+		{
+			_cache = cache;
+			_select = select;
+			_key = key;
+		}
+
+		public T Get(T parameter)
+		{
+			if (!_cache.TryGetValue(_key, out _))
+			{
+				_cache.CreateEntry(_key);
+				_cache.Set(_key, this);
+				return _select(parameter);
+			}
+			return parameter;
+		}
 	}
 }

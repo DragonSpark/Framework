@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,8 +29,7 @@ namespace DragonSpark.Application.Compose.Entities
 			         .AddDefaultIdentity<TUser>(_identity)
 			         .AddEntityFrameworkStores<T>()
 			         .Return(parameter)
-			         .AddScoped<IStorageInitializer<T>, StorageInitializer<T>>()
-			         .AddScoped<IInitializer<T>, DefaultInitializer<T>>()
+			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
 			         .AddScoped<AuthenticationStateProvider, Revalidation<TUser>>()
 			         .AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
 		}
