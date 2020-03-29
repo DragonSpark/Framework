@@ -15,7 +15,12 @@ namespace DragonSpark.Application.Security.Identity.Model
 			_applied = applied;
 		}
 
-		public async ValueTask<ExternalLoginInfo> Get() => _applied.Get(await _profile.Get());
+		public async ValueTask<ExternalLoginInfo> Get()
+		{
+			var login  = await _profile.Get();
+			var result = login != null ? _applied.Get(login) : null;
+			return result;
+		}
 	}
 
 	sealed class AuthenticationProfile<T> : IAuthenticationProfile where T : class

@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public class New<T> : ISelect<ExternalLoginInfo, T> where T : IdentityUser, new()
+	public sealed class New<T> : ISelect<ExternalLoginInfo, T> where T : IdentityUser, new()
 	{
 		public static New<T> Default { get; } = new New<T>();
 
@@ -18,7 +18,8 @@ namespace DragonSpark.Application.Security.Identity
 		{
 			var result = new T
 			{
-				UserName = _name(parameter)
+				UserName = _name(parameter),
+				Created  = DateTimeOffset.UtcNow
 			};
 			return result;
 		}
