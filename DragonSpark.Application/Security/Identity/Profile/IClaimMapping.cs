@@ -1,8 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	public interface IClaimMapping : ISelect<ExternalLoginInfo, Claim> {}
+	public interface IClaimMapping : ISelect<ClaimsPrincipal, Claim> {}
 }

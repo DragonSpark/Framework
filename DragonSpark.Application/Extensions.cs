@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
@@ -35,6 +36,8 @@ namespace DragonSpark.Application
 			=> @this.Then(new AuthorizeConfiguration(policy));
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
+
+		public static ProviderIdentity Identity(this IdentityUser @this) => Identities.Default.Get(@this.UserName);
 
 		public static async ValueTask<T> GetUser<T>(this UserManager<T> @this, ExternalLoginInfo login)
 			where T : IdentityUser

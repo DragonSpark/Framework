@@ -9,7 +9,8 @@ using System.Collections.Generic;
 namespace DragonSpark.Presentation.Components
 {
 	/// <summary>
-	/// Temp component to enable asynchronous click event: https://forum.radzen.com/t/synchronous-call-used-for-radzenbutton-click/2844
+	/// Temp component to enable asynchronous click event:
+	/// https://forum.radzen.com/t/synchronous-call-used-for-radzenbutton-click/2844
 	/// </summary>
 	public class ButtonComponent : RadzenComponent
 	{
@@ -53,13 +54,10 @@ namespace DragonSpark.Presentation.Components
 			__builder.AddMarkupContent(20, "\r\n");
 		}
 
-		private string getButtonSize()
-		{
-			return Size != ButtonSize.Medium ? "sm" : "md";
-		}
+		string GetButtonSize() => Size != ButtonSize.Medium ? "sm" : "md";
 
 		[Parameter]
-		public string Text { get; set; } = "";
+		public string Text { get; set; } = string.Empty;
 
 		[Parameter]
 		public string Icon { get; set; }
@@ -84,12 +82,24 @@ namespace DragonSpark.Presentation.Components
 		  this.Click.InvokeAsync(args);
 		}*/
 
+		[Parameter]
+		public string CssClass { get; set; }
+
+
 		protected override string GetComponentCssClass()
 		{
-			return "ui-button ui-button-" + getButtonSize() + " ui-widget ui-state-default ui-corner-all btn-" +
-			       Enum.GetName(typeof(ButtonStyle), ButtonStyle).ToLower() +
-			       (Disabled ? " ui-state-disabled" : "") +
-			       (!string.IsNullOrEmpty(Text) || string.IsNullOrEmpty(Icon) ? "" : " ui-button-icon-only");
+			if (string.IsNullOrWhiteSpace(CssClass))
+			{
+				var iconOnly = !string.IsNullOrEmpty(Text) || string.IsNullOrEmpty(Icon)
+					               ? string.Empty
+					               : " ui-button-icon-only";
+				var disabled = Disabled ? " ui-state-disabled" : string.Empty;
+				var name     = Enum.GetName(typeof(ButtonStyle), ButtonStyle).ToLower();
+				var result =
+					$"ui-button ui-button-{GetButtonSize()} ui-widget ui-state-default ui-corner-all btn-{name}{disabled}{iconOnly}";
+				return result;
+			}
+			return CssClass;
 		}
 	}
 }

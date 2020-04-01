@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
@@ -13,6 +12,6 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			_source = source;
 		}
 
-		public Claim Get(ExternalLoginInfo parameter) => new Claim(_key, parameter.Principal.FindFirstValue(_source));
+		public Claim Get(ClaimsPrincipal parameter) => new Claim(_key, parameter.FindFirstValue(_source));
 	}
 }

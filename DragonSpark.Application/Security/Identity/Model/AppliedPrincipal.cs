@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			{
 				var claims = _definitions.Get(parameter.LoginProvider)
 				                         .ClaimMappings.Open()
-				                         .Get(parameter)
+				                         .Get(parameter.Principal)
 				                         .Where(x => x != null)
 				                         .ToArray();
 
