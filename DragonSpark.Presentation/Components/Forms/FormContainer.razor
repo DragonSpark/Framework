@@ -1,0 +1,41 @@
+﻿@using JetBrains.Annotations
+@typeparam TItem
+
+<Form @ref="_form" TItem="TItem" Data="Source" Submit="OnSubmit">
+    <OperationMonitor @ref="_monitor" ChildContent="@ChildContent(Source)" />
+</Form>
+
+@code {
+
+    [UsedImplicitly]
+    OperationMonitor _monitor;
+
+    [UsedImplicitly]
+    Form<TItem> _form;
+
+    [Parameter]
+    public RenderFragment<TItem> ChildContent { get; set; }
+
+    [Parameter]
+    public TItem Source { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> Submit { get; set; }
+
+    [UsedImplicitly]
+    async Task OnSubmit(TItem parameter)
+    {
+        var valid = await _monitor.Validate();
+        if (valid)
+        {
+            await Submit.InvokeAsync(parameter);
+        }
+        else
+        {
+            await _form.InvalidSubmit.InvokeAsync(new FormInvalidSubmitEventArgs
+            {
+                Errors = _form.EditContext.GetValidationMessages()
+            });
+        }
+    }
+}

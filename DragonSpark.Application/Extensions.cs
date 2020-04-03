@@ -54,11 +54,11 @@ namespace DragonSpark.Application
 			return result;
 		}
 
-		public static Claim Claim(this Text.Text @this, Claim claim) => @this.Claim(claim.Value);
+		/*public static Claim Claim(this Text.Text @this, Claim claim) => @this.Claim(claim.Value);*/
 
 		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
 
-		public static IUserMapping Promote<T>(this IAssignment<T> @this, string key, bool required = false)
+		public static IUserMapping Promote<T>(this IAccessor<T> @this, string key, bool required = false)
 			where T : IdentityUser
 			=> new UserMapping<T>(@this, key, required);
 

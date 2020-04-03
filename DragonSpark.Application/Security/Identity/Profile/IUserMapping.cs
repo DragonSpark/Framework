@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Security.Identity.Profile
 {
-	public interface IUserMapping : IAssignment<IdentityUser>
+	public interface IUserMapping : IAccessor<IdentityUser>
 	{
 		bool Required { get; }
 
