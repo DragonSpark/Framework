@@ -46,6 +46,6 @@ namespace DragonSpark.Presentation.Components
 		public RenderFragment LoadingTemplate { get; set; } = x => x.AddContent(2, "Loading, please wait.");
 
 		[Parameter]
-		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(2, "Not found.");
+		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(2, "This view's required information does not exist.");
 	}
 }
