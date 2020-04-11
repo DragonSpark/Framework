@@ -25,6 +25,7 @@
     [UsedImplicitly]
     async Task OnSubmit(TItem parameter)
     {
+    
         var valid = await _monitor.Validate();
         if (valid)
         {

@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Compose
+﻿@using DragonSpark.Application
+@using DragonSpark.Compose
 @using JetBrains.Annotations
 @using Microsoft.EntityFrameworkCore
 @typeparam TEntity
@@ -114,9 +115,7 @@
     {
         _grid.CancelEditRow(entity);
 
-        var entry = Storage.Entry(entity);
-        entry.CurrentValues.SetValues(entry.OriginalValues);
-        entry.State = EntityState.Unchanged;
+        Storage.Undo(entity);
     }
 
     [UsedImplicitly]

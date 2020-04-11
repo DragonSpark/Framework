@@ -17,6 +17,14 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
+		public static T Undo<T>(this DbContext @this, T entity) where T : class
+		{
+			var entry = @this.Entry(entity);
+			entry.CurrentValues.SetValues(entry.OriginalValues);
+			entry.State = EntityState.Unchanged;
+			return entity;
+		}
+
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
 			=> @this.WithIdentity(options => {});
 
