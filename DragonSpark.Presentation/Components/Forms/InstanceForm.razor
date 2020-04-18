@@ -2,13 +2,13 @@
 @typeparam TItem
 
 <Form @ref="_form" TItem="Instance<TItem>" Data="Source" Submit="OnSubmit">
-    <OperationMonitor @ref="_monitor" ChildContent="@ChildContent(Source)" />
+    <EditOperationContext @ref="_operations" ChildContent="@ChildContent(Source)" />
 </Form>
 
 @code {
 
     [UsedImplicitly]
-    OperationMonitor _monitor;
+    EditOperationContext _operations;
 
     [UsedImplicitly]
     Form<Instance<TItem>> _form;
@@ -25,7 +25,7 @@
     [UsedImplicitly]
     async Task OnSubmit(Instance<TItem> parameter)
     {
-        var valid = await _monitor.Validate();
+        var valid = await _operations.Validate();
         if (valid)
         {
             await Submit.InvokeAsync(parameter);

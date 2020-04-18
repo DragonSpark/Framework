@@ -14,16 +14,16 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class OperationMonitor : RadzenComponent, IDisposable, ICommand<FieldValidator>
+	public sealed class EditOperationContext : RadzenComponent, IDisposable, ICommand<FieldValidator>
 	{
 		readonly IDictionary<FieldIdentifier, List<FieldValidator>> _identifiers;
 
 		EditContext _editContext;
 
 		[UsedImplicitly]
-		public OperationMonitor() : this(new Dictionary<FieldIdentifier, List<FieldValidator>>()) {}
+		public EditOperationContext() : this(new Dictionary<FieldIdentifier, List<FieldValidator>>()) {}
 
-		public OperationMonitor(IDictionary<FieldIdentifier, List<FieldValidator>> identifiers)
+		public EditOperationContext(IDictionary<FieldIdentifier, List<FieldValidator>> identifiers)
 			=> _identifiers = identifiers;
 
 		[Parameter]
@@ -104,7 +104,7 @@ namespace DragonSpark.Presentation.Components
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			builder.OpenComponent<CascadingValue<OperationMonitor>>(0);
+			builder.OpenComponent<CascadingValue<EditOperationContext>>(0);
 			builder.AddAttribute(1, "IsFixed", true);
 			builder.AddAttribute(2, "Value", this);
 			builder.AddAttribute(3, "ChildContent", ChildContent);

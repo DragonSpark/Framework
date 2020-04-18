@@ -1,6 +1,6 @@
 ﻿@using JetBrains.Annotations
 @* ReSharper disable once ArrangeRedundantParentheses *@
-<ButtonComponent Text="@Text" Icon="@Icon" ButtonType="ButtonType.Submit" Disabled="@(!Monitor.IsValid)"/>
+<ButtonComponent Text="@Text" Icon="@Icon" ButtonType="ButtonType.Submit" Disabled="@(!Operations.IsValid)"/>
 
 @code {
 
@@ -14,7 +14,7 @@
     public string Text { get; [UsedImplicitly] set; }
 
     [CascadingParameter]
-    OperationMonitor Monitor { get; [UsedImplicitly] set; }
+    EditOperationContext Operations { get; [UsedImplicitly] set; }
 
     [CascadingParameter, UsedImplicitly]
     EditContext EditContext

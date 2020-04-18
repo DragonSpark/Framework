@@ -35,7 +35,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		internal ILogger<FieldValidator> Logger { get; [UsedImplicitly] set; }
 
 		[CascadingParameter, UsedImplicitly]
-		OperationMonitor Monitor { get; set; }
+		EditOperationContext Operations { get; set; }
 
 		FieldValidationContext Context
 		{
@@ -78,7 +78,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			Context    = new FieldValidationContext(Definition, EditContext);
 			Identifier = new FieldIdentifier(EditContext.Model, Component);
-			Monitor.Execute(this);
+			Operations.Execute(this);
 		}
 
 		public void Reset()
