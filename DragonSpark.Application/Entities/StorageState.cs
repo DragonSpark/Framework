@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public sealed class StorageState<T> : IOperationResult<int>, ICommand<object> where T : DbContext
+	public sealed class StorageState<T> : IStorageState where T : DbContext
 	{
 		readonly IOperationResult<int> _confirm;
 		readonly ICommand<object>      _cancel;
