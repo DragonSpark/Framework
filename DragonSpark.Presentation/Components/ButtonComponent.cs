@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
@@ -27,7 +28,7 @@ namespace DragonSpark.Presentation.Components
 			                                RuntimeHelpers
 				                                .TypeCheck<IEnumerable<KeyValuePair<string, object>>>(Attributes));
 			__builder.AddAttribute(6, "class", GetCssClass());
-			__builder.AddAttribute(7, "onclick", EventCallback.Factory.Create(this, Click));
+			__builder.AddAttribute(7, "onclick", EventCallback.Factory.Create(this, OnClick));
 			__builder.AddMarkupContent(8, "\r\n");
 			if (!string.IsNullOrEmpty(Icon))
 			{
@@ -54,8 +55,6 @@ namespace DragonSpark.Presentation.Components
 			__builder.AddMarkupContent(20, "\r\n");
 		}
 
-		string GetButtonSize() => Size != ButtonSize.Medium ? "sm" : "md";
-
 		[Parameter]
 		public string Text { get; set; } = string.Empty;
 
@@ -77,14 +76,13 @@ namespace DragonSpark.Presentation.Components
 		[Parameter]
 		public EventCallback<MouseEventArgs> Click { get; set; }
 
-		/*public void OnClick(MouseEventArgs args)
-		{
-		  this.Click.InvokeAsync(args);
-		}*/
+		Task OnClick(MouseEventArgs args) => Disabled ? Task.CompletedTask : Click.InvokeAsync(args);
 
 		[Parameter]
 		public string CssClass { get; set; }
 
+
+		string GetButtonSize() => Size != ButtonSize.Medium ? "sm" : "md";
 
 		protected override string GetComponentCssClass()
 		{

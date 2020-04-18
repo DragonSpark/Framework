@@ -17,8 +17,8 @@ namespace DragonSpark.Compose.Model
 			_tables  = tables;
 		}
 
-		public ISelect<_, T> Reference() => _tables.Get(_subject.ToDelegateReference());
+		public ITable<_, T> Reference() => _tables.Get(_subject.ToDelegateReference());
 
-		public ISelect<_, T> New() => _tables.Get(_subject.Get);
+		public ITable<_, T> New() => _tables.Get(_subject.Get);
 	}
 }

@@ -1,12 +1,12 @@
 ﻿@using JetBrains.Annotations
 @typeparam TItem
 
-<Form @ref="_form" TItem="TItem" Data="Source" Submit="OnSubmit">
-    <OperationMonitor @ref="_monitor" ChildContent="@ChildContent(Source)" />
-</Form>
+    <Form @ref="_form" TItem="TItem" Data="Source" Submit="OnSubmit">
+        <OperationMonitor @ref="_monitor" ChildContent="@ChildContent(Source)" />
+    </Form>
 
-@code {
-
+@code
+{
     [UsedImplicitly]
     OperationMonitor _monitor;
 
@@ -25,7 +25,6 @@
     [UsedImplicitly]
     async Task OnSubmit(TItem parameter)
     {
-    
         var valid = await _monitor.Validate();
         if (valid)
         {

@@ -9,7 +9,7 @@ namespace DragonSpark.Model.Selection.Stores
 	{
 		public static ReferenceTables<TIn, TOut> Default { get; } = new ReferenceTables<TIn, TOut>();
 
-		ReferenceTables() : this(IsValueType.Default.Get(typeof(TOut))
+		ReferenceTables() : this(IsValueType.Default.Get(A.Type<TOut>())
 			                         ? typeof(StructureValueTable<,>)
 			                         : typeof(ReferenceValueTable<,>)) {}
 
@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Selection.Stores
 		                                              .Of.Type<ITable<TIn, TOut>>()
 		                                              .WithParameterOf<Func<TIn, TOut>>()
 		                                              .Then()
-		                                              .Bind(Array.Of(typeof(TIn), typeof(TOut)))
+		                                              .Bind(Array.Of(A.Type<TIn>(), A.Type<TOut>()))
 		                                              .Get()
 		                                              .Then()
 		                                              .Assume()

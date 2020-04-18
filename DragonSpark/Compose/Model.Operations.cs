@@ -8,6 +8,9 @@ namespace DragonSpark.Compose
 	public static partial class ExtensionMethods
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ValueTask ToOperation(this Task @this) => new ValueTask(@this);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new ValueTask<T>(@this);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

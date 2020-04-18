@@ -12,6 +12,6 @@ namespace DragonSpark.Model.Selection.Stores
 			                ? Selections<TIn, TOut>.Default
 			                : Start.A.Generic(typeof(ReferenceTables<,>))
 			                       .Of.Type<ISelect<Func<TIn, TOut>, ISelect<TIn, TOut>>>()
-			                       .Get(typeof(TIn), typeof(TOut))) {}
+			                       .Get(A.Type<TIn>(), A.Type<TOut>())) {}
 	}
 }

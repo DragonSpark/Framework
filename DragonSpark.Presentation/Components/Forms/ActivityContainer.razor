@@ -1,0 +1,39 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Reflection.Collections
+@using JetBrains.Annotations
+
+<fieldset disabled="@IsActive.Default.Get(Context)">
+    @ChildContent
+
+    <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)"/>
+    <label>
+        <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute"/>
+    </label>
+</fieldset>
+
+
+@code
+{
+    [Parameter]
+    public string Property { get; set; }
+
+    [Parameter]
+    public IComponent Context { get; set; }
+
+    [CascadingParameter, UsedImplicitly]
+    IRadzenForm Form { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Property = Property ?? InnerType.Default.Get(Form.GetType())
+                                        .GetProperties()
+                                        .First(x => x.PropertyType == A.Type<string>())
+                                        .Name;
+        Context = Context ?? Form as IComponent ?? throw new InvalidOperationException("No valid context found for ActivityContainer");
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
