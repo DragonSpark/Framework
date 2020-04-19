@@ -14,7 +14,7 @@ namespace DragonSpark.Presentation.Compose
 		readonly IComponent _receiver;
 		readonly Func<Task> _method;
 
-		public CallbackContext(Func<Task> method) : this(method.Target.To<IComponent>(), method) {}
+		public CallbackContext(Func<Task> method) : this(method.Target as IComponent, method) {}
 
 		public CallbackContext(IComponent receiver, Func<Task> method)
 		{
@@ -26,8 +26,7 @@ namespace DragonSpark.Presentation.Compose
 
 		public OperationCallbackContext Handle(IExceptions exceptions)
 			=> new OperationCallbackContext(_receiver,
-			                                new ExceptionAwareOperation(_receiver.GetType(), exceptions,
-			                                                            _method));
+			                                new ExceptionAwareOperation(_receiver.GetType(), exceptions, _method));
 
 		public EventCallback Get() => EventCallback.Factory.Create(_receiver, _method);
 	}
@@ -39,7 +38,7 @@ namespace DragonSpark.Presentation.Compose
 		readonly IComponent    _receiver;
 		readonly Func<T, Task> _method;
 
-		public CallbackContext(Func<T, Task> method) : this(method.Target.To<IComponent>(), method) {}
+		public CallbackContext(Func<T, Task> method) : this(method.Target as IComponent, method) {}
 
 		public CallbackContext(IComponent receiver, Func<T, Task> method)
 		{

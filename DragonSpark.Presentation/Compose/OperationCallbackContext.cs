@@ -21,6 +21,9 @@ namespace DragonSpark.Presentation.Compose
 			_operation = operation;
 		}
 
+		public OperationCallbackContext Using(IComponent receiver)
+			=> new OperationCallbackContext(receiver, _operation);
+
 		public OperationCallbackContext GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
 
 		public OperationCallbackContext GuardEntry(TimeSpan duration)
@@ -46,6 +49,9 @@ namespace DragonSpark.Presentation.Compose
 			_receiver  = receiver;
 			_operation = operation;
 		}
+
+		public OperationCallbackContext<T> Using(IComponent receiver)
+			=> new OperationCallbackContext<T>(receiver, _operation);
 
 		public OperationCallbackContext<T> GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
 
