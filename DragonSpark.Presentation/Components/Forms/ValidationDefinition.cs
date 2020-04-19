@@ -3,12 +3,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public sealed class ValidationDefinition : IValidationDefinition
+	sealed class ValidationDefinition : IValidationDefinition
 	{
 		readonly OperationView<FieldIdentifier, bool> _view;
 
-		public ValidationDefinition(OperationView<FieldIdentifier, bool> view,
-		                            FieldValidationMessages messages)
+		public ValidationDefinition(OperationView<FieldIdentifier, bool> view, FieldValidationMessages messages)
 		{
 			_view    = view;
 			Messages = messages;
