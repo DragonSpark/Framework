@@ -48,7 +48,10 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 
 		[CascadingParameter, UsedImplicitly]
-		public EditContext EditContext
+		IRadzenForm Form { get; set; }
+
+		[CascadingParameter, UsedImplicitly]
+		EditContext EditContext
 		{
 			get => _editContext;
 			set
@@ -77,7 +80,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		void Register()
 		{
 			Context    = new FieldValidationContext(Definition, EditContext);
-			Identifier = new FieldIdentifier(EditContext.Model, Component);
+			Identifier = Form.FindComponent(Component).FieldIdentifier;
 			Operations.Execute(this);
 		}
 

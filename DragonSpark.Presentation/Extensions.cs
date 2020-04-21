@@ -5,6 +5,7 @@ using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Radzen;
 using System;
 using System.Threading.Tasks;
 
@@ -34,7 +35,10 @@ namespace DragonSpark.Presentation
 			=> Start.A.Callback(method).Handle(@this);
 /**/
 
-		public static T GetValue<T>(this FieldIdentifier @this) => SelectValue<T>.Default.Get(@this);
+		public static T GetValue<T>(this FieldIdentifier @this)
+			=> @this.FieldName.Contains(".")
+				   ? PropertyAccess.GetValue(@this.Model, @this.FieldName).To<T>()
+				   : SelectValue<T>.Default.Get(@this);
 
 		public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 	}
