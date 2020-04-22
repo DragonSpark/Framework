@@ -57,7 +57,7 @@ namespace DragonSpark.Testing.Model.Sequences
 			                   .Get(count);
 			array.Should().HaveCount(5);
 
-			Numbers.Default.Get(count).Open().Skip((int)(count - 5)).Take(5).Sum().Should().Be(array.Sum());
+			Numbers.Default.Get(count).Open().Skip((int)(count - 5)).Take(5).ToArray().Sum().Should().Be(array.Sum());
 		}
 
 		[Fact]

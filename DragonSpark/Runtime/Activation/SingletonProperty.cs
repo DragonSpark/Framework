@@ -28,7 +28,7 @@ namespace DragonSpark.Runtime.Activation
 
 			Query() : this(IsSingletonProperty.Default.Get, Is.Assigned()) {}
 
-			readonly Predicate<PropertyInfo> _assigned, _is;
+			readonly Predicate<PropertyInfo>      _is, _assigned;
 
 			public Query(Predicate<PropertyInfo> @is, Predicate<PropertyInfo> assigned)
 			{
@@ -36,7 +36,7 @@ namespace DragonSpark.Runtime.Activation
 				_assigned = assigned;
 			}
 
-			public PropertyInfo Get(PropertyInfo[] parameter) => parameter.Where(_is).FirstOrDefault(_assigned);
+			public PropertyInfo Get(PropertyInfo[] parameter) => parameter.Where(_is).Where(_assigned).First().Value;
 		}
 	}
 }
