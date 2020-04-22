@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	sealed class FieldValidationContext : IOperation<FieldValidator>, ICommand<FieldIdentifier>
+	sealed class FieldValidationContext : IOperation<FieldValidator>, ICommand<FieldIdentifier>, IDisposable
 	{
 		readonly IValidationDefinition  _view;
 		readonly ValidationMessageStore _store;
@@ -64,6 +64,11 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			Result = null;
 			_store.Clear(parameter);
+		}
+
+		public void Dispose()
+		{
+			_store.Clear();
 		}
 	}
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public class FieldValidator : RadzenComponent, ICommand
+	public class FieldValidator : RadzenComponent, ICommand, IDisposable
 	{
 		readonly Func<Task> _validate;
 
@@ -142,6 +142,22 @@ namespace DragonSpark.Presentation.Components.Forms
 					builder.CloseElement();
 				}
 			}
+		}
+
+		// ReSharper disable once FlagArgument
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				Operations?.Execute(Identifier);
+				Context?.Dispose();
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 	}
 }
