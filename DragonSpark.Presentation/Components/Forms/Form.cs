@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public class Form<TItem> : RadzenTemplateForm<TItem>
+	public class Form<TItem> : RadzenTemplateForm<TItem>, IRadzenForm
 	{
 		readonly static FieldInfo FieldInfo = typeof(RadzenTemplateForm<TItem>)
 			.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -18,6 +18,14 @@ namespace DragonSpark.Presentation.Components.Forms
 		public Form() : this(FieldInfo) {}
 
 		public Form(FieldInfo field) => _field = field;
+
+		public new void AddComponent(IRadzenFormComponent component)
+		{
+			var components = _field.GetValue(this).To<List<IRadzenFormComponent>>();
+			components.RemoveAll(x => x.Name == component.Name);
+			components.Add(component);
+		}
+
 
 		protected override void OnParametersSet()
 		{
