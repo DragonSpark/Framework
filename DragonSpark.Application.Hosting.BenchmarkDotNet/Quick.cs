@@ -9,6 +9,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 	{
 		public static Quick Default { get; } = new Quick();
 
-		Quick() : base(QuickConfiguration.Default, Job.ShortRun.With(InProcessNoEmitToolchain.DontLogOutput)) {}
+		Quick()
+			: base(QuickConfiguration.Default, Job.ShortRun.WithToolchain(InProcessNoEmitToolchain.DontLogOutput)) {}
 	}
 }

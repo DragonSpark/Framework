@@ -17,13 +17,9 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 
 		public DeployedConfiguration(IAlteration<Job> configure) => _configure = configure;
 
-		public IConfig Get(Job parameter)
-		{
-			var result = ManualConfig.Create(DefaultConfig.Instance);
-			result.Add(parameter);
-			result.Add(parameter.To(_configure));
-			result.Add(MemoryDiagnoser.Default);
-			return result;
-		}
+		public IConfig Get(Job parameter) => ManualConfig.Create(DefaultConfig.Instance)
+		                                                 .AddJob(parameter)
+		                                                 .AddJob(parameter.To(_configure))
+		                                                 .AddDiagnoser(MemoryDiagnoser.Default);
 	}
 }
