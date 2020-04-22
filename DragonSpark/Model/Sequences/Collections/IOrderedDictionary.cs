@@ -11,8 +11,12 @@ namespace DragonSpark.Model.Sequences.Collections
 	// ReSharper disable once PossibleInterfaceMemberAmbiguity
 	public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IOrderedDictionary
 	{
+#pragma warning disable 109
 		new TValue this[int index] { get; set; }
+
 		new TValue this[TKey key] { get; set; }
+#pragma warning restore 109
+		// TODO ^
 		new int Count { get; }
 		new ICollection<TKey> Keys { get; }
 		new ICollection<TValue> Values { get; }

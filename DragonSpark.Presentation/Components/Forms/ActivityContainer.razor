@@ -1,13 +1,14 @@
-﻿@using DragonSpark.Compose
+﻿@* ReSharper disable ArrangeRedundantParentheses *@
+@using DragonSpark.Compose
 @using DragonSpark.Reflection.Collections
 @using JetBrains.Annotations
 
 <fieldset disabled="@IsActive.Default.Get(Context)">
     @ChildContent
 
-    <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)"/>
+    <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)" />
     <label>
-        <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute"/>
+        <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute" />
     </label>
 </fieldset>
 

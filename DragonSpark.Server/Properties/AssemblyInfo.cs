@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿// ReSharper disable FilesNotPartOfProjectWarning
+// TODO ^
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("DragonSpark.Testing.Application")]

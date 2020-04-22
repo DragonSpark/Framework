@@ -20,8 +20,8 @@ namespace DragonSpark.Application.Security.Identity
 		public void Execute(IServiceCollection parameter)
 		{
 			parameter.Scan(x => x.FromAssemblyOf<IdentityRegistration<T>>()
-			                     .AddClasses(y => y.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace,
-			                                                          typeof(ExternalLoginModel<T>).Namespace))
+			                     .AddClasses(y => y.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace!,
+			                                                          typeof(ExternalLoginModel<T>).Namespace!))
 			                     .AsSelf()
 			                     .AsMatchingInterface()
 			                     .WithScopedLifetime())
