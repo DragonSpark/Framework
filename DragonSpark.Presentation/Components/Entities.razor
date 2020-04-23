@@ -33,7 +33,7 @@
 
 
 <DialogContext T="TEntity" @ref="_new" Title="@($"Create {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Confirmation="ConfirmCreate" Accept="@Exceptions.Bind(() => CompleteCreate(parameter.Context))">
+    <Confirm Confirmation="ConfirmCreate" Accept="@Start.A.Callback(() => CompleteCreate(parameter.Context)).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity(Context ?? this)">
         <RadzenTemplateForm TItem="TEntity" @ref="_newForm" Data="parameter.Context">
             @EditContent(parameter.Context)
         </RadzenTemplateForm>
@@ -41,7 +41,7 @@
 </DialogContext>
 
 <DialogContext T="TEntity" @ref="_editor" Title="@($"Edit {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Confirmation="ConfirmEdit" Accept="@Exceptions.Bind(() => CompleteEdit(parameter.Context))" Cancel="@(() => CancelEdit(parameter.Context))">
+    <Confirm Confirmation="ConfirmEdit" Accept="@Start.A.Callback(() => CompleteEdit(parameter.Context)).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity(Context ?? this)" Cancel="@(() => CancelEdit(parameter.Context))">
         <RadzenTemplateForm TItem="TEntity" @ref="_editForm" Data="parameter.Context">
             @EditContent(parameter.Context)
         </RadzenTemplateForm>
@@ -49,7 +49,7 @@
 </DialogContext>
 
 <DialogContext T="TEntity" @ref="_delete" Title="@($"Delete {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Accept="@Exceptions.Bind(() => Delete(parameter.Context))">
+    <Confirm Accept="@Start.A.Callback(() => Delete(parameter.Context)).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity(Context ?? this)">
         Delete entry named '@Name(parameter.Context)'?  This cannot be undone.
     </Confirm>
 </DialogContext>
@@ -88,6 +88,9 @@
 
     [Parameter, UsedImplicitly]
     public DbContext Storage { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public IComponent Context { get; set; }
 
     [UsedImplicitly]
     ValueTask<bool> ConfirmCreate() => _newForm.EditContext.Validate().ToOperation();

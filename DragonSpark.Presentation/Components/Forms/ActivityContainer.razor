@@ -6,10 +6,13 @@
 <fieldset disabled="@IsActive.Default.Get(Context)">
     @ChildContent
 
-    <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)" />
-    <label>
-        <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute" />
-    </label>
+    @if (Form != null)
+    {
+        <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)" />
+        <label>
+            <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute" />
+        </label>
+    }
 </fieldset>
 
 
@@ -28,10 +31,10 @@
     {
         base.OnInitialized();
 
-        Property = Property ?? InnerType.Default.Get(Form.GetType())
-                                        .GetProperties()
-                                        .First(x => x.PropertyType == A.Type<string>())
-                                        .Name;
+        Property = Property ?? (Form != null ? InnerType.Default.Get(Form.GetType())
+                                                        .GetProperties()
+                                                        .First(x => x.PropertyType == A.Type<string>())
+                                                        .Name : null);
         Context = Context ?? Form as IComponent ?? throw new InvalidOperationException("No valid context found for ActivityContainer");
     }
 
