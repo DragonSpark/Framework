@@ -1,5 +1,4 @@
 ﻿// ReSharper disable FilesNotPartOfProjectWarning
-// TODO ^
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
