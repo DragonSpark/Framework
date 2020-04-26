@@ -16,8 +16,7 @@ namespace DragonSpark.Presentation.Components
 {
 	public sealed class EditOperationContext : RadzenComponent,
 	                                           IDisposable,
-	                                           ICommand<FieldValidator>,
-	                                           ICommand<FieldIdentifier>
+	                                           ICommand<FieldValidator>
 	{
 		readonly IDictionary<FieldIdentifier, List<FieldValidator>> _identifiers;
 
@@ -132,9 +131,24 @@ namespace DragonSpark.Presentation.Components
 			return result;
 		}
 
-		public void Execute(FieldIdentifier parameter)
+		public bool Unregister(FieldValidator parameter)
 		{
-			_identifiers.Remove(parameter);
+			var key = parameter.Identifier;
+			if (_identifiers.ContainsKey(key))
+			{
+				var list = _identifiers[key];
+				var result = list.Remove(parameter);
+
+				switch (list.Count)
+				{
+					case 0:
+						_identifiers[key] = null;
+						break;
+				}
+
+				return result;
+			}
+			return false;
 		}
 
 		public void Dispose()

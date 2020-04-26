@@ -149,7 +149,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			if (disposing)
 			{
-				Operations?.Execute(Identifier);
+				Operations?.Unregister(this);
 				Context?.Dispose();
 			}
 		}
