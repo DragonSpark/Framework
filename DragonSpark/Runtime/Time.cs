@@ -7,6 +7,6 @@ namespace DragonSpark.Runtime
 	{
 		public static Time Default { get; } = new Time();
 
-		Time() : base(() => DateTimeOffset.Now) {}
+		Time() : base(() => DateTimeOffset.UtcNow) {}
 	}
 }

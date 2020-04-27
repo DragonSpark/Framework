@@ -207,8 +207,9 @@ namespace DragonSpark.Application.Testing.Security
 
 		sealed class Subject : UserSynchronizer<User>
 		{
-			public Subject(UserManager<User> users) : base(new Claims(x => x.Type.StartsWith(ClaimNamespace.Default)),
-			                                               new ClaimTransactions<User>(users)) {}
+			public Subject(UserManager<User> users)
+				: base(new UserClaimSynchronizer<User>(new Claims(x => x.Type.StartsWith(ClaimNamespace.Default)),
+				                                       new ClaimTransactions<User>(users))) {}
 		}
 	}
 }
