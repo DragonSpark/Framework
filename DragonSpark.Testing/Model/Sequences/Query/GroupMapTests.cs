@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var entries = new[]
 			{

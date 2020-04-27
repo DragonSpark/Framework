@@ -17,13 +17,13 @@ namespace DragonSpark.Testing.Application.Reflection
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			ConstructorCondition.Default.Get(A.Type<object>().GetConstructor(Empty<Type>.Array));
 		}
 
 		[Fact]
-		void VerifyOptional()
+		public void VerifyOptional()
 		{
 			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only<ConstructorInfo>());
 		}

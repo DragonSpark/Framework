@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Compose.Extents.Selections
 		sealed class Subject {}
 
 		[Fact]
-		void VerifyFull()
+		public void VerifyFull()
 		{
 			var instance  = new Subject();
 			var parameter = new object();
@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Compose.Extents.Selections
 		}
 
 		[Fact]
-		void VerifyParameter()
+		public void VerifyParameter()
 		{
 			Start.A.Selection.Of.Any.By.Returning(4)
 			     .Get()

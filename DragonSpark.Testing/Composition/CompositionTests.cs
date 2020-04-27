@@ -44,7 +44,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task Verify()
+		public async Task Verify()
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyActivation()
+		public async Task VerifyActivation()
 		{
 			using var host = await Start.A.Host()
 			                            .WithDefaultComposition()
@@ -73,7 +73,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyActivationThrowsWithoutConfiguration()
+		public async Task VerifyActivationThrowsWithoutConfiguration()
 		{
 			using var host = await Start.A.Host().Operations().Run();
 			host.Services.Invoking(x => x.GetRequiredService<Singleton>())
@@ -86,7 +86,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyAllAssemblyTypes()
+		public async Task VerifyAllAssemblyTypes()
 		{
 			using var host = await Start.A.Host()
 			                            .RegisterModularity<AllAssemblyTypes>()
@@ -96,7 +96,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyAssemblies()
+		public async Task VerifyAssemblies()
 		{
 			using var host = await Start.A.Host()
 			                            .RegisterModularity()
@@ -106,7 +106,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyCompositionRoot()
+		public async Task VerifyCompositionRoot()
 		{
 			using var host = await Start.A.Host()
 			                            .ComposeUsingRoot<Root>()
@@ -119,7 +119,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyConfiguration()
+		public async Task VerifyConfiguration()
 		{
 			using var host = await Start.A.Host()
 			                            .Configure(x => x.AddSingleton("Hello World!"))
@@ -131,7 +131,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyDecoration()
+		public async Task VerifyDecoration()
 		{
 			using var host = await Start.A.Host()
 			                            .Configure(x => x.AddSingleton("Hello World!"))
@@ -144,7 +144,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyDecorationViaRoot()
+		public async Task VerifyDecorationViaRoot()
 		{
 			using var host = await Start.A.Host()
 			                            .Configure(x => x.AddSingleton("Hello World!"))
@@ -157,7 +157,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyDevelopmentEnvironmentalRegistration()
+		public async Task VerifyDevelopmentEnvironmentalRegistration()
 		{
 			using var host = await Start.A.Host()
 			                            .WithEnvironment("Development")
@@ -170,7 +170,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyEnvironmentalRegistration()
+		public async Task VerifyEnvironmentalRegistration()
 		{
 			{
 				using var host = await Start.A.Host()
@@ -195,7 +195,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		async Task VerifyUnexistingComponentThrows()
+		public async Task VerifyUnexistingComponentThrows()
 			=> await Start.A.Host()
 			              .WithDefaultComposition()
 			              .RegisterModularity()

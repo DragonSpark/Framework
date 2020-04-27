@@ -8,6 +8,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class SelectManyTests
 	{
 		readonly static Numbers[] Data =
@@ -50,7 +51,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Select(x => x.SelectMany(y => y.Elements).ToArray())
@@ -60,7 +61,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBody()
+		public void VerifyBody()
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(2)
@@ -72,7 +73,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBodyFirst()
+		public void VerifyBodyFirst()
 		{
 			Start.A.Selection<Numbers>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(1)

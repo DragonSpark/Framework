@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class EnvironmentAwareAssembliesTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			EnvironmentAwareAssemblies.Default.Get("Production")
 			                          .Open()
@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 		}
 
 		[Fact]
-		void VerifyDevelopment()
+		public void VerifyDevelopment()
 		{
 			EnvironmentAwareAssemblies.Default.Get("Development")
 			                          .Open()

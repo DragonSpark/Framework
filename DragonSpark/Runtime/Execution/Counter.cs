@@ -19,7 +19,7 @@ namespace DragonSpark.Runtime.Execution
 	}
 
 	[UsedImplicitly]
-	sealed class Counter<T> : Select<T, int>
+	public sealed class Counter<T> : Select<T, int>
 	{
 		public Counter() : base(Start.A.Selection<T>()
 		                             .AndOf<Counter>()

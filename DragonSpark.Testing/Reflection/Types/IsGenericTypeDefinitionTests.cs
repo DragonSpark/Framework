@@ -10,7 +10,7 @@ namespace DragonSpark.Testing.Reflection.Types
 		sealed class Subject<T> {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var sut = IsGenericTypeDefinition.Default;
 			sut.Get(typeof(Subject<object>)).Should().BeFalse();

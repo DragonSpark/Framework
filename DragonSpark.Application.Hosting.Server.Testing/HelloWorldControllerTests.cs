@@ -13,6 +13,7 @@ using Dependency = DragonSpark.Application.Hosting.Server.Testing.Environment.De
 
 namespace DragonSpark.Application.Hosting.Server.Testing
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class HelloWorldControllerTests
 	{
 		[Theory, InlineData("Development", typeof(Dependency)),

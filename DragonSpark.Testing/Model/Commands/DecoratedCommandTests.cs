@@ -6,6 +6,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Commands
 {
+	// ReSharper disable once TestFileNameWarning
 	public class DecoratedCommandTests
 	{
 		[Fact]

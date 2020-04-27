@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class PrimaryAssemblyDetailsTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var details  = PrimaryAssemblyDetails.Default.Get();
 			var assembly = Assembly.GetExecutingAssembly();

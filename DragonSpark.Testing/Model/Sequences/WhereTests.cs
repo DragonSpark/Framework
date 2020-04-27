@@ -11,6 +11,7 @@ using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Testing.Model.Sequences
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class WhereTests
 	{
 		public class Benchmarks
@@ -44,7 +45,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			const uint count = 1_000u;
 			var array = Numbers.Default.Open()
@@ -61,7 +62,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyAdvanced()
+		public void VerifyAdvanced()
 		{
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
@@ -79,7 +80,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyComprehensive()
+		public void VerifyComprehensive()
 		{
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			Start.A.Selection<int>()
@@ -101,7 +102,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyCount()
+		public void VerifyCount()
 		{
 			var source   = Enumerable.Range(0, 1_000).ToArray();
 			var expected = source.Where(x => x > 100).ToArray();
@@ -115,7 +116,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereLink()
+		public void VerifyWhereLink()
 		{
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).ToArray();
@@ -127,7 +128,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereSkipTake()
+		public void VerifyWhereSkipTake()
 		{
 			var source = Enumerable.Range(0, 1_000).ToArray();
 			var count  = 850;
@@ -146,7 +147,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereTake()
+		public void VerifyWhereTake()
 		{
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();

@@ -9,6 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Runtime
 {
+	// ReSharper disable once TestFileNameSpaceWarning
 	public class ObjectsTests
 	{
 		[Theory, AutoData]

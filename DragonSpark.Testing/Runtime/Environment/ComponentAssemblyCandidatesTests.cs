@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class ComponentAssemblyCandidatesTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			ComponentAssemblyCandidates.Default
 			                           .Get(new AssemblyName("DragonSpark.Duper.Awesome.Namespace.Application"))

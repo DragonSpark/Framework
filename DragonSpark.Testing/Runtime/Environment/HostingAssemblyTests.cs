@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class HostingAssemblyTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			HostingAssembly.Default.Get().Should().BeSameAs(typeof(XunitTestingApplicationAttribute).Assembly);
 		}

@@ -5,6 +5,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class ConcatenationTests
 	{
 		const int skip = 10;
@@ -16,7 +17,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		};
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Append(1, 2, 3).ToArray())
@@ -26,7 +27,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBody()
+		public void VerifyBody()
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip).Append(1, 2, 3).ToArray())
@@ -36,7 +37,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBodyFirst()
+		public void VerifyBodyFirst()
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip).Append(1, 2, 3).Skip(skip).FirstOrDefault())

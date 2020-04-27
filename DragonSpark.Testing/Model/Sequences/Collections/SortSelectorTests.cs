@@ -17,19 +17,19 @@ namespace DragonSpark.Testing.Model.Sequences.Collections
 		sealed class Declared {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			SortSelector<Subject>.Default.Get(new Subject()).Should().Be(-1);
 		}
 
 		[Fact]
-		void VerifyAware()
+		public void VerifyAware()
 		{
 			SortSelector<Aware>.Default.Get(new Aware()).Should().Be(6776);
 		}
 
 		[Fact]
-		void VerifyDeclared()
+		public void VerifyDeclared()
 		{
 			SortSelector<Declared>.Default.Get(new Declared()).Should().Be(123);
 		}

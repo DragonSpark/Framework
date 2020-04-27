@@ -9,6 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class InlineProjectionTests
 	{
 		const uint Total = 1000;
@@ -37,7 +38,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Select(y => y.Length))
@@ -48,7 +49,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifySkipTakeWhereSkipTake()
+		public void VerifySkipTakeWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(100)
@@ -69,7 +70,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyWhere()
+		public void VerifyWhere()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Where(s => s.Contains("ab"))
@@ -81,7 +82,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyWhereSkip()
+		public void VerifyWhereSkip()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Where(s => s.Contains("ab"))
@@ -94,7 +95,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyWhereSkipTake()
+		public void VerifyWhereSkipTake()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Where(y => y.Contains("ab"))

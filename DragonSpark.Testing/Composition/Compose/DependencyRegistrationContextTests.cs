@@ -11,6 +11,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Composition.Compose
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class DependencyRegistrationContextTests
 	{
 		sealed class Subject
@@ -51,7 +52,7 @@ namespace DragonSpark.Testing.Composition.Compose
 		}
 
 		[Fact]
-		async Task Verify()
+		public async Task Verify()
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
@@ -69,7 +70,7 @@ namespace DragonSpark.Testing.Composition.Compose
 		}
 
 		[Fact]
-		async Task VerifyGeneric()
+		public async Task VerifyGeneric()
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
@@ -90,7 +91,7 @@ namespace DragonSpark.Testing.Composition.Compose
 		}
 
 		[Fact]
-		async Task VerifyGenericDefinition()
+		public async Task VerifyGenericDefinition()
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
@@ -108,7 +109,7 @@ namespace DragonSpark.Testing.Composition.Compose
 		}
 
 		[Fact]
-		async Task VerifyMultiple()
+		public async Task VerifyMultiple()
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()

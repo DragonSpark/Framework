@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 	public sealed class DynamicStoreTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var first  = new[] {1, 2, 3, 4};
 			var second = new[] {5, 6, 7, 8};
@@ -23,7 +23,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyLarge()
+		public void VerifyLarge()
 		{
 			var first  = Enumerable.Range(0, 2048).ToArray();
 			var second = Enumerable.Range(0, 2048).ToArray();

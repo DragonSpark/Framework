@@ -8,13 +8,13 @@ namespace DragonSpark.Testing.Compose.Extents.Commands
 	public sealed class CommandContextTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Command.Of.Any.By.Empty.Get().Should().BeSameAs(EmptyCommand<object>.Default);
 		}
 
 		[Fact]
-		void VerifyCalling()
+		public void VerifyCalling()
 		{
 			var count = 0;
 			Start.A.Command.Of.None.By.Calling(_ => count++).Get().Execute();

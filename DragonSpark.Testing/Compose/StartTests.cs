@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Compose
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var instance = new Instance();
 
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Compose
 		}
 
 		[Fact]
-		void VerifyActivation()
+		public void VerifyActivation()
 		{
 			var activation = Start.An.Activation<Instance>();
 			activation.Default.Should()
@@ -61,7 +61,7 @@ namespace DragonSpark.Testing.Compose
 		}
 
 		[Fact]
-		void VerifyBasicExtent()
+		public void VerifyBasicExtent()
 		{
 			var instance = new Instance();
 
@@ -73,7 +73,7 @@ namespace DragonSpark.Testing.Compose
 		}
 
 		[Fact]
-		void VerifyCalling()
+		public void VerifyCalling()
 		{
 			var instance = new Instance();
 
@@ -82,6 +82,59 @@ namespace DragonSpark.Testing.Compose
 			     .Return()
 			     .Should()
 			     .BeSameAs(instance);
+		}
+
+		sealed class Subject {}
+
+		sealed class SingletonSubject
+		{
+			public static SingletonSubject Default { get; } = new SingletonSubject();
+
+			SingletonSubject() {}
+		}
+
+		[Fact]
+		public void VerifyArray()
+		{
+			Start.A.Result<Subject>()
+			     .As.Sequence.Array.New(0)
+			     .Return()
+			     .Should()
+			     .BeEmpty();
+
+			Start.A.Result<Subject>()
+			     .As.Sequence.Array.New(4)
+			     .Return()
+			     .Should()
+			     .HaveCount(4);
+		}
+
+		[Fact]
+		public void VerifyDefault()
+		{
+			Start.A.Result<Subject>()
+			     .By.Default()
+			     .Return()
+			     .Should()
+			     .BeNull();
+		}
+
+		[Fact]
+		public void VerifySingleton()
+		{
+			var source = Start.A.Result<SingletonSubject>().By.Activation();
+			var first  = source.Return();
+			first.Should().Be(SingletonSubject.Default);
+			source.Return().Should().BeSameAs(first);
+		}
+
+		[Fact]
+		public void VerifySubject()
+		{
+			var source = Start.A.Result<Subject>().By.Activation();
+			var first  = source.Get();
+			first.Should().NotBeNull();
+			source.Return().Should().NotBeNull().And.Subject.Should().NotBeSameAs(first);
 		}
 	}
 }

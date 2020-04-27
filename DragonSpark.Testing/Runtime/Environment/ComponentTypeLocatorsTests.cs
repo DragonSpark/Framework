@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			SortSelector<Type>.Default.Get(typeof(First)).Should().Be(-10);
 

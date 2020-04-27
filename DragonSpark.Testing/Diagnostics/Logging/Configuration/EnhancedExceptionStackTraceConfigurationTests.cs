@@ -5,10 +5,11 @@ using Xunit;
 
 namespace DragonSpark.Testing.Diagnostics.Logging.Configuration
 {
+	// ReSharper disable once TestFileNameWarning
 	public class EnhancedExceptionStackTraceConfigurationTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			try
 			{

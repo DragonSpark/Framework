@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Runtime
 	public sealed class IsAssignedTests
 	{
 		[Fact]
-		void VerifyImmutableArrays()
+		public void VerifyImmutableArrays()
 		{
 			Is.Assigned<ImmutableArray<object>>().Get().Get(default).Should().BeFalse();
 			Is.Assigned<ImmutableArray<object>>().Get().Get(ImmutableArray<object>.Empty).Should().BeTrue();
@@ -16,14 +16,14 @@ namespace DragonSpark.Testing.Runtime
 		}
 
 		[Fact]
-		void VerifyReferences()
+		public void VerifyReferences()
 		{
 			Is.Assigned<object>().Get().Get(new object()).Should().BeTrue();
 			Is.Assigned<object>().Get().Get(null).Should().BeFalse();
 		}
 
 		[Fact]
-		void VerifyUnassignedValues()
+		public void VerifyUnassignedValues()
 		{
 			Is.Assigned<int?>().Get().Get(1).Should().BeTrue();
 			Is.Assigned<int?>().Get().Get(0).Should().BeTrue();
@@ -31,7 +31,7 @@ namespace DragonSpark.Testing.Runtime
 		}
 
 		[Fact]
-		void VerifyValues()
+		public void VerifyValues()
 		{
 			Is.Assigned<int>().Get().Get(1).Should().BeTrue();
 			Is.Assigned<int>().Get().Get(0).Should().BeFalse();

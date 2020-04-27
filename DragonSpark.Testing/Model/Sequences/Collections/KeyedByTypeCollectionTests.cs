@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Model.Sequences.Collections
 		sealed class Other : ISubject {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var first  = new Subject();
 			var second = new Subject();

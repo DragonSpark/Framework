@@ -12,13 +12,13 @@ namespace DragonSpark.Testing.Model.Sequences.Collections
 		sealed class Subject {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			SortMetadata<Subject>.Default.Get(new Subject()).Should().Be(200);
 		}
 
 		[Fact]
-		void VerifyMetadata()
+		public void VerifyMetadata()
 		{
 			SortMetadata<TypeInfo>.Default.Get(A.Metadata<Subject>()).Should().Be(200);
 		}

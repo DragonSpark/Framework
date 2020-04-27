@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		}
 
 		[Fact]
-		void VerifyActivation()
+		public void VerifyActivation()
 		{
 			Start.A.Result<Subject>()
 			     .By.Activation()
@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		}
 
 		[Fact]
-		void VerifyExtentSelection()
+		public void VerifyExtentSelection()
 		{
 			var instance = Array.Empty<Subject>();
 			Start.A.Result<Subject>()
@@ -44,7 +44,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		}
 
 		[Fact]
-		void VerifyNew()
+		public void VerifyNew()
 		{
 			var result = Start.A.Result<Subject>()
 			                  .By.Instantiation();
@@ -55,7 +55,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		}
 
 		[Fact]
-		void VerifySingleton()
+		public void VerifySingleton()
 		{
 			Start.A.Result.Of<SubjectSingleton>()
 			     .By.Singleton()

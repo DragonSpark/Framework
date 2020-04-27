@@ -8,6 +8,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class DistinctTests
 	{
 		readonly static int[] Numbers
@@ -37,7 +38,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Selection.Of.Type<int>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Distinct().ToArray())

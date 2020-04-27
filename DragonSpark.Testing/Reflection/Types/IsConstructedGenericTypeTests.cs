@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Reflection.Types
 		interface ISubject<T> {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var sut = IsConstructedGenericType.Default;
 			sut.Get(typeof(Subject<object>)).Should().BeTrue();
@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Reflection.Types
 		}
 
 		[Fact]
-		void VerifyInterface()
+		public void VerifyInterface()
 		{
 			var sut = IsConstructedGenericType.Default;
 			sut.Get(typeof(ISubject<object>)).Should().BeTrue();

@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Reflection
 		sealed class SubjectAttribute : Attribute {}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var provider = typeof(Extend);
 			LocalAttribute<SubjectAttribute>.Default.Get(provider)

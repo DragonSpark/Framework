@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Text.Formatting
 	public sealed class FormattersTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var formatter = DefaultSystemFormatter.Default.Append(ApplicationDomainFormatter.Default);
 			var sut       = formatter.Get(AppDomain.CurrentDomain);

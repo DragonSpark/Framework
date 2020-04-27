@@ -5,10 +5,11 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class IntersectTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var first  = new[] {1, 2, 3, 4, 5};
 			var second = new[] {4, 5, 6, 7, 8};
@@ -21,7 +22,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBody()
+		public void VerifyBody()
 		{
 			var first  = new[] {1, 2, 3, 4, 5};
 			var second = new[] {4, 5, 6, 7, 8};
@@ -36,7 +37,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyBodyFirst()
+		public void VerifyBodyFirst()
 		{
 			var first  = new[] {1, 2, 3, 4, 5};
 			var second = new[] {4, 5, 6, 7, 8};

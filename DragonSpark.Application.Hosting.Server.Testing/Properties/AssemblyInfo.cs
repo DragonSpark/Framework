@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Hosting.xUnit;
+﻿// ReSharper disable once FilesNotPartOfProjectWarning
+using DragonSpark.Application.Hosting.xUnit;
 using System.Reflection;
 using Xunit;
 

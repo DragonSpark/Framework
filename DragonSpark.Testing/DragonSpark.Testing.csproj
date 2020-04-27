@@ -27,4 +27,15 @@
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Application\Console\" />
+    <Folder Include="Aspects\" />
+    <Folder Include="Compose\Extents\Validation\" />
+    <Folder Include="Expressions\" />
+    <Folder Include="Model\Extents\" />
+    <Folder Include="Model\Selection\Adapters\" />
+    <Folder Include="Model\Sources\Tables\" />
+    <Folder Include="Model\Specifications\" />
+    <Folder Include="Operations\" />
+  </ItemGroup>
 </Project>

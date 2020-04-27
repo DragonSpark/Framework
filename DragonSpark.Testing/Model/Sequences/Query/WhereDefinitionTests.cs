@@ -9,6 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class WhereDefinitionTests
 	{
 		const uint Total = 1000;
@@ -42,7 +43,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Select(y => y.Length).ToArray())
@@ -52,7 +53,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyDoubleWhere()
+		public void VerifyDoubleWhere()
 		{
 			var numbers = new[] {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7};
 
@@ -67,7 +68,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifyDoubleWhereSkipTake()
+		public void VerifyDoubleWhereSkipTake()
 		{
 			var numbers = new[] {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7};
 
@@ -86,7 +87,7 @@ namespace DragonSpark.Testing.Model.Sequences.Query
 		}
 
 		[Fact]
-		void VerifySkipTakeWhere()
+		public void VerifySkipTakeWhere()
 		{
 			Start.A.Selection.Of.Type<string>()
 			     .As.Sequence.Open.By.Self.Select(x => x.Skip(skip)

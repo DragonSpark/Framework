@@ -9,6 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Composition
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class WithCompositionTests
 	{
 		sealed class Instances : Select<int, object>

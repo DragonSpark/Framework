@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Compose.Extents.Conditions
 	public sealed class ConditionContextTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			Start.A.Condition.Of.Any.By.Always.Get()
 			     .Should()
@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Compose.Extents.Conditions
 		}
 
 		[Fact]
-		void VerifyUsing()
+		public void VerifyUsing()
 		{
 			var subject = Start.A.Condition.Of.Type<int>().By.Calling(x => x > 3).Get();
 

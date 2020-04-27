@@ -5,10 +5,11 @@ using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class CollectionSequenceTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var expected = Enumerable.Range(0, 10_000).ToArray();
 			Start.A.Selection<int>()
@@ -20,7 +21,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyAdvanced()
+		public void VerifyAdvanced()
 		{
 			var source = Enumerable.Range(0, 10_000).ToList();
 			Start.A.Selection<int>()
@@ -38,7 +39,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyComprehensive()
+		public void VerifyComprehensive()
 		{
 			var source = Enumerable.Range(0, 10_000).ToList();
 			Start.A.Selection<int>()
@@ -60,7 +61,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyCount()
+		public void VerifyCount()
 		{
 			var source   = Enumerable.Range(0, 10_000).ToArray();
 			var expected = source.Where(x => x > 1000).ToArray();
@@ -75,7 +76,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifySelection()
+		public void VerifySelection()
 		{
 			var source   = Enumerable.Range(0, 10_000).ToArray();
 			var expected = source.Skip(5000).Take(300).ToArray();
@@ -89,7 +90,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereLink()
+		public void VerifyWhereLink()
 		{
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).ToArray();
@@ -101,7 +102,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereSkipTake()
+		public void VerifyWhereSkipTake()
 		{
 			var       source = Enumerable.Range(0, 10_000).ToArray();
 			const int count  = 8500;
@@ -119,7 +120,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifyWhereTake()
+		public void VerifyWhereTake()
 		{
 			var numbers  = new[] {1, 2, 3, 4, 5};
 			var expected = numbers.Where(x => x > 3).Take(1).ToArray();

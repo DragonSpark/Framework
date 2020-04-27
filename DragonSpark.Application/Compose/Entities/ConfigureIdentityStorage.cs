@@ -30,6 +30,7 @@ namespace DragonSpark.Application.Compose.Entities
 			         .AddEntityFrameworkStores<T>()
 			         .Return(parameter)
 			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
+			         .For<DbContext>().Map<T>().Scoped()
 			         .AddScoped<AuthenticationStateProvider, Revalidation<TUser>>()
 			         .AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
 		}

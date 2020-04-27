@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class RegistryTests
 	{
 		[Fact]
-		void VerifyAdd()
+		public void VerifyAdd()
 		{
 			var subject = new Registry<object>();
 
@@ -21,7 +21,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 		}
 
 		[Fact]
-		void VerifyAddRange()
+		public void VerifyAddRange()
 		{
 			var subject = new Registry<object>();
 

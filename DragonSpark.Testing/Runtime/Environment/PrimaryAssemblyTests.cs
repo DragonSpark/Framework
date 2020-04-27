@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 	public sealed class PrimaryAssemblyTests
 	{
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			PrimaryAssembly.Default.Get().Should().BeSameAs(GetType().Assembly);
 		}

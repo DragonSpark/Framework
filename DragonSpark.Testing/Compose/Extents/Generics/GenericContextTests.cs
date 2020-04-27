@@ -29,7 +29,7 @@ namespace DragonSpark.Testing.Compose.Extents.Generics
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var parameters = typeof(int);
 			Start.A.Generic(typeof(Subject<>))
@@ -42,7 +42,7 @@ namespace DragonSpark.Testing.Compose.Extents.Generics
 		}
 
 		[Fact]
-		void VerifyParameter()
+		public void VerifyParameter()
 		{
 			const uint start      = 6776u;
 			const int  parameter  = 123;

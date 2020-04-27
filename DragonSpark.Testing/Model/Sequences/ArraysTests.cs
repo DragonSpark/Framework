@@ -37,7 +37,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			var expected = Enumerable.Range(0, 10_000).ToArray();
 			Arrays<int>.Default.Get(expected)
@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		}
 
 		[Fact]
-		void VerifySelection()
+		public void VerifySelection()
 		{
 			var source   = Enumerable.Range(0, 10_000).ToArray();
 			var expected = source.Skip(1000).Take(250).ToArray();

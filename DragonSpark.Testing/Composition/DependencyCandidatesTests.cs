@@ -9,6 +9,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Composition
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class DependencyCandidatesTests
 	{
 		sealed class Subject
@@ -80,7 +81,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void Verify()
+		public void Verify()
 		{
 			DependencyCandidates.Default.Get(typeof(Subject))
 			                    .Open()
@@ -90,7 +91,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void VerifyMultiple()
+		public void VerifyMultiple()
 		{
 			DependencyCandidates.Default.Get(typeof(Multiple))
 			                    .Open()
@@ -99,7 +100,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void VerifyMultipleDefinition()
+		public void VerifyMultipleDefinition()
 		{
 			DependencyCandidates.Default.Get(typeof(Multiple<>))
 			                    .Open()
@@ -108,7 +109,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void VerifyMultipleGeneric()
+		public void VerifyMultipleGeneric()
 		{
 			DependencyCandidates.Default.Get(typeof(Multiple<object>))
 			                    .Open()
@@ -117,7 +118,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void VerifyMultipleWithDelegate()
+		public void VerifyMultipleWithDelegate()
 		{
 			DependencyCandidates.Default.Get(typeof(MultipleWithDelegate))
 			                    .Open()
@@ -126,7 +127,7 @@ namespace DragonSpark.Testing.Composition
 		}
 
 		[Fact]
-		void VerifyMultipleWithInterface()
+		public void VerifyMultipleWithInterface()
 		{
 			DependencyCandidates.Default.Get(typeof(MultipleWithInterface))
 			                    .Open()
