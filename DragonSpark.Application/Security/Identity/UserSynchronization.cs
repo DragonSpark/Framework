@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity
 		{
 			var user      = await _users.GetUser(parameter);
 			var principal = await _authentication.CreateUserPrincipalAsync(user);
-			var synchronization = new Synchronization<T>(parameter, new Stored<T>(user, principal),
+			var synchronization = new Synchronization<T>(parameter, new Profile<T>(principal, user),
 			                                             parameter.Principal);
 			if (await _synchronizer.Get(synchronization))
 			{

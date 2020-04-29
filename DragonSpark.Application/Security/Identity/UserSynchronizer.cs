@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Security.Identity
 			var result = await _previous.Get(parameter).ConfigureAwait(false);
 			if (result)
 			{
-				await _modified.Get(parameter.Stored.User).ConfigureAwait(false);
+				await _modified.Get(parameter.Profile.User).ConfigureAwait(false);
 			}
 			return result;
 		}

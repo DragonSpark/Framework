@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public readonly struct Stored<T> where T : IdentityUser
+	public readonly struct Profile<T> where T : IdentityUser
 	{
-		public Stored(T user, ClaimsPrincipal principal)
+		public Profile(ClaimsPrincipal principal, T user)
 		{
 			User      = user;
 			Principal = principal;

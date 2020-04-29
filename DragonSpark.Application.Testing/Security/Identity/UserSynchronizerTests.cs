@@ -66,7 +66,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Stored<User>(user, principal), source);
+					                                                new Profile<User>(principal, user), source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
@@ -135,7 +135,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Stored<User>(user, principal), source);
+					                                                new Profile<User>(principal, user), source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
@@ -197,7 +197,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Stored<User>(user, principal), source);
+					                                                new Profile<User>(principal, user), source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeFalse();
 				}

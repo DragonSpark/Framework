@@ -5,23 +5,23 @@ namespace DragonSpark.Application.Security.Identity
 {
 	public readonly struct Synchronization<T> where T : IdentityUser
 	{
-		public Synchronization(ExternalLoginInfo login, Stored<T> stored, ClaimsPrincipal source)
+		public Synchronization(ExternalLoginInfo login, Profile<T> profile, ClaimsPrincipal source)
 		{
 			Login  = login;
-			Stored = stored;
+			Profile = profile;
 			Source = source;
 		}
 
 		public ExternalLoginInfo Login { get; }
 
-		public Stored<T> Stored { get; }
+		public Profile<T> Profile { get; }
 
 		public ClaimsPrincipal Source { get; }
 
-		public void Deconstruct(out ExternalLoginInfo login, out Stored<T> stored, out ClaimsPrincipal source)
+		public void Deconstruct(out ExternalLoginInfo login, out Profile<T> profile, out ClaimsPrincipal source)
 		{
 			login  = Login;
-			stored = Stored;
+			profile = Profile;
 			source = Source;
 		}
 	}
