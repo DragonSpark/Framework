@@ -17,7 +17,6 @@ namespace DragonSpark.Application.Security.Identity
 		readonly IdentityOptions      _options;
 		readonly IServiceScopeFactory _scopes;
 
-		// ReSharper disable once TooManyDependencies
 		public Revalidation(ILoggerFactory loggerFactory, IServiceScopeFactory scopes,
 		                    IOptions<IdentityOptions> options)
 			: this(loggerFactory, scopes, options.Value, TimeSpan.FromMinutes(30)) {}
@@ -41,27 +40,27 @@ namespace DragonSpark.Application.Security.Identity
 			var scope = _scopes.CreateScope();
 			try
 			{
-				var userManager = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
-				return await ValidateSecurityStampAsync(userManager, authenticationState.User);
+				var users = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
+				if (users.SupportsUserSecurityStamp)
+				{
+					var user = await users.GetUserAsync(authenticationState.User);
+					if (user != null)
+					{
+						var result = authenticationState.User
+						                                .FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType)
+						             == await users.GetSecurityStampAsync(user);
+						return result;
+					}
+
+					return false;
+				}
+
+				return true;
 			}
 			finally
 			{
 				await scope.Disposed();
 			}
-		}
-
-		async Task<bool> ValidateSecurityStampAsync(UserManager<T> users, ClaimsPrincipal principal)
-		{
-			var user = await users.GetUserAsync(principal);
-			if (user != null)
-			{
-				var result = !users.SupportsUserSecurityStamp ||
-				             principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType) ==
-				             await users.GetSecurityStampAsync(user);
-				return result;
-			}
-
-			return false;
 		}
 	}
 }
