@@ -14,4 +14,8 @@
     <PackageReference Include="Radzen.Blazor" Version="2.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Security\" />
+  </ItemGroup>
+
 </Project>

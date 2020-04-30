@@ -9,12 +9,10 @@ namespace DragonSpark.Application.Security.Identity
 	{
 		readonly string _applicationName;
 
-		public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor)
-			: this(userManager, optionsAccessor, "Identity.Application") {}
-
 		public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor,
-		                            string applicationName)
-			: base(userManager, optionsAccessor) => _applicationName = applicationName;
+		                            string applicationName = "Identity.Application")
+			: base(userManager, optionsAccessor)
+			=> _applicationName = applicationName;
 
 		protected override async Task<ClaimsIdentity> GenerateClaimsAsync(T user)
 		{

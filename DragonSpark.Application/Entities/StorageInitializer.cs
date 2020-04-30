@@ -25,7 +25,6 @@ namespace DragonSpark.Application.Entities
 		{
 			if (!_cache.TryGetValue(_key, out _))
 			{
-				_cache.CreateEntry(_key);
 				_cache.Set(_key, this);
 				return _select(parameter);
 			}

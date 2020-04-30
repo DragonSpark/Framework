@@ -31,7 +31,18 @@ namespace DragonSpark.Application.Compose.Entities
 			         .Return(parameter)
 			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
 			         .For<DbContext>().Map<T>().Scoped()
-			         .AddScoped<AuthenticationStateProvider, Revalidation<TUser>>()
+					 //
+			         .For<IProfileStates<TUser>>().Map<ProfileStates<TUser>>().Scoped()
+			         .Decorate<IProfileStates<TUser>, AnonymousAwareProfile<TUser>>()
+			         .Decorate<IProfileStates<TUser>, StoredProfileStates<TUser>>()
+
+					 //
+			         .For<IAdapters>().Map<Adapters<TUser>>().Scoped()
+					 //
+					 .For<IAuthenticationValidation>().Map<AuthenticationValidation<TUser>>().Scoped()
+					 .For<IValidationServices>().Map<ValidationServices>().Scoped()
+					 .For<AuthenticationStateProvider>().Map<Revalidation>().Scoped()
+					 //
 			         .AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
 		}
 	}

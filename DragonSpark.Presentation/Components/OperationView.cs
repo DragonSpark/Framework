@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+// ReSharper disable PossibleMultipleConsumption
 
 namespace DragonSpark.Presentation.Components
 {
