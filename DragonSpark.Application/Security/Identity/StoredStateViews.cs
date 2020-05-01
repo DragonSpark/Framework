@@ -10,8 +10,8 @@ namespace DragonSpark.Application.Security.Identity
 	sealed class StoredStateViews<T> : IStateViews<T> where T : class
 	{
 		readonly IStateViews<T> _previous;
-		readonly IMemoryCache     _store;
-		readonly string           _prefix;
+		readonly IMemoryCache   _store;
+		readonly string         _prefix;
 
 		[UsedImplicitly]
 		public StoredStateViews(IStateViews<T> previous, IMemoryCache store)
