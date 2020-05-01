@@ -1,10 +1,13 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Security;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +73,6 @@ namespace DragonSpark.Application
 			where T : IdentityUser
 			=> new UserMapping<T>(@this, key, required);
 
-
 		public static string Value(this ModelBindingContext @this, IResult<string> key)
 			=> @this.ValueProvider.Get(key);
 
@@ -79,6 +81,13 @@ namespace DragonSpark.Application
 			var name   = key.Get();
 			var value  = @this.GetValue(name);
 			var result = value != ValueProviderResult.None ? value.FirstValue : null;
+			return result;
+		}
+
+		public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this)
+		{
+			var state  = await @this;
+			var result = state.To<AuthenticationState<T>>();
 			return result;
 		}
 	}

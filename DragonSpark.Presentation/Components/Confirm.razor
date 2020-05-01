@@ -1,16 +1,25 @@
-﻿@inject DialogService Dialogs
+﻿@inherits RadzenComponent
+
 @using DragonSpark.Compose
 @using JetBrains.Annotations
-@inherits RadzenComponent
+
+@inject DialogService Dialogs
+@inject IExceptions Exceptions
+
+
 <RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
     <p style="margin-bottom: 25px;">@ChildContent</p>
-    <div class="container">
-        <div class="d-flex justify-content-between">
-            <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-                             Style="margin: 10px; width: 150px" />
-            <ButtonComponent Text="OK" Click="OnAccept" Style="margin: 10px; width: 150px" />
+    <ActivityContainer Context="@this">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+                                 Style="margin: 10px; width: 150px" class="@SecondaryClass" />
+                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).GuardEntry().UpdateActivity())"
+                                 Style="margin: 10px; width: 150px" class="@PrimaryClass" />
+            </div>
         </div>
-    </div>
+    </ActivityContainer>
+
     <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
 </RadzenCard>
 
@@ -32,6 +41,12 @@
         await Cancel.InvokeAsync(parameter);
         Dialogs.Close();
     }
+
+    [Parameter, UsedImplicitly]
+    public string PrimaryClass { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public string SecondaryClass { get; set; }
 
     [Parameter, UsedImplicitly]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();

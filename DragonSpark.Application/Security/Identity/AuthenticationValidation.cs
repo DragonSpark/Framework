@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public sealed class AuthenticationValidation<T> : IAuthenticationValidation where T : class
+	sealed class AuthenticationValidation<T> : IAuthenticationValidation where T : class
 	{
 		readonly IStateViews<T> _views;
-		readonly string           _type;
+		readonly string         _type;
 
 		[UsedImplicitly]
 		public AuthenticationValidation(IStateViews<T> views, IOptions<IdentityOptions> options)

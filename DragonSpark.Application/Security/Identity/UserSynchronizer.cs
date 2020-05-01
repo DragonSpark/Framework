@@ -45,7 +45,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		public ValueTask<int> Get(T parameter)
 		{
-			parameter.Modified = _time.Get();
+			_context.Entry(parameter).Entity.Modified = _time.Get();
 			var result = _context.SaveChangesAsync().ToOperation();
 			return result;
 		}
