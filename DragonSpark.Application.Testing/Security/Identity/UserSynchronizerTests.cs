@@ -35,14 +35,13 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Operations()
 			                            .Run();
 
-			var id = Guid.NewGuid().ToString();
+			var id       = Guid.NewGuid().ToString();
 			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
 			var       users   = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 			var       context = scope.ServiceProvider.GetRequiredService<ApplicationStorage>();
 			{
-
 				var create = await users.CreateAsync(new User
 				{
 					UserName = uniqueId
@@ -66,7 +65,8 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Profile<User>(principal, user), source);
+					                                                new AuthenticationState<User>(principal, user),
+					                                                source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
@@ -99,7 +99,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Operations()
 			                            .Run();
 
-			var id = Guid.NewGuid().ToString();
+			var id       = Guid.NewGuid().ToString();
 			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
@@ -135,7 +135,8 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Profile<User>(principal, user), source);
+					                                                new AuthenticationState<User>(principal, user),
+					                                                source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeTrue();
 				}
@@ -161,7 +162,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Operations()
 			                            .Run();
 
-			var id = Guid.NewGuid().ToString();
+			var id       = Guid.NewGuid().ToString();
 			var uniqueId = new ExternalLoginInfo(new ClaimsPrincipal(), "UnitTesting", id, "Display Name").UniqueId();
 
 			using var scope   = host.Services.CreateScope();
@@ -197,7 +198,8 @@ namespace DragonSpark.Application.Testing.Security.Identity
 					                           .CreateUserPrincipalAsync(user);
 					var synchronization = new Synchronization<User>(new ExternalLoginInfo(principal, string.Empty,
 					                                                                      string.Empty, string.Empty),
-					                                                new Profile<User>(principal, user), source);
+					                                                new AuthenticationState<User>(principal, user),
+					                                                source);
 					var synchronized = await subject.Get(synchronization);
 					synchronized.Should().BeFalse();
 				}

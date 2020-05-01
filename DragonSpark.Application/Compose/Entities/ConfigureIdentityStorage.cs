@@ -32,9 +32,9 @@ namespace DragonSpark.Application.Compose.Entities
 			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
 			         .For<DbContext>().Map<T>().Scoped()
 					 //
-			         .For<IProfileStates<TUser>>().Map<ProfileStates<TUser>>().Scoped()
-			         .Decorate<IProfileStates<TUser>, AnonymousAwareProfile<TUser>>()
-			         .Decorate<IProfileStates<TUser>, StoredProfileStates<TUser>>()
+			         .For<IProfileViews<TUser>>().Map<ProfileViews<TUser>>().Scoped()
+			         .Decorate<IProfileViews<TUser>, StoredProfileViews<TUser>>()
+			         .Decorate<IProfileViews<TUser>, AnonymousAwareProfile<TUser>>()
 
 					 //
 			         .For<IAdapters>().Map<Adapters<TUser>>().Scoped()

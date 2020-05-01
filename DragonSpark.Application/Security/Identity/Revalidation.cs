@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		[UsedImplicitly]
 		public Revalidation(ILoggerFactory loggerFactory, IValidationServices validation)
-			: this(loggerFactory, validation, TimeSpan.FromMinutes(30)) {}
+			: this(loggerFactory, validation, TimeSpan.FromMinutes(10)) {}
 
 		public Revalidation(ILoggerFactory loggerFactory, IValidationServices validation, TimeSpan interval)
 			: base(loggerFactory)
@@ -23,10 +23,10 @@ namespace DragonSpark.Application.Security.Identity
 			RevalidationInterval = interval;
 		}
 
+		protected override TimeSpan RevalidationInterval { get; }
+
 		public override Task<AuthenticationState> GetAuthenticationStateAsync()
 			=> _validation.Get(base.GetAuthenticationStateAsync());
-
-		protected override TimeSpan RevalidationInterval { get; }
 
 		protected override Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState,
 		                                                               CancellationToken cancellationToken)
