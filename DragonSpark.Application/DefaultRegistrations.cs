@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application
@@ -11,12 +9,6 @@ namespace DragonSpark.Application
 
 		DefaultRegistrations() {}
 
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.For<IStorageState>()
-			         .Map<StorageState>()
-			         .Scoped()
-				;
-		}
+		public void Execute(IServiceCollection parameter) {}
 	}
 }
