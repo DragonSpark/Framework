@@ -17,8 +17,11 @@ namespace DragonSpark.Presentation.Components
 
 		protected override void OnInitialized()
 		{
-			Navigation.NavigateTo(Path ?? throw new InvalidOperationException("Path not provided for navigation."),
-			                      Forced);
+			if (Path.TrimStart('/') != Navigation.ToBaseRelativePath(Navigation.Uri))
+			{
+				Navigation.NavigateTo(Path ?? throw new InvalidOperationException("Path not provided for navigation."),
+				                      Forced);
+			}
 		}
 	}
 }

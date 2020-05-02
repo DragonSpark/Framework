@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DragonSpark.Application.Security {
+namespace DragonSpark.Application.Security
+{
 	public class ClaimValuePolicy : ICommand<AuthorizationOptions>
 	{
 		readonly string _name, _type, _value;

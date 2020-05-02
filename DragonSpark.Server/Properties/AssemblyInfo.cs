@@ -1,4 +1,4 @@
-﻿// ReSharper disable FilesNotPartOfProjectWarning
+﻿// ReSharper disable once FilesNotPartOfProjectWarning
 using System.Reflection;
 using System.Runtime.CompilerServices;
 

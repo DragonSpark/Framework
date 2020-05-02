@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Presentation.Components
 {
@@ -86,7 +87,8 @@ namespace DragonSpark.Presentation.Components
 
 			Debounce(() =>
 			         {
-				         var messages = EditContext.GetValidationMessages(e.FieldIdentifier);
+				         var messages = EditContext?.GetValidationMessages(e.FieldIdentifier) ??
+				                        Enumerable.Empty<string>();
 				         if (!messages.Any())
 				         {
 					         foreach (var validator in list)
@@ -136,18 +138,19 @@ namespace DragonSpark.Presentation.Components
 			var key = parameter.Identifier;
 			if (_identifiers.ContainsKey(key))
 			{
-				var list = _identifiers[key];
+				var list   = _identifiers[key];
 				var result = list.Remove(parameter);
 
-				switch (list.Count)
+				/*switch (list.Count)
 				{
 					case 0:
 						_identifiers[key] = null;
 						break;
-				}
+				}*/
 
 				return result;
 			}
+
 			return false;
 		}
 
