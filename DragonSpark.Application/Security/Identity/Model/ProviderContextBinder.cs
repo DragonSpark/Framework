@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -27,7 +28,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			                     .Page("./ExternalLogin", "Callback",
 			                           new {returnUrl = bindingContext.Value(_returnUrl)});
 
-			var instance = new ProviderContext(bindingContext.Value(_provider), returnUrl);
+			var instance = new ProviderContext(bindingContext.Value(_provider).Verify(), returnUrl);
 
 			bindingContext.Result = ModelBindingResult.Success(instance);
 

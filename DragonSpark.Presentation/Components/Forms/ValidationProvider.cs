@@ -10,12 +10,12 @@ namespace DragonSpark.Presentation.Components.Forms
 		[Parameter, UsedImplicitly]
 		public IFieldValidator? Validator { get; set; }
 
-		public override string Text { get; set; } = default!;
+		public override string? Text { get; set; }
 
 		protected override bool Validate(IRadzenFormComponent component)
 		{
 			var result = Validator.Verify().Get(component.GetValue());
-			Text = result.Message.Verify();
+			Text = result.Message;
 			return result.Valid;
 		}
 	}

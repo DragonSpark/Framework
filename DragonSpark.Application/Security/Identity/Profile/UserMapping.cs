@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			_accessor.Execute((parameter.User.To<T>(), parameter.Value));
 		}
 
-		public string Get(IdentityUser parameter) => _accessor.Get(parameter.To<T>());
+		public string? Get(IdentityUser parameter) => _accessor.Get(parameter.To<T>());
 
 		public string Name => _accessor.Name;
 	}

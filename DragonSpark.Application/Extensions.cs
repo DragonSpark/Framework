@@ -72,14 +72,14 @@ namespace DragonSpark.Application
 			where T : IdentityUser
 			=> new UserMapping<T>(@this, key, required);
 
-		public static string Value(this ModelBindingContext @this, IResult<string> key)
+		public static string? Value(this ModelBindingContext @this, IResult<string> key)
 			=> @this.ValueProvider.Get(key);
 
-		public static string Get(this IValueProvider @this, IResult<string> key)
+		public static string? Get(this IValueProvider @this, IResult<string> key)
 		{
 			var name   = key.Get();
 			var value  = @this.GetValue(name);
-			var result = value != ValueProviderResult.None ? value.FirstValue : string.Empty;
+			var result = value != ValueProviderResult.None ? value.FirstValue : null;
 			return result;
 		}
 
