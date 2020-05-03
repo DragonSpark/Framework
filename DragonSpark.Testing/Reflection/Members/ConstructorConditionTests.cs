@@ -6,7 +6,7 @@ using Xunit;
 
 // ReSharper disable All
 
-namespace DragonSpark.Testing.Application.Reflection
+namespace DragonSpark.Testing.Reflection.Members
 {
 	public sealed class ConstructorConditionTests
 	{

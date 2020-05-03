@@ -6,7 +6,7 @@ using Xunit;
 
 // ReSharper disable All
 
-namespace DragonSpark.Testing.Application.Model.Sources
+namespace DragonSpark.Testing.Compose.Extents.Selections
 {
 	public sealed class SelectionsTests
 	{
