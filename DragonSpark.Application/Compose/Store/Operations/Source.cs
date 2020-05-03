@@ -9,9 +9,9 @@ namespace DragonSpark.Application.Compose.Store.Operations
 	{
 		readonly IMemoryCache               _memory;
 		readonly Func<TIn, ValueTask<TOut>> _source;
-		readonly System.Action<ICacheEntry> _configure;
+		readonly Action<ICacheEntry> _configure;
 
-		public Source(IMemoryCache memory, Func<TIn, ValueTask<TOut>> source, System.Action<ICacheEntry> configure)
+		public Source(IMemoryCache memory, Func<TIn, ValueTask<TOut>> source, Action<ICacheEntry> configure)
 		{
 			_memory    = memory;
 			_source    = source;
