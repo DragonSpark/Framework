@@ -447,14 +447,6 @@ namespace DragonSpark.Testing.Application
 				// Go through each buffer, which contains one 'row' of items.
 				// The index in each buffer is referred to as the 'column'.
 
-				/*
-				 * Visual representation:
-				 *
-				 *       C0   C1   C2 ..  C31 ..   C63
-				 * R0:  [0]  [1]  [2] .. [31]
-				 * R1: [32] [33] [34] .. [63]
-				 * R2: [64] [65] [66] .. [95] .. [127]
-				 */
 
 				int row    = position.Row;
 				int column = position.Column;

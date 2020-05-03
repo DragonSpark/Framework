@@ -140,14 +140,6 @@ namespace DragonSpark.Presentation.Components
 			{
 				var list   = _identifiers[key];
 				var result = list.Remove(parameter);
-
-				/*switch (list.Count)
-				{
-					case 0:
-						_identifiers[key] = null;
-						break;
-				}*/
-
 				return result;
 			}
 

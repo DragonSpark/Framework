@@ -93,40 +93,6 @@ namespace DragonSpark.Composition
 			}
 		}
 
-		/*sealed class Constructors : IConstructorSelector
-		{
-			readonly IConstructorSelector _selector;
-			readonly ICondition<Type> _condition;
-			readonly IActivator _activator;
-
-			public Constructors(IConstructorSelector selector)
-				: this(selector, CanActivate.Default, Activator.Default) {}
-
-			public Constructors(IConstructorSelector selector, ICondition<Type> condition, IActivator activator)
-			{
-				_selector = selector;
-				_condition = condition;
-				_activator = activator;
-			}
-
-			public ConstructorInfo Execute(Type implementingType)
-			{
-				try
-				{
-					return _selector.Execute(implementingType);
-				}
-				catch (InvalidOperationException)
-				{
-					if (_condition.Get(implementingType))
-					{
-						return new Construcinf;
-					}
-
-					throw;
-				}
-			}
-		}*/
-
 		sealed class Selector : IConstructorDependencySelector
 		{
 			readonly IServiceRegistry               _registry;

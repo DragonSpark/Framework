@@ -15,10 +15,6 @@ namespace DragonSpark.Identity.Google
 			var settings = _settings();
 			parameter.ClientId     = settings.Key;
 			parameter.ClientSecret = settings.Secret;
-
-			/*
-			parameter.RetrieveUserDetails = true;
-			parameter.ClaimActions.MapJsonKey(DisplayName.Default, "name", "string");*/
 		}
 	}
 }
