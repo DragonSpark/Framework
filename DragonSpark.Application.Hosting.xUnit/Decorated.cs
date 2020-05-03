@@ -14,13 +14,12 @@ namespace DragonSpark.Application.Hosting.xUnit
 		{
 			while (true)
 			{
-				var tiex = ex as TargetInvocationException;
-				if (tiex == null)
+				if (!(ex is TargetInvocationException exception))
 				{
 					return ex;
 				}
 
-				ex = tiex.InnerException;
+				ex = exception.InnerException;
 			}
 		}
 

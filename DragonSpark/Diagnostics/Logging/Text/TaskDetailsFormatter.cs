@@ -11,6 +11,6 @@ namespace DragonSpark.Diagnostics.Logging.Text
 		TaskDetailsFormatter() {}
 
 		public string Get(TaskDetails parameter)
-			=> $"Task: {parameter.TaskId.OrNone()}, Default/Current Scheduler: {parameter.Default.Id.ToString()}/{parameter.Current.Id.ToString()}";
+			=> $"Task: {parameter.TaskId.OrNone()}, Default/Current Scheduler: {parameter.Default.Id}/{parameter.Current.Id}";
 	}
 }

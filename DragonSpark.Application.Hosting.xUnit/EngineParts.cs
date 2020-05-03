@@ -19,14 +19,11 @@ namespace DragonSpark.Application.Hosting.xUnit
 
 		public override IEnumerator<ISpecimenBuilder> GetEnumerator()
 		{
-			using (var enumerator = base.GetEnumerator())
+			using var enumerator = base.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				while (enumerator.MoveNext())
-				{
-					yield return Transform(enumerator.Current);
-				}
-			}
-		}
+				yield return Transform(enumerator.Current);
+			}		}
 
 		ISpecimenBuilder Transform(ISpecimenBuilder current)
 		{

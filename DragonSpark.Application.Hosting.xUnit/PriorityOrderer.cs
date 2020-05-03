@@ -10,15 +10,11 @@ namespace DragonSpark.Application.Hosting.xUnit
 	{
 		static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
 		{
-			TValue result;
-
-			if (dictionary.TryGetValue(key, out result))
+			if (!dictionary.TryGetValue(key, out var result))
 			{
-				return result;
+				result          = new TValue();
+				dictionary[key] = result;
 			}
-
-			result          = new TValue();
-			dictionary[key] = result;
 
 			return result;
 		}

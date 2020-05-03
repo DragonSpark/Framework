@@ -9,3 +9,5 @@
 	SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member",
 	                Target =
 		                "~M:DragonSpark.Testing.Application.ValueIterationBenchmarks.Call(System.Int32)")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:DragonSpark.Testing.IterationBenchmarks.Call(System.String)")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:DragonSpark.Testing.ValueIterationBenchmarks.Call(System.Int32)")]

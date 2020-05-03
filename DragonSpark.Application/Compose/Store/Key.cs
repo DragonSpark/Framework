@@ -18,6 +18,6 @@ namespace DragonSpark.Application.Compose.Store
 			_key       = key;
 		}
 
-		public string Get(T parameter) => $"{_prefix}{_delimiter.ToString()}{_key(parameter)}";
+		public string Get(T parameter) => $"{_prefix}{_delimiter}{_key(parameter)}";
 	}
 }

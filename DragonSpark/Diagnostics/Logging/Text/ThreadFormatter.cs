@@ -11,6 +11,6 @@ namespace DragonSpark.Diagnostics.Logging.Text
 		ThreadFormatter() {}
 
 		public string Get(Thread parameter)
-			=> $"#{parameter.ManagedThreadId.ToString()} {parameter.Priority.ToString()} {parameter.Name.OrNone()}";
+			=> $"#{parameter.ManagedThreadId} {parameter.Priority} {parameter.Name.OrNone()}";
 	}
 }

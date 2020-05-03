@@ -2,7 +2,6 @@
 using DragonSpark.Model;
 using DragonSpark.Reflection.Members;
 using System;
-using System.Reflection;
 using Xunit;
 
 // ReSharper disable All
@@ -13,7 +12,9 @@ namespace DragonSpark.Testing.Application.Reflection
 	{
 		sealed class Optional
 		{
-			public Optional(int number = 123) {}
+			public Optional(int number = 123) => Number = number;
+
+			public int Number { get; }
 		}
 
 		[Fact]
@@ -25,7 +26,7 @@ namespace DragonSpark.Testing.Application.Reflection
 		[Fact]
 		public void VerifyOptional()
 		{
-			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only<ConstructorInfo>());
+			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only());
 		}
 	}
 }

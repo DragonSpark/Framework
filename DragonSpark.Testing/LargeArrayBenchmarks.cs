@@ -234,7 +234,7 @@ namespace DragonSpark.Testing.Application
 			/// <summary>
 			/// Represents a position at the start of a <see cref="LargeArrayBuilder{T}"/>.
 			/// </summary>
-			public static CopyPosition Start => default(CopyPosition);
+			public static CopyPosition Start => default;
 
 			/// <summary>
 			/// The index of the buffer to select.
@@ -362,34 +362,32 @@ namespace DragonSpark.Testing.Application
 			{
 				Debug.Assert(items != null);
 
-				using (IEnumerator<T> enumerator = items.GetEnumerator())
+				using IEnumerator<T> enumerator = items.GetEnumerator();
+				T[] destination = _current;
+				int index       = _index;
+
+				// Continuously read in items from the enumerator, updating _count
+				// and _index when we run out of space.
+
+				while (enumerator.MoveNext())
 				{
-					T[] destination = _current;
-					int index       = _index;
+					T item = enumerator.Current;
 
-					// Continuously read in items from the enumerator, updating _count
-					// and _index when we run out of space.
-
-					while (enumerator.MoveNext())
+					if ((uint)index >= (uint)destination.Length)
 					{
-						T item = enumerator.Current;
-
-						if ((uint)index >= (uint)destination.Length)
-						{
-							AddWithBufferAllocation(item, ref destination, ref index);
-						}
-						else
-						{
-							destination[index] = item;
-						}
-
-						index++;
+						AddWithBufferAllocation(item, ref destination, ref index);
+					}
+					else
+					{
+						destination[index] = item;
 					}
 
-					// Final update to _count and _index.
-					_count += index - _index;
-					_index =  index;
+					index++;
 				}
+
+				// Final update to _count and _index.
+				_count += index - _index;
+				_index =  index;
 			}
 
 			// Non-inline to improve code quality as uncommon path

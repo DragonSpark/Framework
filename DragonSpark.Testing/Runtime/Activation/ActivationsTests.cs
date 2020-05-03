@@ -40,9 +40,9 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 
 		sealed class References : ISelect<int, Type>, IActivateUsing<string>
 		{
-			readonly string _message;
+			public References(string message) => Message = message;
 
-			public References(string message) => _message = message;
+			public string Message { get; }
 
 			public Type Get(int parameter) => GetType();
 		}

@@ -276,7 +276,7 @@ namespace DragonSpark.Text
 			return status == OperationStatus.Done
 				       ? result
 				       : throw new
-					         InvalidOperationException($"[{status}] Could not successfully convert value to Utf-8 data: {source.ToString()}");
+					         InvalidOperationException($"[{status}] Could not successfully convert value to Utf-8 data: {new string(source)}");
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

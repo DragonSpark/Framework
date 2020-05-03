@@ -23,12 +23,11 @@ namespace DragonSpark.Server.Security
 
 		public string Get(string parameter)
 		{
-			var key = _key;
-			using (var hmac = new HMACSHA512(key))
-			{
-				return BitConverter.ToString(hmac.ComputeHash(_encoding.GetBytes(parameter)))
-				                   .Replace("-", string.Empty);
-			}
+			var       key  = _key;
+			using var hmac = new HMACSHA512(key);
+			var result = BitConverter.ToString(hmac.ComputeHash(_encoding.GetBytes(parameter)))
+			                         .Replace("-", string.Empty);
+			return result;
 		}
 	}
 }

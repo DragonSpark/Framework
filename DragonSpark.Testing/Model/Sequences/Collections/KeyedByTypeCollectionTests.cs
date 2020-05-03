@@ -19,10 +19,7 @@ namespace DragonSpark.Testing.Model.Sequences.Collections
 			var second = new Subject();
 			var other  = new Other();
 
-			var sut = new KeyedByTypeCollection<ISubject>();
-			sut.Add(first);
-			sut.Add(second);
-			sut.Add(other);
+			var sut = new KeyedByTypeCollection<ISubject> {first, second, other};
 
 			sut[typeof(Other)].Should().BeSameAs(other);
 			sut[typeof(Subject)].Should().BeSameAs(second);
