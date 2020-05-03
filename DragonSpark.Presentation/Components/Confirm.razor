@@ -43,16 +43,16 @@
     }
 
     [Parameter, UsedImplicitly]
-    public string PrimaryClass { get; set; }
+    public string PrimaryClass { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public string SecondaryClass { get; set; }
+    public string SecondaryClass { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
     [Parameter, UsedImplicitly]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
     public EventCallback<MouseEventArgs> Accept { get; set; }

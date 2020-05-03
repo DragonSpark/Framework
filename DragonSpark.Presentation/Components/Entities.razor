@@ -57,13 +57,13 @@
 @code {
 
     [UsedImplicitly]
-    RadzenTemplateForm<TEntity> _newForm, _editForm;
+    RadzenTemplateForm<TEntity> _newForm = default!, _editForm = default!;
 
     [UsedImplicitly]
-    DialogContext<TEntity> _delete, _editor, _new;
+    DialogContext<TEntity> _delete = default!, _editor = default!, _new = default!;
 
     [UsedImplicitly]
-    RadzenGrid<TEntity> _grid;
+    RadzenGrid<TEntity> _grid = default!;
 
     [Parameter, UsedImplicitly]
     public Func<TEntity> Create { get; set; } = Start.An.Instance<TEntity>;
@@ -75,22 +75,22 @@
     public int PageSize { get; set; } = 10;
 
     [Parameter]
-    public RenderFragment<TEntity> Details { get; set; }
+    public RenderFragment<TEntity> Details { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public RenderFragment Columns { get; set; }
+    public RenderFragment Columns { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public RenderFragment<TEntity> EditContent { get; set; }
+    public RenderFragment<TEntity> EditContent { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public IQueryable<TEntity> Query { get; set; }
+    public IQueryable<TEntity> Query { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public DbContext Storage { get; set; }
+    public DbContext Storage { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public IComponent Context { get; set; }
+    public IComponent Context { get; set; } = default!;
 
     [UsedImplicitly]
     ValueTask<bool> ConfirmCreate() => _newForm.EditContext.Validate().ToOperation();

@@ -21,7 +21,7 @@ namespace DragonSpark.Presentation.Components
 	{
 		readonly IDictionary<FieldIdentifier, List<FieldValidator>> _identifiers;
 
-		EditContext _editContext;
+		EditContext? _editContext;
 
 		[UsedImplicitly]
 		public EditOperationContext() : this(new Dictionary<FieldIdentifier, List<FieldValidator>>()) {}
@@ -30,10 +30,10 @@ namespace DragonSpark.Presentation.Components
 			=> _identifiers = identifiers;
 
 		[Parameter]
-		public RenderFragment ChildContent { get; set; }
+		public RenderFragment ChildContent { get; set; } = default!;
 
 		[CascadingParameter]
-		EditContext EditContext
+		EditContext? EditContext
 		{
 			get => _editContext;
 			set
@@ -49,16 +49,16 @@ namespace DragonSpark.Presentation.Components
 
 					if ((_editContext = value) != null)
 					{
-						EditContext.OnFieldChanged           += Changed;
-						EditContext.OnValidationStateChanged += Changed;
+						_editContext.OnFieldChanged           += Changed;
+						_editContext.OnValidationStateChanged += Changed;
 					}
 				}
 			}
 		}
 
-		public bool IsValid => !EditContext.GetValidationMessages()
-		                                   .AsValueEnumerable()
-		                                   .Any()
+		public bool IsValid => (!EditContext?.GetValidationMessages()
+		                                    .AsValueEnumerable()
+		                                    .Any() ?? false)
 		                       &&
 		                       _identifiers.SelectMany(x => x.Value)
 		                                   .All(x => x.Valid.GetValueOrDefault(false));
@@ -76,7 +76,7 @@ namespace DragonSpark.Presentation.Components
 			return true;
 		}
 
-		void Changed(object sender, FieldChangedEventArgs e)
+		void Changed(object? sender, FieldChangedEventArgs e)
 		{
 			var list = List(e.FieldIdentifier);
 
@@ -99,7 +99,7 @@ namespace DragonSpark.Presentation.Components
 			         });
 		}
 
-		void Changed(object sender, ValidationStateChangedEventArgs e)
+		void Changed(object? sender, ValidationStateChangedEventArgs e)
 		{
 			foreach (var command in _identifiers.SelectMany(x => x.Value))
 			{

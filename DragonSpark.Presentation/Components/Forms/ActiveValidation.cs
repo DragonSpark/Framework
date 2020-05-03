@@ -13,9 +13,9 @@ namespace DragonSpark.Presentation.Components.Forms
 		public ActiveValidation(IProperty<object, bool> active) => _active = active;
 
 		[Parameter]
-		public IComponent Context { get; set; }
+		public IComponent? Context { get; set; }
 
-		protected override bool Validate(IRadzenFormComponent component) => !_active.Get((object)Context ?? Form);
+		protected override bool Validate(IRadzenFormComponent component) => !_active.Get((object)Context! ?? Form);
 
 		public override string Text { get; set; } = "The form is currently performing an operation.";
 	}

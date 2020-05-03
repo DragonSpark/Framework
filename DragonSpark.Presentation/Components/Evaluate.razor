@@ -6,7 +6,7 @@
     // ATTRIBUTION: https://github.com/dotnet/aspnetcore/issues/16218#issuecomment-552052798
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; } = default!;
 
     [Parameter]
     public string Type { get; set; } = "text/javascript";

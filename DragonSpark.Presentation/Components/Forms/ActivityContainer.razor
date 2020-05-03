@@ -8,9 +8,9 @@
 
     @if (Form != null)
     {
-        <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)" />
+        <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)"/>
         <label>
-            <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute" />
+            <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute"/>
         </label>
     }
 </fieldset>
@@ -19,25 +19,25 @@
 @code
 {
     [Parameter]
-    public string Property { get; set; }
+    public string Property { get; set; } = default!;
 
     [Parameter]
-    public IComponent Context { get; set; }
+    public IComponent Context { get; set; } = default!;
 
     [CascadingParameter, UsedImplicitly]
-    IRadzenForm Form { get; set; }
+    IRadzenForm Form { get; set; } = default!;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        Property = Property ?? (Form != null ? InnerType.Default.Get(Form.GetType())
-                                                        .GetProperties()
-                                                        .First(x => x.PropertyType == A.Type<string>())
-                                                        .Name : null);
-        Context = Context ?? Form as IComponent ?? throw new InvalidOperationException("No valid context found for ActivityContainer");
+        Property ??= (Form != null ? InnerType.Default.Get(Form.GetType())
+                                              .GetProperties()
+                                              .First(x => x.PropertyType == A.Type<string>())
+                                              .Name : string.Empty);
+        Context ??= Form as IComponent ?? throw new InvalidOperationException("No valid context found for ActivityContainer");
     }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; } = default!;
 }

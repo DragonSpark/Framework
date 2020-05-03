@@ -8,16 +8,16 @@
 @code
 {
     [UsedImplicitly]
-    EditOperationContext _operations;
+    EditOperationContext _operations = default!;
 
     [UsedImplicitly]
-    Form<TItem> _form;
+    Form<TItem> _form = default!;
 
     [Parameter]
-    public RenderFragment<TItem> ChildContent { get; set; }
+    public RenderFragment<TItem> ChildContent { get; set; } = default!;
 
     [Parameter]
-    public TItem Source { get; set; }
+    public TItem Source { get; set; } = default!;
 
     [Parameter]
     public EventCallback<TItem> Submit { get; set; }

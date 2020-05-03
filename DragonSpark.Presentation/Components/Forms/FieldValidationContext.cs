@@ -25,11 +25,11 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		public bool? Valid => _view.IsActive ? null : Result?.Valid;
 
-		public string Text => _view.IsActive
-			                      ? _view.Messages.Loading
-			                      : Result.HasValue && !Result.Value.Valid
-				                      ? Result?.Message
-				                      : null;
+		public string? Text => _view.IsActive
+			                       ? _view.Messages.Loading
+			                       : Result.HasValue && !Result.Value.Valid
+				                       ? Result?.Message
+				                       : null;
 
 		public async ValueTask Get(FieldValidator parameter)
 		{
@@ -38,7 +38,7 @@ namespace DragonSpark.Presentation.Components.Forms
 				var result = await _view.Get(parameter);
 				if (!result.Valid)
 				{
-					Invalidate(parameter.Identifier, result.Message);
+					Invalidate(parameter.Identifier, result.Message.Verify());
 					return;
 				}
 

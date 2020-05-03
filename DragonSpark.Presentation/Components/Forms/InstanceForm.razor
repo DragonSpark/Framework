@@ -8,13 +8,13 @@
 @code {
 
     [UsedImplicitly]
-    EditOperationContext _operations;
+    EditOperationContext _operations = default!;
 
     [UsedImplicitly]
-    Form<Instance<TItem>> _form;
+    Form<Instance<TItem>> _form = default!;
 
     [Parameter]
-    public RenderFragment<Instance<TItem>> ChildContent { get; set; }
+    public RenderFragment<Instance<TItem>> ChildContent { get; set; } = default!;
 
     [Parameter]
     public Instance<TItem> Source { get; set; } = new Instance<TItem>();

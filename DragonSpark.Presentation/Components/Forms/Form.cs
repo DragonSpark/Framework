@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components.Forms
 	public class Form<TItem> : RadzenTemplateForm<TItem>, IRadzenForm
 	{
 		readonly static FieldInfo FieldInfo = typeof(RadzenTemplateForm<TItem>)
-			.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic);
+			.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic).Verify();
 
 		readonly FieldInfo _field;
 

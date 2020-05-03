@@ -7,10 +7,10 @@ namespace DragonSpark.Presentation.Components
 	public class NavigateTo : ComponentBase
 	{
 		[Inject, UsedImplicitly]
-		protected NavigationManager Navigation { get; set; }
+		protected NavigationManager Navigation { get; set; } = default!;
 
 		[Parameter]
-		public string Path { get; set; }
+		public string Path { get; set; } = default!;
 
 		[Parameter]
 		public bool Forced { get; set; }

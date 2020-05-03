@@ -15,7 +15,7 @@ namespace DragonSpark.Presentation.Components
 		public string FormatPath { get; set; } = "Identity/Account/Login?returnUrl=/{0}";
 
 		[Inject, UsedImplicitly]
-		ILogger<RedirectToLogin> Logger { get; set; }
+		ILogger<RedirectToLogin> Logger { get; set; } = default!;
 
 		protected override void OnInitialized()
 		{

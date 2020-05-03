@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
@@ -15,8 +16,8 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		readonly Func<Task> _validate;
 
-		EditContext            _editContext;
-		FieldValidationContext _context;
+		EditContext?            _editContext;
+		FieldValidationContext? _context;
 
 		public FieldValidator() => _validate = Refresh;
 
@@ -24,20 +25,20 @@ namespace DragonSpark.Presentation.Components.Forms
 		public bool Popup { get; set; }
 
 		[Parameter, UsedImplicitly]
-		public IValidationDefinition Definition { get; set; }
+		public IValidationDefinition Definition { get; set; } = default!;
 
 		[Parameter, UsedImplicitly]
-		public string Component { get; set; }
+		public string Component { get; set; } = default!;
 
 		public FieldIdentifier Identifier { get; private set; }
 
 		[Inject]
-		internal ILogger<FieldValidator> Logger { get; [UsedImplicitly] set; }
+		internal ILogger<FieldValidator> Logger { get; [UsedImplicitly] set; } = default!;
 
 		[CascadingParameter, UsedImplicitly]
-		EditOperationContext Operations { get; set; }
+		EditOperationContext Operations { get; set; } = default!;
 
-		FieldValidationContext Context
+		FieldValidationContext? Context
 		{
 			get => _context;
 			set
@@ -48,10 +49,10 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 
 		[CascadingParameter, UsedImplicitly]
-		IRadzenForm Form { get; set; }
+		IRadzenForm Form { get; set; } = default!;
 
 		[CascadingParameter, UsedImplicitly]
-		EditContext EditContext
+		EditContext? EditContext
 		{
 			get => _editContext;
 			set
@@ -68,7 +69,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			}
 		}
 
-		public bool? Valid => Context.Valid;
+		public bool? Valid => Context?.Valid;
 
 		protected override void OnInitialized()
 		{
@@ -79,14 +80,14 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		void Register()
 		{
-			Context    = new FieldValidationContext(Definition, EditContext);
+			Context    = new FieldValidationContext(Definition, EditContext ?? throw new InvalidOperationException());
 			Identifier = Form.FindComponent(Component).FieldIdentifier;
 			Operations.Execute(this);
 		}
 
 		public void Reset()
 		{
-			Context.Execute(Identifier);
+			Context?.Execute(Identifier);
 		}
 
 		public void Start()
@@ -100,7 +101,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 
 		protected override string GetComponentCssClass()
-			=> $"ui-message ui-messages-{(Context.Valid.HasValue ? "error" : "active")} {(Popup ? "ui-message-popup" : string.Empty)}";
+			=> $"ui-message ui-messages-{(Context.Verify().Valid.HasValue ? "error" : "active")} {(Popup ? "ui-message-popup" : string.Empty)}";
 
 		public async ValueTask<bool> Validate()
 		{
@@ -109,7 +110,7 @@ namespace DragonSpark.Presentation.Components.Forms
 				return true;
 			}
 
-			await Context.Get(this).ConfigureAwait(false);
+			await Context.Verify().Get(this).ConfigureAwait(false);
 
 			if (!Valid.HasValue)
 			{
@@ -122,16 +123,16 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		async Task Refresh()
 		{
-			await Context.Get(this);
+			await Context.Verify().Get(this);
 
-			EditContext.NotifyValidationStateChanged();
+			EditContext?.NotifyValidationStateChanged();
 		}
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			if (Visible)
 			{
-				var text = Context.Text;
+				var text = Context.Verify().Text;
 				if (text != null)
 				{
 					builder.OpenElement(0, "div");

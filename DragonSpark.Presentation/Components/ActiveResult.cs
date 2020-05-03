@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components
 
 		public ActiveResult(ValueTask<T> source) => _source = source;
 
-		public T Value { get; private set; }
+		public T Value { get; private set; } = default!;
 
 		public bool HasValue { get; private set; }
 
@@ -20,6 +20,6 @@ namespace DragonSpark.Presentation.Components
 			HasValue = true;
 		}
 
-		public override string ToString() => Value.ToString();
+		public override string? ToString() => Value?.ToString();
 	}
 }

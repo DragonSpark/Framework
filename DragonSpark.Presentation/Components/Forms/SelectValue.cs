@@ -27,7 +27,7 @@ namespace DragonSpark.Presentation.Components.Forms
 		public T Get(FieldIdentifier parameter)
 		{
 			var type = parameter.Model.GetType();
-			var result = _generic.Get(type, _type).Get(type.GetProperty(parameter.FieldName))(parameter.Model);
+			var result = _generic.Get(type, _type).Get(type.GetProperty(parameter.FieldName).Verify())(parameter.Model);
 			return result;
 		}
 	}

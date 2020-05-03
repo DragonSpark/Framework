@@ -20,7 +20,7 @@ namespace DragonSpark.Presentation.Components
 		{
 			if (Source?.HasValue ?? false)
 			{
-				var value = Source.Value;
+				var value = Source!.Value;
 				if (value is null)
 				{
 					builder.AddContent(1, NotAssignedTemplate);
@@ -37,10 +37,10 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		[Parameter]
-		public ActiveResult<TValue> Source { get; set; }
+		public ActiveResult<TValue> Source { get; set; } = default!;
 
 		[Parameter]
-		public RenderFragment<TValue> ChildContent { get; set; }
+		public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
 		[Parameter]
 		public RenderFragment LoadingTemplate { get; set; } = x => x.AddContent(2, "Loading, please wait.");

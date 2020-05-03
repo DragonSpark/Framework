@@ -2,6 +2,6 @@
 {
 	public sealed class Instance<T>
 	{
-		public T Value { get; set; }
+		public T Value { get; set; } = default!;
 	}
 }

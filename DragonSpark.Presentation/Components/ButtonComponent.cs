@@ -23,7 +23,7 @@ namespace DragonSpark.Presentation.Components
 			__builder.OpenElement(1, "button");
 			__builder.AddAttribute(2, "style", Style);
 			__builder.AddAttribute(3, "disabled", Disabled);
-			__builder.AddAttribute(4, "type", Enum.GetName(typeof(ButtonType), ButtonType).ToLower());
+			__builder.AddAttribute(4, "type", Enum.GetName(typeof(ButtonType), ButtonType)!.ToLower());
 			__builder.AddMultipleAttributes(5,
 			                                RuntimeHelpers
 				                                .TypeCheck<IEnumerable<KeyValuePair<string, object>>>(Attributes));
@@ -59,7 +59,7 @@ namespace DragonSpark.Presentation.Components
 		public string Text { get; set; } = string.Empty;
 
 		[Parameter]
-		public string Icon { get; set; }
+		public string? Icon { get; set; }
 
 		[Parameter]
 		public ButtonStyle ButtonStyle { get; set; }
@@ -79,7 +79,7 @@ namespace DragonSpark.Presentation.Components
 		Task OnClick(MouseEventArgs args) => Disabled ? Task.CompletedTask : Click.InvokeAsync(args);
 
 		[Parameter]
-		public string CssClass { get; set; }
+		public string? CssClass { get; set; }
 
 
 		string GetButtonSize() => Size != ButtonSize.Medium ? "sm" : "md";
@@ -92,7 +92,7 @@ namespace DragonSpark.Presentation.Components
 					               ? string.Empty
 					               : " ui-button-icon-only";
 				var disabled = Disabled ? " ui-state-disabled" : string.Empty;
-				var name     = Enum.GetName(typeof(ButtonStyle), ButtonStyle).ToLower();
+				var name     = Enum.GetName(typeof(ButtonStyle), ButtonStyle)!.ToLower();
 				var result =
 					$"ui-button ui-button-{GetButtonSize()} ui-widget ui-state-default ui-corner-all btn-{name}{disabled}{iconOnly}";
 				return result;

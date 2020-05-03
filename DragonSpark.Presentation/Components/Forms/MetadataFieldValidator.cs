@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Components.Forms
 	public sealed class MetadataFieldValidator : IFieldValidator
 	{
 		readonly ValidationAttribute _metadata;
-		readonly string              _name;
+		readonly string?              _name;
 
-		public MetadataFieldValidator(ValidationAttribute metadata, string name = null)
+		public MetadataFieldValidator(ValidationAttribute metadata, string? name = null)
 		{
 			_metadata = metadata;
 			_name     = name;

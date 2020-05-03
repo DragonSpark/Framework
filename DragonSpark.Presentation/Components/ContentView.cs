@@ -12,17 +12,17 @@ namespace DragonSpark.Presentation.Components
 			{
 				builder.AddContent(2, NotFoundTemplate);
 			}
-			else
+			else if (ChildContent != null)
 			{
 				builder.AddContent(1, ChildContent(Content));
 			}
 		}
 
 		[Parameter, UsedImplicitly]
-		public TValue Content { get; set; }
+		public TValue Content { get; set; } = default!;
 
 		[Parameter, UsedImplicitly]
-		public RenderFragment<TValue> ChildContent { get; set; }
+		public RenderFragment<TValue>? ChildContent { get; set; }
 
 		[Parameter]
 		public RenderFragment NotFoundTemplate { get; set; } = x => x.AddContent(2, "Not found.");

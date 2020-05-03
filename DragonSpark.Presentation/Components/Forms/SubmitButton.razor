@@ -4,17 +4,17 @@
 
 @code {
 
-    Action _changed;
-    EditContext _editContext;
+    Action _changed = default!;
+    EditContext _editContext = default!;
 
     [Parameter]
-    public string Icon { get; [UsedImplicitly] set; }
+    public string Icon { get; [UsedImplicitly] set; } = default!;
 
     [Parameter]
-    public string Text { get; [UsedImplicitly] set; }
+    public string Text { get; [UsedImplicitly] set; } = default!;
 
     [CascadingParameter]
-    EditOperationContext Operations { get; [UsedImplicitly] set; }
+    EditOperationContext Operations { get; [UsedImplicitly] set; } = default!;
 
     [CascadingParameter, UsedImplicitly]
     EditContext EditContext
@@ -26,12 +26,12 @@
             {
                 if (_editContext != null)
                 {
-                    _editContext.OnValidationStateChanged -= Changed;
+                    _editContext.OnValidationStateChanged -= Changed!;
                 }
 
                 if ((_editContext = value) != null)
                 {
-                    EditContext.OnValidationStateChanged += Changed;
+                    EditContext.OnValidationStateChanged += Changed!;
                 }
             }
         }
