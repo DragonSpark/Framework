@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 		protected override Task<RunSummary> RunTestCaseAsync(IXunitTestCase testCase)
 			=> Runner(testCase)?.RunAsync() ?? base.RunTestCaseAsync(testCase);
 
-		XunitTestCaseRunner Runner(IXunitSerializable testCase)
+		XunitTestCaseRunner? Runner(IXunitSerializable testCase)
 		{
 			switch (testCase)
 			{

@@ -23,7 +23,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 			_none      = none;
 		}
 
-		public object Create(object request, ISpecimenContext context)
-			=> _condition(request) ? (object)_specimen() : _none;
+		public object? Create(object request, ISpecimenContext context)
+			=> _condition(request) ? (object?)_specimen() : _none;
 	}
 }

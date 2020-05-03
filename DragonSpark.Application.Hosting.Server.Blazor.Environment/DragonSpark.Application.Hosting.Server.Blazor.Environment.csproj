@@ -2,11 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj" />
+    <ProjectReference
+      Include="..\DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj" />
   </ItemGroup>
 
 </Project>

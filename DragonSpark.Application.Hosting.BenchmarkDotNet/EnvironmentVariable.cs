@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 
 	class EnvironmentVariable<T> : EnvironmentVariable
 	{
-		public EnvironmentVariable(string name, T value) : this(name, value.ToString()) {}
+		public EnvironmentVariable(string name, T value) : this(name, value?.ToString() ?? string.Empty) {}
 
 		public EnvironmentVariable(string name, string value) : base(name, value) {}
 	}

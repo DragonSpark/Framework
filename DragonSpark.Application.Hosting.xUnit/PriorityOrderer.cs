@@ -8,7 +8,9 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	public class PriorityOrderer : ITestCaseOrderer
 	{
-		static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
+		static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key)
+			where TKey : notnull
+			where TValue : new()
 		{
 			if (!dictionary.TryGetValue(key, out var result))
 			{

@@ -25,10 +25,10 @@ namespace DragonSpark.Application.Hosting.xUnit
 			       beforeAfterAttributes,
 			       aggregator, cancellationTokenSource) {}
 
-		protected override object CallTestMethod(object testClassInstance)
+		protected override object? CallTestMethod(object testClassInstance)
 			=> Result(testClassInstance)
 				?
-				.ContinueWith(task => task.Exception
+				.ContinueWith(task => task.Exception?
 				                          .InnerExceptions
 				                          .Select(x => x.Demystify())
 				                          .ForEach(Aggregator.Add),

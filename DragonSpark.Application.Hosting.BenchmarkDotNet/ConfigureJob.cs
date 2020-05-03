@@ -12,6 +12,6 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 		public ConfigureJob(params global::BenchmarkDotNet.Jobs.EnvironmentVariable[] variables)
 			=> _variables = variables;
 
-		public Job Get(Job parameter) => _variables.Copy().To(parameter.WithEnvironmentVariables);
+		public Job Get(Job parameter) => _variables.Copy().To(parameter.WithEnvironmentVariables!);
 	}
 }

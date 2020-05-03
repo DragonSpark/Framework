@@ -13,10 +13,10 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	sealed class TestCase : LongLivedMarshalByRefObject, IXunitTestCase
 	{
-		readonly Action         _action;
-		readonly IXunitTestCase _case;
-		readonly ICondition     _condition;
-		readonly ITestMethod    _method;
+		readonly Action         _action    = default!;
+		readonly IXunitTestCase _case      = default!;
+		readonly ICondition     _condition = default!;
+		readonly ITestMethod    _method    = default!;
 
 		public TestCase() {}
 

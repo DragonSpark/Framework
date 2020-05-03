@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	sealed class TestMethod : ITestMethod
 	{
-		readonly ITestMethod _method;
+		readonly ITestMethod _method = default!;
 
 		public TestMethod() {}
 
@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 			_method.Serialize(info);
 		}
 
-		public IMethodInfo Method { get; }
+		public IMethodInfo Method { get; } = default!;
 
 		public ITestClass TestClass => _method.TestClass;
 	}

@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 
 		public ParameterRequestRelay(AutoFixture.Kernel.ParameterRequestRelay inner) => _inner = inner;
 
-		public object Create(object request, ISpecimenContext context)
+		public object? Create(object request, ISpecimenContext context)
 			=> request is ParameterInfo parameter
 				   ? parameter.IsOptional ? parameter.DefaultValue : _inner.Create(request, context)
 				   : NoSpecimen;

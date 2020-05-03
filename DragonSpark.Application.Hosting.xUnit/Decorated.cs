@@ -16,10 +16,10 @@ namespace DragonSpark.Application.Hosting.xUnit
 			{
 				if (!(ex is TargetInvocationException exception))
 				{
-					return ex;
+					return ex!;
 				}
 
-				ex = exception.InnerException;
+				ex = exception.InnerException!;
 			}
 		}
 
