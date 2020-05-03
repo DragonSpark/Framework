@@ -11,7 +11,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 
 		public bool Equals(GroupName other) => string.Equals(Name, other.Name);
 
-		public override bool Equals(object obj) => obj is GroupName phase && Equals(phase);
+		public override bool Equals(object? obj) => obj is GroupName phase && Equals(phase);
 
 		public override int GetHashCode() => Name != null ? Name.GetHashCode() : 0;
 	}

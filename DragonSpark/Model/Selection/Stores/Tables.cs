@@ -7,7 +7,7 @@ using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Model.Selection.Stores
 {
-	public sealed class Tables<TIn, TOut> : Select<Func<TIn, TOut>, ITable<TIn, TOut>>
+	public sealed class Tables<TIn, TOut> : Select<Func<TIn, TOut>, ITable<TIn, TOut>> where TIn : notnull
 	{
 		public static Tables<TIn, TOut> Default { get; } = new Tables<TIn, TOut>();
 

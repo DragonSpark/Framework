@@ -12,7 +12,7 @@ namespace DragonSpark.Runtime.Activation
 
 		SingletonPropertyDelegates() : base(Start.A.Selection<PropertyInfo>()
 		                                         .By.Calling(x => x.GetMethod)
-		                                         .Select(MethodDelegates<Func<object>>.Default)
+		                                         .Select(MethodDelegates<Func<object>>.Default!)
 		                                         .Get()
 		                                         .Then()
 		                                         .Singleton()) {}

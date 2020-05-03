@@ -52,7 +52,7 @@ namespace DragonSpark.Reflection.Collections
 				}
 			}
 
-			return null;
+			return default!;
 		}
 	}
 }

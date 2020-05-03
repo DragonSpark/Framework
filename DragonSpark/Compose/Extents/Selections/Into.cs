@@ -11,9 +11,12 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		Into() {}
 
-		public ITable<TIn, TOut> Table() => Table(x => default);
+		public ITable<TIn, TOut> Table() => Table(x => default!);
 
+		// TODO: ???
+#pragma warning disable 8714
 		public ITable<TIn, TOut> Table(Func<TIn, TOut> select) => Tables<TIn, TOut>.Default.Get(select);
+#pragma warning restore 8714
 
 		public ICondition<TIn> Condition(Func<TIn, bool> condition)
 			=> new DragonSpark.Model.Selection.Conditions.Condition<TIn>(condition);

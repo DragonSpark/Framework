@@ -13,7 +13,7 @@ namespace DragonSpark.Runtime.Execution
 
 		public Logical(AsyncLocal<T> local) => _local = local;
 
-		public T Get() => _local.Value;
+		public T Get() => _local.Value!;
 
 		public void Execute(T parameter)
 		{

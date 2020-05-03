@@ -10,6 +10,6 @@ namespace DragonSpark.Text.Formatting
 		public FormatProvider(ISelect<object, IFormattable> table)
 			: base(new CustomFormatter(table), CultureInfo.CurrentCulture) {}
 
-		public object GetFormat(Type formatType) => GetService(formatType);
+		public object? GetFormat(Type? formatType) => GetService(formatType!);
 	}
 }

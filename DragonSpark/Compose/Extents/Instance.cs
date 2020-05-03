@@ -8,7 +8,7 @@ namespace DragonSpark.Compose.Extents
 
 		Instance() {}
 
-		public T Default => default;
+		public T Default => default!;
 
 		public T New() => Location<T>.Default.New();
 

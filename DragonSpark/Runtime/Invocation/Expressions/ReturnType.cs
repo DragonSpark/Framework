@@ -8,6 +8,6 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 	{
 		public static ReturnType<T> Default { get; } = new ReturnType<T>();
 
-		ReturnType() : base(A.Metadata<T>().GetDeclaredMethod(nameof(Func<object>.Invoke)).ReturnType) {}
+		ReturnType() : base(A.Metadata<T>().GetDeclaredMethod(nameof(Func<object>.Invoke))!.ReturnType) {}
 	}
 }

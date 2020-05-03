@@ -25,7 +25,7 @@ namespace DragonSpark.Runtime.Objects
 		public Type InstanceType { get; }
 	}
 
-	public class Projection<T> : ISelect<T, IProjection>
+	public class Projection<T> : ISelect<T, IProjection> where T : notnull
 	{
 		readonly Func<T, string>                      _formatter;
 		readonly Func<T, IDictionary<string, object>> _properties;

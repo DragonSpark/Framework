@@ -55,7 +55,7 @@ namespace DragonSpark.Compose.Model
 			=> new Configuration<TIn, TOut>(_subject, configuration).Then();
 
 		public Selector<TIn, TOut> Configure(ICommand<(TIn, TOut)> configuration)
-			=> new Configuration<TIn, TOut>(_subject.Get, configuration.Execute).Then();
+			=> new Configuration<TIn, TOut>(_subject.Get, configuration.Execute!).Then(); // TODO.
 
 		public Selector<TIn, TOut> Configure<TOther>(IAssign<TIn, TOther> configuration)
 			=> new Configuration<TIn, TOut, TOther>(_subject, configuration).Then();
@@ -81,13 +81,19 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<TIn, (TIn, TOut)> Introduce() => new Introduce<TIn, TOut>(_subject).Then();
 
+		// TODO:???
+
+#pragma warning disable 8714
 		public Selector<TIn, TOut> OnceStriped() => OncePerParameter<TIn, TOut>.Default.Get(_subject).Then();
+#pragma warning restore 8714
 
 		public Selector<TIn, TOut> OnlyOnce() => OnlyOnceAlteration<TIn, TOut>.Default.Get(_subject).Then();
 
 		public Selector<TIn, TOut> Protect() => ProtectAlteration<TIn, TOut>.Default.Get(_subject).Then();
 
+#pragma warning disable 8714
 		public Selector<TIn, TOut> Stripe() => StripedAlteration<TIn, TOut>.Default.Get(_subject).Then();
+#pragma warning restore 8714
 
 		public Selector<TIn, TOut> Try<TException>() where TException : Exception
 			=> new Try<TException, TIn, TOut>(Get().Get).Then();

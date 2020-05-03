@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Text
 {
-	public class Selection<TIn, TOut> : Select<string, TIn, TOut>
+	public class Selection<TIn, TOut> : Select<string?, TIn, TOut> where TIn : notnull
 	{
 		public Selection(params Pair<string, Func<TIn, TOut>>[] pairs)
 			: this(Start.A.Selection.Of.Type<TIn>().By.Default<TOut>().Get(), pairs) {}
@@ -16,6 +16,6 @@ namespace DragonSpark.Text
 			            .Unless.Using(pairs.ToSelect())
 			            .ResultsInAssigned()
 			            .Get()
-			            .To(NullOrEmpty.Default.Select)) {}
+			            .To(NullOrEmpty.Default.Select!)) {}
 	}
 }

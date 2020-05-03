@@ -17,7 +17,7 @@ namespace DragonSpark.Text.Formatting
 			_selector = selector;
 		}
 
-		public string ToString(string format, IFormatProvider formatProvider)
-			=> _selector(format)(_subject) ?? string.Empty;
+		public string ToString(string? format, IFormatProvider? formatProvider)
+			=> _selector(format!)(_subject) ?? string.Empty;
 	}
 }

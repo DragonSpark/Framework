@@ -33,7 +33,7 @@ namespace DragonSpark.Runtime.Activation
 			return false;
 		}
 
-		public object GetService(Type serviceType)
+		public object? GetService(Type serviceType)
 		{
 			for (var i = 0; i < _length; i++)
 			{
@@ -44,7 +44,7 @@ namespace DragonSpark.Runtime.Activation
 				}
 			}
 
-			return null;
+			return default;
 		}
 	}
 }

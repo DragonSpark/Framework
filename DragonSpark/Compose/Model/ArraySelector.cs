@@ -15,15 +15,19 @@ namespace DragonSpark.Compose.Model
 		public new Selector<_, Array<T>> Subject => new Selector<_, Array<T>>(_subject);
 
 		public ISelect<_, IArrayMap<TKey, T>> GroupMap<TKey>(ISelect<T, TKey> key)
+			where TKey : notnull
 			=> GroupMap(key, EqualityComparer<TKey>.Default);
 
 		public ISelect<_, IArrayMap<TKey, T>> GroupMap<TKey>(ISelect<T, TKey> key, IEqualityComparer<TKey> comparer)
+			where TKey : notnull
 			=> GroupMap(key.Get, comparer);
 
 		public ISelect<_, IArrayMap<TKey, T>> GroupMap<TKey>(Func<T, TKey> key)
+			where TKey : notnull
 			=> GroupMap(key, EqualityComparer<TKey>.Default);
 
 		public ISelect<_, IArrayMap<TKey, T>> GroupMap<TKey>(Func<T, TKey> key, IEqualityComparer<TKey> comparer)
+			where TKey : notnull
 			=> base.Subject.Select(x => new GroupMapAdapter<T, TKey>(new GroupMap<T, TKey>(key, comparer)).Get(x))
 			       .Get();
 	}

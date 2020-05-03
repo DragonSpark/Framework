@@ -20,11 +20,11 @@
 
 		public override int GetHashCode() => Instance.GetHashCode();
 
-		public override string ToString() => IsAssigned ? Instance.ToString() : string.Empty;
+		public override string? ToString() => IsAssigned ? Instance.ToString() : string.Empty;
 
 		bool Equals(Assigned<T> other) => Instance.Equals(other.Instance);
 
-		public override bool Equals(object obj) => obj is Assigned<T> other && Equals(other);
+		public override bool Equals(object? obj) => obj is Assigned<T> other && Equals(other);
 
 		public static bool operator ==(Assigned<T> left, Assigned<T> right) => left.Equals(right);
 

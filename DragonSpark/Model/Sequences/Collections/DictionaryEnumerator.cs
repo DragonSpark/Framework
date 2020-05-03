@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Collections
 {
-	public class DictionaryEnumerator<TKey, TValue> : IDictionaryEnumerator, IDisposable
+	public class DictionaryEnumerator<TKey, TValue> : IDictionaryEnumerator, IDisposable where TKey : notnull
 	{
 		readonly IEnumerator<KeyValuePair<TKey, TValue>> _impl;
 
@@ -21,7 +21,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			=> new DictionaryEntry(_impl.Current.Key ?? throw new InvalidOperationException(), _impl.Current.Value);
 
 		public object Key => _impl.Current.Key;
-		public object Value => _impl.Current.Value;
+		public object? Value => _impl.Current.Value;
 		public object Current => Entry;
 
 		public void Dispose()

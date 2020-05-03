@@ -10,6 +10,7 @@ namespace DragonSpark.Model.Sequences.Collections
 	/// <typeparam name="TValue"></typeparam>
 	// ReSharper disable once PossibleInterfaceMemberAmbiguity
 	public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IOrderedDictionary
+		where TKey : notnull
 	{
 #pragma warning disable 109
 		new TValue this[int index] { get; set; }

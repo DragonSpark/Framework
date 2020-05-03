@@ -39,7 +39,7 @@ namespace DragonSpark.Reflection.Members
 				}
 			}
 
-			return null;
+			return default!;
 		}
 	}
 }

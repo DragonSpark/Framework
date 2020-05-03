@@ -13,7 +13,7 @@ namespace DragonSpark.Runtime.Environment
 
 		public IEnumerable<AssemblyName> Get(AssemblyName parameter)
 		{
-			var queue = new Stack<string>(parameter.Name.Split('.'));
+			var queue = new Stack<string>(parameter.Name!.Split('.'));
 			while (queue.Any())
 			{
 				yield return new AssemblyName(string.Join(".", queue.Reverse()));

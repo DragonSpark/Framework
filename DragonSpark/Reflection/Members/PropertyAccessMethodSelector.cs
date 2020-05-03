@@ -9,6 +9,6 @@ namespace DragonSpark.Reflection.Members
 
 		PropertyAccessMethodSelector() {}
 
-		public MethodInfo Get(PropertyInfo parameter) => parameter.GetMethod;
+		public MethodInfo Get(PropertyInfo parameter) => parameter.GetMethod!;
 	}
 }

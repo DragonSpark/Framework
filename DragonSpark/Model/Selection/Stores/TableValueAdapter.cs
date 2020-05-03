@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores
 {
-	sealed class TableValueAdapter<TIn, TOut> : ISelect<TIn, TOut>
+	sealed class TableValueAdapter<TIn, TOut> : ISelect<TIn, TOut> where TIn : notnull
 	{
 		readonly Func<TIn, TOut>                _default;
 		readonly IReadOnlyDictionary<TIn, TOut> _store;

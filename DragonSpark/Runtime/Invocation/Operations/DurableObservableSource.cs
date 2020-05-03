@@ -14,6 +14,6 @@ namespace DragonSpark.Runtime.Invocation.Operations
 
 		public DurableObservableSource(Func<Func<T>, T> policy) => _policy = policy;
 
-		public T Get(Task<T> parameter) => _policy(parameter.Wait);
+		public T Get(Task<T> parameter) => _policy(parameter.Wait!);
 	}
 }

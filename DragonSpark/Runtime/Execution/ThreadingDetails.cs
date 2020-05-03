@@ -4,7 +4,7 @@ namespace DragonSpark.Runtime.Execution
 {
 	public sealed class ThreadingDetails
 	{
-		public ThreadingDetails() : this(SynchronizationContext.Current, Thread.CurrentThread) {}
+		public ThreadingDetails() : this(SynchronizationContext.Current!, Thread.CurrentThread) {}
 
 		public ThreadingDetails(SynchronizationContext synchronization, Thread thread)
 		{

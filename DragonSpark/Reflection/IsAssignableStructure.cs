@@ -7,6 +7,6 @@ namespace DragonSpark.Reflection
 	{
 		public static IsAssignableStructure Default { get; } = new IsAssignableStructure();
 
-		IsAssignableStructure() : base(Nullable.GetUnderlyingType) {}
+		IsAssignableStructure() : base(Nullable.GetUnderlyingType!) {}
 	}
 }

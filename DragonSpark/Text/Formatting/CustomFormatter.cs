@@ -9,7 +9,7 @@ namespace DragonSpark.Text.Formatting
 
 		public CustomFormatter(ISelect<object, IFormattable> table) => _select = table;
 
-		public string Format(string format, object arg, IFormatProvider formatProvider)
-			=> _select.Get(arg).ToString(format, formatProvider);
+		public string Format(string? format, object? arg, IFormatProvider? formatProvider)
+			=> _select.Get(arg!).ToString(format, formatProvider);
 	}
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Model.Selection.Stores
 {
-	public class AssociatedResource<TIn, TOut> : DecoratedTable<TIn, TOut>
+	public class AssociatedResource<TIn, TOut> : DecoratedTable<TIn, TOut> where TIn : notnull
 	{
 		public AssociatedResource() : this(Start.A.Selection<TIn>().AndOf<TOut>().By.Activation()) {}
 

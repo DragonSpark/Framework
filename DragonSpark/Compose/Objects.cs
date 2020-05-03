@@ -33,7 +33,7 @@ namespace DragonSpark.Compose
 			var length = result.Length;
 			for (var i = 0u; i < length; i++)
 			{
-				result[i] = default;
+				result[i] = default!;
 			}
 
 			return result;
@@ -54,32 +54,36 @@ namespace DragonSpark.Compose
 		public static T If<T>(ref this bool @this, T @true, T @false) => @this ? @true : @false;
 
 		public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<Pair<TKey, TValue>> @this,
-		                                                                  IEqualityComparer<TKey> comparer = null)
+		                                                                  IEqualityComparer<TKey>? comparer = null)
+			where TKey : notnull
 			=> @this.ToDictionary(x => x.Key, x => x.Value, comparer);
 
 		public static OrderedDictionary<TKey, TValue> ToOrderedDictionary<TKey, TValue>(
 			this IEnumerable<Pair<TKey, TValue>> @this,
-			IEqualityComparer<TKey> comparer = null)
+			IEqualityComparer<TKey>? comparer = default)
+			where TKey : notnull
 			=> @this.ToOrderedDictionary(x => x.Key, x => x.Value, comparer);
 
 		public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> @this)
+			where TKey : notnull
 			=> new ReadOnlyDictionary<TKey, TValue>(@this);
 
 		public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(
 			this IEnumerable<Pair<TKey, TValue>> @this)
+			where TKey : notnull
 			=> new ReadOnlyDictionary<TKey, TValue>(@this.ToDictionary());
 
 		public static TOut AsTo<TSource, TOut>(this object target, Func<TSource, TOut> transform,
-		                                       Func<TOut> resolve = null)
+		                                       Func<TOut>? resolve = default)
 		{
-			var @default = resolve ?? (() => default);
+			var @default = resolve ?? (() => default!);
 			var result   = target is TSource source ? transform(source) : @default();
 			return result;
 		}
 
 		public static (T1, T2) Pair<T1, T2>(this T1 @this, T2 other) => ValueTuple.Create(@this, other);
 
-		public static string NullIfEmpty(this string target) => string.IsNullOrEmpty(target) ? null : target;
+		public static string? NullIfEmpty(this string target) => string.IsNullOrEmpty(target) ? null : target;
 
 		public static T Self<T>(this T @this) => @this;
 
@@ -126,7 +130,7 @@ namespace DragonSpark.Compose
 
 			var service = @this.GetService(typeof(T));
 			var result  = service != null ? service.To<T>() : default;
-			return result;
+			return result!;
 		}
 	}
 }

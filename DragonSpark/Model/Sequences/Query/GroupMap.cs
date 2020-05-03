@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DragonSpark.Model.Sequences.Query
 {
-	sealed class GroupMap<T, TKey> : IReduce<T, IArrayMap<TKey, T>>
+	sealed class GroupMap<T, TKey> : IReduce<T, IArrayMap<TKey, T>> where TKey : notnull
 	{
 		readonly IEqualityComparer<TKey> _comparer;
 		readonly Func<T, TKey>           _key;

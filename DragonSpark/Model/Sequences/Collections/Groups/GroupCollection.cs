@@ -15,7 +15,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 
 		public GroupCollection(IOrderedDictionary<GroupName, IList<T>> store)
 			: this(store,
-			       store.Select(x => x.Value?.ToArray())
+			       store.Select(x => x.Value.ToArray())
 			            .Select(SortAlteration<T>.Default.ToDelegate())
 			            .SelectMany(x => x)
 			            .To(Start.An.Extent<DeferredArray<T>>())) {}

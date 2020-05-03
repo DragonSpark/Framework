@@ -3,6 +3,7 @@
 namespace DragonSpark.Model.Selection.Stores
 {
 	public class Table<TIn, TOut> : Lookup<TIn, TOut>, ITable<TIn, TOut>
+		where TIn : notnull
 	{
 		readonly IDictionary<TIn, TOut> _store;
 

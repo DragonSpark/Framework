@@ -50,7 +50,7 @@ namespace DragonSpark.Composition
 			    @this.Select(x => x.ImplementationInstance)
 			         .OfType<T>()
 			         .FirstOrDefault()
-			   )
+			   )!
 				.To<T>();
 
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class

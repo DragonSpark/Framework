@@ -8,7 +8,7 @@ namespace DragonSpark.Model.Selection.Stores
 	                                                                        where TOut : class
 	{
 		[UsedImplicitly]
-		public ReferenceValueTable() : this(_ => default) {}
+		public ReferenceValueTable() : this(_ => default!) {}
 
 		public ReferenceValueTable(Func<TIn, TOut> parameter)
 			: base(new ReferenceValueTables<TIn, TOut>(parameter).Get(new ConditionalWeakTable<TIn, TOut>())) {}

@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Aspects
 
 			public Container(ISelect<TI, TO> select) => _select = select;
 
-			public TOut Get(TIn parameter) => (TOut)_select.Get(parameter);
+			public TOut Get(TIn parameter) => (TOut)_select.Get(parameter)!;
 		}
 
 		sealed class Select : ISelect<TI, TO>
@@ -26,7 +26,7 @@ namespace DragonSpark.Model.Aspects
 
 			public Select(ISelect<TIn, TOut> select) => _select = select;
 
-			public TO Get(TI parameter) => _select.Get((TIn)parameter);
+			public TO Get(TI parameter) => _select.Get((TIn)parameter!);
 		}
 	}
 }

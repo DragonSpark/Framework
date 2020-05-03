@@ -4,6 +4,6 @@
 	{
 		public static Default<T> Instance { get; } = new Default<T>();
 
-		Default() : base(default) {}
+		Default() : base(default!) {}
 	}
 }

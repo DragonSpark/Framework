@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
-
+// ReSharper disable PossibleMultipleConsumption
 namespace DragonSpark.Compose.Extents.Selections
 {
 	sealed class LogOperationExceptionBinding<TIn, TOut> : IOperation<TIn>
@@ -25,7 +25,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 			if (result.IsFaulted)
 			{
-				var input = new ExceptionParameter<TOut>(result.AsTask().Exception, _select((parameter, result)));
+				var input = new ExceptionParameter<TOut>(result.AsTask().Exception!, _select((parameter, result)));
 				_log.Execute(input);
 			}
 

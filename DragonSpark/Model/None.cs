@@ -8,7 +8,7 @@ namespace DragonSpark.Model
 
 		public bool Equals(None parameter) => parameter == Default;
 
-		public override bool Equals(object obj) => obj is None;
+		public override bool Equals(object? obj) => obj is None;
 
 		public override int GetHashCode() => 0;
 

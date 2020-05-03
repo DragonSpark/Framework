@@ -127,24 +127,29 @@ namespace DragonSpark.Compose
 
 		public static OrderedDictionary<TKey, TSource> ToOrderedDictionary<TSource, TKey>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+			where TKey : notnull
 			=> GetOrderedDictionaryImpl(source, keySelector, x => x, null);
 
 		public static OrderedDictionary<TKey, TElement> ToOrderedDictionary<TSource, TKey, TElement>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
+			where TKey : notnull
 			=> GetOrderedDictionaryImpl(source, keySelector, elementSelector, null);
 
 		public static OrderedDictionary<TKey, TSource> ToOrderedDictionary<TSource, TKey>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+			where TKey : notnull
 			=> GetOrderedDictionaryImpl(source, keySelector, x => x, comparer);
 
 		public static OrderedDictionary<TKey, TElement> ToOrderedDictionary<TSource, TKey, TElement>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
-			IEqualityComparer<TKey> comparer)
+			IEqualityComparer<TKey>? comparer)
+			where TKey : notnull
 			=> GetOrderedDictionaryImpl(source, keySelector, elementSelector, comparer);
 
 		static OrderedDictionary<TKey, TElement> GetOrderedDictionaryImpl<TSource, TKey, TElement>(
 			IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
-			IEqualityComparer<TKey> comparer)
+			IEqualityComparer<TKey>? comparer)
+			where TKey : notnull
 		{
 			var result = comparer == null
 				             ? new OrderedDictionary<TKey, TElement>()

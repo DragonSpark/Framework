@@ -10,6 +10,6 @@ namespace DragonSpark.Runtime.Activation
 
 		IsSingletonProperty() : base(Start.A.Condition.Of.Any.By.Assigned,
 		                             Start.A.Condition<PropertyInfo>()
-		                                  .By.Calling(y => y.CanRead && y.GetMethod.IsStatic)) {}
+		                                  .By.Calling(y => y.CanRead && y.GetMethod!.IsStatic)) {}
 	}
 }

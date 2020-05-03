@@ -9,6 +9,7 @@ namespace DragonSpark.Model.Selection.Stores
 	public class Lookup<TIn, TOut> : Conditional<TIn, TOut>,
 	                                 IActivateUsing<IReadOnlyDictionary<TIn, TOut>>,
 	                                 IActivateUsing<IDictionary<TIn, TOut>>
+		where TIn : notnull
 	{
 		public Lookup(IDictionary<TIn, TOut> dictionary) : this(dictionary.AsReadOnly()) {}
 

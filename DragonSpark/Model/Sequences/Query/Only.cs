@@ -14,7 +14,7 @@ namespace DragonSpark.Model.Sequences.Query
 			using var enumerator = parameter.GetEnumerator();
 			var       first      = enumerator.MoveNext() ? enumerator.Current : default;
 			var       result     = !enumerator.MoveNext() ? first : default;
-			return result;
+			return result!;
 		}
 	}
 }

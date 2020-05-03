@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,9 +12,9 @@ namespace DragonSpark.Model.Sequences.Collections
 	/// <summary>
 	/// ATTRIBUTION: https://github.com/mattmc3/dotmore
 	/// </summary>
-	public class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue>
+	public class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue> where TKey : notnull
 	{
-		DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>> _delegatedKeyedCollection;
+		DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>? _delegatedKeyedCollection;
 
 		public OrderedDictionary()
 		{
@@ -30,7 +31,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			Initialize();
 			foreach (var pair in dictionary)
 			{
-				_delegatedKeyedCollection.Add(pair);
+				_delegatedKeyedCollection?.Add(pair);
 			}
 		}
 
@@ -39,7 +40,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			Initialize(comparer);
 			foreach (var pair in dictionary)
 			{
-				_delegatedKeyedCollection.Add(pair);
+				_delegatedKeyedCollection?.Add(pair);
 			}
 		}
 
@@ -48,7 +49,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			Initialize();
 			foreach (var pair in items)
 			{
-				_delegatedKeyedCollection.Add(pair);
+				_delegatedKeyedCollection?.Add(pair);
 			}
 		}
 
@@ -57,16 +58,16 @@ namespace DragonSpark.Model.Sequences.Collections
 			Initialize(comparer);
 			foreach (var pair in items)
 			{
-				_delegatedKeyedCollection.Add(pair);
+				_delegatedKeyedCollection?.Add(pair);
 			}
 		}
 
 		/// <summary>
 		/// Gets the key comparer for this dictionary
 		/// </summary>
-		public IEqualityComparer<TKey> Comparer { get; private set; }
+		public IEqualityComparer<TKey>? Comparer { [UsedImplicitly] get; private set; }
 
-		void Initialize(IEqualityComparer<TKey> comparer = null)
+		void Initialize(IEqualityComparer<TKey>? comparer = default)
 		{
 			Comparer = comparer;
 			_delegatedKeyedCollection = comparer != null
@@ -99,7 +100,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <summary>
 		/// Gets the number of items in the dictionary
 		/// </summary>
-		public int Count => _delegatedKeyedCollection.Count;
+		public int Count => _delegatedKeyedCollection!.Count;
 
 		/// <summary>
 		/// Gets all the keys in the ordered dictionary in their proper order.
@@ -118,7 +119,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <param name="value">The value of the element to add.  The value can be null for reference types.</param>
 		public void Add(TKey key, TValue value)
 		{
-			_delegatedKeyedCollection.Add(new KeyValuePair<TKey, TValue>(key, value));
+			_delegatedKeyedCollection?.Add(new KeyValuePair<TKey, TValue>(key, value));
 		}
 
 		/// <summary>
@@ -126,7 +127,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </summary>
 		public void Clear()
 		{
-			_delegatedKeyedCollection.Clear();
+			_delegatedKeyedCollection?.Clear();
 		}
 
 		/// <summary>
@@ -137,7 +138,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <param name="value">The value of the element to add.  Can be null for reference types.</param>
 		public void Insert(int index, TKey key, TValue value)
 		{
-			_delegatedKeyedCollection.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
+			_delegatedKeyedCollection?.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
 		}
 
 		/// <summary>
@@ -147,7 +148,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <returns>Returns the index of the key specified if found.  Returns -1 if the key could not be located.</returns>
 		public int IndexOf(TKey key)
 		{
-			if (_delegatedKeyedCollection.Contains(key))
+			if (_delegatedKeyedCollection!.Contains(key))
 			{
 				return _delegatedKeyedCollection.IndexOf(_delegatedKeyedCollection[key]);
 			}
@@ -175,7 +176,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </summary>
 		/// <param name="key">The key to locate in this object.</param>
 		/// <returns>True if the key is found.  False otherwise.</returns>
-		public bool ContainsKey(TKey key) => _delegatedKeyedCollection.Contains(key);
+		public bool ContainsKey(TKey key) => _delegatedKeyedCollection!.Contains(key);
 
 		/// <summary>
 		/// Returns the KeyValuePair at the index specified.
@@ -186,7 +187,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </exception>
 		public KeyValuePair<TKey, TValue> GetItem(int index)
 		{
-			if (index < 0 || index >= _delegatedKeyedCollection.Count)
+			if (index < 0 || index >= _delegatedKeyedCollection!.Count)
 			{
 				throw new ArgumentException($"The index was outside the bounds of the dictionary: {index}");
 			}
@@ -204,7 +205,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </exception>
 		public void SetItem(int index, TValue value)
 		{
-			if (index < 0 || index >= _delegatedKeyedCollection.Count)
+			if (index < 0 || index >= _delegatedKeyedCollection!.Count)
 			{
 				throw new ArgumentException($"The index is outside the bounds of the dictionary: {index}");
 			}
@@ -216,14 +217,14 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <summary>
 		/// Returns an enumerator that iterates through all the KeyValuePairs in this object.
 		/// </summary>
-		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _delegatedKeyedCollection.GetEnumerator();
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _delegatedKeyedCollection!.GetEnumerator();
 
 		/// <summary>
 		/// Removes the key-value pair for the specified key.
 		/// </summary>
 		/// <param name="key">The key to remove from the dictionary.</param>
 		/// <returns>True if the item specified existed and the removal was successful.  False otherwise.</returns>
-		public bool Remove(TKey key) => _delegatedKeyedCollection.Remove(key);
+		public bool Remove(TKey key) => _delegatedKeyedCollection!.Remove(key);
 
 		/// <summary>
 		/// Removes the key-value pair at the specified index.
@@ -231,7 +232,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <param name="index">The index of the key-value pair to remove from the dictionary.</param>
 		public void RemoveAt(int index)
 		{
-			if (index < 0 || index >= _delegatedKeyedCollection.Count)
+			if (index < 0 || index >= _delegatedKeyedCollection!.Count)
 			{
 				throw new ArgumentException($"The index was outside the bounds of the dictionary: {index}");
 			}
@@ -245,7 +246,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <param name="key">The key associated with the value to get.</param>
 		public TValue GetValue(TKey key)
 		{
-			if (_delegatedKeyedCollection.Contains(key) == false)
+			if (_delegatedKeyedCollection!.Contains(key) == false)
 			{
 				throw new ArgumentException($"The given key is not present in the dictionary: {key}");
 			}
@@ -265,11 +266,11 @@ namespace DragonSpark.Model.Sequences.Collections
 			var idx = IndexOf(key);
 			if (idx > -1)
 			{
-				_delegatedKeyedCollection[idx] = kvp;
+				_delegatedKeyedCollection![idx] = kvp;
 			}
 			else
 			{
-				_delegatedKeyedCollection.Add(kvp);
+				_delegatedKeyedCollection!.Add(kvp);
 			}
 		}
 
@@ -286,13 +287,13 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// <remarks></remarks>
 		public bool TryGetValue(TKey key, out TValue value)
 		{
-			if (_delegatedKeyedCollection.Contains(key))
+			if (_delegatedKeyedCollection!.Contains(key))
 			{
 				value = _delegatedKeyedCollection[key].Value;
 				return true;
 			}
 
-			value = default;
+			value = default!;
 			return false;
 		}
 
@@ -319,28 +320,28 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
 		{
-			_delegatedKeyedCollection.Add(item);
+			_delegatedKeyedCollection!.Add(item);
 		}
 
 		void ICollection<KeyValuePair<TKey, TValue>>.Clear()
 		{
-			_delegatedKeyedCollection.Clear();
+			_delegatedKeyedCollection!.Clear();
 		}
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
-			=> _delegatedKeyedCollection.Contains(item);
+			=> _delegatedKeyedCollection!.Contains(item);
 
 		void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
 		{
-			_delegatedKeyedCollection.CopyTo(array, arrayIndex);
+			_delegatedKeyedCollection!.CopyTo(array, arrayIndex);
 		}
 
-		int ICollection<KeyValuePair<TKey, TValue>>.Count => _delegatedKeyedCollection.Count;
+		int ICollection<KeyValuePair<TKey, TValue>>.Count => _delegatedKeyedCollection!.Count;
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
-			=> _delegatedKeyedCollection.Remove(item);
+			=> _delegatedKeyedCollection!.Remove(item);
 
 		IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
 			=> GetEnumerator();
@@ -359,15 +360,15 @@ namespace DragonSpark.Model.Sequences.Collections
 			RemoveAt(index);
 		}
 
-		object IOrderedDictionary.this[int index]
+		object? IOrderedDictionary.this[int index]
 		{
 			get => this[index];
-			set => this[index] = (TValue)value;
+			set => this[index] = (TValue)value!;
 		}
 
-		void IDictionary.Add(object key, object value)
+		void IDictionary.Add(object key, object? value)
 		{
-			Add((TKey)key, (TValue)value);
+			Add((TKey)key, (TValue)value!);
 		}
 
 		void IDictionary.Clear()
@@ -375,7 +376,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			Clear();
 		}
 
-		bool IDictionary.Contains(object key) => _delegatedKeyedCollection.Contains((TKey)key);
+		bool IDictionary.Contains(object key) => _delegatedKeyedCollection!.Contains((TKey)key);
 
 		IDictionaryEnumerator IDictionary.GetEnumerator() => new DictionaryEnumerator<TKey, TValue>(this);
 
@@ -392,21 +393,21 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		ICollection IDictionary.Values => (ICollection)Values;
 
-		object IDictionary.this[object key]
+		object? IDictionary.this[object key]
 		{
 			get => this[(TKey)key];
-			set => this[(TKey)key] = (TValue)value;
+			set => this[(TKey)key] = (TValue)value!;
 		}
 
 		void ICollection.CopyTo(System.Array array, int index)
 		{
-			((ICollection)_delegatedKeyedCollection).CopyTo(array, index);
+			((ICollection)_delegatedKeyedCollection!).CopyTo(array, index);
 		}
 
-		int ICollection.Count => ((ICollection)_delegatedKeyedCollection).Count;
+		int ICollection.Count => ((ICollection)_delegatedKeyedCollection!).Count;
 
-		bool ICollection.IsSynchronized => ((ICollection)_delegatedKeyedCollection).IsSynchronized;
+		bool ICollection.IsSynchronized => ((ICollection)_delegatedKeyedCollection!).IsSynchronized;
 
-		object ICollection.SyncRoot => ((ICollection)_delegatedKeyedCollection).SyncRoot;
+		object ICollection.SyncRoot => ((ICollection)_delegatedKeyedCollection!).SyncRoot;
 	}
 }

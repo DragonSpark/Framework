@@ -86,7 +86,7 @@ namespace DragonSpark.Runtime.Environment
 				               .StoredActivation<OneItemIs<Type>>()
 				               .Select(metadata.Select(GenericInterfaces.Default)
 				                               .Open()
-				                               .Select)
+				                               .Select!)
 				               .Select(x => x.Then().Out())
 				               .Get()) {}
 		}

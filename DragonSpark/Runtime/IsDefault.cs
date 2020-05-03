@@ -6,6 +6,6 @@ namespace DragonSpark.Runtime
 	{
 		public static IsDefault<T> Default { get; } = new IsDefault<T>();
 
-		IsDefault() : base(default) {}
+		IsDefault() : base(default!) {}
 	}
 }

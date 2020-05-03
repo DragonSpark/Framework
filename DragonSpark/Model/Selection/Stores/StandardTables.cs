@@ -7,6 +7,7 @@ namespace DragonSpark.Model.Selection.Stores
 {
 	public class StandardTables<TIn, TOut> : ISelect<IDictionary<TIn, TOut>, ITable<TIn, TOut>>,
 	                                         IActivateUsing<Func<TIn, TOut>>
+		where TIn : notnull
 	{
 		public static StandardTables<TIn, TOut> Default { get; } = new StandardTables<TIn, TOut>();
 

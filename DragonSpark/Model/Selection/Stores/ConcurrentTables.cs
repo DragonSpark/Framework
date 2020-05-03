@@ -7,6 +7,7 @@ namespace DragonSpark.Model.Selection.Stores
 {
 	public sealed class ConcurrentTables<TIn, TOut> : ISelect<ConcurrentDictionary<TIn, TOut>, ITable<TIn, TOut>>,
 	                                                  IActivateUsing<Func<TIn, TOut>>
+		where TIn : notnull
 	{
 		public static ConcurrentTables<TIn, TOut> Default { get; } = new ConcurrentTables<TIn, TOut>();
 

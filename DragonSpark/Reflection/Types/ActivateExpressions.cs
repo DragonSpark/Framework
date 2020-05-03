@@ -28,7 +28,7 @@ namespace DragonSpark.Reflection.Types
 			var constructor = parameter.GetTypeInfo().DeclaredConstructors.Only() ??
 			                  parameter.GetConstructors().Only() ??
 			                  parameter.GetConstructor(_types);
-			var types      = constructor.GetParameters().Select(x => x.ParameterType);
+			var types      = constructor?.GetParameters().Select(x => x.ParameterType);
 			var parameters = Parameters.Get().Open().Zip(types, Defaults.ExpressionZip);
 			var result     = Expression.New(constructor, parameters);
 			return result;

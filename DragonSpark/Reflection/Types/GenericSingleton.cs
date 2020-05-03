@@ -13,7 +13,7 @@ namespace DragonSpark.Reflection.Types
 		public static GenericSingleton Default { get; } = new GenericSingleton();
 
 		GenericSingleton() : this(typeof(Singletons).GetRuntimeMethod(nameof(Singletons.Get),
-		                                                              typeof(Type).Yield().ToArray()),
+		                                                              typeof(Type).Yield().ToArray())!,
 		                          new ArrayInstance<ParameterExpression>(Array<ParameterExpression>.Empty)) {}
 
 		readonly MethodInfo _method;

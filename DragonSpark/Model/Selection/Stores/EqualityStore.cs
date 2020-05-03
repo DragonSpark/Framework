@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores
 {
-	public class EqualityStore<TIn, TOut> : Select<TIn, TOut>
+	public class EqualityStore<TIn, TOut> : Select<TIn, TOut> where TIn : notnull
 	{
 		protected EqualityStore(ISelect<TIn, TOut> source, IDictionary<TIn, TOut> store)
 			: this(source.Get, store) {}

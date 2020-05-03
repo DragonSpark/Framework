@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Runtime.Invocation
 {
-	sealed class Locks<T> : Locks<T, object>
+	sealed class Locks<T> : Locks<T, object> where T : notnull
 	{
 		public static Locks<T> Default { get; } = new Locks<T>();
 
@@ -17,7 +17,7 @@ namespace DragonSpark.Runtime.Invocation
 	/// </summary>
 	/// <typeparam name="TKey"></typeparam>
 	/// <typeparam name="TLock"></typeparam>
-	public class Locks<TKey, TLock> : ISelect<TKey, TLock>
+	public class Locks<TKey, TLock> : ISelect<TKey, TLock> where TKey : notnull
 	{
 		// ReSharper disable once ComplexConditionExpression
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

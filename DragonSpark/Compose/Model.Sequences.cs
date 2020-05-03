@@ -78,7 +78,7 @@ namespace DragonSpark.Compose
 			{
 				for (var i = 0u; i < count; i++)
 				{
-					@this[i] = default;
+					@this[i] = default!;
 				}
 			}
 			else
