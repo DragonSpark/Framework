@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Security
@@ -20,18 +19,11 @@ namespace DragonSpark.Application.Security
 		public string Identity { get; }
 	}
 
-	public sealed class ProviderIdentityToken : Instance<char>
-	{
-		public static ProviderIdentityToken Default { get; } = new ProviderIdentityToken();
-
-		ProviderIdentityToken() : base('+') {}
-	}
-
 	public sealed class Identities : ISelect<string, ProviderIdentity>
 	{
 		public static Identities Default { get; } = new Identities();
 
-		Identities() : this(ProviderIdentityToken.Default) {}
+		Identities() : this(KeyDelimiter.Default) {}
 
 		readonly char _token;
 

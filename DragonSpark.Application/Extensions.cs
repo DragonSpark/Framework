@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
+using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +13,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
@@ -32,7 +33,7 @@ namespace DragonSpark.Application
 			=> @this.WithIdentity(options => {});
 
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
-		                                           Action<IdentityOptions> configure)
+		                                           System.Action<IdentityOptions> configure)
 			=> new IdentityContext(@this, configure);
 
 		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this)
@@ -43,7 +44,7 @@ namespace DragonSpark.Application
 			=> @this.AuthorizeUsing(policy.Execute);
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       Action<AuthorizationOptions> policy)
+		                                                       System.Action<AuthorizationOptions> policy)
 			=> @this.Then(new AuthorizeConfiguration(policy));
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
@@ -88,5 +89,14 @@ namespace DragonSpark.Application
 			var result = state.To<AuthenticationState<T>>();
 			return result;
 		}
+
+		/**/
+
+		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this)
+			=> new StoreContext<TIn, TOut>(@this);
+
+		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
+			this OperationSelector<TIn, TOut> @this)
+			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
 	}
 }
