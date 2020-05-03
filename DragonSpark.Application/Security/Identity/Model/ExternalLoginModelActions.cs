@@ -38,7 +38,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			return result;
 		}
 
-		public ValueTask<IActionResult> Get(CallbackContext parameter) => _authenticate.Get(parameter);
+		public ValueTask<IActionResult?> Get(CallbackContext parameter) => _authenticate.Get(parameter);
 
 		public IActionResult Get(ProviderContext parameter)
 		{

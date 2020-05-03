@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
@@ -13,7 +14,8 @@ namespace DragonSpark.Application.Compose.Entities
 		readonly string _connection;
 		readonly string _name;
 
-		public ConfigureSqlServer(string connection) : this(connection, A.Type<T>().Assembly.GetName().Name) {}
+		public ConfigureSqlServer(string connection)
+			: this(connection, A.Type<T>().Assembly.GetName().Name ?? throw new InvalidOperationException()) {}
 
 		public ConfigureSqlServer(string connection, string name)
 		{

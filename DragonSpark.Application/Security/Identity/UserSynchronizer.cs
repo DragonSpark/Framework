@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
@@ -18,7 +19,8 @@ namespace DragonSpark.Application.Security.Identity
 			var result = await _previous.Get(parameter).ConfigureAwait(false);
 			if (result)
 			{
-				await _modified.Get(parameter.Profile.Profile).ConfigureAwait(false);
+				var profile = parameter.Profile.Profile ?? throw new InvalidOperationException();
+				await _modified.Get(profile).ConfigureAwait(false);
 			}
 			return result;
 		}

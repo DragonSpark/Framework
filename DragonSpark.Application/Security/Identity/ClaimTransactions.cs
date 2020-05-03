@@ -16,17 +16,17 @@ namespace DragonSpark.Application.Security.Identity
 
 			if (transactions.Add.Length > 0)
 			{
-				await _users.AddClaimsAsync(user, transactions.Add.Open());
+				await _users.AddClaimsAsync(user!, transactions.Add.Open());
 			}
 
 			foreach (var (existing, input) in transactions.Update.Open())
 			{
-				await _users.ReplaceClaimAsync(user, existing, input);
+				await _users.ReplaceClaimAsync(user!, existing, input);
 			}
 
 			if (transactions.Delete.Length > 0)
 			{
-				await _users.RemoveClaimsAsync(user, transactions.Delete.Open());
+				await _users.RemoveClaimsAsync(user!, transactions.Delete.Open());
 			}
 		}
 	}

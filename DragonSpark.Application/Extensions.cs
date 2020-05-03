@@ -79,11 +79,11 @@ namespace DragonSpark.Application
 		{
 			var name   = key.Get();
 			var value  = @this.GetValue(name);
-			var result = value != ValueProviderResult.None ? value.FirstValue : null;
+			var result = value != ValueProviderResult.None ? value.FirstValue : string.Empty;
 			return result;
 		}
 
-		public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this)
+		public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this) where T : class
 		{
 			var state  = await @this;
 			var result = state.To<AuthenticationState<T>>();

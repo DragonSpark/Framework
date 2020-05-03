@@ -6,7 +6,7 @@
 
 		StateView() : this(AuthenticationState<T>.Default, null) {}
 
-		public StateView(AuthenticationState<T> state, string hash)
+		public StateView(AuthenticationState<T> state, string? hash)
 		{
 			State = state;
 			Hash  = hash;
@@ -14,6 +14,6 @@
 
 		public AuthenticationState<T> State { get; }
 
-		public string Hash { get; }
+		public string? Hash { get; }
 	}
 }

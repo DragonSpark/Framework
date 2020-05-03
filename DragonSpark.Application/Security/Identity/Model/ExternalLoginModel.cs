@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public ExternalLoginModel(ExternalLoginModelActions<T> actions) => _actions = actions;
 
-		public string LoginProvider { get; private set; }
+		public string? LoginProvider { get; private set; }
 
 		public IActionResult OnGet(ProviderContext context) => _actions.Get(context);
 

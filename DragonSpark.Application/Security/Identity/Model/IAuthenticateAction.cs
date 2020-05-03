@@ -3,5 +3,5 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public interface IAuthenticateAction : IOperationResult<CallbackContext, IActionResult> {}
+	public interface IAuthenticateAction : IOperationResult<CallbackContext, IActionResult?> {}
 }

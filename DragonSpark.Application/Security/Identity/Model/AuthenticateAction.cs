@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public AuthenticateAction(IAuthentication authentication) => _authentication = authentication;
 
-		public async ValueTask<IActionResult> Get(CallbackContext parameter)
+		public async ValueTask<IActionResult?> Get(CallbackContext parameter)
 		{
 			var (login, origin) = parameter;
 

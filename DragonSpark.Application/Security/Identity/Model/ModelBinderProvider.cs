@@ -23,6 +23,6 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public IModelBinder GetBinder(ModelBinderProviderContext context)
 			=> _types.TryGetValue(context.Metadata.ModelType, out var result)
 				   ? context.Services.GetRequiredService(result).To<IModelBinder>()
-				   : null;
+				   : null!;
 	}
 }

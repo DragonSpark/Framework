@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			_applied = applied;
 		}
 
-		public async ValueTask<ExternalLoginInfo> Get()
+		public async ValueTask<ExternalLoginInfo?> Get()
 		{
 			var login  = await _profile.Get();
 			var result = login != null ? _applied.Get(login) : null;
@@ -29,6 +29,6 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public AuthenticationProfile(SignInManager<T> authentication) => _authentication = authentication;
 
-		public ValueTask<ExternalLoginInfo> Get() => _authentication.GetExternalLoginInfoAsync().ToOperation();
+		public ValueTask<ExternalLoginInfo?> Get() => _authentication.GetExternalLoginInfoAsync().ToOperation();
 	}
 }

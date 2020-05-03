@@ -41,7 +41,7 @@ namespace DragonSpark.Composition
 				                                                .WithAspNetCoreSettings());
 				root.ConstructorDependencySelector = new Selector(root);
 
-				var current = _provider.GetValue(root).To<Lazy<IConstructionInfoProvider>>();
+				var current = _provider.GetValue(root)?.To<Lazy<IConstructionInfoProvider>>();
 
 				_provider.SetValue(root, new Lazy<IConstructionInfoProvider>(new Construction(current.Value)));
 

@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Compose.Store.Operations
 			=> _configure = configure;
 
 		public OperationSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
-			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName, key).Get);
+			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName ?? throw new InvalidOperationException(), key).Get);
 
 		public OperationSelector<TIn, TOut> Using(Func<TIn, object> key)
 			=> new Memory<TIn, TOut>(Memory,
