@@ -21,7 +21,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		public new void AddComponent(IRadzenFormComponent component)
 		{
-			var components = _field.GetValue(this).To<List<IRadzenFormComponent>>();
+			var components = _field.GetValue(this).Verify().To<List<IRadzenFormComponent>>();
 			components.RemoveAll(x => x.Name == component.Name);
 			components.Add(component);
 		}
@@ -33,7 +33,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			base.OnParametersSet();
 			if (context != null && context != EditContext)
 			{
-				_field.GetValue(this)
+				_field.GetValue(this).Verify()
 				      .To<List<IRadzenFormComponent>>()
 				      .Clear();
 			}

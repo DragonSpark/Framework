@@ -27,20 +27,10 @@ namespace DragonSpark.Composition
 		public static IConfiguration Configuration(this IServiceCollection @this)
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 			        .ImplementationFactory?.Invoke(null)
-			        .To<IConfiguration>();
+			        .To<IConfiguration>() ?? throw new InvalidOperationException();
 
 		public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
 			=> new DeferredService<T>(@this).Then().Singleton();
-
-		public static T GetInstance<T>(this IServiceCollection @this) where T : class
-			=> (@this.Where(x => x.ServiceType == typeof(T))
-			         .Select(x => x.ImplementationInstance)
-			         .Only()
-			    ??
-			    @this.Select(x => x.ImplementationInstance)
-			         .OfType<T>()
-			         .FirstOrDefault())?
-				.To<T>();
 
 		public static T GetRequiredInstance<T>(this IServiceCollection @this) where T : class
 			=> (@this.Where(x => x.ServiceType == typeof(T))

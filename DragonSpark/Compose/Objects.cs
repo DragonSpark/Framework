@@ -7,6 +7,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Compose
@@ -115,6 +116,11 @@ namespace DragonSpark.Compose
 
 		public static IDisposable ToDisposable(this object @this) => @this as IDisposable ?? EmptyDisposable.Default;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static T Verify<T>(this T? @this) where T : class
+			=> @this ?? throw new InvalidOperationException("Provided instance is not assigned.");
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T To<T>(this object @this)
 			=> @this is T result
 				   ? result
