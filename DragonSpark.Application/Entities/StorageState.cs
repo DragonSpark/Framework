@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public sealed class StorageState<T> : IStorageState where T : DbContext
+	public sealed class StorageState : IStorageState
 	{
 		readonly IOperationResult<int> _confirm;
 		readonly ICommand<object>      _cancel;
 
 		[UsedImplicitly]
-		public StorageState(T storage) : this(new Confirm(storage), new Undo(storage)) {}
+		public StorageState(DbContext storage) : this(new Confirm(storage), new Undo(storage)) {}
 
 		public StorageState(IOperationResult<int> confirm, ICommand<object> cancel)
 		{

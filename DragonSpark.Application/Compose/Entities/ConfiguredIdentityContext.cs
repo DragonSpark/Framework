@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Compose.Entities
 {
-	public sealed class ConfiguredIdentityContext<T> where T : IdentityUser
+	public sealed class ConfiguredIdentityContext<T> where T : Security.Identity.IdentityUser
 	{
 		readonly ApplicationProfileContext _context;
 		readonly Action<IdentityOptions>   _configure;

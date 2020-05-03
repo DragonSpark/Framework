@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Compose.Entities
 			         .AddEntityFrameworkStores<T>()
 			         .Return(parameter)
 			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
-			         .For<DbContext>().Map<T>().Scoped()
+			         .AddScoped<DbContext>(x => x.GetRequiredService<T>())
 					 //
 			         .For<IStateViews<TUser>>().Map<StateViews<TUser>>().Scoped()
 			         .Decorate<IStateViews<TUser>, StoredStateViews<TUser>>()

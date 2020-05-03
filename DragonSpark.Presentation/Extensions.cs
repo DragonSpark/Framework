@@ -5,8 +5,10 @@ using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Primitives;
 using Radzen;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation
@@ -41,5 +43,8 @@ namespace DragonSpark.Presentation
 				   : SelectValue<T>.Default.Get(@this);
 
 		public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
+
+		public static Dictionary<string, StringValues> QueryString(this NavigationManager @this)
+			=> Presentation.QueryString.Default.Get(@this);
 	}
 }
