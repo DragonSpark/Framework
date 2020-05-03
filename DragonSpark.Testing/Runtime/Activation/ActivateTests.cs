@@ -48,7 +48,7 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 
 			Subject() {}
 
-			public TOut Get(TIn parameter) => default;
+			public TOut Get(TIn parameter) => default!;
 		}
 
 		sealed class Subject : IActivateUsing<int>

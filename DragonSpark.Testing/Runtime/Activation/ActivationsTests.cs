@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Application.Runtime.Activation
 
 			public Values(int number) => _number = number;
 
-			public int Get(Type parameter) => _number + parameter.AssemblyQualifiedName.Length;
+			public int Get(Type parameter) => _number + parameter.AssemblyQualifiedName.Verify().Length;
 		}
 
 		sealed class References : ISelect<int, Type>, IActivateUsing<string>

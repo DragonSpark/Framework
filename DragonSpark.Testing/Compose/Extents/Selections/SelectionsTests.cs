@@ -42,7 +42,7 @@ namespace DragonSpark.Testing.Compose.Extents.Selections
 
 			Subject() {}
 
-			public TOut Get(TIn parameter) => default;
+			public TOut Get(TIn parameter) => default!;
 		}
 
 		[Fact]

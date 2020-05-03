@@ -5,6 +5,7 @@
     <AssemblyName>DragonSpark.Testing.Environment</AssemblyName>
     <RootNamespace>DragonSpark.Testing.Environment</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

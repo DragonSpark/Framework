@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Model.Selection.Conditions
 			Always<object>.Default.Then()
 			              .Or(Never<object>.Default)
 			              .Get()
-			              .Get(null)
+			              .Get(null!)
 			              .Should()
 			              .BeTrue();
 		}
@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.Model.Selection.Conditions
 			Never<object>.Default.Then()
 			             .Or(Never<object>.Default)
 			             .Get()
-			             .Get(null)
+			             .Get(null!)
 			             .Should()
 			             .BeFalse();
 		}

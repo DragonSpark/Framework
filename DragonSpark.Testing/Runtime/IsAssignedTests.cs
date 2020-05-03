@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Runtime
 		public void VerifyReferences()
 		{
 			Is.Assigned<object>().Get().Get(new object()).Should().BeTrue();
-			Is.Assigned<object>().Get().Get(null).Should().BeFalse();
+			Is.Assigned<object>().Get().Get(null!).Should().BeFalse();
 		}
 
 		[Fact]

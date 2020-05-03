@@ -17,7 +17,7 @@ namespace DragonSpark.Testing.Model.Aspects
 
 			Aspect() {}
 
-			public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter) => null;
+			public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter) => null!;
 		}
 
 		[Fact]

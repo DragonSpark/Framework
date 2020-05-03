@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Testing
 		{
 			public Guid Id { get; set; }
 
-			public string Message { get; set; }
+			public string Message { get; set; } = default!;
 		}
 
 		sealed class Transactional : Transactional<Subject>

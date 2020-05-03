@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Model.Commands
 		{
 			Delegates<object>.Empty.Should()
 			                 .BeSameAs(Delegates<object>.Empty);
-			Delegates<object>.Empty(null);
+			Delegates<object>.Empty(null!);
 		}
 	}
 }

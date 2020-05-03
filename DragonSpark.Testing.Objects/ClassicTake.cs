@@ -12,6 +12,7 @@ namespace DragonSpark.Testing.Objects
 
 		public ClassicTake(Func<IEnumerable<T>> source) => _source = source;
 
-		public IEnumerable<T> Get(uint parameter) => _source()?.Take((int)parameter);
+		public IEnumerable<T> Get(uint parameter)
+			=> _source()?.Take((int)parameter) ?? throw new InvalidOperationException();
 	}
 }

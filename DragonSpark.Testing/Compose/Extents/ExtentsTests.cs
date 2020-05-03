@@ -26,11 +26,11 @@ namespace DragonSpark.Testing.Compose.Extents
 			Start.A.Selection<string>()
 			     .By.Self.Ensure.Output.IsAssigned.Otherwise.Throw()
 			     .Get()
-			     .Invoking(x => x.Get(null))
+			     .Invoking(x => x.Get(null!))
 			     .Should()
 			     .Throw<InvalidOperationException>();
 			Start.A.Selection<string>()
-			     .By.Self.Invoking(x => x.Get().Get(null))
+			     .By.Self.Invoking(x => x.Get().Get(null!))
 			     .Should()
 			     .NotThrow();
 		}

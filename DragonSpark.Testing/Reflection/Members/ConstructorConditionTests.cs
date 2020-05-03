@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Reflection.Members
 		[Fact]
 		public void Verify()
 		{
-			ConstructorCondition.Default.Get(A.Type<object>().GetConstructor(Empty<Type>.Array));
+			ConstructorCondition.Default.Get(A.Type<object>().GetConstructor(Empty<Type>.Array).Verify());
 		}
 
 		[Fact]

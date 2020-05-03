@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Testing
 		sealed class User : IdentityUser
 		{
 			// ReSharper disable once UnusedMember.Local
-			public string DisplayName { get; set; }
+			public string DisplayName { get; set; } = default!;
 		}
 
 		sealed class StorageBuilder : StorageBuilder<ApplicationStorage>

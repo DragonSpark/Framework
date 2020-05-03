@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Application.Runtime.Environment
 	{
 		sealed class Types : ArrayInstance<Type>
 		{
-			public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter)) {}
+			public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter!)) {}
 		}
 	}
 }

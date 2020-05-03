@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 		public void Verify()
 		{
 			Start.A.Result<Assembly>()
-			     .By.Calling(() => null)
+			     .By.Calling(() => null!)
 			     .Invoking(x => x.Get())
 			     .Should()
 			     .NotThrow();
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 		public void VerifyGuard()
 		{
 			Start.A.Result<Assembly>()
-			     .By.Calling(() => null)
+			     .By.Calling(() => null!)
 			     .Accept()
 			     .Ensure.Output.IsAssigned.Otherwise.Throw(PrimaryAssemblyMessage.Default)
 			     .Get()

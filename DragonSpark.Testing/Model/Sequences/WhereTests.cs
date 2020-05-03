@@ -24,7 +24,7 @@ namespace DragonSpark.Testing.Model.Sequences
 
 			uint _count = Total;
 
-			uint[] _source;
+			uint[] _source = default!;
 
 			[Params(Total)]
 			public uint Count

@@ -14,7 +14,8 @@ namespace DragonSpark.Testing.Reflection.Types
 		{
 			Lambda<Func<object>>.Default
 			                    .Get(ConstructorExpressions.Default.Get(A.Type<object>()
-			                                                             .GetConstructor(Empty<Type>.Array)))
+			                                                             .GetConstructor(Empty<Type>.Array)
+			                                                             .Verify()))
 			                    .Compile()()
 			                    .Should()
 			                    .NotBeNull();

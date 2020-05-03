@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Runtime.Activation
 		sealed class Not
 		{
 			[UsedImplicitly]
-			public object InvalidName { get; set; }
+			public object InvalidName { get; set; } = default!;
 		}
 
 		[Fact]

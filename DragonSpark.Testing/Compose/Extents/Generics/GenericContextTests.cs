@@ -16,7 +16,7 @@ namespace DragonSpark.Testing.Compose.Extents.Generics
 
 			Subject() {}
 
-			public string Get() => typeof(T).AssemblyQualifiedName;
+			public string Get() => typeof(T).AssemblyQualifiedName.Verify();
 		}
 
 		sealed class SelectedSubject<T> : IAlteration<int>
@@ -25,7 +25,7 @@ namespace DragonSpark.Testing.Compose.Extents.Generics
 
 			public SelectedSubject(uint seed) => _seed = seed;
 
-			public int Get(int parameter) => (int)(parameter + _seed) + typeof(T).AssemblyQualifiedName.Length;
+			public int Get(int parameter) => (int)(parameter + _seed) + typeof(T).AssemblyQualifiedName.Verify().Length;
 		}
 
 		[Fact]
@@ -47,7 +47,7 @@ namespace DragonSpark.Testing.Compose.Extents.Generics
 			const uint start      = 6776u;
 			const int  parameter  = 123;
 			var        parameters = typeof(GenericContextTests);
-			var        expected   = start + parameter + parameters.AssemblyQualifiedName.Length;
+			var        expected   = start + parameter + parameters.AssemblyQualifiedName.Verify().Length;
 			Start
 				.A.Generic(typeof(SelectedSubject<>))
 				.Of.Type<IAlteration<int>>()

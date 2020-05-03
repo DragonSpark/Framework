@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Model.Sequences
 		public class Benchmarks
 		{
 			readonly Session<object>
-				_null  = new Session<object>(Empty<object>.Array, null),
+				_null  = new Session<object>(Empty<object>.Array, null!),
 				_empty = new Session<object>(Empty<object>.Array, EmptyCommand<object[]>.Default);
 
 			[Benchmark]

@@ -23,11 +23,11 @@ namespace DragonSpark.Testing.Model.Aspects
 			registry.Execute(new Registration(typeof(AssignedAspect<,>)));
 
 			var subject = Start.A.Selection<string>().By.Self.Get();
-			subject.Invoking(x => x.Get(null)).Should().NotThrow();
+			subject.Invoking(x => x.Get(null!)).Should().NotThrow();
 
 			new Aspects<string, string>(registry).Get(subject)
 			                                     .Get(subject)
-			                                     .Invoking(x => x.Get(null))
+			                                     .Invoking(x => x.Get(null!))
 			                                     .Should()
 			                                     .Throw<ArgumentNullException>();
 		}

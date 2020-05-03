@@ -9,9 +9,9 @@ namespace DragonSpark.Testing.Model.Selection.Stores
 		[Fact]
 		public void Verify()
 		{
-			Tables<string, object>.Default.Get(_ => null)
+			Tables<string, object>.Default.Get(_ => null!)
 			                      .Should()
-			                      .NotBeSameAs(Tables<string, object>.Default.Get(_ => null));
+			                      .NotBeSameAs(Tables<string, object>.Default.Get(_ => null!));
 		}
 	}
 }
