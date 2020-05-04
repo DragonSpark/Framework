@@ -81,8 +81,6 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<TIn, (TIn, TOut)> Introduce() => new Introduce<TIn, TOut>(_subject).Then();
 
-		// TODO:???
-
 #pragma warning disable 8714
 		public Selector<TIn, TOut> OnceStriped() => OncePerParameter<TIn, TOut>.Default.Get(_subject).Then();
 #pragma warning restore 8714

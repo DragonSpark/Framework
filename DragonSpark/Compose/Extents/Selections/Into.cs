@@ -13,7 +13,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public ITable<TIn, TOut> Table() => Table(x => default!);
 
-		// TODO: ???
+
 #pragma warning disable 8714
 		public ITable<TIn, TOut> Table(Func<TIn, TOut> select) => Tables<TIn, TOut>.Default.Get(select);
 #pragma warning restore 8714
