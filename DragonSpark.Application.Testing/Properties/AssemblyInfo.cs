@@ -14,4 +14,4 @@ using Xunit;
 [assembly:
 	TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]
 
-[assembly: CollectionBehavior(DisableTestParallelization = true)] // TODO: https://github.com/dotnet/efcore/issues/20830#issuecomment-623398014
+[assembly: CollectionBehavior(DisableTestParallelization = true)] // ISSUE: https://github.com/dotnet/efcore/issues/20830#issuecomment-623398014
