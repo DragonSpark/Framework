@@ -1,9 +1,11 @@
-﻿using DragonSpark.Application.Hosting.Server.Blazor;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Application.Hosting.Server.Blazor;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Server;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +27,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
-			                            .WithBlazorServerApplication()
+			                            .Apply(new ApplicationProfile(collection => {}, builder => {}))
 			                            .WithIdentity()
 			                            .Using<User>()
 			                            .Having(Claims.Default)
