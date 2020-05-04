@@ -41,17 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Presentation", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Blazor", "DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj", "{1537F341-C654-48D1-89ED-4161E497CBF4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.GitHub", "DragonSpark.Application.Hosting.Server.GitHub\DragonSpark.Application.Hosting.Server.GitHub.csproj", "{B701EDA8-6D7B-4BEC-A917-F343FA804BAA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.GitHub.Environment.Development", "DragonSpark.Application.Hosting.Server.GitHub.Environment.Development\DragonSpark.Application.Hosting.Server.GitHub.Environment.Development.csproj", "{A965F130-F4D2-4A11-B568-85385C5AFD64}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server", "DragonSpark.Application.Hosting.Server\DragonSpark.Application.Hosting.Server.csproj", "{301B35DC-B409-4D5D-A439-5BEF008B6423}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Environment.Development", "DragonSpark.Application.Hosting.Server.Environment.Development\DragonSpark.Application.Hosting.Server.Environment.Development.csproj", "{260A1394-2915-40D5-83B4-702947DA0F8D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.Testing", "DragonSpark.Application.Hosting.Server.Testing\DragonSpark.Application.Hosting.Server.Testing.csproj", "{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application", "DragonSpark.Application.Hosting.Server.GitHub.Testing.Application\DragonSpark.Application.Hosting.Server.GitHub.Testing.Application.csproj", "{D3445660-18AA-47CC-80E4-151734B35CE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Testing.Server", "DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj", "{C8E96381-C9AB-4D29-BA7C-A107A6DF3087}"
 EndProject
@@ -64,6 +58,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Testing", "DragonSpark.Application.Testing\DragonSpark.Application.Testing.csproj", "{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application", "DragonSpark.Application\DragonSpark.Application.csproj", "{AA88172F-1CC2-431A-8FC4-CE4701E25242}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,14 +123,6 @@ Global
 		{1537F341-C654-48D1-89ED-4161E497CBF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1537F341-C654-48D1-89ED-4161E497CBF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1537F341-C654-48D1-89ED-4161E497CBF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B701EDA8-6D7B-4BEC-A917-F343FA804BAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B701EDA8-6D7B-4BEC-A917-F343FA804BAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B701EDA8-6D7B-4BEC-A917-F343FA804BAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B701EDA8-6D7B-4BEC-A917-F343FA804BAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A965F130-F4D2-4A11-B568-85385C5AFD64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A965F130-F4D2-4A11-B568-85385C5AFD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A965F130-F4D2-4A11-B568-85385C5AFD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A965F130-F4D2-4A11-B568-85385C5AFD64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{301B35DC-B409-4D5D-A439-5BEF008B6423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{301B35DC-B409-4D5D-A439-5BEF008B6423}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{301B35DC-B409-4D5D-A439-5BEF008B6423}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -147,10 +135,6 @@ Global
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3445660-18AA-47CC-80E4-151734B35CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3445660-18AA-47CC-80E4-151734B35CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3445660-18AA-47CC-80E4-151734B35CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3445660-18AA-47CC-80E4-151734B35CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8E96381-C9AB-4D29-BA7C-A107A6DF3087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8E96381-C9AB-4D29-BA7C-A107A6DF3087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8E96381-C9AB-4D29-BA7C-A107A6DF3087}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -171,6 +155,10 @@ Global
 		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1CB3AA5-6BAF-4F70-A266-F35C0AC8E016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA88172F-1CC2-431A-8FC4-CE4701E25242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA88172F-1CC2-431A-8FC4-CE4701E25242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA88172F-1CC2-431A-8FC4-CE4701E25242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA88172F-1CC2-431A-8FC4-CE4701E25242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,12 +172,9 @@ Global
 		{BE168114-7861-45FC-B9FD-2A25F43275CD} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{FEBB32A2-7B54-43C6-B345-96AD1DFAAA27} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{1537F341-C654-48D1-89ED-4161E497CBF4} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
-		{B701EDA8-6D7B-4BEC-A917-F343FA804BAA} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
-		{A965F130-F4D2-4A11-B568-85385C5AFD64} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{301B35DC-B409-4D5D-A439-5BEF008B6423} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{260A1394-2915-40D5-83B4-702947DA0F8D} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{AEF4BAFA-D8C5-48F7-B787-4FE1B0106DE5} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
-		{D3445660-18AA-47CC-80E4-151734B35CE8} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
 		{C8E96381-C9AB-4D29-BA7C-A107A6DF3087} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
 		{FB52AAAD-1CFB-476A-8702-B1F93A4F1F99} = {7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}
 		{8CBFBE82-7D65-4747-993E-4B700430E072} = {7D3ED06D-8BE3-43EC-9A24-F42E2B93491A}

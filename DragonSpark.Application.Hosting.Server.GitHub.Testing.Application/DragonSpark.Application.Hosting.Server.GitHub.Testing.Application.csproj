@@ -23,8 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.GitHub.Environment.Development\DragonSpark.Application.Hosting.Server.GitHub.Environment.Development.csproj" />
-    <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.GitHub\DragonSpark.Application.Hosting.Server.GitHub.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj" />
   </ItemGroup>

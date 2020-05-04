@@ -10,6 +10,7 @@ using Xunit;
 
 namespace DragonSpark.Testing.Application.Runtime.Activation
 {
+	// ReSharper disable once TestFileNameWarning
 	public sealed class ActivateTests
 	{
 		[Theory, AutoData]

@@ -14,6 +14,8 @@ using Xunit;
 
 namespace DragonSpark.Testing.Composition
 {
+	// ReSharper disable once FilesNotPartOfProjectWarning
+	// ReSharper disable once TestFileNameWarning
 	public sealed class CompositionTests
 	{
 		public interface IDoesNotExist {}
