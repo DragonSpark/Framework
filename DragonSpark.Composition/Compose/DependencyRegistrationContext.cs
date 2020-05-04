@@ -40,7 +40,7 @@ namespace DragonSpark.Composition.Compose
 		{
 			public static SingletonRegistrations Default { get; } = new SingletonRegistrations();
 
-			SingletonRegistrations() : base(x => new RegisterDependencies(x, x.AddSingleton!)) {} // TODO:
+			SingletonRegistrations() : base(x => new RegisterDependencies(x, x.AddSingleton!)) {} // TODO: https://youtrack.jetbrains.com/issue/RSRP-479406
 		}
 
 		sealed class ScopedRegistrations : Store<IServiceCollection, ICommand<Type>>

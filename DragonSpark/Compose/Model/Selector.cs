@@ -55,7 +55,7 @@ namespace DragonSpark.Compose.Model
 			=> new Configuration<TIn, TOut>(_subject, configuration).Then();
 
 		public Selector<TIn, TOut> Configure(ICommand<(TIn, TOut)> configuration)
-			=> new Configuration<TIn, TOut>(_subject.Get, configuration.Execute).Then(); // TODO.
+			=> new Configuration<TIn, TOut>(_subject.Get, configuration.Execute!).Then(); // TODO: https://youtrack.jetbrains.com/issue/RSRP-479406
 
 		public Selector<TIn, TOut> Configure<TOther>(IAssign<TIn, TOther> configuration)
 			=> new Configuration<TIn, TOut, TOther>(_subject, configuration).Then();

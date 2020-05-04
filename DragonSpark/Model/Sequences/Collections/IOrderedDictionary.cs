@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		new TValue this[TKey key] { get; set; }
 #pragma warning restore 109
-		// TODO ^
+		// TODO: https://youtrack.jetbrains.com/issue/RSRP-479292
 		new int Count { get; }
 		new ICollection<TKey> Keys { get; }
 		new ICollection<TValue> Values { get; }
