@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Testing.Environment.Development;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
+using JetBrains.Annotations;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -55,6 +57,29 @@ namespace DragonSpark.Testing.Composition
 			host.Services.GetType()
 			    .FullName.Should()
 			    .Be("DragonSpark.Composition.WithComposition+Provider");
+		}
+
+		[Fact]
+		public async Task VerifyArray()
+		{
+			using var host = await Start.A.Host()
+			                            .WithDefaultComposition()
+			                            .Configure(x => x.AddSingleton<Service>())
+			                            .Operations()
+			                            .Run();
+			host.Services.Invoking(x => x.GetRequiredService<Service>())
+			    .Should()
+			    .Throw<InvalidOperationException>()
+			    .WithMessage("Unable to resolve type: DragonSpark.Testing.Composition.CompositionTests+Service, service name: ");
+		}
+
+		sealed class Service : ISelect<object, object>
+		{
+			[UsedImplicitly] readonly Array<object> _dependency;
+
+			public Service(Array<object> dependency) => _dependency = dependency;
+
+			public object Get(object parameter) => parameter;
 		}
 
 		[Fact]

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Reflection.Types;
 using System;
 
 namespace DragonSpark.Runtime.Activation
@@ -8,6 +9,8 @@ namespace DragonSpark.Runtime.Activation
 	{
 		public static CanActivate Default { get; } = new CanActivate();
 
-		CanActivate() : base(HasSingletonProperty.Default.Then().Or(HasActivationConstructor.Default)) {}
+		CanActivate() : base(HasSingletonProperty.Default.Then()
+		                                         .Or(IsClass.Default.Then()
+		                                                    .And(HasActivationConstructor.Default))) {}
 	}
 }

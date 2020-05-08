@@ -37,10 +37,11 @@ namespace DragonSpark.Composition
 
 			public IHostBuilder Get(IHostBuilder parameter)
 			{
-				var root = new ServiceContainer(ContainerOptions.Default.Clone()
-				                                                .WithMicrosoftSettings()
-				                                                .WithAspNetCoreSettings());
+				var options = ContainerOptions.Default.Clone().WithMicrosoftSettings().WithAspNetCoreSettings();
+				var root    = new ServiceContainer(options);
 				root.ConstructorDependencySelector = new Selector(root);
+				root.ConstructorSelector = new ConstructorSelector(root.CanGetInstance,
+				                                                   options.EnableOptionalArguments);
 
 				var current = _provider.GetValue(root).Verify().To<Lazy<IConstructionInfoProvider>>();
 
@@ -52,11 +53,65 @@ namespace DragonSpark.Composition
 				return result;
 			}
 
+			sealed class ConstructorSelector : IConstructorSelector
+			{
+				readonly Func<Type, string, bool>  canGetInstance;
+				readonly bool                      enableOptionalArguments;
+				readonly Func<ParameterInfo, bool> can;
+
+				public ConstructorSelector(Func<Type, string, bool> canGetInstance,
+				                           bool enableOptionalArguments = false)
+				{
+					this.canGetInstance          = canGetInstance;
+					this.enableOptionalArguments = enableOptionalArguments;
+					can                          = CanCreateParameterDependency;
+				}
+
+				public ConstructorInfo Execute(Type implementingType)
+				{
+					var candidates = implementingType.GetTypeInfo()
+					                                 .DeclaredConstructors.AsValueEnumerable()
+					                                 .Where(c => c.IsPublic && !c.IsStatic)
+					                                 .Where(x => x.Attribute<CandidateAttribute>()?.Enabled ?? true)
+					                                 .ToArray();
+					if (candidates.Length == 0)
+					{
+						throw new InvalidOperationException("Missing public constructor for Type: " +
+						                                    implementingType.FullName);
+					}
+
+					if (candidates.Length == 1)
+					{
+						return candidates[0];
+					}
+
+					foreach (var candidate in candidates.OrderByDescending(c => c.GetParameters().Count()))
+					{
+						if (candidate.GetParameters().All(can))
+						{
+							return candidate;
+						}
+					}
+
+					throw new InvalidOperationException("No resolvable constructor found for Type: " +
+					                                    implementingType.FullName);
+				}
+
+				bool CanCreateParameterDependency(ParameterInfo parameterInfo)
+					=> canGetInstance(parameterInfo.ParameterType, string.Empty)
+					   ||
+					   !string.IsNullOrEmpty(parameterInfo.Name)
+					   &&
+					   canGetInstance(parameterInfo.ParameterType, parameterInfo.Name)
+					   ||
+					   parameterInfo.HasDefaultValue && enableOptionalArguments;
+			}
+
 			sealed class Construction : IConstructionInfoProvider
 			{
 				readonly IConstructionInfoProvider _provider;
-				readonly ICondition<Type> _condition;
-				readonly IActivator _activator;
+				readonly ICondition<Type>          _condition;
+				readonly IActivator                _activator;
 
 				public Construction(IConstructionInfoProvider provider)
 					: this(provider, CanActivate.Default, Activator.Default) {}
@@ -64,12 +119,12 @@ namespace DragonSpark.Composition
 				public Construction(IConstructionInfoProvider provider, ICondition<Type> condition,
 				                    IActivator activator)
 				{
-					_provider = provider;
+					_provider  = provider;
 					_condition = condition;
 					_activator = activator;
 				}
 
-				public ConstructionInfo GetConstructionInfo(Registration registration)
+				public ConstructionInfo? GetConstructionInfo(Registration registration)
 				{
 					try
 					{
@@ -85,7 +140,8 @@ namespace DragonSpark.Composition
 							{
 								service.Value = instance;
 							}
-							return new ConstructionInfo{FactoryDelegate = registration.FactoryExpression};
+
+							return new ConstructionInfo {FactoryDelegate = registration.FactoryExpression};
 						}
 
 						throw;
@@ -112,20 +168,18 @@ namespace DragonSpark.Composition
 
 			public IEnumerable<ConstructorDependency> Execute(ConstructorInfo constructor)
 			{
-				var result = _selector.Execute(constructor).Open();
-
-				foreach (var dependency in result)
+				foreach (var dependency in _selector.Execute(constructor).AsValueEnumerable())
 				{
-					var type = dependency.ServiceType;
+					var type = dependency!.ServiceType;
 
 					if (type.IsConstructedGenericType && _types.Open().Contains(type.GetGenericTypeDefinition()) &&
 					    _registry.AvailableServices.Introduce(type).All(x => x.Item1.ServiceType != x.Item2))
 					{
 						throw new InvalidOperationException("Not supported.");
 					}
-				}
 
-				return result;
+					yield return dependency;
+				}
 			}
 		}
 
