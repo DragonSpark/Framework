@@ -12,12 +12,10 @@ namespace DragonSpark.Model.Operations
 		public OperationResult(Func<TIn, ValueTask<TOut>> select) : base(select) {}
 	}
 
-	public class OperationResult<T> : Instance<ValueTask<T>>, IOperationResult<T>
+	public class OperationResult<T> : Result<ValueTask<T>>, IOperationResult<T>
 	{
-		public OperationResult(Task<T> instance) : this(new ValueTask<T>(instance)) {}
+		public OperationResult(IResult<ValueTask<T>> result) : base(result) {}
 
-		public OperationResult(T instance) : this(new ValueTask<T>(instance)) {}
-
-		public OperationResult(ValueTask<T> instance) : base(instance) {}
+		public OperationResult(Func<ValueTask<T>> source) : base(source) {}
 	}
 }
