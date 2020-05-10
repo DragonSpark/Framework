@@ -12,12 +12,10 @@ namespace DragonSpark.Model.Sequences.Collections
 	public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IOrderedDictionary
 		where TKey : notnull
 	{
-#pragma warning disable 109
 		new TValue this[int index] { get; set; }
 
 		new TValue this[TKey key] { get; set; }
-#pragma warning restore 109
-		// ISSUE: https://youtrack.jetbrains.com/issue/RSRP-479292
+
 		new int Count { get; }
 		new ICollection<TKey> Keys { get; }
 		new ICollection<TValue> Values { get; }

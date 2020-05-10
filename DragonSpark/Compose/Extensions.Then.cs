@@ -7,6 +7,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,9 @@ namespace DragonSpark.Compose
 
 		public static ConditionalSelector<TIn, TOut> Then<TIn, TOut>(this IConditional<TIn, TOut> @this)
 			=> new ConditionalSelector<TIn, TOut>(@this);
+
+		public static TableSelector<TIn, TOut> Then<TIn, TOut>(this ITable<TIn, TOut> @this)
+			=> new TableSelector<TIn, TOut>(@this);
 
 		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new ConditionSelector<T>(@this);
 

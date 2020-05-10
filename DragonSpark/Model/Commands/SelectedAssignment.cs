@@ -2,12 +2,20 @@
 
 namespace DragonSpark.Model.Commands
 {
-	sealed class SelectedAssignment<TIn, TOut> : IAssign<TIn, TOut>
+	public class SelectedAssignment<TFrom, TTo, T> : ICommand<(TFrom, T)>
 	{
-		readonly Func<TIn, ICommand<TOut>> _select;
+		readonly Func<TFrom, TTo> _select;
+		readonly Action<TTo, T>   _assign;
 
-		public SelectedAssignment(Func<TIn, ICommand<TOut>> select) => _select = select;
+		public SelectedAssignment(Func<TFrom, TTo> select, Action<TTo, T> assign)
+		{
+			_select = select;
+			_assign = assign;
+		}
 
-		public void Execute(Pair<TIn, TOut> parameter) => _select(parameter.Key).Execute(parameter.Value);
+		public void Execute((TFrom, T) parameter)
+		{
+			_assign(_select(parameter.Item1), parameter.Item2);
+		}
 	}
 }

@@ -7,6 +7,6 @@ namespace DragonSpark.Compose.Model
 	{
 		public CommandInstanceSelector(ISelect<TIn, ICommand<T>> subject) : base(subject) {}
 
-		public IAssign<TIn, T> ToAssignment() => new SelectedAssignment<TIn, T>(Get().Get);
+		public IAssign<TIn, T> ToAssignment() => new SelectedInstance<TIn, T>(Get().Get);
 	}
 }
