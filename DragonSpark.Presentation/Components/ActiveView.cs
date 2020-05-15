@@ -42,9 +42,9 @@ namespace DragonSpark.Presentation.Components
 		public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
 		[Parameter]
-		public RenderFragment LoadingTemplate { get; set; } = x => x.AddContent(2, "Loading, please wait.");
+		public RenderFragment LoadingTemplate { get; set; } = x => x.AddContent(3, "Loading, please wait.");
 
 		[Parameter]
-		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(2, "This view's required information does not exist.");
+		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(1, "This view's required information does not exist.");
 	}
 }

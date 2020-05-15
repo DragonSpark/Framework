@@ -90,10 +90,7 @@ namespace DragonSpark.Presentation.Components.Forms
 			Context?.Execute(Identifier);
 		}
 
-		public void Start()
-		{
-			InvokeAsync(_validate);
-		}
+		public Task Start() => _validate();
 
 		public void Execute(None _)
 		{

@@ -85,7 +85,7 @@ namespace DragonSpark.Presentation.Components
 				validator.Reset();
 			}
 
-			Debounce(() =>
+			Debounce(async () =>
 			         {
 				         var messages = EditContext?.GetValidationMessages(e.FieldIdentifier) ??
 				                        Enumerable.Empty<string>();
@@ -93,7 +93,7 @@ namespace DragonSpark.Presentation.Components
 				         {
 					         foreach (var validator in list)
 					         {
-						         validator.Start();
+						         await validator.Start();
 					         }
 				         }
 			         });

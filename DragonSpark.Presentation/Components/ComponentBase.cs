@@ -14,7 +14,11 @@ namespace DragonSpark.Presentation.Components
 		{
 			foreach (var operation in _properties.Get(GetType()).Open())
 			{
-				await operation(this).Get().ConfigureAwait(false);
+				var task = operation(this).Get();
+				if (!task.IsCompleted)
+				{
+					await task.ConfigureAwait(false);
+				}
 			}
 		}
 	}
