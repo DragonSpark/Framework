@@ -11,8 +11,9 @@ namespace DragonSpark.Compose.Model
 
 		public TaskSelector<_, T> Demote() => new TaskSelector<_, T>(Get().Select(SelectTask<T>.Default));
 
-		public TaskSelector<_, TTo> Then<TTo>(ISelect<T, TTo> select) => Then(select.Get);
+		public OperationSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
-		public TaskSelector<_, TTo> Then<TTo>(Func<T, TTo> select) => Demote().Then(select);
+		public OperationSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
+			=> new OperationSelector<_, TTo>(Get().Select(new OperationSelect<T, TTo>(select)));
 	}
 }

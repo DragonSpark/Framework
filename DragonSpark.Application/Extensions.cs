@@ -83,12 +83,16 @@ namespace DragonSpark.Application
 			return result;
 		}
 
-		public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this) where T : class
+		public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this)
+			where T : class
 		{
 			var state  = await @this;
 			var result = state.To<AuthenticationState<T>>();
 			return result;
 		}
+
+		public static T User<T>(this AuthenticationState @this) where T : class
+			=> @this.To<AuthenticationState<T>>().Profile.Verify();
 
 		/**/
 

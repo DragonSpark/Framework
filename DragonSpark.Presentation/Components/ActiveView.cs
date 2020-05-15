@@ -13,7 +13,6 @@ namespace DragonSpark.Presentation.Components
 			{
 				await operation;
 			}
-			await base.OnInitializedAsync().ConfigureAwait(false);
 		}
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)

@@ -12,9 +12,9 @@ namespace DragonSpark.Compose.Model
 		public OperationSelector<_, T> Promote()
 			=> new OperationSelector<_, T>(Get().Select(SelectOperation<T>.Default));
 
-		public TaskSelector<_, TTo> Then<TTo>(ISelect<T, TTo> select) => Then(select.Get);
+		public TaskSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
-		public TaskSelector<_, TTo> Then<TTo>(Func<T, TTo> select)
+		public TaskSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 			=> new TaskSelector<_, TTo>(Get().Select(new Selection<T, TTo>(select)));
 	}
 }

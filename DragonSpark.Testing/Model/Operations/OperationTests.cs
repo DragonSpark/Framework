@@ -17,7 +17,8 @@ namespace DragonSpark.Testing.Model.Operations
 
 		[Fact]
 		Task Verify() => Number.Default.Then()
-		                       .Then(x => x * 2)
+		                       .Select(x => x * 2)
+		                       .Demote()
 		                       .Get()
 		                       .Get("Hello World!")
 		                       .ContinueWith(x => x.Result.Should().Be(24));
