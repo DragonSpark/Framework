@@ -1,9 +1,15 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DragonSpark.Model
 {
+	public static class Empty
+	{
+		public static Array<T> Result<T>() => Empty<T>.Array;
+	}
+
 	public static class Empty<T>
 	{
 		public static T[] Array { get; } = System.Array.Empty<T>();

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
@@ -102,5 +103,7 @@ namespace DragonSpark.Application
 		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
 			this OperationSelector<TIn, TOut> @this)
 			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
+
+		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
 	}
 }

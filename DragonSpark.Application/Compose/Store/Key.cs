@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Application.Compose.Store
 {
-	sealed class Key<T> : ISelect<T, string>
+	public class Key<T> : ISelect<T, string>
 	{
 		readonly string          _prefix;
 		readonly char            _delimiter;

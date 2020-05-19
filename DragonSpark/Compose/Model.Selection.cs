@@ -32,6 +32,12 @@ namespace DragonSpark.Compose
 		public static TOut Get<TIn, TOut, TOther>(this ISelect<(TIn, TOther), TOut> @this, TIn parameter, TOther other)
 			=> @this.Get((parameter, other));
 
+		public static TOut Get<TIn, TOut, TOther>(this ISelect<TIn, TOut> @this, (TIn, TOther) parameter)
+			=> @this.Get(parameter.Item1);
+
+		public static TOut Get<TIn, TOut, TOther>(this ISelect<TOther, TOut> @this, (TIn, TOther) parameter)
+			=> @this.Get(parameter.Item2);
+
 		public static TOut Get<TIn, TOut, TOther>(this ISelect<TIn, TOut> @this, TOther _, TIn parameter)
 			=> @this.Get(parameter);
 
