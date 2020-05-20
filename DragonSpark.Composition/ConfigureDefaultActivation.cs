@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
 using LightInject;
 using System;
@@ -12,10 +11,10 @@ namespace DragonSpark.Composition
 		[UsedImplicitly]
 		public static ConfigureDefaultActivation Default { get; } = new ConfigureDefaultActivation();
 
-		ConfigureDefaultActivation() : this(CanActivate.Default.Get, Start.A.Selection<ServiceRequest>()
-		                                                                  .By.Calling(x => x.ServiceType)
-		                                                                  .Then()
-		                                                                  .Activate()) {}
+		ConfigureDefaultActivation() : this(IsFallbackCandidate.Default.Get, Start.A.Selection<ServiceRequest>()
+		                                                                          .By.Calling(x => x.ServiceType)
+		                                                                          .Then()
+		                                                                          .Activate()) {}
 
 		readonly Func<Type, string, bool>     _condition;
 		readonly Func<ServiceRequest, object> _select;
