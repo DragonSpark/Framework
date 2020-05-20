@@ -7,6 +7,7 @@ namespace DragonSpark.Model.Operations
 {
 	public class OperationResult<TIn, TOut> : Select<TIn, ValueTask<TOut>>, IOperationResult<TIn, TOut>
 	{
+		
 		public OperationResult(ISelect<TIn, ValueTask<TOut>> select) : this(select.Get) {}
 
 		public OperationResult(Func<TIn, ValueTask<TOut>> select) : base(select) {}

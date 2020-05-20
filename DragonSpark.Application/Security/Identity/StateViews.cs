@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,9 +11,17 @@ namespace DragonSpark.Application.Security.Identity
 	sealed class StateViews<T> : IStateViews<T> where T : class
 	{
 		readonly IServiceScopeFactory _scopes;
+		readonly StateView<T>         _default;
 
 		[UsedImplicitly]
-		public StateViews(IServiceScopeFactory scopes) => _scopes = scopes;
+		public StateViews(IServiceScopeFactory scopes) : this(scopes, StateView<T>.Default) {}
+
+		[Candidate(false)]
+		public StateViews(IServiceScopeFactory scopes, StateView<T> @default)
+		{
+			_scopes  = scopes;
+			_default = @default;
+		}
 
 		public async ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
 		{
@@ -21,10 +30,12 @@ namespace DragonSpark.Application.Security.Identity
 			{
 				var users = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
 				var user  = await users.GetUserAsync(parameter);
-				var result = new StateView<T>(new AuthenticationState<T>(parameter, user),
-				                              users.SupportsUserSecurityStamp
-					                              ? await users.GetSecurityStampAsync(user) ?? string.Empty
-					                              : null);
+				var result = user != null
+					             ? new StateView<T>(new AuthenticationState<T>(parameter, user),
+					                                users.SupportsUserSecurityStamp
+						                                ? await users.GetSecurityStampAsync(user) ?? string.Empty
+						                                : null)
+					             : _default;
 
 				return result;
 			}

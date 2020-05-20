@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -17,22 +19,26 @@ namespace DragonSpark.Compose
 		public static ValueTask<T> ToOperation<T>(this T @this) => new ValueTask<T>(@this);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this IOperationResult<TIn, TOut> @this,
+		public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
 		                                                                  TIn parameter)
 			=> @this.Get(parameter).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable<TOut> Await<TFirst, TSecond, TOut>(
-			this IOperationResult<(TFirst, TSecond), TOut> @this, TFirst first, TSecond second)
+			this ISelect<(TFirst, TSecond), ValueTask<TOut>> @this, TFirst first, TSecond second)
 			=> @this.Get((first, second)).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ConfiguredValueTaskAwaitable Await<TFirst, TSecond>(this IOperation<(TFirst, TSecond)> @this,
-		                                                                  TFirst first, TSecond second)
+		public static ConfiguredValueTaskAwaitable Await<TFirst, TSecond>(
+			this ISelect<(TFirst, TSecond), ValueTask> @this, TFirst first, TSecond second)
 			=> @this.Get((first, second)).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ConfiguredValueTaskAwaitable<T> Await<T>(this IOperationResult<T> @this)
+		public static ConfiguredValueTaskAwaitable Await<T>(this ISelect<T, ValueTask> @this, T parameter)
+			=> @this.Get(parameter).ConfigureAwait(false);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ConfiguredValueTaskAwaitable<T> Await<T>(this IResult<ValueTask<T>> @this)
 			=> @this.Get().ConfigureAwait(false);
 
 		public static Task Promote(this IOperation @this) => @this.Get().AsTask();

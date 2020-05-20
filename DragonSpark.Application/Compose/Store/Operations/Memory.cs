@@ -21,9 +21,10 @@ namespace DragonSpark.Application.Compose.Store.Operations
 
 		public async ValueTask<TOut> Get(TIn parameter)
 		{
-			var key         = _key(parameter);
-			var tryGetValue = _memory.TryGetValue(key, out var stored);
-			var result      = tryGetValue ? stored.To<TOut>() : await _get((parameter, key));
+			var key = _key(parameter);
+			var result = _memory.TryGetValue(key, out var stored) && !(stored is null)
+				             ? stored.To<TOut>()
+				             : await _get((parameter, key));
 			return result;
 		}
 	}
