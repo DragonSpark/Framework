@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences.Collections
 {
-	public sealed class DelegatedEqualityComparer<T, TKey> : IEqualityComparer<T> where TKey : notnull
+	public class DelegatedEqualityComparer<T, TKey> : IEqualityComparer<T> where TKey : notnull
 	{
 		readonly IEqualityComparer<TKey> _equals;
 		readonly Func<T, TKey>           _key;
