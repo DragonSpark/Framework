@@ -17,10 +17,10 @@ namespace DragonSpark.Compose.Extents.Selections
 			_log       = log;
 		}
 
-		public IOperation<TIn> WithArguments(Parameter<TIn, TOut> @delegate)
-			=> new LogOperationExceptionBinding<TIn, TOut>(_operation, @delegate, _log);
-
 		public IOperation<TIn> WithArguments(Func<TIn, TOut> @delegate)
 			=> WithArguments(new ParameterSelection<TIn, TOut>(@delegate).Get);
+
+		public IOperation<TIn> WithArguments(Parameter<TIn, TOut> @delegate)
+			=> new LogOperationExceptionBinding<TIn, TOut>(_operation, @delegate, _log);
 	}
 }

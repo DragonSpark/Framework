@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
@@ -17,12 +16,10 @@ namespace DragonSpark.Compose.Extents.Selections
 			_log       = log;
 		}
 
-		public IOperation<T> WithArguments(Func<(T Parameter, ValueTask Task), TParameter> @delegate)
-			=> _operation.Then()
-			             .Configure(@delegate.Start().Terminate(_log).Get())
-			             .Out();
-
-		public IOperation<T> WithArguments(Func<T, TParameter> @delegate)
+		public OperationContext<T> WithArguments(Func<T, TParameter> @delegate)
 			=> WithArguments(new ParameterSelection<T, TParameter>(@delegate).Get);
+
+		public OperationContext<T> WithArguments(Func<(T Parameter, ValueTask Task), TParameter> @delegate)
+			=> _operation.Then().Configure(@delegate.Start().Terminate(_log).Get()).Then();
 	}
 }
