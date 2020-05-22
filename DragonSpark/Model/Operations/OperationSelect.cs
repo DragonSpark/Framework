@@ -27,4 +27,22 @@ namespace DragonSpark.Model.Operations
 			return result;
 		}
 	}
+
+	sealed class OperationSelect<T> : ISelect<ValueTask<T>, ValueTask>
+	{
+		readonly Func<T, ValueTask> _select;
+		readonly bool               _capture;
+
+		public OperationSelect(Func<T, ValueTask> select, bool capture = false)
+		{
+			_select  = select;
+			_capture = capture;
+		}
+
+		public async ValueTask Get(ValueTask<T> parameter)
+		{
+			var input = parameter.IsCompletedSuccessfully ? parameter.Result : await parameter.ConfigureAwait(_capture);
+			await _select(input).ConfigureAwait(_capture);
+		}
+	}
 }

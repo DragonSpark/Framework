@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose.Extents.Selections;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
@@ -29,5 +30,10 @@ namespace DragonSpark.Compose.Model
 
 		public OperationSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 			=> new OperationSelector<_, TTo>(Get().Select(new OperationSelect<T, TTo>(select)));
+
+
+		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
+		public OperationContext<_> Terminate(Func<T, ValueTask> command)
+			=> new OperationContext<_>(Get().Select(new OperationSelect<T>(command)));
 	}
 }
