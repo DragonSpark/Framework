@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Commands
 		}
 	}
 
-	public class Command : ICommand<None>
+	public class Command : ICommand
 	{
 		readonly Action _command;
 

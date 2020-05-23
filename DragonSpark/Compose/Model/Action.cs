@@ -16,7 +16,7 @@ namespace DragonSpark.Compose.Model
 		}
 	}
 
-	public class Action : Command, IAction<None>, ICommand
+	public class Action : Command, IAction<None>
 	{
 		public static implicit operator Action(System.Action value) => new Action(value);
 
