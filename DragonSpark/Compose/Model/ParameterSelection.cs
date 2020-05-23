@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections
+namespace DragonSpark.Compose.Model
 {
 	sealed class ParameterSelection<TIn, TOut> : ISelect<(TIn Parameter, ValueTask Task), TOut>
 	{

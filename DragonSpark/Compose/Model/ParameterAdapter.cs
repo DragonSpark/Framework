@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections
+namespace DragonSpark.Compose.Model
 {
 	sealed class ParameterAdapter<TIn, TOut> : ISelect<(TIn Parameter, ValueTask Task), TOut>
 	{

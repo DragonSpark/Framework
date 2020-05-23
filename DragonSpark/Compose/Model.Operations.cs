@@ -22,38 +22,25 @@ namespace DragonSpark.Compose
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
 		                                                                  TIn parameter)
-			=> @this.Token().Get(parameter).ConfigureAwait(false);
+			=> @this.Get(parameter).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable<TOut> Await<TFirst, TSecond, TOut>(
 			this ISelect<(TFirst, TSecond), ValueTask<TOut>> @this, TFirst first, TSecond second)
-			=> @this.Token().Get((first, second)).ConfigureAwait(false);
+			=> @this.Get((first, second)).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable Await<TFirst, TSecond>(
 			this ISelect<(TFirst, TSecond), ValueTask> @this, TFirst first, TSecond second)
-			=> @this.Token().Get((first, second)).ConfigureAwait(false);
+			=> @this.Get((first, second)).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable Await<T>(this ISelect<T, ValueTask> @this, T parameter)
-			=> @this.Token().Get(parameter).ConfigureAwait(false);
+			=> @this.Get(parameter).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable<T> Await<T>(this IResult<ValueTask<T>> @this)
-			=> @this.Token().Get().ConfigureAwait(false);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ISelect<T, ValueTask> Token<T>(this ISelect<T, ValueTask> @this)
-			=> @this is IToken token ? token.Get().Return(@this) : @this;
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ISelect<TIn, ValueTask<TOut>> Token<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this)
-			
-			=> @this is IToken token ? token.Get().Return(@this) : @this;
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static IResult<ValueTask<T>> Token<T>(this IResult<ValueTask<T>> @this)
-			=> @this is IToken token ? token.Get().Return(@this) : @this;
+			=> @this.Get().ConfigureAwait(false);
 
 		public static Task Promote(this IOperation @this) => @this.Get().AsTask();
 

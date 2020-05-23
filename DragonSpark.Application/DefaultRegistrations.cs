@@ -18,7 +18,6 @@ namespace DragonSpark.Application
 			         .Map<StorageState>()
 			         .Scoped()
 			         //
-			         // TODO
 			         .For<IToken>()
 			         .Map<Token>()
 			         .Scoped();

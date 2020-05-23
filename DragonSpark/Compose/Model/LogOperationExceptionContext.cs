@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Compose.Extents.Selections
+namespace DragonSpark.Compose.Model
 {
 	public sealed class LogOperationExceptionContext<TIn, TOut>
 	{

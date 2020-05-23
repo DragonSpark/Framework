@@ -3,11 +3,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
+	public delegate ValueTask<T> OperateOf<T>();
+
 	public delegate ValueTask<TOut> Operate<in TIn, TOut>(TIn parameter);
 
 	public delegate ValueTask Operate<in T>(T parameter);
 	
 	public delegate ConfiguredValueTaskAwaitable<TOut> Await<in TIn, TOut>(TIn parameter);
+	
+	public delegate ConfiguredValueTaskAwaitable<T> AwaitOf<T>();
 
 	public delegate ConfiguredValueTaskAwaitable Await<in T>(T parameter);
 }

@@ -9,8 +9,8 @@ namespace DragonSpark.Compose.Model
 	{
 		public TaskSelector(ISelect<_, Task<T>> subject) : base(subject) {}
 
-		public OperationSelector<_, T> Promote()
-			=> new OperationSelector<_, T>(Get().Select(SelectOperation<T>.Default));
+		public OperationResultSelector<_, T> Promote()
+			=> new OperationResultSelector<_, T>(Get().Select(SelectOperation<T>.Default));
 
 		public TaskSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 

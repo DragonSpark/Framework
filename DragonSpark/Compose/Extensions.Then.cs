@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose.Extents.Selections;
-using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
@@ -94,20 +93,25 @@ namespace DragonSpark.Compose
 
 		public static MetadataSelector<T> Then<T>(this Selector<T, TypeInfo> @this) => @this.Get().Then();
 
-		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
-
-		public static OperationContext<T> Then<T>(this Selector<T, ValueTask> @this) => @this.Get().Then();
-
 		public static NestedConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
 			=> new NestedConditionSelector<_, T>(@this);
 
 		public static NestedConditionSelector<_, T> Then<_, T>(this Selector<_, ICondition<T>> @this)
 			=> @this.Get().Then();
 
-		public static OperationSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this)
-			=> new OperationSelector<_, T>(@this);
+		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
-		public static OperationSelector<_, T> Then<_, T>(this Selector<_, ValueTask<T>> @this)
+		public static OperationContext<T> Then<T>(this Selector<T, ValueTask> @this) => @this.Get().Then();
+
+		public static OperationResultSelector<T> Then<T>(this IResult<ValueTask<T>> @this)
+			=> new OperationResultSelector<T>(@this);
+
+		public static OperationResultSelector<T> Then<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Then();
+
+		public static OperationResultSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this)
+			=> new OperationResultSelector<_, T>(@this);
+
+		public static OperationResultSelector<_, T> Then<_, T>(this Selector<_, ValueTask<T>> @this)
 			=> @this.Get().Then();
 
 		public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new TaskSelector<_, T>(@this);
