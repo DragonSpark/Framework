@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Threading.Tasks;
 
@@ -8,14 +7,14 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class Adapters<T> : IAdapters where T : class
 	{
-		readonly IStateViews<T> _views;
-		readonly NavigationManager _navigation;
+		readonly IStateViews<T>     _views;
+		readonly INavigateToSignOut _exit;
 
 		[UsedImplicitly]
-		public Adapters(IStateViews<T> views, NavigationManager navigation)
+		public Adapters(IStateViews<T> views, INavigateToSignOut exit)
 		{
 			_views = views;
-			_navigation = navigation;
+			_exit  = exit;
 		}
 
 		public async Task<AuthenticationState> Get(Task<AuthenticationState> parameter)
@@ -25,9 +24,10 @@ namespace DragonSpark.Application.Security.Identity
 
 			if (previous.User.Identity.IsAuthenticated && view.State.Profile == null)
 			{
-				_navigation.NavigateTo("/Identity/Account/LogOut", true); // TODO: RedirectToLogin
+				_exit.Execute();
 			}
-			var result   = view.State;
+
+			var result = view.State;
 			return result;
 		}
 	}

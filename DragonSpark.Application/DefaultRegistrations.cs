@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities;
+using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
@@ -20,7 +21,12 @@ namespace DragonSpark.Application
 			         //
 			         .For<IToken>()
 			         .Map<Token>()
-			         .Scoped();
+			         .Scoped()
+			         //
+			         .For<INavigateToSignOut>()
+			         .Map<NavigateToSignOut>()
+			         .Scoped()
+				;
 		}
 	}
 }
