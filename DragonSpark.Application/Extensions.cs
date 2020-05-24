@@ -30,6 +30,12 @@ namespace DragonSpark.Application
 			return entity;
 		}
 
+		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity)
+		{
+			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);
+			return entity;
+		}
+
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
 			=> @this.WithIdentity(options => {});
 
