@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Diagnostics.Logging
+﻿using JetBrains.Annotations;
+
+namespace DragonSpark.Diagnostics.Logging
 {
 	public readonly struct ExceptionParameter<T>
 	{
@@ -11,5 +13,11 @@
 		public System.Exception Exception { get; }
 
 		public T Argument { get; }
+
+		public void Deconstruct([NotNull] out System.Exception exception, out T argument)
+		{
+			exception = Exception;
+			argument  = Argument;
+		}
 	}
 }
