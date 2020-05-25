@@ -5,13 +5,13 @@ namespace DragonSpark.Presentation.Components.Forms
 {
 	public sealed class FieldValidationDefinition
 	{
-		public FieldValidationDefinition(IOperationResult<FieldIdentifier, bool> operation, FieldValidationMessages messages)
+		public FieldValidationDefinition(ISelecting<FieldIdentifier, bool> operation, FieldValidationMessages messages)
 		{
 			Operation   = operation;
 			Messages = messages;
 		}
 
-		public IOperationResult<FieldIdentifier, bool> Operation { get; }
+		public ISelecting<FieldIdentifier, bool> Operation { get; }
 		public FieldValidationMessages Messages { get; }
 	}
 }

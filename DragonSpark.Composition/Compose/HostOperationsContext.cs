@@ -6,9 +6,9 @@ namespace DragonSpark.Composition.Compose
 {
 	public sealed class HostOperationsContext
 	{
-		readonly IOperationResult<HostBuilder, IHost> _select;
+		readonly ISelecting<HostBuilder, IHost> _select;
 
-		public HostOperationsContext(IOperationResult<HostBuilder, IHost> select) => _select = select;
+		public HostOperationsContext(ISelecting<HostBuilder, IHost> select) => _select = select;
 
 		public ValueTask<IHost> Run() => _select.Get(new HostBuilder());
 	}

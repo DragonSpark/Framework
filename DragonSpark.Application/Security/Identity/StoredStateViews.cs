@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class StoredStateViews<T> : OperationResult<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : class
+	sealed class StoredStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : class
 	{
 		[UsedImplicitly]
 		public StoredStateViews(IStateViews<T> previous, IMemoryCache memory)

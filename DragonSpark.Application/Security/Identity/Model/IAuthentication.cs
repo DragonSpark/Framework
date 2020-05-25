@@ -2,5 +2,5 @@
 using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.Security.Identity.Model {
-	public interface IAuthentication : IOperationResult<ExternalLoginInfo, SignInResult> {}
+	public interface IAuthentication : ISelecting<ExternalLoginInfo, SignInResult> {}
 }

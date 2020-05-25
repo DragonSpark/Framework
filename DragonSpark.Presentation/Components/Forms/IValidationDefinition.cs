@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public interface IValidationDefinition : IOperationResult<FieldValidator, ValidationResult>
+	public interface IValidationDefinition : ISelecting<FieldValidator, ValidationResult>
 	{
 		bool IsActive { get; }
 

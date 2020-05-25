@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class OperationView<T> : IOperationResult<T>
+	public sealed class OperationView<T> : IResulting<T>
 	{
-		readonly IOperationResult<T>           _view;
+		readonly IResulting<T> _view;
 		readonly ConcurrentStack<ValueTask<T>> _operations;
 
-		public OperationView(IOperationResult<T> view) : this(view, new ConcurrentStack<ValueTask<T>>()) {}
+		public OperationView(IResulting<T> view) : this(view, new ConcurrentStack<ValueTask<T>>()) {}
 
-		public OperationView(IOperationResult<T> view, ConcurrentStack<ValueTask<T>> operations)
+		public OperationView(IResulting<T> view, ConcurrentStack<ValueTask<T>> operations)
 		{
 			_view       = view;
 			_operations = operations;
@@ -32,14 +32,14 @@ namespace DragonSpark.Presentation.Components
 		}
 	}
 
-	public sealed class OperationView<TIn, TOut> : IOperationResult<TIn, TOut>
+	public sealed class OperationView<TIn, TOut> : ISelecting<TIn, TOut>
 	{
-		readonly IOperationResult<TIn, TOut>      _view;
+		readonly ISelecting<TIn, TOut>      _view;
 		readonly ConcurrentStack<ValueTask<TOut>> _operations;
 
-		public OperationView(IOperationResult<TIn, TOut> view) : this(view, new ConcurrentStack<ValueTask<TOut>>()) {}
+		public OperationView(ISelecting<TIn, TOut> view) : this(view, new ConcurrentStack<ValueTask<TOut>>()) {}
 
-		public OperationView(IOperationResult<TIn, TOut> view, ConcurrentStack<ValueTask<TOut>> operations)
+		public OperationView(ISelecting<TIn, TOut> view, ConcurrentStack<ValueTask<TOut>> operations)
 		{
 			_view       = view;
 			_operations = operations;

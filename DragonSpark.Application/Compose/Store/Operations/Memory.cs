@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Compose.Store.Operations
 {
-	sealed class Memory<TIn, TOut> : IOperationResult<TIn, TOut>
+	sealed class Memory<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly IMemoryCache      _memory;
 		readonly Get<TIn, TOut>    _get;

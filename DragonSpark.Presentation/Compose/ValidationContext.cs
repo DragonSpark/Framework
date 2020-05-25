@@ -12,7 +12,7 @@ namespace DragonSpark.Presentation.Compose
 
 		ValidationContext() {}
 
-		public ValidationDefinitionContext Using(IOperationResult<FieldIdentifier, bool> operation)
+		public ValidationDefinitionContext Using(ISelecting<FieldIdentifier, bool> operation)
 			=> new ValidationDefinitionContext(operation);
 
 		public IFieldValidator Using(params ValidationAttribute[] attributes)

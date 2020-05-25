@@ -6,9 +6,9 @@ namespace DragonSpark.Presentation.Compose
 {
 	public sealed class ValidationDefinitionContext
 	{
-		readonly IOperationResult<FieldIdentifier, bool> _operation;
+		readonly ISelecting<FieldIdentifier, bool> _operation;
 
-		public ValidationDefinitionContext(IOperationResult<FieldIdentifier, bool> operation)
+		public ValidationDefinitionContext(ISelecting<FieldIdentifier, bool> operation)
 			=> _operation = operation;
 
 		public IValidationDefinition WithMessaging(string invalid, string loading = "Loading...",

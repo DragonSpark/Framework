@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace DragonSpark.Composition.Compose
 {
 	public sealed class BuildHostContext : Instance<IAlteration<IHostBuilder>>,
-	                                       IOperationResult<HostBuilder, IHost>,
+	                                       ISelecting<HostBuilder, IHost>,
 	                                       IActivateUsing<IAlteration<IHostBuilder>>
 	{
 		public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context) => context.Get().Get;

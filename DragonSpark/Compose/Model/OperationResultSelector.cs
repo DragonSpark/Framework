@@ -58,10 +58,10 @@ namespace DragonSpark.Compose.Model
 		public OperationResultSelector<_, T> Watching(IResult<CancellationToken> token) => Watching(token.Get);
 
 		public OperationResultSelector<_, T> Watching(Func<CancellationToken> token)
-			=> new OperationResultSelector<_, T>(new TokenAwareOperationResult<_, T>(Get(), token));
+			=> new OperationResultSelector<_, T>(new TokenAwareSelecting<_, T>(Get(), token));
 	}
 
-	sealed class TokenAwareOperationResult<T> : IOperationResult<T>
+	sealed class TokenAwareOperationResult<T> : IResulting<T>
 	{
 		readonly IResult<ValueTask<T>> _operation;
 		readonly Func<CancellationToken> _token;
@@ -82,12 +82,12 @@ namespace DragonSpark.Compose.Model
 		}
 	}
 
-	sealed class TokenAwareOperationResult<TIn, TOut> : IOperationResult<TIn, TOut>
+	sealed class TokenAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly ISelect<TIn, ValueTask<TOut>> _operation;
 		readonly Func<CancellationToken>     _token;
 
-		public TokenAwareOperationResult(ISelect<TIn, ValueTask<TOut>> operation, Func<CancellationToken> token)
+		public TokenAwareSelecting(ISelect<TIn, ValueTask<TOut>> operation, Func<CancellationToken> token)
 		{
 			_operation = operation;
 			_token     = token;

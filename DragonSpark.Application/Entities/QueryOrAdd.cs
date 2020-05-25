@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities {
-	public class QueryOrAdd<TKey, TEntity> : IOperationResult<TKey, TEntity> where TEntity : class
+	public class QueryOrAdd<TKey, TEntity> : ISelecting<TKey, TEntity> where TEntity : class
 	{
 		readonly DbContext                       _context;
-		readonly IOperationResult<TKey, TEntity> _query;
+		readonly ISelecting<TKey, TEntity> _query;
 		readonly ISelect<TKey, TEntity>          _create;
 
-		protected QueryOrAdd(DbContext context, IOperationResult<TKey, TEntity> query,
+		protected QueryOrAdd(DbContext context, ISelecting<TKey, TEntity> query,
 		                     ISelect<TKey, TEntity> create)
 		{
 			_context = context;

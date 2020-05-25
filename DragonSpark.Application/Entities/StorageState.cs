@@ -8,13 +8,13 @@ namespace DragonSpark.Application.Entities
 {
 	sealed class StorageState : IStorageState
 	{
-		readonly IOperationResult<int> _confirm;
-		readonly ICommand<object>      _cancel;
+		readonly IResulting<int>  _confirm;
+		readonly ICommand<object> _cancel;
 
 		[UsedImplicitly]
 		public StorageState(DbContext storage) : this(new Confirm(storage), new Undo(storage)) {}
 
-		public StorageState(IOperationResult<int> confirm, ICommand<object> cancel)
+		public StorageState(IResulting<int> confirm, ICommand<object> cancel)
 		{
 			_confirm = confirm;
 			_cancel  = cancel;

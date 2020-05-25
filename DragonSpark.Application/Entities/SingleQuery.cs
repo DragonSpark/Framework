@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class SingleQuery<TKey, TEntity> : IOperationResult<TKey, TEntity>
+	public class SingleQuery<TKey, TEntity> : ISelecting<TKey, TEntity>
 	{
 		readonly IQueryable<TEntity>   _queryable;
 		readonly IQuery<TKey, TEntity> _query;

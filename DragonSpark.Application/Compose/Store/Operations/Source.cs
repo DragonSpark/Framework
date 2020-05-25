@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Compose.Store.Operations
 {
-	sealed class Source<TIn, TOut> : IOperationResult<(TIn Parameter, object Key), TOut>
+	sealed class Source<TIn, TOut> : ISelecting<(TIn Parameter, object Key), TOut>
 	{
 		readonly IMemoryCache               _memory;
 		readonly Func<TIn, ValueTask<TOut>> _source;

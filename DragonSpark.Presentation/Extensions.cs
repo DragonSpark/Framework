@@ -17,10 +17,10 @@ namespace DragonSpark.Presentation
 	{
 		public static ValidationContext Validation(this ModelContext _) => ValidationContext.Default;
 
-		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this IOperationResult<TIn, TOut> @this)
+		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 			=> new OperationView<TIn, TOut>(@this);
 
-		public static OperationView<T> AsView<T>(this IOperationResult<T> @this) => new OperationView<T>(@this);
+		public static OperationView<T> AsView<T>(this IResulting<T> @this) => new OperationView<T>(@this);
 
 /**/
 

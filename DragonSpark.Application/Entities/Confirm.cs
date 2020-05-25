@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class Confirm : IOperationResult<int>
+	sealed class Confirm : IResulting<int>
 	{
 		readonly DbContext _storage;
 
