@@ -70,11 +70,11 @@ namespace DragonSpark.Composition.Compose
 
 		public IRegistration Include(IRelatedTypes related) => Current.Get(related.Get(_subject));
 
-		public RegistrationResult Singleton() => Include(x => x.AsIs).Singleton();
+		public RegistrationResult Singleton() => Include(x => x.None).Singleton();
 
-		public RegistrationResult Transient() => Include(x => x.AsIs).Transient();
+		public RegistrationResult Transient() => Include(x => x.None).Transient();
 
-		public RegistrationResult Scoped() => Include(x => x.AsIs).Scoped();
+		public RegistrationResult Scoped() => Include(x => x.None).Scoped();
 	}
 
 	public class RegistrationWithInclude : IRegistrationWithInclude
@@ -101,11 +101,11 @@ namespace DragonSpark.Composition.Compose
 
 		public IRegistration Include(IRelatedTypes related) => _current.Get(related.Get(Services));
 
-		public RegistrationResult Singleton() => Include(x => x.AsIs).Singleton();
+		public RegistrationResult Singleton() => Include(x => x.None).Singleton();
 
-		public RegistrationResult Transient() => Include(x => x.AsIs).Transient();
+		public RegistrationResult Transient() => Include(x => x.None).Transient();
 
-		public RegistrationResult Scoped() => Include(x => x.AsIs).Scoped();
+		public RegistrationResult Scoped() => Include(x => x.None).Scoped();
 	}
 
 	public sealed class Registrations : RegistrationWithInclude
@@ -122,13 +122,13 @@ namespace DragonSpark.Composition.Compose
 
 		RelatedTypesHolster() : this(RelatedTypes.Default, Dependencies.Default) {}
 
-		public RelatedTypesHolster(IRelatedTypes asIs, Dependencies dependencies)
+		public RelatedTypesHolster(IRelatedTypes none, Dependencies dependencies)
 		{
-			AsIs         = asIs;
+			None         = none;
 			Dependencies = dependencies;
 		}
 
-		public IRelatedTypes AsIs { get; }
+		public IRelatedTypes None { get; }
 
 		public Dependencies Dependencies { get; }
 	}
@@ -151,7 +151,7 @@ namespace DragonSpark.Composition.Compose
 		RecursiveDependencies() {}
 
 		public IIncludes Get(IServiceCollection parameter)
-			=> new RecursiveDependencyIncludes(new IncludeTracker(parameter));
+			=> new RecursiveDependencyIncludes(new DependencyIncludes(parameter));
 	}
 
 	sealed class RelatedTypes : FixedResult<IServiceCollection, IIncludes>, IRelatedTypes
@@ -167,30 +167,19 @@ namespace DragonSpark.Composition.Compose
 
 	sealed class RecursiveDependencyIncludes : IIncludes
 	{
-		readonly IIncludeTracker _includes;
+		readonly IIncludes _includes;
 
-		public RecursiveDependencyIncludes(IIncludeTracker includes) => _includes = includes;
+		public RecursiveDependencyIncludes(IIncludes includes) => _includes = includes;
 
-		public Array<Type> Get(Type parameter)
+		public Array<Type> Get(Type parameter) => Yield(parameter).AsValueEnumerable().Distinct().ToArray();
+
+		IEnumerable<Type> Yield(Type current)
 		{
-			/*
-			var history = new HashSet<Type>();
-			var result = _includes.Get(history, parameter)
-			                      .Aggregate(System.Linq.Enumerable.Empty<Type>(),
-			                                 (current, type) => current.Union(_includes.Get(history, type)))
-			                      .ToArray();
-			return result;*/
-			var result = Yield(new HashSet<Type>(), parameter).AsValueEnumerable().Distinct().ToArray();
-			return result;
-		}
-
-		IEnumerable<Type> Yield(ISet<Type> history, Type current)
-		{
-			foreach (var type in _includes.Get(history, current))
+			foreach (var type in _includes.Get(current).Open())
 			{
 				yield return type;
 
-				foreach (var other in Yield(history, type))
+				foreach (var other in Yield(type))
 				{
 					yield return other;
 				}
@@ -198,54 +187,29 @@ namespace DragonSpark.Composition.Compose
 		}
 	}
 
-	public interface IIncludeTracker : ISelect<(ISet<Type> History, Type Current), IEnumerable<Type>> {}
-
-	sealed class IncludeTracker : IIncludeTracker
+	sealed class DependencyIncludes : IIncludes
 	{
-		readonly Func<Type, bool>   _can;
+		readonly Predicate<Type>    _can;
 		readonly IArray<Type, Type> _candidates;
 
-		public IncludeTracker(IServiceCollection services)
-			: this(new CanRegister(services).Get, DependencyCandidates.Default) {}
+		public DependencyIncludes(IServiceCollection services)
+			: this(new CanRegister(services).Then().And(new HashSet<Type>().Add), DependencyCandidates.Default) {}
 
-		public IncludeTracker(Func<Type, bool> can, IArray<Type, Type> candidates)
+		public DependencyIncludes(Predicate<Type> can, IArray<Type, Type> candidates)
 		{
 			_can        = can;
 			_candidates = candidates;
 		}
 
-		public IEnumerable<Type> Get((ISet<Type> History, Type Current) parameter)
-		{
-			var (history, current) = parameter;
-			foreach (var candidate in _candidates.Get(current).Open())
-			{
-				var add = history.Add(candidate);
-				var can = _can(candidate);
-				if (add && can)
-				{
-					yield return candidate;
-				}
-			}
-		}
-	}
-
-	sealed class DependencyIncludes : IIncludes
-	{
-		readonly IIncludeTracker _tracker;
-
-		public DependencyIncludes(IServiceCollection services) : this(new IncludeTracker(services)) {}
-
-		public DependencyIncludes(IIncludeTracker tracker) => _tracker = tracker;
-
 		public Array<Type> Get(Type parameter)
-			=> _tracker.Get(new HashSet<Type>(), parameter).AsValueEnumerable().ToArray();
+			=> _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
 	}
 
-	sealed class Includes : Select<Type, Array<Type>>, IIncludes
+	sealed class Includes : FixedResult<Type, Array<Type>>, IIncludes
 	{
 		public static Includes Default { get; } = new Includes();
 
-		Includes() : base(x => x.Yield().Result()) {}
+		Includes() : base(Array<Type>.Empty) {}
 	}
 
 	sealed class LinkedRegistrationContext : IRegistration

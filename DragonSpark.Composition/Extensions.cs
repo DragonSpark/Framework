@@ -29,6 +29,13 @@ namespace DragonSpark.Composition
 			        .ImplementationFactory?.Invoke(null)
 			        .To<IConfiguration>() ?? throw new InvalidOperationException();
 
+		public static ComponentRequest Component<T>(this IServiceCollection @this)
+		{
+			var request = A.Type<T>();
+			var result  = new ComponentRequest(request, @this.GetRequiredInstance<IComponentType>().Get(request));
+			return result;
+		}
+
 		public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
 			=> new DeferredService<T>(@this).Then().Singleton();
 

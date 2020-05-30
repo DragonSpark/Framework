@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
-using DragonSpark.Runtime.Environment;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -69,10 +68,8 @@ namespace DragonSpark.Composition.Compose
 
 		public SelectionRegistrationContext<T> UseEnvironment()
 		{
-			var parameter      = A.Type<T>();
-			var implementation = _collection.GetRequiredInstance<IComponentType>().Get(parameter);
-			var selector       = _generic.Get(parameter, implementation);
-			var result         = new SelectionRegistrationContext<T>(_collection, selector.Get);
+			var selector = _generic.Get(_collection.Component<T>()).Start().Then().Assume();
+			var result   = new SelectionRegistrationContext<T>(_collection, selector);
 			return result;
 		}
 
