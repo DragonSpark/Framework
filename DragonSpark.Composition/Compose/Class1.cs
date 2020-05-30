@@ -9,10 +9,14 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose
 {
-	public static class Extensions
+	public static class Extensions // TODO:
 	{
 		public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
 			=> new StartRegistration<T>(@this);
+
+		public static IncludeAwareRegistration StartDefinition<T>(this IServiceCollection @this) where T : class
+			=> new IncludeAwareRegistration(@this,
+			                                new RegistrationContext(@this, A.Type<T>().GetGenericTypeDefinition()));
 
 		public static IRegistration Then(this IRegistration @this, IRegistration next)
 			=> new LinkedRegistrationContext(@this, next);
@@ -39,7 +43,7 @@ namespace DragonSpark.Composition.Compose
 		public IServiceCollection Then { get; }
 	}
 
-	public interface IRegistrationWithInclude : IRegistration
+	public interface IIncludeAwareRegistration : IRegistration
 	{
 		IRegistration Include(IRelatedTypes related);
 	}
@@ -53,7 +57,7 @@ namespace DragonSpark.Composition.Compose
 		RegistrationResult Scoped();
 	}
 
-	public sealed class StartRegistration<T> : IRegistrationWithInclude where T : class
+	public sealed class StartRegistration<T> : IIncludeAwareRegistration where T : class
 	{
 		readonly IServiceCollection _subject;
 
@@ -90,14 +94,17 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationResult Scoped() => Include(x => x.None).Scoped();
 	}
 
-	public class RegistrationWithInclude : IRegistrationWithInclude
+	public class IncludeAwareRegistration : IIncludeAwareRegistration
 	{
 		readonly IExpander _current;
 
-		public RegistrationWithInclude(IServiceCollection services, IRegistration next)
+		public IncludeAwareRegistration(IServiceCollection services, IRegistrationContext context)
+			: this(services, context.Adapt()) {}
+
+		public IncludeAwareRegistration(IServiceCollection services, IRegistration next)
 			: this(services, next.Fixed()) {}
 
-		public RegistrationWithInclude(IServiceCollection services, IExpander current)
+		public IncludeAwareRegistration(IServiceCollection services, IExpander current)
 		{
 			_current = current;
 			Services = services;
@@ -121,7 +128,7 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationResult Scoped() => Include(x => x.None).Scoped();
 	}
 
-	public sealed class Registrations : RegistrationWithInclude
+	public sealed class Registrations : IncludeAwareRegistration
 	{
 		public Registrations(IServiceCollection services, IExpander current) : base(services, current) {}
 
@@ -351,7 +358,7 @@ namespace DragonSpark.Composition.Compose
 		public IRegistration Get(IIncludes parameter) => new TypesRegistration(_services, parameter.Get(_subject));
 	}
 
-	public sealed class Registration<T> : RegistrationWithInclude where T : class
+	public sealed class Registration<T> : IncludeAwareRegistration where T : class
 	{
 		public Registration(IServiceCollection subject, IRegistrationContext context)
 			: this(subject, context.Adapt()) {}
