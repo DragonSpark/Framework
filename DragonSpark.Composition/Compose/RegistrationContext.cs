@@ -1,8 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
-using DragonSpark.Reflection.Types;
-using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -47,45 +44,18 @@ namespace DragonSpark.Composition.Compose
 
 	public sealed class RegistrationContext<T> where T : class
 	{
-		readonly IServiceCollection                     _collection;
-		readonly IGeneric<ISelect<IServiceProvider, T>> _generic;
+		readonly IServiceCollection _collection;
 
-		public RegistrationContext(IServiceCollection collection) : this(collection, Selector.Default) {}
-
-		public RegistrationContext(IServiceCollection collection, IGeneric<ISelect<IServiceProvider, T>> generic)
-		{
-			_collection = collection;
-			_generic    = generic;
-		}
+		public RegistrationContext(IServiceCollection collection) => _collection = collection;
 
 		public RegistrationContext Register => new RegistrationContext(_collection, A.Type<T>());
-
-		public ResultRegistrationContext<T, TResult> Use<TResult>() where TResult : class, IResult<T>
-			=> new ResultRegistrationContext<T, TResult>(_collection);
 
 		public RegistrationContext<T, TTo> Map<TTo>() where TTo : class, T
 			=> new RegistrationContext<T, TTo>(_collection);
 
-		public SelectionRegistrationContext<T> UseEnvironment()
-		{
-			var selector = _generic.Get(_collection.Component<T>()).Start().Then().Assume();
-			var result   = new SelectionRegistrationContext<T>(_collection, selector);
-			return result;
-		}
+		public ResultRegistrationContext<T, TResult> Use<TResult>() where TResult : class, IResult<T>
+			=> new ResultRegistrationContext<T, TResult>(_collection);
 
-		sealed class Selector : Generic<ISelect<IServiceProvider, T>>
-		{
-			public static Selector Default { get; } = new Selector();
-
-			Selector() : base(typeof(Selector<>)) {}
-		}
-
-		sealed class Selector<TTo> : Select<IServiceProvider, T> where TTo : class, T
-		{
-			[UsedImplicitly]
-			public static Selector<TTo> Default { get; } = new Selector<TTo>();
-
-			Selector() : base(x => x.GetService<TTo>()) {}
-		}
+		public SelectionRegistrationContext<T> UseEnvironment() => new SelectionRegistrationContext<T>(_collection);
 	}
 }

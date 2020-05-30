@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,11 +17,15 @@ namespace DragonSpark.Composition.Compose
 		public static IRegistration Then(this IRegistration @this, IRegistration next)
 			=> new LinkedRegistrationContext(@this, next);
 
+		public static IExpander Then(this IExpander @this, IRegistrationContext context) => @this.Then(context.Adapt());
+
 		public static IExpander Then(this IExpander @this, IRegistration context) => @this.Then(context.Fixed());
 
 		public static IExpander Then(this IExpander @this, IExpander next) => new LinkedExpander(@this, next);
 
 		public static IExpander Fixed(this IRegistration @this) => new FixedExpander(@this);
+
+		public static IRegistration Adapt(this IRegistrationContext @this) => new Adapter(@this);
 
 		public static RegistrationResult Result(this IServiceCollection @this) => new RegistrationResult(@this);
 
@@ -54,7 +59,7 @@ namespace DragonSpark.Composition.Compose
 
 		public StartRegistration(IServiceCollection subject) => _subject = subject;
 
-		IExpander Current => new Register<T>(_subject).Fixed();
+		IExpander Current => new Register<T>(_subject).Adapt().Fixed();
 
 		public Registrations And<TNext>() where TNext : class
 			=> new Registrations(_subject,
@@ -64,6 +69,14 @@ namespace DragonSpark.Composition.Compose
 		public Registration<T> Forward<TTo>() where TTo : class, T
 			=> new Registration<T>(_subject,
 			                       new TypeExpander<TTo>(_subject).Then(new Forward<T, TTo>(_subject)));
+
+		public Registration<T> Use<TResult>() where TResult : class, IResult<T>
+			=> new Registration<T>(_subject,
+			                       new TypeExpander<TResult>(_subject)
+				                       .Then(new ResultRegistrationContext<T, TResult>(_subject)));
+
+		public Registration<T> UseEnvironment()
+			=> new Registration<T>(_subject, new SelectionRegistrationContext<T>(_subject));
 
 		public IRegistration Include(Func<RelatedTypesHolster, IRelatedTypes> related)
 			=> Include(related(RelatedTypesHolster.Default));
@@ -340,6 +353,9 @@ namespace DragonSpark.Composition.Compose
 
 	public sealed class Registration<T> : RegistrationWithInclude where T : class
 	{
+		public Registration(IServiceCollection subject, IRegistrationContext context)
+			: this(subject, context.Adapt()) {}
+
 		public Registration(IServiceCollection subject, IRegistration current) : base(subject, current) {}
 
 		public Registration(IServiceCollection subject, IExpander expander) : base(subject, expander) {}
@@ -350,43 +366,56 @@ namespace DragonSpark.Composition.Compose
 			                                     ));
 	}
 
-	sealed class Register<T> : IRegistration where T : class
+	sealed class Register<T> : IRegistrationContext where T : class
 	{
 		readonly IServiceCollection _subject;
 
 		public Register(IServiceCollection subject) => _subject = subject;
 
-		public RegistrationResult Singleton() => _subject.AddSingleton<T>().Result();
+		public IServiceCollection Singleton() => _subject.AddSingleton<T>();
 
-		public RegistrationResult Transient() => _subject.AddTransient<T>().Result();
+		public IServiceCollection Transient() => _subject.AddTransient<T>();
 
-		public RegistrationResult Scoped() => _subject.AddScoped<T>().Result();
+		public IServiceCollection Scoped() => _subject.AddScoped<T>();
 	}
 
-	sealed class Forward<T, TTo> : IRegistration where T : class where TTo : class, T
+	sealed class Forward<T, TTo> : IRegistrationContext where T : class where TTo : class, T
 	{
 		readonly IServiceCollection _subject;
 
 		public Forward(IServiceCollection subject) => _subject = subject;
 
-		public RegistrationResult Singleton() => _subject.AddSingleton<T, TTo>().Result();
+		public IServiceCollection Singleton() => _subject.AddSingleton<T, TTo>();
 
-		public RegistrationResult Transient() => _subject.AddTransient<T, TTo>().Result();
+		public IServiceCollection Transient() => _subject.AddTransient<T, TTo>();
 
-		public RegistrationResult Scoped() => _subject.AddScoped<T, TTo>().Result();
+		public IServiceCollection Scoped() => _subject.AddScoped<T, TTo>();
 	}
 
-	sealed class Decorate<T, TNext> : IRegistration
+	sealed class Decorate<T, TNext> : IRegistrationContext
 		where T : class where TNext : class, T
 	{
 		readonly IServiceCollection _subject;
 
 		public Decorate(IServiceCollection subject) => _subject = subject;
 
-		public RegistrationResult Singleton() => _subject.Decorate<T, TNext>().Result();
+		public IServiceCollection Singleton() => _subject.Decorate<T, TNext>();
 
-		public RegistrationResult Transient() => _subject.Decorate<T, TNext>().Result();
+		public IServiceCollection Transient() => _subject.Decorate<T, TNext>();
 
-		public RegistrationResult Scoped() => _subject.Decorate<T, TNext>().Result();
+		public IServiceCollection Scoped() => _subject.Decorate<T, TNext>();
+	}
+
+	sealed class Adapter : IRegistration
+	{
+		readonly IRegistrationContext _registration;
+
+		public Adapter(IRegistrationContext registration) => _registration = registration;
+
+		public RegistrationResult Singleton() => _registration.Singleton().Result();
+
+		public RegistrationResult Transient() => _registration.Transient().Result();
+
+		public RegistrationResult Scoped() => _registration.Scoped().Result();
 	}
 }
