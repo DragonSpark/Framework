@@ -2,6 +2,7 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using System;
@@ -14,10 +15,9 @@ namespace DragonSpark.Composition.Compose
 		public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
 			=> new StartRegistration<T>(@this);
 
-		public static IncludeAwareRegistration StartDefinition<T>(this IServiceCollection @this) where T : class
-			=> new IncludeAwareRegistration(@this,
-			                                new RegistrationContext(@this, A.Type<T>().GetGenericTypeDefinition()));
-
+		public static IncludeAwareRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
+			=> new GenericDefinitionRegistration<T>(@this);
+/**/
 		public static IRegistration Then(this IRegistration @this, IRegistration next)
 			=> new LinkedRegistrationContext(@this, next);
 
@@ -92,6 +92,19 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationResult Transient() => Include(x => x.None).Transient();
 
 		public RegistrationResult Scoped() => Include(x => x.None).Scoped();
+	}
+
+	public sealed class GenericDefinitionRegistration<T> : GenericDefinitionRegistration
+	{
+		public GenericDefinitionRegistration([NotNull] IServiceCollection services)
+			: base(services, A.Type<T>().GetGenericTypeDefinition()) {}
+	}
+
+	public class GenericDefinitionRegistration : IncludeAwareRegistration
+	{
+		public GenericDefinitionRegistration([NotNull] IServiceCollection services, Type definition)
+			: base(services,
+			       new TypeExpander(services, definition).Then(new RegistrationContext(services, definition))) {}
 	}
 
 	public class IncludeAwareRegistration : IIncludeAwareRegistration
@@ -222,7 +235,10 @@ namespace DragonSpark.Composition.Compose
 		}
 
 		public Array<Type> Get(Type parameter)
-			=> _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
+		{
+			var array = _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
+			return array;
+		}
 	}
 
 	sealed class Includes : FixedResult<Type, Array<Type>>, IIncludes

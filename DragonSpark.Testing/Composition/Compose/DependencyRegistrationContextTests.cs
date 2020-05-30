@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Composition.Compose;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -96,7 +97,8 @@ namespace DragonSpark.Testing.Composition.Compose
 			using var host = await Start.A.Host()
 			                            .WithComposition()
 			                            .Configure(x => x.ForDefinition<Multiple<object>>()
-			                                             .WithDependencies.Singleton())
+			                                             .Include(y => y.Dependencies)
+			                                             .Singleton())
 			                            .Operations()
 			                            .Run();
 

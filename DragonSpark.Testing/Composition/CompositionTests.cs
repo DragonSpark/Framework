@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Selection;
@@ -190,7 +191,7 @@ namespace DragonSpark.Testing.Composition
 			                            .WithEnvironment("Development")
 			                            .WithDefaultComposition()
 			                            .RegisterModularity()
-			                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+			                            .Configure(x => x.Start<IHelloWorld>().UseEnvironment().Singleton())
 			                            .Operations()
 			                            .Run();
 			host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
@@ -204,7 +205,7 @@ namespace DragonSpark.Testing.Composition
 				                            .WithEnvironment("Production")
 				                            .WithDefaultComposition()
 				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+				                            .Configure(x => x.Start<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
 				                            .Run();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
@@ -214,7 +215,7 @@ namespace DragonSpark.Testing.Composition
 				using var host = await Start.A.Host()
 				                            .WithDefaultComposition()
 				                            .RegisterModularity()
-				                            .Configure(x => x.For<IHelloWorld>().UseEnvironment().Singleton())
+				                            .Configure(x => x.Start<IHelloWorld>().UseEnvironment().Singleton())
 				                            .Operations()
 				                            .Run();
 				host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.HelloWorld>();
@@ -226,7 +227,7 @@ namespace DragonSpark.Testing.Composition
 			=> await Start.A.Host()
 			              .WithDefaultComposition()
 			              .RegisterModularity()
-			              .Configure(x => x.For<IDoesNotExist>()
+			              .Configure(x => x.Start<IDoesNotExist>()
 			                               .Invoking(y => y.UseEnvironment())
 			                               .Should()
 			                               .ThrowExactly<InvalidOperationException>()

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Results;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
@@ -135,6 +136,25 @@ namespace DragonSpark.Testing.Composition.Compose
 			       .BeOfType<DecoratedSubjectForRecursionDeep>()
 			       .Subject.Inner.Inner.Inner.Should()
 			       .NotBeNull();
+		}
+
+		[Fact]
+		public void VerifyResult()
+		{
+			new ServiceCollection().Start<string>()
+			                       .Use<MessageResult>()
+			                       .Singleton()
+			                       .Then.BuildServiceProvider()
+			                       .GetRequiredService<string>()
+			                       .Should()
+			                       .Be(MessageResult.Default.Get());
+		}
+
+		sealed class MessageResult : Result<string>
+		{
+			public static MessageResult Default { get; } = new MessageResult();
+
+			public MessageResult() : base(() => "Hello World!") {}
 		}
 
 		interface ISubject {}

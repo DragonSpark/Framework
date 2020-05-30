@@ -49,13 +49,11 @@ namespace DragonSpark.Composition
 			         .FirstOrDefault()
 			   )!
 				.To<T>();
-
+/**/
 		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
 			=> new RegistrationContext<T>(@this);
 
-		public static RegistrationContext ForDefinition<T>(this IServiceCollection @this) where T : class
-			=> new RegistrationContext(@this, A.Type<T>().GetGenericTypeDefinition());
-
+/**/
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
 			=> @this.Select(Composition.WithComposition.Default);
 

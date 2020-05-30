@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -52,10 +51,5 @@ namespace DragonSpark.Composition.Compose
 
 		public RegistrationContext<T, TTo> Map<TTo>() where TTo : class, T
 			=> new RegistrationContext<T, TTo>(_collection);
-
-		public ResultRegistrationContext<T, TResult> Use<TResult>() where TResult : class, IResult<T>
-			=> new ResultRegistrationContext<T, TResult>(_collection);
-
-		public SelectionRegistrationContext<T> UseEnvironment() => new SelectionRegistrationContext<T>(_collection);
 	}
 }
