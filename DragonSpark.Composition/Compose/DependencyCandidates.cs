@@ -21,7 +21,7 @@ namespace DragonSpark.Composition.Compose
 			readonly Func<Type, bool>          _where;
 
 			public Select(Type source)
-				: this(ParameterType.Default.Select(new GenericTypeDependencySelector(source)).Get,
+				: this(ParameterType.Default.Then().Select(new GenericTypeDependencySelector(source)).Get,
 				       IsClass.Default.Then().And(Is.AssignableFrom<Delegate>().Inverse()).Get) {}
 
 			public Select(Func<ParameterInfo, Type> select, Func<Type, bool> where)
