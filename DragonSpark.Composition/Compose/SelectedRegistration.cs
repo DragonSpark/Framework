@@ -7,15 +7,15 @@ using System;
 
 namespace DragonSpark.Composition.Compose
 {
-	public sealed class SelectionRegistrationContext<T> : IRegistrationContext where T : class
+	sealed class SelectedRegistration<T> : IRegistrationContext where T : class
 	{
 		readonly IServiceCollection        _collection;
 		readonly Func<IServiceProvider, T> _select;
 
-		public SelectionRegistrationContext(IServiceCollection collection)
+		public SelectedRegistration(IServiceCollection collection)
 			: this(collection, Selector.Default.Get(collection.Component<T>()).Start().Then().Assume()) {}
 
-		public SelectionRegistrationContext(IServiceCollection collection, Func<IServiceProvider, T> select)
+		public SelectedRegistration(IServiceCollection collection, Func<IServiceProvider, T> select)
 		{
 			_collection = collection;
 			_select     = select;

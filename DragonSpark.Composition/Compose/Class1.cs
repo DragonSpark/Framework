@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using System;
@@ -27,7 +26,7 @@ namespace DragonSpark.Composition.Compose
 
 		public static RegistrationResult Result(this IServiceCollection @this) => new RegistrationResult(@this);
 
-		
+
 	}
 
 	public readonly struct RegistrationResult
@@ -73,10 +72,10 @@ namespace DragonSpark.Composition.Compose
 		public Registration<T> Use<TResult>() where TResult : class, IResult<T>
 			=> new Registration<T>(_subject,
 			                       new TypeExpander<TResult>(_subject)
-				                       .Then(new ResultRegistrationContext<T, TResult>(_subject)));
+				                       .Then(new ResultRegistration<T, TResult>(_subject)));
 
 		public Registration<T> UseEnvironment()
-			=> new Registration<T>(_subject, new SelectionRegistrationContext<T>(_subject));
+			=> new Registration<T>(_subject, new SelectedRegistration<T>(_subject));
 
 		public IRegistration Include(Func<RelatedTypesHolster, IRelatedTypes> related)
 			=> Include(related(RelatedTypesHolster.Default));
@@ -92,15 +91,15 @@ namespace DragonSpark.Composition.Compose
 
 	public sealed class GenericDefinitionRegistration<T> : GenericDefinitionRegistration
 	{
-		public GenericDefinitionRegistration([NotNull] IServiceCollection services)
+		public GenericDefinitionRegistration(IServiceCollection services)
 			: base(services, A.Type<T>().GetGenericTypeDefinition()) {}
 	}
 
 	public class GenericDefinitionRegistration : IncludeAwareRegistration
 	{
-		public GenericDefinitionRegistration([NotNull] IServiceCollection services, Type definition)
+		public GenericDefinitionRegistration(IServiceCollection services, Type definition)
 			: base(services,
-			       new TypeExpander(services, definition).Then(new RegistrationContext(services, definition))) {}
+			       new TypeExpander(services, definition).Then(new TypeRegistration(services, definition))) {}
 	}
 
 	public class IncludeAwareRegistration : IIncludeAwareRegistration

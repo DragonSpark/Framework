@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition.Compose
 {
-	public sealed class ResultRegistrationContext<T, TResult> : IRegistrationContext
+	sealed class ResultRegistration<T, TResult> : IRegistrationContext
 		where T : class where TResult : class, IResult<T>
 	{
 		readonly IServiceCollection _collection;
 
-		public ResultRegistrationContext(IServiceCollection collection) => _collection = collection;
+		public ResultRegistration(IServiceCollection collection) => _collection = collection;
 
 		public IServiceCollection Singleton()
 			=> _collection.AddSingleton<TResult>()
