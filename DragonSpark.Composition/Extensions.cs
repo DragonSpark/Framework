@@ -56,10 +56,10 @@ namespace DragonSpark.Composition
 		public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
 			=> new StartRegistration<T>(@this);
 
-		public static IncludeAwareRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
+		public static IncludingRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
 			=> new GenericDefinitionRegistration<T>(@this);
 
-		public static IRelatedTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
+		public static IServiceTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
 
 /**/
 		public static BuildHostContext WithComposition(this BuildHostContext @this)

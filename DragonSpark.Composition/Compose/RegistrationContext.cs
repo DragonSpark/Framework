@@ -3,12 +3,12 @@ using System;
 
 namespace DragonSpark.Composition.Compose
 {
-	sealed class TypeRegistration : IRegistrationContext
+	sealed class RegistrationContext : IRegistrationContext
 	{
 		readonly IServiceCollection _collection;
 		readonly Type               _type;
 
-		public TypeRegistration(IServiceCollection collection, Type type)
+		public RegistrationContext(IServiceCollection collection, Type type)
 		{
 			_collection = collection;
 			_type       = type;
