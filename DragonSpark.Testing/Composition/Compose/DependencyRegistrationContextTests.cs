@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Composition.Compose;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -57,8 +56,9 @@ namespace DragonSpark.Testing.Composition.Compose
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
-			                            .Configure(x => x.For<Subject>()
-			                                             .Register.WithDependencies.Singleton())
+			                            .Configure(x => x.Start<Subject>()
+			                                             .Include(y => y.Dependencies)
+			                                             .Singleton())
 			                            .Operations()
 			                            .Run();
 
@@ -75,7 +75,9 @@ namespace DragonSpark.Testing.Composition.Compose
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
-			                            .Configure(x => x.For<Multiple<int>>().Register.WithDependencies.Singleton())
+			                            .Configure(x => x.Start<Multiple<int>>()
+			                                             .Include(y => y.Dependencies)
+			                                             .Singleton())
 			                            .Operations()
 			                            .Run();
 
@@ -115,8 +117,9 @@ namespace DragonSpark.Testing.Composition.Compose
 		{
 			using var host = await Start.A.Host()
 			                            .WithComposition()
-			                            .Configure(x => x.For<Multiple>()
-			                                             .Register.WithDependencies.Singleton())
+			                            .Configure(x => x.Start<Multiple>()
+			                                             .Include(y => y.Dependencies)
+			                                             .Singleton())
 			                            .Operations()
 			                            .Run();
 

@@ -17,7 +17,9 @@ namespace DragonSpark.Composition
 	public static class Extensions
 	{
 		public static BuildHostContext Host(this ModelContext _)
-			=> Start.A.Selection.Of<IHostBuilder>().By.Self.Get().To(Start.An.Extent<BuildHostContext>());
+			=> DragonSpark.Compose.Start.A.Selection.Of<IHostBuilder>()
+			              .By.Self.Get()
+			              .To(DragonSpark.Compose.Start.An.Extent<BuildHostContext>());
 
 		public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class, new()
 			=> RegisterOption<T>.Default.Get(@this);
@@ -49,9 +51,15 @@ namespace DragonSpark.Composition
 			         .FirstOrDefault()
 			   )!
 				.To<T>();
+
 /**/
-		public static RegistrationContext<T> For<T>(this IServiceCollection @this) where T : class
-			=> new RegistrationContext<T>(@this);
+		public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
+			=> new StartRegistration<T>(@this);
+
+		public static IncludeAwareRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
+			=> new GenericDefinitionRegistration<T>(@this);
+
+		public static IRelatedTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
 
 /**/
 		public static BuildHostContext WithComposition(this BuildHostContext @this)
@@ -80,7 +88,7 @@ namespace DragonSpark.Composition
 
 		public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
 			where T : class, ICommand<IServiceContainer>
-			=> @this.ComposeUsing(Start.An.Activation<T>().Activate());
+			=> @this.ComposeUsing(DragonSpark.Compose.Start.An.Activation<T>().Activate());
 
 		public static BuildHostContext ComposeUsing(this BuildHostContext @this, ICommand<IServiceContainer> configure)
 			=> @this.ComposeUsing(configure.Execute);

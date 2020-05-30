@@ -32,7 +32,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
-			                            .Then(x => x.For<Subject>().Register.Scoped())
+			                            .Then(x => x.Start<Subject>().Scoped())
 			                            .As.Is()
 			                            .Operations()
 			                            .Run();
@@ -96,7 +96,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
-			                            .Then(x => x.For<Subject>().Register.Scoped())
+			                            .Then(x => x.Start<Subject>().Scoped())
 			                            .As.Is()
 			                            .Operations()
 			                            .Run();
@@ -159,7 +159,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .Having(Objects.Claims.Default)
 			                            .StoredIn<ApplicationStorage>()
 			                            .Using.Memory()
-			                            .Then(x => x.For<Subject>().Register.Scoped())
+			                            .Then(x => x.Start<Subject>().Scoped())
 			                            .As.Is()
 			                            .Operations()
 			                            .Run();

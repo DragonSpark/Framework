@@ -10,14 +10,8 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose
 {
-	public static class Extensions // TODO:
+	static class FrameworkExtensions
 	{
-		public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
-			=> new StartRegistration<T>(@this);
-
-		public static IncludeAwareRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
-			=> new GenericDefinitionRegistration<T>(@this);
-/**/
 		public static IRegistration Then(this IRegistration @this, IRegistration next)
 			=> new LinkedRegistrationContext(@this, next);
 
@@ -33,7 +27,7 @@ namespace DragonSpark.Composition.Compose
 
 		public static RegistrationResult Result(this IServiceCollection @this) => new RegistrationResult(@this);
 
-		public static IRelatedTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
+		
 	}
 
 	public readonly struct RegistrationResult
@@ -65,10 +59,12 @@ namespace DragonSpark.Composition.Compose
 
 		IExpander Current => new Register<T>(_subject).Adapt().Fixed();
 
+		IExpander Expanded => new TypeExpander<T>(_subject).Then(Current);
+
 		public Registrations And<TNext>() where TNext : class
 			=> new Registrations(_subject,
-			                     Current.Then(new TypeExpander<TNext>(_subject)
-				                                  .Then(new Register<TNext>(_subject))));
+			                     Expanded.Then(new TypeExpander<TNext>(_subject)
+				                                   .Then(new Register<TNext>(_subject))));
 
 		public Registration<T> Forward<TTo>() where TTo : class, T
 			=> new Registration<T>(_subject,
@@ -85,7 +81,7 @@ namespace DragonSpark.Composition.Compose
 		public IRegistration Include(Func<RelatedTypesHolster, IRelatedTypes> related)
 			=> Include(related(RelatedTypesHolster.Default));
 
-		public IRegistration Include(IRelatedTypes related) => Current.Get(related.Get(_subject));
+		public IRegistration Include(IRelatedTypes related) => Expanded.Get(related.Get(_subject));
 
 		public RegistrationResult Singleton() => Include(x => x.None).Singleton();
 
@@ -235,10 +231,7 @@ namespace DragonSpark.Composition.Compose
 		}
 
 		public Array<Type> Get(Type parameter)
-		{
-			var array = _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
-			return array;
-		}
+			=> _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
 	}
 
 	sealed class Includes : FixedResult<Type, Array<Type>>, IIncludes

@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Composition.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Results;
 using FluentAssertions;
 using JetBrains.Annotations;

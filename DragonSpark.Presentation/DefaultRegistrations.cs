@@ -14,12 +14,13 @@ namespace DragonSpark.Presentation
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.For<IExceptions>()
-			         .Map<Exceptions>()
-			         .WithDependencies.Scoped()
+			parameter.Start<IExceptions>()
+			         .Forward<Exceptions>()
+			         .Include(x => x.Dependencies)
+			         .Scoped()
 			         //
-			         .For<DialogService>()
-			         .Register.Scoped();
+			         .Then.Start<DialogService>()
+			         .Scoped();
 		}
 	}
 }

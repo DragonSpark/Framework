@@ -15,16 +15,16 @@ namespace DragonSpark.Application
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.For<IStorageState>()
-			         .Map<StorageState>()
+			parameter.Start<IStorageState>()
+			         .Forward<StorageState>()
 			         .Scoped()
 			         //
-			         .For<IToken>()
-			         .Map<Token>()
+			         .Then.Start<IToken>()
+			         .Forward<Token>()
 			         .Scoped()
 			         //
-			         .For<INavigateToSignOut>()
-			         .Map<NavigateToSignOut>()
+			         .Then.Start<INavigateToSignOut>()
+			         .Forward<NavigateToSignOut>()
 			         .Scoped()
 				;
 		}

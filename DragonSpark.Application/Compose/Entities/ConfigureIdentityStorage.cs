@@ -29,21 +29,32 @@ namespace DragonSpark.Application.Compose.Entities
 			         .AddDefaultIdentity<TUser>(_identity)
 			         .AddEntityFrameworkStores<T>()
 			         .Return(parameter)
-			         .For<IStorageInitializer<T>>().Map<StorageInitializer<T>>().Singleton()
-			         .AddScoped<DbContext>(x => x.GetRequiredService<T>())
-					 //
-			         .For<IStateViews<TUser>>().Map<StateViews<TUser>>().Scoped()
-			         .Decorate<IStateViews<TUser>, StoredStateViews<TUser>>()
-			         .Decorate<IStateViews<TUser>, AnonymousAwareState<TUser>>()
-
-					 //
-			         .For<IAdapters>().Map<Adapters<TUser>>().Scoped()
-					 //
-					 .For<IAuthenticationValidation>().Map<AuthenticationValidation<TUser>>().Scoped()
-					 .For<IValidationServices>().Map<ValidationServices>().Scoped()
-					 .For<AuthenticationStateProvider>().Map<Revalidation>().Scoped()
-					 //
-			         .AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
+			         .Start<IStorageInitializer<T>>()
+			         .Forward<StorageInitializer<T>>()
+			         .Singleton()
+			         .Then.AddScoped<DbContext>(x => x.GetRequiredService<T>())
+			         //
+			         .Start<IStateViews<TUser>>()
+			         .Forward<StateViews<TUser>>()
+			         .Decorate<StoredStateViews<TUser>>()
+			         .Decorate<AnonymousAwareState<TUser>>()
+			         .Scoped()
+			         //
+			         .Then.Start<IAdapters>()
+			         .Forward<Adapters<TUser>>()
+			         .Scoped()
+			         //
+			         .Then.Start<IAuthenticationValidation>()
+			         .Forward<AuthenticationValidation<TUser>>()
+			         .Scoped()
+			         .Then.Start<IValidationServices>()
+			         .Forward<ValidationServices>()
+			         .Scoped()
+			         .Then.Start<AuthenticationStateProvider>()
+			         .Forward<Revalidation>()
+			         .Scoped()
+			         //
+			         .Then.AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
 		}
 	}
 }

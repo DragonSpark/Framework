@@ -13,8 +13,8 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Environment.Production
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.For<IDependency>()
-			         .Map<Dependency>()
+			parameter.Start<IDependency>()
+			         .Forward<Dependency>()
 			         .Singleton();
 		}
 	}
