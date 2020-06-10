@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DragonSpark.Model.Sequences.Collections
 {
@@ -9,6 +10,6 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public DelegatedComparer(Func<T, int> select) => _sort = select;
 
-		public int Compare(T x, T y) => _sort(x).CompareTo(_sort(y));
+		public int Compare([AllowNull]T x, [AllowNull]T y) => _sort(x!).CompareTo(_sort(y!));
 	}
 }

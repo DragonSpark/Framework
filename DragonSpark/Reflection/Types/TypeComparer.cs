@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DragonSpark.Reflection.Types
 {
@@ -8,7 +9,7 @@ namespace DragonSpark.Reflection.Types
 
 		TypeComparer() {}
 
-		public bool Equals(T x, T y) => x?.GetType() == y?.GetType();
+		public bool Equals([AllowNull]T x, [AllowNull]T y) => x?.GetType() == y?.GetType();
 
 		public int GetHashCode(T obj) => 0;
 	}

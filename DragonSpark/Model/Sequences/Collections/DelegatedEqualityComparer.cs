@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DragonSpark.Model.Sequences.Collections
 {
@@ -16,7 +17,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			_equals = equals;
 		}
 
-		public bool Equals(T x, T y) => _equals.Equals(_key(x), _key(y));
+		public bool Equals([AllowNull]T x, [AllowNull]T y) => _equals.Equals(_key(x!), _key(y!));
 
 		public int GetHashCode(T obj) => _key(obj).GetHashCode();
 	}

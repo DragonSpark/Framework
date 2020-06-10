@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DragonSpark.Model.Sequences.Collections
 {
@@ -16,6 +17,6 @@ namespace DragonSpark.Model.Sequences.Collections
 			_member = member;
 		}
 
-		public int Compare(T x, T y) => _member.Compare(_select(x), _select(x));
+		public int Compare([AllowNull]T x, [AllowNull]T y) => _member.Compare(_select(x!), _select(y!));
 	}
 }
