@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Compose.Extents.Selections
+namespace DragonSpark.Testing.Compose.Model
 {
 	public class ParameterTests
 	{

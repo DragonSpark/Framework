@@ -1,5 +1,4 @@
-﻿// ReSharper disable once FilesNotPartOfProjectWarning
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("DragonSpark.Testing.Application")]
