@@ -2,12 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace DragonSpark.Model
 {
 	public static class Empty
 	{
 		public static Array<T> Result<T>() => Empty<T>.Array;
+		
+		public static IEnumerable<T> Enumerable<T>() => Empty<T>.Enumerable;
+
+		public static T[] Array<T>() => Empty<T>.Array;
+
+		public static IQueryable<T> Queryable<T>() => Empty<T>.Array.AsQueryable();
+
 	}
 
 	public static class Empty<T>
