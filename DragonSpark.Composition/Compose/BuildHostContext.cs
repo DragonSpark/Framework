@@ -31,7 +31,7 @@ namespace DragonSpark.Composition.Compose
 		public BuildHostContext Configure(Action<IServiceCollection> configure) => Select(new Configure(configure));
 
 		public BuildHostContext Configure<T>() where T : ICommand<IServiceCollection>
-			=> Configure(Start.A.Result<T>().By.Activation().Return().Execute);
+			=> Configure(Start.A.Result<T>().By.Activation().Instance().Execute);
 
 		public BuildHostContext Select(IAlteration<IHostBuilder> select)
 			=> _select.Then()

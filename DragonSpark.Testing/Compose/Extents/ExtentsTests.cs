@@ -72,7 +72,7 @@ namespace DragonSpark.Testing.Compose.Extents
 		[Fact]
 		public void VerifySourceDelegated()
 		{
-			Start.A.Result(6776).Select(x => x.GetType().GetTypeInfo()).Return().Should().Be(A.Metadata<int>());
+			Start.A.Result(6776).Select(x => x.GetType().GetTypeInfo()).Instance().Should().Be(A.Metadata<int>());
 		}
 
 		[Fact]
@@ -84,7 +84,7 @@ namespace DragonSpark.Testing.Compose.Extents
 			     .Type()
 			     .Metadata()
 			     .Bind()
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .Be(A.Metadata<string>());
 		}

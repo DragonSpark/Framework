@@ -21,13 +21,13 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		{
 			Start.A.Result<Subject>()
 			     .By.Activation()
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .NotBeNull();
 
 			Start.A.Result<SubjectSingleton>()
 			     .By.Activation()
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(SubjectSingleton.Default);
 		}
@@ -38,7 +38,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 			var instance = Array.Empty<Subject>();
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.By.Using(instance)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -51,7 +51,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 			var instance = result.Get();
 			instance.Should()
 			        .NotBeNull();
-			result.Return().Should().NotBeSameAs(instance);
+			result.Instance().Should().NotBeSameAs(instance);
 		}
 
 		[Fact]
@@ -59,7 +59,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results
 		{
 			Start.A.Result.Of<SubjectSingleton>()
 			     .By.Singleton()
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(SubjectSingleton.Default);
 		}

@@ -30,7 +30,7 @@ namespace DragonSpark.Testing.Compose
 			var instance = new Instance();
 
 			Start.A.Result(instance)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -67,7 +67,7 @@ namespace DragonSpark.Testing.Compose
 
 			Start.An.Extent<Instance>()
 			     .Into.Result.Using(instance)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -79,7 +79,7 @@ namespace DragonSpark.Testing.Compose
 
 			Start.A.Result.Of<Instance>()
 			     .By.Calling(instance.Self)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeSameAs(instance);
 		}
@@ -98,13 +98,13 @@ namespace DragonSpark.Testing.Compose
 		{
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.New(0)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeEmpty();
 
 			Start.A.Result<Subject>()
 			     .As.Sequence.Array.New(4)
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .HaveCount(4);
 		}
@@ -114,7 +114,7 @@ namespace DragonSpark.Testing.Compose
 		{
 			Start.A.Result<Subject>()
 			     .By.Default()
-			     .Return()
+			     .Instance()
 			     .Should()
 			     .BeNull();
 		}
@@ -123,9 +123,9 @@ namespace DragonSpark.Testing.Compose
 		public void VerifySingleton()
 		{
 			var source = Start.A.Result<SingletonSubject>().By.Activation();
-			var first  = source.Return();
+			var first  = source.Instance();
 			first.Should().Be(SingletonSubject.Default);
-			source.Return().Should().BeSameAs(first);
+			source.Instance().Should().BeSameAs(first);
 		}
 
 		[Fact]
@@ -134,7 +134,7 @@ namespace DragonSpark.Testing.Compose
 			var source = Start.A.Result<Subject>().By.Activation();
 			var first  = source.Get();
 			first.Should().NotBeNull();
-			source.Return().Should().NotBeNull().And.Subject.Should().NotBeSameAs(first);
+			source.Instance().Should().NotBeNull().And.Subject.Should().NotBeSameAs(first);
 		}
 	}
 }

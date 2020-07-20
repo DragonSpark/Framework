@@ -19,7 +19,7 @@ namespace DragonSpark.Model.Selection.Stores
 			                       .Get()
 			                       .Then()
 			                       .Assume()
-			                       .Return()
+			                       .Instance()
 			                : Start.An.Instance(Activations<Func<TIn, TOut>, ConcurrentTables<TIn, TOut>>.Default)
 			                       .Select(x => x.Get(new ConcurrentDictionary<TIn, TOut>()))) {}
 	}

@@ -203,7 +203,7 @@ namespace DragonSpark.Compose
 
 		public static ResultContext<T> Bind<T>(this Selector<None, T> @this) => @this.Bind(None.Default);
 
-		public static T Return<T>(this ResultContext<T> @this) => @this.Get().Get();
+		public static T Instance<T>(this ResultContext<T> @this) => @this.Get().Get();
 
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
 	}
