@@ -3,15 +3,24 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	sealed class Awaiting<T> : ISelect<ValueTask<ValueTask<T>>, ValueTask<T>>
+	public class Awaiting<T> : IOperation<T>
 	{
-		public static Awaiting<T> Default { get; } = new Awaiting<T>();
+		readonly Await<T> _await;
 
-		Awaiting() : this(false) {}
+		public Awaiting(Await<T> await) => _await = @await;
+
+		public async ValueTask Get(T parameter) => await _await(parameter);
+	}
+
+	sealed class Assuming<T> : ISelect<ValueTask<ValueTask<T>>, ValueTask<T>>
+	{
+		public static Assuming<T> Default { get; } = new Assuming<T>();
+
+		Assuming() : this(false) {}
 
 		readonly bool _capture;
 
-		public Awaiting(bool capture = false) => _capture = capture;
+		public Assuming(bool capture = false) => _capture = capture;
 
 		public ValueTask<T> Get(ValueTask<ValueTask<T>> parameter)
 			=> parameter.IsCompletedSuccessfully ? parameter.Result : Yield(parameter);

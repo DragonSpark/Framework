@@ -40,7 +40,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector<_, TTo> Select<TTo>(Func<T, ValueTask<TTo>> select)
 		{
-			var subject = Get().Select(new OperationSelect<T, ValueTask<TTo>>(@select)).Select(Awaiting<TTo>.Default);
+			var subject = Get().Select(new OperationSelect<T, ValueTask<TTo>>(@select)).Select(Assuming<TTo>.Default);
 			var result  = new OperationResultSelector<_, TTo>(subject);
 			return result;
 		}

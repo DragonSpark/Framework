@@ -18,6 +18,11 @@ namespace DragonSpark.Compose.Model
 
 		public OperationContext(ISelect<T, ValueTask> subject) : base(subject) => _subject = subject;
 
+		public OperationContext<T> Append(ISelect<T, ValueTask> command) => Append(command.Await!); // ISSUE: NRT
+
+		public OperationContext<T> Append(Await<T> command)
+			=> new OperationContext<T>(new Appended<T>(Get().Await!, command)); // ISSUE: NRT
+
 		public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
 			=> new LogOperationContext<T, TParameter>(_subject, log);
 
@@ -30,25 +35,5 @@ namespace DragonSpark.Compose.Model
 
 		public OperationContext<T> Watching(Func<CancellationToken> token)
 			=> new OperationContext<T>(new TokenAwareOperation<T>(Get(), token));
-	}
-
-	sealed class TokenAwareOperation<T> : IOperation<T>
-	{
-		readonly ISelect<T, ValueTask> _operation;
-		readonly Func<CancellationToken> _token;
-
-		public TokenAwareOperation(ISelect<T, ValueTask> operation, Func<CancellationToken> token)
-		{
-			_operation = operation;
-			_token     = token;
-		}
-
-		public async ValueTask Get(T parameter)
-		{
-			var token = _token();
-			token.ThrowIfCancellationRequested();
-			await _operation.Await(parameter);
-			token.ThrowIfCancellationRequested();
-		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
@@ -10,10 +9,5 @@ namespace DragonSpark.Model.Operations
 		public Operation(Func<T, ValueTask> select) : base(select) {}
 	}
 
-	public class Operation : Instance<ValueTask>, IOperation
-	{
-		public Operation(Task instance) : this(new ValueTask(instance)) {}
-
-		public Operation(ValueTask instance) : base(instance) {}
-	}
+	
 }
