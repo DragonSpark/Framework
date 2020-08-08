@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose.Extents;
-using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
@@ -10,9 +9,6 @@ namespace DragonSpark.Compose
 	// ReSharper disable once MismatchedFileName
 	public static partial class ExtensionMethods
 	{
-		public static Selector<TIn, TOut> Start<TIn, TOut>(this TOut @this, Extent<TIn> _)
-			=> Compose.Start.A.Selection<TIn>().By.Returning(@this);
-
 		public static Selector<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
 			=> Compose.Start.A.Selection<TIn>().By.Calling(@this);
 

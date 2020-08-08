@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Text;
 
 namespace DragonSpark.Application
 {
-	public sealed class KeyDelimiter : Instance<char>
+	public sealed class KeyDelimiter : Character
 	{
 		public static KeyDelimiter Default { get; } = new KeyDelimiter();
 
