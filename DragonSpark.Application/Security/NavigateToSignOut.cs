@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Security
 
 		public void Execute(ClaimsPrincipal parameter)
 		{
-			base.Execute(None.Default);
+			Execute(None.Default);
 		}
 	}
 }
