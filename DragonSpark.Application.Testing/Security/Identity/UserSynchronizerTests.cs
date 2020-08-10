@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Hosting.Server.Blazor;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
@@ -26,6 +27,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
+			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
 			                            .Apply(new ApplicationProfile(collection => {}, builder => {}))
 			                            .WithIdentity()
 			                            .Using<User>()
@@ -90,6 +92,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
+			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
 			                            .Using<User>()
@@ -153,6 +156,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 		{
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
+			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
 			                            .Using<User>()

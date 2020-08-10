@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -54,7 +55,9 @@ namespace DragonSpark.Application.Compose.Entities
 			         .Forward<Revalidation>()
 			         .Scoped()
 			         //
-			         .Then.AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>();
+			         .Then.AddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipals<TUser>>()
+					 //
+			         .Decorate<INavigateToSignOut, MemoryAwareNavigateToSignOut<TUser>>();
 		}
 	}
 }

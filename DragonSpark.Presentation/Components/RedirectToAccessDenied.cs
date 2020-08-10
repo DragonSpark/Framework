@@ -5,15 +5,12 @@ using System.Net;
 
 namespace DragonSpark.Presentation.Components
 {
-	/// <summary>
-	/// ATTRIBUTION: https://blog.vfrz.fr/blazor-redirect-non-authenticated-user/
-	/// </summary>
-	public sealed class RedirectToLogin : NavigateTo
+	public sealed class RedirectToAccessDenied : NavigateTo
 	{
-		public RedirectToLogin() => Forced = true;
+		public RedirectToAccessDenied() => Forced = true;
 
 		[Parameter]
-		public string FormatPath { get; set; } = "Identity/Account/Login?ReturnUrl={0}";
+		public string FormatPath { get; set; } = "Identity/Account/AccessDenied?ReturnUrl={0}";
 
 		[Inject, UsedImplicitly]
 		ILogger<RedirectToLogin> Logger { get; set; } = default!;

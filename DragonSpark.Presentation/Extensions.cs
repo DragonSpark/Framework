@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Forms;
@@ -15,6 +16,9 @@ namespace DragonSpark.Presentation
 {
 	public static class Extensions
 	{
+		public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
+			=> Configure.Default.Get(@this);
+/**/
 		public static ValidationContext Validation(this ModelContext _) => ValidationContext.Default;
 
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)

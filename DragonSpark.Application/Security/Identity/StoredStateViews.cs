@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Compose.Store;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Caching.Memory;
@@ -15,6 +16,13 @@ namespace DragonSpark.Application.Security.Identity
 			               .Store()
 			               .In(memory)
 			               .For(TimeSpan.FromSeconds(10))
-			               .Using<StoredStateViews<T>>(x => x.Identity.Name ?? "Anonymous")) {}
+			               .Using(StoredStateKey<T>.Default)) {}
+	}
+
+	sealed class StoredStateKey<T> : Key<ClaimsPrincipal>
+	{
+		public static StoredStateKey<T> Default { get; } = new StoredStateKey<T>();
+
+		StoredStateKey() : base(nameof(StoredStateKey<T>), x => x.Identity.Name ?? "Anonymous") {}
 	}
 }

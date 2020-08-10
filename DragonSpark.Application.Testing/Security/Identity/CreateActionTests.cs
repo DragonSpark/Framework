@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Hosting.Server.Blazor;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Testing.Objects;
@@ -27,6 +28,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
+			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
 			                            .Apply(new ApplicationProfile(collection => {}, builder => {}))
 			                            .WithIdentity()
 			                            .Using<User>()
@@ -57,7 +59,6 @@ namespace DragonSpark.Application.Testing.Security.Identity
 
 			request.Succeeded.Should().BeTrue();
 
-
 			var user = await storage.Users.SingleAsync(x => x.UserName == login.UniqueId());
 			user.Should().NotBeNull();
 
@@ -76,6 +77,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
+			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
 			                            .WithBlazorServerApplication()
 			                            .WithIdentity()
 			                            .Using<User>()
