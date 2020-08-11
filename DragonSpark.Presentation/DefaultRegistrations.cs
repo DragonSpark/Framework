@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components;
+using DragonSpark.Presentation.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 
@@ -20,6 +21,9 @@ namespace DragonSpark.Presentation
 			         .Scoped()
 			         //
 			         .Then.Start<DialogService>()
+			         .Scoped()
+			         //
+			         .Then.Start<RouterSession>()
 			         .Scoped();
 		}
 	}

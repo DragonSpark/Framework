@@ -1,0 +1,40 @@
+﻿@using DragonSpark.Compose
+@using JetBrains.Annotations
+@inherits EditorComponent
+
+@inject IExceptions Exceptions
+
+<DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
+    <Confirm Accept="@Start.A.Callback(OnConfirm).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity()"
+             PrimaryClass="primary button fit"
+             SecondaryClass="button fit"
+             ChildContent="@ChildContent">
+    </Confirm>
+</DialogContext>
+
+@code {
+
+    [UsedImplicitly]
+    DialogContext<object> _confirm = default!;
+
+    [Parameter]
+    public string Title { get; set; } = "Changes Detected";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
+
+    [Parameter]
+    public IComponent Context { get; set; } = default!;
+
+    protected override void OnNavigationCanceled()
+    {
+        InvokeAsync(() => Task.Delay(0).ContinueWith(x => _confirm.Open(default!)));
+    }
+
+    Task OnConfirm()
+    {
+        Continue();
+        return Task.CompletedTask;
+    }
+
+}
