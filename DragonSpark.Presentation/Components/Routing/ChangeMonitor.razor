@@ -5,7 +5,7 @@
 @inject IExceptions Exceptions
 
 <DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
-    <Confirm Accept="@Start.A.Callback(OnConfirm).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity()"
+    <Confirm Accept="@Start.A.Callback(Continue).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity()"
              PrimaryClass="primary button fit"
              SecondaryClass="button fit"
              ChildContent="@ChildContent">
@@ -30,11 +30,4 @@
     {
         InvokeAsync(() => Task.Delay(0).ContinueWith(x => _confirm.Open(default!)));
     }
-
-    Task OnConfirm()
-    {
-        Continue();
-        return Task.CompletedTask;
-    }
-
 }

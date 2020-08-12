@@ -55,11 +55,17 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		protected virtual void OnNavigationCanceled() => StateHasChanged();
 
-		public void Continue()
+		public Task Exit(string destination)
 		{
-			var session = Session.Verify();
-			session.ActiveComponent = null;
-			Navigation.Verify().NavigateTo(session.NavigationCancelledUrl);
+			EditContext.MarkAsUnmodified();
+			Navigation.Verify().NavigateTo(destination);
+			return Task.CompletedTask;
+		}
+
+		public Task Continue()
+		{
+			var destination = Session.Verify().NavigationCancelledUrl;
+			return destination != null ? Exit(destination) : Task.CompletedTask;
 		}
 
 		public void Dispose()
