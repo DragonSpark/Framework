@@ -2,6 +2,7 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Reflection;
@@ -34,6 +35,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 	sealed class SelectValue<T, TValue> : Select<PropertyInfo, Func<object, TValue>>
 	{
+		[UsedImplicitly]
 		public static SelectValue<T, TValue> Default { get; } = new SelectValue<T, TValue>();
 
 		SelectValue() : base(PropertyDelegate<T, TValue>.Default.Then().Stores().Reference().Get) {}
