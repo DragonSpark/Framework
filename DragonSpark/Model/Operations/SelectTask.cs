@@ -9,4 +9,11 @@ namespace DragonSpark.Model.Operations
 
 		SelectTask() : base(x => x.AsTask()) {}
 	}
+
+	public sealed class SelectTask : Select<ValueTask, Task>
+	{
+		public static SelectTask Default { get; } = new SelectTask();
+
+		SelectTask() : base(x => x.AsTask()) {}
+	}
 }

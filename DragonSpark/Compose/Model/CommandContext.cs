@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 
@@ -40,6 +41,8 @@ namespace DragonSpark.Compose.Model
 			=> new CommandContext<DragonSpark.Model.Sequences.Store<T>>(new ManyCommand<T>(Get()));
 
 		public Selector<T, None> Selection() => new Selector<T, None>(new Action<T>(this));
+
+		public OperationContext<T> Operation() => new OperationContext<T>(new CommandOperation<T>(Get().Execute));
 
 		public AlterationSelector<T> ToConfiguration() => new AlterationSelector<T>(new Configured<T>(Get().Execute));
 	}

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Validation;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
@@ -117,6 +118,10 @@ namespace DragonSpark.Compose.Model
 
 		public CommandContext<(TIn, T)> Terminate<T>(Action<TOut, T> command)
 			=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();
+
+		public OperationContext<TIn> Operation()
+			=> new OperationContext<TIn>(new CommandOperation<TIn>(new InvokeParameterCommand<TIn, TOut>(Get().Get)
+				                                                       .Execute));
 
 		public ISelect<TIn, TOut> Get() => _subject;
 	}

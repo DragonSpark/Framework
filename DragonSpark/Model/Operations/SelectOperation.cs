@@ -9,4 +9,11 @@ namespace DragonSpark.Model.Operations
 
 		SelectOperation() : base(x => new ValueTask<T>(x)) {}
 	}
+
+	public sealed class SelectOperation : Select<Task, ValueTask>
+	{
+		public static SelectOperation Default { get; } = new SelectOperation();
+
+		SelectOperation() : base(x => new ValueTask(x)) {}
+	}
 }

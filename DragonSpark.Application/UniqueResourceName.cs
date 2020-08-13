@@ -15,6 +15,6 @@ namespace DragonSpark.Application
 			_strategy  = strategy;
 		}
 
-		public string Get(string parameter) => parameter.ToSlug(_separator, _strategy);
+		public string Get(string parameter) => parameter.Replace(_separator, " ").ToSlug(_separator, _strategy);
 	}
 }

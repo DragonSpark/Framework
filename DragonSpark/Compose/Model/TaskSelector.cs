@@ -17,4 +17,12 @@ namespace DragonSpark.Compose.Model
 		public TaskSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 			=> new TaskSelector<_, TTo>(Get().Select(new Selection<T, TTo>(select)));
 	}
+
+
+	public class TaskSelector<T> : Selector<T, Task>
+	{
+		public TaskSelector(ISelect<T, Task> subject) : base(subject) {}
+
+		public OperationContext<T> Promote() => new OperationContext<T>(Get().Select(SelectOperation.Default));
+	}
 }

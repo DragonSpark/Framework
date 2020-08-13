@@ -1,13 +1,17 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Model.Commands
 {
-	class ValidatedCommand<T> : ICommand<T>
+	public class ValidatedCommand<T> : ICommand<T>
 	{
-		readonly ICommand<T>   _command;
-		readonly ICondition<T> _condition;
+		readonly Action<T> _command;
+		readonly Func<T, bool> _condition;
 
 		public ValidatedCommand(ICondition<T> condition, ICommand<T> command)
+			: this(condition.Get, command.Execute) {}
+
+		public ValidatedCommand(Func<T, bool> condition, Action<T> command)
 		{
 			_condition = condition;
 			_command   = command;
@@ -15,9 +19,9 @@ namespace DragonSpark.Model.Commands
 
 		public void Execute(T parameter)
 		{
-			if (_condition.Get(parameter))
+			if (_condition(parameter))
 			{
-				_command.Execute(parameter);
+				_command(parameter);
 			}
 		}
 	}
