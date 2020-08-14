@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components;
@@ -39,6 +40,8 @@ namespace DragonSpark.Presentation
 
 		public static OperationCallbackContext<T> Bind<T>(this IExceptions @this, Func<T, Task> method)
 			=> Start.A.Callback(method).Handle(@this);
+
+		public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
 /**/
 
 		public static T GetValue<T>(this FieldIdentifier @this)
