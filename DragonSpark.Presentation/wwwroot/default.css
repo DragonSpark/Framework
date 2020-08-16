@@ -2,3 +2,8 @@
     display: inline-block;
     font-size: 0.75rem;
 }
+
+.dragonspark-activity-active {
+    pointer-events: none;
+    opacity: 0.4;
+}

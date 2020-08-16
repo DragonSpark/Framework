@@ -3,23 +3,24 @@
 @using DragonSpark.Reflection.Collections
 @using JetBrains.Annotations
 
-<fieldset disabled="@IsActive.Default.Get(Context)">
+<fieldset disabled="@Active">
     @ChildContent
 
-    @if (Form != null)
-    {
-        <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)"/>
-        <label>
-            <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute"/>
-        </label>
-    }
+    <RadzenTextBox Name="Placeholder" Visible="false" ValueExpression="@(() => Property)" />
+    <label>
+        <ActiveValidation Context="@Context" Component="Placeholder" Popup="false" Style="position: absolute" />
+    </label>
 </fieldset>
-
 
 @code
 {
+    bool Active { get; set; }
+
     [Parameter]
     public string Property { get; set; } = default!;
+
+    [Parameter]
+    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
     [Parameter]
     public IComponent Context { get; set; } = default!;
@@ -36,6 +37,12 @@
                                               .First(x => x.PropertyType == A.Type<string>())
                                               .Name : string.Empty);
         Context ??= Form as IComponent ?? throw new InvalidOperationException("No valid context found for ActivityContainer");
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Active = IsActive.Default.Get(Context);
+        return base.OnParametersSetAsync();
     }
 
     [Parameter]

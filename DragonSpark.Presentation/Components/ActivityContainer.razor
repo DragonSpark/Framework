@@ -1,0 +1,15 @@
+﻿<div class="@(IsActive.Default.Get(Context) ? ActiveStyle : null)">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter]
+    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+
+    [Parameter]
+    public IComponent Context { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}
