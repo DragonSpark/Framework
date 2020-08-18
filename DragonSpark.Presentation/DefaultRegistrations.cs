@@ -17,6 +17,7 @@ namespace DragonSpark.Presentation
 		{
 			parameter.Start<IExceptions>()
 			         .Forward<Exceptions>()
+			         .Decorate<NotificationAwareExceptions>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //

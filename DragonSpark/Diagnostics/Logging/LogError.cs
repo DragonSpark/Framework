@@ -23,61 +23,62 @@ namespace DragonSpark.Diagnostics.Logging
 		}
 	}
 
-	public class LogError<T> : ILogException<T>
+	public class LogError<T> : ILogMessage<T>
 	{
-		readonly Exception<T> _action;
+		readonly Message<T> _action;
 		readonly string     _messageTemplate;
 
 		public LogError(ILogger logger, string messageTemplate) : this(logger.LogError, messageTemplate) {}
 
-		public LogError(Exception<T> action, string messageTemplate)
+		public LogError(Message<T> action, string messageTemplate)
 		{
 			_action          = action;
 			_messageTemplate = messageTemplate;
 		}
 
-		public void Execute(ExceptionParameter<T> parameter)
+		public void Execute(T parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument);
+			_action(_messageTemplate, parameter);
 		}
 	}
 
-	public class LogError<T1, T2> : ILogException<(T1, T2)>
+	public class LogError<T1, T2> : ILogMessage<(T1, T2)>
 	{
-		readonly Exception<T1, T2> _action;
+		readonly Message<T1, T2> _action;
 		readonly string          _messageTemplate;
 
 		public LogError(ILogger logger, string messageTemplate) : this(logger.LogError, messageTemplate) {}
 
-		public LogError(Exception<T1, T2> action, string messageTemplate)
+		public LogError(Message<T1, T2> action, string messageTemplate)
 		{
 			_action          = action;
 			_messageTemplate = messageTemplate;
 		}
 
-		public void Execute(ExceptionParameter<(T1, T2)> parameter)
+		public void Execute((T1, T2) parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument.Item1, parameter.Argument.Item2);
+			var (first, second) = parameter;
+			_action(_messageTemplate, first, second);
 		}
 	}
 
-	public class LogError<T1, T2, T3> : ILogException<(T1, T2, T3)>
+	public class LogError<T1, T2, T3> : ILogMessage<(T1, T2, T3)>
 	{
-		readonly Exception<T1, T2, T3> _action;
+		readonly Message<T1, T2, T3> _action;
 		readonly string              _messageTemplate;
 
 		public LogError(ILogger logger, string messageTemplate) : this(logger.LogError, messageTemplate) {}
 
-		public LogError(Exception<T1, T2, T3> action, string messageTemplate)
+		public LogError(Message<T1, T2, T3> action, string messageTemplate)
 		{
 			_action          = action;
 			_messageTemplate = messageTemplate;
 		}
 
-		public void Execute(ExceptionParameter<(T1, T2, T3)> parameter)
+		public void Execute((T1, T2, T3) parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument.Item1, parameter.Argument.Item2,
-			        parameter.Argument.Item3);
+			var (first, second, third) = parameter;
+			_action(_messageTemplate, first, second, third);
 		}
 	}
 }

@@ -39,7 +39,8 @@ namespace DragonSpark.Diagnostics.Logging
 
 		public void Execute(ExceptionParameter<T> parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument);
+			var (exception, argument) = parameter;
+			_action(exception, _messageTemplate, argument);
 		}
 	}
 
@@ -58,7 +59,8 @@ namespace DragonSpark.Diagnostics.Logging
 
 		public void Execute(ExceptionParameter<(T1, T2)> parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument.Item1, parameter.Argument.Item2);
+			var (exception, (first, second)) = parameter;
+			_action(exception, _messageTemplate, first, second);
 		}
 	}
 
@@ -77,8 +79,8 @@ namespace DragonSpark.Diagnostics.Logging
 
 		public void Execute(ExceptionParameter<(T1, T2, T3)> parameter)
 		{
-			_action(parameter.Exception, _messageTemplate, parameter.Argument.Item1, parameter.Argument.Item2,
-			        parameter.Argument.Item3);
+			var (exception, (first, second, third)) = parameter;
+			_action(exception, _messageTemplate, first, second, third);
 		}
 	}
 }

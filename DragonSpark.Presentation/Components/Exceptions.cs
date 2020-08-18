@@ -1,36 +1,34 @@
-﻿using Microsoft.Extensions.Logging;
-using Radzen;
+﻿using DragonSpark.Compose;
+using DragonSpark.Diagnostics.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using Exception = System.Exception;
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class Exceptions : IExceptions
+	sealed class Exceptions : IExceptions
 	{
-		readonly ILoggerFactory      _factory;
-		readonly NotificationService _notifications;
+		readonly ILoggerFactory _factory;
 
-		public Exceptions(ILoggerFactory factory, NotificationService notifications)
-		{
-			_factory       = factory;
-			_notifications = notifications;
-		}
+		public Exceptions(ILoggerFactory factory) => _factory = factory;
 
 		public ValueTask Get((Type Owner, Exception Exception) parameter)
 		{
 			var (owner, exception) = parameter;
 
-			_factory.CreateLogger(owner)
-			        .LogError(exception, "A problem was encountered while performing this operation.");
+			var logger = _factory.CreateLogger(owner);
 
-			_notifications.Notify(new NotificationMessage
+			if (exception is TemplateException template)
 			{
-				Severity = NotificationSeverity.Warning,
-				Summary  = "There was a problem",
-				Detail   = "A problem was encountered while performing this operation and has been logged for system administrators.",
-				Duration = 4000
-			});
-			return new ValueTask(Task.CompletedTask);
+				logger.LogError(template.InnerException, template.Message, template.Parameters.Open());
+			}
+			else
+			{
+				logger.LogError(exception, "A problem was encountered while performing this operation.");
+			}
+
+			return Task.CompletedTask.ToOperation();
 		}
 	}
 }

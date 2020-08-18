@@ -234,5 +234,29 @@ namespace DragonSpark.Compose
 		{
 			@this.Execute(new ExceptionParameter<ValueTuple<T1, T2, T3>>(exception, (first, second, third)));
 		}
+
+		public static TemplateException Get<T>(this ITemplate<T> @this, T parameter)
+			=> @this.Get(new InvalidOperationException(), parameter);
+
+		public static TemplateException Get<T>(this ITemplate<T> @this, Exception exception, T parameter)
+			=> @this.Get(new ExceptionParameter<T>(exception, parameter));
+
+		public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this, T1 first, T2 second)
+			=> @this.Get(new InvalidOperationException(), first, second);
+
+		// ReSharper disable once TooManyArguments
+		public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this,
+		                                            Exception exception, T1 first, T2 second)
+			=> @this.Get(new ExceptionParameter<(T1, T2)>(exception, (first, second)));
+
+		// ReSharper disable once TooManyArguments
+		public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
+		                                                T1 first, T2 second, T3 third)
+			=> @this.Get(new InvalidOperationException(), first, second, third);
+
+		// ReSharper disable once TooManyArguments
+		public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
+		                                                Exception exception, T1 first, T2 second, T3 third)
+			=> @this.Get(new ExceptionParameter<(T1, T2, T3)>(exception, (first, second, third)));
 	}
 }
