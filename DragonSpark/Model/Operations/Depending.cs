@@ -7,8 +7,8 @@ namespace DragonSpark.Model.Operations
 {
 	public class Depending<T> : Selecting<T, bool>, IDepending<T>
 	{
-		public Depending([NotNull] ISelect<T, ValueTask<bool>> @select) : base(@select) {}
+		public Depending([NotNull] ISelect<T, ValueTask<bool>> select) : base(select) {}
 
-		public Depending([NotNull] Func<T, ValueTask<bool>> @select) : base(@select) {}
+		public Depending([NotNull] Func<T, ValueTask<bool>> select) : base(select) {}
 	}
 }
