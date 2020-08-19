@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace DragonSpark.Application.Compose.Store.Operations
 		protected ISelect<TIn, ValueTask<TOut>> Subject { get; }
 
 		protected IMemoryCache Memory { get; }
+
+		public ConfiguredMemoryStoreContext<TIn, TOut> UntilRemoved()
+			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
 
 		public ConfiguredMemoryStoreContext<TIn, TOut> For(TimeSpan duration)
 			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, new RelativeExpiration(duration));

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 
 namespace DragonSpark.Application.Compose.Store
@@ -8,6 +9,8 @@ namespace DragonSpark.Application.Compose.Store
 		readonly string          _prefix;
 		readonly char            _delimiter;
 		readonly Func<T, string> _key;
+
+		public Key(Type prefix, Func<T, string> key) : this(prefix.AssemblyQualifiedName.Verify(), key) {}
 
 		public Key(string prefix, Func<T, string> key) : this(prefix, KeyDelimiter.Default, key) {}
 
