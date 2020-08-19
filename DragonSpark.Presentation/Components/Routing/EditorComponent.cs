@@ -19,16 +19,13 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		public string? PageUrl { get; set; }
 
-		protected virtual bool HasChanges() => EditContext?.IsModified() ?? false;
-
-
-		bool IRoutingComponent.HasChanges => HasChanges();
+		public virtual bool HasChanges => EditContext?.IsModified() ?? false;
 
 		/// <summary>
 		/// Form Edit Context
 		/// </summary>
 		[CascadingParameter]
-		EditContext EditContext { get; set; } = default!;
+		public EditContext EditContext { get; set; } = default!;
 
 		/*/// <summary>
 		/// Alert object used in UI by UI Alert
