@@ -107,7 +107,7 @@ namespace DragonSpark.Presentation.Components.Forms
 				return true;
 			}
 
-			await Context.Verify().Get(this).ConfigureAwait(false);
+			await Context.Verify().Await(this);
 
 			if (!Valid.HasValue)
 			{
