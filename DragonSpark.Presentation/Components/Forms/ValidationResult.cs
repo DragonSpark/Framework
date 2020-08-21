@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Presentation.Components.Forms
+﻿using JetBrains.Annotations;
+
+namespace DragonSpark.Presentation.Components.Forms
 {
 	public readonly struct ValidationResult
 	{
@@ -15,5 +17,11 @@
 		public bool Valid { get; }
 
 		public string? Message { get; }
+
+		public void Deconstruct(out bool valid, [CanBeNull] out string? message)
+		{
+			valid   = Valid;
+			message = Message;
+		}
 	}
 }

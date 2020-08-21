@@ -2,5 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public interface IFieldValidator : ISelect<object, ValidationResult> {}
+	public interface IFieldValidator : IFieldValidator<object> {}
+
+	public interface IFieldValidator<in T> : ISelect<T, ValidationResult> {}
 }
