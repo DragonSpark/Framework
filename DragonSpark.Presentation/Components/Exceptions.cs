@@ -2,6 +2,7 @@
 using DragonSpark.Diagnostics.Logging;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Exception = System.Exception;
 
@@ -21,11 +22,11 @@ namespace DragonSpark.Presentation.Components
 
 			if (exception is TemplateException template)
 			{
-				logger.LogError(template.InnerException, template.Message, template.Parameters.Open());
+				logger.LogError(template.InnerException.Demystify(), template.Message, template.Parameters.Open());
 			}
 			else
 			{
-				logger.LogError(exception, "A problem was encountered while performing this operation.");
+				logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation.");
 			}
 
 			return Task.CompletedTask.ToOperation();

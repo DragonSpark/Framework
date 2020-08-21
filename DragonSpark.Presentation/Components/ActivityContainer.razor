@@ -1,9 +1,13 @@
-﻿<div class="@(IsActive.Default.Get(Context) ? ActiveStyle : null)">
-    @ChildContent
+﻿<div class="@(Active ? ActiveStyle : null)">
+    <fieldset disabled="@Active">
+        @ChildContent
+    </fieldset>
 </div>
 
 @code
 {
+    bool Active { get; set; }
+
     [Parameter]
     public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
@@ -12,4 +16,10 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        Active = IsActive.Default.Get(Context);
+        base.OnParametersSet();
+    }
 }
