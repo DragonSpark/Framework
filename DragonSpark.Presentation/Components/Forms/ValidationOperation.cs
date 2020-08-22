@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
-using DragonSpark.Presentation.Compose;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -12,36 +10,14 @@ using Exception = System.Exception;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public static class Extensions
-	{
-		public static CallbackContext<Validation> Callback<T>(this ValidationContext _, IFieldValidation<T> validation)
-		{
-			// TODO:
-			var first     = new ValidationCallback<T>(validation);
-			var operation = new ExceptionAwareValidationCallback(first);
-			var context   = new ValidationCallbackContext(operation);
-			var result    = context.Get();
-			return result;
-		}
-	}
-
-	sealed class ValidationCallbackContext : IResult<CallbackContext<Validation>>
-	{
-		readonly IOperation<Validation> _operation;
-
-		public ValidationCallbackContext(IOperation<Validation> operation) => _operation = operation;
-
-		public CallbackContext<Validation> Get() => new CallbackContext<Validation>(_operation.Then().Demote());
-	}
-
-	sealed class ExceptionAwareValidationCallback : IOperation<Validation>
+	sealed class ExceptionAwareValidationOperation : IOperation<Validation>
 	{
 		readonly IOperation<Validation>    _previous;
 		readonly ITemplate<(Type, string)> _template;
 
-		public ExceptionAwareValidationCallback(IOperation<Validation> previous) : this(previous, Template.Default) {}
+		public ExceptionAwareValidationOperation(IOperation<Validation> previous) : this(previous, Template.Default) {}
 
-		public ExceptionAwareValidationCallback(IOperation<Validation> previous, ITemplate<(Type, string)> template)
+		public ExceptionAwareValidationOperation(IOperation<Validation> previous, ITemplate<(Type, string)> template)
 		{
 			_previous = previous;
 			_template = template;
@@ -69,11 +45,11 @@ namespace DragonSpark.Presentation.Components.Forms
 		}
 	}
 
-	sealed class ValidationCallback<T> : IOperation<Validation>
+	sealed class ValidationOperation<T> : IOperation<Validation>
 	{
 		readonly IFieldValidation<T> _validator;
 
-		public ValidationCallback(IFieldValidation<T> validator) => _validator = validator;
+		public ValidationOperation(IFieldValidation<T> validator) => _validator = validator;
 
 		public async ValueTask Get(Validation parameter)
 		{
@@ -134,10 +110,8 @@ namespace DragonSpark.Presentation.Components.Forms
 		ValidationMessageStore _messages = default!;
 		EditContext?           _context;
 
-		FieldIdentifier Identifier { get; set; }
-
 		[Parameter]
-		public string Property { get; set; } = default!;
+		public FieldIdentifier Identifier { get; set; }
 
 		[Parameter]
 		public string Message { get; set; } = "This field does not contain a valid value.";
@@ -162,7 +136,6 @@ namespace DragonSpark.Presentation.Components.Forms
 					if ((_context = value) != null)
 					{
 						_messages  = new ValidationMessageStore(_context);
-						Identifier = _context.Verify().Field(Property);
 
 						_context.OnFieldChanged += ContextOnOnFieldChanged;
 					}

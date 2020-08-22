@@ -22,6 +22,12 @@ namespace DragonSpark.Presentation
 /**/
 		public static ValidationContext Validation(this ModelContext _) => ValidationContext.Default;
 
+		public static CallbackContext<Validation> Callback<T>(this ModelContext _, IFieldValidation<T> validation)
+			=> validation.Callback();
+
+		public static CallbackContext<Validation> Callback<T>(this IFieldValidation<T> validation)
+			=> new ValidationOperationContext(new ValidationOperation<T>(validation)).DenoteExceptions().Get();
+
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 			=> new OperationView<TIn, TOut>(@this);
 
