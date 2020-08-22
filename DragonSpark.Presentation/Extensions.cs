@@ -12,6 +12,7 @@ using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ValidationContext = DragonSpark.Presentation.Components.Forms.ValidationContext;
 
 namespace DragonSpark.Presentation
 {
@@ -20,12 +21,12 @@ namespace DragonSpark.Presentation
 		public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
 			=> Configure.Default.Get(@this);
 /**/
-		public static ValidationContext Validation(this ModelContext _) => ValidationContext.Default;
+		public static Compose.ValidationContext Validation(this ModelContext _) => Compose.ValidationContext.Default;
 
-		public static CallbackContext<Validation> Callback<T>(this ModelContext _, IFieldValidation<T> validation)
+		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _, IFieldValidation<T> validation)
 			=> validation.Callback();
 
-		public static CallbackContext<Validation> Callback<T>(this IFieldValidation<T> validation)
+		public static CallbackContext<ValidationContext> Callback<T>(this IFieldValidation<T> validation)
 			=> new ValidationOperationContext(new ValidationOperation<T>(validation)).DenoteExceptions().Get();
 
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
