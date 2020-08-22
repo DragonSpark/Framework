@@ -2,8 +2,6 @@
 @using JetBrains.Annotations
 @inherits EditorComponent
 
-@inject IExceptions Exceptions
-
 <DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
     <Confirm Accept="@Start.A.Callback(Continue).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity()"
              PrimaryClass="primary button fit"

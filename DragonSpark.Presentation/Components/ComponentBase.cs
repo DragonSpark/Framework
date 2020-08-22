@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
@@ -21,5 +22,8 @@ namespace DragonSpark.Presentation.Components
 				}
 			}
 		}
+
+		[Inject]
+		protected IExceptions Exceptions { get; set; } = default!;
 	}
 }
