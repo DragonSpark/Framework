@@ -118,6 +118,10 @@ namespace DragonSpark.Compose
 
 		public static TaskSelector<_, T> Then<_, T>(this Selector<_, Task<T>> @this) => @this.Get().Then();
 
+		public static TaskSelector<_> Then<_>(this ISelect<_, Task> @this) => new TaskSelector<_>(@this);
+
+		public static TaskSelector<_> Then<_>(this Selector<_, Task> @this) => @this.Get().Then();
+
 /**/
 
 		public static CommandContext Then(this ICommand @this) => new CommandContext(@this);

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
+	// TODO: Remove
 	sealed class ValidationDefinition : IValidationDefinition
 	{
 		readonly OperationView<FieldIdentifier, bool> _view;

@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Forms.Validation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using NetFabric.Hyperlinq;
 using System;
 using System.Threading.Tasks;
 
@@ -8,8 +10,20 @@ namespace DragonSpark.Presentation.Components.Forms
 {
 	public class Validating : ComponentBase, IDisposable
 	{
+		readonly IOperationsStore _store;
+		readonly Func<Task>       _update;
+
 		ValidationMessageStore _messages = default!;
+		IOperations            _list     = default!;
 		EditContext?           _context;
+
+		public Validating() : this(OperationsStore.Default) {}
+
+		public Validating(IOperationsStore store)
+		{
+			_store  = store;
+			_update = Update;
+		}
 
 		[Parameter]
 		public FieldIdentifier Identifier { get; set; }
@@ -30,25 +44,37 @@ namespace DragonSpark.Presentation.Components.Forms
 				{
 					if (_context != null)
 					{
+						_list.Execute();
 						_messages.Clear();
-						_context.OnFieldChanged -= ContextOnOnFieldChanged;
+						_context.OnFieldChanged        -= FieldChanged;
+						_context.OnValidationRequested -= ValidationRequested;
 					}
 
 					if ((_context = value) != null)
 					{
 						_messages = new ValidationMessageStore(_context);
+						_list     = _store.Get(_context);
 
-						_context.OnFieldChanged += ContextOnOnFieldChanged;
+						_context.OnFieldChanged        += FieldChanged;
+						_context.OnValidationRequested += ValidationRequested;
 					}
 				}
 			}
 		}
 
-		void ContextOnOnFieldChanged(object? sender, FieldChangedEventArgs e)
+		void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
+		{
+			if (!_messages[Identifier].AsValueEnumerable().Any())
+			{
+				_list.Execute(InvokeAsync(_update));
+			}
+		}
+
+		void FieldChanged(object? sender, FieldChangedEventArgs e)
 		{
 			if (e.FieldIdentifier.Equals(Identifier))
 			{
-				InvokeAsync(Update);
+				InvokeAsync(_update);
 			}
 		}
 
@@ -56,10 +82,9 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			_messages.Clear(Identifier);
 
-			var context    = new FieldContext(Context.Verify(), Identifier);
-			var validation = new ValidationContext(context, _messages, Message);
+			var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
 
-			await Validate.InvokeAsync(validation);
+			await Validate.InvokeAsync(context);
 
 			_context.Verify().NotifyValidationStateChanged();
 		}

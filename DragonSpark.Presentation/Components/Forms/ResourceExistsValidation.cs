@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using DragonSpark.Model.Operations;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public sealed class ResourceExistsValidation : IValidation
+	public sealed class ResourceExistsValidation : IDepending<FieldIdentifier>
 	{
 		public static ResourceExistsValidation Default { get; } = new ResourceExistsValidation();
 

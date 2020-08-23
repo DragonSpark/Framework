@@ -4,6 +4,7 @@ using Radzen;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
+	// TODO: Remove
 	public sealed class ValidationProvider : ValidatorBase
 	{
 		[Parameter, UsedImplicitly]
@@ -13,9 +14,9 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		protected override bool Validate(IRadzenFormComponent component)
 		{
-			var result = Validator.Get(component.GetValue());
-			Text = result.Message;
-			return result.Valid;
+			var (result, message) = Validator.Get(component.GetValue());
+			Text = message;
+			return result;
 		}
 	}
 }

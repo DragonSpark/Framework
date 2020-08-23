@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
+	// TODO: Remove
 	sealed class FieldValidationContext : IOperation<FieldValidator>, ICommand<FieldIdentifier>, IDisposable
 	{
 		readonly IValidationDefinition  _view;

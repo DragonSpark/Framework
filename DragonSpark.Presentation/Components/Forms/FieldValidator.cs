@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
+	// TODO: Remove
 	public class FieldValidator : RadzenComponent, ICommand, IDisposable
 	{
 		readonly Func<Task> _validate;
@@ -80,7 +81,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		void Register()
 		{
-			Context    = new FieldValidationContext(Definition, EditContext ?? throw new InvalidOperationException());
+			Context    = new FieldValidationContext(Definition, EditContext.Verify());
 			Identifier = Form.FindComponent(Component).FieldIdentifier;
 			Operations.Execute(this);
 		}

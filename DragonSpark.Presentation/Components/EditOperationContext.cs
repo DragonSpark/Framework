@@ -15,9 +15,8 @@ using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class EditOperationContext : RadzenComponent,
-	                                           IDisposable,
-	                                           ICommand<FieldValidator>
+	// TODO: Remove
+	public sealed class EditOperationContext : RadzenComponent, ICommand<FieldValidator>, IDisposable
 	{
 		readonly IDictionary<FieldIdentifier, List<FieldValidator>> _identifiers;
 

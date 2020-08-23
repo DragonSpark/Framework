@@ -8,6 +8,7 @@ using DragonSpark.Presentation.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Primitives;
+using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -20,24 +21,28 @@ namespace DragonSpark.Presentation
 	{
 		public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
 			=> Configure.Default.Get(@this);
+
 /**/
 		public static Compose.ValidationContext Validation(this ModelContext _) => Compose.ValidationContext.Default;
 
-		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _, IFieldValidation<T> validation)
+		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _,
+		                                                             IFieldValidation<T> validation)
 			=> validation.Callback();
 
 		public static CallbackContext<ValidationContext> Callback<T>(this IFieldValidation<T> validation)
 			=> new ValidationOperationContext(new ValidationOperation<T>(validation)).DenoteExceptions().Get();
 
+		// TODO: Remove
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 			=> new OperationView<TIn, TOut>(@this);
-
-		public static OperationView<T> AsView<T>(this IResulting<T> @this) => new OperationView<T>(@this);
 
 /**/
 
 		public static CallbackContext Callback(this ModelContext _, Func<Task> method)
 			=> new CallbackContext(method);
+
+		public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit)
+			=> new SubmitCallbackContext(submit);
 
 		public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
 			=> new CallbackContext<T>(method);
@@ -50,6 +55,10 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
 /**/
+
+		public static bool IsEnabled(this EditContext @this) => @this.IsModified() && @this.IsValid();
+
+		public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
 
 		public static T GetValue<T>(this FieldIdentifier @this)
 			=> @this.FieldName.Contains(".")

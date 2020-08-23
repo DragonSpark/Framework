@@ -12,27 +12,24 @@ namespace DragonSpark.Presentation.Compose
 	{
 		public static implicit operator EventCallback(OperationCallbackContext instance) => instance.Get();
 
-		readonly IComponent _receiver;
+		readonly object     _receiver;
 		readonly IOperation _operation;
 
-		public OperationCallbackContext(IComponent receiver, IOperation operation)
+		public OperationCallbackContext(object receiver, IOperation operation)
 		{
 			_receiver  = receiver;
 			_operation = operation;
 		}
 
-		public OperationCallbackContext Using(IComponent receiver)
-			=> new OperationCallbackContext(receiver, _operation);
+		public OperationCallbackContext Using(object receiver) => new OperationCallbackContext(receiver, _operation);
 
 		public OperationCallbackContext GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
 
 		public OperationCallbackContext GuardEntry(TimeSpan duration)
 			=> new OperationCallbackContext(_receiver, new ThrottleEntryOperation(_operation, duration));
 
-		public OperationCallbackContext UpdateActivity() => UpdateActivity(_receiver);
-
-		public OperationCallbackContext UpdateActivity(IComponent subject)
-			=> new OperationCallbackContext(_receiver, new ActivityAwareOperation(_operation, subject));
+		public OperationCallbackContext UpdateActivity()
+			=> new OperationCallbackContext(_receiver, new ActivityAwareOperation(_operation, _receiver));
 
 		public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Promote);
 	}
@@ -41,16 +38,16 @@ namespace DragonSpark.Presentation.Compose
 	{
 		public static implicit operator EventCallback<T>(OperationCallbackContext<T> instance) => instance.Get();
 
-		readonly IComponent    _receiver;
+		readonly object        _receiver;
 		readonly IOperation<T> _operation;
 
-		public OperationCallbackContext(IComponent receiver, IOperation<T> operation)
+		public OperationCallbackContext(object receiver, IOperation<T> operation)
 		{
 			_receiver  = receiver;
 			_operation = operation;
 		}
 
-		public OperationCallbackContext<T> Using(IComponent receiver)
+		public OperationCallbackContext<T> Using(object receiver)
 			=> new OperationCallbackContext<T>(receiver, _operation);
 
 		public OperationCallbackContext<T> GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
@@ -58,10 +55,8 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext<T> GuardEntry(TimeSpan duration)
 			=> new OperationCallbackContext<T>(_receiver, new ThrottleEntryOperation<T>(_operation, duration));
 
-		public OperationCallbackContext<T> UpdateActivity() => UpdateActivity(_receiver);
-
-		public OperationCallbackContext<T> UpdateActivity(IComponent subject)
-			=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, subject));
+		public OperationCallbackContext<T> UpdateActivity()
+			=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
 
 		public EventCallback<T> Get()
 			=> EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Promote!)); // ISSUE: NRT
