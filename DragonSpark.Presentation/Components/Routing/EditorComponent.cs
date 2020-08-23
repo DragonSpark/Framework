@@ -17,9 +17,12 @@ namespace DragonSpark.Presentation.Components.Routing
 		[Inject]
 		public RouterSession? Session { get; set; } = default!;
 
+		[Parameter]
+		public EventCallback<string> Exited { get; set; }
+
 		public string? PageUrl { get; set; }
 
-		public virtual bool HasChanges => EditContext?.IsModified() ?? false;
+		public virtual bool HasChanges => EditContext.IsModified();
 
 		/// <summary>
 		/// Form Edit Context
@@ -56,7 +59,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		{
 			EditContext.MarkAsUnmodified();
 			Navigation.Verify().NavigateTo(destination);
-			return Task.CompletedTask;
+			return Exited.InvokeAsync(destination);
 		}
 
 		public Task Continue()

@@ -2,7 +2,6 @@
 @using DragonSpark.Compose
 @using JetBrains.Annotations
 @using Microsoft.EntityFrameworkCore
-@using DragonSpark.Application
 @typeparam TEntity
 
 @inject DialogService Dialogs
@@ -120,7 +119,7 @@
     {
         _grid.CancelEditRow(entity);
 
-        Storage.Undo(entity);
+        Storage.Entry(entity).State = EntityState.Unchanged;
     }
 
     [UsedImplicitly]

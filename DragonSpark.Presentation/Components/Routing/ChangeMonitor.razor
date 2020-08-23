@@ -26,6 +26,6 @@
 
     protected override void OnNavigationCanceled()
     {
-        InvokeAsync(() => Task.Delay(0).ContinueWith(x => _confirm.Open(default!)));
+        InvokeAsync(() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!)));
     }
 }

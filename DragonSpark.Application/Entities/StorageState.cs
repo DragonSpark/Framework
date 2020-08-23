@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +9,12 @@ namespace DragonSpark.Application.Entities
 	sealed class StorageState : IStorageState
 	{
 		readonly IResulting<int>  _confirm;
-		readonly ICommand<object> _cancel;
+		readonly IUndo _cancel;
 
 		[UsedImplicitly]
 		public StorageState(DbContext storage) : this(new Confirm(storage), new Undo(storage)) {}
 
-		public StorageState(IResulting<int> confirm, ICommand<object> cancel)
+		public StorageState(IResulting<int> confirm, IUndo cancel)
 		{
 			_confirm = confirm;
 			_cancel  = cancel;
@@ -23,6 +23,11 @@ namespace DragonSpark.Application.Entities
 		public ValueTask<int> Get() => _confirm.Get();
 
 		public void Execute(object parameter)
+		{
+			_cancel.Execute(parameter);
+		}
+
+		public void Execute(None parameter)
 		{
 			_cancel.Execute(parameter);
 		}

@@ -22,14 +22,6 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		public static T Undo<T>(this DbContext @this, T entity) where T : class
-		{
-			var entry = @this.Entry(entity);
-			entry.CurrentValues.SetValues(entry.OriginalValues);
-			entry.State = EntityState.Unchanged;
-			return entity;
-		}
-
 		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity)
 		{
 			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);

@@ -1,7 +1,6 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Entities
 {
-	public interface IStorageState : IResulting<int>, ICommand<object> {}
+	public interface IStorageState : IResulting<int>, IUndo {}
 }
