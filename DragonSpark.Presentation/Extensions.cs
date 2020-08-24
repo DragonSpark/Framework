@@ -4,6 +4,7 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Forms;
+using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -27,11 +28,11 @@ namespace DragonSpark.Presentation
 		public static Compose.ValidationContext Validation(this ModelContext _) => Compose.ValidationContext.Default;
 
 		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _,
-		                                                             IFieldValidation<T> validation)
-			=> validation.Callback();
+		                                                             IValidatingValue<T> validating)
+			=> validating.Callback();
 
-		public static CallbackContext<ValidationContext> Callback<T>(this IFieldValidation<T> validation)
-			=> new ValidationOperationContext(new ValidationOperation<T>(validation)).DenoteExceptions().Get();
+		public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
+			=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
 
 		// TODO: Remove
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)

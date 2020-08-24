@@ -1,12 +1,10 @@
-﻿using DragonSpark.Model.Operations;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Forms
+namespace DragonSpark.Presentation.Components.Forms.Validation
 {
-	public sealed class ResourceExistsValidation : IDepending<FieldIdentifier>
+	public sealed class ResourceExistsValidation : IValidatingValue<string>
 	{
 		public static ResourceExistsValidation Default { get; } = new ResourceExistsValidation();
 
@@ -21,12 +19,11 @@ namespace DragonSpark.Presentation.Components.Forms
 		/// </summary>
 		/// <param name="parameter"></param>
 		/// <returns></returns>
-		public async ValueTask<bool> Get(FieldIdentifier parameter)
+		public async ValueTask<bool> Get(string parameter)
 		{
-			var input = parameter.GetValue<string>()?.Trim() ?? string.Empty;
-			if (!string.IsNullOrEmpty(input))
+			if (!string.IsNullOrEmpty(parameter))
 			{
-				var request = WebRequest.Create(input);
+				var request = WebRequest.Create(parameter);
 				request.Timeout = (int)_timeout.TotalMilliseconds;
 				request.Method  = "HEAD";
 

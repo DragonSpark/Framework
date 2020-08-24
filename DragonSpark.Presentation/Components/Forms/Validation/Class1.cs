@@ -19,14 +19,17 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 {
 	public static class Extensions
 	{
+		public static IValidateValue<object> Validator(this IExpression @this)
+			=> new RegularExpressionValidator(@this.Get());
 
+		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
 	}
 
-	sealed class DisplayNamePattern : Text.Text
+	sealed class DisplayNamePattern : Expression
 	{
 		public static DisplayNamePattern Default { get; } = new DisplayNamePattern();
 
-		DisplayNamePattern() : base("^[a-zA-Z0-9- _]{{1,{0}}}$") {}
+		DisplayNamePattern() : base("[a-zA-Z0-9- _]") {}
 	}
 
 	public class RegularExpressionValidator : MetadataValueValidator
@@ -36,7 +39,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public RegularExpressionValidator(RegularExpressionAttribute metadata) : base(metadata) {}
 	}
 
-	public sealed class DisplayNameValidation : ISelect<uint, Expression>
+	/*public sealed class DisplayNameValidation : ISelect<uint, Expression>
 	{
 		public static DisplayNameValidation Default { get; } = new DisplayNameValidation();
 
@@ -47,7 +50,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public DisplayNameValidation(string pattern) => _pattern = pattern;
 
 		public Expression Get(uint parameter) => new Expression(string.Format(_pattern, parameter.ToString()));
-	}
+	}*/
 
 	public sealed class RequiredValidator : MetadataValueValidator
 	{
@@ -138,7 +141,8 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		}
 	}
 
-	public interface IValidate : ICondition<ValidationContext> {}
+	public interface IValidatingValue<in T> : IDepending<T> {}
+
 
 	public interface IValidateValue<in T> : ICondition<T> {}
 
@@ -149,13 +153,40 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public Expression([NotNull] string instance) : base(instance) {}
 	}
 
+	public sealed class BoundedExpression : ISelect<Bounds, Expression>
+	{
+		readonly string _expression;
+
+		public BoundedExpression(string expression) => _expression = expression;
+
+		public Expression Get(Bounds parameter) => new Expression($"^{_expression}{{{parameter.Minimum},{parameter.Maximum}}}$");
+	}
+
+	public readonly struct Bounds
+	{
+		public Bounds(uint minimum, uint maximum)
+		{
+			Minimum = minimum;
+			Maximum = maximum;
+		}
+
+		public uint Minimum { get; }
+
+		public uint Maximum { get; }
+	}
+
+	public sealed class StandardCharactersPattern : Expression
+	{
+		public static StandardCharactersPattern Default { get; } = new StandardCharactersPattern();
+
+		StandardCharactersPattern() : base(@"([a-zA-Z0-9- _.;'"":!+*&%$#^@=[\]()~`<>\\/,?{}\|]|\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])") {}
+	}
+
 	public sealed class ValidUrlExpression : Expression
 	{
-		public const string Pattern = @"^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)$";
-
 		public static ValidUrlExpression Default { get; } = new ValidUrlExpression();
 
-		ValidUrlExpression() : base(Pattern) {}
+		ValidUrlExpression() : base(@"^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)$") {}
 	}
 
 	public interface IOperations : ICommand<Task>, ICommand, ICondition, IOperation {}

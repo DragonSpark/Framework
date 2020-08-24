@@ -82,11 +82,15 @@ namespace DragonSpark.Presentation.Components.Forms
 		{
 			_messages.Clear(Identifier);
 
-			var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
+			var edit = _context.Verify();
+			if (!edit.GetValidationMessages(Identifier).AsValueEnumerable().Any())
+			{
+				var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
 
-			await Validate.InvokeAsync(context);
+				await Validate.InvokeAsync(context);
 
-			_context.Verify().NotifyValidationStateChanged();
+				edit.NotifyValidationStateChanged();
+			}
 		}
 
 		public virtual void Dispose()

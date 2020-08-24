@@ -4,6 +4,6 @@
 	{
 		public static DefaultDisplayNameValidator Default { get; } = new DefaultDisplayNameValidator();
 
-		DefaultDisplayNameValidator() : base(DisplayNameValidation.Default.Get(50)) {}
+		DefaultDisplayNameValidator() : base(DisplayNamePattern.Default.Bounded().Get(new Bounds(1, 50))) {}
 	}
 }
