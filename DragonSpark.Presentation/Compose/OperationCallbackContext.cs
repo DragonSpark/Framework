@@ -50,7 +50,7 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext<T> Using(object receiver)
 			=> new OperationCallbackContext<T>(receiver, _operation);
 
-		public OperationCallbackContext<T> GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
+		public OperationCallbackContext<T> GuardEntry() => GuardEntry(TimeSpan.FromMilliseconds(250));
 
 		public OperationCallbackContext<T> GuardEntry(TimeSpan duration)
 			=> new OperationCallbackContext<T>(_receiver, new ThrottleEntryOperation<T>(_operation, duration));

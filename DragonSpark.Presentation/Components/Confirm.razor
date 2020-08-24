@@ -15,7 +15,7 @@
             <div class="d-flex justify-content-between">
                 <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                  Style="margin: 10px; width: 150px" class="@SecondaryClass" />
-                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).GuardEntry().UpdateActivity())"
+                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).UpdateActivity().GuardEntry())"
                                  Style="margin: 10px; width: 150px" class="@PrimaryClass" />
             </div>
         </div>
