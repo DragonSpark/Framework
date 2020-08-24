@@ -3,7 +3,7 @@
 @inherits EditorComponent
 
 <DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
-    <Confirm Accept="@Start.A.Callback(Exit).Using(Receiver ?? this).Handle(Exceptions).UpdateActivity().GuardEntry(TimeSpan.FromMilliseconds(100))"
+    <Confirm Accept="@Start.A.Callback(Exit).Using(Receiver ?? this).Handle(Exceptions).UpdateActivity()"
              PrimaryClass="primary button fit"
              SecondaryClass="button fit"
              ChildContent="@ConfirmContent"

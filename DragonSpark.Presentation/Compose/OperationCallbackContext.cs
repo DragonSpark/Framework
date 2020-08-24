@@ -23,9 +23,9 @@ namespace DragonSpark.Presentation.Compose
 
 		public OperationCallbackContext Using(object receiver) => new OperationCallbackContext(receiver, _operation);
 
-		public OperationCallbackContext GuardEntry() => GuardEntry(TimeSpan.FromSeconds(1));
+		public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
-		public OperationCallbackContext GuardEntry(TimeSpan duration)
+		public OperationCallbackContext Throttle(TimeSpan duration)
 			=> new OperationCallbackContext(_receiver, new ThrottleEntryOperation(_operation, duration));
 
 		public OperationCallbackContext UpdateActivity()
@@ -50,9 +50,9 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext<T> Using(object receiver)
 			=> new OperationCallbackContext<T>(receiver, _operation);
 
-		public OperationCallbackContext<T> GuardEntry() => GuardEntry(TimeSpan.FromMilliseconds(250));
+		public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
-		public OperationCallbackContext<T> GuardEntry(TimeSpan duration)
+		public OperationCallbackContext<T> Throttle(TimeSpan duration)
 			=> new OperationCallbackContext<T>(_receiver, new ThrottleEntryOperation<T>(_operation, duration));
 
 		public OperationCallbackContext<T> UpdateActivity()
