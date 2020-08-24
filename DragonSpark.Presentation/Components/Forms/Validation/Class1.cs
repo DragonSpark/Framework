@@ -59,6 +59,13 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		RequiredValidator() : base(new RequiredAttribute()) {}
 	}
 
+	public sealed class EmailAddressValidator : RegularExpressionValidator
+	{
+		public static EmailAddressValidator Default { get; } = new EmailAddressValidator();
+
+		EmailAddressValidator() : base(EmailAddressExpression.Default) {}
+	}
+
 	public class MetadataValueValidator : Condition<object>, IValidateValue<object>
 	{
 		public MetadataValueValidator(ValidationAttribute metadata) : base(metadata.IsValid) {}
@@ -175,6 +182,13 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public uint Maximum { get; }
 	}
 
+	public sealed class EmailAddressExpression : Expression
+	{
+		public static EmailAddressExpression Default { get; } = new EmailAddressExpression();
+
+		EmailAddressExpression() : base(@"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,9})$") {}
+	}
+
 	public sealed class StandardCharactersPattern : Expression
 	{
 		public static StandardCharactersPattern Default { get; } = new StandardCharactersPattern();
@@ -265,11 +279,11 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 	sealed class Submit : IOperation<EditContext>
 	{
 		readonly IOperation<EditContext>  _operation;
-		readonly Await<EditContext, bool> _valid;
+		readonly Operate<EditContext, bool> _valid;
 
-		public Submit(IOperation<EditContext> operation) : this(operation, ValidContext.Default.Await) {}
+		public Submit(IOperation<EditContext> operation) : this(operation, ValidContext.Default.Get) {}
 
-		public Submit(IOperation<EditContext> operation, Await<EditContext, bool> valid)
+		public Submit(IOperation<EditContext> operation, Operate<EditContext, bool> valid)
 		{
 			_operation = operation;
 			_valid     = valid;
@@ -279,7 +293,8 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		{
 			if (await _valid(parameter))
 			{
-				await _operation.Await(parameter);
+				await _operation.Get(parameter);
+				parameter.MarkAsUnmodified();
 			}
 		}
 	}

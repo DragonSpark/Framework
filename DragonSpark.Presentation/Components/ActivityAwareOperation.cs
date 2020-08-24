@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -24,7 +22,6 @@ namespace DragonSpark.Presentation.Components
 
 		public async ValueTask Get()
 		{
-			Debug.WriteLine($"YAAAAAAAAAAAAAAAAAAAAAAAAAA {Thread.CurrentThread.ManagedThreadId} - {GetHashCode()}");
 			_activity.Assign(_subject, _operation);
 			try
 			{
@@ -58,7 +55,7 @@ namespace DragonSpark.Presentation.Components
 			_activity.Assign(_subject, _operation);
 			try
 			{
-				await _operation.Await(parameter);
+				await _operation.Get(parameter);
 			}
 			finally
 			{
