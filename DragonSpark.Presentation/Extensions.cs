@@ -12,6 +12,7 @@ using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.ValidationContext;
 
@@ -35,6 +36,10 @@ namespace DragonSpark.Presentation
 		// TODO: Remove
 		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 			=> new OperationView<TIn, TOut>(@this);
+
+		// TODO: Remove
+		public static IFieldValidator Adapt(this ValidationAttribute @this, string? name = null)
+			=> new MetadataFieldValidator(@this, name);
 
 /**/
 

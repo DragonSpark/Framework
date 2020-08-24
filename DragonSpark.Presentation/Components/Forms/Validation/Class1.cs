@@ -17,32 +17,48 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation
 {
-	class Class1 {}
-
 	public static class Extensions
 	{
-		public static RegularExpressionAttribute Metadata(this IExpression @this,
-		                                                  string message = "The provided value is not valid.")
-			=> new RegularExpressionAttribute(@this.Get()) {ErrorMessage = message};
 
-		public static IFieldValidator Validator(this IExpression @this,
-		                                        string message = "The provided value is not valid.")
-			=> @this.Metadata(message).Adapt();
-
-		public static IFieldValidator Adapt(this ValidationAttribute @this, string? name = null)
-			=> new MetadataFieldValidator(@this, name);
-
-		public static IValidateValue<object> Validator(this ValidationAttribute @this)
-			=> new MetadataValueValidator(@this);
 	}
 
-	public sealed class MetadataValueValidator : IValidateValue<object>
+	sealed class DisplayNamePattern : Text.Text
 	{
-		readonly ValidationAttribute _metadata;
+		public static DisplayNamePattern Default { get; } = new DisplayNamePattern();
 
-		public MetadataValueValidator(ValidationAttribute metadata) => _metadata = metadata;
+		DisplayNamePattern() : base("^[a-zA-Z0-9- _]{{1,{0}}}$") {}
+	}
 
-		public bool Get(object parameter) => _metadata.IsValid(parameter);
+	public class RegularExpressionValidator : MetadataValueValidator
+	{
+		public RegularExpressionValidator(string expression) : this(new RegularExpressionAttribute(expression)) {}
+
+		public RegularExpressionValidator(RegularExpressionAttribute metadata) : base(metadata) {}
+	}
+
+	public sealed class DisplayNameValidation : ISelect<uint, Expression>
+	{
+		public static DisplayNameValidation Default { get; } = new DisplayNameValidation();
+
+		DisplayNameValidation() : this(DisplayNamePattern.Default) {}
+
+		readonly string _pattern;
+
+		public DisplayNameValidation(string pattern) => _pattern = pattern;
+
+		public Expression Get(uint parameter) => new Expression(string.Format(_pattern, parameter.ToString()));
+	}
+
+	public sealed class RequiredValidator : MetadataValueValidator
+	{
+		public static RequiredValidator Default { get; } = new RequiredValidator();
+
+		RequiredValidator() : base(new RequiredAttribute()) {}
+	}
+
+	public class MetadataValueValidator : Condition<object>, IValidateValue<object>
+	{
+		public MetadataValueValidator(ValidationAttribute metadata) : base(metadata.IsValid) {}
 	}
 
 	public class GeneralFieldValidator : FieldValidation<object> {}
@@ -112,6 +128,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 			{
 				_messages.Add(Identifier, ErrorMessage);
 			}
+
 			_context.Verify().NotifyValidationStateChanged();
 		}
 
@@ -129,7 +146,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 	public class Expression : Text.Text, IExpression
 	{
-		protected Expression([NotNull] string instance) : base(instance) {}
+		public Expression([NotNull] string instance) : base(instance) {}
 	}
 
 	public sealed class ValidUrlExpression : Expression
