@@ -8,26 +8,32 @@ namespace DragonSpark.Presentation.Components.Forms
 		[Parameter]
 		public EventCallback<EditContext> Changed { get; set; }
 
-		EditContext _editContext = default!;
+		EditContext _context = default!;
 
 		[CascadingParameter]
 		EditContext EditContext
 		{
-			get => _editContext;
+			get => _context;
 			set
 			{
-				if (_editContext != null)
+				if (_context != null)
 				{
-					_editContext.OnFieldChanged -= FieldChanged;
+					_context.OnFieldChanged           -= FieldChanged;
+					_context.OnValidationStateChanged -= ValidationStateChanged;
 				}
 
-				if ((_editContext = value) != null)
+				if ((_context = value) != null)
 				{
-					_editContext                =  value;
-					_editContext.OnFieldChanged += FieldChanged;
+					_context                          =  value;
+					_context.OnFieldChanged           += FieldChanged;
+					_context.OnValidationStateChanged += ValidationStateChanged;
 				}
-
 			}
+		}
+
+		void ValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+		{
+			Changed.InvokeAsync(EditContext);
 		}
 
 		void FieldChanged(object? sender, FieldChangedEventArgs args)

@@ -7,7 +7,9 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +31,99 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 		public static IFieldValidator Adapt(this ValidationAttribute @this, string? name = null)
 			=> new MetadataFieldValidator(@this, name);
+
+		public static IValidateValue<object> Validator(this ValidationAttribute @this)
+			=> new MetadataValueValidator(@this);
 	}
+
+	public sealed class MetadataValueValidator : IValidateValue<object>
+	{
+		readonly ValidationAttribute _metadata;
+
+		public MetadataValueValidator(ValidationAttribute metadata) => _metadata = metadata;
+
+		public bool Get(object parameter) => _metadata.IsValid(parameter);
+	}
+
+	public class GeneralFieldValidator : FieldValidation<object> {}
+
+	// TODO: name.
+	public class FieldValidation<T> : ComponentBase, IDisposable
+	{
+		ValidationMessageStore _messages = default!;
+		EditContext?           _context;
+
+		[Parameter]
+		public FieldIdentifier Identifier { get; set; }
+
+		[Parameter]
+		public IValidateValue<T> Validator { get; set; } = default!;
+
+		[Parameter]
+		public string ErrorMessage { get; set; } = "This field does not contain a valid value.";
+
+		[CascadingParameter]
+		EditContext? EditContext
+		{
+			get => _context;
+			set
+			{
+				if (_context != value)
+				{
+					if (_context != null)
+					{
+						_messages.Clear();
+						_context.OnFieldChanged        -= FieldChanged;
+						_context.OnValidationRequested -= ValidationRequested;
+					}
+
+					if ((_context = value) != null)
+					{
+						_messages = new ValidationMessageStore(_context);
+
+						_context.OnFieldChanged        += FieldChanged;
+						_context.OnValidationRequested += ValidationRequested;
+					}
+				}
+			}
+		}
+
+		void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
+		{
+			if (!_messages[Identifier].AsValueEnumerable().Any())
+			{
+				Update();
+			}
+		}
+
+		void FieldChanged(object? sender, FieldChangedEventArgs e)
+		{
+			if (e.FieldIdentifier.Equals(Identifier))
+			{
+				Update();
+			}
+		}
+
+		void Update()
+		{
+			_messages.Clear(Identifier);
+			var valid = Validator.Get(Identifier.GetValue<T>());
+			if (!valid)
+			{
+				_messages.Add(Identifier, ErrorMessage);
+			}
+			_context.Verify().NotifyValidationStateChanged();
+		}
+
+		public void Dispose()
+		{
+			EditContext = null;
+		}
+	}
+
+	public interface IValidate : ICondition<ValidationContext> {}
+
+	public interface IValidateValue<in T> : ICondition<T> {}
 
 	public interface IExpression : IResult<string> {}
 
@@ -83,10 +177,21 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 	sealed class ValidContext : IDepending<EditContext>
 	{
-		readonly Func<EditContext, IOperations> _list;
+		static async ValueTask Process(IOperations list)
+		{
+			if (A.Condition(list).Get())
+			{
+				var awaitable = list.Await();
+				list.Execute();
+				await awaitable;
+			}
+		}
+
 		public static ValidContext Default { get; } = new ValidContext();
 
 		ValidContext() : this(OperationsStore.Default.Get) {}
+
+		readonly Func<EditContext, IOperations> _list;
 
 		public ValidContext(Func<EditContext, IOperations> list) => _list = list;
 
@@ -106,16 +211,6 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 			}
 
 			return false;
-		}
-
-		static async ValueTask Process(IOperations list)
-		{
-			if (A.Condition(list).Get())
-			{
-				var awaitable = list.Await();
-				list.Execute();
-				await awaitable;
-			}
 		}
 	}
 
