@@ -111,7 +111,7 @@ namespace DragonSpark.Compose
 
 			@this.Dispose();
 
-			return new ValueTask(Task.CompletedTask);
+			return Task.CompletedTask.ToOperation();
 		}
 
 		public static IDisposable ToDisposable(this object @this) => @this as IDisposable ?? EmptyDisposable.Default;
@@ -138,5 +138,7 @@ namespace DragonSpark.Compose
 			var result  = service != null ? service.To<T>() : default;
 			return result!;
 		}
+
+		public static bool Inverse(this bool @this) => !@this;
 	}
 }
