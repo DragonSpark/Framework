@@ -10,7 +10,7 @@
 
 <RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
     <p style="margin-bottom: 25px;">@ChildContent</p>
-    <ActivityContainer Context="@this">
+    <ActivityContainer Receiver="@this">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"

@@ -56,7 +56,7 @@ namespace DragonSpark.Presentation
 		public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
 /**/
 
-		public static bool IsEnabled(this EditContext @this) => @this.IsModified() && @this.IsValid();
+		public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();
 
 		public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
 

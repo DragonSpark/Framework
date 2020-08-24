@@ -3,12 +3,14 @@
 @inherits EditorComponent
 
 <DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
-    <Confirm Accept="@Start.A.Callback(Continue).Using(Context ?? this).Handle(Exceptions).GuardEntry().UpdateActivity()"
+    <Confirm Accept="@Start.A.Callback(Exit).Using(Receiver ?? this).Handle(Exceptions).UpdateActivity().GuardEntry(TimeSpan.FromMilliseconds(100))"
              PrimaryClass="primary button fit"
              SecondaryClass="button fit"
-             ChildContent="@ChildContent"
-             />
+             ChildContent="@ConfirmContent"
+    />
 </DialogContext>
+
+@ChildContent(EventCallback.Factory.Create(this, Confirm))
 
 @code {
 
@@ -19,13 +21,20 @@
     public string Title { get; set; } = "Changes Detected";
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
+    public RenderFragment<EventCallback> ChildContent { get; set; } = default!;
 
     [Parameter]
-    public IComponent Context { get; set; } = default!;
+    public RenderFragment ConfirmContent { get; set; } = @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
+
+    [Parameter]
+    public object Receiver { get; set; } = default!;
+
+    Task Confirm() => HasChanges ? Invoke() : Exit();
+
+    Task Invoke() => InvokeAsync(() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!)));
 
     protected override void OnNavigationCanceled()
     {
-        InvokeAsync(() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!)));
+        Invoke();
     }
 }

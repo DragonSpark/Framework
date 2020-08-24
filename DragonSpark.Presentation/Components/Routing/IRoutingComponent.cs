@@ -20,7 +20,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		/// Injected User Session Object
 		/// </summary>
 		[Inject]
-		public RouterSession? Session { get; set; }
+		public RouterSession Session { get; set; }
 
 		/// <summary>
 		/// Property to hold the current page Url

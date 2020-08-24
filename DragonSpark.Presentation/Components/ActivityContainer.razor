@@ -12,14 +12,14 @@
     public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
     [Parameter]
-    public IComponent Context { get; set; } = default!;
+    public object Receiver { get; set; } = default!;
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 
     protected override void OnParametersSet()
     {
-        Active = IsActive.Default.Get(Context);
+        Active = IsActive.Default.Get(Receiver ?? this);
         base.OnParametersSet();
     }
 }

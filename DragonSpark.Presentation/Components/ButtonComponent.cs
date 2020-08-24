@@ -13,6 +13,7 @@ namespace DragonSpark.Presentation.Components
 	/// Temp component to enable asynchronous click event:
 	/// https://forum.radzen.com/t/synchronous-call-used-for-radzenbutton-click/2844
 	/// </summary>
+	// TODO: Remove.
 	public class ButtonComponent : RadzenComponent
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder __builder)

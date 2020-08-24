@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +6,8 @@ using System.Threading.Tasks;
 namespace DragonSpark.Presentation.Components.Routing
 {
 	/// <summary>
-	/// Attribution: https://github.com/ShaunCurtis/CEC.Routing/blob/master/CEC.RoutingSample/Components/EditorComponentBase.cs
+	/// Attribution:
+	/// https://github.com/ShaunCurtis/CEC.Routing/blob/master/CEC.RoutingSample/Components/EditorComponentBase.cs
 	/// </summary>
 	public class EditorComponent : ComponentBase, IRoutingComponent, IDisposable
 	{
@@ -15,10 +15,10 @@ namespace DragonSpark.Presentation.Components.Routing
 		public NavigationManager Navigation { get; set; } = default!;
 
 		[Inject]
-		public RouterSession? Session { get; set; } = default!;
+		public RouterSession Session { get; set; } = default!;
 
 		[Parameter]
-		public EventCallback<string> Exited { get; set; }
+		public EventCallback Exited { get; set; }
 
 		public string? PageUrl { get; set; }
 
@@ -37,17 +37,12 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		protected override Task OnInitializedAsync()
 		{
-			PageUrl                     =  Navigation.Uri;
-			Session!.ActiveComponent    =  this;
+			PageUrl                    =  Navigation.Uri;
+			Session!.ActiveComponent   =  this;
 			Session.NavigationCanceled += OnNavigationCanceled;
 			return base.OnInitializedAsync();
 		}
 
-		/// <summary>
-		/// Event Handler for the Navigation Cancelled event
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		void OnNavigationCanceled(object? sender, EventArgs e)
 		{
 			OnNavigationCanceled();
@@ -55,23 +50,22 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		protected virtual void OnNavigationCanceled() => StateHasChanged();
 
-		public Task Exit(string destination)
+		protected Task Exit()
 		{
 			EditContext.MarkAsUnmodified();
-			Navigation.Verify().NavigateTo(destination);
-			return Exited.InvokeAsync(destination);
-		}
 
-		public Task Continue()
-		{
-			var destination = Session.Verify().NavigationCancelledUrl;
-			return destination != null ? Exit(destination) : Task.CompletedTask;
+			var destination = Session.NavigationCancelledUrl;
+			if (destination != null)
+			{
+				Navigation.NavigateTo(destination);
+			}
+
+			return Exited.InvokeAsync(this);
 		}
 
 		public void Dispose()
 		{
-			Session!.NavigationCanceled -= OnNavigationCanceled;
+			Session.NavigationCanceled -= OnNavigationCanceled;
 		}
 	}
-
 }
