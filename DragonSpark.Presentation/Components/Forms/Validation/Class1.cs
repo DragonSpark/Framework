@@ -25,7 +25,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
 	}
 
-	sealed class DisplayNamePattern : Expression
+	public sealed class DisplayNamePattern : Expression
 	{
 		public static DisplayNamePattern Default { get; } = new DisplayNamePattern();
 
@@ -70,7 +70,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 	{
 		public MetadataValueValidator(ValidationAttribute metadata) : base(metadata.IsValid) {}
 	}
-
+	
 	public class GeneralFieldValidator : FieldValidation<object> {}
 
 	// TODO: name.
