@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -13,7 +12,6 @@ using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.ValidationContext;
 
@@ -25,22 +23,12 @@ namespace DragonSpark.Presentation
 			=> Configure.Default.Get(@this);
 
 /**/
-		public static Compose.ValidationContext Validation(this ModelContext _) => Compose.ValidationContext.Default;
-
 		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _,
 		                                                             IValidatingValue<T> validating)
 			=> validating.Callback();
 
 		public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
 			=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
-
-		// TODO: Remove
-		public static OperationView<TIn, TOut> AsView<TIn, TOut>(this ISelecting<TIn, TOut> @this)
-			=> new OperationView<TIn, TOut>(@this);
-
-		// TODO: Remove
-		public static IFieldValidator Adapt(this ValidationAttribute @this, string? name = null)
-			=> new MetadataFieldValidator(@this, name);
 
 /**/
 

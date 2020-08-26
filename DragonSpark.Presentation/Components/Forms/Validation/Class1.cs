@@ -25,6 +25,13 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
 	}
 
+	public sealed class ScreenNamePattern : Expression
+	{
+		public static ScreenNamePattern Default { get; } = new ScreenNamePattern();
+
+		ScreenNamePattern() : base("[a-zA-Z0-9_]") {}
+	}
+
 	public sealed class DisplayNamePattern : Expression
 	{
 		public static DisplayNamePattern Default { get; } = new DisplayNamePattern();

@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Compose
 {
 	public class ValidationOperationContext : ValidationCallbackContext
 	{
-		readonly IOperation<Components.Forms.ValidationContext> _validation;
+		readonly IOperation<ValidationContext> _validation;
 
-		public ValidationOperationContext(IOperation<Components.Forms.ValidationContext> validation) : base(validation)
+		public ValidationOperationContext(IOperation<ValidationContext> validation) : base(validation)
 			=> _validation = validation;
 
 		public ValidationCallbackContext DenoteExceptions()
