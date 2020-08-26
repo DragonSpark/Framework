@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace DragonSpark.Presentation.Components.Forms
+namespace DragonSpark.Presentation.Components.Forms.Validation
 {
 	public readonly struct FieldContext
 	{

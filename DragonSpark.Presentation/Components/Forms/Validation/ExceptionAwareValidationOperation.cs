@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Exception = System.Exception;
 
-namespace DragonSpark.Presentation.Components.Forms
+namespace DragonSpark.Presentation.Components.Forms.Validation
 {
 	sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 	{

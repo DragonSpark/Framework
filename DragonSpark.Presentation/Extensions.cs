@@ -13,7 +13,7 @@ using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValidationContext = DragonSpark.Presentation.Components.Forms.ValidationContext;
+using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
 
 namespace DragonSpark.Presentation
 {
@@ -29,6 +29,11 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
 			=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
+
+		public static IValidateValue<object> Validator(this IExpression @this)
+			=> new RegularExpressionValidator(@this.Get());
+
+		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
 
 /**/
 

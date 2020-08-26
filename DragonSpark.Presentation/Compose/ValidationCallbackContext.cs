@@ -1,17 +1,18 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Components.Forms.Validation;
 
 namespace DragonSpark.Presentation.Compose
 {
-	public class ValidationCallbackContext : IResult<CallbackContext<Components.Forms.ValidationContext>>
+	public class ValidationCallbackContext : IResult<CallbackContext<ValidationContext>>
 	{
-		readonly IOperation<Components.Forms.ValidationContext> _validation;
+		readonly IOperation<ValidationContext> _validation;
 
-		public ValidationCallbackContext(IOperation<Components.Forms.ValidationContext> validation)
+		public ValidationCallbackContext(IOperation<ValidationContext> validation)
 			=> _validation = validation;
 
-		public CallbackContext<Components.Forms.ValidationContext> Get()
-			=> new CallbackContext<Components.Forms.ValidationContext>(_validation.Then().Demote());
+		public CallbackContext<ValidationContext> Get()
+			=> new CallbackContext<ValidationContext>(_validation.Then().Demote());
 	}
 }

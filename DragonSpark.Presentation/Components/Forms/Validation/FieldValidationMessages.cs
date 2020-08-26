@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace DragonSpark.Presentation.Components.Forms
+namespace DragonSpark.Presentation.Components.Forms.Validation
 {
 	public sealed class FieldValidationMessages
 	{
