@@ -23,6 +23,6 @@ namespace DragonSpark.Application.Security.Identity
 	{
 		public static StoredStateKey<T> Default { get; } = new StoredStateKey<T>();
 
-		StoredStateKey() : base(nameof(StoredStateKey<T>), x => x.Identity.Name ?? "Anonymous") {}
+		StoredStateKey() : base(nameof(StoredStateKey<T>), x => x.UserName()) {}
 	}
 }

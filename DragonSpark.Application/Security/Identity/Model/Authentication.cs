@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model {
+namespace DragonSpark.Application.Security.Identity.Model
+{
 	sealed class Authentication : IAuthentication
 	{
 		readonly IExternalSignin         _signin;
@@ -25,7 +26,7 @@ namespace DragonSpark.Application.Security.Identity.Model {
 			if (result.Succeeded)
 			{
 				_log.LogInformation("[{Id}] {Name} logged in with {LoginProvider} provider.",
-				                    parameter.ProviderKey, parameter.Principal.Identity.Name, parameter.LoginProvider);
+				                    parameter.ProviderKey, parameter.Principal.UserName(), parameter.LoginProvider);
 
 				await _synchronization.Get(parameter);
 			}

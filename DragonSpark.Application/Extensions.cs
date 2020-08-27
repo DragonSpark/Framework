@@ -67,6 +67,15 @@ namespace DragonSpark.Application
 
 		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
 
+		public static string DisplayName(this ClaimsPrincipal @this) => @this.DisplayName(Anonymous.Default);
+
+		public static string DisplayName(this ClaimsPrincipal @this, string anonymous)
+			=> @this.FindFirstValue(Security.Identity.DisplayName.Default) ?? @this.UserName(anonymous);
+
+		public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
+
+		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity.Name ?? anonymous;
+
 		public static IUserMapping Promote<T>(this IAccessor<T> @this, string key, bool required = false)
 			where T : IdentityUser
 			=> new UserMapping<T>(@this, key, required);
