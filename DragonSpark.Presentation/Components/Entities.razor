@@ -100,7 +100,7 @@
 
         await Storage.SaveChangesAsync();
 
-        _grid.Reload();
+        await _grid.Reload().ConfigureAwait(false);
     }
 
     [UsedImplicitly]
@@ -127,6 +127,6 @@
     {
         Storage.Set<TEntity>().Remove(entity);
         await Storage.SaveChangesAsync();
-        _grid.Reload();
+        await _grid.Reload().ConfigureAwait(false);
     }
 }
