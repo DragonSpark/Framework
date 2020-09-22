@@ -223,7 +223,7 @@ namespace DragonSpark.Composition
 			}
 		}
 
-		sealed class Provider : IServiceProvider
+		sealed class Provider : IServiceProvider, IDisposable
 		{
 			readonly IActivator       _activator;
 			readonly ICondition<Type> _condition;
@@ -253,6 +253,11 @@ namespace DragonSpark.Composition
 
 					throw;
 				}
+			}
+
+			public void Dispose()
+			{
+				_provider.ToDisposable().Dispose();
 			}
 		}
 	}
