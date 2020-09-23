@@ -17,9 +17,9 @@ namespace DragonSpark.Presentation.Components
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (Source?.HasValue ?? false)
+			if (Source.HasValue)
 			{
-				var value = Source!.Value;
+				var value = Source.Value;
 				if (value is null)
 				{
 					builder.AddContent(1, NotAssignedTemplate);

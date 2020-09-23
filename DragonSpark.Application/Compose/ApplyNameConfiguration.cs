@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Compose
 		readonly Func<string> _name;
 
 		public ApplyNameConfiguration(IResult<Assembly> assembly)
-			: this(assembly.Then().Select(x => x.GetName().Name)) {}
+			: this(assembly.Then().Select(x => x.GetName().Name.Verify())) {}
 
 		public ApplyNameConfiguration(Func<string> name) => _name = name;
 

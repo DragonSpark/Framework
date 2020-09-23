@@ -12,10 +12,10 @@ namespace DragonSpark.Presentation.Components.Forms
 		[Parameter]
 		public EventCallback<T> Changed { get; set; }
 
-		EditContext _editContext = default!;
+		EditContext? _editContext;
 
 		[CascadingParameter]
-		EditContext EditContext
+		EditContext? EditContext
 		{
 			get => _editContext;
 			set
@@ -27,7 +27,6 @@ namespace DragonSpark.Presentation.Components.Forms
 
 				if ((_editContext = value) != null)
 				{
-					_editContext = value;
 					_editContext.OnFieldChanged += FieldChanged;
 				}
 

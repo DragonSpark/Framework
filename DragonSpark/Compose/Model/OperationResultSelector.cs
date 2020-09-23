@@ -11,7 +11,7 @@ namespace DragonSpark.Compose.Model
 	{
 		public static implicit operator OperateOf<T>(OperationResultSelector<T> instance) => instance.Get().Get;
 
-		public static implicit operator AwaitOf<T>(OperationResultSelector<T> instance) => instance.Get().Await!; // ISSUE: NRT
+		public static implicit operator AwaitOf<T>(OperationResultSelector<T> instance) => instance.Get().Await;
 
 		public OperationResultSelector(IResult<ValueTask<T>> instance) : base(instance) {}
 
@@ -27,7 +27,7 @@ namespace DragonSpark.Compose.Model
 	{
 		public static implicit operator Operate<_, T>(OperationResultSelector<_, T> instance) => instance.Get().Get;
 
-		public static implicit operator Await<_, T>(OperationResultSelector<_, T> instance) => instance.Get().Await!; // ISSUE: NRT
+		public static implicit operator Await<_, T>(OperationResultSelector<_, T> instance) => instance.Get().Await;
 
 		public OperationResultSelector(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 

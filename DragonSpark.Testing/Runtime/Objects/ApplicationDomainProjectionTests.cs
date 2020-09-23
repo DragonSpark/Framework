@@ -11,7 +11,7 @@ namespace DragonSpark.Testing.Runtime.Objects
 		[Fact]
 		public void Verify()
 		{
-			var projection = ApplicationDomainProjection.Default.Default(AppDomain.CurrentDomain);
+			var projection = ApplicationDomainProjection.Default.Default(AppDomain.CurrentDomain).Verify();
 			projection.InstanceType.Should().Be(typeof(AppDomain));
 			projection.Keys
 			          .Should()

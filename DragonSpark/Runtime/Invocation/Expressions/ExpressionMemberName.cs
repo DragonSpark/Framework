@@ -12,7 +12,8 @@ namespace DragonSpark.Runtime.Invocation.Expressions
 		ExpressionMemberName() {}
 
 		public MemberInfo Get(LambdaExpression parameter)
-			=> (parameter.Body.AsTo<UnaryExpression, Expression>(unaryExpression => unaryExpression.Operand) ??
+			=> (parameter.Body.AsTo<UnaryExpression, Expression>(unaryExpression => unaryExpression.Operand).Account()
+			    ??
 			    parameter.Body)
 			   .To<MemberExpression>()
 			   .Member;

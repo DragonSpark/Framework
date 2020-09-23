@@ -5,13 +5,13 @@ namespace DragonSpark.Model.Sequences
 {
 	public readonly struct Session<T> : IDisposable
 	{
-		readonly ICommand<T[]> _command;
+		readonly ICommand<T[]>? _command;
 
 		public Session(Store<T> store, ICommand<T[]> command) : this(store.Instance, store.Length, command) {}
 
 		public Session(T[] store, ICommand<T[]> command) : this(store, (uint)store.Length, command) {}
 
-		public Session(T[] store, in uint size, ICommand<T[]> command)
+		public Session(T[] store, in uint size, ICommand<T[]>? command)
 		{
 			Store    = store;
 			Size     = size;

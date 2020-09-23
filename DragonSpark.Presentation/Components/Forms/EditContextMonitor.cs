@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
-	public class EditContextMonitor : ComponentBase
+	public class EditContextMonitor : ComponentBase, IDisposable
 	{
 		[Parameter]
 		public EventCallback<EditContext> Changed { get; set; }
 
-		EditContext _context = default!;
+		EditContext? _context;
 
 		[CascadingParameter]
-		EditContext EditContext
+		EditContext? EditContext
 		{
 			get => _context;
 			set
@@ -24,7 +25,6 @@ namespace DragonSpark.Presentation.Components.Forms
 
 				if ((_context = value) != null)
 				{
-					_context                          =  value;
 					_context.OnFieldChanged           += FieldChanged;
 					_context.OnValidationStateChanged += ValidationStateChanged;
 				}
@@ -33,12 +33,25 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		void ValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
 		{
-			Changed.InvokeAsync(EditContext);
+			Update();
+		}
+
+		void Update()
+		{
+			if (EditContext != null)
+			{
+				Changed.InvokeAsync(EditContext);
+			}
 		}
 
 		void FieldChanged(object? sender, FieldChangedEventArgs args)
 		{
-			Changed.InvokeAsync(EditContext);
+			Update();
+		}
+
+		public void Dispose()
+		{
+			EditContext = null;
 		}
 	}
 }

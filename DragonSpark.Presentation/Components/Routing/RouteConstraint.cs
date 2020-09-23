@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Globalization;
+// ReSharper disable All
 
 namespace DragonSpark.Presentation.Components.Routing
 {

@@ -27,7 +27,6 @@ namespace DragonSpark.Runtime.Environment
 
 		public AssemblySelector(Func<Array<Assembly>, Assembly[]> select) => _select = select;
 
-		public Array<Assembly> Get(Array<Assembly> parameter)
-			=> _select(parameter)?.Union(parameter.Open()).Result() ?? throw new InvalidOperationException();
+		public Array<Assembly> Get(Array<Assembly> parameter) => _select(parameter).Union(parameter.Open()).Result();
 	}
 }

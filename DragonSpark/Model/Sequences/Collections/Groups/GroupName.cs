@@ -13,7 +13,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups
 
 		public override bool Equals(object? obj) => obj is GroupName phase && Equals(phase);
 
-		public override int GetHashCode() => Name != null ? Name.GetHashCode() : 0;
+		public override int GetHashCode() => Name.GetHashCode();
 	}
 
 	sealed class GroupName<T> : Select<T, GroupName>, IGroupName<T>

@@ -18,8 +18,8 @@ namespace DragonSpark.Compose
 			                     .Select(x => x.ToDelegate())
 			                     .ToDelegate())!;
 
-		public static IProjection Default<T>(this IFormattedProjection<T> @this, T parameter)
-			=> @this.Get(null)(parameter);
+		public static IProjection? Default<T>(this IFormattedProjection<T> @this, T parameter)
+			=> @this.Get(null)?.Invoke(parameter);
 
 		public static ISelect<T, IProjection> Project<T>(this IFormatter<T> @this,
 		                                                 params Expression<Func<T, object>>[] expressions)

@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 			using var enumerator = base.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				yield return Transform(enumerator.Current);
+				yield return Transform(enumerator.Current!);
 			}		}
 
 		ISpecimenBuilder Transform(ISpecimenBuilder current)

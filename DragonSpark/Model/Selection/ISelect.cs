@@ -7,5 +7,5 @@ namespace DragonSpark.Model.Selection
 		TOut Get(TIn parameter);
 	}
 
-	public interface ISelect<in T, in TIn, out TOut> : ISelect<T, Func<TIn, TOut>> {}
+	public interface ISelect<in T, in TIn, out TOut> : ISelect<T, Func<TIn, TOut>?> {}
 }

@@ -54,10 +54,10 @@ namespace DragonSpark.Compose.Model
 			=> new Selection<TIn, TOut, TTo>(Get().Get, select).Then();
 
 		public Selector<TIn, TOut> Configure(IAssign<TIn, TOut> configure)
-			=> Configure(configure.Assign!); // ISSUE: https://youtrack.jetbrains.com/issue/RSRP-479406
+			=> Configure(configure.Assign);
 
 		public Selector<TIn, TOut> Configure(ICommand<(TIn, TOut)> configuration)
-			=> Configure(configuration.Execute!); // ISSUE: https://youtrack.jetbrains.com/issue/RSRP-479406
+			=> Configure(configuration.Execute);
 
 		public Selector<TIn, TOut> Configure(Action<TIn, TOut> configure)
 			=> new DragonSpark.Model.Selection.Configure<TIn, TOut>(_subject.Get, configure).Then();
@@ -112,8 +112,7 @@ namespace DragonSpark.Compose.Model
 		public CommandContext<TIn> Terminate(System.Action<TOut> command)
 			=> new SelectedParameterCommand<TIn, TOut>(command, _subject.Get).Then();
 
-		public CommandContext<(TIn, T)> Terminate<T>(IAssign<TOut, T> assign)
-			=> Terminate<T>(assign.Assign!); // ISSUE: https://youtrack.jetbrains.com/issue/RSRP-479406
+		public CommandContext<(TIn, T)> Terminate<T>(IAssign<TOut, T> assign) => Terminate<T>(assign.Assign);
 
 		public CommandContext<(TIn, T)> Terminate<T>(Action<TOut, T> command)
 			=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();

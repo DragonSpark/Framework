@@ -19,9 +19,9 @@ namespace DragonSpark.Runtime.Invocation
 			: this(select, assignable, assignable) {}
 
 		public Deferred(ISelect<TIn, TOut> select, IAssign<TIn, TOut> assign, ISelect<TIn, TOut> source)
-			: base(new Model.Selection.Configure<TIn, TOut>(select.Get, assign.Assign!).Then() // ISSUE: https://youtrack.jetbrains.com/issue/RSRP-479406
-			                                                                           .Unless.Using(source)
-			                                                                           .ResultsInAssigned()) {}
+			: base(new Model.Selection.Configure<TIn, TOut>(select.Get, assign.Assign).Then()
+				       .Unless.Using(source)
+				       .ResultsInAssigned()) {}
 	}
 
 	public class Deferred<T> : Result<T>

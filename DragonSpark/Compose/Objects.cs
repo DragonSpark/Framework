@@ -121,6 +121,9 @@ namespace DragonSpark.Compose
 			=> @this ?? throw new InvalidOperationException(message);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static T? Account<T>(this T? @this) where T : class => @this;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T To<T>(this object @this)
 			=> @this is T result
 				   ? result

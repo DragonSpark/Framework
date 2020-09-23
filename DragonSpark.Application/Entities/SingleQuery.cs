@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class SingleQuery<TKey, TEntity> : ISelecting<TKey, TEntity>
+	public class SingleQuery<TKey, TEntity> : ISelecting<TKey, TEntity?> where TEntity : class
 	{
 		readonly IQueryable<TEntity>   _queryable;
 		readonly IQuery<TKey, TEntity> _query;
@@ -17,7 +17,11 @@ namespace DragonSpark.Application.Entities
 			_query     = query;
 		}
 
-		public ValueTask<TEntity> Get(TKey parameter)
-			=> _queryable.SingleOrDefaultAsync(_query.Get(parameter)).ToOperation();
+		public async ValueTask<TEntity?> Get(TKey parameter)
+		{
+			var entity = await _queryable.SingleOrDefaultAsync(_query.Get(parameter)).ConfigureAwait(false);
+			var result = entity.Account();
+			return result;
+		}
 	}
 }

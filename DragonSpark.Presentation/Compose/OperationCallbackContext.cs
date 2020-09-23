@@ -58,7 +58,6 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext<T> UpdateActivity()
 			=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
 
-		public EventCallback<T> Get()
-			=> EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Promote!)); // ISSUE: NRT
+		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Promote));
 	}
 }

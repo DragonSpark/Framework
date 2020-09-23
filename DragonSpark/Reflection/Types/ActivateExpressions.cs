@@ -25,10 +25,11 @@ namespace DragonSpark.Reflection.Types
 
 		public Expression Get(Type parameter)
 		{
-			var constructor = parameter.GetTypeInfo().DeclaredConstructors.Only() ??
-			                  parameter.GetConstructors().Only() ??
-			                  parameter.GetConstructor(_types);
-			var types      = constructor?.GetParameters().Select(x => x.ParameterType);
+			var constructor = parameter.GetTypeInfo().DeclaredConstructors.Only().Account() ??
+			                  parameter.GetConstructors().Only().Account() ??
+			                  parameter.GetConstructor(_types) ??
+			                  throw new InvalidOperationException($"Constructor for type '{parameter}' not found!");
+			var types      = constructor.GetParameters().Select(x => x.ParameterType);
 			var parameters = Parameters.Get().Open().Zip(types, Defaults.ExpressionZip);
 			var result     = Expression.New(constructor, parameters);
 			return result;

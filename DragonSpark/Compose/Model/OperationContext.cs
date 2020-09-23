@@ -12,16 +12,16 @@ namespace DragonSpark.Compose.Model
 	{
 		public static implicit operator Operate<T>(OperationContext<T> instance) => instance.Get().Get;
 
-		public static implicit operator Await<T>(OperationContext<T> instance) => instance.Get().Await!; // ISSUE: NRT
+		public static implicit operator Await<T>(OperationContext<T> instance) => instance.Get().Await;
 
 		readonly ISelect<T, ValueTask> _subject;
 
 		public OperationContext(ISelect<T, ValueTask> subject) : base(subject) => _subject = subject;
 
-		public OperationContext<T> Append(ISelect<T, ValueTask> command) => Append(command.Await!); // ISSUE: NRT
+		public OperationContext<T> Append(ISelect<T, ValueTask> command) => Append(command.Await);
 
 		public OperationContext<T> Append(Await<T> command)
-			=> new OperationContext<T>(new Appended<T>(Get().Await!, command)); // ISSUE: NRT
+			=> new OperationContext<T>(new Appended<T>(Get().Await, command));
 
 		public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
 			=> new LogOperationContext<T, TParameter>(_subject, log);

@@ -24,7 +24,7 @@ namespace DragonSpark.Application
 	{
 		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity)
 		{
-			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);
+			await @this.Entry(entity!).ReloadAsync().ConfigureAwait(false);
 			return entity;
 		}
 
