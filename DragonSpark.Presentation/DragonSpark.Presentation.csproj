@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.7.0" />
-    <PackageReference Include="Radzen.Blazor" Version="2.14.3" />
+    <PackageReference Include="Radzen.Blazor" Version="2.15.10" />
   </ItemGroup>
 
 </Project>
