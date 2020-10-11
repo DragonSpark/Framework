@@ -18,12 +18,12 @@ namespace DragonSpark.Presentation.Components
 
 		public IEnumerable<T> Current { get; private set; } = default!;
 
-		public async Task Get(LoadDataArgs load)
+		public async Task Get(LoadDataArgs parameter)
 		{
-			var ordered = !string.IsNullOrEmpty(load.OrderBy) ? _source.OrderBy(load.OrderBy) : _source;
-			var all     = !string.IsNullOrEmpty(load.Filter) ? ordered.Where(load.Filter) : ordered;
+			var ordered = !string.IsNullOrEmpty(parameter.OrderBy) ? _source.OrderBy(parameter.OrderBy) : _source;
+			var all     = !string.IsNullOrEmpty(parameter.Filter) ? ordered.Where(parameter.Filter) : ordered;
 			Count   = await all.CountAsync();
-			Current = await all.Skip(load.Skip.GetValueOrDefault()).Take(load.Top.GetValueOrDefault()).ToArrayAsync();
+			Current = await all.Skip(parameter.Skip.GetValueOrDefault()).Take(parameter.Top.GetValueOrDefault()).ToArrayAsync();
 		}
 	}
 }
