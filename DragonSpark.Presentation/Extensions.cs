@@ -57,6 +57,9 @@ namespace DragonSpark.Presentation
 
 		public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();
 
+		public static bool CanSubmit(this EditContext @this, object receiver)
+			=> @this.CanSubmit() && !IsActive.Default.Get(receiver);
+
 		public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
 
 		public static T GetValue<T>(this FieldIdentifier @this)
