@@ -6,15 +6,12 @@ namespace DragonSpark.Presentation.Components
 {
 	sealed class NotificationAwareExceptions : IExceptions
 	{
-		readonly IExceptions         _exceptions;
-		readonly NotificationService _notifications;
-		readonly NotificationMessage _message;
-
-		public NotificationAwareExceptions(IExceptions exceptions, NotificationService notifications)
-			: this(exceptions, notifications, DefaultNotificationMessage.Default) {}
+		readonly IExceptions            _exceptions;
+		readonly NotificationService    _notifications;
+		readonly IExceptionNotification _message;
 
 		public NotificationAwareExceptions(IExceptions exceptions, NotificationService notifications,
-		                                   NotificationMessage message)
+		                                   IExceptionNotification message)
 		{
 			_exceptions    = exceptions;
 			_notifications = notifications;
@@ -25,7 +22,7 @@ namespace DragonSpark.Presentation.Components
 		{
 			var result = _exceptions.Get(parameter);
 
-			_notifications.Notify(_message);
+			_notifications.Notify(_message.Get(parameter.Exception));
 
 			return result;
 		}

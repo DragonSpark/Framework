@@ -15,7 +15,12 @@ namespace DragonSpark.Presentation
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Start<IExceptions>()
+			parameter.Start<IExceptionNotification>()
+			         .Forward<ExceptionNotification>()
+			         .Decorate<ClientExceptionAwareExceptionNotification>()
+			         .Scoped()
+			         //
+			         .Then.Start<IExceptions>()
 			         .Forward<Exceptions>()
 			         .Decorate<NotificationAwareExceptions>()
 			         .Include(x => x.Dependencies)
