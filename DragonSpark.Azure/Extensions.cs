@@ -6,5 +6,7 @@ namespace DragonSpark.Azure
 	{
 		public static BuildHostContext WithAzureConfigurations(this BuildHostContext @this)
 			=> Configure.Default.Get(@this);
+
+		public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Get());
 	}
 }
