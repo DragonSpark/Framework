@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -11,27 +12,45 @@ namespace DragonSpark.Presentation.Components
 			var operation = Source.Get();
 			if (!operation.IsCompleted)
 			{
-				await operation;
+				try
+				{
+					await operation;
+				}
+				// ReSharper disable once CatchAllClause
+				catch (Exception e)
+				{
+					EncounteredException = true;
+					await Exceptions.Get((GetType(), e));
+				}
 			}
 		}
 
+		bool EncounteredException { get; set; }
+
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (Source.HasValue)
+			if (EncounteredException)
 			{
-				var value = Source.Value;
-				if (value is null)
-				{
-					builder.AddContent(1, NotAssignedTemplate);
-				}
-				else
-				{
-					builder.AddContent(2, ChildContent(value));
-				}
+				builder.AddContent(0, ExceptionTemplate ?? NotAssignedTemplate);
 			}
 			else
 			{
-				builder.AddContent(3, LoadingTemplate);
+				if (Source.HasValue)
+				{
+					var value = Source.Value;
+					if (value is null)
+					{
+						builder.AddContent(1, NotAssignedTemplate);
+					}
+					else
+					{
+						builder.AddContent(2, ChildContent(value));
+					}
+				}
+				else
+				{
+					builder.AddContent(3, LoadingTemplate);
+				}
 			}
 		}
 
@@ -46,5 +65,8 @@ namespace DragonSpark.Presentation.Components
 
 		[Parameter]
 		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(1, "This view's required information does not exist.");
+
+		[Parameter]
+		public RenderFragment? ExceptionTemplate { get; set; }
 	}
 }
