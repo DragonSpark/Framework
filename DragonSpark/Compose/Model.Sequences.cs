@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose.Model;
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Array = System.Array;
 
 namespace DragonSpark.Compose
@@ -90,5 +92,15 @@ namespace DragonSpark.Compose
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Session<T> Session<T>(this IStorage<T> @this, in uint size)
 			=> new Session<T>(@this.Get(size), @this);
+
+		public static async ValueTask<ICollection<T>> Emit<TIn, T>(this IEnumerable<TIn> @this, Await<TIn, T> select)
+		{
+			var result = new List<T>();
+			foreach (var @in in @this)
+			{
+				result.Add(await select(@in));
+			}
+			return result;
+		}
 	}
 }
