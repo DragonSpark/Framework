@@ -39,6 +39,10 @@ namespace DragonSpark.Compose
 			=> @this.Get(parameter).ConfigureAwait(false);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ConfiguredValueTaskAwaitable<T> Await<T>(this IAltering<T> @this, T parameter)
+			=> @this.Get(parameter).ConfigureAwait(false);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable<T> Await<T>(this IResult<ValueTask<T>> @this)
 			=> @this.Get().ConfigureAwait(false);
 
