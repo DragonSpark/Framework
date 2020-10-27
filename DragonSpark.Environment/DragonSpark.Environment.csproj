@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>DragonSpark.Environment</AssemblyName>
-    <RootNamespace>DragonSpark.Environment</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
+  </ItemGroup>
 </Project>

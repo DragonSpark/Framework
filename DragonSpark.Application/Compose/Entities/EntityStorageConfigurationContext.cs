@@ -24,15 +24,18 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ApplicationProfileContext SqlServer() => Configuration(SqlStorageConfiguration<T>.Default);
 
+		public ApplicationProfileContext Configuration(Alter<StorageConfigurationBuilder> configuration)
+			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
+
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
 			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
-			           .Configure(Decorator.Default.Get);
+			           .Configure(Initialize.Default.Get);
 
-		sealed class Decorator : IAlteration<BuildHostContext>
+		sealed class Initialize : IAlteration<BuildHostContext>
 		{
-			public static Decorator Default { get; } = new Decorator();
+			public static Initialize Default { get; } = new Initialize();
 
-			Decorator() {}
+			Initialize() {}
 
 			public BuildHostContext Get(BuildHostContext parameter)
 				=> parameter.Decorate<T>((factory, context) => factory.GetInstance<IStorageInitializer<T>>()

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Environment\DragonSpark.Application.Environment.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj" />
   </ItemGroup>
 
 </Project>

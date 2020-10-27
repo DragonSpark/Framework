@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Environment
 			var names = new ComponentAssemblyNames(new SpecificEnvironmentAssemblyName(parameter),
 			                                       EnvironmentAssemblyName.Default);
 			var selector = new AssemblySelector(names);
-			var result   = new Assemblies(selector).Get().Open();
+			var result   = new Assemblies(selector).Get();
 			return result;
 		}
 	}

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+    <ProjectReference Include="..\DragonSpark.Environment\DragonSpark.Environment.csproj" />
+  </ItemGroup>
+</Project>
