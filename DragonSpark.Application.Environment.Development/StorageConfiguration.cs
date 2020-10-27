@@ -1,13 +1,12 @@
-﻿using DragonSpark.Application.Compose.Entities;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace DragonSpark.Application.Environment
 {
-	public sealed class StorageConfiguration : Compose.Entities.StorageConfiguration
+	public sealed class StorageConfiguration : DragonSpark.Application.Compose.Entities.StorageConfiguration
 	{
 		[UsedImplicitly]
 		public static StorageConfiguration Default { get; } = new StorageConfiguration();
 
-		StorageConfiguration() : base(EmptyStorageConfiguration.Default.Get) {}
+		StorageConfiguration() : base(x => x.EnableSensitiveDataLogging()) {}
 	}
 }
