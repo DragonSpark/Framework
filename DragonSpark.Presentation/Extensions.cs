@@ -23,6 +23,10 @@ namespace DragonSpark.Presentation
 			=> Configure.Default.Get(@this);
 
 /**/
+		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext context,
+		                                                             IValidateValue<T> validate)
+			=> context.Callback(validate.Adapt());
+
 		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _,
 		                                                             IValidatingValue<T> validating)
 			=> validating.Callback();
@@ -34,6 +38,9 @@ namespace DragonSpark.Presentation
 			=> new RegularExpressionValidator(@this.Get());
 
 		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
+
+		public static IValidatingValue<T> Adapt<T>(this IValidateValue<T> @this)
+			=> new ValidatingValueAdapter<T>(@this);
 
 /**/
 
