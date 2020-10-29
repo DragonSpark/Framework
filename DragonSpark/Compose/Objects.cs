@@ -104,6 +104,7 @@ namespace DragonSpark.Compose
 
 		public static ValueTask Disposed(this IDisposable @this)
 		{
+			// ReSharper disable once SuspiciousTypeConversion.Global
 			if (@this is IAsyncDisposable disposable)
 			{
 				return disposable.DisposeAsync();
