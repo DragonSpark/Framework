@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Store;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
@@ -8,6 +9,7 @@ using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -112,5 +114,10 @@ namespace DragonSpark.Application
 			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
 
 		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
+
+		/**/
+
+		public static Array<T> ApplyOrder<T>(this Array<T> @this) where T : class, IOrderAware
+			=> Ordered<T>.Default.Get(@this);
 	}
 }
