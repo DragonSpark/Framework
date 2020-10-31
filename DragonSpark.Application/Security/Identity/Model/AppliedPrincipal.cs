@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 				var claims = _definitions.Get(parameter.LoginProvider)
 				                         .ClaimMappings.Open()
 				                         .Get(parameter.Principal)
-				                         .Where(x => x != null)
+				                         .Where(x => x.Account() != null)
 				                         .ToArray();
 
 				var identity = new ClaimsIdentity(claims);

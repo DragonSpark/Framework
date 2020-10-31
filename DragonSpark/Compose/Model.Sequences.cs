@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose.Model;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -19,12 +19,12 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this)
+		public static Model.Selector<_, T[]> Open<_, T>(this Model.Selector<_, IEnumerable<T>> @this)
 			=> @this.Select(x => x.Open());
 
-		public static Selector<_, T[]> Open<_, T>(this Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
+		public static Model.Selector<_, T[]> Open<_, T>(this Model.Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
 
-		public static Selector<_, TTo> Select<_, T, TTo>(this Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
+		public static Model.Selector<_, TTo> Select<_, T, TTo>(this Model.Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
 			=> @this.Open().Select(select);
 
 		/**/
@@ -96,11 +96,39 @@ namespace DragonSpark.Compose
 		public static async ValueTask<ICollection<T>> Emit<TIn, T>(this IEnumerable<TIn> @this, Await<TIn, T> select)
 		{
 			var result = new List<T>();
-			foreach (var @in in @this)
+			foreach (var @in in @this.AsValueEnumerable())
 			{
-				result.Add(await select(@in));
+				result.Add(await select(@in!));
 			}
 			return result;
 		}
+
+		public static async IAsyncEnumerable<T> Adapt<T>(this IEnumerable<ValueTask<T>> @this)
+		{
+			using var iterator = @this.GetEnumerator();
+			while (iterator.MoveNext())
+			{
+				yield return await iterator.Current;
+			}
+		}
+
+		public static async IAsyncEnumerable<T> Adapt<T>(this IEnumerable<ConfiguredValueTaskAwaitable<T>> @this)
+		{
+			using var iterator = @this.GetEnumerator();
+			while (iterator.MoveNext())
+			{
+				yield return await iterator.Current;
+			}
+		}
+
+		public static async IAsyncEnumerable<TTo> Select<T, TTo>(this IAsyncEnumerable<T> @this, Await<T, TTo> select)
+		{
+			var iterator = @this.GetAsyncEnumerator();
+			while (await iterator.MoveNextAsync())
+			{
+				yield return await select(iterator.Current);
+			}
+		}
+
 	}
 }

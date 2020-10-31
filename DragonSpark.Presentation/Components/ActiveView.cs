@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -10,28 +9,24 @@ namespace DragonSpark.Presentation.Components
 		protected override async Task OnInitializedAsync()
 		{
 			var operation = Source.Get();
-			if (!operation.IsCompleted)
+			try
 			{
-				try
-				{
-					await operation;
-				}
-				// ReSharper disable once CatchAllClause
-				catch (Exception e)
-				{
-					EncounteredException = true;
-					await Exceptions.Get((GetType(), e));
-				}
+				await operation;
+			}
+			// ReSharper disable once CatchAllClause
+			catch
+			{
+				Fragment = ExceptionTemplate;
 			}
 		}
 
-		bool EncounteredException { get; set; }
+		RenderFragment? Fragment { get; set; }
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (EncounteredException)
+			if (Fragment != null)
 			{
-				builder.AddContent(0, ExceptionTemplate ?? NotAssignedTemplate);
+				builder.AddContent(0, Fragment);
 			}
 			else
 			{
@@ -64,9 +59,11 @@ namespace DragonSpark.Presentation.Components
 		public RenderFragment LoadingTemplate { get; set; } = x => x.AddContent(3, "Loading, please wait.");
 
 		[Parameter]
-		public RenderFragment NotAssignedTemplate { get; set; } = x => x.AddContent(1, "This view's required information does not exist.");
+		public RenderFragment NotAssignedTemplate { get; set; } =
+			x => x.AddContent(1, "This view's required information does not exist.");
 
 		[Parameter]
-		public RenderFragment? ExceptionTemplate { get; set; }
+		public RenderFragment ExceptionTemplate { get; set; }
+			= x => x.AddContent(2, "There was a problem loading this view.");
 	}
 }

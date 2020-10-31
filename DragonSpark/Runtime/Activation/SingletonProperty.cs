@@ -16,19 +16,19 @@ namespace DragonSpark.Runtime.Activation
 		SingletonProperty() : this(SingletonCandidates.Default) {}
 
 		public SingletonProperty(IResult<Array<string>> candidates)
-			: base(Start.A.Selection.Of.System.Type.By.Delegate<string, PropertyInfo>(x => x.GetProperty!)
-			            .Select(candidates.Select!)
+			: base(Start.A.Selection.Of.System.Type.By.Delegate<string, PropertyInfo?>(x => x.GetProperty)
+			            .Select(candidates.Select)
 			            .Then()
 			            .Value()
 			            .Select(Query.Instance)) {}
 
-		sealed class Query : IReduce<PropertyInfo, PropertyInfo>
+		sealed class Query : IReduce<PropertyInfo?, PropertyInfo>
 		{
 			public static Query Instance { get; } = new Query();
 
 			Query() : this(IsSingletonProperty.Default.Get, Is.Assigned()) {}
 
-			readonly Predicate<PropertyInfo>      _is, _assigned;
+			readonly Predicate<PropertyInfo> _is, _assigned;
 
 			public Query(Predicate<PropertyInfo> @is, Predicate<PropertyInfo> assigned)
 			{
@@ -36,7 +36,13 @@ namespace DragonSpark.Runtime.Activation
 				_assigned = assigned;
 			}
 
-			public PropertyInfo Get(PropertyInfo[] parameter) => parameter.Where(_is).Where(_assigned).First().Value;
+			public PropertyInfo Get(PropertyInfo?[] parameter) => parameter.AsValueEnumerable()
+			                                                               .Where(x => x != null)
+			                                                               .Select(x => x.Verify())
+			                                                               .Where(_is)
+			                                                               .Where(_assigned)
+			                                                               .First()
+			                                                               .Value!;
 		}
 	}
 }

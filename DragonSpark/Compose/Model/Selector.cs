@@ -22,7 +22,7 @@ namespace DragonSpark.Compose.Model
 	{
 		public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance.Get().Get;
 
-		public static implicit operator NetFabric.Hyperlinq.Selector<TIn, TOut>(Selector<TIn, TOut> instance)
+		public static implicit operator NetFabric.Hyperlinq.NullableSelector<TIn, TOut>(Selector<TIn, TOut> instance)
 			=> instance.Get().Get;
 
 		readonly ISelect<TIn, TOut> _subject;

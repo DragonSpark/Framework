@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -13,12 +14,27 @@ namespace DragonSpark.Presentation.Components
 
 		protected override async Task OnParametersSetAsync()
 		{
-			foreach (var operation in _properties.Get(GetType()).Open())
+			var type = GetType();
+			foreach (var operation in _properties.Get(type).Open())
 			{
 				var task = operation(this).Get();
-				if (!task.IsCompleted)
+
+				try
 				{
-					await task.ConfigureAwait(false);
+					if (task.IsFaulted)
+					{
+						throw task.AsTask().Exception!;
+					}
+
+					if (!task.IsCompleted)
+					{
+						await task.ConfigureAwait(false);
+					}
+				}
+				// ReSharper disable once CatchAllClause
+				catch (Exception e)
+				{
+					await Exceptions.Get((type, e));
 				}
 			}
 		}

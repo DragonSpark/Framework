@@ -6,7 +6,6 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Enumerable = NetFabric.Hyperlinq.Enumerable;
 
 // ReSharper disable TooManyArguments
 // ReSharper disable once PossibleInvalidOperationException
@@ -22,7 +21,7 @@ namespace DragonSpark.Compose
 
 		public static IArray<T> Promote<T>(this Array<T> @this) => new ArrayInstance<T>(@this);
 
-		public static Enumerable.ValueEnumerableWrapper<T1> Get<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this,
+		public static EnumerableExtensions.ValueEnumerableWrapper<T1> Get<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this,
 		                                                                T2 parameter)
 			=> @this.Introduce(parameter, tuple => tuple.Item1.Get(tuple.Item2)).AsValueEnumerable();
 

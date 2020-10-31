@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
@@ -24,11 +25,16 @@ namespace DragonSpark.Application
 {
 	public static class Extensions
 	{
-		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity)
+		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity) where T : notnull
 		{
-			await @this.Entry(entity!).ReloadAsync().ConfigureAwait(false);
+			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);
 			return entity;
 		}
+
+		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
+			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
+
+		/**/
 
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
 			=> @this.WithIdentity(options => {});

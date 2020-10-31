@@ -16,14 +16,14 @@ namespace DragonSpark.Presentation.Components
 
 		public async ValueTask Get()
 		{
-			if (_source.IsCompleted)
+			if (_source.IsCompletedSuccessfully)
 			{
 				Value = _source.Result;
 			}
 			else
 			{
 				HasValue = false;
-				Value = await _source;
+				Value    = await _source;
 			}
 			HasValue = true;
 		}

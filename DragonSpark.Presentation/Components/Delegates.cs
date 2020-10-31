@@ -33,10 +33,11 @@ namespace DragonSpark.Presentation.Components
 		                   A.Type<T>().GetRuntimeProperties().Result()) {}
 
 		readonly Predicate<PropertyInfo> _where;
-		readonly Selector<PropertyInfo, Func<ComponentBase, IOperation>> _select;
+		readonly NullableSelector<PropertyInfo, Func<ComponentBase, IOperation>> _select;
 		readonly Array<PropertyInfo>                                 _properties;
 
-		public Delegates(Predicate<PropertyInfo> where, Selector<PropertyInfo, Func<ComponentBase, IOperation>> select,
+		public Delegates(Predicate<PropertyInfo> where,
+		                 NullableSelector<PropertyInfo, Func<ComponentBase, IOperation>> select,
 		                 Array<PropertyInfo> properties)
 		{
 			_where      = @where;

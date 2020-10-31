@@ -18,10 +18,10 @@ namespace DragonSpark.Compose
 		public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
-			=> @this.Select(new NetFabric.Hyperlinq.Selector<TFrom, TTo>(select));
+			=> @this.Select(new NullableSelector<TFrom, TTo>(select));
 
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this,
-		                                                     NetFabric.Hyperlinq.Selector<TFrom, TTo> select)
+		                                                     NullableSelector<TFrom, TTo> select)
 			=> @this.Then()
 			        .Select(x => x.Open().Select(select).ToArray().Result())
 			        .Get();
