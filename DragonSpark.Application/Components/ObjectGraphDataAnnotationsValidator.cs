@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components
 {
 	/// <summary>
 	/// Attribution: https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation
@@ -66,11 +66,11 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 			}
 		}
 
-		System.ComponentModel.DataAnnotations.ValidationContext New(object value) => New(value, new HashSet<object>());
+		ValidationContext New(object value) => New(value, new HashSet<object>());
 
-		System.ComponentModel.DataAnnotations.ValidationContext New(object value, HashSet<object> visited)
+		ValidationContext New(object value, HashSet<object> visited)
 		{
-			var result = new System.ComponentModel.DataAnnotations.ValidationContext(value);
+			var result = new ValidationContext(value);
 			result.Items.Add(ValidatorKey, this);
 			result.Items.Add(ObjectsKey, visited);
 			return result;
@@ -83,7 +83,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		}
 
 		internal static void TryValidateRecursive(object value,
-		                                          System.ComponentModel.DataAnnotations.ValidationContext context)
+		                                          ValidationContext context)
 		{
 			if (context.Items.TryGetValue(ValidatorKey, out var result) &&
 			    result is ObjectGraphDataAnnotationsValidator validator)

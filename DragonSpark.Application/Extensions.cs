@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -125,5 +126,8 @@ namespace DragonSpark.Application
 
 		public static Array<T> ApplyOrder<T>(this Array<T> @this) where T : class, IOrderAware
 			=> Ordered<T>.Default.Get(@this);
+
+		public static SelectedCollection<T> Selected<T>(this IEnumerable<T> @this) where T : class
+			=> new SelectedCollection<T>(@this);
 	}
 }

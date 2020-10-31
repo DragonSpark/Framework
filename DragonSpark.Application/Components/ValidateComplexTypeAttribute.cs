@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components
 {
 	/// <summary>
 	/// Attribution: https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation
@@ -10,8 +10,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 	public sealed class ValidateComplexTypeAttribute : ValidationAttribute
 	{
 		/// <inheritdoc />
-		protected override ValidationResult IsValid(object value,
-		                                            System.ComponentModel.DataAnnotations.ValidationContext context)
+		protected override ValidationResult IsValid(object value, ValidationContext context)
 		{
 			ObjectGraphDataAnnotationsValidator.TryValidateRecursive(value, context);
 
