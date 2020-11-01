@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.Runtime
 {
@@ -7,7 +6,6 @@ namespace DragonSpark.Application.Runtime
 	{
 		public SelectedCollection(IEnumerable<T> list) : base(list) {}
 
-		[Required]
-		public T? Selected { get; set; }
+		public virtual T? Selected { get; set; }
 	}
 }

@@ -23,7 +23,7 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		[Parameter, UsedImplicitly]
-		public IEnumerable<TItem>? Content { get; set; } = default!;
+		public IEnumerable<TItem>? Content { get; set; }
 
 		[Parameter, UsedImplicitly]
 		public RenderFragment<IEnumerable<TItem>>? ChildContent { get; set; }
