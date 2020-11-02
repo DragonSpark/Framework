@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 
@@ -40,6 +41,6 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		[Inject]
-		protected IExceptions Exceptions { get; set; } = default!;
+		protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;
 	}
 }

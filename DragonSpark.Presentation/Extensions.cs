@@ -50,6 +50,9 @@ namespace DragonSpark.Presentation
 		public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit)
 			=> new SubmitCallbackContext(submit);
 
+		public static CallbackContext<object> Callback(this ModelContext _, Func<object, Task> method)
+			=> new CallbackContext<object>(method);
+
 		public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
 			=> new CallbackContext<T>(method);
 

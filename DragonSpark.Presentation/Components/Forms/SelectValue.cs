@@ -38,6 +38,6 @@ namespace DragonSpark.Presentation.Components.Forms
 		[UsedImplicitly]
 		public static SelectValue<T, TValue> Default { get; } = new SelectValue<T, TValue>();
 
-		SelectValue() : base(PropertyDelegate<T, TValue>.Default.Then().Stores().Reference().Get) {}
+		SelectValue() : base(DefaultPropertyDelegate<T, TValue>.Default.Then().Stores().Reference().Get) {}
 	}
 }

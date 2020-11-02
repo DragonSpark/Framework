@@ -1,30 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Application.Components.Validation
 {
 	public readonly struct NewValidationContext
 	{
-		public NewValidationContext(ObjectGraphValidator validator, object instance)
-			: this(validator, instance, new HashSet<object>()) {}
+		public NewValidationContext(FieldIdentifier field, ObjectGraphValidator validator)
+			: this(field, validator, new ModelValidationContext()) {}
 
-		public NewValidationContext(ObjectGraphValidator validator, object instance, HashSet<object> visited)
+		public NewValidationContext(object instance, ObjectGraphValidator validator, ModelValidationContext context)
+			: this(new FieldIdentifier(instance, string.Empty), validator, context) {}
+
+		public NewValidationContext(FieldIdentifier field, ObjectGraphValidator validator, ModelValidationContext context)
 		{
+			Field  = field;
 			Validator = validator;
-			Instance  = instance;
-			Visited   = visited;
+			Context   = context;
 		}
 
+		public FieldIdentifier Field { get; }
 		public ObjectGraphValidator Validator { get; }
+		public ModelValidationContext Context { get; }
 
-		public object Instance { get; }
-
-		public HashSet<object> Visited { get; }
-
-		public void Deconstruct(out ObjectGraphValidator validator, out object instance, out HashSet<object> visited)
+		public void Deconstruct(out FieldIdentifier field, out ObjectGraphValidator validator, out ModelValidationContext context)
 		{
+			field     = Field;
 			validator = Validator;
-			instance  = Instance;
-			visited   = Visited;
+			context   = Context;
 		}
 	}
 }

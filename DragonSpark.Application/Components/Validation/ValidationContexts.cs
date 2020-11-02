@@ -1,33 +1,35 @@
 ﻿using DragonSpark.Compose;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.Components.Validation
 {
 	public sealed class ValidationContexts : IValidationContexts
 	{
+		readonly IValidatorKey<ModelValidationContext> _context;
+		readonly IValidatorKey<ObjectGraphValidator>   _validator;
 		public static ValidationContexts Default { get; } = new ValidationContexts();
 
-		ValidationContexts() : this(ValidatorKey.Default, VisitedKey.Default) {}
+		ValidationContexts() : this(ModelValidationContextKey.Default, ValidatorKey.Default) {}
 
-		readonly IValidatorKey<ObjectGraphValidator> _key;
-		readonly IValidatorKey<HashSet<object>>      _visited;
-
-		public ValidationContexts(IValidatorKey<ObjectGraphValidator> key, IValidatorKey<HashSet<object>> visited)
+		public ValidationContexts(IValidatorKey<ModelValidationContext> context,
+		                          IValidatorKey<ObjectGraphValidator> validator)
 		{
-			_key     = key;
-			_visited = visited;
+			_context   = context;
+			_validator = validator;
 		}
 
 		public ValidationContext Get(NewValidationContext parameter)
 		{
-			var (validator, instance, visited) = parameter;
-			var result = new ValidationContext(instance);
-			_key.Assign(result, validator);
-			_visited.Assign(result, visited);
+			var (field, validator, context) = parameter;
+			var result = new ValidationContext(field.Model) { MemberName = field.FieldName };
+
+			_context.Assign(result, context);
+			_validator.Assign(result, validator);
 			return result;
 		}
 
-		public HashSet<object> Get(ValidationContext parameter) => _visited.Get(parameter) ?? new HashSet<object>();
+		public ModelValidationContext Get(ValidationContext parameter)
+			=> _context.Get(parameter) ?? throw new InvalidOperationException();
 	}
 }

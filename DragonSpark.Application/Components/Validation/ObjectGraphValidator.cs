@@ -1,90 +1,86 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components.Forms;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace DragonSpark.Application.Components.Validation
 {
 	public sealed class ObjectGraphValidator
 	{
-		readonly Func<object?, bool>    _condition;
-		readonly ValidationMessageStore _store;
-		readonly IValidationContexts    _contexts;
+		readonly Func<object?, bool> _condition;
+		readonly IValidationContexts _contexts;
 
-		public ObjectGraphValidator(ValidationMessageStore store) : this(Is.Assigned<object?>(), store) {}
+		public ObjectGraphValidator() : this(Is.Assigned<object?>()) {}
 
-		public ObjectGraphValidator(Func<object?, bool> condition, ValidationMessageStore store)
-			: this(condition, store, ValidationContexts.Default) {}
+		public ObjectGraphValidator(Func<object?, bool> condition) : this(condition, ValidationContexts.Default) {}
 
-		public ObjectGraphValidator(Func<object?, bool> condition, ValidationMessageStore store,
-		                            IValidationContexts contexts)
+		public ObjectGraphValidator(Func<object?, bool> condition, IValidationContexts contexts)
 		{
 			_condition = condition;
-			_store     = store;
 			_contexts  = contexts;
 		}
 
-		public void Validate(object? value)
+		public ModelValidationContext Validate(object? value)
 		{
-			Enter(value, new HashSet<object>());
+			var result = new ModelValidationContext();
+			Validate(value, result);
+			return result;
 		}
 
-		public void Validate(object? value, ValidationContext context)
-		{
-			Enter(value, _contexts.Get(context));
-		}
-
-		void Enter(object? value, HashSet<object> visited)
+		public void Validate(object? value, ModelValidationContext context)
 		{
 			if (_condition(value))
 			{
-				Apply(value.Verify(), visited);
+
+				Apply(value.Verify(), context);
 			}
 		}
 
-		void Apply(object value, HashSet<object> visited)
+		void Apply(object value, ModelValidationContext context)
 		{
-			if (visited.Add(value))
+			if (context.Get(value))
 			{
 				if (value is IEnumerable<object> enumerable)
 				{
-					foreach (var item in enumerable)
+					foreach (var item in enumerable.AsValueEnumerable())
 					{
-						Enter(item, visited);
+						Validate(item, context);
 					}
 				}
 
-				Visit(value, visited);
+				Visit(value, context);
 			}
 		}
 
-		void Visit(object value, HashSet<object> visited)
+		void Visit(object value, ModelValidationContext context)
 		{
-			var results = new List<ValidationResult>();
-			Validate(value, visited, results);
-
-			foreach (var item in results)
+			var path = context.Get();
+			foreach (var item in Results(value, context).AsValueEnumerable())
 			{
-				if (item.MemberNames.Any())
+				var names = item!.MemberNames.AsValueEnumerable();
+				if (names.Any())
 				{
-					foreach (var name in item.MemberNames)
+					foreach (var name in names)
 					{
-						_store.Add(new FieldIdentifier(value, name), item.ErrorMessage);
+						context.Add(new ValidationResultMessage(path, new FieldIdentifier(value, name!),
+						                                        item.ErrorMessage));
 					}
 				}
 				else
 				{
-					_store.Add(new FieldIdentifier(value, string.Empty), item.ErrorMessage);
+					context.Add(new ValidationResultMessage(path, value, item.ErrorMessage));
 				}
 			}
 		}
 
-		void Validate(object value, HashSet<object> visited, ICollection<ValidationResult> results)
+		IEnumerable<ValidationResult> Results(object value, ModelValidationContext model)
 		{
-			var context = _contexts.Get(new NewValidationContext(this, value, visited));
-			Validator.TryValidateObject(value, context, results, true);
+			var result  = new List<ValidationResult>();
+			var context = _contexts.Get(new NewValidationContext(value, this, model));
+			Validator.TryValidateObject(value, context, result, true);
+			return result;
 		}
 	}
 }

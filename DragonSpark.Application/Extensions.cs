@@ -12,6 +12,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -129,5 +130,10 @@ namespace DragonSpark.Application
 
 		public static SelectedCollection<T> Selected<T>(this IEnumerable<T> @this) where T : class
 			=> new SelectedCollection<T>(@this);
+
+		/**/
+
+		public static (Type Owner, string Name) Key(this FieldIdentifier @this)
+			=> (@this.Model.GetType(), @this.FieldName);
 	}
 }

@@ -9,16 +9,29 @@ namespace DragonSpark.Application.Components.Validation
 	[AttributeUsage(AttributeTargets.Property)]
 	public class ValidateComplexTypeAttribute : ValidationAttribute
 	{
+		readonly IValidationContexts                 _contexts;
 		readonly IValidatorKey<ObjectGraphValidator> _validator;
 
-		public ValidateComplexTypeAttribute() : this(ValidatorKey.Default) {}
+		public ValidateComplexTypeAttribute()
+			: this(ValidationContexts.Default, ValidatorKey.Default) {}
 
-		public ValidateComplexTypeAttribute(IValidatorKey<ObjectGraphValidator> validator) => _validator = validator;
+		public ValidateComplexTypeAttribute(IValidationContexts contexts, IValidatorKey<ObjectGraphValidator> validator)
+		{
+			_contexts  = contexts;
+			_validator = validator;
+		}
 
 		/// <inheritdoc />
 		protected override ValidationResult IsValid(object value, ValidationContext context)
 		{
-			_validator.Get(context)?.Validate(value, context);
+			var validator = _validator.Get(context);
+			if (validator != null)
+			{
+				var validation = _contexts.Get(context);
+				validation.Execute(context.MemberName);
+				validator.Validate(value, validation);
+			}
+
 
 			return ValidationResult.Success;
 		}

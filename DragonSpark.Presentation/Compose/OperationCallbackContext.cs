@@ -36,6 +36,7 @@ namespace DragonSpark.Presentation.Compose
 
 	public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	{
+		
 		public static implicit operator EventCallback<T>(OperationCallbackContext<T> instance) => instance.Get();
 
 		readonly object        _receiver;
