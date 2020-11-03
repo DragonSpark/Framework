@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Commands
 {
-	sealed class FixedParameterCommand<T> : ICommand
+	public class FixedParameterCommand<T> : ICommand
 	{
 		readonly Action<T> _command;
 		readonly T         _parameter;

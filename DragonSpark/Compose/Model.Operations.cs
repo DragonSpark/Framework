@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System.Runtime.CompilerServices;
@@ -49,6 +50,8 @@ namespace DragonSpark.Compose
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ConfiguredValueTaskAwaitable Await(this IResult<ValueTask> @this)
 			=> @this.Get().ConfigureAwait(false);
+
+		public static Task Promote(this IOperation<None> @this) => @this.Get().AsTask();
 
 		public static Task Promote(this IOperation @this) => @this.Get().AsTask();
 

@@ -63,6 +63,7 @@ namespace DragonSpark.Application.Components.Validation
 			var edit    = EditContext.Verify();
 			var context = Validator.Validate(edit.Model);
 
+			_messages.Execute();
 			_messages.Execute(context);
 
 			edit.NotifyValidationStateChanged();
@@ -79,6 +80,7 @@ namespace DragonSpark.Application.Components.Validation
 			System.ComponentModel.DataAnnotations.Validator.TryValidateProperty(value, context, results);
 
 			_messages.Execute((field, results));
+			_messages.Execute(_contexts.Get(context));
 
 			edit.NotifyValidationStateChanged();
 		}

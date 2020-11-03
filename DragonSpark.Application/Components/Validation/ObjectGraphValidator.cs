@@ -22,14 +22,14 @@ namespace DragonSpark.Application.Components.Validation
 			_contexts  = contexts;
 		}
 
-		public ModelValidationContext Validate(object? value)
+		public GraphValidationContext Validate(object? value)
 		{
-			var result = new ModelValidationContext();
+			var result = new GraphValidationContext();
 			Validate(value, result);
 			return result;
 		}
 
-		public void Validate(object? value, ModelValidationContext context)
+		public void Validate(object? value, GraphValidationContext context)
 		{
 			if (_condition(value))
 			{
@@ -38,7 +38,7 @@ namespace DragonSpark.Application.Components.Validation
 			}
 		}
 
-		void Apply(object value, ModelValidationContext context)
+		void Apply(object value, GraphValidationContext context)
 		{
 			if (context.Get(value))
 			{
@@ -54,7 +54,7 @@ namespace DragonSpark.Application.Components.Validation
 			}
 		}
 
-		void Visit(object value, ModelValidationContext context)
+		void Visit(object value, GraphValidationContext context)
 		{
 			var path = context.Get();
 			foreach (var item in Results(value, context).AsValueEnumerable())
@@ -75,7 +75,7 @@ namespace DragonSpark.Application.Components.Validation
 			}
 		}
 
-		IEnumerable<ValidationResult> Results(object value, ModelValidationContext model)
+		IEnumerable<ValidationResult> Results(object value, GraphValidationContext model)
 		{
 			var result  = new List<ValidationResult>();
 			var context = _contexts.Get(new NewValidationContext(value, this, model));

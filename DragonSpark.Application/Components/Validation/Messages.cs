@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace DragonSpark.Application.Components.Validation
 {
-	public sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
-	                               ICommand<(FieldIdentifier Field, IList<ValidationResult> Results)>,
-	                               ICommand
+	sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
+	                        ICommand<(FieldIdentifier Field, IEnumerable<ValidationResult> Results)>,
+	                        ICommand
 	{
 		readonly EditContext                          _edit;
 		readonly ValidationMessageStore               _store;
@@ -29,9 +29,6 @@ namespace DragonSpark.Application.Components.Validation
 
 		public void Execute(IEnumerable<ValidationResultMessage> parameter)
 		{
-			_store.Clear();
-			_messages.Clear();
-
 			foreach (var message in parameter.AsValueEnumerable())
 			{
 				_messages.Add(message);
@@ -39,7 +36,7 @@ namespace DragonSpark.Application.Components.Validation
 			}
 		}
 
-		public void Execute((FieldIdentifier Field, IList<ValidationResult> Results) parameter)
+		public void Execute((FieldIdentifier Field, IEnumerable<ValidationResult> Results) parameter)
 		{
 			var (field, results) = parameter;
 			_store.Clear(field);
@@ -48,7 +45,7 @@ namespace DragonSpark.Application.Components.Validation
 			{
 				var select = _messages.Introduce(field.FieldName)
 				                      .AsValueEnumerable()
-				                      .Where(x => x.Item1.Path.StartsWith(x.Item2))
+				                      .Where(x => x.Item1.Path.Equals(x.Item2))
 				                      .Select(x => x.Item1);
 				foreach (var message in select.Any() ? select.ToArray() : Empty.Array<ValidationResultMessage>())
 				{
@@ -63,6 +60,7 @@ namespace DragonSpark.Application.Components.Validation
 		public void Execute(None parameter)
 		{
 			_store.Clear();
+			_messages.Clear();
 		}
 	}
 }

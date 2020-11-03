@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Components.Validation
 {
-	sealed class ModelValidationContextKey : ValidatorKey<ModelValidationContext>
+	sealed class ModelValidationContextKey : ValidatorKey<GraphValidationContext>
 	{
 		public static ModelValidationContextKey Default { get; } = new ModelValidationContextKey();
 

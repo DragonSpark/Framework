@@ -6,13 +6,13 @@ namespace DragonSpark.Application.Components.Validation
 {
 	public sealed class ValidationContexts : IValidationContexts
 	{
-		readonly IValidatorKey<ModelValidationContext> _context;
+		readonly IValidatorKey<GraphValidationContext> _context;
 		readonly IValidatorKey<ObjectGraphValidator>   _validator;
 		public static ValidationContexts Default { get; } = new ValidationContexts();
 
 		ValidationContexts() : this(ModelValidationContextKey.Default, ValidatorKey.Default) {}
 
-		public ValidationContexts(IValidatorKey<ModelValidationContext> context,
+		public ValidationContexts(IValidatorKey<GraphValidationContext> context,
 		                          IValidatorKey<ObjectGraphValidator> validator)
 		{
 			_context   = context;
@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Components.Validation
 			return result;
 		}
 
-		public ModelValidationContext Get(ValidationContext parameter)
+		public GraphValidationContext Get(ValidationContext parameter)
 			=> _context.Get(parameter) ?? throw new InvalidOperationException();
 	}
 }

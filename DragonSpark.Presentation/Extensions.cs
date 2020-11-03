@@ -55,6 +55,9 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
 			=> new CallbackContext<T>(method);
+		public static EditContextCallbackContext Callback(this ModelContext _, EditContext context)
+			=> new EditContextCallbackContext(context);
+
 
 		public static OperationCallbackContext Bind(this IExceptions @this, Func<Task> method)
 			=> Start.A.Callback(method).Handle(@this);
@@ -71,6 +74,10 @@ namespace DragonSpark.Presentation
 			=> @this.CanSubmit() && !IsActive.Default.Get(receiver);
 
 		public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
+
+		public static void NotifyModelField(this EditContext @this, string field)
+			=> @this.NotifyFieldChanged(@this.Field(field));
+
 
 		public static T GetValue<T>(this FieldIdentifier @this)
 			=> @this.FieldName.Contains(".")
