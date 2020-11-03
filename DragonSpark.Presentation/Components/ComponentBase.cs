@@ -1,19 +1,17 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
 	public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	{
-		readonly IProperties _properties;
+		/*readonly IProperties _properties;
 
 		public ComponentBase() : this(Properties.Default) {}
 
-		public ComponentBase(IProperties properties) => _properties = properties;
+		public ComponentBase(IProperties properties) => _properties = properties;*/
 
-		protected override async Task OnParametersSetAsync()
+		/*protected override async Task OnParametersSetAsync()
 		{
 			var type = GetType();
 			foreach (var operation in _properties.Get(type).Open())
@@ -38,7 +36,7 @@ namespace DragonSpark.Presentation.Components
 					await Exceptions.Get((type, e));
 				}
 			}
-		}
+		}*/
 
 		[Inject]
 		protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;
