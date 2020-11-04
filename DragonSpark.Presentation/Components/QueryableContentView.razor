@@ -1,0 +1,32 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using JetBrains.Annotations
+@typeparam TItem
+
+@Fragment
+
+@code
+{
+    #nullable enable
+    RenderFragment Fragment { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Fragment = Content != null ?
+                       await Content.AnyAsync()
+                           ? ChildContent(Content) : NoElementsFoundTemplate
+                       : NotAssignedTemplate;
+    }
+
+    [Parameter, UsedImplicitly]
+    public IQueryable<TItem>? Content { get; set; }
+
+    [Parameter, UsedImplicitly]
+    public RenderFragment<IEnumerable<TItem>> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment NoElementsFoundTemplate { get; set; } = @<p>No elements found for this view's content.</p>;
+
+    [Parameter]
+    public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;
+    #nullable restore
+}

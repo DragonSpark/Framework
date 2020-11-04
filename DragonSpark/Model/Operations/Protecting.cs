@@ -6,12 +6,14 @@ namespace DragonSpark.Model.Operations
 {
 	public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 	{
-		readonly ISelecting<TIn, TOut> _previous;
-		readonly AsyncLock             _lock;
+		readonly Await<TIn, TOut> _previous;
+		readonly AsyncLock        _lock;
 
-		public Protecting(ISelecting<TIn, TOut> previous) : this(previous, new AsyncLock()) {}
+		public Protecting(ISelecting<TIn, TOut> previous) : this(previous.Await) {}
 
-		public Protecting(ISelecting<TIn, TOut> previous, AsyncLock @lock)
+		public Protecting(Await<TIn, TOut> previous) : this(previous, new AsyncLock()) {}
+
+		public Protecting(Await<TIn, TOut> previous, AsyncLock @lock)
 		{
 			_previous = previous;
 			_lock     = @lock;
@@ -21,7 +23,7 @@ namespace DragonSpark.Model.Operations
 		{
 			using (await _lock.LockAsync().ConfigureAwait(false))
 			{
-				return await _previous.Await(parameter);
+				return await _previous(parameter);
 			}
 		}
 	}
