@@ -61,7 +61,7 @@ namespace DragonSpark.Reflection.Types
 		{
 			public static Delegates Default { get; } = new Delegates();
 
-			Delegates() : base(typeof(T1), typeof(T2), typeof(T3)) {}
+			Delegates() : base(typeof(T1), typeof(T2), typeof(T3), A.Type<T4>()) {}
 		}
 	}
 }

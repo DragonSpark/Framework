@@ -17,7 +17,7 @@ namespace DragonSpark.Reflection.Types
 			: this(expressions, expressions.Parameters.Get().Open()) {}
 
 		public ActivationDelegates(ISelect<Type, Expression> select, params ParameterExpression[] expressions)
-			: base(new Lambda(expressions).Select(Compiler<T>.Default).To(select.Select!).Get) {}
+			: base(new Lambda(expressions).Select(Compiler<T>.Default).To(select.Select).Get) {}
 
 		sealed class Lambda : Invocation0<Expression, IEnumerable<ParameterExpression>, Expression<T>>
 		{
