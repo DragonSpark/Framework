@@ -5,6 +5,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Collections;
 using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Linq;
@@ -32,10 +33,18 @@ namespace DragonSpark.Application.Entities
 			_execute  = execute;
 		}
 
-		public IQueryable CreateQuery(Expression expression) => _previous.CreateQuery(expression);
+		public IQueryable CreateQuery(Expression expression)
+		{
+			var query  = _previous.CreateQuery(expression);
+			var result = Caller.Default.Get(query.ElementType)().Get((this, query));
+			return result;
+		}
 
 		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
-			=> _previous.CreateQuery<TElement>(expression);
+			=> New(_previous.CreateQuery<TElement>(expression));
+
+		ProtectedQuery<T> New<T>(IQueryable<T> previous)
+			=> new ProtectedQuery<T>(new Querying<T>(previous), this, _lock);
 
 		public object Execute(Expression expression) => _previous.Execute(expression);
 
@@ -118,6 +127,26 @@ namespace DragonSpark.Application.Entities
 					await provider.ExecuteAsync<Task>(expression, token);
 				}
 			}
+		}
+
+		sealed class Caller : Generic<ISelect<(QueryProvider, IQueryable), IQueryable>>
+		{
+			public static Caller Default { get; } = new Caller();
+
+			Caller() : base(typeof(Caller<>)) {}
+		}
+
+		sealed class Caller<T> : ISelect<(QueryProvider, IQueryable), IQueryable>
+		{
+			[UsedImplicitly]
+			public static Caller<T> Default { get; } = new Caller<T>();
+
+			Caller() {}
+
+			public IQueryable Get((QueryProvider, IQueryable) parameter)
+				=> parameter.Item2 is IQueryable<T> queryable
+					   ? parameter.Item1.New(queryable)
+					   : parameter.Item2;
 		}
 	}
 #pragma warning restore

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class ProtectedQuery<T> : IQuerying<T> where T : class
+	class ProtectedQuery<T> : IQuerying<T>
 	{
 		readonly IQuerying<T>        _query;
 		readonly IAsyncQueryProvider _provider;
