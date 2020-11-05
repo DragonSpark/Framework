@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities;
+﻿using AsyncUtilities;
+using DragonSpark.Application.Entities;
 using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -26,7 +27,10 @@ namespace DragonSpark.Application
 			         .Then.Start<INavigateToSignOut>()
 			         .Forward<NavigateToSignOut>()
 			         .Scoped()
-				;
+					 //
+			         .Then.Start<AsyncLock>()
+			         .Use<StateConnectionLock>()
+			         .Scoped();
 		}
 	}
 }

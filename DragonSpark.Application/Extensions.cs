@@ -1,16 +1,11 @@
-﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Compose.Store;
+﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +20,7 @@ using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
 {
-	public static class Extensions
+	partial class Extensions
 	{
 		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity) where T : notnull
 		{
@@ -36,25 +31,13 @@ namespace DragonSpark.Application
 		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
 			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
 
+
+		public static IQueryable<T> Protected<T>(this IQueryable<T> @this) where T : class
+			=> ProtectedQueries<T>.Default.Get(@this);
+
+		public static IQuerying<T> Querying<T>(this IQueryable<T> @this)
+			=> @this as IQuerying<T> ?? new Querying<T>(@this);
 		/**/
-
-		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
-			=> @this.WithIdentity(options => {});
-
-		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
-		                                           System.Action<IdentityOptions> configure)
-			=> new IdentityContext(@this, configure);
-
-		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this)
-			=> new AuthenticationContext(@this);
-
-		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       ICommand<AuthorizationOptions> policy)
-			=> @this.AuthorizeUsing(policy.Execute);
-
-		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       System.Action<AuthorizationOptions> policy)
-			=> @this.Then(new AuthorizeConfiguration(policy));
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
 
@@ -114,21 +97,10 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this)
-			=> new StoreContext<TIn, TOut>(@this);
-
-		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
-			this OperationResultSelector<TIn, TOut> @this)
-			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
-
-		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
-
-		/**/
-
 		public static Array<T> ApplyOrder<T>(this Array<T> @this) where T : class, IOrderAware
 			=> Ordered<T>.Default.Get(@this);
 
-		public static SelectedCollection<T> Selected<T>(this IEnumerable<T> @this) where T : class
+		public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
 			=> new SelectedCollection<T>(@this);
 
 		/**/

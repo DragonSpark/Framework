@@ -175,7 +175,7 @@ namespace DragonSpark.Composition
 					if (type.IsConstructedGenericType && _types.Open().Contains(type.GetGenericTypeDefinition()) &&
 					    _registry.AvailableServices.Introduce(type).All(x => x.Item1.ServiceType != x.Item2))
 					{
-						throw new InvalidOperationException("Not supported.");
+						throw new InvalidOperationException($"Factory types of type 'Func<*>' are not supported unless specifically registered.  Please adjust the constructor of `{constructor.ReflectedType}` with the signature `{constructor}` so that it does not contain this unregistered factory type.");
 					}
 
 					yield return dependency;

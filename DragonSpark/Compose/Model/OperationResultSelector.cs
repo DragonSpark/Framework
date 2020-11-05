@@ -1,9 +1,11 @@
-﻿using DragonSpark.Model.Operations;
+﻿using AsyncUtilities;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ValueTask = System.Threading.Tasks.ValueTask;
 
 namespace DragonSpark.Compose.Model
 {
@@ -47,6 +49,11 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 			=> new OperationResultSelector<_, TTo>(Get().Select(new OperationSelect<T, TTo>(select)));
+
+		public OperationResultSelector<_, T> Protecting() => Protecting(new AsyncLock());
+
+		public OperationResultSelector<_, T> Protecting(AsyncLock @lock)
+			=> new OperationResultSelector<_, T>(new Protecting<_, T>(Get().Await, @lock));
 
 
 		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
