@@ -20,7 +20,9 @@ namespace DragonSpark.Application
 			         .Forward<StorageState>()
 			         .Scoped()
 			         //
-			         .Then.Start<IToken>()
+			         .Then.AddScoped(typeof(IEntityState<>), typeof(EntityState<>))
+			         //
+			         .Start<IToken>()
 			         .Forward<Token>()
 			         .Scoped()
 			         //

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class Confirm : IResulting<int>
+	sealed class Save : IResulting<int>
 	{
 		readonly DbContext _storage;
 
-		public Confirm(DbContext storage) => _storage = storage;
+		public Save(DbContext storage) => _storage = storage;
 
 
 		public ValueTask<int> Get() => _storage.SaveChangesAsync().ToOperation();

@@ -8,19 +8,19 @@ namespace DragonSpark.Application.Entities
 {
 	sealed class StorageState : IStorageState
 	{
-		readonly IResulting<int> _confirm;
+		readonly IResulting<int> _save;
 		readonly IUndo           _undo;
 
 		[UsedImplicitly]
-		public StorageState(DbContext storage) : this(new Confirm(storage), new Undo(storage)) {}
+		public StorageState(DbContext storage) : this(new Save(storage), new Undo(storage)) {}
 
-		public StorageState(IResulting<int> confirm, IUndo undo)
+		public StorageState(IResulting<int> save, IUndo undo)
 		{
-			_confirm = confirm;
-			_undo    = undo;
+			_save = save;
+			_undo = undo;
 		}
 
-		public ValueTask<int> Get() => _confirm.Get();
+		public ValueTask<int> Get() => _save.Get();
 
 		public void Execute(object parameter)
 		{
