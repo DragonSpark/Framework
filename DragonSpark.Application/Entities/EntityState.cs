@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
@@ -12,6 +13,7 @@ namespace DragonSpark.Application.Entities
 		readonly DbContext                    _context;
 		readonly Func<Predicate<EntityEntry>> _excluded;
 
+		[UsedImplicitly]
 		public EntityState(DbContext context) : this(context, Excluded.Default.Then().Bind(context)) {}
 
 		public EntityState(DbContext context, Func<Predicate<EntityEntry>> excluded)
