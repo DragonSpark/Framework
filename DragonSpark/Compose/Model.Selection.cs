@@ -52,6 +52,10 @@ namespace DragonSpark.Compose
 
 		/**/
 
+		public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class
+			=> new Verified<_, T>(@this.Get()).Then();
+		/**/
+
 		public static Func<TIn, TOut> ToDelegate<TIn, TOut>(this ISelect<TIn, TOut> @this) => @this.Get;
 
 		public static Func<TIn, TOut> ToDelegateReference<TIn, TOut>(this ISelect<TIn, TOut> @this)

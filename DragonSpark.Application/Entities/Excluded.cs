@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
 using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.Entities
 {
@@ -19,10 +18,11 @@ namespace DragonSpark.Application.Entities
 		public Excluded(DragonSpark.Compose.Model.Selector<EntityEntry, object> selector) => _selector = selector;
 
 		public Predicate<EntityEntry> Get(DbContext parameter)
-			=> _selector.Select(new HashSet<object>(parameter.ChangeTracker.Entries()
-			                                                 .AsValueEnumerable()
-			                                                 .Select(x => x.Entity)
-			                                                 .ToArray()).Contains)
+			=> _selector.Select(parameter.ChangeTracker.Entries()
+			                             .AsValueEnumerable()
+			                             .Select(x => x.Entity)
+			                             .ToArray()
+			                             .Contains)
 			            .Out()
 			            .Then()
 			            .Inverse()
