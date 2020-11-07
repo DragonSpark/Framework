@@ -15,6 +15,8 @@ namespace DragonSpark.Compose.Model
 		public ICommand Command { get; }
 
 		public CommandContext<object> Any() => new CommandContext<object>(new Any(Get()));
+
+		public new OperationSelector Operation() => new OperationSelector(new CommandOperation(Get().Execute));
 	}
 
 	public class CommandContext<T> : Instance<ICommand<T>>
@@ -33,7 +35,7 @@ namespace DragonSpark.Compose.Model
 			=> new CommandContext<T>(new CompositeCommand<T>(commands.Append(Get()).Result()));
 
 		public CommandContext<T> Append(System.Action<T> command) => Append(Start.A.Command(command).Get());
-		
+
 		public CommandContext<T> Append(params ICommand<T>[] commands)
 			=> new CommandContext<T>(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 

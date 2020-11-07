@@ -21,7 +21,7 @@ namespace DragonSpark.Presentation.Compose
 		public CallbackContext Field<T>(Expression<Func<T>> expression) => Field(FieldIdentifier.Create(expression));
 
 		public CallbackContext Field(in FieldIdentifier field)
-			=> new CallbackContext(new NotifyField(_context, in field).Then().Operation().Out().Promote);
+			=> new CallbackContext(new NotifyField(_context, in field).Then().Operation().Demote());
 
 		public CallbackContext Call(Func<EditContext, Task> method) => new CallbackContext(method.Start().Bind(_context));
 
@@ -38,7 +38,7 @@ namespace DragonSpark.Presentation.Compose
 
 			public void Execute(None parameter)
 			{
-				_context.NotifyFieldChanged(_identifier);
+				_context.NotifyFieldChanged(in _identifier);
 			}
 		}
 	}

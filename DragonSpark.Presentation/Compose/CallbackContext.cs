@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components;
 using Microsoft.AspNetCore.Components;
@@ -33,7 +32,7 @@ namespace DragonSpark.Presentation.Compose
 			return result;
 		}
 
-		public CallbackContext Append(Action next) => Append(new ConfiguredAllocated(next).Get);
+		public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Demote());
 
 		public CallbackContext Append(Func<Task> next)
 			=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Append(next));

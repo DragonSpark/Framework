@@ -16,4 +16,17 @@ namespace DragonSpark.Model.Operations
 			return Task.CompletedTask.ToOperation();
 		}
 	}
+
+	sealed class CommandOperation : IOperation
+	{
+		readonly Action _action;
+
+		public CommandOperation(Action action) => _action = action;
+
+		public ValueTask Get()
+		{
+			_action();
+			return Task.CompletedTask.ToOperation();
+		}
+	}
 }

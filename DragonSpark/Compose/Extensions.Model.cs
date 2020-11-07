@@ -4,6 +4,7 @@ using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
 using DragonSpark.Compose.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
@@ -48,6 +49,9 @@ namespace DragonSpark.Compose
 
 		public static Model.CommandContext<T> Command<T>(this ModelContext @this, System.Action<T> action)
 			=> @this.Command.Of.Type<T>().By.Calling(action);
+
+		public static Model.CommandContext Command(this ModelContext _, System.Action action)
+			=> new Model.CommandContext(new Command(action));
 
 		public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();
 
