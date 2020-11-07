@@ -4,6 +4,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Compose
 {
@@ -21,6 +22,8 @@ namespace DragonSpark.Presentation.Compose
 
 		public CallbackContext Field(in FieldIdentifier field)
 			=> new CallbackContext(new NotifyField(_context, in field).Then().Operation().Out().Promote);
+
+		public CallbackContext Call(Func<EditContext, Task> method) => new CallbackContext(method.Start().Bind(_context));
 
 		sealed class NotifyField : ICommand
 		{

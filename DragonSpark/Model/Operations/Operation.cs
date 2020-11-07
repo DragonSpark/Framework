@@ -8,6 +8,4 @@ namespace DragonSpark.Model.Operations
 	{
 		public Operation(Func<T, ValueTask> select) : base(select) {}
 	}
-
-	
 }

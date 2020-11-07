@@ -39,12 +39,12 @@ namespace DragonSpark.Application.Compose
 		public ApplicationProfileContext Configure(Func<BuildHostContext, BuildHostContext> context)
 			=> new ApplicationProfileContext(context(_context), _profile, _configure);
 
-		public ApplicationProfileContext Then(System.Action<IServiceCollection> other) => Then(Start.A.Command(other));
+		public ApplicationProfileContext Then(System.Action<IServiceCollection> other) => Then(Start.A.Command(other).Get());
 
 		public ApplicationProfileContext Then(ICommand<IServiceCollection> other)
 			=> Get(x => new ApplicationProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
-		public ApplicationProfileContext Then(System.Action<IApplicationBuilder> other) => Then(Start.A.Command(other));
+		public ApplicationProfileContext Then(System.Action<IApplicationBuilder> other) => Then(Start.A.Command(other).Get());
 
 		public ApplicationProfileContext Then(ICommand<IApplicationBuilder> other)
 			=> Get(x => new ApplicationProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
