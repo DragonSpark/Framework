@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -18,9 +20,10 @@ namespace DragonSpark.Presentation.Components
 				}
 			}
 			// ReSharper disable once CatchAllClause
-			catch
+			catch (Exception error)
 			{
 				Fragment = ExceptionTemplate;
+				await Exceptions.Await((GetType(), error));
 			}
 		}
 
