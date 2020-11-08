@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class EntityState<T> : IEntityState<T> where T : class
+	sealed class Update<T> : IUpdate<T> where T : class
 	{
 		readonly DbContext                    _context;
 		readonly Func<Predicate<EntityEntry>> _excluded;
 
 		[UsedImplicitly]
-		public EntityState(DbContext context) : this(context, Excluded.Default.Then().Bind(context)) {}
+		public Update(DbContext context) : this(context, Excluded.Default.Then().Bind(context)) {}
 
-		public EntityState(DbContext context, Func<Predicate<EntityEntry>> excluded)
+		public Update(DbContext context, Func<Predicate<EntityEntry>> excluded)
 		{
 			_context  = context;
 			_excluded = excluded;
