@@ -73,6 +73,7 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			Session.NavigationCanceled -= OnNavigationCanceled;
 		}
 	}
