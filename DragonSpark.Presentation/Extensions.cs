@@ -66,6 +66,9 @@ namespace DragonSpark.Presentation
 			=> Start.A.Callback(method).Handle(@this);
 
 		public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
+
+		public static CallbackContext<object> ToCallback(this EventCallback @this)
+			=> Start.A.Callback(new Func<object, Task>(@this.InvokeAsync));
 /**/
 
 		public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();

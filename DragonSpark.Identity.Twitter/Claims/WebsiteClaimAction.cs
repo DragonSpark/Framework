@@ -1,7 +1,8 @@
 ﻿using DragonSpark.Application.Security;
 using Microsoft.AspNetCore.Authentication;
 
-namespace DragonSpark.Identity.Twitter.Claims {
+namespace DragonSpark.Identity.Twitter.Claims
+{
 	public sealed class WebsiteClaimAction : CustomClaimAction
 	{
 		public static WebsiteClaimAction Default { get; } = new WebsiteClaimAction();
@@ -9,6 +10,6 @@ namespace DragonSpark.Identity.Twitter.Claims {
 		WebsiteClaimAction() : base(Website.Default, "url", root => root.GetProperty("entities")
 		                                                                .GetProperty("url")
 		                                                                .GetProperty("urls")[0]
-		                                                                .GetString("expanded_url")) {}
+		                                                                .GetString("expanded_url")!) {}
 	}
 }
