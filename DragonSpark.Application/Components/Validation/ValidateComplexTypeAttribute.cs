@@ -22,13 +22,17 @@ namespace DragonSpark.Application.Components.Validation
 		}
 
 		/// <inheritdoc />
-		protected override ValidationResult IsValid(object value, ValidationContext context)
+		protected override ValidationResult? IsValid(object? value, ValidationContext context)
 		{
 			var validator = _validator.Get(context);
 			if (validator != null)
 			{
 				var validation = _contexts.Get(context);
-				validation.Execute(context.MemberName);
+				if (context.MemberName != null)
+				{
+					validation.Execute(context.MemberName);
+				}
+
 				validator.Validate(value, validation);
 			}
 

@@ -6,7 +6,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Collections;
 using DragonSpark.Reflection.Types;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-#pragma warning disable EF1001
 	sealed class QueryProvider : IAsyncQueryProvider
 	{
 		readonly static ICondition<Type> IsTask = Is.AssignableFrom<Task>().Out();
@@ -46,7 +45,7 @@ namespace DragonSpark.Application.Entities
 		ProtectedQuery<T> New<T>(IQueryable<T> previous)
 			=> new ProtectedQuery<T>(new Querying<T>(previous), this, _lock);
 
-		public object Execute(Expression expression) => _previous.Execute(expression);
+		public object? Execute(Expression expression) => _previous.Execute(expression);
 
 		public TResult Execute<TResult>(Expression expression) => _previous.Execute<TResult>(expression);
 
@@ -57,10 +56,10 @@ namespace DragonSpark.Application.Entities
 			{
 				var type = InnerType.Default.Get(A.Type<TResult>());
 				var result = type != null
-					             ? _execute.Get(type)(_previous, expression, cancellationToken, _lock)
+					             ? _execute.Get(type)(_previous, expression, _lock, cancellationToken)
 					                       .Get()
 					                       .To<TResult>()
-					             : ExecuteTask.Default.Get((_previous, expression, cancellationToken, _lock))
+					             : ExecuteTask.Default.Get((_previous, expression, _lock, cancellationToken))
 					                          .To<TResult>();
 				return result;
 			}
@@ -72,9 +71,9 @@ namespace DragonSpark.Application.Entities
 		}
 
 		internal interface IGeneric
-			: IGeneric<IAsyncQueryProvider, Expression, CancellationToken, AsyncLock, IResult<object>> {}
+			: IGeneric<IAsyncQueryProvider, Expression, AsyncLock, CancellationToken, IResult<object>> {}
 
-		sealed class Generic : Generic<IAsyncQueryProvider, Expression, CancellationToken, AsyncLock, IResult<object>>,
+		sealed class Generic : Generic<IAsyncQueryProvider, Expression, AsyncLock, CancellationToken, IResult<object>>,
 		                       IGeneric
 		{
 			public static Generic Default { get; } = new Generic();
@@ -90,13 +89,13 @@ namespace DragonSpark.Application.Entities
 			readonly AsyncLock           _lock;
 
 			// ReSharper disable once TooManyDependencies
-			public ExecuteTaskResult(IAsyncQueryProvider provider, Expression expression,
-			                         CancellationToken cancellationToken, AsyncLock @lock)
+			public ExecuteTaskResult(IAsyncQueryProvider provider, Expression expression, AsyncLock @lock,
+			                         CancellationToken cancellationToken)
 			{
 				_provider          = provider;
 				_expression        = expression;
-				_cancellationToken = cancellationToken;
 				_lock              = @lock;
+				_cancellationToken = cancellationToken;
 			}
 
 			public async Task<T> Get()
@@ -112,16 +111,16 @@ namespace DragonSpark.Application.Entities
 
 		sealed class ExecuteTask
 			: ISelect<(IAsyncQueryProvider provider, Expression expression,
-				CancellationToken cancellationToken, AsyncLock @lock), Task>
+				AsyncLock @lock, CancellationToken cancellationToken), Task>
 		{
 			public static ExecuteTask Default { get; } = new ExecuteTask();
 
 			ExecuteTask() {}
 
 			public async Task Get((IAsyncQueryProvider provider, Expression expression,
-				                      CancellationToken cancellationToken, AsyncLock @lock) parameter)
+				                      AsyncLock @lock, CancellationToken cancellationToken) parameter)
 			{
-				var (provider, expression, token, @lock) = parameter;
+				var (provider, expression, @lock, token) = parameter;
 				using (await @lock.LockAsync(token))
 				{
 					await provider.ExecuteAsync<Task>(expression, token);
@@ -149,5 +148,4 @@ namespace DragonSpark.Application.Entities
 					   : parameter.Item2;
 		}
 	}
-#pragma warning restore
 }

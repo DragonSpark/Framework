@@ -238,7 +238,7 @@ namespace DragonSpark.Composition
 				_activator = activator;
 			}
 
-			public object GetService(Type serviceType)
+			public object? GetService(Type serviceType)
 			{
 				try
 				{

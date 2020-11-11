@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor.Environment
 {
-	public sealed class ApplicationConfiguration : IApplicationConfiguration
+	public sealed class ApplicationConfiguration : IApplicationConfiguration // TODO: Attach
 	{
 		[UsedImplicitly]
 		public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();

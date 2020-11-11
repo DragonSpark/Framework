@@ -10,8 +10,8 @@ namespace DragonSpark.Runtime.Environment
 		public static AssemblyLocation Default { get; } = new AssemblyLocation();
 
 		AssemblyLocation() : base(Start.A.Selection<Assembly>()
-		                               .By.Calling(x => x.CodeBase)
-		                               .Select(Start.An.Extent<Uri>().New!)
+		                               .By.Calling(x => x.Location)
+		                               .Select(Start.An.Extent<Uri>().New)
 		                               .Get()
 		                               .Get) {}
 	}

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public async Task BindModelAsync(ModelBindingContext bindingContext)
 		{
 			var origin = bindingContext.Value(_returnUrl) ?? _urls.GetUrlHelper(bindingContext.ActionContext)
-			                                                      .Content("~/");
+			                                                      .Content("~/").Verify();
 
 			var error = bindingContext.Value(_errorMessage);
 

@@ -4,11 +4,11 @@ using System;
 
 namespace DragonSpark.Testing.Server
 {
-	sealed class Accessor : Variable<HttpContext>, IHttpContextAccessor
+	sealed class Accessor : Variable<HttpContext?>, IHttpContextAccessor
 	{
 		public Accessor(IServiceProvider provider) : base(new DefaultHttpContext {RequestServices = provider}) {}
 
-		public HttpContext HttpContext
+		public HttpContext? HttpContext
 		{
 			get => Get();
 			set => Execute(value);

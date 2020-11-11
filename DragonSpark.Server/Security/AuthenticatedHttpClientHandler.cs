@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Alterations;
 using Flurl;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,7 +28,7 @@ namespace DragonSpark.Server.Security
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
 		                                                       CancellationToken cancellationToken)
 		{
-			var uri = request.RequestUri
+			var uri = request.RequestUri.Verify()
 			                 .ToString()
 			                 .SetQueryParam("apikey", _apiKey)
 			                 .SetQueryParam("nonce", (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds)

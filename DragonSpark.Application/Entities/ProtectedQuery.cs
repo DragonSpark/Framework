@@ -1,5 +1,5 @@
 ﻿using AsyncUtilities;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace DragonSpark.Application.Entities
 {
-	class ProtectedQuery<T> : IQuerying<T>
+	sealed class ProtectedQuery<T> : IQuerying<T>
 	{
 		readonly IQuerying<T>        _query;
 		readonly IAsyncQueryProvider _provider;

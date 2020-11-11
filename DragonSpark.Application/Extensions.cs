@@ -67,7 +67,7 @@ namespace DragonSpark.Application
 
 		public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
 
-		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity.Name ?? anonymous;
+		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity?.Name ?? anonymous;
 
 		public static IUserMapping Promote<T>(this IAccessor<T> @this, string key, bool required = false)
 			where T : IdentityUser

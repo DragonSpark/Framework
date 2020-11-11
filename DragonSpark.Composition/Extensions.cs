@@ -28,7 +28,7 @@ namespace DragonSpark.Composition
 
 		public static IConfiguration Configuration(this IServiceCollection @this)
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
-			        .ImplementationFactory?.Invoke(null)
+			        .ImplementationFactory?.Invoke(null!)
 			        .To<IConfiguration>() ?? throw new InvalidOperationException();
 
 		public static ComponentRequest Component<T>(this IServiceCollection @this)

@@ -26,7 +26,7 @@ namespace DragonSpark.Compose.Model
 		public CommandContext(ICommand<T> command) : base(command) {}
 
 		public CommandContext Bind(T parameter = default)
-			=> new CommandContext(new FixedParameterCommand<T>(Get().Execute, parameter));
+			=> new CommandContext(new FixedParameterCommand<T>(Get().Execute, parameter!));
 
 		public CommandContext Bind(IResult<T> parameter)
 			=> new CommandContext(new DelegatedParameterCommand<T>(Get().Execute, parameter.Get));

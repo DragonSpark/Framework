@@ -29,7 +29,7 @@ namespace DragonSpark.Presentation.Components
 		                        .Select(Is.AssignableFrom<IViewProperty>())
 		                        .Then()
 		                        .And(Is.DecoratedWith<ParameterAttribute>()),
-		                   DefaultPropertyDelegate<T, IOperation>.Default.Get,
+		                   DefaultPropertyDelegate<T, IOperation>.Default.Get!,
 		                   A.Type<T>().GetRuntimeProperties().Result()) {}
 
 		readonly Predicate<PropertyInfo> _where;

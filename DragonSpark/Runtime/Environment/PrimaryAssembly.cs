@@ -13,6 +13,7 @@ namespace DragonSpark.Runtime.Environment
 		                              .As.Sequence.Array.By.Self.Open()
 		                              .Select(x => x.SingleOrDefault(y => y.Has<HostingAttribute>()))
 		                              .Ensure.Output.IsAssigned.Otherwise.Throw(PrimaryAssemblyMessage.Default)
+		                              .Verified()
 		                              .Get(Reflection.Assemblies.Assemblies.Default)) {}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime.Objects;
+﻿using DragonSpark.Compose;
+using DragonSpark.Runtime.Objects;
 using System;
 using System.Collections.Generic;
 
@@ -26,7 +27,7 @@ namespace DragonSpark.Model.Sequences.Collections
 			var key = GetKeyForItem(item);
 			if (Contains(key))
 			{
-				Dictionary.Remove(key);
+				Dictionary.Verify().Remove(key);
 			}
 
 			base.InsertItem(index, item);

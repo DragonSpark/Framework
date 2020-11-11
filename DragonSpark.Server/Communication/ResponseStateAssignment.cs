@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -26,8 +27,8 @@ namespace DragonSpark.Server.Communication
 		public void Execute(Pair<HttpRequest, HttpClient> parameter)
 		{
 			_handler(parameter.Value)
-				.CookieContainer
-				.Add(parameter.Value.BaseAddress, _state(parameter.Key) ?? throw new InvalidOperationException());
+				.CookieContainer.Add(parameter.Value.BaseAddress.Verify(),
+				                     _state(parameter.Key) ?? throw new InvalidOperationException());
 		}
 	}
 }

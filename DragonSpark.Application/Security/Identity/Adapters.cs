@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Security.Identity
 			var previous = await parameter.ConfigureAwait(false);
 			var (result, _) = await _views.Await(previous.User);
 
-			if (previous.User.Identity.IsAuthenticated && result.Profile == null)
+			if ((previous.User.Identity?.IsAuthenticated ?? false) && result.Profile == null)
 			{
 				_exit.Execute(previous.User);
 				return _default;

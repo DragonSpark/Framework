@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+
 // ReSharper disable All
 
 // ReSharper disable ComplexConditionExpression
@@ -15,21 +16,21 @@ namespace DragonSpark.Model.Sequences.Collections
 	/// </summary>
 	public class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue> where TKey : notnull
 	{
-		DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>? _delegatedKeyedCollection;
+		readonly DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>> _delegatedKeyedCollection;
 
 		public OrderedDictionary()
 		{
-			Initialize();
+			_delegatedKeyedCollection = Initialize();
 		}
 
 		public OrderedDictionary(IEqualityComparer<TKey> comparer)
 		{
-			Initialize(comparer);
+			_delegatedKeyedCollection = Initialize(comparer);
 		}
 
 		public OrderedDictionary(IOrderedDictionary<TKey, TValue> dictionary)
 		{
-			Initialize();
+			_delegatedKeyedCollection = Initialize();
 			foreach (var pair in dictionary)
 			{
 				_delegatedKeyedCollection?.Add(pair);
@@ -38,7 +39,7 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public OrderedDictionary(IOrderedDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
 		{
-			Initialize(comparer);
+			_delegatedKeyedCollection = Initialize(comparer);
 			foreach (var pair in dictionary)
 			{
 				_delegatedKeyedCollection?.Add(pair);
@@ -47,7 +48,7 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public OrderedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> items)
 		{
-			Initialize();
+			_delegatedKeyedCollection = Initialize();
 			foreach (var pair in items)
 			{
 				_delegatedKeyedCollection?.Add(pair);
@@ -56,7 +57,7 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public OrderedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> items, IEqualityComparer<TKey> comparer)
 		{
-			Initialize(comparer);
+			_delegatedKeyedCollection = Initialize(comparer);
 			foreach (var pair in items)
 			{
 				_delegatedKeyedCollection?.Add(pair);
@@ -68,14 +69,14 @@ namespace DragonSpark.Model.Sequences.Collections
 		/// </summary>
 		public IEqualityComparer<TKey>? Comparer { [UsedImplicitly] get; private set; }
 
-		void Initialize(IEqualityComparer<TKey>? comparer = default)
+		DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>
+			Initialize(IEqualityComparer<TKey>? comparer = default)
 		{
 			Comparer = comparer;
-			_delegatedKeyedCollection = comparer != null
-				                            ? new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>(x => x.Key,
-				                                                                                             comparer)
-				                            : new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>
-				                            >(x => x.Key);
+			var result = comparer != null
+				             ? new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>(x => x.Key, comparer)
+				             : new DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>>(x => x.Key);
+			return result;
 		}
 
 		/// <summary>
@@ -351,9 +352,9 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		IDictionaryEnumerator IOrderedDictionary.GetEnumerator() => new DictionaryEnumerator<TKey, TValue>(this);
 
-		void IOrderedDictionary.Insert(int index, object key, object value)
+		void IOrderedDictionary.Insert(int index, object key, object? value)
 		{
-			Insert(index, (TKey)key, (TValue)value);
+			Insert(index, (TKey)key, (TValue)value!);
 		}
 
 		void IOrderedDictionary.RemoveAt(int index)

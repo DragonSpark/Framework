@@ -15,7 +15,7 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<_, T> Only() => Select(Only<T>.Default);
 
-		public Selector<_, T> FirstOrDefault(Func<T, bool> where) => Select(x => x.FirstOrDefault(where));
+		public Selector<_, T> FirstOrDefault(Func<T, bool> where) => Select(x => x.FirstOrDefault(where))!;
 
 		public Selector<_, Array<T>> Result() => Select(x => x.Result());
 	}

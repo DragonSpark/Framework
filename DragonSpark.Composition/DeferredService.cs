@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition
 {
-	sealed class DeferredService<T> : IResult<T>
+	sealed class DeferredService<T> : IResult<T> where T : notnull
 	{
 		readonly IServiceCollection _collection;
 

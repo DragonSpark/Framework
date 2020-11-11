@@ -65,12 +65,12 @@ namespace DragonSpark.Application.Components.Validation
 					foreach (var name in names)
 					{
 						context.Add(new ValidationResultMessage(path, new FieldIdentifier(value, name!),
-						                                        item.ErrorMessage));
+						                                        item.ErrorMessage ?? string.Empty));
 					}
 				}
 				else
 				{
-					context.Add(new ValidationResultMessage(path, value, item.ErrorMessage));
+					context.Add(new ValidationResultMessage(path, value, item.ErrorMessage ?? string.Empty));
 				}
 			}
 		}

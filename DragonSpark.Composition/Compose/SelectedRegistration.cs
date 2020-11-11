@@ -40,7 +40,7 @@ namespace DragonSpark.Composition.Compose
 			[UsedImplicitly]
 			public static Selector<TTo> Default { get; } = new Selector<TTo>();
 
-			Selector() : base(x => x.GetService<TTo>()) {}
+			Selector() : base(x => x.GetService<TTo>()!) {}
 		}
 	}
 }

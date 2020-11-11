@@ -37,7 +37,7 @@ namespace DragonSpark.Presentation.Compose
 		public CallbackContext Append(Func<Task> next)
 			=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Append(next));
 
-		public EventCallback Get() => EventCallback.Factory.Create(_receiver, _method);
+		public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 	}
 
 	public class CallbackContext<T> : IResult<EventCallback<T>>
@@ -65,6 +65,6 @@ namespace DragonSpark.Presentation.Compose
 			return result;
 		}
 
-		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, _method);
+		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver!, _method);
 	}
 }

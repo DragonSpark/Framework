@@ -8,6 +8,6 @@ namespace DragonSpark.Application.Security
 	{
 		public static Name Default { get; } = new Name();
 
-		Name() : base(x => x.Identity.Name.Verify()) {}
+		Name() : base(x => x.Identity.Verify().Name.Verify()) {}
 	}
 }

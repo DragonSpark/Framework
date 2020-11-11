@@ -20,6 +20,6 @@ namespace DragonSpark.Application.Security.Identity
 		}
 
 		public ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
-			=> parameter.Identity.IsAuthenticated ? _views.Get(parameter) : _default.ToOperation();
+			=> parameter.Identity?.IsAuthenticated ?? false ? _views.Get(parameter) : _default.ToOperation();
 	}
 }

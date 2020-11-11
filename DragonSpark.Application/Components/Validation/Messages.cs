@@ -54,7 +54,7 @@ namespace DragonSpark.Application.Components.Validation
 				}
 			}
 
-			_store.Add(field, results.Select(x => x.ErrorMessage));
+			_store.Add(field, results.Where(x => x.ErrorMessage != null).Select(x => x.ErrorMessage.Verify()));
 		}
 
 		public void Execute(None parameter)
