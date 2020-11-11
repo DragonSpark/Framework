@@ -11,6 +11,10 @@ namespace DragonSpark.Presentation.Components.Routing
 	/// </summary>
 	public class EditorComponent : ComponentBase, IRoutingComponent, IDisposable
 	{
+		readonly Func<Task> _cancel;
+
+		public EditorComponent() => _cancel = OnNavigationCanceled;
+
 		[Inject]
 		public NavigationManager Navigation { get; set; } = default!;
 
@@ -45,10 +49,14 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		void OnNavigationCanceled(object? sender, EventArgs e)
 		{
-			OnNavigationCanceled();
+			InvokeAsync(_cancel);
 		}
 
-		protected virtual void OnNavigationCanceled() => StateHasChanged();
+		protected virtual Task OnNavigationCanceled()
+		{
+			StateHasChanged();
+			return Task.CompletedTask;
+		}
 
 		protected Task Exit()
 		{

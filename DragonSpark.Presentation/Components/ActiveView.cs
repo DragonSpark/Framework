@@ -18,6 +18,10 @@ namespace DragonSpark.Presentation.Components
 				{
 					await operation;
 				}
+				else if (operation.IsFaulted)
+				{
+					throw operation.AsTask().Exception.Verify();
+				}
 			}
 			// ReSharper disable once CatchAllClause
 			catch (Exception error)

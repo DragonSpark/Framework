@@ -29,12 +29,8 @@
     [Parameter]
     public object Receiver { get; set; } = default!;
 
-    Task Confirm() => HasChanges ? Invoke() : Exit();
+    Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
 
-    Task Invoke() => InvokeAsync(() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!)));
+    protected override Task OnNavigationCanceled() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!));
 
-    protected override void OnNavigationCanceled()
-    {
-        Invoke();
-    }
 }

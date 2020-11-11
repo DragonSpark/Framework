@@ -6,19 +6,32 @@
 
 @code
 {
-    #nullable enable
-    RenderFragment Fragment { get; set; } = default!;
+#nullable enable
+    RenderFragment? Fragment { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        Fragment = Content != null ?
+        Fragment ??= Content != null ?
                        await Content.AnyAsync()
                            ? ChildContent(Content) : NoElementsFoundTemplate
                        : NotAssignedTemplate;
     }
 
     [Parameter, UsedImplicitly]
-    public IQueryable<TItem>? Content { get; set; }
+    public IQueryable<TItem>? Content
+    {
+        get => _content;
+        set
+        {
+            if (_content != value)
+            {
+                Fragment = null;
+                _content = value;
+            }
+        }
+    }
+
+    public IQueryable<TItem>? _content;
 
     [Parameter, UsedImplicitly]
     public RenderFragment<IEnumerable<TItem>> ChildContent { get; set; } = default!;
