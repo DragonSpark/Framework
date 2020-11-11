@@ -92,5 +92,12 @@ namespace DragonSpark.Compose
 			element = result ? @this.Get(key) : default!;
 			return result ? @this.Remove(key) : result;
 		}
+
+		public static bool TryGet<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, out TOut element)
+		{
+			var result = @this.IsSatisfiedBy(key);
+			element = result ? @this.Get(key) : default!;
+			return result;
+		}
 	}
 }

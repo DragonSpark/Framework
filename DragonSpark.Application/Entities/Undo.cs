@@ -1,13 +1,10 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.Entities
 {
-	public interface IUndo : ICommand<object>, ICommand {}
-
 	sealed class Undo : IUndo
 	{
 		readonly DbContext _storage;

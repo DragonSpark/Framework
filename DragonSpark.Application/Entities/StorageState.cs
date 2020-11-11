@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Operations;
-using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
@@ -11,10 +9,7 @@ namespace DragonSpark.Application.Entities
 		readonly IResulting<int> _save;
 		readonly IUndo           _undo;
 
-		[UsedImplicitly]
-		public StorageState(DbContext storage) : this(new Save(storage), new Undo(storage)) {}
-
-		public StorageState(IResulting<int> save, IUndo undo)
+		public StorageState(ISave save, IUndo undo)
 		{
 			_save = save;
 			_undo = undo;

@@ -16,7 +16,19 @@ namespace DragonSpark.Application
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Start<IStorageState>()
+			parameter.Start<IClear>()
+			         .Forward<Clear>()
+			         .Scoped()
+			         //
+			         .Then.Start<ISave>()
+			         .Forward<Save>()
+			         .Scoped()
+			         //
+			         .Then.Start<IUndo>()
+			         .Forward<Undo>()
+			         .Scoped()
+			         //
+			         .Then.Start<IStorageState>()
 			         .Forward<StorageState>()
 			         .Scoped()
 			         //
@@ -29,7 +41,7 @@ namespace DragonSpark.Application
 			         .Then.Start<INavigateToSignOut>()
 			         .Forward<NavigateToSignOut>()
 			         .Scoped()
-					 //
+			         //
 			         .Then.Start<AsyncLock>()
 			         .Use<StateConnectionLock>()
 			         .Scoped();
