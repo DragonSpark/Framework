@@ -14,7 +14,6 @@
   <ItemGroup>
     <PackageReference Include="AsyncUtilities" Version="1.0.1" />
     <PackageReference Include="Ben.Demystifier" Version="0.1.6" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="NetFabric.Hyperlinq" Version="3.0.0-beta26" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
