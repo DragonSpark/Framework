@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using System.Collections.Generic;
@@ -8,13 +8,20 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public class QueryView<T> : ISelect<LoadDataArgs, Task>
+	public interface IQueryView<out T> : IAllocated<LoadDataArgs>
+	{
+		IEnumerable<T> Current { get; }
+
+		ulong Count { get; }
+	}
+
+	sealed class QueryView<T> : IQueryView<T>
 	{
 		readonly IQueryable<T> _source;
 
 		public QueryView(IQueryable<T> source) => _source = source;
 
-		public int Count { get; private set; }
+		public ulong Count { get; private set; }
 
 		public IEnumerable<T> Current { get; private set; } = default!;
 
@@ -22,8 +29,10 @@ namespace DragonSpark.Presentation.Components
 		{
 			var ordered = !string.IsNullOrEmpty(parameter.OrderBy) ? _source.OrderBy(parameter.OrderBy) : _source;
 			var all     = !string.IsNullOrEmpty(parameter.Filter) ? ordered.Where(parameter.Filter) : ordered;
-			Count   = await all.CountAsync();
-			Current = await all.Skip(parameter.Skip.GetValueOrDefault()).Take(parameter.Top.GetValueOrDefault()).ToArrayAsync();
+			Count = (ulong)await all.LongCountAsync();
+			Current = await all.Skip(parameter.Skip.GetValueOrDefault())
+			                   .Take(parameter.Top.GetValueOrDefault())
+			                   .ToArrayAsync();
 		}
 	}
 }

@@ -11,11 +11,18 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Fragment ??= Content != null ?
-                       await Content.AnyAsync()
-                           ? ChildContent(Content) : NoElementsFoundTemplate
-                       : NotAssignedTemplate;
+        Fragment ??= await DetermineContent();
     }
+
+    async ValueTask<RenderFragment> DetermineContent()
+        => Content != null
+               ?
+               NoElementsFoundTemplate == null || await Content.AnyAsync()
+                   ?
+                   ChildContent(Content.AsView())
+                   :
+                   NoElementsFoundTemplate
+               : NotAssignedTemplate;
 
     [Parameter, UsedImplicitly]
     public IQueryable<TItem>? Content
@@ -34,10 +41,10 @@
     IQueryable<TItem>? _content;
 
     [Parameter, UsedImplicitly]
-    public RenderFragment<IEnumerable<TItem>> ChildContent { get; set; } = default!;
+    public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
 
     [Parameter]
-    public RenderFragment NoElementsFoundTemplate { get; set; } = @<p>No elements found for this view's content.</p>;
+    public RenderFragment? NoElementsFoundTemplate { get; set; }
 
     [Parameter]
     public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;

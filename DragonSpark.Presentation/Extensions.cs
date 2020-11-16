@@ -12,6 +12,7 @@ using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
 
@@ -69,7 +70,8 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<object> ToCallback(this EventCallback @this)
 			=> Start.A.Callback(new Func<object, Task>(@this.InvokeAsync));
-/**/
+
+		/**/
 
 		public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();
 
@@ -91,5 +93,9 @@ namespace DragonSpark.Presentation
 
 		public static Dictionary<string, StringValues> QueryString(this NavigationManager @this)
 			=> Presentation.QueryString.Default.Get(@this);
+
+		/**/
+
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this) => new QueryView<T>(@this);
 	}
 }
