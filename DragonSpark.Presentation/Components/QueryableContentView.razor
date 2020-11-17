@@ -34,7 +34,7 @@
     IQueryable<TItem>? _content;
 
     [Parameter, UsedImplicitly]
-    public RenderFragment<IEnumerable<TItem>> ChildContent { get; set; } = default!;
+    public RenderFragment<IQueryable<TItem>> ChildContent { get; set; } = default!;
 
     [Parameter]
     public RenderFragment NoElementsFoundTemplate { get; set; } = @<p>No elements found for this view's content.</p>;
