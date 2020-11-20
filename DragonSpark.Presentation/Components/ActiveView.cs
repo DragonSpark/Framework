@@ -10,6 +10,14 @@ namespace DragonSpark.Presentation.Components
 	{
 		protected override async Task OnParametersSetAsync()
 		{
+			if (Source.Account() == null)
+			{
+				Fragment = NotAssignedTemplate;
+				return;
+			}
+
+			Fragment = null;
+
 			var operation = Source.Get();
 
 			try
