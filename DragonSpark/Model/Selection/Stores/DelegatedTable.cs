@@ -10,6 +10,9 @@ namespace DragonSpark.Model.Selection.Stores
 		readonly Func<TIn, TOut>     _get;
 		readonly Func<TIn, bool>     _remove;
 
+		public DelegatedTable(ITable<TIn, TOut> source)
+			: this(source.Condition, source.Assign, source.Get, source.Remove) {}
+
 		// ReSharper disable once TooManyDependencies
 		public DelegatedTable(Func<TIn, bool> contains, Action<(TIn, TOut)> assign,
 		                      Func<TIn, TOut> get, Func<TIn, bool> remove)

@@ -1,5 +1,6 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -44,6 +45,10 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<AsyncLock>()
 			         .Use<StateConnectionLock>()
+			         .Scoped()
+			         //
+			         .Then.Start<IScopedTable>()
+			         .Forward<ScopedTable>()
 			         .Scoped();
 		}
 	}

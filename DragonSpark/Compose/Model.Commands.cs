@@ -54,6 +54,9 @@ namespace DragonSpark.Compose
 		public static void Assign<TKey, TValue>(this IAssign<TKey, TValue> @this, TKey key, TValue value)
 			=> @this.Execute(Pairs.Create(key, value));
 
+		public static void Assign<TKey, TValue>(this IAssign<TKey, TValue> @this, (TKey key, TValue value) parameter)
+			=> @this.Execute(Pairs.Create(parameter.key, parameter.value));
+
 		public static CommandContext<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
 			=> @this.Then().Append(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
 

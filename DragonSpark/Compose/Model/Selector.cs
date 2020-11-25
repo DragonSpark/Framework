@@ -112,6 +112,9 @@ namespace DragonSpark.Compose.Model
 		public CommandContext<TIn> Terminate(System.Action<TOut> command)
 			=> new SelectedParameterCommand<TIn, TOut>(command, _subject.Get).Then();
 
+		public CommandContext<TIn> Terminate<_>(Func<TOut, _> command)
+			=> new SelectedParameterInvocation<TIn, TOut, _>(command, _subject.Get).Then();
+
 		public CommandContext<(TIn, T)> Terminate<T>(IAssign<TOut, T> assign) => Terminate<T>(assign.Assign);
 
 		public CommandContext<(TIn, T)> Terminate<T>(Action<TOut, T> command)
