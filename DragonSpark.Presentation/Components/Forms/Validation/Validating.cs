@@ -95,6 +95,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public virtual void Dispose()
 		{
 			Context = null;
+			GC.SuppressFinalize(this);
 		}
 	}
 }

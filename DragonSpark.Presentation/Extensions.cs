@@ -81,6 +81,9 @@ namespace DragonSpark.Presentation
 
 		public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
 
+		public static bool IsValid(this EditContext @this, object receiver)
+			=> @this.IsValid() && !IsActive.Default.Get(receiver);
+
 		public static void NotifyModelField(this EditContext @this, string field)
 			=> @this.NotifyFieldChanged(@this.Field(field));
 

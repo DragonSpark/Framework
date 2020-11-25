@@ -6,6 +6,9 @@ namespace DragonSpark.Presentation.Components.Forms
 	public class MarkFieldModified : ComponentBase
 	{
 		[Parameter]
+		public bool Enabled { get; set; } = true;
+
+		[Parameter]
 		public string FieldName { get; set; } = default!;
 
 		[CascadingParameter]
@@ -14,7 +17,10 @@ namespace DragonSpark.Presentation.Components.Forms
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			EditContext.NotifyFieldChanged(EditContext.Field(FieldName));
+			if (Enabled)
+			{
+				EditContext.NotifyFieldChanged(EditContext.Field(FieldName));
+			}
 		}
 	}
 }

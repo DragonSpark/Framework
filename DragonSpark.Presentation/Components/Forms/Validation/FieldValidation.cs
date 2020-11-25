@@ -76,6 +76,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			EditContext = null;
 		}
 	}

@@ -51,6 +51,7 @@ namespace DragonSpark.Presentation.Components.Forms
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			EditContext = null;
 		}
 	}
