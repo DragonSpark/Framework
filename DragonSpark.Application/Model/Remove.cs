@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace DragonSpark.Application.Compose.Store
+namespace DragonSpark.Application.Model
 {
 	public class Remove<TFrom, TTo> : Select<TFrom, TTo>
 	{

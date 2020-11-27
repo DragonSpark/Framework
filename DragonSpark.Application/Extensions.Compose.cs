@@ -5,6 +5,7 @@ using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Entities;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -56,5 +57,13 @@ namespace DragonSpark.Application
 		public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
 			this OperationResultSelector<_, IQueryable<T>> @this, AsyncLock @lock) where T : class
 			=> @this.Protecting(@lock).Select(new ProtectedQueries<T>(@lock));
+
+		/**/
+
+		public static ProjectionContext<_, TOut> Then<_, TOut>(this Selector<_, IQueryable<TOut>> @this)
+			=> @this.Get().Then();
+
+		public static ProjectionContext<_, TOut> Then<_, TOut>(
+			this ISelect<_, IQueryable<TOut>> @this) => new ProjectionContext<_, TOut>(@this);
 	}
 }
