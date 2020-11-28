@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities
 {
-	public interface IUpdate<in T> : ISelecting<T, int> {}
+	public interface IUpdate<in T> : ISelecting<T, uint> {}
 }

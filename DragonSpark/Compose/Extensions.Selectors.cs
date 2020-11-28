@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model.Operations;
 using System;
 
 namespace DragonSpark.Compose
@@ -16,5 +17,14 @@ namespace DragonSpark.Compose
 
 		public static TOut Get<TIn, TOut>(this Selector<TIn, TOut> @this, TIn parameter)
 			=> @this.Get().Get(parameter);
+
+		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                               ISelecting<TIn, TOut> second)
+			where TOut : class => @this.Or(second.Await);
+
+		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                               Await<TIn, TOut> next)
+			where TOut : class
+			=> new Coalesce<TIn, TOut>(@this, next).Then();
 	}
 }

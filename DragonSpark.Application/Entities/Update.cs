@@ -22,13 +22,13 @@ namespace DragonSpark.Application.Entities
 			_excluded = excluded;
 		}
 
-		public async ValueTask<int> Get(T parameter)
+		public async ValueTask<uint> Get(T parameter)
 		{
 			var excluded = _excluded();
 
 			_context.Set<T>().Update(parameter);
 
-			var result = await _context.SaveChangesAsync().ConfigureAwait(false);
+			var result = (uint)await _context.SaveChangesAsync().ConfigureAwait(false);
 
 			foreach (var entry in _context.ChangeTracker.Entries().AsValueEnumerable().Where(excluded))
 			{
