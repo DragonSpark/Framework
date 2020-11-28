@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Sequences;
 using JetBrains.Annotations;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	public readonly struct FileContent
 	{

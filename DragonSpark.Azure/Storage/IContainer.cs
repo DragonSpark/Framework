@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	public interface IContainer : IResult<BlobContainerClient> {}
 }

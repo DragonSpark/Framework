@@ -2,7 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	public class Container : Result<BlobContainerClient>, IContainer
 	{

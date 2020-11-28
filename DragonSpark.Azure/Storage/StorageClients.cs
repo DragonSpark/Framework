@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	public sealed class StorageClients : ISelect<string, BlobServiceClient>
 	{

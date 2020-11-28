@@ -1,4 +1,6 @@
 ﻿using Azure.Storage.Blobs;
+using DragonSpark.Azure.Queues;
+using DragonSpark.Azure.Storage;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,11 @@ namespace DragonSpark.Azure
 			         .Then.Start<IStorageContainers>()
 			         .Forward<StorageContainers>()
 			         .Decorate<ValidatedStorageContainers>()
+			         .Singleton()
+			         //
+			         .Then.Start<IQueueClients>()
+			         .Forward<QueueClients>()
+			         .Decorate<ValidatedQueueClients>()
 			         .Singleton()
 				;
 		}

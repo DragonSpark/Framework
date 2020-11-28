@@ -2,7 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	sealed class ValidatedStorageContainers : Select<string, BlobContainerClient>, IStorageContainers
 	{

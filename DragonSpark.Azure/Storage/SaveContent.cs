@@ -3,7 +3,7 @@ using Azure.Storage.Blobs.Models;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	sealed class SaveContent : ISaveContent
 	{

@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
 	sealed class StorageContainers : IStorageContainers
 	{

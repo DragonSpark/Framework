@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 
-namespace DragonSpark.Azure
+namespace DragonSpark.Azure.Storage
 {
-	public sealed class InitializeContainers : ICommand<IApplicationBuilder>
+	public sealed class InitializeStorage : ICommand<IApplicationBuilder>
 	{
-		public static InitializeContainers Default { get; } = new InitializeContainers();
+		public static InitializeStorage Default { get; } = new InitializeStorage();
 
-		InitializeContainers() {}
+		InitializeStorage() {}
 
 		public void Execute(IApplicationBuilder parameter)
 		{
