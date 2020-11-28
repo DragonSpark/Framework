@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
+using System;
 
 namespace DragonSpark.Application.Components
 {
@@ -8,5 +9,11 @@ namespace DragonSpark.Application.Components
 	{
 		protected Navigation(NavigationManager navigation, string path, bool force = false)
 			: base(new Navigate(navigation, force).Then().Bind(path)) {}
+	}
+
+	public class Navigation<T> : Command<T>
+	{
+		protected Navigation(NavigationManager navigation, Func<T, string> path, bool force = false)
+			: base(path.Start().Terminate(new Navigate(navigation, force))) {}
 	}
 }

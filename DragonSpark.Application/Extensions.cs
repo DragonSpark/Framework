@@ -6,6 +6,7 @@ using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
+using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
@@ -102,6 +103,11 @@ namespace DragonSpark.Application
 
 		public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
 			=> new SelectedCollection<T>(@this);
+
+		public static string Get<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
+
+		public static string Get(this IResult<string> @this, params object[] arguments)
+			=> @this.Get().FormatWith(arguments);
 
 		/**/
 
