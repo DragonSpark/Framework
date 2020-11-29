@@ -9,6 +9,10 @@ namespace DragonSpark.Runtime
 
 		public Disposable(Action callback) => _callback = callback;
 
-		public void Dispose() => _callback();
+		public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			_callback();
+		}
 	}
 }

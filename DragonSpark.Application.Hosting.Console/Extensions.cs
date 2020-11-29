@@ -6,6 +6,6 @@ namespace DragonSpark.Application.Hosting.Console
 	public static class Extensions
 	{
 		public static ApplicationProfileContext WithConsoleApplication(this BuildHostContext @this)
-			=> @this.Apply(DefaultApplicationProfile.Default);
+			=> @this.Apply(ConsoleApplicationProfile.Default);
 	}
 }

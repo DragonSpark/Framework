@@ -1,7 +1,6 @@
 ﻿using System;
 
 // ReSharper disable All
-#pragma warning disable 8618
 
 namespace DragonSpark.Presentation.Components.Routing
 {

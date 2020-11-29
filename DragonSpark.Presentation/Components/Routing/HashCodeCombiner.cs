@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable All
-#pragma warning disable 8618
 
 namespace DragonSpark.Presentation.Components.Routing
 {

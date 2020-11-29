@@ -26,6 +26,7 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			_impl.Dispose();
 		}
 	}

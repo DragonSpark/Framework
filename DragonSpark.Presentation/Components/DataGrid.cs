@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.JSInterop;
 using Radzen.Blazor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace DragonSpark.Presentation.Components
 	{
 		public override void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			InvokeAsync(Disposing);
 		}
 

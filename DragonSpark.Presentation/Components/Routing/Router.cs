@@ -220,6 +220,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		/// <inheritdoc />
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			NavigationManager.LocationChanged -= OnLocationChanged;
 		}
 

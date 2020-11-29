@@ -6,6 +6,7 @@ using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using Humanizer;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
@@ -109,6 +111,12 @@ namespace DragonSpark.Application
 
 		public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
 			=> new SelectedCollection<T>(@this);
+
+		/**/
+
+		public static ConfiguredValueTaskAwaitable Await<T>(this IOperation<(Type Owner, Exception Exception)> @this,
+		                                                    Exception exception)
+			=> @this.Await(A.Type<T>(), exception);
 
 		public static string Get<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
 

@@ -87,6 +87,7 @@ namespace DragonSpark.Application.Components.Validation
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			EditContext = null;
 		}
 	}

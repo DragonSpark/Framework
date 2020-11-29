@@ -17,6 +17,7 @@ namespace DragonSpark.Runtime
 
 		public void Dispose()
 		{
+			GC.SuppressFinalize(this);
 			var count = _collection.Count;
 			for (var i = 0; i < count; i++)
 			{

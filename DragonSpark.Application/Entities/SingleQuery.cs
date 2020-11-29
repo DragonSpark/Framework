@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class SingleQuery<TKey, TEntity> : ISelecting<TKey, TEntity?> where TEntity : class
+	public class SingleOrDefault<TKey, TEntity> : ISelecting<TKey, TEntity?> where TEntity : class
 	{
 		readonly IQueryable<TEntity>  _queryable;
 		readonly Query<TKey, TEntity> _query;
 
-		public SingleQuery(IQueryable<TEntity> queryable, Query<TKey, TEntity> query)
+		public SingleOrDefault(IQueryable<TEntity> queryable, Query<TKey, TEntity> query)
 		{
 			_queryable = queryable;
 			_query     = query;
@@ -28,4 +28,19 @@ namespace DragonSpark.Application.Entities
 	}
 
 	public delegate Expression<Func<TEntity, bool>> Query<in TKey, TEntity>(TKey parameter);
+
+	public class Single<TKey, TEntity> : ISelecting<TKey, TEntity> where TEntity : class
+	{
+		readonly IQueryable<TEntity>  _queryable;
+		readonly Query<TKey, TEntity> _query;
+
+		public Single(IQueryable<TEntity> queryable, Query<TKey, TEntity> query)
+		{
+			_queryable = queryable;
+			_query     = query;
+		}
+
+		public async ValueTask<TEntity> Get(TKey parameter)
+			=> await _queryable.SingleAsync(_query(parameter)).ConfigureAwait(false);
+	}
 }
