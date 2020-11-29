@@ -1,9 +1,11 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Application.Entities;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using Humanizer;
@@ -23,6 +25,10 @@ namespace DragonSpark.Application
 {
 	partial class Extensions
 	{
+		public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
+			=> new ApplicationProfileContext(@this, profile);
+/**/
+
 		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity) where T : notnull
 		{
 			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);

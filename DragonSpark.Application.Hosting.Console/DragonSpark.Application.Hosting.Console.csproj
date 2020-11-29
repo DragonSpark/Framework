@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
 

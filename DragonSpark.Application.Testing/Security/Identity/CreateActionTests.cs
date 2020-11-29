@@ -6,7 +6,6 @@ using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Testing.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Server;
 using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;

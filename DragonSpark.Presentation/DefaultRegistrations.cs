@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Routing;
@@ -20,13 +21,11 @@ namespace DragonSpark.Presentation
 			         .Decorate<ClientExceptionAwareExceptionNotification>()
 			         .Scoped()
 			         //
-			         .Then.Start<IExceptions>()
-			         .Forward<Exceptions>()
-			         .Decorate<NotificationAwareExceptions>()
-			         .Include(x => x.Dependencies)
-			         .Scoped()
+			         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
+			         .Decorate<IExceptions, NotificationAwareExceptions>()
 			         //
-			         .Then.Start<DialogService>()
+			         .Start<DialogService>()
+			         .And<NotificationService>()
 			         .Scoped()
 			         //
 			         .Then.Start<RouterSession>()
