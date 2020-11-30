@@ -143,12 +143,12 @@ namespace DragonSpark.Compose
 			return result!;
 		}
 
-		public static bool Inverse(this bool @this) => !@this;
+		public static bool Inverse(this in bool @this) => !@this;
 
-		public static int Degrade(this ulong @this) => (int)@this;
+		public static int Unshift(this in ulong @this) => (int)@this;
 
-		public static int Degrade(this uint @this) => (int)@this;
+		public static int Unshift(this in uint @this) => (int)@this;
 
-		public static uint Upgrade(this int @this) => (uint)@this;
+		public static uint Shift(this in int @this) => (uint)@this;
 	}
 }
