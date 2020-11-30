@@ -54,6 +54,9 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public Selector<T, TOut> Cast<TOut>() where TOut : T => CastOrDefault<T, TOut>.Default.Then();
 
+		public Selector<T, TOut> CastAny<TOut>() => CastOrDefault<T, TOut>.Default.Then();
+
+		
 		public Selector<T, Array<T>> Array() => Self.Yield().Result();
 
 		public Selector<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)

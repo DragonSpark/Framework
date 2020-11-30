@@ -101,6 +101,9 @@ namespace DragonSpark.Compose
 
 		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
+		public static OperationContext<T> Then<T>(this Await<T> @this)
+			=> new OperationContext<T>(@this.Target as ISelect<T, ValueTask> ?? new Awaiting<T>(@this));
+
 		public static OperationContext<T> Then<T>(this Selector<T, ValueTask> @this) => @this.Get().Then();
 
 		public static OperationResultSelector<T> Then<T>(this IResult<ValueTask<T>> @this)
@@ -111,7 +114,7 @@ namespace DragonSpark.Compose
 		public static OperationSelector Then(this IResult<ValueTask> @this) => new OperationSelector(@this);
 
 		public static OperationSelector Then(this ResultContext<ValueTask> @this) => @this.Get().Then();
-		
+
 		public static AllocatedOperationSelector Then(this IResult<Task> @this) => new AllocatedOperationSelector(@this);
 
 		public static AllocatedOperationSelector Then(this ResultContext<Task> @this) => @this.Get().Then();
