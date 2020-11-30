@@ -31,6 +31,8 @@ namespace DragonSpark.Compose.Model
 
 		public static implicit operator Await<_, T>(OperationResultSelector<_, T> instance) => instance.Get().Await;
 
+		public static implicit operator Await<_>(OperationResultSelector<_, T> instance) => instance.Terminate();
+
 		public OperationResultSelector(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 
 		public TaskSelector<_, T> Demote() => new TaskSelector<_, T>(Get().Select(SelectTask<T>.Default));
@@ -57,6 +59,8 @@ namespace DragonSpark.Compose.Model
 
 
 		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
+
+		public new OperationContext<_> Terminate() => Terminate(x => ValueTask.CompletedTask);
 		public OperationContext<_> Terminate(Func<T, ValueTask> command)
 			=> new OperationContext<_>(Get().Select(new OperationSelect<T>(command)));
 
