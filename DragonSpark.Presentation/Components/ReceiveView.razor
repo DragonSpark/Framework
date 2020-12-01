@@ -1,0 +1,24 @@
+﻿@using DragonSpark.Presentation.Connections
+@using DragonSpark.Compose
+@implements IAsyncDisposable
+@typeparam T
+
+@code
+{
+    IReceiver connection = default!;
+
+    [Parameter]
+    public IReceive<T> Registration { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<T> Received { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        connection = Registration.Get(Received.InvokeAsync);
+
+        return Task.WhenAll(connection.Get().AsTask(), base.OnInitializedAsync());
+    }
+
+    public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+}
