@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Stores;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -7,19 +8,28 @@ namespace DragonSpark.Application.Connections
 {
 	public class UserAwareHub : Hub
 	{
-		readonly IUserNameMappings _names;
+		readonly ITable<string, string> _names;
 
-		public UserAwareHub(IUserNameMappings names) => _names = names;
+		public UserAwareHub(ITable<string, string> names) => _names = names;
 
 		public override Task OnConnectedAsync()
 		{
-			_names.Get(Context).Assign(Context.User.Verify().UserName(), Context.UserIdentifier.Verify());
+			var name = Context.User?.Identity?.Name;
+			if (name != null)
+			{
+				_names.Assign(name, Context.UserIdentifier.Verify());
+			}
+
 			return base.OnConnectedAsync();
 		}
 
 		public override Task OnDisconnectedAsync(Exception? exception)
 		{
-			_names.Get(Context).Remove(Context.User.Verify().UserName());
+			var name = Context.User?.Identity?.Name;
+			if (name != null)
+			{
+				_names.Remove(name);
+			}
 			return base.OnDisconnectedAsync(exception);
 		}
 	}

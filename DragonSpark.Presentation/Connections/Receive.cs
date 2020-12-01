@@ -45,6 +45,7 @@ namespace DragonSpark.Presentation.Connections
 			}
 
 			public ValueTask Get() => _connection.StartAsync().ToOperation();
+
 			/*public async ValueTask Get()
 			{
 				await _connection.StartAsync();
