@@ -27,6 +27,12 @@ namespace DragonSpark.Application
 {
 	partial class Extensions
 	{
+		public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
+			=> Configure.Default.Get(@this);
+
+		public static BuildHostContext WithConnectionConfigurations(this BuildHostContext @this)
+			=> Connections.Configure.Default.Get(@this);
+
 		public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
 			=> new ApplicationProfileContext(@this, profile);
 /**/

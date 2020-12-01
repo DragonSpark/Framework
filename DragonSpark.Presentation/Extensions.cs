@@ -21,8 +21,11 @@ namespace DragonSpark.Presentation
 {
 	public static class Extensions
 	{
-		public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
+		public static BuildHostContext WithPresentationConfigurations(this BuildHostContext @this)
 			=> Configure.Default.Get(@this);
+
+		public static BuildHostContext WithClientConnectionConfigurations(this BuildHostContext @this)
+			=> Connections.Configure.Default.Get(@this);
 
 /**/
 		public static CallbackContext<ValidationContext> Callback<T>(this ModelContext context,

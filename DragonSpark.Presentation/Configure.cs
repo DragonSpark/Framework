@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation
 	{
 		public static Configure Default { get; } = new Configure();
 
-		Configure() {}
+		Configure() {}	
 
 		public BuildHostContext Get(BuildHostContext parameter) => parameter.To(Application.Configure.Default)
 		                                                                    .Configure(DefaultRegistrations.Default);
