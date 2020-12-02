@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
 
 namespace DragonSpark.Presentation
@@ -61,9 +62,9 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
 			=> new CallbackContext<T>(method);
+
 		public static EditContextCallbackContext Callback(this ModelContext _, EditContext context)
 			=> new EditContextCallbackContext(context);
-
 
 		public static OperationCallbackContext Bind(this IExceptions @this, Func<Task> method)
 			=> Start.A.Callback(method).Handle(@this);
@@ -75,6 +76,11 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<object> ToCallback(this EventCallback @this)
 			=> Start.A.Callback(new Func<object, Task>(@this.InvokeAsync));
+
+		/**/
+
+		public static Evaluation<T> Evaluation<T>(this VowelContext _) where T : ComponentBase
+			=> Compose.Evaluation<T>.Default;
 
 		/**/
 
@@ -90,7 +96,6 @@ namespace DragonSpark.Presentation
 
 		public static void NotifyModelField(this EditContext @this, string field)
 			=> @this.NotifyFieldChanged(@this.Field(field));
-
 
 		public static T GetValue<T>(this FieldIdentifier @this)
 			=> @this.FieldName.Contains(".")

@@ -1,5 +1,6 @@
 ﻿@using DragonSpark.Presentation.Connections
 @using DragonSpark.Compose
+@using DragonSpark.Model.Operations
 @implements IAsyncDisposable
 @typeparam T
 
@@ -11,6 +12,9 @@
     public IReceive<T> Registration { get; set; } = default!;
 
     [Parameter]
+    public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
+
+    [Parameter]
     public EventCallback<T> Received { get; set; }
 
     protected override Task OnInitializedAsync()
@@ -18,6 +22,14 @@
         connection = Registration.Get(Received.InvokeAsync);
 
         return Task.WhenAll(connection.Get().AsTask(), base.OnInitializedAsync());
+    }
+
+    async Task OnReceive(T parameter)
+    {
+        if (await Condition.Get(parameter))
+        {
+            await Received.InvokeAsync(parameter);
+        }
     }
 
     public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
