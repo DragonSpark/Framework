@@ -52,6 +52,10 @@ namespace DragonSpark.Presentation
 		public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
 			=> @this.Callback(new Func<Task>(callback.InvokeAsync));
 
+		public static CallbackContext Callback(this ModelContext @this, Func<ValueTask> method)
+			=> @this.Callback(method.Start().Select(x => x.AsTask()));
+
+
 		public static CallbackContext Callback(this ModelContext _, Func<Task> method) => new CallbackContext(method);
 
 		public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit)
