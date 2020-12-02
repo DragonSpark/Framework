@@ -36,7 +36,6 @@ namespace DragonSpark.Presentation.Compose
 
 	public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	{
-		
 		public static implicit operator EventCallback<T>(OperationCallbackContext<T> instance) => instance.Get();
 
 		readonly object        _receiver;
@@ -60,5 +59,12 @@ namespace DragonSpark.Presentation.Compose
 			=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
 
 		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Promote));
+
+		public EventCallback Adapt() => EventCallback.Factory.Create(_receiver,
+		                                                             Start.A.Selection<object>()
+		                                                                  .By.CastDown<T>()
+		                                                                  .Select(_operation)
+		                                                                  .Then()
+		                                                                  .Demote());
 	}
 }
