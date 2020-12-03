@@ -1,6 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Properties;
+using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Selection.Stores;
+using DragonSpark.Presentation.Compose;
 using System;
 using System.Collections.Concurrent;
 
@@ -10,7 +13,7 @@ namespace DragonSpark.Presentation.Components
 	{
 		public static UpdateActivity Default { get; } = new UpdateActivity();
 
-		UpdateActivity() : this(Activities.Default.Get, IsActive.Default) {}
+		UpdateActivity() : this(Activities.Default.Get, ReceiverAwareProperty.Default) {}
 
 		readonly Func<object, ConcurrentBag<object>> _activities;
 		readonly IProperty<object, bool>             _active;
@@ -35,6 +38,38 @@ namespace DragonSpark.Presentation.Components
 			if (store.IsEmpty)
 			{
 				_active.Assign(parameter, false);
+			}
+		}
+	}
+
+	sealed class ReceiverAwareProperty : IProperty<object, bool>
+	{
+		public static ReceiverAwareProperty Default { get; } = new ReceiverAwareProperty();
+
+		ReceiverAwareProperty() : this(IsActive.Default) {}
+
+		readonly IProperty<object, bool> _previous;
+		readonly ITable<object, Action>  _receivers;
+
+		public ReceiverAwareProperty(IProperty<object, bool> previous) : this(previous, Receivers.Default) {}
+
+		public ReceiverAwareProperty(IProperty<object, bool> previous, ITable<object, Action> receivers)
+		{
+			_previous       = previous;
+			_receivers = receivers;
+		}
+
+		public ICondition<object> Condition => _previous.Condition;
+
+		public bool Get(object parameter) => _previous.Get(parameter);
+
+		public void Execute(Pair<object, bool> parameter)
+		{
+			_previous.Execute(parameter);
+
+			if (!parameter.Value && _receivers.TryGet(parameter.Key, out var action))
+			{
+				action();
 			}
 		}
 	}

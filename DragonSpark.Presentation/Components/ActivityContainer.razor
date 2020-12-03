@@ -19,6 +19,7 @@
 
     protected override void OnParametersSet()
     {
+        /*Active = IsActive.Default.Get((Receiver is Receiver receiver ? receiver.Get() : Receiver) ?? this);*/
         Active = IsActive.Default.Get(Receiver ?? this);
         base.OnParametersSet();
     }
