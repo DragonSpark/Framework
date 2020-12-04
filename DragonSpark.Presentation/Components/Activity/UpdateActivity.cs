@@ -3,9 +3,8 @@ using DragonSpark.Model;
 using DragonSpark.Model.Properties;
 using System;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Activity
 {
 	sealed class UpdateActivity : IUpdateActivity
 	{
@@ -38,12 +37,5 @@ namespace DragonSpark.Presentation.Components
 				_active.Assign(parameter, false);
 			}
 		}
-	}
-
-	public interface IActivityReceiver
-	{
-		ValueTask Start();
-		ValueTask Complete();
-
 	}
 }

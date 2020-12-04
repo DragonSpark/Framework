@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Activity
 {
 	sealed class ActivityAwareOperation : IOperation
 	{

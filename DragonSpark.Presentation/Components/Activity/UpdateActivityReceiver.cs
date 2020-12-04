@@ -1,15 +1,9 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Activity
 {
-	public interface IUpdateActivity : IAssign<object, object>, ICommand<object> {}
-
-	public interface IUpdateActivityReceiver : IAssigning<object, object>, IOperation<object> {}
-
 	sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 	{
 		public static UpdateActivityReceiver Default { get; } = new UpdateActivityReceiver();
