@@ -16,7 +16,6 @@ namespace DragonSpark.Syncfusion
 			parameter.Register<SyncfusionConfiguration>()
 			         .AddSyncfusionBlazor()
 			         .Start<Initializer>()
-			         .Include(x => x.Dependencies)
 			         .Singleton();
 		}
 	}

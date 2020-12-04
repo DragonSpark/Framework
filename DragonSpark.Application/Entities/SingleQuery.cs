@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Entities
 
 	public delegate Expression<Func<TEntity, bool>> Query<in TKey, TEntity>(TKey parameter);
 
-	public class Single<TKey, TEntity> : ISelecting<TKey, TEntity> where TEntity : class
+	public class Single<TKey, TEntity> : ISelecting<TKey, TEntity>
 	{
 		readonly IQueryable<TEntity>  _queryable;
 		readonly Query<TKey, TEntity> _query;

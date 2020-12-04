@@ -55,7 +55,7 @@ namespace DragonSpark.Presentation.Components
 
 		public ReceiverAwareProperty(IProperty<object, bool> previous, ITable<object, Action> receivers)
 		{
-			_previous       = previous;
+			_previous  = previous;
 			_receivers = receivers;
 		}
 
@@ -65,9 +65,12 @@ namespace DragonSpark.Presentation.Components
 
 		public void Execute(Pair<object, bool> parameter)
 		{
-			_previous.Execute(parameter);
+			var exists = _receivers.TryGet(parameter.Key, out var action);
+			var target = exists ? action.Target.Verify().Paired(parameter.Value) : parameter;
 
-			if (!parameter.Value && _receivers.TryGet(parameter.Key, out var action))
+			_previous.Execute(target);
+
+			if (exists)
 			{
 				action();
 			}

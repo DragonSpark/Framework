@@ -1,4 +1,5 @@
-﻿<div class="@(Active ? ActiveStyle : null)">
+﻿@using DragonSpark.Presentation.Compose
+<div class="@(Active ? ActiveStyle : null)">
     <fieldset disabled="@Active">
         @ChildContent
     </fieldset>
@@ -19,8 +20,7 @@
 
     protected override void OnParametersSet()
     {
-        /*Active = IsActive.Default.Get((Receiver is Receiver receiver ? receiver.Get() : Receiver) ?? this);*/
-        Active = IsActive.Default.Get(Receiver ?? this);
+        Active = IsActive.Default.Get((Receiver is Receiver receiver ? receiver.Get() : Receiver) ?? this);
         base.OnParametersSet();
     }
 }

@@ -13,8 +13,8 @@ namespace DragonSpark.Syncfusion
 
 		public void Execute(IApplicationBuilder parameter)
 		{
-			/*parameter.ApplicationServices.GetRequiredService<Initializer>()
-			         .Execute();*/
+			parameter.ApplicationServices.GetRequiredService<Initializer>()
+			         .Execute();
 		}
 	}
 }

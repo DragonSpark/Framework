@@ -26,5 +26,14 @@ namespace DragonSpark.Compose
 		                                                               Await<TIn, TOut> next)
 			where TOut : class
 			=> new Coalesce<TIn, TOut>(@this, next).Then();
+
+		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                               ISelecting<TIn, TOut?> second)
+			where TOut : class => @this.OrMaybe(second.Await);
+
+		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                                    Await<TIn, TOut?> next)
+			where TOut : class
+			=> new Maybe<TIn, TOut>(@this, next).Then();
 	}
 }
