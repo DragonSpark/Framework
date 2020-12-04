@@ -1,4 +1,4 @@
 ﻿namespace DragonSpark.Model.Operations
 {
-	public interface IAssigning<TKey, TValue> : IResulting<(TKey Key, TValue Value)> {}
+	public interface IAssigning<TKey, TValue> : IOperation<Pair<TKey, TValue>> {}
 }

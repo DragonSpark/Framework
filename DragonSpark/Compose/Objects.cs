@@ -82,7 +82,11 @@ namespace DragonSpark.Compose
 			return result;
 		}
 
-		public static (T1, T2) Pair<T1, T2>(this T1 @this, T2 other) => ValueTuple.Create(@this, other);
+		public static (T1, T2) Tuple<T1, T2>(this T1 @this, T2 other) => (@this, other);
+
+		
+		public static Pair<T1, T2> Pair<T1, T2>(this T1 @this, T2 other) => Pairs.Create(@this, other);
+
 
 		public static string? NullIfEmpty(this string? target) => string.IsNullOrEmpty(target) ? null : target;
 

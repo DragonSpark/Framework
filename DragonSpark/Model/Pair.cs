@@ -17,6 +17,8 @@
 
 		public TValue Value { get; }
 
+		public (TKey, TValue) Native() => (Key, Value);
+
 		public void Deconstruct(out TKey key, out TValue value)
 		{
 			key   = Key;

@@ -1,19 +1,18 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
 	sealed class ActivityAwareOperation : IOperation
 	{
-		readonly IOperation      _operation;
-		readonly object          _subject;
-		readonly IUpdateActivity _activity;
+		readonly IOperation              _operation;
+		readonly object                  _subject;
+		readonly IUpdateActivityReceiver _activity;
 
 		public ActivityAwareOperation(IOperation operation, object subject)
-			: this(operation, subject, UpdateActivity.Default) {}
+			: this(operation, subject, UpdateActivityReceiver.Default) {}
 
-		public ActivityAwareOperation(IOperation operation, object subject, IUpdateActivity activity)
+		public ActivityAwareOperation(IOperation operation, object subject, IUpdateActivityReceiver activity)
 		{
 			_operation = operation;
 			_subject   = subject;
@@ -22,28 +21,28 @@ namespace DragonSpark.Presentation.Components
 
 		public async ValueTask Get()
 		{
-			_activity.Assign(_subject, _operation);
+			await _activity.Get((_subject, _operation));
 			try
 			{
-				await _operation.Await();
+				await _operation.Get();
 			}
 			finally
 			{
-				_activity.Execute(_subject);
+				await _activity.Get(_subject);
 			}
 		}
 	}
 
 	sealed class ActivityAwareOperation<T> : IOperation<T>
 	{
-		readonly IOperation<T>   _operation;
-		readonly object          _subject;
-		readonly IUpdateActivity _activity;
+		readonly IOperation<T>           _operation;
+		readonly object                  _subject;
+		readonly IUpdateActivityReceiver _activity;
 
 		public ActivityAwareOperation(IOperation<T> operation, object subject)
-			: this(operation, subject, UpdateActivity.Default) {}
+			: this(operation, subject, UpdateActivityReceiver.Default) {}
 
-		public ActivityAwareOperation(IOperation<T> operation, object subject, IUpdateActivity activity)
+		public ActivityAwareOperation(IOperation<T> operation, object subject, IUpdateActivityReceiver activity)
 		{
 			_operation = operation;
 			_subject   = subject;
@@ -52,14 +51,14 @@ namespace DragonSpark.Presentation.Components
 
 		public async ValueTask Get(T parameter)
 		{
-			_activity.Assign(_subject, _operation);
+			await _activity.Get((_subject, _operation));
 			try
 			{
 				await _operation.Get(parameter);
 			}
 			finally
 			{
-				_activity.Execute(_subject);
+				await _activity.Get(_subject);
 			}
 		}
 	}
