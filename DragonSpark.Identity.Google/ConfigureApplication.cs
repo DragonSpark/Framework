@@ -16,7 +16,7 @@ namespace DragonSpark.Identity.Google
 		{
 			parameter.Services.Register<GoogleApplicationSettings>()
 			         .Return(parameter)
-			         .Pair(parameter.Services.Deferred<GoogleApplicationSettings>())
+			         .Tuple(parameter.Services.Deferred<GoogleApplicationSettings>())
 			         .With((x, y) => x.AddGoogle(new ConfigureAuthentication(y).Execute))
 			         .Return(parameter.Services)
 			         ;

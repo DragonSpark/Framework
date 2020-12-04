@@ -66,7 +66,7 @@ namespace DragonSpark.Presentation.Components
 		public void Execute(Pair<object, bool> parameter)
 		{
 			var exists = _receivers.TryGet(parameter.Key, out var action);
-			var target = exists ? action.Target.Verify().Paired(parameter.Value) : parameter;
+			var target = exists ? action.Target.Verify().Pair(parameter.Value) : parameter;
 
 			_previous.Execute(target);
 

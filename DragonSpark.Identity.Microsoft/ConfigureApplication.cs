@@ -16,7 +16,7 @@ namespace DragonSpark.Identity.Microsoft
 		{
 			parameter.Services.Register<MicrosoftApplicationSettings>()
 			         .Return(parameter)
-			         .Pair(parameter.Services.Deferred<MicrosoftApplicationSettings>())
+			         .Tuple(parameter.Services.Deferred<MicrosoftApplicationSettings>())
 			         .With((x, y) => x.AddMicrosoftAccount(new ConfigureAuthentication(y).Execute))
 			         .Return(parameter.Services)
 			         ;

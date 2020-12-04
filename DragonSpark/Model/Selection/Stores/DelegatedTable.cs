@@ -35,6 +35,6 @@ namespace DragonSpark.Model.Selection.Stores
 
 		public bool Remove(TIn key) => _remove(key);
 
-		public void Execute(Pair<TIn, TOut> parameter) => _assign(parameter.Key.Pair(parameter.Value));
+		public void Execute(Pair<TIn, TOut> parameter) => _assign(parameter.Key.Tuple(parameter.Value));
 	}
 }
