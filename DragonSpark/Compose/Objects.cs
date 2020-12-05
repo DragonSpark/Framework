@@ -84,7 +84,7 @@ namespace DragonSpark.Compose
 
 		public static (T1, T2) Tuple<T1, T2>(this T1 @this, T2 other) => (@this, other);
 
-		
+
 		public static Pair<T1, T2> Pair<T1, T2>(this T1 @this, T2 other) => Pairs.Create(@this, other);
 
 
@@ -155,7 +155,11 @@ namespace DragonSpark.Compose
 
 		public static uint Grade(this in int @this) => (uint)@this;
 
+		public static byte Byte(this in int @this) => (byte)@this;
+
 		public static uint Next(this in uint @this) => @this + 1;
+
+		public static byte Next(this in byte @this) => (byte)(@this + 1.Byte());
 
 		public static int Next(this in int @this) => @this + 1;
 	}
