@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using DragonSpark.Reflection;
 using DragonSpark.Reflection.Members;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.Application.Components.Validation
 {
@@ -9,17 +11,23 @@ namespace DragonSpark.Application.Components.Validation
 	{
 		public static Delegates Default { get; } = new Delegates();
 
-		Delegates() : this(PropertyDelegates.Default) {}
+		Delegates() : this(PropertyDelegates.Default, AllInstanceFlags.Default) {}
 
 		readonly IPropertyDelegates _delegates;
+		readonly BindingFlags       _flags;
 
-		public Delegates(IPropertyDelegates delegates) => _delegates = delegates;
+		public Delegates(IPropertyDelegates delegates, BindingFlags flags)
+		{
+			_delegates = delegates;
+			_flags     = flags;
+		}
 
 		public Func<object, object> Get((Type Owner, string Name) parameter)
 		{
 			var (owner, name) = parameter;
-			var property = owner.GetProperty(name).Verify($"Could not locate property '{name}' on type '{owner}'");
-			var result   = _delegates.Get(owner)(property);
+			var property = owner.GetProperty(name, _flags)
+			                    .Verify($"Could not locate property '{name}' on type '{owner}'");
+			var result = _delegates.Get(owner)(property);
 			return result;
 		}
 	}

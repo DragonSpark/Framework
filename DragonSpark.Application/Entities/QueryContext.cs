@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using DragonSpark.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Query;
@@ -17,7 +18,7 @@ namespace DragonSpark.Application.Entities
 	{
 		public static QueryContext Default { get; } = new QueryContext();
 
-		QueryContext() : this(BindingFlags.NonPublic | BindingFlags.Instance) {}
+		QueryContext() : this(PrivateInstanceFlags.Default) {}
 
 		readonly Fields       _fields;
 		readonly PropertyInfo _stateManager;

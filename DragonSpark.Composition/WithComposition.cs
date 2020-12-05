@@ -3,6 +3,7 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Reflection;
 using DragonSpark.Runtime.Activation;
 using LightInject;
 using LightInject.Microsoft.DependencyInjection;
@@ -29,8 +30,7 @@ namespace DragonSpark.Composition
 			public static Select Instance { get; } = new Select();
 			readonly FieldInfo _provider;
 
-			Select() : this(typeof(ServiceContainer).GetField("constructionInfoProvider",
-			                                                  BindingFlags.Instance | BindingFlags.NonPublic)
+			Select() : this(typeof(ServiceContainer).GetField("constructionInfoProvider", PrivateInstanceFlags.Default)
 			                                        .Verify()) {}
 
 			public Select(FieldInfo provider) => _provider = provider;
