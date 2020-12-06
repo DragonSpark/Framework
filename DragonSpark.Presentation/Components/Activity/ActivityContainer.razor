@@ -5,7 +5,7 @@
 <div class="@(Active ? ActiveStyle : null)">
     <fieldset disabled="@Active">
         <CascadingValue TValue="IActivityReceiver" Value="@this">
-            @ChildContent
+            @ChildContent(ActualReceiver)
         </CascadingValue>
     </fieldset>
 </div>
@@ -22,7 +22,7 @@
     public object? Receiver { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment<object> ChildContent { get; set; } = default!;
 
 
     [Parameter]
@@ -30,6 +30,8 @@
 
     [Parameter]
     public EventCallback Completed { get; set; }
+
+    object ActualReceiver => Receiver ?? this;
 
     protected override void OnParametersSet()
     {
@@ -40,7 +42,7 @@
 
     void Update()
     {
-        Active = IsActive.Default.Get(Receiver ?? this);
+        Active = IsActive.Default.Get(ActualReceiver);
     }
 
     public async ValueTask Start()

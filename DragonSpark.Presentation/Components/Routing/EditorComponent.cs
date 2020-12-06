@@ -75,6 +75,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		{
 			GC.SuppressFinalize(this);
 			Session.NavigationCanceled -= OnNavigationCanceled;
+			Session.ActiveComponent    =  Session.ActiveComponent == this ? null : Session.ActiveComponent;
 		}
 	}
 }
