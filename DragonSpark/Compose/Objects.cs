@@ -154,12 +154,13 @@ namespace DragonSpark.Compose
 		public static int Degrade(this in uint @this) => (int)@this;
 
 		public static uint Grade(this in int @this) => (uint)@this;
-
+		
 		public static byte Byte(this in int @this) => (byte)@this;
 
 		public static uint Next(this in uint @this) => @this + 1;
 
 		public static byte Next(this in byte @this) => (byte)(@this + 1.Byte());
+		public static byte Previous(this in byte @this) => (byte)(@this - 1.Byte());
 
 		public static int Next(this in int @this) => @this + 1;
 	}
