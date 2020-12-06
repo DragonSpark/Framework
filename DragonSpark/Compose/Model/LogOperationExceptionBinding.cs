@@ -20,17 +20,18 @@ namespace DragonSpark.Compose.Model
 			_log       = log;
 		}
 
-		public ValueTask Get(TIn parameter)
+		public async ValueTask Get(TIn parameter)
 		{
-			var result = _operation.Get(parameter);
-
-			if (result.IsFaulted)
+			try
 			{
-				var input = new ExceptionParameter<TOut>(result.AsTask().Exception!, _select((parameter, result)));
+				await _operation.Await(parameter);
+			}
+			// ReSharper disable once CatchAllClause
+			catch (System.Exception e)
+			{
+				var input = new ExceptionParameter<TOut>(e, _select((parameter, ValueTask.CompletedTask)));
 				_log.Execute(input);
 			}
-
-			return result;
 		}
 	}
 }
