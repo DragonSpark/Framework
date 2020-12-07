@@ -50,6 +50,8 @@ namespace DragonSpark.Presentation
 			=> new ValidatingValueAdapter<T>(@this);
 
 /**/
+		public static CallbackContext Callback<T>(this ModelContext @this, EventCallback<T> callback)
+			=> @this.Callback(callback.InvokeAsync);
 		public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
 			=> @this.Callback(new Func<Task>(callback.InvokeAsync));
 
