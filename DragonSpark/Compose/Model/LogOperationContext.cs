@@ -16,9 +16,6 @@ namespace DragonSpark.Compose.Model
 			_log       = log;
 		}
 
-		public OperationContext<T> WithArguments(Func<T, TParameter> @delegate)
-			=> WithArguments(new ParameterSelection<T, TParameter>(@delegate).Get);
-
 		public OperationContext<T> WithArguments(Func<(T Parameter, ValueTask Task), TParameter> @delegate)
 			=> _operation.Then().Configure(@delegate.Start().Terminate(_log).Get()).Then();
 	}

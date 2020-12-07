@@ -1,26 +1,31 @@
 ﻿using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Diagnostics;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Compose.Model
 {
-	public sealed class LogOperationExceptionContext<TIn, TOut>
+	public class LogOperationExceptionContext<T> : IResult<IOperation<T>>
 	{
-		readonly ILogException<TOut>     _log;
-		readonly ISelect<TIn, ValueTask> _operation;
+		public static implicit operator Func<T, ValueTask>(LogOperationExceptionContext<T> instance)
+			=> instance.Get().Get;
 
-		public LogOperationExceptionContext(ISelect<TIn, ValueTask> operation, ILogException<TOut> log)
+		public static implicit operator Operate<T>(LogOperationExceptionContext<T> instance) => instance.Get().Get;
+
+		public static implicit operator Await<T>(LogOperationExceptionContext<T> instance) => instance.Get().Await;
+
+		readonly ISelect<T, ValueTask> _operation;
+		readonly ILogException<T>      _log;
+
+		public LogOperationExceptionContext(ISelect<T, ValueTask> operation, ILogException<T> log)
 		{
 			_operation = operation;
 			_log       = log;
 		}
 
-		public IOperation<TIn> WithArguments(Func<TIn, TOut> @delegate)
-			=> WithArguments(new ParameterSelection<TIn, TOut>(@delegate).Get);
-
-		public IOperation<TIn> WithArguments(Parameter<TIn, TOut> @delegate)
-			=> new LogOperationExceptionBinding<TIn, TOut>(_operation, @delegate, _log);
+		public IOperation<T> Get() => new ExceptionAwareOperation<T>(_operation, _log);
 	}
 }

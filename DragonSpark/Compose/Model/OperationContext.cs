@@ -26,8 +26,12 @@ namespace DragonSpark.Compose.Model
 		public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
 			=> new LogOperationContext<T, TParameter>(_subject, log);
 
-		public LogOperationExceptionContext<T, TParameter> Bind<TParameter>(ILogException<TParameter> log)
-			=> new LogOperationExceptionContext<T, TParameter>(_subject, log);
+
+		public SelectedLogOperationExceptionContext<T, TOther> Use<TOther>(ILogException<TOther> log)
+			=> new SelectedLogOperationExceptionContext<T, TOther>(_subject, log);
+
+		public PolicyAwareLogOperationExceptionContext<T> Use(ILogException<T> log)
+			=> new PolicyAwareLogOperationExceptionContext<T>(_subject, log);
 
 		public OperationContext<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
