@@ -9,6 +9,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 
 		DefaultCustomization() : base(ManualPropertyTypesCustomization.Default,
 		                              SingletonCustomization.Default,
+		                              new InsertCustomization(TimeSpecimen.Default),
 		                              new InsertCustomization(EpochSpecimen.Default),
 		                              new AutoMoqCustomization {ConfigureMembers = true}) {}
 	}

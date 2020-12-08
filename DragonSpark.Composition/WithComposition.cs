@@ -94,18 +94,10 @@ namespace DragonSpark.Composition
 				}
 
 				public bool Get(Type parameter)
-				{
-					if (parameter.IsConstructedGenericType && _types.Open()
-					                                                .Contains(parameter.GetGenericTypeDefinition())
-					                                       &&
-					                                       _registry.AvailableServices.Introduce(parameter)
-					                                                .All(x => x.Item1.ServiceType != x.Item2))
-					{
-						return false;
-					}
-
-					return true;
-				}
+					=> !parameter.IsConstructedGenericType || !_types.Open()
+					                                                 .Contains(parameter.GetGenericTypeDefinition())
+					                                       || _registry.AvailableServices.Introduce(parameter)
+					                                                   .Any(x => x.Item1.ServiceType == x.Item2);
 			}
 
 			sealed class ConstructorSelector : IConstructorSelector
