@@ -23,7 +23,8 @@ namespace DragonSpark.Application.Hosting.xUnit
 			while (enumerator.MoveNext())
 			{
 				yield return Transform(enumerator.Current!);
-			}		}
+			}
+		}
 
 		ISpecimenBuilder Transform(ISpecimenBuilder current)
 		{

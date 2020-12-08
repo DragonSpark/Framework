@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 		readonly Func<T, ISpecimenBuilderNode> _delegate;
 
 		protected BuilderSelection(Func<T, ISpecimenBuilder> @delegate)
-			: this(@delegate.Start().Select(Start.An.Extent<CustomizationNode>().New!)) {}
+			: this(@delegate.Start().Select(Start.An.Extent<CustomizationNode>().New)) {}
 
 		public ISpecimenBuilderNode Transform(ISpecimenBuilder builder) => builder.AsTo(_delegate);
 	}
