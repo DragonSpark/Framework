@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Activator = DragonSpark.Runtime.Activation.Activator;
@@ -28,10 +27,11 @@ namespace DragonSpark.Composition
 		sealed class Select : IAlteration<IHostBuilder>
 		{
 			public static Select Instance { get; } = new Select();
-			readonly FieldInfo _provider;
 
 			Select() : this(typeof(ServiceContainer).GetField("constructionInfoProvider", PrivateInstanceFlags.Default)
 			                                        .Verify()) {}
+
+			readonly FieldInfo _provider;
 
 			public Select(FieldInfo provider) => _provider = provider;
 
@@ -39,9 +39,7 @@ namespace DragonSpark.Composition
 			{
 				var options = ContainerOptions.Default.Clone().WithMicrosoftSettings().WithAspNetCoreSettings();
 				var root    = new ServiceContainer(options);
-				root.ConstructorDependencySelector = new Selector(root);
-				root.ConstructorSelector = new ConstructorSelector(root.CanGetInstance,
-				                                                   options.EnableOptionalArguments);
+				root.ConstructorSelector = new ConstructorSelector(new CanSelectDependency(root, options).Get);
 
 				var current = _provider.GetValue(root).Verify().To<Lazy<IConstructionInfoProvider>>();
 
@@ -53,19 +51,68 @@ namespace DragonSpark.Composition
 				return result;
 			}
 
+			sealed class CanSelectDependency : AllCondition<ParameterInfo>
+			{
+				public CanSelectDependency(ServiceContainer owner, ContainerOptions options)
+					: this(new CanLocateDependency(owner.CanGetInstance, options.EnableOptionalArguments),
+					       new IsValidDependency(owner, Array.Of(typeof(Func<,>), typeof(Func<,,>)))) {}
+
+				public CanSelectDependency(CanLocateDependency locate, IsValidDependency valid)
+					: base(locate,
+					       Start.A.Selection<ParameterInfo>().By.Calling(x => x.ParameterType).Select(valid).Out()) {}
+			}
+
+			sealed class CanLocateDependency : ICondition<ParameterInfo>
+			{
+				readonly Func<Type, string, bool> _specification;
+				readonly bool                     _enableOptionalArguments;
+
+				public CanLocateDependency(Func<Type, string, bool> specification, bool enableOptionalArguments = false)
+				{
+					_specification           = specification;
+					_enableOptionalArguments = enableOptionalArguments;
+				}
+
+				public bool Get(ParameterInfo parameter) => _specification(parameter.ParameterType, string.Empty)
+				                                            ||
+				                                            !string.IsNullOrEmpty(parameter.Name)
+				                                            &&
+				                                            _specification(parameter.ParameterType, parameter.Name)
+				                                            ||
+				                                            _enableOptionalArguments && parameter.HasDefaultValue;
+			}
+
+			sealed class IsValidDependency : ICondition<Type>
+			{
+				readonly IServiceRegistry _registry;
+				readonly Array<Type>      _types;
+
+				public IsValidDependency(IServiceRegistry registry, Array<Type> types)
+				{
+					_registry = registry;
+					_types    = types;
+				}
+
+				public bool Get(Type parameter)
+				{
+					if (parameter.IsConstructedGenericType && _types.Open()
+					                                                .Contains(parameter.GetGenericTypeDefinition())
+					                                       &&
+					                                       _registry.AvailableServices.Introduce(parameter)
+					                                                .All(x => x.Item1.ServiceType != x.Item2))
+					{
+						return false;
+					}
+
+					return true;
+				}
+			}
+
 			sealed class ConstructorSelector : IConstructorSelector
 			{
-				readonly Func<Type, string, bool>  canGetInstance;
-				readonly bool                      enableOptionalArguments;
-				readonly Func<ParameterInfo, bool> can;
+				readonly Func<ParameterInfo, bool> _specification;
 
-				public ConstructorSelector(Func<Type, string, bool> canGetInstance,
-				                           bool enableOptionalArguments = false)
-				{
-					this.canGetInstance          = canGetInstance;
-					this.enableOptionalArguments = enableOptionalArguments;
-					can                          = CanCreateParameterDependency;
-				}
+				public ConstructorSelector(Func<ParameterInfo, bool> specification) => _specification = specification;
 
 				public ConstructorInfo Execute(Type implementingType)
 				{
@@ -80,31 +127,18 @@ namespace DragonSpark.Composition
 						                                    implementingType.FullName);
 					}
 
-					if (candidates.Length == 1)
+					foreach (var candidate in candidates.OrderByDescending(c => c.GetParameters().Length)
+					                                    .AsValueEnumerable())
 					{
-						return candidates[0];
-					}
-
-					foreach (var candidate in candidates.OrderByDescending(c => c.GetParameters().Count()))
-					{
-						if (candidate.GetParameters().All(can))
+						if (candidate!.GetParameters().All(_specification))
 						{
 							return candidate;
 						}
 					}
 
-					throw new InvalidOperationException("No resolvable constructor found for Type: " +
-					                                    implementingType.FullName);
+					throw new
+						InvalidOperationException($"No resolvable constructor found for Type: {implementingType.FullName}");
 				}
-
-				bool CanCreateParameterDependency(ParameterInfo parameterInfo)
-					=> canGetInstance(parameterInfo.ParameterType, string.Empty)
-					   ||
-					   !string.IsNullOrEmpty(parameterInfo.Name)
-					   &&
-					   canGetInstance(parameterInfo.ParameterType, parameterInfo.Name)
-					   ||
-					   parameterInfo.HasDefaultValue && enableOptionalArguments;
 			}
 
 			sealed class Construction : IConstructionInfoProvider
@@ -141,44 +175,11 @@ namespace DragonSpark.Composition
 								service.Value = instance;
 							}
 
-							return new ConstructionInfo {FactoryDelegate = registration.FactoryExpression};
+							return new ConstructionInfo { FactoryDelegate = registration.FactoryExpression };
 						}
 
 						throw;
 					}
-				}
-			}
-		}
-
-		sealed class Selector : IConstructorDependencySelector
-		{
-			readonly IServiceRegistry               _registry;
-			readonly IConstructorDependencySelector _selector;
-			readonly Array<Type>                    _types;
-
-			public Selector(ServiceContainer container) : this(container.ConstructorDependencySelector, container,
-			                                                   Array.Of(typeof(Func<,>), typeof(Func<,,>))) {}
-
-			public Selector(IConstructorDependencySelector selector, IServiceRegistry registry, Array<Type> types)
-			{
-				_selector = selector;
-				_registry = registry;
-				_types    = types;
-			}
-
-			public IEnumerable<ConstructorDependency> Execute(ConstructorInfo constructor)
-			{
-				foreach (var dependency in _selector.Execute(constructor).AsValueEnumerable())
-				{
-					var type = dependency!.ServiceType;
-
-					if (type.IsConstructedGenericType && _types.Open().Contains(type.GetGenericTypeDefinition()) &&
-					    _registry.AvailableServices.Introduce(type).All(x => x.Item1.ServiceType != x.Item2))
-					{
-						throw new InvalidOperationException($"Factory types of type 'Func<*>' are not supported unless specifically registered.  Please adjust the constructor of `{constructor.ReflectedType}` with the signature `{constructor}` so that it does not contain this unregistered factory type.");
-					}
-
-					yield return dependency;
 				}
 			}
 		}
