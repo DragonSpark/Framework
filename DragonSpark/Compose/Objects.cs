@@ -161,8 +161,11 @@ namespace DragonSpark.Compose
 
 		public static uint Next(this in uint @this) => @this + 1;
 
-		public static byte Next(this in byte @this) => (byte)(@this + 1.Byte());
-		public static byte Previous(this in byte @this) => (byte)(@this - 1.Byte());
+		public static byte Plus(this in byte @this, in byte other) => (byte)(@this + other);
+		public static byte Minus(this in byte @this, in byte other) => (byte)(@this - other);
+
+		public static byte Next(this in byte @this) => @this.Plus(1);
+		public static byte Previous(this in byte @this) => @this.Minus(1);
 		public static uint Previous(this in uint @this) => @this - 1;
 		public static int Previous(this in int @this) => @this - 1;
 
