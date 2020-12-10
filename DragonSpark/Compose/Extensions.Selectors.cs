@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose.Model;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using System;
 
 namespace DragonSpark.Compose
@@ -18,21 +18,19 @@ namespace DragonSpark.Compose
 		public static TOut Get<TIn, TOut>(this Selector<TIn, TOut> @this, TIn parameter)
 			=> @this.Get().Get(parameter);
 
-		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
-		                                                               ISelecting<TIn, TOut> second)
-			where TOut : class => @this.Or(second.Await);
+		public static Selector<TIn, TOut> Or<TIn, TOut>(this Selector<TIn, TOut?> @this, ISelect<TIn, TOut> second)
+			where TOut : class => @this.Or(second.Get);
 
-		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
-		                                                               Await<TIn, TOut> next)
+		public static Selector<TIn, TOut> Or<TIn, TOut>(this Selector<TIn, TOut?> @this, Func<TIn, TOut> next)
 			where TOut : class
 			=> new Coalesce<TIn, TOut>(@this, next).Then();
 
-		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
-		                                                               ISelecting<TIn, TOut?> second)
-			where TOut : class => @this.OrMaybe(second.Await);
+		public static Selector<TIn, TOut?> OrMaybe<TIn, TOut>(this Selector<TIn, TOut?> @this,
+		                                                      ISelect<TIn, TOut?> second)
+			where TOut : class => @this.OrMaybe(second.Get);
 
-		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
-		                                                                    Await<TIn, TOut?> next)
+		public static Selector<TIn, TOut?> OrMaybe<TIn, TOut>(this Selector<TIn, TOut?> @this,
+		                                                      Func<TIn, TOut?> next)
 			where TOut : class
 			=> new Maybe<TIn, TOut>(@this, next).Then();
 	}

@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Hosting.xUnit.Objects
+namespace DragonSpark.Application.Entities.Generation
 {
 	public readonly struct Seeding<T> where T : class
 	{
@@ -23,4 +23,18 @@ namespace DragonSpark.Application.Hosting.xUnit.Objects
 			seed   = Seed;
 		}
 	}
+
+	/*public readonly struct Seeding<T, TOther> where T : class
+	{
+		public Faker<T> Source { get; }
+		public uint Seed { get; }
+
+		public Seeding(uint seed) : this(new Faker<T>().UseSeed(seed.Degrade()), seed) {}
+
+		public Seeding(Faker<T> source, uint seed)
+		{
+			Source    = source;
+			Seed = seed;
+		}
+	}*/
 }

@@ -1,10 +1,10 @@
 ﻿using Bogus;
-using DragonSpark.Application.Hosting.xUnit.Objects;
 using DragonSpark.Compose;
 using System;
 
-namespace DragonSpark.Application.Hosting.xUnit
+namespace DragonSpark.Application.Entities.Generation
 {
+	// TODO: ???
 	public static class Extensions
 	{
 		public static T Generate<T>(this ISome<T> @this) where T : class

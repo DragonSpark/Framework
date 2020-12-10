@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose.Model;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
@@ -11,6 +12,24 @@ namespace DragonSpark.Compose
 	// ReSharper disable SuspiciousTypeConversion.Global
 	public static partial class ExtensionMethods
 	{
+		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                               ISelecting<TIn, TOut> second)
+			where TOut : class => @this.Or(second.Await);
+
+		public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                               Await<TIn, TOut> next)
+			where TOut : class
+			=> new DragonSpark.Model.Operations.Coalesce<TIn, TOut>(@this, next).Then();
+
+		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                                     ISelecting<TIn, TOut?> second)
+			where TOut : class => @this.OrMaybe(second.Await);
+
+		public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+		                                                                     Await<TIn, TOut?> next)
+			where TOut : class
+			=> new DragonSpark.Model.Operations.Maybe<TIn, TOut>(@this, next).Then();
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask ToOperation(this Task @this) => new ValueTask(@this);
 

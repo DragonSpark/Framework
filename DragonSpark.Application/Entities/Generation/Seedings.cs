@@ -2,7 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Hosting.xUnit.Objects
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class Seedings : ISelect<IFakerTInternal, uint>
 	{
