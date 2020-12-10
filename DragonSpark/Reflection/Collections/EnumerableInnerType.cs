@@ -1,9 +1,9 @@
-using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Selection;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Collections
 {
-	public sealed class EnumerableInnerType : Alteration<TypeInfo>
+	public sealed class EnumerableInnerType : Select<TypeInfo, TypeInfo?>
 	{
 		public static EnumerableInnerType Default { get; } = new EnumerableInnerType();
 

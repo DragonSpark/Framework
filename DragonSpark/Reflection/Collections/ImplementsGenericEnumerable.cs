@@ -1,6 +1,5 @@
 using DragonSpark.Reflection.Types;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace DragonSpark.Reflection.Collections
 {
@@ -8,6 +7,6 @@ namespace DragonSpark.Reflection.Collections
 	{
 		public static ImplementsGenericEnumerable Default { get; } = new ImplementsGenericEnumerable();
 
-		ImplementsGenericEnumerable() : base(typeof(IEnumerable<>).GetTypeInfo()) {}
+		ImplementsGenericEnumerable() : base(typeof(IEnumerable<>)) {}
 	}
 }
