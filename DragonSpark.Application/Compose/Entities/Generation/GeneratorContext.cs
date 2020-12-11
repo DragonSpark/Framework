@@ -18,13 +18,13 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public static implicit operator T(GeneratorContext<T> instance) => instance.Get();
 
 		readonly Faker<T>       _subject;
-		readonly GeneratorStore _store;
+		readonly GeneratorState _store;
 
-		public GeneratorContext() : this(new GeneratorStore()) {}
+		public GeneratorContext() : this(new GeneratorState()) {}
 
-		public GeneratorContext(GeneratorStore store) : this(store.Get<T>(), store) {}
+		public GeneratorContext(GeneratorState store) : this(store.Get<T>(), store) {}
 
-		public GeneratorContext(Faker<T> subject, GeneratorStore store)
+		public GeneratorContext(Faker<T> subject, GeneratorState store)
 		{
 			_subject = subject;
 			_store   = store;
@@ -63,6 +63,133 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public T Get() => _subject.Generate();
 	}
 
+	public class PivotContext<T, TCurrent> : IResult<T> where T : class where TCurrent : class
+	{
+		readonly Faker<T>        _subject;
+		readonly Faker<TCurrent> _current;
+		readonly GeneratorState  _store;
+
+		public PivotContext(Faker<T> subject, Faker<TCurrent> current, GeneratorState store)
+		{
+			_subject = subject;
+			_current = current;
+			_store   = store;
+		}
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property)
+			where TOther : class
+			=> Include(property, x => x);
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                Including<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _store.Rule(including);
+			var configured = _current.RuleFor(property, rule.Get);
+			var generators = new PivotGenerators<T, TCurrent, TOther>(_subject, configured, generator);
+			var result     = new PivotIncludeContext<T, TCurrent, TOther>(generators, _store);
+			return result;
+		}
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                Expression<Func<TOther, TCurrent>> other)
+			where TOther : class
+			=> Include(property, other, x => x);
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                Expression<Func<TOther, TCurrent>> other,
+		                                                                Including<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _store.Rule(other, including);
+			var configured = _current.RuleFor(property, rule.Get);
+			var generators = new PivotGenerators<T, TCurrent, TOther>(_subject, configured, generator);
+			var result     = new PivotIncludeContext<T, TCurrent, TOther>(generators, _store);
+			return result;
+		}
+
+		public T Get() => _subject.Generate();
+	}
+
+	public readonly struct PivotGenerators<T, TPivot, TCurrent>
+		where T : class where TPivot : class where TCurrent : class
+	{
+		public PivotGenerators(Faker<T> subject, Faker<TPivot> pivot, Faker<TCurrent> current)
+		{
+			Subject = subject;
+			Pivot   = pivot;
+			Current = current;
+		}
+
+		public Faker<T> Subject { get; }
+
+		public Faker<TPivot> Pivot { get; }
+
+		public Faker<TCurrent> Current { get; }
+
+		public void Deconstruct(out Faker<T> subject, out Faker<TPivot> pivot, out Faker<TCurrent> current)
+		{
+			subject = Subject;
+			pivot   = Pivot;
+			current = Current;
+		}
+	}
+
+	public class PivotIncludeContext<T, TPivot, TCurrent> : PivotContext<T, TPivot>
+		where T : class where TCurrent : class where TPivot : class
+	{
+		readonly PivotGenerators<T, TPivot, TCurrent> _generators;
+		readonly GeneratorState                       _store;
+
+		public PivotIncludeContext(PivotGenerators<T, TPivot, TCurrent> generators, GeneratorState store)
+			: base(generators.Subject, generators.Pivot, store)
+		{
+			_generators = generators;
+			_store      = store;
+		}
+
+		public PivotContext<T, TCurrent> Pivot()
+			=> new PivotContext<T, TCurrent>(_generators.Subject, _generators.Current, _store);
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property)
+			where TOther : class
+			=> ThenInclude(property, x => x);
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                  Including<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (subject, pivot, current) = _generators;
+			var (generator, rule)         = _store.Rule(including);
+
+			current.RuleFor(property, rule.Get);
+
+			var generators = new PivotGenerators<T, TPivot, TOther>(subject, pivot, generator);
+			var result     = new PivotIncludeContext<T, TPivot, TOther>(generators, _store);
+			return result;
+		}
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                  Expression<Func<TOther, TCurrent>> other)
+			where TOther : class
+			=> ThenInclude(property, other, x => x);
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                                  Expression<Func<TOther, TCurrent>> other,
+		                                                                  Including<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (subject, pivot, current) = _generators;
+			var (generator, rule)         = _store.Rule(other, including);
+
+			current.RuleFor(property, rule.Get);
+
+			var generators = new PivotGenerators<T, TPivot, TOther>(subject, pivot, generator);
+			var result     = new PivotIncludeContext<T, TPivot, TOther>(generators, _store);
+			return result;
+		}
+	}
+
 	sealed class GeneratorTables : ISelect<TypeInfo, IFakerTInternal>
 	{
 		public static GeneratorTables Default { get; } = new GeneratorTables();
@@ -86,19 +213,18 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		}
 	}
 
-	public sealed class GeneratorStore
+	public sealed class GeneratorState
 	{
+		readonly ITypedTable<object>                _instances;
 		readonly ISelect<TypeInfo, IFakerTInternal> _generators;
 
-		public GeneratorStore() : this(new TypedTable<object>(), GeneratorTables.Default.ToStandardTable()) {}
+		public GeneratorState() : this(new TypedTable<object>(), GeneratorTables.Default.ToStandardTable()) {}
 
-		public GeneratorStore(ITypedTable<object> instances, ISelect<TypeInfo, IFakerTInternal> generators)
+		public GeneratorState(ITypedTable<object> instances, ISelect<TypeInfo, IFakerTInternal> generators)
 		{
+			_instances  = instances;
 			_generators = generators;
-			Instances   = instances;
 		}
-
-		public ITypedTable<object> Instances { get; }
 
 		public Faker<T> Get<T>() where T : class => _generators.Get(A.Type<T>()).To<Faker<T>>();
 
@@ -113,7 +239,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			var assign    = new Assign<T, TOther>(includes.Post, configure);
 			var generator = _generators.Get(A.Type<TOther>()).To<Faker<TOther>>();
 			var current   = new Rule<T, TOther>(generator, includes.Generate, assign.Execute);
-			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, Instances)));
+			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, _instances)));
 			return result;
 		}
 
@@ -127,7 +253,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 				                : includes.Post;
 			var generator = _generators.Get(A.Type<TOther>()).To<Faker<TOther>>();
 			var current   = new Rule<T, TOther>(generator, includes.Generate, configure);
-			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, Instances)));
+			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, _instances)));
 			return result;
 		}
 	}
@@ -136,15 +262,17 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	{
 		readonly Faker<T>        _subject;
 		readonly Faker<TCurrent> _current;
-		readonly GeneratorStore  _store;
+		readonly GeneratorState  _store;
 
-		public IncludeGeneratorContext(Faker<T> subject, Faker<TCurrent> current, GeneratorStore store)
+		public IncludeGeneratorContext(Faker<T> subject, Faker<TCurrent> current, GeneratorState store)
 			: base(subject, store)
 		{
 			_subject = subject;
 			_current = current;
 			_store   = store;
 		}
+
+		public PivotContext<T, TCurrent> Pivot() => new PivotContext<T, TCurrent>(_subject, _current, _store);
 
 		public IncludeGeneratorContext<T, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property)
 			where TOther : class

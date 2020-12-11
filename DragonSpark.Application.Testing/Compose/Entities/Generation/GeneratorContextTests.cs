@@ -141,6 +141,43 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			sut.Child.Other.Item.Other.Should().BeSameAs(sut.Child.Other);
 		}
 
+		[Fact]
+		public void VerifyPivot()
+		{
+			var sut = Start.A.Generator<Pivot.Parent>()
+			               .Include(x => x.Child)
+			               .Pivot()
+			               .Include(x => x.Other)
+			               .Include(x => x.Item)
+			               .Get();
+			sut.Child.Other.Child.Should().BeSameAs(sut.Child.Item.Child).And.Subject.Should().NotBeNull();
+		}
+
+		[Fact]
+		public void VerifyPivotThenInclude()
+		{
+			var sut = Start.A.Generator<PivotThenInclude.Parent>()
+			               .Include(x => x.Child)
+			               .Pivot()
+			               .Include(x => x.Other)
+			               .ThenInclude(x => x.Item)
+			               .Get();
+			sut.Child.Other.Item.Other.Should().BeSameAs(sut.Child.Other).And.Subject.Should().NotBeNull();
+		}
+
+		[Fact]
+		public void VerifyPivotThenIncludeDirect()
+		{
+			var sut = Start.A.Generator<PivotThenIncludeDirect.Parent>()
+			               .Include(x => x.Child)
+			               .Pivot()
+			               .Include(x => x.Other)
+			               .ThenInclude(x => x.Item, x => x.Other2)
+			               .Get();
+			sut.Child.Other.Item.Other2.Should().BeSameAs(sut.Child.Other).And.Subject.Should().NotBeNull();
+			sut.Child.Other.Item.Other1.Should().BeNull();
+		}
+
 		static class Basic
 		{
 			public sealed class Parent
@@ -171,6 +208,88 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 				public Child Child { get; set; } = default!;
 			}
 		}
+
+		static class Pivot
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				[UsedImplicitly]
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+
+				public Item Item { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Item
+			{
+				public Child Child { get; set; } = default!;
+			}
+		}
+
+		static class PivotThenInclude
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				[UsedImplicitly]
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Item Item { get; set; } = default!;
+			}
+
+			public sealed class Item
+			{
+				public Other Other { get; set; } = default!;
+			}
+		}
+
+		static class PivotThenIncludeDirect
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				[UsedImplicitly]
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Item Item { get; set; } = default!;
+			}
+
+			public sealed class Item
+			{
+				public Other Other1 { get; set; } = default!;
+				public Other Other2 { get; set; } = default!;
+			}
+		}
+
 
 		static class ThenIncludeDouble
 		{
