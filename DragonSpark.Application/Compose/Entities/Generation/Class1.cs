@@ -26,17 +26,26 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	{
 		public static Rule<T, TOther> Default { get; } = new Rule<T, TOther>();
 
-		Rule() : this(Generate<T, TOther>.Default) {}
+		Rule() : this((faker, other) => {}) {}
 
-		readonly IRule<T, TOther> _generate;
+		readonly IRule<T, TOther>      _generate;
+		readonly Action<Faker, TOther> _post;
 
-		public Rule(IRule<T, TOther> generate) => _generate = generate;
+		public Rule(Action<Faker, TOther> post) : this(Generate<T, TOther>.Default, post) {}
+
+		public Rule(IRule<T, TOther> generate, Action<Faker, TOther> post)
+		{
+			_generate = generate;
+			_post     = post;
+		}
 
 		public TOther Get((Faker, T) parameter)
 		{
+
 			var assignment = LocateAssignment<TOther, T>.Default.Get();
 			var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
 			var result     = rule.Get(parameter);
+			_post(parameter.Item1, result);
 			return result;
 		}
 	}

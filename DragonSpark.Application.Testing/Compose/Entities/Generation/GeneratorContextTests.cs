@@ -32,6 +32,27 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			     .Throw<InvalidOperationException>();
 		}
 
+		[Fact]
+		public void VerifyPost()
+		{
+			var @default = Start.A.Generator<PostConfigure.Parent>()
+			                    .Include(x => x.Child)
+			                    .Get();
+			@default.Child.Count1.Should().NotBe(default);
+			@default.Child.Count2.Should().NotBe(default);
+			@default.Child.Count3.Should().NotBe(default);
+
+			var post = Start.A.Generator<PostConfigure.Parent>()
+			                .Include(x => x.Child, (faker, child) =>
+			                                       {
+				                                       child.Count1 = child.Count2 = child.Count3 = 0;
+			                                       })
+			                .Get();
+			post.Child.Count1.Should().Be(default);
+			post.Child.Count2.Should().Be(default);
+			post.Child.Count3.Should().Be(default);
+		}
+
 		static class Basic
 		{
 			public sealed class Parent
@@ -47,7 +68,6 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			public sealed class Parent
 			{
 				public Child Child { get; set; } = default!;
-
 			}
 
 			[UsedImplicitly]
@@ -55,6 +75,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			{
 				[UsedImplicitly]
 				public Parent Parent1 { get; set; } = default!;
+
 				[UsedImplicitly]
 				public Parent Parent2 { get; set; } = default!;
 			}
@@ -65,7 +86,6 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			public sealed class Parent
 			{
 				public Child Child { get; set; } = default!;
-
 			}
 
 			public sealed class Child
@@ -74,6 +94,28 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 
 				[UsedImplicitly]
 				public Parent Other { get; set; } = default!;
+			}
+		}
+
+		static class PostConfigure
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Parent Parent { get; set; } = default!;
+
+				[UsedImplicitly]
+				public Guid Id { get; set; }
+
+				public uint Count1 { get; set; }
+
+				public uint Count2 { get; set; }
+
+				public uint Count3 { get; set; }
 			}
 		}
 	}

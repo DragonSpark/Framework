@@ -17,8 +17,12 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public GeneratorContext(Faker<T> subject) => _subject = subject;
 
 		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property) where TOther : class
+			=> Include(property, (faker, other) => {});
+
+		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property, Action<Faker, TOther> post)
+			where TOther : class
 		{
-			var configured = _subject.RuleFor(property, Rule<T, TOther>.Default.Get);
+			var configured = _subject.RuleFor(property, new Rule<T, TOther>(post).Get);
 			var result     = new GeneratorContext<T>(configured);
 			return result;
 		}
