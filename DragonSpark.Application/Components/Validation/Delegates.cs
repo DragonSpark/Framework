@@ -11,12 +11,12 @@ namespace DragonSpark.Application.Components.Validation
 	{
 		public static Delegates Default { get; } = new Delegates();
 
-		Delegates() : this(PropertyDelegates.Default, AllInstanceFlags.Default) {}
+		Delegates() : this(GeneralPropertyValueDelegates.Default, AllInstanceFlags.Default) {}
 
-		readonly IPropertyDelegates _delegates;
-		readonly BindingFlags       _flags;
+		readonly IPropertyValueDelegate _delegates;
+		readonly BindingFlags           _flags;
 
-		public Delegates(IPropertyDelegates delegates, BindingFlags flags)
+		public Delegates(IPropertyValueDelegate delegates, BindingFlags flags)
 		{
 			_delegates = delegates;
 			_flags     = flags;
@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Components.Validation
 			var (owner, name) = parameter;
 			var property = owner.GetProperty(name, _flags)
 			                    .Verify($"Could not locate property '{name}' on type '{owner}'");
-			var result = _delegates.Get(owner)(property);
+			var result = _delegates.Get(property);
 			return result;
 		}
 	}

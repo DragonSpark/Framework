@@ -1,11 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
-using DragonSpark.Reflection.Types;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Reflection;
 
 namespace DragonSpark.Presentation.Components.Forms
 {
@@ -13,31 +9,17 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		public static SelectValue<T> Default { get; } = new SelectValue<T>();
 
-		SelectValue()
-			: this(new Generic<ISelect<PropertyInfo, Func<object, T>>>(typeof(SelectValue<,>)), A.Type<T>()) {}
+		SelectValue() : this(GeneralPropertyValueDelegates<T>.Default) {}
 
-		readonly IGeneric<ISelect<PropertyInfo, Func<object, T>>> _generic;
-		readonly Type _type;
+		readonly IPropertyValueDelegate<T> _delegates;
 
-		public SelectValue(IGeneric<ISelect<PropertyInfo, Func<object, T>>> generic, Type type)
-		{
-			_generic = generic;
-			_type = type;
-		}
+		public SelectValue(IPropertyValueDelegate<T> delegates) => _delegates = delegates;
 
 		public T Get(FieldIdentifier parameter)
 		{
-			var type = parameter.Model.GetType();
-			var result = _generic.Get(type, _type).Get(type.GetProperty(parameter.FieldName).Verify())(parameter.Model);
+			var property = parameter.Model.GetType().GetProperty(parameter.FieldName).Verify();
+			var result   = _delegates.Get(property)(parameter.Model);
 			return result;
 		}
-	}
-
-	sealed class SelectValue<T, TValue> : Select<PropertyInfo, Func<object, TValue>>
-	{
-		[UsedImplicitly]
-		public static SelectValue<T, TValue> Default { get; } = new SelectValue<T, TValue>();
-
-		SelectValue() : base(DefaultPropertyDelegate<T, TValue>.Default.Then().Stores().Reference().Get) {}
 	}
 }

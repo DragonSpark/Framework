@@ -204,8 +204,10 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		{
 			public sealed class Parent
 			{
+				[UsedImplicitly]
 				public Guid Id { get; set; }
 
+				[UsedImplicitly]
 				public DateTimeOffset Created { get; set; }
 
 				public Child Child { get; set; } = default!;
