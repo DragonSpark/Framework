@@ -10,46 +10,70 @@ using DragonSpark.Reflection.Members;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DragonSpark.Application.Compose.Entities.Generation
 {
-	class Class1 {}
-
 	public static class Extensions
 	{
 		public static GeneratorContext<T> Generator<T>(this ModelContext _)
 			where T : class => new GeneratorContext<T>();
 	}
 
-	public sealed class GeneratorContext<T> : IResult<T> where T : class
+	public interface IRule<T, out TOther> : ISelect<(Faker, T), TOther> where TOther : class {}
+
+	sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
 	{
-		public static implicit operator T(GeneratorContext<T> instance) => instance.Get();
+		public static Rule<T, TOther> Default { get; } = new Rule<T, TOther>();
 
-		readonly Faker<T> _subject;
+		Rule() : this(Generate<T, TOther>.Default) {}
 
-		public GeneratorContext() : this(Generator<T>.Default.Get()) {}
+		readonly IRule<T, TOther> _generate;
 
-		public GeneratorContext(Faker<T> subject) => _subject = subject;
+		public Rule(IRule<T, TOther> generate) => _generate = generate;
 
-		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property) where TOther : class
+		public TOther Get((Faker, T) parameter)
 		{
-			var other      = Generator<TOther>.Default.Get();
 			var assignment = LocateAssignment<TOther, T>.Default.Get();
-			var configured = _subject.RuleFor(property, (faker, arg2) =>
-			                                            {
-				                                            var result = other.Generate();
-				                                            assignment?.Invoke(result, arg2);
-				                                            return result;
-			                                            });
-			{
-				var result = new GeneratorContext<T>(configured);
-				return result;
-			}
+			var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
+			var result     = rule.Get(parameter);
+			return result;
+		}
+	}
+
+	sealed class Generate<T, TOther> : IRule<T, TOther> where TOther : class
+	{
+		public static Generate<T, TOther> Default { get; } = new Generate<T, TOther>();
+
+		Generate() : this(Generator<TOther>.Default.Get()) {}
+
+		readonly Faker<TOther> _generator;
+
+		public Generate(Faker<TOther> generator) => _generator = generator;
+
+		public TOther Get((Faker, T) parameter) => _generator.Generate();
+	}
+
+	sealed class Assign<T, TOther> : IRule<T, TOther> where TOther : class
+	{
+		readonly Action<TOther, T> _assign;
+		readonly Faker<TOther>     _generator;
+
+		public Assign(Action<TOther, T> assign) : this(assign, Generator<TOther>.Default.Get()) {}
+
+		public Assign(Action<TOther, T> assign, Faker<TOther> generator)
+		{
+			_assign    = assign;
+			_generator = generator;
 		}
 
-		public T Get() => _subject.Generate();
+		public TOther Get((Faker, T) parameter)
+		{
+			var (_, owner) = parameter;
+			var result = _generator.Generate();
+			_assign(result, owner);
+			return result;
+		}
 	}
 
 	sealed class LocateAssignment<T, TValue> : IResult<Action<T, TValue>?>
@@ -123,7 +147,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 		PrincipalProperty() : base(Start.An.Instance(LocateOnlyPrincipalProperty.Default)
 		                                .Then()
-		                                .OrMaybe(PrincipalPropertyByName<T>.Default)
+		                                .OrMaybe(PrincipalPropertyByName<TValue>.Default)
 		                                .Get()
 		                                .To(x => new MultipleCandidatePrincipalProperty<T, TValue>(x))) {}
 	}
@@ -181,27 +205,6 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 			return default;
 		}
-	}
-
-	/*public readonly struct Configuration<T, TProperty>
-	{
-		public Configuration(Faker generator, T owner, TProperty property)
-		{
-			Generator = generator;
-			Owner     = owner;
-			Property  = property;
-		}
-
-		public Faker Generator { get; }
-
-		public T Owner { get; }
-
-		public TProperty Property { get; }
-	}*/
-
-	sealed class Configuration<T, TProperty> : ICommand<(T, TProperty)>
-	{
-		public void Execute((T, TProperty) parameter) {}
 	}
 
 	sealed class Generator<T> : IResult<AutoFaker<T>> where T : class
