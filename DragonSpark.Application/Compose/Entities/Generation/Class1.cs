@@ -22,18 +22,12 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 	public interface IRule<T, out TOther> : ISelect<(Faker, T), TOther> where TOther : class {}
 
-	sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
+	/*sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
 	{
-		public static Rule<T, TOther> Default { get; } = new Rule<T, TOther>();
+		readonly Func<Faker<TOther>, T, TOther> _generate;
+		readonly Action<Faker, T, TOther>       _post;
 
-		Rule() : this((faker, other) => {}) {}
-
-		readonly IRule<T, TOther>      _generate;
-		readonly Action<Faker, TOther> _post;
-
-		public Rule(Action<Faker, TOther> post) : this(Generate<T, TOther>.Default, post) {}
-
-		public Rule(IRule<T, TOther> generate, Action<Faker, TOther> post)
+		public Rule(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post)
 		{
 			_generate = generate;
 			_post     = post;
@@ -41,16 +35,68 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 		public TOther Get((Faker, T) parameter)
 		{
-
-			var assignment = LocateAssignment<TOther, T>.Default.Get();
-			var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
+			
+			/*var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
 			var result     = rule.Get(parameter);
 			_post(parameter.Item1, result);
+			return result;#1#
+		}
+	}*/
+
+	/*sealed class Generate<T, TOther> : ISelect<(Faker<TOther>, T), TOther> where TOther : class
+	{
+		public static Generate<T,TOther> Default { get; } = new Generate<T,TOther>();
+
+		Generate() {}
+
+		public TOther Get((Faker<TOther>, T) parameter) => parameter.Item1.Generate();
+	}*/
+
+	sealed class Assign<T, TOther> : ICommand<(Faker, T, TOther)>
+	{
+		readonly Action<Faker, T, TOther> _previous;
+		readonly Action<TOther, T>        _assign;
+
+		public Assign(Action<Faker, T, TOther> previous, Action<TOther, T> assign)
+		{
+			_previous = previous;
+			_assign   = assign;
+		}
+
+		public void Execute((Faker, T, TOther) parameter)
+		{
+			var (values, owner, instance) = parameter;
+			_previous(values, owner, instance);
+			_assign(instance, owner);
+		}
+	}
+
+	sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
+	{
+		readonly Func<Faker<TOther>, T, TOther> _generate;
+		readonly Action<Faker, T, TOther>       _post;
+		readonly Faker<TOther>                  _generator;
+
+		public Rule(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post)
+			: this(generate, post, Generator<TOther>.Default.Get()) {}
+
+		public Rule(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post, Faker<TOther> generator)
+		{
+			_generate  = generate;
+			_post      = post;
+			_generator = generator;
+		}
+
+		public TOther Get((Faker, T) parameter)
+		{
+			var (faker, owner) = parameter;
+			var result = _generate(_generator, owner);
+			_post(faker, owner, result);
 			return result;
 		}
 	}
 
-	sealed class Generate<T, TOther> : IRule<T, TOther> where TOther : class
+	/*sealed class Generate<T, TOther> : IRule<T, TOther> where TOther : class
 	{
 		public static Generate<T, TOther> Default { get; } = new Generate<T, TOther>();
 
@@ -83,7 +129,9 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			_assign(result, owner);
 			return result;
 		}
-	}
+	}*/
+
+	/**/
 
 	sealed class LocateAssignment<T, TValue> : IResult<Action<T, TValue>?>
 	{

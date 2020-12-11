@@ -17,12 +17,35 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public GeneratorContext(Faker<T> subject) => _subject = subject;
 
 		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property) where TOther : class
-			=> Include(property, (faker, other) => {});
+			=> Include(property, (generator, _) => generator.Generate(), (_, __, ___) => {});
 
 		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property, Action<Faker, TOther> post)
 			where TOther : class
+			=> Include(property, (generator, _) => generator.Generate(), post);
+
+		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property,
+		                                           Func<Faker<TOther>, T, TOther> generate)
+			where TOther : class
+			=> Include(property, generate, (faker, other) => {});
+
+		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property,
+		                                           Func<Faker<TOther>, T, TOther> generate, Action<Faker, TOther> post)
+			where TOther : class
+			=> Include(property, generate, (generator, _, instance) => post(generator, instance));
+
+		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property,
+		                                           Action<Faker, T, TOther> post)
+			where TOther : class => Include(property, (generator, _) => generator.Generate(), post);
+
+		public GeneratorContext<T> Include<TOther>(Expression<Func<T, TOther>> property,
+		                                           Func<Faker<TOther>, T, TOther> generate,
+		                                           Action<Faker, T, TOther> post)
+			where TOther : class
 		{
-			var configured = _subject.RuleFor(property, new Rule<T, TOther>(post).Get);
+			var assignment = LocateAssignment<TOther, T>.Default.Get();
+			var configure  = assignment != null ? new Assign<T, TOther>(post, assignment).Execute : post;
+
+			var configured = _subject.RuleFor(property, new Rule<T, TOther>(generate, configure).Get);
 			var result     = new GeneratorContext<T>(configured);
 			return result;
 		}

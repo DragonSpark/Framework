@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Compose.Entities.Generation;
+using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -26,10 +27,19 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		public void VerifyMultiple()
 		{
 			Start.A.Generator<Multiple.Parent>()
-			     .Include(x => x.Child)
-			     .Invoking(x => x.Get())
+			     .Invoking(x => x.Include(x => x.Child))
 			     .Should()
 			     .Throw<InvalidOperationException>();
+		}
+
+		[Theory, AutoData]
+		public void VerifyGenerate(Guid expected)
+		{
+			var generated = Start.A.Generator<Generate.Parent>()
+			                     .Include(x => x.Child, (faker, parent) => faker.Generate().With(y => y.Id = expected))
+			                     .Get();
+			generated.Child.Id.Should().Be(expected);
+			generated.Child.Parent.Should().BeSameAs(generated);
 		}
 
 		[Fact]
@@ -41,16 +51,27 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			@default.Child.Count1.Should().NotBe(default);
 			@default.Child.Count2.Should().NotBe(default);
 			@default.Child.Count3.Should().NotBe(default);
+			@default.Child.Parent.Should().BeSameAs(@default);
 
-			var post = Start.A.Generator<PostConfigure.Parent>()
-			                .Include(x => x.Child, (faker, child) =>
-			                                       {
-				                                       child.Count1 = child.Count2 = child.Count3 = 0;
-			                                       })
-			                .Get();
-			post.Child.Count1.Should().Be(default);
-			post.Child.Count2.Should().Be(default);
-			post.Child.Count3.Should().Be(default);
+			{
+				var post = Start.A.Generator<PostConfigure.Parent>()
+				                .Include(x => x.Child, (_, child) => child.Count1 = child.Count2 = child.Count3 = 0)
+				                .Get();
+				post.Child.Count1.Should().Be(default);
+				post.Child.Count2.Should().Be(default);
+				post.Child.Count3.Should().Be(default);
+				post.Child.Parent.Should().BeSameAs(post);
+			}
+
+			{
+				var post = Start.A.Generator<PostConfigure.Parent>()
+				                .Include(x => x.Child, (_, __, child) => child.Count1 = child.Count2 = child.Count3 = 0)
+				                .Get();
+				post.Child.Count1.Should().Be(default);
+				post.Child.Count2.Should().Be(default);
+				post.Child.Count3.Should().Be(default);
+				post.Child.Parent.Should().BeSameAs(post);
+			}
 		}
 
 		static class Basic
@@ -94,6 +115,22 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 
 				[UsedImplicitly]
 				public Parent Other { get; set; } = default!;
+			}
+		}
+
+		static class Generate
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Parent Parent { get; set; } = default!;
+
+				[UsedImplicitly]
+				public Guid Id { get; set; }
 			}
 		}
 
