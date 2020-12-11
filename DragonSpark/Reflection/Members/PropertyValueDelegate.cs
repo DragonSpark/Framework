@@ -1,30 +1,42 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using DragonSpark.Reflection.Types;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members
 {
-	/*public sealed class PropertyValueDelegate<T> : IPropertyValueDelegate<object, T>
+	sealed class PropertyValueDelegate : IPropertyValueDelegate
 	{
+		readonly IGeneric<IPropertyValueDelegate> _generic;
+
+		public static PropertyValueDelegate Default { get; } = new PropertyValueDelegate();
+
+		PropertyValueDelegate()
+			: this(new Generic<IPropertyValueDelegate>(typeof(PropertyValueDelegateAdapter<,>))) {}
+
+		public PropertyValueDelegate(IGeneric<IPropertyValueDelegate> generic) => _generic = generic;
+
+		public Func<object, object> Get(PropertyInfo parameter)
+			=> _generic.Get(parameter.DeclaringType ?? parameter.ReflectedType.Verify(), parameter.PropertyType)
+			           .Get(parameter);
+	}
+
+	sealed class PropertyValueDelegate<T> : IPropertyValueDelegate<T>
+	{
+		readonly IGeneric<IPropertyValueDelegate<T>> _generic;
+
 		public static PropertyValueDelegate<T> Default { get; } = new PropertyValueDelegate<T>();
 
 		PropertyValueDelegate()
-			: this(new Generic<IPropertyValueDelegate<object, T>>(typeof(PropertyDelegateAdapter<,>)), A.Type<T>()) {}
+			: this(new Generic<IPropertyValueDelegate<T>>(typeof(PropertyDelegateAdapter<,>))) {}
 
-		readonly IGeneric<IPropertyValueDelegate<object, T>> _generic;
-		readonly Type                                        _ownerType;
-
-		public PropertyValueDelegate(IGeneric<IPropertyValueDelegate<object, T>> generic, Type ownerType)
-		{
-			_generic   = generic;
-			_ownerType = ownerType;
-		}
+		public PropertyValueDelegate(IGeneric<IPropertyValueDelegate<T>> generic) => _generic = generic;
 
 		public Func<object, T> Get(PropertyInfo parameter)
-			=> _generic.Get(_ownerType, parameter.PropertyType).Get(parameter);
-	}*/
-
-
+			=> _generic.Get(parameter.DeclaringType ?? parameter.ReflectedType.Verify(), parameter.PropertyType)
+			           .Get(parameter);
+	}
 	sealed class PropertyValueDelegate<T, TValue> : IPropertyValueDelegate<T, TValue>
 	{
 		public static PropertyValueDelegate<T, TValue> Default { get; } = new PropertyValueDelegate<T, TValue>();

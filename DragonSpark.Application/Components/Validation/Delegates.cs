@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Components.Validation
 	{
 		public static Delegates Default { get; } = new Delegates();
 
-		Delegates() : this(GeneralPropertyValueDelegates.Default, AllInstanceFlags.Default) {}
+		Delegates() : this(PropertyValueDelegates.Default, AllInstanceFlags.Default) {}
 
 		readonly IPropertyValueDelegate _delegates;
 		readonly BindingFlags           _flags;

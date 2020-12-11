@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Forms
 	{
 		public static SelectValue<T> Default { get; } = new SelectValue<T>();
 
-		SelectValue() : this(GeneralPropertyValueDelegates<T>.Default) {}
+		SelectValue() : this(PropertyValueDelegates<T>.Default) {}
 
 		readonly IPropertyValueDelegate<T> _delegates;
 
