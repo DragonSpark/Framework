@@ -16,6 +16,18 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			Start.A.Generator<Basic.Parent>().Include(x => x.Child).Get().Child.Should().NotBeNull();
 		}
 
+		[Theory, AutoData]
+		public void VerifyConfigure(DateTimeOffset expected)
+		{
+			var sut = Start.A.Generator<Configured.Parent>()
+			               .Include(x => x.Child)
+			               .Configure(x => x.Created, x => expected)
+			               .Get();
+			sut.Child.Parent.Should().BeSameAs(sut);
+			sut.Created.Should().Be(expected);
+			sut.Id.Should().NotBe(default);
+		}
+
 		[Fact]
 		public void VerifyNamed()
 		{
@@ -188,6 +200,23 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			public sealed class Child {}
 		}
 
+		static class Configured
+		{
+			public sealed class Parent
+			{
+				public Guid Id { get; set; }
+
+				public DateTimeOffset Created { get; set; }
+
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Parent Parent { get; set; } = default!;
+			}
+		}
+
 		static class ThenInclude
 		{
 			public sealed class Parent
@@ -289,7 +318,6 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 				public Other Other2 { get; set; } = default!;
 			}
 		}
-
 
 		static class ThenIncludeDouble
 		{

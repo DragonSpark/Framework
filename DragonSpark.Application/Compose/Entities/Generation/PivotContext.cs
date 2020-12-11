@@ -19,6 +19,10 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			_state   = state;
 		}
 
+		public PivotContext<T, TCurrent> Configure<TOther>(Expression<Func<TCurrent, TOther>> property,
+		                                                   Func<Faker, TOther> configure)
+			=> new PivotContext<T, TCurrent>(_subject, _current.RuleFor(property, configure), _state);
+
 		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property)
 			where TOther : class
 			=> Include(property, x => x);

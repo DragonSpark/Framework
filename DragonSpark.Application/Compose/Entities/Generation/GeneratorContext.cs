@@ -25,6 +25,10 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			_state   = state;
 		}
 
+		public GeneratorContext<T> Configure<TOther>(Expression<Func<T, TOther>> property,
+		                                             Func<Faker, TOther> configure)
+			=> new GeneratorContext<T>(_subject.RuleFor(property, configure), _state);
+
 		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, TOther>> property)
 			where TOther : class
 			=> Include(property, x => x);
