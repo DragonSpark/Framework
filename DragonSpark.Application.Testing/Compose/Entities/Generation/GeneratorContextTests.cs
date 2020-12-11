@@ -46,7 +46,9 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		public void VerifyGenerate(Guid expected)
 		{
 			var generated = Start.A.Generator<Generate.Parent>()
-			                     .Include(x => x.Child, (faker, parent) => faker.Generate().With(y => y.Id = expected))
+			                     .Include(x => x.Child,
+			                              x => x.Generate((faker, parent)
+				                                              => faker.Generate().With(y => y.Id = expected)))
 			                     .Get();
 			generated.Child.Id.Should().Be(expected);
 			generated.Child.Parent.Should().BeSameAs(generated);
@@ -65,7 +67,8 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 
 			{
 				var post = Start.A.Generator<PostConfigure.Parent>()
-				                .Include(x => x.Child, (_, child) => child.Count1 = child.Count2 = child.Count3 = 0)
+				                .Include(x => x.Child,
+				                         x => x.Configure((_, child) => child.Count1 = child.Count2 = child.Count3 = 0))
 				                .Get();
 				post.Child.Count1.Should().Be(default);
 				post.Child.Count2.Should().Be(default);
@@ -75,13 +78,37 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 
 			{
 				var post = Start.A.Generator<PostConfigure.Parent>()
-				                .Include(x => x.Child, (_, __, child) => child.Count1 = child.Count2 = child.Count3 = 0)
+				                .Include(x => x.Child,
+				                         x => x.Configure((_, __, child)
+					                                          => child.Count1 = child.Count2 = child.Count3 = 0))
 				                .Get();
 				post.Child.Count1.Should().Be(default);
 				post.Child.Count2.Should().Be(default);
 				post.Child.Count3.Should().Be(default);
 				post.Child.Parent.Should().BeSameAs(post);
 			}
+		}
+
+		[Fact]
+		public void VerifyScoping()
+		{
+			var sut = Start.A.Generator<Basic.Parent>()
+			               .Include(x => x.Child, include => include.Scoped(y => y.Once()));
+			var first  = sut.Get();
+			var second = sut.Get();
+
+			first.Child.Should().BeSameAs(second.Child).And.Subject.Should().NotBeNull();
+		}
+
+		[Fact]
+		public void VerifyScopingEach()
+		{
+			var sut = Start.A.Generator<Basic.Parent>()
+			               .Include(x => x.Child, include => include.Scoped(y => y.PerCall()));
+			var first  = sut.Get();
+			var second = sut.Get();
+
+			first.Child.Should().NotBeSameAs(second.Child).And.Subject.Should().NotBeNull();
 		}
 
 		static class Basic

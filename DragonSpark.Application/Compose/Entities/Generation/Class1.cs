@@ -23,36 +23,6 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 	public interface IRule<T, out TOther> : ISelect<(Faker, T), TOther> where TOther : class {}
 
-	/*sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
-	{
-		readonly Func<Faker<TOther>, T, TOther> _generate;
-		readonly Action<Faker, T, TOther>       _post;
-
-		public Rule(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post)
-		{
-			_generate = generate;
-			_post     = post;
-		}
-
-		public TOther Get((Faker, T) parameter)
-		{
-
-			/*var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
-			var result     = rule.Get(parameter);
-			_post(parameter.Item1, result);
-			return result;#1#
-		}
-	}*/
-
-	/*sealed class Generate<T, TOther> : ISelect<(Faker<TOther>, T), TOther> where TOther : class
-	{
-		public static Generate<T,TOther> Default { get; } = new Generate<T,TOther>();
-
-		Generate() {}
-
-		public TOther Get((Faker<TOther>, T) parameter) => parameter.Item1.Generate();
-	}*/
-
 	sealed class Assign<T, TOther> : ICommand<(Faker, T, TOther)>
 	{
 		readonly Action<Faker, T, TOther> _previous;
@@ -96,41 +66,6 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			return result;
 		}
 	}
-
-	/*sealed class Generate<T, TOther> : IRule<T, TOther> where TOther : class
-	{
-		public static Generate<T, TOther> Default { get; } = new Generate<T, TOther>();
-
-		Generate() : this(Generator<TOther>.Default.Get()) {}
-
-		readonly Faker<TOther> _generator;
-
-		public Generate(Faker<TOther> generator) => _generator = generator;
-
-		public TOther Get((Faker, T) parameter) => _generator.Generate();
-	}
-
-	sealed class Assign<T, TOther> : IRule<T, TOther> where TOther : class
-	{
-		readonly Action<TOther, T> _assign;
-		readonly Faker<TOther>     _generator;
-
-		public Assign(Action<TOther, T> assign) : this(assign, Generator<TOther>.Default.Get()) {}
-
-		public Assign(Action<TOther, T> assign, Faker<TOther> generator)
-		{
-			_assign    = assign;
-			_generator = generator;
-		}
-
-		public TOther Get((Faker, T) parameter)
-		{
-			var (_, owner) = parameter;
-			var result = _generator.Generate();
-			_assign(result, owner);
-			return result;
-		}
-	}*/
 
 	/**/
 
