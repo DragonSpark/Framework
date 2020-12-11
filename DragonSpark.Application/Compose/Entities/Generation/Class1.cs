@@ -6,6 +6,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Reflection.Members;
 using NetFabric.Hyperlinq;
 using System;
@@ -35,7 +36,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 		public TOther Get((Faker, T) parameter)
 		{
-			
+
 			/*var rule       = assignment != null ? new Assign<T, TOther>(assignment) : _generate;
 			var result     = rule.Get(parameter);
 			_post(parameter.Item1, result);
@@ -133,15 +134,28 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 	/**/
 
+	sealed class LocateAssignments<T, TOther> : ReferenceValueStore<string, IResult<Action<T, TOther>?>>
+	{
+		public static LocateAssignments<T, TOther> Default { get; } = new LocateAssignments<T, TOther>();
+
+		LocateAssignments() : base(Start.A.Selection<string>()
+		                                .By.Calling(string.Intern)
+		                                .Select(x => new PrincipalPropertyByName(x))
+		                                .Select(x => new LocatePrincipalProperty<T, TOther>(x))
+		                                .Select(x => new LocateAssignment<T, TOther>(x))) {}
+	}
+
 	sealed class LocateAssignment<T, TValue> : IResult<Action<T, TValue>?>
 	{
 		public static LocateAssignment<T, TValue> Default { get; } = new LocateAssignment<T, TValue>();
 
-		LocateAssignment() : this(LocatePrincipalProperty<T, TValue>.Default,
-		                          PropertyAssignmentDelegates<T, TValue>.Default) {}
+		LocateAssignment() : this(LocatePrincipalProperty<T, TValue>.Default) {}
 
 		readonly ILocatePrincipalProperty               _property;
 		readonly IPropertyAssignmentDelegate<T, TValue> _delegates;
+
+		public LocateAssignment(ILocatePrincipalProperty property)
+			: this(property, PropertyAssignmentDelegates<T, TValue>.Default) {}
 
 		public LocateAssignment(ILocatePrincipalProperty property, IPropertyAssignmentDelegate<T, TValue> delegates)
 		{
@@ -163,12 +177,19 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	{
 		public static LocatePrincipalProperty<T, TValue> Default { get; } = new LocatePrincipalProperty<T, TValue>();
 
-		LocatePrincipalProperty()
-			: base(PrincipalProperty<T, TValue>.Default, Start.A.Selection<PropertyInfo>()
-			                                                  .By.Calling(x => x.PropertyType)
-			                                                  .Select(Is.EqualTo(A.Type<TValue>()))
-			                                                  .Out()
-			                                                  .Then()) {}
+		LocatePrincipalProperty() : this(PrincipalProperty<T, TValue>.Default) {}
+
+		public LocatePrincipalProperty(IPrincipalProperty property) : this(property, Start.A.Selection<PropertyInfo>()
+		                                                                                  .By.Calling(x => x
+			                                                                                              .PropertyType)
+		                                                                                  .Select(Is.EqualTo(A.Type<
+			                                                                                                     TValue
+		                                                                                                     >()))
+		                                                                                  .Out()
+		                                                                                  .Then()) {}
+
+		public LocatePrincipalProperty(IPrincipalProperty property, Predicate<PropertyInfo> filter) :
+			base(property, filter) {}
 	}
 
 	class LocatePrincipalProperty : ILocatePrincipalProperty

@@ -27,9 +27,19 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		public void VerifyMultiple()
 		{
 			Start.A.Generator<Multiple.Parent>()
-			     .Invoking(x => x.Include(x => x.Child))
+			     .Invoking(x => x.Include(y => y.Child))
 			     .Should()
 			     .Throw<InvalidOperationException>();
+		}
+
+		[Fact]
+		public void VerifyMultipleDirect()
+		{
+			var subject = Start.A.Generator<Multiple.Parent>()
+			                   .Include(y => y.Child, child => child.Parent1)
+			                   .Get();
+			subject.Child.Parent1.Should().BeSameAs(subject);
+			subject.Child.Parent2.Should().BeNull();
 		}
 
 		[Theory, AutoData]
