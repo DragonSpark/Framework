@@ -111,6 +111,14 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			first.Child.Should().NotBeSameAs(second.Child).And.Subject.Should().NotBeNull();
 		}
 
+		[Fact]
+		public void VerifyThenInclude()
+		{
+			var sut = Start.A.Generator<ThenInclude.Parent>().Include(x => x.Child).ThenInclude(x => x.Other).Get();
+			sut.Child.Other.Child.Should().BeSameAs(sut.Child);
+
+		}
+
 		static class Basic
 		{
 			public sealed class Parent
@@ -119,6 +127,26 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			}
 
 			public sealed class Child {}
+		}
+
+		static class ThenInclude
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Child Child { get; set; } = default!;
+			}
 		}
 
 		static class Multiple
