@@ -116,7 +116,29 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		{
 			var sut = Start.A.Generator<ThenInclude.Parent>().Include(x => x.Child).ThenInclude(x => x.Other).Get();
 			sut.Child.Other.Child.Should().BeSameAs(sut.Child);
+		}
 
+		[Fact]
+		public void VerifyThenIncludeDirect()
+		{
+			var sut = Start.A.Generator<ThenIncludeMulti.Parent>()
+			               .Include(x => x.Child)
+			               .ThenInclude(x => x.Other, x => x.Child2)
+			               .Get();
+			sut.Child.Other.Child1.Should().BeNull();
+			sut.Child.Other.Child2.Should().BeSameAs(sut.Child);
+		}
+
+		[Fact]
+		public void VerifyThenIncludeDouble()
+		{
+			var sut = Start.A.Generator<ThenIncludeDouble.Parent>()
+			               .Include(x => x.Child)
+			               .ThenInclude(x => x.Other)
+			               .ThenInclude(x => x.Item)
+			               .Get();
+			sut.Child.Other.Item.Should().NotBeNull();
+			sut.Child.Other.Item.Other.Should().BeSameAs(sut.Child.Other);
 		}
 
 		static class Basic
@@ -138,6 +160,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 
 			public sealed class Child
 			{
+				[UsedImplicitly]
 				public Parent Parent { get; set; } = default!;
 
 				public Other Other { get; set; } = default!;
@@ -146,6 +169,55 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			public sealed class Other
 			{
 				public Child Child { get; set; } = default!;
+			}
+		}
+
+		static class ThenIncludeDouble
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				[UsedImplicitly]
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Item Item { get; set; } = default!;
+			}
+
+			public sealed class Item
+			{
+				public Other Other { get; set; } = default!;
+			}
+		}
+
+		static class ThenIncludeMulti
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				[UsedImplicitly]
+				public Parent Parent { get; set; } = default!;
+
+				public Other Other { get; set; } = default!;
+			}
+
+			public sealed class Other
+			{
+				public Child Child1 { get; set; } = default!;
+
+				public Child Child2 { get; set; } = default!;
 			}
 		}
 

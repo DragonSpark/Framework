@@ -48,7 +48,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		readonly Action<Faker, T, TOther>       _post;
 		readonly Faker<TOther>                  _generator;
 
-		public Rule(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post, Faker<TOther> generator)
+		public Rule(Faker<TOther> generator, Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post)
 		{
 			_generate  = generate;
 			_post      = post;

@@ -3,7 +3,9 @@
 using Bogus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Linq.Expressions;
@@ -15,12 +17,14 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	{
 		public static implicit operator T(GeneratorContext<T> instance) => instance.Get();
 
-		readonly Faker<T>            _subject;
-		readonly ITypedTable<object> _store;
+		readonly Faker<T>       _subject;
+		readonly GeneratorStore _store;
 
-		public GeneratorContext() : this(Generator<T>.Default.Get(), new TypedTable<object>()) {}
+		public GeneratorContext() : this(new GeneratorStore()) {}
 
-		public GeneratorContext(Faker<T> subject, ITypedTable<object> store)
+		public GeneratorContext(GeneratorStore store) : this(store.Get<T>(), store) {}
+
+		public GeneratorContext(Faker<T> subject, GeneratorStore store)
 		{
 			_subject = subject;
 			_store   = store;
@@ -34,14 +38,14 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		                                                          Including<T, TOther> including)
 			where TOther : class
 		{
-			var includes   = including(Include<T, TOther>.New()).Complete();
+			var includes   = including(Generation.Include.New<T, TOther>()).Complete();
 			var assignment = LocateAssignment<TOther, T>.Default.Get();
 			var configure = assignment != null
 				                ? new Assign<T, TOther>(includes.Post, assignment).Execute
 				                : includes.Post;
-			var generator = Generator<TOther>.Default.Get();
-			var current    = new Rule<T, TOther>(includes.Generate, configure, generator);
-			var rule       = includes.Scope(new Scope<T, TOther>(current, _store));
+			var generator  = _store.Get<TOther>();
+			var current    = new Rule<T, TOther>(generator, includes.Generate, configure);
+			var rule       = includes.Scope(new Scope<T, TOther>(current, _store.Instances));
 			var configured = _subject.RuleFor(property, rule.Get);
 			var result     = new IncludeGeneratorContext<T, TOther>(configured, generator, _store);
 			return result;
@@ -57,14 +61,14 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		                                                          Including<T, TOther> including)
 			where TOther : class
 		{
-			var includes = including(Include<T, TOther>.New()).Complete();
+			var includes = including(Generation.Include.New<T, TOther>()).Complete();
 			var configure = LocateAssignments<TOther, T>.Default.Get(other.GetMemberAccess().Name)
 			                                            .Get()
 			                                            .Verify($"The expression '{other}' did not resolve to a valid assignment setter.");
 			var assign     = new Assign<T, TOther>(includes.Post, configure);
-			var generator  = Generator<TOther>.Default.Get();
-			var current    = new Rule<T, TOther>(includes.Generate, assign.Execute, generator);
-			var rule       = includes.Scope(new Scope<T, TOther>(current, _store));
+			var generator  = _store.Get<TOther>();
+			var current    = new Rule<T, TOther>(generator, includes.Generate, assign.Execute);
+			var rule       = includes.Scope(new Scope<T, TOther>(current, _store.Instances));
 			var configured = _subject.RuleFor(property, rule.Get);
 			var result     = new IncludeGeneratorContext<T, TOther>(configured, generator, _store);
 			return result;
@@ -73,13 +77,53 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public T Get() => _subject.Generate();
 	}
 
+	sealed class GeneratorTables : ISelect<TypeInfo, IFakerTInternal>
+	{
+		public static GeneratorTables Default { get; } = new GeneratorTables();
+
+		GeneratorTables() : this(new Generic<IResult<IFakerTInternal>>(typeof(Tables<>))) {}
+
+		readonly IGeneric<IResult<IFakerTInternal>> _generic;
+
+		public GeneratorTables(IGeneric<IResult<IFakerTInternal>> generic) => _generic = generic;
+
+		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get();
+
+		sealed class Tables<T> : IResult<IFakerTInternal> where T : class
+		{
+			[UsedImplicitly]
+			public static Tables<T> Instance { get; } = new Tables<T>();
+
+			Tables() {}
+
+			public IFakerTInternal Get() => Generator<T>.Default.Get();
+		}
+	}
+
+	public sealed class GeneratorStore
+	{
+		readonly ISelect<TypeInfo, IFakerTInternal> _generators;
+
+		public GeneratorStore() : this(new TypedTable<object>(), GeneratorTables.Default.ToStandardTable()) {}
+
+		public GeneratorStore(ITypedTable<object> instances, ISelect<TypeInfo, IFakerTInternal> generators)
+		{
+			_generators = generators;
+			Instances   = instances;
+		}
+
+		public ITypedTable<object> Instances { get; }
+
+		public Faker<T> Get<T>() where T : class => _generators.Get(A.Type<T>()).To<Faker<T>>();
+	}
+
 	public class IncludeGeneratorContext<T, TCurrent> : GeneratorContext<T> where T : class where TCurrent : class
 	{
-		readonly Faker<T>            _subject;
-		readonly Faker<TCurrent>     _current;
-		readonly ITypedTable<object> _store;
+		readonly Faker<T>        _subject;
+		readonly Faker<TCurrent> _current;
+		readonly GeneratorStore  _store;
 
-		public IncludeGeneratorContext(Faker<T> subject, Faker<TCurrent> current, ITypedTable<object> store)
+		public IncludeGeneratorContext(Faker<T> subject, Faker<TCurrent> current, GeneratorStore store)
 			: base(subject, store)
 		{
 			_subject = subject;
@@ -95,14 +139,14 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		                                                              Including<TCurrent, TOther> including)
 			where TOther : class
 		{
-			var includes   = including(Include<TCurrent, TOther>.New()).Complete();
+			var includes   = including(Generation.Include.New<TCurrent, TOther>()).Complete();
 			var assignment = LocateAssignment<TOther, TCurrent>.Default.Get();
 			var configure = assignment != null
 				                ? new Assign<TCurrent, TOther>(includes.Post, assignment).Execute
 				                : includes.Post;
-			var generator = Generator<TOther>.Default.Get();
-			var current = new Rule<TCurrent, TOther>(includes.Generate, configure, generator);
-			var rule    = includes.Scope(new Scope<TCurrent, TOther>(current, _store));
+			var generator = _store.Get<TOther>();
+			var current   = new Rule<TCurrent, TOther>(generator, includes.Generate, configure);
+			var rule      = includes.Scope(new Scope<TCurrent, TOther>(current, _store.Instances));
 
 			_current.RuleFor(property, rule.Get);
 
@@ -110,7 +154,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			return result;
 		}
 
-		/*public IncludeGeneratorContext<T, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
+		public IncludeGeneratorContext<T, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
 		                                                              Expression<Func<TOther, TCurrent>> other)
 			where TOther : class
 			=> ThenInclude(property, other, x => x);
@@ -120,25 +164,31 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		                                                              Including<TCurrent, TOther> including)
 			where TOther : class
 		{
-			var includes = including(Include<TCurrent, TOther>.New()).Complete();
+			var includes = including(Generation.Include.New<TCurrent, TOther>()).Complete();
 			var configure = LocateAssignments<TOther, TCurrent>.Default.Get(other.GetMemberAccess().Name)
 			                                                   .Get()
 			                                                   .Verify($"The expression '{other}' did not resolve to a valid assignment setter.");
 			var assign     = new Assign<TCurrent, TOther>(includes.Post, configure);
-			var current    = new Rule<TCurrent, TOther>(includes.Generate, assign.Execute);
-			var rule       = includes.Scope(new Scope<TCurrent, TOther>(current, _store));
-			var configured = _current.RuleFor(property, rule.Get);
-			var result     = new IncludeGeneratorContext<T, TOther>(_subject, _store);
+			var generator  = _store.Get<TOther>();
+			var current    = new Rule<TCurrent, TOther>(generator, includes.Generate, assign.Execute);
+			var rule       = includes.Scope(new Scope<TCurrent, TOther>(current, _store.Instances));
+
+			_current.RuleFor(property, rule.Get);
+
+			var result     = new IncludeGeneratorContext<T, TOther>(_subject, generator, _store);
 			return result;
-		}*/
+		}
+	}
+
+	public static class Include
+	{
+		public static Include<T, TOther> New<T, TOther>() where TOther : class
+			=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, __, ___) => {},
+			                          scope => scope.Once());
 	}
 
 	public readonly struct Include<T, TOther> where TOther : class
 	{
-		public static Include<T, TOther> New()
-			=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, __, ___) => {},
-			                          scope => scope.Once());
-
 		readonly Func<Faker<TOther>, T, TOther> _generate;
 		readonly Action<Faker, T, TOther>       _post;
 		readonly AssignScope<T, TOther>         _scope;
