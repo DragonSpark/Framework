@@ -1,10 +1,12 @@
 ﻿using AsyncUtilities;
+using AutoBogus;
 using Bogus.Extensions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
@@ -72,7 +74,20 @@ namespace DragonSpark.Application
 		/**/
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)
-			where T : class => new GeneratorContext<T>(seed);
+			where T : class
+		{
+			return Generator<T>(_, new Configuration(seed));
+		}
+
+		public static GeneratorContext<T> Generator<T>(this ModelContext _,
+		                                               System.Action<IAutoGenerateConfigBuilder> configure)
+			where T : class
+		{
+			return Generator<T>(_, new Configuration(null, configure));
+		}
+
+		public static GeneratorContext<T> Generator<T>(this ModelContext _, Configuration configuration)
+			where T : class => new GeneratorContext<T>(configuration);
 
 		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range) where TOther : class
 			=> @this.Generate((faker, arg2) => faker.GenerateBetween(range.Start.Value, range.End.Value));

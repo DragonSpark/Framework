@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Entities.Generation
 
 		public void Execute(IAutoGenerateConfigBuilder parameter)
 		{
-			parameter.WithConventions().WithSkip<bool>().WithBinder(_binder);
+			parameter.WithConventions().WithBinder(_binder);
 		}
 	}
 }

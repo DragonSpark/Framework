@@ -10,22 +10,23 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 {
 	sealed class GeneratorTables : ISelect<TypeInfo, IFakerTInternal>
 	{
-		public GeneratorTables(in uint? seed)
-			: this(seed, Start.A.Generic(typeof(GeneratorTables<>)).Of.Type<ISelect<uint?, IFakerTInternal>>()) {}
+		public GeneratorTables(Configuration configuration)
+			: this(configuration, Start.A.Generic(typeof(GeneratorTables<>))
+			                           .Of.Type<ISelect<Configuration, IFakerTInternal>>()) {}
 
-		readonly uint?                                     _seed;
-		readonly         IGeneric<ISelect<uint?, IFakerTInternal>> _generic;
+		readonly Configuration                                     _configuration;
+		readonly IGeneric<ISelect<Configuration, IFakerTInternal>> _generic;
 
-		public GeneratorTables(in uint? seed, IGeneric<ISelect<uint?, IFakerTInternal>> generic)
+		public GeneratorTables(Configuration configuration, IGeneric<ISelect<Configuration, IFakerTInternal>> generic)
 		{
-			_seed = seed;
-			_generic   = generic;
+			_configuration = configuration;
+			_generic       = generic;
 		}
 
-		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get(_seed);
+		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get(_configuration);
 	}
 
-	sealed class GeneratorTables<T> : Select<uint?, IFakerTInternal> where T : class
+	sealed class GeneratorTables<T> : Select<Configuration, IFakerTInternal> where T : class
 	{
 		[UsedImplicitly]
 		public static GeneratorTables<T> Default { get; } = new GeneratorTables<T>();
