@@ -1,4 +1,5 @@
-﻿using DragonSpark.Reflection.Types;
+﻿using DragonSpark.Application.Entities.Generation;
+using DragonSpark.Reflection.Types;
 
 namespace DragonSpark.Application.Compose.Entities.Generation
 {

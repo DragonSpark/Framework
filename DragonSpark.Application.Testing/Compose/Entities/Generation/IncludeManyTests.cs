@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Compose.Entities.Generation;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using FluentAssertions;
 using JetBrains.Annotations;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Reflection.Types;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class StateAwareGenerate<T, TOther> : ISelect<T, TOther> where T : class where TOther : class
 	{

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Results;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class Generator<T> : IResult<AutoFaker<T>> where T : class
 	{

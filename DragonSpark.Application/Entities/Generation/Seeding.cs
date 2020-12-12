@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 
 namespace DragonSpark.Application.Entities.Generation
 {
+	// TODO: remove
 	public readonly struct Seeding<T> where T : class
 	{
 		public Seeding(uint seed) : this(new Faker<T>().UseSeed(seed.Degrade()), seed) {}

@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;

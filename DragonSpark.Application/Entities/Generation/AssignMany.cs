@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class AssignMany<T, TOther> : ICommand<(Faker, T, List<TOther>)>
 	{

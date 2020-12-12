@@ -4,7 +4,7 @@ using System;
 using System.Buffers;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class LocatePrincipalProperty<T, TValue> : LocatePrincipalProperty
 	{

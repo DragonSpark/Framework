@@ -1,6 +1,5 @@
 ﻿using AutoBogus;
 using AutoBogus.Conventions;
-using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using FluentAssertions;

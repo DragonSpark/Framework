@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Compose.Entities.Generation;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
 using FluentAssertions;
 using JetBrains.Annotations;

@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Generation
 {
-	// TODO: ???
+	// TODO: Remove
 	public static class Extensions
 	{
 		public static T Generate<T>(this ISome<T> @this) where T : class
@@ -17,5 +17,8 @@ namespace DragonSpark.Application.Entities.Generation
 			where T : class => @this.Then().Select(x => x.Generate()).Bind(new Seeding<T>(Seedings.Default.Get(other)));
 
 		public static T Generate<T>(this ISome<T> @this, uint seed) where T : class => @this.Get(new Seeding<T>(seed));
+
+/**/
+
 	}
 }

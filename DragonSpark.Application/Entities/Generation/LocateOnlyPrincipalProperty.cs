@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class LocateOnlyPrincipalProperty : ISelect<Memory<PropertyInfo>, PropertyInfo?>
 	{

@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class MultipleCandidatePrincipalProperty<T, TValue> : ISelect<Memory<PropertyInfo>, PropertyInfo?>
 	{

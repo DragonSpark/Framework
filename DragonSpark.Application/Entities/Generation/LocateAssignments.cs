@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Stores;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class LocateAssignments<T, TOther> : ReferenceValueStore<string, IResult<Action<T, TOther>?>>
 	{

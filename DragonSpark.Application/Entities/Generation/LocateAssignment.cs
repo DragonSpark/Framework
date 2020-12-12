@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Reflection.Members;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class LocateAssignment<T, TValue> : IResult<Action<T, TValue>?>
 	{

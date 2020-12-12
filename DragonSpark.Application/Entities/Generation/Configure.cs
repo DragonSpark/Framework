@@ -1,9 +1,8 @@
 ﻿using AutoBogus;
 using AutoBogus.Conventions;
-using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class Configure<T> : ICommand<IAutoGenerateConfigBuilder> where T : class
 	{

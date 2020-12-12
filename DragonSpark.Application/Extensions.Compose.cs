@@ -1,8 +1,11 @@
 ﻿using AsyncUtilities;
+using Bogus.Extensions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
+using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Entities;
+using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
@@ -65,5 +68,15 @@ namespace DragonSpark.Application
 
 		public static ProjectionContext<_, TOut> Then<_, TOut>(
 			this ISelect<_, IQueryable<TOut>> @this) => new ProjectionContext<_, TOut>(@this);
+
+		/**/
+
+		public static GeneratorContext<T> Generator<T>(this ModelContext _)
+			where T : class => new GeneratorContext<T>();
+
+		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range) where TOther : class
+			=> @this.Generate((faker, arg2) => faker.GenerateBetween(range.Start.Value, range.End.Value));
+		public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
+			=> @this.Generate((faker, arg2) => faker.Generate(0));
 	}
 }

@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.Entities.Generation
 {
+	// TODO: remove
 	sealed class Seedings : ISelect<IFakerTInternal, uint>
 	{
 		public static Seedings Default { get; } = new Seedings();

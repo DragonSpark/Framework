@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class StoredRule<T, TOther> : IRule<T, TOther> where TOther : class
 	{

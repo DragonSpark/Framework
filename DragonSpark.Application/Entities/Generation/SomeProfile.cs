@@ -3,6 +3,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Generation
 {
+	// TODO: remove
 	public class SomeProfile<T> : ISome<T> where T : class
 	{
 		readonly Func<Faker<T>, Faker<T>> _alteration;
@@ -14,8 +15,8 @@ namespace DragonSpark.Application.Entities.Generation
 
 	/*public class SomeAssociation<T, TOther>
 	{
-		
+
 	}*/
 
-	
+
 }

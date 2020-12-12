@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities.Generation
+namespace DragonSpark.Application.Entities.Generation
 {
 	sealed class Rule<T, TOther> : IRule<T, TOther> where TOther : class
 	{
