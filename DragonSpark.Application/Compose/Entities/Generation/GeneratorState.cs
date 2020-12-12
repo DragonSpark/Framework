@@ -17,8 +17,8 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		readonly ITypedTable<object>                _chain;
 		readonly ISelect<TypeInfo, IFakerTInternal> _generators;
 
-		public GeneratorState() : this(new TypedTable<object>(), new TypedTable<object>(),
-		                               GeneratorTables.Default.ToStandardTable()) {}
+		public GeneratorState(in uint? seed = null) : this(new TypedTable<object>(), new TypedTable<object>(),
+		                                                   new GeneratorTables(seed).ToStandardTable()) {}
 
 		public GeneratorState(ITypedTable<object> instances, ITypedTable<object> chain,
 		                      ISelect<TypeInfo, IFakerTInternal> generators)

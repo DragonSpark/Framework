@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		readonly Faker<T>       _subject;
 		readonly GeneratorState _state;
 
-		public GeneratorContext() : this(new GeneratorState()) {}
+		public GeneratorContext(in uint? seed = null) : this(new GeneratorState(seed)) {}
 
 		public GeneratorContext(GeneratorState state) : this(state.Get<T>(), state) {}
 

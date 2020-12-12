@@ -1,10 +1,14 @@
 ﻿using AutoBogus;
-using DragonSpark.Model.Results;
+using Bogus;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 
 namespace DragonSpark.Application.Entities.Generation
 {
-	sealed class Generator<T> : IResult<AutoFaker<T>> where T : class
+	public interface IGenerator<T> : ISelect<uint?, AutoFaker<T>> where T : class {}
+
+	sealed class Generator<T> : IGenerator<T> where T : class
 	{
 		public static Generator<T> Default { get; } = new Generator<T>();
 
@@ -14,6 +18,9 @@ namespace DragonSpark.Application.Entities.Generation
 
 		public Generator(Action<IAutoGenerateConfigBuilder> configure) => _configure = configure;
 
-		public AutoFaker<T> Get() => new AutoFaker<T>().Configure(_configure);
+		public AutoFaker<T> Get(uint? parameter)
+			=> new AutoFaker<T>().UseSeed(parameter.GetValueOrDefault(Randomizer.Seed.Next().Grade()).Degrade())
+			                     .To<AutoFaker<T>>()
+			                     .Configure(_configure);
 	}
 }

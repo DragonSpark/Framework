@@ -1,7 +1,6 @@
 ﻿using Bogus;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
 using JetBrains.Annotations;
@@ -11,23 +10,26 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 {
 	sealed class GeneratorTables : ISelect<TypeInfo, IFakerTInternal>
 	{
-		public static GeneratorTables Default { get; } = new GeneratorTables();
+		public GeneratorTables(in uint? seed)
+			: this(seed, Start.A.Generic(typeof(GeneratorTables<>)).Of.Type<ISelect<uint?, IFakerTInternal>>()) {}
 
-		GeneratorTables() : this(Start.A.Generic(typeof(GeneratorTables<>)).Of.Type<IResult<IFakerTInternal>>()) {}
+		readonly uint?                                     _seed;
+		readonly         IGeneric<ISelect<uint?, IFakerTInternal>> _generic;
 
-		readonly IGeneric<IResult<IFakerTInternal>> _generic;
+		public GeneratorTables(in uint? seed, IGeneric<ISelect<uint?, IFakerTInternal>> generic)
+		{
+			_seed = seed;
+			_generic   = generic;
+		}
 
-		public GeneratorTables(IGeneric<IResult<IFakerTInternal>> generic) => _generic = generic;
-
-		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get();
+		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get(_seed);
 	}
 
-	sealed class GeneratorTables<T> : Result<IFakerTInternal> where T : class
+	sealed class GeneratorTables<T> : Select<uint?, IFakerTInternal> where T : class
 	{
 		[UsedImplicitly]
 		public static GeneratorTables<T> Default { get; } = new GeneratorTables<T>();
 
 		GeneratorTables() : base(Generator<T>.Default) {}
 	}
-
 }

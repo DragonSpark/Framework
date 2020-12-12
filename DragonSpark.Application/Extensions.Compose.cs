@@ -71,8 +71,8 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static GeneratorContext<T> Generator<T>(this ModelContext _)
-			where T : class => new GeneratorContext<T>();
+		public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)
+			where T : class => new GeneratorContext<T>(seed);
 
 		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range) where TOther : class
 			=> @this.Generate((faker, arg2) => faker.GenerateBetween(range.Start.Value, range.End.Value));
