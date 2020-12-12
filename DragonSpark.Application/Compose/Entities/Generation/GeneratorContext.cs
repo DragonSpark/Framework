@@ -3,6 +3,7 @@
 using Bogus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Alterations;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -29,6 +30,9 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public GeneratorContext<T> Configure<TOther>(Expression<Func<T, TOther>> property,
 		                                             Func<Faker, TOther> configure)
 			=> new GeneratorContext<T>(_subject.RuleFor(property, configure), _state);
+
+		public GeneratorContext<T> Configure(Alter<Faker<T>> configure)
+			=> new GeneratorContext<T>(configure(_subject), _state);
 
 		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, TOther>> property)
 			where TOther : class

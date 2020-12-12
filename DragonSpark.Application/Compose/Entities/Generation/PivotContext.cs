@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Alterations;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -23,6 +24,11 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public PivotContext<T, TCurrent> Configure<TOther>(Expression<Func<TCurrent, TOther>> property,
 		                                                   Func<Faker, TOther> configure)
 			=> new PivotContext<T, TCurrent>(_subject, _current.RuleFor(property, configure), _state);
+
+		public PivotContext<T, TCurrent> Configure(Alter<Faker<TCurrent>> configure)
+			=> new PivotContext<T, TCurrent>(_subject, configure(_current), _state);
+
+		public GeneratorContext<T> Return() => new GeneratorContext<T>(_subject, _state);
 
 		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property)
 			where TOther : class
