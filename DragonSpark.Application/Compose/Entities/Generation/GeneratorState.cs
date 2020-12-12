@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -12,13 +13,17 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	public sealed class GeneratorState
 	{
 		readonly ITypedTable<object>                _instances;
+		readonly ITypedTable<object>                _chain;
 		readonly ISelect<TypeInfo, IFakerTInternal> _generators;
 
-		public GeneratorState() : this(new TypedTable<object>(), GeneratorTables.Default.ToStandardTable()) {}
+		public GeneratorState() : this(new TypedTable<object>(), new TypedTable<object>(),
+		                               GeneratorTables.Default.ToStandardTable()) {}
 
-		public GeneratorState(ITypedTable<object> instances, ISelect<TypeInfo, IFakerTInternal> generators)
+		public GeneratorState(ITypedTable<object> instances, ITypedTable<object> chain,
+		                      ISelect<TypeInfo, IFakerTInternal> generators)
 		{
 			_instances  = instances;
+			_chain      = chain;
 			_generators = generators;
 		}
 
@@ -26,30 +31,72 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 		public (Faker<TOther>, IRule<T, TOther>) Rule<T, TOther>(Expression<Func<TOther, T>> other,
 		                                                         Including<T, TOther> including)
-			where TOther : class
+			where TOther : class where T : class
 		{
-			var includes = including(Include.New<T, TOther>()).Complete();
+			var payload = including(Include.New<T, TOther>()).Complete();
 			var configure = LocateAssignments<TOther, T>.Default.Get(other.GetMemberAccess().Name)
 			                                            .Get()
 			                                            .Verify($"The expression '{other}' did not resolve to a valid assignment setter.");
-			var assign    = new Assign<T, TOther>(includes.Post, configure);
-			var generator = _generators.Get(A.Type<TOther>()).To<Faker<TOther>>();
-			var current   = new Rule<T, TOther>(generator, includes.Generate, assign.Execute);
-			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, _instances)));
+			var result = Rule(payload.With(new Assign<T, TOther>(payload.Configure, configure).Execute));
 			return result;
 		}
 
 		public (Faker<TOther>, IRule<T, TOther>) Rule<T, TOther>(Including<T, TOther> including)
-			where TOther : class
+			where TOther : class where T : class
 		{
-			var includes   = including(Include.New<T, TOther>()).Complete();
+			var payload    = including(Include.New<T, TOther>()).Complete();
 			var assignment = LocateAssignment<TOther, T>.Default.Get();
 			var configure = assignment != null
-				                ? new Assign<T, TOther>(includes.Post, assignment).Execute
-				                : includes.Post;
+				                ? new Assign<T, TOther>(payload.Configure, assignment).Execute
+				                : payload.Configure;
+			var result = Rule(payload.With(configure));
+			return result;
+		}
+
+		(Faker<TOther>, IRule<T, TOther>) Rule<T, TOther>(Include<T, TOther>.Payload payload)
+			where TOther : class where T : class
+		{
+			var (generate, configure, scope) = payload;
 			var generator = _generators.Get(A.Type<TOther>()).To<Faker<TOther>>();
-			var current   = new Rule<T, TOther>(generator, includes.Generate, configure);
-			var result    = generator.Pair(includes.Scope(new Scope<T, TOther>(current, _instances)));
+			var create    = new StateAwareGenerate<T, TOther>(new Generate<T, TOther>(generator, generate), _chain);
+			var current   = new Rule<T, TOther>(create, configure);
+			var result    = generator.Pair(scope(new Scope<T, TOther>(current, _instances)));
+			return result;
+		}
+
+		public (Faker<TOther>, IRule<T, List<TOther>>) RuleMany<T, TOther>(Expression<Func<TOther, T>> other,
+		                                                                   IncludingMany<T, TOther> including)
+			where TOther : class where T : class
+		{
+			var payload = including(Include.Many<T, TOther>()).Complete();
+			var configure = LocateAssignments<TOther, T>.Default.Get(other.GetMemberAccess().Name)
+			                                            .Get()
+			                                            .Verify($"The expression '{other}' did not resolve to a valid assignment setter.");
+			var result = Many(payload.With(new AssignMany<T, TOther>(payload.Configure, configure).Execute));
+			return result;
+		}
+
+		public (Faker<TOther>, IRule<T, List<TOther>>) RuleMany<T, TOther>(IncludingMany<T, TOther> including)
+			where TOther : class where T : class
+		{
+			var payload    = including(Include.Many<T, TOther>()).Complete();
+			var assignment = LocateAssignment<TOther, T>.Default.Get();
+			var configure = assignment != null
+				                ? new AssignMany<T, TOther>(payload.Configure, assignment).Execute
+				                : payload.Configure;
+			var result = Many(payload.With(configure));
+			return result;
+		}
+
+		(Faker<TOther>, IRule<T, List<TOther>>) Many<T, TOther>(IncludeMany<T, TOther>.Payload payload)
+			where TOther : class where T : class
+		{
+			var (generate, configure) = payload;
+			var generator = _generators.Get(A.Type<TOther>()).To<Faker<TOther>>();
+			var list      = new GenerateList<T, TOther>(generator, generate);
+			var create    = new StateAwareGenerate<T, List<TOther>>(list, _chain);
+			var current   = new ManyRule<T, TOther>(create, configure);
+			var result    = generator.Pair(current);
 			return result;
 		}
 	}

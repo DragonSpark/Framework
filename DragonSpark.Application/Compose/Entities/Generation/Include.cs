@@ -8,6 +8,9 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public static Include<T, TOther> New<T, TOther>() where TOther : class
 			=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, __, ___) => {},
 			                          scope => scope.Once());
+
+		public static IncludeMany<T, TOther> Many<T, TOther>() where TOther : class
+			=> new IncludeMany<T, TOther>((generator, _) => generator.Generate(3), (_, __, ___) => {});
 	}
 
 	public readonly struct Include<T, TOther> where TOther : class
@@ -40,21 +43,30 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 
 		public readonly struct Payload
 		{
-			public Payload(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> post,
+			public Payload(Func<Faker<TOther>, T, TOther> generate, Action<Faker, T, TOther> configure,
 			               AssignScope<T, TOther> scope)
 
 			{
-				Generate = generate;
-				Post     = post;
-				Scope    = scope;
+				Generate  = generate;
+				Configure = configure;
+				Scope     = scope;
 			}
 
 			public Func<Faker<TOther>, T, TOther> Generate { get; }
 
-			public Action<Faker, T, TOther> Post { get; }
+			public Action<Faker, T, TOther> Configure { get; }
 
 			public AssignScope<T, TOther> Scope { get; }
+
+			public Payload With(Action<Faker, T, TOther> configure) => new Payload(Generate, configure, Scope);
+
+			public void Deconstruct(out Func<Faker<TOther>, T, TOther> generate, out Action<Faker, T, TOther> post,
+			                        out AssignScope<T, TOther> scope)
+			{
+				generate = Generate;
+				post     = Configure;
+				scope    = Scope;
+			}
 		}
 	}
-
 }

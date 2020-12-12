@@ -4,6 +4,7 @@ using Bogus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Compose.Entities.Generation
@@ -59,7 +60,36 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			return result;
 		}
 
+		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property)
+			where TOther : class
+			=> Include<TOther>(property, x => x);
+
+		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property,
+		                                                          IncludingMany<T, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _state.RuleMany(including);
+			var configured = _subject.RuleFor(property, rule.Get);
+			var result     = new IncludeGeneratorContext<T, TOther>(configured, generator, _state);
+			return result;
+		}
+
+		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property,
+		                                                          Expression<Func<TOther, T>> other)
+			where TOther : class
+			=> Include<TOther>(property, other, x => x);
+
+		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property,
+		                                                          Expression<Func<TOther, T>> other,
+		                                                          IncludingMany<T, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _state.RuleMany(other, including);
+			var configured = _subject.RuleFor(property, rule.Get);
+			var result     = new IncludeGeneratorContext<T, TOther>(configured, generator, _state);
+			return result;
+		}
+
 		public T Get() => _subject.Generate();
 	}
-
 }

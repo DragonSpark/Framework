@@ -2,6 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Compose.Entities.Generation
@@ -49,6 +50,42 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			where TOther : class
 		{
 			var (generator, rule) = _state.Rule(other, including);
+			var configured = _current.RuleFor(property, rule.Get);
+			var generators = new PivotGenerators<T, TCurrent, TOther>(_subject, configured, generator);
+			var result     = new PivotIncludeContext<T, TCurrent, TOther>(generators, _state);
+			return result;
+		}
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property)
+			where TOther : class
+			=> Include<TOther>(property, x => x);
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			IncludingMany<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _state.RuleMany(including);
+			var configured = _current.RuleFor(property, rule.Get);
+			var generators = new PivotGenerators<T, TCurrent, TOther>(_subject, configured, generator);
+			var result     = new PivotIncludeContext<T, TCurrent, TOther>(generators, _state);
+			return result;
+		}
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			Expression<Func<TOther, TCurrent>> other)
+			where TOther : class
+			=> Include(property, other, x => x);
+
+		public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			Expression<Func<TOther, TCurrent>> other,
+			IncludingMany<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (generator, rule) = _state.RuleMany(other, including);
 			var configured = _current.RuleFor(property, rule.Get);
 			var generators = new PivotGenerators<T, TCurrent, TOther>(_subject, configured, generator);
 			var result     = new PivotIncludeContext<T, TCurrent, TOther>(generators, _state);

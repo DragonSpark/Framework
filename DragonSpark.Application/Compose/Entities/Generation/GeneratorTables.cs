@@ -12,22 +12,21 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	{
 		public static GeneratorTables Default { get; } = new GeneratorTables();
 
-		GeneratorTables() : this(new Generic<IResult<IFakerTInternal>>(typeof(Tables<>))) {}
+		GeneratorTables() : this(Start.A.Generic(typeof(GeneratorTables<>)).Of.Type<IResult<IFakerTInternal>>()) {}
 
 		readonly IGeneric<IResult<IFakerTInternal>> _generic;
 
 		public GeneratorTables(IGeneric<IResult<IFakerTInternal>> generic) => _generic = generic;
 
 		public IFakerTInternal Get(TypeInfo parameter) => _generic.Get(parameter)().Get();
-
-		sealed class Tables<T> : IResult<IFakerTInternal> where T : class
-		{
-			[UsedImplicitly]
-			public static Tables<T> Instance { get; } = new Tables<T>();
-
-			Tables() {}
-
-			public IFakerTInternal Get() => Generator<T>.Default.Get();
-		}
 	}
+
+	sealed class GeneratorTables<T> : Result<IFakerTInternal> where T : class
+	{
+		[UsedImplicitly]
+		public static GeneratorTables<T> Default { get; } = new GeneratorTables<T>();
+
+		GeneratorTables() : base(Generator<T>.Default) {}
+	}
+
 }

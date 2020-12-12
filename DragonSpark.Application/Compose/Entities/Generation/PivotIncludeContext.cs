@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Compose.Entities.Generation
@@ -38,6 +39,26 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 			return result;
 		}
 
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property)
+			where TOther : class
+			=> ThenInclude<TOther>(property, x => x);
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			IncludingMany<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (subject, pivot, current) = _generators;
+			var (generator, rule)         = _state.RuleMany(including);
+
+			current.RuleFor(property, rule.Get);
+
+			var generators = new PivotGenerators<T, TPivot, TOther>(subject, pivot, generator);
+			var result     = new PivotIncludeContext<T, TPivot, TOther>(generators, _state);
+			return result;
+		}
+
 		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property,
 		                                                                  Expression<Func<TOther, TCurrent>> other)
 			where TOther : class
@@ -50,6 +71,28 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		{
 			var (subject, pivot, current) = _generators;
 			var (generator, rule)         = _state.Rule(other, including);
+
+			current.RuleFor(property, rule.Get);
+
+			var generators = new PivotGenerators<T, TPivot, TOther>(subject, pivot, generator);
+			var result     = new PivotIncludeContext<T, TPivot, TOther>(generators, _state);
+			return result;
+		}
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			Expression<Func<TOther, TCurrent>> other)
+			where TOther : class
+			=> ThenInclude(property, other, x => x);
+
+		public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(
+			Expression<Func<TCurrent, ICollection<TOther>>> property,
+			Expression<Func<TOther, TCurrent>> other,
+			IncludingMany<TCurrent, TOther> including)
+			where TOther : class
+		{
+			var (subject, pivot, current) = _generators;
+			var (generator, rule)         = _state.RuleMany(other, including);
 
 			current.RuleFor(property, rule.Get);
 

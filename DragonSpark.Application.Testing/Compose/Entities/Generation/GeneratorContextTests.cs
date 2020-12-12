@@ -190,6 +190,64 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			sut.Child.Other.Item.Other1.Should().BeNull();
 		}
 
+		[Fact]
+		public void VerifyExistingEncounter()
+		{
+			var sut = Start.A.Generator<Existing.Parent>()
+			               .Include(x => x.Child)
+			               .ThenInclude(x => x.Next)
+			               .ThenInclude(x => x.Parent)
+			               .Get();
+			sut.Child.Next.Parent.Should().BeSameAs(sut);
+		}
+
+		[Fact]
+		public void VerifyBasicDouble()
+		{
+			var sut = Start.A.Generator<BasicDouble.Parent>().Include(x => x.Child).Include(x => x.Next).Get();
+			sut.Child.Parent.Should().BeSameAs(sut);
+			sut.Next.Parent.Should().BeSameAs(sut);
+
+		}
+
+		static class BasicDouble
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+
+				public Next Next { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Parent Parent { get; set; } = default!;
+			}
+
+			public sealed class Next
+			{
+				public Parent Parent { get; set; } = default!;
+			}
+		}
+
+		static class Existing
+		{
+			public sealed class Parent
+			{
+				public Child Child { get; set; } = default!;
+			}
+
+			public sealed class Child
+			{
+				public Next Next { get; set; } = default!;
+			}
+
+			public sealed class Next
+			{
+				public Parent Parent { get; set; } = default!;
+			}
+		}
+
 		static class Basic
 		{
 			public sealed class Parent
