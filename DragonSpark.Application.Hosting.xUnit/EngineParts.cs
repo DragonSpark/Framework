@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.Kernel;
 using JetBrains.Annotations;
+using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.xUnit
@@ -28,9 +29,9 @@ namespace DragonSpark.Application.Hosting.xUnit
 
 		ISpecimenBuilder Transform(ISpecimenBuilder current)
 		{
-			foreach (var transformer in _transformers)
+			foreach (var transformer in _transformers.AsValueEnumerable())
 			{
-				var transformed = transformer.Transform(current);
+				var transformed = transformer!.Transform(current);
 				if (transformed != null)
 				{
 					return transformed;

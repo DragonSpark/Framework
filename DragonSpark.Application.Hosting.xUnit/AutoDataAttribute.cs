@@ -3,6 +3,7 @@ using AutoFixture.Kernel;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 
@@ -12,8 +13,16 @@ namespace DragonSpark.Application.Hosting.xUnit
 	{
 		public AutoDataAttribute() : this(Fixtures.Default) {}
 
+		protected AutoDataAttribute(params ISpecimenBuilder[] specimens)
+			: this(specimens.AsValueEnumerable()
+			                .Select(x => (ICustomization)new InsertCustomization(x))
+			                .ToArray()) {}
+
+		protected AutoDataAttribute(params ICustomization[] customizations)
+			: this(new DefaultCustomizations(customizations)) {}
+
 		protected AutoDataAttribute(params ISpecimenBuilderTransformation[] transformations)
-			: this(DefaultCustomization.Default, transformations) {}
+			: this(DefaultCustomizations.Default, transformations) {}
 
 		protected AutoDataAttribute(ICustomization customization,
 		                            params ISpecimenBuilderTransformation[] transformations)
