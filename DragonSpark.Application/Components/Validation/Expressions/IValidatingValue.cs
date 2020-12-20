@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public interface IValidatingValue<in T> : IDepending<T> {}
 

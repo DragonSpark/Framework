@@ -1,4 +1,6 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application;
+using DragonSpark.Application.Components.Validation.Expressions;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
@@ -40,14 +42,6 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
 			=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
-
-		public static IValidateValue<object> Validator(this IExpression @this)
-			=> new RegularExpressionValidator(@this.Get());
-
-		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
-
-		public static IValidatingValue<T> Adapt<T>(this IValidateValue<T> @this)
-			=> new ValidatingValueAdapter<T>(@this);
 
 /**/
 		public static CallbackContext Callback<T>(this ModelContext @this, EventCallback<T> callback)

@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public class Expression : Text.Text, IExpression
 	{

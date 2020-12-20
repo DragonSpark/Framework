@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public interface IExpression : IResult<string> {}
 }

@@ -35,7 +35,11 @@ namespace DragonSpark.Application.Compose.Entities
 			         .Singleton()
 			         .Then.AddScoped<DbContext>(x => x.GetRequiredService<T>())
 			         //
-			         .Start<IStateViews<TUser>>()
+			         .Start<IStorageInitializer>()
+			         .Forward<StorageInitializer>()
+			         .Singleton()
+					 //
+			         .Then.Start<IStateViews<TUser>>()
 			         .Forward<StateViews<TUser>>()
 			         .Decorate<StoredStateViews<TUser>>()
 			         .Decorate<AnonymousAwareState<TUser>>()

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.Components.Validation.Expressions;
+using DragonSpark.Application.Compose;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
@@ -133,5 +134,15 @@ namespace DragonSpark.Application
 
 		public static (Type Owner, string Name) Key(this FieldIdentifier @this)
 			=> (@this.Model.GetType(), @this.FieldName);
+
+		/**/
+
+		public static IValidateValue<object> Validator(this IExpression @this)
+			=> new RegularExpressionValidator(@this.Get());
+
+		public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
+
+		public static IValidatingValue<T> Adapt<T>(this IValidateValue<T> @this)
+			=> new ValidatingValueAdapter<T>(@this);
 	}
 }

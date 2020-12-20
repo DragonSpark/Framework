@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public interface IValidateValue<in T> : ICondition<T> {}
 }

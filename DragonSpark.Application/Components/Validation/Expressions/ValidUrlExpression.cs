@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Presentation.Components.Forms.Validation
+﻿namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public sealed class ValidUrlExpression : Expression
 	{

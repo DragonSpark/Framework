@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Application.Components.Validation.Expressions
 {
 	public class MetadataValueValidator : Condition<object>, IValidateValue<object>
 	{
