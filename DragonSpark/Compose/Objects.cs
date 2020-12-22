@@ -154,6 +154,10 @@ namespace DragonSpark.Compose
 		public static int Degrade(this in uint @this) => (int)@this;
 
 		public static uint Grade(this in int @this) => (uint)@this;
+
+		public static ulong Grade(this in long @this) => (ulong)@this;
+
+		public static uint Integer(this in ulong @this) => (uint)@this;
 		
 		public static byte Byte(this in int @this) => (byte)@this;
 
