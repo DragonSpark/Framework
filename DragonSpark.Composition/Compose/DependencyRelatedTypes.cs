@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Reflection.Types;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using System;
@@ -13,7 +14,10 @@ namespace DragonSpark.Composition.Compose
 		readonly IArray<Type, Type> _candidates;
 
 		public DependencyRelatedTypes(IServiceCollection services)
-			: this(new CanRegister(services).Then().And(new HashSet<Type>().Add), DependencyCandidates.Default) {}
+			: this(new CanRegister(services).Then()
+			                                .And(IsNativeSystemType.Default.Then().Inverse())
+			                                .And(new HashSet<Type>().Add),
+			       DependencyCandidates.Default) {}
 
 		public DependencyRelatedTypes(Predicate<Type> can, IArray<Type, Type> candidates)
 		{

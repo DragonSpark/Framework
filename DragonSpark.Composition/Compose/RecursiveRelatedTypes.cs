@@ -17,9 +17,9 @@ namespace DragonSpark.Composition.Compose
 			{
 				yield return type;
 
-				foreach (var other in Yield(type))
+				foreach (var other in Yield(type).AsValueEnumerable())
 				{
-					yield return other;
+					yield return other!;
 				}
 			}
 		}
