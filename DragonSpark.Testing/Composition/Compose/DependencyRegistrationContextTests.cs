@@ -23,6 +23,15 @@ namespace DragonSpark.Testing.Composition.Compose
 
 		sealed class Other {}
 
+		sealed class CustomList<T> : List<T>
+		{
+			public CustomList() {}
+
+			public CustomList(IEnumerable<T> collection) : base(collection) {}
+
+			public CustomList(int capacity) : base(capacity) {}
+		}
+
 		sealed class Multiple
 		{
 			public Multiple(Subject subject, Other other)
@@ -38,7 +47,7 @@ namespace DragonSpark.Testing.Composition.Compose
 
 		sealed class Multiple<T>
 		{
-			public Multiple(Subject subject, Other other, List<T> list)
+			public Multiple(Subject subject, Other other, CustomList<T> list)
 			{
 				Subject = subject;
 				Other   = other;
