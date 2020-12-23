@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace DragonSpark.Testing.Composition.Compose
 
 		sealed class CustomList<T> : List<T>
 		{
+			[UsedImplicitly]
 			public CustomList() {}
 
 			public CustomList(IEnumerable<T> collection) : base(collection) {}
