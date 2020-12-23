@@ -6,6 +6,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -174,5 +175,10 @@ namespace DragonSpark.Compose
 		public static int Previous(this in int @this) => @this - 1;
 
 		public static int Next(this in int @this) => @this + 1;
+
+		/**/
+
+		public static DirectoryInfo Directory(this DirectoryInfo @this, string path)
+			=> new DirectoryInfo(Path.Combine(@this.FullName, path));
 	}
 }
