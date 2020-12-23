@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
@@ -18,5 +19,8 @@ namespace DragonSpark.Application.Compose.Store
 
 		public ConfiguredMemoryStoreContext<TIn, TOut> For(TimeSpan duration)
 			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, new RelativeExpiration(duration));
+
+		public ConfiguredMemoryStoreContext<TIn, TOut> ForProcessLifetime()
+			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
 	}
 }

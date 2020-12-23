@@ -159,7 +159,7 @@ namespace DragonSpark.Compose
 		public static ulong Grade(this in long @this) => (ulong)@this;
 
 		public static uint Integer(this in ulong @this) => (uint)@this;
-		
+
 		public static byte Byte(this in int @this) => (byte)@this;
 
 		public static byte Byte(this in uint @this) => (byte)@this;
@@ -178,7 +178,10 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static DirectoryInfo Directory(this DirectoryInfo @this, string path)
+		public static DirectoryInfo Subdirectory(this DirectoryInfo @this, string path)
 			=> new DirectoryInfo(Path.Combine(@this.FullName, path));
+
+		public static FileInfo File(this DirectoryInfo @this, string path)
+			=> new FileInfo(Path.Combine(@this.FullName, path));
 	}
 }

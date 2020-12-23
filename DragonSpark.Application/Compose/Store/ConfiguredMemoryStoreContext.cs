@@ -16,6 +16,8 @@ namespace DragonSpark.Application.Compose.Store
 			: base(subject, memory)
 			=> _configure = configure;
 
+		public Selector<TIn, TOut> Using<T>() => Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
+
 		public Selector<TIn, TOut> Using<T>(Func<TIn, string> key)
 			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName ?? throw new InvalidOperationException(), key).Get);
 
