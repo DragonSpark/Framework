@@ -8,10 +8,12 @@ namespace DragonSpark.Application
 	{
 		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
 
-		EnvironmentalConfiguration()
+		EnvironmentalConfiguration() : this(EnvironmentName.Default!) {}
+
+		public EnvironmentalConfiguration(string environment)
 			: base(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
 			                                 .AddJsonFile("appsettings.json")
-			                                 .AddJsonFile($"appsettings.{EnvironmentName.Default}.json", true)
+			                                 .AddJsonFile($"appsettings.{environment}.json", true)
 			                                 .Build) {}
 	}
 }
