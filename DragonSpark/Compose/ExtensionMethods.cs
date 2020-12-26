@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
-using Polly;
 using System;
 using Exception = System.Exception;
 
@@ -205,15 +204,8 @@ namespace DragonSpark.Compose
 			LoggerExtensions.LogCritical(@this, exception, template, first, second, third);
 		}
 
-		public static void Execute<T>(this ICommand<ExceptionParameter<TimeSpan>> @this, DelegateResult<T> result,
-		                              TimeSpan span)
-		{
-			@this.Execute(new ExceptionParameter<TimeSpan>(result.Exception, span));
-		}
-
 		public static void Execute(this ICommand<ExceptionParameter<Array<object>>> @this,
-		                           Exception exception,
-		                           params object[] arguments)
+		                           Exception exception, params object[] arguments)
 		{
 			@this.Execute(new ExceptionParameter<Array<object>>(exception, arguments));
 		}

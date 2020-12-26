@@ -5,6 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public sealed class RedirectErrorsAttribute : Attribute, IPageFilter
 	{
 		public void OnPageHandlerExecuting(PageHandlerExecutingContext context)

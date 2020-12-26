@@ -19,11 +19,6 @@
     <PackageReference Include="Flurl" Version="3.0.0" />
     <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" Version="2.3.5" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-    <PackageReference Include="Refit" Version="5.2.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\" />
   </ItemGroup>
 
 </Project>

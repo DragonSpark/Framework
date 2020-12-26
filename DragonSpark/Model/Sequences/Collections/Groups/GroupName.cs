@@ -1,10 +1,15 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Model.Sequences.Collections.Groups
 {
-	public readonly struct GroupName
+	public readonly struct GroupName : IEquatable<GroupName>
 	{
+		public static bool operator ==(GroupName left, GroupName right) => left.Equals(right);
+
+		public static bool operator !=(GroupName left, GroupName right) => !left.Equals(right);
+
 		public GroupName(string name) => Name = name;
 
 		public string Name { get; }

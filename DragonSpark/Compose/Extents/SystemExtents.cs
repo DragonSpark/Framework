@@ -3,7 +3,14 @@ using System.Reflection;
 
 namespace DragonSpark.Compose.Extents
 {
-	public sealed class SystemExtents
+	public interface ISystemExtents
+	{
+		Extent<Type> Type { get; }
+
+		Extent<TypeInfo> Metadata { get; }
+	}
+
+	public sealed class SystemExtents : ISystemExtents
 	{
 		public static SystemExtents Default { get; } = new SystemExtents();
 

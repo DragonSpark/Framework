@@ -27,7 +27,7 @@ namespace DragonSpark.Presentation.Components.Routing
 				}
 				// If the `?` optional marker shows up in the segment but not at the very end,
 				// then throw an error.
-				else if (segment.IndexOf('?') >= 0 && segment.IndexOf('?') != length)
+				else if (segment.Contains('?') && segment.IndexOf('?') != length)
 				{
 					throw new
 						ArgumentException($"Malformed parameter '{segment}' in route '{template}'. '?' character can only appear at the end of parameter name.");

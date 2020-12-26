@@ -1,6 +1,11 @@
 ﻿namespace DragonSpark.Compose
 {
-	public sealed class VowelContext
+	public interface IVowelContext
+	{
+		Extents.Extents Extent { get; }
+	}
+
+	public sealed class VowelContext : IVowelContext
 	{
 		public static VowelContext Default { get; } = new VowelContext();
 

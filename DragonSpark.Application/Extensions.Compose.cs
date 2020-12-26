@@ -2,6 +2,7 @@
 using AutoBogus;
 using Bogus.Extensions;
 using DragonSpark.Application.Compose;
+using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Store;
@@ -14,6 +15,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -93,5 +95,9 @@ namespace DragonSpark.Application
 			=> @this.Generate((faker, arg2) => faker.GenerateBetween(range.Start.Value, range.End.Value));
 		public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
 			=> @this.Generate((faker, arg2) => faker.Generate(0));
+		/**/
+
+		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this) where T : class
+			=> new RegisterApiContext<T>(@this);
 	}
 }

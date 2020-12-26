@@ -1,5 +1,7 @@
-﻿using Microsoft.JSInterop;
+﻿using DragonSpark.Compose;
+using Microsoft.JSInterop;
 using System;
+using System.Threading.Tasks;
 
 // ReSharper disable All
 #pragma warning disable 8618
@@ -56,14 +58,14 @@ namespace DragonSpark.Presentation.Components.Routing
 		/// </summary>
 		public void TriggerIntraPageNavigation() => IntraPageNavigation?.Invoke(this, EventArgs.Empty);
 
-		public void SetPageExitCheck(bool show)
+		public async ValueTask SetPageExitCheck(bool show)
 		{
-			if (show != ExitShowState)
-			{
-				_runtime.InvokeAsync<bool>("cec_setEditorExitCheck", show);
-			}
+			var task = (show != ExitShowState)
+				             ? _runtime.InvokeAsync<bool>("cec_setEditorExitCheck", show)
+				             : ExitShowState.ToOperation();
 
 			ExitShowState = show;
+			await task;
 		}
 
 		/// <summary>
