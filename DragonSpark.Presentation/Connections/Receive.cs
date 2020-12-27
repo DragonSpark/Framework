@@ -46,11 +46,6 @@ namespace DragonSpark.Presentation.Connections
 
 			public ValueTask Get() => _connection.StartAsync().ToOperation();
 
-			/*public async ValueTask Get()
-			{
-				await _connection.StartAsync();
-				await _connection.SendAsync("UpdateProcess", new Guid("bac1f79e-1f95-4641-625f-08d8954e705b"));
-			}*/
 		}
 	}
 }
