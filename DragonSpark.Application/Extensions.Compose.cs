@@ -98,6 +98,10 @@ namespace DragonSpark.Application
 			=> @this.Generate((faker, arg2) => faker.Generate(0));
 		/**/
 
+		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, IContentSerializer serializer)
+			where T : class
+			=> Api<T>(@this, new RefitSettings(serializer));
+
 		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, RefitSettings? settings = null)
 			where T : class
 			=> new RegisterApiContext<T>(@this, settings);
