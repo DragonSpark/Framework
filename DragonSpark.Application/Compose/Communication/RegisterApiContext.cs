@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Composition.Compose;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
@@ -14,15 +13,15 @@ namespace DragonSpark.Application.Compose.Communication
 
 		public RegisterApiContext(IServiceCollection subject, RefitSettings? settings = null)
 		{
-			_subject       = subject;
+			_subject  = subject;
 			_settings = settings;
 		}
 
-		public RegistrationResult Configure<TConfiguration>(Func<TConfiguration, Uri> baseUri)
+		public ConfiguredApiContextRegistration<T> Configure<TConfiguration>(Func<TConfiguration, Uri> baseUri)
 			where TConfiguration : class
 			=> Configure(new Configure<TConfiguration>(baseUri).Execute);
 
-		public RegistrationResult Configure(Action<IServiceProvider, HttpClient> configure)
-			=> new ConfigureApi<T>(configure, _settings).Parameter(_subject).To(x => new RegistrationResult(x));
+		public ConfiguredApiContextRegistration<T> Configure(Action<IServiceProvider, HttpClient> configure)
+			=> new ConfiguredApiContextRegistration<T>(_subject, configure, _settings);
 	}
 }

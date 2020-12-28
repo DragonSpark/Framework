@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Compose {
+namespace DragonSpark.Application.Compose
+{
 	sealed class AuthenticationContextCommand : ICommand<IServiceCollection>
 	{
 		readonly System.Action<AuthenticationBuilder> _command;

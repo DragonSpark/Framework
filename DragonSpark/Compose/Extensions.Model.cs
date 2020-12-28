@@ -50,6 +50,9 @@ namespace DragonSpark.Compose
 		public static Model.CommandContext<T> Command<T>(this ModelContext @this, System.Action<T> action)
 			=> @this.Command.Of.Type<T>().By.Calling(action);
 
+		public static Model.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this, Action<T1, T2> action)
+			=> @this.Command.Of.Type<(T1, T2)>().By.Calling(action.Invoke);
+
 		public static Model.CommandContext Command(this ModelContext _, System.Action action)
 			=> new Model.CommandContext(new Command(action));
 
