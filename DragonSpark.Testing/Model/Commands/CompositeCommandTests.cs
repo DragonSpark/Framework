@@ -12,7 +12,7 @@ namespace DragonSpark.Testing.Model.Commands
 		public void Verify()
 		{
 			var count = 0;
-			new CompositeCommand<None>(new Command<None>(x => count++), new Command<None>(x => count++))
+			new CompositeCommand<None>(new Command<None>(_ => count++), new Command<None>(_ => count++))
 				.Execute();
 			count.Should()
 			     .Be(2);

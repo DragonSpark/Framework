@@ -16,7 +16,7 @@ namespace DragonSpark.Model.Sequences.Collections
 	/// </summary>
 	public class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue> where TKey : notnull
 	{
-		readonly DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>> _delegatedKeyedCollection;
+		readonly DelegatedKeyedCollection<TKey, KeyValuePair<TKey, TValue>> _delegatedKeyedCollection = null!;
 
 		public OrderedDictionary()
 		{

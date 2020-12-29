@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Entities.Generation
 			            .By.Cast<PropertyInfo>()
 			            .Select(filter)
 			            .Ensure.Input.IsOf<PropertyInfo>()
-			            .Otherwise.Use(info => true),
+			            .Otherwise.Use(_ => true),
 			       new AutoBinder()) {}
 
 		public ModelBinder(Func<MemberInfo, bool> filter, IAutoBinder previous)

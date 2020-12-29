@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			using var host = await Start.A.Host()
 			                            .WithTestServer()
 			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
-			                            .Apply(new ApplicationProfile(collection => {}, builder => {}))
+			                            .Apply(new ApplicationProfile(_ => {}, _ => {}))
 			                            .WithIdentity()
 			                            .Using<User>()
 			                            .Having(Objects.Claims.Default)

@@ -35,7 +35,7 @@ namespace DragonSpark.Application
 		/**/
 
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
-			=> @this.WithIdentity(options => {});
+			=> @this.WithIdentity(_ => {});
 
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
 		                                           System.Action<IdentityOptions> configure)
@@ -93,9 +93,9 @@ namespace DragonSpark.Application
 			where T : class => new GeneratorContext<T>(configuration);
 
 		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range) where TOther : class
-			=> @this.Generate((faker, arg2) => faker.GenerateBetween(range.Start.Value, range.End.Value));
+			=> @this.Generate((faker, _) => faker.GenerateBetween(range.Start.Value, range.End.Value));
 		public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
-			=> @this.Generate((faker, arg2) => faker.Generate(0));
+			=> @this.Generate((faker, _) => faker.Generate(0));
 		/**/
 
 		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, IContentSerializer serializer)

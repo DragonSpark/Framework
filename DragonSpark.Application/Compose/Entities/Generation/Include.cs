@@ -6,11 +6,11 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 	public static class Include
 	{
 		public static Include<T, TOther> New<T, TOther>() where TOther : class
-			=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, __, ___) => {},
+			=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, _, _) => {},
 			                          scope => scope.Once());
 
 		public static IncludeMany<T, TOther> Many<T, TOther>() where TOther : class
-			=> new IncludeMany<T, TOther>((generator, _) => generator.Generate(3), (_, __, ___) => {});
+			=> new IncludeMany<T, TOther>((generator, _) => generator.Generate(3), (_, _, _) => {});
 	}
 
 	public readonly struct Include<T, TOther> where TOther : class

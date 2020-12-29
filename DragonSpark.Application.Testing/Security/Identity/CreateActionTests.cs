@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Testing.Security.Identity
 			                            .WithTestServer()
 			                            .WithDefaultComposition()
 			                            .Configure(x => x.AddScoped<INavigateToSignOut, NavigateToSignOut>())
-			                            .Apply(new ApplicationProfile(collection => {}, builder => {}))
+			                            .Apply(new ApplicationProfile(_ => {}, _ => {}))
 			                            .WithIdentity()
 			                            .Using<User>()
 			                            .Having(Claims.Default)

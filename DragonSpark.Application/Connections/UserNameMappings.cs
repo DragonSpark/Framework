@@ -10,6 +10,6 @@ namespace DragonSpark.Application.Connections
 	{
 		public static UserNameMappings Default { get; } = new UserNameMappings();
 
-		UserNameMappings() : base(x => new ConcurrentDictionary<string, string>().ToTable()) {}
+		UserNameMappings() : base(_ => new ConcurrentDictionary<string, string>().ToTable()) {}
 	}
 }

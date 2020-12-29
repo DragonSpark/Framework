@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Entities.Generation
 
 	public readonly struct Configuration
 	{
-		public Configuration(in uint? seed) : this(in seed, x => {}) {}
+		public Configuration(in uint? seed) : this(in seed, _ => {}) {}
 
 		public Configuration(in uint? seed, System.Action<IAutoGenerateConfigBuilder> configure)
 		{

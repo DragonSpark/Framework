@@ -35,7 +35,7 @@ namespace DragonSpark.Testing.Composition
 		{
 			public void Compose(IServiceRegistry serviceRegistry)
 			{
-				serviceRegistry.Decorate<string>((factory, s) => $"Decorated: {s}");
+				serviceRegistry.Decorate<string>((_, s) => $"Decorated: {s}");
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace DragonSpark.Testing.Composition
 		{
 			using var host = await Start.A.Host()
 			                            .Configure(x => x.AddSingleton("Hello World!"))
-			                            .ComposeUsing(x => x.Decorate<string>((factory, s) => $"Decorated: {s}"))
+			                            .ComposeUsing(x => x.Decorate<string>((_, s) => $"Decorated: {s}"))
 			                            .Operations()
 			                            .Run();
 			host.Services.GetRequiredService<string>()

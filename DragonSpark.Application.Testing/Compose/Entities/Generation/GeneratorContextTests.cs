@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		{
 			var sut = Start.A.Generator<Configured.Parent>()
 			               .Include(x => x.Child)
-			               .Configure(x => x.Created, x => expected)
+			               .Configure(x => x.Created, _ => expected)
 			               .Get();
 			sut.Child.Parent.Should().BeSameAs(sut);
 			sut.Created.Should().Be(expected);
@@ -58,7 +58,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 		{
 			var generated = Start.A.Generator<Generate.Parent>()
 			                     .Include(x => x.Child,
-			                              x => x.Generate((faker, parent)
+			                              x => x.Generate((faker, _)
 				                                              => faker.Generate().With(y => y.Id = expected)))
 			                     .Get();
 			generated.Child.Id.Should().Be(expected);
@@ -90,7 +90,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			{
 				var post = Start.A.Generator<PostConfigure.Parent>()
 				                .Include(x => x.Child,
-				                         x => x.Configure((_, __, child)
+				                         x => x.Configure((_, _, child)
 					                                          => child.Count1 = child.Count2 = child.Count3 = 0))
 				                .Get();
 				post.Child.Count1.Should().Be(default);

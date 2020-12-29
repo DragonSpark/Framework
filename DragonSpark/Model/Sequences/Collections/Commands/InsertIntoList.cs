@@ -9,7 +9,7 @@ namespace DragonSpark.Model.Sequences.Collections.Commands
 		readonly Func<IList<T>, int> _index;
 		readonly T                   _item;
 
-		public InsertIntoList(T item) : this(item, x => 0) {}
+		public InsertIntoList(T item) : this(item, _ => 0) {}
 
 		public InsertIntoList(T item, Func<IList<T>, int> index)
 		{

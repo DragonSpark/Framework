@@ -2,7 +2,7 @@
 @using JetBrains.Annotations
 @inherits EditorComponent
 
-<DialogContext T="object" @ref="_confirm" Title="@Title" Context="parameter">
+<DialogContext T="object" @ref="_confirm" Title="@Title" Context="_">
     <Confirm Accept="@Start.A.Callback(Exit).Using(ActualReceiver).Handle(Exceptions).UpdateActivity()"
              PrimaryClass="primary button fit"
              SecondaryClass="button fit"
@@ -37,6 +37,6 @@
 
     Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
 
-    protected override Task OnNavigationCanceled() => Task.Delay(25).ContinueWith(x => _confirm.Open(default!));
+    protected override Task OnNavigationCanceled() => Task.Delay(25).ContinueWith(_ => _confirm.Open(default!));
 #nullable restore
 }

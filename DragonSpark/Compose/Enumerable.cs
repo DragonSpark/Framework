@@ -29,7 +29,7 @@ namespace DragonSpark.Compose
 			=> @this.Introduce(instance, tuple => tuple.Item1(tuple.Item2));
 
 		public static IEnumerable<(T1, T2)> Introduce<T1, T2>(this IEnumerable<T1> @this, T2 instance)
-			=> @this.Introduce(instance, x => true, Delegates<(T1, T2)>.Self);
+			=> @this.Introduce(instance, _ => true, Delegates<(T1, T2)>.Self);
 
 		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<T1> @this, T2 instance,
 		                                                Func<(T1, T2), bool> where)
@@ -37,7 +37,7 @@ namespace DragonSpark.Compose
 
 		public static IEnumerable<TOut> Introduce<T1, T2, TOut>(this IEnumerable<T1> @this, T2 instance,
 		                                                        Func<(T1, T2), TOut> select)
-			=> @this.Introduce(instance, x => true, select);
+			=> @this.Introduce(instance, _ => true, select);
 
 		public static IEnumerable<TOut> Introduce<T1, T2, TOut>(this IEnumerable<T1> @this, T2 instance,
 		                                                        Func<(T1, T2), bool> where,

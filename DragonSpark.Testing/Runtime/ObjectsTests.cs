@@ -82,7 +82,7 @@ namespace DragonSpark.Testing.Runtime
 		public void With()
 		{
 			var count = 0;
-			count.With(x => { count++; });
+			count.With(_ => { count++; });
 			count.Should()
 			     .Be(1);
 		}

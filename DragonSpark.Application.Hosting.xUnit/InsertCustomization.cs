@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 {
 	public class InsertCustomization : Command<IFixture>, ICustomization
 	{
-		public InsertCustomization(ISpecimenBuilder specimen) : this(specimen, x => 0) {}
+		public InsertCustomization(ISpecimenBuilder specimen) : this(specimen, _ => 0) {}
 
 		public InsertCustomization(ISpecimenBuilder specimen, Func<IList<ISpecimenBuilder>, int> index)
 			: base(SelectCustomizations.Default.Then()

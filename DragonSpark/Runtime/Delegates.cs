@@ -4,7 +4,7 @@ namespace DragonSpark.Runtime
 {
 	public static class Delegates<T>
 	{
-		public static Action<T> Empty { get; } = t => {};
+		public static Action<T> Empty { get; } = _ => {};
 
 		public static Func<T, T> Self { get; } = t => t;
 	}

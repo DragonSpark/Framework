@@ -11,7 +11,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		Into() {}
 
-		public ITable<TIn, TOut> Table() => Table(x => default!);
+		public ITable<TIn, TOut> Table() => Table(_ => default!);
 
 
 #pragma warning disable 8714

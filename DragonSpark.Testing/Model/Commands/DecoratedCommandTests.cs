@@ -13,7 +13,7 @@ namespace DragonSpark.Testing.Model.Commands
 		public void Verify()
 		{
 			var count = 0;
-			var inner = new Command<None>(x => count++);
+			var inner = new Command<None>(_ => count++);
 			var sut   = new Command<None>(inner);
 			sut.Execute();
 			count.Should()

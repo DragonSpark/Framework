@@ -39,7 +39,7 @@ namespace DragonSpark.Testing.Compose.Extents
 		public void VerifyOnceStriped()
 		{
 			var count   = 0;
-			var counter = new Select<string, int>(x => count++).Then().OnceStriped().Get();
+			var counter = new Select<string, int>(_ => count++).Then().OnceStriped().Get();
 			count.Should().Be(0);
 			counter.Get("HelloWorld");
 			count.Should().Be(1);
@@ -57,7 +57,7 @@ namespace DragonSpark.Testing.Compose.Extents
 		public void VerifyOnlyOnce()
 		{
 			var count   = 0;
-			var counter = new Select<string, int>(x => count++).Then().OnlyOnce().Get();
+			var counter = new Select<string, int>(_ => count++).Then().OnlyOnce().Get();
 			count.Should().Be(0);
 			counter.Get("HelloWorld");
 			count.Should().Be(1);

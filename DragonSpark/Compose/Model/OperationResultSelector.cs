@@ -60,7 +60,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
 
-		public new OperationContext<_> Terminate() => Terminate(x => ValueTask.CompletedTask);
+		public new OperationContext<_> Terminate() => Terminate(_ => ValueTask.CompletedTask);
 		public OperationContext<_> Terminate(Func<T, ValueTask> command)
 			=> new OperationContext<_>(Get().Select(new OperationSelect<T>(command)));
 
