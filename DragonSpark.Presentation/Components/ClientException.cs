@@ -1,12 +1,11 @@
-﻿using JetBrains.Annotations;
-using Radzen;
+﻿using Radzen;
 using System;
 
 namespace DragonSpark.Presentation.Components
 {
 	public class ClientException : InvalidOperationException
 	{
-		public ClientException([CanBeNull] string? message, NotificationSeverity severity = NotificationSeverity.Error)
+		public ClientException(string? message, NotificationSeverity severity = NotificationSeverity.Error)
 			: this("There was a problem.", message, TimeSpan.FromMilliseconds(5000), severity) {}
 
 		// ReSharper disable once TooManyDependencies
