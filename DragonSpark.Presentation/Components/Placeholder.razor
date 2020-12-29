@@ -1,0 +1,26 @@
+﻿@using System.Net
+<img class="@Class" src="http://via.placeholder.com/@Foreground/@Background/@(Width)x@Height.png?text=@WebUtility.UrlEncode(Text)" @attributes="AdditionalAttributes" />
+
+@code {
+
+    [Parameter]
+    public string Class { get; set; } = "img-fluid";
+
+    [Parameter]
+    public string Background { get; set; } = "000000";
+
+    [Parameter]
+    public string Foreground { get; set; } = "FFFFFF";
+
+    [Parameter]
+    public string Text { get; set; } = "TBD";
+
+    [Parameter]
+    public ushort Width { get; set; } = 100;
+
+    [Parameter]
+    public ushort Height { get; set; } = 100;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+}
