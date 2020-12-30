@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Compose.Entities
 	                                                   where TUser : Security.Identity.IdentityUser
 	{
 		readonly ApplicationProfileContext _collection;
-		readonly Action<IdentityOptions> _configure;
+		readonly Action<IdentityOptions>   _configure;
 
 		public EntityStorageContext(ApplicationProfileContext collection, Action<IdentityOptions> configure)
 		{
@@ -16,16 +16,15 @@ namespace DragonSpark.Application.Compose.Entities
 			_configure  = configure;
 		}
 
-		public EntityStorageConfigurationContext<T, TUser> Using => new (_collection, _configure);
+		public EntityStorageConfigurationContext<T, TUser> Using => new(_collection, _configure);
 	}
 
-	public sealed class EntityStorageContext<T> where T : DbContext
+	public sealed class IdentityStorageContext<T> where T : class
 	{
 		readonly ApplicationProfileContext _subject;
 
-		public EntityStorageContext(ApplicationProfileContext subject) => _subject = subject;
+		public IdentityStorageContext(ApplicationProfileContext subject) => _subject = subject;
 
-		public EntityStorageConfigurationContext<T> Using => new (_subject);
+		public IdentityStorageContext<T, TContext> StoredIn<TContext>() where TContext : DbContext => new(_subject);
 	}
-
 }

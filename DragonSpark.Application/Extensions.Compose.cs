@@ -26,8 +26,6 @@ namespace DragonSpark.Application
 	// ReSharper disable once MismatchedFileName
 	public static partial class Extensions
 	{
-		public static EntityStorageContext<T> StoredIn<T>(this ApplicationProfileContext @this) where T : DbContext
-			=> new(@this);
 
 		public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
 			where T : DbContext
@@ -45,10 +43,10 @@ namespace DragonSpark.Application
 		                                           System.Action<IdentityOptions> configure)
 			=> new IdentityContext(@this, configure);
 
-		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
+		public static IdentityStorageContext<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : class
+			=> new(@this);
 
-		public static ApplicationProfileContext WithIdentity<T>(this ApplicationProfileContext @this) where T : class
-			=> @this.Then(x => x.AddDefaultIdentity<T>());
+		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
 
 		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this,
 		                                                       System.Action<AuthenticationBuilder> configure)

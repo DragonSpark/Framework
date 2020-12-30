@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
@@ -25,23 +24,7 @@ namespace DragonSpark.Application.Compose.Entities
 			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
-			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
-			           .Configure(Initialize<T>.Default.Get);
-	}
-
-	public sealed class EntityStorageConfigurationContext<T> where T : DbContext
-	{
-		readonly ApplicationProfileContext _context;
-
-		public EntityStorageConfigurationContext(ApplicationProfileContext context) => _context = context;
-
-		public ApplicationProfileContext SqlServer() => Configuration(SqlStorageConfiguration<T>.Default);
-
-		public ApplicationProfileContext Configuration(Alter<StorageConfigurationBuilder> configuration)
-			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
-
-		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
-			=> _context.Then(new ConfigureStorage<T>(configuration))
+			=> _context.Then(new ConfigureIdentityApplicationStorage<T, TUser>(configuration, _configure))
 			           .Configure(Initialize<T>.Default.Get);
 	}
 }
