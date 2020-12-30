@@ -19,6 +19,7 @@ namespace DragonSpark.Application.Hosting.Server
 		{
 			parameter.UseHttpsRedirection()
 			         .UseRouting()
+			         .UseAuthentication()
 			         .UseAuthorization()
 			         .UseEndpoints(_endpoints);
 		}
