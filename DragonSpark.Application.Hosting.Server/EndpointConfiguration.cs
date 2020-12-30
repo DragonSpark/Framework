@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Hosting.Server
 {
 	sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
 	{
-		public static EndpointConfiguration Default { get; } = new EndpointConfiguration();
+		public static EndpointConfiguration Default { get; } = new();
 
 		EndpointConfiguration() : base(x => x.MapControllers()) {}
 	}

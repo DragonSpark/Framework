@@ -1,18 +1,25 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Application.Compose
 {
 	sealed class AuthenticationContextCommand : ICommand<IServiceCollection>
 	{
-		readonly System.Action<AuthenticationBuilder> _command;
+		readonly Action<AuthenticationBuilder> _command;
+		readonly Action<AuthenticationOptions>?       _configure;
 
-		public AuthenticationContextCommand(System.Action<AuthenticationBuilder> command) => _command = command;
+		public AuthenticationContextCommand(Action<AuthenticationBuilder> command,
+		                                    Action<AuthenticationOptions>? configure = null)
+		{
+			_command   = command;
+			_configure = configure;
+		}
 
 		public void Execute(IServiceCollection parameter)
 		{
-			_command(parameter.AddAuthentication());
+			_command(_configure != null ? parameter.AddAuthentication(_configure) : parameter.AddAuthentication());
 		}
 	}
 }

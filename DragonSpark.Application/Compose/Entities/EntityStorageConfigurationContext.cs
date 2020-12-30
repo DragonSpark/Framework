@@ -1,9 +1,6 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Composition;
-using DragonSpark.Composition.Compose;
-using DragonSpark.Model.Selection.Alterations;
-using LightInject;
+﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
@@ -29,17 +26,22 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
 			=> _context.Then(new ConfigureIdentityStorage<T, TUser>(configuration, _configure))
-			           .Configure(Initialize.Default.Get);
+			           .Configure(Initialize<T>.Default.Get);
+	}
 
-		sealed class Initialize : IAlteration<BuildHostContext>
-		{
-			public static Initialize Default { get; } = new Initialize();
+	public sealed class EntityStorageConfigurationContext<T> where T : DbContext
+	{
+		readonly ApplicationProfileContext _context;
 
-			Initialize() {}
+		public EntityStorageConfigurationContext(ApplicationProfileContext context) => _context = context;
 
-			public BuildHostContext Get(BuildHostContext parameter)
-				=> parameter.Decorate<T>((factory, context) => factory.GetInstance<IStorageInitializer<T>>()
-				                                                      .Get(context));
-		}
+		public ApplicationProfileContext SqlServer() => Configuration(SqlStorageConfiguration<T>.Default);
+
+		public ApplicationProfileContext Configuration(Alter<StorageConfigurationBuilder> configuration)
+			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
+
+		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
+			=> _context.Then(new ConfigureStorage<T>(configuration))
+			           .Configure(Initialize<T>.Default.Get);
 	}
 }

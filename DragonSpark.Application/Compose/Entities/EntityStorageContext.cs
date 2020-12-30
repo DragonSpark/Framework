@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DragonSpark.Application.Compose.Entities
@@ -15,7 +16,16 @@ namespace DragonSpark.Application.Compose.Entities
 			_configure  = configure;
 		}
 
-		public EntityStorageConfigurationContext<T, TUser> Using
-			=> new EntityStorageConfigurationContext<T, TUser>(_collection, _configure);
+		public EntityStorageConfigurationContext<T, TUser> Using => new (_collection, _configure);
 	}
+
+	public sealed class EntityStorageContext<T> where T : DbContext
+	{
+		readonly ApplicationProfileContext _subject;
+
+		public EntityStorageContext(ApplicationProfileContext subject) => _subject = subject;
+
+		public EntityStorageConfigurationContext<T> Using => new (_subject);
+	}
+
 }

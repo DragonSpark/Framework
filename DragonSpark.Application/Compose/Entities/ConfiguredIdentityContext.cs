@@ -16,6 +16,6 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public EntityStorageContext<TContext, T> StoredIn<TContext>()
 			where TContext : Security.Identity.IdentityDbContext<T>
-			=> new EntityStorageContext<TContext, T>(_context, _configure);
+			=> new(_context, _configure);
 	}
 }

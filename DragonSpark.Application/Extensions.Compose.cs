@@ -12,6 +12,7 @@ using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,9 @@ namespace DragonSpark.Application
 	// ReSharper disable once MismatchedFileName
 	public static partial class Extensions
 	{
+		public static EntityStorageContext<T> StoredIn<T>(this ApplicationProfileContext @this) where T : DbContext
+			=> new(@this);
+
 		public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
 			where T : DbContext
 			=> @this.Append(ConfigureSqlServer<T>.Default.Execute);
@@ -41,8 +45,14 @@ namespace DragonSpark.Application
 		                                           System.Action<IdentityOptions> configure)
 			=> new IdentityContext(@this, configure);
 
-		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this)
-			=> new AuthenticationContext(@this);
+		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
+
+		public static ApplicationProfileContext WithIdentity<T>(this ApplicationProfileContext @this) where T : class
+			=> @this.Then(x => x.AddDefaultIdentity<T>());
+
+		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this,
+		                                                       System.Action<AuthenticationBuilder> configure)
+			=> new(@this, Start.A.Command(configure));
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
 		                                                       ICommand<AuthorizationOptions> policy)
