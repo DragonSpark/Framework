@@ -26,4 +26,24 @@ namespace DragonSpark.Application.Entities
 		                                                                 .SingleAsync()
 		                                                                 .ConfigureAwait(false);
 	}
+
+	public class SingleOrDefaultSelected<TKey, TEntity, T> : ISelecting<TKey, T?>
+	{
+		readonly IQueryable<TEntity>          _queryable;
+		readonly Query<TKey, TEntity>         _query;
+		readonly Expression<Func<TEntity, T>> _select;
+
+		public SingleOrDefaultSelected(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		                               Expression<Func<TEntity, T>> select)
+		{
+			_queryable = queryable;
+			_query     = query;
+			_select    = select;
+		}
+
+		public async ValueTask<T?> Get(TKey parameter) => await _queryable.Where(_query(parameter))
+		                                                                 .Select(_select)
+		                                                                 .SingleOrDefaultAsync()
+		                                                                 .ConfigureAwait(false);
+	}
 }
