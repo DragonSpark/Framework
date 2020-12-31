@@ -14,6 +14,9 @@ namespace DragonSpark.Server.Requests
 
 		public Query<T> Parameter { get; }
 
+		public Request<TOther> Subject<TOther>(TOther subject)
+			=> new(Owner, new (Parameter.UserName, Parameter.Identity, subject));
+
 		public void Deconstruct(out ControllerBase owner, out Query<T> parameter)
 		{
 			owner     = Owner;

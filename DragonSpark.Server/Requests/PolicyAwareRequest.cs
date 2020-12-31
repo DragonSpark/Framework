@@ -1,12 +1,16 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Requests
 {
 	public class PolicyAwareRequest<TIn, TOut> : PolicyAwareRequest<TIn> where TOut : class
 	{
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelecting<TIn, TOut?> select, IRequested<TIn> other)
+			: this(new Policy(owner), select, other) {}
+
 		public PolicyAwareRequest(IPolicy policy, ISelecting<TIn, TOut?> select, IRequested<TIn> other)
 			: base(policy, new Requested<TIn, TOut>(select), other) {}
 	}
@@ -15,6 +19,9 @@ namespace DragonSpark.Server.Requests
 	{
 		readonly IPolicy       _policy;
 		readonly IRequested<T> _previous, _other;
+
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner, IRequested<T> previous, IRequested<T> other)
+			: this(new Policy(owner), previous, other) {}
 
 		public PolicyAwareRequest(IPolicy policy, IRequested<T> previous, IRequested<T> other)
 		{
