@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Requests
 {
-	class IsOwner : IIsOwner
+	public class IsOwner : IIsOwner
 	{
 		readonly ISelecting<Guid, string?> _owner;
 		readonly IEqualityComparer<string> _equals;

@@ -19,12 +19,12 @@ namespace DragonSpark.Application.Compose.Store.Operations
 		protected IMemoryCache Memory { get; }
 
 		public ConfiguredMemoryStoreContext<TIn, TOut> UntilRemoved()
-			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
+			=> new(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
 
 		public ConfiguredMemoryStoreContext<TIn, TOut> For(TimeSpan duration)
-			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, new RelativeExpiration(duration));
+			=> new(Subject, Memory, new RelativeExpiration(duration));
 
 		public ConfiguredMemoryStoreContext<TIn, TOut> For(Slide duration)
-			=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, new SlidingExpiration(duration.For));
+			=> new(Subject, Memory, new SlidingExpiration(duration.For));
 	}
 }

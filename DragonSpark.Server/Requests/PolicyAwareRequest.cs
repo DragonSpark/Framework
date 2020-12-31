@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -20,8 +21,14 @@ namespace DragonSpark.Server.Requests
 		readonly IPolicy       _policy;
 		readonly IRequested<T> _previous, _other;
 
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelect<T, ValueTask> select, IRequested<T> other)
+			: this(owner, new Requested<T>(select), other) {}
+
 		public PolicyAwareRequest(ISelecting<Guid, string?> owner, IRequested<T> previous, IRequested<T> other)
 			: this(new Policy(owner), previous, other) {}
+
+		public PolicyAwareRequest(IPolicy policy, ISelect<T, ValueTask> select, IRequested<T> other)
+			: this(policy, new Requested<T>(select), other) {}
 
 		public PolicyAwareRequest(IPolicy policy, IRequested<T> previous, IRequested<T> other)
 		{
@@ -42,5 +49,4 @@ namespace DragonSpark.Server.Requests
 			return result;
 		}
 	}
-
 }
