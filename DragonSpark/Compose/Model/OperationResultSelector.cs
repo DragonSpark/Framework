@@ -22,7 +22,7 @@ namespace DragonSpark.Compose.Model
 		public OperationResultSelector<T> Watching(IResult<CancellationToken> token) => Watching(token.Get);
 
 		public OperationResultSelector<T> Watching(Func<CancellationToken> token)
-			=> new OperationResultSelector<T>(new TokenAwareOperationResult<T>(Get(), token));
+			=> new(new TokenAwareOperationResult<T>(Get(), token));
 	}
 
 	public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
@@ -35,7 +35,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 
-		public TaskSelector<_, T> Demote() => new TaskSelector<_, T>(Get().Select(SelectTask<T>.Default));
+		public TaskSelector<_, T> Demote() => new(Get().Select(SelectTask<T>.Default));
 
 		public OperationResultSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
@@ -50,26 +50,28 @@ namespace DragonSpark.Compose.Model
 		}
 
 		public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
-			=> new OperationResultSelector<_, TTo>(Get().Select(new OperationSelect<T, TTo>(select)));
+			=> new(Get().Select(new OperationSelect<T, TTo>(select)));
 
 		public OperationResultSelector<_, T> Protecting() => Protecting(new AsyncLock());
 
 		public OperationResultSelector<_, T> Protecting(AsyncLock @lock)
-			=> new OperationResultSelector<_, T>(new Protecting<_, T>(Get().Await, @lock));
+			=> new(new Protecting<_, T>(Get().Await, @lock));
 
 
 		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
 
 		public new OperationContext<_> Terminate() => Terminate(_ => ValueTask.CompletedTask);
 		public OperationContext<_> Terminate(Func<T, ValueTask> command)
-			=> new OperationContext<_>(Get().Select(new OperationSelect<T>(command)));
+			=> new(Get().Select(new OperationSelect<T>(command)));
+
+		public OperationContext<_> Terminate(System.Action<T> command) => new(Get().Select(new Invoking<T>(command)));
 
 		public OperationResultSelector<_, T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
 		public OperationResultSelector<_, T> Watching(IResult<CancellationToken> token) => Watching(token.Get);
 
 		public OperationResultSelector<_, T> Watching(Func<CancellationToken> token)
-			=> new OperationResultSelector<_, T>(new TokenAwareSelecting<_, T>(Get(), token));
+			=> new(new TokenAwareSelecting<_, T>(Get(), token));
 	}
 
 	sealed class TokenAwareOperationResult<T> : IResulting<T>
