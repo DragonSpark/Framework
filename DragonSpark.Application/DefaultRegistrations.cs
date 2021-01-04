@@ -50,10 +50,14 @@ namespace DragonSpark.Application
 			         .Then.Start<IScopedTable>()
 			         .Forward<ScopedTable>()
 			         .Scoped()
-					 //
+			         //
 			         .Then.Start<IExceptions>()
 			         .Forward<Exceptions>()
 			         .Include(x => x.Dependencies)
+			         .Scoped()
+			         //
+			         .Then.Start<IExecuteOperation>()
+			         .Forward<ExecuteOperation>()
 			         .Scoped()
 				;
 		}

@@ -121,6 +121,9 @@ namespace DragonSpark.Application
 
 		/**/
 
+		public static ValueTask<Exception?> Get<T>(this IExecuteOperation @this, ValueTask parameter)
+			=> @this.Get(A.Type<T>(), parameter);
+
 		public static ConfiguredValueTaskAwaitable Await<T>(this IOperation<(Type Owner, Exception Exception)> @this,
 		                                                    Exception exception)
 			=> @this.Await(A.Type<T>(), exception);

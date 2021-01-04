@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application;
+using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -16,27 +16,7 @@ namespace DragonSpark.Presentation.Components
 				return;
 			}
 
-			Fragment = null;
-
-			var operation = Source.Get();
-
-			try
-			{
-				if (!operation.IsCompleted)
-				{
-					await operation;
-				}
-				else if (operation.IsFaulted)
-				{
-					throw operation.AsTask().Exception.Verify();
-				}
-			}
-			// ReSharper disable once CatchAllClause
-			catch (Exception error)
-			{
-				Fragment = ExceptionTemplate;
-				await Exceptions.Await((GetType(), error));
-			}
+			Fragment = await Execute.Get<ActiveView<TValue>>(Source.Get()) != null ? ExceptionTemplate : null;
 		}
 
 		RenderFragment? Fragment { get; set; }

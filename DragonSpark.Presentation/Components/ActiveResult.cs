@@ -4,7 +4,7 @@ namespace DragonSpark.Presentation.Components
 {
 	public sealed class ActiveResult<T> : IViewProperty, ISource<T>
 	{
-		public static implicit operator ActiveResult<T>(ValueTask<T> instance) => new ActiveResult<T>(instance);
+		public static implicit operator ActiveResult<T>(ValueTask<T> instance) => new(instance);
 
 		readonly ValueTask<T> _source;
 
@@ -16,18 +16,21 @@ namespace DragonSpark.Presentation.Components
 
 		public async ValueTask Get()
 		{
-			if (_source.IsCompletedSuccessfully)
+			if (!HasValue)
 			{
-				Value = _source.Result;
+				if (_source.IsCompletedSuccessfully)
+				{
+					Value = _source.Result;
+				}
+				else
+				{
+					Value = await _source;
+				}
+
+				HasValue = true;
 			}
-			else
-			{
-				HasValue = false;
-				Value    = await _source;
-			}
-			HasValue = true;
 		}
 
-		public override string? ToString() => Value?.ToString();
+		public override string? ToString() => HasValue ? Value?.ToString() : null;
 	}
 }

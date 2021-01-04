@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Operations;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -9,12 +8,11 @@ using Exception = System.Exception;
 
 namespace DragonSpark.Application.Runtime
 {
-	public interface IExceptions : IOperation<(Type Owner, Exception Exception)> {}
 	sealed class Exceptions : IExceptions
 	{
-		readonly ILoggerFactory   _factory;
+		readonly ILoggerFactory _factory;
 
-		public Exceptions(ILoggerFactory factory) => _factory    = factory;
+		public Exceptions(ILoggerFactory factory) => _factory = factory;
 
 		public ValueTask Get((Type Owner, Exception Exception) parameter)
 		{
@@ -34,6 +32,4 @@ namespace DragonSpark.Application.Runtime
 			return Task.CompletedTask.ToOperation();
 		}
 	}
-
-
 }
