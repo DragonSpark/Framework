@@ -1,11 +1,10 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using System;
 
 namespace DragonSpark.Application.Entities
 {
-	public class LockInstance<T> : Instance<AsyncLock> where T : class
+	public class LockInstance<T> : DragonSpark.Model.Results.Instance<AsyncLock> where T : class
 	{
 		protected LockInstance(T context) : this(context, Locks.Default.Get) {}
 

@@ -19,7 +19,7 @@ namespace DragonSpark.Compose.Model
 		public new OperationSelector Operation() => new OperationSelector(new CommandOperation(Get().Execute));
 	}
 
-	public class CommandContext<T> : Instance<ICommand<T>>
+	public class CommandContext<T> : DragonSpark.Model.Results.Instance<ICommand<T>>
 	{
 		public static implicit operator System.Action<T>(CommandContext<T> instance) => instance.Get().Execute;
 

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Activation;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Composition.Compose
 {
-	public sealed class BuildHostContext : Instance<IAlteration<IHostBuilder>>,
+	public sealed class BuildHostContext : Model.Results.Instance<IAlteration<IHostBuilder>>,
 	                                       ISelecting<HostBuilder, IHost>,
 	                                       IActivateUsing<IAlteration<IHostBuilder>>
 	{
