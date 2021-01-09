@@ -35,7 +35,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 
-		public TaskSelector<_, T> Demote() => new(Get().Select(SelectTask<T>.Default));
+		public TaskSelector<_, T> Allocate() => new(Get().Select(SelectTask<T>.Default));
 
 		public OperationResultSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 

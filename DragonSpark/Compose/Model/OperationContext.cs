@@ -40,7 +40,7 @@ namespace DragonSpark.Compose.Model
 		public OperationContext<T> Watching(Func<CancellationToken> token)
 			=> new OperationContext<T>(new TokenAwareOperation<T>(Get(), token));
 
-		public TaskSelector<T> Demote() => new TaskSelector<T>(Get().Select(SelectTask.Default));
+		public TaskSelector<T> Allocate() => new TaskSelector<T>(Get().Select(SelectTask.Default));
 
 
 	}

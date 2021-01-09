@@ -13,6 +13,6 @@ namespace DragonSpark.Presentation.Compose
 			=> _validation = validation;
 
 		public CallbackContext<ValidationContext> Get()
-			=> new CallbackContext<ValidationContext>(_validation.Then().Demote());
+			=> new CallbackContext<ValidationContext>(_validation.Then().Allocate());
 	}
 }

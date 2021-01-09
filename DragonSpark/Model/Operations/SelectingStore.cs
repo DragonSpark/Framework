@@ -8,7 +8,7 @@ namespace DragonSpark.Model.Operations
 	{
 		public SelectingStore(ISelect<TIn, ValueTask<TOut>> select)
 			: base(select.Then()
-			             .Demote()
+			             .Allocate()
 			             .Stores()
 			             .New()
 			             .Select(x => x.ToOperation())) {}

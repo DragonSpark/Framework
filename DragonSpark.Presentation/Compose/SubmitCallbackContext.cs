@@ -10,9 +10,9 @@ namespace DragonSpark.Presentation.Compose
 	public class SubmitCallbackContext : CallbackContext<EditContext>
 	{
 		public SubmitCallbackContext(Func<EditContext, Task> method)
-			: this(method, method.Start().Then().Promote().Out()) {}
+			: this(method, method.Start().Then().Structure().Out()) {}
 
 		public SubmitCallbackContext(Func<EditContext, Task> method, IOperation<EditContext> operation)
-			: base(method.Target, new Submit(operation).Then().Demote()) {}
+			: base(method.Target, new Submit(operation).Then().Allocate()) {}
 	}
 }

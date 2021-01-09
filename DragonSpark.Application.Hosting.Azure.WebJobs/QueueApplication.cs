@@ -10,6 +10,6 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs
 		                                                              .By.Calling(Guid.Parse)
 		                                                              .Select(application)
 		                                                              .Then()
-		                                                              .Demote()) {}
+		                                                              .Allocate()) {}
 	}
 }

@@ -74,10 +74,10 @@ namespace DragonSpark.Compose
 		public static ConfiguredValueTaskAwaitable Await(this IResult<ValueTask> @this)
 			=> @this.Get().ConfigureAwait(false);
 
-		public static Task Promote(this IOperation<None> @this) => @this.Get().AsTask();
+		public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 
-		public static Task Promote(this IOperation @this) => @this.Get().AsTask();
+		public static Task Allocate(this IOperation @this) => @this.Get().AsTask();
 
-		public static Task Promote<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
+		public static Task Allocate<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
 	}
 }

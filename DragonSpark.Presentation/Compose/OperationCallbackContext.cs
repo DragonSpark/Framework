@@ -32,7 +32,7 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext UpdateActivity()
 			=> new OperationCallbackContext(_receiver, new ActivityAwareOperation(_operation, _receiver));
 
-		public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Promote);
+		public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Allocate);
 	}
 
 	public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
@@ -59,13 +59,13 @@ namespace DragonSpark.Presentation.Compose
 		public OperationCallbackContext<T> UpdateActivity()
 			=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
 
-		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Promote));
+		public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));
 
 		public EventCallback Adapt() => EventCallback.Factory.Create(_receiver,
 		                                                             Start.A.Selection<object>()
 		                                                                  .By.CastDown<T>()
 		                                                                  .Select(_operation)
 		                                                                  .Then()
-		                                                                  .Demote());
+		                                                                  .Allocate());
 	}
 }

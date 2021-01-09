@@ -9,13 +9,12 @@ namespace DragonSpark.Compose.Model
 	{
 		public TaskSelector(ISelect<_, Task<T>> subject) : base(subject) {}
 
-		public OperationResultSelector<_, T> Promote()
-			=> new OperationResultSelector<_, T>(Get().Select(SelectOperation<T>.Default));
+		public OperationResultSelector<_, T> Structure() => new(Get().Select(SelectOperation<T>.Default));
 
 		public TaskSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
 		public TaskSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
-			=> new TaskSelector<_, TTo>(Get().Select(new Selection<T, TTo>(select)));
+			=> new(Get().Select(new Selection<T, TTo>(select)));
 	}
 
 
@@ -23,6 +22,6 @@ namespace DragonSpark.Compose.Model
 	{
 		public TaskSelector(ISelect<T, Task> subject) : base(subject) {}
 
-		public OperationContext<T> Promote() => new OperationContext<T>(Get().Select(SelectOperation.Default));
+		public OperationContext<T> Structure() => new(Get().Select(SelectOperation.Default));
 	}
 }

@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Testing.Compose.Store.Operations
 			                    .UntilRemoved()
 			                    .Using(_ => "UniqueKey")
 			                    .Protecting()
-			                    .Demote()
+			                    .Allocate()
 			                    .Get();
 
 			var first  = selector.Get();
