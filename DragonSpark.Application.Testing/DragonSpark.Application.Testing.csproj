@@ -27,4 +27,8 @@
     <ProjectReference Include="..\DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Compose\Store\Operations\" />
+  </ItemGroup>
+
 </Project>
