@@ -38,6 +38,8 @@ namespace DragonSpark.Compose.Extents.Selections
 		public Selector<T, TOut> Calling<TOut>(Func<T, TOut> select)
 			=> new Selector<T, TOut>(select.Target as ISelect<T, TOut> ?? new Select<T, TOut>(select));
 
+		public Selector<T, TOut> Calling<TOut>(IResult<TOut> result) => Calling(result.Get);
+
 		public Selector<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result).Then();
 
 		public AlterationSelector<T> Calling(Func<T, T> result) => new AlterationSelector<T>(new Alteration<T>(result));
@@ -56,7 +58,7 @@ namespace DragonSpark.Compose.Extents.Selections
 
 		public Selector<T, TOut> CastDown<TOut>() => CastOrDefault<T, TOut>.Default.Then();
 
-		
+
 		public Selector<T, Array<T>> Array() => Self.Yield().Result();
 
 		public Selector<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
