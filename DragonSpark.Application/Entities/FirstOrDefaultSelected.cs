@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class FirstOrDefaultSelected<TKey, TEntity, T> : ISelecting<TKey, T?>
+	public class FirstOrDefaultSelected<TKey, TEntity, T> : ISelecting<TKey, T?> where T : class
 	{
 		readonly IQueryable<TEntity>          _queryable;
 		readonly Query<TKey, TEntity>         _query;
