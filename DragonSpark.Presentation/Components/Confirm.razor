@@ -10,14 +10,14 @@
 
 
 <RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
-    <p style="margin-bottom: 25px;">@ChildContent</p>
-    <ActivityContainer Receiver="@this">
+    <ActivityContainer Context="receiver">
+        <p style="margin-bottom: 25px;">@ChildContent</p>
         <div class="container">
             <div class="d-flex justify-content-between">
                 <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                  Style="margin: 10px; width: 150px" class="@SecondaryClass" />
-                @* ReSharper disable once ArrangeRedundantParentheses *@
-                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).UpdateActivity())"
+
+                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
                                  Style="margin: 10px; width: 150px" class="@PrimaryClass" />
             </div>
         </div>
