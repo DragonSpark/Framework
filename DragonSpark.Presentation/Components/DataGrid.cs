@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen.Blazor;
 using System;
@@ -14,6 +15,25 @@ namespace DragonSpark.Presentation.Components
 	/// <typeparam name="T"></typeparam>
 	public class DataGrid<T> : RadzenGrid<T>
 	{
+		[Parameter]
+		public object? Receiver
+		{
+			get => _receiver;
+			set
+			{
+				if (_receiver != value)
+				{
+					_receiver = value;
+
+					Refresh = _receiver != null ? Start.A.Callback(Reload).Using(_receiver).Get() : null;
+				}
+			}
+		}	object? _receiver;
+
+		EventCallback? Refresh { get; set; }
+
+		public override Task Reload() => Refresh?.InvokeAsync() ?? base.Reload();
+
 		public override void Dispose()
 		{
 			GC.SuppressFinalize(this);
