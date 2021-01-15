@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class DefaultExceptionTemplate : Model.Results.Instance<RenderFragment>
+	public sealed class DefaultExceptionTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
 	{
 		public static DefaultExceptionTemplate Default { get; } = new DefaultExceptionTemplate();
 

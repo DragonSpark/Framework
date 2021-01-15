@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class DefaultNotAssignedTemplate : Model.Results.Instance<RenderFragment>
+	public sealed class DefaultNotAssignedTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
 	{
 		public static DefaultNotAssignedTemplate Default { get; } = new DefaultNotAssignedTemplate();
 

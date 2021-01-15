@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components
 {
-	sealed class DefaultNotificationMessage : Model.Results.Instance<NotificationMessage>
+	sealed class DefaultNotificationMessage : DragonSpark.Model.Results.Instance<NotificationMessage>
 	{
 		public static DefaultNotificationMessage Default { get; } = new DefaultNotificationMessage();
 

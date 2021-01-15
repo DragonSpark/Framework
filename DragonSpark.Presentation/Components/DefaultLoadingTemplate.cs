@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components
 {
-	public sealed class DefaultLoadingTemplate : Model.Results.Instance<RenderFragment>
+	public sealed class DefaultLoadingTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
 	{
 		public static DefaultLoadingTemplate Default { get; } = new DefaultLoadingTemplate();
 
