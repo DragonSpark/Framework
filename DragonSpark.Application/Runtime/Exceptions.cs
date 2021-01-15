@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Runtime
 
 			if (exception is TemplateException template)
 			{
-				logger.LogError(template.InnerException.Demystify(), template.Message, template.Parameters.Open());
+				logger.LogError(template.InnerException!.Demystify(), template.Message, template.Parameters.Open());
 			}
 			else
 			{

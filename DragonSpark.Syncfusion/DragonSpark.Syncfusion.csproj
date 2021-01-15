@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Syncfusion.Blazor" Version="18.4.0.31" />
+    <PackageReference Include="Syncfusion.Blazor" Version="18.4.0.34" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
