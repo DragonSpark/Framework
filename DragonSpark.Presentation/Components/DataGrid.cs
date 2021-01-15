@@ -1,4 +1,6 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Activity;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen.Blazor;
@@ -15,8 +17,8 @@ namespace DragonSpark.Presentation.Components
 	/// <typeparam name="T"></typeparam>
 	public class DataGrid<T> : RadzenGrid<T>
 	{
-		[Parameter]
-		public object? Receiver
+		[CascadingParameter]
+		IActivityReceiver? Receiver
 		{
 			get => _receiver;
 			set
@@ -25,10 +27,17 @@ namespace DragonSpark.Presentation.Components
 				{
 					_receiver = value;
 
-					Refresh = _receiver != null ? Start.A.Callback(Reload).Using(_receiver).Get() : null;
+					Refresh = _receiver != null
+						          ? Exceptions.Bind(base.Reload).Using(_receiver).UpdateActivity().Get()
+						          : null;
 				}
 			}
-		}	object? _receiver;
+		}
+
+		IActivityReceiver? _receiver;
+
+		[Inject]
+		IExceptions Exceptions { get; set; } = default!;
 
 		EventCallback? Refresh { get; set; }
 
@@ -62,11 +71,12 @@ namespace DragonSpark.Presentation.Components
 			{
 				await InvokeVoid("Radzen.removeMouseLeave", UniqueID);
 
-				var columns = GetType().GetField("columns")
-				                       .Verify()
-				                       .GetValue(this)
-				                       .Verify()
-				                       .To<List<RadzenGridColumn<T>>>();
+				var columns = GetType()
+				              .GetField("columns")
+				              .Verify()
+				              .GetValue(this)
+				              .Verify()
+				              .To<List<RadzenGridColumn<T>>>();
 
 				var id = $"popup{UniqueID}";
 
