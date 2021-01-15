@@ -49,8 +49,7 @@ namespace DragonSpark.Application.Entities
 
 		public TResult Execute<TResult>(Expression expression) => _previous.Execute<TResult>(expression);
 
-		public TResult ExecuteAsync<TResult>(Expression expression,
-		                                     CancellationToken cancellationToken = new CancellationToken())
+		public TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = new())
 		{
 			if (IsTask.Get(A.Type<TResult>()))
 			{
