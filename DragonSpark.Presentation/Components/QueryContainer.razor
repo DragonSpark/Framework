@@ -16,13 +16,13 @@
     public RenderFragment<IQueryable<T>> ChildContent { get; set; } = default!;
 
     [Parameter]
-    public IQueryable<T> Subject { get; set; } = default!;
+    public IQueryable<T> Input { get; set; } = default!;
 
     IQueryable<T> Query { get; set; } = default!;
 
     protected override void OnInitialized()
     {
-        Query = _adjustments.Alter(Subject);
+        Query = _adjustments.Alter(Input);
         base.OnInitialized();
     }
 
@@ -35,7 +35,7 @@
 
     public void Execute(None _)
     {
-        Query = _adjustments.Alter(Subject);
+        Query = _adjustments.Alter(Input);
         StateHasChanged();
     }
 
