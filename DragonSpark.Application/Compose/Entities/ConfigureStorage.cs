@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Entities;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
@@ -24,14 +23,15 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.AddDbContext<TContext>(_storage.Get(parameter))
-			         .Return(parameter)
+			parameter.AddDbContextFactory<TContext>(_storage.Get(parameter))
+			         .AddScoped(p => p.GetRequiredService<IDbContextFactory<TContext>>().CreateDbContext())
+			         .AddScoped<DbContext>(x => x.GetRequiredService<TContext>())
+			         //
 			         .Start<IStorageInitializer<TContext>>()
 			         .Forward<StorageInitializer<TContext>>()
 			         .Singleton()
-			         .Then.AddScoped<DbContext>(x => x.GetRequiredService<TContext>())
 			         //
-			         .AddDefaultIdentity<T>(_configure)
+			         .Then.AddDefaultIdentity<T>(_configure)
 			         .AddEntityFrameworkStores<TContext>();
 		}
 	}
