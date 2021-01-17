@@ -19,7 +19,7 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		[Parameter, UsedImplicitly]
-		public TValue Content { get; set; } = default!;
+		public TValue? Content { get; set; }
 
 		[Parameter, UsedImplicitly]
 		public RenderFragment<TValue>? ChildContent { get; set; }
