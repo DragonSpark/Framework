@@ -17,8 +17,8 @@
     public IQuery<T> Query { get; set; } = Query<T>.Default;
 
 #pragma warning disable 8669
-    [CascadingParameter]
-    IActivityReceiver? Receiver { get; set; }
+    /*[CascadingParameter]
+    IActivityReceiver? Receiver { get; set; }*/
 
     public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
     {
