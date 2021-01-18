@@ -1,0 +1,37 @@
+﻿@inherits global::Syncfusion.Blazor.DataAdaptor
+
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Activity
+@using global::Syncfusion.Blazor
+@using global::Syncfusion.Blazor.Data
+@using Microsoft.EntityFrameworkCore
+
+@typeparam T
+
+@code {
+
+    [Parameter]
+    public IQueryable<T> Input { get; set; } = default!;
+
+    [Parameter]
+    public IQuery<T> Query { get; set; } = Query<T>.Default;
+
+#pragma warning disable 8669
+    [CascadingParameter]
+    IActivityReceiver? Receiver { get; set; }
+
+    public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
+    {
+        /*await using var context = new ActivityContext(Receiver);
+        await context.Start();*/
+
+        var (_, query, count) = await Query.Get(new(request, Input));
+
+        var elements = await query.ToListAsync();
+        var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
+                         :
+                         (object)elements;
+        return result;
+    }
+#pragma warning restore 8669
+}
