@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Compose
+
+<Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" Confirmation="@Confirmation"
+         ChildContent="@ChildContent"
+         Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel" />
+
+@code {
+    [Parameter]
+    public string PrimaryClass { get; set; } = default!;
+
+    [Parameter]
+    public string SecondaryClass { get; set; } = default!;
+
+    [Parameter]
+    public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        Result = null;
+        base.OnParametersSet();
+    }
+
+    public DialogResult? Result { get; private set; }
+}

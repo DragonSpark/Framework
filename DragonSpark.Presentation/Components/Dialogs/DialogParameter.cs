@@ -1,11 +1,10 @@
 ﻿using Radzen;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Dialogs
 {
 	public static class DialogParameter
 	{
-		public static DialogParameter<T> From<T>(DialogService dialogs, T context)
-			=> new DialogParameter<T>(dialogs, context);
+		public static DialogParameter<T> From<T>(DialogService dialogs, T context) => new(dialogs, context);
 	}
 
 	public readonly struct DialogParameter<T>

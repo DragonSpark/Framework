@@ -1,0 +1,42 @@
+﻿@using DragonSpark.Compose
+
+@typeparam T
+
+<DialogContext T="T" @ref="_context" Title="@Title" Width="@Width">
+    <ConfirmResult @ref="_result" />
+</DialogContext>
+
+@code {
+
+    ConfirmResult _result = default!;
+
+    DialogContext<T> _context = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public string Width { get; set; } = "unset";
+
+    [Parameter]
+    public string PrimaryClass { get; set; } = default!;
+
+    [Parameter]
+    public string SecondaryClass { get; set; } = default!;
+
+    [Parameter]
+    public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+
+    public async ValueTask<DialogResult> Confirm(T entity)
+    {
+        await _context.Open(entity);
+        var result = _result.Result ?? DialogResult.Other;
+        return result;
+    }
+
+
+}

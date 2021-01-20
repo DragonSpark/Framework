@@ -45,22 +45,22 @@
         Dialogs.Close();
     }
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public string PrimaryClass { get; set; } = default!;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public string SecondaryClass { get; set; } = default!;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public EventCallback<MouseEventArgs> Accept { get; set; }
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public EventCallback<MouseEventArgs> Cancel { get; set; }
 
     void LogKeyPressed(KeyboardEventArgs eventArgs)
@@ -68,7 +68,7 @@
         switch (eventArgs.Code)
         {
             case "Escape":
-                Dialogs.Close();
+                InvokeAsync(() => OnCancel(null!));
                 break;
         }
     }

@@ -1,0 +1,27 @@
+﻿@typeparam T
+
+
+@inject DialogService Dialogs
+
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public string Width { get; set; } = "unset";
+
+    [Parameter]
+    public RenderFragment<DialogParameter<T>> ChildContent { get; set; } = default!;
+
+    public Task Open(T entity) => Dialogs.OpenAsync(Title, x => ChildContent(new (x, entity)),
+                                                    new DialogOptions { Width = Width });
+
+    public Task Close()
+    {
+        Dialogs.Close();
+        return Task.CompletedTask;
+    }
+
+}
