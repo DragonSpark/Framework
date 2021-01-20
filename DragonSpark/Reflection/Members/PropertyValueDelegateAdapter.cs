@@ -9,7 +9,7 @@ namespace DragonSpark.Reflection.Members
 	                                                       IPropertyValueDelegate
 	{
 		public static PropertyValueDelegateAdapter<T, TValue> Default { get; }
-			= new PropertyValueDelegateAdapter<T, TValue>();
+			= new();
 
 		PropertyValueDelegateAdapter()
 			: base(Start.An.Instance(PropertyDelegateAdapter<T, TValue>.Default)
