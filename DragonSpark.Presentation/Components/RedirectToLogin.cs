@@ -1,7 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Application.Navigation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using System.Net;
+// ReSharper disable FormatStringProblem
 
 namespace DragonSpark.Presentation.Components
 {
@@ -13,16 +13,17 @@ namespace DragonSpark.Presentation.Components
 		public RedirectToLogin() => Forced = true;
 
 		[Parameter]
-		public string FormatPath { get; set; } = "Identity/Account/Login?ReturnUrl={0}";
+		public string FormatPath { get; set; } = LoginPathTemplate.Default;
 
-		[Inject, UsedImplicitly]
+		[Inject]
 		ILogger<RedirectToLogin> Logger { get; set; } = default!;
+
+		[Inject]
+		CurrentRootPath CurrentPath { get; set; } = default!;
 
 		protected override void OnInitialized()
 		{
-			var @return = WebUtility.UrlEncode($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}");
-
-			Path = string.Format(FormatPath, @return);
+			Path = new LoginPath(FormatPath).Get(CurrentPath.Get());
 
 			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}",
 			                Navigation.Uri, Path);

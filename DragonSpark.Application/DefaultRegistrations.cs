@@ -1,5 +1,6 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Navigation;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Composition;
@@ -41,6 +42,11 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<INavigateToSignOut>()
 			         .Forward<NavigateToSignOut>()
+			         .Scoped()
+			         //
+			         .Then.Start<NavigateToSignIn>()
+			         .And<CurrentRootPath>()
+			         .And<RedirectLoginPath>()
 			         .Scoped()
 			         //
 			         .Then.Start<AsyncLock>()

@@ -1,0 +1,18 @@
+﻿@ChildContent(State)
+
+@code {
+
+    [Parameter]
+    public RenderFragment<AuthenticationState> ChildContent { get; set; } = default!;
+
+    [CascadingParameter]
+    Task<AuthenticationState> Operation { get; set; } = default!;
+
+    AuthenticationState State { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        State = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+    }
+
+}

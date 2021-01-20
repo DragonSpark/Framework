@@ -1,11 +1,10 @@
-﻿using DragonSpark.Application.Components;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security
 {
-	sealed class NavigateToSignOut : Navigation, INavigateToSignOut
+	sealed class NavigateToSignOut : Navigation.Navigation, INavigateToSignOut
 	{
 		public NavigateToSignOut(NavigationManager navigation) : base(navigation, "/Identity/Account/LogOut", true) {}
 

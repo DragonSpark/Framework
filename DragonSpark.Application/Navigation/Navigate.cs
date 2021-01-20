@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Components
+namespace DragonSpark.Application.Navigation
 {
 	public class Navigate : ICommand<string>
 	{
