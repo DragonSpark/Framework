@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Runtime;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Presentation.Components;
+using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;

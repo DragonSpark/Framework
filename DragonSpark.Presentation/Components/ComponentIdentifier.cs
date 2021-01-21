@@ -1,12 +1,12 @@
-﻿using DragonSpark.Model.Selection.Stores;
-using System;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Presentation.Components
 {
 	public sealed class ComponentIdentifier : ReferenceValueStore<object, string>
 	{
-		public static ComponentIdentifier Default { get; } = new ComponentIdentifier();
+		public static ComponentIdentifier Default { get; } = new();
 
-		ComponentIdentifier() : base(_ => UniqueIdentifier.Default.Get(Guid.NewGuid())) {}
+		ComponentIdentifier() : base(UniqueIdentifiers.Default.Then().Any()) {}
 	}
 }

@@ -18,6 +18,8 @@ namespace DragonSpark.Compose.Model
 
 		public Selector<None, T> Accept() => Accept<None>();
 
+		public Selector<object, T> Any() => Accept<object>();
+
 		public ResultContext<T> Singleton() => new DeferredSingleton<T>(_instance.Get).Then();
 
 		public ResultContext<TOut> Select<TOut>(Selector<T, TOut> select) => Select(select.Get());
