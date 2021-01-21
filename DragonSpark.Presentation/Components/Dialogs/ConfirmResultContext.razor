@@ -2,8 +2,8 @@
 
 @typeparam T
 
-<DialogContext T="T" @ref="_context" Title="@Title" Width="@Width">
-    <ConfirmResult @ref="_result" />
+<DialogContext T="T" @ref="_context" Title="@Title" Width="@Width" Context="parameter">
+    <ConfirmResult @ref="_result" PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" Confirmation="@Confirmation" ChildContent="@ChildContent(parameter)" />
 </DialogContext>
 
 @code {
@@ -28,7 +28,7 @@
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment<DialogParameter<T>> ChildContent { get; set; } = default!;
 
 
     public async ValueTask<DialogResult> Confirm(T entity)

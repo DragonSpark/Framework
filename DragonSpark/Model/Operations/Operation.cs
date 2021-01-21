@@ -10,4 +10,13 @@ namespace DragonSpark.Model.Operations
 
 		public Operation(Func<T, ValueTask> select) : base(select) {}
 	}
+
+	public class Operation : IOperation
+	{
+		readonly Func<ValueTask> _select;
+
+		public Operation(Func<ValueTask> select) => _select = select;
+
+		public ValueTask Get() => _select();
+	}
 }

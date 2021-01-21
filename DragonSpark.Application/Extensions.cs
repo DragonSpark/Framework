@@ -128,9 +128,9 @@ namespace DragonSpark.Application
 		                                                    Exception exception)
 			=> @this.Await(A.Type<T>(), exception);
 
-		public static string Get<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
+		public static string Format<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
 
-		public static string Get(this IResult<string> @this, params object[] arguments)
+		public static string Format(this IResult<string> @this, params object[] arguments)
 			=> @this.Get().FormatWith(arguments);
 
 		/**/
