@@ -4,7 +4,7 @@ using DragonSpark.Model.Properties;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	public sealed class IsActive : IProperty<object, bool>
 	{

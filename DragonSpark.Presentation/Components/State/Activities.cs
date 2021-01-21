@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Stores;
 using System.Collections.Concurrent;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	sealed class Activities : ReferenceValueStore<object, ConcurrentBag<object>>
 	{

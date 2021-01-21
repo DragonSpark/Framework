@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	sealed class ThrottleEntryOperation : IOperation
 	{

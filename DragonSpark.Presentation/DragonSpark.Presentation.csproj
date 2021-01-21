@@ -16,4 +16,8 @@
     <PackageReference Include="Radzen.Blazor" Version="2.18.16" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Callbacks\" />
+  </ItemGroup>
+
 </Project>

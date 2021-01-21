@@ -3,7 +3,7 @@ using DragonSpark.Model;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	public readonly struct ActivityContext : IAsyncDisposable
 	{

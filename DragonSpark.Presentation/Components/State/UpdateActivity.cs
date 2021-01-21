@@ -4,7 +4,7 @@ using DragonSpark.Model.Properties;
 using System;
 using System.Collections.Concurrent;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	sealed class UpdateActivity : IUpdateActivity
 	{

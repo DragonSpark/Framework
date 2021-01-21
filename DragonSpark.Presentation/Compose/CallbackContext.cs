@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using DragonSpark.Presentation.Components.Callbacks;
+using DragonSpark.Presentation.Components.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;

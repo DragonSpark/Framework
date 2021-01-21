@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.State
 {
 	sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 	{

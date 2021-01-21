@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Callbacks
+namespace DragonSpark.Presentation.Components.Diagnostics
 {
 	sealed class ExceptionAwareOperation : IOperation
 	{
