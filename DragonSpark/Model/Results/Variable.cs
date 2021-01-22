@@ -7,7 +7,7 @@ namespace DragonSpark.Model.Results
 	{
 		readonly T[] _store = new T[1];
 
-		public Variable(T instance = default) => Execute(instance!);
+		public Variable(T? instance = default) => Execute(instance!);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public T Get()

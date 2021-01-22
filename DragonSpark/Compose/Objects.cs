@@ -123,7 +123,7 @@ namespace DragonSpark.Compose
 		public static IDisposable ToDisposable(this object @this) => @this as IDisposable ?? EmptyDisposable.Default;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T Verify<T>(this T? @this, string message = "Provided instance is not assigned.") where T : class
+		public static T Verify<T>(this T? @this, string message = "Provided instance is not assigned.")
 			=> @this ?? throw new InvalidOperationException(message);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

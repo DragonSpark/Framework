@@ -8,27 +8,27 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-
 <RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
     <ActivityContainer Context="receiver">
         <p style="margin-bottom: 25px;">@ChildContent</p>
         <div class="container">
             <div class="d-flex justify-content-between">
-                <ButtonComponent id="@UniqueID" Text="Cancel" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+                <ButtonComponent id="@UniqueID" Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                  Style="margin: 10px; width: 150px" class="@SecondaryClass" />
 
-                <ButtonComponent Text="OK" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
+                <ButtonComponent Text="@PrimaryText" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
                                  Style="margin: 10px; width: 150px" class="@PrimaryClass" />
             </div>
         </div>
     </ActivityContainer>
-
-    <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
 </RadzenCard>
 
-@code {
+<Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
 
-    [UsedImplicitly]
+@code
+{
+    protected override Task OnInitializedAsync() => Opened.InvokeAsync();
+
     async Task OnAccept(MouseEventArgs parameter)
     {
         if (await Confirmation())
@@ -38,12 +38,17 @@
         }
     }
 
-    [UsedImplicitly]
     async Task OnCancel(MouseEventArgs parameter)
     {
         await Cancel.InvokeAsync(parameter);
         Dialogs.Close();
     }
+
+    [Parameter]
+    public string PrimaryText { get; set; } = "OK";
+
+    [Parameter]
+    public string SecondaryText { get; set; } = "Cancel";
 
     [Parameter]
     public string PrimaryClass { get; set; } = default!;
@@ -56,6 +61,9 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback Opened { get; set; }
 
     [Parameter]
     public EventCallback<MouseEventArgs> Accept { get; set; }
