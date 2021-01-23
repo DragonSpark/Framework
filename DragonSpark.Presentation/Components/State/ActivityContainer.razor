@@ -54,8 +54,8 @@
 
     public async ValueTask Complete()
     {
-        await Completed.InvokeAsync();
         Update();
+        await Completed.InvokeAsync();
         StateHasChanged();
     }
 
