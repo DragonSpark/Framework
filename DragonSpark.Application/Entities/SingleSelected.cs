@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
+	public class SingleSelected<TKey, T> : SingleSelected<TKey, T, T>
+	{
+		public SingleSelected(IQueryable<T> queryable, Query<TKey, T> query, Expression<Func<T, T>> select)
+			: base(queryable, query, select) {}
+	}
+
 	public class SingleSelected<TKey, TEntity, T> : ISelecting<TKey, T>
 	{
 		readonly IQueryable<TEntity>          _queryable;
