@@ -9,7 +9,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Syncfusion.Blazor" Version="18.4.0.34" />
+    <PackageReference Include="Syncfusion.Blazor" Version="18.4.0.35" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
