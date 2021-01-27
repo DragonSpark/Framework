@@ -11,7 +11,7 @@ namespace DragonSpark.Presentation.Components.Content
 		readonly IQueryable<T>       _source;
 		readonly IQueryAlteration<T> _alteration;
 
-		public QueryView(IQueryable<T> source) : this(source, OrderQueryAlteration<T>.Default) {}
+		public QueryView(IQueryable<T> source) : this(source, DefaultQueryAlteration<T>.Default) {}
 
 		public QueryView(IQueryable<T> source, IQueryAlteration<T> alteration)
 		{
