@@ -1,5 +1,6 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using JetBrains.Annotations
+@using DragonSpark.Compose
 @typeparam TItem
 
 @Fragment
@@ -19,12 +20,12 @@
                ?
                NoElementsFoundTemplate == null || await Content.AnyAsync()
                    ?
-                   ChildContent(Content.AsView())
+                   ChildContent(FilterExpression != null ? Content.AsView(FilterExpression.Verify()) : Content.AsView())
                    :
                    NoElementsFoundTemplate
                : NotAssignedTemplate;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public IQueryable<TItem>? Content
     {
         get => _content;
@@ -39,6 +40,9 @@
     }
 
     IQueryable<TItem>? _content;
+
+    [Parameter]
+    public string? FilterExpression { get; set; }
 
     [Parameter, UsedImplicitly]
     public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;

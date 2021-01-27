@@ -1,25 +1,23 @@
-﻿using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Radzen;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public interface IQueryView<out T> : IAllocated<LoadDataArgs>
-	{
-		IEnumerable<T> Current { get; }
-
-		ulong Count { get; }
-	}
-
 	sealed class QueryView<T> : IQueryView<T>
 	{
-		readonly IQueryable<T> _source;
+		readonly IQueryable<T>       _source;
+		readonly IQueryAlteration<T> _alteration;
 
-		public QueryView(IQueryable<T> source) => _source = source;
+		public QueryView(IQueryable<T> source) : this(source, OrderQueryAlteration<T>.Default) {}
+
+		public QueryView(IQueryable<T> source, IQueryAlteration<T> alteration)
+		{
+			_source     = source;
+			_alteration = alteration;
+		}
 
 		public ulong Count { get; private set; }
 
@@ -27,8 +25,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		public async Task Get(LoadDataArgs parameter)
 		{
-			var ordered = !string.IsNullOrEmpty(parameter.OrderBy) ? _source.OrderBy(parameter.OrderBy) : _source;
-			var all     = !string.IsNullOrEmpty(parameter.Filter) ? ordered.Where(parameter.Filter) : ordered;
+			var all = _alteration.Get(new(_source, parameter));
 			Count = (ulong)await all.LongCountAsync();
 			Current = await all.Skip(parameter.Skip.GetValueOrDefault())
 			                   .Take(parameter.Top.GetValueOrDefault())
