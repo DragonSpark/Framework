@@ -99,6 +99,8 @@ namespace DragonSpark.Compose
 		public static NestedConditionSelector<_, T> Then<_, T>(this Selector<_, ICondition<T>> @this)
 			=> @this.Get().Then();
 
+
+		public static OperationContext<T> Then<T>(this IOperation<T> @this) => new OperationContext<T>(@this);
 		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
 
 		public static OperationContext<T> Then<T>(this Await<T> @this)
