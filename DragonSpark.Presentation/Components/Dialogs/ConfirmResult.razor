@@ -1,7 +1,7 @@
 ﻿@using DragonSpark.Compose
 
 <Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" Confirmation="@Confirmation"
-         ChildContent="@ChildContent"
+         ChildContent="@ChildContent" PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
          Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel" />
 
 @code {
@@ -10,6 +10,12 @@
 
     [Parameter]
     public string SecondaryClass { get; set; } = default!;
+
+    [Parameter]
+    public string PrimaryText { get; set; } = "OK";
+
+    [Parameter]
+    public string SecondaryText { get; set; } = "Cancel";
 
     [Parameter]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();

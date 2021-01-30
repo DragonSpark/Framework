@@ -123,7 +123,8 @@ namespace DragonSpark.Compose
 
 		public static OperationResultSelector<T> Then<T>(this ResultContext<Task<T>> @this) => @this.Select(x => x.ToOperation()).Then();*/
 
-
+		public static OperationResultSelector<_, T> Then<_, T>(this ISelecting<_, T> @this)
+			=> new OperationResultSelector<_, T>(@this);
 
 		public static OperationResultSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this)
 			=> new OperationResultSelector<_, T>(@this);
