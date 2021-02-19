@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace DragonSpark.Application.Security.Identity
 	[UsedImplicitly]
 	sealed class CreateUser<T> : ICreateUser<T> where T : IdentityUser
 	{
-		readonly IIdentityOperation<T>       _actions;
+		readonly IIdentityOperation<T>      _actions;
 		readonly Func<ExternalLoginInfo, T> _create;
 
 		public CreateUser(IIdentityOperation<T> actions, Func<ExternalLoginInfo, T> create)
@@ -20,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity
 		public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 		{
 			var user   = _create(parameter);
-			var result = new CreateUserResult<T>(user, await _actions.Get((parameter, user)));
+			var result = new CreateUserResult<T>(user, await _actions.Get(parameter, user));
 			return result;
 		}
 	}
