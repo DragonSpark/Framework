@@ -164,6 +164,8 @@ namespace DragonSpark.Compose
 
 		public static byte Byte(this in uint @this) => (byte)@this;
 
+		public static ushort Short(this in uint @this) => (ushort)@this;
+
 		public static uint Next(this in uint @this) => @this + 1;
 
 		public static byte Plus(this in byte @this, in byte other) => (byte)(@this + other);
