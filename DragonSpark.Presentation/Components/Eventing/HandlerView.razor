@@ -1,0 +1,37 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@typeparam T
+
+@implements IHandle<T>
+@implements IDisposable
+
+@inject IEventAggregator Events
+
+
+@code
+{
+    [Parameter]
+    public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
+
+    [Parameter]
+    public EventCallback<T> Received { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        Events.Subscribe(this);
+        return Task.CompletedTask;
+    }
+
+    public async Task HandleAsync(T parameter)
+    {
+        if (await Condition.Get(parameter))
+        {
+            await InvokeAsync(() => Received.InvokeAsync(parameter));
+        }
+    }
+
+    public void Dispose()
+    {
+        Events.Unsubscribe(this);
+    }
+}
