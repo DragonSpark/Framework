@@ -9,25 +9,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Connections
 {
-	public sealed class UserConnection
-	{
-		public UserConnection(string user, string connection)
-		{
-			User       = user;
-			Connection = connection;
-		}
-
-		public string User { get; }
-
-		public string Connection { get; }
-
-		public void Deconstruct(out string user, out string connection)
-		{
-			user       = User;
-			connection = Connection;
-		}
-	}
-
 	public class UserAwareHub : Hub
 	{
 		readonly ITable<string, List<UserConnection>> _names;
