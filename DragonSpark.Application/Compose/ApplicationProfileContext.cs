@@ -36,6 +36,9 @@ namespace DragonSpark.Application.Compose
 		public BuildServerContext As => new BuildServerContext(_context, _profile.Execute,
 		                                                       _configure.Prepend(new ServerConfiguration(_profile)));
 
+		public ApplicationProfileContext Configure(ISelect<BuildHostContext, BuildHostContext> context)
+			=> Configure(context.Get);
+
 		public ApplicationProfileContext Configure(Func<BuildHostContext, BuildHostContext> context)
 			=> new ApplicationProfileContext(context(_context), _profile, _configure);
 

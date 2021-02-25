@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Composition.Compose
 {
-	public sealed class BuildHostContext : Model.Results.Instance<IAlteration<IHostBuilder>>,
-	                                       ISelecting<HostBuilder, IHost>,
+	public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>,
 	                                       IActivateUsing<IAlteration<IHostBuilder>>
 	{
-		public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context) => context.Get().Get;
+		public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context)
+			=> context._select.Get;
 
 		readonly IAlteration<IHostBuilder> _select;
 
-		public BuildHostContext(IAlteration<IHostBuilder> select) : base(select) => _select = select;
+		public BuildHostContext(IAlteration<IHostBuilder> select) => _select = select;
 
 		public BuildHostContext WithEnvironment(string name) => Select(ConfigureEnvironment.Defaults.Get(name));
 
@@ -32,11 +32,7 @@ namespace DragonSpark.Composition.Compose
 		public BuildHostContext Configure<T>() where T : ICommand<IServiceCollection>
 			=> Configure(Start.A.Result<T>().By.Activation().Instance().Execute);
 
-		public BuildHostContext Select(IAlteration<IHostBuilder> select)
-			=> _select.Then()
-			          .Select(select)
-			          .Out()
-			          .To(Start.An.Extent<BuildHostContext>());
+		public BuildHostContext Select(IAlteration<IHostBuilder> select) => new(_select.Then().Select(select).Out());
 
 		public ValueTask<IHost> Get(HostBuilder parameter) => _select.Get(parameter)
 		                                                             .StartAsync()
