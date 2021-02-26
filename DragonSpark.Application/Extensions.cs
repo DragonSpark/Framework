@@ -130,6 +130,9 @@ namespace DragonSpark.Application
 
 		public static string Format<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
 
+		public static string Format<T1, T2>(this IResult<string> @this, (T1,T2) parameter)
+			=> @this.Get().FormatWith(parameter.Item1, parameter.Item2);
+
 		public static string Format(this IResult<string> @this, params object[] arguments)
 			=> @this.Get().FormatWith(arguments);
 
