@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DragonSpark.Application.Messaging
 {
-	public class MarkdownEmailTemplate<T> : IFormatter<T>
+	public class MarkdownEmailTemplate<T> : IFormatter<T> where T : notnull
 	{
 		readonly string _template;
 
@@ -17,11 +17,12 @@ namespace DragonSpark.Application.Messaging
 
 		public string Get(T parameter)
 		{
-			var       content  = Smart.Format(_template, new[] { parameter });
+			var       content  = Smart.Format(_template, parameter);
 			var       pipeline = new MarkdownPipelineBuilder().Build();
 			var       markdown = Markdown.Parse(content, pipeline);
 			using var writer   = new StringWriter();
 			var       renderer = new HtmlRenderer(writer);
+
 			pipeline.Setup(renderer);
 			renderer.Render(markdown);
 
