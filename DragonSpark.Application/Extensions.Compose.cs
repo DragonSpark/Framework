@@ -10,6 +10,7 @@ using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Authentication;
@@ -59,6 +60,10 @@ namespace DragonSpark.Application
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
 		                                                       System.Action<AuthorizationOptions> policy)
 			=> @this.Then(new AuthorizeConfiguration(policy));
+		/**/
+
+		public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
+			=> @this.Configure(Security.Data.Registrations.Default);
 
 		/**/
 		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this)
