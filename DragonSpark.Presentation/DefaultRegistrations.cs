@@ -3,6 +3,7 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
+using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
@@ -35,9 +36,12 @@ namespace DragonSpark.Presentation
 			         .Then.Start<IEventAggregator>()
 			         .Forward<EventAggregator>()
 			         .Scoped()
-					 //
+			         //
 			         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
-				//
+			         //
+			         .Start<IApplyQueryStringValues>()
+			         .Forward<ApplyQueryStringValues>()
+			         .Scoped()
 				;
 		}
 	}

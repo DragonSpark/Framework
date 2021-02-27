@@ -15,9 +15,4 @@
     <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="Radzen.Blazor" Version="3.1.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Callbacks\" />
-  </ItemGroup>
-
 </Project>
