@@ -1,28 +1,27 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
-using System.Text.RegularExpressions;
+using System.Linq;
+using System.Net.Mail;
 
 namespace DragonSpark.Application.Security.Data
 {
-	// ATTRIBUTION: https://stackoverflow.com/a/47637410/10340424
 	public sealed class AddressMask : IAlteration<string>
 	{
 		public static AddressMask Default { get; } = new AddressMask();
 
-		AddressMask() : this(@"(?:(?:^|(?<=@))([^.@])|\G(?!\A))[^.@](?:([^.@])(?=[.@]))?", @"$1*$2") {}
+		AddressMask() : this(Mask.Default) {}
 
-		readonly string _pattern, _substitution;
+		readonly IAlteration<string> _mask;
 
-		public AddressMask(string pattern, string substitution)
-		{
-			_pattern      = pattern;
-			_substitution = substitution;
-		}
+		public AddressMask(IAlteration<string> mask) => _mask = mask;
 
 		public string Get(string parameter)
-			=> parameter.Contains("@")
-				   ? parameter.Split('@')[0].Length < 4
-					     ? @"*@*.*"
-					     : Regex.Replace(parameter, _pattern, _substitution)
-				   : new string('*', parameter.Length);
+		{
+			var address = new MailAddress(parameter);
+			var parts   = address.Host.Split('.');
+			var suffix  = parts.Last();
+			var domain  = _mask.Get(string.Join('.', parts[..^1]));
+			var result  = $"{_mask.Get(address.User)}@{domain}.{suffix}";
+			return result;
+		}
 	}
 }
