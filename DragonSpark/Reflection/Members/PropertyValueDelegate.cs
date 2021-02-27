@@ -10,10 +10,10 @@ namespace DragonSpark.Reflection.Members
 	{
 		readonly IGeneric<IPropertyValueDelegate> _generic;
 
-		public static PropertyValueDelegate Default { get; } = new PropertyValueDelegate();
+		public static PropertyValueDelegate Default { get; } = new();
 
 		PropertyValueDelegate()
-			: this(new Generic<IPropertyValueDelegate>(typeof(PropertyValueDelegateAdapter<,>))) {}
+			: this(new Generic<IPropertyValueDelegate>(typeof(GeneralPropertyDelegateAdapter<,>))) {}
 
 		public PropertyValueDelegate(IGeneric<IPropertyValueDelegate> generic) => _generic = generic;
 
@@ -26,7 +26,7 @@ namespace DragonSpark.Reflection.Members
 	{
 		readonly IGeneric<IPropertyValueDelegate<T>> _generic;
 
-		public static PropertyValueDelegate<T> Default { get; } = new PropertyValueDelegate<T>();
+		public static PropertyValueDelegate<T> Default { get; } = new();
 
 		PropertyValueDelegate()
 			: this(new Generic<IPropertyValueDelegate<T>>(typeof(PropertyDelegateAdapter<,>))) {}
@@ -39,7 +39,7 @@ namespace DragonSpark.Reflection.Members
 	}
 	sealed class PropertyValueDelegate<T, TValue> : IPropertyValueDelegate<T, TValue>
 	{
-		public static PropertyValueDelegate<T, TValue> Default { get; } = new PropertyValueDelegate<T, TValue>();
+		public static PropertyValueDelegate<T, TValue> Default { get; } = new();
 
 		PropertyValueDelegate() : this(Expression.Parameter(typeof(T), "parameter")) {}
 

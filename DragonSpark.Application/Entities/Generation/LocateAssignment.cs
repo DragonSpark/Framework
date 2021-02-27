@@ -2,6 +2,7 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Reflection.Members;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.Application.Entities.Generation
 {
@@ -11,13 +12,13 @@ namespace DragonSpark.Application.Entities.Generation
 
 		LocateAssignment() : this(LocatePrincipalProperty<T, TValue>.Default) {}
 
-		readonly ILocatePrincipalProperty               _property;
+		readonly Func<PropertyInfo?>                    _property;
 		readonly IPropertyAssignmentDelegate<T, TValue> _delegates;
 
 		public LocateAssignment(ILocatePrincipalProperty property)
-			: this(property, PropertyAssignmentDelegates<T, TValue>.Default) {}
+			: this(property.Then().Bind(A.Type<T>()), PropertyAssignmentDelegates<T, TValue>.Default) {}
 
-		public LocateAssignment(ILocatePrincipalProperty property, IPropertyAssignmentDelegate<T, TValue> delegates)
+		public LocateAssignment(Func<PropertyInfo?> property, IPropertyAssignmentDelegate<T, TValue> delegates)
 		{
 			_property  = property;
 			_delegates = delegates;
@@ -25,8 +26,8 @@ namespace DragonSpark.Application.Entities.Generation
 
 		public Action<T, TValue>? Get()
 		{
-			var propertyInfo = _property.Get(A.Type<T>());
-			var result       = propertyInfo != null ? _delegates.Get(propertyInfo) : null;
+			var property = _property();
+			var result   = property != null ? _delegates.Get(property) : null;
 			return result;
 		}
 	}
