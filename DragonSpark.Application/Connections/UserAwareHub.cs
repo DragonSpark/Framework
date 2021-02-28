@@ -22,10 +22,11 @@ namespace DragonSpark.Application.Connections
 			var name = Context.User?.Identity?.Name;
 			if (name != null)
 			{
+				var user = Context.UserIdentifier.Verify();
 				var list = _names.Get(name);
 				lock (list)
 				{
-					list.Add(new UserConnection(Context.UserIdentifier.Verify(), Context.ConnectionId));
+					list.Add(new UserConnection(user, Context.ConnectionId));
 				}
 			}
 
