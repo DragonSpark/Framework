@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
@@ -19,10 +20,12 @@ namespace DragonSpark.Model.Operations
 		}
 	}
 
-	sealed class Appended<T> : IOperation<T>
+	public class Appended<T> : IOperation<T>
 	{
 		readonly Await<T> _first;
 		readonly Await<T> _second;
+
+		public Appended(IOperation<T> first, IOperation<T> second) : this(first.Await, second.Await) {}
 
 		public Appended(Await<T> first, Await<T> second)
 		{
