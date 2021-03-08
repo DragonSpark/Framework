@@ -1,0 +1,33 @@
+﻿<div @onkeyup="LogKeyPressed" @attributes="@AdditionalAttributes">
+    <input id="@Identifier" class="@FocusClass" />
+    @ChildContent
+</div>
+
+<Evaluate>document.getElementById("@Identifier").focus();</Evaluate>
+
+@code {
+    [Parameter]
+    public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
+
+    [Parameter]
+    public string FocusClass { get; set; } = "dragonspark-input-hidden";
+
+    [Parameter]
+    public EventCallback Escaped { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+    Task LogKeyPressed(KeyboardEventArgs eventArgs)
+    {
+        switch (eventArgs.Code)
+        {
+            case "Escape":
+                return Escaped.InvokeAsync();
+        }
+        return Task.CompletedTask;
+    }
+}

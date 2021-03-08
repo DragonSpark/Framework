@@ -10,6 +10,8 @@
 
 		public string Description { get; set; } = default!;
 
+		public string? Tag { get; set; }
+
 		public string Icon { get; set; } = default!;
 	}
 }
