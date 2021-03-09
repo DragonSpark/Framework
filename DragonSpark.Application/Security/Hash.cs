@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using NetFabric.Hyperlinq;
+using System.Buffers;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,9 +19,9 @@ namespace DragonSpark.Application.Security
 		public string Get(string parameter)
 		{
 			using var context = MD5.Create();
-			var       hash    = context.ComputeHash(_encoding.GetBytes(parameter));
-			var       parts   = hash.AsValueEnumerable().Select(x => x.ToString("x2")).ToArray();
-			var       result  = string.Join(string.Empty, parts);
+			var       hash = context.ComputeHash(_encoding.GetBytes(parameter));
+			using var parts = hash.AsValueEnumerable().Select(x => x.ToString("x2")).ToArray(MemoryPool<string>.Shared);
+			var       result = string.Join(string.Empty, parts);
 			return result;
 		}
 	}

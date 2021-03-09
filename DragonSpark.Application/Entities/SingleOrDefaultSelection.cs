@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
+	public class SingleOrDefaultSelection<TKey, T> : SingleOrDefaultSelection<TKey, T, T>
+	{
+		public SingleOrDefaultSelection(IQueryable<T> queryable, Query<TKey, T> query,
+		                                Func<IQueryable<T>, IQueryable<T>> selection)
+			: base(queryable, query, selection) {}
+	}
+
 	public class SingleOrDefaultSelection<TKey, TEntity, T> : ISelecting<TKey, T?>
 	{
 		readonly IQueryable<TEntity>                      _queryable;
