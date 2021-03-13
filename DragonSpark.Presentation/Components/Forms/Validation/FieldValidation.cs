@@ -11,6 +11,21 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 	{
 		ValidationMessageStore _messages = default!;
 		EditContext?           _context;
+		bool                   _enabled = true;
+
+		[Parameter]
+		public bool Enabled
+		{
+			get => _enabled;
+			set
+			{
+				if (_enabled != value)
+				{
+					_enabled = value;
+					Update();
+				}
+			}
+		}
 
 		[Parameter]
 		public FieldIdentifier Identifier { get; set; }
@@ -66,12 +81,13 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		void Update()
 		{
 			_messages.Clear(Identifier);
-			var valid = Validator.Get(Identifier.GetValue<T>());
-			if (!valid)
+			if (Enabled)
 			{
-				_messages.Add(Identifier, ErrorMessage);
+				if (!Validator.Get(Identifier.GetValue<T>()))
+				{
+					_messages.Add(Identifier, ErrorMessage);
+				}
 			}
-
 			_context.Verify().NotifyValidationStateChanged();
 		}
 
