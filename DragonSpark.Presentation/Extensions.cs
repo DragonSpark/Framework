@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
 
@@ -63,6 +64,12 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
 			=> new CallbackContext<T>(method);
+
+		public static CallbackContext<T> Callback<T>(this ModelContext @this, Action callback)
+			=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
+
+		public static CallbackContext Callback(this ModelContext @this, Action callback)
+			=> @this.Callback(Start.A.Command(callback).Operation());
 
 		public static EditContextCallbackContext Callback(this ModelContext _, EditContext context)
 			=> new EditContextCallbackContext(context);

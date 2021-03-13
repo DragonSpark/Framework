@@ -14,7 +14,9 @@ namespace DragonSpark.Compose.Model
 
 		public ICommand Command { get; }
 
-		public CommandContext<object> Any() => new CommandContext<object>(new Any(Get()));
+		public CommandContext<object> Any() => new CommandContext<object>(new Any(Command));
+
+		public CommandContext<T> Accept<T>() => new CommandContext<T>(new Accept<T>(Command));
 
 		public new OperationSelector Operation() => new OperationSelector(new CommandOperation(Get().Execute));
 	}
