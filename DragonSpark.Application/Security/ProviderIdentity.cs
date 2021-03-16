@@ -11,5 +11,11 @@
 		public string Provider { get; }
 
 		public string Identity { get; }
+
+		public void Deconstruct(out string provider, out string identity)
+		{
+			provider = Provider;
+			identity = Identity;
+		}
 	}
 }
