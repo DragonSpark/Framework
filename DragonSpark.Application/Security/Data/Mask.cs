@@ -6,11 +6,12 @@ namespace DragonSpark.Application.Security.Data
 	{
 		public static Mask Default { get; } = new Mask();
 
-		Mask() : this('.', '*') {}
+		Mask() : this(new string('.', 3), '*') {}
 
-		readonly char _spot, _mask;
+		readonly string _spot;
+		readonly char   _mask;
 
-		public Mask(char spot, char mask)
+		public Mask(string spot, char mask)
 		{
 			_spot = spot;
 			_mask = mask;
@@ -21,10 +22,8 @@ namespace DragonSpark.Application.Security.Data
 			var length = parameter.Length;
 			if (length >= 3)
 			{
-				var cap  = length > 6 ? 2 : 1;
-				var caps = (parameter[..cap], parameter[^cap..]);
-				var result =
-					$"{caps.Item1}{new string(_spot, length - caps.Item1.Length - caps.Item2.Length)}{caps.Item2}";
+				var cap  = length > 12 ? 3 : length > 6 ? 2 : 1;
+				var result = $"{parameter[..cap]}{_spot}{parameter[^cap..]}";
 				return result;
 			}
 

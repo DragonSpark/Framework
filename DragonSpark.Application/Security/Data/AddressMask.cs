@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Text;
 using System.Linq;
 using System.Net.Mail;
 
 namespace DragonSpark.Application.Security.Data
 {
-	public sealed class AddressMask : IAlteration<string>
+	public sealed class AddressMask : IFormatter<MailAddress>
 	{
 		public static AddressMask Default { get; } = new AddressMask();
 
@@ -14,13 +15,11 @@ namespace DragonSpark.Application.Security.Data
 
 		public AddressMask(IAlteration<string> mask) => _mask = mask;
 
-		public string Get(string parameter)
+		public string Get(MailAddress parameter)
 		{
-			var address = new MailAddress(parameter);
-			var parts   = address.Host.Split('.');
-			var suffix  = parts.Last();
+			var parts   = parameter.Host.Split('.');
 			var domain  = _mask.Get(string.Join('.', parts[..^1]));
-			var result  = $"{_mask.Get(address.User)}@{domain}.{suffix}";
+			var result  = $"{_mask.Get(parameter.User)}@{domain}.{parts.Last()}";
 			return result;
 		}
 	}
