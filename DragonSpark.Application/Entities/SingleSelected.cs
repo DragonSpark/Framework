@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -27,9 +28,9 @@ namespace DragonSpark.Application.Entities
 			_select    = select;
 		}
 
-		public async ValueTask<T> Get(TKey parameter) => await _queryable.Where(_query(parameter))
-		                                                                 .Select(_select)
-		                                                                 .SingleAsync()
-		                                                                 .ConfigureAwait(false);
+		public ValueTask<T> Get(TKey parameter) => _queryable.Where(_query(parameter))
+		                                                     .Select(_select)
+		                                                     .SingleAsync()
+		                                                     .ToOperation();
 	}
 }

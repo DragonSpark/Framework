@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
+	public class WhereSelected<TKey, T> : WhereSelected<TKey, T, T>
+	{
+		public WhereSelected(IQueryable<T> queryable, Query<TKey, T> query, Expression<Func<T, T>> select)
+			: base(queryable, query, select) {}
+	}
+
 	public class WhereSelected<TKey, TEntity, T> : ISelecting<TKey, List<T>>
 	{
 		readonly IQueryable<TEntity>          _queryable;
@@ -22,13 +29,7 @@ namespace DragonSpark.Application.Entities
 			_select    = @select;
 		}
 
-		public async ValueTask<List<T>> Get(TKey parameter)
-			=> await _queryable.Where(_query(parameter)).Select(_select).ToListAsync().ConfigureAwait(false);
-	}
-
-	public class WhereSelected<TKey, T> : WhereSelected<TKey, T, T>
-	{
-		public WhereSelected(IQueryable<T> queryable, Query<TKey, T> query, Expression<Func<T, T>> select)
-			: base(queryable, query, select) {}
+		public ValueTask<List<T>> Get(TKey parameter)
+			=> _queryable.Where(_query(parameter)).Select(_select).ToListAsync().ToOperation();
 	}
 }
