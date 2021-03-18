@@ -9,7 +9,7 @@
 @inject IExceptions Exceptions
 
 <RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
-    <ActivityContainer Context="receiver">
+    <ActivityReceiverContainer Context="receiver">
         <p style="margin-bottom: 25px;">@ChildContent</p>
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -20,7 +20,7 @@
                                  Style="margin: 10px; width: 150px" class="@PrimaryClass" />
             </div>
         </div>
-    </ActivityContainer>
+    </ActivityReceiverContainer>
 </RadzenCard>
 
 <Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>

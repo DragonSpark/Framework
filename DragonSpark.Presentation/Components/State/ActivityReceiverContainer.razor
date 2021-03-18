@@ -1,0 +1,22 @@
+﻿@using DragonSpark.Compose
+@if (Receiver != null)
+{
+    @ChildContent(Receiver)
+}
+else
+{
+    <ActivityContainer Context="receiver">
+        @ChildContent(receiver.To<IActivityReceiver>())
+    </ActivityContainer>
+}
+
+@code {
+    #nullable enable
+
+    [CascadingParameter]
+    IActivityReceiver? Receiver { get; set; }
+
+    [Parameter]
+    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = default!;
+    #nullable restore
+}
