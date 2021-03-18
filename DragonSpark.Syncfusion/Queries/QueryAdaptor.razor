@@ -21,9 +21,6 @@
 
     public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
     {
-        /*await using var context = new ActivityContext(Receiver);
-        await context.Start();*/
-
         var (_, query, count) = await Query.Get(new(request, Input));
 
         var elements = await query.ToListAsync();
