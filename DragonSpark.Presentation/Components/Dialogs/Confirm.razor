@@ -8,22 +8,20 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<RadzenCard Style="padding: 20px;" @onkeyup="LogKeyPressed">
-    <ActivityReceiverContainer Context="receiver">
-        <p style="margin-bottom: 25px;">@ChildContent</p>
-        <div class="container">
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
+    <RadzenCard Style="padding: 20px;">
+        <ActivityReceiverContainer Context="receiver">
+            <p style="margin-bottom: 25px;">@ChildContent</p>
             <div class="d-flex justify-content-between">
-                <ButtonComponent id="@UniqueID" Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-                                 Style="margin: 10px; width: 150px" class="@SecondaryClass" />
+                <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+                                 class="@SecondaryClass" style="margin-right: 10px" />
 
                 <ButtonComponent Text="@PrimaryText" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
-                                 Style="margin: 10px; width: 150px" class="@PrimaryClass" />
+                                 class="@PrimaryClass" style="margin-left: 10px" />
             </div>
-        </div>
-    </ActivityReceiverContainer>
-</RadzenCard>
-
-<Evaluate>document.getElementById("@UniqueID").focus();</Evaluate>
+        </ActivityReceiverContainer>
+    </RadzenCard>
+</DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
 
 @code
 {
@@ -70,15 +68,4 @@
 
     [Parameter]
     public EventCallback<MouseEventArgs> Cancel { get; set; }
-
-    void LogKeyPressed(KeyboardEventArgs eventArgs)
-    {
-        switch (eventArgs.Code)
-        {
-            case "Escape":
-                InvokeAsync(() => OnCancel(null!));
-                break;
-        }
-    }
-
 }
