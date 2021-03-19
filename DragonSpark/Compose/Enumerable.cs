@@ -43,12 +43,12 @@ namespace DragonSpark.Compose
 		                                                        Func<(T1, T2), bool> where,
 		                                                        Func<(T1, T2), TOut> select)
 		{
-			foreach (var item in @this)
+			foreach (var item in @this.AsValueEnumerable())
 			{
 				var tuple = (item, instance);
-				if (where(tuple))
+				if (where(tuple!))
 				{
-					yield return select(tuple);
+					yield return select(tuple!);
 				}
 			}
 		}
