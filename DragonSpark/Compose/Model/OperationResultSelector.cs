@@ -49,7 +49,7 @@ namespace DragonSpark.Compose.Model
 			return result;
 		}
 
-		public new OperationResultSelector<_, (_, T)> Introduce()
+		public new OperationResultSelector<_, (_ In, T Out)> Introduce()
 			=> new DragonSpark.Model.Operations.Introduce<_, T>(Get()).Then();
 
 		public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
