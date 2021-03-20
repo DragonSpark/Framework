@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 	{
 		public static GravatarImagePath Default { get; } = new GravatarImagePath();
 
-		GravatarImagePath() : this(Hash.Default.Get) {}
+		GravatarImagePath() : this(IdentifierHash.Default.Get) {}
 
 		readonly Func<string, string> _hash;
 		readonly string _template;
