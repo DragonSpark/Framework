@@ -39,8 +39,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
-		public OperationResultSelector<_, TTo> Select<TTo>(ISelect<T, ValueTask<TTo>> select)
-			=> Select(select.Get);
+		public OperationResultSelector<_, TTo> Select<TTo>(ISelect<T, ValueTask<TTo>> select) => Select(select.Get);
 
 		public OperationResultSelector<_, TTo> Select<TTo>(Func<T, ValueTask<TTo>> select)
 		{
