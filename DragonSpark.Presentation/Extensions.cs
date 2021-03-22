@@ -119,9 +119,10 @@ namespace DragonSpark.Presentation
 
 		/**/
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this) => new QueryView<T>(@this);
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, ApplicationQuery<T> query)
+			=> new QueryView<T>(@this, query);
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, string filter)
-			=> new QueryView<T>(@this, new FilterAwareQueryAlteration<T>(filter));
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, ApplicationQuery<T> query, string filter)
+			=> new QueryView<T>(@this, query, new FilterAwareQueryAlteration<T>(filter));
 	}
 }

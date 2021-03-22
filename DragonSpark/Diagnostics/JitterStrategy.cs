@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Application.Communication
+namespace DragonSpark.Diagnostics
 {
 	sealed class JitterStrategy : Select<int, TimeSpan>
 	{

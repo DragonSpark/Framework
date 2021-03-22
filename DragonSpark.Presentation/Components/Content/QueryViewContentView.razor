@@ -18,12 +18,15 @@
     async ValueTask<RenderFragment> DetermineContent()
         => Content != null
                ?
-               NoElementsFoundTemplate == null || await Content.AnyAsync()
+               NoElementsFoundTemplate == null || await Query.Any.Get(Content)
                    ?
-                   ChildContent(FilterExpression != null ? Content.AsView(FilterExpression.Verify()) : Content.AsView())
+                   ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
                    :
                    NoElementsFoundTemplate
                : NotAssignedTemplate;
+
+    [Parameter]
+    public ApplicationQuery<TItem> Query { get; set; } = ApplicationQuery<TItem>.Default;
 
     [Parameter]
     public IQueryable<TItem>? Content

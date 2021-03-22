@@ -23,6 +23,8 @@ namespace DragonSpark.Compose.Model
 
 		public OperationResultSelector<T> Watching(Func<CancellationToken> token)
 			=> new(new TokenAwareOperationResult<T>(Get(), token));
+
+
 	}
 
 	public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>

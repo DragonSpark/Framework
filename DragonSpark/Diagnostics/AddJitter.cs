@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using System;
 
-namespace DragonSpark.Application.Communication
+namespace DragonSpark.Diagnostics
 {
 	sealed class AddJitter : IAlteration<TimeSpan>
 	{

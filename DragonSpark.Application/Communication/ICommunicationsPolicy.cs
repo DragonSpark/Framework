@@ -5,5 +5,5 @@ using System.Net.Http;
 namespace DragonSpark.Application.Communication
 {
 	public interface ICommunicationsPolicy
-		: ISelect<PolicyBuilder<HttpResponseMessage>, AsyncPolicy<HttpResponseMessage>> {}
+		: ISelect<PolicyBuilder<HttpResponseMessage>, IAsyncPolicy<HttpResponseMessage>> {}
 }

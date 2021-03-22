@@ -1,9 +1,11 @@
 ﻿@inherits global::Syncfusion.Blazor.DataAdaptor
 
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content
 @using global::Syncfusion.Blazor
 @using global::Syncfusion.Blazor.Data
 @using Microsoft.EntityFrameworkCore
+@using Polly
 
 @typeparam T
 
@@ -15,6 +17,9 @@
     [Parameter]
     public IQuery<T> Query { get; set; } = Query<T>.Default;
 
+    [Parameter]
+    public ApplicationQuery<T> Content { get; set; } = ApplicationQuery<T>.Default;
+
 #pragma warning disable 8669
     /*[CascadingParameter]
     IActivityReceiver? Receiver { get; set; }*/
@@ -23,7 +28,7 @@
     {
         var (_, query, count) = await Query.Get(new(request, Input));
 
-        var elements = await query.ToListAsync();
+        var elements = await Content.ToArray.Get(query);
         var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
                          :
                          (object)elements;
