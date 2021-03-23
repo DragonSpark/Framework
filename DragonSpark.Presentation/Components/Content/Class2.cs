@@ -6,6 +6,7 @@ using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Policy = Polly.Policy;
@@ -50,7 +51,7 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public static ApplicationContentRetryPolicy Default { get; } = new ApplicationContentRetryPolicy();
 
-		ApplicationContentRetryPolicy() : base(10, LinearRetryStrategy.Default.Get) {}
+		ApplicationContentRetryPolicy() : base(10, new LinearRetryStrategy(TimeSpan.FromMilliseconds(50)).Get) {}
 	}
 
 	sealed class Any<T> : ISelecting<IQueryable<T>, bool>
@@ -60,7 +61,7 @@ namespace DragonSpark.Presentation.Components.Content
 		public Any(IAsyncPolicy policy) => _policy = policy;
 
 		public ValueTask<bool> Get(IQueryable<T> parameter)
-			=> _policy.ExecuteAsync(parameter.AnyAsync().Self).ToOperation();
+			=> _policy.ExecuteAsync(parameter.Any).ToOperation();
 	}
 
 	public sealed class Count<T> : ISelecting<IQueryable<T>, int>
@@ -91,21 +92,50 @@ namespace DragonSpark.Presentation.Components.Content
 			=> _policy.ExecuteAsync(parameter.LongCount).ToOperation();
 	}
 
-	sealed class Materialize<T> : ISelecting<IQueryable<T>, T[]>
+	public sealed class Materialize<T>
+	{
+		public Materialize(IAsyncPolicy policy) : this(new ToList<T>(policy), new ToArray<T>(policy)) {}
+
+		public Materialize(ToList<T> toList, ToArray<T> toArray)
+		{
+			ToList  = toList;
+			ToArray = toArray;
+		}
+
+		public ToList<T> ToList { get; }
+
+		public ToArray<T> ToArray { get; }
+	}
+
+	public sealed class ToArray<T> : ISelecting<IQueryable<T>, T[]>
 	{
 		readonly IAsyncPolicy _policy;
 
-		public Materialize(IAsyncPolicy policy) => _policy = policy;
+		public ToArray(IAsyncPolicy policy) => _policy = policy;
 
 		public ValueTask<T[]> Get(IQueryable<T> parameter)
 			=> _policy.ExecuteAsync(parameter.ToArray).ToOperation();
 	}
 
+	public sealed class ToList<T> : ISelecting<IQueryable<T>, List<T>>
+	{
+		readonly IAsyncPolicy _policy;
+
+		public ToList(IAsyncPolicy policy) => _policy = policy;
+
+		public ValueTask<List<T>> Get(IQueryable<T> parameter)
+			=> _policy.ExecuteAsync(parameter.ToList).ToOperation();
+	}
+
 	public static class ContentQueryExtensions
 	{
 		public static Task<int> Count<T>(this IQueryable<T> @this) => @this.CountAsync();
+
 		public static Task<long> LongCount<T>(this IQueryable<T> @this) => @this.LongCountAsync();
+
 		public static Task<T[]> ToArray<T>(this IQueryable<T> @this) => @this.ToArrayAsync();
+
+		public static Task<List<T>> ToList<T>(this IQueryable<T> @this) => @this.ToListAsync();
 
 		public static Task<bool> Any<T>(this IQueryable<T> @this) => @this.AnyAsync();
 	}
@@ -119,17 +149,17 @@ namespace DragonSpark.Presentation.Components.Content
 		public ApplicationQuery(IAsyncPolicy policy) : this(new Any<T>(policy), new Materialize<T>(policy),
 		                                                    new Count<T>(policy)) {}
 
-		public ApplicationQuery(ISelecting<IQueryable<T>, bool> any, ISelecting<IQueryable<T>, T[]> toArray,
+		public ApplicationQuery(ISelecting<IQueryable<T>, bool> any, Materialize<T> materialize,
 		                        Count<T> count)
 		{
-			Any     = any;
-			ToArray = toArray;
-			Count   = count;
+			Any         = any;
+			Materialize = materialize;
+			Count       = count;
 		}
 
 		public ISelecting<IQueryable<T>, bool> Any { get; }
 
-		public ISelecting<IQueryable<T>, T[]> ToArray { get; }
+		public Materialize<T> Materialize { get; }
 		public Count<T> Count { get; }
 	}
 }

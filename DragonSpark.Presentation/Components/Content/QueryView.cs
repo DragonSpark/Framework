@@ -29,9 +29,8 @@ namespace DragonSpark.Presentation.Components.Content
 		{
 			var all = _alteration.Get(new(_source, parameter));
 			Count = (ulong)await _query.Count.Long.Get(all);
-			Current = await _query.ToArray.Get(all.Skip(parameter.Skip.GetValueOrDefault())
-			                                      .Take(parameter.Top.GetValueOrDefault())
-			                                  );
+			Current = await _query.Materialize.ToArray.Get(all.Skip(parameter.Skip.GetValueOrDefault())
+			                                                  .Take(parameter.Top.GetValueOrDefault()));
 		}
 	}
 }

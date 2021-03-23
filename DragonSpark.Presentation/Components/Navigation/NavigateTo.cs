@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Navigation
 {
 	public class NavigateTo : ComponentBase
 	{
@@ -16,6 +16,11 @@ namespace DragonSpark.Presentation.Components
 		public bool Forced { get; set; }
 
 		protected override void OnInitialized()
+		{
+			Navigate();
+		}
+
+		protected void Navigate()
 		{
 			var path = Path ?? throw new InvalidOperationException("Path not provided for navigation.");
 			if (path.TrimStart('/') != Navigation.ToBaseRelativePath(Navigation.Uri))

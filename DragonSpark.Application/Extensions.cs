@@ -48,7 +48,11 @@ namespace DragonSpark.Application
 			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
 
 
+		// TODO: Remove?
 		public static IQueryable<T> Protected<T>(this IQueryable<T> @this) where T : class
+			=> /*ProtectedQueries<T>.Default.Get(@this)*/@this;
+
+		public static IQueryable<T> ProtectedREMOVE<T>(this IQueryable<T> @this) where T : class
 			=> ProtectedQueries<T>.Default.Get(@this);
 
 		public static IQuerying<T> Querying<T>(this IQueryable<T> @this)

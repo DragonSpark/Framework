@@ -14,7 +14,7 @@ namespace DragonSpark.Diagnostics
 	{
 		public static LinearRetryStrategy Default { get; } = new LinearRetryStrategy();
 
-		LinearRetryStrategy() : this(TimeSpan.FromMilliseconds(50)) {}
+		LinearRetryStrategy() : this(TimeSpan.FromSeconds(1)) {}
 
 		readonly TimeSpan _duration;
 

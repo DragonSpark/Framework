@@ -1,12 +1,10 @@
-﻿using AsyncUtilities;
-using AutoBogus;
+﻿using AutoBogus;
 using Bogus.Extensions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Store;
-using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
@@ -75,9 +73,9 @@ namespace DragonSpark.Application
 
 		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
 
-		public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
+		/*public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
 			this OperationResultSelector<_, IQueryable<T>> @this, AsyncLock @lock) where T : class
-			=> @this.Protecting(@lock).Select(new ProtectedQueries<T>(@lock));
+			=> @this.Protecting(@lock).Select(new ProtectedQueries<T>(@lock));*/
 
 		/**/
 

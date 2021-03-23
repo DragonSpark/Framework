@@ -110,6 +110,13 @@ namespace DragonSpark.Diagnostics
 		public IAsyncPolicy Get(PolicyBuilder parameter) => parameter.WaitAndRetryAsync(_times, _strategy);
 	}
 
+	public sealed class EmptyPolicy : Policy
+	{
+		public static EmptyPolicy Default { get; } = new EmptyPolicy();
+
+		EmptyPolicy() : base(Polly.Policy.Handle<Exception>()) {}
+	}
+
 	public class Policy : Instance<PolicyBuilder>
 	{
 		public Policy(PolicyBuilder instance) : base(instance) {}

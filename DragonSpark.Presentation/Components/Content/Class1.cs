@@ -16,14 +16,14 @@ namespace DragonSpark.Presentation.Components.Content
 
 	public class PolicyAwareDelegatedContentView<TValue> : DelegatedContentView<TValue>
 	{
-		public PolicyAwareDelegatedContentView() : this(default!) {}
+		public PolicyAwareDelegatedContentView() : this(Polly.Policy.Handle<Exception>().RetryAsync()) {}
 
 		public PolicyAwareDelegatedContentView(IAsyncPolicy policy) => Policy = policy;
 
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			Body = Start.A.Result(Content).Select(x => x.AsTask());
+			Body = Start.A.Result(base.LoadContent).Select(x => x.AsTask());
 		}
 
 		[Parameter]
@@ -58,7 +58,7 @@ namespace DragonSpark.Presentation.Components.Content
 			}
 		}
 
-		protected virtual ValueTask<TValue> LoadContent() => Content();
+		protected virtual ValueTask<TValue> LoadContent() => Content.Get();
 
 		RenderFragment? Fragment { get; set; }
 
@@ -75,7 +75,7 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 
 		[Parameter]
-		public Func<ValueTask<TValue>> Content { get; set; } = default!;
+		public ActiveContent<TValue> Content { get; set; } = default!;
 
 		[Parameter]
 		public RenderFragment<TValue> ChildContent { get; set; } = default!;
@@ -89,6 +89,4 @@ namespace DragonSpark.Presentation.Components.Content
 		[Parameter]
 		public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 	}
-
-
 }

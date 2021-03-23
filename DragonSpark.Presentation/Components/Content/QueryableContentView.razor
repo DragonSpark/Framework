@@ -12,10 +12,13 @@
     protected override async Task OnParametersSetAsync()
     {
         Fragment ??= Content != null ?
-                       await Content.AnyAsync()
+                       await Query.Any.Get(Content)
                            ? ChildContent(Content) : NoElementsFoundTemplate
                        : NotAssignedTemplate;
     }
+
+    [Parameter]
+    public ApplicationQuery<TItem> Query { get; set; } = ApplicationQuery<TItem>.Default;
 
     [Parameter, UsedImplicitly]
     public IQueryable<TItem>? Content
