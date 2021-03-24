@@ -18,7 +18,7 @@
     }
 
     [Parameter]
-    public ApplicationQuery<TItem> Query { get; set; } = ApplicationQuery<TItem>.Default;
+    public EntityQuery<TItem> Query { get; set; } = DurableEntityQuery<TItem>.Default;
 
     [Parameter, UsedImplicitly]
     public IQueryable<TItem>? Content

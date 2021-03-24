@@ -48,4 +48,6 @@ namespace DragonSpark.Application.Entities.Diagnostics
 
 		ApplicationContentRetryPolicy() : base(10, new LinearRetryStrategy(TimeSpan.FromMilliseconds(50)).Get) {}
 	}
+
+
 }
