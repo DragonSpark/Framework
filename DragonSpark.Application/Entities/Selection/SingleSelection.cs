@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Selection
 {
 	public class SingleSelection<TKey, T> : SingleSelection<TKey, T, T>
 	{

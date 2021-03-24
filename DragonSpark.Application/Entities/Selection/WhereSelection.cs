@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Selection
 {
 	public class WhereSelection<TKey, T> : WhereSelection<TKey, T, T>
 	{

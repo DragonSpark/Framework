@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Selection
 {
 	public class FirstOrDefaultSelected<TKey, TEntity, T> : ISelecting<TKey, T?>
 	{

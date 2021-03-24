@@ -1,39 +1,9 @@
-﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Polly;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	class Class1 {}
-
-	public sealed class ApplicationContentView<TValue> : PolicyAwareDelegatedContentView<TValue>
-	{
-		public ApplicationContentView() : base(DurableApplicationContentPolicy.Default.Get()) {}
-	}
-
-	public class PolicyAwareDelegatedContentView<TValue> : DelegatedContentView<TValue>
-	{
-		public PolicyAwareDelegatedContentView() : this(Polly.Policy.Handle<Exception>().RetryAsync()) {}
-
-		public PolicyAwareDelegatedContentView(IAsyncPolicy policy) => Policy = policy;
-
-		protected override void OnInitialized()
-		{
-			base.OnInitialized();
-			Body = Start.A.Result(base.LoadContent).Select(x => x.AsTask());
-		}
-
-		[Parameter]
-		public IAsyncPolicy Policy { get; set; }
-
-		Func<Task<TValue>> Body { get; set; } = default!;
-
-		protected override ValueTask<TValue> LoadContent() => Policy.ExecuteAsync(Body).ToOperation();
-	}
-
 	public class DelegatedContentView<TValue> : ComponentBase
 	{
 		protected override async Task OnParametersSetAsync()

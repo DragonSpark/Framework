@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Selection
 {
 	public class WhereSelected<TKey, T> : WhereSelected<TKey, T, T>
 	{

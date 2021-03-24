@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Entities;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
@@ -47,16 +46,6 @@ namespace DragonSpark.Application
 		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
 			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
 
-
-		// TODO: Remove?
-		public static IQueryable<T> Protected<T>(this IQueryable<T> @this) where T : class
-			=> /*ProtectedQueries<T>.Default.Get(@this)*/@this;
-
-		public static IQueryable<T> ProtectedREMOVE<T>(this IQueryable<T> @this) where T : class
-			=> ProtectedQueries<T>.Default.Get(@this);
-
-		public static IQuerying<T> Querying<T>(this IQueryable<T> @this)
-			=> @this as IQuerying<T> ?? new Querying<T>(@this);
 		/**/
 
 		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
