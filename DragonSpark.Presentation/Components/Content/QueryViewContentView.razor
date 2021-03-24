@@ -1,6 +1,7 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using JetBrains.Annotations
 @using DragonSpark.Compose
+@using AsyncUtilities
 @typeparam TItem
 
 @Fragment
@@ -16,14 +17,15 @@
     }
 
     async ValueTask<RenderFragment> DetermineContent()
-        => Content != null
-               ?
-               NoElementsFoundTemplate == null || await Query.Any.Get(Content)
-                   ?
-                   ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
-                   :
-                   NoElementsFoundTemplate
-               : NotAssignedTemplate;
+    {
+        Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
+        var result = Content != null
+                          ? NoElementsFoundTemplate == null || await Query.Any.Get(Content)
+                                ? ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
+                                : NoElementsFoundTemplate
+                          : NotAssignedTemplate;
+        return result;
+    }
 
     [Parameter]
     public EntityQuery<TItem> Query { get; set; } = DurableEntityQuery<TItem>.Default;
@@ -47,9 +49,12 @@
     [Parameter]
     public string? FilterExpression { get; set; }
 
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
     [Parameter, UsedImplicitly]
     public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
-
+    
     [Parameter]
     public RenderFragment? NoElementsFoundTemplate { get; set; }
 

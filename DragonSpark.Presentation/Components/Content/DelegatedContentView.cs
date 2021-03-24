@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AsyncUtilities;
+using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
@@ -8,12 +11,13 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		protected override async Task OnParametersSetAsync()
 		{
-			Fragment = default;
-			Fragment = await DetermineFragment();
+			Fragment ??= await DetermineFragment();
 		}
+
 
 		async ValueTask<RenderFragment> DetermineFragment()
 		{
+			Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
 			try
 			{
 				var operation = LoadContent();
@@ -21,9 +25,10 @@ namespace DragonSpark.Presentation.Components.Content
 				var result    = content is not null ? ChildContent(content) : NotAssignedTemplate;
 				return result;
 			}
-			// ReSharper disable once CatchAllClause
-			catch
+			catch (Exception error)
 			{
+				await Exceptions.Get(GetType(), error);
+
 				return ExceptionTemplate;
 			}
 		}
@@ -34,18 +39,30 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (Fragment != null)
+			if (Fragment == null)
 			{
-				builder.AddContent(0, Fragment ?? LoadingTemplate);
+				builder.AddContent(0, LoadingTemplate);
 			}
 			else
 			{
-				builder.AddContent(1, LoadingTemplate);
+				builder.AddContent(1, Fragment);
 			}
+
 		}
 
 		[Parameter]
-		public ActiveContent<TValue> Content { get; set; } = default!;
+		public ActiveContent<TValue> Content
+		{
+			get => _content;
+			set
+			{
+				if (_content != value)
+				{
+					_content = value;
+					Fragment = default;
+				}
+			}
+		}	ActiveContent<TValue> _content = default!;
 
 		[Parameter]
 		public RenderFragment<TValue> ChildContent { get; set; } = default!;
