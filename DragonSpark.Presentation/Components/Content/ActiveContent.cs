@@ -5,17 +5,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	class Class3 {}
-
-	public static class ActiveContentExtensions
-	{
-		public static ActiveContent<T> Content<T>(this DragonSpark.Compose.Model.ResultContext<ValueTask<T>> @this)
-			=> new(@this);
-	}
-
 	public sealed class ActiveContent<T> : IResulting<T>
 	{
 		public static implicit operator ActiveContent<T>(Func<ValueTask<T>> instance) => new(instance);
+
+		public static implicit operator ActiveContent<T>(DragonSpark.Compose.Model.ResultContext<ValueTask<T>> instance)
+			=> new(instance);
 
 		readonly IMutable<ValueTuple<T>?> _store;
 		readonly Func<ValueTask<T>>       _content;
@@ -44,27 +39,5 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 
 		public override string? ToString() => _store.Get()?.Item1?.ToString();
-	}
-
-	public abstract class ContentComponentBase<T> : ComponentBase
-	{
-		protected ActiveContent<T> Content { get; set; } = default!;
-
-		protected abstract ValueTask<T> GetContent();
-
-		protected override ValueTask Initialize() => InitializeContent();
-
-		protected override async ValueTask RefreshState()
-		{
-			await InitializeContent();
-			await Content.Get();
-			await base.RefreshState().ConfigureAwait(false);
-		}
-
-		protected ValueTask InitializeContent()
-		{
-			Content = new ActiveContent<T>(GetContent);
-			return ValueTask.CompletedTask;
-		}
 	}
 }
