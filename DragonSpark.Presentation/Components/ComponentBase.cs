@@ -15,14 +15,13 @@ namespace DragonSpark.Presentation.Components
 
 		protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
 
-		protected virtual ValueTask RefreshState() => InvokeAsync(_state).ToOperation();
-
 		protected virtual ValueTask Initialize() => Task.CompletedTask.ToOperation();
+
+		protected virtual ValueTask RefreshState() => InvokeAsync(_state).ToOperation();
 
 		[Inject]
 		protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;
 
-		// TODO: Remove:
 		[Inject]
 		protected IExecuteOperation Execute { get; [UsedImplicitly]set; } = default!;
 	}
