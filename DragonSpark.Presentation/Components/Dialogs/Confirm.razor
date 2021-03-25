@@ -8,7 +8,7 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
     <RadzenCard Style="padding: 20px;">
         <ActivityReceiverContainer Context="receiver">
             <p style="margin-bottom: 25px;">@ChildContent</p>

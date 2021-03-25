@@ -1,16 +1,22 @@
 ﻿@inject DialogService Dialogs
 
-<EscapeContainer ChildContent="ChildContent" AdditionalAttributes="AdditionalAttributes" Escaped="@Escaped" />
+<EscapeContainer ChildContent="ChildContent" AdditionalAttributes="AdditionalAttributes" Escaped="@OnEscape" />
 
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 
+    [Parameter]
+    public EventCallback Escaped { get; set; }
+
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
-    void Escaped()
+
+
+    Task OnEscape()
     {
         Dialogs.Close();
+        return Escaped.InvokeAsync();
     }
 }
