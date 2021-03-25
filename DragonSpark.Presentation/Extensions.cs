@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
+using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
@@ -119,9 +120,10 @@ namespace DragonSpark.Presentation
 
 		/**/
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this) => new QueryView<T>(@this);
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, EntityQuery<T> query)
+			=> new QueryView<T>(@this, query);
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, string filter)
-			=> new QueryView<T>(@this, new FilterAwareQueryAlteration<T>(filter));
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, EntityQuery<T> query, string filter)
+			=> new QueryView<T>(@this, query, new FilterAwareQueryAlteration<T>(filter));
 	}
 }
