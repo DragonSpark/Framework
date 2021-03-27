@@ -23,6 +23,10 @@ namespace DragonSpark.Compose.Model
 		public OperationContext<T> Append(Await<T> command)
 			=> new OperationContext<T>(new Appended<T>(Get().Await, command));
 
+		public OperationContext<T> Append(IOperation command) => Append(command.Await);
+		public OperationContext<T> Append(Await command)
+			=> new OperationContext<T>(new AppendedTo<T>(Get().Await, command));
+
 		public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
 			=> new LogOperationContext<T, TParameter>(_subject, log);
 
