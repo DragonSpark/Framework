@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Sequences;
 using System;
 
 namespace DragonSpark.Application.Entities.Diagnostics
@@ -8,12 +9,25 @@ namespace DragonSpark.Application.Entities.Diagnostics
 		public static IsApplicationContentException Default { get; } = new IsApplicationContentException();
 
 		IsApplicationContentException()
-			: this("A second operation was started on this context before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext.") {}
+			: this(
+			       "A second operation was started on this context before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext.",
+			       "An exception was thrown while attempting to evaluate the LINQ query parameter expression") {}
 
-		readonly string _message;
+		readonly Array<string> _messages;
 
-		public IsApplicationContentException(string message) => _message = message;
+		public IsApplicationContentException(params string[] messages) => _messages = messages;
 
-		public bool Get(InvalidOperationException parameter) => parameter.Message.StartsWith(_message);
+		public bool Get(InvalidOperationException parameter)
+		{
+			var length = _messages.Length;
+			for (byte i = 0; i < length; i++)
+			{
+				if (parameter.Message.StartsWith(_messages[i]))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }
