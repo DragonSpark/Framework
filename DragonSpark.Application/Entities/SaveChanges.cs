@@ -8,15 +8,24 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class Update<T> : IUpdate<T> where T : class
+	sealed class Save : ISave
+	{
+		readonly DbContext _storage;
+
+		public Save(DbContext storage) => _storage = storage;
+
+		public ValueTask<int> Get() => _storage.SaveChangesAsync().ToOperation();
+	}
+
+	sealed class SaveChanges<T> : ISaveChanges<T> where T : class
 	{
 		readonly DbContext                    _context;
 		readonly Func<Predicate<EntityEntry>> _excluded;
 
 		[UsedImplicitly]
-		public Update(DbContext context) : this(context, Excluded.Default.Then().Bind(context)) {}
+		public SaveChanges(DbContext context) : this(context, Excluded.Default.Then().Bind(context)) {}
 
-		public Update(DbContext context, Func<Predicate<EntityEntry>> excluded)
+		public SaveChanges(DbContext context, Func<Predicate<EntityEntry>> excluded)
 		{
 			_context  = context;
 			_excluded = excluded;

@@ -34,7 +34,8 @@ namespace DragonSpark.Application
 			         .Forward<StorageState>()
 			         .Scoped()
 					 //
-					 .Then.AddScoped(typeof(IUpdate<>), typeof(Update<>))
+					 .Then.AddScoped(typeof(ISaveChanges<>), typeof(SaveChanges<>))
+			         .AddScoped(typeof(ISave<>), typeof(Save<>))
 			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
 			         //
 			         .Start<IToken>()
