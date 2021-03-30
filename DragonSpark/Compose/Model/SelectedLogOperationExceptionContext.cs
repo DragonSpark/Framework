@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Diagnostics;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace DragonSpark.Compose.Model
 			_log       = log;
 		}
 
-		public OperationContext<TIn> WithArguments(Func<TIn, TOut> select)
-			=> new SelectedExceptionAwareOperation<TIn, TOut>(_operation, select, _log).Then();
+		public PolicyAwareLogOperationExceptionContext<TIn> Calling(Func<TIn, TOut> select)
+			=> new(_operation, new SelectedLogException<TIn, TOut>(select, _log));
 	}
 }
