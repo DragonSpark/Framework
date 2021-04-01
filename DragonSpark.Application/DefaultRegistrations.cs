@@ -33,8 +33,8 @@ namespace DragonSpark.Application
 			         .Then.Start<IStorageState>()
 			         .Forward<StorageState>()
 			         .Scoped()
-					 //
-					 .Then.AddScoped(typeof(ISaveChanges<>), typeof(SaveChanges<>))
+			         //
+			         .Then.AddScoped(typeof(ISaveChanges<>), typeof(SaveChanges<>))
 			         .AddScoped(typeof(ISave<>), typeof(Save<>))
 			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
 			         //
@@ -57,6 +57,10 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<IScopedTable>()
 			         .Forward<ScopedTable>()
+			         .Scoped()
+			         //
+			         .Then.Start<IExceptionLogger>()
+			         .Forward<ExceptionLogger>()
 			         .Scoped()
 			         //
 			         .Then.Start<IExceptions>()

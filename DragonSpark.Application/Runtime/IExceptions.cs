@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 using System;
+using Exception = System.Exception;
 
 namespace DragonSpark.Application.Runtime
 {
