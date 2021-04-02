@@ -12,12 +12,12 @@
     <RadzenCard Style="padding: 20px;">
         <ActivityReceiverContainer Context="receiver">
             <p style="margin-bottom: 25px;">@ChildContent</p>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between" style="gap: 20px">
                 <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-                                 class="@SecondaryClass" style="margin-right: 10px" />
+                                 class="@SecondaryClass" />
 
                 <ButtonComponent Text="@PrimaryText" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
-                                 class="@PrimaryClass" style="margin-left: 10px" />
+                                 class="@PrimaryClass" />
             </div>
         </ActivityReceiverContainer>
     </RadzenCard>
