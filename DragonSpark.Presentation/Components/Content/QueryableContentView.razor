@@ -28,7 +28,7 @@
     [Parameter]
     public EntityQuery<TItem> Query { get; set; } = DurableEntityQuery<TItem>.Default;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public IQueryable<TItem>? Content
     {
         get => _content;
@@ -44,7 +44,7 @@
 
     IQueryable<TItem>? _content;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public RenderFragment<IQueryable<TItem>> ChildContent { get; set; } = default!;
 
     [Parameter]
