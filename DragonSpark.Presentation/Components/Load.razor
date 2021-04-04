@@ -1,0 +1,12 @@
+﻿<Evaluate>
+    document.body.appendChild(Object.assign(document.createElement('script'), { src: '@Source', type: '@Type' }));
+</Evaluate>
+
+@code {
+
+    [Parameter]
+    public string Source { get; set; } = default!;
+
+    [Parameter]
+    public string Type { get; set; } = "text/javascript";
+}
