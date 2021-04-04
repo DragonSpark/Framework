@@ -30,6 +30,10 @@ namespace DragonSpark.Application
 			where T : DbContext
 			=> @this.Append(ConfigureSqlServer<T>.Default.Execute);
 
+		public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
+			where T : DbContext
+			=> @this.Append(new ConfigureSqlServer<T>(name).Execute);
+
 		public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
 			=> @this.Append(EnvironmentalStorageConfiguration.Default);
 

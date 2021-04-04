@@ -16,8 +16,9 @@ namespace DragonSpark.Application.Compose.Entities
 	{
 		readonly ICommand<IServiceCollection> _previous;
 
-		public ConfigureIdentityApplicationStorage(IStorageConfiguration storage, Action<IdentityOptions> identity)
-			: this(new ConfigureStorage<TUser, T>(storage, identity)) {}
+		public ConfigureIdentityApplicationStorage(IStorageConfiguration storage, Func<IServiceProvider, T> factory,
+		                                           Action<IdentityOptions> identity)
+			: this(new ConfigureStorage<TUser, T>(storage, factory, identity)) {}
 
 		public ConfigureIdentityApplicationStorage(ICommand<IServiceCollection> previous) => _previous = previous;
 

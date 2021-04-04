@@ -24,7 +24,10 @@ namespace DragonSpark.Application.Compose.Entities
 			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
 
 		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
-			=> _context.Then(new ConfigureIdentityApplicationStorage<T, TUser>(configuration, _configure))
+			=> Configuration(configuration, DefaultContextFactory<T>.Default.Get);
+
+		public ApplicationProfileContext Configuration(IStorageConfiguration configuration, Func<IServiceProvider, T> factory)
+			=> _context.Then(new ConfigureIdentityApplicationStorage<T, TUser>(configuration, factory, _configure))
 			           .Configure(Initialize<T>.Default.Get);
 	}
 }

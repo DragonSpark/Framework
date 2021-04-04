@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Entities
 
 	public interface IStorageInitializer : IAlteration<ModelBuilder> {}
 
-	sealed class StorageInitializer : Alteration<ModelBuilder>, IStorageInitializer
+	public class StorageInitializer : Alteration<ModelBuilder>, IStorageInitializer
 	{
 		public StorageInitializer(params IInitializer[] initializers) : base(initializers.Alter) {}
 	}

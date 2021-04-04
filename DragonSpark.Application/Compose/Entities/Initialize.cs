@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Compose.Entities
 		Initialize() {}
 
 		public BuildHostContext Get(BuildHostContext parameter)
-			=> parameter.Decorate<T>((factory, context) => ServiceFactoryExtensions.GetInstance<IStorageInitializer<T>>(factory)
-			                                                                       .Get(context));
+			=> parameter.Decorate<T>((factory, context) => factory.GetInstance<IStorageInitializer<T>>()
+			                                                      .Get(context));
 	}
 }

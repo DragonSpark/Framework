@@ -20,6 +20,9 @@ namespace DragonSpark.Application
 			                       .By.Instantiation.Get()
 			                       .Get) {}
 
+		protected StorageBuilder(Func<DbContextOptions<T>, T> create)
+			: this(ConfigureSqlServer<T>.Default.Execute, create) {}
+
 		protected StorageBuilder(Action<DbContextOptionsBuilder> configure, Func<DbContextOptions<T>, T> create)
 		{
 			_configure = configure;

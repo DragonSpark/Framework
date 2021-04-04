@@ -5,17 +5,22 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
-	sealed class ConfigureSqlServer<T> : ICommand<DbContextOptionsBuilder>
+	public sealed class ConfigureSqlServer<T> : ConfigureSqlServer
 	{
 		public static ConfigureSqlServer<T> Default { get; } = new ConfigureSqlServer<T>();
 
-		ConfigureSqlServer() : this(ConnectionString<T>.Default.Get(EnvironmentalConfiguration.Default.Get())) {}
+		ConfigureSqlServer() : this(A.Type<T>().Assembly.GetName().Name ?? throw new InvalidOperationException()) {}
 
+		public ConfigureSqlServer(string name)
+			: this(ConnectionString<T>.Default.Get(EnvironmentalConfiguration.Default.Get()), name) {}
+
+		public ConfigureSqlServer(string connection, string name) : base(connection, name) {}
+	}
+
+	public class ConfigureSqlServer : ICommand<DbContextOptionsBuilder>
+	{
 		readonly string _connection;
 		readonly string _name;
-
-		public ConfigureSqlServer(string connection)
-			: this(connection, A.Type<T>().Assembly.GetName().Name ?? throw new InvalidOperationException()) {}
 
 		public ConfigureSqlServer(string connection, string name)
 		{
