@@ -82,7 +82,7 @@ namespace DragonSpark.Application.Compose.Entities.Generation
 		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property,
 		                                                          Expression<Func<TOther, T>> other)
 			where TOther : class
-			=> Include<TOther>(property, other, x => x);
+			=> Include(property, other, x => x);
 
 		public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, ICollection<TOther>>> property,
 		                                                          Expression<Func<TOther, T>> other,

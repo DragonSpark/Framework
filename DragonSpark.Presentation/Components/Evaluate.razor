@@ -19,7 +19,7 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender && ChildContent != null && Type == "text/javascript")
+        if (firstRender && Type == "text/javascript")
         {
             var script = ChildContent.Text();
             if (!string.IsNullOrWhiteSpace(script))

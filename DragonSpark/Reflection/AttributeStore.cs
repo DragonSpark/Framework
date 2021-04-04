@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection
 {
-	class AttributeStore<T> : Conditional<ICustomAttributeProvider, T>, IAttribute<T> where T : Attribute
+	class AttributeStore<T> : Conditional<ICustomAttributeProvider, T?>, IAttribute<T> where T : Attribute
 	{
 		public AttributeStore(IAttributes<T> attributes)
-			: base(attributes.Condition, attributes.Select(x => x.Open().Only()).ToTable()) {}
+			: base(attributes.Condition, attributes.Select(x => x.Open().Only().Account()).ToTable()) {}
 	}
 }

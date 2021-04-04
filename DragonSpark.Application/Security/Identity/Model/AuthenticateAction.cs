@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 			var result = await _authentication.Get(login);
 			return result.Succeeded
-				       ? (IActionResult)new LocalRedirectResult(origin)
+				       ? new LocalRedirectResult(origin)
 				       : result.IsLockedOut
 					       ? new RedirectToPageResult("./Lockout")
 					       : null;

@@ -91,7 +91,7 @@
     public DbContext Storage { get; set; } = default!;
 
     [Parameter, UsedImplicitly]
-    public IComponent Context { get; set; } = default!;
+    public IComponent? Context { get; set; }
 
     [UsedImplicitly]
     ValueTask<bool> ConfirmCreate() => _newForm.EditContext.Validate().ToOperation();

@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Runtime
 {
-	sealed class IsNullReference : Condition<object>
+	sealed class IsNullReference : Condition<object?>
 	{
 		public static IsNullReference Default { get; } = new IsNullReference();
 

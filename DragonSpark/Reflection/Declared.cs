@@ -10,6 +10,8 @@ namespace DragonSpark.Reflection
 		protected Declared(Func<TAttribute, T> select) : this(LocalAttribute<TAttribute>.Default, select) {}
 
 		protected Declared(IAttribute<TAttribute> attribute, Func<TAttribute, T> select)
-			: base(attribute.Condition, attribute.Select(select).ToTable()) {}
+			: base(attribute.Condition,
+			       attribute.Select(select.Start().Ensure.Input.IsAssigned.Otherwise.UseDefault().Accounting().Get())
+			                .ToTable()) {}
 	}
 }
