@@ -126,6 +126,13 @@ namespace DragonSpark.Compose
 		public static T Verify<T>(this T? @this, string message = "Provided instance is not assigned.")
 			=> @this ?? throw new InvalidOperationException(message);
 
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static T Value<T>(this T? @this, string message = "Provided instance is not assigned.") 
+			where T : struct
+			=> @this ?? throw new InvalidOperationException(message);
+
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? Account<T>(this T @this) => @this;
 
