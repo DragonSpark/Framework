@@ -34,7 +34,7 @@ namespace DragonSpark.Presentation.Components.Navigation
 
 			foreach (var property in parameter.GetType().GetRuntimeProperties().AsValueEnumerable())
 			{
-				if (property is not null) // TODO: Hyperlinq
+				if (property is not null) // ISSUE: Hyperlinq
 				{
 					var attribute = property.Attribute<QueryStringParameterAttribute>();
 					var name      = attribute != null ? attribute.Name ?? property.Name : null;
