@@ -38,6 +38,8 @@ namespace DragonSpark.Compose.Model
 
 		public CommandContext<T> Append(System.Action<T> command) => Append(Start.A.Command(command).Get());
 
+		public CommandContext<T> Append(ICommand<T> command) => new(new AppendedCommand<T>(Get(), command));
+
 		public CommandContext<T> Append(params ICommand<T>[] commands)
 			=> new CommandContext<T>(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 
