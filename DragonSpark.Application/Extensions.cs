@@ -147,7 +147,7 @@ namespace DragonSpark.Application
 		{
 			var result = @this.IsSatisfiedBy();
 			element = result ? @this.Get() : default;
-			@this.Execute();
+			@this.Remove.Execute();
 			return result;
 		}
 

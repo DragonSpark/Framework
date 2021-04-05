@@ -4,5 +4,8 @@ using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Runtime
 {
-	public interface IScopedVariable<T> : IMutable<T?>, IConditionAware, ICommand {}
+	public interface IScopedVariable<T> : IMutable<T?>, IConditionAware
+	{
+		ICommand Remove { get; }
+	}
 }

@@ -1,38 +1,24 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Runtime
 {
-	public class ScopedVariable<T> : IScopedVariable<T?>
+	public class ScopedVariable<T> : Mutable<T?>, IScopedVariable<T?>
 	{
-		readonly string       _key;
-		readonly IScopedTable _store;
+		protected ScopedVariable(string key, IScopedTable store)
+			: this(new ScopedVariableStore<T>(key, store), store.Condition.Then().Bind(key).Out(),
+			       new RemoveScopedVariable(key, store)) {}
 
-		public ScopedVariable(string key, IScopedTable store)
-			: this(key, store, store.Condition.Then().Bind(key).Out()) {}
-
-		public ScopedVariable(string key, IScopedTable store, ICondition<None> condition)
+		protected ScopedVariable(IMutable<T?> variable, ICondition<None> condition, ICommand remove) : base(variable)
 		{
-			_key      = key;
-			_store    = store;
 			Condition = condition;
-		}
-
-		public T? Get() => _store.TryGet(_key, out var existing)
-			                   ? existing is null ? default : existing.To<T>()
-			                   : default;
-
-		public void Execute(T? parameter)
-		{
-			_store.Assign(_key, parameter);
-		}
-
-		public void Execute(None parameter)
-		{
-			_store.Remove(_key);
+			Remove    = remove;
 		}
 
 		public ICondition<None> Condition { get; }
+		public ICommand Remove { get; }
 	}
 }
