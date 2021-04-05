@@ -140,5 +140,16 @@ namespace DragonSpark.Application
 
 		public static IValidatingValue<T> Adapt<T>(this IValidateValue<T> @this)
 			=> new ValidatingValueAdapter<T>(@this);
+
+		/**/
+
+		public static bool TryPop<T>(this IScopedVariable<T> @this, out T? element)
+		{
+			var result = @this.IsSatisfiedBy();
+			element = result ? @this.Get() : default;
+			@this.Execute();
+			return result;
+		}
+
 	}
 }

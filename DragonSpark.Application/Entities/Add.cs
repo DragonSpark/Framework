@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Entities
 
 		public Add(Await<TIn, TOut> @new, ISave<TOut> save)
 		{
-			_new    = @new;
+			_new  = @new;
 			_save = save;
 		}
 

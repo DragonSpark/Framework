@@ -1,9 +1,15 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
+	public class Remove<TIn, T> : Operation<TIn>
+	{
+		public Remove(ISelecting<TIn, T> select, IRemove<T> remove) : base(select.Then().Terminate(remove)) {}
+	}
+
 	sealed class Remove<T> : IRemove<T> where T : class
 	{
 		readonly DbSet<T> _set;
@@ -17,10 +23,10 @@ namespace DragonSpark.Application.Entities
 			_save = save;
 		}
 
-		public async ValueTask<uint> Get(T parameter)
+		public async ValueTask Get(T parameter)
 		{
 			_set.Remove(parameter);
-			return (uint)await _save.Await();
+			await _save.Await();
 		}
 	}
 }

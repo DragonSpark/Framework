@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities
 {
-	public interface IRemove<in T> : ISelecting<T, uint> {}
+	public interface IRemove<in T> : IOperation<T> {}
 }

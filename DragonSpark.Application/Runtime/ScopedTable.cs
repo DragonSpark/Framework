@@ -5,8 +5,6 @@ using System.Collections.Concurrent;
 
 namespace DragonSpark.Application.Runtime
 {
-	public interface IScopedTable : ITable<string, object?> {}
-
 	sealed class ScopedTable : DelegatedTable<string, object?>, IScopedTable
 	{
 		[UsedImplicitly]
