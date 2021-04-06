@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection.Conditions;
+using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Application.Runtime
@@ -10,7 +11,7 @@ namespace DragonSpark.Application.Runtime
 		public virtual T? Selected { get; set; }
 	}
 
-	public class SelectedCollection<T, TValue> : SelectedCollection<T>
+	public class SelectedCollection<T, TValue> : SelectedCollection<T>, ICondition<TValue>
 	{
 		readonly Func<T, TValue>           _select;
 		readonly IEqualityComparer<TValue> _equality;
@@ -27,7 +28,7 @@ namespace DragonSpark.Application.Runtime
 
 		public TValue? Value
 		{
-			get => Selected != null ? _select(Selected) : default;
+			get => Selected is not null ? _select(Selected) : default;
 			set
 			{
 				if (value is not null)
@@ -37,14 +38,25 @@ namespace DragonSpark.Application.Runtime
 						if (_equality.Equals(_select(listing), value))
 						{
 							Selected = listing;
+							return;
 						}
 					}
 				}
-				else
+
+				Selected = default;
+			}
+		}
+
+		public bool Get(TValue parameter)
+		{
+			foreach (var listing in this)
+			{
+				if (_equality.Equals(_select(listing), parameter))
 				{
-					Selected = default;
+					return true;
 				}
 			}
+			return false;
 		}
 	}
 }
