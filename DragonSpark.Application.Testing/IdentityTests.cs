@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Entities.Design;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Testing.Server;
 using JetBrains.Annotations;

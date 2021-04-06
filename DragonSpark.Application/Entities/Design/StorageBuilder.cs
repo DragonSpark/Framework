@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application.Entities.Design
 {
 	public class StorageBuilder<T> : IResult<T>, IDesignTimeDbContextFactory<T> where T : DbContext
 	{
-		readonly Action<DbContextOptionsBuilder> _configure;
-		readonly Func<DbContextOptions<T>, T>    _create;
+		readonly Action<DbContextOptionsBuilder<T>> _configure;
+		readonly Func<DbContextOptions<T>, T>       _create;
 
 		protected StorageBuilder() : this(ConfigureSqlServer<T>.Default.Execute) {}
 
-		protected StorageBuilder(Action<DbContextOptionsBuilder> configure)
+		protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure)
 			: this(configure, Start.A.Selection<DbContextOptions<T>>()
 			                       .AndOf<T>()
 			                       .By.Instantiation.Get()
@@ -23,7 +23,7 @@ namespace DragonSpark.Application
 		protected StorageBuilder(Func<DbContextOptions<T>, T> create)
 			: this(ConfigureSqlServer<T>.Default.Execute, create) {}
 
-		protected StorageBuilder(Action<DbContextOptionsBuilder> configure, Func<DbContextOptions<T>, T> create)
+		protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure, Func<DbContextOptions<T>, T> create)
 		{
 			_configure = configure;
 			_create    = create;
