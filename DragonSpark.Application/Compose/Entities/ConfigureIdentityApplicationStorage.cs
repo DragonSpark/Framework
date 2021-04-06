@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -26,11 +25,7 @@ namespace DragonSpark.Application.Compose.Entities
 		{
 			_previous.Execute(parameter);
 
-			parameter.Start<IStorageInitializer>()
-			         .Forward<StorageInitializer>()
-			         .Singleton()
-					 //
-			         .Then.Start<IStateViews<TUser>>()
+			parameter.Start<IStateViews<TUser>>()
 			         .Forward<StateViews<TUser>>()
 			         .Decorate<StoredStateViews<TUser>>()
 			         .Decorate<AnonymousAwareState<TUser>>()
