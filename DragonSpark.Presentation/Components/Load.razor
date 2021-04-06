@@ -1,6 +1,20 @@
 ﻿@* ATTRIBUTION: https://blog.ppedv.de/post/Razor-Classlibrary-JavaScript-einbinden *@
 <Evaluate>
-    document.body.appendChild(Object.assign(document.createElement('script'), { src: '@Source', type: '@Type' }));
+    let scripts = document.getElementsByTagName("script");
+    let exists = false;
+    let index = 0;
+    let source = '@Source';
+
+    while(index @("<") scripts.length && !exists)
+    {
+        exists = scripts[index].src.endsWith(source);
+        index++;
+    }
+
+    if(!exists) {
+        document.body.appendChild(Object.assign(document.createElement('script'), { src: source, type: '@Type' }));
+    }
+
 </Evaluate>
 
 @code {
