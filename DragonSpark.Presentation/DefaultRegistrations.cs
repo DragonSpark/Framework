@@ -25,6 +25,7 @@ namespace DragonSpark.Presentation
 			         //
 			         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 			         .Decorate<IExceptions, NotificationAwareExceptions>()
+			         .Decorate<IExceptions, NavigationAwareExceptions>()
 			         //
 			         .Start<DialogService>()
 			         .And<NotificationService>()
