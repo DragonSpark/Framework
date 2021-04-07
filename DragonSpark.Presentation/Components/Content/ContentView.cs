@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	// TODO: TValue => TContent (or T)
 	public sealed class ContentView<TValue> : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
