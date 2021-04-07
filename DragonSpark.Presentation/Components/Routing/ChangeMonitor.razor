@@ -13,8 +13,6 @@
 @ChildContent?.Invoke(EventCallback.Factory.Create(this, Confirm))
 
 @code {
-#nullable enable
-
     [UsedImplicitly]
     DialogContext<object> _confirm = default!;
 
@@ -38,5 +36,4 @@
     Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
 
     protected override Task OnNavigationCanceled() => Task.Delay(25).ContinueWith(_ => _confirm.Open(default!));
-#nullable restore
 }

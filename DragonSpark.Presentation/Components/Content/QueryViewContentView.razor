@@ -8,7 +8,6 @@
 
 @code
 {
-#nullable enable
     RenderFragment? Fragment { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
@@ -20,10 +19,10 @@
     {
         Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
         var result = Content != null
-                          ? NoElementsFoundTemplate == null || await Query.Any.Get(Content)
-                                ? ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
-                                : NoElementsFoundTemplate
-                          : NotAssignedTemplate;
+                         ? NoElementsFoundTemplate == null || await Query.Any.Get(Content)
+                               ? ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
+                               : NoElementsFoundTemplate
+                         : NotAssignedTemplate;
         return result;
     }
 
@@ -54,11 +53,10 @@
 
     [Parameter, UsedImplicitly]
     public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
-    
+
     [Parameter]
     public RenderFragment? NoElementsFoundTemplate { get; set; }
 
     [Parameter]
     public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;
-    #nullable restore
 }

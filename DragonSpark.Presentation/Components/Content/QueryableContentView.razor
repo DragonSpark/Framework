@@ -7,7 +7,6 @@
 
 @code
 {
-#nullable enable
     RenderFragment? Fragment { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
@@ -19,9 +18,9 @@
     {
         Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
         var result = Content != null ?
-                          await Query.Any.Get(Content)
-                              ? ChildContent(Content) : NoElementsFoundTemplate
-                          : NotAssignedTemplate;
+                         await Query.Any.Get(Content)
+                             ? ChildContent(Content) : NoElementsFoundTemplate
+                         : NotAssignedTemplate;
         return result;
     }
 
@@ -55,5 +54,4 @@
 
     [Parameter]
     public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;
-    #nullable restore
 }

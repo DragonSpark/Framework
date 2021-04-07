@@ -11,12 +11,9 @@ else
 }
 
 @code {
-    #nullable enable
-
     [CascadingParameter]
     IActivityReceiver? Receiver { get; set; }
 
     [Parameter]
     public RenderFragment<IActivityReceiver> ChildContent { get; set; } = default!;
-    #nullable restore
 }

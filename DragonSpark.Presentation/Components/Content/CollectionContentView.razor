@@ -3,7 +3,6 @@
 @Fragment
 
 @code {
-#nullable enable
     [Parameter]
     public ICollection<TItem>? Content
     {
@@ -44,5 +43,4 @@
                          : NotAssignedTemplate;
         return result;
     }
-#nullable restore
 }

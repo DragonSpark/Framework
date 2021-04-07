@@ -12,7 +12,6 @@
 
 @code
 {
-#nullable enable
     bool Active { get; set; }
 
     [Parameter]
@@ -58,7 +57,4 @@
         await Completed.InvokeAsync();
         StateHasChanged();
     }
-
-
-#nullable restore
 }
