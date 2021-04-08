@@ -1,14 +1,10 @@
-﻿@using Microsoft.EntityFrameworkCore
-@using JetBrains.Annotations
-@using DragonSpark.Compose
-@using AsyncUtilities
-@typeparam TItem
+﻿@typeparam TItem
 
 @Fragment
 
 @code
 {
-    RenderFragment? Fragment { get; set; } = default!;
+    RenderFragment? Fragment { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -51,7 +47,7 @@
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter, UsedImplicitly]
+    [Parameter]
     public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
 
     [Parameter]
