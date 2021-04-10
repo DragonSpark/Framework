@@ -21,7 +21,6 @@
     [Parameter]
     public EntityQuery<T> Content { get; set; } = DurableEntityQuery<T>.Default;
 
-#pragma warning disable 8669
     public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
     {
         var (_, query, count) = await Query.Get(new(request, Input));
@@ -32,5 +31,4 @@
                          (object)elements;
         return result;
     }
-#pragma warning restore 8669
 }
