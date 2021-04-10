@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Retry.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
   </ItemGroup>
 
