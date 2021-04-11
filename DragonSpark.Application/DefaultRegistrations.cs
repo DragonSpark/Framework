@@ -37,6 +37,7 @@ namespace DragonSpark.Application
 			         .Then.AddScoped(typeof(ISaveChanges<>), typeof(SaveChanges<>))
 			         .AddScoped(typeof(ISave<>), typeof(Save<>))
 			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
+			         .AddScoped(typeof(IUpdate<>), typeof(Update<>))
 			         //
 			         .Start<IToken>()
 			         .Forward<Token>()

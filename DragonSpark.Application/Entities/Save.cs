@@ -8,6 +8,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
+	sealed class Save : ISave
+	{
+		readonly DbContext _storage;
+
+		public Save(DbContext storage) => _storage = storage;
+
+		public ValueTask<int> Get() => _storage.SaveChangesAsync().ToOperation();
+	}
+
 	sealed class Save<T> : ISave<T> where T : class
 	{
 		readonly DbContext                    _context;
