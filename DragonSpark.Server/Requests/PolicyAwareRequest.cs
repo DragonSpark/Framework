@@ -19,7 +19,7 @@ namespace DragonSpark.Server.Requests
 
 	public class PolicyAwareRequest<T> : IRequesting<T>
 	{
-		readonly IPolicy                               _policy;
+		readonly IPolicy<T>                            _policy;
 		readonly ISelecting<Request<T>, IActionResult> _previous, _other;
 
 		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelect<T, ValueTask> select,
@@ -36,6 +36,10 @@ namespace DragonSpark.Server.Requests
 
 		public PolicyAwareRequest(IPolicy policy, ISelecting<Request<T>, IActionResult> previous,
 		                          ISelecting<Request<T>, IActionResult> other)
+			: this(new Policy<T>(policy), previous, other) {}
+
+		public PolicyAwareRequest(IPolicy<T> policy, ISelecting<Request<T>, IActionResult> previous,
+		                          ISelecting<Request<T>, IActionResult> other)
 		{
 			_policy   = policy;
 			_previous = previous;
@@ -44,8 +48,8 @@ namespace DragonSpark.Server.Requests
 
 		public async ValueTask<IActionResult> Get(Request<T> parameter)
 		{
-			var (owner, (userName, identity, _)) = parameter;
-			var policy = await _policy.Await(new Query(userName, identity));
+			var (owner, _) = parameter;
+			var policy = await _policy.Await(parameter);
 			var result = policy.HasValue
 				             ? policy.Value
 					               ? await _previous.Await(parameter)
