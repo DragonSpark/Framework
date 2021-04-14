@@ -9,28 +9,33 @@ namespace DragonSpark.Server.Requests
 {
 	public class PolicyAwareRequest<TIn, TOut> : PolicyAwareRequest<TIn> where TOut : class
 	{
-		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelecting<TIn, TOut?> select, IRequested<TIn> other)
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelecting<TIn, TOut?> select,
+		                          IRequesting<TIn> other)
 			: this(new Policy(owner), select, other) {}
 
-		public PolicyAwareRequest(IPolicy policy, ISelecting<TIn, TOut?> select, IRequested<TIn> other)
-			: base(policy, new Requested<TIn, TOut>(select), other) {}
+		public PolicyAwareRequest(IPolicy policy, ISelecting<TIn, TOut?> select, IRequesting<TIn> other)
+			: base(policy, new SelectedRequest<TIn, TOut>(select), other) {}
 	}
 
-	public class PolicyAwareRequest<T> : IRequested<T>
+	public class PolicyAwareRequest<T> : IRequesting<T>
 	{
-		readonly IPolicy       _policy;
-		readonly IRequested<T> _previous, _other;
+		readonly IPolicy                               _policy;
+		readonly ISelecting<Request<T>, IActionResult> _previous, _other;
 
-		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelect<T, ValueTask> select, IRequested<T> other)
-			: this(owner, new Requested<T>(select), other) {}
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner, ISelect<T, ValueTask> select,
+		                          ISelect<T, ValueTask> other)
+			: this(new Policy(owner), select, new Ok<T>(other)) {}
 
-		public PolicyAwareRequest(ISelecting<Guid, string?> owner, IRequested<T> previous, IRequested<T> other)
+		public PolicyAwareRequest(IPolicy policy, ISelect<T, ValueTask> select, IRequesting<T> other)
+			: this(policy, new Ok<T>(select), other) {}
+
+		public PolicyAwareRequest(ISelecting<Guid, string?> owner,
+		                          ISelecting<Request<T>, IActionResult> previous,
+		                          ISelecting<Request<T>, IActionResult> other)
 			: this(new Policy(owner), previous, other) {}
 
-		public PolicyAwareRequest(IPolicy policy, ISelect<T, ValueTask> select, IRequested<T> other)
-			: this(policy, new Requested<T>(select), other) {}
-
-		public PolicyAwareRequest(IPolicy policy, IRequested<T> previous, IRequested<T> other)
+		public PolicyAwareRequest(IPolicy policy, ISelecting<Request<T>, IActionResult> previous,
+		                          ISelecting<Request<T>, IActionResult> other)
 		{
 			_policy   = policy;
 			_previous = previous;
