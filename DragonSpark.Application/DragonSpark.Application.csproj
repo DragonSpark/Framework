@@ -26,7 +26,7 @@
     <PackageReference Include="Refit" Version="6.0.38" />
     <PackageReference Include="Refit.HttpClientFactory" Version="6.0.38" />
     <PackageReference Include="SluggyUnidecode" Version="2.0.1" />
-    <PackageReference Include="SmartFormat.NET" Version="2.6.2" />
+    <PackageReference Include="SmartFormat.NET" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>
