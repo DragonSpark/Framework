@@ -1,11 +1,11 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
+using DragonSpark.Application.Compose;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
-using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -52,12 +52,12 @@ namespace DragonSpark.Presentation
 /**/
 		public static CallbackContext Callback<T>(this ModelContext @this, EventCallback<T> callback)
 			=> @this.Callback(callback.InvokeAsync);
+
 		public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
 			=> @this.Callback(new Func<Task>(callback.InvokeAsync));
 
 		public static CallbackContext Callback(this ModelContext @this, Func<ValueTask> method)
 			=> @this.Callback(method.Start().Select(x => x.AsTask()));
-
 
 		public static CallbackContext Callback(this ModelContext _, Func<Task> method) => new CallbackContext(method);
 
@@ -132,9 +132,16 @@ namespace DragonSpark.Presentation
 
 		/**/
 
-		public static IApplicationBuilder ApplyPolicy<T>(this IApplicationBuilder @this) where T : IResult<string>
-			=> @this.ApplyPolicy(@this.ApplicationServices.GetRequiredService<T>().Get());
-		public static IApplicationBuilder ApplyPolicy(this IApplicationBuilder @this, string policy)
-			=> @this.UseMiddleware<ApplyPolicy>(policy);
+		public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
+			=> @this.Then(x => x.AddContentSecurity()).Then(x => x.UseContentSecurity());
+
+		public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
+			=> @this.Configure(Registrations.Default);
+
+		public static IServiceCollection AddContentSecurity(this IServiceCollection @this)
+			=> Registrations.Default.Parameter(@this);
+
+		public static IApplicationBuilder UseContentSecurity(this IApplicationBuilder @this)
+			=> @this.UseMiddleware<ApplyPolicy>();
 	}
 }

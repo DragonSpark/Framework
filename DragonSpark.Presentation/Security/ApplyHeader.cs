@@ -4,15 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Security
 {
-	class Class1 {}
-
-	public sealed class ApplyPolicy : ApplyHeader
-	{
-		public ApplyPolicy(RequestDelegate next, string value) : base(next, "Content-Security-Policy", value) {}
-
-		public Task Invoke(HttpContext parameter) => Get(parameter); // Sigh...
-	}
-
 	public class ApplyHeader : IAllocated<HttpContext>
 	{
 		readonly RequestDelegate _next;
