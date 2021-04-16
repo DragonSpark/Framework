@@ -5,13 +5,17 @@ using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
+using DragonSpark.Presentation.Security;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using NetFabric.Hyperlinq;
 using Radzen;
@@ -125,5 +129,12 @@ namespace DragonSpark.Presentation
 
 		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, EntityQuery<T> query, string filter)
 			=> new QueryView<T>(@this, query, new FilterAwareQueryAlteration<T>(filter));
+
+		/**/
+
+		public static IApplicationBuilder ApplyPolicy<T>(this IApplicationBuilder @this) where T : IResult<string>
+			=> @this.ApplyPolicy(@this.ApplicationServices.GetRequiredService<T>().Get());
+		public static IApplicationBuilder ApplyPolicy(this IApplicationBuilder @this, string policy)
+			=> @this.UseMiddleware<ApplyPolicy>(policy);
 	}
 }
