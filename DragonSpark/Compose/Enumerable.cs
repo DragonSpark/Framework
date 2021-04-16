@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable TooManyArguments
-// ReSharper disable once PossibleInvalidOperationException
 // ReSharper disable once MismatchedFileName
 
 namespace DragonSpark.Compose

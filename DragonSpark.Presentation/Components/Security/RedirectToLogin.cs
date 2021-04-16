@@ -3,7 +3,6 @@ using DragonSpark.Presentation.Components.Navigation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable FormatStringProblem
 
 namespace DragonSpark.Presentation.Components.Security
 {

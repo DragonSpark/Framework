@@ -23,7 +23,6 @@ namespace DragonSpark.Model.Sequences.Collections
 
 		protected sealed override void InsertItem(int index, T item)
 		{
-			// ReSharper disable once AssignNullToNotNullAttribute
 			var key = GetKeyForItem(item);
 			if (Contains(key))
 			{

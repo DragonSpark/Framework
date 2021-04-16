@@ -8,7 +8,6 @@ namespace DragonSpark.Runtime.Invocation
 	/// <summary>
 	/// Attribution: https://github.com/i3arnon/AsyncUtilities
 	/// </summary>
-	// ReSharper disable once PossibleInfiniteInheritance
 	sealed class LockItem<T> : ISelect<int, (Array<T> Items, int Mask)>
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

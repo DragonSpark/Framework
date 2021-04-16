@@ -5,11 +5,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 
-// ReSharper disable PossibleMultipleEnumeration
-
-// ReSharper disable NotAccessedVariable
-// ReSharper disable RedundantAssignment
-
 namespace DragonSpark.Testing
 {
 	public class IterationBenchmarks

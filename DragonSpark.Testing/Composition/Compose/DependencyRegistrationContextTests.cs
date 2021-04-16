@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-
 namespace DragonSpark.Testing.Composition.Compose
 {
 	// ReSharper disable once TestFileNameWarning
