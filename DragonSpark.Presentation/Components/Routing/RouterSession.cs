@@ -1,5 +1,7 @@
-﻿using Microsoft.JSInterop;
+﻿using DragonSpark.Compose;
+using Microsoft.JSInterop;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // ReSharper disable All
@@ -57,7 +59,19 @@ namespace DragonSpark.Presentation.Components.Routing
 		/// </summary>
 		public void TriggerIntraPageNavigation() => IntraPageNavigation?.Invoke(this, EventArgs.Empty);
 
-		public async ValueTask SetPageExitCheck(bool show)
+		readonly HashSet<object> _active = new HashSet<object>();
+
+		public ValueTask Register(object instance)
+			=> _active.Add(instance) ? SetPageExitCheck(true) : Task.CompletedTask.ToOperation();
+
+		public ValueTask Unregister(object instance)
+		{
+			_active.Remove(instance);
+
+			return SetPageExitCheck(_active.Count > 0);
+		}
+
+		async ValueTask SetPageExitCheck(bool show)
 		{
 			if (show != ExitShowState)
 			{

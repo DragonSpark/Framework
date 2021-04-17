@@ -21,7 +21,7 @@ namespace DragonSpark.Presentation.Components.Routing
 					if (_editContext.Account() != null)
 					{
 						_editContext.OnFieldChanged -= OnChanged;
-						InvokeAsync(Session.SetPageExitCheck(false).AsTask);
+						InvokeAsync(Session.Unregister(this).AsTask);
 					}
 
 					if ((_editContext = value) != null)
@@ -36,7 +36,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		{
 			if (EditContext.IsModified(e.FieldIdentifier))
 			{
-				InvokeAsync(Session.SetPageExitCheck(true).AsTask);
+				InvokeAsync(Session.Register(this).AsTask);
 			}
 		}
 

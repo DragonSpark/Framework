@@ -48,7 +48,7 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		protected virtual async Task Exit()
 		{
-			await InvokeAsync(Session.SetPageExitCheck(false).AsTask);
+			await Session.Unregister(this);
 			var destination = Session.NavigationCancelledUrl;
 			if (destination != null)
 			{
@@ -76,7 +76,7 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		protected virtual async ValueTask OnDisposing()
 		{
-			await InvokeAsync(Session.SetPageExitCheck(false).AsTask);
+			await Session.Unregister(this);
 			OnDispose(true);
 		}
 	}
