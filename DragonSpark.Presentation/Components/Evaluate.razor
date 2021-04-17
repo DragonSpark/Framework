@@ -11,6 +11,9 @@
     [Parameter]
     public string Type { get; set; } = "text/javascript";
 
+    [Parameter]
+    public bool Force { get; set; }
+
     protected override bool ShouldRender() => false; // important!!
 
 
@@ -19,7 +22,7 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender && Type == "text/javascript")
+        if ((firstRender || Force) && Type == "text/javascript")
         {
             var script = ChildContent.Text();
             if (!string.IsNullOrWhiteSpace(script))
