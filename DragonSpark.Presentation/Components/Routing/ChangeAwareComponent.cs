@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Routing
 	/// Attribution:
 	/// https://github.com/ShaunCurtis/CEC.Routing/blob/master/CEC.RoutingSample/Components/EditorComponentBase.cs
 	/// </summary>
-	public abstract class ChangeAwareComponent : ComponentBase, IRoutingComponent, IDisposable
+	public abstract class ChangeAwareComponent : ComponentBase, IRoutingComponent, IAsyncDisposable
 	{
 		readonly Func<Task> _cancel;
 
@@ -46,22 +46,38 @@ namespace DragonSpark.Presentation.Components.Routing
 			return Task.CompletedTask;
 		}
 
-		protected virtual Task Exit()
+		protected virtual async Task Exit()
 		{
+			await InvokeAsync(Session.SetPageExitCheck(false).AsTask);
 			var destination = Session.NavigationCancelledUrl;
 			if (destination != null)
 			{
 				Navigation.NavigateTo(destination);
 			}
 
-			return Exited.InvokeAsync(this);
+			await Exited.InvokeAsync(this);
 		}
 
-		public void Dispose()
+		~ChangeAwareComponent() {
+			OnDispose(false);
+		}
+
+		public async ValueTask DisposeAsync()
 		{
+			await OnDisposing();
 			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void OnDispose(bool disposing)
+		{
 			Session.NavigationCanceled -= OnNavigationCanceled;
 			Session.ActiveComponent    =  Session.ActiveComponent == this ? null : Session.ActiveComponent;
+		}
+
+		protected virtual async ValueTask OnDisposing()
+		{
+			await InvokeAsync(Session.SetPageExitCheck(false).AsTask);
+			OnDispose(true);
 		}
 	}
 }

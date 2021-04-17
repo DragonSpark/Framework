@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
@@ -60,12 +59,11 @@ namespace DragonSpark.Presentation.Components.Routing
 
 		public async ValueTask SetPageExitCheck(bool show)
 		{
-			var task = (show != ExitShowState)
-				             ? _runtime.InvokeAsync<bool>("cec_setEditorExitCheck", show)
-				             : ExitShowState.ToOperation();
-
-			ExitShowState = show;
-			await task;
+			if (show != ExitShowState)
+			{
+				ExitShowState = show;
+				await _runtime.InvokeVoidAsync("cec_setEditorExitCheck", show);
+			}
 		}
 
 		/// <summary>
