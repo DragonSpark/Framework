@@ -28,7 +28,7 @@ namespace DragonSpark.Presentation.Components
 					_receiver = value;
 
 					Refresh = _receiver != null
-						          ? Exceptions.Bind(base.Reload).Using(_receiver).UpdateActivity().Get()
+						          ? Exceptions.Bind(CallReload).Using(_receiver).UpdateActivity().Get()
 						          : null;
 				}
 			}
@@ -41,7 +41,25 @@ namespace DragonSpark.Presentation.Components
 
 		EventCallback? Refresh { get; set; }
 
-		public override Task Reload() => Refresh?.InvokeAsync() ?? base.Reload();
+		public override Task Reload() => Refresh?.InvokeAsync() ?? CallReload();
+
+		bool Active { get; set; }
+
+		async Task CallReload()
+		{
+			Active = true;
+			await base.Reload();
+			Active = false;
+		}
+
+		protected override Task OnAfterRenderAsync(bool firstRender)
+		{
+			if (!firstRender && !Active && Visible && (LoadData.HasDelegate && Data == null))
+			{
+				return base.OnAfterRenderAsync(true);
+			}
+			return base.OnAfterRenderAsync(firstRender);
+		}
 
 		public override void Dispose()
 		{
