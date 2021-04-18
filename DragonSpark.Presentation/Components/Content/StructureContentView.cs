@@ -20,7 +20,7 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 
 		[Parameter]
-		public Nullable<TContent> Content { get; set; }
+		public TContent? Content { get; set; }
 
 		[Parameter]
 		public RenderFragment<TContent>? ChildContent { get; set; }
