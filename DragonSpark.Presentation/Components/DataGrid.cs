@@ -53,13 +53,7 @@ namespace DragonSpark.Presentation.Components
 		}
 
 		protected override Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (!firstRender && !Active && Visible && (LoadData.HasDelegate && Data == null))
-			{
-				return base.OnAfterRenderAsync(true);
-			}
-			return base.OnAfterRenderAsync(firstRender);
-		}
+			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null);
 
 		public override void Dispose()
 		{
