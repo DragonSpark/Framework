@@ -165,13 +165,38 @@ namespace DragonSpark.Compose
 
 		public static ulong Grade(this in long @this) => (ulong)@this;
 
-		public static uint Integer(this in ulong @this) => (uint)@this;
+		public static int Contract(this in long @this) => (int)@this;
+		public static short Contract(this in int @this) => (short)@this;
+		public static byte Contract(this in short @this) => (byte)@this;
+		
+		public static uint Contract(this in ulong @this) => (uint)@this;
+		public static ushort Contract(this in uint @this) => (ushort)@this;
+		public static byte Contract(this in ushort @this) => (byte)@this;
 
-		public static byte Byte(this in int @this) => (byte)@this;
+		public static ushort Expand(this in byte @this) => @this;
+		public static uint Expand(this in ushort @this) => @this;
+		public static ulong Expand(this in uint @this) => @this;
 
-		public static byte Byte(this in uint @this) => (byte)@this;
+		public static short Expand(this in sbyte @this) => @this;
+		public static int Expand(this in short @this) => @this;
+		public static long Expand(this in int @this) => @this;
 
-		public static ushort Short(this in uint @this) => (ushort)@this;
+		public static float Real(this in byte @this) => @this;
+		public static float Real(this in ushort @this) => @this;
+		public static float Real(this in uint @this) => @this;
+
+		public static float Real(this in sbyte @this) => @this;
+		public static float Real(this in short @this) => @this;
+		public static float Real(this in int @this) => @this;
+
+
+		public static double Expand(this in float @this) => @this;
+
+		public static decimal Expand(this in double @this) => (decimal)@this;
+
+		public static double Contract(this in decimal @this) => (double)@this;
+		public static float Contract(this in double @this) => (float)@this;
+		public static long Clip(this in float @this) => (long)@this;
 
 		public static uint Next(this in uint @this) => @this + 1;
 
