@@ -14,6 +14,8 @@ namespace DragonSpark.Azure
 
 		public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Get());
 
+		public static IDeleteContent Delete(this IContainer @this) => new DeleteContent(@this.Get());
+
 		public static ISend Send(this IQueue @this, TimeSpan? life = null, TimeSpan? visibility = null)
 			=> new Send(@this.Get(), life.GetValueOrDefault(DefaultLife.Default),
 			            visibility.GetValueOrDefault(DefaultVisibility.Default));
