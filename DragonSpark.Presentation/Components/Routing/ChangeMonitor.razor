@@ -28,10 +28,15 @@
     [Parameter]
     public object? Receiver { get; set; }
 
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
     [CascadingParameter]
     IActivityReceiver DefaultReceiver { get; set; } = default!;
 
     object ActualReceiver => Receiver ?? DefaultReceiver;
+
+    public override bool HasChanges => Enabled && base.HasChanges;
 
     Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
 
