@@ -64,6 +64,9 @@ namespace DragonSpark.Compose.Model
 		public OperationResultSelector<_, T> Protecting(AsyncLock @lock)
 			=> new(new Protecting<_, T>(Get().Await, @lock));
 
+		public OperationResultSelector<_, T> Configure(System.Action<T> configure)
+			=> new(Get().Select(new Configure<T>(configure)));
+
 
 		public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
 
