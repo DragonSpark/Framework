@@ -1,0 +1,20 @@
+﻿@if (Enabled)
+{
+    @ChildContent
+}
+else
+{
+<fieldset disabled="true">
+    @ChildContent
+</fieldset>
+}
+
+@code {
+
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+}
