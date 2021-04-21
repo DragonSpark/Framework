@@ -118,7 +118,8 @@ namespace DragonSpark.Application
 		                                                    Exception exception)
 			=> @this.Await(A.Type<T>(), exception);
 
-		public static string Format<T>(this IResult<string> @this, T parameter) => @this.Get().FormatWith(parameter);
+		public static string Format<T>(this IResult<string> @this, T parameter) where T : notnull
+			=> @this.Get().FormatWith(parameter.ToString());
 
 		public static string Format<T1, T2>(this IResult<string> @this, (T1,T2) parameter)
 			=> @this.Get().FormatWith(parameter.Item1, parameter.Item2);

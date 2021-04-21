@@ -157,6 +157,7 @@ namespace DragonSpark.Compose
 
 		public static bool Inverse(this in bool @this) => !@this;
 
+		public static short Degrade(this in ushort @this) => (short)@this;
 		public static int Degrade(this in ulong @this) => (int)@this;
 
 		public static int Degrade(this in uint @this) => (int)@this;
