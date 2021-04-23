@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Eventing
 	/// <summary>
 	/// ATTRIBUTION: https://github.com/mikoskinen/Blazor.EventAggregator
 	/// </summary>
-	public class EventAggregator : IEventAggregator
+	public class EventAggregator : IEventAggregator, IDisposable
 	{
 		readonly List<Handler> _handlers = new();
 
@@ -40,11 +40,9 @@ namespace DragonSpark.Presentation.Components.Eventing
 
 			lock (_handlers)
 			{
-				var handlersFound = _handlers.FirstOrDefault(x => x.Matches(subscriber));
-
-				if (handlersFound != null)
+				foreach (var handler in _handlers.Where(x => x.Matches(subscriber)).ToArray())
 				{
-					_handlers.Remove(handlersFound);
+					_handlers.Remove(handler);
 				}
 			}
 		}
@@ -69,52 +67,8 @@ namespace DragonSpark.Presentation.Components.Eventing
 			var tasks  = handlers.Select(h => h.Handle(type, message));
 			var result = Task.WhenAll(tasks);
 			return result;
-
-			/*if (_options.AutoRefresh)
-			{
-				foreach (var handler in handlers.Where(x => !x.IsDead))
-				{
-					if (handler.Reference.Target is ComponentBase component)
-					{
-						var invoker = component.GetType()
-						                       .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-						                       .FirstOrDefault(x =>
-							                                       string.Equals(x.Name, "InvokeAsync") &&
-							                                       x.GetParameters().FirstOrDefault()?.ParameterType ==
-							                                       typeof(Action));
-
-						if (invoker != null)
-						{
-							var method = component.GetType()
-							                      .GetMethod("StateHasChanged", BindingFlags.Instance |
-							                                                    BindingFlags.NonPublic);
-
-							if (method != null)
-							{
-								var args = new object[] { new Action(() => method.Invoke(component, null)) };
-								if (invoker.Invoke(component, args) is Task operation)
-								{
-									await operation;
-								}
-							}
-						}
-					}
-				}
-			}*/
 		}
 
-		public readonly struct Descriptor
-		{
-			public Descriptor(Type owner, MethodInfo method)
-			{
-				Owner  = owner;
-				Method = method;
-			}
-
-			public Type Owner { get; }
-
-			public MethodInfo Method { get; }
-		}
 
 		sealed class Handler
 		{
@@ -162,6 +116,11 @@ namespace DragonSpark.Presentation.Components.Eventing
 					}
 				}
 			}
+		}
+
+		public void Dispose()
+		{
+			_handlers.Clear();
 		}
 	}
 }
