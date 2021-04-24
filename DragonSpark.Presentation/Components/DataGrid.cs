@@ -55,26 +55,12 @@ namespace DragonSpark.Presentation.Components
 		async Task CallReload()
 		{
 			Active = true;
-			try
-			{
-				await base.Reload();
-				Exception = null;
-			}
-			catch (Exception e)
-			{
-				Exception = e;
-				throw;
-			}
-			finally
-			{
-				Active = false;
-			}
+			await base.Reload();
+			Active = false;
 		}
 
-		Exception? Exception { get; set; }
-
 		protected override Task OnAfterRenderAsync(bool firstRender)
-			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null && Exception == null);
+			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null);
 
 		public override void Dispose()
 		{

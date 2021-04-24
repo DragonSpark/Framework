@@ -1,5 +1,8 @@
 ﻿@typeparam TItem
 
+@using DragonSpark.Compose
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
 @Fragment
 
 @code
@@ -8,19 +11,34 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Fragment ??= await DetermineContent();
+        Fragment ??= await DetermineFragment();
     }
 
-    async ValueTask<RenderFragment> DetermineContent()
+    async ValueTask<RenderFragment> DetermineFragment()
     {
         Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
         var result = Content != null
                          ? NoElementsFoundTemplate == null || await Query.Any.Get(Content)
-                               ? ChildContent(FilterExpression != null ? Content.AsView(Query, FilterExpression) : Content.AsView(Query))
+                               ? ChildContent(DetermineView(Content))
                                : NoElementsFoundTemplate
                          : NotAssignedTemplate;
         return result;
     }
+
+    IQueryView<TItem> DetermineView(IQueryable<TItem> content)
+    {
+        var view = FilterExpression != null ? content.AsView(Query, FilterExpression) : content.AsView(Query);
+        var result = new ExceptionAwareQueryView<TItem>(view, Handle);
+        return result;
+    }
+
+    async Task Handle(Exception error)
+    {
+        await Exceptions.Get(GetType(), error);
+        Fragment = ExceptionTemplate;
+        StateHasChanged();
+    }
+
 
     [Parameter]
     public EntityQuery<TItem> Query { get; set; } = DurableEntityQuery<TItem>.Default;
@@ -55,4 +73,7 @@
 
     [Parameter]
     public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;
+
+    [Parameter]
+    public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 }
