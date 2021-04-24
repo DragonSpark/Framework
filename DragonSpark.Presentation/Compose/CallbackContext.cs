@@ -2,6 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Diagnostics;
+using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -57,6 +58,15 @@ namespace DragonSpark.Presentation.Compose
 		}
 
 		public CallbackContext<T> Using(object receiver) => new CallbackContext<T>(receiver, _method);
+
+		public OperationCallbackContext<T> UpdateActivity()
+		{
+			var receiver  = _receiver.Verify();
+			var body      = Start.A.Selection(_method).Then().Structure().Out();
+			var operation = new ActivityAwareOperation<T>(body, receiver);
+			var result    = new OperationCallbackContext<T>(receiver, operation);
+			return result;
+		}
 
 		public OperationCallbackContext<T> Handle(IExceptions exceptions)
 		{
