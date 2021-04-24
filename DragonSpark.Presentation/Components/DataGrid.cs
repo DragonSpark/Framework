@@ -23,13 +23,20 @@ namespace DragonSpark.Presentation.Components
 			get => _receiver;
 			set
 			{
-				if (_receiver != value)
+				if (LoadData.HasDelegate)
 				{
-					_receiver = value;
+					if (_receiver != value)
+					{
+						_receiver = value;
 
-					Refresh = _receiver != null
-						          ? Exceptions.Bind(CallReload).Using(_receiver).UpdateActivity().Get()
-						          : null;
+						Refresh = _receiver != null
+							          ? Exceptions.Bind(CallReload).Using(_receiver).UpdateActivity().Get()
+							          : null;
+					}	
+				}
+				else
+				{
+					Refresh = null;
 				}
 			}
 		}
