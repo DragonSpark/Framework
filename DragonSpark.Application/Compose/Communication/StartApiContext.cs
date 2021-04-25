@@ -1,7 +1,4 @@
-﻿using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Results;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
 
@@ -17,22 +14,5 @@ namespace DragonSpark.Application.Compose.Communication
 			=> Using(x => x.GetRequiredService<RefitConfiguration>().Get());
 
 		public RegisterApiContext<T> Using(Func<IServiceProvider, RefitSettings?> settings) => new(_subject, settings);
-	}
-
-	sealed class AddRefit<T> : ICommand<IServiceCollection> where T : class, IResult<IHttpContentSerializer>
-	{
-		public static AddRefit<T> Default { get; } = new AddRefit<T>();
-
-		AddRefit() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Start<IHttpContentSerializer>()
-			        .Use<T>()
-			        .Scoped()
-			        .Then.Start<RefitSettings>()
-			        .Use<RefitConfiguration>()
-			        .Scoped();
-		}
 	}
 }
