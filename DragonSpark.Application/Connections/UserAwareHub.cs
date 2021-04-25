@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Connections
 	{
 		readonly ITable<string, List<UserConnection>> _names;
 
-		protected UserAwareHub() : this(Connections.Identifiers.Default.Get()) {}
+		protected UserAwareHub() : this(Connections.Sessions.Default.Get()) {}
 
 		protected UserAwareHub(ITable<string, List<UserConnection>> names) => _names = names;
 
