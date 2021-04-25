@@ -8,13 +8,13 @@ namespace DragonSpark.Application.Compose.Communication
 {
 	public sealed class ConfiguredApiContextRegistration<T> where T : class
 	{
-		readonly IServiceCollection                   _subject;
-		readonly Action<IServiceProvider, HttpClient> _configure;
-		readonly RefitSettings?                       _settings;
+		readonly IServiceCollection                     _subject;
+		readonly Action<IServiceProvider, HttpClient>   _configure;
+		readonly Func<IServiceProvider, RefitSettings?> _settings;
 
 		public ConfiguredApiContextRegistration(IServiceCollection subject,
 		                                        Action<IServiceProvider, HttpClient> configure,
-		                                        RefitSettings? settings = null)
+		                                        Func<IServiceProvider, RefitSettings?> settings)
 		{
 			_subject   = subject;
 			_configure = configure;
@@ -22,12 +22,7 @@ namespace DragonSpark.Application.Compose.Communication
 		}
 
 		public ConfiguredApiContextRegistration<T> Append(Action<IServiceProvider, HttpClient> next)
-			=> new ConfiguredApiContextRegistration<T>(_subject,
-			                                           Start.A.Command(_configure)
-			                                                .Append(Start.A.Command(next))
-			                                                .Get()
-			                                                .Execute,
-			                                           _settings);
+			=> new(_subject, Start.A.Command(_configure).Append(Start.A.Command(next)).Get().Execute, _settings);
 
 		public IServiceCollection Then => new ConfigureApi<T>(_configure, _settings).Parameter(_subject);
 	}

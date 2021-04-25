@@ -8,10 +8,10 @@ namespace DragonSpark.Application.Compose.Communication
 {
 	public sealed class RegisterApiContext<T> where T : class
 	{
-		readonly IServiceCollection _subject;
-		readonly RefitSettings?     _settings;
+		readonly IServiceCollection                     _subject;
+		readonly Func<IServiceProvider, RefitSettings?> _settings;
 
-		public RegisterApiContext(IServiceCollection subject, RefitSettings? settings = null)
+		public RegisterApiContext(IServiceCollection subject, Func<IServiceProvider, RefitSettings?> settings)
 		{
 			_subject  = subject;
 			_settings = settings;

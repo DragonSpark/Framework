@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Refit;
 using System;
 using System.Linq;
 
@@ -113,12 +112,12 @@ namespace DragonSpark.Application
 			=> @this.Generate((faker, _) => faker.Generate(0));
 		/**/
 
-		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, IHttpContentSerializer serializer)
+		/*public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, IHttpContentSerializer serializer)
 			where T : class
-			=> Api<T>(@this, new RefitSettings(serializer));
+			=> Api<T>(@this, new RefitSettings(serializer));*/
 
-		public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, RefitSettings? settings = null)
+		public static StartApiContext<T> Api<T>(this IServiceCollection @this)
 			where T : class
-			=> new RegisterApiContext<T>(@this, settings);
+			=> new StartApiContext<T>(@this);
 	}
 }
