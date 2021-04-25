@@ -34,6 +34,15 @@ namespace DragonSpark.Presentation.Compose
 			return result;
 		}
 
+		public OperationCallbackContext UpdateActivity()
+		{
+			var receiver  = _receiver.Verify();
+			var body      = Start.A.Result(_method).Then().Structure().Out();
+			var operation = new ActivityAwareOperation(body, receiver);
+			var result    = new OperationCallbackContext(receiver, operation);
+			return result;
+		}
+
 		public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
 
 		public CallbackContext Append(Func<Task> next)

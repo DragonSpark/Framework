@@ -220,6 +220,9 @@ namespace DragonSpark.Compose
 
 		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this);
 
+		public static IOperation Out(this OperationSelector @this)
+			=> @this.Get().To(x => x as IOperation ?? new Operation(x.Get));
+
 		public static IOperation<T> Out<T>(this Selector<T, ValueTask> @this)
 			=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
 		public static IDepending<T> Out<T>(this Selector<T, ValueTask<bool>> @this)
