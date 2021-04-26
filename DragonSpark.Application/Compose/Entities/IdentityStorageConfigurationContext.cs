@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Compose.Entities
 {
@@ -11,11 +12,13 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ApplicationProfileContext SqlServer() => Configuration(SqlStorageConfiguration<TContext>.Default);
 
-		public ApplicationProfileContext Configuration(Alter<StorageConfigurationBuilder> configuration)
-			=> Configuration(configuration(new StorageConfigurationBuilder()).Get());
+		public ApplicationProfileContext Configuration(Alter<StorageConfigurationBuilder> configuration,
+		                                               ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			=> Configuration(configuration(new StorageConfigurationBuilder()).Get(), lifetime);
 
-		public ApplicationProfileContext Configuration(IStorageConfiguration configuration)
-			=> _subject.Then(new ConfigureStorage<T, TContext>(configuration))
+		public ApplicationProfileContext Configuration(IStorageConfiguration configuration,
+		                                               ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			=> _subject.Then(new ConfigureStorage<T, TContext>(configuration, lifetime))
 			           .Configure(Initialize<TContext>.Default.Get);
 	}
 }

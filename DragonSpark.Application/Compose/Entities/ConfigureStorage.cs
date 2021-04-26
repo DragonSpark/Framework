@@ -2,6 +2,7 @@
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,34 +10,70 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
+	sealed class ConfigureServices<T> : IAlteration<IServiceCollection> where T : DbContext
+	{
+		readonly IStorageConfiguration     _storage;
+		readonly Func<IServiceProvider, T> _factory;
+		readonly ServiceLifetime           _lifetime;
+
+		public ConfigureServices(IStorageConfiguration storage, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			: this(storage, DefaultContextFactory<T>.Default.Get, lifetime) {}
+
+		public ConfigureServices(IStorageConfiguration storage, Func<IServiceProvider, T> factory,
+		                         ServiceLifetime lifetime = ServiceLifetime.Scoped)
+		{
+			_storage  = storage;
+			_factory  = factory;
+			_lifetime = lifetime;
+		}
+
+		public IServiceCollection Get(IServiceCollection parameter)
+		{
+			var collection = parameter.AddDbContextFactory<T>(_storage.Get(parameter), _lifetime);
+
+			switch (_lifetime)
+			{
+				case ServiceLifetime.Singleton:
+					return collection.AddSingleton(_factory)
+					                 .AddSingleton<DbContext>(x => x.GetRequiredService<T>());
+				case ServiceLifetime.Scoped:
+					return collection.AddScoped(_factory)
+					                 .AddScoped<DbContext>(x => x.GetRequiredService<T>());
+				case ServiceLifetime.Transient:
+					return collection.AddTransient(_factory)
+					                 .AddTransient<DbContext>(x => x.GetRequiredService<T>());
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+	}
+
 	sealed class ConfigureStorage<T, TContext> : ICommand<IServiceCollection> where TContext : DbContext where T : class
 	{
-		readonly IStorageConfiguration            _storage;
-		readonly Func<IServiceProvider, TContext> _factory;
-		readonly Action<IdentityOptions>          _configure;
+		readonly ConfigureServices<TContext> _services;
+		readonly Action<IdentityOptions>     _identity;
 
-		public ConfigureStorage(IStorageConfiguration storage) : this(storage, _ => {}) {}
-
-		public ConfigureStorage(IStorageConfiguration storage, Func<IServiceProvider, TContext> factory)
-			: this(storage, factory, _ => {}) {}
-
-		public ConfigureStorage(IStorageConfiguration storage, Action<IdentityOptions> configure)
-			: this(storage, DefaultContextFactory<TContext>.Default.Get, configure) {}
+		
+		public ConfigureStorage(IStorageConfiguration storage, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			: this(storage, DefaultContextFactory<TContext>.Default.Get, lifetime) {}
 
 		public ConfigureStorage(IStorageConfiguration storage, Func<IServiceProvider, TContext> factory,
-		                        Action<IdentityOptions> configure)
+		                        ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			: this(new ConfigureServices<TContext>(storage, factory, lifetime), _ => {}) {}
+
+		public ConfigureStorage(IStorageConfiguration storage, Action<IdentityOptions> configure,
+		                        ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			: this(new ConfigureServices<TContext>(storage, lifetime), configure) {}
+
+		public ConfigureStorage(ConfigureServices<TContext> services, Action<IdentityOptions> identity)
 		{
-			_storage   = storage;
-			_factory   = factory;
-			_configure = configure;
+			_services = services;
+			_identity = identity;
 		}
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.AddDbContextFactory<TContext>(_storage.Get(parameter))
-			         .AddScoped(_factory)
-			         .AddScoped<DbContext>(x => x.GetRequiredService<TContext>())
-			         //
+			_services.Get(parameter)
 			         .Start<IStorageInitializer<TContext>>()
 			         .Forward<StorageInitializer<TContext>>()
 			         .Singleton()
@@ -45,7 +82,7 @@ namespace DragonSpark.Application.Compose.Entities
 			         .Forward<StorageInitializer>()
 			         .Singleton()
 			         //
-			         .Then.AddDefaultIdentity<T>(_configure)
+			         .Then.AddDefaultIdentity<T>(_identity)
 			         .AddEntityFrameworkStores<TContext>();
 		}
 	}

@@ -7,6 +7,7 @@ using DragonSpark.Runtime.Environment;
 using LightInject;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
@@ -40,6 +41,31 @@ namespace DragonSpark.Composition
 
 		public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
 			=> new DeferredService<T>(@this).Then().Singleton();
+
+		public static IServiceCollection Replace<T>(this IServiceCollection @this, ServiceLifetime lifetime)
+			where T : class
+		{
+			var existing = @this.FirstOrDefault(x => x.ServiceType == typeof(T));
+			if (existing != null)
+			{
+				var instance = existing.ImplementationType != null
+					               ? ServiceDescriptor.Describe(existing.ServiceType,
+					                                            existing.ImplementationType,
+					                                            lifetime)
+					               : existing.ImplementationFactory != null
+						               ? ServiceDescriptor.Describe(existing.ServiceType,
+						                                            existing
+							                                            .ImplementationFactory,
+						                                            lifetime)
+						               : null;
+				if (instance != null)
+				{
+					@this.Replace(instance);
+				}
+			}
+
+			return @this;
+		}
 
 		public static T GetRequiredInstance<T>(this IServiceCollection @this) where T : class
 			=> (@this.Where(x => x.ServiceType == typeof(T))
