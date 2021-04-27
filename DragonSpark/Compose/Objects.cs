@@ -198,6 +198,9 @@ namespace DragonSpark.Compose
 		public static double Contract(this in decimal @this) => (double)@this;
 		public static float Contract(this in double @this) => (float)@this;
 		public static long Clip(this in float @this) => (long)@this;
+		public static long Clip(this in double @this) => (long)@this;
+
+		public static long Clip(this in decimal @this) => (long)@this;
 
 		public static uint Next(this in uint @this) => @this + 1;
 

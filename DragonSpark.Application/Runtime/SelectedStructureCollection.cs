@@ -4,22 +4,24 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Runtime
 {
-	public class SelectedCollection<T> : List<T> where T : class
+	public class SelectedStructureCollection<T> : List<T> where T : struct
 	{
-		public SelectedCollection(IEnumerable<T> list) : base(list) {}
+		public SelectedStructureCollection(IEnumerable<T> list) : base(list) {}
 
 		public virtual T? Selected { get; set; }
 	}
 
-	public class SelectedCollection<T, TValue> : SelectedCollection<T>, ICondition<TValue> where T : class
+	public class SelectedStructureCollection<T, TValue> : SelectedStructureCollection<T>, ICondition<TValue>
+		where T : struct
 	{
 		readonly Func<T, TValue>           _select;
 		readonly IEqualityComparer<TValue> _equality;
 
-		public SelectedCollection(IEnumerable<T> list, Func<T, TValue> select)
+		public SelectedStructureCollection(IEnumerable<T> list, Func<T, TValue> select)
 			: this(list, select, EqualityComparer<TValue>.Default) {}
 
-		public SelectedCollection(IEnumerable<T> list, Func<T, TValue> select, IEqualityComparer<TValue> equality)
+		public SelectedStructureCollection(IEnumerable<T> list, Func<T, TValue> select,
+		                                   IEqualityComparer<TValue> equality)
 			: base(list)
 		{
 			_select   = @select;
@@ -28,7 +30,7 @@ namespace DragonSpark.Application.Runtime
 
 		public TValue? Value
 		{
-			get => Selected is not null ? _select(Selected) : default;
+			get => Selected is not null ? _select(Selected.Value) : default;
 			set
 			{
 				if (value is not null)
@@ -60,4 +62,5 @@ namespace DragonSpark.Application.Runtime
 			return false;
 		}
 	}
+
 }
