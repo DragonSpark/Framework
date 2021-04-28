@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Diagnostics;

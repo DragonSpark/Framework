@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Requests
 {
-	public class Policy : Selecting<Query, bool?>, IPolicy
+	public class Policy : Selecting<Unique, bool?>, IPolicy
 	{
 		public Policy(ISelecting<Guid, string?> owner) : base(new IsOwner(owner)) {}
 
-		public Policy(ISelect<Query, ValueTask<bool?>> select) : base(select) {}
+		public Policy(ISelect<Unique, ValueTask<bool?>> select) : base(select) {}
 	}
 
 	public class Policy<T> : IPolicy<T>
@@ -26,6 +26,6 @@ namespace DragonSpark.Server.Requests
 		}
 
 		public ValueTask<bool?> Get(Request<T> parameter)
-			=> _policy.Get(new Query(parameter.Parameter.UserName, _select(parameter)));
+			=> _policy.Get(new Unique(parameter.Parameter.UserName, _select(parameter)));
 	}
 }

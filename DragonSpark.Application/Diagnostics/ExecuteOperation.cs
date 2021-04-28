@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Runtime
+namespace DragonSpark.Application.Diagnostics
 {
 	sealed class ExecuteOperation : IExecuteOperation
 	{

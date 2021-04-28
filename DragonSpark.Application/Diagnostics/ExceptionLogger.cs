@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Exception = System.Exception;
 
-namespace DragonSpark.Application.Runtime
+namespace DragonSpark.Application.Diagnostics
 {
 	sealed class ExceptionLogger : IExceptionLogger
 	{
@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Runtime
 
 		public ExceptionLogger(ILoggerFactory factory) => _factory = factory;
 
-		public ValueTask Get((Type Owner, Exception Exception) parameter)
+		public ValueTask<Exception> Get((Type Owner, Exception Exception) parameter)
 		{
 			var (owner, exception) = parameter;
 
@@ -22,14 +22,13 @@ namespace DragonSpark.Application.Runtime
 
 			if (exception is TemplateException template)
 			{
-				logger.LogError(template.InnerException!.Demystify(), template.Message, template.Parameters.Open());
+				var result = template.InnerException ?? template;
+				logger.LogError(result!.Demystify(), template.Message, template.Parameters.Open());
+				return result.ToOperation();
 			}
-			else
-			{
-				logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation.");
-			}
-
-			return Task.CompletedTask.ToOperation();
+			
+			logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation.");
+			return exception.ToOperation();
 		}
 	}
 }

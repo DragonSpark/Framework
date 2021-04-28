@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 
 namespace DragonSpark.Server.Requests
 {
-	public sealed class PolicyKey<T> : Key<Query>
+	public sealed class PolicyKey<T> : Key<Unique>
 	{
 		public static PolicyKey<T> Default { get; } = new PolicyKey<T>();
 

@@ -19,7 +19,7 @@ namespace DragonSpark.Server.Requests
 			_equals = @equals;
 		}
 
-		public async ValueTask<bool?> Get(Query parameter)
+		public async ValueTask<bool?> Get(Unique parameter)
 		{
 			var (user, identity) = parameter;
 			var owner  = await _owner.Await(identity);

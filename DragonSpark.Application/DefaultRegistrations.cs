@@ -1,4 +1,5 @@
 ﻿using AsyncUtilities;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Navigation;
 using DragonSpark.Application.Runtime;

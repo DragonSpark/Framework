@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Diagnostics;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Diagnostics;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;

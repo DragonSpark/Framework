@@ -4,7 +4,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
 using Exception = System.Exception;
 
-namespace DragonSpark.Model.Diagnostics
+namespace DragonSpark.Model.Operations.Diagnostics
 {
 	sealed class PolicyAwareLogException<T> : ValidatedCommand<ExceptionParameter<T>>, ILogException<T>
 	{

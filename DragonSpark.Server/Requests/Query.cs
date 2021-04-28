@@ -1,45 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace DragonSpark.Server.Requests
 {
 	public readonly struct Query<T>
 	{
-		public Query(string userName, Guid identity, T subject)
+		public Query(ControllerBase owner, T subject)
 		{
-			UserName = userName;
-			Identity = identity;
-			Subject  = subject;
+			Owner   = owner;
+			Subject = subject;
 		}
 
-		public string UserName { get; }
+		public ControllerBase Owner { get; }
 
-		public Guid Identity { get; }
 		public T Subject { get; }
 
-		public void Deconstruct(out string userName, out Guid identity, out T subject)
+		public void Deconstruct(out ControllerBase owner, out T subject)
 		{
-			userName = UserName;
-			identity = Identity;
-			subject  = Subject;
-		}
-	}
-
-	public readonly struct Query
-	{
-		public Query(string userName, Guid identity)
-		{
-			UserName = userName;
-			Identity = identity;
-		}
-
-		public string UserName { get; }
-
-		public Guid Identity { get; }
-
-		public void Deconstruct(out string userName, out Guid identity)
-		{
-			userName = UserName;
-			identity = Identity;
+			owner   = Owner;
+			subject = Subject;
 		}
 	}
 }

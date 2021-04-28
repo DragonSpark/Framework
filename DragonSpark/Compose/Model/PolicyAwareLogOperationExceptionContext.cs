@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Diagnostics;
+using DragonSpark.Model.Operations.Diagnostics;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;

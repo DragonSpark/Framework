@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 using Exception = System.Exception;
 
-namespace DragonSpark.Model.Diagnostics
+namespace DragonSpark.Model.Operations.Diagnostics
 {
 	sealed class ExceptionAwareOperation<T> : IOperation<T>
 	{

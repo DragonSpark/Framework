@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;

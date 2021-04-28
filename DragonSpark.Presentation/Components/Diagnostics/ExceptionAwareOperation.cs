@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;

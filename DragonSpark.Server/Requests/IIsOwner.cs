@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Server.Requests
 {
-	public interface IIsOwner : ISelecting<Query, bool?> {}
+	public interface IIsOwner : ISelecting<Unique, bool?> {}
 }
