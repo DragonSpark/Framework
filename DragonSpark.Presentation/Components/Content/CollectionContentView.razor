@@ -28,7 +28,7 @@
     [Parameter]
     public RenderFragment EmptyTemplate { get; set; } = x => x.AddContent(2, "No elements found.");
 
-    RenderFragment? Fragment { get; set; } = default!;
+    RenderFragment? Fragment { get; set; }
 
     protected override void OnParametersSet()
     {
