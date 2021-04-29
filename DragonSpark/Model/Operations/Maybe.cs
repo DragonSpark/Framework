@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	public class Maybe<TIn, TOut> : ISelecting<TIn, TOut?> where TOut : class
+	public class Maybe<TIn, TOut> : ISelecting<TIn, TOut?>
 	{
 		readonly Await<TIn, TOut?> _first, _second;
 
