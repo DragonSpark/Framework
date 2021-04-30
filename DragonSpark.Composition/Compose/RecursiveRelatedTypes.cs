@@ -24,6 +24,7 @@ namespace DragonSpark.Composition.Compose
 			}
 		}
 
+		// TODO: Performance:
 		public Array<Type> Get(Type parameter) => Yield(parameter).AsValueEnumerable().Distinct().ToArray();
 	}
 }

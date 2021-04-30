@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	public class Coalesce<TIn, TOut> : ISelecting<TIn, TOut> where TOut : class
+	public class Coalesce<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly Await<TIn, TOut?> _first;
 		readonly Await<TIn, TOut>  _second;

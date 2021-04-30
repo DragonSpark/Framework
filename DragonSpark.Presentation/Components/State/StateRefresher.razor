@@ -1,0 +1,14 @@
+﻿<Refresher Repeat="true" Interval="@Interval" Updated="@StateHasChanged" />
+@ChildContent
+
+@code {
+    [Parameter]
+    public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(30);
+
+    [Parameter]
+    public EventCallback Updated { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+}
