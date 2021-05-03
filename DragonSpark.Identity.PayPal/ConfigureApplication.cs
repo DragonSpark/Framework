@@ -4,7 +4,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Identity.Microsoft
+namespace DragonSpark.Identity.PayPal
 {
 	sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 	{
@@ -14,11 +14,10 @@ namespace DragonSpark.Identity.Microsoft
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
-			parameter.Services.Register<MicrosoftApplicationSettings>()
+			parameter.Services.Register<PayPalApplicationSettings>()
 			         .Return(parameter)
-			         .Tuple(parameter.Services.Deferred<MicrosoftApplicationSettings>())
-			         .With((x, y) => x.AddMicrosoftAccount(new ConfigureAuthentication(y).Execute))
-			         ;
+			         .Tuple(parameter.Services.Deferred<PayPalApplicationSettings>())
+			         .With((x, y) => x.AddPaypal(new ConfigureAuthentication(y).Execute));
 		}
 	}
 }
