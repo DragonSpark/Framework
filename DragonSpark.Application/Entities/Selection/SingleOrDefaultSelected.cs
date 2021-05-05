@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Selection
 {
-	public class SingleOrDefaultSelected<TKey, T> : SingleOrDefaultSelected<TKey, T, T>
+	public class SingleOrDefaultSelected<TKey, T> : SingleOrDefaultSelected<TKey, TKey, T>
 	{
-		public SingleOrDefaultSelected(IQueryable<T> queryable, Query<TKey, T> query, Expression<Func<T, T>> @select)
-			: base(queryable, query, @select) {}
+		public SingleOrDefaultSelected(IQueryable<TKey> queryable, Query<TKey, TKey> query,
+		                               Expression<Func<TKey, T>> @select) : base(queryable, query, @select) {}
 	}
 
 	public class SingleOrDefaultSelected<TKey, TEntity, T> : ISelecting<TKey, T?>
