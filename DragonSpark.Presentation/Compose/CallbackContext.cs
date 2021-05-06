@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
@@ -47,6 +48,9 @@ namespace DragonSpark.Presentation.Compose
 
 		public CallbackContext Append(Func<Task> next)
 			=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Append(next));
+
+		public CallbackContext Append(Operate next)
+			=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
 
 		public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 	}

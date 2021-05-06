@@ -14,6 +14,8 @@ namespace DragonSpark.Compose.Model
 
 		public OperationSelector Append(Await next) => new OperationSelector(new Appended(Get().Await, next));
 
+		public OperationSelector Append(Operate next) => new OperationSelector(new AppendedOperate(Get().Get, next));
+
 		public AllocatedOperationSelector Allocate() => new AllocatedOperationSelector(Select(x => x.AsTask()).Get());
 	}
 }
