@@ -16,21 +16,17 @@ namespace DragonSpark.Identity.PayPal
 			parameter.ClientId     = settings.Key;
 			parameter.ClientSecret = settings.Secret;
 
-
 			var authentication = settings.Authentication;
-			if (authentication != null)
-			{
-				parameter.AuthorizationEndpoint   = authentication.AuthorizationEndpoint;
-				parameter.TokenEndpoint           = authentication.TokenEndpoint;
-				parameter.UserInformationEndpoint = authentication.UserInformationEndpoint;
+			parameter.AuthorizationEndpoint   = authentication.AuthorizationEndpoint;
+			parameter.TokenEndpoint           = authentication.TokenEndpoint;
+			parameter.UserInformationEndpoint = authentication.UserInformationEndpoint;
 
-				if (authentication.Scopes != null)
+			if (authentication.Scopes != null)
+			{
+				parameter.Scope.Clear();
+				foreach (var scope in authentication.Scopes)
 				{
-					parameter.Scope.Clear();
-					foreach (var scope in authentication.Scopes)
-					{
-						parameter.Scope.Add(scope);
-					}
+					parameter.Scope.Add(scope);
 				}
 			}
 		}

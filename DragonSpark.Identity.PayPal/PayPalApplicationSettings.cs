@@ -6,7 +6,7 @@
 
 		public string Secret { get; set; }  = null!;
 
-		public PayPalAuthenticationSettings? Authentication { get; set; }
+		public PayPalAuthenticationSettings Authentication { get; set; } = new PayPalAuthenticationSettings();
 
 	}
 }
