@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		public void Execute(IServiceCollection parameter)
 		{
-			// TODO: Performance:
+			// Performance:
 			parameter.Scan(x => x.FromAssemblyOf<IdentityRegistration<T>>()
 			                     .AddClasses(y => y.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace!,
 			                                                          typeof(ExternalLoginModel<T>).Namespace!))
