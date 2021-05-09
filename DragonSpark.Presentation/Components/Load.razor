@@ -12,7 +12,12 @@
     }
 
     if(!exists) {
-        document.body.appendChild(Object.assign(document.createElement('script'), { src: source, type: '@Type' }));
+        let tag = document.createElement('script');
+        @if (Tag != null)
+        {
+            @($"tag.setAttribute('{Tag.Value.Key}', '{Tag.Value.Value}');")
+        }
+        document.body.appendChild(Object.assign(tag, { src: source, type: '@Type' }));
     }
 
 </Evaluate>
@@ -24,4 +29,7 @@
 
     [Parameter]
     public string Type { get; set; } = "text/javascript";
+
+    [Parameter]
+    public KeyValuePair<string, string>? Tag { get; set; }
 }
