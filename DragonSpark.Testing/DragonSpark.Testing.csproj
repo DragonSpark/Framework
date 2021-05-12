@@ -16,7 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
+    <PackageReference Include="Humanizer.Core" Version="2.10.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj" />
