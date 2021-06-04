@@ -20,7 +20,6 @@ namespace DragonSpark.Application.Compose.Entities
 		}
 
 		public ConfiguredIdentityContext<T> Having(IClaims claims)
-			=> new ConfiguredIdentityContext<T>(_context.Then(new IdentityRegistration<T>(claims, _create)),
-			                                    _configure);
+			=> new(_context.Then(new IdentityRegistration<T>(claims, _create)), _configure);
 	}
 }
