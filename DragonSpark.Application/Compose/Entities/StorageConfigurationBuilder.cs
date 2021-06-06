@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Compose.Entities
 			=> Append(new StorageConfiguration(configure));
 
 		public StorageConfigurationBuilder Append(IStorageConfiguration append)
-			=> new StorageConfigurationBuilder(new AppendedStorageConfiguration(_configuration, append));
+			=> new (new AppendedStorageConfiguration(_configuration, append));
 
 		public IStorageConfiguration Get() => _configuration;
 	}

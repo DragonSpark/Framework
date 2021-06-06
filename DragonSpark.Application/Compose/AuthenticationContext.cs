@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Compose
 	{
 		readonly ApplicationProfileContext             _subject;
 		readonly CommandContext<AuthenticationBuilder> _configure;
-		readonly System.Action<AuthenticationOptions>?      _options;
+		readonly System.Action<AuthenticationOptions>? _options;
 
 		public AuthenticationContext(ApplicationProfileContext subject) : this(subject, null) {}
 
@@ -27,15 +27,17 @@ namespace DragonSpark.Application.Compose
 		                             CommandContext<AuthenticationBuilder> configure,
 		                             System.Action<AuthenticationOptions>? options = null)
 		{
-			_subject      = subject;
-			_configure    = configure;
-			_options = options;
+			_subject   = subject;
+			_configure = configure;
+			_options   = options;
 		}
 
-		public AuthenticationContext Then(ICommand<AuthenticationBuilder> command) => Then(command.Execute);
+		public AuthenticationContext Append(ICommand<AuthenticationBuilder> command) => Append(command.Execute);
 
-		public AuthenticationContext Then(System.Action<AuthenticationBuilder> command)
-			=> new AuthenticationContext(_subject, _configure.Append(command));
+		public AuthenticationContext Append(System.Action<AuthenticationBuilder> command)
+			=> new(_subject, _configure.Append(command));
+
+		public ApplicationProfileContext Then => Get();
 
 		public ApplicationProfileContext Get() => _subject.Then(new AuthenticationContextCommand(_configure, _options));
 	}

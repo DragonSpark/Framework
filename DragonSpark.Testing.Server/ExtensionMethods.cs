@@ -1,8 +1,7 @@
-﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Entities;
+﻿using DragonSpark.Application.Compose.Entities;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition.Compose;
-using System;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Testing.Server
 {
@@ -11,13 +10,10 @@ namespace DragonSpark.Testing.Server
 		public static BuildHostContext WithTestServer(this BuildHostContext @this)
 			=> @this.Configure(ServerConfiguration.Default);
 
-		public static ApplicationProfileContext Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this)
-			where T : Application.Security.Identity.IdentityDbContext<TUser>
-			where TUser : IdentityUser => Memory(@this, DefaultContextFactory<T>.Default.Get);
-
-		public static ApplicationProfileContext Memory<T, TUser>(this EntityStorageConfigurationContext<T, TUser> @this, Func<IServiceProvider, T> factory)
-			where T : Application.Security.Identity.IdentityDbContext<TUser>
-			where TUser : IdentityUser
-			=> @this.Configuration(InMemoryStorageConfiguration.Default, factory);
+		public static ConfiguredIdentityStorage<T, TContext> Memory<T, TContext>(
+			this IdentityStorageConfiguration<T, TContext> @this)
+			where T : IdentityUser
+			where TContext : DbContext
+			=> @this.Configuration(InMemoryStorageConfiguration.Default);
 	}
 }

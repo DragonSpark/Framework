@@ -10,7 +10,7 @@ namespace DragonSpark.Identity.Twitter
 			=> @this.UsingTwitter(DefaultClaimActions.Default);
 
 		public static AuthenticationContext UsingTwitter(this AuthenticationContext @this, IClaimAction claims)
-			=> @this.Then(new ConfigureTwitterApplication(claims));
+			=> @this.Append(new ConfigureTwitterApplication(claims));
 
 		public static ApplicationProfileContext WithTwitterApi(this ApplicationProfileContext @this)
 			=> @this.Then(Registrations.Default);

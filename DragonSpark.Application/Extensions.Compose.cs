@@ -18,13 +18,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
 {
 	// ReSharper disable once MismatchedFileName
 	public static partial class Extensions
 	{
-
 		public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
 			where T : DbContext
 			=> @this.Append(ConfigureSqlServer<T>.Default.Execute);
@@ -38,15 +38,20 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
+		/*public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
 			=> @this.WithIdentity(_ => {});
 
 		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
 		                                           System.Action<IdentityOptions> configure)
-			=> new IdentityContext(@this, configure);
+			=> new IdentityContext(@this, configure);*/
 
-		public static IdentityStorageContext<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : class
+		public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : IdentityUser
 			=> new(@this);
+
+		public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this,
+		                                                 System.Action<IdentityOptions> configure)
+			where T : IdentityUser
+			=> new(@this, configure);
 
 		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
 
@@ -106,8 +111,10 @@ namespace DragonSpark.Application
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, Configuration configuration)
 			where T : class => new GeneratorContext<T>(configuration);
 
-		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range) where TOther : class
+		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range)
+			where TOther : class
 			=> @this.Generate((faker, _) => faker.GenerateBetween(range.Start.Value, range.End.Value));
+
 		public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
 			=> @this.Generate((faker, _) => faker.Generate(0));
 		/**/

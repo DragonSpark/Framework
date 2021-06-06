@@ -1,12 +1,14 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public interface INew<out T> : ISelect<ExternalLoginInfo, T> where T : IdentityUser {}
+	public interface INew<T> : ISelecting<ExternalLoginInfo, T> where T : IdentityUser {}
 
 	public sealed class New<T> : INew<T> where T : IdentityUser, new()
 	{
@@ -23,13 +25,15 @@ namespace DragonSpark.Application.Security.Identity
 			_time = time;
 		}
 
-		public T Get(ExternalLoginInfo parameter)
+		public ValueTask<T> Get(ExternalLoginInfo parameter)
 		{
-			var result = new T
+			var user = new T
 			{
 				UserName = _name(parameter),
 				Created  = _time.Get()
 			};
+
+			var result = user.ToOperation();
 			return result;
 		}
 	}
