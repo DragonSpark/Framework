@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
+	[UsedImplicitly]
 	sealed class IdentityOperation<T> : IIdentityOperation<T> where T : class
 	{
 		readonly Array<IIdentityOperation<T>> _actions;

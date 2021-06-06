@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model {
+namespace DragonSpark.Application.Security.Identity.Model
+{
 	sealed class ExternalSignin<T> : IExternalSignin where T : class
 	{
 		readonly SignInManager<T> _authentication;

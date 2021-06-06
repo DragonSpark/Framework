@@ -45,7 +45,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			var login = await _profile.Get();
 
 			bindingContext.Result = login != null
-				                        ? ModelBindingResult.Success(new CallbackContext(login, origin))
+				                        ? ModelBindingResult.Success(new Challenged(login, origin))
 				                        : Redirect("Error loading external login information.", origin);
 		}
 	}

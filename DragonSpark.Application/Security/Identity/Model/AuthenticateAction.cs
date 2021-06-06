@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
+	[UsedImplicitly]
 	sealed class AuthenticateAction : IAuthenticateAction
 	{
 		readonly IAuthentication _authentication;
 
 		public AuthenticateAction(IAuthentication authentication) => _authentication = authentication;
 
-		public async ValueTask<IActionResult?> Get(CallbackContext parameter)
+		public async ValueTask<IActionResult?> Get(Challenged parameter)
 		{
 			var (login, origin) = parameter;
 

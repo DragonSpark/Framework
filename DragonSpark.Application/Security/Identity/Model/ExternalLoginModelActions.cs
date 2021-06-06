@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public sealed class ExternalLoginModelActions<T> : ISelect<ProviderContext, IActionResult>, IAuthenticateAction
+	public sealed class ExternalLoginModelActions<T> : ISelect<Challenging, IActionResult>, IAuthenticateAction
 		where T : class
 	{
 		readonly IAuthenticateAction _authenticate;
@@ -21,26 +22,26 @@ namespace DragonSpark.Application.Security.Identity.Model
 			_authentication = authentication;
 		}
 
-		public async ValueTask<bool> Get((ModelStateDictionary State, ExternalLoginInfo Login) parameter)
+		public async ValueTask<bool> Get((ExternalLoginInfo Login, ModelStateDictionary State) parameter)
 		{
-			var (state, login) = parameter;
+			var (login, state) = parameter;
 			var call   = await _create.Get(login);
 			var result = call.Succeeded;
 
 			if (!result)
 			{
-				foreach (var error in call.Errors)
+				foreach (var error in call.Errors.AsValueEnumerable())
 				{
-					state.AddModelError(string.Empty, error.Description);
+					state.AddModelError(string.Empty, error!.Description);
 				}
 			}
 
 			return result;
 		}
 
-		public ValueTask<IActionResult?> Get(CallbackContext parameter) => _authenticate.Get(parameter);
+		public ValueTask<IActionResult?> Get(Challenged parameter) => _authenticate.Get(parameter);
 
-		public IActionResult Get(ProviderContext parameter)
+		public IActionResult Get(Challenging parameter)
 		{
 			var (provider, origin) = parameter;
 			var properties = _authentication.ConfigureExternalAuthenticationProperties(provider, origin);

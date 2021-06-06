@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask Get(ExternalLoginInfo parameter)
 		{
-			var user      = await _users.GetUser(parameter);
+			var user      = await _users.GetUserAsync(parameter.Principal);
 			var principal = await _authentication.CreateUserPrincipalAsync(user);
 			var synchronization = new Synchronization<T>(parameter, new AuthenticationState<T>(principal, user),
 			                                             parameter.Principal);

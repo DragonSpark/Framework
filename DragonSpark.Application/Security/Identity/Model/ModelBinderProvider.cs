@@ -12,8 +12,8 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		ModelBinderProvider() : this(new Dictionary<Type, Type>
 		{
-			[A.Type<CallbackContext>()] = A.Type<CallbackContextBinder>(),
-			[A.Type<ProviderContext>()] = A.Type<ProviderContextBinder>()
+			[A.Type<Challenged>()] = A.Type<CallbackContextBinder>(),
+			[A.Type<Challenging>()] = A.Type<ProviderContextBinder>()
 		}) {}
 
 		readonly IReadOnlyDictionary<Type, Type> _types;

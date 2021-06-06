@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public sealed class CallbackContext
+	public sealed class Challenged
 	{
-		public CallbackContext(ExternalLoginInfo login, string origin)
+		public Challenged(ExternalLoginInfo login, string origin)
 		{
 			Login  = login;
 			Origin = origin;

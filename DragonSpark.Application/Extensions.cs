@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Runtime;
-using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
@@ -12,7 +11,6 @@ using DragonSpark.Model.Sequences;
 using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,37 +33,15 @@ namespace DragonSpark.Application
 
 		public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
 			=> new ApplicationProfileContext(@this, profile);
-/**/
 
-		public static async ValueTask<T> Latest<T>(this DbContext @this, T entity) where T : notnull
-		{
-			await @this.Entry(entity).ReloadAsync().ConfigureAwait(false);
-			return entity;
-		}
+		/**/
 
 		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
 			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
 
 		/**/
 
-		public static string UniqueId(this ExternalLoginInfo @this) => Security.Identity.UniqueId.Default.Get(@this);
-
-		public static ProviderIdentity Identity(this IdentityUser @this) => Identities.Default.Get(@this.UserName);
-
-		public static async ValueTask<T> GetUser<T>(this UserManager<T> @this, ExternalLoginInfo login)
-			where T : IdentityUser
-		{
-			var id     = login.UniqueId();
-			var result = await @this.Users.SingleAsync(x => x.UserName == id);
-			return result;
-		}
-
-		public static bool HasClaim(this ClaimsPrincipal @this, IResult<string> claim)
-		{
-			var type   = claim.Get();
-			var result = @this.HasClaim(x => x.Type == type);
-			return result;
-		}
+		public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 
 		public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
 
@@ -82,13 +58,11 @@ namespace DragonSpark.Application
 			where T : IdentityUser
 			=> new UserMapping<T>(@this, key, required);
 
-		public static string? Value(this ModelBindingContext @this, IResult<string> key)
-			=> @this.ValueProvider.Get(key);
+		public static string? Value(this ModelBindingContext @this, string key) => @this.ValueProvider.Get(key);
 
-		public static string? Get(this IValueProvider @this, IResult<string> key)
+		public static string? Get(this IValueProvider @this, string key)
 		{
-			var name   = key.Get();
-			var value  = @this.GetValue(name);
+			var value  = @this.GetValue(key);
 			var result = value != ValueProviderResult.None ? value.FirstValue : null;
 			return result;
 		}

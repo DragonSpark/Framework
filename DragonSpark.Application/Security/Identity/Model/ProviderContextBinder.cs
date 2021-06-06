@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			                     .Page("./ExternalLogin", "Callback",
 			                           new {returnUrl = bindingContext.Value(_returnUrl)});
 
-			var instance = new ProviderContext(bindingContext.Value(_provider).Verify(), returnUrl);
+			var instance = new Challenging(bindingContext.Value(_provider).Verify(), returnUrl);
 
 			bindingContext.Result = ModelBindingResult.Success(instance);
 

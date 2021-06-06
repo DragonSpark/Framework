@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -10,7 +9,6 @@ namespace DragonSpark.Application.Security.Identity
 		readonly IAdapters                 _adapters;
 		readonly IAuthenticationValidation _validation;
 
-		[UsedImplicitly]
 		public ValidationServices(IAdapters adapters, IAuthenticationValidation validation)
 		{
 			_adapters   = adapters;

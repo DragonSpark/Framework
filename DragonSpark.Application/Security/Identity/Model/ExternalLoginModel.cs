@@ -15,12 +15,12 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public string? LoginProvider { get; private set; }
 
-		public IActionResult OnGet(ProviderContext context) => _actions.Get(context);
+		public IActionResult OnGet(Challenging context) => _actions.Get(context);
 
-		public IActionResult OnPost(ProviderContext context) => _actions.Get(context);
+		public IActionResult OnPost(Challenging context) => _actions.Get(context);
 
-		public async Task<IActionResult> OnGetCallback(CallbackContext context)
-			=> await _actions.Get(context) ?? (await _actions.Get((ModelState, context.Login))
+		public async Task<IActionResult> OnGetCallback(Challenged context)
+			=> await _actions.Get(context) ?? (await _actions.Get((context.Login, ModelState))
 				                                   ? LocalRedirect(context.Origin)
 				                                   : Bind(context.Login));
 
@@ -31,5 +31,4 @@ namespace DragonSpark.Application.Security.Identity.Model
 			return Page();
 		}
 	}
-
 }

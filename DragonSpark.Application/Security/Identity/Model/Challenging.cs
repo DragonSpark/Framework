@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Application.Security.Identity.Model
 {
-	public sealed class ProviderContext
+	public sealed class Challenging
 	{
-		public ProviderContext(string provider, string returnUrl)
+		public Challenging(string provider, string returnUrl)
 		{
 			Provider  = provider;
 			ReturnUrl = returnUrl;

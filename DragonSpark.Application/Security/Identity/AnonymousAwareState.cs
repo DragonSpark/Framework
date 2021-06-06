@@ -7,19 +7,19 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class AnonymousAwareState<T> : IStateViews<T> where T : class
 	{
-		readonly IStateViews<T> _views;
+		readonly IStateViews<T> _previous;
 		readonly StateView<T>   _default;
 
 		[UsedImplicitly]
-		public AnonymousAwareState(IStateViews<T> views) : this(views, StateView<T>.Default) {}
+		public AnonymousAwareState(IStateViews<T> previous) : this(previous, StateView<T>.Default) {}
 
-		public AnonymousAwareState(IStateViews<T> views, StateView<T> @default)
+		public AnonymousAwareState(IStateViews<T> previous, StateView<T> @default)
 		{
-			_views   = views;
-			_default = @default;
+			_previous = previous;
+			_default  = @default;
 		}
 
 		public ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
-			=> parameter.Identity?.IsAuthenticated ?? false ? _views.Get(parameter) : _default.ToOperation();
+			=> parameter.Identity?.IsAuthenticated ?? false ? _previous.Get(parameter) : _default.ToOperation();
 	}
 }

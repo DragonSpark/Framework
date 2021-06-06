@@ -23,8 +23,8 @@ namespace DragonSpark.Application.Security.Identity
 			var (user, result) = await _create.Get(parameter);
 			if (result.Succeeded)
 			{
-				_log.LogInformation("User {UserName} created an account using {Provider} provider.",
-				                    user.UserName, parameter.LoginProvider);
+				_log.LogInformation("User {UserName} created an account using {Provider} having {Key}.",
+				                    user.UserName, parameter.LoginProvider, parameter.ProviderKey);
 
 				await _authentication.SignInAsync(user, false);
 			}

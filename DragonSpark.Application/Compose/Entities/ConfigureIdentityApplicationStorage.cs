@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 			parameter.Start<IStateViews<TUser>>()
 			         .Forward<StateViews<TUser>>()
-			         .Decorate<StoredStateViews<TUser>>()
+			         .Decorate<MemoryAwareStateViews<TUser>>()
 			         .Decorate<AnonymousAwareState<TUser>>()
 			         .Scoped()
 			         //

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
@@ -23,8 +24,8 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 		{
-			var state  = await _views.Get(parameter).ConfigureAwait(false);
-			var result = state.Hash is null || parameter.FindFirstValue(_type) == state.Hash;
+			var (_, hash) = await _views.Await(parameter);
+			var result = hash is null || parameter.FindFirstValue(_type) == hash;
 			return result;
 		}
 	}
