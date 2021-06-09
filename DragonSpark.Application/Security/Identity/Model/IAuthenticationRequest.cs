@@ -3,5 +3,5 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public interface IAuthenticateAction : ISelecting<Challenged, IActionResult?> {}
+	public interface IAuthenticationRequest : ISelecting<Challenged, IActionResult?> {}
 }

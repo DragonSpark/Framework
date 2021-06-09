@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	public sealed class ExternalLoginModelActions<T> : ISelect<Challenging, IActionResult>, IAuthenticateAction
+	public sealed class ExternalLoginModelActions<T> : ISelect<Challenging, IActionResult>, IAuthenticationRequest
 		where T : class
 	{
-		readonly IAuthenticateAction _authenticate;
+		readonly IAuthenticationRequest _authenticate;
 		readonly SignInManager<T>    _authentication;
-		readonly ICreateAction       _create;
+		readonly ICreateRequest       _create;
 
-		public ExternalLoginModelActions(IAuthenticateAction authenticate, ICreateAction create,
+		public ExternalLoginModelActions(IAuthenticationRequest authenticate, ICreateRequest create,
 		                                 SignInManager<T> authentication)
 		{
 			_authenticate   = authenticate;

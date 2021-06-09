@@ -14,4 +14,5 @@ namespace DragonSpark.Application.Security
 
 		public string Get(ProviderIdentity parameter) => $"{parameter.Provider}{_token}{parameter.Identity}";
 	}
+
 }

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,13 +20,21 @@ namespace DragonSpark.Application.Security.Identity
 			                     .AsSelf()
 			                     .AsMatchingInterface()
 			                     .WithScopedLifetime())
-				//
+			         //
 			         .AddScoped<IUserSynchronization, UserSynchronization<T>>()
-					 //
-			         .AddScoped<ICreateAction, CreateAction<T>>()
-			         //.Decorate<ICreateAction, SynchronizedCreateAction>()
-					 //
-			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
+			         //
+			         .AddScoped<ICreateRequest, CreateRequest<T>>()
+			         //
+			         .Start<ICreate<T>>()
+			         .Forward<Create<T>>()
+			         .Decorate<LoggingAwareCreate<T>>()
+			         .Scoped()
+			         .Then.Start<ICreated<T>>()
+			         .Forward<Created<T>>()
+			         .Decorate<AddLoginAwareCreated<T>>()
+			         .Scoped()
+			         //
+			         .Then.AddScoped<IExternalSignin, ExternalSignin<T>>()
 			         // Profile:
 			         .AddScoped<IAuthenticationProfile, AuthenticationProfile<T>>()
 			         //.Decorate<IAuthenticationProfile, AuthenticationProfile>()

@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 namespace DragonSpark.Application.Security.Identity.Model
 {
 	[UsedImplicitly]
-	sealed class AuthenticateAction : IAuthenticateAction
+	sealed class AuthenticationRequest : IAuthenticationRequest
 	{
 		readonly IAuthentication _authentication;
 
-		public AuthenticateAction(IAuthentication authentication) => _authentication = authentication;
+		public AuthenticationRequest(IAuthentication authentication) => _authentication = authentication;
 
 		public async ValueTask<IActionResult?> Get(Challenged parameter)
 		{
 			var (login, origin) = parameter;
 
 			var authentication = await _authentication.Get(login);
-			var result = authentication.Succeeded
-				             ? new LocalRedirectResult(origin)
-				             : authentication.IsLockedOut
-					             ? new RedirectToPageResult("./Lockout")
+			var result = authentication.IsLockedOut
+				             ? new RedirectToPageResult("./Lockout")
+				             : authentication.Succeeded
+					             ? new LocalRedirectResult(origin)
 					             : default(IActionResult?);
 			return result;
 		}

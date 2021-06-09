@@ -1,40 +1,39 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class CreateAction<T> : ICreateAction where T : IdentityUser
+	sealed class CreateRequest<T> : ICreateRequest where T : IdentityUser
 	{
-		readonly ICreate<T>                            _create;
-		readonly IExternalSignin                       _signin;
-		readonly ISelect<SignInResult, IdentityResult> _adapter;
+		readonly ICreate<T>                                    _create;
+		readonly ISelecting<ExternalLoginInfo, IdentityResult> _select;
 
-		public CreateAction(ICreate<T> create, IExternalSignin signin)
-			: this(create, signin, AuthenticationResult.Default) {}
+		public CreateRequest(ICreate<T> create, IExternalSignin signin)
+			: this(create, signin.Then().Select(IdentityResults.Default).Out()) {}
 
-		public CreateAction(ICreate<T> create, IExternalSignin signin, ISelect<SignInResult, IdentityResult> adapter)
+		public CreateRequest(ICreate<T> create, ISelecting<ExternalLoginInfo, IdentityResult> select)
 		{
-			_create  = create;
-			_signin  = signin;
-			_adapter = adapter;
+			_create = create;
+			_select = select;
 		}
 
 		public async ValueTask<IdentityResult> Get(ExternalLoginInfo parameter)
 		{
 			var (_, call) = await _create.Get(parameter);
-			var result = call.Succeeded ? _adapter.Get(await _signin.Await(parameter)) : call;
+			var result = call.Succeeded ? await _select.Await(parameter) : call;
 			return result;
 		}
 	}
 
-	sealed class AuthenticationResult : ISelect<SignInResult, IdentityResult>
+	sealed class IdentityResults : ISelect<SignInResult, IdentityResult>
 	{
-		public static AuthenticationResult Default { get; } = new AuthenticationResult();
+		public static IdentityResults Default { get; } = new IdentityResults();
 
-		AuthenticationResult() {}
+		IdentityResults() {}
 
 		public IdentityResult Get(SignInResult parameter)
 			=> parameter.Succeeded

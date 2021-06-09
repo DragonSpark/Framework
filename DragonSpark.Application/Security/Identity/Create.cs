@@ -20,14 +20,13 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 		{
-			var user      = await _new.Get(parameter);
-			var operation = await _created.Await(new(parameter, user));
-			var result    = new CreateUserResult<T>(user, operation);
+			var user   = await _new.Get(parameter);
+			var call   = await _created.Await(new(parameter, user));
+			var result = new CreateUserResult<T>(user, call);
 			return result;
 		}
 	}
 
-	// TODO: Register
 	sealed class LoggingAwareCreate<T> : ICreate<T> where T : IdentityUser
 	{
 		readonly ICreate<T>                     _previous;

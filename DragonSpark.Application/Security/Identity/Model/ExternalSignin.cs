@@ -10,19 +10,18 @@ namespace DragonSpark.Application.Security.Identity.Model
 {
 	sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 	{
-		readonly UserManager<T>   _users;
+		readonly ILocateUser<T>   _locate;
 		readonly IAuthenticate<T> _authenticate;
 
-		public ExternalSignin(UserManager<T> users, IAuthenticate<T> authenticate)
+		public ExternalSignin(ILocateUser<T> locate, IAuthenticate<T> authenticate)
 		{
-			_users        = users;
+			_locate       = locate;
 			_authenticate = authenticate;
 		}
 
 		public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
 		{
-			var user = await _users.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey)
-			                       .ConfigureAwait(false);
+			var user = await _locate.Await(parameter);
 			if (user != null)
 			{
 				await _authenticate.Await(new(parameter, user));
@@ -74,8 +73,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		readonly IDisplayNameClaim                  _display;
 		readonly ISelect<ExternalLoginInfo, string> _formatter;
 
-		public Claims(IDisplayNameClaim display)
-			: this(display, ExternalLoginIdentity.Default.Then().Select(IdentityFormatter.Default).Get()) {}
+		public Claims(IDisplayNameClaim display) : this(display, ExternalIdentityFormatter.Default) {}
 
 		public Claims(IDisplayNameClaim display, ISelect<ExternalLoginInfo, string> formatter)
 		{
@@ -89,7 +87,8 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 			yield return new Claim(ExternalIdentity.Default, _formatter.Get(information));
 			yield return new Claim(ClaimTypes.AuthenticationMethod, information.LoginProvider);
-			yield return new Claim(DisplayName.Default, _display.Get(information));
+			yield return new Claim(DisplayName.Default,
+			                       information.Principal.FindFirstValue(_display.Get(information)));
 		}
 	}
 

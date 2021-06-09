@@ -20,8 +20,8 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask Get(ExternalLoginInfo parameter)
 		{
-			var user = await _locate.Await(parameter);
-
+			var locate = await _locate.Await(parameter);
+			var user   = locate.Verify();
 			if (await _synchronizer.Get(new(parameter, user)))
 			{
 				await _authentication.RefreshSignInAsync(user);
