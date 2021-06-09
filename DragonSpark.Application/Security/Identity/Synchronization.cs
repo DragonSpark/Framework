@@ -1,29 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity
 {
 	public readonly struct Synchronization<T> where T : IdentityUser
 	{
-		public Synchronization(ExternalLoginInfo login, AuthenticationState<T> profile, ClaimsPrincipal source)
+		public Synchronization(ExternalLoginInfo login, T user)
 		{
-			Login   = login;
-			Profile = profile;
-			Source  = source;
+			Login = login;
+			User  = user;
 		}
 
 		public ExternalLoginInfo Login { get; }
+		public T User { get; }
 
-		public AuthenticationState<T> Profile { get; }
-
-		public ClaimsPrincipal Source { get; }
-
-		public void Deconstruct(out ExternalLoginInfo login, out AuthenticationState<T> profile,
-		                        out ClaimsPrincipal source)
+		public void Deconstruct(out ExternalLoginInfo login, out T user)
 		{
-			login   = Login;
-			profile = Profile;
-			source  = Source;
+			login = Login;
+			user  = User;
 		}
 	}
 }

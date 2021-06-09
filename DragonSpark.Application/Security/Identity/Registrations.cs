@@ -4,31 +4,31 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class IdentityRegistration<T> : ICommand<IServiceCollection> where T : IdentityUser
+	sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 	{
-		readonly IClaims _claims;
+		public static Registrations<T> Default { get; } = new Registrations<T>();
 
-		public IdentityRegistration(IClaims claims) => _claims = claims;
+		Registrations() {}
 
 		public void Execute(IServiceCollection parameter)
 		{
 			// Performance:
-			parameter.Scan(x => x.FromAssemblyOf<IdentityRegistration<T>>()
-			                     .AddClasses(y => y.InExactNamespaces(typeof(IdentityRegistration<T>).Namespace!,
+			parameter.Scan(x => x.FromAssemblyOf<Registrations<T>>()
+			                     .AddClasses(y => y.InExactNamespaces(typeof(Registrations<T>).Namespace!,
 			                                                          typeof(ExternalLoginModel<T>).Namespace!))
 			                     .AsSelf()
 			                     .AsMatchingInterface()
 			                     .WithScopedLifetime())
-			         .AddSingleton(_claims)
+				//
 			         .AddScoped<IUserSynchronization, UserSynchronization<T>>()
 					 //
 			         .AddScoped<ICreateAction, CreateAction<T>>()
-			         .Decorate<ICreateAction, SynchronizedCreateAction>()
+			         //.Decorate<ICreateAction, SynchronizedCreateAction>()
 					 //
 			         .AddScoped<IExternalSignin, ExternalSignin<T>>()
 			         // Profile:
 			         .AddScoped<IAuthenticationProfile, AuthenticationProfile<T>>()
-			         .Decorate<IAuthenticationProfile, AuthenticationProfile>()
+			         //.Decorate<IAuthenticationProfile, AuthenticationProfile>()
 			         //
 			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider.Default));
 		}

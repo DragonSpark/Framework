@@ -11,6 +11,6 @@ namespace DragonSpark.Application.Runtime
 
 		IdentifyingText() {}
 
-		public string Get() => new Guid().ToString();
+		public string Get() => Guid.NewGuid().ToString();
 	}
 }

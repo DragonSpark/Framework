@@ -1,11 +1,13 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
+	[UsedImplicitly]
+	sealed class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
 	{
-		readonly IUserSynchronizer<T> _previous;
+		/*readonly IUserSynchronizer<T> _previous;
 		readonly IMarkModified<T>     _modified;
 
 		public UserSynchronizer(UserClaimSynchronizer<T> previous, IMarkModified<T> modified)
@@ -16,13 +18,15 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask<bool> Get(Synchronization<T> parameter)
 		{
-			var result = await _previous.Get(parameter).ConfigureAwait(false);
+			var result = await _previous.Await(parameter);
 			if (result)
 			{
-				var profile = parameter.Profile.Profile ?? throw new InvalidOperationException();
-				await _modified.Get(profile).ConfigureAwait(false);
+				var (_, (user, _), _) = parameter;
+
+				await _modified.Get(user.Verify()).ConfigureAwait(false);
 			}
 			return result;
-		}
+		}*/
+		public ValueTask<bool> Get(Synchronization<T> parameter) => false.ToOperation();
 	}
 }

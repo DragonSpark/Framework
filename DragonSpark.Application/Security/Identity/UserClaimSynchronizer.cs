@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿/*using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
@@ -32,4 +32,5 @@ namespace DragonSpark.Application.Security.Identity
 			return result;
 		}
 	}
-}
+}*/
+// TODO: Delete

@@ -1,17 +1,102 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	sealed class ExternalSignin<T> : IExternalSignin where T : class
+	sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
+	{
+		readonly UserManager<T>   _users;
+		readonly IAuthenticate<T> _authenticate;
+
+		public ExternalSignin(UserManager<T> users, IAuthenticate<T> authenticate)
+		{
+			_users        = users;
+			_authenticate = authenticate;
+		}
+
+		public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
+		{
+			var user = await _users.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey)
+			                       .ConfigureAwait(false);
+			if (user != null)
+			{
+				await _authenticate.Await(new(parameter, user));
+				return SignInResult.Success;
+			}
+
+			return SignInResult.Failed;
+		}
+	}
+
+	public interface IAuthenticate<T> : IOperation<Login<T>> where T : IdentityUser {}
+
+	sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 	{
 		readonly SignInManager<T> _authentication;
+		readonly IClaims<T>       _claims;
+		readonly bool             _persist;
 
-		public ExternalSignin(SignInManager<T> authentication) => _authentication = authentication;
+		public Authenticate(SignInManager<T> authentication, IClaims<T> claims, bool persist = true)
+		{
+			_authentication = authentication;
+			_claims         = claims;
+			_persist        = persist;
+		}
 
-		public ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
-			=> _authentication.ExternalLoginSignInAsync(parameter.LoginProvider, parameter.ProviderKey, true, true)
-			                  .ToOperation();
+		public async ValueTask Get(Login<T> parameter)
+		{
+			var (_, user) = parameter;
+			var claims = _claims.Get(parameter);
+			await _authentication.SignInWithClaimsAsync(user, _persist, claims);
+		}
+	}
+
+	public interface IDisplayNameClaim : ISelect<ExternalLoginInfo, string> {}
+
+	sealed class DisplayNameClaim : IDisplayNameClaim
+	{
+		public static DisplayNameClaim Default { get; } = new DisplayNameClaim();
+
+		DisplayNameClaim() {}
+
+		public string Get(ExternalLoginInfo parameter) => ClaimTypes.Name;
+	}
+
+	public interface IClaims<T> : ISelect<Login<T>, IEnumerable<Claim>> {}
+
+	sealed class Claims<T> : IClaims<T>
+	{
+		readonly IDisplayNameClaim                  _display;
+		readonly ISelect<ExternalLoginInfo, string> _formatter;
+
+		public Claims(IDisplayNameClaim display)
+			: this(display, ExternalLoginIdentity.Default.Then().Select(IdentityFormatter.Default).Get()) {}
+
+		public Claims(IDisplayNameClaim display, ISelect<ExternalLoginInfo, string> formatter)
+		{
+			_display   = display;
+			_formatter = formatter;
+		}
+
+		public IEnumerable<Claim> Get(Login<T> parameter)
+		{
+			var (information, _) = parameter;
+
+			yield return new Claim(ExternalIdentity.Default, _formatter.Get(information));
+			yield return new Claim(ClaimTypes.AuthenticationMethod, information.LoginProvider);
+			yield return new Claim(DisplayName.Default, _display.Get(information));
+		}
+	}
+
+	public sealed class ExternalLoginIdentity : Select<ExternalLoginInfo, ProviderIdentity>
+	{
+		public static ExternalLoginIdentity Default { get; } = new ExternalLoginIdentity();
+
+		ExternalLoginIdentity() : base(x => new ProviderIdentity(x.LoginProvider, x.ProviderKey)) {}
 	}
 }

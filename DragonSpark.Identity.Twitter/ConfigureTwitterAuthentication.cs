@@ -19,6 +19,7 @@ namespace DragonSpark.Identity.Twitter
 		public void Execute(TwitterOptions parameter)
 		{
 			var settings = _settings();
+
 			parameter.ConsumerKey         = settings.Key;
 			parameter.ConsumerSecret      = settings.Secret;
 			parameter.RetrieveUserDetails = true;

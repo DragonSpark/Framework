@@ -21,11 +21,8 @@ namespace DragonSpark.Application.Compose.Entities
 			_configure = configure;
 		}
 
-		public IdentityStorageUsing<T, TContext> Application() => Application(AllClaims.Default);
-
-		public IdentityStorageUsing<T, TContext> Application(IClaims claims)
-			=> new(_subject.Then(new IdentityRegistration<T>(claims)).Then(AddIdentityComponents<T>.Default),
-			       _configure);
+		public IdentityStorageUsing<T, TContext> Application()
+			=> new(_subject.Then(Registrations<T>.Default).Then(AddIdentityComponents<T>.Default), _configure);
 
 		public IdentityStorageUsing<T, TContext> Is => new(_subject, _configure);
 	}

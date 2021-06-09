@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	sealed class AuthenticationProfile : IAuthenticationProfile
+	/*sealed class AuthenticationProfile : IAuthenticationProfile
 	{
 		readonly IAuthenticationProfile _profile;
 		readonly IAppliedAuthentication _applied;
@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			var result = login != null ? _applied.Get(login) : null;
 			return result;
 		}
-	}
+	}*/
 
 	sealed class AuthenticationProfile<T> : IAuthenticationProfile where T : class
 	{

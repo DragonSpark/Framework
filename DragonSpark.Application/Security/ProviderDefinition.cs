@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security
 {
+	// TODO: Remove
 	public class ProviderDefinition
 	{
 		public ProviderDefinition(string name, params IUserMapping[] definitions)

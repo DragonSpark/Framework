@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Commands
 {
-	class ConditionalCommand<T> : ICommand<T>
+	public class ConditionalCommand<T> : ICommand<T>
 	{
 		readonly ICondition<T> _condition;
 		readonly ICommand<T>   _false;

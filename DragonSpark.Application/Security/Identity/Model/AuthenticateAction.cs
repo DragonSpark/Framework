@@ -15,12 +15,13 @@ namespace DragonSpark.Application.Security.Identity.Model
 		{
 			var (login, origin) = parameter;
 
-			var result = await _authentication.Get(login);
-			return result.Succeeded
-				       ? new LocalRedirectResult(origin)
-				       : result.IsLockedOut
-					       ? new RedirectToPageResult("./Lockout")
-					       : null;
+			var authentication = await _authentication.Get(login);
+			var result = authentication.Succeeded
+				             ? new LocalRedirectResult(origin)
+				             : authentication.IsLockedOut
+					             ? new RedirectToPageResult("./Lockout")
+					             : default(IActionResult?);
+			return result;
 		}
 	}
 }
