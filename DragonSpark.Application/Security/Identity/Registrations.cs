@@ -32,12 +32,12 @@ namespace DragonSpark.Application.Security.Identity
 			         .Then.Start<ICreated<T>>()
 			         .Forward<Created<T>>()
 			         .Decorate<AddLoginAwareCreated<T>>()
+			         .Decorate<SynchronizationAwareCreated<T>>()
 			         .Scoped()
 			         //
 			         .Then.AddScoped<IExternalSignin, ExternalSignin<T>>()
 			         // Profile:
 			         .AddScoped<IAuthenticationProfile, AuthenticationProfile<T>>()
-			         //.Decorate<IAuthenticationProfile, AuthenticationProfile>()
 			         //
 			         .AddControllers(x => x.ModelBinderProviders.Insert(0, ModelBinderProvider.Default));
 		}

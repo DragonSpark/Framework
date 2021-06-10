@@ -4,25 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model
 {
-	/*sealed class AuthenticationProfile : IAuthenticationProfile
-	{
-		readonly IAuthenticationProfile _profile;
-		readonly IAppliedAuthentication _applied;
-
-		public AuthenticationProfile(IAuthenticationProfile profile, IAppliedAuthentication applied)
-		{
-			_profile = profile;
-			_applied = applied;
-		}
-
-		public async ValueTask<ExternalLoginInfo?> Get()
-		{
-			var login  = await _profile.Get();
-			var result = login != null ? _applied.Get(login) : null;
-			return result;
-		}
-	}*/
-
 	sealed class AuthenticationProfile<T> : IAuthenticationProfile where T : class
 	{
 		readonly SignInManager<T> _authentication;

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	// TODO: Register:
 	sealed class AddLoginAwareCreated<T> : ICreated<T> where T : class
 	{
 		readonly ICreated<T>    _previous;

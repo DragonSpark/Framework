@@ -2,7 +2,6 @@
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
@@ -19,7 +18,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
 {
@@ -53,10 +51,6 @@ namespace DragonSpark.Application
 		public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
 
 		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity?.Name ?? anonymous;
-
-		public static IUserMapping Promote<T>(this IAccessor<T> @this, string key, bool required = false)
-			where T : IdentityUser
-			=> new UserMapping<T>(@this, key, required);
 
 		public static string? Value(this ModelBindingContext @this, string key) => @this.ValueProvider.Get(key);
 
