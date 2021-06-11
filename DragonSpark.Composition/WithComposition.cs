@@ -58,8 +58,8 @@ namespace DragonSpark.Composition
 					       new IsValidDependency(owner, Array.Of(typeof(Func<,>), typeof(Func<,,>)))) {}
 
 				public CanSelectDependency(CanLocateDependency locate, IsValidDependency valid)
-					: base(locate,
-					       Start.A.Selection<ParameterInfo>().By.Calling(x => x.ParameterType).Select(valid).Out()) {}
+					: base(locate.Then(),
+					       Start.A.Selection<ParameterInfo>().By.Calling(x => x.ParameterType).Select(valid)) {}
 			}
 
 			sealed class CanLocateDependency : ICondition<ParameterInfo>
@@ -115,8 +115,8 @@ namespace DragonSpark.Composition
 					                                 .ToArray();
 					if (candidates.Length == 0)
 					{
-						throw new InvalidOperationException("Missing public constructor for Type: " +
-						                                    implementingType.FullName);
+						throw new
+							InvalidOperationException($"Missing public constructor for Type: {implementingType.FullName}");
 					}
 
 					foreach (var candidate in candidates.OrderByDescending(c => c.GetParameters().Length)
@@ -186,8 +186,9 @@ namespace DragonSpark.Composition
 
 			public IServiceProvider CreateServiceProvider(IServiceContainer containerBuilder)
 			{
-				var result = new Provider(_factory.CreateServiceProvider(containerBuilder));
-				containerBuilder.Decorate<IServiceProvider>((_, provider) => new Provider(provider));
+				var result = new ActivationAwareServiceProvider(_factory.CreateServiceProvider(containerBuilder));
+				containerBuilder.Decorate<IServiceProvider>((_, provider)
+					                                            => new ActivationAwareServiceProvider(provider));
 				containerBuilder.Decorate<IServiceScopeFactory>((_, factory) => new ServiceScopeFactory(factory));
 				return result;
 			}
@@ -207,50 +208,12 @@ namespace DragonSpark.Composition
 
 				public Scope(IServiceScope scope) => _scope = scope;
 
+				public IServiceProvider ServiceProvider => new ActivationAwareServiceProvider(_scope.ServiceProvider);
+
 				public void Dispose()
 				{
 					_scope.Dispose();
 				}
-
-				public IServiceProvider ServiceProvider => new Provider(_scope.ServiceProvider);
-			}
-		}
-
-		sealed class Provider : IServiceProvider, IDisposable
-		{
-			readonly IActivator       _activator;
-			readonly ICondition<Type> _condition;
-			readonly IServiceProvider _provider;
-
-			public Provider(IServiceProvider provider) : this(provider, CanActivate.Default, Activator.Default) {}
-
-			public Provider(IServiceProvider provider, ICondition<Type> condition, IActivator activator)
-			{
-				_provider  = provider;
-				_condition = condition;
-				_activator = activator;
-			}
-
-			public object? GetService(Type serviceType)
-			{
-				try
-				{
-					return _provider.GetService(serviceType);
-				}
-				catch (InvalidOperationException)
-				{
-					if (_condition.Get(serviceType))
-					{
-						return _activator.Get(serviceType);
-					}
-
-					throw;
-				}
-			}
-
-			public void Dispose()
-			{
-				_provider.ToDisposable().Dispose();
 			}
 		}
 	}
