@@ -54,9 +54,7 @@ namespace DragonSpark.Testing.Composition
 			                            .WithComposition()
 			                            .Operations()
 			                            .Run();
-			host.Services.GetType()
-			    .FullName.Should()
-			    .Be("DragonSpark.Composition.WithComposition+Provider");
+			host.Services.Should().BeOfType<ActivationAwareServiceProvider>();
 		}
 
 		[Fact]
