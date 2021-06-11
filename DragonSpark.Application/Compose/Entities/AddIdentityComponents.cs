@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
+using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -16,6 +17,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public void Execute(IServiceCollection parameter)
 		{
+			var stamp = new ConfigureSecurityStamp(parameter.Deferred<IKnownClaims>());
 			parameter.Start<IStateViews<T>>()
 			         .Forward<StateViews<T>>()
 			         .Decorate<MemoryAwareStateViews<T>>()
@@ -38,7 +40,9 @@ namespace DragonSpark.Application.Compose.Entities
 			         //
 			         .Then.AddScoped<IUserClaimsPrincipalFactory<T>, UserClaimsPrincipals<T>>()
 			         //
-			         .Decorate<INavigateToSignOut, MemoryAwareNavigateToSignOut<T>>();
+			         .Decorate<INavigateToSignOut, MemoryAwareNavigateToSignOut<T>>()
+			         //
+			         .Configure<SecurityStampValidatorOptions>(stamp.Execute);
 		}
 	}
 }
