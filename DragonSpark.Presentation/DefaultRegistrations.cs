@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
+using DragonSpark.Presentation.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 
@@ -43,6 +45,15 @@ namespace DragonSpark.Presentation
 			         .Start<IApplyQueryStringValues>()
 			         .Forward<ApplyQueryStringValues>()
 			         .Scoped()
+			         //
+			         .Then.Start<ICurrentPrincipal>()
+			         .Forward<CurrentPrincipal>()
+			         .Scoped()
+					 //
+			         .Then.Start<DefaultExternalLogin>()
+			         .Include(x => x.Dependencies.Recursive())
+			         .Scoped()
+					 //
 				;
 		}
 	}

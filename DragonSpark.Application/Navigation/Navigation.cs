@@ -7,6 +7,9 @@ namespace DragonSpark.Application.Navigation
 {
 	public class Navigation : Command
 	{
+		protected Navigation(NavigationManager navigation, Func<string> path, bool force = false)
+			: base(new Navigate(navigation, force).Then().Bind(path)) {}
+
 		protected Navigation(NavigationManager navigation, string path, bool force = false)
 			: base(new Navigate(navigation, force).Then().Bind(path)) {}
 	}

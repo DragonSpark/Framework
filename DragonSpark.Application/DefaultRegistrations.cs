@@ -53,6 +53,10 @@ namespace DragonSpark.Application
 			         .And<RedirectLoginPath>()
 			         .Scoped()
 			         //
+			         .Then.Start<RefreshCurrentPath>()
+			         .And<CurrentPath>()
+			         .Scoped()
+			         //
 			         .Then.Start<AsyncLock>()
 			         .Use<StateConnectionLock>()
 			         .Scoped()

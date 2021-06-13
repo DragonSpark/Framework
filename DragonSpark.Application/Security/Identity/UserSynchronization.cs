@@ -6,25 +6,25 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class UserSynchronization<T> : IUserSynchronization where T : IdentityUser
 	{
-		readonly SignInManager<T>     _authentication;
-		readonly ILocateUser<T>       _locate;
-		readonly IUserSynchronizer<T> _synchronizer;
+		readonly IRefreshAuthentication<T> _refresh;
+		readonly ILocateUser<T>            _locate;
+		readonly IUserSynchronizer<T>      _synchronizer;
 
-		public UserSynchronization(SignInManager<T> authentication, ILocateUser<T> locate,
+		public UserSynchronization(IRefreshAuthentication<T> refresh, ILocateUser<T> locate,
 		                           IUserSynchronizer<T> synchronizer)
 		{
-			_authentication = authentication;
-			_locate         = locate;
-			_synchronizer   = synchronizer;
+			_refresh      = refresh;
+			_locate       = locate;
+			_synchronizer = synchronizer;
 		}
 
 		public async ValueTask Get(ExternalLoginInfo parameter)
 		{
 			var locate = await _locate.Await(parameter);
 			var user   = locate.Verify();
-			if (await _synchronizer.Get(new(parameter, user)))
+			if (await _synchronizer.Await(new(parameter, user)))
 			{
-				await _authentication.RefreshSignInAsync(user);
+				await _refresh.Await(user);
 			}
 		}
 	}

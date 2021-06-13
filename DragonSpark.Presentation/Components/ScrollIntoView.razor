@@ -9,10 +9,13 @@
 
     // ReSharper disable once FlagArgument
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
+        => Enabled && firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 
     [Parameter]
     public Guid Identifier { get; set; } = Guid.NewGuid();
+
+    [Parameter]
+    public bool Enabled { get; set; } = true;
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
@@ -38,6 +39,9 @@ namespace DragonSpark.Application
 			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
 
 		/**/
+
+		public static string Value(this Accessed @this)
+			=> @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
 
 		public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 

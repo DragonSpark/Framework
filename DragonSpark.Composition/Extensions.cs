@@ -40,7 +40,7 @@ namespace DragonSpark.Composition
 		}
 
 		public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
-			=> new DeferredService<T>(@this).Then().Singleton();
+			=> new DeferredService<T>(@this).Get;
 
 		public static IServiceCollection Replace<T>(this IServiceCollection @this, ServiceLifetime lifetime)
 			where T : class
