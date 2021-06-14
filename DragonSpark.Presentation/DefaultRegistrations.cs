@@ -6,7 +6,7 @@ using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
-using DragonSpark.Presentation.Security;
+using DragonSpark.Presentation.Security.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 
