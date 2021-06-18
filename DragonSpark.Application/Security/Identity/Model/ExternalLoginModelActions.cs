@@ -22,6 +22,16 @@ namespace DragonSpark.Application.Security.Identity.Model
 			_authentication = authentication;
 		}
 
+		public IActionResult Get(Challenging parameter)
+		{
+			var (provider, origin) = parameter;
+			var properties = _authentication.ConfigureExternalAuthenticationProperties(provider, origin);
+			var result     = new ChallengeResult(provider, properties);
+			return result;
+		}
+
+		public ValueTask<IActionResult?> Get(Challenged parameter) => _authenticate.Get(parameter);
+
 		public async ValueTask<bool> Get((ExternalLoginInfo Login, ModelStateDictionary State) parameter)
 		{
 			var (login, state) = parameter;
@@ -36,16 +46,6 @@ namespace DragonSpark.Application.Security.Identity.Model
 				}
 			}
 
-			return result;
-		}
-
-		public ValueTask<IActionResult?> Get(Challenged parameter) => _authenticate.Get(parameter);
-
-		public IActionResult Get(Challenging parameter)
-		{
-			var (provider, origin) = parameter;
-			var properties = _authentication.ConfigureExternalAuthenticationProperties(provider, origin);
-			var result     = new ChallengeResult(provider, properties);
 			return result;
 		}
 	}

@@ -1,0 +1,30 @@
+﻿@using DragonSpark.Presentation.Components.Navigation
+@using JetBrains.Annotations
+@inject IApplyQueryStringValues Apply
+
+<ScrollIntoView Identifier="@Identifier" Enabled="@Enabled">
+    @ChildContent
+</ScrollIntoView>
+
+@code {
+
+    [Parameter]
+    public string Identifier { get; set; } = default!;
+
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [QueryStringParameter, UsedImplicitly]
+    public string? ScrollToSection { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Apply.Execute(this);
+        Enabled = ScrollToSection == Identifier;
+        base.OnInitialized();
+    }
+
+}

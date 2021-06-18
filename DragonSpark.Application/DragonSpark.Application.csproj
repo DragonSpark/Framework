@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Flurl" Version="3.0.2" />
     <PackageReference Include="Humanizer" Version="2.10.1" />
     <PackageReference Include="AutoBogus.Conventions" Version="2.13.0" />
     <PackageReference Include="Markdig" Version="0.24.0" />

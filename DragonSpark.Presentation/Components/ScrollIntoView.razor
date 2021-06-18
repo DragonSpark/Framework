@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime Runtime
+﻿@using DragonSpark.Application.Runtime
+@inject IJSRuntime Runtime
 
 <section id="@Identifier">
     @ChildContent
@@ -12,7 +13,7 @@
         => Enabled && firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 
     [Parameter]
-    public Guid Identifier { get; set; } = Guid.NewGuid();
+    public string Identifier { get; set; } = IdentifyingText.Default.Get();
 
     [Parameter]
     public bool Enabled { get; set; } = true;

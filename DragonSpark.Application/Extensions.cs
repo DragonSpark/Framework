@@ -56,8 +56,6 @@ namespace DragonSpark.Application
 
 		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity?.Name ?? anonymous;
 
-		public static string? Value(this ModelBindingContext @this, string key) => @this.ValueProvider.Get(key);
-
 		public static string? Get(this IValueProvider @this, string key)
 		{
 			var value  = @this.GetValue(key);

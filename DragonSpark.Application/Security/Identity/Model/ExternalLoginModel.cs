@@ -15,11 +15,16 @@ namespace DragonSpark.Application.Security.Identity.Model
 
 		public string? LoginProvider { get; private set; }
 
-		public IActionResult OnGet(Challenging context) => _actions.Get(context);
+		public IActionResult OnGet([ModelBinder(typeof(ExternalLoginChallengingModelBinder))]
+		                           Challenging context)
+			=> _actions.Get(context);
 
-		public IActionResult OnPost(Challenging context) => _actions.Get(context);
+		public IActionResult OnPost([ModelBinder(typeof(ExternalLoginChallengingModelBinder))]
+		                            Challenging context)
+			=> _actions.Get(context);
 
-		public async Task<IActionResult> OnGetCallback(Challenged context)
+		public async Task<IActionResult> OnGetCallback([ModelBinder(typeof(ChallengedModelBinder))]
+		                                               Challenged context)
 			=> await _actions.Get(context) ?? (await _actions.Get((context.Login, ModelState))
 				                                   ? LocalRedirect(context.Origin)
 				                                   : Bind(context.Login));
