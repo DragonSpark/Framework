@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.Security.Identity
+﻿using DragonSpark.Application.Security.Identity.Claims;
+
+namespace DragonSpark.Application.Security.Identity
 {
 	public sealed class DisplayName : Text.Text
 	{

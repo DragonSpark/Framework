@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Security;
+using DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Identity.Reddit
 {

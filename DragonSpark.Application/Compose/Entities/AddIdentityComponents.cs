@@ -1,6 +1,7 @@
-﻿using DragonSpark.Application.Security;
-using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Application.Security.Identity.Model;
+using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Authorization;

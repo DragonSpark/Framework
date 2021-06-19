@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Composition;
 using DragonSpark.Identity.Reddit.Claims;
 using DragonSpark.Model.Commands;

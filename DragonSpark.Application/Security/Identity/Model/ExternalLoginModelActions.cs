@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Application.Security.Identity.Profile;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

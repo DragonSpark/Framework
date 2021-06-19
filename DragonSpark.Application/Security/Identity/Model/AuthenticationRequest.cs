@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

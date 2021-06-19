@@ -93,7 +93,7 @@ namespace DragonSpark.Compose
 			return result ? @this.Remove(key) : result;
 		}
 
-		public static bool TryGet<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, out TOut element)
+		public static bool TryGet<TIn, TOut>(this IConditional<TIn, TOut> @this, TIn key, out TOut element)
 		{
 			var result = @this.IsSatisfiedBy(key);
 			element = result ? @this.Get(key) : default!;

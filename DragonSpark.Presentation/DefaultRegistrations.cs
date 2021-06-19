@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Security;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Diagnostics;

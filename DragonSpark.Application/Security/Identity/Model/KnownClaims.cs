@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Application.Security.Identity.Claims;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Model

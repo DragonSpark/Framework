@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Identity.Twitter.Claims
 {

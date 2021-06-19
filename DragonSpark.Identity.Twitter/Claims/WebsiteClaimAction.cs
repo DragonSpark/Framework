@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security.Identity.Claims;
 using Microsoft.AspNetCore.Authentication;
 
 namespace DragonSpark.Identity.Twitter.Claims

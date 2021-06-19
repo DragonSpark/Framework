@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\.Remote\AspNet.Security.OAuth.Providers\src\AspNet.Security.OAuth.Mixcloud\AspNet.Security.OAuth.Mixcloud.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+  </ItemGroup>
+</Project>

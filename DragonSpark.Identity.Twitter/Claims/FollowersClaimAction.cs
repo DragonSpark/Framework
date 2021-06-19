@@ -1,6 +1,7 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security.Identity.Claims;
 
-namespace DragonSpark.Identity.Twitter.Claims {
+namespace DragonSpark.Identity.Twitter.Claims
+{
 	public sealed class FollowersClaimAction : ClaimAction
 	{
 		public static FollowersClaimAction Default { get; } = new FollowersClaimAction();
