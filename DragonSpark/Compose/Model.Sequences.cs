@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using NetFabric.Hyperlinq;
+using DragonSpark.Runtime;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Array = System.Array;
 
 namespace DragonSpark.Compose
@@ -93,42 +92,9 @@ namespace DragonSpark.Compose
 		public static Session<T> Session<T>(this IStorage<T> @this, in uint size)
 			=> new Session<T>(@this.Get(size), @this);
 
-		public static async ValueTask<ICollection<T>> Emit<TIn, T>(this IEnumerable<TIn> @this, Await<TIn, T> select)
-		{
-			var result = new List<T>();
-			foreach (var @in in @this.AsValueEnumerable())
-			{
-				result.Add(await select(@in!));
-			}
-			return result;
-		}
 
-		public static async IAsyncEnumerable<T> Adapt<T>(this IEnumerable<ValueTask<T>> @this)
-		{
-			using var iterator = @this.GetEnumerator();
-			while (iterator.MoveNext())
-			{
-				yield return await iterator.Current;
-			}
-		}
-
-		public static async IAsyncEnumerable<T> Adapt<T>(this IEnumerable<ConfiguredValueTaskAwaitable<T>> @this)
-		{
-			using var iterator = @this.GetEnumerator();
-			while (iterator.MoveNext())
-			{
-				yield return await iterator.Current;
-			}
-		}
-
-		public static async IAsyncEnumerable<TTo> Select<T, TTo>(this IAsyncEnumerable<T> @this, Await<T, TTo> select)
-		{
-			var iterator = @this.GetAsyncEnumerator();
-			while (await iterator.MoveNextAsync())
-			{
-				yield return await select(iterator.Current);
-			}
-		}
+		public static ArrayBuilder<T> AsBuilder<T>(this IList @this) => new(@this.Count);
+		public static ArrayBuilder<T> AsBuilder<T>(this Array<T> @this) => new((int)@this.Length);
 
 	}
 }
