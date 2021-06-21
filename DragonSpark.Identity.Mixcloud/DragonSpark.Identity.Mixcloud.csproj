@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\.Remote\AspNet.Security.OAuth.Providers\src\AspNet.Security.OAuth.Mixcloud\AspNet.Security.OAuth.Mixcloud.csproj" />
+    <PackageReference Include="AspNet.Security.OAuth.Mixcloud" Version="5.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
   </ItemGroup>
 </Project>
