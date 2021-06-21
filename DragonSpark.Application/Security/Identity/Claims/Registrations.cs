@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity.Claims
 			         .Scoped()
 			         .Then.Start<IDisplayNameClaim>()
 			         .Forward<DisplayNameClaim>()
-			         .Scoped()
+			         .Singleton()
 			         //
 			         .Then.Start<IExtractClaims>()
 			         .Forward<ExtractClaims>()
