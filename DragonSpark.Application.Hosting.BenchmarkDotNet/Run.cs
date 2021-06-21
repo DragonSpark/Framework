@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet
 	{
 		public static Run<T> Default { get; } = new Run<T>();
 
-		Run() : this(BenchmarkRunner.Run<T>) {}
+		Run() : this(x => BenchmarkRunner.Run<T>(x)) {}
 
 		public Run(Func<IConfig, Summary> select) : base(select) {}
 	}
