@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Antiforgery
+@using DragonSpark.Presentation.Security
+@inject AntiforgeryStore Store
+
+@ChildContent(Store.Get())
+
+@code {
+
+
+    [Parameter]
+    public RenderFragment<AntiforgeryTokenSet> ChildContent { get; set; } = default!;
+
+}

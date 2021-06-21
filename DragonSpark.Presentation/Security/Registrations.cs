@@ -12,7 +12,10 @@ namespace DragonSpark.Presentation.Security
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Register<ContentSecurityConfiguration>();
+			parameter.Start<AntiforgeryStore>()
+			         .Scoped()
+					 //
+			         .Then.Register<ContentSecurityConfiguration>();
 		}
 	}
 }
