@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences;
+using System;
 using System.Buffers;
 using System.Diagnostics;
+using Array = System.Array;
 
 namespace DragonSpark.Runtime
 {
@@ -11,6 +13,8 @@ namespace DragonSpark.Runtime
 	/// <typeparam name="T">The element type.</typeparam>
 	public struct ArrayBuilder<T> : IDisposable
 	{
+		public static implicit operator Array<T>(ArrayBuilder<T> instance) => instance.AsSpan().ToArray();
+
 		const int defaultMinCapacity    = 4;
 		const int maxCoreClrArrayLength = 0x7fefffff; // For byte arrays the limit is slightly larger
 
