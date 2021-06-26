@@ -10,11 +10,11 @@ namespace DragonSpark.Presentation.Security.Identity
 		readonly IResult<string> _return;
 		readonly string          _path;
 
-		protected ExternalLogin(string @return) : this(@return.Start().Get()) {}
+		public ExternalLogin(string @return) : this(@return.Start().Get()) {}
 
-		protected ExternalLogin(IResult<string> @return) : this(@return, ExternalLoginPath.Default) {}
+		public ExternalLogin(IResult<string> @return) : this(@return, ExternalLoginPath.Default) {}
 
-		protected ExternalLogin(IResult<string> @return, string path)
+		public ExternalLogin(IResult<string> @return, string path)
 		{
 			_return = @return;
 			_path   = path;

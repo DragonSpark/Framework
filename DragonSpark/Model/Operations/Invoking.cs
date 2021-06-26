@@ -1,24 +1,21 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	sealed class Invoking<T> : ISelect<ValueTask<T>, ValueTask>
+	public class Invoking<T> : IOperation<T>
 	{
-		readonly Action<T> _configure;
-		readonly bool      _capture;
+		readonly Action<T> _action;
 
-		public Invoking(Action<T> configure, bool capture = false)
-		{
-			_configure = configure;
-			_capture   = capture;
-		}
+		public Invoking(Action action) : this(Start.A.Command(action).Accept<T>()) {}
 
-		public async ValueTask Get(ValueTask<T> parameter)
+		public Invoking(Action<T> action) => _action = action;
+
+		public ValueTask Get(T parameter)
 		{
-			var input = parameter.IsCompletedSuccessfully ? parameter.Result : await parameter.ConfigureAwait(_capture);
-			_configure(input);
+			_action(parameter);
+			return Task.CompletedTask.ToOperation();
 		}
 	}
 }

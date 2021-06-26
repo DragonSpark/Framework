@@ -29,6 +29,9 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 			         .Forward<RefreshAuthentication<T>>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
+			        
+				//
+
 				;
 		}
 	}

@@ -15,6 +15,6 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 			               .Store()
 			               .In(memory)
 			               .For(TimeSpan.FromMinutes(1).Slide())
-			               .Using(StoredStateKey<T>.Default)) {}
+			               .Using(StateViewKey.Default)) {}
 	}
 }

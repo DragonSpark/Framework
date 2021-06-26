@@ -74,7 +74,7 @@ namespace DragonSpark.Compose.Model
 		public OperationContext<_> Terminate(Func<T, ValueTask> command)
 			=> new(Get().Select(new OperationSelect<T>(command)));
 
-		public OperationContext<_> Terminate(System.Action<T> command) => new(Get().Select(new Invoking<T>(command)));
+		public OperationContext<_> Terminate(System.Action<T> command) => new(Get().Select(new InvokingParameter<T>(command)));
 
 		public OperationResultSelector<_, T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 

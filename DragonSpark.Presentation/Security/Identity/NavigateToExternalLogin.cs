@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Security.Identity
 {
 	public class NavigateToExternalLogin : Navigation<string>
 	{
-		protected NavigateToExternalLogin(NavigationManager navigation, IAlteration<string> login)
+		public NavigateToExternalLogin(NavigationManager navigation, IAlteration<string> login)
 			: base(navigation, login.Get, true) {}
 	}
 }

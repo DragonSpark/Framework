@@ -41,7 +41,7 @@ namespace DragonSpark.Application.Compose.Entities
 			         //
 			         .Then.AddScoped<IUserClaimsPrincipalFactory<T>, UserClaimsPrincipals<T>>()
 			         //
-			         .Decorate<INavigateToSignOut, MemoryAwareNavigateToSignOut<T>>()
+			         .Decorate<INavigateToSignOut, AuthenticationStateAwareNavigateToSignOut>()
 			         //
 			         .Configure<SecurityStampValidatorOptions>(stamp.Execute);
 		}
