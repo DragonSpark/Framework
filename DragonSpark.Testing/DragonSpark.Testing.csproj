@@ -11,6 +11,29 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Application\**" />
+    <Compile Remove="Aspects\**" />
+    <Compile Remove="Expressions\**" />
+    <Compile Remove="Model\Extents\**" />
+    <Compile Remove="Model\Sources\**" />
+    <Compile Remove="Model\Specifications\**" />
+    <Compile Remove="Operations\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="Aspects\**" />
+    <EmbeddedResource Remove="Expressions\**" />
+    <EmbeddedResource Remove="Model\Extents\**" />
+    <EmbeddedResource Remove="Model\Sources\**" />
+    <EmbeddedResource Remove="Model\Specifications\**" />
+    <EmbeddedResource Remove="Operations\**" />
+    <None Remove="Application\**" />
+    <None Remove="Aspects\**" />
+    <None Remove="Expressions\**" />
+    <None Remove="Model\Extents\**" />
+    <None Remove="Model\Sources\**" />
+    <None Remove="Model\Specifications\**" />
+    <None Remove="Operations\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
@@ -29,14 +52,7 @@
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\Console\" />
-    <Folder Include="Aspects\" />
     <Folder Include="Compose\Extents\Validation\" />
-    <Folder Include="Expressions\" />
-    <Folder Include="Model\Extents\" />
     <Folder Include="Model\Selection\Adapters\" />
-    <Folder Include="Model\Sources\Tables\" />
-    <Folder Include="Model\Specifications\" />
-    <Folder Include="Operations\" />
   </ItemGroup>
 </Project>
