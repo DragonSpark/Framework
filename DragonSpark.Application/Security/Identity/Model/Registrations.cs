@@ -23,7 +23,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			         .And<ExternalLoginModel<T>>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
-					 //
+			         //
 			         //
 			         .Then.Start<IAddExternalSignin>()
 			         .Forward<AddExternalSignin<T>>()
@@ -44,7 +44,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			         .Then.Start<IClearAuthenticationState>()
 			         .Forward<ClearAuthenticationState>()
 			         .Singleton()
-					 ;
+				;
 		}
 	}
 }

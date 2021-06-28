@@ -1,6 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Security.Identity
@@ -11,9 +9,6 @@ namespace DragonSpark.Application.Security.Identity
 
 		Registrations() : base(Authentication.Registrations<T>.Default, Claims.Registrations.Default,
 		                       Model.Registrations<T>.Default, Profile.Registrations<T>.Default,
-		                       Start.A.Command<IServiceCollection>(x => x.Start<IMarkModified<T>>()
-		                                                                 .Forward<MarkModified<T>>()
-		                                                                 .Scoped())
-		                            .Get()) {}
+		                       DefaultRegistrations<T>.Default) {}
 	}
 }
