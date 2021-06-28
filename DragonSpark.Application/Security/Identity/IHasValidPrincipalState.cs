@@ -3,5 +3,5 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public interface IHasValidSecurityState : IDepending<ClaimsPrincipal> {}
+	public interface IHasValidPrincipalState : IDepending<ClaimsPrincipal> {}
 }

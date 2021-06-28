@@ -16,12 +16,17 @@ namespace DragonSpark.Application.Security.Identity
 			         .Forward<MarkModified<T>>()
 			         .Scoped()
 			         //
-			         .Then.Start<IHasValidSecurityState>()
-			         .Forward<HasValidSecurityState<T>>()
+			         .Then.Start<IHasValidPrincipalState>()
+			         .Forward<HasValidPrincipalState<T>>()
 			         .Scoped()
 			         //
 			         .Then.Start<IsCurrentSecurityStateValid>()
-			         .Scoped();
+			         .Scoped()
+			         //
+			         .Then.Start<IHasValidState<T>>()
+			         .Forward<HasValidState<T>>()
+			         .Scoped()
+				;
 		}
 	}
 }

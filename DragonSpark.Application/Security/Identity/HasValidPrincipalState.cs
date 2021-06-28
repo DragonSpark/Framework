@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	public sealed class HasValidSecurityState<T> : IHasValidSecurityState where T : class
+	sealed class HasValidPrincipalState<T> : IHasValidPrincipalState where T : class
 	{
 		readonly SignInManager<T> _authentication;
 		readonly IClear           _clear;
 
-		public HasValidSecurityState(SignInManager<T> authentication, IClear clear)
+		public HasValidPrincipalState(SignInManager<T> authentication, IClear clear)
 		{
 			_authentication = authentication;
 			_clear          = clear;
