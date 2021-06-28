@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Runtime;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
@@ -11,20 +11,21 @@ namespace DragonSpark.Composition.Compose
 
 		public RecursiveRelatedTypes(IRelatedTypes related) => _related = related;
 
-		IEnumerable<Type> Yield(Type current)
+		void Yield(List<Type> all, Type current)
 		{
-			foreach (var type in _related.Get(current).Open())
+			var related = _related.Get(current);
+			all.AddRange(related);
+			foreach (var type in related)
 			{
-				yield return type;
-
-				foreach (var other in Yield(type).AsValueEnumerable())
-				{
-					yield return other!;
-				}
+				Yield(all, type);
 			}
 		}
 
-		// Performance:
-		public Array<Type> Get(Type parameter) => Yield(parameter).AsValueEnumerable().Distinct().ToArray();
+		public List<Type> Get(Type parameter)
+		{
+			var result = new List<Type>();
+			Yield(result, parameter);
+			return result;
+		}
 	}
 }

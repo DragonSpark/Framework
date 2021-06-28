@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
+using DragonSpark.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using System;
@@ -25,7 +26,19 @@ namespace DragonSpark.Composition.Compose
 			_candidates = candidates;
 		}
 
-		public Array<Type> Get(Type parameter)
-			=> _candidates.Get(parameter).Open().AsValueEnumerable().Where(_can).ToArray();
+		public List<Type> Get(Type parameter)
+		{
+
+			var types  = _candidates.Get(parameter).Open();
+			var result = new List<Type>();
+
+			foreach (var type in types.Where(_can))
+			{
+				result.Add(type);
+			}
+
+			return result;
+
+		}
 	}
 }

@@ -63,7 +63,7 @@ namespace DragonSpark.Runtime
 		//     }
 		// }
 
-		public readonly Span<T> AsSpan() => buffer!.AsSpan().Slice(0, Count);
+		public readonly Span<T> AsSpan() => buffer!.AsSpan(..Count);
 
 		/// <summary>
 		/// Adds an item to the backing array, resizing it if necessary.
@@ -78,6 +78,16 @@ namespace DragonSpark.Runtime
 
 			UncheckedAdd(item);
 		}
+
+		public void Add(ArrayBuilder<T> others)
+		{
+			var total = Count + others.Count;
+			EnsureCapacity(total);
+			Array.Copy(others.buffer!, buffer!, Count);
+			Count = total;
+		}
+
+
 
 		/// <summary>
 		/// Adds an item to the backing array, without checking if there is room.

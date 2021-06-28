@@ -2,6 +2,7 @@
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Reflection.Types;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
