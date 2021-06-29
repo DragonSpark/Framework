@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Selection.Alterations;
-using NetFabric.Hyperlinq;
+﻿using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
@@ -19,10 +19,12 @@ namespace DragonSpark.Model.Sequences.Memory
 			Length  = length;
 		}
 
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Lease<T> Size(int size) => new(_owner, _memory, (uint)size);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Lease<T> Size(uint size) => new(_owner, _memory, size);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Span<T> AsSpan() => _memory.Span[..(int)Length];
 
 		public uint Length { get; }

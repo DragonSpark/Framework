@@ -18,6 +18,7 @@ namespace DragonSpark.Composition.Compose
 			_services = services;
 			_types    = types;
 			_length   = length;
+
 		}
 
 		public RegistrationResult Singleton()
@@ -28,7 +29,14 @@ namespace DragonSpark.Composition.Compose
 				services = services.AddSingleton(_types[i]);
 			}
 
+			var result = Result(services);
+			return result;
+		}
+
+		RegistrationResult Result(IServiceCollection services)
+		{
 			var result = services.Result();
+			_types.Dispose();
 			return result;
 		}
 
