@@ -1,4 +1,4 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
@@ -8,23 +8,42 @@ namespace DragonSpark.Composition.Compose
 	sealed class RecursiveRelatedTypes : IRelatedTypes
 	{
 		readonly IRelatedTypes _related;
+		readonly ILeases<Type> _leases;
 
-		public RecursiveRelatedTypes(IRelatedTypes related) => _related = related;
+		public RecursiveRelatedTypes(IRelatedTypes related) : this(related, Leases<Type>.Default) {}
 
-		void Yield(List<Type> all, Type current)
+		public RecursiveRelatedTypes(IRelatedTypes related, ILeases<Type> leases)
 		{
-			var related = _related.Get(current);
-			all.AddRange(related);
-			foreach (var type in related)
+			_related = related;
+			_leases  = leases;
+		}
+
+		void Expand(ISet<Type> state, Type current)
+		{
+			using var related = _related.Get(current);
+			var       length  = related.Length;
+			for (int i = 0; i < length; i++)
 			{
-				Yield(all, type);
+				var item = related[i];
+				if (state.Add(item))
+				{
+					Expand(state, item);
+				}
 			}
 		}
 
-		public List<Type> Get(Type parameter)
+		public Lease<Type> Get(Type parameter)
 		{
-			var result = new List<Type>();
-			Yield(result, parameter);
+			var state = new HashSet<Type>();
+			Expand(state, parameter);
+			var count = (uint)state.Count;
+			var lease = _leases.Get(count);
+			var index = 0;
+			foreach (var type in state)
+			{
+				lease[index++] = type;
+			}
+			var result = lease.Distinct();
 			return result;
 		}
 	}

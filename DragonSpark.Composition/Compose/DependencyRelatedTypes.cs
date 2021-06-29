@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Reflection.Types;
-using DragonSpark.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using System;
@@ -13,28 +13,30 @@ namespace DragonSpark.Composition.Compose
 	{
 		readonly Predicate<Type>    _can;
 		readonly IArray<Type, Type> _candidates;
+		readonly ILeases<Type>      _leases;
 
 		public DependencyRelatedTypes(IServiceCollection services)
 			: this(new CanRegister(services).Then()
 			                                .And(IsNativeSystemType.Default.Then().Inverse())
 			                                .And(new HashSet<Type>().Add),
-			       DependencyCandidates.Default) {}
+			       DependencyCandidates.Default, Model.Sequences.Memory.Leases<Type>.Default) {}
 
-		public DependencyRelatedTypes(Predicate<Type> can, IArray<Type, Type> candidates)
+		public DependencyRelatedTypes(Predicate<Type> can, IArray<Type, Type> candidates, ILeases<Type> leases)
 		{
-			_can        = can;
-			_candidates = candidates;
+			_can         = can;
+			_candidates  = candidates;
+			_leases = leases;
 		}
 
-		public List<Type> Get(Type parameter)
+		public Lease<Type> Get(Type parameter)
 		{
 
 			var types  = _candidates.Get(parameter).Open();
-			var result = new List<Type>();
-
+			var result = _leases.Get(types.Length);
+			var index  = 0;
 			foreach (var type in types.Where(_can))
 			{
-				result.Add(type);
+				result[index++] = type;
 			}
 
 			return result;

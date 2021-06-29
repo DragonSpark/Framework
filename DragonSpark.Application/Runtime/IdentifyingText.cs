@@ -3,8 +3,6 @@ using System;
 
 namespace DragonSpark.Application.Runtime
 {
-	class Class1 {}
-
 	public sealed class IdentifyingText : IResult<string>
 	{
 		public static IdentifyingText Default { get; } = new IdentifyingText();

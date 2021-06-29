@@ -1,14 +1,13 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose
 {
-	sealed class RelatedTypes : Select<Type, List<Type>>, IRelatedTypes
+	sealed class RelatedTypes : Select<Type, Lease<Type>>, IRelatedTypes
 	{
 		public static RelatedTypes Default { get; } = new RelatedTypes();
 
-		RelatedTypes() : base(new List<Type>().Accept) {}
+		RelatedTypes() : base(_ => Leases<Type>.Default.Get(0)) {}
 	}
 }

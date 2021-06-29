@@ -1,26 +1,29 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.Model.Sequences.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose
 {
 	sealed class TypesRegistration : IRegistration
 	{
 		readonly IServiceCollection _services;
-		readonly List<Type>         _types;
+		readonly Lease<Type>        _types;
+		readonly uint               _length;
 
-		public TypesRegistration(IServiceCollection services, List<Type> types)
+		public TypesRegistration(IServiceCollection services, Lease<Type> types)
+			: this(services, types, types.Length) {}
+
+		public TypesRegistration(IServiceCollection services, Lease<Type> types, uint length)
 		{
 			_services = services;
 			_types    = types;
+			_length   = length;
 		}
 
 		public RegistrationResult Singleton()
 		{
 			var services = _services;
-			var length   = _types.Count;
-			for (var i = 0; i < length; i++)
+			for (var i = 0; i < _length; i++)
 			{
 				services = services.AddSingleton(_types[i]);
 			}
@@ -32,8 +35,7 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationResult Transient()
 		{
 			var services = _services;
-			var length   = _types.Count;
-			for (var i = 0; i < length; i++)
+			for (var i = 0; i < _length; i++)
 			{
 				services = services.AddTransient(_types[i]);
 			}
@@ -45,8 +47,7 @@ namespace DragonSpark.Composition.Compose
 		public RegistrationResult Scoped()
 		{
 			var services = _services;
-			var length   = _types.Count;
-			for (var i = 0; i < length; i++)
+			for (var i = 0; i < _length; i++)
 			{
 				services = services.AddScoped(_types[i]);
 			}
