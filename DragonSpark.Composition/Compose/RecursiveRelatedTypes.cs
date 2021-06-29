@@ -18,7 +18,7 @@ namespace DragonSpark.Composition.Compose
 			_leases  = leases;
 		}
 
-		void Expand(ISet<Type> state, Type current)
+		void Expand(HashSet<Type> state, Type current)
 		{
 			using var related = _related.Get(current);
 			var       length  = related.Length;

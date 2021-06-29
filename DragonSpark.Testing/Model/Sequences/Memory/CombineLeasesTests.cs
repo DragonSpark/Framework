@@ -22,7 +22,7 @@ namespace DragonSpark.Testing.Model.Sequences.Memory
 
 			using var combined = CombineLeases<int>.Default.Get(first, second);
 			first.ActualLength.Should().Be(16);
-			combined.AsSpan().ToArray().Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
+			combined.AsSpan().ToArray().Should().Equal(1, 2, 3, 4, 5, 6);
 			combined.Length.Should().Be(6);
 		}
 	}

@@ -1,12 +1,12 @@
-﻿using NetFabric.Hyperlinq;
-using System;
+﻿using System;
 using System.Buffers;
-using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
 	public readonly struct Lease<T> : IDisposable
 	{
+		public static Lease<T> Default { get; } = new Lease<T>(EmptyOwner<T>.Default, 0);
+
 		readonly IMemoryOwner<T> _owner;
 		readonly Memory<T>       _memory;
 
@@ -19,12 +19,10 @@ namespace DragonSpark.Model.Sequences.Memory
 			Length  = length;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Lease<T> Size(int size) => new(_owner, _memory, (uint)size);
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+
 		public Lease<T> Size(uint size) => new(_owner, _memory, size);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Span<T> AsSpan() => _memory.Span[..(int)Length];
 
 		public uint Length { get; }
@@ -47,28 +45,5 @@ namespace DragonSpark.Model.Sequences.Memory
 		{
 			_owner.Dispose();
 		}
-	}
-
-	sealed class Distinct<T>// : IAlteration<Lease<T>>
-	{
-		public static Distinct<T> Default { get; } = new Distinct<T>();
-
-		Distinct() {}
-
-		public Lease<T> Get(in Lease<T> parameter)
-		{
-			var index = 0u;
-			foreach (var element in parameter.AsSpan().Distinct())
-			{
-				parameter[index++] = element;
-			}
-
-			return parameter.Size(index);
-		}
-	}
-
-	public static class LeaseExtensions
-	{
-		public static Lease<T> Distinct<T>(this in Lease<T> @this) => Memory.Distinct<T>.Default.Get(in @this);
 	}
 }

@@ -8,6 +8,6 @@ namespace DragonSpark.Composition.Compose
 	{
 		public static RelatedTypes Default { get; } = new RelatedTypes();
 
-		RelatedTypes() : base(_ => Leases<Type>.Default.Get(0)) {}
+		RelatedTypes() : base(_ => Lease<Type>.Default) {}
 	}
 }
