@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
 using System;
+using System.Buffers;
 using System.Linq;
 using System.Reflection;
 using Activator = DragonSpark.Runtime.Activation.Activator;
@@ -108,20 +109,25 @@ namespace DragonSpark.Composition
 
 				public ConstructorInfo Execute(Type implementingType)
 				{
-					var candidates = implementingType.GetTypeInfo()
-					                                 .DeclaredConstructors.AsValueEnumerable()
-					                                 .Where(c => c.IsPublic && !c.IsStatic)
-					                                 .Where(x => x.Attribute<CandidateAttribute>()?.Enabled ?? true)
-					                                 .ToArray();
-					if (candidates.Length == 0)
+					using var candidates = implementingType.GetTypeInfo()
+					                                       .DeclaredConstructors
+					                                       .OrderByDescending(c => c.GetParameters().Length)
+					                                       .AsValueEnumerable()
+					                                       .Where(c => c.IsPublic && !c.IsStatic)
+					                                       .Where(x => x.Attribute<CandidateAttribute>()?.Enabled ??
+					                                                   true)
+					                                       .ToArray(MemoryPool<ConstructorInfo>.Shared);
+					if (candidates.Memory.Length == 0)
 					{
 						throw new
 							InvalidOperationException($"Missing public constructor for Type: {implementingType.FullName}");
 					}
 
-					foreach (var candidate in candidates.OrderByDescending(c => c.GetParameters().Length)
-					                                    .AsValueEnumerable())
+					var span   = candidates.Memory.Span;
+					var length = span.Length;
+					for (var index = 0; index < length; index++)
 					{
+						var candidate = span[index];
 						if (candidate!.GetParameters().All(_specification))
 						{
 							return candidate;
