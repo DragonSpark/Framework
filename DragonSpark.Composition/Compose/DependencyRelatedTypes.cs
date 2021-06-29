@@ -39,8 +39,7 @@ namespace DragonSpark.Composition.Compose
 				result[index++] = type;
 			}
 
-			return result;
-
+			return result.Size(index);
 		}
 	}
 }

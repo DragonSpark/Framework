@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Sequences.Memory;
-using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +21,7 @@ namespace DragonSpark.Composition.Compose
 		{
 			using var related = _related.Get(current);
 			var       length  = related.Length;
-			for (int i = 0; i < length; i++)
+			for (var i = 0; i < length; i++)
 			{
 				var item = related[i];
 				if (state.Add(item))
@@ -43,7 +42,8 @@ namespace DragonSpark.Composition.Compose
 			{
 				lease[index++] = type;
 			}
-			var result = lease.Distinct();
+
+			var result = lease.Size(index);
 			return result;
 		}
 	}
