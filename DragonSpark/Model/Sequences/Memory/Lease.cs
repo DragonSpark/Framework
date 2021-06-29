@@ -10,6 +10,8 @@ namespace DragonSpark.Model.Sequences.Memory
 		readonly IMemoryOwner<T> _owner;
 		readonly Memory<T>       _memory;
 
+		public Lease(IMemoryOwner<T> owner) : this(owner, (uint)owner.Memory.Length) {}
+
 		public Lease(IMemoryOwner<T> owner, uint length) : this(owner, owner.Memory, length) {}
 
 		public Lease(IMemoryOwner<T> owner, Memory<T> memory, uint length)
