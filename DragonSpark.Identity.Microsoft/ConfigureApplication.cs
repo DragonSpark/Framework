@@ -14,10 +14,10 @@ namespace DragonSpark.Identity.Microsoft
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
+			var settings = parameter.Services.Deferred<MicrosoftApplicationSettings>();
 			parameter.Services.Register<MicrosoftApplicationSettings>()
 			         .Return(parameter)
-			         .Tuple(parameter.Services.Deferred<MicrosoftApplicationSettings>())
-			         .With((x, y) => x.AddMicrosoftAccount(new ConfigureAuthentication(y).Execute))
+			         .AddMicrosoftAccount(new ConfigureAuthentication(settings).Execute)
 			         ;
 		}
 	}

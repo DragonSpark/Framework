@@ -14,10 +14,10 @@ namespace DragonSpark.Identity.PayPal
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
+			var settings = parameter.Services.Deferred<PayPalApplicationSettings>();
 			parameter.Services.Register<PayPalApplicationSettings>()
 			         .Return(parameter)
-			         .Tuple(parameter.Services.Deferred<PayPalApplicationSettings>())
-			         .With((x, y) => x.AddPaypal(new ConfigureAuthentication(y).Execute));
+			         .AddPaypal(new ConfigureAuthentication(settings).Execute);
 		}
 	}
 }

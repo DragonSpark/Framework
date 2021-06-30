@@ -14,10 +14,10 @@ namespace DragonSpark.Identity.Google
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
+			var settings = parameter.Services.Deferred<GoogleApplicationSettings>();
 			parameter.Services.Register<GoogleApplicationSettings>()
 			         .Return(parameter)
-			         .Tuple(parameter.Services.Deferred<GoogleApplicationSettings>())
-			         .With((x, y) => x.AddGoogle(new ConfigureAuthentication(y).Execute))
+			         .AddGoogle(new ConfigureAuthentication(settings).Execute)
 			         .Return(parameter.Services)
 			         ;
 		}
