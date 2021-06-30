@@ -30,6 +30,11 @@ namespace DragonSpark.Compose.Model
 		public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
 			=> new LogOperationContext<T, TParameter>(_subject, log);
 
+		public OperationSelector Bind(IResult<ValueTask<T>> parameter) => Bind(parameter.Get);
+
+		public OperationSelector Bind(Func<ValueTask<T>> parameter)
+			=> new OperationSelector(new Binding<T>(this.Out(), parameter));
+
 
 		public SelectedLogOperationExceptionContext<T, TOther> Use<TOther>(ILogException<TOther> log)
 			=> new SelectedLogOperationExceptionContext<T, TOther>(_subject, log);

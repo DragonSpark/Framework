@@ -50,8 +50,8 @@ namespace DragonSpark.Presentation
 			=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
 
 /**/
-		public static CallbackContext Callback<T>(this ModelContext @this, EventCallback<T> callback)
-			=> @this.Callback(callback.InvokeAsync);
+		public static CallbackContext<T> Callback<T>(this ModelContext @this, EventCallback<T> callback)
+			=> @this.Callback<T>(callback.InvokeAsync);
 
 		public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
 			=> @this.Callback(new Func<Task>(callback.InvokeAsync));
@@ -91,6 +91,9 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<object> ToCallback(this EventCallback @this)
 			=> Start.A.Callback(new Func<object, Task>(@this.InvokeAsync));
+
+		public static OperationContext<T> Then<T>(this EventCallback<T> @this)
+			=> Start.A.Selection<T>().By.Calling(new Func<T, Task>(@this.InvokeAsync)).Then().Structure();
 
 		/**/
 
