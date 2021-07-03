@@ -28,6 +28,7 @@ namespace DragonSpark.Compose
 		public static TOut Get<TIn, TOut, TOther>(this ISelect<(TIn, TOther), TOut> @this, TIn parameter, TOther other)
 			=> @this.Get((parameter, other));
 
+		// ReSharper disable once TooManyArguments
 		public static TOut Get<T1, T2, T3, TOut>(this ISelect<(T1, T2, T3), TOut> @this, T1 first, T2 second, T3 third)
 			=> @this.Get((first, second, third));
 
@@ -55,10 +56,10 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static Selector<TIn?, TOut> AccountStructure<TIn, TOut>(this Selector<TIn, TOut> @this) 
+		public static Selector<TIn?, TOut> AccountStructure<TIn, TOut>(this Selector<TIn, TOut> @this)
 			where TIn : struct => new(new AccountedStructure<TIn, TOut>(@this.Get()));
 
-		public static Selector<TIn?, TOut> Accounting<TIn, TOut>(this Selector<TIn, TOut> @this) 
+		public static Selector<TIn?, TOut> Accounting<TIn, TOut>(this Selector<TIn, TOut> @this)
 			 => new(new Accounted<TIn, TOut>(@this.Get()));
 
 		public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class

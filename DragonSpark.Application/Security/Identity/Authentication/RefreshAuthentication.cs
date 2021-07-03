@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 			if (authentication != null)
 			{
 				var (properties, claims) = authentication.Value;
-				await _authentication.SignInWithClaimsAsync(parameter, properties, claims.Open());
+				await _authentication.SignInWithClaimsAsync(parameter, properties, claims.Open()).ConfigureAwait(false);
 			}
 		}
 	}

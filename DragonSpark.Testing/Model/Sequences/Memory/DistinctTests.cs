@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Sequences.Query
+namespace DragonSpark.Testing.Model.Sequences.Memory
 {
 	// ReSharper disable once TestFileNameWarning
 	public sealed class DistinctTests

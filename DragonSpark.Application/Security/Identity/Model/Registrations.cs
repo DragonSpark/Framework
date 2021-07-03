@@ -21,6 +21,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			         .And<ChallengedModelBinder>()
 			         .And<ReturnOrRoot>()
 			         .And<ExternalLoginModel<T>>()
+			         .And<ClearCurrentAuthenticationState>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //

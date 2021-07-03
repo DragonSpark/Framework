@@ -8,8 +8,10 @@ namespace DragonSpark.Application.Environment
 		[UsedImplicitly]
 		public static StorageConfiguration Default { get; } = new StorageConfiguration();
 
-		StorageConfiguration() : base(x => x.EnableSensitiveDataLogging()
-		                                    .EnableDetailedErrors()
-		                                    .ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))) {}
+		StorageConfiguration()
+			: base(x => x.EnableSensitiveDataLogging()
+			             .EnableDetailedErrors()
+			             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+			                                      .Ignore(SqlServerEventId.SavepointsDisabledBecauseOfMARS))) {}
 	}
 }

@@ -6,6 +6,8 @@ using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -72,6 +74,9 @@ namespace DragonSpark.Presentation
 
 		public static CallbackContext<T> Callback<T>(this ModelContext @this, Action callback)
 			=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
+
+		public static CallbackContext Callback(this ModelContext @this, ICommand<None> command)
+			=> @this.Callback(command.Execute);
 
 		public static CallbackContext Callback(this ModelContext @this, Action callback)
 			=> @this.Callback(Start.A.Command(callback).Operation());

@@ -24,6 +24,7 @@ namespace DragonSpark.Application.Diagnostics
 			}
 			catch (Exception e)
 			{
+				// ReSharper disable once UnthrowableException
 				throw await _logger.Await(GetType(), e);
 			}
 		}

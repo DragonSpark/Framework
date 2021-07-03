@@ -13,7 +13,7 @@ namespace DragonSpark.Composition
 		{
 			using var provider = parameter.BuildServiceProvider(false);
 			var       next     = new ActivationAwareServiceProvider(provider);
-			var       result   = new ServiceCollectionAwareServiceProvider(next, parameter).GetRequiredService<T>();
+			var       result   = new LocateAwareServiceProvider(next, parameter).GetRequiredService<T>();
 			return result;
 		}
 	}
