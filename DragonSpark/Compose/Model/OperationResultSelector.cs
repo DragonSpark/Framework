@@ -27,6 +27,8 @@ namespace DragonSpark.Compose.Model
 		public OperationResultSelector<TTo> Select<TTo>(Func<T, TTo> select)
 			=> new(new OperationResulting<T, TTo>(Get().Get, select));
 
+		public AllocatedOperationResultSelector<T> Allocate() => new(Get().Then().Select(x => x.AsTask()).Get());
+
 
 	}
 
