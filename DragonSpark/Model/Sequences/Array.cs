@@ -42,7 +42,8 @@ namespace DragonSpark.Model.Sequences
 				var     view   = Unsafe.As<RawData>(_reference);
 				ref var item   = ref Unsafe.As<byte, T>(ref view.Data);
 				ref var result = ref Unsafe.Add(ref item, index);
-				return ref result;
+				// ReSharper disable once RedundantNullForgivingOperator
+				return ref result!;
 			}
 		}
 
