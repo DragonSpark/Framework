@@ -26,6 +26,9 @@ namespace DragonSpark.Application.Security.Identity
 			         .Then.Start<IHasValidState<T>>()
 			         .Forward<HasValidState<T>>()
 			         .Scoped()
+			         //
+			         .Then.Start<CurrentProviderIdentity>()
+			         .Scoped()
 				;
 		}
 	}
