@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims {
+namespace DragonSpark.Application.Security.Identity.Claims
+{
 	public class ClaimAction : IClaimAction
 	{
 		readonly string _element, _claim, _type;

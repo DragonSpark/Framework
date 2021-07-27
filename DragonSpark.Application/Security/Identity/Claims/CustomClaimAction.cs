@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		readonly string                    _element;
 		readonly Func<JsonElement, string> _select;
 
-		public CustomClaimAction(string claim, string element, Func<JsonElement, string> select)
+		protected CustomClaimAction(string claim, string element, Func<JsonElement, string> select)
 		{
 			_claim   = claim;
 			_element = element;
