@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Claims;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using System;
 
@@ -8,12 +7,12 @@ namespace DragonSpark.Identity.Facebook
 	sealed class ConfigureAuthentication : ICommand<FacebookOptions>
 	{
 		readonly Func<FacebookApplicationSettings> _settings;
-		readonly IClaimAction                      _claims;
+		readonly Action<FacebookOptions>           _configure;
 
-		public ConfigureAuthentication(Func<FacebookApplicationSettings> settings, IClaimAction claims)
+		public ConfigureAuthentication(Func<FacebookApplicationSettings> settings, Action<FacebookOptions> configure)
 		{
-			_settings = settings;
-			_claims   = claims;
+			_settings  = settings;
+			_configure = configure;
 		}
 
 		public void Execute(FacebookOptions parameter)
@@ -22,7 +21,7 @@ namespace DragonSpark.Identity.Facebook
 			parameter.ClientId     = settings.Key;
 			parameter.ClientSecret = settings.Secret;
 
-			_claims.Execute(parameter.ClaimActions);
+			_configure(parameter);
 		}
 	}
 }

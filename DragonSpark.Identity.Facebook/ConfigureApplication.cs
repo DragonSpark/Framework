@@ -1,26 +1,22 @@
-﻿using DragonSpark.Application.Security.Identity.Claims;
-using DragonSpark.Composition;
-using DragonSpark.Identity.Facebook.Claims;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Identity.Facebook
 {
 	sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 	{
-		public static ConfigureApplication Default { get; } = new ConfigureApplication();
+		readonly Action<FacebookOptions> _configure;
 
-		ConfigureApplication() : this(DefaultClaimActions.Default) {}
-
-		readonly IClaimAction _claims;
-
-		public ConfigureApplication(IClaimAction claims) => _claims = claims;
+		public ConfigureApplication(Action<FacebookOptions> configure) => _configure = configure;
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
 			var settings = parameter.Services.Deferred<FacebookApplicationSettings>();
-			parameter.AddFacebook(new ConfigureAuthentication(settings, _claims).Execute);
+			parameter.AddFacebook(new ConfigureAuthentication(settings, _configure).Execute);
 			parameter.Services.Register<FacebookApplicationSettings>();
 		}
 	}
