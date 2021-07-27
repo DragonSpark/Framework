@@ -12,7 +12,7 @@ namespace DragonSpark.Compose.Model
 
 		public OperationSelector(IResult<ValueTask> instance) : base(instance) {}
 
-		public OperationSelector Append(Await next) => new OperationSelector(new Appended(Get().Await, next));
+		public OperationSelector Append(Await next) => new OperationSelector(new Appending(Get().Await, next));
 
 		public OperationSelector Append(Operate next) => new OperationSelector(new AppendedOperate(Get().Get, next));
 
