@@ -13,6 +13,7 @@ using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
+using DragonSpark.Presentation.Model;
 using DragonSpark.Presentation.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -151,5 +152,13 @@ namespace DragonSpark.Presentation
 
 		public static IApplicationBuilder UseContentSecurity(this IApplicationBuilder @this)
 			=> @this.UseMiddleware<ApplyPolicy>();
+
+		/**/
+
+		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
+			this IEnumerable<SelectionListing<T>> @this) => new(@this);
+
+		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
+			this IEnumerable<SelectionListing<T>> @this, IEqualityComparer<T> comparer) => new(@this, comparer);
 	}
 }
