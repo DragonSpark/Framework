@@ -1,12 +1,10 @@
 ﻿using DragonSpark.Compose;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	[UsedImplicitly]
 	sealed class Create<T> : ICreate<T> where T : IdentityUser
 	{
 		readonly ICreated<T> _created;
@@ -20,7 +18,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 
 		public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 		{
-			var user   = await _new.Get(parameter);
+			var user   = await _new.Await(parameter);
 			var call   = await _created.Await(new(parameter, user));
 			var result = new CreateUserResult<T>(user, call);
 			return result;
