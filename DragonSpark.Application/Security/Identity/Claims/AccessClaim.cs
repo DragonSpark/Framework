@@ -4,7 +4,9 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims
 {
-	public class AccessClaim<T> : ISelect<ClaimsPrincipal, Claim<T>>
+	public interface IAccessClaim<T> : ISelect<ClaimsPrincipal, Claim<T>> {}
+
+	public class AccessClaim<T> : IAccessClaim<T>
 	{
 		readonly IReadClaim      _read;
 		readonly Func<string, T> _select;

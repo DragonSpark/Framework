@@ -13,6 +13,6 @@ namespace DragonSpark.Application.Security.Identity.Profile
 		public LocateUser(UserManager<T> users) => _users = users;
 
 		public async ValueTask<T?> Get(ExternalLoginInfo parameter)
-			=> await _users.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey);
+			=> await _users.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey).ConfigureAwait(false);
 	}
 }
