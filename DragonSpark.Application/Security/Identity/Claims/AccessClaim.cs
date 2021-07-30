@@ -6,6 +6,13 @@ namespace DragonSpark.Application.Security.Identity.Claims
 {
 	public interface IAccessClaim<T> : ISelect<ClaimsPrincipal, Claim<T>> {}
 
+	public class AccessClaim : AccessClaim<string>
+	{
+		public AccessClaim(string claim) : base(claim, s => s) {}
+
+		public AccessClaim(IReadClaim read, Claim<string> @default) : base(read, s => s, @default) {}
+	}
+
 	public class AccessClaim<T> : IAccessClaim<T>
 	{
 		readonly IReadClaim      _read;
