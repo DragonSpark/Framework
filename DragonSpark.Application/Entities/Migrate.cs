@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
@@ -10,10 +11,9 @@ namespace DragonSpark.Application.Entities
 
 		Migrate() {}
 
-		public T Get(T parameter)
+		public async ValueTask Get(T parameter)
 		{
-			parameter.Database.Migrate();
-			return parameter;
+			await parameter.Database.MigrateAsync().ConfigureAwait(false);
 		}
 	}
 }

@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
@@ -11,6 +11,9 @@ namespace DragonSpark.Application.Entities
 
 		EnsureCreated() {}
 
-		public T Get(T parameter) => parameter.With(x => x.Database.EnsureCreated());
+		public async ValueTask Get(T parameter)
+		{
+			await parameter.Database.EnsureCreatedAsync().ConfigureAwait(false);
+		}
 	}
 }

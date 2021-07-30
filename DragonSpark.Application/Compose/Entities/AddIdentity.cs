@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Compose.Entities
 		public void Execute(IServiceCollection parameter)
 		{
 			_services.Get(parameter)
-			         .Start<IStorageInitializer<TContext>>()
+			         .Start<IHostInitializer>()
 			         .Forward<StorageInitializer<TContext>>()
 			         .Singleton()
 			         //

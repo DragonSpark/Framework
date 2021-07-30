@@ -13,11 +13,4 @@ namespace DragonSpark.Application.Entities
 	{
 		public StorageInitializer(params IInitializer[] initializers) : base(initializers.Alter) {}
 	}
-
-	public sealed class DefaultStorageInitializer : Alteration<ModelBuilder>, IStorageInitializer
-	{
-		public static DefaultStorageInitializer Default { get; } = new DefaultStorageInitializer();
-
-		DefaultStorageInitializer() : base(new StorageInitializer()) {}
-	}
 }

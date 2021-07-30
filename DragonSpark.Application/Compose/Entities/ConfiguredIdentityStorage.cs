@@ -29,11 +29,9 @@ namespace DragonSpark.Application.Compose.Entities
 		public ApplicationProfileContext Then => Register(ServiceLifetime.Scoped);
 
 		public ApplicationProfileContext Register(Func<IServiceProvider, TContext> factory)
-			=> _subject.Then(new AddIdentity<T, TContext>(_configuration, factory))
-			           .Configure(Initialize<TContext>.Default.Get);
+			=> _subject.Then(new AddIdentity<T, TContext>(_configuration, factory));
 
 		public ApplicationProfileContext Register(ServiceLifetime lifetime)
-			=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure, lifetime))
-			           .Configure(Initialize<TContext>.Default.Get);
+			=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure, lifetime));
 	}
 }
