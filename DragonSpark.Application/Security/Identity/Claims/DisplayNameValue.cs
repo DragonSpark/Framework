@@ -1,4 +1,5 @@
-﻿using DragonSpark.Text;
+﻿using DragonSpark.Compose;
+using DragonSpark.Text;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims
@@ -13,8 +14,10 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		{
 			var (principal, provider) = parameter;
 
-			var claim  = _claim.Get(provider);
-			var result = principal.HasClaim(claim) ? principal.FindFirstValue(claim) : principal.UserName();
+			var claim = _claim.Get(provider);
+			var result = principal.HasClaim(claim)
+				             ? principal.FindFirstValue(claim).NullIfEmpty() ?? principal.UserName()
+				             : principal.UserName();
 			return result;
 		}
 	}
