@@ -56,6 +56,6 @@ namespace DragonSpark.Identity.Mixcloud.Claims
 	{
 		public static CloudCastsAction Default { get; } = new();
 
-		CloudCastsAction() : base(CloudCasts.Default, "cloudcast_count") {}
+		CloudCastsAction() : base(CloudCasts.Default, "cloudcast_count", "integer") {}
 	}
 }

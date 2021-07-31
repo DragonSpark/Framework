@@ -30,6 +30,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 			         .Forward<AddExternalSignin<T>>()
 			         .Decorate<StateViewAwareAddExternalSignin>()
 			         .Decorate<SignOutAwareAddExternalSignin>()
+			         .Decorate<ExceptionAwareAddExternalLogin>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //

@@ -8,7 +8,10 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		readonly string _claim, _type;
 		readonly SubKey _key;
 
-		public SubKeyClaimAction(string claim, SubKey key, string type = "string")
+		protected SubKeyClaimAction(string claim, string key, string element)
+			: this(claim, new SubKey(key, element), "string") {}
+
+		protected SubKeyClaimAction(string claim, SubKey key, string type)
 		{
 			_key   = key;
 			_claim = claim;

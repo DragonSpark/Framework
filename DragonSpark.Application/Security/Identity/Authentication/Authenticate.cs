@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 		{
 			var (information, user) = parameter;
 			var claims = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
-			await _authentication.SignInWithClaimsAsync(user, _persist, claims);
+			await _authentication.SignInWithClaimsAsync(user, _persist, claims).ConfigureAwait(false);
 		}
 	}
 }

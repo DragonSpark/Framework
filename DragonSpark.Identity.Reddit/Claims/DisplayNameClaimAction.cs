@@ -2,10 +2,10 @@
 
 namespace DragonSpark.Identity.Reddit.Claims
 {
-	public sealed class DisplayNameClaimAction : ClaimAction
+	public sealed class DisplayNameClaimAction : SubKeyClaimAction
 	{
 		public static DisplayNameClaimAction Default { get; } = new DisplayNameClaimAction();
 
-		DisplayNameClaimAction() : base(DisplayName.Default, "name") {}
+		DisplayNameClaimAction() : base(DisplayName.Default, "subreddit", "title") {}
 	}
 }

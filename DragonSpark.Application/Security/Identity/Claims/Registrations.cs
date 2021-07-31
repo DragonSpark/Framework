@@ -15,6 +15,7 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		{
 			parameter.Start<IClaims>()
 			         .Forward<Claims>()
+			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         .Then.Start<ICurrentKnownClaims>()
 			         .Forward<CurrentKnownClaims>()

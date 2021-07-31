@@ -6,6 +6,8 @@ namespace DragonSpark.Identity.Reddit.Claims
 	{
 		public static DefaultClaimActions Default { get; } = new DefaultClaimActions();
 
-		DefaultClaimActions() : base(DisplayNameClaimAction.Default) {}
+		DefaultClaimActions() : base(DisplayNameClaimAction.Default,
+		                             ImageClaimAction.Default, DescriptionClaimAction.Default,
+		                             VerifiedClaimAction.Default, FriendsClaimAction.Default) {}
 	}
 }
