@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences.Collections;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Model.Sequences.Collections;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims

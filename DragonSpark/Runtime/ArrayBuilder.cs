@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Memory;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Array = System.Array;
 
@@ -65,6 +67,13 @@ namespace DragonSpark.Runtime
 
 		public readonly Span<T> AsSpan() => buffer!.AsSpan(..Count);
 
+		public readonly Lease<T> AsLease()
+		{
+			var result = Model.Sequences.Memory.Leases<T>.Default.Get((uint)Count);
+			AsSpan().CopyTo(result.AsSpan());
+			return result;
+		}
+
 		/// <summary>
 		/// Adds an item to the backing array, resizing it if necessary.
 		/// </summary>
@@ -84,6 +93,14 @@ namespace DragonSpark.Runtime
 			var total = Count + others.Count;
 			EnsureCapacity(total);
 			Array.Copy(others.buffer!, buffer!, Count);
+			Count = total;
+		}
+
+		public void Add(ICollection<T> others)
+		{
+			var total = Count + others.Count;
+			EnsureCapacity(total);
+			others.CopyTo(buffer!, Count);
 			Count = total;
 		}
 

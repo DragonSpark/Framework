@@ -25,6 +25,8 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public Lease<T> Size(uint size) => new(_owner, _memory, size);
 
+		public Memory<T> AsMemory() => _memory[..(int)Length];
+
 		public Span<T> AsSpan() => _memory.Span[..(int)Length];
 
 		public uint Length { get; }

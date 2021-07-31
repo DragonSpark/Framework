@@ -1,10 +1,11 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
 using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Application.Testing
+namespace DragonSpark.Application.Testing.Runtime
 {
 	public sealed class TransactionalTests
 	{
@@ -46,10 +47,10 @@ namespace DragonSpark.Application.Testing
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			var transactions = Transactional.Default.Get((stored, current));
-			transactions.Add.Open().Should().BeEmpty();
-			transactions.Update.Open().Should().BeEmpty();
-			transactions.Delete.Open().Should().BeEmpty();
+			using var transactions = Transactional.Default.Get((stored, current));
+			transactions.Add.Length.Should().Be(0);
+			transactions.Update.Length.Should().Be(0);
+			transactions.Delete.Length.Should().Be(0);
 		}
 
 		[Fact]
@@ -72,10 +73,10 @@ namespace DragonSpark.Application.Testing
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			var transactions = Transactional.Default.Get((stored, current));
-			transactions.Add.Open().Only().Should().BeSameAs(current[0]);
-			transactions.Update.Open().Should().BeEmpty();
-			transactions.Delete.Open().Should().BeEmpty();
+			using var transactions = Transactional.Default.Get((stored, current));
+			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[0]);
+			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
+			transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
 		}
 
 		[Fact]
@@ -97,12 +98,12 @@ namespace DragonSpark.Application.Testing
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			var transactions = Transactional.Default.Get((stored, current));
-			transactions.Add.Open().Only().Should().BeSameAs(current[2]);
-			var (subject, source) = transactions.Update.Open().Only();
+			using var transactions = Transactional.Default.Get((stored, current));
+			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[2]);
+			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
 			subject.Should().BeSameAs(stored[2]);
 			source.Should().BeSameAs(current[1]);
-			transactions.Delete.Open().Only().Should().BeSameAs(stored[0]);
+			transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[0]);
 		}
 
 		[Fact]
@@ -125,10 +126,10 @@ namespace DragonSpark.Application.Testing
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			var transactions = Transactional.Default.Get((stored, current));
-			transactions.Add.Open().Should().BeEmpty();
-			transactions.Update.Open().Should().BeEmpty();
-			transactions.Delete.Open().Only().Should().BeSameAs(stored[2]);
+			using var transactions = Transactional.Default.Get((stored, current));
+			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
+			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
+			transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[2]);
 		}
 
 		[Fact]
@@ -152,12 +153,12 @@ namespace DragonSpark.Application.Testing
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			var transactions = Transactional.Default.Get((stored, current));
-			transactions.Add.Open().Should().BeEmpty();
-			var (subject, source) = transactions.Update.Open().Only();
+			using var transactions = Transactional.Default.Get((stored, current));
+			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
+			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
 			subject.Should().BeSameAs(stored[3]);
 			source.Should().BeSameAs(current[3]);
-			transactions.Delete.Open().Should().BeEmpty();
+			transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
 		}
 	}
 }
