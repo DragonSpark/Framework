@@ -49,7 +49,7 @@ namespace DragonSpark.Composition.Compose
 				services = services.AddTransient(destination[i]);
 			}
 
-			var result = services.Result();
+			var result = Result(services);
 			return result;
 		}
 
@@ -62,7 +62,7 @@ namespace DragonSpark.Composition.Compose
 				services = services.AddScoped(destination[i]);
 			}
 
-			var result = services.Result();
+			var result = Result(services);
 			return result;
 		}
 	}

@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 				_log.LogInformation("[{Id}] {LoginProvider} user with key {Key} logged in.",
 				                    parameter.Principal.UserName(), parameter.LoginProvider, parameter.ProviderKey);
 
-				await _synchronization.Get(parameter);
+				await _synchronization.Await(parameter);
 			}
 
 			return result;

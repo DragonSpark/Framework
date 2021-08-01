@@ -23,7 +23,7 @@ namespace DragonSpark.Model.Sequences.Memory
 				span[i] = enumerator.Current!;
 			}
 
-			return default;
+			return result;
 		}
 	}
 }

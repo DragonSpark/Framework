@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile
@@ -17,8 +18,8 @@ namespace DragonSpark.Application.Security.Identity.Profile
 		public async ValueTask<IdentityResult> Get(Login<T> parameter)
 		{
 			var (information, _) = parameter;
-			var result = await _previous.Get(parameter);
-			await _synchronization.Get(information);
+			var result = await _previous.Await(parameter);
+			await _synchronization.Await(information);
 			return result;
 		}
 	}
