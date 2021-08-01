@@ -48,9 +48,6 @@ namespace DragonSpark.Model.Sequences
 		}
 
 		[Pure]
-		public T[] Copy() => Arrays<T>.Default.Get(_reference);
-
-		[Pure]
 		public ImmutableArray<T> Get() => ImmutableArray.Create(_reference);
 
 		[Pure]

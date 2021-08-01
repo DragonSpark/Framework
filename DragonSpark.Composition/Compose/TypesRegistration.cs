@@ -18,15 +18,15 @@ namespace DragonSpark.Composition.Compose
 			_services = services;
 			_types    = types;
 			_length   = length;
-
 		}
 
 		public RegistrationResult Singleton()
 		{
-			var services = _services;
+			var services    = _services;
+			var destination = _types.AsSpan();
 			for (var i = 0; i < _length; i++)
 			{
-				services = services.AddSingleton(_types[i]);
+				services = services.AddSingleton(destination[i]);
 			}
 
 			var result = Result(services);
@@ -42,10 +42,11 @@ namespace DragonSpark.Composition.Compose
 
 		public RegistrationResult Transient()
 		{
-			var services = _services;
+			var services    = _services;
+			var destination = _types.AsSpan();
 			for (var i = 0; i < _length; i++)
 			{
-				services = services.AddTransient(_types[i]);
+				services = services.AddTransient(destination[i]);
 			}
 
 			var result = services.Result();
@@ -54,10 +55,11 @@ namespace DragonSpark.Composition.Compose
 
 		public RegistrationResult Scoped()
 		{
-			var services = _services;
+			var services    = _services;
+			var destination = _types.AsSpan();
 			for (var i = 0; i < _length; i++)
 			{
-				services = services.AddScoped(_types[i]);
+				services = services.AddScoped(destination[i]);
 			}
 
 			var result = services.Result();

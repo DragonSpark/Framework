@@ -11,10 +11,11 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public Lease<T> Get(Lease<T> parameter)
 		{
-			var index = 0u;
-			foreach (var element in parameter.AsSpan().Distinct())
+			var index       = 0;
+			var destination = parameter.AsSpan();
+			foreach (var element in destination.Distinct())
 			{
-				parameter[index++] = element;
+				destination[index++] = element;
 			}
 
 			return parameter.Size(index);

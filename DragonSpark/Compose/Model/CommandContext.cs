@@ -46,9 +46,7 @@ namespace DragonSpark.Compose.Model
 		public CommandContext<T> Append(params ICommand<T>[] commands)
 			=> new(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
 
-		public CommandContext<DragonSpark.Model.Sequences.Store<T>> Many()
-			=> new(new ManyCommand<T>(Get()));
-
+		
 		public Selector<T, None> Selection() => new(new Action<T>(this));
 
 		public OperationContext<T> Operation() => new(new CommandOperation<T>(Get().Execute));

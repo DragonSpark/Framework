@@ -69,7 +69,7 @@ namespace DragonSpark.Runtime
 
 		public readonly Lease<T> AsLease()
 		{
-			var result = Model.Sequences.Memory.Leases<T>.Default.Get((uint)Count);
+			var result = Leases<T>.Default.Get((uint)Count);
 			AsSpan().CopyTo(result.AsSpan());
 			return result;
 		}

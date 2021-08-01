@@ -10,5 +10,6 @@ namespace DragonSpark.Application.Entities.Selection
 		protected Query(IQueryable<T> instance) : base(instance) {}
 	}
 
+
 	public delegate Expression<Func<TEntity, bool>> Query<in TKey, TEntity>(TKey parameter);
 }

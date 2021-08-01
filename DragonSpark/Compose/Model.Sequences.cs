@@ -1,8 +1,5 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Array = System.Array;
@@ -28,7 +25,7 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] ToArray<T>(in this ArrayView<T> @this)
 			=> @this.Length == 0
 				   ? Empty<T>.Array
@@ -40,7 +37,7 @@ namespace DragonSpark.Compose
 			var result = stores.Get(@this.Length);
 			@this.Array.CopyInto(result.Instance, @this.Start, @this.Length);
 			return result;
-		}
+		}*/
 
 		// ReSharper disable once TooManyArguments
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,14 +84,5 @@ namespace DragonSpark.Compose
 				Array.Clear(@this, 0, (int)count);
 			}
 		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Session<T> Session<T>(this IStorage<T> @this, in uint size)
-			=> new Session<T>(@this.Get(size), @this);
-
-
-		public static ArrayBuilder<T> AsBuilder<T>(this IList @this) => new(@this.Count);
-		public static ArrayBuilder<T> AsBuilder<T>(this Array<T> @this) => new((int)@this.Length);
-
 	}
 }

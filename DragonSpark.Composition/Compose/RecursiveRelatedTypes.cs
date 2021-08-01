@@ -19,11 +19,12 @@ namespace DragonSpark.Composition.Compose
 
 		void Expand(HashSet<Type> state, Type current)
 		{
-			using var related = _related.Get(current);
-			var       length  = related.Length;
+			using var related     = _related.Get(current);
+			var       length      = related.Length;
+			var       destination = related.AsSpan();
 			for (var i = 0; i < length; i++)
 			{
-				var item = related[i];
+				var item = destination[i];
 				if (state.Add(item))
 				{
 					Expand(state, item);
@@ -35,12 +36,13 @@ namespace DragonSpark.Composition.Compose
 		{
 			var state = new HashSet<Type>();
 			Expand(state, parameter);
-			var count = (uint)state.Count;
-			var lease = _leases.Get(count);
-			var index = 0;
+			var count       = (uint)state.Count;
+			var lease       = _leases.Get(count);
+			var index       = 0;
+			var destination = lease.AsSpan();
 			foreach (var type in state)
 			{
-				lease[index++] = type;
+				destination[index++] = type;
 			}
 
 			var result = lease.Size(index);

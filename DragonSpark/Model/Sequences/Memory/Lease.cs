@@ -33,7 +33,7 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public uint ActualLength => (uint)_memory.Length;
 
-		public T this[int index]
+		/*public T this[int index]
 		{
 			get => _memory.Span[index];
 			set => _memory.Span[index] = value;
@@ -43,7 +43,7 @@ namespace DragonSpark.Model.Sequences.Memory
 		{
 			get => _memory.Span[(int)index];
 			set => _memory.Span[(int)index] = value;
-		}
+		}*/
 
 		public void Dispose()
 		{

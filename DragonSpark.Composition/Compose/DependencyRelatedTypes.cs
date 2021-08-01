@@ -19,7 +19,7 @@ namespace DragonSpark.Composition.Compose
 			: this(new CanRegister(services).Then()
 			                                .And(IsNativeSystemType.Default.Then().Inverse())
 			                                .And(new HashSet<Type>().Add),
-			       DependencyCandidates.Default, Model.Sequences.Memory.Leases<Type>.Default) {}
+			       DependencyCandidates.Default, Leases<Type>.Default) {}
 
 		public DependencyRelatedTypes(Predicate<Type> can, IArray<Type, Type> candidates, ILeases<Type> leases)
 		{
@@ -31,12 +31,13 @@ namespace DragonSpark.Composition.Compose
 		public Lease<Type> Get(Type parameter)
 		{
 
-			var types  = _candidates.Get(parameter).Open();
-			var result = _leases.Get(types.Length);
-			var index  = 0;
+			var types       = _candidates.Get(parameter).Open();
+			var result      = _leases.Get(types.Length);
+			var index       = 0;
+			var destination = result.AsSpan();
 			foreach (var type in types.Where(_can))
 			{
-				result[index++] = type;
+				destination[index++] = type;
 			}
 
 			return result.Size(index);

@@ -11,14 +11,16 @@ namespace DragonSpark.Testing.Model.Sequences.Memory
 		public void Verify()
 		{
 			using var first = Leases<int>.Default.Get(3);
-			first[0] = 1;
-			first[1] = 2;
-			first[2] = 3;
+			var       fSpan = first.AsSpan();
+			fSpan[0] = 1;
+			fSpan[1] = 2;
+			fSpan[2] = 3;
 
 			using var second = Leases<int>.Default.Get(3);
-			second[0] = 4;
-			second[1] = 5;
-			second[2] = 6;
+			var sSpan = second.AsSpan();
+			sSpan[0] = 4;
+			sSpan[1] = 5;
+			sSpan[2] = 6;
 
 			using var combined = CombineLeases<int>.Default.Get(first, second);
 			first.ActualLength.Should().Be(16);
