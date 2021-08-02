@@ -5,12 +5,14 @@ using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Store;
+using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -80,6 +82,9 @@ namespace DragonSpark.Application
 			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
 
 		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
+
+		public static IWindow WithinLast(this ITime @this, TimeSpan within) => new Ago(@this, within);
+		public static IWindow FromNow(this ITime @this, TimeSpan window) => new FromNow(@this, window);
 
 		/*public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
 			this OperationResultSelector<_, IQueryable<T>> @this, AsyncLock @lock) where T : class

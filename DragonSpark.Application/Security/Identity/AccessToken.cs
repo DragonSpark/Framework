@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Text;
+﻿using DragonSpark.Text;
 using Microsoft.AspNetCore.Authentication;
 
 namespace DragonSpark.Application.Security.Identity
@@ -14,6 +13,6 @@ namespace DragonSpark.Application.Security.Identity
 
 		public AccessToken(string value) => _value = value;
 
-		public string Get(AuthenticationProperties parameter) => parameter.GetString(_value).Verify();
+		public string Get(AuthenticationProperties parameter) => parameter.GetString(_value) ?? string.Empty;
 	}
 }
