@@ -1,7 +1,11 @@
-﻿namespace DragonSpark.Application.Security.Identity
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace DragonSpark.Application.Security.Identity
 {
 	public readonly struct ProviderIdentity
 	{
+		public static implicit operator ProviderIdentity(ExternalLoginInfo instance) => instance.AsIdentity();
+
 		public ProviderIdentity(string provider, string identity)
 		{
 			Provider = provider;

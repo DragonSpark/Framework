@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
@@ -11,6 +12,7 @@ using DragonSpark.Model.Sequences;
 using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -73,6 +75,9 @@ namespace DragonSpark.Application
 
 		public static T User<T>(this AuthenticationState @this) where T : class
 			=> @this.To<AuthenticationState<T>>().Profile.Verify();
+
+		public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)
+			=> ExternalLoginIdentity.Default.Get(@this);
 
 		/**/
 
