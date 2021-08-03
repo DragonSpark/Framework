@@ -1,9 +1,11 @@
-﻿using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences.Memory;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime
 {
-	public readonly struct Transactions<T> : IDisposable
+	public readonly struct Transactions<T> : IDisposable, IAsyncDisposable
 	{
 		public Transactions(Lease<T> add, Lease<(T Stored, T Source)> update, Lease<T> delete)
 		{
@@ -34,6 +36,12 @@ namespace DragonSpark.Application.Runtime
 			Add.Dispose();
 			Update.Dispose();
 			Delete.Dispose();
+		}
+
+		public ValueTask DisposeAsync()
+		{
+			Dispose();
+			return Task.CompletedTask.ToOperation();
 		}
 	}
 

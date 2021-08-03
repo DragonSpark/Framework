@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	public readonly struct StoredLease<T> : IDisposable
+	public readonly struct StoredLease<T> : IDisposable, IAsyncDisposable
 	{
 		public static implicit operator T[](StoredLease<T> source) => source.Store.Elements;
 		public static implicit operator Memory<T>(StoredLease<T> source) => source.Lease.AsMemory();
@@ -21,6 +23,12 @@ namespace DragonSpark.Model.Sequences.Memory
 		{
 			Lease.Dispose();
 			Store.Dispose();
+		}
+
+		public ValueTask DisposeAsync()
+		{
+			Dispose();
+			return Task.CompletedTask.ToOperation();
 		}
 	}
 }

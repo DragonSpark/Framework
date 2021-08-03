@@ -1,9 +1,11 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
 using System.Buffers;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	public readonly struct Lease<T> : IDisposable
+	public readonly struct Lease<T> : IDisposable, IAsyncDisposable
 	{
 		public static Lease<T> Default { get; } = new Lease<T>(EmptyOwner<T>.Default, 0);
 
@@ -48,6 +50,12 @@ namespace DragonSpark.Model.Sequences.Memory
 		public void Dispose()
 		{
 			_owner.Dispose();
+		}
+
+		public ValueTask DisposeAsync()
+		{
+			Dispose();
+			return Task.CompletedTask.ToOperation();
 		}
 	}
 }
