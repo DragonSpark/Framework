@@ -3,7 +3,7 @@ using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
@@ -28,10 +28,10 @@ namespace DragonSpark.Compose
 
 		public static ResultExtent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
 
-		public static Model.ResultContext<T> Result<T>(this ModelContext @this, T instance)
+		public static Model.Results.ResultContext<T> Result<T>(this ModelContext @this, T instance)
 			=> @this.Result<T>().By.Using(instance);
 
-		public static Model.ResultContext<T> Result<T>(this ModelContext @this, Func<T> result)
+		public static Model.Results.ResultContext<T> Result<T>(this ModelContext @this, Func<T> result)
 			=> @this.Result<T>().By.Calling(result);
 
 		public static ConditionExtent<T> Of<T>(this ConditionContext @this) => @this.Of.Type<T>();
@@ -47,14 +47,14 @@ namespace DragonSpark.Compose
 
 		public static CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
 
-		public static Model.CommandContext<T> Command<T>(this ModelContext @this, System.Action<T> action)
+		public static Model.Commands.CommandContext<T> Command<T>(this ModelContext @this, Action<T> action)
 			=> @this.Command.Of.Type<T>().By.Calling(action);
 
-		public static Model.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this, Action<T1, T2> action)
+		public static Model.Commands.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this, Action<T1, T2> action)
 			=> @this.Command.Of.Type<(T1, T2)>().By.Calling(action.Invoke);
 
-		public static Model.CommandContext Command(this ModelContext _, System.Action action)
-			=> new Model.CommandContext(new Command(action));
+		public static Model.Commands.CommandContext Command(this ModelContext _, Action action)
+			=> new(new Command(action));
 
 		public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();
 

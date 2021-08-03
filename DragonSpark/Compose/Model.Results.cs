@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;

@@ -1,4 +1,9 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Commands;
+using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Operations.Allocated;
+using DragonSpark.Compose.Model.Results;
+using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Compose.Model.Sequences;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;

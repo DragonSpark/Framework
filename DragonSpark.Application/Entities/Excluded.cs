@@ -13,9 +13,9 @@ namespace DragonSpark.Application.Entities
 
 		Excluded() : this(Start.A.Selection<EntityEntry>().By.Calling(x => x.Entity)) {}
 
-		readonly DragonSpark.Compose.Model.Selector<EntityEntry, object> _selector;
+		readonly DragonSpark.Compose.Model.Selection.Selector<EntityEntry, object> _selector;
 
-		public Excluded(DragonSpark.Compose.Model.Selector<EntityEntry, object> selector) => _selector = selector;
+		public Excluded(DragonSpark.Compose.Model.Selection.Selector<EntityEntry, object> selector) => _selector = selector;
 
 		public Predicate<EntityEntry> Get(DbContext parameter)
 			=> _selector.Select(parameter.ChangeTracker.Entries()

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Text;
 using DragonSpark.Text.Formatting;

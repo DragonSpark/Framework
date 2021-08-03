@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;

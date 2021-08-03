@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Sequences;
 
 namespace DragonSpark.Compose.Extents.Results
 {
@@ -12,6 +12,6 @@ namespace DragonSpark.Compose.Extents.Results
 
 		public ArrayResultExtent(OpenArraySelector<int, T> select) => _select = select;
 
-		public Model.ResultContext<T[]> New(uint size) => _select.Subject.Bind((int)size);
+		public Model.Results.ResultContext<T[]> New(uint size) => _select.Subject.Bind((int)size);
 	}
 }

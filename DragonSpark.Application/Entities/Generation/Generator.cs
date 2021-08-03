@@ -1,7 +1,7 @@
 ﻿using AutoBogus;
 using Bogus;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.Entities.Generation

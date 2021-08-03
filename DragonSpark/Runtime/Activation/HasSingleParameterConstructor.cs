@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Sequences;
 using DragonSpark.Reflection.Members;
 using System.Reflection;
 

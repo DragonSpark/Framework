@@ -23,8 +23,8 @@ namespace DragonSpark.Compose.Extents.Commands
 
 		CommandContext() {}
 
-		public Model.CommandContext<T> Empty { get; } = EmptyCommand<T>.Default.Then();
+		public Model.Commands.CommandContext<T> Empty { get; } = EmptyCommand<T>.Default.Then();
 
-		public Model.CommandContext<T> Calling(Action<T> body) => new Model.CommandContext<T>(new Command<T>(body));
+		public Model.Commands.CommandContext<T> Calling(Action<T> body) => new Model.Commands.CommandContext<T>(new Command<T>(body));
 	}
 }

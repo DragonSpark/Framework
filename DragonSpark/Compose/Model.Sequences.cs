@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -15,12 +16,12 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static Model.Selector<_, T[]> Open<_, T>(this Model.Selector<_, IEnumerable<T>> @this)
+		public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this)
 			=> @this.Select(x => x.Open());
 
-		public static Model.Selector<_, T[]> Open<_, T>(this Model.Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
+		public static Selector<_, T[]> Open<_, T>(this Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
 
-		public static Model.Selector<_, TTo> Select<_, T, TTo>(this Model.Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
+		public static Selector<_, TTo> Select<_, T, TTo>(this Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
 			=> @this.Open().Select(select);
 
 		/**/

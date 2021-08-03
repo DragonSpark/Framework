@@ -23,24 +23,24 @@ namespace DragonSpark.Compose.Extents.Results
 
 		ResultContext() {}
 
-		public Model.ResultContext<T> Activation() => Activator<T>.Default.Then();
+		public Model.Results.ResultContext<T> Activation() => Activator<T>.Default.Then();
 
-		public Model.ResultContext<T> Singleton() => Singleton<T>.Default.Then();
+		public Model.Results.ResultContext<T> Singleton() => Singleton<T>.Default.Then();
 
-		public Model.ResultContext<T> Instantiation() => New<T>.Default.Then();
+		public Model.Results.ResultContext<T> Instantiation() => New<T>.Default.Then();
 
-		public Model.ResultContext<T> Default() => DragonSpark.Model.Results.Default<T>.Instance.Then();
+		public Model.Results.ResultContext<T> Default() => DragonSpark.Model.Results.Default<T>.Instance.Then();
 
-		public Model.ResultContext<T> Using(T instance) => new DragonSpark.Model.Results.Instance<T>(instance).Then();
+		public Model.Results.ResultContext<T> Using(T instance) => new DragonSpark.Model.Results.Instance<T>(instance).Then();
 
-		public Model.ResultContext<T> Using(ISelect<None, T> source) => new Result<T>(source.Get).Then();
+		public Model.Results.ResultContext<T> Using(ISelect<None, T> source) => new Result<T>(source.Get).Then();
 
-		public Model.ResultContext<T> Using(IResult<T> instance) => instance.Then();
+		public Model.Results.ResultContext<T> Using(IResult<T> instance) => instance.Then();
 
-		public Model.ResultContext<T> Using<TResult>() where TResult : class, IResult<T>
+		public Model.Results.ResultContext<T> Using<TResult>() where TResult : class, IResult<T>
 			=> Activator<TResult>.Default.Get().To(Using);
 
-		public Model.ResultContext<T> Calling(Func<T> select)
-			=> new Model.ResultContext<T>(select.Target as IResult<T> ?? new Result<T>(select));
+		public Model.Results.ResultContext<T> Calling(Func<T> select)
+			=> new Model.Results.ResultContext<T>(select.Target as IResult<T> ?? new Result<T>(select));
 	}
 }

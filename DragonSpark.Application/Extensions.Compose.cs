@@ -8,7 +8,8 @@ using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
@@ -51,14 +52,14 @@ namespace DragonSpark.Application
 			=> new(@this);
 
 		public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this,
-		                                                 System.Action<IdentityOptions> configure)
+		                                                 Action<IdentityOptions> configure)
 			where T : IdentityUser
 			=> new(@this, configure);
 
 		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
 
 		public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this,
-		                                                       System.Action<AuthenticationBuilder> configure)
+		                                                       Action<AuthenticationBuilder> configure)
 			=> new(@this, Start.A.Command(configure));
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
@@ -66,7 +67,7 @@ namespace DragonSpark.Application
 			=> @this.AuthorizeUsing(policy.Execute);
 
 		public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-		                                                       System.Action<AuthorizationOptions> policy)
+		                                                       Action<AuthorizationOptions> policy)
 			=> @this.Then(new AuthorizeConfiguration(policy));
 		/**/
 
@@ -107,7 +108,7 @@ namespace DragonSpark.Application
 		}
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _,
-		                                               System.Action<IAutoGenerateConfigBuilder> configure)
+		                                               Action<IAutoGenerateConfigBuilder> configure)
 			where T : class
 		{
 			return Generator<T>(_, new Configuration(null, configure));

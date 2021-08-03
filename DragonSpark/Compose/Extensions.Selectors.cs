@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Results;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection;
 using System;
 

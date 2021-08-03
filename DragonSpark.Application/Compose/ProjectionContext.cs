@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Model;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection;
 using System;
 using System.Linq;

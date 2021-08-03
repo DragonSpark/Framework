@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose.Model;
+﻿using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model.Selection.Stores;
 using Microsoft.Extensions.Caching.Memory;
 

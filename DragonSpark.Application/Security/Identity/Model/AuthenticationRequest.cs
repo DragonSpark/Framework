@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		{
 			var (login, origin) = parameter;
 
-			var authentication = await _authentication.Get(login);
+			var authentication = await _authentication.Await(login);
 			var result = authentication.IsLockedOut
 				             ? new RedirectToPageResult("./Lockout")
 				             : authentication.Succeeded

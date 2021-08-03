@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose.Model.Results;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public static implicit operator ActiveContent<T>(Func<ValueTask<T>> instance) => new(instance);
 
-		public static implicit operator ActiveContent<T>(DragonSpark.Compose.Model.ResultContext<ValueTask<T>> instance)
+		public static implicit operator ActiveContent<T>(ResultContext<ValueTask<T>> instance)
 			=> new(instance);
 
 		readonly IMutable<ValueTuple<T>?> _store;

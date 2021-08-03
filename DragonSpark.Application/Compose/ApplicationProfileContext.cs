@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;

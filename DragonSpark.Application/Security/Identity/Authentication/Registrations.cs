@@ -23,15 +23,15 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 			         .Scoped()
 			         .Then.Start<IExternalSignin>()
 			         .Forward<ExternalSignin<T>>()
+			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //
 			         .Then.Start<IRefreshAuthentication<T>>()
 			         .Forward<RefreshAuthentication<T>>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
-			        
-				//
 
+				//
 				;
 		}
 	}

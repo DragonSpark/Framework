@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Compose.Model.Memory;
+using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
@@ -22,9 +23,16 @@ namespace DragonSpark.Compose
 
 		public static Lease<T> AsLease<T>(this IMemoryOwner<T> @this) => new(@this);
 
+		public static ReadOnlyListExtensions.SkipTakeEnumerable<ReadOnlyListExtensions.ValueEnumerableWrapper<T>, T> AsValueEnumerable<T>(this Store<T> @this)
+			=> @this.Elements.AsValueEnumerable().Take((int)@this.Length);
+
 		/*public static Store<T> AsStore<T>(this Lease<T> @this) => Stores<T>.Default.Get(@this.AsMemory());*/
 		public static Store<T> AsStore<T>(this Memory<T> @this) => Stores<T>.Default.Get(@this);
 
 		public static StoredLease<T> WithStore<T>(this Lease<T> @this) => StoredLeases<T>.Default.Get(@this);
+/**/
+
+		public static LeaseSelector<T> Then<T>(this Lease<T> @this) => new(@this);
+		public static MemorySelector<T> Then<T>(this Memory<T> @this) => new(@this);
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
 using System;

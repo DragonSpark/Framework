@@ -47,6 +47,13 @@ namespace DragonSpark.Model.Sequences.Memory
 			set => _memory.Span[(int)index] = value;
 		}*/
 
+		public T[] ToArray()
+		{
+			var result = AsSpan().ToArray();
+			Dispose();
+			return result;
+		}
+
 		public void Dispose()
 		{
 			_owner.Dispose();

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Profile;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,8 @@ namespace DragonSpark.Application.Security.Identity.Model
 		where T : class
 	{
 		readonly IAuthenticationRequest _authenticate;
-		readonly SignInManager<T>    _authentication;
-		readonly ICreateRequest       _create;
+		readonly SignInManager<T>       _authentication;
+		readonly ICreateRequest         _create;
 
 		public ExternalLoginModelActions(IAuthenticationRequest authenticate, ICreateRequest create,
 		                                 SignInManager<T> authentication)
@@ -36,7 +37,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public async ValueTask<bool> Get((ExternalLoginInfo Login, ModelStateDictionary State) parameter)
 		{
 			var (login, state) = parameter;
-			var call   = await _create.Get(login);
+			var call   = await _create.Await(login);
 			var result = call.Succeeded;
 
 			if (!result)
