@@ -18,9 +18,10 @@ namespace DragonSpark.Model.Sequences.Memory
 			var       result     = _leases.Get(count);
 			var       span       = result.AsSpan();
 			using var enumerator = parameter.GetEnumerator();
-			for (var i = 0; i < count; i++, enumerator.MoveNext())
+			var       i          = 0;
+			while (enumerator.MoveNext())
 			{
-				span[i] = enumerator.Current!;
+				span[i++] = enumerator.Current!;
 			}
 
 			return result;
