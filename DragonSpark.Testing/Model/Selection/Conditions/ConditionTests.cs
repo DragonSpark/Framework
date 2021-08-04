@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Compose.Model
+namespace DragonSpark.Testing.Model.Selection.Conditions
 {
 	public class ConditionTests
 	{

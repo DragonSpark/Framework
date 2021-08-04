@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences.Memory;
 using FluentAssertions;
 using NetFabric.Hyperlinq;
+using System.Buffers;
 using System.Linq;
 using Xunit;
 
@@ -34,6 +36,21 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 
 			var sut = first.AsValueEnumerable().AsLease().Then().Concat(second).ToArray();
 			sut.Should().Equal(first.Concat(second));
+		}
+
+		[Fact]
+		public void VerifyMemoryOwner()
+		{
+			using var native = MemoryPool<int>.Shared.Rent(3);
+			native.Memory.Length.Should().NotBe(3);
+
+			using var sut = Leases<int>.Default.Get(3);
+
+			var memory = sut.AsMemory();
+			memory.Length.Should().Be(3);
+			memory.Span.Length.Should().Be(3);
+			sut.AsSpan().Length.Should().Be(3);
+
 		}
 	}
 }
