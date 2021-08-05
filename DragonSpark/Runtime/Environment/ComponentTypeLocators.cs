@@ -12,17 +12,12 @@ namespace DragonSpark.Runtime.Environment
 
 		ComponentTypeLocators() : this(IsComponentType.Default.Get) {}
 
-		public ComponentTypeLocators(Predicate<Type> condition)
+		public ComponentTypeLocators(Func<Type, bool> condition)
 			: base(Start.A.Selection<Type>()
 			            .As.Sequence.Array.By.Self.Open()
-			            .Select(x => x.Where(condition).ToArray().Result())
+			            .Select(x => x.AsValueEnumerable().Where(condition).ToArray().Result())
 			            .StoredActivation<TypeCandidates>()
-			            .Select(x => x.Open()
-			                          .Then()
-			                          .Sort()
-			                          .Result()
-			                          .Get()
-			                          .To(Start.An.Extent<ComponentTypes>()))
-			      ) {}
+			            .Select(x => x.Open().Then().Sort().Result().Get())
+			            .Select(x => new ComponentTypes(x))) {}
 	}
 }

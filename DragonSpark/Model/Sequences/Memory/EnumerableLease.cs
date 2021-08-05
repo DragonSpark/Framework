@@ -1,30 +1,34 @@
 ﻿using NetFabric.Hyperlinq;
+using System.Buffers;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	sealed class EnumerableLease<T> : ILease<EnumerableExtensions.ValueEnumerableWrapper<T>, T>
+	sealed class EnumerableLease<T> : ILease<EnumerableExtensions.ValueEnumerable<T>, T>
 	{
 		public static EnumerableLease<T> Default { get; } = new EnumerableLease<T>();
 
-		EnumerableLease() : this(Leases<T>.Default) {}
+		EnumerableLease() : this(ArrayPool<T>.Shared, 64) {}
 
-		readonly ILeases<T> _leases;
+		readonly ArrayPool<T> _leases;
+		readonly uint         _capacity;
 
-		public EnumerableLease(ILeases<T> leases) => _leases = leases;
-
-		public Lease<T> Get(EnumerableExtensions.ValueEnumerableWrapper<T> parameter)
+		public EnumerableLease(ArrayPool<T> leases, uint capacity)
 		{
-			var       count      = (uint)parameter.Count();
-			var       result     = _leases.Get(count);
-			var       span       = result.AsSpan();
-			using var enumerator = parameter.GetEnumerator();
-			var       i          = 0;
-			while (enumerator.MoveNext())
+			_leases   = leases;
+			_capacity = capacity;
+		}
+
+		public Lease<T> Get(EnumerableExtensions.ValueEnumerable<T> parameter)
+		{
+			/*var builder = ArrayBuilder.New<T>(_capacity);
+			foreach (var element in parameter)
 			{
-				span[i++] = enumerator.Current!;
+				builder.Add(element);
 			}
 
-			return result;
+			return builder.AsLease()*/
+			return new Lease<T>(parameter.ToArray(_leases));
+			;
 		}
 	}
 }

@@ -19,15 +19,15 @@ namespace DragonSpark.Application.Entities
 
 	sealed class Save<T> : ISave<T> where T : class
 	{
-		readonly DbContext                    _context;
-		readonly ISaveChanges<T>              _save;
-		readonly Func<Predicate<EntityEntry>> _excluded;
+		readonly DbContext                     _context;
+		readonly ISaveChanges<T>               _save;
+		readonly Func<Func<EntityEntry, bool>> _excluded;
 
 		[UsedImplicitly]
 		public Save(DbContext context, ISaveChanges<T> save)
 			: this(context, save, Excluded.Default.Then().Bind(context)) {}
 
-		public Save(DbContext context, ISaveChanges<T> save, Func<Predicate<EntityEntry>> excluded)
+		public Save(DbContext context, ISaveChanges<T> save, Func<Func<EntityEntry, bool>> excluded)
 		{
 			_context  = context;
 			_save     = save;

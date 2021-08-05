@@ -16,7 +16,7 @@ namespace DragonSpark.Application
 		{
 			foreach (var initializer in parameter.Services.GetServices<IHostInitializer>().AsValueEnumerable())
 			{
-				await initializer!.Await(parameter);
+				await initializer.Await(parameter);
 			}
 		}
 	}

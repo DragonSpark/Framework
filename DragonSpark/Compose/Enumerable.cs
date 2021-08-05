@@ -20,10 +20,6 @@ namespace DragonSpark.Compose
 
 		public static IArray<T> Promote<T>(this Array<T> @this) => new ArrayInstance<T>(@this);
 
-		public static EnumerableExtensions.ValueEnumerableWrapper<T1> Get<T1, T2>(this IEnumerable<ISelect<T2, T1>> @this,
-		                                                                T2 parameter)
-			=> @this.Introduce(parameter, tuple => tuple.Item1.Get(tuple.Item2)).AsValueEnumerable();
-
 		public static IEnumerable<T1> Introduce<T1, T2>(this IEnumerable<Func<T2, T1>> @this, T2 instance)
 			=> @this.Introduce(instance, tuple => tuple.Item1(tuple.Item2));
 
@@ -45,7 +41,7 @@ namespace DragonSpark.Compose
 			foreach (var item in @this.AsValueEnumerable())
 			{
 				var tuple = (item, instance);
-				if (where(tuple!))
+				if (where(tuple))
 				{
 					yield return select(tuple!);
 				}

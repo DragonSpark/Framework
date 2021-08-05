@@ -8,13 +8,13 @@ namespace DragonSpark.Composition.Construction
 {
 	sealed class ConstructorSelector : IConstructorSelector
 	{
-		readonly Predicate<ParameterInfo>           _specification;
+		readonly Func<ParameterInfo, bool>          _specification;
 		readonly ILease<Type, ConstructorCandidate> _candidates;
 
-		public ConstructorSelector(Predicate<ParameterInfo> specification)
+		public ConstructorSelector(Func<ParameterInfo, bool> specification)
 			: this(specification, ConstructorCandidates.Default) {}
 
-		public ConstructorSelector(Predicate<ParameterInfo> specification,
+		public ConstructorSelector(Func<ParameterInfo, bool> specification,
 		                           ILease<Type, ConstructorCandidate> candidates)
 		{
 			_specification = specification;

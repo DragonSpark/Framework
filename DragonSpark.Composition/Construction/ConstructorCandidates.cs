@@ -13,14 +13,14 @@ namespace DragonSpark.Composition.Construction
 	{
 		public static ConstructorCandidates Default { get; } = new ConstructorCandidates();
 
-		ConstructorCandidates() : this(MemoryPool<ConstructorCandidate>.Shared, IsCandidate.Default.Get) {}
+		ConstructorCandidates() : this(ArrayPool<ConstructorCandidate>.Shared, IsCandidate.Default.Get) {}
 
-		readonly MemoryPool<ConstructorCandidate> _pool;
-		readonly Predicate<ConstructorCandidate>  _candidate;
+		readonly ArrayPool<ConstructorCandidate>  _pool;
+		readonly Func<ConstructorCandidate, bool> _candidate;
 
-		public ConstructorCandidates(MemoryPool<ConstructorCandidate> pool, Predicate<ConstructorCandidate> candidate)
+		public ConstructorCandidates(ArrayPool<ConstructorCandidate> pool, Func<ConstructorCandidate, bool> candidate)
 		{
-			_pool           = pool;
+			_pool      = pool;
 			_candidate = candidate;
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using NetFabric.Hyperlinq;
+using System.Buffers;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
@@ -6,12 +7,12 @@ namespace DragonSpark.Model.Sequences.Memory
 	{
 		public static Leases<T> Default { get; } = new Leases<T>();
 
-		Leases() : this(MemoryPool<T>.Shared) {}
+		Leases() : this(ArrayPool<T>.Shared) {}
 
-		readonly MemoryPool<T> _pool;
+		readonly ArrayPool<T> _pool;
 
-		public Leases(MemoryPool<T> pool) => _pool = pool;
+		public Leases(ArrayPool<T> pool) => _pool = pool;
 
-		public Lease<T> Get(uint parameter) => new(_pool.Rent((int)parameter), parameter);
+		public Lease<T> Get(uint parameter) => new(_pool.RentSliced((int)parameter, false), parameter);
 	}
 }

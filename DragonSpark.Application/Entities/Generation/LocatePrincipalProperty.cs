@@ -19,21 +19,21 @@ namespace DragonSpark.Application.Entities.Generation
 			                      .Out()
 			                      .Then()) {}
 
-		public LocatePrincipalProperty(IPrincipalProperty property, Predicate<PropertyInfo> filter)
+		public LocatePrincipalProperty(IPrincipalProperty property, Func<PropertyInfo, bool> filter)
 			: base(property, filter) {}
 	}
 
 	class LocatePrincipalProperty : ILocatePrincipalProperty
 	{
 		readonly IPrincipalProperty       _property;
-		readonly Predicate<PropertyInfo>  _filter;
-		readonly MemoryPool<PropertyInfo> _pool;
+		readonly Func<PropertyInfo, bool> _filter;
+		readonly ArrayPool<PropertyInfo>  _pool;
 
-		public LocatePrincipalProperty(IPrincipalProperty property, Predicate<PropertyInfo> filter)
-			: this(property, filter, MemoryPool<PropertyInfo>.Shared) {}
+		public LocatePrincipalProperty(IPrincipalProperty property, Func<PropertyInfo, bool> filter)
+			: this(property, filter, ArrayPool<PropertyInfo>.Shared) {}
 
-		public LocatePrincipalProperty(IPrincipalProperty property, Predicate<PropertyInfo> filter,
-		                               MemoryPool<PropertyInfo> pool)
+		public LocatePrincipalProperty(IPrincipalProperty property, Func<PropertyInfo, bool> filter,
+		                               ArrayPool<PropertyInfo> pool)
 		{
 			_property = property;
 			_filter   = filter;

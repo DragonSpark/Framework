@@ -11,7 +11,7 @@ namespace DragonSpark.Composition.Compose
 {
 	sealed class DependencyRelatedTypes : IRelatedTypes
 	{
-		readonly Predicate<Type>    _can;
+		readonly Func<Type, bool>   _can;
 		readonly IArray<Type, Type> _candidates;
 		readonly ILeases<Type>      _leases;
 
@@ -21,21 +21,20 @@ namespace DragonSpark.Composition.Compose
 			                                .And(new HashSet<Type>().Add),
 			       DependencyCandidates.Default, Leases<Type>.Default) {}
 
-		public DependencyRelatedTypes(Predicate<Type> can, IArray<Type, Type> candidates, ILeases<Type> leases)
+		public DependencyRelatedTypes(Func<Type, bool> can, IArray<Type, Type> candidates, ILeases<Type> leases)
 		{
-			_can         = can;
-			_candidates  = candidates;
-			_leases = leases;
+			_can        = can;
+			_candidates = candidates;
+			_leases     = leases;
 		}
 
 		public Lease<Type> Get(Type parameter)
 		{
-
 			var types       = _candidates.Get(parameter).Open();
 			var result      = _leases.Get(types.Length);
 			var index       = 0;
 			var destination = result.AsSpan();
-			foreach (var type in types.Where(_can))
+			foreach (var type in types.AsValueEnumerable().Where(_can))
 			{
 				destination[index++] = type;
 			}

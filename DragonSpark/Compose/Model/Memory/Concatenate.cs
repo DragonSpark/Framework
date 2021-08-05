@@ -1,28 +1,29 @@
 ﻿using DragonSpark.Model.Sequences.Memory;
-using System;
+using DragonSpark.Runtime;
+using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class Concatenate<T> : ILease<(Memory<T> First, Memory<T> Second), T>
+	sealed class Concatenate<T> : ILease<(Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second), T>
 	{
 		public static Concatenate<T> Default { get; } = new Concatenate<T>();
 
-		Concatenate() : this(Leases<T>.Default) {}
+		Concatenate() {}
 
-		readonly ILeases<T> _leases;
-
-		public Concatenate(ILeases<T> leases) => _leases = leases;
-
-		public Lease<T> Get((Memory<T> First, Memory<T> Second) parameter)
+		public Lease<T> Get((Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 
-			var result      = _leases.Get((uint)(first.Length + second.Length));
-			var destination = result.AsMemory();
+			var builder = ArrayBuilder.New<T>(first.ActualLength * 2);
+			builder.Add(first.AsMemory());
 
-			first.CopyTo(destination[..first.Length]);
-			second.CopyTo(destination[first.Length..]);
-			return result;
+			foreach (var element in second)
+			{
+				builder.Add(element);
+			}
+
+			first.Dispose();
+			return builder.AsLease();
 		}
 	}
 }

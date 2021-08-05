@@ -69,6 +69,11 @@ namespace DragonSpark.Runtime
 
 		public readonly Lease<T> AsLease()
 		{
+			if (Count == 0)
+			{
+				return Lease<T>.Default;
+			}
+
 			var result = Leases<T>.Default.Get((uint)Count);
 			AsSpan().CopyTo(result.AsSpan());
 			return result;
@@ -91,7 +96,10 @@ namespace DragonSpark.Runtime
 		public void Add(ArrayBuilder<T> others)
 		{
 			var total = Count + others.Count;
-			EnsureCapacity(total);
+			if (total >= Capacity)
+			{
+				EnsureCapacity(total);
+			}
 			Array.Copy(others.buffer!, buffer!, Count);
 			Count = total;
 		}
@@ -99,12 +107,28 @@ namespace DragonSpark.Runtime
 		public void Add(ICollection<T> others)
 		{
 			var total = Count + others.Count;
-			EnsureCapacity(total);
+			if (total >= Capacity)
+			{
+				EnsureCapacity(total);
+			}
 			others.CopyTo(buffer!, Count);
 			Count = total;
 		}
 
+		public void Add(Memory<T> others)
+		{
+			var total = Count + others.Length;
+			if (total >= Capacity)
+			{
+				EnsureCapacity(total);
+			}
+			if (buffer is not null)
+			{
+				others.Span.CopyTo(buffer[Count..]);
+			}
 
+			Count = total;
+		}
 
 		/// <summary>
 		/// Adds an item to the backing array, without checking if there is room.

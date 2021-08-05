@@ -9,6 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.Composition.Compose
 {
+	// TODO: Attempt unstore
 	sealed class DependencyCandidates : ArrayStore<Type, Type>
 	{
 		public static DependencyCandidates Default { get; } = new DependencyCandidates();

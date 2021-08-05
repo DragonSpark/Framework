@@ -25,8 +25,9 @@ namespace DragonSpark.Presentation.Components.Content
 			parameter(builder);
 
 			foreach (var frame in builder.GetFrames()
-			                             .Array.Where(x => x.FrameType == RenderTreeFrameType.Markup
-			                                               || x.FrameType == RenderTreeFrameType.Text)
+			                             .Array.AsValueEnumerable()
+			                             .Where(x => x.FrameType == RenderTreeFrameType.Markup
+			                                         || x.FrameType == RenderTreeFrameType.Text)
 			                             .Select(x => x.MarkupContent.Trim())
 			                             .Where(x => !string.IsNullOrEmpty(x)))
 			{

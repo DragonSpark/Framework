@@ -3,8 +3,8 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
 using FluentAssertions;
 using JetBrains.Annotations;
-using NetFabric.Hyperlinq;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Runtime

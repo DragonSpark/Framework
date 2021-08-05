@@ -28,9 +28,9 @@ namespace DragonSpark.Runtime.Activation
 
 			Query() : this(IsSingletonProperty.Default.Get, Is.Assigned()) {}
 
-			readonly Predicate<PropertyInfo> _is, _assigned;
+			readonly Func<PropertyInfo, bool> _is, _assigned;
 
-			public Query(Predicate<PropertyInfo> @is, Predicate<PropertyInfo> assigned)
+			public Query(Func<PropertyInfo, bool> @is, Func<PropertyInfo, bool> assigned)
 			{
 				_is       = @is;
 				_assigned = assigned;

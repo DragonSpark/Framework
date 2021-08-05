@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Memory;
 using FluentAssertions;
 using NetFabric.Hyperlinq;
@@ -50,7 +51,106 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			memory.Length.Should().Be(3);
 			memory.Span.Length.Should().Be(3);
 			sut.AsSpan().Length.Should().Be(3);
+		}
 
+		[Fact]
+		public void VerifySum()
+		{
+			var first  = new[] { 1, 2, 3, 4 };
+			var second = new[] { 5, 6, 7, 8 };
+
+			var       result = 0;
+			using var other  = second.Hide().AsValueEnumerable().AsLease();
+			using var sut    = first.Hide().AsValueEnumerable().AsLease().Then().Concat(other.AsMemory());
+			var       span   = sut.AsSpan();
+			for (var i = 0; i < sut.Length; i++)
+			{
+				result += span[i];
+			}
+
+			result.Should().Be(first.Concat(second).Sum());
+		}
+
+		[Fact]
+		public void VerifySumEnumerable()
+		{
+			var first  = new[] { 1, 2, 3, 4 };
+			var second = new[] { 5, 6, 7, 8 };
+
+			var       result = 0;
+			var       other  = second.Hide().AsValueEnumerable().AsValueEnumerable();
+			using var sut    = first.Hide().AsValueEnumerable().AsLease().Then().Concat(other);
+			var       span   = sut.AsSpan();
+			for (var i = 0; i < sut.Length; i++)
+			{
+				result += span[i];
+			}
+
+			result.Should().Be(first.Concat(second).Sum());
+		}
+
+		[Fact]
+		public void Test()
+		{
+			var items = new[] { 1, 2, 3, 4 };
+
+			var first  = items.AsValueEnumerable();
+			var second = items.AsValueEnumerable().Where(x => x == 1);
+		}
+
+		public class Benchmarks
+		{
+			readonly int[] first = { 1, 2, 3, 4 }, second = { 5, 6, 7, 8 };
+
+			[Benchmark(Baseline = true)]
+			public int Allocations()
+			{
+				var result = 0;
+				foreach (var element in first.Concat(second))
+				{
+					result += element;
+				}
+
+				return result;
+			}
+
+			/*[Benchmark]
+			public int MeasureValue()
+			{
+				var result = 0;
+				foreach (var element in first.Concat(second).AsValueEnumerable())
+				{
+					result += element;
+				}
+
+				return result;
+			}*/
+
+			[Benchmark]
+			public int NoAllocations()
+			{
+				var       result = 0;
+				using var sut    = first.AsValueEnumerable().AsLease().Then().Concat(second);
+				var       span   = sut.AsSpan();
+				for (var i = 0; i < sut.Length; i++)
+				{
+					result += span[i];
+				}
+
+				return result;
+			}
+
+			/*[Benchmark]
+			public int MeasureBoxing()
+			{
+				var       result = 0;
+				foreach (var element in first.AsValueEnumerable().Concat(second).AsValueEnumerable())
+				{
+					result += element;
+				}
+
+				return result;
+			}*/
 		}
 	}
 }

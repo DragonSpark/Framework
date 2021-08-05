@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
-using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 
@@ -26,14 +26,10 @@ namespace DragonSpark.Application.Runtime
 		public Transactions<T> Get((Memory<T> Stored, Memory<T> Source) parameter)
 		{
 			var (first, second) = parameter;
+			var (left, add)     = Left(first, second);
+			var (right, delete) = Right(first, second);
 
-			using var added   = Left(first, second);
-			using var removed = Right(first, second);
-
-			var (left, add)     = added;
-			var (right, delete) = removed;
-
-			using var update = ArrayBuilder.New<(T, T)>(right.Count);
+			var       update = ArrayBuilder.New<(T, T)>(right.Count);
 			using var lease  = left.AsLease();
 			var       both   = lease.AsMemory();
 			foreach (var element in right.AsSpan())
@@ -45,6 +41,8 @@ namespace DragonSpark.Application.Runtime
 				}
 			}
 
+			right.Dispose();
+
 			return new(add.AsLease(), update.AsLease(), delete.AsLease());
 		}
 
@@ -52,10 +50,11 @@ namespace DragonSpark.Application.Runtime
 		{
 			var add  = ArrayBuilder.New<T>(second.Length);
 			var left = ArrayBuilder.New<T>(second.Length);
+			var span = second.Span;
 			for (var i = 0; i < second.Length; i++)
 			{
-				var candidate = second.Span[i];
-				if (first.Contains(candidate, _equals))
+				var candidate = span[i];
+				if (first.Then().Contains(candidate, _equals))
 				{
 					left.UncheckedAdd(candidate);
 				}
@@ -72,10 +71,11 @@ namespace DragonSpark.Application.Runtime
 		{
 			var delete = ArrayBuilder.New<T>(first.Length);
 			var right  = ArrayBuilder.New<T>(first.Length);
+			var span   = first.Span;
 			for (var i = 0; i < first.Length; i++)
 			{
-				var candidate = first.Span[i];
-				if (second.Contains(candidate, _equals))
+				var candidate = span[i];
+				if (second.Then().Contains(candidate, _equals))
 				{
 					right.UncheckedAdd(candidate);
 				}

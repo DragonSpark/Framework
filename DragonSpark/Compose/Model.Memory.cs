@@ -2,7 +2,6 @@
 using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 
 namespace DragonSpark.Compose
@@ -15,15 +14,15 @@ namespace DragonSpark.Compose
 
 		public static Lease<T> AsLease<T>(this ICollection<T> @this) => CollectionLease<T>.Default.Get(@this);
 
-		public static Lease<T> AsLease<T>(this EnumerableExtensions.ValueEnumerableWrapper<T> @this)
+		public static Lease<T> AsLease<T>(this EnumerableExtensions.ValueEnumerable<T> @this)
 			=> EnumerableLease<T>.Default.Get(@this);
 
-		public static Lease<T> AsLease<T>(this ReadOnlyListExtensions.ValueEnumerableWrapper<T> @this)
+		public static Lease<T> AsLease<T>(this ArrayExtensions.ArraySegmentValueEnumerable<T> @this)
 			=> EnumerableListLease<T>.Default.Get(@this);
 
-		public static Lease<T> AsLease<T>(this IMemoryOwner<T> @this) => new(@this);
+		public static Lease<T> AsLease<T>(this ValueMemoryOwner<T> @this) => new(@this);
 
-		public static ReadOnlyListExtensions.SkipTakeEnumerable<ReadOnlyListExtensions.ValueEnumerableWrapper<T>, T> AsValueEnumerable<T>(this Store<T> @this)
+		public static ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable<T>(this Store<T> @this)
 			=> @this.Elements.AsValueEnumerable().Take((int)@this.Length);
 
 		/*public static Store<T> AsStore<T>(this Lease<T> @this) => Stores<T>.Default.Get(@this.AsMemory());*/

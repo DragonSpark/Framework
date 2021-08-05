@@ -13,7 +13,7 @@ namespace DragonSpark.Model.Sequences.Memory
 		{
 			var index       = 0;
 			var destination = parameter.AsSpan();
-			foreach (var element in destination.Distinct())
+			foreach (var element in destination.AsValueEnumerable().Distinct())
 			{
 				destination[index++] = element;
 			}

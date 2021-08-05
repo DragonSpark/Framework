@@ -3,6 +3,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
 using System;
+using System.Linq;
 
 namespace DragonSpark.Compose
 {
@@ -17,11 +18,8 @@ namespace DragonSpark.Compose
 
 		public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
-		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this, Func<TFrom, TTo> select)
-			=> @this.Select(new NullableSelector<TFrom, TTo>(select!));
-
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this,
-		                                                     NullableSelector<TFrom, TTo> select)
+		                                                     Func<TFrom, TTo> select)
 			=> @this.Then()
 			        .Select(x => x.Open().Select(select).ToArray().Result())
 			        .Get();
