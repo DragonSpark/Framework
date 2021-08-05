@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -27,6 +28,7 @@ namespace DragonSpark.Application.Entities
 		public Save(DbContext context, ISaveChanges<T> save)
 			: this(context, save, Excluded.Default.Then().Bind(context)) {}
 
+		[Candidate(false)]
 		public Save(DbContext context, ISaveChanges<T> save, Func<Func<EntityEntry, bool>> excluded)
 		{
 			_context  = context;
