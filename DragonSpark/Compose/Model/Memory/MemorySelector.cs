@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Model.Sequences.Memory;
+using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Compose.Model.Memory
@@ -9,7 +10,7 @@ namespace DragonSpark.Compose.Model.Memory
 
 		public MemorySelector(Memory<T> subject) => _subject = subject;
 
-		/*public Lease<T> Concat(Memory<T> memory) => ConcatenateMemory<T>.Default.Get(_subject, memory);*/
+		public Lease<T> Concat(Memory<T> memory) => ConcatenateMemory<T>.Default.Get(_subject, memory);
 
 		public uint? IndexOf(T candidate) => IndexOf(candidate, EqualityComparer<T>.Default);
 

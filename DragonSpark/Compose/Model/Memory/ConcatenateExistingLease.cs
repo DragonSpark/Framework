@@ -3,11 +3,11 @@ using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class ConcatenateExistingMemory<T> : ILease<(Lease<T> First, Memory<T> Second), T>
+	sealed class ConcatenateExistingLease<T> : ILease<(Lease<T> First, Memory<T> Second), T>
 	{
-		public static ConcatenateExistingMemory<T> Default { get; } = new ConcatenateExistingMemory<T>();
+		public static ConcatenateExistingLease<T> Default { get; } = new ConcatenateExistingLease<T>();
 
-		ConcatenateExistingMemory() {}
+		ConcatenateExistingLease() {}
 
 		public Lease<T> Get((Lease<T> First, Memory<T> Second) parameter)
 		{
@@ -15,6 +15,7 @@ namespace DragonSpark.Compose.Model.Memory
 
 			var span = second.Span;
 			span.CopyTo(first.Remaining.Span);
+
 			return first.Size((uint)(first.Length + span.Length));
 		}
 	}

@@ -89,15 +89,6 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			result.Should().Be(first.Concat(second).Sum());
 		}
 
-		[Fact]
-		public void Test()
-		{
-			var items = new[] { 1, 2, 3, 4 };
-
-			var first  = items.AsValueEnumerable();
-			var second = items.AsValueEnumerable().Where(x => x == 1);
-		}
-
 		public class Benchmarks
 		{
 			readonly int[] first = { 1, 2, 3, 4 }, second = { 5, 6, 7, 8 };

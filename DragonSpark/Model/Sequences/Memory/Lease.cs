@@ -5,38 +5,40 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
+
+
 	public readonly struct Lease<T> : IDisposable, IAsyncDisposable
 	{
 		public static Lease<T> Default { get; } = new(new ValueMemoryOwner<T>(), Memory<T>.Empty, 0);
 
 		readonly ValueMemoryOwner<T> _owner;
-		readonly Memory<T>       _memory;
+		readonly Memory<T>           _reference;
 
 		public Lease(ValueMemoryOwner<T> owner) : this(owner, (uint)owner.Memory.Length) {}
 
 		public Lease(ValueMemoryOwner<T> owner, uint length) : this(owner, owner.Memory, length) {}
 
-		public Lease(ValueMemoryOwner<T> owner, Memory<T> memory, uint length)
+		public Lease(ValueMemoryOwner<T> owner, Memory<T> reference, uint length)
 		{
-			_owner  = owner;
-			_memory = memory;
-			Length  = length;
+			_owner     = owner;
+			_reference = reference;
+			Length     = length;
 		}
 
-		public Lease<T> Size(int size) => new(_owner, _memory, (uint)size);
+		public Lease<T> Size(int size) => new(_owner, _reference, (uint)size);
 
-		public Lease<T> Size(uint size) => new(_owner, _memory, size);
+		public Lease<T> Size(uint size) => new(_owner, _reference, size);
 
-		public Memory<T> Memory => _memory;
-		public Memory<T> Remaining => _memory[(int)Length..];
+		public Memory<T> Reference => _reference;
+		public Memory<T> Remaining => _reference[(int)Length..];
 
-		public Memory<T> AsMemory() => _memory[..(int)Length];
+		public Memory<T> AsMemory() => _reference[..(int)Length];
 
-		public Span<T> AsSpan() => _memory.Span[..(int)Length];
+		public Span<T> AsSpan() => _reference.Span[..(int)Length];
 
 		public uint Length { get; }
 
-		public uint ActualLength => (uint)_memory.Length;
+		public uint ActualLength => (uint)_reference.Length;
 
 		/*public T this[int index]
 		{

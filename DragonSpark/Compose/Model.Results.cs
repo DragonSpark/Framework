@@ -3,7 +3,6 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
 using System;
-using System.Linq;
 
 namespace DragonSpark.Compose
 {
@@ -21,10 +20,11 @@ namespace DragonSpark.Compose
 		public static IResult<Array<TTo>> Select<TFrom, TTo>(this IResult<Array<TFrom>> @this,
 		                                                     Func<TFrom, TTo> select)
 			=> @this.Then()
-			        .Select(x => x.Open().Select(select).ToArray().Result())
+			        .Select(x => x.Open().AsValueEnumerable().Select(select).ToArray().Result())
 			        .Get();
 
 		public static Lazy<T> Defer<T>(this IResult<T> @this) => new Lazy<T>(@this.Get);
+
 		public static Lazy<T> Defer<T>(this ResultContext<T> @this) => @this.Get().Defer();
 	}
 }
