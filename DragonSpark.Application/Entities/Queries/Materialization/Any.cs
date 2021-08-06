@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	class Any<T> : Materializer<T, bool>, IAny<T>
 	{

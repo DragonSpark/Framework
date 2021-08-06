@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Materialization;
 using DragonSpark.Diagnostics;
 using Polly;
 using System.Linq;

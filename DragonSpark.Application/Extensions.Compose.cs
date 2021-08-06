@@ -4,9 +4,11 @@ using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
+using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities.Generation;
+using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
@@ -76,15 +78,16 @@ namespace DragonSpark.Application
 
 		/**/
 		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this)
-			=> new StoreContext<TIn, TOut>(@this);
+			=> new(@this);
 
 		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
 			this OperationResultSelector<TIn, TOut> @this)
-			=> new Compose.Store.Operations.StoreContext<TIn, TOut>(@this);
+			=> new(@this);
 
-		public static Slide Slide(this TimeSpan @this) => new Slide(@this);
+		public static Slide Slide(this TimeSpan @this) => new(@this);
 
 		public static IWindow WithinLast(this ITime @this, TimeSpan within) => new Ago(@this, within);
+
 		public static IWindow FromNow(this ITime @this, TimeSpan window) => new FromNow(@this, window);
 
 		/*public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
@@ -96,8 +99,9 @@ namespace DragonSpark.Application
 		public static ProjectionContext<_, TOut> Then<_, TOut>(this Selector<_, IQueryable<TOut>> @this)
 			=> @this.Get().Then();
 
-		public static ProjectionContext<_, TOut> Then<_, TOut>(
-			this ISelect<_, IQueryable<TOut>> @this) => new ProjectionContext<_, TOut>(@this);
+		public static ProjectionContext<_, TOut> Then<_, TOut>(this ISelect<_, IQueryable<TOut>> @this) => new(@this);
+
+		public static QuerySelector<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
 		/**/
 
@@ -115,7 +119,7 @@ namespace DragonSpark.Application
 		}
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, Configuration configuration)
-			where T : class => new GeneratorContext<T>(configuration);
+			where T : class => new(configuration);
 
 		public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range)
 			where TOther : class
@@ -131,6 +135,6 @@ namespace DragonSpark.Application
 
 		public static StartApiContext<T> Api<T>(this IServiceCollection @this)
 			where T : class
-			=> new StartApiContext<T>(@this);
+			=> new(@this);
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public sealed class Counting<T> : Selecting<IQueryable<T>, uint>, ICount<T>
 	{

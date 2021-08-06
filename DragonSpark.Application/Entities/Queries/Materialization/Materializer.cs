@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public class Materializer<T, TResult> : Selecting<IQueryable<T>, TResult>, IMaterializer<T, TResult>
 	{
