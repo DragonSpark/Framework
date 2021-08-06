@@ -10,8 +10,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Query<TKey, TEntity>         _query;
 		readonly Expression<Func<TEntity, T>> _select;
 
-		protected WhereSelect(IQueryable<TEntity> source, Query<TKey, TEntity> query,
-		                      Expression<Func<TEntity, T>> select)
+		public WhereSelect(IQueryable<TEntity> source, Query<TKey, TEntity> query,
+		                   Expression<Func<TEntity, T>> select)
 		{
 			_source = source;
 			_query  = query;

@@ -10,9 +10,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public QuerySelector(IQuery<TIn, T> subject) => _subject = subject;
 
+		public Any<TIn, T> Any() => new(_subject);
+
 		public Single<TIn, T> Single() => new(_subject);
 
 		public SingleOrDefault<TIn, T> SingleOrDefault() => new(_subject);
+
+		public First<TIn, T> First() => new(_subject);
+
+		public FirstOrDefault<TIn, T> FirstOrDefault() => new(_subject);
 
 		public ToArray<TIn, T> ToArray() => new(_subject);
 

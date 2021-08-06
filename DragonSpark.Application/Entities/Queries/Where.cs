@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly IQueryable<T>  _source;
 		readonly Query<TKey, T> _query;
 
-		protected Where(IQueryable<T> source, Query<TKey, T> query)
+		public Where(IQueryable<T> source, Query<TKey, T> query)
 		{
 			_source = source;
 			_query  = query;

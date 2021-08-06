@@ -11,4 +11,11 @@ namespace DragonSpark.Application.Entities.Queries.Materialization
 
 		public Any(Func<IQueryable<T>, ValueTask<bool>> select) : base(select) {}
 	}
+
+	public class Any<TIn, T> : Materialize<TIn, T, bool>
+	{
+		public Any(IQuery<TIn, T> query) : this(query, DefaultAny<T>.Default) {}
+
+		protected Any(IQuery<TIn, T> query, IMaterializer<T, bool> materializer) : base(query, materializer) {}
+	}
 }

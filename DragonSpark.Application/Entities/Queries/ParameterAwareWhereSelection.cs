@@ -9,8 +9,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Query<TKey, TEntity>                           _query;
 		readonly Func<TKey, IQueryable<TEntity>, IQueryable<T>> _selection;
 
-		protected ParameterAwareWhereSelection(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
-		                                       Func<TKey, IQueryable<TEntity>, IQueryable<T>> selection)
+		public ParameterAwareWhereSelection(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		                                    Func<TKey, IQueryable<TEntity>, IQueryable<T>> selection)
 		{
 			_queryable = queryable;
 			_query     = query;
