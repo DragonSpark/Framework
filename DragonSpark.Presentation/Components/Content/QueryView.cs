@@ -29,7 +29,7 @@ namespace DragonSpark.Presentation.Components.Content
 		public async Task Get(LoadDataArgs parameter)
 		{
 			var all = _alteration.Get(new(_source, parameter));
-			var current = await _query.Materialize.ToArray.Get(all.Skip(parameter.Skip.GetValueOrDefault())
+			var current = await _query.Materializers.ToArray.Get(all.Skip(parameter.Skip.GetValueOrDefault())
 			                                                      .Take(parameter.Top.GetValueOrDefault()));
 			Count   = await _query.Counting.Large.Get(all);
 			Current = current.Open();

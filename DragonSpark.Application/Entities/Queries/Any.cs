@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	class Any<T> : Querying<T, bool>, IAny<T>
+	class Any<T> : Materializer<T, bool>, IAny<T>
 	{
 		public Any(ISelect<IQueryable<T>, ValueTask<bool>> select) : base(select) {}
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	class LargeCount<T> : Querying<T, ulong>, ILargeCount<T>
+	class LargeCount<T> : Materializer<T, ulong>, ILargeCount<T>
 	{
 		public LargeCount(ISelect<IQueryable<T>, ValueTask<ulong>> select) : base(select) {}
 

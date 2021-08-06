@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	class Count<T> : Querying<T, uint>, ICount<T>
+	class Count<T> : Materializer<T, uint>, ICount<T>
 	{
 		public Count(ISelect<IQueryable<T>, ValueTask<uint>> select) : base(select) {}
 

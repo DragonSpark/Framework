@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	public interface IToArray<T> : IQuerying<T, Array<T>> {}
+	public interface IToArray<T> : IMaterializer<T, Array<T>> {}
 }

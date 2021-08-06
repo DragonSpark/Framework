@@ -25,7 +25,7 @@
     {
         var (_, query, count) = await Query.Get(new(request, Input));
 
-        var elements = await Content.Materialize.ToList.Get(query);
+        var elements = await Content.Materializers.ToList.Get(query);
         var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
                          :
                          (object)elements;

@@ -10,8 +10,8 @@ namespace DragonSpark.Application.Entities.Selection
 {
 	public class SingleSelected<TKey, T> : SingleSelected<TKey, TKey, T>
 	{
-		public SingleSelected(IQueryable<TKey> queryable, Query<TKey, TKey> query, Expression<Func<TKey, T>> @select)
-			: base(queryable, query, @select) {}
+		protected SingleSelected(IQueryable<TKey> queryable, Query<TKey, TKey> query, Expression<Func<TKey, T>> select)
+			: base(queryable, query, select) {}
 	}
 
 	public class SingleSelected<TKey, TEntity, T> : ISelecting<TKey, T>
@@ -20,8 +20,8 @@ namespace DragonSpark.Application.Entities.Selection
 		readonly Query<TKey, TEntity>         _query;
 		readonly Expression<Func<TEntity, T>> _select;
 
-		public SingleSelected(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
-		                      Expression<Func<TEntity, T>> select)
+		protected SingleSelected(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		                         Expression<Func<TEntity, T>> select)
 		{
 			_queryable = queryable;
 			_query     = query;

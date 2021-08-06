@@ -4,6 +4,6 @@
 	{
 		public static DefaultEntityQuery<T> Default { get; } = new DefaultEntityQuery<T>();
 
-		DefaultEntityQuery() : base(DefaultAny<T>.Default, Counting<T>.Default, Materialize<T>.Default) {}
+		DefaultEntityQuery() : base(DefaultAny<T>.Default, Counting<T>.Default, Materializers<T>.Default) {}
 	}
 }

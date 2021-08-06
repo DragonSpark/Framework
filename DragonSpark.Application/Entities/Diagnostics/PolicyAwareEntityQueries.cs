@@ -19,8 +19,8 @@ namespace DragonSpark.Application.Entities.Diagnostics
 			var any = new Any<T>(_prototype.Any.With(parameter));
 			var counting = new Counting<T>(new Count<T>(_prototype.Counting.With(parameter)),
 			                               new LargeCount<T>(_prototype.Counting.Large.With(parameter)));
-			var materialize = new Materialize<T>(new ToList<T>(_prototype.Materialize.ToList.With(parameter)),
-			                                     new ToArray<T>(_prototype.Materialize.ToArray.With(parameter)));
+			var materialize = new Materializers<T>(new ToList<T>(_prototype.Materializers.ToList.With(parameter)),
+			                                     new ToArray<T>(_prototype.Materializers.ToArray.With(parameter)));
 			var result = new EntityQuery<T>(any, counting, materialize);
 			return result;
 		}

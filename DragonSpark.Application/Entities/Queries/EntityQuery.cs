@@ -2,17 +2,17 @@
 {
 	public class EntityQuery<T>
 	{
-		public EntityQuery(IAny<T> any, Counting<T> counting, Materialize<T> materialize)
+		public EntityQuery(IAny<T> any, Counting<T> counting, Materializers<T> materializers)
 		{
 			Any         = any;
 			Counting    = counting;
-			Materialize = materialize;
+			Materializers = materializers;
 		}
 
 		public IAny<T> Any { get; }
 
 		public Counting<T> Counting { get; }
 
-		public Materialize<T> Materialize { get; }
+		public Materializers<T> Materializers { get; }
 	}
 }

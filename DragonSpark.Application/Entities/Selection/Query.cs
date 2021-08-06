@@ -12,4 +12,5 @@ namespace DragonSpark.Application.Entities.Selection
 
 
 	public delegate Expression<Func<TEntity, bool>> Query<in TKey, TEntity>(TKey parameter);
+	public delegate Expression<Func<TFrom, TTo>> Query<in TKey, TFrom, TTo>(TKey parameter);
 }

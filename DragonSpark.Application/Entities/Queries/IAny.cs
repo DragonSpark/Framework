@@ -1,4 +1,4 @@
 ﻿namespace DragonSpark.Application.Entities.Queries
 {
-	public interface IAny<in T> : IQuerying<T, bool> {}
+	public interface IAny<in T> : IMaterializer<T, bool> {}
 }

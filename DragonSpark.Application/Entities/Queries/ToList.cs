@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	class ToList<T> : Querying<T, List<T>>, IToList<T>
+	class ToList<T> : Materializer<T, List<T>>, IToList<T>
 	{
 		public ToList(ISelect<IQueryable<T>, ValueTask<List<T>>> select) : base(select) {}
 

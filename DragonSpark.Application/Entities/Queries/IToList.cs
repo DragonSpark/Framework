@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	public interface IToList<T> : IQuerying<T, List<T>> {}
+	public interface IToList<T> : IMaterializer<T, List<T>> {}
 }

@@ -9,9 +9,9 @@ namespace DragonSpark.Application.Entities.Diagnostics
 		DurableEntityQuery()
 			: this(PolicyAwareEntityQueries<T>.Default.Get(DurableApplicationContentPolicy.Default.Get())) {}
 
-		public DurableEntityQuery(EntityQuery<T> source) : this(source.Any, source.Counting, source.Materialize) {}
+		public DurableEntityQuery(EntityQuery<T> source) : this(source.Any, source.Counting, source.Materializers) {}
 
-		public DurableEntityQuery(IAny<T> any, Counting<T> counting, Materialize<T> materialize) :
-			base(any, counting, materialize) {}
+		public DurableEntityQuery(IAny<T> any, Counting<T> counting, Materializers<T> materializers) :
+			base(any, counting, materializers) {}
 	}
 }
