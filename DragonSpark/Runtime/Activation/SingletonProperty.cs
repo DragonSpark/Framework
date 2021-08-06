@@ -42,7 +42,7 @@ namespace DragonSpark.Runtime.Activation
 			                                                               .Where(_is)
 			                                                               .Where(_assigned)
 			                                                               .First()
-			                                                               .Value!;
+			                                                               .Value;
 		}
 	}
 }

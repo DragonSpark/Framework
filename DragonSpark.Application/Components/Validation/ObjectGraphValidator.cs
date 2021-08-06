@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Components.Forms;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
@@ -33,7 +32,6 @@ namespace DragonSpark.Application.Components.Validation
 		{
 			if (_condition(value))
 			{
-
 				Apply(value.Verify(), context);
 			}
 		}
@@ -59,18 +57,17 @@ namespace DragonSpark.Application.Components.Validation
 			var path = context.Get();
 			foreach (var item in Results(value, context).AsValueEnumerable())
 			{
-				var names = item!.MemberNames.AsValueEnumerable();
+				var names = item.MemberNames.AsValueEnumerable();
 				if (names.Any())
 				{
 					foreach (var name in names)
 					{
-						context.Add(new ValidationResultMessage(path, new FieldIdentifier(value, name!),
-						                                        item.ErrorMessage ?? string.Empty));
+						context.Add(new (path, new(value, name), item.ErrorMessage ?? string.Empty));
 					}
 				}
 				else
 				{
-					context.Add(new ValidationResultMessage(path, value, item.ErrorMessage ?? string.Empty));
+					context.Add(new (path, value, item.ErrorMessage ?? string.Empty));
 				}
 			}
 		}

@@ -30,7 +30,7 @@ namespace DragonSpark.Presentation.Components.Routing
 		protected override Task OnInitializedAsync()
 		{
 			PageUrl                    =  Navigation.Uri;
-			Session!.ActiveComponent   =  this;
+			Session.ActiveComponent    =  this;
 			Session.NavigationCanceled += OnNavigationCanceled;
 			return base.OnInitializedAsync();
 		}
@@ -58,7 +58,8 @@ namespace DragonSpark.Presentation.Components.Routing
 			await Exited.InvokeAsync(this);
 		}
 
-		~ChangeAwareComponent() {
+		~ChangeAwareComponent()
+		{
 			OnDispose(false);
 		}
 

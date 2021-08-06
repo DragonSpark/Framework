@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences.Query;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences.Query;
 using DragonSpark.Reflection.Assemblies;
 using NetFabric.Hyperlinq;
 using System;
@@ -30,7 +31,7 @@ namespace DragonSpark.Runtime.Environment
 		                                                        .SelectMany(_names)
 		                                                        .Select(_load)
 		                                                        .AsValueEnumerable()
-		                                                        .Where(y => y != null)
+		                                                        .Where(y => y.Account() is not null)
 		                                                        .Distinct()
 		                                                        .ToArray();
 	}

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation
 {
@@ -17,8 +16,8 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		public ValidationMessageStore Messages { get; }
 		public FieldValidationMessages Messaging { get; }
 
-		public void Deconstruct(out FieldContext context, [NotNull] out ValidationMessageStore messages,
-		                        [NotNull] out FieldValidationMessages messaging)
+		public void Deconstruct(out FieldContext context, out ValidationMessageStore messages,
+		                        out FieldValidationMessages messaging)
 		{
 			context   = Field;
 			messages  = Messages;

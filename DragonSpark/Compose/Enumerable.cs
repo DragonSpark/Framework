@@ -42,7 +42,7 @@ namespace DragonSpark.Compose
 				var tuple = (item, instance);
 				if (where(tuple))
 				{
-					yield return select(tuple!);
+					yield return select(tuple);
 				}
 			}
 		}

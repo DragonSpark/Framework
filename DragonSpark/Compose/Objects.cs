@@ -128,13 +128,13 @@ namespace DragonSpark.Compose
 
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T Value<T>(this T? @this, string message = "Provided instance is not assigned.") 
+		public static T Value<T>(this T? @this, string message = "Provided instance is not assigned.")
 			where T : struct
 			=> @this ?? throw new InvalidOperationException(message);
 
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T? Account<T>(this T @this) => @this;
+		public static T? Account<T>(this T @this) => (T?)@this;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T To<T>(this object @this)
@@ -169,7 +169,7 @@ namespace DragonSpark.Compose
 		public static int Contract(this in long @this) => (int)@this;
 		public static short Contract(this in int @this) => (short)@this;
 		public static byte Contract(this in short @this) => (byte)@this;
-		
+
 		public static uint Contract(this in ulong @this) => (uint)@this;
 		public static ushort Contract(this in uint @this) => (ushort)@this;
 		public static byte Contract(this in ushort @this) => (byte)@this;

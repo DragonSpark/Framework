@@ -11,7 +11,7 @@ namespace DragonSpark.Runtime.Objects
 		ApplicationDomainProjection()
 			: base(DefaultApplicationDomainFormatter.Default.Project(x => x.FriendlyName, x => x.Id),
 			       ApplicationDomainName.Default.Entry(x => x.FriendlyName, x => x.Id, x => x.IsFullyTrusted),
-			       ApplicationDomainIdentifier.Default.Entry(x => x.FriendlyName, x => x.Id, x => x.BaseDirectory!,
+			       ApplicationDomainIdentifier.Default.Entry(x => x.FriendlyName, x => x.Id, x => x.BaseDirectory,
 			                                                 x => x.RelativeSearchPath!)) {}
 	}
 }

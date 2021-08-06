@@ -1,11 +1,8 @@
-﻿using JetBrains.Annotations;
-
-namespace DragonSpark.Presentation.Components.Forms.Validation
+﻿namespace DragonSpark.Presentation.Components.Forms.Validation
 {
 	public sealed class FieldValidationMessages
 	{
-		public static implicit operator FieldValidationMessages(string instance)
-			=> new FieldValidationMessages(instance);
+		public static implicit operator FieldValidationMessages(string instance) => new (instance);
 
 		public FieldValidationMessages(string invalid, string loading = "Validating this field... please wait.",
 		                               string error = "An exception occurred while validating this field.")
@@ -21,7 +18,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 		public string Error { get; }
 
-		public void Deconstruct([NotNull] out string invalid, [NotNull] out string loading, [NotNull] out string error)
+		public void Deconstruct(out string invalid, out string loading, out string error)
 		{
 			invalid = Invalid;
 			loading = Loading;

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Sequences;
-using JetBrains.Annotations;
 using System;
 using Array = DragonSpark.Model.Sequences.Array;
 
@@ -24,7 +23,7 @@ namespace DragonSpark.Composition
 
 		public Type Result { get; }
 
-		public void Deconstruct([NotNull] out Type request, [NotNull] out Type result)
+		public void Deconstruct(out Type request, out Type result)
 		{
 			request = Request;
 			result  = Result;

@@ -23,10 +23,10 @@ namespace DragonSpark.Application.Diagnostics
 			if (exception is TemplateException template)
 			{
 				var result = template.InnerException ?? template;
-				logger.LogError(result!.Demystify(), template.Message, template.Parameters.Open());
+				logger.LogError(result.Demystify(), template.Message, template.Parameters.Open());
 				return result.ToOperation();
 			}
-			
+
 			logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation.");
 			return exception.ToOperation();
 		}

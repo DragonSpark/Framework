@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
@@ -11,10 +10,10 @@ namespace DragonSpark.Model.Operations
 	{
 		readonly Array<Await<T, bool>> _selections;
 
-		public DependingOnAny([NotNull] params ISelect<T, ValueTask<bool>>[] selections)
+		public DependingOnAny(params ISelect<T, ValueTask<bool>>[] selections)
 			: this(selections.AsValueEnumerable().Select(x => new Await<T, bool>(x.Await)).ToArray()) {}
 
-		public DependingOnAny([NotNull] params Await<T, bool>[] selections) => _selections = selections;
+		public DependingOnAny(params Await<T, bool>[] selections) => _selections = selections;
 
 		public async ValueTask<bool> Get(T parameter)
 		{
@@ -35,10 +34,10 @@ namespace DragonSpark.Model.Operations
 	{
 		readonly Array<Await<T, bool>> _selections;
 
-		public DependingOnAll([NotNull] params ISelect<T, ValueTask<bool>>[] selections)
+		public DependingOnAll(params ISelect<T, ValueTask<bool>>[] selections)
 			: this(selections.AsValueEnumerable().Select(x => new Await<T, bool>(x.Await)).ToArray()) {}
 
-		public DependingOnAll([NotNull] params Await<T, bool>[] selections) => _selections = selections;
+		public DependingOnAll(params Await<T, bool>[] selections) => _selections = selections;
 
 		public async ValueTask<bool> Get(T parameter)
 		{

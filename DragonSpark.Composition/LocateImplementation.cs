@@ -13,10 +13,8 @@ namespace DragonSpark.Composition
 
 		public Type? Get(Type parameter)
 		{
-			foreach (var element in _collection.AsValueEnumerable())
+			foreach (var descriptor in _collection.AsValueEnumerable())
 			{
-				var descriptor = element!;
-
 				if (descriptor.ServiceType == parameter)
 				{
 					if (descriptor.ImplementationType != null)

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation
 {
@@ -15,7 +14,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 
 		public FieldIdentifier Identifier { get; }
 
-		public void Deconstruct([NotNull] out EditContext context, out FieldIdentifier field)
+		public void Deconstruct(out EditContext context, out FieldIdentifier field)
 		{
 			context = Context;
 			field   = Identifier;

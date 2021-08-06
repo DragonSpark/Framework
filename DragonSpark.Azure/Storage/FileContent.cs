@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Sequences;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Azure.Storage
 {
@@ -18,7 +17,7 @@ namespace DragonSpark.Azure.Storage
 
 		public Array<byte> Content { get; }
 
-		public void Deconstruct([NotNull] out string name, [NotNull] out string contentType, out Array<byte> content)
+		public void Deconstruct(out string name, out string contentType, out Array<byte> content)
 		{
 			name        = Name;
 			contentType = ContentType;

@@ -56,7 +56,7 @@ namespace DragonSpark.Testing.Reflection.Collections
 					typeof(Subject),
 					typeof(Subject<int>),
 					typeof(Integers)
-				}.All(ImplementsGenericEnumerable.Default.Get!)
+				}.All(ImplementsGenericEnumerable.Default.Get)
 				 .Should()
 				 .BeTrue();
 		}
@@ -66,7 +66,7 @@ namespace DragonSpark.Testing.Reflection.Collections
 			{
 				typeof(Result),
 				typeof(Command)
-			}.All(ImplementsGenericEnumerable.Default.Get!)
+			}.All(ImplementsGenericEnumerable.Default.Get)
 			 .Should()
 			 .BeFalse();
 	}

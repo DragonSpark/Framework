@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DragonSpark.Application.Security.Identity.Authentication
+﻿namespace DragonSpark.Application.Security.Identity.Authentication
 {
 	public sealed class StateView<T> where T : class
 	{
@@ -18,7 +16,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 
 		public string? Hash { get; }
 
-		public void Deconstruct([NotNull] out AuthenticationState<T> state, [CanBeNull] out string? hash)
+		public void Deconstruct(out AuthenticationState<T> state, out string? hash)
 		{
 			state = State;
 			hash  = Hash;

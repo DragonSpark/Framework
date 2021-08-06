@@ -31,7 +31,7 @@ namespace DragonSpark.Application.Hosting.xUnit
 		{
 			foreach (var transformer in _transformers.AsValueEnumerable())
 			{
-				var transformed = transformer!.Transform(current);
+				var transformed = transformer.Transform(current);
 				if (transformed != null)
 				{
 					return transformed;

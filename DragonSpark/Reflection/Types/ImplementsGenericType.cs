@@ -9,6 +9,6 @@ namespace DragonSpark.Reflection.Types
 	{
 		public ImplementsGenericType(Type definition) : base(Start.An.Instance(GenericInterfaceImplementations.Default)
 		                                                          .Select(x => x.Condition)
-		                                                          .Select(definition.To!)) {}
+		                                                          .Select(definition.To)) {}
 	}
 }

@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Runtime
 			var order = 0u;
 			foreach (var aware in parameter.Open().AsValueEnumerable())
 			{
-				aware!.Order ??= order++;
+				aware.Order ??= order++;
 			}
 
 			return parameter;
