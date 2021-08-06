@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Selection;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries

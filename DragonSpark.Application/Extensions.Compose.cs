@@ -11,7 +11,6 @@ using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
-using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
@@ -77,7 +76,8 @@ namespace DragonSpark.Application
 			=> @this.Configure(Security.Data.Registrations.Default);
 
 		/**/
-		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this)
+		public static StoreContext<TIn, TOut> Store<TIn, TOut>(
+			this DragonSpark.Compose.Model.Selection.Selector<TIn, TOut> @this)
 			=> new(@this);
 
 		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
@@ -96,7 +96,8 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static ProjectionContext<_, TOut> Then<_, TOut>(this Selector<_, IQueryable<TOut>> @this)
+		public static ProjectionContext<_, TOut> Then<_, TOut>(
+			this DragonSpark.Compose.Model.Selection.Selector<_, IQueryable<TOut>> @this)
 			=> @this.Get().Then();
 
 		public static ProjectionContext<_, TOut> Then<_, TOut>(this ISelect<_, IQueryable<TOut>> @this) => new(@this);

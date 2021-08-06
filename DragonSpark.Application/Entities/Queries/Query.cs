@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Selection
+namespace DragonSpark.Application.Entities.Queries
 {
 	public class Query<T> : Instance<IQueryable<T>>
 	{

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
