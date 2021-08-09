@@ -33,9 +33,9 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		{
 			var (name, exists, value) = _read.Get(parameter);
 			var result = exists
-				             ? new Claim<T>(_select(value ??
-				                                    throw new
-					                                    InvalidOperationException($"Claim '{name}' value exists but its value is invalid/null.")))
+				             ? new(_select(value ??
+				                           throw new
+					                           InvalidOperationException($"Claim '{name}' value exists but its value is invalid/null.")))
 				             : _default;
 			return result;
 		}

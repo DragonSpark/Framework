@@ -17,6 +17,7 @@
     async Task<RenderFragment> DetermineFragment()
     {
         Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
+        
         var result = Content != null ?
                          await Query.Any.Get(Content)
                              ? ChildContent(Content) : NoElementsFoundTemplate
