@@ -5,6 +5,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
 using Xunit;
+using Activator = DragonSpark.Runtime.Activation.Activator;
 
 // ReSharper disable All
 

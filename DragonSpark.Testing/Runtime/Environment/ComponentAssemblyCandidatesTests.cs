@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Runtime.Environment;
 using FluentAssertions;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -10,14 +11,18 @@ namespace DragonSpark.Testing.Runtime.Environment
 		[Fact]
 		public void Verify()
 		{
-			ComponentAssemblyCandidates.Default
-			                           .Get(new AssemblyName("DragonSpark.Duper.Awesome.Namespace.Application"))
-			                           .Should()
-			                           .BeEquivalentTo(new AssemblyName("DragonSpark.Duper.Awesome.Namespace.Application"),
-			                                           new AssemblyName("DragonSpark.Duper.Awesome.Namespace"),
-			                                           new AssemblyName("DragonSpark.Duper.Awesome"),
-			                                           new AssemblyName("DragonSpark.Duper"),
-			                                           new AssemblyName("DragonSpark"));
+			var source = new AssemblyName("DragonSpark.Duper.Awesome.Namespace.Application");
+			var expected = new[]
+			{
+				source,
+				new AssemblyName("DragonSpark.Duper.Awesome.Namespace"),
+				new AssemblyName("DragonSpark.Duper.Awesome"),
+				new AssemblyName("DragonSpark.Duper"),
+				new AssemblyName("DragonSpark")
+			}.Select(x => x.FullName);
+
+			var enumerable = ComponentAssemblyCandidates.Default.Get(source).Select(x => x.FullName);
+			enumerable.Should().BeEquivalentTo(expected);
 		}
 	}
 }

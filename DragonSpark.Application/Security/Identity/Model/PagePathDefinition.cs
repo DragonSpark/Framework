@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DragonSpark.Application.Security.Identity.Model
@@ -18,7 +19,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public string Get((IUrlHelper Url, IValueProvider Values) parameter)
 		{
 			var (url, values) = parameter;
-			var result = url.Page(_path, _handler, _value.Get(values));
+			var result = url.Page(_path, _handler, _value.Get(values)).Verify();
 			return result;
 		}
 	}

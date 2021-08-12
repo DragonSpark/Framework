@@ -14,7 +14,7 @@ namespace DragonSpark.Compose.Model.Memory
 		{
 			var (first, second) = parameter;
 
-			var builder = ArrayBuilder.New<T>(first.ActualLength * 2);
+			using var builder = ArrayBuilder.New<T>(first.ActualLength * 2);
 			builder.Add(first.AsMemory());
 
 			foreach (var element in second)

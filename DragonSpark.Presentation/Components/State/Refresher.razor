@@ -25,7 +25,7 @@
         _timer.Start();
     }
 
-    void OnElapsed(object sender, ElapsedEventArgs e)
+    void OnElapsed(object? sender, ElapsedEventArgs e)
     {
         InvokeAsync(_refresh);
     }

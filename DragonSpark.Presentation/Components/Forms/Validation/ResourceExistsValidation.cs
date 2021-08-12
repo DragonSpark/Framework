@@ -1,19 +1,21 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation
 {
-	public sealed class ResourceExistsValidation : IValidatingValue<string>
+	public sealed class ResourceExistsValidation : ComponentBase, IValidatingValue<string>
 	{
-		public static ResourceExistsValidation Default { get; } = new ResourceExistsValidation();
-
-		ResourceExistsValidation() : this(TimeSpan.FromMilliseconds(2500)) {}
-
 		readonly TimeSpan _timeout;
 
+		public ResourceExistsValidation() : this(TimeSpan.FromMilliseconds(2500)) {}
+
 		public ResourceExistsValidation(TimeSpan timeout) => _timeout = timeout;
+
+		[Inject]
+		IHttpClientFactory Clients { get; set; } = default!;
 
 		/// <summary>
 		/// ATTRIBUTION: https://stackoverflow.com/questions/1979915/can-i-check-if-a-file-exists-at-a-url/12013240
@@ -24,18 +26,10 @@ namespace DragonSpark.Presentation.Components.Forms.Validation
 		{
 			if (!string.IsNullOrEmpty(parameter))
 			{
-				var request = WebRequest.Create(parameter);
-				request.Timeout = (int)_timeout.TotalMilliseconds;
-				request.Method  = "HEAD";
-
-				try
-				{
-					await request.GetResponseAsync();
-				}
-				catch
-				{
-					return false;
-				}
+				using var client  = Clients.CreateClient();
+				client.Timeout = _timeout;
+				var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, parameter));
+				return response.IsSuccessStatusCode;
 			}
 
 			return true;

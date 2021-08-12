@@ -24,7 +24,8 @@ namespace DragonSpark.Compose
 
 		public static IConditional<TIn, TOut> ToStore<TIn, TOut>(this IReadOnlyDictionary<TIn, TOut> @this)
 			where TIn : notnull
-			=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);
+		// ReSharper disable once RedundantNameQualifier
+			=> Compose.Start.An.Extent<DragonSpark.Model.Selection.Stores.Lookup<TIn, TOut>>().From(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
 			where TIn : notnull
