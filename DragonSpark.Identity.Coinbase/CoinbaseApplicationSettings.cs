@@ -6,7 +6,7 @@
 
 		public string Secret { get; set; }  = null!;
 
-		public CoinbaseAuthenticationSettings Authentication { get; set; } = new CoinbaseAuthenticationSettings();
+		public string[]? Scopes { get; set; }
 
 	}
 }

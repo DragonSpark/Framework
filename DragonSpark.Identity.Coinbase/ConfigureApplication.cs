@@ -1,21 +1,23 @@
-﻿using DragonSpark.Compose;
+﻿using AspNet.Security.OAuth.Coinbase;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Identity.Coinbase
 {
 	sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 	{
-		public static ConfigureApplication Default { get; } = new ConfigureApplication();
+		readonly Action<CoinbaseAuthenticationOptions> _configure;
 
-		ConfigureApplication() {}
+		public ConfigureApplication(Action<CoinbaseAuthenticationOptions> configure) => _configure = configure;
 
 		public void Execute(AuthenticationBuilder parameter)
 		{
-			parameter.Services.Register<CoinbaseApplicationSettings>()
-			         .Return(parameter)
-			         ;
+			var settings = parameter.Services.Deferred<CoinbaseApplicationSettings>();
+			parameter.AddCoinbase(new ConfigureAuthentication(settings, _configure).Execute);
+			parameter.Services.Register<CoinbaseApplicationSettings>();
 		}
 	}
 }
