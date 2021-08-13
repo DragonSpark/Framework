@@ -49,7 +49,7 @@ namespace DragonSpark.Application.Testing.Runtime
 			var sut      = MembershipTransaction<Subject>.Default;
 			var instance = stored.ToList();
 			sut.Execute(instance, transactions);
-			instance.Should().HaveCount(5).And.Subject.Should().BeEquivalentTo<Subject>(current);
+			instance.Should().HaveCount(5).And.Subject.Should().BeEquivalentTo(current);
 
 		}
 
@@ -79,7 +79,7 @@ namespace DragonSpark.Application.Testing.Runtime
 			var sut      = MembershipTransaction<Subject>.Default;
 			var instance = stored.ToList();
 			sut.Execute(instance, transactions);
-			instance.Should().HaveCount(5).And.Subject.Should().BeEquivalentTo<Subject>(current);
+			instance.Should().HaveCount(5).And.Subject.Should().BeEquivalentTo(current);
 		}
 
 		[Fact]
@@ -109,7 +109,7 @@ namespace DragonSpark.Application.Testing.Runtime
 			var sut      = MembershipTransaction<Subject>.Default;
 			var instance = stored.ToList();
 			sut.Execute(instance, transactions);
-			instance.Should().HaveCount(3).And.Subject.Should().BeEquivalentTo<Subject>(current);
+			instance.Should().HaveCount(3).And.Subject.Should().BeEquivalentTo(current);
 		}
 
 	}

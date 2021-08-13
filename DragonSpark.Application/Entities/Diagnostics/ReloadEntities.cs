@@ -17,7 +17,7 @@ namespace DragonSpark.Application.Entities.Diagnostics
 			var (exception, _) = parameter;
 			foreach (var entry in exception.Entries.AsValueEnumerable())
 			{
-				await entry!.ReloadAsync().ConfigureAwait(false);
+				await entry.ReloadAsync().ConfigureAwait(false);
 			}
 		}
 	}
