@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs
 		public QueueApplicationContext(BuildHostContext subject) => _subject = subject;
 
 		public ApplicationProfileContext HostedUsing<THost>() where THost : QueueHost
-			=> HostedUsing<THost>(QueueConfiguration.Default.Execute);
+			=> HostedUsing<THost>(EmptyQueueConfiguration.Default.Execute);
 
 		public ApplicationProfileContext HostedUsing<THost>(Action<QueuesOptions> configure) where THost : QueueHost
 			=> _subject.Configure(new Hosting(configure))
