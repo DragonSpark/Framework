@@ -12,10 +12,8 @@ namespace DragonSpark.Testing.Runtime.Activation
 		public void Verify(int number)
 		{
 			var subject = Start.An.Extent<Subject>().New(number);
-			subject.Number.Should()
-			       .Be(number)
-			       .And.Subject.Should()
-			       .NotBeSameAs(New<int, Subject>.Default.Get(number));
+			subject.Number.Should().Be(number);
+			subject.Should().NotBeSameAs(New<int, Subject>.Default.Get(number));
 		}
 
 		[Theory, AutoData]

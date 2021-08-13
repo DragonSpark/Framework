@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Generation
 			               .Get();
 			sut.Child.Parent.Should().BeSameAs(sut);
 			sut.Created.Should().Be(expected);
-			sut.Id.Should().NotBe(default);
+			sut.Id.Should().NotBeEmpty();
 		}
 
 		[Fact]

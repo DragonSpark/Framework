@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Materialization
 {
-	public class DictionaryMaterializer<T, TKey> : DictionaryMaterializer<T, TKey, T>
+	public class DictionaryMaterializer<T, TKey> : DictionaryMaterializer<T, TKey, T> where TKey : notnull
 	{
 		public DictionaryMaterializer(Func<T, TKey> key) : base(key, x => x) {}
 	}
 
 	public class DictionaryMaterializer<T, TKey, TValue> : IMaterializer<T, IReadOnlyDictionary<TKey, TValue>>
+		where TKey : notnull
 	{
 		readonly Func<T, TKey>   _key;
 		readonly Func<T, TValue> _value;

@@ -104,6 +104,13 @@ namespace DragonSpark.Application
 
 		public static QuerySelector<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
+		public static IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
+			=> new Adapter<TIn, T>(@this);
+
+		public static IQuery<TIn, T> Out<TIn, T>(
+			this DragonSpark.Compose.Model.Selection.Selector<TIn, IQueryable<T>> @this)
+			=> @this.Get().Out();
+
 		/**/
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)

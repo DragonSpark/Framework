@@ -4,15 +4,18 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	public class Where<TKey, T> : IQuery<TKey, T>
 	{
-		readonly IQueryable<T>  _source;
-		readonly Query<TKey, T> _query;
+		readonly IQuery<TKey, T> _query;
+		readonly Query<TKey, T>  _select;
 
-		public Where(IQueryable<T> source, Query<TKey, T> query)
+		public Where(IQueryable<T> query, Query<TKey, T> select)
+			: this(new Accept<TKey, T>(query), @select) {}
+
+		public Where(IQuery<TKey, T> query, Query<TKey, T> select)
 		{
-			_source = source;
 			_query  = query;
+			_select = select;
 		}
 
-		public IQueryable<T> Get(TKey parameter) => _source.Where(_query(parameter));
+		public IQueryable<T> Get(TKey parameter) => _query.Get(parameter).Where(_select(parameter));
 	}
 }

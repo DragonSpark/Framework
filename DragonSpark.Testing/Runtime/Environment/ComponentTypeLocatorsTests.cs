@@ -33,7 +33,7 @@ namespace DragonSpark.Testing.Runtime.Environment
 			                                 .Get(typeof(IComponent))
 			                                 .Open();
 			types.Should().HaveCount(4);
-			types.Should().BeEquivalentTo(typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last));
+			types.Should().BeEquivalentTo(new []{typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last)});
 			types.First().Should().Be(typeof(First));
 			types.Last().Should().Be(typeof(Last));
 		}

@@ -4,7 +4,7 @@
 	{
 		public SingleOrDefault(IQuery<TIn, T> query) : this(query, SingleOrDefaultMaterializer<T>.Default) {}
 
-		protected SingleOrDefault(IQuery<TIn, T> query, IMaterializer<T, T?> materializer) :
-			base(query, materializer) {}
+		protected SingleOrDefault(IQuery<TIn, T> query, IMaterializer<T, T?> materializer)
+			: base(query, materializer) {}
 	}
 }
