@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -40,6 +41,9 @@ namespace DragonSpark.Application
 		public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
 			=> @this.Append(EnvironmentalStorageConfiguration.Default);
 
+		public static StorageConfigurationBuilder WithModel(this StorageConfigurationBuilder @this, IModel model)
+			=> @this.Append(new RuntimeModelConfiguration(new ThreadAwareModel(model)));
+		
 		/**/
 
 		/*public static IdentityContext WithIdentity(this ApplicationProfileContext @this)

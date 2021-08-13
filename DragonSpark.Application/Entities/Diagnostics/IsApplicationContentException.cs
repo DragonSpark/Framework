@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Entities.Diagnostics
 
 		IsApplicationContentException()
 			: this(
-			       "A second operation was started on this context before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext.",
+			       "A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext",
 			       "An exception was thrown while attempting to evaluate the LINQ query parameter expression") {}
 
 		readonly Array<string> _messages;

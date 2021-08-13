@@ -12,11 +12,11 @@ namespace DragonSpark.Application
 		readonly Func<IHostBuilder, IHostBuilder> _select;
 		readonly IOperation<IHost>                _run;
 
-		public Program(ISelect<IHostBuilder, IHostBuilder> select) : this(select.Get) {}
+		protected Program(ISelect<IHostBuilder, IHostBuilder> select) : this(select.Get) {}
 
-		public Program(Func<IHostBuilder, IHostBuilder> select) : this(@select, RunInitializedProgram.Default) {}
+		protected Program(Func<IHostBuilder, IHostBuilder> select) : this(@select, RunInitializedProgram.Default) {}
 
-		public Program(Func<IHostBuilder, IHostBuilder> select, IOperation<IHost> run)
+		protected Program(Func<IHostBuilder, IHostBuilder> select, IOperation<IHost> run)
 		{
 			_select = @select;
 			_run    = run;

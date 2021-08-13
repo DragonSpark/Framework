@@ -25,6 +25,9 @@ namespace DragonSpark.Composition.Compose
 		public BuildHostContext Configure(ICommand<IHostBuilder> configuration)
 			=> Select(configuration.Then().ToConfiguration().Out());
 
+		public BuildHostContext Configure(params ICommand<IServiceCollection>[] configurations)
+			=> Configure(new CompositeCommand<IServiceCollection>(configurations));
+
 		public BuildHostContext Configure(ICommand<IServiceCollection> configure) => Configure(configure.Execute);
 
 		public BuildHostContext Configure(Action<IServiceCollection> configure) => Select(new Configure(configure));
