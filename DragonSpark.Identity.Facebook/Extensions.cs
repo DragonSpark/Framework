@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Facebook;

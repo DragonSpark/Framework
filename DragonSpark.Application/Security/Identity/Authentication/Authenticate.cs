@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Claims;
+﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 

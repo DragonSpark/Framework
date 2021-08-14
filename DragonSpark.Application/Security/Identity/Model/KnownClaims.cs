@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Claims;
+﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
 using System.Collections.Generic;
 using System.Security.Claims;
 

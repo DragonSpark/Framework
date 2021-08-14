@@ -1,16 +1,10 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Claims;
-using DragonSpark.Compose;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Application.Security.Identity.Claims.Access;
 
 namespace DragonSpark.Presentation.Security.Identity
 {
-	public sealed class CurrentAuthenticationMethod : Result<string>
+	public sealed class CurrentAuthenticationMethod : CurrentClaimValue
 	{
-		public CurrentAuthenticationMethod(ICurrentPrincipal source) : this(source, AuthenticationMethod.Default) {}
-
-		public CurrentAuthenticationMethod(ICurrentPrincipal source, IReadClaim read)
-			: base(source.Then().Select(read).Select(x => x.Value())) {}
+		public CurrentAuthenticationMethod(ICurrentPrincipal source) : base(source, AuthenticationMethod.Default) {}
 	}
 }

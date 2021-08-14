@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Identity.Twitter.Claims;
 
 namespace DragonSpark.Identity.Twitter

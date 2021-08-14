@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Application.Security.Identity.Claims.Compile;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Composition;

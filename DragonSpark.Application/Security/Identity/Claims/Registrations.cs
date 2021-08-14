@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,7 @@ namespace DragonSpark.Application.Security.Identity.Claims
 		public void Execute(IServiceCollection parameter)
 		{
 			parameter.Start<IClaims>()
-			         .Forward<Claims>()
+			         .Forward<Compile.Claims>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         .Then.Start<ICurrentKnownClaims>()

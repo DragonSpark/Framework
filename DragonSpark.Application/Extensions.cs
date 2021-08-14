@@ -3,7 +3,7 @@ using DragonSpark.Application.Compose;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
