@@ -42,6 +42,11 @@ namespace DragonSpark.Application
 
 		/**/
 
+		public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
+
+		public static string ValueOrDefault(this Accessed @this, string @default)
+			=> @this.Exists ? @this.Value.Verify() : @default;
+
 		public static string Value(this Accessed @this)
 			=> @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
 
