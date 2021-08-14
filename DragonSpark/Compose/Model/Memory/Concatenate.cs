@@ -1,16 +1,18 @@
-﻿using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Runtime;
 using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class Concatenate<T> : ILease<(Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second), T>
+	sealed class Concatenate<T>
+		: ISelect<(Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second), Concatenation<T>>
 	{
 		public static Concatenate<T> Default { get; } = new Concatenate<T>();
 
 		Concatenate() {}
 
-		public Lease<T> Get((Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second) parameter)
+		public Concatenation<T> Get((Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 
@@ -22,8 +24,7 @@ namespace DragonSpark.Compose.Model.Memory
 				builder.Add(element);
 			}
 
-			first.Dispose();
-			return builder.AsLease();
+			return new Concatenation<T>(first, builder.AsLease());
 		}
 	}
 }

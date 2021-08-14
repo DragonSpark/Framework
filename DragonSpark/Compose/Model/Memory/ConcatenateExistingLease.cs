@@ -1,22 +1,23 @@
-﻿using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class ConcatenateExistingLease<T> : ILease<(Lease<T> First, Memory<T> Second), T>
+	sealed class ConcatenateExistingLease<T> : ISelect<(Lease<T> First, Memory<T> Second), Concatenation<T>>
 	{
 		public static ConcatenateExistingLease<T> Default { get; } = new ConcatenateExistingLease<T>();
 
 		ConcatenateExistingLease() {}
 
-		public Lease<T> Get((Lease<T> First, Memory<T> Second) parameter)
+		public Concatenation<T> Get((Lease<T> First, Memory<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 
 			var span = second.Span;
 			span.CopyTo(first.Remaining.Span);
 
-			return first.Size((uint)(first.Length + span.Length));
+			return new Concatenation<T>(first, first.Size((uint)(first.Length + span.Length)));
 		}
 	}
 }

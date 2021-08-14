@@ -1,9 +1,10 @@
-﻿using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class ConcatenateNewLease<T> : ILease<(Lease<T> First, Memory<T> Second, uint size), T>
+	sealed class ConcatenateNewLease<T> : ISelect<(Lease<T> First, Memory<T> Second, uint size), Concatenation<T>>
 	{
 		public static ConcatenateNewLease<T> Default { get; } = new();
 
@@ -13,7 +14,7 @@ namespace DragonSpark.Compose.Model.Memory
 
 		public ConcatenateNewLease(ILeases<T> leases) => _leases = leases;
 
-		public Lease<T> Get((Lease<T> First, Memory<T> Second, uint size) parameter)
+		public Concatenation<T> Get((Lease<T> First, Memory<T> Second, uint size) parameter)
 		{
 			var (first, second, size) = parameter;
 
@@ -24,8 +25,7 @@ namespace DragonSpark.Compose.Model.Memory
 			one.CopyTo(destination[..one.Length]);
 			second.Span.CopyTo(destination[one.Length..]);
 
-			first.Dispose();
-			return result;
+			return new (first, result);
 		}
 	}
 }

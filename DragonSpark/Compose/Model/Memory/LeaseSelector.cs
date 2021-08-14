@@ -10,10 +10,10 @@ namespace DragonSpark.Compose.Model.Memory
 
 		public LeaseSelector(Lease<T> subject) => _subject = subject;
 
-		public Lease<T> Concat(EnumerableExtensions.ValueEnumerable<T> memory)
+		public Concatenation<T> Concat(EnumerableExtensions.ValueEnumerable<T> memory)
 			=> Concatenate<T>.Default.Get(_subject, memory);
 
-		public Lease<T> Concat(Memory<T> memory) => ConcatenateLeases<T>.Default.Get(_subject, memory);
+		public Concatenation<T> Concat(Memory<T> memory) => ConcatenateLeases<T>.Default.Get(_subject, memory);
 
 		public Lease<TTo> OfType<TTo>() => OfType<T, TTo>.Default.Get(_subject);
 	}

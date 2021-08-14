@@ -6,6 +6,7 @@ using NetFabric.Hyperlinq;
 using System.Buffers;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Compose.Model.Memory
 {
@@ -35,7 +36,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			var first  = new[] { 1, 2, 3, 4 };
 			var second = new[] { 5, 6, 7, 8 };
 
-			var sut = first.AsValueEnumerable().AsLease().Then().Concat(second).ToArray();
+			var sut = first.AsValueEnumerable().AsLease().Then().Concat(second).Result().ToArray();
 			sut.Should().Equal(first.Concat(second));
 		}
 
@@ -53,40 +54,64 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			sut.AsSpan().Length.Should().Be(3);
 		}
 
+		readonly ITestOutputHelper _output;
+
+		public LeaseSelectorTests(ITestOutputHelper output) => _output = output;
+
 		[Fact]
 		public void VerifySum()
 		{
 			var first  = new[] { 1, 2, 3, 4 };
 			var second = new[] { 5, 6, 7, 8 };
 
-			var       result = 0;
-			using var other  = second.Hide().AsValueEnumerable().AsLease();
-			using var sut    = first.Hide().AsValueEnumerable().AsLease().Then().Concat(other.AsMemory());
-			var       span   = sut.AsSpan();
+			var       result   = 0;
+			using var other    = second.Hide().AsValueEnumerable().AsLease();
+			var       memory = other.AsMemory();
+
+			for (int i = 0; i < memory.Length; i++)
+			{
+				_output.WriteLine(memory.Span[i].ToString());
+			}
+			using var sut      = first.Hide().AsValueEnumerable().AsLease().Then().Concat(memory).Result();
+			var       span     = sut.AsSpan();
+
+			_output.WriteLine($"{memory.Length} - {span.Length}");
+
+
 			for (var i = 0; i < sut.Length; i++)
 			{
-				result += span[i];
+				var i1 = span[i];
+				_output.WriteLine(i1.ToString());
+				result += i1;
 			}
 
 			result.Should().Be(first.Concat(second).Sum());
 		}
 
-		[Fact] // TODO: Stress test this
+		[Fact]
 		public void VerifySumEnumerable()
 		{
-			var first  = new[] { 1, 2, 3, 4 };
-			var second = new[] { 5, 6, 7, 8 };
-
-			var       result = 0;
-			var       other  = second.Hide().AsValueEnumerable().AsValueEnumerable();
-			using var sut    = first.Hide().AsValueEnumerable().AsLease().Then().Concat(other);
-			var       span   = sut.AsSpan();
-			for (var i = 0; i < sut.Length; i++)
+			for (int j = 0; j < 100; j++)
 			{
-				result += span[i];
-			}
+				var first    = new[] { 1, 2, 3, 4 };
+				var second   = new[] { 5, 6, 7, 8 };
+				var expected = first.Concat(second).Sum();
+				using var sut = first.Hide()
+				                     .AsValueEnumerable()
+				                     .AsLease()
+				                     .Then()
+				                     .Concat(second.Hide().AsValueEnumerable())
+				                     .Result();
+				var span   = sut.AsSpan();
+				var result = 0;
 
-			result.Should().Be(first.Concat(second).Sum());
+				for (var i = 0; i < sut.Length; i++)
+				{
+					result += span[i];
+				}
+
+				result.Should().Be(expected);
+			}
 		}
 
 		public class Benchmarks
@@ -121,7 +146,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			public int NoAllocations()
 			{
 				var       result = 0;
-				using var sut    = first.AsValueEnumerable().AsLease().Then().Concat(second);
+				using var sut    = first.AsValueEnumerable().AsLease().Then().Concat(second).Result();
 				var       span   = sut.AsSpan();
 				for (var i = 0; i < sut.Length; i++)
 				{
