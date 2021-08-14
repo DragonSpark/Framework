@@ -71,7 +71,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			result.Should().Be(first.Concat(second).Sum());
 		}
 
-		[Fact]
+		[Fact] // TODO: Stress test this
 		public void VerifySumEnumerable()
 		{
 			var first  = new[] { 1, 2, 3, 4 };
