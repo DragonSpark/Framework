@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities
 {
-	public interface IStorageInitializer<T> : IAlteration<T> where T : DbContext {}
-
-
 	public interface IStorageInitializer : IAlteration<ModelBuilder> {}
 
 	public class StorageInitializer : Alteration<ModelBuilder>, IStorageInitializer
