@@ -43,15 +43,8 @@ namespace DragonSpark.Application
 
 		public static StorageConfigurationBuilder WithModel(this StorageConfigurationBuilder @this, IModel model)
 			=> @this.Append(new RuntimeModelConfiguration(new ThreadAwareModel(model)));
-		
+
 		/**/
-
-		/*public static IdentityContext WithIdentity(this ApplicationProfileContext @this)
-			=> @this.WithIdentity(_ => {});
-
-		public static IdentityContext WithIdentity(this ApplicationProfileContext @this,
-		                                           System.Action<IdentityOptions> configure)
-			=> new IdentityContext(@this, configure);*/
 
 		public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : IdentityUser
 			=> new(@this);
@@ -79,6 +72,9 @@ namespace DragonSpark.Application
 		public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
 			=> @this.Configure(Security.Data.Registrations.Default);
 
+		public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
+			=> new (new InitializationAwareHostBuilder<T>(@this));
+
 		/**/
 		public static StoreContext<TIn, TOut> Store<TIn, TOut>(
 			this DragonSpark.Compose.Model.Selection.Selector<TIn, TOut> @this)
@@ -93,10 +89,6 @@ namespace DragonSpark.Application
 		public static IWindow WithinLast(this ITime @this, TimeSpan within) => new Ago(@this, within);
 
 		public static IWindow FromNow(this ITime @this, TimeSpan window) => new FromNow(@this, window);
-
-		/*public static OperationResultSelector<_, IQueryable<T>> Protected<_, T>(
-			this OperationResultSelector<_, IQueryable<T>> @this, AsyncLock @lock) where T : class
-			=> @this.Protecting(@lock).Select(new ProtectedQueries<T>(@lock));*/
 
 		/**/
 
