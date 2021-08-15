@@ -13,14 +13,14 @@ namespace DragonSpark.Reflection.Members
 
 	public class FieldDefinition : Instance<FieldInfo>
 	{
-		public FieldDefinition(Type type, string name)
+		protected FieldDefinition(Type type, string name)
 			: base(type.GetField(name, PrivateInstanceFlags.Default).Verify()) {}
 	}
 
 	public class FieldAccessor<T, TValue> : Select<T, TValue>
 	{
-		public FieldAccessor(string name) : this(new FieldDefinition<T>(name)) {}
+		protected FieldAccessor(string name) : this(new FieldDefinition<T>(name)) {}
 
-		public FieldAccessor(FieldInfo metadata) : base(FieldValueDelegates<T, TValue>.Default.Get(metadata)) {}
+		protected FieldAccessor(FieldInfo metadata) : base(FieldValueDelegates<T, TValue>.Default.Get(metadata)) {}
 	}
 }
