@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Diagnostics.Initialization
 	{
 		public static EmitInitializingLog<T> Default { get; } = new EmitInitializingLog<T>();
 
-		EmitInitializingLog() : base(LogInitializingMessage<T>.Default) {}
+		EmitInitializingLog() : base(LogRunningMessage<T>.Default) {}
 	}
 
 	public class EmitInitializingLog : ICommand
