@@ -91,27 +91,24 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 		[Fact]
 		public void VerifySumEnumerable()
 		{
-			for (int j = 0; j < 100; j++)
+			var first    = new[] { 1, 2, 3, 4 };
+			var second   = new[] { 5, 6, 7, 8 };
+			var expected = first.Concat(second).Sum();
+			using var sut = first.Hide()
+			                     .AsValueEnumerable()
+			                     .AsLease()
+			                     .Then()
+			                     .Concat(second.Hide().AsValueEnumerable())
+			                     .Result();
+			var span   = sut.AsSpan();
+			var result = 0;
+
+			for (var i = 0; i < sut.Length; i++)
 			{
-				var first    = new[] { 1, 2, 3, 4 };
-				var second   = new[] { 5, 6, 7, 8 };
-				var expected = first.Concat(second).Sum();
-				using var sut = first.Hide()
-				                     .AsValueEnumerable()
-				                     .AsLease()
-				                     .Then()
-				                     .Concat(second.Hide().AsValueEnumerable())
-				                     .Result();
-				var span   = sut.AsSpan();
-				var result = 0;
-
-				for (var i = 0; i < sut.Length; i++)
-				{
-					result += span[i];
-				}
-
-				result.Should().Be(expected);
+				result += span[i];
 			}
+
+			result.Should().Be(expected);
 		}
 
 		public class Benchmarks
