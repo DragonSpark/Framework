@@ -25,6 +25,9 @@ namespace DragonSpark.Application.Entities
 		readonly Func<Func<EntityEntry, bool>> _excluded;
 
 		[UsedImplicitly]
+		public Save(DbContext context) : this(context, new SaveChanges<T>(context, new Update<T>(context))) {}
+
+		[UsedImplicitly]
 		public Save(DbContext context, ISaveChanges<T> save)
 			: this(context, save, Excluded.Default.Then().Bind(context)) {}
 
