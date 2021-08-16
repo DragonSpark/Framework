@@ -9,22 +9,22 @@ using System.Diagnostics;
 
 namespace DragonSpark.Application.Diagnostics.Initialization
 {
-	public sealed class EmitInitializingLog<T> : EmitInitializingLog
+	public sealed class EmitRunningLog<T> : EmitRunningLog
 	{
-		public static EmitInitializingLog<T> Default { get; } = new EmitInitializingLog<T>();
+		public static EmitRunningLog<T> Default { get; } = new EmitRunningLog<T>();
 
-		EmitInitializingLog() : base(LogRunningMessage<T>.Default) {}
+		EmitRunningLog() : base(LogRunningMessage<T>.Default) {}
 	}
 
-	public class EmitInitializingLog : ICommand
+	public class EmitRunningLog : ICommand
 	{
 		readonly ILogMessage<(string, Version, int)> _message;
 		readonly AssemblyDetails                     _details;
 
-		protected EmitInitializingLog(ILogMessage<(string, Version, int)> message)
+		protected EmitRunningLog(ILogMessage<(string, Version, int)> message)
 			: this(message, PrimaryAssemblyDetails.Default) {}
 
-		protected EmitInitializingLog(ILogMessage<(string, Version, int)> message, AssemblyDetails details)
+		protected EmitRunningLog(ILogMessage<(string, Version, int)> message, AssemblyDetails details)
 		{
 			_message = message;
 			_details = details;
@@ -35,5 +35,4 @@ namespace DragonSpark.Application.Diagnostics.Initialization
 			_message.Execute(_details.Title, _details.Version, Process.GetCurrentProcess().Id);
 		}
 	}
-
 }
