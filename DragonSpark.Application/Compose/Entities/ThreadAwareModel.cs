@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -73,6 +74,12 @@ namespace DragonSpark.Application.Compose.Entities
 		public string ToDebugString(MetadataDebugStringOptions options = MetadataDebugStringOptions.ShortDefault, int indent = 0) => _model.ToDebugString(options, indent);
 
 		public bool IsIndexerMethod(MethodInfo methodInfo) => _previous.IsIndexerMethod(methodInfo);
+
+		public CoreTypeMapping? FindMapping(Type type) => _previous.FindMapping(type);
+
+		public IEnumerable<IPropertyTypeConfiguration> GetPropertyTypeConfigurations() => _previous.GetPropertyTypeConfigurations();
+
+		public IEnumerable<IPropertyTypeConfiguration>? FindPropertyTypeConfigurations(Type propertyType) => _previous.FindPropertyTypeConfigurations(propertyType);
 
 		public RuntimeModelDependencies? ModelDependencies
 		{
