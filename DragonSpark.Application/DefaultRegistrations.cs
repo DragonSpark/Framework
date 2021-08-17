@@ -31,11 +31,11 @@ namespace DragonSpark.Application
 			         .Forward<Undo>()
 			         .Scoped()
 			         //
-			         .Then.AddScoped(typeof(ISaveChanges<>), typeof(SaveChanges<>))
-			         .AddScoped(typeof(ISave<>), typeof(Save<>))
+			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
 			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
 			         .AddScoped(typeof(IUpdate<>), typeof(Update<>))
-			         //
+
+					 //
 			         .Start<IToken>()
 			         .Forward<Token>()
 			         .Scoped()
@@ -72,8 +72,7 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<IExecuteOperation>()
 			         .Forward<ExecuteOperation>()
-			         .Scoped()
-				;
+			         .Scoped();
 		}
 	}
 }

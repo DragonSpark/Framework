@@ -20,6 +20,15 @@ namespace DragonSpark.Compose.Model.Operations
 
 		public OperationResultSelector(IResult<ValueTask<T>> instance) : base(instance) {}
 
+		public OperationSelector Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
+
+		public OperationSelector Terminate() => Terminate(_ => ValueTask.CompletedTask);
+
+		public OperationSelector Terminate(Func<T, ValueTask> command) => new(new Terminated<T>(Get(), command));
+
+		public OperationSelector Terminate(Action<T> command)
+			=> new(new Terminated<T>(Get(), Start.A.Command(command).Operation()));
+
 		public OperationResultSelector<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
 		public OperationResultSelector<T> Watching(IResult<CancellationToken> token) => Watching(token.Get);

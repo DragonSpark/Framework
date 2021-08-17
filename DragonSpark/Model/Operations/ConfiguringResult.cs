@@ -30,12 +30,11 @@ namespace DragonSpark.Model.Operations
 		readonly AwaitOf<T> _select;
 		readonly Await<T>   _configure;
 
-		public ConfiguringResult(IResulting<T> select, IOperation<T> operation)
-			: this(select.Await, operation.Await) {}
+		public ConfiguringResult(IResulting<T> select, IOperation<T> operation) : this(select.Await, operation.Await) {}
 
 		public ConfiguringResult(AwaitOf<T> select, Await<T> configure)
 		{
-			_select         = @select;
+			_select    = select;
 			_configure = configure;
 		}
 
@@ -46,5 +45,4 @@ namespace DragonSpark.Model.Operations
 			return result;
 		}
 	}
-
 }

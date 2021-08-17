@@ -35,7 +35,7 @@ namespace DragonSpark.Compose.Model.Results
 
 		public ValidatedResultContext<T> Unless(ResultContext<T> other) => Unless(other.Get());
 
-		public ValidatedResultContext<T> Unless(IResult<T> other) => new ValidatedResultContext<T>(Get(), other);
+		public ValidatedResultContext<T> Unless(IResult<T> other) => new(Get(), other);
 
 		public Func<T> ReferenceDelegate() => Delegates<T>.Default.Get(Get());
 

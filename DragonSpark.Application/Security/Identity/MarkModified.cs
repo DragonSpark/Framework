@@ -6,18 +6,18 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class MarkModified<T> : IMarkModified<T> where T : IdentityUser
 	{
-		readonly ITime           _time;
-		readonly ISaveChanges<T> _save;
+		readonly ITime    _time;
+		readonly ISave<T> _save;
 
-		public MarkModified(ISaveChanges<T> save) : this(save, Time.Default) {}
+		public MarkModified(ISave<T> save) : this(save, Time.Default) {}
 
-		public MarkModified(ISaveChanges<T> save, ITime time)
+		public MarkModified(ISave<T> save, ITime time)
 		{
-			_time = time;
 			_save = save;
+			_time = time;
 		}
 
-		public ValueTask<uint> Get(T parameter)
+		public ValueTask Get(T parameter)
 		{
 			parameter.Modified = _time.Get();
 			return _save.Get(parameter);
