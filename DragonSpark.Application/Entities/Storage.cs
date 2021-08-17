@@ -6,13 +6,13 @@ namespace DragonSpark.Application.Entities
 {
 	public class Storage<T> : Security.Identity.IdentityDbContext<T> where T : IdentityUser
 	{
-		readonly IStorageInitializer    _initializer;
+		readonly ISchemaModification    _initializer;
 		readonly ICommand<ModelBuilder> _configure;
 
-		protected Storage(DbContextOptions options, IStorageInitializer initializer)
+		protected Storage(DbContextOptions options, ISchemaModification initializer)
 			: this(options, initializer, EmptyCommand<ModelBuilder>.Default) {}
 
-		protected Storage(DbContextOptions options, IStorageInitializer initializer, ICommand<ModelBuilder> configure)
+		protected Storage(DbContextOptions options, ISchemaModification initializer, ICommand<ModelBuilder> configure)
 			: base(options)
 		{
 			_initializer = initializer;

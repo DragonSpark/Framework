@@ -37,8 +37,8 @@ namespace DragonSpark.Application.Compose.Entities
 			         .Forward<StorageInitializer<TContext>>()
 			         .Singleton()
 			         //
-			         .Then.Start<IStorageInitializer>()
-			         .Forward<StorageInitializer>()
+			         .Then.Start<ISchemaModification>()
+			         .Forward<SchemaModification>()
 			         .Singleton()
 			         //
 			         .Then.AddDefaultIdentity<T>(_identity)
