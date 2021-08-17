@@ -63,6 +63,8 @@ namespace DragonSpark.Compose.Model.Selection
 		public Selector<TIn, TOut> Configure(Action<TIn, TOut> configure)
 			=> new DragonSpark.Model.Selection.Configure<TIn, TOut>(_subject.Get, configure).Then();
 
+		public Selector<TIn, TOut> Configure(ICommand<TOut> configure) => Configure(configure.Execute);
+
 		public Selector<TIn, TOut> Configure(System.Action<TOut> configure)
 			=> new ConfigureOutput<TIn, TOut>(_subject.Get, configure).Then();
 

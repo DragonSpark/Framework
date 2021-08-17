@@ -1,29 +1,26 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.EntityFrameworkCore;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Entities
 {
-	public class Storage<T> : Security.Identity.IdentityDbContext<T> where T : IdentityUser
+	public class Storage<T> : Security.Identity.IdentityDbContext<T> where T : Security.Identity.IdentityUser
 	{
-		readonly ISchemaModification    _initializer;
-		readonly ICommand<ModelBuilder> _configure;
+		readonly Alter<ModelBuilder> _select;
 
 		protected Storage(DbContextOptions options, ISchemaModification initializer)
 			: this(options, initializer, EmptyCommand<ModelBuilder>.Default) {}
 
 		protected Storage(DbContextOptions options, ISchemaModification initializer, ICommand<ModelBuilder> configure)
-			: base(options)
-		{
-			_initializer = initializer;
-			_configure   = configure;
-		}
+			: this(options, initializer.Then().Configure(configure).Out().Get) {}
+
+		protected Storage(DbContextOptions options, Alter<ModelBuilder> select) : base(options) => _select = select;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			var initialized = _initializer.Get(builder);
-			_configure.Execute(initialized);
-			base.OnModelCreating(initialized);
+			var select = _select(builder);
+			base.OnModelCreating(select);
 		}
 	}
 }
