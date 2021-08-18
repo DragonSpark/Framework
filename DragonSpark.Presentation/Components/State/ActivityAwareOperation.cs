@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State
 {
-	sealed class ActivityAwareOperation : IOperation
+
+
+    sealed class ActivityAwareOperation : IOperation
 	{
 		readonly IOperation              _operation;
 		readonly object                  _subject;

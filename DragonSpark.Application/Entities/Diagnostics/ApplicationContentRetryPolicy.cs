@@ -3,10 +3,10 @@ using System;
 
 namespace DragonSpark.Application.Entities.Diagnostics
 {
-	public sealed class ApplicationContentRetryPolicy : RetryPolicy
+    public sealed class ApplicationContentRetryPolicy : RetryPolicy
 	{
 		public static ApplicationContentRetryPolicy Default { get; } = new ApplicationContentRetryPolicy();
 
-		ApplicationContentRetryPolicy() : base(10, new LinearRetryStrategy(TimeSpan.FromMilliseconds(50)).Get) {}
+		ApplicationContentRetryPolicy() : base(15, new LinearRetryStrategy(TimeSpan.FromMilliseconds(100)).Get) {}
 	}
 }

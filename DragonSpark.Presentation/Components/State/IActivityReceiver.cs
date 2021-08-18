@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.State
 {
-	public interface IActivityReceiver
+    public interface IActivityReceiver
 	{
 		ValueTask Start();
 		ValueTask Complete();

@@ -1,17 +1,15 @@
-﻿using DragonSpark.Compose.Model.Results;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public sealed class ActiveContent<T> : IResulting<T>
+    public class ActiveContent<T> : IActiveContent<T>
 	{
-		public static implicit operator ActiveContent<T>(Func<ValueTask<T>> instance) => new(instance);
+		/*public static implicit operator ActiveContent<T>(Func<ValueTask<T>> instance) => new(instance);*/
 
-		public static implicit operator ActiveContent<T>(ResultContext<ValueTask<T>> instance)
-			=> new(instance);
+		/*public static implicit operator ActiveContent<T>(ResultContext<ValueTask<T>> instance)
+			=> new(instance);*/
 
 		readonly IMutable<ValueTuple<T>?> _store;
 		readonly Func<ValueTask<T>>       _content;

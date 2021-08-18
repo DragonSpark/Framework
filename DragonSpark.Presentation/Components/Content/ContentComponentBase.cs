@@ -1,25 +1,35 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public abstract class ContentComponentBase<T> : ComponentBase
+    public abstract class ContentComponentBase<T> : ComponentBase
 	{
-		protected ActiveContent<T> Content { get; set; } = default!;
+		readonly Func<ValueTask<T>> _content;
+
+		protected ContentComponentBase() => _content = GetContent;
+
+		[Parameter]
+		public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
+
+		protected IActiveContent<T> Content { get; set; } = default!;
 
 		protected abstract ValueTask<T> GetContent();
 
-		protected override ValueTask Initialize() => InitializeContent();
+		protected override ValueTask Initialize() => RefreshContent().Return(base.Initialize());
 
-		protected ValueTask InitializeContent()
+		IActiveContent<T> RefreshContent()
 		{
-			Content = new ActiveContent<T>(GetContent);
-			return ValueTask.CompletedTask;
+			var result = Contents.Get(_content);
+			Content = result;
+			return result;
 		}
 
 		protected override async ValueTask RefreshState()
 		{
-			await InitializeContent();
-			await Content.Get();
+			await RefreshContent().Get();
 			await base.RefreshState().ConfigureAwait(false);
 		}
 	}

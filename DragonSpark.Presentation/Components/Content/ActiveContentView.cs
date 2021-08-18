@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public class DelegatedContentView<TValue> : ComponentBase
+	public class ActiveContentView<TValue> : ComponentBase
 	{
 		protected override async Task OnParametersSetAsync()
 		{
-			Fragment ??= await DetermineFragment();
+			if (Render == null)
+			{
+				Render = Saved.Account() ?? LoadingTemplate;
+				Saved  = Render = await DetermineFragment();
+			}
 		}
-
 
 		async ValueTask<RenderFragment> DetermineFragment()
 		{
-			Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
 			try
 			{
-				var operation = LoadContent();
+				var operation = Content.Get();
 				var content   = operation.IsCompletedSuccessfully ? operation.Result : await operation;
 				var result    = content is not null ? ChildContent(content) : NotAssignedTemplate;
 				return result;
@@ -32,25 +34,17 @@ namespace DragonSpark.Presentation.Components.Content
 			}
 		}
 
-		protected virtual ValueTask<TValue> LoadContent() => Content.Get();
+		RenderFragment? Render { get; set; }
 
-		RenderFragment? Fragment { get; set; }
+		RenderFragment Saved { get; set; } = default!;
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (Fragment == null)
-			{
-				builder.AddContent(0, LoadingTemplate);
-			}
-			else
-			{
-				builder.AddContent(1, Fragment);
-			}
-
+			builder.AddContent(0, Render);
 		}
 
 		[Parameter]
-		public ActiveContent<TValue> Content
+		public IActiveContent<TValue> Content
 		{
 			get => _content;
 			set
@@ -58,16 +52,26 @@ namespace DragonSpark.Presentation.Components.Content
 				if (_content != value)
 				{
 					_content = value;
-					Fragment = default;
+					Render   = default;
 				}
 			}
-		}	ActiveContent<TValue> _content = default!;
+		}	IActiveContent<TValue> _content = default!;
 
 		[Parameter]
 		public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
 		[Parameter]
-		public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+		public RenderFragment LoadingTemplate
+		{
+			get => _loadingTemplate;
+			set
+			{
+				if (_loadingTemplate != value)
+				{
+					Saved = _loadingTemplate = value;
+				}
+			}
+		}	RenderFragment _loadingTemplate = DefaultLoadingTemplate.Default;
 
 		[Parameter]
 		public RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
