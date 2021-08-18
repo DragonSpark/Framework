@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences.Query;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Reflection.Assemblies;
 using NetFabric.Hyperlinq;
 using System;
@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
-	sealed class AssemblySelectorQuery : IMaterialize<Assembly>
+    sealed class AssemblySelectorQuery : IAlteration<Assembly[]>
 	{
 		readonly Func<AssemblyName, Assembly>                  _load;
 		readonly Func<Assembly, AssemblyName>                  _name;

@@ -14,7 +14,6 @@ namespace DragonSpark.Application.Entities
 		public ValueTask<int> Get() => _storage.SaveChangesAsync().ToOperation();
 	}
 
-
 	sealed class Save<T> : ISave<T> where T : class
 	{
 		readonly IUpdate<T> _update;

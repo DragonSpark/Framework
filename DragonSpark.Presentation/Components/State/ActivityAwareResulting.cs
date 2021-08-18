@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State
 {
-    sealed class ActivityAwareResulting<T> : IResulting<T>
+	sealed class ActivityAwareResulting<T> : IResulting<T>
     {
 	    readonly IResulting<T>           _previous;
 	    readonly object                  _subject;
@@ -24,7 +24,6 @@ namespace DragonSpark.Presentation.Components.State
 		    await _activity.Get((_subject, _previous));
 		    try
 		    {
-			    await Task.Delay(1000);
 			    return await _previous.Get();
 		    }
 		    finally
