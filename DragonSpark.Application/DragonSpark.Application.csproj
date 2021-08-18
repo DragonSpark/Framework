@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Flurl" Version="3.0.2" />
     <PackageReference Include="Humanizer" Version="2.11.10" />
     <PackageReference Include="AutoBogus.Conventions" Version="2.13.1" />
