@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialization;
-
-namespace DragonSpark.Application.Entities.Queries.Scoped
+﻿namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public class EntityQuery<T>
 	{

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Scoped;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System;
@@ -17,9 +16,9 @@ namespace DragonSpark.Application.Entities.Queries.Materialization
 
 	public class ToArray<TIn, TEntity> : Materialize<TIn, TEntity, Array<TEntity>>
 	{
-		public ToArray(IQuery<TIn, TEntity> query) : this(query, DefaultToArray<TEntity>.Default) {}
+		public ToArray(Scoped.IQuery<TIn, TEntity> query) : this(query, DefaultToArray<TEntity>.Default) {}
 
-		protected ToArray(IQuery<TIn, TEntity> query, IMaterializer<TEntity, Array<TEntity>> materializer)
+		protected ToArray(Scoped.IQuery<TIn, TEntity> query, IMaterializer<TEntity, Array<TEntity>> materializer)
 			: base(query, materializer) {}
 	}
 }

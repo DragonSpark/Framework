@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Scoped;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +14,8 @@ namespace DragonSpark.Application.Entities.Queries.Materialization
 
 	public class Any<TIn, T> : Materialize<TIn, T, bool>
 	{
-		public Any(IQuery<TIn, T> query) : this(query, DefaultAny<T>.Default) {}
+		public Any(Scoped.IQuery<TIn, T> query) : this(query, DefaultAny<T>.Default) {}
 
-		protected Any(IQuery<TIn, T> query, IMaterializer<T, bool> materializer) : base(query, materializer) {}
+		protected Any(Scoped.IQuery<TIn, T> query, IMaterializer<T, bool> materializer) : base(query, materializer) {}
 	}
 }

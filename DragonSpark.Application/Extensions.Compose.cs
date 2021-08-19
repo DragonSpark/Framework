@@ -92,12 +92,6 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static ProjectionContext<_, TOut> Then<_, TOut>(
-			this DragonSpark.Compose.Model.Selection.Selector<_, IQueryable<TOut>> @this)
-			=> @this.Get().Then();
-
-		public static ProjectionContext<_, TOut> Then<_, TOut>(this ISelect<_, IQueryable<TOut>> @this) => new(@this);
-
 		public static QuerySelector<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
 		public static IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)

@@ -2,7 +2,7 @@
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Entities.Queries.Scoped;
+using DragonSpark.Application.Entities.Queries.Materialization;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Results;

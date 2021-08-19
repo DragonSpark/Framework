@@ -48,8 +48,7 @@ namespace DragonSpark.Presentation.Connections
 
 		}
 	}
-
-
+	
 	public class Receive<T> : IReceive<T>
 	{
 		readonly Func<HubConnection> _connection;

@@ -1,15 +1,14 @@
-﻿using DragonSpark.Application.Entities.Queries.Scoped;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public class Materialize<TIn, TEntity, TResult> : ISelecting<TIn, TResult>
 	{
-		readonly IQuery<TIn, TEntity>            _query;
+		readonly Scoped.IQuery<TIn, TEntity>          _query;
 		readonly IMaterializer<TEntity, TResult> _materializer;
 
-		protected Materialize(IQuery<TIn, TEntity> query, IMaterializer<TEntity, TResult> materializer)
+		protected Materialize(Scoped.IQuery<TIn, TEntity> query, IMaterializer<TEntity, TResult> materializer)
 		{
 			_query        = query;
 			_materializer = materializer;

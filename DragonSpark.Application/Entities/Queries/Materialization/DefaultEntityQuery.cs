@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialization;
-
-namespace DragonSpark.Application.Entities.Queries.Scoped
+﻿namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public sealed class DefaultEntityQuery<T> : EntityQuery<T>
 	{
