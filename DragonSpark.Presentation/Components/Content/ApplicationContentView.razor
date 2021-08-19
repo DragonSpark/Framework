@@ -2,14 +2,14 @@
 @using DragonSpark.Compose
 @typeparam TValue
 
-<ActivityReceiverContainer Context="receiver">
+<ActivityContainer Context="receiver">
     <ActiveContentView Content="@Contents.Get(receiver)"
                        ChildContent="@ChildContent"
                        LoadingTemplate="@LoadingTemplate"
                        NotAssignedTemplate="@NotAssignedTemplate"
                        ExceptionTemplate="@ExceptionTemplate"
                        />
-</ActivityReceiverContainer>
+</ActivityContainer>
 
 @code
 {
