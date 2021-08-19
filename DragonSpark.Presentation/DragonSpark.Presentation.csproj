@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.8.0" />
-    <PackageReference Include="Radzen.Blazor" Version="3.8.2" />
+    <PackageReference Include="Radzen.Blazor" Version="3.9.2" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.12" />
   </ItemGroup>
 </Project>
