@@ -7,14 +7,14 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class WhereMany<TKey, T> : WhereMany<TKey, T, T>
 	{
-		protected WhereMany(IQueryable<T> queryable, Query<TKey, T> query, Expression<Func<T, IEnumerable<T>>> select)
-			: base(queryable, query, select) {}
+		protected WhereMany(IQueryable<T> queryable, Express<TKey, T> express, Expression<Func<T, IEnumerable<T>>> select)
+			: base(queryable, express, select) {}
 	}
 
 	public class WhereMany<TKey, TEntity, T> : ToArray<TKey, T>
 	{
-		protected WhereMany(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected WhereMany(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                    Expression<Func<TEntity, IEnumerable<T>>> select)
-			: base(new Scoped.WhereMany<TKey, TEntity, T>(queryable, query, select)) {}
+			: base(new Scoped.WhereMany<TKey, TEntity, T>(queryable, express, select)) {}
 	}
 }

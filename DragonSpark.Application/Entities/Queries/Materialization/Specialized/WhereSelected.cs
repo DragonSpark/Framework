@@ -7,8 +7,8 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class WhereSelected<TKey, TEntity, T> : ToArray<TKey, T>
 	{
-		protected WhereSelected(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected WhereSelected(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                        Expression<Func<TEntity, T>> select)
-			: base(new WhereSelect<TKey, TEntity, T>(queryable, query, select)) {}
+			: base(new WhereSelect<TKey, TEntity, T>(queryable, express, select)) {}
 	}
 }

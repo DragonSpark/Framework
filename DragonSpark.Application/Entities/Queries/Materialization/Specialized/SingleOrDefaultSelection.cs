@@ -6,15 +6,15 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class SingleOrDefaultSelection<TKey, T> : SingleOrDefaultSelection<TKey, T, T>
 	{
-		protected SingleOrDefaultSelection(IQueryable<T> queryable, Query<TKey, T> query,
+		protected SingleOrDefaultSelection(IQueryable<T> queryable, Express<TKey, T> express,
 		                                   Func<IQueryable<T>, IQueryable<T>> selection)
-			: base(queryable, query, selection) {}
+			: base(queryable, express, selection) {}
 	}
 
 	public class SingleOrDefaultSelection<TKey, TEntity, T> : Materialization.SingleOrDefault<TKey, T?>
 	{
-		protected SingleOrDefaultSelection(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected SingleOrDefaultSelection(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                                   Func<IQueryable<TEntity>, IQueryable<T>> selection)
-			: base(new WhereSelection<TKey, TEntity, T>(queryable, query, selection)) {}
+			: base(new WhereSelection<TKey, TEntity, T>(queryable, express, selection)) {}
 	}
 }

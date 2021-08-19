@@ -79,19 +79,19 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public sealed class WhereSelector<TKey, T> : ISelector<TKey, T>
 	{
-		readonly Query<TKey, T> _select;
+		readonly Express<TKey, T> _select;
 
-		public WhereSelector(Query<TKey, T> select) => _select = select;
+		public WhereSelector(Express<TKey, T> select) => _select = select;
 
 		public IQueryable<T> Get(In<T, TKey> parameter) => parameter.Query.Where(_select(parameter.Parameter));
 	}
 
 	public class Where<TIn, TOut> : Session<TIn, TOut> where TOut : class
 	{
-		protected Where(IQuery<TOut> query, Query<TIn, TOut> select)
+		protected Where(IQuery<TOut> query, Express<TIn, TOut> select)
 			: base(query, new WhereSelector<TIn, TOut>(select)) {}
 
-		protected Where(ISession<TIn, TOut> session, Query<TIn, TOut> select)
+		protected Where(ISession<TIn, TOut> session, Express<TIn, TOut> select)
 			: base(session, new WhereSelector<TIn, TOut>(select)) {}
 	}
 

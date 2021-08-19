@@ -7,17 +7,17 @@ namespace DragonSpark.Application.Entities.Queries.Scoped
 	public class WhereSelect<TKey, TEntity, T> : IQuery<TKey, T>
 	{
 		readonly IQueryable<TEntity>          _source;
-		readonly Query<TKey, TEntity>         _query;
+		readonly Express<TKey, TEntity>         _express;
 		readonly Expression<Func<TEntity, T>> _select;
 
-		public WhereSelect(IQueryable<TEntity> source, Query<TKey, TEntity> query,
+		public WhereSelect(IQueryable<TEntity> source, Express<TKey, TEntity> express,
 		                   Expression<Func<TEntity, T>> select)
 		{
 			_source = source;
-			_query  = query;
+			_express  = express;
 			_select = select;
 		}
 
-		public IQueryable<T> Get(TKey parameter) => _source.Where(_query(parameter)).Select(_select);
+		public IQueryable<T> Get(TKey parameter) => _source.Where(_express(parameter)).Select(_select);
 	}
 }

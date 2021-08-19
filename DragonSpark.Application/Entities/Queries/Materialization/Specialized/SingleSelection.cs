@@ -6,8 +6,8 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class SingleSelection<TKey, TEntity, T> : Materialization.Single<TKey, T>
 	{
-		protected SingleSelection(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected SingleSelection(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                          Func<IQueryable<TEntity>, IQueryable<T>> selection)
-			: base(new WhereSelection<TKey, TEntity, T>(queryable, query, selection)) {}
+			: base(new WhereSelection<TKey, TEntity, T>(queryable, express, selection)) {}
 	}
 }

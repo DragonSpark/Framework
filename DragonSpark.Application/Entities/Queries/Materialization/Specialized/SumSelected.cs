@@ -7,14 +7,14 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class SumSelected<T> : SumSelected<T, T>
 	{
-		public SumSelected(IQueryable<T> queryable, Query<T, T> query, Expression<Func<T, decimal>> select)
-			: base(queryable, query, select) {}
+		public SumSelected(IQueryable<T> queryable, Express<T, T> express, Expression<Func<T, decimal>> select)
+			: base(queryable, express, select) {}
 	}
 
 	public class SumSelected<TKey, TEntity> : Sum<TKey>
 	{
-		protected SumSelected(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected SumSelected(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                      Expression<Func<TEntity, decimal>> select)
-			: base(new WhereSelect<TKey, TEntity, decimal>(queryable, query, select)) {}
+			: base(new WhereSelect<TKey, TEntity, decimal>(queryable, express, select)) {}
 	}
 }

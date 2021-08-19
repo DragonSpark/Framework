@@ -5,12 +5,12 @@ namespace DragonSpark.Application.Entities.Queries.Scoped
 	public class ParameterAwareWhere<TKey, T> : IQuery<TKey, T>
 	{
 		readonly IQuery<TKey, T> _select;
-		readonly Query<TKey, T>  _where;
+		readonly Express<TKey, T>  _where;
 
-		protected ParameterAwareWhere(IQueryable<T> queryable, Query<TKey, T> where)
+		protected ParameterAwareWhere(IQueryable<T> queryable, Express<TKey, T> where)
 			: this(new Accept<TKey, T>(queryable), where) {}
 
-		protected ParameterAwareWhere(IQuery<TKey, T> select, Query<TKey, T> where)
+		protected ParameterAwareWhere(IQuery<TKey, T> select, Express<TKey, T> where)
 		{
 			_select = select;
 			_where  = where;

@@ -6,8 +6,8 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 {
 	public class SingleParameterizedSelection<TKey, TEntity, T> : Materialization.Single<TKey, T>
 	{
-		protected SingleParameterizedSelection(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
+		protected SingleParameterizedSelection(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                                       Func<TKey, IQueryable<TEntity>, IQueryable<T>> selection)
-			: base(new ParameterAwareWhereSelection<TKey, TEntity, T>(queryable, query, selection)) {}
+			: base(new ParameterAwareWhereSelection<TKey, TEntity, T>(queryable, express, selection)) {}
 	}
 }
