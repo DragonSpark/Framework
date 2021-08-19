@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Materialization
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+
+namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public class Sum<T> : Materialize<T, decimal, decimal>
 	{

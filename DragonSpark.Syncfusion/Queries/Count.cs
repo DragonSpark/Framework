@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Diagnostics;
-using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Scoped;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Syncfusion.Queries

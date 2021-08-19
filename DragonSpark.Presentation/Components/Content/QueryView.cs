@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
 using Radzen;
 using System.Collections.Generic;
 using System.Linq;

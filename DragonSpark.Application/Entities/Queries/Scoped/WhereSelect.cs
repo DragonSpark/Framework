@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Scoped
 {
 	public class WhereSelect<TKey, TEntity, T> : IQuery<TKey, T>
 	{

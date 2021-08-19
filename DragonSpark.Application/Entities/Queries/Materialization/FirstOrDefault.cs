@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Materialization
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+
+namespace DragonSpark.Application.Entities.Queries.Materialization
 {
 	public class FirstOrDefault<TIn, T> : Materialize<TIn, T, T?>
 	{

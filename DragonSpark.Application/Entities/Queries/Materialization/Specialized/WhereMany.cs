@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,6 +16,6 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 	{
 		protected WhereMany(IQueryable<TEntity> queryable, Query<TKey, TEntity> query,
 		                    Expression<Func<TEntity, IEnumerable<T>>> select)
-			: base(new Queries.WhereMany<TKey, TEntity, T>(queryable, query, select)) {}
+			: base(new Scoped.WhereMany<TKey, TEntity, T>(queryable, query, select)) {}
 	}
 }

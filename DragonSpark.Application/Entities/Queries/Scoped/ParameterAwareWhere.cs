@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Scoped
 {
 	public class ParameterAwareWhere<TKey, T> : IQuery<TKey, T>
 	{

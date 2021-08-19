@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Scoped
 {
 	public sealed class Adapter<TIn, T> : Select<TIn, IQueryable<T>>, IQuery<TIn, T>
 	{

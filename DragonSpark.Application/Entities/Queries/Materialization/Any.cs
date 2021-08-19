@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+using DragonSpark.Model.Selection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

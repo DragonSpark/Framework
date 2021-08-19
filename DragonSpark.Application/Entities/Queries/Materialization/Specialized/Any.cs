@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+using DragonSpark.Model.Operations;
 using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
@@ -7,6 +8,6 @@ namespace DragonSpark.Application.Entities.Queries.Materialization.Specialized
 	                                 IDepending<TIn>
 	{
 		protected Any(IQueryable<TEntity> queryable, Query<TIn, TEntity> query)
-			: base(new DragonSpark.Application.Entities.Queries.Where<TIn, TEntity>(queryable, query)) {}
+			: base(new Scoped.Where<TIn, TEntity>(queryable, query)) {}
 	}
 }
