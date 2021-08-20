@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Entities.Queries.Scoped
 		readonly Express<TKey, T>  _select;
 
 		public Where(IQueryable<T> query, Express<TKey, T> select)
-			: this(new Accept<TKey, T>(query), @select) {}
+			: this(new Accept<TKey, T>(query), select) {}
 
 		public Where(IQuery<TKey, T> query, Express<TKey, T> select)
 		{

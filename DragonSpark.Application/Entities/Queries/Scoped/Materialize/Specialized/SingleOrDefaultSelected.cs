@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Scoped.Materialize.Specialize
 	public class SingleOrDefaultSelected<TKey, T> : SingleOrDefaultSelected<TKey, TKey, T>
 	{
 		public SingleOrDefaultSelected(IQueryable<TKey> queryable, Express<TKey, TKey> express,
-		                               Expression<Func<TKey, T>> @select) : base(queryable, express, @select) {}
+		                               Expression<Func<TKey, T>> select) : base(queryable, express, select) {}
 	}
 
 	public class SingleOrDefaultSelected<TKey, TEntity, T> : Materialize.SingleOrDefault<TKey, T?>

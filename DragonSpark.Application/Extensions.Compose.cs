@@ -8,7 +8,6 @@ using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities.Generation;
-using DragonSpark.Application.Entities.Queries.Scoped;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
@@ -73,7 +72,7 @@ namespace DragonSpark.Application
 			=> @this.Configure(Security.Data.Registrations.Default);
 
 		public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
-			=> new (new InitializationAwareHostBuilder<T>(@this));
+			=> new(new InitializationAwareHostBuilder<T>(@this));
 
 		/**/
 		public static StoreContext<TIn, TOut> Store<TIn, TOut>(
@@ -92,12 +91,16 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static QuerySelector<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
+		public static QuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.IQuery<TIn, T> @this) where T : class
+			=> new(@this);
 
-		public static IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
-			=> new Adapter<TIn, T>(@this);
+		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
+			=> new(@this);
 
-		public static IQuery<TIn, T> Out<TIn, T>(
+		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
+			=> new Entities.Queries.Scoped.Adapter<TIn, T>(@this);
+
+		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(
 			this DragonSpark.Compose.Model.Selection.Selector<TIn, IQueryable<T>> @this)
 			=> @this.Get().Out();
 

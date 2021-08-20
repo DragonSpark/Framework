@@ -38,10 +38,10 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Root<TContext, T> : IQuery<T> where TContext : DbContext where T : class
 	{
-		readonly IDbContextFactory<TContext> _contexts;
+		readonly IDbContextFactory<TContext> _factory;
 
-		protected Root(IDbContextFactory<TContext> contexts) => _contexts = contexts;
+		protected Root(IDbContextFactory<TContext> factory) => _factory = factory;
 
-		public Query<T> Get() => new(_contexts.CreateDbContext());
+		public Query<T> Get() => new(_factory.CreateDbContext());
 	}
 }

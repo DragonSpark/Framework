@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
-	public class QuerySelector<TIn, T>
+	public class ScopedQuerySelector<TIn, T>
 	{
 		readonly IQuery<TIn, T> _subject;
 
-		public QuerySelector(IQuery<TIn, T> subject) => _subject = subject;
+		public ScopedQuerySelector(IQuery<TIn, T> subject) => _subject = subject;
 
-		public QuerySelector<TIn, TTo> Select<TTo>(Func<IQueryable<T>, IQueryable<TTo>> selection)
+		public ScopedQuerySelector<TIn, TTo> Select<TTo>(Func<IQueryable<T>, IQueryable<TTo>> selection)
 			=> new(new Select<TIn, T, TTo>(_subject, selection));
 
 		public Any<TIn, T> Any() => new(_subject);

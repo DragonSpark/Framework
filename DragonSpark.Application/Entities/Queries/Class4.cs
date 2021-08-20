@@ -63,7 +63,7 @@ namespace DragonSpark.Application.Entities.Queries
 		where TKey : notnull
 		where T : class
 	{
-		protected ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key)
+		public ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key)
 			: this(query, new DictionaryMaterializer<T, TKey>(key)) {}
 
 		protected ToDictionaryResult(IQuery<TIn, T> query, IMaterializer<T, IReadOnlyDictionary<TKey, T>> materializer)
@@ -73,7 +73,7 @@ namespace DragonSpark.Application.Entities.Queries
 	public class ToDictionaryResult<TIn, T, TKey, TValue> : Result<TIn, T, IReadOnlyDictionary<TKey, TValue>>
 		where TKey : notnull where T : class
 	{
-		protected ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key, Func<T, TValue> value)
+		public ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key, Func<T, TValue> value)
 			: this(query, new DictionaryMaterializer<T, TKey, TValue>(key, value)) {}
 
 		protected ToDictionaryResult(IQuery<TIn, T> query,
