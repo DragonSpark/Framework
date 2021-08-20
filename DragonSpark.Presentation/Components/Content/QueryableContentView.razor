@@ -28,7 +28,7 @@
     }
 
     [Parameter]
-    public EntityQuery<TItem> Query { get; set; } = DurableEntityQuery<TItem>.Default;
+    public Materialization<TItem> Query { get; set; } = DurableMaterialization<TItem>.Default;
 
     [Parameter]
     public IQueryable<TItem>? Content

@@ -6,6 +6,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -127,12 +128,12 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	public class Select<TIn, TOut, TResult> : ISelecting<TIn, TResult> where TOut : class
+	public class Result<TIn, TOut, TResult> : ISelecting<TIn, TResult> where TOut : class
 	{
 		readonly IQuery<TIn, TOut>            _query;
 		readonly IMaterializer<TOut, TResult> _materializer;
 
-		public Select(IQuery<TIn, TOut> query, IMaterializer<TOut, TResult> materializer)
+		protected Result(IQuery<TIn, TOut> query, IMaterializer<TOut, TResult> materializer)
 		{
 			_query        = query;
 			_materializer = materializer;
@@ -146,9 +147,15 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	public class ToArraySelection<TIn, T> : Select<TIn, T, Array<T>> where T : class
+	public class ToArrayResult<TIn, T> : Result<TIn, T, Array<T>> where T : class
 	{
-		public ToArraySelection(IQuery<TIn, T> query) : base(query, DefaultToArray<T>.Default) {}
+		public ToArrayResult(IQuery<TIn, T> query) : base(query, DefaultToArray<T>.Default) {}
 	}
+
+	public class ToListResult<TIn, T> : Result<TIn, T, List<T>> where T : class
+	{
+		public ToListResult(IQuery<TIn, T> query) : base(query, DefaultToList<T>.Default) {}
+	}
+
 
 }

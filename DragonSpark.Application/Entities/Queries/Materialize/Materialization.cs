@@ -1,18 +1,18 @@
 ﻿namespace DragonSpark.Application.Entities.Queries.Materialize
 {
-	public class EntityQuery<T>
+	public class Materialization<T>
 	{
-		public EntityQuery(IAny<T> any, Counting<T> counting, Materializers<T> materializers)
+		public Materialization(IAny<T> any, Counting<T> counting, Sequences<T> sequences)
 		{
 			Any         = any;
 			Counting    = counting;
-			Materializers = materializers;
+			Sequences = sequences;
 		}
 
 		public IAny<T> Any { get; }
 
 		public Counting<T> Counting { get; }
 
-		public Materializers<T> Materializers { get; }
+		public Sequences<T> Sequences { get; }
 	}
 }

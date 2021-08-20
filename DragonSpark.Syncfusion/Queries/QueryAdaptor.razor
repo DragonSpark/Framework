@@ -21,13 +21,13 @@
     public IQuery<T> Query { get; set; } = Query<T>.Default;
 
     [Parameter]
-    public EntityQuery<T> Content { get; set; } = DurableEntityQuery<T>.Default;
+    public Materialization<T> Content { get; set; } = DurableMaterialization<T>.Default;
 
     public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
     {
         var (_, query, count) = await Query.Get(new(request, Input));
 
-        var elements = await Content.Materializers.ToList.Get(query);
+        var elements = await Content.Sequences.ToList.Get(query);
         var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
                          :
                          (object)elements;

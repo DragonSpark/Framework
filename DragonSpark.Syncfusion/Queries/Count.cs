@@ -6,12 +6,12 @@ namespace DragonSpark.Syncfusion.Queries
 {
 	sealed class Count<T> : IQuery<T>
 	{
-		readonly EntityQuery<T> _query;
+		readonly Materialization<T> _query;
 		public static Count<T> Default { get; } = new Count<T>();
 
-		Count() : this(DurableEntityQuery<T>.Default) {}
+		Count() : this(DurableMaterialization<T>.Default) {}
 
-		public Count(EntityQuery<T> query) => _query  = query;
+		public Count(Materialization<T> query) => _query  = query;
 
 		public async ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 		{
