@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Scoped
+namespace DragonSpark.Application.Entities.Queries
 {
 	public class Selector<TIn, TOut> : Instance<Expression<Func<TIn, TOut>>>
 	{

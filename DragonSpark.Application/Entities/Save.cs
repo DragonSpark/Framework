@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-    sealed class Save : ISave
+	sealed class Save : ISave
 	{
 		readonly DbContext _storage;
 
@@ -16,22 +16,22 @@ namespace DragonSpark.Application.Entities
 
 	sealed class Save<T> : ISave<T> where T : class
 	{
-		readonly IUpdate<T> _update;
-		readonly Operate    _save;
+		readonly DbSet<T> _set;
+		readonly Operate  _save;
 
-		public Save(DbContext context) : this(new Update<T>(context), new Save(context)) {}
+		public Save(DbContext context) : this(context.Set<T>(), new Save(context)) {}
 
-		public Save(IUpdate<T> update, ISave save) : this(update, save.Then().Terminate()) {}
+		public Save(DbSet<T> set, ISave save) : this(set, save.Then().Terminate()) {}
 
-		public Save(IUpdate<T> update, Operate save)
+		public Save(DbSet<T> set, Operate save)
 		{
-			_update = update;
-			_save   = save;
+			_set  = set;
+			_save = save;
 		}
 
 		public ValueTask Get(T parameter)
 		{
-			_update.Execute(parameter);
+			_set.Update(parameter);
 			return _save();
 		}
 	}

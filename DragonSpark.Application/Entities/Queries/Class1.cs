@@ -12,25 +12,27 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public readonly struct Query<T> : IAsyncDisposable where T : class
 	{
-		readonly IAsyncDisposable _previous;
+		readonly DbContext _context;
+
 
 		public Query(DbContext context) : this(context, context.Set<T>()) {}
 
-		public Query(IAsyncDisposable previous, IQueryable<T> subject)
+		public Query(DbContext context, IQueryable<T> subject)
 		{
-			_previous = previous;
-			Subject   = subject;
+			_context = context;
+			Subject  = subject;
 		}
 
-		public Query<TTo> Select<TTo>(IQueryable<TTo> parameter) where TTo : class => new(_previous, parameter);
+		public Query<TTo> Select<TTo>(IQueryable<TTo> parameter) where TTo : class => new(_context, parameter);
 
 		public IQueryable<T> Subject { get; }
 
-		public ValueTask DisposeAsync() => _previous.DisposeAsync();
+		public ValueTask DisposeAsync() => _context.DisposeAsync();
 
-		public void Deconstruct(out IQueryable<T> subject)
+		public void Deconstruct(out DbContext context, out DbSet<T> subject)
 		{
-			subject = Subject;
+			context = _context;
+			subject = _context.Set<T>();
 		}
 	}
 
@@ -42,8 +44,4 @@ namespace DragonSpark.Application.Entities.Queries
 
 		public Query<T> Get() => new(_contexts.CreateDbContext());
 	}
-
-
-
-
 }

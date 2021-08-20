@@ -14,18 +14,17 @@ namespace DragonSpark.Application.Entities.Queries.Scoped
 	public class WhereMany<TKey, TEntity, T> : IQuery<TKey, T>
 	{
 		readonly IQueryable<TEntity>                       _queryable;
-		readonly Express<TKey, TEntity>                      _express;
+		readonly Express<TKey, TEntity>                    _express;
 		readonly Expression<Func<TEntity, IEnumerable<T>>> _select;
 
 		public WhereMany(IQueryable<TEntity> queryable, Express<TKey, TEntity> express,
 		                 Expression<Func<TEntity, IEnumerable<T>>> select)
 		{
 			_queryable = queryable;
-			_express     = express;
+			_express   = express;
 			_select    = select;
 		}
 
 		public IQueryable<T> Get(TKey parameter) => _queryable.Where(_express(parameter)).SelectMany(_select);
 	}
-
 }

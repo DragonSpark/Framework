@@ -27,13 +27,8 @@ namespace DragonSpark.Application
 			         .Forward<Save>()
 			         .Scoped()
 			         //
-			         .Then.Start<IUndo>()
-			         .Forward<Undo>()
-			         .Scoped()
-			         //
 			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
 			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
-			         .AddScoped(typeof(IUpdate<>), typeof(Update<>))
 
 					 //
 			         .Start<IToken>()
