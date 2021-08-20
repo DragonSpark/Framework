@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialization;
+﻿using DragonSpark.Application.Entities.Queries.Materialize;
 using DragonSpark.Model.Selection;
 using Polly;
 

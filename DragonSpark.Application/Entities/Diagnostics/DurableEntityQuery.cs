@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialization;
+﻿using DragonSpark.Application.Entities.Queries.Materialize;
 
 namespace DragonSpark.Application.Entities.Diagnostics
 {

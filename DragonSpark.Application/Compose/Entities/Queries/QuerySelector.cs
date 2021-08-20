@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialization;
-using DragonSpark.Application.Entities.Queries.Scoped;
+﻿using DragonSpark.Application.Entities.Queries.Scoped;
+using DragonSpark.Application.Entities.Queries.Scoped.Materialize;
 using System;
 using System.Linq;
 
