@@ -1,20 +1,14 @@
-﻿using DragonSpark.Model.Selection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace DragonSpark.Application.Entities.Queries
+﻿namespace DragonSpark.Application.Entities.Queries
 {
 	class Class3 {}
 
-	public interface IQuery<in TIn, TOut> : ISelect<TIn, Query<TOut>> where TOut : class {}
+	/*public interface IQuery<in TIn, TOut> : ISelect<TIn, Query<TOut>> where TOut : class {}
 
 	public class Query<TIn, T> : Query<TIn, T, T> where T : class
 	{
-		protected Query(IQuery<T> query, ISelector<TIn, T, T> select) : base(query, select) {}
+		public Query(IQuery<T> query, ISelector<TIn, T, T> select) : base(query, select) {}
 
-		protected Query(IQuery<TIn, T> query, ISelector<TIn, T, T> select) : base(query, select) {}
+		public Query(IQuery<TIn, T> query, ISelector<TIn, T, T> select) : base(query, select) {}
 	}
 
 	public class Query<TIn, T, TOut> : IQuery<TIn, TOut> where TOut : class where T : class
@@ -22,9 +16,9 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly IQuery<TIn, T>          _query;
 		readonly ISelector<TIn, T, TOut> _select;
 
-		protected Query(IQuery<T> query, ISelector<TIn, T, TOut> select) : this(new Accept<TIn, T>(query), select) {}
+		public Query(IQuery<T> query, ISelector<TIn, T, TOut> select) : this(new Accept<TIn, T>(query), select) {}
 
-		protected Query(IQuery<TIn, T> query, ISelector<TIn, T, TOut> select)
+		public Query(IQuery<TIn, T> query, ISelector<TIn, T, TOut> select)
 		{
 			_query  = query;
 			_select = select;
@@ -33,7 +27,7 @@ namespace DragonSpark.Application.Entities.Queries
 		public Query<TOut> Get(TIn parameter)
 		{
 			var session = _query.Get(parameter);
-			var query   = _select.Get(new(session.Subject, parameter));
+			var query   = _select.Get(session.In(parameter));
 			var result  = session.Select(query);
 			return result;
 		}
@@ -104,25 +98,5 @@ namespace DragonSpark.Application.Entities.Queries
 		protected ParameterAwareWhereSelection(IQuery<TIn, TFrom> query, Express<TIn, TFrom> where,
 		                                       Func<TIn, IQueryable<TFrom>, IQueryable<TTo>> selection)
 			: base(query, new ParameterAwareWhereSelectionSelector<TIn, TFrom, TTo>(where, selection)) {}
-	}
-
-	public class Select<TIn, TFrom, TOut> : IQuery<TIn, TOut> where TOut : class where TFrom : class
-	{
-		readonly IQuery<TIn, TFrom>                        _subject;
-		readonly Func<IQueryable<TFrom>, IQueryable<TOut>> _selection;
-
-		public Select(IQuery<TIn, TFrom> subject, Func<IQueryable<TFrom>, IQueryable<TOut>> selection)
-		{
-			_subject   = subject;
-			_selection = selection;
-		}
-
-		public Query<TOut> Get(TIn parameter)
-		{
-			var query   = _subject.Get(parameter);
-			var result = query.Select(_selection(query.Subject));
-			return result;
-		}
-	}
-
+	}*/
 }

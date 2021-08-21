@@ -1,14 +1,8 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialize;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using System;
-using System.Threading.Tasks;
-
-namespace DragonSpark.Application.Entities.Queries
+﻿namespace DragonSpark.Application.Entities.Queries
 {
 	class Class5 {}
 
-	public class Update<TIn, T> : ISelecting<TIn, T> where T : class
+	/*public class Update<TIn, T> : ISelecting<TIn, T> where T : class
 	{
 		readonly IQuery<TIn, T>      _query;
 		readonly Action<T>           _update;
@@ -32,5 +26,5 @@ namespace DragonSpark.Application.Entities.Queries
 			await context.SaveChangesAsync().ConfigureAwait(false);
 			return result;
 		}
-	}
+	}*/
 }

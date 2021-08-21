@@ -91,8 +91,8 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static QuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.IQuery<TIn, T> @this) where T : class
-			=> new(@this);
+		/*public static QuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.IQuery<TIn, T> @this) where T : class
+			=> new(@this);*/
 
 		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
 			=> new(@this);

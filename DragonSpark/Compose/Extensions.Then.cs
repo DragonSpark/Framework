@@ -231,11 +231,12 @@ namespace DragonSpark.Compose
 		public static IOperation<T> Out<T>(this Selector<T, ValueTask> @this)
 			=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
 		public static IDepending<T> Out<T>(this Selector<T, ValueTask<bool>> @this)
-
 			=> @this.Get().To(x => x as IDepending<T> ?? new Depending<T>(x.Get));
 
 		public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, ValueTask<TOut>> @this)
 			=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
+
+		public static IResulting<T> Out<T>(this ResultContext<ValueTask<T>> @this) => new Resulting<T>(@this.Get());
 
 		/**/
 

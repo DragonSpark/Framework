@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Application.Diagnostics.Initialization
 {
-	sealed class DefaultInitializeLog<T> : DragonSpark.Model.Results.Instance<ILogger>
+	public sealed class DefaultInitializeLog<T> : DragonSpark.Model.Results.Instance<ILogger>
 	{
 		public static DefaultInitializeLog<T> Default { get; } = new DefaultInitializeLog<T>();
 

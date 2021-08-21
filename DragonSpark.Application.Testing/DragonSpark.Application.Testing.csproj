@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Compose\Store\Operations\" />
+    <Folder Include="Entities\Queries\Scoped\" />
     <Folder Include="Security\Identity\" />
   </ItemGroup>
 

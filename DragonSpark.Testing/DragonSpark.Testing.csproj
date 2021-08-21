@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Compose\Extents\Validation\" />
+    <Folder Include="Entities\Queries\" />
     <Folder Include="Model\Selection\Adapters\" />
   </ItemGroup>
 </Project>
