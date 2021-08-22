@@ -8,38 +8,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Transactional
 {
 	class Class1 {}
-
-	
-
-	public interface IMaps : IAssignable<Type, IMap> {}
-
-	public interface IMap : IAsyncDisposable
-	{
-		IQueryable<T> Query<T>() where T : class;
-	}
 
 	public interface ISession : IMaps, IAsyncDisposable {}
 
 	sealed class Session : Assignable<Type, IMap>, ISession
 	{
-		readonly IEnumerable<IAsyncDisposable> _disposables;
+		readonly IDictionary<Type, IMap> _store;
 
 		public Session() : this(new Dictionary<Type, IMap>()) {}
 
-		public Session(IDictionary<Type, IMap> store) : this(store.Values, store.ToTable()) {}
+		public Session(IDictionary<Type, IMap> store) : this(store, store.ToTable()) {}
 
-		public Session(IEnumerable<IAsyncDisposable> disposables, ITable<Type, IMap> source) : base(source)
-			=> _disposables = disposables;
+		public Session(IDictionary<Type, IMap> store, ITable<Type, IMap> source) : base(source) => _store  = store;
 
 		public async ValueTask DisposeAsync()
 		{
-			foreach (var context in _disposables.AsValueEnumerable())
+			foreach (var context in _store.Values.AsValueEnumerable())
 			{
 				await context.DisposeAsync();
 			}
+
+			_store.Clear();
 		}
 	}
 

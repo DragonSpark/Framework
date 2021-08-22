@@ -1,14 +1,14 @@
-﻿namespace DragonSpark.Application.Compose.Entities.Queries
-{
-	class Class1 {}
+﻿using DragonSpark.Application.Entities.Queries;
 
-	/*public class QuerySelector<T> where T : class
+namespace DragonSpark.Application.Compose.Entities.Queries
+{
+	public class TransactionalQuerySelector<T> where T : class
 	{
 		readonly IQuery<T> _subject;
 
-		public QuerySelector(IQuery<T> subject) => _subject = subject;
+		public TransactionalQuerySelector(IQuery<T> subject) => _subject = subject;
 
-		public QuerySelector<TIn, T> Accept<TIn>() => new(new Accept<TIn, T>(_subject));
+		/*public QuerySelector<TIn, T> Accept<TIn>() => new(new Accept<TIn, T>(_subject));
 
 		public QuerySelector<T> Where(Expression<Func<T, bool>> select) => Next(new WhereSelector<None, T>(select));
 
@@ -30,9 +30,9 @@
 			=> Next(new SelectManySelector<None, T, TTo>(select));
 
 		QuerySelector<TTo> Next<TTo>(ISelector<None, T, TTo> @select) where TTo : class
-			=> new(new Adapter<T, TTo>(_subject, select));
+			=> new(new Adapter<T, TTo>(_subject, select));*/
 
-		public IResulting<bool> Any() => Accept<None>().Any().Then().Bind(None.Default).Out();
+		/*public IResulting<bool> Any() => Accept<None>().Any().Then().Bind(None.Default).Out();
 
 		public IResulting<T> Single() => Accept<None>().Single().Then().Bind(None.Default).Out();
 
@@ -52,9 +52,10 @@
 		public IResulting<IReadOnlyDictionary<TKey, TValue>> ToDictionary<TKey, TValue>(
 			Func<T, TKey> key, Func<T, TValue> value)
 			where TKey : notnull
-			=> Accept<None>().ToDictionary(key, value).Then().Bind(None.Default).Out();
+			=> Accept<None>().ToDictionary(key, value).Then().Bind(None.Default).Out();*/
 	}
 
+	/*
 	public class QuerySelector<TIn, T> where T : class
 	{
 		readonly IQuery<TIn, T> _subject;
@@ -109,5 +110,6 @@
 			Func<T, TKey> key, Func<T, TValue> value)
 			where TKey : notnull
 			=> new(_subject, key, value);
-	}*/
+	}
+*/
 }

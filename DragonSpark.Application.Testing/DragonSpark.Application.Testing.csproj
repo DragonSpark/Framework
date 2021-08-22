@@ -1,11 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
+    <IsPackable>false</IsPackable>
+    <startupobject>DragonSpark.Application.Testing.Program</startupobject>
+    <GenerateProgramFile>false</GenerateProgramFile>
+    <NoWarn>IDE0051</NoWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\Queries\QueryBaseTests.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.0.0" />
@@ -22,8 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application.Hosting.BenchmarkDotNet\DragonSpark.Application.Hosting.BenchmarkDotNet.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Blazor\DragonSpark.Application.Hosting.Server.Blazor.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
+    <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj" />
   </ItemGroup>
 

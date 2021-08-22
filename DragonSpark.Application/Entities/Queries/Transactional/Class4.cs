@@ -3,31 +3,28 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Transactional
 {
 	class Class4 {}
 
 	public class Result<T, TResult> : IResulting<TResult>
 	{
-		readonly ISessions                 _sessions;
-		readonly IQuery<T>                 _query;
-		readonly IMaterializer<T, TResult> _materializer;
+		readonly ISessions                _sessions;
+		readonly Await<ISession, TResult> _materialize;
 
 		public Result(IQuery<T> query, IMaterializer<T, TResult> materializer)
-			: this(Sessions.Default, query, materializer) {}
+			: this(Sessions.Default, query.Then().Select(materializer).Then()) {}
 
-		public Result(ISessions sessions, IQuery<T> query, IMaterializer<T, TResult> materializer)
+		public Result(ISessions sessions, Await<ISession, TResult> materialize)
 		{
-			_sessions     = sessions;
-			_query        = query;
-			_materializer = materializer;
+			_sessions    = sessions;
+			_materialize = materialize;
 		}
 
 		public async ValueTask<TResult> Get()
 		{
 			await using var session = _sessions.Get();
-			var             query   = _query.Get(session);
-			var             result  = await _materializer.Await(query);
+			var             result  = await _materialize(session);
 			return result;
 		}
 	}

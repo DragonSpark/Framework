@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
@@ -26,9 +25,11 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
+	/*
 	public class Add<T, TIn, TOut> : Add<TIn, TOut> where T : DbContext where TOut : class
 	{
 		protected Add(ISelecting<TIn, TOut> @new, IDbContextFactory<T> contexts)
 			: base(@new, new Save<TOut>(contexts.CreateDbContext())) {}
 	}
+*/
 }

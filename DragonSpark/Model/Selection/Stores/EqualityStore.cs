@@ -9,6 +9,6 @@ namespace DragonSpark.Model.Selection.Stores
 			: this(source.Get, store) {}
 
 		protected EqualityStore(Func<TIn, TOut> source, IDictionary<TIn, TOut> store)
-			: base(new StandardTables<TIn, TOut>(source).Get(store)) {}
+			: base(new StandardTable<TIn, TOut>(store, source)) {}
 	}
 }

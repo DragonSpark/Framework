@@ -35,4 +35,18 @@ namespace DragonSpark.Application.Entities
 			return _save();
 		}
 	}
+
+	public class Save<TContext, T> : IOperation<T> where TContext : DbContext where T : class
+	{
+		readonly IDbContextFactory<TContext> _context;
+
+		public Save(IDbContextFactory<TContext> context) => _context = context;
+
+		public async ValueTask Get(T parameter)
+		{
+			await using var context = _context.CreateDbContext();
+			context.Set<T>().Update(parameter);
+			await context.SaveChangesAsync();
+		}
+	}
 }

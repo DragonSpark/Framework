@@ -1,21 +1,31 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Transactional
 {
 	class Class2 {}
 
+	public interface IMaps : IAssignable<Type, IMap> {}
+
+	public interface IMap : IAsyncDisposable
+	{
+		IQueryable<T> Query<T>() where T : class;
+	}
+
 	public interface IQuery<out T> : ISelect<IMaps, IQueryable<T>> {}
 
-	public class QueryBase<TContext, T> : QueryBase<T> where TContext : DbContext where T : class
+	public class DbQueryBase<TContext, T> : QueryBase<T> where TContext : DbContext where T : class
 	{
-		protected QueryBase(DbQuery<TContext, T> previous) : base(previous) {}
+		protected DbQueryBase(DbQuery<TContext, T> previous) : base(previous) {}
 
-		protected QueryBase(DbQuery<TContext, T> previous, Func<IQueryable<T>, IQueryable<T>> query)
+		protected DbQueryBase(DbQuery<TContext, T> previous, Func<IQueryable<T>, IQueryable<T>> query)
 			: base(previous, query) {}
+
+		protected DbQueryBase(IQuery<T> previous) : base(previous) {}
 	}
 
 	public class QueryBase<T> : IQuery<T>

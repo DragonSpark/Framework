@@ -29,7 +29,7 @@ namespace DragonSpark.Compose
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
 			where TIn : notnull
-			=> StandardTables<TIn, TOut>.Default.Get(@this);
+			=> new StandardTable<TIn, TOut>(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConcurrentDictionary<TIn, TOut> @this)
 			where TIn : notnull
@@ -67,7 +67,7 @@ namespace DragonSpark.Compose
 		public static ITable<TIn, TOut> ToStandardTable<TIn, TOut>(this Func<TIn, TOut> @this,
 		                                                           IDictionary<TIn, TOut> table)
 			where TIn : notnull
-			=> Compose.Start.An.Extent<StandardTables<TIn, TOut>>().From(@this).Get(table);
+			=> new StandardTable<TIn, TOut>(table, @this);
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
