@@ -89,7 +89,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 		}
 
 		[Fact]
-		public void VerifySumEnumerable()
+		public void VerifyConcatEnumerable()
 		{
 			var first    = new[] { 1, 2, 3, 4 };
 			var second   = new[] { 5, 6, 7, 8 };
@@ -108,7 +108,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 				result += span[i];
 			}
 
-			result.Should().Be(expected);
+			result.Should().Be(expected, "Count: {0}", span.Length);
 		}
 
 		public class Benchmarks
