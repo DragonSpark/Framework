@@ -24,22 +24,18 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public IServiceCollection Get(IServiceCollection parameter)
 		{
-			var collection = parameter.AddDbContextFactory<T>(_storage.Get(parameter), _lifetime);
+			var collection = parameter.AddDbContextFactory<T>(_storage.Get(parameter));
 
-			switch (_lifetime)
+			return _lifetime switch
 			{
-				case ServiceLifetime.Singleton:
-					return collection.AddSingleton(_factory)
-					                 .AddSingleton<DbContext>(x => x.GetRequiredService<T>());
-				case ServiceLifetime.Scoped:
-					return collection.AddScoped(_factory)
-					                 .AddScoped<DbContext>(x => x.GetRequiredService<T>());
-				case ServiceLifetime.Transient:
-					return collection.AddTransient(_factory)
-					                 .AddTransient<DbContext>(x => x.GetRequiredService<T>());
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+				ServiceLifetime.Singleton => collection.AddSingleton(_factory)
+				                                       .AddSingleton<DbContext>(x => x.GetRequiredService<T>()),
+				ServiceLifetime.Scoped => collection.AddScoped(_factory)
+				                                    .AddScoped<DbContext>(x => x.GetRequiredService<T>()),
+				ServiceLifetime.Transient => collection.AddTransient(_factory)
+				                                       .AddTransient<DbContext>(x => x.GetRequiredService<T>()),
+				_ => throw new ArgumentOutOfRangeException()
+			};
 		}
 	}
 }
