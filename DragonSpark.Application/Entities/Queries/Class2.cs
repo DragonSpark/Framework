@@ -1,24 +1,23 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Transactional
+namespace DragonSpark.Application.Entities.Queries
 {
 	class Class2 {}
 
-	public interface IMaps : IAssignable<Type, IMap> {}
+	/*public interface IContextMap : IAssignable<Type, DbContext> {}*/
 
-	public interface IMap : IAsyncDisposable
+	/*public interface IMap : IAsyncDisposable
 	{
 		IQueryable<T> Query<T>() where T : class;
-	}
+	}*/
+	public interface IQuery<out T> : ISelect<DbContext, IQueryable<T>> {}
 
-	public interface IQuery<out T> : ISelect<IMaps, IQueryable<T>> {}
-
-	public class DbQueryBase<TContext, T> : QueryBase<T> where TContext : DbContext where T : class
+	/*public class DbQueryBase<TContext, T> : QueryBase<T> where TContext : DbContext where T : class
 	{
 		protected DbQueryBase(DbQuery<TContext, T> previous) : base(previous) {}
 
@@ -26,65 +25,55 @@ namespace DragonSpark.Application.Entities.Queries.Transactional
 			: base(previous, query) {}
 
 		protected DbQueryBase(IQuery<T> previous) : base(previous) {}
-	}
-
-	public class QueryBase<T> : IQuery<T>
-	{
-		readonly IQuery<T>                          _previous;
-		readonly Func<IQueryable<T>, IQueryable<T>> _query;
-
-		protected QueryBase(IQuery<T> previous) : this(previous, x => x) {}
-
-		protected QueryBase(IQuery<T> previous, Func<IQueryable<T>, IQueryable<T>> query)
-		{
-			_previous = previous;
-			_query    = query;
-		}
-
-		public IQueryable<T> Get(IMaps parameter) => _query(_previous.Get(parameter));
-	}
-
-	public class DbQuery<TContext, T> : MapAwareQuery<T> where TContext : DbContext where T : class
-	{
-		public DbQuery(DbQueryMaps<TContext> maps) : base(maps) {}
-	}
-
-	public class MapAwareQuery<T> : IQuery<T> where T : class
-	{
-		readonly IQuery<T>  _previous;
-		readonly IQueryMaps _maps;
-		readonly Type       _key;
-
-		protected MapAwareQuery(IQueryMaps maps) : this(maps, A.Type<T>()) {}
-
-		protected MapAwareQuery(IQueryMaps maps, Type key) : this(new Root<T>(key), maps, key) {}
-
-		protected MapAwareQuery(IQuery<T> previous, IQueryMaps maps, Type key)
-		{
-			_previous = previous;
-			_maps     = maps;
-			_key      = key;
-		}
-
-		public IQueryable<T> Get(IMaps parameter)
-		{
-			if (!parameter.IsSatisfiedBy(_key))
-			{
-				parameter.Assign(_key, _maps.Get());
-			}
-
-			return _previous.Get(parameter);
-		}
-	}
+	}*/
 
 	sealed class Root<T> : IQuery<T> where T : class
 	{
-		readonly Type _context;
+		public static Root<T> Default { get; } = new Root<T>();
 
-		public Root(Type context) => _context = context;
+		Root() {}
 
-		public IQueryable<T> Get(IMaps parameter) => parameter.Get(_context).Query<T>();
+		public IQueryable<T> Get(DbContext parameter) => parameter.Set<T>();
 	}
+
+	public class Append<T> : IQuery<T> where T : class
+	{
+		readonly IQuery<T>                          _previous;
+		readonly Func<IQueryable<T>, IQueryable<T>> _select;
+
+		public Append(IQuery<T> previous) : this(previous, x => x) {}
+
+		public Append(Func<IQueryable<T>, IQueryable<T>> query) : this(Root<T>.Default, query) {}
+
+		public Append(IQuery<T> previous, Func<IQueryable<T>, IQueryable<T>> select)
+		{
+			_previous = previous;
+			_select   = select;
+		}
+
+		public IQueryable<T> Get(DbContext parameter) => _select(_previous.Get(parameter));
+	}
+
+	public interface ICompile<out T> : ISelect<DbContext, IAsyncEnumerable<T>> {}
+
+	sealed class Compile<T> : Select<DbContext, IAsyncEnumerable<T>>, ICompile<T> where T : class
+	{
+		public Compile(IQuery<T> query) : this(context => query.Get(context)) {}
+
+		public Compile(Expression<Func<DbContext, IQueryable<T>>> expression)
+			: this(EF.CompileAsyncQuery(expression)) {}
+
+		public Compile(Func<DbContext, IAsyncEnumerable<T>> select) : base(select) {}
+	}
+
+	/*public class Expression<TContext, T> : Select<TContext, IAsyncEnumerable<T>>
+		where TContext : DbContext where T : class
+	{
+		public Expression(Expression<Func<TContext, IQueryable<T>>> expression)
+			: this(EF.CompileAsyncQuery(expression)) {}
+
+		public Expression(Func<TContext, IAsyncEnumerable<T>> select) : base(select) {}
+	}*/
 
 	/*public interface IQuery<TIn, out TOut> : ISelect<In<TIn>, IQueryable<TOut>> {}
 

@@ -1,71 +1,19 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection.Stores;
+﻿using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
-using NetFabric.Hyperlinq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Transactional
+namespace DragonSpark.Application.Entities.Queries
 {
 	class Class1 {}
 
-	public interface ISession : IMaps, IAsyncDisposable {}
+	public interface IContexts<out T> : IResult<T> where T : DbContext {}
 
-	sealed class Session : Assignable<Type, IMap>, ISession
-	{
-		readonly IDictionary<Type, IMap> _store;
-
-		public Session() : this(new Dictionary<Type, IMap>()) {}
-
-		public Session(IDictionary<Type, IMap> store) : this(store, store.ToTable()) {}
-
-		public Session(IDictionary<Type, IMap> store, ITable<Type, IMap> source) : base(source) => _store  = store;
-
-		public async ValueTask DisposeAsync()
-		{
-			foreach (var context in _store.Values.AsValueEnumerable())
-			{
-				await context.DisposeAsync();
-			}
-
-			_store.Clear();
-		}
-	}
-
-	public interface ISessions : IResult<ISession> {}
-
-	sealed class Sessions : ISessions
-	{
-		public static Sessions Default { get; } = new Sessions();
-
-		Sessions() {}
-
-		public ISession Get() => new Session();
-	}
-
-	public interface IQueryMaps : IResult<IMap> {}
-
-	public sealed class DbQueryMaps<T> : IQueryMaps where T : DbContext
+	public sealed class DbContexts<T> : IContexts<T> where T : DbContext
 	{
 		readonly IDbContextFactory<T> _factory;
 
-		public DbQueryMaps(IDbContextFactory<T> factory) => _factory = factory;
+		public DbContexts(IDbContextFactory<T> factory) => _factory = factory;
 
-		public IMap Get() => new DbContextMap(_factory.CreateDbContext());
-	}
-
-	sealed class DbContextMap : IMap
-	{
-		readonly DbContext _context;
-
-		public DbContextMap(DbContext context) => _context = context;
-
-		public IQueryable<T> Query<T>() where T : class => _context.Set<T>();
-
-		public ValueTask DisposeAsync() => _context.DisposeAsync();
+		public T Get() => _factory.CreateDbContext();
 	}
 
 	/*

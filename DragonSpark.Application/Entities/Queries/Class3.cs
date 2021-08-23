@@ -1,6 +1,50 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Transactional
+﻿using DragonSpark.Model.Results;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DragonSpark.Application.Entities.Queries
 {
 	class Class3 {}
+
+	public readonly struct Invocation<T> : IAsyncDisposable
+	{
+		readonly IAsyncDisposable _disposable;
+
+		public Invocation(IAsyncDisposable disposable, IAsyncEnumerable<T> elements)
+		{
+			_disposable = disposable;
+			Elements    = elements;
+		}
+
+		public IAsyncEnumerable<T> Elements { get; }
+
+		public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+	}
+
+	public interface IInvoke<T> : IResult<Invocation<T>> {}
+
+	public class Invoke<TContext, T> : IInvoke<T> where TContext : DbContext where T : class
+	{
+		readonly IContexts<TContext> _contexts;
+		readonly ICompile<T>         _compile;
+
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : this(contexts, new Compile<T>(query)) {}
+
+		public Invoke(IContexts<TContext> contexts, ICompile<T> compile)
+		{
+			_contexts = contexts;
+			_compile  = compile;
+		}
+
+		public Invocation<T> Get()
+		{
+			var context = _contexts.Get();
+			var compile = _compile.Get(context);
+			return new(context, compile);
+		}
+	}
 
 	/*public interface IQuery<in TIn, TOut> : ISelect<TIn, Query<TOut>> where TOut : class {}
 

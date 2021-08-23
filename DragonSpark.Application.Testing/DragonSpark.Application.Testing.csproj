@@ -12,10 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entities\Queries\QueryBaseTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -39,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Compose\Store\Operations\" />
-    <Folder Include="Entities\Queries\Scoped\" />
     <Folder Include="Security\Identity\" />
   </ItemGroup>
 

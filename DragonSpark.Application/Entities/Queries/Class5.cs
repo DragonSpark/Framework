@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Transactional
+﻿namespace DragonSpark.Application.Entities.Queries
 {
 	class Class5 {}
 

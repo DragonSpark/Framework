@@ -1,12 +1,57 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialize;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
+using Microsoft.EntityFrameworkCore;
+using NetFabric.Hyperlinq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Transactional
+namespace DragonSpark.Application.Entities.Queries
 {
 	class Class4 {}
 
+	public interface IEvaluate<in T, TResult> : ISelecting<IAsyncEnumerable<T>, TResult> {}
+
+	sealed class ToArray<T> : IEvaluate<T, T[]>
+	{
+		public static ToArray<T> Default { get; } = new ToArray<T>();
+
+		ToArray() {}
+
+		public ValueTask<T[]> Get(IAsyncEnumerable<T> parameter) => parameter.AsAsyncValueEnumerable().ToArrayAsync();
+	}
+
+	public class EvaluateToArray<TContext, T> : EvaluateToArray<T> where TContext : DbContext where T : class
+	{
+		protected EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
+			: this(new Invoke<TContext, T>(contexts, query)) {}
+
+		public EvaluateToArray(IInvoke<T> invoke) : base(invoke) {}
+	}
+
+	public class EvaluateToArray<T> : Evaluate<T, T[]>
+	{
+		public EvaluateToArray(IInvoke<T> invoke) : base(invoke, ToArray<T>.Default) {}
+	}
+
+	public class Evaluate<T, TResult> : IResulting<TResult>
+	{
+		readonly IInvoke<T>            _invoke;
+		readonly IEvaluate<T, TResult> _evaluate;
+
+		protected Evaluate(IInvoke<T> invoke, IEvaluate<T, TResult> evaluate)
+		{
+			_invoke   = invoke;
+			_evaluate = evaluate;
+		}
+
+		public async ValueTask<TResult> Get()
+		{
+			await using var invocation = _invoke.Get();
+			var             result     = await _evaluate.Get(invocation.Elements);
+			return result;
+		}
+	}
+
+	/*
 	public class Result<T, TResult> : IResulting<TResult>
 	{
 		readonly ISessions                _sessions;
@@ -28,6 +73,7 @@ namespace DragonSpark.Application.Entities.Queries.Transactional
 			return result;
 		}
 	}
+	*/
 
 	/*
 	public class Result<TIn, TOut, TResult> : ISelecting<TIn, TResult> where TOut : class
