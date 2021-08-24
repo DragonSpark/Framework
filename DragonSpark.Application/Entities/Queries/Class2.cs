@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -9,107 +10,90 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	class Class2 {}
 
-	/*public interface IContextMap : IAssignable<Type, DbContext> {}*/
+	public interface IQuery<T> : IResult<Expression<Func<DbContext, IQueryable<T>>>> where T : class {}
 
-	/*public interface IMap : IAsyncDisposable
+	public class Query<T> : Instance<Expression<Func<DbContext, IQueryable<T>>>>, IQuery<T> where T : class
 	{
-		IQueryable<T> Query<T>() where T : class;
-	}*/
-	public interface IQuery<out T> : ISelect<DbContext, IQueryable<T>> {}
-
-	/*public class DbQueryBase<TContext, T> : QueryBase<T> where TContext : DbContext where T : class
-	{
-		protected DbQueryBase(DbQuery<TContext, T> previous) : base(previous) {}
-
-		protected DbQueryBase(DbQuery<TContext, T> previous, Func<IQueryable<T>, IQueryable<T>> query)
-			: base(previous, query) {}
-
-		protected DbQueryBase(IQuery<T> previous) : base(previous) {}
-	}*/
-
-	sealed class Root<T> : IQuery<T> where T : class
-	{
-		public static Root<T> Default { get; } = new Root<T>();
-
-		Root() {}
-
-		public IQueryable<T> Get(DbContext parameter) => parameter.Set<T>();
+		public Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 
-	public class Append<T> : IQuery<T> where T : class
+	public sealed class Set<T> : Query<T> where T : class
 	{
-		readonly IQuery<T>                          _previous;
+		public static Set<T> Default { get; } = new Set<T>();
+
+		Set() : base(context => context.Set<T>()) {}
+	}
+
+	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> where T : class {}
+
+	public class Query<TIn, T> : Instance<Expression<Func<DbContext, TIn, IQueryable<T>>>>, IQuery<TIn, T>
+		where T : class
+	{
+		protected Query(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
+	}
+
+	public class Start<T> : Start<None, T> where T : class
+	{
+		public Start(Func<IQueryable<T>, IQueryable<T>> @select) : base(@select) {}
+
+		public Start(Func<DbContext, IQueryable<T>, IQueryable<T>> @select) : base(@select) {}
+	}
+
+	public class Start<TIn, T> : Query<TIn, T> where T : class
+	{
+		public Start(Func<IQueryable<T>, IQueryable<T>> select) : base((context, @in) => select(context.Set<T>())) {}
+
+		public Start(Func<DbContext, IQueryable<T>, IQueryable<T>> select)
+			: base((context, queryable) => select(context, context.Set<T>())) {}
+
+		public Start(Func<DbContext, TIn, IQueryable<T>, IQueryable<T>> select)
+			: base((context, @in) => select(context, @in, context.Set<T>())) {}
+
+		protected Start(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
+	}
+
+	public interface ISelector<TIn, out T> : ISelect<In<TIn>, IQueryable<T>> {}
+
+	public class Selected<TIn, T> : Start<TIn, T> where T : class
+	{
+		public Selected(Func<In<TIn>, IQueryable<T>> select)
+			: base((context, @in) => select(new In<TIn>(context, @in))) {}
+	}
+
+	/*public class Append<TIn, T> : IQuery<TIn, T> where T : class
+	{
+		readonly IQuery<TIn, T>                     _previous;
 		readonly Func<IQueryable<T>, IQueryable<T>> _select;
 
-		public Append(IQuery<T> previous) : this(previous, x => x) {}
+		protected Append(IQuery<TIn, T> previous) : this(previous, x => x) {}
 
-		public Append(Func<IQueryable<T>, IQueryable<T>> query) : this(Root<T>.Default, query) {}
-
-		public Append(IQuery<T> previous, Func<IQueryable<T>, IQueryable<T>> select)
+		protected Append(IQuery<TIn, T> previous, Func<IQueryable<T>, IQueryable<T>> select)
 		{
 			_previous = previous;
 			_select   = select;
 		}
 
-		public IQueryable<T> Get(DbContext parameter) => _select(_previous.Get(parameter));
-	}
-
-	public interface ICompile<out T> : ISelect<DbContext, IAsyncEnumerable<T>> {}
-
-	sealed class Compile<T> : Select<DbContext, IAsyncEnumerable<T>>, ICompile<T> where T : class
-	{
-		public Compile(IQuery<T> query) : this(context => query.Get(context)) {}
-
-		public Compile(Expression<Func<DbContext, IQueryable<T>>> expression)
-			: this(EF.CompileAsyncQuery(expression)) {}
-
-		public Compile(Func<DbContext, IAsyncEnumerable<T>> select) : base(select) {}
-	}
-
-	/*public class Expression<TContext, T> : Select<TContext, IAsyncEnumerable<T>>
-		where TContext : DbContext where T : class
-	{
-		public Expression(Expression<Func<TContext, IQueryable<T>>> expression)
-			: this(EF.CompileAsyncQuery(expression)) {}
-
-		public Expression(Func<TContext, IAsyncEnumerable<T>> select) : base(select) {}
-	}*/
-
-	/*public interface IQuery<TIn, out TOut> : ISelect<In<TIn>, IQueryable<TOut>> {}
-
-	sealed class Start<T> : IQuery<T> where T : class
-	{
-		public static Start<T> Default { get; } = new Start<T>();
-
-		Start() {}
-
-		public IQueryable<T> Get(In<T> parameter) => parameter.Context.Set<T>();
+		public IQueryable<T> Get(In<TIn, T> parameter)
+		{
+			var previous = _previous.Get(parameter);
+			var result   = _select(previous);
+			return result;
+		}
 	}*/
 
 	/*
-	public readonly struct In<TIn, T>
+	public sealed class Set<TIn, T> : IQuery<TIn, T> where T : class
 	{
-		readonly DbContext _source;
+		public static Set<TIn, T> Default { get; } = new Set<TIn, T>();
 
-		public In(DbContext source, IQueryable<T> query, TIn parameter)
-		{
-			_source   = source;
-			Query     = query;
-			Parameter = parameter;
-		}
+		Set() {}
 
-		public IQueryable<T> Query { get; }
-
-		public TIn Parameter { get; }
-
-		public void Deconstruct(out DbContext source, out IQueryable<T> query, out TIn parameter)
-		{
-			source    = _source;
-			query     = Query;
-			parameter = Parameter;
-		}
+		public IQueryable<T> Get(In<TIn> parameter) => parameter.Context.Set<T>();
 	}
+	*/
 
+	public readonly record struct In<T>(DbContext Context, T Parameter);
+	/*
 	public interface ISelector<TIn, TOut> : ISelector<TIn, TOut, TOut> {}
 
 	public interface ISelector<TIn, T, out TOut> : ISelect<In<TIn, T>, IQueryable<TOut>> {}

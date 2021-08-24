@@ -1,14 +1,33 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
 	class Class3 {}
 
-	public readonly struct Invocation<T> : IAsyncDisposable
+	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> where T : class {}
+
+	sealed class Form<TIn, T> : IForm<TIn, T> where T : class
+	{
+		readonly Func<DbContext, TIn, IAsyncEnumerable<T>> _select;
+
+		public Form(IQuery<TIn, T> query) : this(query.Get()) {}
+
+		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: this(EF.CompileAsyncQuery(expression)) {}
+
+		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = @select;
+
+		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context, parameter.Parameter);
+	}
+
+	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
 	{
 		readonly IAsyncDisposable _disposable;
 
@@ -21,27 +40,36 @@ namespace DragonSpark.Application.Entities.Queries
 		public IAsyncEnumerable<T> Elements { get; }
 
 		public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+
+		public void Dispose() {}
 	}
 
-	public interface IInvoke<T> : IResult<Invocation<T>> {}
+	public interface IInvoke<in TIn, T> : ISelect<TIn, Invocation<T>> {}
 
-	public class Invoke<TContext, T> : IInvoke<T> where TContext : DbContext where T : class
+	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext where T : class
+	{
+		public Invoke(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}
+
+		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
+	}
+
+	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext where T : class
 	{
 		readonly IContexts<TContext> _contexts;
-		readonly ICompile<T>         _compile;
+		readonly IForm<TIn, T>       _form;
 
-		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : this(contexts, new Compile<T>(query)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, new Form<TIn, T>(query)) {}
 
-		public Invoke(IContexts<TContext> contexts, ICompile<T> compile)
+		public Invoke(IContexts<TContext> contexts, IForm<TIn, T> form)
 		{
 			_contexts = contexts;
-			_compile  = compile;
+			_form     = form;
 		}
 
-		public Invocation<T> Get()
+		public Invocation<T> Get(TIn parameter)
 		{
 			var context = _contexts.Get();
-			var compile = _compile.Get(context);
+			var compile = _form.Get(new In<TIn>(context, parameter));
 			return new(context, compile);
 		}
 	}
