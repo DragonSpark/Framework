@@ -2,8 +2,8 @@
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
@@ -113,6 +113,61 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		}
 
 		[Fact]
+		public async Task VerifyParameter()
+		{
+			var counter = new Counter();
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			{
+				await using var context = factory.CreateDbContext();
+				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+				                          new Subject { Name = "Three" });
+				await context.SaveChangesAsync();
+			}
+
+			counter.Get().Should().Be(1);
+
+			var evaluate = new SubjectsNotWithParameter(new DbContexts<Context>(factory));
+			{
+				var results = await evaluate.Await("One");
+				results.Should().HaveCount(2);
+				results.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
+			}
+
+			{
+				var results = await evaluate.Await("Two");
+				results.Should().HaveCount(2);
+				results.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
+			}
+
+			counter.Get().Should().Be(2);
+		}
+
+		[Fact]
+		public async Task VerifyParameterSql()
+		{
+			await using var factory = await new SqlContexts<Context>().Initialize();
+			{
+				await using var context = factory.Get();
+				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+				                          new Subject { Name = "Three" });
+				await context.SaveChangesAsync();
+			}
+
+			var parameter = new SubjectsNotWithParameter(factory);
+			{
+				var results  = await parameter.Await("One");
+				results.Should().HaveCount(2);
+				results.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
+			}
+
+			{
+				var results  = await parameter.Await("Two");
+				results.Should().HaveCount(2);
+				results.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
+			}
+		}
+
+		[Fact]
 		public async Task VerifySelected()
 		{
 			var counter = new Counter();
@@ -126,14 +181,39 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var evaluate = new SubjectsNot(new DbContexts<Context>(factory));
+			var evaluate = new EvaluateToArray<Context, string, string>(new DbContexts<Context>(factory), Selected.Default);
 			{
 				var results = await evaluate.Await("One");
 				results.Should().HaveCount(2);
-				results.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
+				results.Should().BeEquivalentTo("Two", "Three");
 			}
 
 			counter.Get().Should().Be(2);
+		}
+
+		[Fact]
+		public async Task VerifySelectedSql()
+		{
+			await using var factory = await new SqlContexts<Context>().Initialize();
+			{
+				await using var context = factory.Get();
+				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+				                          new Subject { Name = "Three" });
+				await context.SaveChangesAsync();
+			}
+
+			var evaluation = new EvaluateToArray<Context, string, string>(factory, Selected.Default);
+			{
+				var results = await evaluation.Await("One");
+				results.Should().HaveCount(2);
+				results.Should().BeEquivalentTo("Two", "Three");
+			}
+
+			{
+				var results = await evaluation.Await("Two");
+				results.Should().HaveCount(2);
+				results.Should().BeEquivalentTo("One", "Three");
+			}
 		}
 
 		[Fact]
@@ -191,11 +271,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Selected : ParameterAwareStart<string, Subject>
+		sealed class Parameter : Start<string, Subject>
 		{
-			public static Selected Default { get; } = new Selected();
+			public static Parameter Default { get; } = new Parameter();
 
-			Selected() : base((@in, set) => set.Where(x => x.Name != @in)) {}
+			Parameter() : base((@in, set) => set.Where(x => x.Name != @in)) {}
 		}
 
 		sealed class Complex : Start<Subject>
@@ -208,27 +288,30 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				: base((_, subjects) => select(subjects)) {}
 		}
 
-		sealed class SubjectsNotTwo : EvaluateToArray<Context, None, Subject>
+		sealed class Selected : Selected<string, string>
 		{
-			public SubjectsNotTwo(IContexts<Context> contexts) : this(contexts, Query.Default) {}
+			public static Selected Default { get; } = new Selected();
+
+			Selected() : base(x => x.Context.Set<Subject>().Where(y => y.Name != x.Parameter).Select(y => y.Name)) {}
+		}
+
+		sealed class SubjectsNotTwo : EvaluateToArray<Context, Subject>
+		{
+			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts, Query.Default) {}
 
 			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
-
-			public SubjectsNotTwo(IInvoke<None, Subject> invoke) : base(invoke) {}
 		}
 
-		sealed class SubjectsNot : EvaluateToArray<Context, string, Subject>
+		sealed class SubjectsNotWithParameter : EvaluateToArray<Context, string, Subject>
 		{
-			public SubjectsNot(IContexts<Context> contexts) : this(contexts, Selected.Default) {}
-
-			public SubjectsNot(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
+			public SubjectsNotWithParameter(IContexts<Context> contexts) : base(contexts, Parameter.Default) {}
 		}
 
-		/*
 		public class Benchmarks
 		{
-			readonly ISelecting<None, Subject[]> _query;
-			readonly IQueryable<Subject>         _scoped;
+			readonly ISelecting<None, Subject[]>   _query;
+			readonly ISelecting<string, Subject[]> _selected;
+			readonly IQueryable<Subject>           _scoped;
 
 			public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
 
@@ -236,22 +319,28 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			Benchmarks(IDbContextFactory<Context> factory)
 				: this(new SubjectsNotTwo(new DbContexts<Context>(factory)),
+				       new SubjectsNotWithParameter(new DbContexts<Context>(factory)),
 				       new Scoped(factory.CreateDbContext()).Get()) {}
 
-			Benchmarks(ISelecting<None, Subject[]> query, IQueryable<Subject> scoped)
+			Benchmarks(ISelecting<None, Subject[]> query, ISelecting<string, Subject[]> selected,
+			           IQueryable<Subject> scoped)
 			{
-				_query  = query;
-				_scoped = scoped;
+				_query    = query;
+				_selected = selected;
+				_scoped   = scoped;
 			}
-
-			[Benchmark]
-			public async Task<Array> MeasureSingleton() => await _query.Await();
 
 			[Benchmark(Baseline = true)]
 			public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
-		}
-		*/
 
+			[Benchmark]
+			public async Task<Array> MeasureCompiled() => await _query.Await();
+
+			[Benchmark]
+			public async Task<Array> MeasureCompiledParameter() => await _selected.Await("Two");
+		}
+
+		/*
 		public class Benchmarks
 		{
 			readonly DbContext                      _subject;
@@ -278,7 +367,6 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			{
 				_select.Assign(_subject, "None.Default");
 				return None.Default;
-				;
 			}
 
 			[Benchmark]
@@ -288,5 +376,6 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				return _select.Get(_subject);
 			}
 		}
+	*/
 	}
 }

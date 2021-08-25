@@ -21,8 +21,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 		public Form(IQuery<T> query) : this(query.Get()) {}
 
-		public Form(Expression<Func<DbContext, IQueryable<T>>> expression)
-			: this(EF.CompileAsyncQuery(expression)) {}
+		public Form(Expression<Func<DbContext, IQueryable<T>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
 
 		public Form(Func<DbContext, IAsyncEnumerable<T>> select) => _select = @select;
 
@@ -73,8 +72,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext where T : class
 	{
-		public Invoke(IContexts<TContext> contexts, IQuery<T> query)
-			: base(contexts, new Form<None, T>(query)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<None, T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}

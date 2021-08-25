@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
 using System.Collections.Generic;
@@ -19,25 +20,25 @@ namespace DragonSpark.Application.Entities.Queries
 		public ValueTask<T[]> Get(IAsyncEnumerable<T> parameter) => parameter.AsAsyncValueEnumerable().ToArrayAsync();
 	}
 
-	/*public class EvaluateToArray<TContext, T> : EvaluateToArray<TContext, None, T> where TContext : DbContext where T : class
+	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, T[]> where TContext : DbContext where T : class
 	{
-		protected EvaluateToArray(IContexts<TContext> contexts, IQuery<None, T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke) {}
-	}*/
-
-	public class EvaluateToArray<TContext, TIn, T> : EvaluateToArray<TIn, T> where TContext : DbContext where T : class
-	{
-		protected EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
+		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
 			: this(new Invoke<TContext, TIn, T>(contexts, query)) {}
 
-		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke) {}
+		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
 	}
 
-	public class EvaluateToArray<TIn, T> : Evaluate<TIn, T, T[]>
+	public class EvaluateToArray<TContext, T> : Evaluate<T, T[]> where TContext : DbContext where T : class
 	{
-		protected EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
+		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
+			: this(new Invoke<TContext, T>(contexts, query)) {}
+
+		public EvaluateToArray(IInvoke<None, T> invoke) : base(invoke, ToArray<T>.Default) {}
+	}
+
+	public class Evaluate<T, TResult> : Evaluate<None, T, TResult>
+	{
+		protected Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate) : base(invoke, evaluate) {}
 	}
 
 	public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>

@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public interface IContexts<out T> : IResult<T> where T : DbContext {}
 
-	public sealed class DbContexts<T> : IContexts<T> where T : DbContext
+	public class DbContexts<T> : IContexts<T> where T : DbContext
 	{
 		readonly IDbContextFactory<T> _factory;
 
