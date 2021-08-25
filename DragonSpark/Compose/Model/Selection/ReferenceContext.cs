@@ -17,8 +17,6 @@ namespace DragonSpark.Compose.Model.Selection
 			_tables  = tables;
 		}
 
-		public ITable<_, T> Reference() => _tables.Get(_subject.ToDelegateReference());
-
 		public ITable<_, T> New() => _tables.Get(_subject.Get);
 	}
 }

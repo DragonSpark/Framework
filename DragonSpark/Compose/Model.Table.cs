@@ -37,11 +37,11 @@ namespace DragonSpark.Compose
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConditionalWeakTable<TIn, TOut> @this)
 			where TOut : class where TIn : class
-			=> ReferenceValueTables<TIn, TOut>.Default.Get(@this);
+			=> new ReferenceValueTable<TIn, TOut>(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConditionalWeakTable<TIn, Tuple<TOut>> @this)
 			where TIn : class where TOut : struct
-			=> StructureValueTables<TIn, TOut>.Default.Get(@this);
+			=> new StructureValueTable<TIn, TOut>(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
