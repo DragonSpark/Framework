@@ -1,5 +1,7 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,17 +17,40 @@ namespace DragonSpark.Application.Entities.Queries
 
 	sealed class Form<TIn, T> : IForm<TIn, T> where T : class
 	{
-		readonly Func<DbContext, TIn, IAsyncEnumerable<T>> _select;
+		readonly Func<DbContext, IAsyncEnumerable<T>> _select;
 
-		public Form(IQuery<TIn, T> query) : this(query.Get()) {}
+		public Form(IQuery<T> query) : this(query.Get()) {}
 
-		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		public Form(Expression<Func<DbContext, IQueryable<T>>> expression)
 			: this(EF.CompileAsyncQuery(expression)) {}
 
-		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = @select;
+		public Form(Func<DbContext, IAsyncEnumerable<T>> select) => _select = @select;
 
-		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context, parameter.Parameter);
+		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context);
 	}
+
+	sealed class ParameterAwareForm<TIn, T> : IForm<TIn, T> where T : class
+	{
+		readonly IForm<TIn, T>          _previous;
+		readonly ITable<DbContext, TIn> _table;
+
+		public ParameterAwareForm(IQuery<T> query) : this(new Form<TIn, T>(query)) {}
+
+		public ParameterAwareForm(IForm<TIn, T> previous) : this(previous, Parameters<TIn>.Default) {}
+
+		public ParameterAwareForm(IForm<TIn, T> previous, ITable<DbContext, TIn> table)
+		{
+			_previous = previous;
+			_table    = table;
+		}
+
+		public IAsyncEnumerable<T> Get(In<TIn> parameter)
+		{
+			_table.Assign(parameter.Context, parameter.Parameter);
+			return _previous.Get(parameter);
+		}
+	}
+
 
 	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
 	{
@@ -48,7 +73,8 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext where T : class
 	{
-		public Invoke(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query)
+			: base(contexts, new Form<None, T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}
@@ -58,7 +84,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly IContexts<TContext> _contexts;
 		readonly IForm<TIn, T>       _form;
 
-		public Invoke(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, new Form<TIn, T>(query)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query)
+			: this(contexts, new ParameterAwareForm<TIn, T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<TIn, T> form)
 		{
@@ -69,8 +96,8 @@ namespace DragonSpark.Application.Entities.Queries
 		public Invocation<T> Get(TIn parameter)
 		{
 			var context = _contexts.Get();
-			var compile = _form.Get(new In<TIn>(context, parameter));
-			return new(context, compile);
+			var form    = _form.Get(new In<TIn>(context, parameter));
+			return new(context, form);
 		}
 	}
 

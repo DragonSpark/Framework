@@ -2,8 +2,8 @@
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
@@ -126,11 +126,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var evaluate = new SubjectsNotTwo(new DbContexts<Context>(factory), Selected.Default);
+			var evaluate = new SubjectsNot(new DbContexts<Context>(factory));
 			{
-				var results = await evaluate.Await();
+				var results = await evaluate.Await("One");
 				results.Should().HaveCount(2);
-				results.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
+				results.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 			}
 
 			counter.Get().Should().Be(2);
@@ -191,11 +191,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Selected : Selected<None, Subject>
+		sealed class Selected : ParameterAwareStart<string, Subject>
 		{
 			public static Selected Default { get; } = new Selected();
 
-			Selected() : base(@in => @in.Context.Set<Subject>().Where(x => x.Name != "Two")) {}
+			Selected() : base((@in, set) => set.Where(x => x.Name != @in)) {}
 		}
 
 		sealed class Complex : Start<Subject>
@@ -212,9 +212,19 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public SubjectsNotTwo(IContexts<Context> contexts) : this(contexts, Query.Default) {}
 
-			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<None, Subject> query) : base(contexts, query) {}
+			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
+
+			public SubjectsNotTwo(IInvoke<None, Subject> invoke) : base(invoke) {}
 		}
 
+		sealed class SubjectsNot : EvaluateToArray<Context, string, Subject>
+		{
+			public SubjectsNot(IContexts<Context> contexts) : this(contexts, Selected.Default) {}
+
+			public SubjectsNot(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
+		}
+
+		/*
 		public class Benchmarks
 		{
 			readonly ISelecting<None, Subject[]> _query;
@@ -239,6 +249,44 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			[Benchmark(Baseline = true)]
 			public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
+		}
+		*/
+
+		public class Benchmarks
+		{
+			readonly DbContext                      _subject;
+			readonly IAssignable<DbContext, string> _select;
+
+			public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
+
+			Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
+
+			Benchmarks(IDbContextFactory<Context> factory)
+				: this(factory.CreateDbContext(), Parameters<string>.Default) {}
+
+			Benchmarks(DbContext subject, IAssignable<DbContext, string> select)
+			{
+				_subject = subject;
+				_select  = @select;
+			}
+
+			[Benchmark(Baseline = true)]
+			public string MeasureAccess() => _select.Get(_subject);
+
+			[Benchmark]
+			public None MeasureAssign()
+			{
+				_select.Assign(_subject, "None.Default");
+				return None.Default;
+				;
+			}
+
+			[Benchmark]
+			public string MeasureFull()
+			{
+				_select.Assign(_subject, "None.Default");
+				return _select.Get(_subject);
+			}
 		}
 	}
 }
