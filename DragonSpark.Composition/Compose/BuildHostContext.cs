@@ -20,7 +20,7 @@ namespace DragonSpark.Composition.Compose
 
 		public BuildHostContext(IAlteration<IHostBuilder> select) => _select = select;
 
-		public BuildHostContext WithEnvironment(string name) => Select(ConfigureEnvironment.Defaults.Get(name));
+		public BuildHostContext WithEnvironment(string name) => Select(new ConfigureEnvironment(name));
 
 		public BuildHostContext Configure(ICommand<IHostBuilder> configuration)
 			=> Select(configuration.Then().ToConfiguration().Out());
