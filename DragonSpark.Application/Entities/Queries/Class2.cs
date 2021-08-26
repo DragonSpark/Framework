@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Stores;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -10,63 +10,67 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	class Class2 {}
 
+	public class Expression<TIn, TOut> : Instance<Expression<Func<TIn, TOut>>>
+	{
+		protected Expression(Expression<Func<TIn, TOut>> instance) : base(instance) {}
+	}
+
 	public interface IQuery<T> : IResult<Expression<Func<DbContext, IQueryable<T>>>> where T : class {}
+
+	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> {}
 
 	public class Query<T> : Instance<Expression<Func<DbContext, IQueryable<T>>>>, IQuery<T> where T : class
 	{
-		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
+		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance.Expand()) {}
+	}
+
+	public class Query<TIn, T> : Instance<Expression<Func<DbContext, TIn, IQueryable<T>>>>, IQuery<TIn, T>
+	{
+		protected Query(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance.Expand()) {}
 	}
 
 	public class Start<T> : Query<T> where T : class
 	{
-		protected Start(Func<IQueryable<T>, IQueryable<T>> select) : base(context => select(context.Set<T>())) {}
+		protected Start(Expression<Func<IQueryable<T>, IQueryable<T>>> select)
+			: base(context => select.Invoke(context.Set<T>())) {}
 
-		protected Start(Func<DbContext, IQueryable<T>, IQueryable<T>> select)
-			: base(context => select(context, context.Set<T>())) {}
+		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select)
+			: base(context => select.Invoke(context, context.Set<T>())) {}
 
 		protected Start(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 
-	public class Start<TIn, T> : Query<T> where T : class
+	public class Start<TIn, T> : Start<TIn, T, T> where T : class
 	{
-		protected Start(Func<IQueryable<T>, IQueryable<T>> select) : base(context => select(context.Set<T>())) {}
+		protected Start(Expression<Func<IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
 
-		protected Start(Func<TIn, IQueryable<T>, IQueryable<T>> select) : this(@select, Parameters<TIn>.Default) {}
+		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
 
-		protected Start(Func<TIn, IQueryable<T>, IQueryable<T>> select, ISelect<DbContext, TIn> parameter)
-			: base(context => select(parameter.Get(context), context.Set<T>())) {}
+		protected Start(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
 
-		protected Start(Func<DbContext, IQueryable<T>, IQueryable<T>> select)
-			: base(context => select(context, context.Set<T>())) {}
+		protected Start(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
 
-		protected Start(Func<DbContext, TIn, IQueryable<T>> select)
-			: this(@select, Parameters<TIn>.Default) {}
-
-		protected Start(Func<DbContext, TIn, IQueryable<T>> select, ISelect<DbContext, TIn> parameter)
-			: base(context => select(context, parameter.Get(context))) {}
-
-		protected Start(Func<DbContext, TIn, IQueryable<T>, IQueryable<T>> select)
-			: this(@select, Parameters<TIn>.Default) {}
-
-		protected Start(Func<DbContext, TIn, IQueryable<T>, IQueryable<T>> select,
-		                ISelect<DbContext, TIn> parameter)
-			: base(context => select(context, parameter.Get(context), context.Set<T>())) {}
+		protected Start(Expression<Func<DbContext, TIn, IQueryable<T>>> @select) : base(@select) {}
 	}
 
-	sealed class Parameters<T> : ReferenceVariable<DbContext, T>
+	public class Start<TIn, T, TTo> : Query<TIn, TTo> where T : class
 	{
-		public static Parameters<T> Default { get; } = new Parameters<T>();
+		protected Start(Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
+			: base((context, _) => select.Invoke(context.Set<T>())) {}
 
-		Parameters() {}
+		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
+			: base((context, _) => select.Invoke(context, context.Set<T>())) {}
+
+		protected Start(Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> select)
+			: base((context, @in) => select.Invoke(@in, context.Set<T>())) {}
+
+		protected Start(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<TTo>>> select)
+			: base((context, @in) => select.Invoke(@in, context, context.Set<T>())) {}
+
+		protected Start(Expression<Func<DbContext, TIn, IQueryable<TTo>>> select) : base(select) {}
 	}
 
 	public interface ISelector<TIn, out T> : ISelect<In<TIn>, IQueryable<T>> {}
-
-	public class Selected<TIn, T> : Start<TIn, T> where T : class
-	{
-		public Selected(Func<In<TIn>, IQueryable<T>> select)
-			: base((context, @in) => select(new In<TIn>(context, @in))) {}
-	}
 
 	/*public class Append<TIn, T> : IQuery<TIn, T> where T : class
 	{

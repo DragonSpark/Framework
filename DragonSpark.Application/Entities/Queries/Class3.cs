@@ -1,7 +1,5 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,9 +11,9 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	class Class3 {}
 
-	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> where T : class {}
+	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> {}
 
-	sealed class Form<TIn, T> : IForm<TIn, T> where T : class
+	sealed class Form<T> : IForm<None, T> where T : class
 	{
 		readonly Func<DbContext, IAsyncEnumerable<T>> _select;
 
@@ -25,31 +23,21 @@ namespace DragonSpark.Application.Entities.Queries
 
 		public Form(Func<DbContext, IAsyncEnumerable<T>> select) => _select = @select;
 
-		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context);
+		public IAsyncEnumerable<T> Get(In<None> parameter) => _select(parameter.Context);
 	}
 
-	sealed class ParameterAwareForm<TIn, T> : IForm<TIn, T> where T : class
+	sealed class Form<TIn, T> : IForm<TIn, T>
 	{
-		readonly IForm<TIn, T>          _previous;
-		readonly ITable<DbContext, TIn> _table;
+		readonly Func<DbContext, TIn, IAsyncEnumerable<T>> _select;
 
-		public ParameterAwareForm(IQuery<T> query) : this(new Form<TIn, T>(query)) {}
+		public Form(IQuery<TIn, T> query) : this(query.Get()) {}
 
-		public ParameterAwareForm(IForm<TIn, T> previous) : this(previous, Parameters<TIn>.Default) {}
+		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
 
-		public ParameterAwareForm(IForm<TIn, T> previous, ITable<DbContext, TIn> table)
-		{
-			_previous = previous;
-			_table    = table;
-		}
+		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = @select;
 
-		public IAsyncEnumerable<T> Get(In<TIn> parameter)
-		{
-			_table.Assign(parameter.Context, parameter.Parameter);
-			return _previous.Get(parameter);
-		}
+		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context, parameter.Parameter);
 	}
-
 
 	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
 	{
@@ -72,7 +60,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext where T : class
 	{
-		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<None, T>(query)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}
@@ -82,8 +70,7 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly IContexts<TContext> _contexts;
 		readonly IForm<TIn, T>       _form;
 
-		public Invoke(IContexts<TContext> contexts, IQuery<T> query)
-			: this(contexts, new ParameterAwareForm<TIn, T>(query)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, new Form<TIn, T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<TIn, T> form)
 		{

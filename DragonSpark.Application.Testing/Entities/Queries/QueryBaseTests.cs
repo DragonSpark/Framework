@@ -3,16 +3,17 @@ using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
 using JetBrains.Annotations;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NetFabric.Hyperlinq;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -133,13 +134,15 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				results.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 			}
 
+			counter.Get().Should().Be(2);
+
 			{
 				var results = await evaluate.Await("Two");
 				results.Should().HaveCount(2);
 				results.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
 
-			counter.Get().Should().Be(2);
+			counter.Get().Should().Be(3);
 		}
 
 		[Fact]
@@ -264,7 +267,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Query() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Selection : Select<IQueryable<Subject>, IQueryable<Subject>>
+		sealed class Selection : Expression<IQueryable<Subject>, IQueryable<Subject>>
 		{
 			public static Selection Default { get; } = new Selection();
 
@@ -282,17 +285,17 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public static Complex Default { get; } = new Complex();
 
-			Complex() : this(Selection.Default.Get) {}
+			Complex() : this(Selection.Default) {}
 
-			public Complex(Func<IQueryable<Subject>, IQueryable<Subject>> @select)
-				: base((_, subjects) => select(subjects)) {}
+			public Complex(Expression<Func<IQueryable<Subject>, IQueryable<Subject>>> @select)
+				: base((_, subjects) => select.Invoke(subjects)) {}
 		}
 
-		sealed class Selected : Selected<string, string>
+		sealed class Selected : Start<string, Subject, string>
 		{
 			public static Selected Default { get; } = new Selected();
 
-			Selected() : base(x => x.Context.Set<Subject>().Where(y => y.Name != x.Parameter).Select(y => y.Name)) {}
+			Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
 		}
 
 		sealed class SubjectsNotTwo : EvaluateToArray<Context, Subject>

@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, T[]> where TContext : DbContext where T : class
 	{
-		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
+		public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query)
 			: this(new Invoke<TContext, TIn, T>(contexts, query)) {}
 
 		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}

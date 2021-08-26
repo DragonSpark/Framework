@@ -8,8 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\Queries\Previous\**" />
     <Compile Remove="Entities\Queries\Transactional\**" />
+    <EmbeddedResource Remove="Entities\Queries\Previous\**" />
     <EmbeddedResource Remove="Entities\Queries\Transactional\**" />
+    <None Remove="Entities\Queries\Previous\**" />
     <None Remove="Entities\Queries\Transactional\**" />
   </ItemGroup>
 
@@ -21,6 +24,7 @@
     <PackageReference Include="Flurl" Version="3.0.2" />
     <PackageReference Include="Humanizer" Version="2.11.10" />
     <PackageReference Include="AutoBogus.Conventions" Version="2.13.1" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="5.0.26" />
     <PackageReference Include="Markdig" Version="0.25.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.0-rc.1.21413.12" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0-rc.1.21413.12" />
