@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Testing
 	{
 		static void Main(params string[] arguments)
 		{
-			Configuration.Default.Get(arguments).To(Run.A<QueryBaseTests.Benchmarks>);
+			Configuration.Default.Get(arguments).To(Run.A<QueryTests.Benchmarks>);
 		}
 	}
 }

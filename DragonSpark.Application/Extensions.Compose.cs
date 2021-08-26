@@ -8,6 +8,7 @@ using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities.Generation;
+using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
@@ -93,6 +94,8 @@ namespace DragonSpark.Application
 
 		/*public static QuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.IQuery<TIn, T> @this) where T : class
 			=> new(@this);*/
+
+		public static ContextsAdapter<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
 		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
 			=> new(@this);

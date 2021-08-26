@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,28 +12,6 @@ namespace DragonSpark.Application.Entities.Queries
 	public class Projector<TIn, TOut> : Selector<IQueryable<TIn>, IQueryable<TOut>>
 	{
 		protected Projector(Expression<Func<IQueryable<TIn>, IQueryable<TOut>>> instance) : base(instance) {}
-	}
-
-	public interface IQuery<T> : IResult<Expression<Func<DbContext, IQueryable<T>>>> {}
-
-	public class Query<T> : Query<T, T> where T : class
-	{
-		protected Query(Expression<Func<IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
-
-		protected Query(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
-
-		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
-	}
-
-	public class Query<T, TTo> : Instance<Expression<Func<DbContext, IQueryable<TTo>>>>, IQuery<TTo> where T : class
-	{
-		protected Query(Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
-			: this(context => select.Invoke(context.Set<T>())) {}
-
-		protected Query(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
-			: this(context => select.Invoke(context, context.Set<T>())) {}
-
-		protected Query(Expression<Func<DbContext, IQueryable<TTo>>> instance) : base(instance.Expand()) {}
 	}
 
 	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> {}
@@ -54,57 +31,71 @@ namespace DragonSpark.Application.Entities.Queries
 		protected InputQuery(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<TTo>>> select)
 			: this((context, @in) => select.Invoke(@in, context, context.Set<T>())) {}
 
-		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<TTo>>> instance) : base(instance.Expand()) {}
+		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<TTo>>> instance) : base(instance) {}
 	}
 
 	public class InputQuery<TIn, T> : InputQuery<TIn, T, T> where T : class
 	{
-		protected InputQuery(Expression<Func<IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
+		protected InputQuery(Expression<Func<IQueryable<T>, IQueryable<T>>> select) : base(select) {}
 
-		protected InputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
+		protected InputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
 
-		protected InputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
+		protected InputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
 
-		protected InputQuery(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<T>>> @select) : base(@select) {}
+		protected InputQuery(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
 
-		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> @select) : base(@select) {}
+		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> select) : base(select) {}
 	}
 
-	public interface ISelector<TIn, out T> : ISelect<In<TIn>, IQueryable<T>> {}
-
-	/*public class Append<TIn, T> : IQuery<TIn, T> where T : class
+	public class Combine<T> : Combine<T, T>
 	{
-		readonly IQuery<TIn, T>                     _previous;
-		readonly Func<IQueryable<T>, IQueryable<T>> _select;
+		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		                  Expression<Func<IQueryable<T>, IQueryable<T>>> select) : base(previous, select) {}
 
-		protected Append(IQuery<TIn, T> previous) : this(previous, x => x) {}
-
-		protected Append(IQuery<TIn, T> previous, Func<IQueryable<T>, IQueryable<T>> select)
-		{
-			_previous = previous;
-			_select   = select;
-		}
-
-		public IQueryable<T> Get(In<TIn, T> parameter)
-		{
-			var previous = _previous.Get(parameter);
-			var result   = _select(previous);
-			return result;
-		}
-	}*/
-
-	/*
-	public sealed class Set<TIn, T> : IQuery<TIn, T> where T : class
-	{
-		public static Set<TIn, T> Default { get; } = new Set<TIn, T>();
-
-		Set() {}
-
-		public IQueryable<T> Get(In<TIn> parameter) => parameter.Context.Set<T>();
+		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select)
+			: base(previous, select) {}
 	}
-	*/
 
-	public readonly record struct In<T>(DbContext Context, T Parameter);
+	public class Start<T> : Combine<T> where T : class
+	{
+		protected Start(Expression<Func<IQueryable<T>, IQueryable<T>>> @select) : base(Set<T>.Default, @select) {}
+
+		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> @select)
+			: base(Set<T>.Default, @select) {}
+	}
+
+	public class Start<T, TTo> : Combine<T, TTo> where T : class
+	{
+		protected Start(Expression<Func<IQueryable<T>, IQueryable<TTo>>> select) : base(Set<T>.Default, select) {}
+
+		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
+			: base(Set<T>.Default, select) {}
+	}
+
+	public class Combine<T, TTo> : Query<TTo>
+	{
+		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		                  Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
+			: base(context => select.Invoke(previous.Invoke(context))) {}
+
+		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
+			: base(context => select.Invoke(context, previous.Invoke(context))) {}
+	}
+
+	public class Where<T> : Combine<T>
+	{
+		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
+			: base(previous, x => x.Where(where)) {}
+	}
+
+	public class Selection<TFrom, TTo> : Combine<TFrom, TTo>
+	{
+		public Selection(Expression<Func<DbContext, IQueryable<TFrom>>> previous, Expression<Func<TFrom, TTo>> select)
+			: base(previous, x => x.Select(select)) {}
+	}
+
 	/*
 	public interface ISelector<TIn, TOut> : ISelector<TIn, TOut, TOut> {}
 

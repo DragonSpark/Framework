@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,17 +12,18 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	class Class3 {}
 
+	public readonly record struct In<T>(DbContext Context, T Parameter);
 	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> {}
 
-	sealed class Form<T> : IForm<None, T> where T : class
+	sealed class Form<T> : IForm<None, T>
 	{
 		readonly Func<DbContext, IAsyncEnumerable<T>> _select;
 
-		public Form(IQuery<T> query) : this(query.Get()) {}
+		public Form(IQuery<T> query) : this(query.Get().Expand()) {}
 
 		public Form(Expression<Func<DbContext, IQueryable<T>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
 
-		public Form(Func<DbContext, IAsyncEnumerable<T>> select) => _select = @select;
+		public Form(Func<DbContext, IAsyncEnumerable<T>> select) => _select = select;
 
 		public IAsyncEnumerable<T> Get(In<None> parameter) => _select(parameter.Context);
 	}
@@ -30,11 +32,11 @@ namespace DragonSpark.Application.Entities.Queries
 	{
 		readonly Func<DbContext, TIn, IAsyncEnumerable<T>> _select;
 
-		public Form(IQuery<TIn, T> query) : this(query.Get()) {}
+		public Form(IQuery<TIn, T> query) : this(query.Get().Expand()) {}
 
 		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
 
-		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = @select;
+		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = select;
 
 		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select(parameter.Context, parameter.Parameter);
 	}
@@ -58,14 +60,14 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public interface IInvoke<in TIn, T> : ISelect<TIn, Invocation<T>> {}
 
-	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext where T : class
+	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext
 	{
 		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<T>(query)) {}
 
 		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}
 
-	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext where T : class
+	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext
 	{
 		readonly IContexts<TContext> _contexts;
 		readonly IForm<TIn, T>       _form;

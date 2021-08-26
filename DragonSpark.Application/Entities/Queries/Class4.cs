@@ -1,5 +1,7 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
 using System.Collections.Generic;
@@ -11,16 +13,18 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public interface IEvaluate<in T, TResult> : ISelecting<IAsyncEnumerable<T>, TResult> {}
 
-	sealed class ToArray<T> : IEvaluate<T, T[]>
+	sealed class ToArray<T> : IEvaluate<T, Array<T>>
 	{
 		public static ToArray<T> Default { get; } = new ToArray<T>();
 
 		ToArray() {}
 
-		public ValueTask<T[]> Get(IAsyncEnumerable<T> parameter) => parameter.AsAsyncValueEnumerable().ToArrayAsync();
+		public async ValueTask<Array<T>> Get(IAsyncEnumerable<T> parameter)
+			=> await parameter.AsAsyncValueEnumerable().ToArrayAsync();
 	}
 
-	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, T[]> where TContext : DbContext where T : class
+	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, Array<T>> 
+		where TContext : DbContext where T : class
 	{
 		public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query)
 			: this(new Invoke<TContext, TIn, T>(contexts, query)) {}
@@ -28,7 +32,7 @@ namespace DragonSpark.Application.Entities.Queries
 		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
 	}
 
-	public class EvaluateToArray<TContext, T> : Evaluate<T, T[]> where TContext : DbContext where T : class
+	public class EvaluateToArray<TContext, T> : Evaluate<T, Array<T>> where TContext : DbContext
 	{
 		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
 			: this(new Invoke<TContext, T>(contexts, query)) {}
@@ -36,9 +40,23 @@ namespace DragonSpark.Application.Entities.Queries
 		public EvaluateToArray(IInvoke<None, T> invoke) : base(invoke, ToArray<T>.Default) {}
 	}
 
-	public class Evaluate<T, TResult> : Evaluate<None, T, TResult>
+	public class Evaluate<T, TResult> : IResulting<TResult>
 	{
-		protected Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate) : base(invoke, evaluate) {}
+		readonly IInvoke<None, T>       _invoke;
+		readonly IEvaluate<T, TResult> _evaluate;
+
+		protected Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate)
+		{
+			_invoke   = invoke;
+			_evaluate = evaluate;
+		}
+
+		public async ValueTask<TResult> Get()
+		{
+			await using var invocation = _invoke.Get();
+			var             result     = await _evaluate.Get(invocation.Elements);
+			return result;
+		}
 	}
 
 	public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
