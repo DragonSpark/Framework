@@ -260,28 +260,28 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			public Scoped(Context instance) : base(instance.Set<Subject>().Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Query : Start<Subject>
+		sealed class Query : Query<Subject>
 		{
 			public static Query Default { get; } = new Query();
 
 			Query() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Selection : Expression<IQueryable<Subject>, IQueryable<Subject>>
+		sealed class Selection : Projector<Subject, Subject>
 		{
 			public static Selection Default { get; } = new Selection();
 
 			Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Parameter : Start<string, Subject>
+		sealed class Parameter : InputQuery<string, Subject>
 		{
 			public static Parameter Default { get; } = new Parameter();
 
 			Parameter() : base((@in, set) => set.Where(x => x.Name != @in)) {}
 		}
 
-		sealed class Complex : Start<Subject>
+		sealed class Complex : Query<Subject>
 		{
 			public static Complex Default { get; } = new Complex();
 
@@ -291,7 +291,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				: base((_, subjects) => select.Invoke(subjects)) {}
 		}
 
-		sealed class Selected : Start<string, Subject, string>
+		sealed class Selected : InputQuery<string, Subject, string>
 		{
 			public static Selected Default { get; } = new Selected();
 
