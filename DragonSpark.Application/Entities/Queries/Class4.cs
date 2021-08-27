@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
-using Microsoft.EntityFrameworkCore;
+using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
@@ -19,52 +21,110 @@ namespace DragonSpark.Application.Entities.Queries
 
 		ToArray() {}
 
-		public async ValueTask<Array<T>> Get(IAsyncEnumerable<T> parameter)
-			=> await parameter.AsAsyncValueEnumerable().ToArrayAsync();
+		public async ValueTask<Array<T>> Get(IAsyncEnumerable<T> parameter) => await parameter.ToArrayAsync();
 	}
 
-	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, Array<T>> 
-		where TContext : DbContext where T : class
+	sealed class ToLease<T> : IEvaluate<T, Lease<T>>
 	{
-		public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query)
-			: this(new Invoke<TContext, TIn, T>(contexts, query)) {}
+		public static ToLease<T> Default { get; } = new ToLease<T>();
 
-		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
-	}
+		ToLease() {}
 
-	public class EvaluateToArray<TContext, T> : Evaluate<T, Array<T>> where TContext : DbContext
-	{
-		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToArray(IInvoke<None, T> invoke) : base(invoke, ToArray<T>.Default) {}
-	}
-
-	public class Evaluate<T, TResult> : IResulting<TResult>
-	{
-		readonly IInvoke<None, T>       _invoke;
-		readonly IEvaluate<T, TResult> _evaluate;
-
-		protected Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate)
+		public async ValueTask<Lease<T>> Get(IAsyncEnumerable<T> parameter)
 		{
-			_invoke   = invoke;
-			_evaluate = evaluate;
-		}
-
-		public async ValueTask<TResult> Get()
-		{
-			await using var invocation = _invoke.Get();
-			var             result     = await _evaluate.Get(invocation.Elements);
+			var owner  = await parameter.AsAsyncValueEnumerable().ToArrayAsync(ArrayPool<T>.Shared);
+			var result = owner.AsLease();
 			return result;
 		}
 	}
+
+	sealed class ToList<T> : IEvaluate<T, List<T>>
+	{
+		public static ToList<T> Default { get; } = new ToList<T>();
+
+		ToList() {}
+
+		public ValueTask<List<T>> Get(IAsyncEnumerable<T> parameter) => parameter.ToListAsync();
+	}
+
+	sealed class ToDictionary<T, TKey> : IEvaluate<T, Dictionary<TKey, T>> where TKey : notnull
+	{
+		readonly Func<T, TKey> _key;
+
+		public ToDictionary(Func<T, TKey> key) => _key = key;
+
+		public ValueTask<Dictionary<TKey, T>> Get(IAsyncEnumerable<T> parameter) => parameter.ToDictionaryAsync(_key);
+	}
+
+	sealed class ToDictionary<T, TKey, TValue> : IEvaluate<T, Dictionary<TKey, TValue>> where TKey : notnull
+	{
+		readonly Func<T, TKey>   _key;
+		readonly Func<T, TValue> _value;
+
+		public ToDictionary(Func<T, TKey> key, Func<T, TValue> value)
+		{
+			_key        = key;
+			_value = value;
+		}
+
+		public ValueTask<Dictionary<TKey, TValue>> Get(IAsyncEnumerable<T> parameter)
+			=> parameter.ToDictionaryAsync(_key, _value);
+	}
+
+	sealed class Single<T> : IEvaluate<T, T>
+	{
+		public static Single<T> Default { get; } = new Single<T>();
+
+		Single() {}
+
+		public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.SingleAsync(); // ISSUE: https://github.com/NetFabric/NetFabric.Hyperlinq/issues/375
+	}
+
+	sealed class SingleOrDefault<T> : IEvaluate<T, T?>
+	{
+		public static SingleOrDefault<T> Default { get; } = new ();
+
+		SingleOrDefault() {}
+
+		public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.SingleOrDefaultAsync();
+	}
+
+	sealed class First<T> : IEvaluate<T, T>
+	{
+		public static First<T> Default { get; } = new ();
+
+		First() {}
+
+		public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.FirstAsync();
+	}
+
+	sealed class FirstOrDefault<T> : IEvaluate<T, T?>
+	{
+		public static FirstOrDefault<T> Default { get; } = new FirstOrDefault<T>();
+
+		FirstOrDefault() {}
+
+		public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.FirstOrDefaultAsync();
+	}
+
+	sealed class Any<T> : IEvaluate<T, bool>
+	{
+		public static Any<T> Default { get; } = new Any<T>();
+
+		Any() {}
+
+		public ValueTask<bool> Get(IAsyncEnumerable<T> parameter) => parameter.AnyAsync();
+	}
+
+
+
 
 	public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
 	{
 		readonly IInvoke<TIn, T>       _invoke;
 		readonly IEvaluate<T, TResult> _evaluate;
 
-		protected Evaluate(IInvoke<TIn, T> invoke, IEvaluate<T, TResult> evaluate)
+		public Evaluate(IInvoke<TIn, T> invoke, IEvaluate<T, TResult> evaluate)
 		{
 			_invoke   = invoke;
 			_evaluate = evaluate;
@@ -77,127 +137,4 @@ namespace DragonSpark.Application.Entities.Queries
 			return result;
 		}
 	}
-
-	/*
-	public class Result<T, TResult> : IResulting<TResult>
-	{
-		readonly ISessions                _sessions;
-		readonly Await<ISession, TResult> _materialize;
-
-		public Result(IQuery<T> query, IMaterializer<T, TResult> materializer)
-			: this(Sessions.Default, query.Then().Select(materializer).Then()) {}
-
-		public Result(ISessions sessions, Await<ISession, TResult> materialize)
-		{
-			_sessions    = sessions;
-			_materialize = materialize;
-		}
-
-		public async ValueTask<TResult> Get()
-		{
-			await using var session = _sessions.Get();
-			var             result  = await _materialize(session);
-			return result;
-		}
-	}
-	*/
-
-	/*
-	public class Result<TIn, TOut, TResult> : ISelecting<TIn, TResult> where TOut : class
-	{
-		readonly ISessions                    _sessions;
-		readonly IQuery<TIn, TOut>            _query;
-		readonly IMaterializer<TOut, TResult> _materializer;
-
-		protected Result(ISessions sessions, IQuery<TIn, TOut> query, IMaterializer<TOut, TResult> materializer)
-		{
-			_sessions     = sessions;
-			_query        = query;
-			_materializer = materializer;
-		}
-
-		public async ValueTask<TResult> Get(TIn parameter)
-		{
-			await using var session = await _sessions.Await();
-			var             query   = _query.Get(new In<TIn>(session, parameter));
-			var             result  = await _materializer.Await(query);
-			return result;
-		}
-	}
-	*/
-	/*public class Result<TIn, TOut, TResult> : ISelecting<TIn, TResult> where TOut : class
-	{
-		readonly IQuery<TIn, TOut>            _query;
-		readonly IMaterializer<TOut, TResult> _materializer;
-
-		protected Result(IQuery<TIn, TOut> query, IMaterializer<TOut, TResult> materializer)
-		{
-			_query        = query;
-			_materializer = materializer;
-		}
-
-		public async ValueTask<TResult> Get(TIn parameter)
-		{
-			await using var session = _query.Get(parameter);
-			var             result  = await _materializer.Await(session.Subject);
-			return result;
-		}
-}
-
-public class ToArrayResult<TIn, T> : Result<TIn, T, Array<T>> where T : class
-{
-	public ToArrayResult(IQuery<TIn, T> query) : base(query, DefaultToArray<T>.Default) {}
-}
-
-public class ToListResult<TIn, T> : Result<TIn, T, List<T>> where T : class
-{
-	public ToListResult(IQuery<TIn, T> query) : base(query, DefaultToList<T>.Default) {}
-}
-
-public class SingleResult<TIn, T> : Result<TIn, T, T> where T : class
-{
-	public SingleResult(IQuery<TIn, T> query) : base(query, SingleMaterializer<T>.Default) {}
-}
-
-public class FirstResult<TIn, T> : Result<TIn, T, T> where T : class
-{
-	public FirstResult(IQuery<TIn, T> query) : base(query, FirstMaterializer<T>.Default) {}
-}
-
-public class SingleOrDefaultResult<TIn, T> : Result<TIn, T, T?> where T : class
-{
-	public SingleOrDefaultResult(IQuery<TIn, T> query) : base(query, SingleOrDefaultMaterializer<T>.Default) {}
-}
-
-public class FirstOrDefaultResult<TIn, T> : Result<TIn, T, T?> where T : class
-{
-	public FirstOrDefaultResult(IQuery<TIn, T> query) : base(query, FirstOrDefaultMaterializer<T>.Default) {}
-}
-
-public class ToDictionaryResult<TIn, TKey, T> : Result<TIn, T, IReadOnlyDictionary<TKey, T>>
-	where TKey : notnull
-	where T : class
-{
-	public ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key)
-		: this(query, new DictionaryMaterializer<T, TKey>(key)) {}
-
-	protected ToDictionaryResult(IQuery<TIn, T> query, IMaterializer<T, IReadOnlyDictionary<TKey, T>> materializer)
-		: base(query, materializer) {}
-}
-
-public class ToDictionaryResult<TIn, T, TKey, TValue> : Result<TIn, T, IReadOnlyDictionary<TKey, TValue>>
-	where TKey : notnull where T : class
-{
-	public ToDictionaryResult(IQuery<TIn, T> query, Func<T, TKey> key, Func<T, TValue> value)
-		: this(query, new DictionaryMaterializer<T, TKey, TValue>(key, value)) {}
-
-	protected ToDictionaryResult(IQuery<TIn, T> query,
-	                             IMaterializer<T, IReadOnlyDictionary<TKey, TValue>> materializer)
-		: base(query, materializer) {}
-}
-
-public class AnyResult<TIn, T> : Result<TIn, T, bool> where T : class
-{
-	public AnyResult(IQuery<TIn, T> query) : base(query, DefaultAny<T>.Default) {}
-}*/
 }

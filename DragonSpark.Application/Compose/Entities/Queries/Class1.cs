@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Memory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,14 +62,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			                  Expression<Func<DbContext, IQueryable<T2>>> second)
 			=> new(_contexts, _query, (first, second));
 
-		public IntroducedQueryAdapter<TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(IQuery<T1> first, IQuery<T2> second,
-		                                                                         IQuery<T3> third)
+		public IntroducedQueryAdapter<TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+			IQuery<T1> first, IQuery<T2> second,
+			IQuery<T3> third)
 			=> Introduce(first.Get(), second.Get(), third.Get());
 
 		public IntroducedQueryAdapter<TContext, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, IQueryable<T1>>> first,
-			                  Expression<Func<DbContext, IQueryable<T2>>> second,
-							  Expression<Func<DbContext, IQueryable<T3>>> third)
+			                      Expression<Func<DbContext, IQueryable<T2>>> second,
+			                      Expression<Func<DbContext, IQueryable<T3>>> third)
 			=> new(_contexts, _query, (first, second, third));
 
 		ContextQueryAdapter<TContext, TTo> Next<TTo>(IQuery<TTo> next) => new(_contexts, next);
@@ -162,5 +164,27 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		}
 
 		public IResulting<Array<T>> Array() => new EvaluateToArray<TContext, T>(_contexts, _query);
+
+		public IResulting<Lease<T>> Lease() => new EvaluateToLease<TContext, T>(_contexts, _query);
+
+		public IResulting<List<T>> List() => new EvaluateToList<TContext, T>(_contexts, _query);
+
+		public IResulting<Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
+			=> new EvaluateToDictionary<TContext, T, TKey>(_contexts, _query, key);
+
+		public IResulting<Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(Func<T, TKey> key, Func<T, TValue> value)
+			where TKey : notnull
+			=> new EvaluateToDictionary<TContext, T, TKey, TValue>(_contexts, _query,
+			                                                       new ToDictionary<T, TKey, TValue>(key, value));
+
+		public IResulting<T> Single() => new EvaluateToSingle<TContext, T>(_contexts, _query);
+
+		public IResulting<T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TContext,T>(_contexts, _query);
+
+		public IResulting<T> First() => new EvaluateToFirst<TContext, T>(_contexts, _query);
+
+		public IResulting<T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TContext,T>(_contexts, _query);
+
+		public IResulting<bool> Any() => new EvaluateToAny<TContext, T>(_contexts, _query);
 	}
 }
