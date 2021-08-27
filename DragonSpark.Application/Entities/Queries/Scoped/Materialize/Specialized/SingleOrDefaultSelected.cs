@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Application.Entities.Queries.Model;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 

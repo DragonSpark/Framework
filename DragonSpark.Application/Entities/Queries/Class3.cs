@@ -13,6 +13,7 @@ namespace DragonSpark.Application.Entities.Queries
 	class Class3 {}
 
 	public readonly record struct In<T>(DbContext Context, T Parameter);
+
 	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> {}
 
 	sealed class Form<T> : IForm<None, T>
@@ -34,7 +35,8 @@ namespace DragonSpark.Application.Entities.Queries
 
 		public Form(IQuery<TIn, T> query) : this(query.Get().Expand()) {}
 
-		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
+		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression) :
+			this(EF.CompileAsyncQuery(expression)) {}
 
 		public Form(Func<DbContext, TIn, IAsyncEnumerable<T>> select) => _select = select;
 
@@ -83,7 +85,7 @@ namespace DragonSpark.Application.Entities.Queries
 		public Invocation<T> Get(TIn parameter)
 		{
 			var context = _contexts.Get();
-			var form    = _form.Get(new In<TIn>(context, parameter));
+			var form    = _form.Get(new(context, parameter));
 			return new(context, form);
 		}
 	}

@@ -2,17 +2,13 @@
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries
 {
 	class Class2 {}
-
-	public class Projector<TIn, TOut> : Selector<IQueryable<TIn>, IQueryable<TOut>>
-	{
-		protected Projector(Expression<Func<IQueryable<TIn>, IQueryable<TOut>>> instance) : base(instance) {}
-	}
 
 	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> {}
 
@@ -75,13 +71,18 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Combine<T, TTo> : Query<TTo>
 	{
-		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
-		                  Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
+		public Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		               Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
 			: base(context => select.Invoke(previous.Invoke(context))) {}
 
 		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
 		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
 			: base(context => select.Invoke(context, previous.Invoke(context))) {}
+	}
+
+	public class StartWhere<T> : Where<T> where T : class
+	{
+		protected StartWhere(Expression<Func<T, bool>> @where) : base(Set<T>.Default, @where) {}
 	}
 
 	public class Where<T> : Combine<T>
@@ -90,10 +91,114 @@ namespace DragonSpark.Application.Entities.Queries
 			: base(previous, x => x.Where(where)) {}
 	}
 
-	public class Selection<TFrom, TTo> : Combine<TFrom, TTo>
+	public class StartSelect<TFrom, TTo> : Select<TFrom, TTo> where TFrom : class
 	{
-		public Selection(Expression<Func<DbContext, IQueryable<TFrom>>> previous, Expression<Func<TFrom, TTo>> select)
+		protected StartSelect(Expression<Func<TFrom, TTo>> @select) : base(Set<TFrom>.Default, @select) {}
+	}
+
+	public class Select<TFrom, TTo> : Combine<TFrom, TTo>
+	{
+		public Select(Expression<Func<DbContext, IQueryable<TFrom>>> previous, Expression<Func<TFrom, TTo>> select)
 			: base(previous, x => x.Select(select)) {}
+	}
+
+	public class StartSelectMany<TFrom, TTo> : SelectMany<TFrom, TTo> where TFrom : class
+	{
+		protected StartSelectMany(Expression<Func<TFrom, IEnumerable<TTo>>> @select) :
+			base(Set<TFrom>.Default, @select) {}
+	}
+
+	public class SelectMany<TFrom, TTo> : Combine<TFrom, TTo>
+	{
+		public SelectMany(Expression<Func<DbContext, IQueryable<TFrom>>> previous,
+		                  Expression<Func<TFrom, IEnumerable<TTo>>> select)
+			: base(previous, x => x.SelectMany(select)) {}
+	}
+
+	public class StartIntroduce<TFrom, TOther, TTo> : Introduce<TFrom, TOther, TTo> where TFrom : class
+	{
+		public StartIntroduce(Expression<Func<DbContext, IQueryable<TOther>>> other,
+		                      Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>>
+			                      @select)
+			: base(Set<TFrom>.Default, other, @select) {}
+	}
+
+	public class StartIntroduce<TFrom, T1, T2, TTo> : Introduce<TFrom, T1, T2, TTo> where TFrom : class
+	{
+		public StartIntroduce(
+			(Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>) others,
+			Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> @select)
+			: base(Set<TFrom>.Default, others, @select) {}
+
+		public StartIntroduce(
+			(Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>) others,
+			Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> @select)
+			: base(Set<TFrom>.Default, others, @select) {}
+	}
+
+	public class StartIntroduce<TFrom, T1, T2, T3, TTo> : Introduce<TFrom, T1, T2, T3, TTo> where TFrom : class
+	{
+		public StartIntroduce((Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
+			                      Expression<Func<DbContext, IQueryable<T3>>>) others,
+		                      Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>,
+			                      IQueryable<T3>, IQueryable<TTo>>> @select)
+			: base(Set<TFrom>.Default, others, @select) {}
+
+		public StartIntroduce((Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
+			                      Expression<Func<DbContext, IQueryable<T3>>>) others,
+		                      Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
+			                      IQueryable<TTo>>> @select)
+			: base(Set<TFrom>.Default, others, @select) {}
+	}
+
+	public class Introduce<TFrom, TOther, TTo> : Query<TTo>
+	{
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 Expression<Func<DbContext, IQueryable<TOther>>> other,
+		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> @select)
+			: base(context => select.Invoke(context, from.Invoke(context), other.Invoke(context))) {}
+
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 Expression<Func<DbContext, IQueryable<TOther>>> other,
+		                 Expression<Func<IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> @select)
+			: base(context => select.Invoke(from.Invoke(context), other.Invoke(context))) {}
+	}
+
+	public class Introduce<TFrom, T1, T2, TTo> : Query<TTo>
+	{
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>)
+			                 others,
+		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>>
+			                 @select)
+			: base(context => select.Invoke(context, from.Invoke(context), others.Item1.Invoke(context),
+			                                others.Item2.Invoke(context))) {}
+
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>)
+			                 others,
+		                 Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> @select)
+			: base(context => select.Invoke(from.Invoke(context), others.Item1.Invoke(context),
+			                                others.Item2.Invoke(context))) {}
+	}
+
+	public class Introduce<TFrom, T1, T2, T3, TTo> : Query<TTo>
+	{
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
+			                 Expression<Func<DbContext, IQueryable<T3>>>) others,
+		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
+			                 IQueryable<TTo>>> @select)
+			: base(context => select.Invoke(context, from.Invoke(context), others.Item1.Invoke(context),
+			                                others.Item2.Invoke(context), others.Item3.Invoke(context))) {}
+
+		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
+			                 Expression<Func<DbContext, IQueryable<T3>>>) others,
+		                 Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
+			                 IQueryable<TTo>>> @select)
+			: base(context => select.Invoke(from.Invoke(context), others.Item1.Invoke(context),
+			                                others.Item2.Invoke(context), others.Item3.Invoke(context))) {}
 	}
 
 	/*

@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Model;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;

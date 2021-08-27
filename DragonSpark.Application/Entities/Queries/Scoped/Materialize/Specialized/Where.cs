@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using DragonSpark.Application.Entities.Queries.Model;
+using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries.Scoped.Materialize.Specialized
 {
