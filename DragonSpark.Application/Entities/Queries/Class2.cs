@@ -13,6 +13,19 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> {}
 
+	public class InputQuery<TIn, T> : InputQuery<TIn, T, T> where T : class
+	{
+		protected InputQuery(Expression<Func<IQueryable<T>, IQueryable<T>>> select) : base(select) {}
+
+		protected InputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
+
+		protected InputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
+
+		protected InputQuery(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
+
+		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> select) : base(select) {}
+	}
+
 	public class InputQuery<TIn, T, TTo> : Instance<Expression<Func<DbContext, TIn, IQueryable<TTo>>>>, IQuery<TIn, TTo>
 		where T : class
 	{

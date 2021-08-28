@@ -41,19 +41,6 @@ namespace DragonSpark.Application.Entities.Queries
 		public Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 
-	public class InputQuery<TIn, T> : InputQuery<TIn, T, T> where T : class
-	{
-		protected InputQuery(Expression<Func<IQueryable<T>, IQueryable<T>>> select) : base(select) {}
-
-		protected InputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
-
-		protected InputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
-
-		protected InputQuery(Expression<Func<TIn, DbContext, IQueryable<T>, IQueryable<T>>> select) : base(select) {}
-
-		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> select) : base(select) {}
-	}
-
 	public class Combine<T> : Combine<T, T>
 	{
 		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
@@ -117,8 +104,8 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class StartWhereMany<T, TTo> : WhereMany<T, TTo> where T : class
 	{
-		public StartWhereMany(Expression<Func<T, bool>> @where, Expression<Func<T, IEnumerable<TTo>>> @select)
-			: base(Set<T>.Default, @where, @select) {}
+		public StartWhereMany(Expression<Func<T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
+			: base(Set<T>.Default, where, select) {}
 	}
 
 	public class WhereMany<T, TTo> : Combine<T, TTo>
