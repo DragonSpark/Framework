@@ -83,10 +83,10 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 			var evaluate =
-				new EvaluateToArray<ContextWithData, (Guid, string), string>(new DbContexts<ContextWithData>(contexts),
-				                                                             ComplexSelected.Default);
+				new EvaluateToArray<ContextWithData, Input, string>(new DbContexts<ContextWithData>(contexts),
+				                                                    ComplexSelected.Default);
 			{
-				var results = await evaluate.Await(new (id, "One"));
+				var results = await evaluate.Await(new(id, "One"));
 				var only    = results.Open().Only();
 				only.Should().NotBeNull();
 				only.Should().Be("One");
@@ -106,7 +106,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
-			var evaluate = new EvaluateToArray<ContextWithData, (Guid, string), string>(contexts, ComplexSelected.Default);
+			var evaluate = new EvaluateToArray<ContextWithData, Input, string>(contexts, ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new (id, "One"));
 				var only    = results.Open().Only();
@@ -119,6 +119,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public Context(DbContextOptions options) : base(options) {}
 
+			[UsedImplicitly]
 			public DbSet<Subject> Subjects { get; set; } = default!;
 		}
 
@@ -150,10 +151,10 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			[UsedImplicitly]
 			public Guid Id { get; set; }
 
-			public string Name { get; set; } = default!;
+			public string Name { [UsedImplicitly] get; set; } = default!;
 		}
 
-		sealed class Selected : InputQuery<string, Subject, string>
+		sealed class Selected : StartInputQuery<string, Subject, string>
 		{
 			public static Selected Default { get; } = new Selected();
 
@@ -161,32 +162,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		}
 
 		public readonly record struct Input(Guid Identity, string Name);
-/*public readonly struct Input
-		{
-			public Input(Guid identity, string name)
-			{
-				Identity = identity;
-				Name     = name;
-			}
 
-			public Guid Identity { get; }
-
-			public string Name { get; }
-
-			public void Deconstruct(out Guid identity, out string name)
-			{
-				identity = Identity;
-				name     = Name;
-			}
-		}*/
-
-		sealed class ComplexSelected : InputQuery<(Guid, string), Subject, string>
+		sealed class ComplexSelected : StartInputQuery<Input, Subject, string>
 		{
 			public static ComplexSelected Default { get; } = new();
 
 			ComplexSelected()
 				: base((input, queryable)
-					       => queryable.Where(y => y.Id == input.Item1 && y.Name == input.Item2)
+					       => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
 					                   .Select(y => y.Name)) {}
 		}
 	}

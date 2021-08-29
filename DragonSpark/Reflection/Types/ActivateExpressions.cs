@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -25,9 +26,13 @@ namespace DragonSpark.Reflection.Types
 
 		public Expression Get(Type parameter)
 		{
-			var constructor = parameter.GetTypeInfo().DeclaredConstructors.Only().Account() ??
+			var constructors = parameter.GetTypeInfo().DeclaredConstructors.ToArray();
+			var constructor = constructors.Only().Account() ??
 			                  parameter.GetConstructors().Only().Account() ??
 			                  parameter.GetConstructor(_types) ??
+			                  constructors.OrderBy(x => x.GetParameters().Length)
+			                              .FirstOrDefault(x => x.Has<ActivatorUtilitiesConstructorAttribute>())
+			                  ??
 			                  throw new InvalidOperationException($"Constructor for type '{parameter}' not found!");
 			var types      = constructor.GetParameters().Select(x => x.ParameterType);
 			var parameters = Parameters.Get().Open().Zip(types, Defaults.ExpressionZip);

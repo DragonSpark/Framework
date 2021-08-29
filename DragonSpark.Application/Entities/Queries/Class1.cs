@@ -38,7 +38,7 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public class Query<T> : DragonSpark.Model.Results.Instance<Expression<Func<DbContext, IQueryable<T>>>>, IQuery<T>
 	{
-		public Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
+		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 
 	public class Combine<T> : Combine<T, T>
@@ -49,6 +49,17 @@ namespace DragonSpark.Application.Entities.Queries
 		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
 		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> select)
 			: base(previous, select) {}
+	}
+
+	public class Combine<T, TTo> : Query<TTo>
+	{
+		public Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		               Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
+			: base(context => select.Invoke(previous.Invoke(context))) {}
+
+		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
+		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
+			: base(context => select.Invoke(context, previous.Invoke(context))) {}
 	}
 
 	public class Start<T> : Combine<T> where T : class
@@ -65,17 +76,6 @@ namespace DragonSpark.Application.Entities.Queries
 
 		protected Start(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
 			: base(Set<T>.Default, select) {}
-	}
-
-	public class Combine<T, TTo> : Query<TTo>
-	{
-		public Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
-		               Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
-			: base(context => select.Invoke(previous.Invoke(context))) {}
-
-		protected Combine(Expression<Func<DbContext, IQueryable<T>>> previous,
-		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
-			: base(context => select.Invoke(context, previous.Invoke(context))) {}
 	}
 
 	public class StartWhere<T> : Where<T> where T : class

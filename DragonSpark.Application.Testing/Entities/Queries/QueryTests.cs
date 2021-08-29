@@ -234,7 +234,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Parameter : InputQuery<string, Subject>
+		sealed class Parameter : StartInputQuery<string, Subject>
 		{
 			public static Parameter Default { get; } = new Parameter();
 
