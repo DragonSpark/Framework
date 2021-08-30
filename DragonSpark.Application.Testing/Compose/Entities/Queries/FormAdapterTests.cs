@@ -1,5 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
@@ -38,7 +40,8 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				await using var result = await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Lease().Get();
+				await using var result =
+					await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Lease().Get();
 				result.Length.Should().Be(2);
 				result.ToArray().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -68,7 +71,11 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Dictionary(x => x.Name).Get();
+				var result = await contexts.Then()
+				                           .Use<Subject>()
+				                           .Where(x => x.Name != "Two")
+				                           .To.Dictionary(x => x.Name)
+				                           .Get();
 				result.Count.Should().Be(2);
 				result.Keys.Should().BeEquivalentTo("One", "Three");
 			}
@@ -83,7 +90,11 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Dictionary(x => x.Name, x => x.Id).Get();
+				var result = await contexts.Then()
+				                           .Use<Subject>()
+				                           .Where(x => x.Name != "Two")
+				                           .To.Dictionary(x => x.Name, x => x.Id)
+				                           .Get();
 				result.Count.Should().Be(2);
 				result.Keys.Count.Should().Be(2);
 				result.Keys.Should().BeEquivalentTo("One", "Three");
@@ -218,7 +229,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 
 		public class Benchmarks
 		{
-			readonly IResulting<Subject>            _single;
+			readonly ISelecting<None, Subject>      _single;
 			readonly IDbContextFactory<Context>     _factory;
 			readonly Func<DbContext, Task<Subject>> _create;
 
@@ -231,7 +242,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				       factory,
 				       EF.CompileAsyncQuery<DbContext, Subject>(x => x.Set<Subject>().Single(y => y.Name == "Two"))) {}
 
-			Benchmarks(IResulting<Subject> single, IDbContextFactory<Context> factory,
+			Benchmarks(ISelecting<None, Subject> single, IDbContextFactory<Context> factory,
 			           Func<DbContext, Task<Subject>> create)
 			{
 				_single  = single;

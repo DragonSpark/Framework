@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Compilation;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using FluentAssertions;
@@ -9,16 +9,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities.Queries
+namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 {
-	public sealed class AccessExpressionReplacerTests
+	public sealed class ParameterUsageEditorTests
 	{
 		[Fact]
 		public void Verify()
 		{
 			Expression<Func<Input, string>> expression = input => input.One.Two.Three.Name;
 
-			var sut = new ParameterUsageRewriter(expression);
+			var sut = new ParameterUsageEditor(expression);
 			var (lambda, types, delegates) = sut.Rewrite();
 			lambda.ToString().Should().Be("input_parameter_0 => input_parameter_0");
 
@@ -37,7 +37,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				                             .Select(x => x.Name + input.One.Two.Name)
 				                             .Single();
 
-			var sut = new ParameterUsageRewriter(expression);
+			var sut = new ParameterUsageEditor(expression);
 			var (lambda, types, delegates) = sut.Rewrite();
 			lambda.ToString().Should().Be("(context, input_parameter_0, input_parameter_1) => context.Set().Where(x => (x.Name == input_parameter_0)).Select(x => (x.Name + input_parameter_1)).Single()");
 
@@ -55,7 +55,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Expression<Func<DbContext, None, string>> expression
 				= (context, _) => context.Set<Subject>().Select(x => x.Name).Single();
 
-			var sut = new ParameterUsageRewriter(expression);
+			var sut = new ParameterUsageEditor(expression);
 			var (lambda, types, delegates) = sut.Rewrite();
 			lambda.ToString().Should().Be("context => context.Set().Select(x => x.Name).Single()");
 
@@ -72,7 +72,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				                             .Select(x => x.Name + input.One.Name)
 				                             .Single();
 
-			var sut = new ParameterUsageRewriter(expression);
+			var sut = new ParameterUsageEditor(expression);
 			var (lambda, types, delegates) = sut.Rewrite();
 			lambda.ToString().Should().Be("(context, input_parameter_0) => context.Set().Where(x => (x.Name == input_parameter_0)).Select(x => (x.Name + input_parameter_0)).Single()");
 
@@ -91,7 +91,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				                             .Select(x => x.Name)
 				                             .Single();
 
-			var sut = new ParameterUsageRewriter(expression);
+			var sut = new ParameterUsageEditor(expression);
 			var (lambda, types, delegates) = sut.Rewrite();
 			lambda.ToString().Should().Be("(context, input, input_parameter_0) => context.Set().Where(x => ((x.Name == input_parameter_0) AndAlso (x.Input == input))).Select(x => x.Name).Single()");
 
@@ -134,6 +134,6 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			[UsedImplicitly]
 			public Input Input { get; set; }
 		}
-
 	}
+
 }

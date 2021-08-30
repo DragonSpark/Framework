@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Compilation;
+using DragonSpark.Model;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -9,9 +10,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities.Queries
+namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 {
-	public class WrappersTests
+	public class CompileTests
 	{
 		[Fact]
 		public async Task Verify()
@@ -28,14 +29,37 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				Expression<Func<DbContext, Input, IQueryable<string>>> expression
 					= (c, i) => c.Set<Subject>().Where(x => x.Name == i.Name).Select(x => x.Name);
 
-				var sut = Wrappers<Input, string>.Default.Get(expression);
+				var sut = Compile<Input, string>.Default.Get(expression);
 				sut.Should().NotBeNull();
 				var query = await sut.Get(new(context, new Input("One"))).SingleAsync();
 				query.Should().Be("One");
 			}
 		}
 
-		public readonly record struct Input(string Name);
+		[Fact]
+		public async Task VerifyNone()
+		{
+			await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+			{
+				await using var context = contexts.Get();
+				await context.Database.EnsureCreatedAsync();
+			}
+
+			{
+				await using var context = contexts.Get();
+
+				Expression<Func<DbContext, None, IQueryable<string>>> expression
+					= (c, i) => c.Set<Subject>().Where(x => x.Name != "Two").Select(x => x.Name);
+
+				var sut = Compile<None, string>.Default.Get(expression);
+				sut.Should().NotBeNull();
+
+				var query = await sut.Get(new(context, None.Default)).ToArrayAsync();
+				query.Should().BeEquivalentTo("One", "Three");
+			}
+		}
+
+		readonly record struct Input(string Name);
 
 		sealed class ContextWithData : DbContext
 		{
@@ -71,6 +95,5 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			[UsedImplicitly]
 			public int Number { get; set; }
 		}
-
 	}
 }

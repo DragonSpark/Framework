@@ -1,83 +1,38 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
-using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries
+namespace DragonSpark.Application.Entities.Queries.Compilation
 {
-	class Class6 {}
-
-	sealed class Wrappers<TIn, TOut> : ISelect<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IWrapper<TIn, TOut>>
-	{
-		public static Wrappers<TIn, TOut> Default { get; } = new Wrappers<TIn, TOut>();
-
-		Wrappers() : this(Candidates<TIn, TOut>.Default) {}
-
-		readonly Array<Generic<TIn, TOut>> _generics;
-
-		public Wrappers(Array<Generic<TIn, TOut>> generics) => _generics = generics;
-
-		public IWrapper<TIn, TOut> Get(Expression<Func<DbContext, TIn, IQueryable<TOut>>> parameter)
-		{
-			var (lambda, types, delegates) = new ParameterUsageRewriter(parameter).Rewrite();
-			var all    = types.Open().Prepend(A.Type<TIn>(), A.Type<TOut>()).ToArray();
-			var result = _generics.Open()[types.Length].Get(all).Invoke(lambda, delegates);
-			return result;
-		}
-	}
-
-	sealed class Candidates<TIn, TOut> : ArrayInstance<Generic<TIn, TOut>>
-	{
-		public static Candidates<TIn, TOut> Default { get; } = new Candidates<TIn, TOut>();
-
-		Candidates() : this(typeof(Wrapper<,>), typeof(Wrapper<,,>), typeof(Wrapper<,,,>), typeof(Wrapper<,,,,>),
-		                    typeof(Wrapper<,,,,,>), typeof(Wrapper<,,,,,,>), typeof(Wrapper<,,,,,,,>),
-		                    typeof(Wrapper<,,,,,,,,>), typeof(Wrapper<,,,,,,,,,>), typeof(Wrapper<,,,,,,,,,,>)) {}
-
-		public Candidates(params Type[] types)
-			: base(types.AsValueEnumerable().Select(x => new Generic<TIn, TOut>(x)).ToArray()) {}
-	}
-
-	sealed class Generic<TIn, TOut> : Reflection.Types.Generic<LambdaExpression, Delegate[], IWrapper<TIn, TOut>>
-	{
-		public Generic(Type definition) : base(definition) {}
-	}
-
-	public interface IWrapper<TIn, out TOut> : ISelect<In<TIn>, IAsyncEnumerable<TOut>> {}
-
-	sealed class Wrapper<TIn, TOut> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, IAsyncEnumerable<TOut>> _select;
 
-		[ActivatorUtilitiesConstructor]
-		// ReSharper disable once UnusedParameter.Local
-		public Wrapper(Expression<Func<DbContext, IQueryable<TOut>>> expression, params Delegate[] _)
+		public Compiled(Expression<Func<DbContext, IQueryable<TOut>>> expression)
 			: this(EF.CompileAsyncQuery(expression)) {}
 
-		public Wrapper(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = @select;
+		public Compiled(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = @select;
 
 		public IAsyncEnumerable<TOut> Get(In<TIn> parameter) => _select(parameter.Context);
 	}
 
-	sealed class Wrapper<TIn, TOut, T1> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                               _first;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, params Delegate[] delegates)
 			: this(expression, delegates[0].To<Func<TIn, T1>>()) {}
 
-		public Wrapper(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, Func<TIn, T1> first)
+		public Compiled(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, Func<TIn, T1> first)
 			: this(EF.CompileAsyncQuery(expression), first) {}
 
-		public Wrapper(Func<DbContext, T1, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first)
+		public Compiled(Func<DbContext, T1, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first)
 		{
 			_select = select;
 			_first  = first;
@@ -91,25 +46,24 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                   _first;
 		readonly Func<TIn, T2>                                   _second;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
-			       delegates[1].To<Func<TIn, T2>>()
-			      ) {}
+			       delegates[1].To<Func<TIn, T2>>()) {}
 
-		public Wrapper(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-		               Func<TIn, T2> second)
+		public Compiled(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+		                Func<TIn, T2> second)
 			: this(EF.CompileAsyncQuery(expression), first, second) {}
 
-		public Wrapper(Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second)
+		public Compiled(Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second)
 		{
 			_select = select;
 			_first  = first;
@@ -124,7 +78,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                       _first;
@@ -132,21 +86,21 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T3>                                       _third;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
 			       delegates[2].To<Func<TIn, T3>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third)
 			: this(EF.CompileAsyncQuery(expression), first, second, third) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third)
+		public Compiled(Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third)
 		{
 			_select = select;
 			_first  = first;
@@ -162,7 +116,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                           _first;
@@ -171,8 +125,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T4>                                           _fourth;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
@@ -180,13 +134,13 @@ namespace DragonSpark.Application.Entities.Queries
 			       delegates[3].To<Func<TIn, T4>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
 		{
 			_select = select;
 			_first  = first;
@@ -203,7 +157,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4, T5> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                               _first;
@@ -213,8 +167,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T5>                                               _fifth;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
@@ -223,14 +177,14 @@ namespace DragonSpark.Application.Entities.Queries
 			       delegates[4].To<Func<TIn, T5>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth)
 		{
 			_select = select;
 			_first  = first;
@@ -248,7 +202,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4, T5, T6> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                   _first;
@@ -259,27 +213,26 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T6>                                                   _sixth;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
 			       delegates[2].To<Func<TIn, T3>>(),
 			       delegates[3].To<Func<TIn, T4>>(),
 			       delegates[4].To<Func<TIn, T5>>(),
-			       delegates[5].To<Func<TIn, T6>>()
-			      ) {}
+			       delegates[5].To<Func<TIn, T6>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
-		               Func<TIn, T6> sixth)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
+		                Func<TIn, T6> sixth)
 		{
 			_select = select;
 			_first  = first;
@@ -299,7 +252,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                       _first;
@@ -311,8 +264,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T7>                                                       _seventh;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
@@ -320,19 +273,18 @@ namespace DragonSpark.Application.Entities.Queries
 			       delegates[3].To<Func<TIn, T4>>(),
 			       delegates[4].To<Func<TIn, T5>>(),
 			       delegates[5].To<Func<TIn, T6>>(),
-			       delegates[6].To<Func<TIn, T7>>()
-			      ) {}
+			       delegates[6].To<Func<TIn, T7>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-		               Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
-		               Func<TIn, T6> sixth, Func<TIn, T7> seventh)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+		                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
+		                Func<TIn, T6> sixth, Func<TIn, T7> seventh)
 		{
 			_select  = select;
 			_first   = first;
@@ -353,7 +305,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                           _first;
@@ -366,8 +318,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T8>                                                           _eighth;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
@@ -376,19 +328,18 @@ namespace DragonSpark.Application.Entities.Queries
 			       delegates[4].To<Func<TIn, T5>>(),
 			       delegates[5].To<Func<TIn, T6>>(),
 			       delegates[6].To<Func<TIn, T7>>(),
-			       delegates[7].To<Func<TIn, T8>>()
-			      ) {}
+			       delegates[7].To<Func<TIn, T8>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh, eighth) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> select,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> select,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
 		{
 			_select  = select;
 			_first   = first;
@@ -410,7 +361,7 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Wrapper<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IWrapper<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IForm<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                               _first;
@@ -424,8 +375,8 @@ namespace DragonSpark.Application.Entities.Queries
 		readonly Func<TIn, T9>                                                               _ninth;
 
 		[ActivatorUtilitiesConstructor]
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
-		               params Delegate[] delegates)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
+		                params Delegate[] delegates)
 			: this(expression,
 			       delegates[0].To<Func<TIn, T1>>(),
 			       delegates[1].To<Func<TIn, T2>>(),
@@ -438,18 +389,18 @@ namespace DragonSpark.Application.Entities.Queries
 			       delegates[8].To<Func<TIn, T9>>()) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
-		               Func<TIn, T9> ninth)
+		public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
+		                Func<TIn, T9> ninth)
 			: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh, eighth,
 			       ninth) {}
 
 		// ReSharper disable once TooManyDependencies
-		public Wrapper(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> select,
-		               Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-		               Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
-		               Func<TIn, T9> ninth)
+		public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> select,
+		                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+		                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
+		                Func<TIn, T9> ninth)
 		{
 			_select  = select;
 			_first   = first;

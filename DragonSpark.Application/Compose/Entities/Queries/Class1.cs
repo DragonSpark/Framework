@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Evaluation;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
@@ -163,28 +165,29 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_query    = query;
 		}
 
-		public IResulting<Array<T>> Array() => new EvaluateToArray<TContext, T>(_contexts, _query);
+		public ISelecting<None, Array<T>> Array() => new EvaluateToArray<TContext, T>(_contexts, _query);
 
-		public IResulting<Lease<T>> Lease() => new EvaluateToLease<TContext, T>(_contexts, _query);
+		public ISelecting<None, Lease<T>> Lease() => new EvaluateToLease<TContext, T>(_contexts, _query);
 
-		public IResulting<List<T>> List() => new EvaluateToList<TContext, T>(_contexts, _query);
+		public ISelecting<None, List<T>> List() => new EvaluateToList<TContext, T>(_contexts, _query);
 
-		public IResulting<Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
+		public ISelecting<None, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
 			=> new EvaluateToDictionary<TContext, T, TKey>(_contexts, _query, key);
 
-		public IResulting<Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(Func<T, TKey> key, Func<T, TValue> value)
+		public ISelecting<None, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
+			Func<T, TKey> key, Func<T, TValue> value)
 			where TKey : notnull
 			=> new EvaluateToDictionary<TContext, T, TKey, TValue>(_contexts, _query,
 			                                                       new ToDictionary<T, TKey, TValue>(key, value));
 
-		public IResulting<T> Single() => new EvaluateToSingle<TContext, T>(_contexts, _query);
+		public ISelecting<None, T> Single() => new EvaluateToSingle<TContext, T>(_contexts, _query);
 
-		public IResulting<T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TContext,T>(_contexts, _query);
+		public ISelecting<None, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TContext, T>(_contexts, _query);
 
-		public IResulting<T> First() => new EvaluateToFirst<TContext, T>(_contexts, _query);
+		public ISelecting<None, T> First() => new EvaluateToFirst<TContext, T>(_contexts, _query);
 
-		public IResulting<T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TContext,T>(_contexts, _query);
+		public ISelecting<None, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TContext, T>(_contexts, _query);
 
-		public IResulting<bool> Any() => new EvaluateToAny<TContext, T>(_contexts, _query);
+		public ISelecting<None, bool> Any() => new EvaluateToAny<TContext, T>(_contexts, _query);
 	}
 }

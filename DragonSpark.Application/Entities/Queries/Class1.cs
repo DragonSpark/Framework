@@ -1,6 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Entities.Queries.Evaluation;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
@@ -10,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
@@ -36,7 +34,7 @@ namespace DragonSpark.Application.Entities.Queries
 		Set() : base(x => x.Set<T>()) {}
 	}
 
-	public class Query<T> : DragonSpark.Model.Results.Instance<Expression<Func<DbContext, IQueryable<T>>>>, IQuery<T>
+	public class Query<T> : Instance<Expression<Func<DbContext, IQueryable<T>>>>, IQuery<T>
 	{
 		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
@@ -339,22 +337,8 @@ namespace DragonSpark.Application.Entities.Queries
 		public EvaluateToAny(IInvoke<None, T> invoke) : base(invoke, Any<T>.Default) {}
 	}
 
-	public class Evaluate<T, TResult> : IResulting<TResult>
+	public class Evaluate<T, TResult> : Evaluate<None, T, TResult>
 	{
-		readonly IInvoke<None, T>      _invoke;
-		readonly IEvaluate<T, TResult> _evaluate;
-
-		public Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate)
-		{
-			_invoke   = invoke;
-			_evaluate = evaluate;
-		}
-
-		public async ValueTask<TResult> Get()
-		{
-			await using var invocation = _invoke.Get();
-			var             result     = await _evaluate.Get(invocation.Elements);
-			return result;
-		}
+		public Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate) : base(invoke, evaluate) {}
 	}
 }

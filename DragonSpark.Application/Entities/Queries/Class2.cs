@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Application.Entities.Queries.Evaluation;
+using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
@@ -87,20 +90,35 @@ namespace DragonSpark.Application.Entities.Queries
 
 	/**/
 
-	/**/
+	public readonly record struct In<T>(DbContext Context, T Parameter);
 
-	sealed class Form<TIn, T> : IForm<TIn, T>
+	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> {}
+
+	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
 	{
-		readonly IWrapper<TIn, T> _select;
+		readonly IAsyncDisposable _disposable;
 
+		public Invocation(IAsyncDisposable disposable, IAsyncEnumerable<T> elements)
+		{
+			_disposable = disposable;
+			Elements    = elements;
+		}
+
+		public IAsyncEnumerable<T> Elements { get; }
+
+		public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+
+		public void Dispose() {}
+	}
+
+	public interface IInvoke<in TIn, T> : ISelect<TIn, Invocation<T>> {}
+
+	sealed class Form<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsyncEnumerable<T>>, IForm<TIn, T>
+	{
 		public Form(IQuery<TIn, T> query) : this(query.Get().Expand()) {}
 
 		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(Wrappers<TIn, T>.Default.Get(expression)) {}
-
-		public Form(IWrapper<TIn, T> select) => _select = select;
-
-		public IAsyncEnumerable<T> Get(In<TIn> parameter) => _select.Get(parameter);
+			: base(Compilation.Compile<TIn, T>.Default.Get(expression)) {}
 	}
 
 	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext

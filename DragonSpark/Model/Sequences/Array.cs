@@ -33,6 +33,8 @@ namespace DragonSpark.Model.Sequences
 
 		public uint Length { get; }
 
+		public ref readonly T this[uint index] => ref this[(int)index];
+
 		public ref readonly T this[int index]
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]

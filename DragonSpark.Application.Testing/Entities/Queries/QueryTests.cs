@@ -265,7 +265,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 		public class Benchmarks
 		{
-			readonly IResulting<Array<Subject>>         _query;
+			readonly ISelecting<None, Array<Subject>>   _query;
 			readonly ISelecting<string, Array<Subject>> _selected;
 			readonly IQueryable<Subject>                _scoped;
 
@@ -278,7 +278,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				       new SubjectsNotWithParameter(new DbContexts<Context>(factory)),
 				       new Scoped(factory.CreateDbContext()).Get()) {}
 
-			Benchmarks(IResulting<Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
+			Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
 			           IQueryable<Subject> scoped)
 			{
 				_query    = query;
