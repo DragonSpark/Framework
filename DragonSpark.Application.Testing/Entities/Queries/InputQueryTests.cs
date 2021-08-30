@@ -1,12 +1,16 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Evaluation;
+using DragonSpark.Application.Entities.Queries.Scoped.Materialize.Specialized;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,7 +114,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 			{
-				var results = await evaluate.Await(new (id, "One"));
+				var results = await evaluate.Await(new(id, "One"));
 				var only    = results.Open().Only();
 				only.Should().NotBeNull();
 				only.Should().Be("One");
@@ -136,7 +140,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			                  .To.Single();
 			{
 				await using var data = contexts.Get();
-				var item = await sut.Await(new Input(id, "Two"));
+				var             item = await sut.Await(new Input(id, "Two"));
 				item.Should().NotBeNull();
 				item.Id.Should().Be(id);
 				item.Name.Should().Be("Two");
@@ -159,16 +163,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			                  .Use<Subject>()
 			                  .Where((input, subject) => subject.Name.StartsWith(input.Name))
 			                  .Where((input, subject) => input.Identity == subject.Id)
-							  .Select(x => new Result(x.Id, x.Name))
+			                  .Select(x => new Result(x.Id, x.Name))
 			                  .To.Single();
 			{
-				await using var data = contexts.Get();
-				var             item = await sut.Await(new Input(id, "Two"));
+				var item = await sut.Await(new Input(id, "Two"));
 				item.Identity.Should().Be(id);
 				item.Name.Should().Be("Two");
 			}
 		}
-
 
 		sealed class Context : DbContext
 		{
@@ -228,6 +230,64 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				: base((input, queryable)
 					       => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
 					                   .Select(y => y.Name)) {}
+		}
+
+		public class Benchmarks
+		{
+			readonly IContexts<ContextWithData> _contexts;
+			readonly ISelecting<Input, Result>  _select, _scoped;
+
+			public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
+			                                                                         .Options) {}
+
+			Benchmarks(DbContextOptions<ContextWithData> options) :
+				this(new PooledDbContextFactory<ContextWithData>(options)) {}
+
+			Benchmarks(IDbContextFactory<ContextWithData> factory)
+				: this(factory, new DbContexts<ContextWithData>(factory)) {}
+
+			Benchmarks(IDbContextFactory<ContextWithData> factory, IContexts<ContextWithData> contexts)
+				: this(contexts,
+				       contexts.Then()
+				               .Accept<Input>()
+				               .Use<Subject>()
+				               .Where((input, subject)
+					                      => subject.Name.StartsWith(input.Name))
+				               .Where((input, subject) => input.Identity == subject.Id)
+				               .Select(x => new Result(x.Id, x.Name))
+				               .To.Single(),
+				       new Scoped(factory.CreateDbContext())) {}
+
+			Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select,
+			           ISelecting<Input, Result> scoped)
+			{
+				_contexts = contexts;
+				_select   = @select;
+				_scoped   = scoped;
+			}
+
+			[GlobalSetup]
+			public async Task GlobalSetup()
+			{
+				await using var dbContext = _contexts.Get();
+				await dbContext.Database.EnsureCreatedAsync();
+			}
+
+			[Benchmark(Baseline = true)]
+			public ValueTask<Result> MeasureScoped()
+				=> _scoped.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
+
+			[Benchmark]
+			public ValueTask<Result> MeasureCompiled()
+				=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
+		}
+
+		sealed class Scoped : SingleSelected<Input, Subject, Result>
+		{
+			public Scoped(DbContext instance)
+				: base(instance.Set<Subject>(),
+				       parameter => subject => subject.Id == parameter.Identity &&
+				                               subject.Name.StartsWith(parameter.Name), x => new(x.Id, x.Name)) {}
 		}
 	}
 }

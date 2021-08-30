@@ -81,8 +81,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Expression<Func<TIn, T, IEnumerable<TTo>>> select)
 			=> Next(new SelectMany<TIn, T, TTo>(_query.Get(), select));
 
+		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TOther> other)
+			=> Introduce(other.Then().Without());
+
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TIn, TOther> other)
 			=> Introduce(other.Get());
+
+		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
+			Introduce<TOther>(Expression<Func<DbContext, IQueryable<TOther>>> other)
+			=> new(_contexts, _query, (context, _) => other.Invoke(context));
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
 			Introduce<TOther>(Expression<Func<DbContext, TIn, IQueryable<TOther>>> other)
