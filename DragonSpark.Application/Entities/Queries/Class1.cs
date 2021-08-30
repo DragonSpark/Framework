@@ -1,10 +1,13 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
@@ -33,134 +36,87 @@ namespace DragonSpark.Application.Entities.Queries
 
 		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
+	public interface IQuery<TIn, T> : IResult<Expression<Func<DbContext, TIn, IQueryable<T>>>> {}
 
-
-
-
-
-	/*public class Introduce<TFrom, T1, T2, T3, TTo> : Query<TTo>
+	public class InputQuery<TIn, T> : Instance<Expression<Func<DbContext, TIn, IQueryable<T>>>>, IQuery<TIn, T>
 	{
-		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
-		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
-			                 Expression<Func<DbContext, IQueryable<T3>>>) others,
-		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
-			                 IQueryable<TTo>>> select)
-			: base(context => select.Invoke(context, from.Invoke(context), others.Item1.Invoke(context),
-			                                others.Item2.Invoke(context), others.Item3.Invoke(context))) {}
+		protected InputQuery(Expression<Func<DbContext, IQueryable<T>>> instance)
+			: base((context, _) => instance.Invoke(context)) {}
 
-		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
-		                 (Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
-			                 Expression<Func<DbContext, IQueryable<T3>>>) others,
-		                 Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
-			                 IQueryable<TTo>>> select)
-			: base(context => select.Invoke(from.Invoke(context), others.Item1.Invoke(context),
-			                                others.Item2.Invoke(context), others.Item3.Invoke(context))) {}
+		protected InputQuery(Expression<Func<TIn, IQueryable<T>>> instance)
+			: base((context, @in) => instance.Invoke(@in)) {}
+
+		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
 	}
 
 
-
-	public class StartIntroduce<TFrom, T1, T2, T3, TTo> : Introduce<TFrom, T1, T2, T3, TTo> where TFrom : class
-	{
-		public StartIntroduce((Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
-			                      Expression<Func<DbContext, IQueryable<T3>>>) others,
-		                      Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
-			                      IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, others, select) {}
-
-		public StartIntroduce((Expression<Func<DbContext, IQueryable<T1>>>, Expression<Func<DbContext, IQueryable<T2>>>,
-			                      Expression<Func<DbContext, IQueryable<T3>>>) others,
-		                      Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>,
-			                      IQueryable<T3>, IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, others, select) {}
-	}*/
 
 	/**/
 
-	/**/
+	public readonly record struct In<T>(DbContext Context, T Parameter);
 
-	/*public class EvaluateToArray<TContext, T> : Evaluate<T, Array<T>> where TContext : DbContext
+	public interface IForm<TIn, out T> : ISelect<In<TIn>, IAsyncEnumerable<T>> {}
+
+	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
 	{
-		public EvaluateToArray(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
+		readonly IAsyncDisposable _disposable;
 
-		public EvaluateToArray(IInvoke<None, T> invoke) : base(invoke, ToArray<T>.Default) {}
+		public Invocation(IAsyncDisposable disposable, IAsyncEnumerable<T> elements)
+		{
+			_disposable = disposable;
+			Elements    = elements;
+		}
+
+		public IAsyncEnumerable<T> Elements { get; }
+
+		public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+
+		public void Dispose() {}
 	}
 
-	public class EvaluateToLease<TContext, T> : Evaluate<T, Lease<T>> where TContext : DbContext
-	{
-		public EvaluateToLease(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
+	public interface IInvoke<in TIn, T> : ISelect<TIn, Invocation<T>> {}
 
-		public EvaluateToLease(IInvoke<None, T> invoke) : base(invoke, ToLease<T>.Default) {}
+	sealed class Form<T> : Form<None, T>
+	{
+		public Form(IQuery<None, T> query) : base(query) {}
+
+		public Form(Expression<Func<DbContext, None, IQueryable<T>>> expression) : base(expression) {}
 	}
 
-	public class EvaluateToList<TContext, T> : Evaluate<T, List<T>> where TContext : DbContext
+	class Form<TIn, T> : Select<In<TIn>, IAsyncEnumerable<T>>, IForm<TIn, T>
 	{
-		public EvaluateToList(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
+		public Form(IQuery<TIn, T> query) : this(query.Get().Expand()) {}
 
-		public EvaluateToList(IInvoke<None, T> invoke) : base(invoke, ToList<T>.Default) {}
+		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: base(Compilation.Compile<TIn, T>.Default.Get(expression)) {}
 	}
 
-	public class EvaluateToDictionary<TContext, T, TKey> : Evaluate<T, Dictionary<TKey, T>> where TKey : notnull
-	                                                                                        where TContext : DbContext
+	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext
 	{
-		public EvaluateToDictionary(IContexts<TContext> contexts, IQuery<T> query, Func<T, TKey> key)
-			: this(new Invoke<TContext, T>(contexts, query), new ToDictionary<T, TKey>(key)) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<T>(query)) {}
 
-		public EvaluateToDictionary(IInvoke<None, T> invoke, IEvaluate<T, Dictionary<TKey, T>> evaluate)
-			: base(invoke, evaluate) {}
+		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}
 
-	public class EvaluateToDictionary<TContext, T, TKey, TValue> : Evaluate<T, Dictionary<TKey, TValue>>
-		where TKey : notnull
-		where TContext : DbContext
+	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext
 	{
-		public EvaluateToDictionary(IContexts<TContext> contexts, IQuery<T> query,
-		                            IEvaluate<T, Dictionary<TKey, TValue>> evaluate)
-			: this(new Invoke<TContext, T>(contexts, query), evaluate) {}
+		readonly IContexts<TContext> _contexts;
+		readonly IForm<TIn, T>       _form;
 
-		public EvaluateToDictionary(IInvoke<None, T> invoke, IEvaluate<T, Dictionary<TKey, TValue>> evaluate)
-			: base(invoke, evaluate) {}
+		public Invoke(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, new Form<TIn, T>(query)) {}
+
+		public Invoke(IContexts<TContext> contexts, IForm<TIn, T> form)
+		{
+			_contexts = contexts;
+			_form     = form;
+		}
+
+		public Invocation<T> Get(TIn parameter)
+		{
+			var context = _contexts.Get();
+			var form    = _form.Get(new(context, parameter));
+			return new(context, form);
+		}
 	}
 
-	public class EvaluateToSingle<TContext, T> : Evaluate<T, T> where TContext : DbContext
-	{
-		public EvaluateToSingle(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToSingle(IInvoke<None, T> invoke) : base(invoke, Single<T>.Default) {}
-	}
-
-	public class EvaluateToSingleOrDefault<TContext, T> : Evaluate<T, T?> where TContext : DbContext
-	{
-		public EvaluateToSingleOrDefault(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToSingleOrDefault(IInvoke<None, T> invoke) : base(invoke, SingleOrDefault<T>.Default) {}
-	}
-
-	public class EvaluateToFirst<TContext, T> : Evaluate<T, T> where TContext : DbContext
-	{
-		public EvaluateToFirst(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToFirst(IInvoke<None, T> invoke) : base(invoke, First<T>.Default) {}
-	}
-
-	public class EvaluateToFirstOrDefault<TContext, T> : Evaluate<T, T?> where TContext : DbContext
-	{
-		public EvaluateToFirstOrDefault(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToFirstOrDefault(IInvoke<None, T> invoke) : base(invoke, FirstOrDefault<T>.Default) {}
-	}
-
-	public class EvaluateToAny<TContext, T> : Evaluate<T, bool> where TContext : DbContext
-	{
-		public EvaluateToAny(IContexts<TContext> contexts, IQuery<T> query)
-			: this(new Invoke<TContext, T>(contexts, query)) {}
-
-		public EvaluateToAny(IInvoke<None, T> invoke) : base(invoke, Any<T>.Default) {}
-	}*/
 }

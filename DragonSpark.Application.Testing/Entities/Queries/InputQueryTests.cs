@@ -108,7 +108,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
-			var evaluate = new EvaluateToArray<Input, ContextWithData, string>(contexts, ComplexSelected.Default);
+			var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 			{
 				var results = await evaluate.Await(new (id, "One"));
 				var only    = results.Open().Only();
