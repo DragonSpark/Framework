@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
@@ -71,7 +72,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default)
-			                       .Select((subjects, names) => subjects.Where(x => names.Contains(x.Name)))
+			                       .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
 			                       .To.Array();
 			{
 				var array = await evaluate.Await();
@@ -96,7 +97,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default)
-			                       .Select((subjects, names) => subjects.Where(x => names.Contains(x.Name)))
+			                       .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
 			                       .To.Array();
 			{
 				var array = await evaluate.Await();
@@ -132,9 +133,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default, Amounts.Default)
-			                       .Select((subjects, names, amounts) => subjects.Where(x => names.Contains(x.Name))
-			                                                                     .Where(x => amounts
-				                                                                            .Contains(x.Amount)))
+			                       .Select((_, subjects, names, amounts)
+				                               => subjects.Where(x => names.Contains(x.Name))
+				                                          .Where(x => amounts.Contains(x.Amount)))
 			                       .To.Array();
 			{
 				var array = await evaluate.Await();
@@ -172,9 +173,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default, Amounts.Default)
-			                       .Select((subjects, names, amounts) => subjects.Where(x => names.Contains(x.Name))
-			                                                                     .Where(x => amounts
-				                                                                            .Contains(x.Amount)))
+			                       .Select((_, subjects, names, amounts)
+				                               => subjects.Where(x => names.Contains(x.Name))
+				                                          .Where(x => amounts.Contains(x.Amount)))
 			                       .To.Array();
 			{
 				var array = await evaluate.Await();
@@ -213,7 +214,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
-			                       .Select((subjects, names, amounts, thirds)
+			                       .Select((_, subjects, names, amounts, thirds)
 				                               => subjects.Where(x => names.Contains(x.Name))
 				                                          .Where(x => amounts.Contains(x.Amount))
 				                                          .Where(x => thirds.Contains(x.ThirdAmount)))
@@ -258,7 +259,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var evaluate = contexts.Then()
 			                       .Use<Subject>()
 			                       .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
-			                       .Select((subjects, names, amounts, thirds)
+			                       .Select((_, subjects, names, amounts, thirds)
 				                               => subjects.Where(x => names.Contains(x.Name))
 				                                          .Where(x => amounts.Contains(x.Amount))
 				                                          .Where(x => thirds.Contains(x.ThirdAmount)))

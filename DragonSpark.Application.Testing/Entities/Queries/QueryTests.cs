@@ -1,5 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Application.Entities.Queries.Evaluation;
 using DragonSpark.Application.Entities.Queries.Model;
 using DragonSpark.Compose;
 using DragonSpark.Model;
@@ -234,7 +236,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 		}
 
-		sealed class Parameter : StartInputQuery<string, Subject>
+		sealed class Parameter : StartInput<string, Subject>
 		{
 			public static Parameter Default { get; } = new Parameter();
 
@@ -251,14 +253,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				: base((_, subjects) => select.Invoke(subjects)) {}
 		}
 
-		sealed class SubjectsNotTwo : EvaluateToArray<Context, Subject>
+		sealed class SubjectsNotTwo : EvaluateToArray<None, Context, Subject>
 		{
 			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts, Query.Default) {}
 
 			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
 		}
 
-		sealed class SubjectsNotWithParameter : EvaluateToArray<Context, string, Subject>
+		sealed class SubjectsNotWithParameter : EvaluateToArray<string, Context, Subject>
 		{
 			public SubjectsNotWithParameter(IContexts<Context> contexts) : base(contexts, Parameter.Default) {}
 		}

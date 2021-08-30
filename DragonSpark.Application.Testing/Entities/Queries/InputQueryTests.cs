@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Application.Entities.Queries.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
@@ -29,7 +31,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var evaluate =
-				new EvaluateToArray<Context, string, string>(new DbContexts<Context>(factory), Selected.Default);
+				new EvaluateToArray<string, Context, string>(new DbContexts<Context>(factory), Selected.Default);
 			{
 				var results = await evaluate.Await("One");
 				var open    = results.Open();
@@ -51,7 +53,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluation = new EvaluateToArray<Context, string, string>(factory, Selected.Default);
+			var evaluation = new EvaluateToArray<string, Context, string>(factory, Selected.Default);
 			{
 				var results = await evaluation.Await("One");
 				var open    = results.Open();
@@ -83,7 +85,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 			var evaluate =
-				new EvaluateToArray<ContextWithData, Input, string>(new DbContexts<ContextWithData>(contexts),
+				new EvaluateToArray<Input, ContextWithData, string>(new DbContexts<ContextWithData>(contexts),
 				                                                    ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new(id, "One"));
@@ -106,7 +108,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
-			var evaluate = new EvaluateToArray<ContextWithData, Input, string>(contexts, ComplexSelected.Default);
+			var evaluate = new EvaluateToArray<Input, ContextWithData, string>(contexts, ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new (id, "One"));
 				var only    = results.Open().Only();
@@ -154,7 +156,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			public string Name { [UsedImplicitly] get; set; } = default!;
 		}
 
-		sealed class Selected : StartInputQuery<string, Subject, string>
+		sealed class Selected : StartInput<string, Subject, string>
 		{
 			public static Selected Default { get; } = new Selected();
 
@@ -163,7 +165,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 		public readonly record struct Input(Guid Identity, string Name);
 
-		sealed class ComplexSelected : StartInputQuery<Input, Subject, string>
+		sealed class ComplexSelected : StartInput<Input, Subject, string>
 		{
 			public static ComplexSelected Default { get; } = new();
 

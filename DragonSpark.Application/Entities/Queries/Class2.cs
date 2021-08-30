@@ -1,7 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Evaluation;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Sequences;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,61 +31,7 @@ namespace DragonSpark.Application.Entities.Queries
 		protected InputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
 	}
 
-	public class InputCombine<TIn, T, TTo> : InputQuery<TIn, TTo>
-	{
-		protected InputCombine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                       Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base((context, @in) => instance.Invoke(context, previous.Invoke(context, @in))) {}
 
-		protected InputCombine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                       Expression<Func<IQueryable<T>, IQueryable<TTo>>> instance)
-			: base((context, @in) => instance.Invoke(previous.Invoke(context, @in))) {}
-
-		protected InputCombine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                       Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base((context, @in) => instance.Invoke(@in, previous.Invoke(context, @in))) {}
-
-		protected InputCombine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                       Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base((context, @in) => instance.Invoke(context, @in, previous.Invoke(context, @in))) {}
-	}
-
-	public class Set<TIn, T> : InputQuery<TIn, T> where T : class
-	{
-		public static Set<TIn, T> Default { get; } = new();
-
-		Set() : base(x => x.Set<T>()) {}
-	}
-
-	public class StartInputQuery<TIn, T> : StartInputQuery<TIn, T, T> where T : class
-	{
-		protected StartInputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> instance)
-			: base(instance) {}
-
-		protected StartInputQuery(Expression<Func<IQueryable<T>, IQueryable<T>>> instance) : base(instance) {}
-
-		protected StartInputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<T>>> instance) : base(instance) {}
-
-		protected StartInputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                          Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<T>>> instance)
-			: base(previous, instance) {}
-	}
-
-	public class StartInputQuery<TIn, T, TTo> : InputCombine<TIn, T, TTo> where T : class
-	{
-		protected StartInputQuery(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base(Set<TIn, T>.Default, instance) {}
-
-		protected StartInputQuery(Expression<Func<IQueryable<T>, IQueryable<TTo>>> instance)
-			: base(Set<TIn, T>.Default, instance) {}
-
-		protected StartInputQuery(Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base(Set<TIn, T>.Default, instance) {}
-
-		protected StartInputQuery(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                     Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
-			: base(previous, instance) {}
-	}
 
 	/**/
 
@@ -113,12 +58,26 @@ namespace DragonSpark.Application.Entities.Queries
 
 	public interface IInvoke<in TIn, T> : ISelect<TIn, Invocation<T>> {}
 
-	sealed class Form<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsyncEnumerable<T>>, IForm<TIn, T>
+	sealed class Form<T> : Form<None, T>
+	{
+		public Form(IQuery<None, T> query) : base(query) {}
+
+		public Form(Expression<Func<DbContext, None, IQueryable<T>>> expression) : base(expression) {}
+	}
+
+	class Form<TIn, T> : Select<In<TIn>, IAsyncEnumerable<T>>, IForm<TIn, T>
 	{
 		public Form(IQuery<TIn, T> query) : this(query.Get().Expand()) {}
 
 		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: base(Compilation.Compile<TIn, T>.Default.Get(expression)) {}
+	}
+
+	public class Invoke<TContext, T> : Invoke<TContext, None, T> where TContext : DbContext
+	{
+		public Invoke(IContexts<TContext> contexts, IQuery<T> query) : base(contexts, new Form<T>(query)) {}
+
+		public Invoke(IContexts<TContext> contexts, IForm<None, T> form) : base(contexts, form) {}
 	}
 
 	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext
@@ -143,12 +102,12 @@ namespace DragonSpark.Application.Entities.Queries
 	}
 
 	/**/
-	public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, Array<T>>
+	/*public class EvaluateToArray<TContext, TIn, T> : Evaluate<TIn, T, Array<T>>
 		where TContext : DbContext
 	{
 		public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query)
 			: this(new Invoke<TContext, TIn, T>(contexts, query)) {}
 
 		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
-	}
+	}*/
 }
