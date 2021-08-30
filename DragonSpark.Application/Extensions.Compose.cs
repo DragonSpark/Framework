@@ -97,6 +97,8 @@ namespace DragonSpark.Application
 
 		public static ContextsAdapter<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
+		public static QueryAdapter<T> Then<T>(this IQuery<T> @this) => new(@this);
+
 		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
 			=> new(@this);
 

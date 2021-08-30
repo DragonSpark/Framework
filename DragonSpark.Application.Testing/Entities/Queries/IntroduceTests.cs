@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task Verify()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyCompose()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -110,7 +110,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyComposeTwo()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One", Amount   = 5 },
@@ -190,7 +190,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyComposeThree()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One", Amount   = 05, ThirdAmount = -.5f },
@@ -351,7 +351,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public static Query Default { get; } = new Query();
 
-			Query() : this(OtherNames.Default) {}
+			Query() : this(OtherNames.Default.Then().Without()) {}
 
 			public Query(Expression<Func<DbContext, IQueryable<string>>> other)
 				: base(other, (context, subjects, names) => subjects.Where(x => names.Contains(x.Name))) {}

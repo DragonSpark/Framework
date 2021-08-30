@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyInMemorySubjects()
 		{
-			var factory = new InMemoryDbContexts<Context>();
+			var factory = new InMemoryDbContextFactory<Context>();
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -48,7 +48,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public async Task VerifyInvoke()
 		{
 			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -74,7 +74,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public async Task VerifyEvaluate()
 		{
 			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -99,7 +99,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public async Task VerifyComplex()
 		{
 			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -124,7 +124,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public async Task VerifyParameter()
 		{
 			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -184,7 +184,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyEquality()
 		{
-			var factory = new InMemoryDbContexts<Context>();
+			var factory = new InMemoryDbContextFactory<Context>();
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

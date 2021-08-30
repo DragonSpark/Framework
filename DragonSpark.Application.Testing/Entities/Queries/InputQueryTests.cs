@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public async Task VerifySelected()
 		{
 			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContexts<Context>(), counter);
+			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 			{
 				await using var context = factory.CreateDbContext();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -74,7 +74,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			var counter = new Counter();
 			var contexts =
-				new CounterAwareDbContexts<ContextWithData>(new InMemoryDbContexts<ContextWithData>(), counter);
+				new CounterAwareDbContexts<ContextWithData>(new InMemoryDbContextFactory<ContextWithData>(), counter);
 			{
 				await using var context = contexts.CreateDbContext();
 				await context.Database.EnsureCreatedAsync();
@@ -116,6 +116,59 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				only.Should().Be("One");
 			}
 		}
+
+		[Fact]
+		public async Task VerifyWhereWithParameter()
+		{
+			var contexts = new MemoryContexts<ContextWithData>();
+			{
+				await using var data = contexts.Get();
+				await data.Database.EnsureCreatedAsync();
+			}
+
+			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
+
+			var sut = contexts.Then()
+			                  .Accept<Input>()
+			                  .Use<Subject>()
+			                  .Where((input, subject) => subject.Name.StartsWith(input.Name))
+			                  .Where((input, subject) => input.Identity == subject.Id)
+			                  .To.Single();
+			{
+				await using var data = contexts.Get();
+				var item = await sut.Await(new Input(id, "Two"));
+				item.Should().NotBeNull();
+				item.Id.Should().Be(id);
+				item.Name.Should().Be("Two");
+			}
+		}
+
+		[Fact]
+		public async Task VerifyWhereWithParameterSql()
+		{
+			await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+			{
+				await using var data = contexts.Get();
+				await data.Database.EnsureCreatedAsync();
+			}
+
+			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
+
+			var sut = contexts.Then()
+			                  .Accept<Input>()
+			                  .Use<Subject>()
+			                  .Where((input, subject) => subject.Name.StartsWith(input.Name))
+			                  .Where((input, subject) => input.Identity == subject.Id)
+							  .Select(x => new Result(x.Id, x.Name))
+			                  .To.Single();
+			{
+				await using var data = contexts.Get();
+				var             item = await sut.Await(new Input(id, "Two"));
+				item.Identity.Should().Be(id);
+				item.Name.Should().Be("Two");
+			}
+		}
+
 
 		sealed class Context : DbContext
 		{
@@ -163,7 +216,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
 		}
 
-		public readonly record struct Input(Guid Identity, string Name);
+		readonly record struct Input(Guid Identity, string Name);
+
+		public readonly record struct Result(Guid Identity, string Name);
 
 		sealed class ComplexSelected : StartInput<Input, Subject, string>
 		{

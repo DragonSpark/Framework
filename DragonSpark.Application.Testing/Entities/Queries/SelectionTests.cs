@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task Verify()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyArray()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -34,7 +34,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyLease()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -50,7 +50,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyList()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -65,7 +65,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyDictionary()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -84,7 +84,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyDictionaryValues()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -109,7 +109,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifySingle()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -127,7 +127,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifySingleOrDefault()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -147,7 +147,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyFirst()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -165,7 +165,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyFirstOrDefault()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -185,7 +185,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyAny()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContexts<Context>());
+			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
@@ -233,7 +233,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 			readonly IDbContextFactory<Context>     _factory;
 			readonly Func<DbContext, Task<Subject>> _create;
 
-			public Benchmarks() : this(new InMemoryDbContexts<Context>()) {}
+			public Benchmarks() : this(new InMemoryDbContextFactory<Context>()) {}
 
 			Benchmarks(IDbContextFactory<Context> factory) : this(new DbContexts<Context>(factory), factory) {}
 

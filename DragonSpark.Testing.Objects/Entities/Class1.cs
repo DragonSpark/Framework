@@ -29,12 +29,19 @@ namespace DragonSpark.Testing.Objects.Entities
 		}
 	}
 
-	public sealed class InMemoryDbContexts<T> : DbContextFactory<T> where T : DbContext
+	public sealed class InMemoryDbContextFactory<T> : DbContextFactory<T> where T : DbContext
 	{
-		public InMemoryDbContexts() : this(IdentifyingText.Default.Get()) {}
+		public InMemoryDbContextFactory() : this(IdentifyingText.Default.Get()) {}
 
-		public InMemoryDbContexts(string name)
+		public InMemoryDbContextFactory(string name)
 			: base(new DbContextOptionsBuilder<T>().UseInMemoryDatabase(name).Options) {}
+	}
+
+	public sealed class MemoryContexts<T> : DbContexts<T> where T : DbContext
+	{
+		public MemoryContexts() : this(IdentifyingText.Default.Get()) {}
+
+		public MemoryContexts(string name) : base(new InMemoryDbContextFactory<T>(name)) {}
 	}
 
 	public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
