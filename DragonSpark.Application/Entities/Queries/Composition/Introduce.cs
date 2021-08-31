@@ -24,13 +24,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class Introduce<TFrom, TOther, TTo> : Introduce<None, TFrom, TOther, TTo>, IQuery<TTo>
 	{
-		public static implicit operator Expression<Func<DbContext, IQueryable<TTo>>>(
-			Introduce<TFrom, TOther, TTo> instance)
-		{
-			var expression = instance.Get();
-			return x => expression.Invoke(x, None.Default);
-		}
-
 		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
 		                 Expression<Func<DbContext, IQueryable<TOther>>> other,
 		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)

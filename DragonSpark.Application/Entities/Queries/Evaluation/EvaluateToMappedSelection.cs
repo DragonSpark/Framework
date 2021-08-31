@@ -12,6 +12,12 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 		where TKey : notnull
 		where TContext : DbContext
 	{
+		/*// ReSharper disable once TooManyDependencies
+		public EvaluateToMappedSelection(IContexts<TContext> contexts, Func<T, TKey> key, IQuery<None, T> query,
+		                                 Func<T, TValue> value)
+			: base(contexts, key, query, value) {}
+			*/
+
 		// ReSharper disable once TooManyDependencies
 		public EvaluateToMappedSelection(IContexts<TContext> contexts,
 		                                 Expression<Func<DbContext, IQueryable<T>>> expression, Func<T, TKey> key,
@@ -31,6 +37,13 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 		where TKey : notnull
 		where TContext : DbContext
 	{
+		/*
+		// ReSharper disable once TooManyDependencies
+		public EvaluateToMappedSelection(IContexts<TContext> contexts, Func<T, TKey> key, IQuery<TIn, T> query,
+		                                 Func<T, TValue> value)
+			: this(contexts, query.Get(), key, value) {}
+			*/
+
 		// ReSharper disable once TooManyDependencies
 		public EvaluateToMappedSelection(IContexts<TContext> contexts,
 		                                 Expression<Func<DbContext, TIn, IQueryable<T>>> expression, Func<T, TKey> key,

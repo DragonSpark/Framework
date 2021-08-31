@@ -9,6 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
 	public class EvaluateToLease<TContext, T> : EvaluateToLease<None, TContext, T> where TContext : DbContext
 	{
+		/*public EvaluateToLease(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToLease(IContexts<TContext> contexts, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
 
@@ -21,6 +23,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToLease<TIn, TContext, T> : Evaluate<TIn, T, Lease<T>> where TContext : DbContext
 	{
+		/*public EvaluateToLease(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
+
 		public EvaluateToLease(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}
 

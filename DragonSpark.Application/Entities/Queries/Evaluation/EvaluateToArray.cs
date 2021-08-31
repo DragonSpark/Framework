@@ -9,6 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
 	public class EvaluateToArray<TContext, T> : EvaluateToArray<None, TContext, T> where TContext : DbContext
 	{
+		/*public EvaluateToArray(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToArray(IContexts<TContext> contexts, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
 
@@ -20,6 +22,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToArray<TIn, TContext, T> : Evaluate<TIn, T, Array<T>> where TContext : DbContext
 	{
+		/*public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
+
 		public EvaluateToArray(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}
 

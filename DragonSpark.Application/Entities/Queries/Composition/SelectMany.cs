@@ -21,12 +21,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class SelectMany<TFrom, TTo> : SelectMany<None, TFrom, TTo>, IQuery<TTo>
 	{
-		public static implicit operator Expression<Func<DbContext, IQueryable<TTo>>>(SelectMany<TFrom, TTo> instance)
-		{
-			var expression = instance.Get();
-			return x => expression.Invoke(x, None.Default);
-		}
-
 		public SelectMany(Expression<Func<DbContext, IQueryable<TFrom>>> previous,
 		                  Expression<Func<TFrom, IEnumerable<TTo>>> select)
 			: base((context, _) => previous.Invoke(context), select) {}

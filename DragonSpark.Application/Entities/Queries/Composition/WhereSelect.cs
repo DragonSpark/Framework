@@ -28,12 +28,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class WhereSelect<T, TTo> : WhereSelect<None, T, TTo>, IQuery<TTo>
 	{
-		public static implicit operator Expression<Func<DbContext, IQueryable<TTo>>>(WhereSelect<T, TTo> instance)
-		{
-			var expression = instance.Get();
-			return x => expression.Invoke(x, None.Default);
-		}
-
 		protected WhereSelect(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where,
 		                      Expression<Func<T, TTo>> select)
 			: base((context, _) => previous.Invoke(context), where, select) {}

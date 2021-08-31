@@ -10,12 +10,6 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	public class Query<T> : Query<None, T>, IQuery<T>
 	{
-		public static implicit operator Expression<Func<DbContext, IQueryable<T>>>(Query<T> instance)
-		{
-			var expression = instance.Get();
-			return x => expression.Invoke(x, None.Default);
-		}
-
 		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 

@@ -27,6 +27,23 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public ContextQueryAdapter<TIn, TContext, T> Where(Expression<Func<TIn, T, bool>> where)
 			=> Next(new Where<TIn, T>(_query.Get(), where));
 
+		public ContextQueryAdapter<TIn, TContext, T> OrderBy<TProperty>(Expression<Func<TIn, T, TProperty>> property)
+			=> Next(new OrderBy<TIn, T, TProperty>(_query.Get(), property));
+
+		public ContextQueryAdapter<TIn, TContext, T> OrderBy<TProperty>(Expression<Func<T, TProperty>> property)
+			=> Next(new OrderBy<TIn, T, TProperty>(_query.Get(), property));
+
+		public ContextQueryAdapter<TIn, TContext, T> OrderByDescending<TProperty>(
+			Expression<Func<TIn, T, TProperty>> property)
+			=> Next(new OrderByDescending<TIn, T, TProperty>(_query.Get(), property));
+
+		public ContextQueryAdapter<TIn, TContext, T> OrderByDescending<TProperty>(
+			Expression<Func<T, TProperty>> property)
+			=> Next(new OrderByDescending<TIn, T, TProperty>(_query.Get(), property));
+
+		public ContextQueryAdapter<TIn, TContext, TOther> OfType<TOther>() where TOther : class, T
+			=> Select(x => x.OfType<TOther>());
+
 		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(Expression<Func<T, TTo>> select)
 			=> Next(new Select<TIn, T, TTo>(_query.Get(), select));
 
@@ -77,7 +94,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(IQuery<TIn, T1> first,
 		                                                                          IQuery<TIn, T2> second)
 			=> Introduce(first.Get(), second.Get());
-
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, IQueryable<T1>>> first,

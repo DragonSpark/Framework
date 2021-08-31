@@ -30,13 +30,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class IntroduceTwo<TFrom, T1, T2, TTo> : IntroduceTwo<None, TFrom, T1, T2, TTo>, IQuery<TTo>
 	{
-		public static implicit operator Expression<Func<DbContext, IQueryable<TTo>>>(
-			IntroduceTwo<TFrom, T1, T2, TTo> instance)
-		{
-			var expression = instance.Get();
-			return x => expression.Invoke(x, None.Default);
-		}
-
 		// ReSharper disable once TooManyDependencies
 		public IntroduceTwo(Expression<Func<DbContext, IQueryable<TFrom>>> from,
 		                    Expression<Func<DbContext, IQueryable<T1>>> first,

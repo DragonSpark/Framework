@@ -8,6 +8,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
 	public class EvaluateToSingle<TContext, T> : EvaluateToSingle<None, TContext, T> where TContext : DbContext
 	{
+		/*public EvaluateToSingle(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToSingle(IContexts<TContext> contexts,
 		                        Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
@@ -21,6 +23,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToSingle<TIn, TContext, T> : Evaluate<TIn, T, T> where TContext : DbContext
 	{
+		/*public EvaluateToSingle(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
+
 		public EvaluateToSingle(IContexts<TContext> contexts,
 		                        Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}

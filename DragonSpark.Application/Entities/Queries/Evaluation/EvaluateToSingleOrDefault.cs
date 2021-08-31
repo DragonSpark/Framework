@@ -9,6 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 	public class EvaluateToSingleOrDefault<TContext, T> : EvaluateToSingleOrDefault<None, TContext, T>
 		where TContext : DbContext
 	{
+		/*public EvaluateToSingleOrDefault(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToSingleOrDefault(IContexts<TContext> contexts,
 		                                 Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
@@ -22,6 +24,9 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToSingleOrDefault<TIn, TContext, T> : Evaluate<TIn, T, T?> where TContext : DbContext
 	{
+		/*public EvaluateToSingleOrDefault(IContexts<TContext> contexts, IQuery<TIn, T> query)
+			: this(contexts, query.Get()) {}*/
+
 		public EvaluateToSingleOrDefault(IContexts<TContext> contexts,
 		                                 Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}

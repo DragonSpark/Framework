@@ -12,13 +12,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public QuerySelector<T> Where(Expression<Func<T, bool>> select) => Next(new WhereSelector<None, T>(select));
 
-		public QuerySelector<T> OrderBy<TProperty>(Expression<Func<T, TProperty>> property)
-			=> Select(x => x.OrderBy(property));
-
-		public QuerySelector<T> OrderByDescending<TProperty>(Expression<Func<T, TProperty>> property)
-			=> Select(x => x.OrderByDescending(property));
-
-		public QuerySelector<TOther> OfType<TOther>() where TOther : class, T => Select(x => x.OfType<TOther>());
+		
 
 		public QuerySelector<TTo> Select<TTo>(Func<IQueryable<T>, IQueryable<TTo>> select) where TTo : class
 			=> Next(new SelectionSelector<None, T, TTo>(select));

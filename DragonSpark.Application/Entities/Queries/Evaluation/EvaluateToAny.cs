@@ -8,6 +8,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
 	public class EvaluateToAny<TContext, T> : EvaluateToAny<None, TContext, T> where TContext : DbContext
 	{
+		/*public EvaluateToAny(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToAny(IContexts<TContext> contexts, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
 
@@ -19,6 +21,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToAny<TIn, TContext, T> : Evaluate<TIn, T, bool> where TContext : DbContext
 	{
+		/*public EvaluateToAny(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
+
 		public EvaluateToAny(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}
 

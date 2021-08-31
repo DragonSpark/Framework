@@ -9,6 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
 	public class EvaluateToList<TContext, T> : EvaluateToList<None, TContext, T> where TContext : DbContext
 	{
+		/*public EvaluateToList(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
+
 		public EvaluateToList(IContexts<TContext> contexts, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(contexts, expression.Then()) {}
 
@@ -20,6 +22,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 	public class EvaluateToList<TIn, TContext, T> : Evaluate<TIn, T, List<T>> where TContext : DbContext
 	{
+		/*public EvaluateToList(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
+
 		public EvaluateToList(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}
 
