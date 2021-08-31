@@ -49,7 +49,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			=> Next(new SelectMany<TIn, T, TTo>(_query.Get(), select));
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TOther> other)
-			=> Introduce(other.Then().Without());
+			=> Introduce(other.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TIn, TOther> other)
 			=> Introduce(other.Get());
@@ -64,15 +64,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
 			IQuery<T1> first, IQuery<T2> second)
-			=> Introduce(first.Then().Without(), second.Then().Without());
+			=> Introduce(first.Then().Remove(), second.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
 			IQuery<T1> first, IQuery<TIn, T2> second)
-			=> Introduce(first.Then().Without(), second.Get());
+			=> Introduce(first.Then().Remove(), second.Get());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
 			IQuery<TIn, T1> first, IQuery<T2> second)
-			=> Introduce(first.Get(), second.Then().Without());
+			=> Introduce(first.Get(), second.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(IQuery<TIn, T1> first,
 		                                                                          IQuery<TIn, T2> second)
@@ -101,31 +101,31 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<T2> second, IQuery<T3> third)
-			=> Introduce(first.Then().Without(), second.Then().Without(), third.Then().Without());
+			=> Introduce(first.Then().Remove(), second.Then().Remove(), third.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<TIn, T2> second, IQuery<T3> third)
-			=> Introduce(first.Get(), second.Get(), third.Then().Without());
+			=> Introduce(first.Get(), second.Get(), third.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<T2> second, IQuery<T3> third)
-			=> Introduce(first.Get(), second.Then().Without(), third.Then().Without());
+			=> Introduce(first.Get(), second.Then().Remove(), third.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Get(), second.Then().Without(), third.Get());
+			=> Introduce(first.Get(), second.Then().Remove(), third.Get());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Then().Without(), second.Then().Without(), third.Get());
+			=> Introduce(first.Then().Remove(), second.Then().Remove(), third.Get());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<TIn, T2> second, IQuery<T3> third)
-			=> Introduce(first.Then().Without(), second.Get(), third.Then().Without());
+			=> Introduce(first.Then().Remove(), second.Get(), third.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<TIn, T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Then().Without(), second.Get(), third.Get());
+			=> Introduce(first.Then().Remove(), second.Get(), third.Get());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<TIn, T2> second, IQuery<TIn, T3> third)

@@ -21,32 +21,30 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_query    = query;
 		}
 
-		public ISelecting<TIn, Array<T>> Array() => new EvaluateToArray<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, Array<T>> Array() => new EvaluateToArray<TIn, TContext, T>(_contexts, _query.Get());
 
-		public ISelecting<TIn, Lease<T>> Lease() => new EvaluateToLease<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, Lease<T>> Lease() => new EvaluateToLease<TIn, TContext, T>(_contexts, _query.Get());
 
-		public ISelecting<TIn, List<T>> List() => new EvaluateToList<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, List<T>> List() => new EvaluateToList<TIn, TContext, T>(_contexts, _query.Get());
 
 		public ISelecting<TIn, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
-			=> new EvaluateToMap<TIn, TContext, T, TKey>(_contexts, _query, key);
+			=> new EvaluateToMap<TIn, TContext, T, TKey>(_contexts, _query.Get(), key);
 
 		public ISelecting<TIn, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
 			Func<T, TKey> key, Func<T, TValue> value)
 			where TKey : notnull
-			=> new EvaluateToMappedSelection<TIn, TContext, T, TKey, TValue>(_contexts, _query,
-			                                                                 new ToDictionary<T, TKey,
-				                                                                 TValue>(key, value));
+			=> new EvaluateToMappedSelection<TIn, TContext, T, TKey, TValue>(_contexts, _query.Get(), key, value);
 
-		public ISelecting<TIn, T> Single() => new EvaluateToSingle<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, T> Single() => new EvaluateToSingle<TIn, TContext, T>(_contexts, _query.Get());
 
 		public ISelecting<TIn, T?> SingleOrDefault()
-			=> new EvaluateToSingleOrDefault<TIn, TContext, T>(_contexts, _query);
+			=> new EvaluateToSingleOrDefault<TIn, TContext, T>(_contexts, _query.Get());
 
-		public ISelecting<TIn, T> First() => new EvaluateToFirst<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, T> First() => new EvaluateToFirst<TIn, TContext, T>(_contexts, _query.Get());
 
 		public ISelecting<TIn, T?> FirstOrDefault()
-			=> new EvaluateToFirstOrDefault<TIn, TContext, T>(_contexts, _query);
+			=> new EvaluateToFirstOrDefault<TIn, TContext, T>(_contexts, _query.Get());
 
-		public ISelecting<TIn, bool> Any() => new EvaluateToAny<TIn, TContext, T>(_contexts, _query);
+		public ISelecting<TIn, bool> Any() => new EvaluateToAny<TIn, TContext, T>(_contexts, _query.Get());
 	}
 }

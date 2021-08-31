@@ -351,7 +351,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public static Query Default { get; } = new Query();
 
-			Query() : this(OtherNames.Default.Then().Without()) {}
+			Query() : this(OtherNames.Default.Then().Remove()) {}
 
 			public Query(Expression<Func<DbContext, IQueryable<string>>> other)
 				: base(other, (context, subjects, names) => subjects.Where(x => names.Contains(x.Name))) {}

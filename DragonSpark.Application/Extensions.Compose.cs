@@ -13,6 +13,7 @@ using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
@@ -24,6 +25,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
@@ -98,7 +100,12 @@ namespace DragonSpark.Application
 
 		public static ContextsAdapter<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
-		public static QueryAdapter<T> Then<T>(this IQuery<T> @this) => new(@this);
+		public static QueryExpressionAdapter<T> Then<T>(this IQuery<T> @this) => @this.Get().Then();
+
+		public static QueryExpressionAdapter<T> Then<T>(this Expression<Func<DbContext, None, IQueryable<T>>> @this)
+			=> new(@this);
+
+		public static ExpressionAdapter<T> Then<T>(this Expression<Func<DbContext, IQueryable<T>>> @this) => new(@this);
 
 		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
 			=> new(@this);

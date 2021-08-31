@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var contexts = new Contexts<Context>(factory);
-			var invoke   = new Invoke<Context, Subject>(contexts, Query.Default);
+			var invoke   = new Invoke<Context, None, Subject>(contexts, Query.Default);
 			{
 				await using var invocation = invoke.Get(None.Default);
 				var             elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
@@ -258,7 +258,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		{
 			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts, Query.Default) {}
 
-			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query) {}
+			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query.Get()) {}
 		}
 
 		sealed class SubjectsNotWithParameter : EvaluateToArray<string, Context, Subject>
