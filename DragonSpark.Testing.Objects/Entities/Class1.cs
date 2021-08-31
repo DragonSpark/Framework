@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
@@ -37,7 +37,7 @@ namespace DragonSpark.Testing.Objects.Entities
 			: base(new DbContextOptionsBuilder<T>().UseInMemoryDatabase(name).Options) {}
 	}
 
-	public sealed class MemoryContexts<T> : DbContexts<T> where T : DbContext
+	public sealed class MemoryContexts<T> : Contexts<T> where T : DbContext
 	{
 		public MemoryContexts() : this(IdentifyingText.Default.Get()) {}
 
@@ -50,7 +50,7 @@ namespace DragonSpark.Testing.Objects.Entities
 
 		public SqlContexts() : this($"{DefaultSqlDbName.Default}-{IdentifyingText.Default}") {}
 
-		public SqlContexts(string name) : this(new DbContexts<T>(new SqlDbContexts<T>(name))) {}
+		public SqlContexts(string name) : this(new Contexts<T>(new SqlDbContexts<T>(name))) {}
 
 		public SqlContexts(IContexts<T> contexts) => _contexts = contexts;
 

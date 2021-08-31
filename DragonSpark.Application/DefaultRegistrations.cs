@@ -1,6 +1,4 @@
-﻿using AsyncUtilities;
-using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity.Model;
@@ -19,19 +17,7 @@ namespace DragonSpark.Application
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Start<IClear>()
-			         .Forward<Clear>()
-			         .Scoped()
-			         //
-			         .Then.Start<ISave>()
-			         .Forward<Save>()
-			         .Scoped()
-			         //
-			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
-			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
-
-					 //
-			         .Start<IToken>()
+			parameter.Start<IToken>()
 			         .Forward<Token>()
 			         .Scoped()
 			         //
@@ -46,10 +32,6 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<RefreshCurrentPath>()
 			         .And<CurrentPath>()
-			         .Scoped()
-			         //
-			         .Then.Start<AsyncLock>()
-			         .Use<StateConnectionLock>()
 			         .Scoped()
 			         //
 			         .Then.Start<IScopedTable>()

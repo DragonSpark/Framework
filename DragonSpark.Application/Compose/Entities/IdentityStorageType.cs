@@ -18,8 +18,12 @@ namespace DragonSpark.Application.Compose.Entities
 		}
 
 		public IdentityStorageUsing<T, TContext> Application()
-			=> new(_subject.Then(Registrations<T>.Default).Then(AddIdentityComponents<T>.Default), _configure);
+			=> new(_subject.Then(Registrations<T>.Default)
+			               .Then(AddIdentityComponents<T>.Default)
+			               .Then(DragonSpark.Application.Entities.Registrations<TContext>.Default),
+			       _configure);
 
-		public IdentityStorageUsing<T, TContext> Is => new(_subject, _configure);
+		public IdentityStorageUsing<T, TContext> Is
+			=> new(_subject.Then(DragonSpark.Application.Entities.Registrations<TContext>.Default), _configure);
 	}
 }

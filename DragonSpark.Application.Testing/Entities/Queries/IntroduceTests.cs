@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task Verify()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyCompose()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -110,7 +110,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyComposeTwo()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One", Amount   = 5 },
@@ -190,7 +190,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		[Fact]
 		public async Task VerifyComposeThree()
 		{
-			var contexts = new DbContexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 			{
 				await using var context = contexts.Get();
 				context.Subjects.AddRange(new Subject { Name = "One", Amount   = 05, ThirdAmount = -.5f },

@@ -8,8 +8,6 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
-	class Class2 {}
-
 	public sealed class QueryAdapter<T>
 	{
 		readonly IQuery<T> _subject;

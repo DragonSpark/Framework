@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,15 +31,11 @@ namespace DragonSpark.Application.Compose.Entities
 		public void Execute(IServiceCollection parameter)
 		{
 			_services.Get(parameter)
-			         .Start<IHostInitializer>()
-			         .Forward<StorageInitializer<TContext>>()
-			         .Singleton()
-			         //
-			         .Then.Start<ISchemaModification>()
+			         /*.Start<ISchemaModification>()
 			         .Forward<SchemaModification>()
-			         .Singleton()
+			         .Singleton()*/
 			         //
-			         .Then.AddDefaultIdentity<T>(_identity)
+			         .AddDefaultIdentity<T>(_identity)
 			         .AddEntityFrameworkStores<TContext>();
 		}
 	}

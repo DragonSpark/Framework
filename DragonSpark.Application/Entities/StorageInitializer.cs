@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
+	public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 	{
 		readonly Array<IInitializer<T>> _initializers;
 

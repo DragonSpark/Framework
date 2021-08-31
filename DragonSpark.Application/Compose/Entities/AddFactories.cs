@@ -5,6 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
+	// TODO: Remove
 	sealed class AddFactories<T> : IAlteration<IServiceCollection> where T : DbContext
 	{
 		readonly IStorageConfiguration     _storage;
@@ -24,7 +25,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public IServiceCollection Get(IServiceCollection parameter)
 		{
-			var collection = parameter.AddDbContextFactory<T>(_storage.Get(parameter));
+			var collection = parameter.AddPooledDbContextFactory<T>(_storage.Get(parameter));
 
 			return _lifetime switch
 			{

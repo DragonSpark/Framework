@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Evaluation;
 using DragonSpark.Application.Entities.Queries.Scoped.Materialize.Specialized;
@@ -35,7 +35,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var evaluate =
-				new EvaluateToArray<string, Context, string>(new DbContexts<Context>(factory), Selected.Default);
+				new EvaluateToArray<string, Context, string>(new Contexts<Context>(factory), Selected.Default);
 			{
 				var results = await evaluate.Await("One");
 				var open    = results.Open();
@@ -89,7 +89,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 			var evaluate =
-				new EvaluateToArray<Input, ContextWithData, string>(new DbContexts<ContextWithData>(contexts),
+				new EvaluateToArray<Input, ContextWithData, string>(new Contexts<ContextWithData>(contexts),
 				                                                    ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new(id, "One"));
@@ -244,7 +244,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				this(new PooledDbContextFactory<ContextWithData>(options)) {}
 
 			Benchmarks(IDbContextFactory<ContextWithData> factory)
-				: this(factory, new DbContexts<ContextWithData>(factory)) {}
+				: this(factory, new Contexts<ContextWithData>(factory)) {}
 
 			Benchmarks(IDbContextFactory<ContextWithData> factory, IContexts<ContextWithData> contexts)
 				: this(contexts,

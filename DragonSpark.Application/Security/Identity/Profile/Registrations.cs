@@ -23,9 +23,10 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			         .Then.Start<ICreateRequest>()
 			         .Forward<CreateRequest<T>>()
 			         .Scoped()
-					 //
+			         //
 			         .Then.Start<INew<T>>()
-			         .Forward<New<T>>().Scoped()
+			         .Forward<New<T>>()
+			         .Scoped()
 			         //
 			         .Then.Start<ICreate<T>>()
 			         .Forward<Create<T>>()

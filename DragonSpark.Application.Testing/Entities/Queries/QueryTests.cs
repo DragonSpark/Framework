@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Evaluation;
@@ -58,7 +59,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var contexts = new DbContexts<Context>(factory);
+			var contexts = new Contexts<Context>(factory);
 			var invoke   = new Invoke<Context, Subject>(contexts, Query.Default);
 			{
 				await using var invocation = invoke.Get(None.Default);
@@ -84,7 +85,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var evaluate = new SubjectsNotTwo(new DbContexts<Context>(factory));
+			var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory));
 			{
 				var results  = await evaluate.Await();
 				var open = results.Open();
@@ -109,7 +110,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var evaluate = new SubjectsNotTwo(new DbContexts<Context>(factory), Complex.Default);
+			var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory), Complex.Default);
 			{
 				var results  = await evaluate.Await();
 				var open = results.Open();
@@ -134,7 +135,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			counter.Get().Should().Be(1);
 
-			var evaluate = new SubjectsNotWithParameter(new DbContexts<Context>(factory));
+			var evaluate = new SubjectsNotWithParameter(new Contexts<Context>(factory));
 			{
 				var results  = await evaluate.Await("One");
 				var open = results.Open();
@@ -192,7 +193,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = new SubjectsNotTwo(new DbContexts<Context>(factory));
+			var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory));
 			{
 				var             results  = await evaluate.Await();
 				await using var context  = factory.CreateDbContext();
@@ -276,8 +277,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
 
 			Benchmarks(IDbContextFactory<Context> factory)
-				: this(new SubjectsNotTwo(new DbContexts<Context>(factory)),
-				       new SubjectsNotWithParameter(new DbContexts<Context>(factory)),
+				: this(new SubjectsNotTwo(new Contexts<Context>(factory)),
+				       new SubjectsNotWithParameter(new Contexts<Context>(factory)),
 				       new Scoped(factory.CreateDbContext()).Get()) {}
 
 			Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
