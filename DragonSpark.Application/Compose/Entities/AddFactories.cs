@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Application.Entities.Configure;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

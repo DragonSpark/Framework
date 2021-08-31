@@ -1,12 +1,8 @@
-﻿using DragonSpark.Model.Selection;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Application.Entities
 {
-	public readonly record struct SchemaInput(Type ContextType, ModelBuilder Subject);
-
-	public interface ISchemaModification : ISelect<SchemaInput, ModelBuilder> {}
+	public interface ISchemaModification : ICommand<ModelCreating> {}
 
 	public class SchemaModification : ISchemaModification
 	{
@@ -14,16 +10,14 @@ namespace DragonSpark.Application.Entities
 
 		public SchemaModification(params IModifySchema[] initializers) => _initializers = initializers;
 
-		public ModelBuilder Get(SchemaInput parameter)
+		public void Execute(ModelCreating parameter)
 		{
-			var (contextType, result) = parameter;
-
+			var (context, builder) = parameter;
+			var type = context.GetType();
 			for (byte i = 0; i < _initializers.Length; i++)
 			{
-				result = _initializers[i].Get(contextType)?.Get(result) ?? result;
+				_initializers[i].Get(type)?.Execute(builder);
 			}
-
-			return result;
 		}
 	}
 }

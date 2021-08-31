@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities
+namespace DragonSpark.Application.Entities.Configure
 {
 	public sealed class ConfigureSqlServer<T> : ConfigureSqlServer
 	{
@@ -19,8 +19,7 @@ namespace DragonSpark.Application.Compose.Entities
 
 	public class ConfigureSqlServer : ICommand<DbContextOptionsBuilder>
 	{
-		readonly string _connection;
-		readonly string _name;
+		readonly string _connection, _name;
 
 		public ConfigureSqlServer(string connection, string name)
 		{

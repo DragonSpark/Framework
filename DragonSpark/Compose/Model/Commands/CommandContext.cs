@@ -37,6 +37,9 @@ namespace DragonSpark.Compose.Model.Commands
 		public CommandContext Bind(Func<T> parameter)
 			=> new(new DelegatedParameterCommand<T>(Get().Execute, parameter));
 
+		public CommandContext<T> Prepend(ICommand<T> command)
+			=> new(new AppendedCommand<T>(command, Get()));
+
 		public CommandContext<T> Prepend(params ICommand<T>[] commands)
 			=> new(new CompositeCommand<T>(commands.Append(Get()).Result()));
 

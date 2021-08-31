@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Compose.Entities;
+﻿using DragonSpark.Application.Entities.Configure;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +19,6 @@ namespace DragonSpark.Application.Entities.Design
 			                       .AndOf<T>()
 			                       .By.Instantiation.Get()
 			                       .Get) {}
-
-		protected StorageBuilder(Func<DbContextOptions<T>, T> create)
-			: this(ConfigureSqlServer<T>.Default.Execute, create) {}
 
 		protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure, Func<DbContextOptions<T>, T> create)
 		{

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Application.Entities.Configure;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

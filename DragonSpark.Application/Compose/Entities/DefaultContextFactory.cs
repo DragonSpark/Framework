@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
-	public sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
+	sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
 	{
 		public static DefaultContextFactory<T> Default { get; } = new DefaultContextFactory<T>();
 

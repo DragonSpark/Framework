@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities
+namespace DragonSpark.Application.Entities.Configure
 {
 	sealed class RuntimeModelConfiguration : FixedResult<IServiceCollection, Action<DbContextOptionsBuilder>>,
 	                                         IStorageConfiguration

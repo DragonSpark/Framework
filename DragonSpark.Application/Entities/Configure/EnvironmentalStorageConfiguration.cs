@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities
+namespace DragonSpark.Application.Entities.Configure
 {
 	sealed class EnvironmentalStorageConfiguration
 		: SelectedInstanceSelector<IServiceCollection, Action<DbContextOptionsBuilder>>,

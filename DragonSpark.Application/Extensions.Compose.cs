@@ -8,6 +8,7 @@ using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Configure;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Compose;
