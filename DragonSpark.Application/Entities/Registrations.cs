@@ -17,10 +17,6 @@ namespace DragonSpark.Application.Entities
 			         .Forward<Contexts<T>>()
 			         .Singleton()
 					 //
-					 .Then.Start<IClear>()
-			         .Forward<Clear>()
-			         .Scoped()
-			         //
 			         .Then.Start<ISave>()
 			         .Forward<Save>()
 			         .Scoped()
