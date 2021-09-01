@@ -22,6 +22,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 	public class StartWhereMany<T, TTo> : WhereMany<T, TTo> where T : class
 	{
 		protected StartWhereMany(Expression<Func<T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
-			: base(Set<T>.Default, where, select) {}
+			: base(Set<T>.Default.Then(), where, select) {}
 	}
 }

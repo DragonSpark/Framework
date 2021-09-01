@@ -33,7 +33,7 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 			Expression<Func<DbContext, IQueryable<T1>>> first, Expression<Func<DbContext, IQueryable<T2>>> second,
 			Expression<Func<DbContext, IQueryable<T3>>> third,
 			Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>, IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, first, second, third, select) {}
+			: base(Set<TFrom>.Default.Then(), first, second, third, select) {}
 
 		// ReSharper disable once TooManyDependencies
 		protected StartIntroduceThree(
@@ -41,6 +41,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 			Expression<Func<DbContext, IQueryable<T3>>> third,
 			Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
 				IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, first, second, third, select) {}
+			: base(Set<TFrom>.Default.Then(), first, second, third, select) {}
 	}
 }

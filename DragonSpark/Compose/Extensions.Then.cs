@@ -247,6 +247,8 @@ namespace DragonSpark.Compose
 
 		public static T Instance<T>(this ResultContext<T> @this) => @this.Get().Get();
 
+		public static T Instance<T>(this IResult<IResult<T>> @this) => @this.Get().Get();
+
 		public static ISelect<_, T> Return<_, T>(this Selector<_, T> @this) => @this.Get();
 	}
 }

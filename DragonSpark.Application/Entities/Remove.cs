@@ -12,21 +12,21 @@ namespace DragonSpark.Application.Entities
 
 	sealed class Remove<T> : IRemove<T> where T : class
 	{
-		readonly DbSet<T> _set;
-		readonly ISave    _save;
+		readonly DbContext _context;
+		readonly DbSet<T>  _set;
 
-		public Remove(DbContext context, ISave save) : this(context.Set<T>(), save) {}
+		public Remove(DbContext context) : this(context, context.Set<T>()) {}
 
-		public Remove(DbSet<T> @set, ISave save)
+		public Remove(DbContext context, DbSet<T> @set)
 		{
-			_set  = set;
-			_save = save;
+			_context = context;
+			_set     = set;
 		}
 
 		public async ValueTask Get(T parameter)
 		{
 			_set.Remove(parameter);
-			await _save.Await();
+			await _context.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 }

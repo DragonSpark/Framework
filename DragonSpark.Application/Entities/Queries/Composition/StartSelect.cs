@@ -5,11 +5,11 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 {
 	public class StartSelect<TIn, TFrom, TTo> : Select<TIn, TFrom, TTo> where TFrom : class
 	{
-		protected StartSelect(Expression<Func<TFrom, TTo>> select) : base(Set<TIn, TFrom>.Default, select) {}
+		protected StartSelect(Expression<Func<TFrom, TTo>> select) : base(Set<TIn, TFrom>.Default.Then(), select) {}
 	}
 
 	public class StartSelect<TFrom, TTo> : Select<TFrom, TTo> where TFrom : class
 	{
-		protected StartSelect(Expression<Func<TFrom, TTo>> select) : base(Set<TFrom>.Default, select) {}
+		protected StartSelect(Expression<Func<TFrom, TTo>> select) : base(Set<TFrom>.Default.Then(), select) {}
 	}
 }

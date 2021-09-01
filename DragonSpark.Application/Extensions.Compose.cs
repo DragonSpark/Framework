@@ -101,12 +101,18 @@ namespace DragonSpark.Application
 
 		public static ContextsAdapter<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
-		public static QueryExpressionAdapter<T> Then<T>(this IQuery<T> @this) => @this.Get().Then();
+		public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
-		public static QueryExpressionAdapter<T> Then<T>(this Expression<Func<DbContext, None, IQueryable<T>>> @this)
+		public static QueryComposer<T> Then<T>(this IQuery<T> @this) => new(@this);
+
+		/*public static ElidedParameterExpressionComposer<T> Then<T>(this IQuery<T> @this) => @this.Get().Then();*/
+
+		public static PlaceholderParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, None, IQueryable<T>>> @this)
 			=> new(@this);
 
-		public static ExpressionAdapter<T> Then<T>(this Expression<Func<DbContext, IQueryable<T>>> @this) => new(@this);
+		public static ElidedParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, IQueryable<T>>> @this) => new(@this);
+
+		// Scoped:
 
 		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
 			=> new(@this);
@@ -121,17 +127,11 @@ namespace DragonSpark.Application
 		/**/
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)
-			where T : class
-		{
-			return Generator<T>(_, new Configuration(seed));
-		}
+			where T : class => _.Generator<T>(new Configuration(seed));
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _,
 		                                               Action<IAutoGenerateConfigBuilder> configure)
-			where T : class
-		{
-			return Generator<T>(_, new Configuration(null, configure));
-		}
+			where T : class => _.Generator<T>(new Configuration(null, configure));
 
 		public static GeneratorContext<T> Generator<T>(this ModelContext _, Configuration configuration)
 			where T : class => new(configuration);

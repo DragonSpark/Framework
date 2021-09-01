@@ -1,7 +1,8 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
-using LinqKit;
+using DragonSpark.Compose;
+using DragonSpark.Model;
+using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,62 +11,70 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
-	public sealed class ContextQueryAdapter<TIn, TContext, T> where TContext : DbContext
+	public sealed class QueryComposer<T> : QueryComposer<None, T>
 	{
-		readonly IContexts<TContext> _contexts;
-		readonly IQuery<TIn, T>      _query;
+		public static implicit operator Expression<Func<DbContext, IQueryable<T>>>(QueryComposer<T> instance)
+			=> instance.Instance().Then().Elide();
 
-		public ContextQueryAdapter(IContexts<TContext> contexts, IQuery<TIn, T> query)
-		{
-			_contexts = contexts;
-			_query    = query;
-		}
+		public QueryComposer(IQuery<None, T> subject) : base(subject) {}
 
-		public ContextQueryAdapter<TIn, TContext, T> Where(Expression<Func<T, bool>> where)
-			=> Next(new Where<TIn, T>(_query.Get(), where));
+		public QueryComposer<TIn, T> Accept<TIn>() => new(new Query<TIn, T>(this));
+	}
 
-		public ContextQueryAdapter<TIn, TContext, T> Where(Expression<Func<TIn, T, bool>> where)
-			=> Next(new Where<TIn, T>(_query.Get(), where));
+	public class QueryComposer<TIn, T> : Instance<IQuery<TIn, T>>
+	{
+		public static implicit operator Expression<Func<DbContext, TIn, IQueryable<T>>>(QueryComposer<TIn, T> instance)
+			=> instance.Get().Get();
 
-		public ContextQueryAdapter<TIn, TContext, T> OrderBy<TProperty>(Expression<Func<TIn, T, TProperty>> property)
-			=> Next(new OrderBy<TIn, T, TProperty>(_query.Get(), property));
+		readonly IQuery<TIn, T> _subject;
 
-		public ContextQueryAdapter<TIn, TContext, T> OrderBy<TProperty>(Expression<Func<T, TProperty>> property)
-			=> Next(new OrderBy<TIn, T, TProperty>(_query.Get(), property));
+		public QueryComposer(IQuery<TIn, T> subject) : base(subject) => _subject = subject;
 
-		public ContextQueryAdapter<TIn, TContext, T> OrderByDescending<TProperty>(
+		public QueryComposer<TIn, T> Where(Expression<Func<T, bool>> where)
+			=> Next(new Where<TIn, T>(_subject.Get(), where));
+
+		public QueryComposer<TIn, T> Where(Expression<Func<TIn, T, bool>> where)
+			=> Next(new Where<TIn, T>(_subject.Get(), where));
+
+		public QueryComposer<TIn, T> OrderBy<TProperty>(Expression<Func<TIn, T, TProperty>> property)
+			=> Next(new OrderBy<TIn, T, TProperty>(_subject.Get(), property));
+
+		public QueryComposer<TIn, T> OrderBy<TProperty>(Expression<Func<T, TProperty>> property)
+			=> Next(new OrderBy<TIn, T, TProperty>(_subject.Get(), property));
+
+		public QueryComposer<TIn, T> OrderByDescending<TProperty>(
 			Expression<Func<TIn, T, TProperty>> property)
-			=> Next(new OrderByDescending<TIn, T, TProperty>(_query.Get(), property));
+			=> Next(new OrderByDescending<TIn, T, TProperty>(_subject.Get(), property));
 
-		public ContextQueryAdapter<TIn, TContext, T> OrderByDescending<TProperty>(
+		public QueryComposer<TIn, T> OrderByDescending<TProperty>(
 			Expression<Func<T, TProperty>> property)
-			=> Next(new OrderByDescending<TIn, T, TProperty>(_query.Get(), property));
+			=> Next(new OrderByDescending<TIn, T, TProperty>(_subject.Get(), property));
 
-		public ContextQueryAdapter<TIn, TContext, TOther> OfType<TOther>() where TOther : class, T
+		public QueryComposer<TIn, TOther> OfType<TOther>() where TOther : class, T
 			=> Select(x => x.OfType<TOther>());
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(Expression<Func<T, TTo>> select)
-			=> Next(new Select<TIn, T, TTo>(_query.Get(), select));
+		public QueryComposer<TIn, TTo> Select<TTo>(Expression<Func<T, TTo>> select)
+			=> Next(new Select<TIn, T, TTo>(_subject.Get(), select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(Expression<Func<TIn, T, TTo>> select)
-			=> Next(new Select<TIn, T, TTo>(_query.Get(), select));
+		public QueryComposer<TIn, TTo> Select<TTo>(Expression<Func<TIn, T, TTo>> select)
+			=> Next(new Select<TIn, T, TTo>(_subject.Get(), select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo>
+		public QueryComposer<TIn, TTo>
 			Select<TTo>(Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
-			=> Next(new Combine<TIn, T, TTo>(_query.Get(), select));
+			=> Next(new Combine<TIn, T, TTo>(_subject.Get(), select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo>
+		public QueryComposer<TIn, TTo>
 			Select<TTo>(Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> select)
-			=> Next(new Combine<TIn, T, TTo>(_query.Get(), select));
+			=> Next(new Combine<TIn, T, TTo>(_subject.Get(), select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> SelectMany<TTo>(Expression<Func<T, IEnumerable<TTo>>> select)
-			=> Next(new SelectMany<TIn, T, TTo>(_query.Get(), select));
+		public QueryComposer<TIn, TTo> SelectMany<TTo>(Expression<Func<T, IEnumerable<TTo>>> select)
+			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> SelectMany<TTo>(
+		public QueryComposer<TIn, TTo> SelectMany<TTo>(
 			Expression<Func<TIn, T, IEnumerable<TTo>>> select)
-			=> Next(new SelectMany<TIn, T, TTo>(_query.Get(), select));
+			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
-		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TOther> other)
+		/*public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TOther> other)
 			=> Introduce(other.Then().Remove());
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TIn, TOther> other)
@@ -73,11 +82,11 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
 			Introduce<TOther>(Expression<Func<DbContext, IQueryable<TOther>>> other)
-			=> new(_contexts, _query, (context, _) => other.Invoke(context));
+			=> new(_contexts, _subject, (context, _) => other.Invoke(context));
 
 		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
 			Introduce<TOther>(Expression<Func<DbContext, TIn, IQueryable<TOther>>> other)
-			=> new(_contexts, _query, other);
+			=> new(_contexts, _subject, other);
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
 			IQuery<T1> first, IQuery<T2> second)
@@ -113,7 +122,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                  Expression<Func<DbContext, TIn, IQueryable<T2>>> second)
-			=> new(_contexts, _query, first, second);
+			=> new(_contexts, _subject, first, second);
 
 		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<T2> second, IQuery<T3> third)
@@ -193,10 +202,8 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, TIn, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, TIn, IQueryable<T3>>> third)
-			=> new(_contexts, _query, first, second, third);
-
-		ContextQueryAdapter<TIn, TContext, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(_contexts, next);
-
-		public FormAdapter<TIn, TContext, T> To => new(_contexts, _query);
+			=> new(_contexts, _subject, first, second, third);
+		*/
+		QueryComposer<TIn, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(next);
 	}
 }

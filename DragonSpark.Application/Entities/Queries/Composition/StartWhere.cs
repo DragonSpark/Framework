@@ -12,6 +12,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class StartWhere<T> : Where<T> where T : class
 	{
-		protected StartWhere(Expression<Func<T, bool>> where) : base(Set<T>.Default, where) {}
+		protected StartWhere(Expression<Func<T, bool>> where) : base(Set<T>.Default.Then(), where) {}
 	}
 }

@@ -22,11 +22,11 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 	{
 		protected StartIntroduce(Expression<Func<DbContext, IQueryable<TOther>>> other,
 		                         Expression<Func<IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, other, select) {}
+			: base(Set<TFrom>.Default.Then(), other, select) {}
 
 		protected StartIntroduce(Expression<Func<DbContext, IQueryable<TOther>>> other,
 		                         Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>>
 			                         select)
-			: base(Set<TFrom>.Default, other, select) {}
+			: base(Set<TFrom>.Default.Then(), other, select) {}
 	}
 }

@@ -3,6 +3,7 @@ using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace DragonSpark.Compose
 {
@@ -14,8 +15,12 @@ namespace DragonSpark.Compose
 
 		public static Lease<T> AsLease<T>(this ICollection<T> @this) => CollectionLease<T>.Default.Get(@this);
 
+		public static Span<T> AsSpan<T>(this List<T> @this) => CollectionsMarshal.AsSpan(@this);
+
 		public static Lease<T> AsLease<T>(this EnumerableExtensions.ValueEnumerable<T> @this)
 			=> EnumerableLease<T>.Default.Get(@this);
+		public static Lease<T> AsLease<T>(this ArrayExtensions.SpanValueEnumerable<T> @this)
+			=> SpanLeases<T>.Default.Get(@this);
 
 		public static Lease<T> AsLease<T>(this ArrayExtensions.ArraySegmentValueEnumerable<T> @this)
 			=> EnumerableListLease<T>.Default.Get(@this);

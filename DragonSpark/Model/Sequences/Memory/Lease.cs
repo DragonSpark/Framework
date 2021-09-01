@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-
-
 	public readonly struct Lease<T> : IDisposable, IAsyncDisposable
 	{
+		public static implicit operator Memory<T>(Lease<T> instance) => instance.AsMemory();
+
 		public static Lease<T> Default { get; } = new(new ValueMemoryOwner<T>(), Memory<T>.Empty, 0);
 
 		readonly ValueMemoryOwner<T> _owner;

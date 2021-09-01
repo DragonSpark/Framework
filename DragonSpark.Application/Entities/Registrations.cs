@@ -16,14 +16,9 @@ namespace DragonSpark.Application.Entities
 			parameter.Start<IContexts<T>>()
 			         .Forward<Contexts<T>>()
 			         .Singleton()
-					 //
-			         .Then.Start<ISave>()
-			         .Forward<Save>()
-			         .Scoped()
 			         //
-			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
-			         .AddScoped(typeof(IRemove<>), typeof(Remove<>))
-				;
+			         .Then.AddScoped(typeof(IRemove<>), typeof(Remove<>))
+			         .AddScoped(typeof(ISave<>), typeof(Save<>));
 		}
 	}
 }

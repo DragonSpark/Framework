@@ -16,6 +16,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 	public class StartSelectMany<TFrom, TTo> : SelectMany<TFrom, TTo> where TFrom : class
 	{
 		protected StartSelectMany(Expression<Func<TFrom, IEnumerable<TTo>>> select)
-			: base(Set<TFrom>.Default, select) {}
+			: base(Set<TFrom>.Default.Then(), select) {}
 	}
 }

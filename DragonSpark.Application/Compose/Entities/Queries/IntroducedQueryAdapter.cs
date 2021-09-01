@@ -22,11 +22,11 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_other    = other;
 		}
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<TIn, IQueryable<T>, IQueryable<TOther>, IQueryable<TTo>>> @select)
 			=> new(_contexts, new Introduce<TIn, T, TOther, TTo>(_query.Get(), _other, select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TOther>, IQueryable<TTo>>> @select)
 			=> new(_contexts, new Introduce<TIn, T, TOther, TTo>(_query.Get(), _other, select));
 	}
@@ -49,11 +49,11 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_second   = second;
 		}
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<TIn, IQueryable<T>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> @select)
 			=> new(_contexts, new IntroduceTwo<TIn, T, T1, T2, TTo>(_query.Get(), _first, _second, select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> @select)
 			=> new(_contexts, new IntroduceTwo<TIn, T, T1, T2, TTo>(_query.Get(), _first, _second, select));
 	}
@@ -79,13 +79,13 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_third    = third;
 		}
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<TIn, IQueryable<T>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>, IQueryable<TTo>>>
 				@select)
 			=> new(_contexts,
 			       new IntroduceThree<TIn, T, T1, T2, T3, TTo>(_query.Get(), _first, _second, _third, select));
 
-		public ContextQueryAdapter<TIn, TContext, TTo> Select<TTo>(
+		public ContextQueryComposer<TIn, TContext, TTo> Select<TTo>(
 			Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<T1>, IQueryable<T2>, IQueryable<T3>,
 					IQueryable<TTo>>>
 				@select)

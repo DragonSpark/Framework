@@ -10,18 +10,18 @@ namespace DragonSpark.Application.Entities.Queries
 {
 	public class Query<T> : Query<None, T>, IQuery<T>
 	{
-		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
+		public Query(Expression<Func<DbContext, IQueryable<T>>> instance) : base(instance) {}
 	}
 
 	public class Query<TIn, T> : Instance<Expression<Func<DbContext, TIn, IQueryable<T>>>>, IQuery<TIn, T>
 	{
-		protected Query(Expression<Func<DbContext, IQueryable<T>>> instance)
+		public Query(Expression<Func<DbContext, IQueryable<T>>> instance)
 			: base((context, _) => instance.Invoke(context)) {}
 
-		protected Query(Expression<Func<TIn, IQueryable<T>>> instance)
+		public Query(Expression<Func<TIn, IQueryable<T>>> instance)
 			: base((context, @in) => instance.Invoke(@in)) {}
 
-		protected Query(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
+		public Query(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
 	}
 
 }

@@ -15,10 +15,10 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ContextsAdapter<TAccept, T> Accept<TAccept>() => new(_subject);
 
-		public ContextQueryAdapter<None, T, TElement> Use<TElement>() where TElement : class
+		public ContextQueryComposer<None, T, TElement> Use<TElement>() where TElement : class
 			=> new(_subject, Set<TElement>.Default);
 
-		public ContextQueryAdapter<TIn, T, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
+		public ContextQueryComposer<TIn, T, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
 			=> new(_subject, query);
 	}
 
@@ -28,9 +28,9 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ContextsAdapter(IContexts<T> subject) => _subject = subject;
 
-		public ContextQueryAdapter<TIn, T, TElement> Use<TElement>() where TElement : class
+		public ContextQueryComposer<TIn, T, TElement> Use<TElement>() where TElement : class
 			=> new(_subject, Set<TIn, TElement>.Default);
 
-		public ContextQueryAdapter<TIn, T, TElement> Use<TElement>(IQuery<TIn, TElement> query) => new(_subject, query);
+		public ContextQueryComposer<TIn, T, TElement> Use<TElement>(IQuery<TIn, TElement> query) => new(_subject, query);
 	}
 }

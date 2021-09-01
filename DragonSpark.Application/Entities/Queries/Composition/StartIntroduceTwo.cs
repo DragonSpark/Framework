@@ -28,12 +28,12 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		protected StartIntroduceTwo(
 			Expression<Func<DbContext, IQueryable<T1>>> first, Expression<Func<DbContext, IQueryable<T2>>> second,
 			Expression<Func<IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, first, second, select) {}
+			: base(Set<TFrom>.Default.Then(), first, second, select) {}
 
 		// ReSharper disable once TooManyDependencies
 		protected StartIntroduceTwo(
 			Expression<Func<DbContext, IQueryable<T1>>> first, Expression<Func<DbContext, IQueryable<T2>>> second,
 			Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<T1>, IQueryable<T2>, IQueryable<TTo>>> select)
-			: base(Set<TFrom>.Default, first, second, select) {}
+			: base(Set<TFrom>.Default.Then(), first, second, select) {}
 	}
 }
