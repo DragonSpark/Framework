@@ -5,7 +5,6 @@ using DragonSpark.Model.Selection.Stores;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Compose
 {
@@ -24,8 +23,7 @@ namespace DragonSpark.Compose
 
 		public static IConditional<TIn, TOut> ToStore<TIn, TOut>(this IReadOnlyDictionary<TIn, TOut> @this)
 			where TIn : notnull
-		// ReSharper disable once RedundantNameQualifier
-			=> Compose.Start.An.Extent<DragonSpark.Model.Selection.Stores.Lookup<TIn, TOut>>().From(@this);
+			=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
 			where TIn : notnull
@@ -35,30 +33,22 @@ namespace DragonSpark.Compose
 			where TIn : notnull
 			=> ConcurrentTables<TIn, TOut>.Default.Get(@this);
 
-		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConditionalWeakTable<TIn, TOut> @this)
-			where TOut : class where TIn : class
-			=> new ReferenceValueTable<TIn, TOut>(@this);
-
-		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConditionalWeakTable<TIn, Tuple<TOut>> @this)
-			where TIn : class where TOut : struct
-			=> new StructureValueTable<TIn, TOut>(@this);
-
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
-			=> @this.ToDelegateReference().ToTable();
+			=> @this as ITable<TIn, TOut> ?? @this.ToDelegate().ToTable();
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this Func<TIn, TOut> @this)
 			where TIn : notnull
-			=> Tables<TIn, TOut>.Default.Get(@this);
+			=> @this.Target as ITable<TIn, TOut> ?? Tables<TIn, TOut>.Default.Get(@this);
 
 		public static ITable<TIn, TOut> ToStandardTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
-			=> @this.ToDelegateReference().ToStandardTable();
+			=> @this.ToDelegate().ToStandardTable();
 
 		public static ITable<TIn, TOut> ToStandardTable<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                           IDictionary<TIn, TOut> table)
 			where TIn : notnull
-			=> @this.ToDelegateReference().ToStandardTable(table);
+			=> @this.ToDelegate().ToStandardTable(table);
 
 		public static ITable<TIn, TOut> ToStandardTable<TIn, TOut>(this Func<TIn, TOut> @this)
 			where TIn : notnull
@@ -71,12 +61,12 @@ namespace DragonSpark.Compose
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
-			=> @this.ToDelegateReference().ToConcurrentTable();
+			=> @this.ToDelegate().ToConcurrentTable();
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this ISelect<TIn, TOut> @this,
 		                                                             ConcurrentDictionary<TIn, TOut> table)
 			where TIn : notnull
-			=> @this.ToDelegateReference().ToConcurrentTable(table);
+			=> @this.ToDelegate().ToConcurrentTable(table);
 
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this Func<TIn, TOut> @this)
 			where TIn : notnull

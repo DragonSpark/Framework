@@ -10,7 +10,7 @@ namespace DragonSpark.Model.Selection.Stores
 		public static ReferenceTables<TIn, TOut> Default { get; } = new ReferenceTables<TIn, TOut>();
 
 		ReferenceTables() : this(IsValueType.Default.Get(A.Type<TOut>())
-			                         ? typeof(StructureValueTable<,>)
+			                         ? typeof(ReferenceVariable<,>)
 			                         : typeof(ReferenceValueTable<,>)) {}
 
 		public ReferenceTables(Type type) : base(Start.A.Generic(type)

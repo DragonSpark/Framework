@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Model.Selection.Stores
 {
@@ -7,7 +8,10 @@ namespace DragonSpark.Model.Selection.Stores
 	{
 		readonly ITable<TIn, IMutable<TOut>> _store;
 
-		public ReferenceVariable() : this(new ReferenceValueTable<TIn, IMutable<TOut>>(_ => new Variable<TOut>())) {}
+		public ReferenceVariable() : this(_ => default!) {}
+
+		public ReferenceVariable(Func<TIn, TOut> create)
+			: this(new ReferenceValueTable<TIn, IMutable<TOut>>(@in => new Variable<TOut>(create(@in)))) {}
 
 		public ReferenceVariable(ITable<TIn, IMutable<TOut>> store) : this(store.Condition, store) {}
 
