@@ -23,7 +23,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then().Use<Subject>().Where(x => x.Name != "Two").Select(x => x.Name).To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Where(x => x.Name != "Two")
+			                    .Select(x => x.Name)
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -43,14 +47,17 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then().Use<Subject>().Where(x => x.Name != "Two").Select(x => x.Name).To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Where(x => x.Name != "Two")
+			                    .Select(x => x.Name)
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
 				open.Should().HaveCount(2);
 				open.Should().BeEquivalentTo("One", "Three");
 			}
-
 		}
 
 		sealed class Context : DbContext

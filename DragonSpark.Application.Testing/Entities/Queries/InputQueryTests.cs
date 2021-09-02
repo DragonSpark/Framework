@@ -132,12 +132,12 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
 
-			var sut = contexts.Then()
-			                  .Accept<Input>()
-			                  .Use<Subject>()
-			                  .Where((input, subject) => subject.Name.StartsWith(input.Name))
-			                  .Where((input, subject) => input.Identity == subject.Id)
-			                  .To.Single();
+			var sut = Start.A.Query<Subject>()
+			               .Accept<Input>()
+			               .Where((input, subject) => subject.Name.StartsWith(input.Name))
+			               .Where((input, subject) => input.Identity == subject.Id)
+			               .Invoke(contexts)
+			               .To.Single();
 			{
 				await using var data = contexts.Get();
 				var             item = await sut.Await(new Input(id, "Two"));
@@ -158,13 +158,13 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
 
-			var sut = contexts.Then()
-			                  .Accept<Input>()
-			                  .Use<Subject>()
-			                  .Where((input, subject) => subject.Name.StartsWith(input.Name))
-			                  .Where((input, subject) => input.Identity == subject.Id)
-			                  .Select(x => new Result(x.Id, x.Name))
-			                  .To.Single();
+			var sut = Start.A.Query<Subject>()
+			               .Accept<Input>()
+			               .Where((input, subject) => subject.Name.StartsWith(input.Name))
+			               .Where((input, subject) => input.Identity == subject.Id)
+			               .Select(x => new Result(x.Id, x.Name))
+			               .Invoke(contexts)
+			               .To.Single();
 			{
 				var item = await sut.Await(new Input(id, "Two"));
 				item.Identity.Should().Be(id);
@@ -248,14 +248,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			Benchmarks(IDbContextFactory<ContextWithData> factory, IContexts<ContextWithData> contexts)
 				: this(contexts,
-				       contexts.Then()
-				               .Accept<Input>()
-				               .Use<Subject>()
-				               .Where((input, subject)
-					                      => subject.Name.StartsWith(input.Name))
-				               .Where((input, subject) => input.Identity == subject.Id)
-				               .Select(x => new Result(x.Id, x.Name))
-				               .To.Single(),
+				       Start.A.Query<Subject>()
+				            .Accept<Input>()
+				            .Where((input, subject)
+					                   => subject.Name.StartsWith(input.Name))
+				            .Where((input, subject) => input.Identity == subject.Id)
+				            .Select(x => new Result(x.Id, x.Name))
+				            .Invoke(contexts)
+				            .To.Single(),
 				       new Scoped(factory.CreateDbContext())) {}
 
 			Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select,

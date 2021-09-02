@@ -69,11 +69,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default)
-			                       .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default)
+			                    .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -94,11 +94,11 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default)
-			                       .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default)
+			                    .Select((_, subjects, names) => subjects.Where(x => names.Contains(x.Name)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -130,13 +130,13 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default, Amounts.Default)
-			                       .Select((_, subjects, names, amounts)
-				                               => subjects.Where(x => names.Contains(x.Name))
-				                                          .Where(x => amounts.Contains(x.Amount)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default, Amounts.Default)
+			                    .Select((_, subjects, names, amounts)
+				                            => subjects.Where(x => names.Contains(x.Name))
+				                                       .Where(x => amounts.Contains(x.Amount)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -170,13 +170,13 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default, Amounts.Default)
-			                       .Select((_, subjects, names, amounts)
-				                               => subjects.Where(x => names.Contains(x.Name))
-				                                          .Where(x => amounts.Contains(x.Amount)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default, Amounts.Default)
+			                    .Select((_, subjects, names, amounts)
+				                            => subjects.Where(x => names.Contains(x.Name))
+				                                       .Where(x => amounts.Contains(x.Amount)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -211,14 +211,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
-			                       .Select((_, subjects, names, amounts, thirds)
-				                               => subjects.Where(x => names.Contains(x.Name))
-				                                          .Where(x => amounts.Contains(x.Amount))
-				                                          .Where(x => thirds.Contains(x.ThirdAmount)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
+			                    .Select((_, subjects, names, amounts, thirds)
+				                            => subjects.Where(x => names.Contains(x.Name))
+				                                       .Where(x => amounts.Contains(x.Amount))
+				                                       .Where(x => thirds.Contains(x.ThirdAmount)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -256,14 +256,14 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then()
-			                       .Use<Subject>()
-			                       .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
-			                       .Select((_, subjects, names, amounts, thirds)
-				                               => subjects.Where(x => names.Contains(x.Name))
-				                                          .Where(x => amounts.Contains(x.Amount))
-				                                          .Where(x => thirds.Contains(x.ThirdAmount)))
-			                       .To.Array();
+			var evaluate = Start.A.Query<Subject>()
+			                    .Introduce(OtherNames.Default, Amounts.Default, ThirdAmounts.Default)
+			                    .Select((_, subjects, names, amounts, thirds)
+				                            => subjects.Where(x => names.Contains(x.Name))
+				                                       .Where(x => amounts.Contains(x.Amount))
+				                                       .Where(x => thirds.Contains(x.ThirdAmount)))
+			                    .Invoke(contexts)
+			                    .To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();

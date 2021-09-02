@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model;
@@ -74,136 +75,138 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Expression<Func<TIn, T, IEnumerable<TTo>>> select)
 			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
-		/*public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TOther> other)
-			=> Introduce(other.Then().Remove());
+		public IntroducedQueryComposer<TIn, T, TOther> Introduce<TOther>(IQuery<TOther> other)
+			=> Introduce<TOther>(other.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, TOther> Introduce<TOther>(IQuery<TIn, TOther> other)
+		public IntroducedQueryComposer<TIn, T, TOther> Introduce<TOther>(IQuery<TIn, TOther> other)
 			=> Introduce(other.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
+		public IntroducedQueryComposer<TIn, T, TOther>
 			Introduce<TOther>(Expression<Func<DbContext, IQueryable<TOther>>> other)
-			=> new(_contexts, _subject, (context, _) => other.Invoke(context));
+			=> new(_subject, other.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, TOther>
-			Introduce<TOther>(Expression<Func<DbContext, TIn, IQueryable<TOther>>> other)
-			=> new(_contexts, _subject, other);
+		public IntroducedQueryComposer<TIn, T, TOther>
+			Introduce<TOther>(Expression<Func<DbContext, TIn, IQueryable<TOther>>> other) => new(_subject, other);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
+		public IntroducedQueryComposer<TIn, T, T1, T2> Introduce<T1, T2>(
 			IQuery<T1> first, IQuery<T2> second)
-			=> Introduce(first.Then().Remove(), second.Then().Remove());
+			=> Introduce<T1, T2>(first.Then(), second.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
+		public IntroducedQueryComposer<TIn, T, T1, T2> Introduce<T1, T2>(
 			IQuery<T1> first, IQuery<TIn, T2> second)
-			=> Introduce(first.Then().Remove(), second.Get());
+			=> Introduce<T1, T2>(first.Then(), second.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(
+		public IntroducedQueryComposer<TIn, T, T1, T2> Introduce<T1, T2>(
 			IQuery<TIn, T1> first, IQuery<T2> second)
-			=> Introduce(first.Get(), second.Then().Remove());
+			=> Introduce<T1, T2>(first.Get(), second.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2> Introduce<T1, T2>(IQuery<TIn, T1> first,
-		                                                                          IQuery<TIn, T2> second)
+		public IntroducedQueryComposer<TIn, T, T1, T2> Introduce<T1, T2>(IQuery<TIn, T1> first, IQuery<TIn, T2> second)
 			=> Introduce(first.Get(), second.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
+		public IntroducedQueryComposer<TIn, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                  Expression<Func<DbContext, IQueryable<T2>>> second)
-			=> Introduce((context, _) => first.Invoke(context), (context, _) => second.Invoke(context));
+			=> Introduce(first.Then().Accept<TIn>(), second.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
+		public IntroducedQueryComposer<TIn, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                  Expression<Func<DbContext, TIn, IQueryable<T2>>> second)
-			=> Introduce((context, _) => first.Invoke(context), second);
+			=> Introduce(first.Then().Accept<TIn>(), second);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
+		public IntroducedQueryComposer<TIn, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                  Expression<Func<DbContext, IQueryable<T2>>> second)
-			=> Introduce(first, (context, _) => second.Invoke(context));
+			=> Introduce(first, second.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2>
+		public IntroducedQueryComposer<TIn, T, T1, T2>
 			Introduce<T1, T2>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                  Expression<Func<DbContext, TIn, IQueryable<T2>>> second)
-			=> new(_contexts, _subject, first, second);
+			=> new(_subject, first, second);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<T2> second, IQuery<T3> third)
-			=> Introduce(first.Then().Remove(), second.Then().Remove(), third.Then().Remove());
+			=> Introduce<T1, T2, T3>(first.Then(), second.Then(), third.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<TIn, T2> second, IQuery<T3> third)
-			=> Introduce(first.Get(), second.Get(), third.Then().Remove());
+			=> Introduce<T1, T2, T3>(first.Get(), second.Get(), third.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<T2> second, IQuery<T3> third)
-			=> Introduce(first.Get(), second.Then().Remove(), third.Then().Remove());
+			=> Introduce<T1, T2, T3>(first.Get(), second.Then(), third.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Get(), second.Then().Remove(), third.Get());
+			=> Introduce<T1, T2, T3>(first.Get(), second.Then(), third.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Then().Remove(), second.Then().Remove(), third.Get());
+			=> Introduce<T1, T2, T3>(first.Then(), second.Then(), third.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<TIn, T2> second, IQuery<T3> third)
-			=> Introduce(first.Then().Remove(), second.Get(), third.Then().Remove());
+			=> Introduce<T1, T2, T3>(first.Then(), second.Get(), third.Then());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<T1> first, IQuery<TIn, T2> second, IQuery<TIn, T3> third)
-			=> Introduce(first.Then().Remove(), second.Get(), third.Get());
+			=> Introduce<T1, T2, T3>(first.Then(), second.Get(), third.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3> Introduce<T1, T2, T3>(
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3> Introduce<T1, T2, T3>(
 			IQuery<TIn, T1> first, IQuery<TIn, T2> second, IQuery<TIn, T3> third)
 			=> Introduce(first.Get(), second.Get(), third.Get());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, TIn, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, IQueryable<T3>>> third)
-			=> Introduce(first, second, (context, _) => third.Invoke(context));
+			=> Introduce(first, second, third.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, IQueryable<T3>>> third)
-			=> Introduce(first, second, (context, _) => third.Invoke(context));
+			=> Introduce(first, second, third.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, IQueryable<T3>>> third)
-			=> Introduce(first, second, (context, _) => third.Invoke(context));
+			=> Introduce(first, second, third.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, TIn, IQueryable<T3>>> third)
-			=> Introduce(first, (context, _) => second.Invoke(context), third);
+			=> Introduce(first, second.Then().Accept<TIn>(), third);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, TIn, IQueryable<T3>>> third)
-			=> Introduce(first, (context, _) => second.Invoke(context), third);
+			=> Introduce(first, second.Then().Accept<TIn>(), third);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, TIn, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, IQueryable<T3>>> third)
-			=> Introduce(first, second, (context, _) => third.Invoke(context));
+			=> Introduce(first, second, third.Then().Accept<TIn>());
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, TIn, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, TIn, IQueryable<T3>>> third)
-			=> Introduce((context, _) => first.Invoke(context), second, third);
+			=> Introduce(first.Then().Accept<TIn>(), second, third);
 
-		public IntroducedQueryAdapter<TIn, TContext, T, T1, T2, T3>
+		public IntroducedQueryComposer<TIn, T, T1, T2, T3>
 			Introduce<T1, T2, T3>(Expression<Func<DbContext, TIn, IQueryable<T1>>> first,
 			                      Expression<Func<DbContext, TIn, IQueryable<T2>>> second,
 			                      Expression<Func<DbContext, TIn, IQueryable<T3>>> third)
-			=> new(_contexts, _subject, first, second, third);
-		*/
+			=> new(_subject, (first, second, third));
+
 		QueryComposer<TIn, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(next);
+
+		public InvocationComposer<TIn, TContext, T> Invoke<TContext>(IContexts<TContext> contexts)
+			where TContext : DbContext
+			=> new(contexts, _subject);
 	}
 }

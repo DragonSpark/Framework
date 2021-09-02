@@ -11,6 +11,7 @@ using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
@@ -96,10 +97,9 @@ namespace DragonSpark.Application
 
 		/**/
 
-		/*public static QuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.IQuery<TIn, T> @this) where T : class
-			=> new(@this);*/
+		public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
 
-		public static ContextsAdapter<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
+		public static ContextsComposer<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
 		public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 

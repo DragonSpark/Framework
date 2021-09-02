@@ -14,18 +14,22 @@ using Xunit;
 
 namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 {
-	public sealed class FormAdapterTests
+	public sealed class FormComposerTests
 	{
 		[Fact]
 		public async Task VerifyArray()
 		{
-			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new MemoryContexts<Context>();
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Array().Get();
+				var result = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name != "Two")
+				                        .Invoke(contexts)
+				                        .To.Array()
+				                        .Get();
 				result.Length.Should().Be(2);
 				result.Open().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -41,7 +45,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 			}
 			{
 				await using var result =
-					await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Lease().Get();
+					await Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Lease().Get();
 				result.Length.Should().Be(2);
 				result.ToArray().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -56,7 +60,11 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.List().Get();
+				var result = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name != "Two")
+				                        .Invoke(contexts)
+				                        .To.List()
+				                        .Get();
 				result.Count.Should().Be(2);
 				result.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -71,11 +79,11 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then()
-				                           .Use<Subject>()
-				                           .Where(x => x.Name != "Two")
-				                           .To.Dictionary(x => x.Name)
-				                           .Get();
+				var result = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name != "Two")
+				                        .Invoke(contexts)
+				                        .To.Dictionary(x => x.Name)
+				                        .Get();
 				result.Count.Should().Be(2);
 				result.Keys.Should().BeEquivalentTo("One", "Three");
 			}
@@ -90,11 +98,11 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var result = await contexts.Then()
-				                           .Use<Subject>()
-				                           .Where(x => x.Name != "Two")
-				                           .To.Dictionary(x => x.Name, x => x.Id)
-				                           .Get();
+				var result = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name != "Two")
+				                        .Invoke(contexts)
+				                        .To.Dictionary(x => x.Name, x => x.Id)
+				                        .Get();
 				result.Count.Should().Be(2);
 				result.Keys.Count.Should().Be(2);
 				result.Keys.Should().BeEquivalentTo("One", "Three");
@@ -115,11 +123,15 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var single = await contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.Single().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Two")
+				                        .Invoke(contexts)
+				                        .To.Single()
+				                        .Get();
 				single.Should().NotBeNull();
 			}
 			{
-				var single = contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Single().Get();
+				var single = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Single().Get();
 				await single.Awaiting(x => x.AsTask()).Should().ThrowAsync<InvalidOperationException>();
 			}
 		}
@@ -133,13 +145,19 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.SingleOrDefault().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Two")
+				                        .Invoke(contexts)
+				                        .To.SingleOrDefault()
+				                        .Get();
 				single.Should().NotBeNull();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Four").To.SingleOrDefault().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Four")
+				                        .Invoke(contexts)
+				                        .To.SingleOrDefault()
+				                        .Get();
 				single.Should().BeNull();
 			}
 		}
@@ -147,17 +165,21 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 		[Fact]
 		public async Task VerifyFirst()
 		{
-			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+			var contexts = new MemoryContexts<Context>();
 			{
 				await using var context = contexts.Get();
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var single = await contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.First().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Two")
+				                        .Invoke(contexts)
+				                        .To.First()
+				                        .Get();
 				single.Should().NotBeNull();
 			}
 			{
-				var single = contexts.Then().Use<Subject>().Where(x => x.Name == "Four").To.First().Get();
+				var single = Start.A.Query<Subject>().Where(x => x.Name == "Four").Invoke(contexts).To.First().Get();
 				await single.Awaiting(x => x.AsTask()).Should().ThrowAsync<InvalidOperationException>();
 			}
 		}
@@ -171,13 +193,19 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.FirstOrDefault().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Two")
+				                        .Invoke(contexts)
+				                        .To.FirstOrDefault()
+				                        .Get();
 				single.Should().NotBeNull();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Four").To.FirstOrDefault().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Four")
+				                        .Invoke(contexts)
+				                        .To.FirstOrDefault()
+				                        .Get();
 				single.Should().BeNull();
 			}
 		}
@@ -191,13 +219,15 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.Any().Get();
+				var single = await Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(contexts).To.Any().Get();
 				single.Should().BeTrue();
 			}
 			{
-				var single =
-					await contexts.Then().Use<Subject>().Where(x => x.Name == "Four").To.Any().Get();
+				var single = await Start.A.Query<Subject>()
+				                        .Where(x => x.Name == "Four")
+				                        .Invoke(contexts)
+				                        .To.Any()
+				                        .Get();
 				single.Should().BeFalse();
 			}
 		}
@@ -238,7 +268,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 			Benchmarks(IDbContextFactory<Context> factory) : this(new Contexts<Context>(factory), factory) {}
 
 			Benchmarks(IContexts<Context> contexts, IDbContextFactory<Context> factory)
-				: this(contexts.Then().Use<Subject>().Where(x => x.Name == "Two").To.Single(),
+				: this(Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(contexts).To.Single(),
 				       factory,
 				       EF.CompileAsyncQuery<DbContext, Subject>(x => x.Set<Subject>().Single(y => y.Name == "Two"))) {}
 

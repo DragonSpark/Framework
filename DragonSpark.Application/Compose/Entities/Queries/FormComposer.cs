@@ -10,12 +10,12 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
-	public sealed class FormAdapter<TIn, TContext, T> where TContext : DbContext
+	public sealed class FormComposer<TIn, TContext, T> where TContext : DbContext
 	{
 		readonly IContexts<TContext> _contexts;
 		readonly IQuery<TIn, T>      _query;
 
-		public FormAdapter(IContexts<TContext> contexts, IQuery<TIn, T> query)
+		public FormComposer(IContexts<TContext> contexts, IQuery<TIn, T> query)
 		{
 			_contexts = contexts;
 			_query    = query;

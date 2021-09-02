@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Array();
+			var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
@@ -44,7 +44,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluate = contexts.Then().Use<Subject>().Where(x => x.Name != "Two").To.Array();
+			var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 			{
 				var array = await evaluate.Await();
 				var open  = array.Open();
