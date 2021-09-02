@@ -9,10 +9,10 @@ namespace DragonSpark.Application.Entities
 	public class Removal<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext where T : class
 	{
 		readonly ISelecting<TIn, T?>            _select;
-		readonly RemoveEntity<TContext, T> _remove;
+		readonly Remove<TContext, T> _remove;
 		readonly ICommand<TIn>                  _command;
 
-		public Removal(ISelecting<TIn, T?> select, RemoveEntity<TContext, T> remove, ICommand<TIn> command)
+		public Removal(ISelecting<TIn, T?> select, Remove<TContext, T> remove, ICommand<TIn> command)
 		{
 			_select  = @select;
 			_remove  = remove;

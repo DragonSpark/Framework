@@ -37,7 +37,7 @@ namespace DragonSpark.Application.Entities
 		readonly Action<T>          _configure;
 		readonly Save<TContext, T>  _save;
 
-		public Save(ISelecting<TIn, T> selecting, Action<T> configure, Save<TContext, T> save)
+		protected Save(ISelecting<TIn, T> selecting, Action<T> configure, Save<TContext, T> save)
 		{
 			_selecting = selecting;
 			_configure = configure;

@@ -13,13 +13,13 @@ namespace DragonSpark.Application.Entities
 		protected SaveMany(ISaveContext<TContext> save) : base(save, UpdateMany<T>.Default) {}
 	}
 
-	sealed class UpdateMany : IModification<Memory<object>>
+	sealed class UpdateMany : IModify<Memory<object>>
 	{
 		public static UpdateMany Default { get; } = new();
 
 		UpdateMany() {}
 
-		public void Execute(Modify<Memory<object>> parameter)
+		public void Execute(Modification<Memory<object>> parameter)
 		{
 			var (context, memory) = parameter;
 			for (var i = 0; i < memory.Length; i++)
@@ -29,13 +29,13 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
-	sealed class UpdateMany<T> : IModification<Memory<T>> where T : class
+	sealed class UpdateMany<T> : IModify<Memory<T>> where T : class
 	{
 		public static UpdateMany<T> Default { get; } = new UpdateMany<T>();
 
 		UpdateMany() {}
 
-		public void Execute(Modify<Memory<T>> parameter)
+		public void Execute(Modification<Memory<T>> parameter)
 		{
 			var (context, memory) = parameter;
 			var set = context.Set<T>();

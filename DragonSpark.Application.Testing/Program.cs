@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Hosting.BenchmarkDotNet;
-using DragonSpark.Application.Testing.Entities.Queries;
+using DragonSpark.Application.Testing.Entities;
 using DragonSpark.Compose;
 
 namespace DragonSpark.Application.Testing
@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Testing
 	{
 		static void Main(params string[] arguments)
 		{
-			Configuration.Default.Get(arguments).To(Run.A<InputQueryTests.Benchmarks>);
+			Configuration.Default.Get(arguments).To(Run.A<SaveTests.Benchmarks>);
 		}
 	}
 }

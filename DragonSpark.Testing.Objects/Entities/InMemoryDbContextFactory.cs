@@ -7,7 +7,6 @@ namespace DragonSpark.Testing.Objects.Entities
 	{
 		public InMemoryDbContextFactory() : this(IdentifyingText.Default.Get()) {}
 
-		public InMemoryDbContextFactory(string name)
-			: base(new DbContextOptionsBuilder<T>().UseInMemoryDatabase(name).Options) {}
+		public InMemoryDbContextFactory(string name) : base(MemoryOptions<T>.Default.Get(name)) {}
 	}
 }

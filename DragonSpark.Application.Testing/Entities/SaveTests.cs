@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities;
+﻿using BenchmarkDotNet.Attributes;
+using DragonSpark.Application.Entities;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
@@ -112,5 +113,51 @@ namespace DragonSpark.Application.Testing.Entities
 			public virtual First? First { get; set; }
 		}
 
+		public class Benchmarks
+		{
+			readonly IContexts<Context> _contexts;
+
+			public Benchmarks() : this(new PooledMemoryContexts<Context>()) {}
+
+			Benchmarks(IContexts<Context> contexts) => _contexts = contexts;
+
+			[GlobalSetup]
+			public async Task GlobalSetup()
+			{
+				await using var context = _contexts.Get();
+				await context.Database.EnsureDeletedAsync();
+				await context.Database.EnsureCreatedAsync();
+				context.Subjects.Add(new Subject { Name = "One" });
+				await context.SaveChangesAsync();
+			}
+
+			[Benchmark(Baseline = true)]
+			public async Task<object> MeasureUnit()
+			{
+				await using var context = _contexts.Get();
+				var result = await context.Subjects.SingleAsync();
+				result.Name = "Updated";
+				await context.SaveChangesAsync();
+				return result;
+			}
+
+			[Benchmark]
+			public async Task<object> MeasureSelectAndSave()
+			{
+				var             result  = await Select();
+				await using var context = _contexts.Get();
+				context.Subjects.Attach(result);
+
+				result.Name = "Updated";
+				await context.SaveChangesAsync();
+				return result;
+			}
+
+			async Task<Subject> Select()
+			{
+				await using var context = _contexts.Get();
+				return await context.Subjects.SingleAsync();
+			}
+		}
 	}
 }
