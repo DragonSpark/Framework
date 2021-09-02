@@ -1,42 +1,48 @@
-﻿using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class SaveMany<T> : IOperation<Memory<object>> where T : DbContext
+	public class SaveMany<T> : Modify<T, Memory<object>> where T : DbContext
 	{
-		readonly IContexts<T> _context;
+		protected SaveMany(ISaveContext<T> save) : base(save, UpdateMany<object>.Default) {}
+	}
 
-		public SaveMany(IContexts<T> context) => _context = context;
+	public class SaveMany<TContext, T> : Modify<TContext, Memory<T>> where TContext : DbContext where T : class
+	{
+		protected SaveMany(ISaveContext<TContext> save) : base(save, UpdateMany<T>.Default) {}
+	}
 
-		public async ValueTask Get(Memory<object> parameter)
+	sealed class UpdateMany : IModification<Memory<object>>
+	{
+		public static UpdateMany Default { get; } = new();
+
+		UpdateMany() {}
+
+		public void Execute(Modify<Memory<object>> parameter)
 		{
-			await using var context  = _context.Get();
-			for (var i = 0; i < parameter.Length; i++)
+			var (context, memory) = parameter;
+			for (var i = 0; i < memory.Length; i++)
 			{
-				context.Update(parameter.Span[i]);
+				context.Update(memory.Span[i]);
 			}
-			await context.SaveChangesAsync();
 		}
 	}
 
-	public class SaveMany<TContext, T> : IOperation<Memory<T>> where TContext : DbContext where T : class
+	sealed class UpdateMany<T> : IModification<Memory<T>> where T : class
 	{
-		readonly IContexts<TContext> _context;
+		public static UpdateMany<T> Default { get; } = new UpdateMany<T>();
 
-		public SaveMany(IContexts<TContext> context) => _context = context;
+		UpdateMany() {}
 
-		public async ValueTask Get(Memory<T> parameter)
+		public void Execute(Modify<Memory<T>> parameter)
 		{
-			await using var context = _context.Get();
-			var             set     = context.Set<T>();
-			for (var i = 0; i < parameter.Length; i++)
+			var (context, memory) = parameter;
+			var set = context.Set<T>();
+			for (var i = 0; i < memory.Length; i++)
 			{
-				set.Update(parameter.Span[i]);
+				set.Update(memory.Span[i]);
 			}
-			await context.SaveChangesAsync();
 		}
 	}
 }

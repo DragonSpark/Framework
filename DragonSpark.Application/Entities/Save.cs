@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
@@ -24,17 +23,8 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
-	public class Save<TContext, T> : IOperation<T> where TContext : DbContext where T : class
+	public class Save<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		readonly IContexts<TContext> _context;
-
-		public Save(IContexts<TContext> context) => _context = context;
-
-		public async ValueTask Get(T parameter)
-		{
-			await using var context = _context.Get();
-			context.Set<T>().Update(parameter);
-			await context.SaveChangesAsync();
-		}
+		public Save(ISaveContext<TContext> save) : base(save, x => x.Context.Set<T>().Update(x.Parameter)) {}
 	}
 }
