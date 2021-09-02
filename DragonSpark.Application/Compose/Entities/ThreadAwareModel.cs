@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -60,13 +61,11 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public IEntityType? FindEntityType(Type type, string definingNavigationName, IEntityType definingEntityType) => _model.FindEntityType(type, definingNavigationName, definingEntityType);
 
-		public IEnumerable<IEntityType> FindEntityTypes(Type type) => _previous.FindEntityTypes(type);
-
 		IReadOnlyEntityType? IReadOnlyModel.FindEntityType(Type type) => ((IReadOnlyModel)_previous).FindEntityType(type);
 
 		public IReadOnlyEntityType? FindEntityType(Type type, string definingNavigationName, IReadOnlyEntityType definingEntityType) => _previous.FindEntityType(type, definingNavigationName, definingEntityType);
 
-		IEnumerable<IReadOnlyEntityType> IReadOnlyModel.FindEntityTypes(Type type) => ((IReadOnlyModel)_previous).FindEntityTypes(type);
+		public IEnumerable<IEntityType> FindEntityTypes(Type type) => _previous.FindEntityTypes(type);
 
 		public IEnumerable<IEntityType> FindLeastDerivedEntityTypes(Type type, Func<IReadOnlyEntityType, bool>? condition = null) => _model.FindLeastDerivedEntityTypes(type, condition);
 
@@ -76,15 +75,19 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public bool IsIndexerMethod(MethodInfo methodInfo) => _previous.IsIndexerMethod(methodInfo);
 
-		public IEnumerable<ITypeMappingConfiguration> GetTypeMappingConfigurations() => _model.GetTypeMappingConfigurations();
+		public CoreTypeMapping? FindMapping(Type type) => _previous.FindMapping(type);
 
-		public ITypeMappingConfiguration? FindTypeMappingConfiguration(Type scalarType) => _model.FindTypeMappingConfiguration(scalarType);
+		public IEnumerable<IPropertyTypeConfiguration> GetPropertyTypeConfigurations() => _previous.GetPropertyTypeConfigurations();
+
+		public IEnumerable<IPropertyTypeConfiguration>? FindPropertyTypeConfigurations(Type propertyType) => _previous.FindPropertyTypeConfigurations(propertyType);
 
 		public RuntimeModelDependencies? ModelDependencies
 		{
 			get => _model.ModelDependencies;
 			set => _model.ModelDependencies = value!;
 		}
+
+		IEnumerable<IReadOnlyEntityType> IReadOnlyModel.FindEntityTypes(Type type) => ((IReadOnlyModel)_previous).FindEntityTypes(type);
 
 		public IAnnotation? FindRuntimeAnnotation(string name) => _previous.FindRuntimeAnnotation(name);
 
