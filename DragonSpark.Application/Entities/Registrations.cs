@@ -21,8 +21,7 @@ namespace DragonSpark.Application.Entities
 			         .Forward<SaveContext<T>>()
 			         .Singleton()
 			         //
-			         .Then.AddScoped(typeof(IRemove<>), typeof(Remove<>))
-			         .AddScoped(typeof(ISave<>), typeof(Save<>));
+			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>));
 		}
 	}
 }

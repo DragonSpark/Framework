@@ -1,21 +1,22 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	public class Removal<TIn, T> : IOperation<TIn>
+	public class Removal<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext where T : class
 	{
-		readonly ISelecting<TIn, T?> _select;
-		readonly IRemove<T>          _remove;
-		readonly ICommand<TIn>       _message;
+		readonly ISelecting<TIn, T?>            _select;
+		readonly RemoveEntity<TContext, T> _remove;
+		readonly ICommand<TIn>                  _command;
 
-		public Removal(ISelecting<TIn, T?> select, IRemove<T> remove, ICommand<TIn> message)
+		public Removal(ISelecting<TIn, T?> select, RemoveEntity<TContext, T> remove, ICommand<TIn> command)
 		{
 			_select  = @select;
 			_remove  = remove;
-			_message = message;
+			_command = command;
 		}
 
 		public async ValueTask Get(TIn parameter)
@@ -27,7 +28,7 @@ namespace DragonSpark.Application.Entities
 			}
 			else
 			{
-				_message.Execute(parameter);
+				_command.Execute(parameter);
 			}
 		}
 	}
