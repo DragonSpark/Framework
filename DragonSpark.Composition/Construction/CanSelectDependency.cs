@@ -2,6 +2,7 @@
 using DragonSpark.Model.Selection.Conditions;
 using LightInject;
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using Array = DragonSpark.Model.Sequences.Array;
 
@@ -11,7 +12,7 @@ namespace DragonSpark.Composition.Construction
 	{
 		public CanSelectDependency(ServiceContainer owner, ContainerOptions options)
 			: this(new CanLocateDependency(owner.CanGetInstance, options.EnableOptionalArguments),
-			       new IsValidDependency(owner, Array.Of(typeof(Func<,>), typeof(Func<,,>)))) {}
+			       new IsValidDependency(owner, Array.Of(typeof(Expression<>), typeof(Func<,>), typeof(Func<,,>)))) {}
 
 		public CanSelectDependency(CanLocateDependency locate, IsValidDependency valid)
 			: base(locate.Then(),

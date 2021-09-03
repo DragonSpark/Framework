@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Model;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,10 +15,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			ElidedParameterExpressionComposer<T> instance)
 			=> instance.Accept();
 
-		/*public static implicit operator Expression<Func<DbContext, IQueryable<T>>>(
-			ElidedParameterExpressionComposer<T> instance)
-			=> instance._subject;*/
-
 		readonly Expression<Func<DbContext, IQueryable<T>>> _subject;
 
 		public ElidedParameterExpressionComposer(Expression<Func<DbContext, IQueryable<T>>> subject) : base(subject)
@@ -27,5 +24,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public Expression<Func<DbContext, TParameter, IQueryable<T>>> Accept<TParameter>()
 			=> (context, _) => _subject.Invoke(context);
+
+		public IQuery<T> Promote() => new Query<T>(_subject);
 	}
 }

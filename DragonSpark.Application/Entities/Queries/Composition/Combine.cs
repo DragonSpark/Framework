@@ -60,8 +60,8 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class Combine<TIn, T, TTo> : Query<TIn, TTo>
 	{
-		protected Combine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                  Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> instance)
+		public Combine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+		               Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> instance)
 			: base((context, @in) => instance.Invoke(context, previous.Invoke(context, @in))) {}
 
 		public Combine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,

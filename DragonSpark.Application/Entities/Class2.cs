@@ -15,23 +15,23 @@ namespace DragonSpark.Application.Entities
 
 	public readonly struct Edit<T> : IAsyncDisposable
 	{
-		readonly Edit _context;
-
-		public Edit(Edit context, T subject)
+		public Edit(DbContext context, T subject)
 		{
-			_context = context;
-			Subject  = subject;
+			Context = context;
+			Subject = subject;
 		}
+
+		public DbContext Context { get; }
 
 		public T Subject { get; }
 
 		public void Deconstruct(out DbContext context, out T subject)
 		{
-			context = _context.Subject;
+			context = Context;
 			subject = Subject;
 		}
 
-		public ValueTask DisposeAsync() => _context.DisposeAsync();
+		public ValueTask DisposeAsync() => Context.DisposeAsync();
 	}
 
 	public class EditSingle<TIn, TContext, T> : Edit<TIn, T> where TContext : DbContext
@@ -65,6 +65,7 @@ namespace DragonSpark.Application.Entities
 		{
 			await using var edit = await _edit.Await(parameter);
 			_configure(edit);
+			await edit.Context.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 
@@ -83,9 +84,9 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask<Edit<TResult>> Get(TIn parameter)
 		{
-			var invoke   = _invoke.Get(parameter);
-			var evaluate = await _evaluate.Await(invoke.Elements);
-			return new(new Edit(invoke.Context), evaluate);
+			var (context, elements) = _invoke.Get(parameter);
+			var evaluate = await _evaluate.Await(elements);
+			return new(context, evaluate);
 		}
 	}
 }

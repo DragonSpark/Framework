@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
+﻿using DragonSpark.Model.Operations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities
 {
+	/*
 	public class Add<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly Await<TIn, TOut> _new;
@@ -24,12 +24,14 @@ namespace DragonSpark.Application.Entities
 			return result;
 		}
 	}
+	*/
 
-	/*
-	public class Add<T, TIn, TOut> : Add<TIn, TOut> where T : DbContext where TOut : class
+	public class Add<TIn, TContext, TOut> : ConfiguringResult<TIn, TOut> where TContext : DbContext where TOut : class
 	{
-		protected Add(ISelecting<TIn, TOut> @new, IDbContextFactory<T> contexts)
-			: base(@new, new Save<TOut>(contexts.CreateDbContext())) {}
+		protected Add(ISelecting<TIn, TOut> @new, Save<TContext, TOut> add) : base(@new, add) {}
+
+		public Add(ISelecting<TIn, TOut> select, IOperation<TOut> operation) : base(select, operation) {}
+
+		protected Add(Await<TIn, TOut> @new, Await<TOut> add) : base(@new, add) {}
 	}
-*/
 }

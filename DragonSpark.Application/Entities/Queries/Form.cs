@@ -15,5 +15,4 @@ namespace DragonSpark.Application.Entities.Queries
 		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: base(Compilation.Compile<TIn, T>.Default.Get(expression.Expand())) {}
 	}
-
 }

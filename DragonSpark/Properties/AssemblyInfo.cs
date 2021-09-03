@@ -7,3 +7,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © 2020 DragonSpark Technologies Incorporated")]
 [assembly: AssemblyTrademark("DragonSpark Technologies Incorporated")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyMetadata("ReSharperHelpers.TestProject", "DragonSpark.Testing")]

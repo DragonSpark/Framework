@@ -9,14 +9,14 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		protected StartWhereMany(Expression<Func<T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
 			: base(Set<TIn, T>.Default, where, select) {}
 
-		public StartWhereMany(Expression<Func<T, bool>> @where, Expression<Func<TIn, T, IEnumerable<TTo>>> @select)
-			: base(Set<TIn, T>.Default, @where, @select) {}
+		public StartWhereMany(Expression<Func<T, bool>> where, Expression<Func<TIn, T, IEnumerable<TTo>>> select)
+			: base(Set<TIn, T>.Default, where, select) {}
 
-		public StartWhereMany(Expression<Func<TIn, T, bool>> @where, Expression<Func<T, IEnumerable<TTo>>> @select)
-			: base(Set<TIn, T>.Default, @where, @select) {}
+		public StartWhereMany(Expression<Func<TIn, T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
+			: base(Set<TIn, T>.Default, where, select) {}
 
-		public StartWhereMany(Expression<Func<TIn, T, bool>> @where, Expression<Func<TIn, T, IEnumerable<TTo>>> @select)
-			: base(Set<TIn, T>.Default, @where, @select) {}
+		public StartWhereMany(Expression<Func<TIn, T, bool>> where, Expression<Func<TIn, T, IEnumerable<TTo>>> select)
+			: base(Set<TIn, T>.Default, where, select) {}
 	}
 
 	public class StartWhereMany<T, TTo> : WhereMany<T, TTo> where T : class

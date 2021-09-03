@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Entities
 
 		public Removal(ISelecting<TIn, T?> select, Remove<TContext, T> remove, ICommand<TIn> command)
 		{
-			_select  = @select;
+			_select  = select;
 			_remove  = remove;
 			_command = command;
 		}

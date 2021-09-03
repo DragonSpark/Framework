@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Entities.Queries.Compilation
 		public Compiled(Expression<Func<DbContext, IQueryable<TOut>>> expression)
 			: this(EF.CompileAsyncQuery(expression)) {}
 
-		public Compiled(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = @select;
+		public Compiled(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = select;
 
 		public IAsyncEnumerable<TOut> Get(In<TIn> parameter) => _select(parameter.Context);
 	}

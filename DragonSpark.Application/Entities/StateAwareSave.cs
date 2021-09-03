@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-    sealed class StateAwareSave<T> : ISave<T> where T : class
+	sealed class StateAwareSave<T> : ISave<T> where T : class
 	{
 		readonly ISave<T>             _previous;
 		readonly Func<ExcludeSession> _session;

@@ -5,12 +5,12 @@ namespace DragonSpark.Application.Entities
 {
 	public class SaveMany<T> : Modify<T, Memory<object>> where T : DbContext
 	{
-		protected SaveMany(Edits<T> save) : base(save, UpdateMany<object>.Default) {}
+		protected SaveMany(IContexts<T> save) : base(save, UpdateMany<object>.Default) {}
 	}
 
 	public class SaveMany<TContext, T> : Modify<TContext, Memory<T>> where TContext : DbContext where T : class
 	{
-		protected SaveMany(Edits<TContext> save) : base(save, UpdateMany<T>.Default) {}
+		protected SaveMany(IContexts<TContext> save) : base(save, UpdateMany<T>.Default) {}
 	}
 
 	sealed class UpdateMany : IModify<Memory<object>>

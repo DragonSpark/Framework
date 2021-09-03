@@ -7,6 +7,9 @@ namespace DragonSpark.Model.Selection
 		readonly Func<TFrom, TTo> _current;
 		readonly Func<TIn, TFrom> _previous;
 
+		public Selection(ISelect<TIn, TFrom> previous, ISelect<TFrom, TTo> current)
+			: this(previous.Get, current.Get) {}
+
 		public Selection(Func<TIn, TFrom> previous, Func<TFrom, TTo> current)
 		{
 			_previous = previous;

@@ -99,14 +99,17 @@ namespace DragonSpark.Application
 
 		public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
 
+		public static ContextComposer Then(this DbContext @this) => new(@this);
+
 		public static ContextsComposer<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
 		public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
-		public static QueryComposer<T> Then<T>(this IQuery<T> @this) => new(@this);
+		public static QueryComposer<T> Then<T>(this IQuery<None, T> @this) => new(@this);
 
-		/*public static ElidedParameterExpressionComposer<T> Then<T>(this IQuery<T> @this) => @this.Get().Then();*/
+		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
+		
 		public static PlaceholderParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, None, IQueryable<T>>> @this)
 			=> new(@this);
 

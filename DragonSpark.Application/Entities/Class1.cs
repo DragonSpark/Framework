@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -11,51 +10,27 @@ namespace DragonSpark.Application.Entities
 {
 	class Class1 {}
 
-	public readonly struct Edit : IAsyncDisposable
-	{
-		public Edit(DbContext subject) => Subject = subject;
-
-		public DbContext Subject { get; }
-
-		public async ValueTask DisposeAsync()
-		{
-			await Subject.SaveChangesAsync().ConfigureAwait(false);
-			await Subject.DisposeAsync().ConfigureAwait(false);
-		}
-	}
-
-	/*public interface IEdits<T> : IResult<Edit<T>> where T : DbContext {}*/
-
-	public class Edits<T> : IResult<Edit> where T : DbContext
-	{
-		readonly IContexts<T> _contexts;
-
-		public Edits(IContexts<T> contexts) => _contexts = contexts;
-
-		public Edit Get() => new(_contexts.Get());
-	}
-
 	public class Attach<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select,
+		protected Attach(IContexts<TContext> save, ISelecting<TIn, T> select,
 		                 ICommand<Modification<T>> modification)
-			: base(save, @select, modification.Execute) {}
+			: base(save, select, modification.Execute) {}
 
-		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select, Action<T> configure)
-			: base(save, @select, configure) {}
+		protected Attach(IContexts<TContext> save, ISelecting<TIn, T> select, Action<T> configure)
+			: base(save, select, configure) {}
 
-		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select, Action<Modification<T>> configure)
-			: base(save, @select, Attach<T>.Default.Then().Append(configure)) {}
+		protected Attach(IContexts<TContext> save, ISelecting<TIn, T> select, Action<Modification<T>> configure)
+			: base(save, select, Attach<T>.Default.Then().Append(configure)) {}
 	}
 
 	public class Attach<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(Edits<TContext> save, ICommand<Modification<T>> modification)
+		protected Attach(IContexts<TContext> save, ICommand<Modification<T>> modification)
 			: this(save, modification.Execute) {}
 
-		protected Attach(Edits<TContext> save, Action<T> configure) : base(save, configure) {}
+		protected Attach(IContexts<TContext> save, Action<T> configure) : base(save, configure) {}
 
-		protected Attach(Edits<TContext> save, Action<Modification<T>> configure)
+		protected Attach(IContexts<TContext> save, Action<Modification<T>> configure)
 			: base(save, Attach<T>.Default.Then().Append(configure)) {}
 	}
 
@@ -68,15 +43,15 @@ namespace DragonSpark.Application.Entities
 
 	public class Modify<TContext, T> : IOperation<T> where TContext : DbContext
 	{
-		readonly Edits<TContext>  _save;
+		readonly IContexts<TContext>     _save;
 		readonly Action<Modification<T>> _configure;
 
-		protected Modify(Edits<TContext> save, ICommand<Modification<T>> modification)
+		protected Modify(IContexts<TContext> save, ICommand<Modification<T>> modification)
 			: this(save, modification.Execute) {}
 
-		protected Modify(Edits<TContext> save, Action<T> configure) : this(save, x => configure(x.Parameter)) {}
+		protected Modify(IContexts<TContext> save, Action<T> configure) : this(save, x => configure(x.Parameter)) {}
 
-		protected Modify(Edits<TContext> save, Action<Modification<T>> configure)
+		protected Modify(IContexts<TContext> save, Action<Modification<T>> configure)
 		{
 			_save      = save;
 			_configure = configure;
@@ -84,35 +59,37 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask Get(T parameter)
 		{
-			await using var save = _save.Get();
-			_configure(new(save.Subject, parameter));
+			await using var context = _save.Get();
+			_configure(new(context, parameter));
+			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 
 	public class Modify<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext
 	{
-		readonly Edits<TContext>  _save;
+		readonly IContexts<TContext>     _save;
 		readonly ISelecting<TIn, T>      _select;
 		readonly Action<Modification<T>> _configure;
 
-		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, ICommand<Modification<T>> modification)
+		protected Modify(IContexts<TContext> save, ISelecting<TIn, T> select, ICommand<Modification<T>> modification)
 			: this(save, select, modification.Execute) {}
 
-		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, Action<T> configure)
-			: this(save, @select, x => configure(x.Parameter)) {}
+		protected Modify(IContexts<TContext> save, ISelecting<TIn, T> select, Action<T> configure)
+			: this(save, select, x => configure(x.Parameter)) {}
 
-		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, Action<Modification<T>> configure)
+		protected Modify(IContexts<TContext> save, ISelecting<TIn, T> select, Action<Modification<T>> configure)
 		{
 			_save      = save;
-			_select    = @select;
+			_select    = select;
 			_configure = configure;
 		}
 
 		public async ValueTask Get(TIn parameter)
 		{
-			await using var save   = _save.Get();
+			await using var context   = _save.Get();
 			var             entity = await _select.Await(parameter);
-			_configure(new(save.Subject, entity));
+			_configure(new(context, entity));
+			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 
@@ -131,7 +108,7 @@ namespace DragonSpark.Application.Entities
 
 	public class Remove<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		protected Remove(Edits<TContext> contexts)
+		protected Remove(IContexts<TContext> contexts)
 			: base(contexts, x => x.Context.Set<T>().Remove(x.Parameter)) {}
 	}
 }

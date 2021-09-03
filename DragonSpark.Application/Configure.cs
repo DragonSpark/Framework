@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.Entities;
+using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 

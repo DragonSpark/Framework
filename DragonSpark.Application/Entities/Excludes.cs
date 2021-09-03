@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Entities
 {
-    sealed class Excludes : ISelect<DbContext, ExcludeSession>
+	sealed class Excludes : ISelect<DbContext, ExcludeSession>
 	{
 		public static Excludes Default { get; } = new Excludes();
 

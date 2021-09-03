@@ -26,8 +26,6 @@ namespace DragonSpark.Application.Entities
 			                             .Contains)
 			            .Out()
 			            .Then()
-			            .Inverse()
-			            .Get()
-			            .Get;
+			            .Inverse();
 	}
 }

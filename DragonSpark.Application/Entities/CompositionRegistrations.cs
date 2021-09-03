@@ -1,8 +1,7 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using LightInject;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application.Entities
 {
 	sealed class CompositionRegistrations : ICommand<IServiceContainer>
 	{

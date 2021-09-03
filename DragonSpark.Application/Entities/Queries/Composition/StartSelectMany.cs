@@ -9,8 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		protected StartSelectMany(Expression<Func<TFrom, IEnumerable<TTo>>> select)
 			: base(Set<TIn, TFrom>.Default, select) {}
 
-		public StartSelectMany(Expression<Func<TIn, TFrom, IEnumerable<TTo>>> @select)
-			: base(Set<TIn, TFrom>.Default, @select) {}
+		public StartSelectMany(Expression<Func<TIn, TFrom, IEnumerable<TTo>>> select)
+			: base(Set<TIn, TFrom>.Default, select) {}
 	}
 
 	public class StartSelectMany<TFrom, TTo> : SelectMany<TFrom, TTo> where TFrom : class
