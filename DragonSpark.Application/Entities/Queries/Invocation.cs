@@ -1,23 +1,28 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	public readonly struct Invocation<T> : IAsyncDisposable, IDisposable
+	public readonly struct Invocation<T> : IAsyncDisposable
 	{
-		readonly IAsyncDisposable _disposable;
-
-		public Invocation(IAsyncDisposable disposable, IAsyncEnumerable<T> elements)
+		public Invocation(DbContext context, IAsyncEnumerable<T> elements)
 		{
-			_disposable = disposable;
-			Elements    = elements;
+			Context  = context;
+			Elements = elements;
 		}
+
+		public DbContext Context { get; }
 
 		public IAsyncEnumerable<T> Elements { get; }
 
-		public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+		public ValueTask DisposeAsync() => Context.DisposeAsync();
 
-		public void Dispose() {}
+		public void Deconstruct(out DbContext context, out IAsyncEnumerable<T> elements)
+		{
+			context  = Context;
+			elements = Elements;
+		}
 	}
 }

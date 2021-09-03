@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Entities
 
 	public class Save<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		public Save(ISaveContext<TContext> save) : base(save, x => x.Context.Set<T>().Update(x.Parameter)) {}
+		public Save(Edits<TContext> save) : base(save, x => x.Context.Set<T>().Update(x.Parameter)) {}
 	}
 
 	public class Save<TIn, TContext, T> : IOperation<TIn> where T : class where TContext : DbContext

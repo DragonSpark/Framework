@@ -1,14 +1,8 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
-	public class Evaluate<T, TResult> : Evaluate<None, T, TResult>
-	{
-		public Evaluate(IInvoke<None, T> invoke, IEvaluate<T, TResult> evaluate) : base(invoke, evaluate) {}
-	}
-
 	public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
 	{
 		readonly IInvoke<TIn, T>       _invoke;

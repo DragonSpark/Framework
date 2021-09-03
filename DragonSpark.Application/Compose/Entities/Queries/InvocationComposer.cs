@@ -21,7 +21,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Func<QueryComposer<TIn, T>, QueryComposer<TIn, TTo>> select)
 			=> new(_contexts, select(new QueryComposer<TIn, T>(_query)).Get());
 
-		public FormComposer<TIn, TContext, T> To => new(_contexts, _query);
+		public QueryInvocationComposer<TIn, T> To => new(Get());
+
+		public EditInvocationComposer<TIn, T> Edit => new(Get());
 
 		public IInvoke<TIn, T> Get() => new Invoke<TContext,TIn,T>(_contexts, _query.Get());
 	}

@@ -26,7 +26,7 @@ namespace DragonSpark.Application.Testing.Entities
 				await data.SaveChangesAsync();
 			}
 			var query = contexts.Then().Use<Subject>().To.Single();
-			var sut   = new Save<Context, Subject>(new SaveContext<Context>(contexts));
+			var sut   = new Save<Context, Subject>(new Edits<Context>(contexts));
 			{
 				var first = await query.Await();
 				first.Name.Should().Be(original);
@@ -136,6 +136,17 @@ namespace DragonSpark.Application.Testing.Entities
 			{
 				await using var context = _contexts.Get();
 				var result = await context.Subjects.SingleAsync();
+				result.Name = "Updated";
+				await context.SaveChangesAsync();
+				return result;
+			}
+
+			[Benchmark]
+			public async Task<object> MeasureAttach()
+			{
+				await using var context = _contexts.Get();
+				var             result  = await context.Subjects.AsNoTracking().SingleAsync();
+				context.Subjects.Attach(result);
 				result.Name = "Updated";
 				await context.SaveChangesAsync();
 				return result;

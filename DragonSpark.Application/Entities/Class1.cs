@@ -11,11 +11,11 @@ namespace DragonSpark.Application.Entities
 {
 	class Class1 {}
 
-	public readonly struct SaveOperation<T> : IAsyncDisposable where T : DbContext
+	public readonly struct Edit : IAsyncDisposable
 	{
-		public SaveOperation(T subject) => Subject = subject;
+		public Edit(DbContext subject) => Subject = subject;
 
-		public T Subject { get; }
+		public DbContext Subject { get; }
 
 		public async ValueTask DisposeAsync()
 		{
@@ -24,38 +24,38 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
-	public interface ISaveContext<T> : IResult<SaveOperation<T>> where T : DbContext {}
+	/*public interface IEdits<T> : IResult<Edit<T>> where T : DbContext {}*/
 
-	public class SaveContext<T> : ISaveContext<T> where T : DbContext
+	public class Edits<T> : IResult<Edit> where T : DbContext
 	{
 		readonly IContexts<T> _contexts;
 
-		public SaveContext(IContexts<T> contexts) => _contexts = contexts;
+		public Edits(IContexts<T> contexts) => _contexts = contexts;
 
-		public SaveOperation<T> Get() => new(_contexts.Get());
+		public Edit Get() => new(_contexts.Get());
 	}
 
 	public class Attach<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(ISaveContext<TContext> save, ISelecting<TIn, T> @select,
+		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select,
 		                 ICommand<Modification<T>> modification)
 			: base(save, @select, modification.Execute) {}
 
-		protected Attach(ISaveContext<TContext> save, ISelecting<TIn, T> @select, Action<T> configure)
+		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select, Action<T> configure)
 			: base(save, @select, configure) {}
 
-		protected Attach(ISaveContext<TContext> save, ISelecting<TIn, T> @select, Action<Modification<T>> configure)
+		protected Attach(Edits<TContext> save, ISelecting<TIn, T> @select, Action<Modification<T>> configure)
 			: base(save, @select, Attach<T>.Default.Then().Append(configure)) {}
 	}
 
 	public class Attach<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(ISaveContext<TContext> save, ICommand<Modification<T>> modification)
+		protected Attach(Edits<TContext> save, ICommand<Modification<T>> modification)
 			: this(save, modification.Execute) {}
 
-		protected Attach(ISaveContext<TContext> save, Action<T> configure) : base(save, configure) {}
+		protected Attach(Edits<TContext> save, Action<T> configure) : base(save, configure) {}
 
-		protected Attach(ISaveContext<TContext> save, Action<Modification<T>> configure)
+		protected Attach(Edits<TContext> save, Action<Modification<T>> configure)
 			: base(save, Attach<T>.Default.Then().Append(configure)) {}
 	}
 
@@ -68,15 +68,15 @@ namespace DragonSpark.Application.Entities
 
 	public class Modify<TContext, T> : IOperation<T> where TContext : DbContext
 	{
-		readonly ISaveContext<TContext>  _save;
+		readonly Edits<TContext>  _save;
 		readonly Action<Modification<T>> _configure;
 
-		protected Modify(ISaveContext<TContext> save, ICommand<Modification<T>> modification)
+		protected Modify(Edits<TContext> save, ICommand<Modification<T>> modification)
 			: this(save, modification.Execute) {}
 
-		protected Modify(ISaveContext<TContext> save, Action<T> configure) : this(save, x => configure(x.Parameter)) {}
+		protected Modify(Edits<TContext> save, Action<T> configure) : this(save, x => configure(x.Parameter)) {}
 
-		protected Modify(ISaveContext<TContext> save, Action<Modification<T>> configure)
+		protected Modify(Edits<TContext> save, Action<Modification<T>> configure)
 		{
 			_save      = save;
 			_configure = configure;
@@ -91,17 +91,17 @@ namespace DragonSpark.Application.Entities
 
 	public class Modify<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext
 	{
-		readonly ISaveContext<TContext>  _save;
+		readonly Edits<TContext>  _save;
 		readonly ISelecting<TIn, T>      _select;
 		readonly Action<Modification<T>> _configure;
 
-		protected Modify(ISaveContext<TContext> save, ISelecting<TIn, T> select, ICommand<Modification<T>> modification)
+		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, ICommand<Modification<T>> modification)
 			: this(save, select, modification.Execute) {}
 
-		protected Modify(ISaveContext<TContext> save, ISelecting<TIn, T> select, Action<T> configure)
+		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, Action<T> configure)
 			: this(save, @select, x => configure(x.Parameter)) {}
 
-		protected Modify(ISaveContext<TContext> save, ISelecting<TIn, T> select, Action<Modification<T>> configure)
+		protected Modify(Edits<TContext> save, ISelecting<TIn, T> select, Action<Modification<T>> configure)
 		{
 			_save      = save;
 			_select    = @select;
@@ -131,7 +131,7 @@ namespace DragonSpark.Application.Entities
 
 	public class Remove<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		protected Remove(ISaveContext<TContext> contexts)
+		protected Remove(Edits<TContext> contexts)
 			: base(contexts, x => x.Context.Set<T>().Remove(x.Parameter)) {}
 	}
 }
