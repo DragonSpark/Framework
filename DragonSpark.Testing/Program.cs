@@ -8,7 +8,7 @@ namespace DragonSpark.Testing
 	{
 		static void Main(params string[] arguments)
 		{
-			Configuration.Default.Get(arguments).To(Run.A<SelectionTests.StructureSelectionBenchmarks>);
+			Configuration.Default.Get(arguments).To(Run.A<SelectionTests.Benchmarks>);
 		}
 	}
 

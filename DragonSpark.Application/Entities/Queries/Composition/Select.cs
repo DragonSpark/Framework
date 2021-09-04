@@ -15,11 +15,15 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		public Select(Expression<Func<DbContext, TIn, IQueryable<TFrom>>> previous,
 		              Expression<Func<TIn, TFrom, TTo>> select)
 			: base(previous, (@in, q) => q.Select(x => select.Invoke(@in, x))) {}
+
+		public Select(Expression<Func<DbContext, TIn, IQueryable<TFrom>>> previous,
+		              Expression<Func<DbContext, TIn, TFrom, TTo>> select)
+			: base(previous, (c, @in, q) => q.Select(x => select.Invoke(c, @in, x))) {}
 	}
 
 	public class Select<TFrom, TTo> : Select<None, TFrom, TTo>, IQuery<TTo>
 	{
-		public Select(Expression<Func<DbContext, IQueryable<TFrom>>> previous, Expression<Func<TFrom, TTo>> select)
+		protected Select(Expression<Func<DbContext, IQueryable<TFrom>>> previous, Expression<Func<TFrom, TTo>> select)
 			: base((context, _) => previous.Invoke(context), select) {}
 	}
 }

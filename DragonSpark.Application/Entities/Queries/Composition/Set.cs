@@ -1,18 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace DragonSpark.Application.Entities.Queries.Composition
+﻿namespace DragonSpark.Application.Entities.Queries.Composition
 {
 	public sealed class Set<T> : Query<T> where T : class
 	{
 		public static Set<T> Default { get; } = new Set<T>();
 
-		Set() : base(x => x.Set<T>().AsNoTrackingWithIdentityResolution()) {}
+		Set() : base(x => x.Set<T>().AsQueryable()) {}
 	}
 
 	public class Set<TIn, T> : Query<TIn, T> where T : class
 	{
 		public static Set<TIn, T> Default { get; } = new();
 
-		Set() : base(x => x.Set<T>().AsNoTrackingWithIdentityResolution()) {}
+		Set() : base(x => x.Set<T>().AsQueryable()) {}
 	}
 }

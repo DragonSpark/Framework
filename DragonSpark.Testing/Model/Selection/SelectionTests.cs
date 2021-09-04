@@ -56,11 +56,12 @@ namespace DragonSpark.Testing.Model.Selection
 			public string Extensive() => _extensive.Get(string.Empty);
 		}
 
+		/*
 		public class StructureSelectionBenchmarks
 		{
-			readonly ISelect<Reference, Reference> _reference;
-			readonly ISelect<Writable, Writable>   _writable;
-			readonly ISelect<Readable, Readable>   _readable;
+			readonly ISelect<Reference, Reference>        _reference;
+			readonly IStructureSelect<Writable, Writable> _writable;
+			readonly IStructureSelect<Readable, Readable> _readable;
 
 			public StructureSelectionBenchmarks()
 				: this(A.Self<Reference>()
@@ -74,31 +75,25 @@ namespace DragonSpark.Testing.Model.Selection
 				        .Select(x => x)
 				        .Select(x => x)
 				        .Select(x => x),
-				       A.Self<Writable>()
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x),
-				       A.Self<Readable>()
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)
-				        .Select(x => x)) {}
+				       new StructureSelect<Writable, Writable, Writable>(
+						   new StructureSelect<Writable, Writable, Writable>(
+							   new StructureSelect<Writable, Writable, Writable>(
+								   new StructureSelect<Writable, Writable, Writable>(
+									   x => x, writable => writable).Get,
+								   writable => writable).Get,
+							   writable => writable).Get,
+						   writable => writable),
+				       new StructureSelect<Readable, Readable, Readable>(
+						   new StructureSelect<Readable, Readable, Readable>(
+							   new StructureSelect<Readable, Readable, Readable>(
+								   new StructureSelect<Readable, Readable, Readable>(x => x, x => x).Get,
+								   x => x).Get,
+							   writable => writable).Get,
+						   writable => writable)) {}
 
-			public StructureSelectionBenchmarks(ISelect<Reference, Reference> reference, ISelect<Writable, Writable> writable,
-			                                    ISelect<Readable, Readable> readable)
+			public StructureSelectionBenchmarks(ISelect<Reference, Reference> reference,
+			                                    IStructureSelect<Writable, Writable> writable,
+			                                    IStructureSelect<Readable, Readable> readable)
 			{
 				_reference = reference;
 				_writable  = writable;
@@ -114,6 +109,7 @@ namespace DragonSpark.Testing.Model.Selection
 			[Benchmark]
 			public string Read() => _readable.Get(new Readable("One", "Two", "Three")).Message;
 		}
+		*/
 
 		public sealed class Reference
 		{
@@ -123,9 +119,9 @@ namespace DragonSpark.Testing.Model.Selection
 
 			public Reference(string first, string second, string third)
 			{
-				First      = first;
-				Second     = second;
-				Third = third;
+				First  = first;
+				Second = second;
+				Third  = third;
 			}
 		}
 
@@ -137,9 +133,9 @@ namespace DragonSpark.Testing.Model.Selection
 
 			public Readable(string message, string other, string three)
 			{
-				Message    = message;
-				Other      = other;
-				Three = three;
+				Message = message;
+				Other   = other;
+				Three   = three;
 			}
 		}
 
@@ -151,9 +147,9 @@ namespace DragonSpark.Testing.Model.Selection
 
 			public Writable(string message, string other, string three)
 			{
-				Message    = message;
-				Other      = other;
-				Three = three;
+				Message = message;
+				Other   = other;
+				Three   = three;
 			}
 		}
 	}

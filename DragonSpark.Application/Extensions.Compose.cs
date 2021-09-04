@@ -109,14 +109,19 @@ namespace DragonSpark.Application
 
 		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
-		
-		public static PlaceholderParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, None, IQueryable<T>>> @this)
+		public static PlaceholderParameterExpressionComposer<T> Then<T>(
+			this Expression<Func<DbContext, None, IQueryable<T>>> @this)
 			=> new(@this);
 
-		public static QueryExpressionComposer<TIn, T> Then<TIn, T>(this Expression<Func<DbContext, TIn, IQueryable<T>>> @this)
+		public static QueryExpressionComposer<TIn, T> Then<TIn, T>(
+			this Expression<Func<DbContext, TIn, IQueryable<T>>> @this)
 			=> new(@this);
 
-		public static ElidedParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, IQueryable<T>>> @this) => new(@this);
+		public static ElidedParameterExpressionComposer<T> Then<T>(
+			this Expression<Func<DbContext, IQueryable<T>>> @this)
+			=> new(@this);
+
+		public static In<TTo> Subject<T, TTo>(this In<T> @this, TTo subject) => new(@this.Context, subject);
 
 		// Scoped:
 
