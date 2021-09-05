@@ -123,31 +123,31 @@ namespace DragonSpark.Testing.Model.Selection
 			}
 
 			[Benchmark(Baseline = true)]
-			public string ReferenceSelect() => _reference.Get(new Reference("One", "Two", "Three")).First;
+			public object ReferenceSelect() => _reference.Get(new Reference(new object(), new object(), new object())).First;
 
 			[Benchmark]
-			public string WriteSelect() => _writable.Get(new Writable("One", "Two", "Three")).Message;
+			public object WriteSelect() => _writable.Get(new Writable(new object(), new object(), new object())).Message;
 
 			[Benchmark]
-			public string ReadSelect() => _readable.Get(new Readable("One", "Two", "Three")).Message;
+			public object ReadSelect() => _readable.Get(new Readable(new object(), new object(), new object())).Message;
 
 			[Benchmark]
-			public string ClassIn() => _referenceIn.Get(new Reference("One", "Two", "Three")).First;
+			public object ClassIn() => _referenceIn.Get(new Reference(new object(), new object(), new object())).First;
 
 			[Benchmark]
-			public string WriteIn() => _writableIn.Get(new Writable("One", "Two", "Three")).Message;
+			public object WriteIn() => _writableIn.Get(new Writable(new object(), new object(), new object())).Message;
 
 			[Benchmark]
-			public string ReadIn() => _readableIn.Get(new Readable("One", "Two", "Three")).Message;
+			public object ReadIn() => _readableIn.Get(new Readable(new object(), new object(), new object())).Message;
 		}
 
 		public sealed class Reference
 		{
-			public string First { get; }
-			public string Second { get; }
-			public string Third { get; }
+			public object First { get; }
+			public object Second { get; }
+			public object Third { get; }
 
-			public Reference(string first, string second, string third)
+			public Reference(object first, object second, object third)
 			{
 				First  = first;
 				Second = second;
@@ -157,11 +157,11 @@ namespace DragonSpark.Testing.Model.Selection
 
 		public readonly struct Readable
 		{
-			public string Message { get; }
-			public string Other { get; }
-			public string Three { get; }
+			public object Message { get; }
+			public object Other { get; }
+			public object Three { get; }
 
-			public Readable(string message, string other, string three)
+			public Readable(object message, object other, object three)
 			{
 				Message = message;
 				Other   = other;
@@ -171,11 +171,11 @@ namespace DragonSpark.Testing.Model.Selection
 
 		public struct Writable
 		{
-			public string Message { get; }
-			public string Other { get; }
-			public string Three { get; }
+			public object Message { get; }
+			public object Other { get; }
+			public object Three { get; }
 
-			public Writable(string message, string other, string three)
+			public Writable(object message, object other, object three)
 			{
 				Message = message;
 				Other   = other;

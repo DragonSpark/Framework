@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Entities
 	{
 		protected Add(ISelecting<TIn, TOut> @new, Save<TContext, TOut> add) : base(@new, add) {}
 
-		public Add(ISelecting<TIn, TOut> select, IOperation<TOut> operation) : base(select, operation) {}
+		protected Add(ISelecting<TIn, TOut> select, IOperation<TOut> operation) : base(select, operation) {}
 
 		protected Add(Await<TIn, TOut> @new, Await<TOut> add) : base(@new, add) {}
 	}

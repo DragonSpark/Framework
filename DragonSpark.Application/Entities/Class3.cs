@@ -14,10 +14,10 @@ namespace DragonSpark.Application.Entities
 		protected Session(IContexts<TContext> contexts, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
 			: this(contexts.Get(), @select, apply) {}
 
-		protected Session(IContexts<TContext> contexts, IFormed<TIn, TOut?> @select, IOperation<In<TSave>> apply)
+		protected Session(IContexts<TContext> contexts, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
 			: this(contexts.Get(), @select, apply) {}
 
-		protected Session(DbContext context, IFormed<TIn, TOut?> @select, IOperation<In<TSave>> apply)
+		protected Session(DbContext context, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
 			: base(context, @select, apply) {}
 
 		protected Session(DbContext context, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
@@ -32,7 +32,7 @@ namespace DragonSpark.Application.Entities
 		readonly ISelecting<In<TIn>, TOut?> _select;
 		readonly IOperation<In<TSave>>      _apply;
 
-		protected Session(DbContext context, IFormed<TIn, TOut?> select, IOperation<In<TSave>> apply) : base(context)
+		protected Session(DbContext context, IForming<TIn, TOut?> select, IOperation<In<TSave>> apply) : base(context)
 		{
 			_context = context;
 			_select  = select;
@@ -53,14 +53,14 @@ namespace DragonSpark.Application.Entities
 	public sealed class Formed<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly DbContext          _instance;
-		readonly IFormed<TIn, TOut> _formed;
+		readonly IForming<TIn, TOut> _forming;
 
-		public Formed(DbContext instance, IFormed<TIn, TOut> formed)
+		public Formed(DbContext instance, IForming<TIn, TOut> forming)
 		{
 			_instance = instance;
-			_formed   = formed;
+			_forming   = forming;
 		}
 
-		public ValueTask<TOut> Get(TIn parameter) => _formed.Get(new(_instance, parameter));
+		public ValueTask<TOut> Get(TIn parameter) => _forming.Get(new(_instance, parameter));
 	}
 }

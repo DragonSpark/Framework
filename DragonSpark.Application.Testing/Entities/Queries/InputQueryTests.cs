@@ -47,6 +47,52 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		}
 
 		[Fact]
+		public async Task VerifyExternalParameter()
+		{
+			var contexts = new MemoryContexts<Context>();
+			{
+				await using var context = contexts.Get();
+				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+				                          new Subject { Name = "Three" });
+				await context.SaveChangesAsync();
+			}
+
+			const string name = "Two";
+
+			var sut = Start.A.Query<Subject>()
+			                 .Accept<string>()
+			                 .Where((s, subject) => subject.Name == name || subject.Name == s)
+			                 .Invoke(contexts).To.Array();
+			var subjects = await sut.Await("One");
+			var open     = subjects.Open();
+			open.Should().HaveCount(2);
+			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+		}
+
+		[Fact]
+		public async Task VerifyExternalParameterSql()
+		{
+			await using var contexts = await new SqlContexts<Context>().Initialize();
+			{
+				await using var context = contexts.Get();
+				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+				                          new Subject { Name = "Three" });
+				await context.SaveChangesAsync();
+			}
+
+			const string name = "Two";
+
+			var sut = Start.A.Query<Subject>()
+			               .Accept<string>()
+			               .Where((s, subject) => subject.Name == name || subject.Name == s)
+			               .Invoke(contexts).To.Array();
+			var subjects = await sut.Await("One");
+			var open     = subjects.Open();
+			open.Should().HaveCount(2);
+			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+		}
+
+		[Fact]
 		public async Task VerifySelectedSql()
 		{
 			await using var factory = await new SqlContexts<Context>().Initialize();

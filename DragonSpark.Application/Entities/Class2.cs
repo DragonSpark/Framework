@@ -15,6 +15,8 @@ namespace DragonSpark.Application.Entities
 
 	public readonly struct Edit<T> : IAsyncDisposable
 	{
+		public static implicit operator In<T>(Edit<T> instance) => new In<T>(instance.Context, instance.Subject);
+
 		public Edit(DbContext context, T subject)
 		{
 			Context = context;
@@ -70,6 +72,25 @@ namespace DragonSpark.Application.Entities
 	}
 
 	public interface IEdit<in TIn, T> : ISelecting<TIn, Edit<T>> {}
+
+	public sealed class StartEdit<TIn, TContext, T> : IEdit<TIn, T> where TContext : DbContext
+	{
+		readonly IContexts<TContext> _contexts;
+		readonly ISelecting<TIn, T>  _select;
+
+		public StartEdit(IContexts<TContext> contexts, ISelecting<TIn, T> select)
+		{
+			_contexts    = contexts;
+			_select = @select;
+		}
+
+		public async ValueTask<Edit<T>> Get(TIn parameter)
+		{
+			var context  = _contexts.Get();
+			var instance = await _select.Await(parameter);
+			return new(context, instance);
+		}
+	}
 
 	public class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 	{

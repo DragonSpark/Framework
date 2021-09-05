@@ -3,6 +3,7 @@ using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Compose.Entities
@@ -20,6 +21,9 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public InvocationComposer<TIn, T, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
 			=> new(_subject, query);
+
+		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
+			=> new StartEdit<TIn, T, TOut>(_subject, select);
 	}
 
 	public sealed class ContextsComposer<TIn, T> where T : DbContext

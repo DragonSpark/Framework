@@ -12,7 +12,7 @@ namespace DragonSpark.Presentation.Components.Content
 	}
 
 	public abstract class
-		PolicyAwareOwningContentComponentBase<TContent, TService> : OwningContentComponentBase<TContent, TService>
+		PolicyAwareOwningContentComponentBase<TService, TContent> : OwningContentComponentBase<TService, TContent>
 		where TService : class
 	{
 		protected PolicyAwareOwningContentComponentBase() : this(Policy.Handle<Exception>().RetryAsync()) {}

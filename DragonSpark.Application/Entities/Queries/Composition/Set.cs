@@ -4,13 +4,13 @@
 	{
 		public static Set<T> Default { get; } = new Set<T>();
 
-		Set() : base(x => x.Set<T>().AsQueryable()) {}
+		Set() : base(x => x.Set<T>()) {}
 	}
 
 	public class Set<TIn, T> : Query<TIn, T> where T : class
 	{
 		public static Set<TIn, T> Default { get; } = new();
 
-		Set() : base(x => x.Set<T>().AsQueryable()) {}
+		Set() : base(x => x.Set<T>()) {}
 	}
 }

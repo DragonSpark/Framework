@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Selection;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ namespace DragonSpark.Application.Entities.Queries
 	{
 		public Form(IQuery<TIn, T> query) : this(query.Get()) {}
 
-		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: base(Compilation.Compile<TIn, T>.Default.Get(expression.Expand())) {}
+		public Form(Expression<Func<DbContext, TIn, IQueryable<T>>> expression) : base(expression.Then().Compile()) {}
 	}
 }

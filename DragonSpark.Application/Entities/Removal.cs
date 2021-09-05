@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Entities
 		readonly Remove<TContext, T> _remove;
 		readonly ICommand<TIn>                  _command;
 
-		public Removal(ISelecting<TIn, T?> select, Remove<TContext, T> remove, ICommand<TIn> command)
+		protected Removal(ISelecting<TIn, T?> select, Remove<TContext, T> remove, ICommand<TIn> command)
 		{
 			_select  = select;
 			_remove  = remove;

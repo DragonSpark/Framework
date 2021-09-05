@@ -105,9 +105,12 @@ namespace DragonSpark.Application
 
 		public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
+		public static TrackingComposer<TIn, T> Tracking<TIn, T>(this QueryComposer<TIn, T> @this) where T : class
+			=> new(@this);
+
 		public static QueryComposer<T> Then<T>(this IQuery<None, T> @this) => new(@this);
 
-		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
+		public static IQuery<T> Out<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
 		public static PlaceholderParameterExpressionComposer<T> Then<T>(
 			this Expression<Func<DbContext, None, IQueryable<T>>> @this)
@@ -121,7 +124,22 @@ namespace DragonSpark.Application
 			this Expression<Func<DbContext, IQueryable<T>>> @this)
 			=> new(@this);
 
+		public static In<None> Subject<T>(this In<T> @this) => new(@this.Context, None.Default);
+
 		public static In<TTo> Subject<T, TTo>(this In<T> @this, TTo subject) => new(@this.Context, subject);
+
+		//
+
+		/*public static Expression<Func<DbContext, TIn, IQueryable<T>>> Invoke<TIn, T>(this IQuery<TIn, T> @this)
+		{
+			var expression = @this.Get();
+			return (context, @in) => expression.Invoke(context, @in);
+		}*/
+
+		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
+
+		public static IForming<T> Then<T>(this IForming<None, T> @this)
+			=> @this as IForming<T> ?? new Forming<T>(@this.Get);
 
 		// Scoped:
 

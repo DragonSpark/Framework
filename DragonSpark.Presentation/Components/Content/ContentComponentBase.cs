@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public abstract class OwningContentComponentBase<TContent, TService> : OwningComponentBase<TService>
+	public abstract class OwningContentComponentBase<TService, TContent> : OwningComponentBase<TService>
 		where TService : class
 	{
 		readonly Func<ValueTask<TContent>> _content;

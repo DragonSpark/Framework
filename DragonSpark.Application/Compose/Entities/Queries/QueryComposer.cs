@@ -218,4 +218,24 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public FormComposer<TIn, T> Form => new(new Form<TIn, T>(_subject));
 	}
+
+	/*public sealed class ReferenceQueryComposer<TIn, T> : QueryComposer<TIn, T> where T : class
+	{
+		readonly IQuery<TIn, T> _subject;
+
+		public ReferenceQueryComposer(IQuery<TIn, T> subject) : base(subject) => _subject = subject;
+
+		public TrackingComposer<TIn, T> Tracking => new TrackingComposer<TIn, T>(_subject);
+	}*/
+
+	public sealed class TrackingComposer<TIn, T> where T : class
+	{
+		readonly QueryComposer<TIn, T> _subject;
+
+		public TrackingComposer(QueryComposer<TIn, T> subject) => _subject = subject;
+
+		public QueryComposer<TIn, T> Off() => _subject.Select(x => x.AsNoTracking());
+
+		public QueryComposer<TIn, T> Unique() => _subject.Select(x => x.AsNoTrackingWithIdentityResolution());
+	}
 }

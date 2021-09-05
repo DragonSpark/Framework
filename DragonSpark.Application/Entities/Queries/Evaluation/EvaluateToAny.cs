@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 		public EvaluateToAny(IInvoke<None, T> invoke) : base(invoke) {}
 	}
 
-	public class EvaluateToAny<TIn, TContext, T> : Evaluate<TIn, T, bool> where TContext : DbContext
+	public class EvaluateToAny<TIn, TContext, T> : Evaluate<TIn, T, bool>, IDepending<TIn> where TContext : DbContext
 	{
 		/*public EvaluateToAny(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
 

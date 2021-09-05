@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Entities
 
 		UpdateMany() {}
 
-		public void Execute(Modification<Memory<object>> parameter)
+		public void Execute(In<Memory<object>> parameter)
 		{
 			var (context, memory) = parameter;
 			for (var i = 0; i < memory.Length; i++)
@@ -35,7 +35,7 @@ namespace DragonSpark.Application.Entities
 
 		UpdateMany() {}
 
-		public void Execute(Modification<Memory<T>> parameter)
+		public void Execute(In<Memory<T>> parameter)
 		{
 			var (context, memory) = parameter;
 			var set = context.Set<T>();
