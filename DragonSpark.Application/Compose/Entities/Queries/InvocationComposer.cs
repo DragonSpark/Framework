@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
@@ -24,6 +26,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public QueryInvocationComposer<TIn, T> To => new(Get());
 
 		public EditInvocationComposer<TIn, T> Edit => new(Get());
+
+		public ISelect<TIn, IQueryable<T>> Compile()
+			=> new Compiled<TContext, TIn, T>(_contexts, _query.Get().Compile());
 
 		public IInvoke<TIn, T> Get() => new Invoke<TContext,TIn,T>(_contexts, _query.Get());
 	}

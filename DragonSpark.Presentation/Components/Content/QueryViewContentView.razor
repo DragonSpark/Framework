@@ -9,6 +9,15 @@
 
 @code
 {
+    Func<Exception, Task> _handle = default!;
+
+    protected override ValueTask Initialize()
+    {
+        _handle = Handle;
+
+        return base.Initialize();
+    }
+
     RenderFragment? Fragment { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -30,7 +39,7 @@
     IQueryView<TItem> DetermineView(IQueryable<TItem> content)
     {
         var view = FilterExpression != null ? content.AsView(Query, FilterExpression) : content.AsView(Query);
-        var result = new ExceptionAwareQueryView<TItem>(view, Handle);
+        var result = new ExceptionAwareQueryView<TItem>(view, _handle);
         return result;
     }
 
@@ -74,7 +83,8 @@
     public RenderFragment? NoElementsFoundTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment NotAssignedTemplate { get; set; } = @<p>No instance was found for this view's content.</p>;
+    public RenderFragment NotAssignedTemplate { get; set; }
+        = @<p>No instance was found for this view's content.</p>;
 
     [Parameter]
     public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;

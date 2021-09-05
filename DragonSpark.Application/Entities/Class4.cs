@@ -17,6 +17,7 @@ namespace DragonSpark.Application.Entities
 
 	public interface IFormed<T> : IOperation<In<T>> {}
 
+
 	public class AddFormed<T, TTo> : IFormed<T> where TTo : class
 	{
 		readonly IForming<T, TTo> _select;

@@ -11,6 +11,8 @@ namespace DragonSpark.Application.Compose.Entities
 		public ContextComposer(DbContext subject) => _subject = subject;
 
 		public ISelecting<TIn, TOut> Form<TIn, TOut>(IForming<TIn, TOut> forming)
-			=> new Formed<TIn, TOut>(_subject, forming);
+			=> new FormingAdapter<TIn, TOut>(_subject, forming);
+
+		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new FormedAdapter<TIn>(_subject, formed);
 	}
 }

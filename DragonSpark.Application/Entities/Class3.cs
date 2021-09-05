@@ -11,28 +11,22 @@ namespace DragonSpark.Application.Entities
 
 	public class Session<TIn, TContext, TOut, TSave> : Session<TIn, TOut, TSave> where TContext : DbContext
 	{
-		protected Session(IContexts<TContext> contexts, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
-			: this(contexts.Get(), @select, apply) {}
-
-		protected Session(IContexts<TContext> contexts, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
-			: this(contexts.Get(), @select, apply) {}
-
-		protected Session(DbContext context, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
+		protected Session(TContext context, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
 			: base(context, @select, apply) {}
 
-		protected Session(DbContext context, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
+		protected Session(TContext context, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
 			: base(context, select.Then().Form.SingleOrDefault(), apply) {}
 	}
 
 	public interface ISession<in TIn, TOut, in TSave> : ISelecting<TIn, TOut?>, IOperation<TSave>, IAsyncDisposable {}
 
-	public class Session<TIn, TOut, TSave> : DragonSpark.Model.Results.Instance<DbContext>, ISession<TIn, TOut, TSave>
+	public class Session<TIn, TOut, TSave> : ISession<TIn, TOut, TSave>
 	{
 		readonly DbContext                  _context;
 		readonly ISelecting<In<TIn>, TOut?> _select;
 		readonly IOperation<In<TSave>>      _apply;
 
-		protected Session(DbContext context, IForming<TIn, TOut?> select, IOperation<In<TSave>> apply) : base(context)
+		protected Session(DbContext context, IForming<TIn, TOut?> select, IOperation<In<TSave>> apply)
 		{
 			_context = context;
 			_select  = select;
@@ -50,12 +44,27 @@ namespace DragonSpark.Application.Entities
 		public ValueTask DisposeAsync() => _context.DisposeAsync();
 	}
 
-	public sealed class Formed<TIn, TOut> : ISelecting<TIn, TOut>
+	public sealed class FormedAdapter<T> : IOperation<T>
+	{
+		readonly DbContext  _context;
+		readonly IFormed<T> _operation;
+
+		public FormedAdapter(DbContext context, IFormed<T> operation)
+		{
+			_context   = context;
+			_operation = operation;
+		}
+
+		public ValueTask Get(T parameter) => _operation.Get(new In<T>(_context, parameter));
+	}
+
+
+	public sealed class FormingAdapter<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly DbContext          _instance;
 		readonly IForming<TIn, TOut> _forming;
 
-		public Formed(DbContext instance, IForming<TIn, TOut> forming)
+		public FormingAdapter(DbContext instance, IForming<TIn, TOut> forming)
 		{
 			_instance = instance;
 			_forming   = forming;
