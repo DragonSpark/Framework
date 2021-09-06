@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
+using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
@@ -38,7 +39,18 @@ namespace DragonSpark.Application
 		/**/
 
 		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
-			where TEntity : class => includes.Aggregate(source, (entities, include) => entities.Include(include));
+			where TEntity : class => includes.Aggregate(source, (entities, include)
+				                                                    => entities.Include(include));
+
+		public static QueryComposer<TIn, TEntity> Include<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
+		                                                                string include)
+			where TEntity : class
+			=> source.Select(q => q.Include(include));
+
+		public static QueryComposer<TIn, TEntity> Includes<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
+		                                                                 params string[] includes)
+			where TEntity : class
+			=> includes.Aggregate(source, (current, include) => current.Include(include));
 
 		/**/
 
@@ -61,7 +73,8 @@ namespace DragonSpark.Application
 
 		public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
 
-		public static string UserName(this ClaimsPrincipal @this, string anonymous) => @this.Identity?.Name ?? anonymous;
+		public static string UserName(this ClaimsPrincipal @this, string anonymous)
+			=> @this.Identity?.Name ?? anonymous;
 
 		public static string? Get(this IValueProvider @this, string key)
 		{
@@ -101,7 +114,7 @@ namespace DragonSpark.Application
 		public static string Format<T>(this IResult<string> @this, T parameter) where T : notnull
 			=> @this.Get().FormatWith(parameter.ToString());
 
-		public static string Format<T1, T2>(this IResult<string> @this, (T1,T2) parameter)
+		public static string Format<T1, T2>(this IResult<string> @this, (T1, T2) parameter)
 			=> @this.Get().FormatWith(parameter.Item1, parameter.Item2);
 
 		public static string Format(this IResult<string> @this, params object[] arguments)
@@ -131,6 +144,5 @@ namespace DragonSpark.Application
 			@this.Remove.Execute();
 			return result;
 		}
-
 	}
 }

@@ -7,7 +7,7 @@ namespace DragonSpark.Model.Operations
 		readonly Await<TSource, TResult>     _select;
 		readonly Operate<(TSource, TResult)> _configure;
 
-		public Configuring(Await<TSource, TResult> select, Operate<(TSource, TResult)> configure)
+		protected Configuring(Await<TSource, TResult> select, Operate<(TSource, TResult)> configure)
 		{
 			_select    = select;
 			_configure = configure;

@@ -14,6 +14,7 @@ using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
@@ -28,6 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
@@ -81,9 +83,7 @@ namespace DragonSpark.Application
 			=> new(new InitializationAwareHostBuilder<T>(@this));
 
 		/**/
-		public static StoreContext<TIn, TOut> Store<TIn, TOut>(
-			this DragonSpark.Compose.Model.Selection.Selector<TIn, TOut> @this)
-			=> new(@this);
+		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this) => new(@this);
 
 		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
 			this OperationResultSelector<TIn, TOut> @this)
@@ -130,16 +130,15 @@ namespace DragonSpark.Application
 
 		//
 
-		/*public static Expression<Func<DbContext, TIn, IQueryable<T>>> Invoke<TIn, T>(this IQuery<TIn, T> @this)
-		{
-			var expression = @this.Get();
-			return (context, @in) => expression.Invoke(context, @in);
-		}*/
-
 		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
 		public static IForming<T> Then<T>(this IForming<None, T> @this)
 			=> @this as IForming<T> ?? new Forming<T>(@this.Get);
+
+		public static IForming<TIn, T> Out<TIn, T>(this Selector<In<TIn>, ValueTask<T>> @this)
+			=> @this.Get().Out();
+		public static IForming<TIn, T> Out<TIn, T>(this ISelect<In<TIn>, ValueTask<T>> @this)
+			=> @this as IForming<TIn, T> ?? new Forming<TIn, T>(@this);
 
 		// Scoped:
 
@@ -149,8 +148,7 @@ namespace DragonSpark.Application
 		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
 			=> new Entities.Queries.Scoped.Adapter<TIn, T>(@this);
 
-		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(
-			this DragonSpark.Compose.Model.Selection.Selector<TIn, IQueryable<T>> @this)
+		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(this Selector<TIn, IQueryable<T>> @this)
 			=> @this.Get().Out();
 
 		/**/

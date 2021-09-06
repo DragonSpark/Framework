@@ -23,11 +23,11 @@ namespace DragonSpark.Application.Entities
 		readonly IForming<T, TTo> _select;
 		readonly IModify<TTo>     _add;
 
-		public AddFormed(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
+		protected AddFormed(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
 
-		public AddFormed(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
+		protected AddFormed(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
 
-		public AddFormed(IForming<T, TTo> select, IModify<TTo> add)
+		protected AddFormed(IForming<T, TTo> select, IModify<TTo> add)
 		{
 			_select = @select;
 			_add    = add;
@@ -62,7 +62,7 @@ namespace DragonSpark.Application.Entities
 
 	public class Forming<TIn, T> : Selecting<In<TIn>, T>, IForming<TIn, T>
 	{
-		protected Forming(ISelect<In<TIn>, ValueTask<T>> select) : base(select) {}
+		public Forming(ISelect<In<TIn>, ValueTask<T>> select) : base(select) {}
 
 		protected Forming(Func<In<TIn>, ValueTask<T>> select) : base(select) {}
 	}

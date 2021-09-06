@@ -1,0 +1,20 @@
+﻿@inherits DragonSpark.Presentation.Components.ComponentBase
+@using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase
+@implements IScopedServiceInjector
+
+<CascadingValue TValue="IScopedServiceInjector" Value="@this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public IServiceProvider Provider { get; set; } = default!;
+
+    public new void Execute(ComponentBase parameter)
+    {
+        ApplyScopedInjections.Default.Execute(new ScopedInjection(parameter, Provider));
+    }
+}

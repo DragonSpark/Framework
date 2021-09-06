@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Array = System.Array;
@@ -85,5 +86,10 @@ namespace DragonSpark.Compose
 				Array.Clear(@this, 0, (int)count);
 			}
 		}
+
+		public static T? ValueOrDefault<T>(this Option<T> @this) where T : struct
+			=> @this.IsSome ? @this.Value : default(T?);
+
+		public static T? OrDefault<T>(this Option<T> @this) => @this.IsSome ? @this.Value : default(T?);
 	}
 }

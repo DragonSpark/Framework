@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components.Scoped
 {
 	public class OwningComponentBase<T> : Microsoft.AspNetCore.Components.OwningComponentBase<T>, IAsyncDisposable
 		where T : class

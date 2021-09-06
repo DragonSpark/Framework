@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Presentation.Components.Navigation
+@using DragonSpark.Presentation.Components.Scoped
 @using JetBrains.Annotations
 @inject IApplyQueryStringValues Apply
 
@@ -17,7 +18,7 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 
-    [QueryStringParameter, UsedImplicitly]
+    [ScopedInjection, UsedImplicitly]
     public string? ScrollToSection { get; set; }
 
     protected override void OnInitialized()

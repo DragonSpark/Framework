@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Members;
 using Microsoft.AspNetCore.Components;
-using NetFabric.Hyperlinq;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 
 namespace DragonSpark.Presentation.Components.Navigation
 {
@@ -13,35 +15,37 @@ namespace DragonSpark.Presentation.Components.Navigation
 	/// </summary>
 	sealed class ApplyQueryStringValues : IApplyQueryStringValues
 	{
-		readonly NavigationManager           _manager;
-		readonly IPropertyAssignmentDelegate _delegate;
-		readonly IQueryString                _query;
+		readonly Func<Dictionary<string, StringValues>>    _values;
+		readonly ISelect<Type, Array<QueryStringProperty>> _properties;
+		readonly IPropertyAssignmentDelegate               _delegate;
 
 		public ApplyQueryStringValues(NavigationManager manager)
-			: this(manager, PropertyAssignmentDelegates.Default, QueryString.Default) {}
+			: this(QueryString.Default.Then().Bind(manager), StoredQueryStringProperties.Default,
+			       PropertyAssignmentDelegates.Default) {}
 
-		public ApplyQueryStringValues(NavigationManager manager, IPropertyAssignmentDelegate @delegate,
-		                              IQueryString query)
+		public ApplyQueryStringValues(Func<Dictionary<string, StringValues>> values,
+		                              ISelect<Type, Array<QueryStringProperty>> properties,
+		                              IPropertyAssignmentDelegate @delegate)
 		{
-			_manager  = manager;
-			_delegate = @delegate;
-			_query    = query;
+			_values     = values;
+			_properties = properties;
+			_delegate   = @delegate;
 		}
 
 		public void Execute(Microsoft.AspNetCore.Components.ComponentBase parameter)
 		{
-			var query = _query.Get(_manager);
-
-			foreach (var property in parameter.GetType().GetRuntimeProperties().AsValueEnumerable())
+			var query      = _values();
+			var properties = _properties.Get(parameter.GetType()).Open();
+			for (var i = 0; i < properties.Length; i++)
 			{
-				var attribute = property.Attribute<QueryStringParameterAttribute>();
-				var name      = attribute != null ? attribute.Name ?? property.Name : null;
-				if (name != null && query.TryGetValue(name, out var value))
+				var (property, name) = properties[i];
+				if (query.TryGetValue(name, out var value))
 				{
 					var @delegate = _delegate.Get(property);
 					var converted = Convert.ChangeType(value[0], property.PropertyType, CultureInfo.InvariantCulture);
 					@delegate(parameter, converted);
-				}			}
+				}
+			}
 		}
 	}
 }
