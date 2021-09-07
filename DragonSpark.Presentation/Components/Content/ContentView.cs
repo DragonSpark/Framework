@@ -4,25 +4,39 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public sealed class ContentView<TValue> : ComponentBase
+	public sealed class ContentView<TValue> : ComponentBase where TValue : class
 	{
+		protected override void OnParametersSet()
+		{
+			base.OnParametersSet();
+			Fragment ??= Content != null ? ChildContent(Content) : NotFoundTemplate;
+		}
+
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			if (Content is null)
+			builder.AddContent(0, Fragment);
+		}
+
+		RenderFragment? Fragment { get; set; }
+
+		[Parameter]
+		public TValue? Content
+		{
+			get => _content;
+			set
 			{
-				builder.AddContent(2, NotFoundTemplate);
-			}
-			else if (ChildContent != null)
-			{
-				builder.AddContent(1, ChildContent(Content));
+				if (_content != value)
+				{
+					_content = value;
+					Fragment = null;
+				}
 			}
 		}
 
-		[Parameter, UsedImplicitly]
-		public TValue? Content { get; set; }
+		TValue? _content;
 
-		[Parameter, UsedImplicitly]
-		public RenderFragment<TValue>? ChildContent { get; set; }
+		[Parameter]
+		public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
 		[Parameter]
 		public RenderFragment NotFoundTemplate { get; set; } = x => x.AddContent(2, "Not found.");

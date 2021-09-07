@@ -5,20 +5,21 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public abstract class ContentComponentBase<T> : ComponentBase
+	public abstract class OwningContentComponentBase<TService, TContent> : Scoped.OwningComponentBase<TService>
+		where TService : class
 	{
-		readonly Func<ValueTask<T>> _content;
+		readonly Func<ValueTask<TContent>> _content;
 
-		protected ContentComponentBase() => _content = GetContent;
+		protected OwningContentComponentBase() => _content = GetContent;
 
 		[Parameter]
-		public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
+		public IActiveContents<TContent> Contents { get; set; } = ActiveContents<TContent>.Default;
 
-		protected IActiveContent<T> Content => _current.Verify();
+		protected IActiveContent<TContent> Content => _current.Verify();
 
-		IActiveContent<T>? _current;
+		IActiveContent<TContent>? _current;
 
-		protected abstract ValueTask<T> GetContent();
+		protected abstract ValueTask<TContent> GetContent();
 
 		protected override void OnParametersSet()
 		{
@@ -36,7 +37,7 @@ namespace DragonSpark.Presentation.Components.Content
 			_current = null;
 		}
 
-		IActiveContent<T> NewContent()
+		IActiveContent<TContent> NewContent()
 		{
 			UpdateContent();
 			Apply();

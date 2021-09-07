@@ -4,15 +4,10 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-    public class ActiveContent<T> : IActiveContent<T>
+	public class ActiveContent<T> : IActiveContent<T>
 	{
-		/*public static implicit operator ActiveContent<T>(Func<ValueTask<T>> instance) => new(instance);*/
-
-		/*public static implicit operator ActiveContent<T>(ResultContext<ValueTask<T>> instance)
-			=> new(instance);*/
-
-		readonly IMutable<ValueTuple<T>?> _store;
 		readonly Func<ValueTask<T>>       _content;
+		readonly IMutable<ValueTuple<T>?> _store;
 
 		public ActiveContent(Func<ValueTask<T>> content) : this(new Variable<ValueTuple<T>?>(), content) {}
 
@@ -21,6 +16,8 @@ namespace DragonSpark.Presentation.Components.Content
 			_store   = store;
 			_content = content;
 		}
+
+		public override string? ToString() => _store.Get()?.Item1?.ToString();
 
 		public bool HasValue => _store.Get().HasValue;
 
@@ -36,7 +33,5 @@ namespace DragonSpark.Presentation.Components.Content
 
 			return store.Value.Item1;
 		}
-
-		public override string? ToString() => _store.Get()?.Item1?.ToString();
 	}
 }
