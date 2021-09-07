@@ -32,22 +32,16 @@ namespace DragonSpark.Presentation.Components.Content
 			_current ??= Contents.Get(_content);
 		}
 
-		protected void UpdateContent()
+		protected void RequestNewContent()
 		{
 			_current = null;
 		}
 
-		IActiveContent<TContent> NewContent()
+		protected override ValueTask RefreshState()
 		{
-			UpdateContent();
+			RequestNewContent();
 			Apply();
-			return Content;
-		}
-
-		protected override async ValueTask RefreshState()
-		{
-			await NewContent().Get();
-			await base.RefreshState().ConfigureAwait(false);
+			return base.RefreshState();
 		}
 	}
 }
