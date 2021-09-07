@@ -17,6 +17,12 @@ namespace DragonSpark.Application.Entities
 
 	public interface IFormed<T> : IOperation<In<T>> {}
 
+	public class Formed<T> : Operation<In<T>>, IFormed<T>
+	{
+		public Formed(ISelect<In<T>, ValueTask> @select) : base(@select) {}
+
+		public Formed(Func<In<T>, ValueTask> @select) : base(@select) {}
+	}
 
 	public class AddFormed<T, TTo> : IFormed<T> where TTo : class
 	{
@@ -37,6 +43,29 @@ namespace DragonSpark.Application.Entities
 		{
 			var entity = await _select.Await(parameter);
 			_add.Execute(parameter.Subject(entity));
+		}
+	}
+
+	public class Adding<T, TTo> : IForming<T, TTo> where TTo : class
+	{
+		readonly IForming<T, TTo> _select;
+		readonly IModify<TTo>     _add;
+
+		protected Adding(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
+
+		protected Adding(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
+
+		protected Adding(IForming<T, TTo> select, IModify<TTo> add)
+		{
+			_select = @select;
+			_add    = add;
+		}
+
+		public async ValueTask<TTo> Get(In<T> parameter)
+		{
+			var result = await _select.Await(parameter);
+			_add.Execute(parameter.Subject(result));
+			return result;
 		}
 	}
 
