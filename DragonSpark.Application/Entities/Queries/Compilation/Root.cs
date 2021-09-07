@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compilation
 {
-	sealed class Root : ISelect<MemberExpression, Expression>
+	sealed class Root : ISelect<MemberExpression, Expression?>
 	{
 		public static Root Default { get; } = new Root();
 
 		Root() {}
 
-		public Expression Get(MemberExpression parameter)
+		public Expression? Get(MemberExpression parameter)
 		{
 			var current = parameter;
 			while (current.Expression is MemberExpression next)
@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Entities.Queries.Compilation
 				current = next;
 			}
 
-			return current.Expression.Verify();
+			return current?.Expression;
 		}
 	}
 }

@@ -72,8 +72,8 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		               Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> instance)
 			: base((context, @in) => instance.Invoke(@in, previous.Invoke(context, @in))) {}
 
-		protected Combine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
-		                  Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
+		public Combine(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+		               Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
 			: base((context, @in) => instance.Invoke(context, @in, previous.Invoke(context, @in))) {}
 	}
 }

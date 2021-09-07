@@ -40,6 +40,7 @@
     <PackageReference Include="SluggyUnidecode" Version="2.0.1" />
     <PackageReference Include="SmartFormat.NET" Version="2.7.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.12" />
   </ItemGroup>
 
   <ItemGroup>

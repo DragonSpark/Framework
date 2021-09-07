@@ -75,6 +75,10 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Select<TTo>(Expression<Func<DbContext, IQueryable<T>, IQueryable<TTo>>> select)
 			=> Next(new Combine<TIn, T, TTo>(_subject.Get(), select));
 
+		public QueryComposer<TIn, TTo>
+			Select<TTo>(Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
+			=> Next(new Combine<TIn, T, TTo>(_subject.Get(), select));
+
 		public QueryComposer<TIn, TTo> SelectMany<TTo>(Expression<Func<T, IEnumerable<TTo>>> select)
 			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
