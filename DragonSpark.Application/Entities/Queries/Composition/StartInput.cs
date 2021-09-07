@@ -30,6 +30,9 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		protected StartInput(Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> instance)
 			: base(Set<TIn, T>.Default, instance) {}
 
+		protected StartInput(Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
+			: base(Set<TIn, T>.Default, instance) {}
+
 		protected StartInput(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
 		                     Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
 			: base(previous, instance) {}

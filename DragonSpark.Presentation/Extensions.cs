@@ -129,9 +129,6 @@ namespace DragonSpark.Presentation
 
 		public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 
-		public static Dictionary<string, StringValues> QueryString(this NavigationManager @this)
-			=> Components.Navigation.QueryString.Default.Get(@this);
-
 		/**/
 
 		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, Materialization<T> query)
