@@ -9,13 +9,13 @@ namespace DragonSpark.Presentation.Components.Content
 	sealed class QueryView<T> : IQueryView<T>
 	{
 		readonly IQueryable<T>       _source;
-		readonly Materialization<T>  _query;
+		readonly IMaterialization<T>  _query;
 		readonly IQueryAlteration<T> _alteration;
 
-		public QueryView(IQueryable<T> source, Materialization<T> query)
+		public QueryView(IQueryable<T> source, IMaterialization<T> query)
 			: this(source, query, DefaultQueryAlteration<T>.Default) {}
 
-		public QueryView(IQueryable<T> source, Materialization<T> query, IQueryAlteration<T> alteration)
+		public QueryView(IQueryable<T> source, IMaterialization<T> query, IQueryAlteration<T> alteration)
 		{
 			_source     = source;
 			_query      = query;

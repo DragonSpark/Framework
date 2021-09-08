@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Assemblies
 {
-	public sealed class Assemblies : ArrayInstance<Assembly>
+	public sealed class Assemblies : Instances<Assembly>
 	{
 		public static Assemblies Default { get; } = new Assemblies();
 

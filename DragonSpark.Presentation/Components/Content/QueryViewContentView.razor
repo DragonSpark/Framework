@@ -9,83 +9,82 @@
 
 @code
 {
-    Func<Exception, Task> _handle = default!;
+	Func<Exception, Task> _handle = default!;
 
-    protected override ValueTask Initialize()
-    {
-        _handle = Handle;
+	protected override ValueTask Initialize()
+	{
+		_handle = Handle;
 
-        return base.Initialize();
-    }
+		return base.Initialize();
+	}
 
-    RenderFragment? Fragment { get; set; }
+	RenderFragment? Fragment { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        Fragment ??= await DetermineFragment();
-    }
+	protected override async Task OnParametersSetAsync()
+	{
+		Fragment ??= await DetermineFragment();
+	}
 
-    async ValueTask<RenderFragment> DetermineFragment()
-    {
-        Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
-        var result = Content != null
-                         ? NoElementsFoundTemplate == null || await Query.Any.Get(Content)
-                               ? ChildContent(DetermineView(Content))
-                               : NoElementsFoundTemplate
-                         : NotAssignedTemplate;
-        return result;
-    }
+	async ValueTask<RenderFragment> DetermineFragment()
+	{
+		Fragment = LoadingTemplate; // Re-entry is occurring for some reason.
+		var result = Content != null
+						 ? NoElementsFoundTemplate == null || await Materialization.Any.Get(Content)
+							   ? ChildContent(DetermineView(Content))
+							   : NoElementsFoundTemplate
+						 : NotAssignedTemplate;
+		return result;
+	}
 
-    IQueryView<TItem> DetermineView(IQueryable<TItem> content)
-    {
-        var view = FilterExpression != null ? content.AsView(Query, FilterExpression) : content.AsView(Query);
-        var result = new ExceptionAwareQueryView<TItem>(view, _handle);
-        return result;
-    }
+	IQueryView<TItem> DetermineView(IQueryable<TItem> content)
+	{
+		var view = FilterExpression != null ? content.AsView(Materialization, FilterExpression) : content.AsView(Materialization);
+		var result = new ExceptionAwareQueryView<TItem>(view, _handle);
+		return result;
+	}
 
-    async Task Handle(Exception error)
-    {
-        await Exceptions.Get(GetType(), error);
-        Fragment = ExceptionTemplate;
-        StateHasChanged();
-    }
+	async Task Handle(Exception error)
+	{
+		await Exceptions.Get(GetType(), error);
+		Fragment = ExceptionTemplate;
+		StateHasChanged();
+	}
 
+	[Inject]
+	IMaterialization<TItem> Materialization { get; set; } = default!;
 
-    [Parameter]
-    public Materialization<TItem> Query { get; set; } = DurableMaterialization<TItem>.Default;
+	[Parameter]
+	public IQueryable<TItem>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				Fragment = null;
+				_content = value;
+			}
+		}
+	}
 
-    [Parameter]
-    public IQueryable<TItem>? Content
-    {
-        get => _content;
-        set
-        {
-            if (_content != value)
-            {
-                Fragment = null;
-                _content = value;
-            }
-        }
-    }
+	IQueryable<TItem>? _content;
 
-    IQueryable<TItem>? _content;
+	[Parameter]
+	public string? FilterExpression { get; set; }
 
-    [Parameter]
-    public string? FilterExpression { get; set; }
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	[Parameter]
+	public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
 
-    [Parameter]
-    public RenderFragment<IQueryView<TItem>> ChildContent { get; set; } = default!;
+	[Parameter]
+	public RenderFragment? NoElementsFoundTemplate { get; set; }
 
-    [Parameter]
-    public RenderFragment? NoElementsFoundTemplate { get; set; }
+	[Parameter]
+	public RenderFragment NotAssignedTemplate { get; set; }
+		= @<p>No instance was found for this view's content.</p>;
 
-    [Parameter]
-    public RenderFragment NotAssignedTemplate { get; set; }
-        = @<p>No instance was found for this view's content.</p>;
-
-    [Parameter]
-    public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+	[Parameter]
+	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 }

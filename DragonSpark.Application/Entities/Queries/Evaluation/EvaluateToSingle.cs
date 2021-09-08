@@ -6,28 +6,25 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Evaluation
 {
-	public class EvaluateToSingle<TContext, T> : EvaluateToSingle<None, TContext, T> where TContext : DbContext
+	public class EvaluateToSingle<T> : EvaluateToSingle<None, T>
 	{
 		/*public EvaluateToSingle(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
 
-		public EvaluateToSingle(IContexts<TContext> contexts,
-		                        Expression<Func<DbContext, IQueryable<T>>> expression)
-			: base(contexts, expression.Then()) {}
+		public EvaluateToSingle(IInvocations invocations, Expression<Func<DbContext, IQueryable<T>>> expression)
+			: base(invocations, expression.Then()) {}
 
-		public EvaluateToSingle(IContexts<TContext> contexts,
-		                        Expression<Func<DbContext, None, IQueryable<T>>> expression)
-			: base(contexts, expression) {}
+		public EvaluateToSingle(IInvocations invocations, Expression<Func<DbContext, None, IQueryable<T>>> expression)
+			: base(invocations, expression) {}
 
 		public EvaluateToSingle(IInvoke<None, T> invoke) : base(invoke) {}
 	}
 
-	public class EvaluateToSingle<TIn, TContext, T> : Evaluate<TIn, T, T> where TContext : DbContext
+	public class EvaluateToSingle<TIn, T> : Evaluate<TIn, T, T>
 	{
 		/*public EvaluateToSingle(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
 
-		public EvaluateToSingle(IContexts<TContext> contexts,
-		                        Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TContext, TIn, T>(contexts, expression)) {}
+		public EvaluateToSingle(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
 		public EvaluateToSingle(IInvoke<TIn, T> invoke) : base(invoke, Single<T>.Default) {}
 	}

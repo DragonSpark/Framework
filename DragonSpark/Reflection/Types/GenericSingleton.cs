@@ -14,7 +14,7 @@ namespace DragonSpark.Reflection.Types
 
 		GenericSingleton() : this(typeof(Singletons).GetRuntimeMethod(nameof(Singletons.Get),
 		                                                              typeof(Type).Yield().ToArray())!,
-		                          new ArrayInstance<ParameterExpression>(Array<ParameterExpression>.Empty)) {}
+		                          new Instances<ParameterExpression>(Array<ParameterExpression>.Empty)) {}
 
 		readonly MethodInfo _method;
 

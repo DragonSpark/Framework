@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Entities.Queries.Materialize
 {
-	public sealed class DefaultMaterialization<T> : Materialization<T>
+	sealed class DefaultMaterialization<T> : Materialization<T>
 	{
 		public static DefaultMaterialization<T> Default { get; } = new DefaultMaterialization<T>();
 

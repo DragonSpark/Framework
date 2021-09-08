@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment
 {
-	sealed class DefaultAssemblies : ArrayInstance<Assembly>
+	sealed class DefaultAssemblies : Instances<Assembly>
 	{
 		public static DefaultAssemblies Default { get; } = new DefaultAssemblies();
 

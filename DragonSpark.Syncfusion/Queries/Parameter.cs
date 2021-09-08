@@ -15,6 +15,7 @@ namespace DragonSpark.Syncfusion.Queries
 		public DataManagerRequest Request { get; }
 
 		public IQueryable<T> Query { get; }
+
 		public uint? Count { get; }
 
 		public void Deconstruct(out DataManagerRequest request, out IQueryable<T> query, out uint? count)

@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Testing.Objects
 {
-	sealed class View : ArrayInstance<string>
+	sealed class View : Instances<string>
 	{
 		public static View Default { get; } = new View();
 

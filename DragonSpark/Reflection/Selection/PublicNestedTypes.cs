@@ -11,7 +11,7 @@ namespace DragonSpark.Reflection.Selection
 		PublicNestedTypes() : base(new PublicNestedTypes(A.Type<T>())) {}
 	}
 
-	public sealed class PublicNestedTypes : ArrayInstance<Type>
+	public sealed class PublicNestedTypes : Instances<Type>
 	{
 		public PublicNestedTypes(Type referenceType) : base(referenceType.GetNestedTypes()) {}
 	}

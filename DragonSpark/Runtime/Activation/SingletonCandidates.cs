@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Runtime.Activation
 {
-	sealed class SingletonCandidates : ArrayInstance<string>, ISingletonCandidates
+	sealed class SingletonCandidates : Instances<string>, ISingletonCandidates
 	{
 		public static SingletonCandidates Default { get; } = new SingletonCandidates();
 

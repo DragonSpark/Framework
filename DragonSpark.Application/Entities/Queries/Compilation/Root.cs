@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compilation

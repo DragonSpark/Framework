@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Application.Entities.Diagnostics;
+using DragonSpark.Application.Entities.Queries.Materialize;
+using DragonSpark.Model.Commands;
 using LightInject;
 
 namespace DragonSpark.Application.Entities
@@ -11,7 +13,8 @@ namespace DragonSpark.Application.Entities
 
 		public void Execute(IServiceContainer parameter)
 		{
-			parameter.Decorate(typeof(ISave<>), typeof(StateAwareSave<>));
+			parameter.Decorate(typeof(ISave<>), typeof(StateAwareSave<>))
+			         .Decorate(typeof(IMaterialization<>), typeof(DurableMaterialization<>));
 		}
 	}
 }

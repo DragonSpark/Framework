@@ -1,7 +1,10 @@
 ﻿namespace DragonSpark.Application.Entities.Queries.Materialize
 {
-	public class Materialization<T>
+	public class Materialization<T> : IMaterialization<T>
 	{
+		public Materialization(IMaterialization<T> previous)
+			: this(previous.Any, previous.Counting, previous.Sequences) {}
+
 		public Materialization(IAny<T> any, Counting<T> counting, Sequences<T> sequences)
 		{
 			Any         = any;

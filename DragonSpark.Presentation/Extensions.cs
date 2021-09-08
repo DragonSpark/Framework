@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 using NetFabric.Hyperlinq;
 using Radzen;
 using System;
@@ -131,10 +130,10 @@ namespace DragonSpark.Presentation
 
 		/**/
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, Materialization<T> query)
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, IMaterialization<T> query)
 			=> new QueryView<T>(@this, query);
 
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, Materialization<T> query, string filter)
+		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, IMaterialization<T> query, string filter)
 			=> new QueryView<T>(@this, query, new FilterAwareQueryAlteration<T>(filter));
 
 		/**/

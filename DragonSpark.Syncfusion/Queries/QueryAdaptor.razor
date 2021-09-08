@@ -14,23 +14,23 @@
 
 @code {
 
-    [Parameter]
-    public IQueryable<T> Input { get; set; } = default!;
+	[Parameter]
+	public IQueryable<T> Input { get; set; } = default!;
 
-    [Parameter]
-    public IQuery<T> Query { get; set; } = Query<T>.Default;
+	[Inject]
+	IQuery<T> Query { get; set; } = default!;
 
-    [Parameter]
-    public Materialization<T> Content { get; set; } = DurableMaterialization<T>.Default;
+	[Inject]
+	IMaterialization<T> Materialization { get; set; } = default!;
 
-    public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
-    {
-        var (_, query, count) = await Query.Get(new(request, Input));
+	public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
+	{
+		var (_, query, count) = await Query.Get(new(request, Input));
 
-        var elements = await Content.Sequences.ToList.Get(query);
-        var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
-                         :
-                         (object)elements;
-        return result;
-    }
+		var elements = await Materialization.Sequences.ToList.Get(query);
+		var result = count.HasValue ? new DataResult { Result = elements, Count = count.Value.Degrade() }
+						 :
+						 (object)elements;
+		return result;
+	}
 }

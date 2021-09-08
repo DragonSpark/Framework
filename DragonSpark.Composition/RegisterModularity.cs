@@ -38,8 +38,8 @@ namespace DragonSpark.Composition
 			var types      = _types(assemblies);
 			var locator    = _locator(types);
 
-			parameter.AddSingleton<IArray<Assembly>>(new ArrayInstance<Assembly>(assemblies))
-			         .AddSingleton<IArray<Type>>(new ArrayInstance<Type>(types))
+			parameter.AddSingleton<IArray<Assembly>>(new Instances<Assembly>(assemblies))
+			         .AddSingleton<IArray<Type>>(new Instances<Type>(types))
 			         .AddSingleton(locator)
 			         .AddSingleton<IComponentType>(new ComponentType(locator));
 		}

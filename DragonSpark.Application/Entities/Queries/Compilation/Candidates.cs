@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Queries.Compilation
 {
-	sealed class Candidates<TIn, TOut> : ArrayInstance<Generic<TIn, TOut>>
+	sealed class Candidates<TIn, TOut> : Instances<Generic<TIn, TOut>>
 	{
 		public static Candidates<TIn, TOut> Default { get; } = new Candidates<TIn, TOut>();
 

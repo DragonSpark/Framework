@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Evaluation
@@ -16,8 +17,8 @@ namespace DragonSpark.Application.Entities.Queries.Evaluation
 
 		public async ValueTask<TResult> Get(TIn parameter)
 		{
-			await using var invocation = _invoke.Get(parameter);
-			var             result     = await _evaluate.Get(invocation.Elements);
+			using var invocation = await _invoke.Await(parameter);
+			var       result     = await _evaluate.Get(invocation.Elements);
 			return result;
 		}
 	}

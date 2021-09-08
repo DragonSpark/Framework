@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection
 {
-	public sealed class AllAssemblyTypes : ArrayInstance<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
+	public sealed class AllAssemblyTypes : Instances<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
 	{
 		public AllAssemblyTypes(Type referenceType) : this(referenceType.Assembly) {}
 

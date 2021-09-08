@@ -2,28 +2,30 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries
 {
-	public class Invoke<TContext, TIn, T> : IInvoke<TIn, T> where TContext : DbContext
+	public class Invoke<TIn, T> : IInvoke<TIn, T>
 	{
-		readonly IContexts<TContext> _contexts;
-		readonly IForm<TIn, T>       _form;
+		readonly IInvocations  _invocations;
+		readonly IForm<TIn, T> _form;
 
-		public Invoke(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(contexts, new Form<TIn, T>(expression)) {}
+		public Invoke(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: this(invocations, new Form<TIn, T>(expression)) {}
 
-		public Invoke(IContexts<TContext> contexts, IForm<TIn, T> form)
+		public Invoke(IInvocations invocations, IForm<TIn, T> form)
 		{
-			_contexts = contexts;
-			_form     = form;
+			_invocations = invocations;
+			_form        = form;
 		}
 
-		public Invocation<T> Get(TIn parameter)
+		public async ValueTask<Invoke<T>> Get(TIn parameter)
 		{
-			var context = _contexts.Get();
-			var form    = _form.Get(new(context, parameter));
-			return new(context, form);
+			var (context, session) = _invocations.Get();
+			var form = _form.Get(new(context, parameter));
+
+			return new(context, await session.Get(), form);
 		}
 	}
 }

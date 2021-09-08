@@ -60,9 +60,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var contexts = new Contexts<Context>(factory);
-			var invoke   = new Invoke<Context, None, Subject>(contexts, Query.Default);
+			var invoke   = new Invoke<None, Subject>(new Invocations<Context>(contexts), Query.Default);
 			{
-				await using var invocation = invoke.Get(None.Default);
+				using var invocation = await invoke.Get(None.Default);
 				var             elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
 				elements.Should().HaveCount(2);
 				elements.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -254,16 +254,18 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				: base((_, subjects) => select.Invoke(subjects)) {}
 		}
 
-		sealed class SubjectsNotTwo : EvaluateToArray<None, Context, Subject>
+		sealed class SubjectsNotTwo : EvaluateToArray<None, Subject>
 		{
-			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts, Query.Default) {}
+			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts.Then().Invocations(), Query.Default) {}
 
-			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query) : base(contexts, query.Get()) {}
+			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query)
+				: base(contexts.Then().Invocations(), query.Get()) {}
 		}
 
-		sealed class SubjectsNotWithParameter : EvaluateToArray<string, Context, Subject>
+		sealed class SubjectsNotWithParameter : EvaluateToArray<string, Subject>
 		{
-			public SubjectsNotWithParameter(IContexts<Context> contexts) : base(contexts, Parameter.Default) {}
+			public SubjectsNotWithParameter(IContexts<Context> contexts)
+				: base(contexts.Then().Invocations(), Parameter.Default) {}
 		}
 
 		public class Benchmarks

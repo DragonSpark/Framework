@@ -12,7 +12,7 @@ namespace DragonSpark.Reflection.Selection
 		NestedTypes() : base(new NestedTypes(A.Metadata<T>())) {}
 	}
 
-	public sealed class NestedTypes : ArrayInstance<Type>
+	public sealed class NestedTypes : Instances<Type>
 	{
 		public NestedTypes(TypeInfo referenceType) : base(referenceType.DeclaredNestedTypes) {}
 	}

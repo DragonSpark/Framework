@@ -4,17 +4,17 @@ using Polly;
 
 namespace DragonSpark.Application.Entities.Diagnostics
 {
-	sealed class PolicyAwareEntityQueries<T> : ISelect<IAsyncPolicy, Materialization<T>>
+	sealed class PolicyAwareMaterialization<T> : ISelect<IAsyncPolicy, IMaterialization<T>>
 	{
-		public static PolicyAwareEntityQueries<T> Default { get; } = new PolicyAwareEntityQueries<T>();
+		public static PolicyAwareMaterialization<T> Default { get; } = new PolicyAwareMaterialization<T>();
 
-		PolicyAwareEntityQueries() : this(DefaultMaterialization<T>.Default) {}
+		PolicyAwareMaterialization() : this(DefaultMaterialization<T>.Default) {}
 
-		readonly Materialization<T> _prototype;
+		readonly IMaterialization<T> _prototype;
 
-		public PolicyAwareEntityQueries(Materialization<T> prototype) => _prototype = prototype;
+		public PolicyAwareMaterialization(IMaterialization<T> prototype) => _prototype = prototype;
 
-		public Materialization<T> Get(IAsyncPolicy parameter)
+		public IMaterialization<T> Get(IAsyncPolicy parameter)
 		{
 			var any = new Any<T>(_prototype.Any.With(parameter));
 			var counting = new Counting<T>(new Count<T>(_prototype.Counting.With(parameter)),

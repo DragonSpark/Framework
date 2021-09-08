@@ -14,7 +14,7 @@ namespace DragonSpark.Reflection.Types
 
 		public ActivateExpressions(Array<Type> parameters)
 			: this(parameters,
-			       new ArrayInstance<ParameterExpression>(parameters.Open()
+			       new Instances<ParameterExpression>(parameters.Open()
 			                                                        .Select(Defaults.Parameter)
 			                                                        .ToArray())) {}
 

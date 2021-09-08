@@ -12,7 +12,7 @@ namespace DragonSpark.Reflection.Selection
 		PublicAssemblyTypes() : base(new PublicAssemblyTypes(typeof(T))) {}
 	}
 
-	public sealed class PublicAssemblyTypes : ArrayInstance<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
+	public sealed class PublicAssemblyTypes : Instances<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
 	{
 		public PublicAssemblyTypes(Type referenceType) : this(referenceType.Assembly) {}
 

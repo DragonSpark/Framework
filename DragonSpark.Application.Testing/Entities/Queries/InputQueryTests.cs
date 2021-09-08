@@ -35,7 +35,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var evaluate =
-				new EvaluateToArray<string, Context, string>(new Contexts<Context>(factory), Selected.Default);
+				new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Invocations(),
+				                                    Selected.Default);
 			{
 				var results = await evaluate.Await("One");
 				var open    = results.Open();
@@ -60,9 +61,10 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			const string name = "Two";
 
 			var sut = Start.A.Query<Subject>()
-			                 .Accept<string>()
-			                 .Where((s, subject) => subject.Name == name || subject.Name == s)
-			                 .Invoke(contexts).To.Array();
+			               .Accept<string>()
+			               .Where((s, subject) => subject.Name == name || subject.Name == s)
+			               .Invoke(contexts)
+			               .To.Array();
 			var subjects = await sut.Await("One");
 			var open     = subjects.Open();
 			open.Should().HaveCount(2);
@@ -85,7 +87,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var sut = Start.A.Query<Subject>()
 			               .Accept<string>()
 			               .Where((s, subject) => subject.Name == name || subject.Name == s)
-			               .Invoke(contexts).To.Array();
+			               .Invoke(contexts)
+			               .To.Array();
 			var subjects = await sut.Await("One");
 			var open     = subjects.Open();
 			open.Should().HaveCount(2);
@@ -103,7 +106,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluation = new EvaluateToArray<string, Context, string>(factory, Selected.Default);
+			var evaluation = new EvaluateToArray<string, string>(factory.Then().Invocations(), Selected.Default);
 			{
 				var results = await evaluation.Await("One");
 				var open    = results.Open();
@@ -135,8 +138,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 			var evaluate =
-				new EvaluateToArray<Input, ContextWithData, string>(new Contexts<ContextWithData>(contexts),
-				                                                    ComplexSelected.Default);
+				new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Invocations(),
+				                                   ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new(id, "One"));
 				var only    = results.Open().Only();

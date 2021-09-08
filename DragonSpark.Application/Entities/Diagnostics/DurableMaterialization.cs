@@ -1,17 +1,14 @@
 ﻿using DragonSpark.Application.Entities.Queries.Materialize;
+using Polly;
 
 namespace DragonSpark.Application.Entities.Diagnostics
 {
-	public sealed class DurableMaterialization<T> : Materialization<T>
+	sealed class DurableMaterialization<T> : Materialization<T>
 	{
-		public static DurableMaterialization<T> Default { get; } = new DurableMaterialization<T>();
+		public DurableMaterialization(IMaterialization<T> previous)
+			: this(previous, DurableApplicationContentPolicy.Default.Get()) {}
 
-		DurableMaterialization()
-			: this(PolicyAwareEntityQueries<T>.Default.Get(DurableApplicationContentPolicy.Default.Get())) {}
-
-		public DurableMaterialization(Materialization<T> source) : this(source.Any, source.Counting, source.Sequences) {}
-
-		public DurableMaterialization(IAny<T> any, Counting<T> counting, Sequences<T> sequences) :
-			base(any, counting, sequences) {}
+		public DurableMaterialization(IMaterialization<T> previous, IAsyncPolicy policy)
+			: base(new PolicyAwareMaterialization<T>(previous).Get(policy)) {}
 	}
 }

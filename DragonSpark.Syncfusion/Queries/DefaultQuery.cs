@@ -1,12 +1,12 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Application.Entities.Queries.Materialize;
+using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Syncfusion.Queries
 {
-	sealed class DefaultQuery<T> : ArrayInstance<IQuery<T>>
+	sealed class DefaultQuery<T> : Instances<IQuery<T>>
 	{
-		public static DefaultQuery<T> Default { get; } = new DefaultQuery<T>();
-
-		DefaultQuery() : base(Search<T>.Default, Sort<T>.Default, Where<T>.Default, Count<T>.Default, Skip<T>.Default,
-		                      Take<T>.Default) {}
+		public DefaultQuery(ICount<T> counting)
+			: base(Search<T>.Default, Sort<T>.Default, Where<T>.Default, new Count<T>(counting), Skip<T>.Default,
+			       Take<T>.Default) {}
 	}
 }

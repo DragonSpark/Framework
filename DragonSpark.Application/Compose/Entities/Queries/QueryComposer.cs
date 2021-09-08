@@ -216,13 +216,13 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		QueryComposer<TIn, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(next);
 
-		public InvocationComposer<TIn, TContext, T> Invoke<TContext>(TContext context)
+		public InvocationComposer<TIn, T> Invoke<TContext>(TContext context)
 			where TContext : DbContext
-			=> Invoke(new FixedInstanceContexts<TContext>(context));
+			=> new(new ScopedInvocation(context), _subject);
 
-		public InvocationComposer<TIn, TContext, T> Invoke<TContext>(IContexts<TContext> contexts)
+		public InvocationComposer<TIn, T> Invoke<TContext>(IContexts<TContext> contexts)
 			where TContext : DbContext
-			=> new(contexts, _subject);
+			=> new(new Invocations<TContext>(contexts), _subject);
 
 		public FormComposer<TIn, T> Form => new(new Form<TIn, T>(_subject));
 	}

@@ -105,9 +105,9 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask<Edit<TResult>> Get(TIn parameter)
 		{
-			var (context, elements) = _invoke.Get(parameter);
-			var evaluate = await _evaluate.Await(elements);
-			return new(context, evaluate);
+			using var invoke = await _invoke.Await(parameter);
+			var evaluate = await _evaluate.Await(invoke.Elements);
+			return new(invoke.Context, evaluate);
 		}
 	}
 }

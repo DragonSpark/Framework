@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.Entities.Queries.Materialize;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,9 @@ namespace DragonSpark.Application.Entities
 			parameter.Start<IContexts<T>>()
 			         .Forward<Contexts<T>>()
 			         .Singleton()
-					 //
-			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>));
+			         //
+			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
+			         .AddSingleton(typeof(IMaterialization<>), typeof(DefaultMaterialization<>));
 		}
 	}
 }
