@@ -117,13 +117,6 @@ namespace DragonSpark.Application.Entities.Queries.Composition.Dynamic
 		public ulong? Total { get; }
 	}
 
-	/*public interface IQueryView<out T> : IAllocated<LoadDataArgs>
-	{
-		IEnumerable<T> Current { get; }
-
-		ulong Count { get; }
-	}*/
-
 	public interface ICompose<T> : ISelecting<ComposeInput<T>, Composition<T>> {}
 
 	public interface IBody<T> : ISelecting<ComposeInput<T>, IQueryable<T>> {}
