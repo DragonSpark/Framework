@@ -17,7 +17,7 @@
                 <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                  class="@SecondaryClass" />
 
-                <ButtonComponent Text="@PrimaryText" Click="@(Exceptions.Bind<MouseEventArgs>(OnAccept).Using(receiver).UpdateActivity())"
+                <ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions).Using(receiver).UpdateActivity())"
                                  class="@PrimaryClass" />
             </div>
         </ActivityReceiverContainer>

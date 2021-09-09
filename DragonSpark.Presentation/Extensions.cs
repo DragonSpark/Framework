@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Entities.Queries.Materialize;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
@@ -92,11 +91,11 @@ namespace DragonSpark.Presentation
 
 		/*public static Receiver Receiver(this ModelContext _, Action receiver) => new Receiver(receiver);*/
 
-		public static OperationCallbackContext Bind(this IExceptions @this, Func<Task> method)
+		/*public static OperationCallbackContext Bind(this IExceptions @this, Func<Task> method)
 			=> Start.A.Callback(method).Handle(@this);
 
 		public static OperationCallbackContext<T> Bind<T>(this IExceptions @this, Func<T, Task> method)
-			=> Start.A.Callback(method).Handle(@this);
+			=> Start.A.Callback(method).Handle(@this);*/
 
 		public static CallbackContext<object> ToCallback(this EventCallback @this)
 			=> Start.A.Callback(new Func<object, Task>(@this.InvokeAsync));

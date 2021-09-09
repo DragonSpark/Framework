@@ -27,10 +27,12 @@ namespace DragonSpark.Presentation.Compose
 
 		public CallbackContext Using(object receiver) => new CallbackContext(receiver, _method);
 
-		public OperationCallbackContext Handle(IExceptions exceptions)
+		public OperationCallbackContext Handle<T>(IExceptions exceptions) => Handle(exceptions, A.Type<T>());
+
+		public OperationCallbackContext Handle(IExceptions exceptions, Type? reportedType = null)
 		{
 			var receiver  = _receiver.Verify();
-			var operation = new ExceptionAwareOperation(receiver.GetType(), exceptions, _method);
+			var operation = new ExceptionAwareOperation(reportedType ?? receiver.GetType(), exceptions, _method);
 			var result    = new OperationCallbackContext(receiver, operation);
 			return result;
 		}

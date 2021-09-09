@@ -3,7 +3,7 @@
 @inherits ConfirmComponent
 
 <DialogContext T="DragonSpark.Model.None" @ref="_confirm" Title="@Title" Context="_">
-    <Confirm Accept="@Start.A.Callback(Exit).Using(ActualReceiver).Handle(Exceptions).UpdateActivity()"
+    <Confirm Accept="@Start.A.Callback(Exit).Using(ActualReceiver).Handle<NavigateMonitor>(Exceptions).UpdateActivity()"
              PrimaryClass="primary button fit"
              SecondaryClass="button fit"
              ChildContent="@ConfirmContent"
