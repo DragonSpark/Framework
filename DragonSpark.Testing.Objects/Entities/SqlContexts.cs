@@ -10,9 +10,9 @@ namespace DragonSpark.Testing.Objects.Entities
 	{
 		readonly IContexts<T> _contexts;
 
-		public SqlContexts() : this($"{DefaultSqlDbName.Default}-{IdentifyingText.Default}") {}
+		public SqlContexts() : this(NewSqlOptions<T>.Default.Get()) {}
 
-		public SqlContexts(string name) : this(new Contexts<T>(new SqlDbContexts<T>(name))) {}
+		public SqlContexts(DbContextOptions<T> options) : this(new Contexts<T>(new SqlDbContexts<T>(options))) {}
 
 		public SqlContexts(IContexts<T> contexts) => _contexts = contexts;
 

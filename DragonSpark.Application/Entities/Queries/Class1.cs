@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -36,10 +37,26 @@ namespace DragonSpark.Application.Entities.Queries
 		}
 	}
 
-	sealed class Compiled<TIn, TOut> : ISelect<TIn, IQueries<TOut>>
+	public class Compiled<TIn, TContext, TOut> : Compiled<TIn, TOut> where TContext : DbContext
+	{
+		public Compiled(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
+			: base(new Invocations<TContext>(contexts), query) {}
+	}
+
+	public interface ICompiled<in TIn, TOut> : ISelect<TIn, IQueries<TOut>>
+	{
+		
+	}
+
+	public class Compiled<TIn, TOut> : ICompiled<TIn, TOut>
 	{
 		readonly IInvocations                           _invocations;
 		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
+
+		public Compiled(DbContext scoped, IQuery<TIn, TOut> query) : this(new ScopedInvocation(scoped), query) {}
+
+		public Compiled(IInvocations invocations, IQuery<TIn, TOut> query)
+			: this(invocations, query.Get().Expand().Compile()) {}
 
 		public Compiled(IInvocations invocations, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 		{

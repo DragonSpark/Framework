@@ -17,10 +17,10 @@ namespace DragonSpark.Application.Compose.Entities
 		public ContextsComposer<TAccept, T> Accept<TAccept>() => new(_subject);
 
 		public InvocationComposer<None, TElement> Use<TElement>() where TElement : class
-			=> new(new Invocations<T>(_subject), Set<TElement>.Default);
+			=> new(Invocations(), Set<TElement>.Default);
 
 		public InvocationComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
-			=> new(new Invocations<T>(_subject), query);
+			=> new(Invocations(), query);
 
 		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
 			=> new StartEdit<TIn, T, TOut>(_subject, select);

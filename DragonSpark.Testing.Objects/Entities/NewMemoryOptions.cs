@@ -10,4 +10,5 @@ namespace DragonSpark.Testing.Objects.Entities
 
 		NewMemoryOptions() : base(MemoryOptions<T>.Default, IdentifyingText.Default) {}
 	}
+
 }
