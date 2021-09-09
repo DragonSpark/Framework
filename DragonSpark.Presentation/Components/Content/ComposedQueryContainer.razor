@@ -1,0 +1,90 @@
+﻿@typeparam T
+
+@using DragonSpark.Compose
+@using DragonSpark.Application.Entities.Queries.Materialize
+@using DragonSpark.Application.Entities.Queries.Composition.Dynamic
+@using DragonSpark.Model.Operations
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+@Fragment
+
+@code
+{
+	protected override ValueTask Initialize()
+	{
+		Evaluations = new ExceptionAwareEvaluations<T>(Evaluations, Handle);
+		return base.Initialize();
+	}
+
+	RenderFragment? Fragment { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Fragment ??= await DetermineFragment();
+	}
+
+	async ValueTask<RenderFragment> DetermineFragment()
+	{
+		Fragment = LoadingTemplate; // Account for re-entry
+		var result = Content != null
+						 ? NoElementsFoundTemplate == null || await HasElements(Content)
+							   ? ChildContent(Evaluations.Get(new (Content, Compose)))
+							   : NoElementsFoundTemplate
+						 : NotAssignedTemplate;
+		return result;
+	}
+
+	async ValueTask<bool> HasElements(IQueries<T> queries)
+	{
+		using var session = await queries.Await();
+		var result = await DefaultAny<T>.Default.Await(session.Subject);
+		return result;
+	}
+
+	async ValueTask Handle(Exception error)
+	{
+		await Exceptions.Get(ReportedType ?? GetType(), error);
+		Fragment = ExceptionTemplate;
+		StateHasChanged();
+	}
+
+	[Parameter]
+	public IQueries<T>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				Fragment = null;
+				_content = value;
+			}
+		}
+	}	IQueries<T>? _content;
+
+	[Parameter]
+	public ICompose<T> Compose { get; set; } = Compose<T>.Default;
+
+	[Parameter]
+	public IEvaluations<T> Evaluations { get; set; } = Evaluations<T>.Default;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+	[Parameter]
+	public RenderFragment<IEvaluate<T>> ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment? NoElementsFoundTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment NotAssignedTemplate { get; set; }
+		=
+	@<p>No instance was found for this view's content.</p>;
+
+	[Parameter]
+	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+}

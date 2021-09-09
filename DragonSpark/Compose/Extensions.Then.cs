@@ -223,7 +223,7 @@ namespace DragonSpark.Compose
 		public static IConditional<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, TOut> @this, ICondition<TIn> condition)
 			=> new Conditional<TIn, TOut>(condition, @this.Get().Get);
 
-		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => Alterations<T>.Default.Get(@this);
+		public static IAlteration<T> Out<T>(this Selector<T, T> @this) => References<T>.Default.Get(@this);
 
 		public static IOperation Out(this OperationSelector @this)
 			=> @this.Get().To(x => x as IOperation ?? new Operation(x.Get));

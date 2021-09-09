@@ -5,6 +5,7 @@ using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Entities.Queries;
+using DragonSpark.Application.Compose.Entities.Queries.Composition.Dynamic;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
@@ -98,6 +99,8 @@ namespace DragonSpark.Application
 		/**/
 
 		public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
+
+		public static ComposeComposer<T> Compose<T>(this ModelContext _) where T : class => new ();
 
 		public static ContextComposer Then(this DbContext @this) => new(@this);
 

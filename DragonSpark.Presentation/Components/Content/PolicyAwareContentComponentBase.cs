@@ -1,9 +1,6 @@
-﻿using Polly;
-using System;
-
-namespace DragonSpark.Presentation.Components.Content
+﻿namespace DragonSpark.Presentation.Components.Content
 {
-	public abstract class PolicyAwareContentComponentBase<T> : ContentComponentBase<T>
+	/*public abstract class PolicyAwareContentComponentBase<T> : ContentComponentBase<T>
 	{
 		protected PolicyAwareContentComponentBase() : this(Policy.Handle<Exception>().RetryAsync()) {}
 
@@ -20,5 +17,5 @@ namespace DragonSpark.Presentation.Components.Content
 		protected PolicyAwareOwningContentComponentBase(IAsyncPolicy policy)
 			=> Contents = new PolicyAwareActiveContents<TContent>(policy);
 
-	}
+	}*/
 }

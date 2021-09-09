@@ -1,12 +1,7 @@
-using DragonSpark.Model.Selection.Stores;
-using System;
-
-namespace DragonSpark.Model.Selection.Alterations
+﻿namespace DragonSpark.Model.Selection.Alterations
 {
-	sealed class Alterations<T> : ReferenceValueStore<Func<T, T>, IAlteration<T>>
+	public class Alterations<T> : Aggregate<IAlteration<T>, T>
 	{
-		public static Alterations<T> Default { get; } = new Alterations<T>();
-
-		Alterations() : base(x => x.Target as IAlteration<T> ?? new Alteration<T>(x)) {}
+		public Alterations(params IAlteration<T>[] items) : base(items) {}
 	}
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Materialize
 {
-	sealed class DefaultAny<T> : IAny<T>
+	public sealed class DefaultAny<T> : IAny<T>
 	{
 		public static DefaultAny<T> Default { get; } = new DefaultAny<T>();
 

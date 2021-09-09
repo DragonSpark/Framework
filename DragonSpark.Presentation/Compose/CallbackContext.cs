@@ -81,10 +81,13 @@ namespace DragonSpark.Presentation.Compose
 			return result;
 		}
 
-		public OperationCallbackContext<T> Handle(IExceptions exceptions)
+		public OperationCallbackContext<T> Handle<TReported>(IExceptions exceptions)
+			=> Handle(exceptions, A.Type<TReported>());
+
+		public OperationCallbackContext<T> Handle(IExceptions exceptions, Type? reportedType = null)
 		{
 			var receiver  = _receiver.Verify();
-			var operation = new ExceptionAwareOperation<T>(receiver.GetType(), exceptions, _method);
+			var operation = new ExceptionAwareOperation<T>(reportedType ?? receiver.GetType(), exceptions, _method);
 			var result    = new OperationCallbackContext<T>(receiver, operation);
 			return result;
 		}

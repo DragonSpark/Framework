@@ -18,7 +18,7 @@ namespace DragonSpark.Presentation.Components
 	/// <typeparam name="T"></typeparam>
 	public class DataGrid<T> : RadzenGrid<T>
 	{
-		[CascadingParameter]
+		/*[CascadingParameter]
 		IActivityReceiver? Receiver
 		{
 			get => _receiver;
@@ -42,9 +42,9 @@ namespace DragonSpark.Presentation.Components
 			}
 		}
 
-		IActivityReceiver? _receiver;
+		IActivityReceiver? _receiver;*/
 
-		[Inject]
+		/*[Inject]
 		IExceptions Exceptions { get; set; } = default!;
 
 		EventCallback? Refresh { get; set; }
@@ -58,10 +58,10 @@ namespace DragonSpark.Presentation.Components
 			Active = true;
 			await base.Reload();
 			Active = false;
-		}
+		}*/
 
-		protected override Task OnAfterRenderAsync(bool firstRender)
-			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null);
+		/*protected override Task OnAfterRenderAsync(bool firstRender)
+			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null);*/
 
 		public override void Dispose()
 		{

@@ -30,7 +30,7 @@ namespace DragonSpark.Model.Operations.Diagnostics
 			// ReSharper disable once CatchAllClause
 			catch (Exception e)
 			{
-				_log.Execute(new ExceptionParameter<TOut>(e, _select(parameter)));
+				_log.Execute(new (e, _select(parameter)));
 			}
 		}
 	}

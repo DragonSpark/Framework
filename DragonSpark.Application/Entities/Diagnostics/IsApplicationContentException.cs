@@ -9,9 +9,7 @@ namespace DragonSpark.Application.Entities.Diagnostics
 		public static IsApplicationContentException Default { get; } = new IsApplicationContentException();
 
 		IsApplicationContentException()
-			: this(
-			       "A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext",
-			       "An exception was thrown while attempting to evaluate the LINQ query parameter expression") {}
+			: this("An exception was thrown while attempting to evaluate the LINQ query parameter expression") {}
 
 		readonly Array<string> _messages;
 

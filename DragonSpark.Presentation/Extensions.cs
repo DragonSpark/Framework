@@ -5,6 +5,7 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Entities.Queries.Materialize;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
@@ -86,6 +87,8 @@ namespace DragonSpark.Presentation
 			=> new EditContextCallbackContext(context);
 
 		public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
+
+		public static CallbackContext<T> Callback<T>(this TaskSelector<T> @this) => new(@this);
 
 		/*public static Receiver Receiver(this ModelContext _, Action receiver) => new Receiver(receiver);*/
 
