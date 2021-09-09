@@ -39,7 +39,6 @@ namespace DragonSpark.Presentation.Components.Content
 			};
 
 			var evaluate = await _evaluate.Await(input);
-			throw new InvalidOperationException();
 			Current = evaluate ?? Empty.Enumerable<T>();
 			Count   = evaluate?.Total ?? (evaluate?.Count ?? -1).Grade();
 		}
