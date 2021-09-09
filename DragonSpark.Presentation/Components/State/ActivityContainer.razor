@@ -1,60 +1,85 @@
 ﻿@using DragonSpark.Presentation.Compose
+@using Majorsoft.Blazor.Components.Common.JsInterop.Focus
+@using System.Diagnostics
+
+@inject IFocusHandler Focus
 
 @implements IActivityReceiver
 
 <div class="@(Active ? ActiveStyle : null)">
-    <fieldset disabled="@Active">
-        <CascadingValue TValue="IActivityReceiver" Value="@this">
-            @ChildContent(ActualReceiver)
-        </CascadingValue>
-    </fieldset>
+	<fieldset disabled="@Active">
+		<CascadingValue TValue="IActivityReceiver" Value="@this">
+			@ChildContent(ActualReceiver)
+		</CascadingValue>
+	</fieldset>
 </div>
 
 @code
 {
-    bool Active { get; set; }
+	bool Active { get; set; }
 
-    [Parameter]
-    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+	[Parameter]
+	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-    [Parameter]
-    public object? Receiver { get; set; }
+	[Parameter]
+	public object? Receiver { get; set; }
 
-    [Parameter]
-    public RenderFragment<object> ChildContent { get; set; } = default!;
+	[Parameter]
+	public RenderFragment<object> ChildContent { get; set; } = default!;
 
 
-    [Parameter]
-    public EventCallback Started { get; set; }
+	[Parameter]
+	public EventCallback Started { get; set; }
 
-    [Parameter]
-    public EventCallback Completed { get; set; }
+	[Parameter]
+	public EventCallback Completed { get; set; }
 
-    object ActualReceiver => Receiver ?? this;
+	object ActualReceiver => Receiver ?? this;
 
-    protected override void OnParametersSet()
-    {
-        Update();
+	protected override void OnParametersSet()
+	{
+		Update();
 
-        base.OnParametersSet();
-    }
+		base.OnParametersSet();
+	}
 
-    void Update()
-    {
-        Active = IsActive.Default.Get(ActualReceiver);
-    }
+	// ReSharper disable once FlagArgument
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		Allowed = true;
+		if (!firstRender && Restore)
+		{
+			Restore = false;
+			await Focus.RestoreStoredElementFocusAsync();
+		}
+	}
 
-    public async ValueTask Start()
-    {
-        await Started.InvokeAsync();
-        Update();
-        StateHasChanged();
-    }
+	bool Allowed { get; set; }
 
-    public async ValueTask Complete()
-    {
-        Update();
-        await Completed.InvokeAsync();
-        StateHasChanged();
-    }
+	bool Restore { get; set; }
+
+	void Update()
+	{
+		Active = IsActive.Default.Get(ActualReceiver);
+	}
+
+	public async ValueTask Start()
+	{
+		if (Allowed)
+		{
+			await Focus.StoreFocusedElementAsync();
+		}
+
+		await Started.InvokeAsync();
+		Update();
+		StateHasChanged();
+	}
+
+	public async ValueTask Complete()
+	{
+		Update();
+		await Completed.InvokeAsync();
+		StateHasChanged();
+		Restore = true;
+	}
 }

@@ -7,6 +7,7 @@ using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Security.Identity;
+using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 
@@ -54,6 +55,7 @@ namespace DragonSpark.Presentation
 			         .Include(x => x.Dependencies.Recursive())
 			         .Scoped()
 					 //
+					 .Then.AddJsInteropExtensions()
 				;
 		}
 	}
