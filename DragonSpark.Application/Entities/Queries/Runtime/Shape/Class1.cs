@@ -129,11 +129,13 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 	{
 		public static Compose<T> Default { get; } = new Compose<T>();
 
-		Compose() : this(Body<T>.Default, DefaultLargeCount<T>.Default, Partitioning<T>.Default) {}
+		Compose() : this(Body<T>.Default) {}
 
 		readonly IBody<T>       _body;
 		readonly ILargeCount<T> _count;
 		readonly IPartition<T>  _partition;
+
+		public Compose(IBody<T> body) : this(body, DefaultLargeCount<T>.Default, Partitioning<T>.Default) {}
 
 		public Compose(IBody<T> body, ILargeCount<T> count, IPartition<T> partition)
 		{
@@ -151,6 +153,11 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 			var partition = input.Partition.HasValue ? await _partition.Await(new(body, input.Partition.Value)) : body;
 			return new(partition, count);
 		}
+	}
+
+	public sealed class FilteredBody<T> : AppendedBody<T>
+	{
+		public FilteredBody(string filter) : base(new Filter<T>(filter), Sort<T>.Default) {}
 	}
 
 	sealed class Body<T> : AppendedBody<T>

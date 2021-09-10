@@ -10,11 +10,17 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 	public class Where<T> : Where<None, T>, IQuery<T>
 	{
 		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
-			: base((context, _) => previous.Invoke(context), where) {}
+			: base(previous.Then().Accept(), where) {}
 	}
 
 	public class Where<TIn, T> : Combine<TIn, T, T>
 	{
+		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
+			: this((context, _) => previous.Invoke(context), where) {}
+
+		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where)
+			: this((context, _) => previous.Invoke(context), where) {}
+
 		public Where(Expression<Func<DbContext, TIn, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
 			: this(previous, (_, element) => where.Invoke(element)) {}
 
