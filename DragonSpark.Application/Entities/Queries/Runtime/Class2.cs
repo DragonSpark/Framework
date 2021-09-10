@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,15 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 {
 	class Class2 {}
 
-
-	public class RuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
+	public class ContextRuntimeQuery<TContext, TOut> : RuntimeQuery<TOut> where TContext : DbContext
 	{
-		protected RuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
+		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TOut> query)
+			: base(new Invocations<TContext>(contexts), query) {}
+	}
+
+	public class ContextRuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
+	{
+		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
 			: base(new Invocations<TContext>(contexts), query) {}
 	}
 
@@ -25,14 +31,23 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 		public IQueryable<TOut> Get((DbContext, TIn) parameter) => _compiled(parameter.Item1, parameter.Item2);
 	}
 
+	public interface IRuntimeQuery<T> : IRuntimeQuery<None, T> {}
+
 	public interface IRuntimeQuery<in TIn, TOut> : ISelect<TIn, IQueries<TOut>> {}
+
+	public class RuntimeQuery<T> : RuntimeQuery<None, T>, IRuntimeQuery<T>
+	{
+		protected RuntimeQuery(DbContext context, IQuery<None, T> query) : base(context, query) {}
+
+		public RuntimeQuery(IInvocations invocations, IQuery<None, T> query) : base(invocations, query) {}
+	}
 
 	public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
 	{
 		readonly IInvocations                           _invocations;
 		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
-		public RuntimeQuery(DbContext context, IQuery<TIn, TOut> query)
+		protected RuntimeQuery(DbContext context, IQuery<TIn, TOut> query)
 			: this(new ScopedInvocation(context), query) {}
 
 		public RuntimeQuery(IInvocations invocations, IQuery<TIn, TOut> query)

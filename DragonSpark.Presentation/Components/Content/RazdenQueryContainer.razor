@@ -3,7 +3,7 @@
 @using DragonSpark.Model.Selection.Stores
 @typeparam T
 
-<ComposedQueryContainer
+<QueryContainer
 	Content="@Content"
 	Compose="@Compose"
 	Evaluations="@Evaluations"
@@ -14,7 +14,7 @@
 	ExceptionTemplate="@ExceptionTemplate"
 >
 	@ChildContent(References.Get(context))
-</ComposedQueryContainer>
+</QueryContainer>
 
 @code {
 

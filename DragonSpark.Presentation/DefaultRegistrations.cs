@@ -49,7 +49,7 @@ namespace DragonSpark.Presentation
 			         //
 			         .Then.Start<ICurrentPrincipal>()
 			         .Forward<CurrentPrincipal>()
-			         .Scoped()
+			         .Singleton()
 					 //
 			         .Then.Start<DefaultExternalLogin>()
 			         .Include(x => x.Dependencies.Recursive())

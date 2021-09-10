@@ -1,11 +1,9 @@
-﻿using DragonSpark.Compose;
-using NetFabric.Hyperlinq;
+﻿using NetFabric.Hyperlinq;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	public readonly struct Lease<T> : IDisposable, IAsyncDisposable
+	public readonly struct Lease<T> : IDisposable
 	{
 		public static implicit operator Memory<T>(Lease<T> instance) => instance.AsMemory();
 
@@ -30,6 +28,7 @@ namespace DragonSpark.Model.Sequences.Memory
 		public Lease<T> Size(uint size) => new(_owner, _reference, size);
 
 		public Memory<T> Reference => _reference;
+
 		public Memory<T> Remaining => _reference[(int)Length..];
 
 		public Memory<T> AsMemory() => _reference[..(int)Length];
@@ -63,12 +62,6 @@ namespace DragonSpark.Model.Sequences.Memory
 		{
 			var owner = _owner;
 			owner.Dispose();
-		}
-
-		public ValueTask DisposeAsync()
-		{
-			Dispose();
-			return Task.CompletedTask.ToOperation();
 		}
 	}
 }

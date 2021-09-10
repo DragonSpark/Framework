@@ -44,7 +44,7 @@ namespace DragonSpark.Application.Testing.Compose.Entities.Queries
 				await context.Database.EnsureCreatedAsync();
 			}
 			{
-				await using var result =
+				using var result =
 					await Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Lease().Get();
 				result.Length.Should().Be(2);
 				result.ToArray().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");

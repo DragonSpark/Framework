@@ -4,7 +4,7 @@
 
 @typeparam T
 
-<ComposedQueryContainer
+<QueryContainer
 	Content="@Content"
 	Compose="@Compose"
 	Evaluations="@Evaluations"
@@ -15,7 +15,7 @@
 	ExceptionTemplate="@ExceptionTemplate"
 >
 	@ChildContent(DataRequests<T>.Default.Get(context))
-</ComposedQueryContainer>
+</QueryContainer>
 
 @code {
 

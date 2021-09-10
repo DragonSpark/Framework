@@ -28,7 +28,7 @@ namespace DragonSpark.Application.Security.Identity
 			         .Scoped()
 			         //
 			         .Then.Start<CurrentProviderIdentity>()
-			         .Scoped()
+			         .Singleton()
 				;
 		}
 	}
