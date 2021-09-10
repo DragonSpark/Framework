@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 	class Class2 {}
 
 
-	public class RuntimeQueries<TIn, TContext, TOut> : Runtime<TIn, TOut> where TContext : DbContext
+	public class RuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
 	{
-		protected RuntimeQueries(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
+		protected RuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
 			: base(new Invocations<TContext>(contexts), query) {}
 	}
 
@@ -25,17 +25,20 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 		public IQueryable<TOut> Get((DbContext, TIn) parameter) => _compiled(parameter.Item1, parameter.Item2);
 	}
 
-	public interface IRuntime<in TIn, TOut> : ISelect<TIn, IQueries<TOut>> {}
+	public interface IRuntimeQuery<in TIn, TOut> : ISelect<TIn, IQueries<TOut>> {}
 
-	public class Runtime<TIn, TOut> : IRuntime<TIn, TOut>
+	public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
 	{
 		readonly IInvocations                           _invocations;
 		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
-		public Runtime(IInvocations invocations, IQuery<TIn, TOut> query)
+		public RuntimeQuery(DbContext context, IQuery<TIn, TOut> query)
+			: this(new ScopedInvocation(context), query) {}
+
+		public RuntimeQuery(IInvocations invocations, IQuery<TIn, TOut> query)
 			: this(invocations, query.Get().Expand().Compile()) {}
 
-		public Runtime(IInvocations invocations, Func<DbContext, TIn, IQueryable<TOut>> compiled)
+		RuntimeQuery(IInvocations invocations, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 		{
 			_invocations = invocations;
 			_compiled    = compiled;

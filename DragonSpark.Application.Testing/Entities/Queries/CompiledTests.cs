@@ -80,7 +80,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public class Benchmarks
 		{
 			readonly IContexts<ContextWithData>      _contexts;
-			readonly IRuntime<string, Subject>       _scoped, _singleton;
+			readonly IRuntimeQuery<string, Subject>       _scoped, _singleton;
 			readonly IMaterializer<Subject, Subject> _evaluate;
 			readonly ISelecting<string, Subject>     _single;
 
@@ -91,8 +91,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				       SingleMaterializer<Subject>.Default, new SingleSubject(contexts)) {}
 
 			// ReSharper disable once TooManyDependencies
-			public Benchmarks(IContexts<ContextWithData> contexts, IRuntime<string, Subject> scoped,
-			                  IRuntime<string, Subject> singleton, IMaterializer<Subject, Subject> evaluate,
+			public Benchmarks(IContexts<ContextWithData> contexts, IRuntimeQuery<string, Subject> scoped,
+			                  IRuntimeQuery<string, Subject> singleton, IMaterializer<Subject, Subject> evaluate,
 			                  ISelecting<string, Subject> single)
 			{
 				_contexts  = contexts;

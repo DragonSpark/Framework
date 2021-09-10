@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 {
 	class Class1 {}
 
-	public interface IQueries<T> : IResulting<Session<T>> {}
+	public interface IQueries<T> : IResulting<Query<T>> {}
 
 	sealed class Queries<TIn, TOut> : IQueries<TOut>
 	{
@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 			_compiled    = compiled;
 		}
 
-		public async ValueTask<Session<TOut>> Get()
+		public async ValueTask<Query<TOut>> Get()
 		{
 			var (subject, session) = _invocations.Get();
 			var query      = _compiled(subject, _parameter);
@@ -38,11 +38,11 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 
 	public interface ISession : IResulting<IDisposable> {}
 
-	public readonly struct Session<T> : IDisposable
+	public readonly struct Query<T> : IDisposable
 	{
 		readonly IDisposable _session;
 
-		public Session(IQueryable<T> subject, IDisposable session)
+		public Query(IQueryable<T> subject, IDisposable session)
 		{
 			_session = session;
 			Subject  = subject;
