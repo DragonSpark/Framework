@@ -64,7 +64,7 @@
 	}	IQueries<T>? _content;
 
 	[Parameter]
-	public ICompose<T> Compose { get; set; } = Compose<T>.Default;
+	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;
 
 	[Parameter]
 	public IEvaluations<T> Evaluations { get; set; } = Evaluations<T>.Default;

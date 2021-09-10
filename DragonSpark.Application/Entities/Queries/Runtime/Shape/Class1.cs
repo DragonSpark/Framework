@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System;
@@ -69,7 +70,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 			_handler  = handler;
 		}
 
-		public async ValueTask<Current<T>?> Get(QueryInput parameter)
+		public async ValueTask<Current<T>> Get(QueryInput parameter)
 		{
 			try
 			{
@@ -78,12 +79,12 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 			catch (Exception e)
 			{
 				await _handler(e).ConfigureAwait(false);
-				return default;
+				return Current<T>.Default;
 			}
 		}
 	}
 
-	public interface IEvaluate<T> : ISelecting<QueryInput, Current<T>?> {}
+	public interface IEvaluate<T> : ISelecting<QueryInput, Current<T>> {}
 
 	public sealed class Evaluate<T> : IEvaluate<T>
 	{
@@ -101,7 +102,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 			_materialize = materialize;
 		}
 
-		public async ValueTask<Current<T>?> Get(QueryInput parameter)
+		public async ValueTask<Current<T>> Get(QueryInput parameter)
 		{
 			using var session = await _queries.Await();
 			var (query, count) = await _compose.Await(new(parameter, session.Subject));
@@ -112,6 +113,10 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 
 	public class Current<T> : Collection<T>
 	{
+		public static Current<T> Default { get; } = new Current<T>();
+
+		Current() : this(Empty.Array<T>(), null) {}
+
 		public Current(IList<T> list, ulong? total) : base(list) => Total = total;
 
 		public ulong? Total { get; }
@@ -125,12 +130,15 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 
 	public readonly record struct Composition<T>(IQueryable<T> Current, ulong? Count = null);
 
-	public sealed class Compose<T> : ICompose<T>
+	public sealed class DefaultCompose<T> : Compose<T>
 	{
-		public static Compose<T> Default { get; } = new Compose<T>();
+		public static DefaultCompose<T> Default { get; } = new ();
 
-		Compose() : this(Body<T>.Default) {}
+		DefaultCompose() : base(Body<T>.Default) {}
+	}
 
+	public class Compose<T> : ICompose<T>
+	{
 		readonly IBody<T>       _body;
 		readonly ILargeCount<T> _count;
 		readonly IPartition<T>  _partition;

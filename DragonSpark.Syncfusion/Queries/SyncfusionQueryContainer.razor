@@ -1,6 +1,7 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
-@using DragonSpark.Model.Selection.Stores
+@using DragonSpark.Presentation.Components.Content
+
 @typeparam T
 
 <ComposedQueryContainer
@@ -13,7 +14,7 @@
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 >
-	@ChildContent(References.Get(context))
+	@ChildContent(DataRequests<T>.Default.Get(context))
 </ComposedQueryContainer>
 
 @code {
@@ -25,7 +26,7 @@
 	public bool IncludeCount { get; set; } = true;
 
 	[Parameter]
-	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;
+	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
 	[Parameter]
 	public IEvaluations<T> Evaluations { get; set; } = Evaluations<T>.Default;
@@ -37,7 +38,7 @@
 	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	[Parameter]
-	public RenderFragment<RadzenCallback<T>> ChildContent { get; set; } = default!;
+	public RenderFragment<IDataRequest> ChildContent { get; set; } = default!;
 
 	[Parameter]
 	public RenderFragment? NoElementsFoundTemplate { get; set; }
@@ -48,18 +49,4 @@
 
 	[Parameter]
 	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		References = new Callbacks(IncludeCount);
-	}
-
-	Callbacks References { get; set; } = default!;
-
-	sealed class Callbacks : ReferenceValueStore<IEvaluate<T>, RadzenCallback<T>>
-	{
-		public Callbacks(bool count) : base(x => new RadzenCallback<T>(x, count)) {}
-	}
-
 }

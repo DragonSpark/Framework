@@ -8,7 +8,7 @@ namespace DragonSpark.Syncfusion.Queries
 		public DefaultQuery(ICount<T> counting)
 			: base(
 				  // Body:
-				  Search<T>.Default, Sort<T>.Default, Where<T>.Default,
+				  Search<T>.Default, Where<T>.Default, Sort<T>.Default,
 
 				  // Count:
 				  new Count<T>(counting),

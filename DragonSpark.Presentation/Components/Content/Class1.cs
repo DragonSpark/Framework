@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Radzen;
 using System.Collections.Generic;
@@ -38,8 +37,8 @@ namespace DragonSpark.Presentation.Components.Content
 			};
 
 			var evaluate = await _evaluate.Await(input);
-			Current = evaluate ?? Empty.Enumerable<T>();
-			Count   = evaluate?.Total ?? (evaluate?.Count ?? -1).Grade();
+			Current = evaluate;
+			Count   = evaluate.Total ?? evaluate.Count.Grade();
 		}
 	}
 }

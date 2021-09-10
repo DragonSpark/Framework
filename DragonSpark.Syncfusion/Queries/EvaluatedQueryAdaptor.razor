@@ -1,0 +1,13 @@
+﻿@inherits global::Syncfusion.Blazor.DataAdaptor
+
+@using global::Syncfusion.Blazor
+
+@code {
+
+	[Parameter]
+	public IDataRequest Request { get; set; } = default!;
+
+	public override Task<object> ReadAsync(DataManagerRequest request, string? key = null)
+		=> Request.Get(request).AsTask();
+
+}
