@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Syncfusion.Queries;
 using Microsoft.Extensions.DependencyInjection;
 using Syncfusion.Blazor;
 
@@ -18,7 +17,6 @@ namespace DragonSpark.Syncfusion
 			         .AddSyncfusionBlazor()
 			         .Start<Initializer>()
 			         .Singleton()
-					 .Then.AddSingleton(typeof(IQuery<>), typeof(Query<>))
 					 ;
 		}
 	}

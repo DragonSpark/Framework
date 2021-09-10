@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
@@ -24,7 +23,6 @@ using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
@@ -129,14 +127,6 @@ namespace DragonSpark.Presentation
 				   : SelectValue<T>.Default.Get(@this);
 
 		public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
-
-		/**/
-
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, IMaterialization<T> query)
-			=> new QueryView<T>(@this, query);
-
-		public static IQueryView<T> AsView<T>(this IQueryable<T> @this, IMaterialization<T> query, string filter)
-			=> new QueryView<T>(@this, query, new FilterAwareQueryAlteration<T>(filter));
 
 		/**/
 
