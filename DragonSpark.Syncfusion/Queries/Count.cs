@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialize;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Syncfusion.Queries

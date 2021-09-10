@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries;
-using DragonSpark.Application.Entities.Queries.Evaluation;
+using DragonSpark.Application.Entities.Queries.Compiled;
+using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
 using System;

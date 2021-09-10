@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Materialize;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using Polly;
 
 namespace DragonSpark.Application.Entities.Diagnostics

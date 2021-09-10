@@ -1,8 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Evaluation;
-using DragonSpark.Application.Entities.Queries.Scoped.Materialize.Specialized;
+using DragonSpark.Application.Entities.Queries.Runtime.Selection.Materialize.Specialized;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Compilation;
+﻿using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using FluentAssertions;

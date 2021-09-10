@@ -1,4 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Compiled;
+using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Model.Results;
 using System;
 
@@ -23,7 +25,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Func<QueryComposer<TIn, T>, QueryComposer<TIn, TTo>> select)
 			=> new(_invocations, select(new QueryComposer<TIn, T>(_query)).Get());
 
-		public ICompiled<TIn, T> Compile() => new Compiled<TIn, T>(_invocations, _query);
+		public IRuntime<TIn, T> Compile() => new Runtime<TIn, T>(_invocations, _query);
 
 		public IInvoke<TIn, T> Get() => new Invoke<TIn, T>(_invocations, _query.Get());
 	}

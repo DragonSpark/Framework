@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries;
+﻿using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;

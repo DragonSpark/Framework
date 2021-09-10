@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
@@ -224,6 +224,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			where TContext : DbContext
 			=> new(new Invocations<TContext>(contexts), _subject);
 
-		public FormComposer<TIn, T> Form => new(new Form<TIn, T>(_subject));
+		public FormComposer<TIn, T> Form => new(new Application.Entities.Queries.Compiled.Form<TIn, T>(_subject));
 	}
 }

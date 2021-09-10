@@ -1,9 +1,9 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Evaluation;
-using DragonSpark.Application.Entities.Queries.Materialize;
+using DragonSpark.Application.Entities.Queries.Runtime;
+using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Testing.Objects.Entities;
@@ -80,7 +80,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public class Benchmarks
 		{
 			readonly IContexts<ContextWithData>      _contexts;
-			readonly ICompiled<string, Subject>      _scoped, _singleton;
+			readonly IRuntime<string, Subject>       _scoped, _singleton;
 			readonly IMaterializer<Subject, Subject> _evaluate;
 			readonly ISelecting<string, Subject>     _single;
 
@@ -91,8 +91,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				       SingleMaterializer<Subject>.Default, new SingleSubject(contexts)) {}
 
 			// ReSharper disable once TooManyDependencies
-			public Benchmarks(IContexts<ContextWithData> contexts, ICompiled<string, Subject> scoped,
-			                  ICompiled<string, Subject> singleton, IMaterializer<Subject, Subject> evaluate,
+			public Benchmarks(IContexts<ContextWithData> contexts, IRuntime<string, Subject> scoped,
+			                  IRuntime<string, Subject> singleton, IMaterializer<Subject, Subject> evaluate,
 			                  ISelecting<string, Subject> single)
 			{
 				_contexts  = contexts;

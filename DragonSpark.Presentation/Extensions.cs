@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Entities.Queries.Materialize;
+using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;

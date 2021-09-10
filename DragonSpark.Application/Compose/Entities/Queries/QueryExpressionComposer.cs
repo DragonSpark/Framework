@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries;
-using DragonSpark.Application.Entities.Queries.Compilation;
+﻿using DragonSpark.Application.Entities.Queries.Compiled;
+using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System;

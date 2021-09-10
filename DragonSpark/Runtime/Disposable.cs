@@ -15,4 +15,18 @@ namespace DragonSpark.Runtime
 			_callback();
 		}
 	}
+
+	public class Disposable<T> : IDisposable where T : IDisposable
+	{
+		readonly T      _disposable;
+
+		public Disposable(T disposable) => _disposable = disposable;
+
+		public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			_disposable.Dispose();
+		}
+	}
+
 }

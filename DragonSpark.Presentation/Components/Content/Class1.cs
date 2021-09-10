@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition.Dynamic;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
@@ -27,7 +27,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		public async Task Get(LoadDataArgs parameter)
 		{
-			var input = new DynamicQueryInput
+			var input = new QueryInput
 			{
 				Filter  = parameter.Filter,
 				OrderBy = parameter.OrderBy,

@@ -1,9 +1,10 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries;
+using DragonSpark.Application.Entities.Queries.Compiled;
+using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Evaluation;
-using DragonSpark.Application.Entities.Queries.Model;
+using DragonSpark.Application.Entities.Queries.Runtime;
+using DragonSpark.Application.Entities.Queries.Runtime.Selection;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
@@ -218,7 +219,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			public string Name { get; set; } = default!;
 		}
 
-		sealed class Scoped : Application.Entities.Queries.Scoped.Query<Subject>
+		sealed class Scoped : Application.Entities.Queries.Runtime.Selection.Query<Subject>
 		{
 			public Scoped(Context instance) : base(instance.Set<Subject>().Where(x => x.Name != "Two")) {}
 		}

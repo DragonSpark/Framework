@@ -5,13 +5,12 @@ using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Entities.Queries;
-using DragonSpark.Application.Compose.Entities.Queries.Composition.Dynamic;
+using DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
 using DragonSpark.Application.Entities.Generation;
-using DragonSpark.Application.Entities.Queries;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
@@ -145,13 +144,13 @@ namespace DragonSpark.Application
 
 		// Scoped:
 
-		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Scoped.IQuery<TIn, T> @this)
+		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Runtime.Selection.IQuery<TIn, T> @this)
 			=> new(@this);
 
-		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
-			=> new Entities.Queries.Scoped.Adapter<TIn, T>(@this);
+		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
+			=> new Entities.Queries.Runtime.Selection.Adapter<TIn, T>(@this);
 
-		public static Entities.Queries.Scoped.IQuery<TIn, T> Out<TIn, T>(this Selector<TIn, IQueryable<T>> @this)
+		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(this Selector<TIn, IQueryable<T>> @this)
 			=> @this.Get().Out();
 
 		/**/
