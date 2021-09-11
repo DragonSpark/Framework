@@ -253,7 +253,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 		{
 			var (queryable, (skip, top)) = parameter;
 			var first  = skip.HasValue ? queryable.Skip(skip.Value) : queryable;
-			var result = top.HasValue ? queryable.Take(top.Value) : first;
+			var result = top.HasValue ? first.Take(top.Value) : first;
 			return result.ToOperation();
 		}
 	}

@@ -31,7 +31,7 @@ namespace DragonSpark.Compose
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConcurrentDictionary<TIn, TOut> @this)
 			where TIn : notnull
-			=> ConcurrentTables<TIn, TOut>.Default.Get(@this);
+			=> new ConcurrentTable<TIn, TOut>(@this);
 
 		public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ISelect<TIn, TOut> @this)
 			where TIn : notnull
@@ -75,7 +75,7 @@ namespace DragonSpark.Compose
 		public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this Func<TIn, TOut> @this,
 		                                                             ConcurrentDictionary<TIn, TOut> table)
 			where TIn : notnull
-			=> Compose.Start.An.Extent<ConcurrentTables<TIn, TOut>>().From(@this).Get(table);
+			=> new ConcurrentTable<TIn, TOut>(table, @this);
 
 		public static bool TryPop<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, out TOut element)
 		{

@@ -1,7 +1,19 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Compose
+@using DragonSpark.Model
+@using DragonSpark.Model.Commands
+@using DragonSpark.Model.Results
 @using DragonSpark.Model.Selection.Stores
+@using DragonSpark.Presentation.Components.Eventing
+@using System.Collections.Concurrent
+
 @typeparam T
+
+@implements DragonSpark.Presentation.Components.Eventing.IHandle<IQueries<T>>
+@implements IDisposable
+
+@inject IEventAggregator Events
 
 <QueryContainer
 	Content="@Content"
@@ -11,15 +23,25 @@
 	LoadingTemplate="@LoadingTemplate"
 	NoElementsFoundTemplate="@NoElementsFoundTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
-	ExceptionTemplate="@ExceptionTemplate"
->
+	ExceptionTemplate="@ExceptionTemplate">
 	@ChildContent(References.Get(context))
 </QueryContainer>
 
 @code {
 
 	[Parameter]
-	public IQueries<T>? Content { get; set; }
+	public IQueries<T>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				References?.Execute();
+			}
+		}
+	}	IQueries<T>? _content;
 
 	[Parameter]
 	public bool IncludeCount { get; set; } = true;
@@ -37,7 +59,7 @@
 	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	[Parameter]
-	public RenderFragment<RadzenCallback<T>> ChildContent { get; set; } = default!;
+	public RenderFragment<IRadzenData<T>> ChildContent { get; set; } = default!;
 
 	[Parameter]
 	public RenderFragment? NoElementsFoundTemplate { get; set; }
@@ -52,14 +74,26 @@
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		References = new Callbacks(IncludeCount);
+		Events.Subscribe(this);
+		References = new DataReferences<T>(IncludeCount);
 	}
 
-	Callbacks References { get; set; } = default!;
-
-	sealed class Callbacks : ReferenceValueStore<IEvaluate<T>, RadzenCallback<T>>
+	public Task HandleAsync(IQueries<T> parameter)
 	{
-		public Callbacks(bool count) : base(x => new RadzenCallback<T>(x, count)) {}
+		if (Content == parameter)
+		{
+			References.Execute();
+			StateHasChanged();
+		}
+		return Task.CompletedTask;
 	}
 
+	DataReferences<T> References { get; set; } = default!;
+
+
+	public void Dispose()
+	{
+		Events.Unsubscribe(this);
+	}
 }
+

@@ -18,51 +18,6 @@ namespace DragonSpark.Presentation.Components
 	/// <typeparam name="T"></typeparam>
 	public class DataGrid<T> : RadzenGrid<T>
 	{
-		/*[CascadingParameter]
-		IActivityReceiver? Receiver
-		{
-			get => _receiver;
-			set
-			{
-				if (LoadData.HasDelegate)
-				{
-					if (_receiver != value)
-					{
-						_receiver = value;
-
-						Refresh = _receiver != null
-							          ? Exceptions.Bind(CallReload).Using(_receiver).UpdateActivity().Get()
-							          : null;
-					}	
-				}
-				else
-				{
-					Refresh = null;
-				}
-			}
-		}
-
-		IActivityReceiver? _receiver;*/
-
-		/*[Inject]
-		IExceptions Exceptions { get; set; } = default!;
-
-		EventCallback? Refresh { get; set; }
-
-		public override Task Reload() => Refresh?.InvokeAsync() ?? CallReload();
-
-		bool Active { get; set; }
-
-		async Task CallReload()
-		{
-			Active = true;
-			await base.Reload();
-			Active = false;
-		}*/
-
-		/*protected override Task OnAfterRenderAsync(bool firstRender)
-			=> base.OnAfterRenderAsync(firstRender || !Active && Visible && LoadData.HasDelegate && Data == null);*/
-
 		public override void Dispose()
 		{
 			GC.SuppressFinalize(this);

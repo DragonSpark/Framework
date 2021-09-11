@@ -10,28 +10,31 @@
 
 @code
 {
-    [Parameter]
-    public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
+	[Parameter]
+	public bool Enabled { get; set; } = true;
 
-    [Parameter]
-    public EventCallback<T> Received { get; set; }
+	[Parameter]
+	public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
 
-    protected override Task OnInitializedAsync()
-    {
-        Events.Subscribe(this);
-        return Task.CompletedTask;
-    }
+	[Parameter]
+	public EventCallback<T> Received { get; set; }
 
-    public async Task HandleAsync(T parameter)
-    {
-        if (await Condition.Get(parameter))
-        {
-            await InvokeAsync(() => Received.InvokeAsync(parameter));
-        }
-    }
+	protected override Task OnInitializedAsync()
+	{
+		Events.Subscribe(this);
+		return Task.CompletedTask;
+	}
 
-    public void Dispose()
-    {
-        Events.Unsubscribe(this);
-    }
+	public async Task HandleAsync(T parameter)
+	{
+		if (Enabled && await Condition.Get(parameter))
+		{
+			await InvokeAsync(() => Received.InvokeAsync(parameter));
+		}
+	}
+
+	public void Dispose()
+	{
+		Events.Unsubscribe(this);
+	}
 }
