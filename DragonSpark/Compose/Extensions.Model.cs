@@ -3,8 +3,10 @@ using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
+using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
@@ -18,9 +20,12 @@ namespace DragonSpark.Compose
 	{
 		public static Extent<T> Extent<T>(this VowelContext _) => Extents.Extent<T>.Default;
 
-		public static Instance<T> Activation<T>(this VowelContext _) => Extents.Instance<T>.Implementation;
+		public static Extents.Instance<T> Activation<T>(this VowelContext _) => Extents.Instance<T>.Implementation;
 
 		public static T Instance<T>(this VowelContext _) => Extents.Instance<T>.Implementation.Activate();
+
+		public static OperationContext<T> Operation<T>(this VowelContext _, Await<T> start)
+			=> new (new Awaiting<T>(start));
 
 		public static T Instance<T>(this VowelContext _, T instance) => instance;
 

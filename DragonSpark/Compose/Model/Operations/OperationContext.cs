@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
@@ -22,6 +23,8 @@ namespace DragonSpark.Compose.Model.Operations
 
 		public OperationContext<T> Append(ISelect<T, ValueTask> command) => Append(command.Await);
 
+		public OperationContext<T> Append(ICommand<T> command) => Append(command.Execute);
+		public OperationContext<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation());
 		public OperationContext<T> Append(Await<T> command)
 			=> new OperationContext<T>(new Appending<T>(Get().Await, command));
 

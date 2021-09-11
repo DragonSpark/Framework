@@ -39,6 +39,7 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
+	/*
 	public sealed class AttachAndUpdate<T> : IModify<T> where T : class
 	{
 		public static AttachAndUpdate<T> Default { get; } = new ();
@@ -53,15 +54,11 @@ namespace DragonSpark.Application.Entities
 			set.Update(subject);
 		}
 	}
-
-	public class Update<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
-	{
-		public Update(IContexts<TContext> save) : base(save, AttachAndUpdate<T>.Default) {}
-	}
+	*/
 
 	public class Save<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		public Save(IContexts<TContext> save) : base(save, Update<T>.Default) {}
+		public Save(IContexts<TContext> contexts) : base(contexts, Update<T>.Default.Then().Operation()) {}
 	}
 
 	public class Save<TIn, TContext, T> : IOperation<TIn> where T : class where TContext : DbContext
