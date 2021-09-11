@@ -18,6 +18,7 @@ namespace DragonSpark.Application.Entities
 			         .Singleton()
 			         //
 			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
+			         .AddSingleton(typeof(Save<,>))
 			         ;
 		}
 	}

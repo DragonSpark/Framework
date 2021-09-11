@@ -2,6 +2,7 @@
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Navigation;
@@ -42,6 +43,7 @@ namespace DragonSpark.Presentation
 			         .Scoped()
 			         //
 			         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
+					 .AddSingleton(typeof(IActiveContents<>), typeof(ActiveContents<>))
 			         //
 			         .Start<IApplyQueryStringValues>()
 			         .Forward<ApplyQueryStringValues>()
@@ -51,7 +53,9 @@ namespace DragonSpark.Presentation
 			         .Forward<CurrentPrincipal>()
 			         .Singleton()
 					 //
-			         .Then.Start<DefaultExternalLogin>()
+					 .Then.AddSingleton(typeof(RenderContentKey<>))
+					 //
+			         .Start<DefaultExternalLogin>()
 			         .Include(x => x.Dependencies.Recursive())
 			         .Scoped()
 					 //

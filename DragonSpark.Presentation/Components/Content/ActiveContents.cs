@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-    sealed class ActiveContents<T> : IActiveContents<T>
+	sealed class ActiveContents<T> : IActiveContents<T>
 	{
 		public static ActiveContents<T> Default { get; } = new ActiveContents<T>();
 

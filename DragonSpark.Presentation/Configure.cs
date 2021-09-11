@@ -1,5 +1,7 @@
-﻿using DragonSpark.Composition.Compose;
+﻿using DragonSpark.Composition;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Presentation.Components.Content;
 
 namespace DragonSpark.Presentation
 {
@@ -9,6 +11,8 @@ namespace DragonSpark.Presentation
 
 		Configure() {}
 
-		public BuildHostContext Get(BuildHostContext parameter) => parameter.Configure(DefaultRegistrations.Default);
+		public BuildHostContext Get(BuildHostContext parameter)
+			=> parameter.Configure(DefaultRegistrations.Default)
+			            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(MemoryAwareActiveContents<>)));
 	}
 }

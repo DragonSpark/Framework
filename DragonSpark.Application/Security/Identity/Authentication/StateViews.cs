@@ -1,8 +1,5 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -10,39 +7,32 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 {
 	sealed class StateViews<T> : IStateViews<T> where T : class
 	{
-		readonly IServiceScopeFactory _scopes;
-		readonly StateView<T>         _default;
+		readonly IUsers<T>    _users;
+		readonly StateView<T> _default;
 
 		[UsedImplicitly]
-		public StateViews(IServiceScopeFactory scopes) : this(scopes, StateView<T>.Default) {}
+		public StateViews(IUsers<T> users) : this(users, StateView<T>.Default) {}
 
 		[Candidate(false)]
-		public StateViews(IServiceScopeFactory scopes, StateView<T> @default)
+		public StateViews(IUsers<T> users, StateView<T> @default)
 		{
-			_scopes  = scopes;
+			_users   = users;
 			_default = @default;
 		}
 
 		public async ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
 		{
-			var scope = _scopes.CreateScope();
-			try
-			{
-				var users = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
-				var user  = await users.GetUserAsync(parameter);
-				var result = user != null
-					             ? new StateView<T>(new AuthenticationState<T>(parameter, user),
-					                                users.SupportsUserSecurityStamp
-						                                ? await users.GetSecurityStampAsync(user) ?? string.Empty
-						                                : null)
-					             : _default;
+			await using var users   = _users.Get();
+			var             manager = users.Subject;
+			var             user    = await manager.GetUserAsync(parameter);
+			var result = user != null
+				             ? new StateView<T>(new AuthenticationState<T>(parameter, user),
+				                                manager.SupportsUserSecurityStamp
+					                                ? await manager.GetSecurityStampAsync(user) ?? string.Empty
+					                                : null)
+				             : _default;
 
-				return result;
-			}
-			finally
-			{
-				await scope.Disposed();
-			}
+			return result;
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Compose.Entities.Queries;
+﻿
+using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Runtime;

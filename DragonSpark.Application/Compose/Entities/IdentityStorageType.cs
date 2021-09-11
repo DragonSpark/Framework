@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Compose.Entities
 		}
 
 		public IdentityStorageUsing<T, TContext> Application()
-			=> new(_subject.Then(Registrations<T>.Default)
+			=> new(_subject.Then(Registrations<TContext, T>.Default)
 			               .Then(AddIdentityComponents<T>.Default)
 			               .Then(DragonSpark.Application.Entities.Registrations<TContext>.Default),
 			       _configure);

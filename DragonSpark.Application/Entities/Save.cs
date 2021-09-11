@@ -39,6 +39,26 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
+	public sealed class AttachAndUpdate<T> : IModify<T> where T : class
+	{
+		public static AttachAndUpdate<T> Default { get; } = new ();
+
+		AttachAndUpdate() {}
+
+		public void Execute(In<T> parameter)
+		{
+			var (context, subject) = parameter;
+			var set = context.Set<T>();
+			set.Attach(subject);
+			set.Update(subject);
+		}
+	}
+
+	public class Update<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
+	{
+		public Update(IContexts<TContext> save) : base(save, AttachAndUpdate<T>.Default) {}
+	}
+
 	public class Save<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
 		public Save(IContexts<TContext> save) : base(save, Update<T>.Default) {}

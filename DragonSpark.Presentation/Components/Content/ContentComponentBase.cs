@@ -11,7 +11,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected ContentComponentBase() => _content = GetContent;
 
-		[Parameter]
+		[Parameter, Inject]
 		public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
 
 		protected IActiveContent<T> Content => _current.Verify();

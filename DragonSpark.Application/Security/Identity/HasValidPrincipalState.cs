@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -6,14 +6,15 @@ namespace DragonSpark.Application.Security.Identity
 {
 	sealed class HasValidPrincipalState<T> : IHasValidPrincipalState where T : class
 	{
-		readonly SignInManager<T> _authentication;
+		readonly IAuthentications<T> _authentications;
 
-		public HasValidPrincipalState(SignInManager<T> authentication) => _authentication = authentication;
+		public HasValidPrincipalState(IAuthentications<T> authentications) => _authentications = authentications;
 
 		public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 		{
-			var user   = await _authentication.ValidateSecurityStampAsync(parameter).ConfigureAwait(false);
-			var result = user != null;
+			await using var session = _authentications.Get();
+			var             user    = await session.Subject.ValidateSecurityStampAsync(parameter).ConfigureAwait(false);
+			var             result  = user != null;
 			return result;
 		}
 	}

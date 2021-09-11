@@ -2,7 +2,7 @@
 @using DragonSpark.Compose
 @typeparam T
 
-@ChildContent(Current.Verify())
+@Fragment
 
 @code {
 
@@ -15,7 +15,7 @@
 			if (_input != value)
 			{
 				_input = value;
-				Current = null;
+				Fragment = null;
 			}
 		}
 
@@ -30,7 +30,7 @@
 			if (_includeTotalCount != value)
 			{
 				_includeTotalCount = value;
-				Current = null;
+				Fragment = null;
 			}
 		}
 	}
@@ -44,7 +44,7 @@
 			if (_orderBy != value)
 			{
 				_orderBy = value;
-				Current = null;
+				Fragment = null;
 			}
 		}
 	}
@@ -58,7 +58,7 @@
 			if (_filter != value)
 			{
 				_filter = value;
-				Current = null;
+				Fragment = null;
 			}
 		}
 	}
@@ -72,21 +72,36 @@
 			if (_partition != value)
 			{
 				_partition = value;
-				Current = null;
+				Fragment = null;
 			}
 		}
 
 	}
 
-	Current<T>? Current { get; set; }
+	RenderFragment? Fragment { get; set; }
 
 	protected override async Task OnParametersSetAsync()
 	{
-		Current ??= await Input.Await(new() { Filter = Filter, OrderBy = OrderBy, IncludeTotalCount = IncludeTotalCount, Partition = Partition });
+		Fragment ??= await DetermineFragment();
+	}
+
+	async ValueTask<RenderFragment> DetermineFragment()
+	{
+		Fragment = LoadingTemplate; // Account for re-entry
+		var queryInput = new QueryInput
+		{
+			Filter = Filter, OrderBy = OrderBy, IncludeTotalCount = IncludeTotalCount, Partition = Partition
+		};
+		var current = await Input.Await(queryInput);
+		var result = ChildContent(current);
+		return result;
 	}
 
 	[Parameter]
 	public RenderFragment<Current<T>> ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	IEvaluate<T> _input = default!;
 	bool _includeTotalCount;

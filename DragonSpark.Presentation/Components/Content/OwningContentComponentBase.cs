@@ -12,7 +12,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected OwningContentComponentBase() => _content = GetContent;
 
-		[Parameter]
+		[Parameter, Inject]
 		public IActiveContents<TContent> Contents { get; set; } = ActiveContents<TContent>.Default;
 
 		protected IActiveContent<TContent> Content => _current.Verify();
