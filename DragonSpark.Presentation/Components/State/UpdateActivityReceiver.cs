@@ -35,9 +35,11 @@ namespace DragonSpark.Presentation.Components.State
 
 		public ValueTask Get(object parameter)
 		{
+			var prior = _active.Get(parameter);
+
 			_activity.Execute(parameter);
 
-			var completed = !_active.Get(parameter);
+			var completed = prior && !_active.Get(parameter);
 			var result = completed && parameter is IActivityReceiver receiver
 				             ? receiver.Complete()
 				             : ValueTask.CompletedTask;

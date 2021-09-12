@@ -58,9 +58,12 @@
 
 	bool Restore { get; set; }
 
-	void Update()
+	bool Update()
 	{
-		Active = IsActive.Default.Get(ActualReceiver);
+		var active = IsActive.Default.Get(ActualReceiver);
+		var result = active != Active;
+		Active = active;
+		return result;
 	}
 
 	public async ValueTask Start()
@@ -70,16 +73,20 @@
 			await Focus.StoreFocusedElementAsync();
 		}
 
-		await Started.InvokeAsync();
-		Update();
-		StateHasChanged();
+		if (Update())
+		{
+			await Started.InvokeAsync();
+			StateHasChanged();
+		}
 	}
 
 	public async ValueTask Complete()
 	{
-		Update();
-		await Completed.InvokeAsync();
-		StateHasChanged();
-		Restore = true;
+		Restore = Update();
+		if (Restore)
+		{
+			await Completed.InvokeAsync();
+			StateHasChanged();
+		}
 	}
 }

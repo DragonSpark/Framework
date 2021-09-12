@@ -14,6 +14,9 @@ namespace DragonSpark.Presentation.Components.Content
 		[Parameter, Inject]
 		public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
 
+		[Inject]
+		IContentInteraction Interaction { get; set; } = default!;
+
 		protected IActiveContent<T> Content => _current.Verify();
 
 		IActiveContent<T>? _current;
@@ -38,6 +41,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected override ValueTask RefreshState()
 		{
+			Interaction.Execute();
 			RequestNewContent();
 			Apply();
 			return base.RefreshState();

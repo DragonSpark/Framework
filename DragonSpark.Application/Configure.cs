@@ -12,6 +12,8 @@ namespace DragonSpark.Application
 		Configure() {}
 
 		public BuildHostContext Get(BuildHostContext parameter)
-			=> parameter.Configure(DefaultRegistrations.Default).ComposeUsing(CompositionRegistrations.Default);
+			=> parameter.Configure(DefaultRegistrations.Default)
+			            .Configure(Components.Registrations.Default)
+			            .ComposeUsing(CompositionRegistrations.Default);
 	}
 }

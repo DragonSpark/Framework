@@ -2,8 +2,5 @@
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public interface IActiveContent<T> : IResulting<T>
-	{
-		bool HasValue { get; }
-	}
+	public interface IActiveContent<T> : IResulting<T> {}
 }

@@ -85,6 +85,9 @@ namespace DragonSpark.Composition
 		public static IncludingRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
 			=> new GenericDefinitionRegistration<T>(@this);
 
+		public static IncludingRegistration Generic<T>(this StartRegistration<T> @this) where T : class
+			=> new GenericDefinitionRegistration<T>(@this.Get());
+
 		public static IServiceTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
 
 /**/

@@ -43,23 +43,33 @@ namespace DragonSpark.Presentation
 			         .Scoped()
 			         //
 			         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
-					 .AddSingleton(typeof(IActiveContents<>), typeof(ActiveContents<>))
+			         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
+			         .ForDefinition<MemoryAwareActiveContents<object>>()
+			         .Scoped()
+			         .Then.Start<IRenderContentKey>()
+			         .Forward<RenderContentKey>()
+			         .Decorate<StoreAwareRenderContentKey>()
+			         .Scoped()
 			         //
-			         .Start<IApplyQueryStringValues>()
+			         .Then.Start<IApplyQueryStringValues>()
 			         .Forward<ApplyQueryStringValues>()
 			         .Scoped()
 			         //
 			         .Then.Start<ICurrentPrincipal>()
 			         .Forward<CurrentPrincipal>()
 			         .Singleton()
-					 //
-					 .Then.AddSingleton(typeof(RenderContentKey<>))
-					 //
-			         .Start<DefaultExternalLogin>()
-			         .Include(x => x.Dependencies.Recursive())
+			         //
+			         .Then.Start<IContentInteraction>()
+			         .Forward<ContentInteraction>()
+			         .Include(x => x.Dependencies)
 			         .Scoped()
-					 //
-					 .Then.AddJsInteropExtensions()
+			         //
+			         .Then.Start<DefaultExternalLogin>()
+			         .And<IsPreRendering>()
+			         .Include(x => x.Dependencies)
+			         .Scoped()
+			         //
+			         .Then.AddJsInteropExtensions()
 				;
 		}
 	}

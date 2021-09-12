@@ -56,11 +56,14 @@ namespace DragonSpark.Compose
 
 		/**/
 
-		public static Selector<TIn?, TOut> AccountStructure<TIn, TOut>(this Selector<TIn, TOut> @this)
+		public static Selector<TIn?, TOut> AccountInStructure<TIn, TOut>(this Selector<TIn, TOut> @this)
 			where TIn : struct => new(new AccountedStructure<TIn, TOut>(@this.Get()));
 
-		public static Selector<TIn?, TOut> Accounting<TIn, TOut>(this Selector<TIn, TOut> @this)
+		public static Selector<TIn?, TOut> AccountIn<TIn, TOut>(this Selector<TIn, TOut> @this)
 			 => new(new Accounted<TIn, TOut>(@this.Get()));
+
+		public static Selector<TIn, TOut?> AccountOut<TIn, TOut>(this Selector<TIn, TOut> @this)
+			=> @this.Select(x => x.Account());
 
 		public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class
 			=> new Verified<_, T>(@this.Get()).Then();

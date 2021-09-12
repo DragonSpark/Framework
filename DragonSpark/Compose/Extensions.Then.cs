@@ -217,7 +217,7 @@ namespace DragonSpark.Compose
 			=> @this.Get()
 			        .To(x => x as ICondition<T> ?? new DragonSpark.Model.Selection.Conditions.Condition<T>(x.Get));
 
-		public static ICondition<None> Out(this ResultContext<bool> @this)
+		public static ICondition Out(this ResultContext<bool> @this)
 			=> @this.Get().To(x => new Condition(x.Get));
 
 		public static IConditional<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, TOut> @this, ICondition<TIn> condition)

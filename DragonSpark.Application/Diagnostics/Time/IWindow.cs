@@ -3,8 +3,5 @@ using System;
 
 namespace DragonSpark.Application.Diagnostics.Time
 {
-	public interface IWindow : ICondition<DateTimeOffset>
-	{
-
-	}
+	public interface IWindow : ICondition<DateTimeOffset> {}
 }

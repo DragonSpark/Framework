@@ -4,11 +4,11 @@ using System;
 
 namespace DragonSpark.Composition.Compose
 {
-	public sealed class StartRegistration<T> : IIncludingRegistration where T : class
+	public sealed class StartRegistration<T> : Instance<IServiceCollection>, IIncludingRegistration where T : class
 	{
 		readonly IServiceCollection _subject;
 
-		public StartRegistration(IServiceCollection subject) => _subject = subject;
+		public StartRegistration(IServiceCollection subject) : base(subject) => _subject = subject;
 
 		IRegistrations Current => new Register<T>(_subject).Adapt().Fixed();
 
