@@ -24,7 +24,7 @@ namespace DragonSpark.Presentation.Components.Content
 {
 	class Class1 {}
 
-	public interface IRadzenData<T> : IAllocated<LoadDataArgs>
+	public interface IRadzenData<out T> : IAllocated<LoadDataArgs>
 	{
 		public ulong Count { get; }
 
@@ -69,7 +69,11 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public static LoadDataArgsEqualityComparer Default { get; } = new();
 
-		LoadDataArgsEqualityComparer() {}
+		LoadDataArgsEqualityComparer() : this(StringComparer.InvariantCultureIgnoreCase) {}
+
+		readonly IEqualityComparer<string> _comparer;
+
+		public LoadDataArgsEqualityComparer(IEqualityComparer<string> comparer) => _comparer = comparer;
 
 		public bool Equals(LoadDataArgs? x, LoadDataArgs? y)
 			=> ReferenceEquals(x, y) || !ReferenceEquals(x, null)
@@ -88,8 +92,8 @@ namespace DragonSpark.Presentation.Components.Content
 			var code = new HashCode();
 			code.Add(obj.Skip);
 			code.Add(obj.Top);
-			code.Add(obj.OrderBy, StringComparer.InvariantCultureIgnoreCase);
-			code.Add(obj.Filter, StringComparer.InvariantCultureIgnoreCase);
+			code.Add(obj.OrderBy, _comparer);
+			code.Add(obj.Filter, _comparer);
 			var result = code.ToHashCode();
 			return result;
 		}
