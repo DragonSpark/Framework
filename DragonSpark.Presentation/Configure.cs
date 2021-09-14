@@ -13,6 +13,8 @@ namespace DragonSpark.Presentation
 
 		public BuildHostContext Get(BuildHostContext parameter)
 			=> parameter.Configure(DefaultRegistrations.Default)
-			            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>)));
+			            .Configure(Interaction.Registrations.Default)
+			            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>),
+			                                          typeof(PreRenderAwareActiveContents<>)));
 	}
 }

@@ -236,7 +236,7 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public static PreRenderingWindow Default { get; } = new();
 
-		PreRenderingWindow() : base(TimeSpan.FromSeconds(10)) {}
+		PreRenderingWindow() : base(TimeSpan.FromSeconds(3)) {}
 	}
 
 	sealed class StoreAwareRenderContentKey : IRenderContentKey

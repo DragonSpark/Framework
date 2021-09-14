@@ -81,8 +81,8 @@ namespace DragonSpark.Application.Entities
 
 		public StartEdit(IContexts<TContext> contexts, ISelecting<TIn, T> select)
 		{
-			_contexts    = contexts;
-			_select = @select;
+			_contexts = contexts;
+			_select   = @select;
 		}
 
 		public async ValueTask<Edit<T>> Get(TIn parameter)
@@ -106,9 +106,9 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask<Edit<TResult>> Get(TIn parameter)
 		{
-			using var invoke = await _invoke.Await(parameter);
-			var evaluate = await _evaluate.Await(invoke.Elements);
-			return new(invoke.Context, evaluate);
+			var (context, elements) = await _invoke.Await(parameter);
+			var evaluate = await _evaluate.Await(elements);
+			return new(context, evaluate);
 		}
 	}
 }

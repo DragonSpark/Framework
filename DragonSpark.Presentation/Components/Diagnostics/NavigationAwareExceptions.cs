@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -7,17 +8,26 @@ namespace DragonSpark.Presentation.Components.Diagnostics
 {
 	sealed class NavigationAwareExceptions : IExceptions
 	{
-		readonly IExceptions _previous;
+		readonly IExceptions      _previous;
+		readonly Alter<Exception> _select;
 
-		public NavigationAwareExceptions(IExceptions previous) => _previous = previous;
+		public NavigationAwareExceptions(IExceptions previous) : this(previous, Aggregation.Default.Get) {}
+
+		public NavigationAwareExceptions(IExceptions previous, Alter<Exception> select)
+		{
+			_previous = previous;
+			_select   = @select;
+		}
 
 		public ValueTask Get((Type Owner, Exception Exception) parameter)
 		{
 			var (_, exception) = parameter;
-			if (exception is NavigationException navigation)
+			var select = _select(exception);
+			if (select is NavigationException navigation)
 			{
 				throw navigation;
 			}
+
 			return _previous.Get(parameter);
 		}
 	}

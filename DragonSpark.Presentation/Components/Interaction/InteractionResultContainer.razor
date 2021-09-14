@@ -1,0 +1,15 @@
+﻿@using DragonSpark.Presentation.Interaction
+
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+<CascadingValue TValue="IInteractionResult" Value="@Result">
+	@ChildContent
+</CascadingValue>
+
+@code {
+	[Parameter]
+	public IInteractionResult Result { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+}

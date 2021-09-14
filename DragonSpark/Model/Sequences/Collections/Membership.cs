@@ -9,7 +9,7 @@ namespace DragonSpark.Model.Sequences.Collections
 		public Membership(ICollection<T> collection)
 			: this(new AddCommand<T>(collection), new RemoveCommand<T>(collection)) {}
 
-		public Membership(ICommand<T> add, ICommand<T> remove)
+		protected Membership(ICommand<T> add, ICommand<T> remove)
 		{
 			Add    = add;
 			Remove = remove;

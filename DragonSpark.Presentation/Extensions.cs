@@ -8,11 +8,13 @@ using DragonSpark.Compose.Model.Results;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
+using DragonSpark.Presentation.Interaction;
 using DragonSpark.Presentation.Model;
 using DragonSpark.Presentation.Security;
 using Microsoft.AspNetCore.Builder;
@@ -134,10 +136,10 @@ namespace DragonSpark.Presentation
 			=> @this.Then(x => x.AddContentSecurity()).Then(x => x.UseContentSecurity());
 
 		public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
-			=> @this.Configure(Registrations.Default);
+			=> @this.Configure(Security.Registrations.Default);
 
 		public static IServiceCollection AddContentSecurity(this IServiceCollection @this)
-			=> Registrations.Default.Parameter(@this);
+			=> Security.Registrations.Default.Parameter(@this);
 
 		public static IApplicationBuilder UseContentSecurity(this IApplicationBuilder @this)
 			=> @this.UseMiddleware<ApplyPolicy>();
@@ -149,5 +151,10 @@ namespace DragonSpark.Presentation
 
 		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
 			this IEnumerable<SelectionListing<T>> @this, IEqualityComparer<T> comparer) => new(@this, comparer);
+
+		/**/
+
+		public static InteractionResultHandlerComposer<T> Then<T>(this IOperation<T> @this) where T : IInteractionResult
+			=> new(@this);
 	}
 }
