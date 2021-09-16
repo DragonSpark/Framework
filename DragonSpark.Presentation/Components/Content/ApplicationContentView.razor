@@ -3,41 +3,45 @@
 @typeparam TValue
 
 <ActivityContainer Context="receiver">
-    <ActiveContentView Content="@Contents.Get(receiver)"
-                       ChildContent="@ChildContent"
-                       LoadingTemplate="@LoadingTemplate"
-                       NotAssignedTemplate="@NotAssignedTemplate"
-                       ExceptionTemplate="@ExceptionTemplate"
-                       />
+	<ActiveContentView Content="@Contents.Get(receiver)"
+					   ChildContent="@ChildContent"
+					   LoadingTemplate="@LoadingTemplate"
+					   NotAssignedTemplate="@NotAssignedTemplate"
+					   ExceptionTemplate="@ExceptionTemplate"
+					   ReportedType="@ReportedType"
+					   />
 </ActivityContainer>
 
 @code
 {
-    ISelect<object, IActiveContent<TValue>> Contents { get; set; } = default!;
+	ISelect<object, IActiveContent<TValue>> Contents { get; set; } = default!;
 
-    [Parameter]
-    public IActiveContent<TValue> Content
-    {
-        get => _content;
-        set
-        {
-            if (_content != value)
-            {
-                _content = value;
-                Contents = new ActivityContents<TValue>(_content).Then().Stores().New();
-            }
-        }
-    }   IActiveContent<TValue> _content = default!;
+	[Parameter]
+	public IActiveContent<TValue> Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				Contents = new ActivityContents<TValue>(_content).Then().Stores().New();
+			}
+		}
+	}   IActiveContent<TValue> _content = default!;
 
-    [Parameter]
-    public RenderFragment<TValue> ChildContent { get; set; } = default!;
+	[Parameter]
+	public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter]
-    public RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
+	[Parameter]
+	public RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
 
-    [Parameter]
-    public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+	[Parameter]
+	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
 }

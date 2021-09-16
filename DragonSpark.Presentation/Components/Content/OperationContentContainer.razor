@@ -1,0 +1,69 @@
+﻿@typeparam T
+
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+
+@inherits ActiveContentTemplateComponentBase<T>
+
+@if (Subject is {IsCompleted: true})
+{
+	if (Subject.IsCompletedSuccessfully)
+	{
+		<ContentView Content="@Subject.Result" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" Rendered="OnRender" />
+	}
+	else if (Subject.IsFaulted)
+	{
+		@ExceptionTemplate
+	}
+}
+else if (Rendered is not null)
+{
+	@Rendered
+}
+else
+{
+	@LoadingTemplate
+}
+
+@code
+{
+	[Parameter]
+	public IResulting<T?>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value && value is not null)
+			{
+				_content = value;
+				if (Subject is {IsFaulted: true})
+				{
+					Rendered = null;
+				}
+				Subject = null;
+			}
+		}
+	}	IResulting<T?>? _content;
+
+	Task<T?>? Subject { get; set; }
+
+	RenderFragment? Rendered { get; set; }
+
+	void OnRender(RenderFragment parameter)
+	{
+		Rendered = parameter;
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		Subject ??= DetermineSubject();
+	}
+
+	Task<T?> DetermineSubject()
+	{
+		var content = Content ?? Defaulting<T>.Default;
+		var result = content.Get().AsTask();
+		return result;
+	}
+}

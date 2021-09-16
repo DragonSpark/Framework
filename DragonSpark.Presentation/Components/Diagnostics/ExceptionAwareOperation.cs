@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace DragonSpark.Presentation.Components.Diagnostics
 			// ReSharper disable once CatchAllClause
 			catch (Exception e)
 			{
-				await _exceptions.Get((_owner, e));
+				await _exceptions.Get(_owner, e);
 			}
 		}
 	}
@@ -54,7 +55,7 @@ namespace DragonSpark.Presentation.Components.Diagnostics
 			// ReSharper disable once CatchAllClause
 			catch (Exception e)
 			{
-				await _exceptions.Get((_owner, e));
+				await _exceptions.Get(_owner, e);
 			}
 		}
 	}

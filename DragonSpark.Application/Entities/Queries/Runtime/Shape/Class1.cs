@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -31,43 +30,50 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 
 	public readonly record struct Partition(int? Skip, int? Top);
 
-	public readonly record struct EvaluationInput<T>(IQueries<T> Queries, ICompose<T> Compose);
+	public readonly record struct PagingInput<T>(IQueries<T> Queries, ICompose<T> Compose);
 
-	public interface IEvaluations<T> : ISelect<EvaluationInput<T>, IEvaluate<T>> {}
+	public interface IPagers<T> : ISelect<PagingInput<T>, IPaging<T>> {}
 
-	public sealed class Evaluations<T> : IEvaluations<T>
+	public sealed class Pagers<T> : IPagers<T>
 	{
-		public static Evaluations<T> Default { get; } = new Evaluations<T>();
+		public static Pagers<T> Default { get; } = new Pagers<T>();
 
-		Evaluations() {}
+		Pagers() {}
 
-		public IEvaluate<T> Get(EvaluationInput<T> parameter) => new Evaluate<T>(parameter.Queries, parameter.Compose);
+		public IPaging<T> Get(PagingInput<T> parameter) => new Paging<T>(parameter.Queries, parameter.Compose);
 	}
 
+	/*
 	public class ExceptionAwareEvaluations<T> : IEvaluations<T>
 	{
-		readonly IEvaluations<T>    _previous;
-		readonly Operate<Exception> _handler;
+		readonly IEvaluations<T> _previous;
+		readonly IExceptions     _logger;
+		readonly Type            _reportedType;
 
-		public ExceptionAwareEvaluations(IEvaluations<T> previous, Operate<Exception> handler)
+		public ExceptionAwareEvaluations(IEvaluations<T> previous, IExceptions logger, Type reportedType)
 		{
-			_previous = previous;
-			_handler  = handler;
+			_previous     = previous;
+			_logger       = logger;
+			_reportedType = reportedType;
 		}
 
 		public IEvaluate<T> Get(EvaluationInput<T> parameter)
-			=> new ExceptionAwareEvaluate<T>(_previous.Get(parameter), _handler);
+			=> new ExceptionAwareEvaluate<T>(_previous.Get(parameter), _logger, _reportedType);
 	}
+	*/
 
+	/*
 	sealed class ExceptionAwareEvaluate<T> : IEvaluate<T>
 	{
-		readonly IEvaluate<T>              _previous;
-		readonly Operate<Exception> _handler;
+		readonly IEvaluate<T> _previous;
+		readonly IExceptions  _logger;
+		readonly Type         _reportedType;
 
-		public ExceptionAwareEvaluate(IEvaluate<T> previous, Operate<Exception> handler)
+		public ExceptionAwareEvaluate(IEvaluate<T> previous, IExceptions logger, Type reportedType)
 		{
-			_previous = previous;
-			_handler  = handler;
+			_previous     = previous;
+			_logger       = logger;
+			_reportedType = reportedType;
 		}
 
 		public async ValueTask<Current<T>> Get(QueryInput parameter)
@@ -78,24 +84,33 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 			}
 			catch (Exception e)
 			{
-				await _handler(e).ConfigureAwait(false);
-				return Current<T>.Default;
+				await _logger.Await(_reportedType, e);
+				throw;
 			}
 		}
 	}
+	*/
 
-	public interface IEvaluate<T> : ISelecting<QueryInput, Current<T>> {}
+	public sealed class EmptyPaging<T> : IPaging<T>
+	{
+		public static EmptyPaging<T> Default { get; } = new();
 
-	public sealed class Evaluate<T> : IEvaluate<T>
+		EmptyPaging() {}
+
+		public ValueTask<Current<T>> Get(QueryInput parameter) => Current<T>.Default.ToOperation();
+	}
+
+	public interface IPaging<T> : ISelecting<QueryInput, Current<T>> {}
+
+	public sealed class Paging<T> : IPaging<T>
 	{
 		readonly IQueries<T> _queries;
 		readonly ICompose<T> _compose;
 		readonly IToArray<T> _materialize;
 
-		public Evaluate(IQueries<T> queries, ICompose<T> compose)
-			: this(queries, compose, DefaultToArray<T>.Default) {}
+		public Paging(IQueries<T> queries, ICompose<T> compose) : this(queries, compose, DefaultToArray<T>.Default) {}
 
-		public Evaluate(IQueries<T> queries, ICompose<T> compose, IToArray<T> materialize)
+		public Paging(IQueries<T> queries, ICompose<T> compose, IToArray<T> materialize)
 		{
 			_queries     = queries;
 			_compose     = compose;
@@ -111,7 +126,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 		}
 	}
 
-	public class Current<T> : Collection<T>
+	public sealed class Current<T> : Collection<T>
 	{
 		public static Current<T> Default { get; } = new Current<T>();
 
@@ -132,7 +147,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 
 	public sealed class DefaultCompose<T> : Compose<T>
 	{
-		public static DefaultCompose<T> Default { get; } = new ();
+		public static DefaultCompose<T> Default { get; } = new();
 
 		DefaultCompose() : base(Body<T>.Default) {}
 	}

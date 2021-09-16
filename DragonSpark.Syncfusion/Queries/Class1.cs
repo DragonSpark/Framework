@@ -67,7 +67,7 @@ namespace DragonSpark.Syncfusion.Queries
 			};
 	}
 
-	public sealed class DataRequests<T> : ReferenceValueStore<IEvaluate<T>, IDataRequest>
+	public sealed class DataRequests<T> : ReferenceValueStore<IPaging<T>, IDataRequest>
 	{
 		public static DataRequests<T> Default { get; } = new DataRequests<T>();
 
@@ -80,7 +80,7 @@ namespace DragonSpark.Syncfusion.Queries
 	{
 		readonly Await<DataManagerRequest, Current<T>> _current;
 
-		public ProcessRequest(IEvaluate<T> evaluate) : this(SelectQueryInput.Default.Then().Select(evaluate).Then()) {}
+		public ProcessRequest(IPaging<T> paging) : this(SelectQueryInput.Default.Then().Select(paging).Then()) {}
 
 		public ProcessRequest(Await<DataManagerRequest, Current<T>> current) => _current = current;
 

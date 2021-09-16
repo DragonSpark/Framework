@@ -4,18 +4,17 @@
 
 @typeparam T
 
-<QueryContainer
+<QueryContentContainer
 	Content="@Content"
 	Compose="@Compose"
-	Evaluations="@Evaluations"
-	ReportedType="@ReportedType"
+	Pagers="@Pagers"
 	LoadingTemplate="@LoadingTemplate"
 	NoElementsFoundTemplate="@NoElementsFoundTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 >
 	@ChildContent(DataRequests<T>.Default.Get(context))
-</QueryContainer>
+</QueryContentContainer>
 
 @code {
 
@@ -29,10 +28,7 @@
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
 	[Parameter]
-	public IEvaluations<T> Evaluations { get; set; } = Evaluations<T>.Default;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
+	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
 	[Parameter]
 	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;

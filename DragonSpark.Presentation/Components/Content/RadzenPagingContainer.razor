@@ -1,0 +1,97 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime
+@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Eventing
+
+@typeparam T
+
+@inherits ActiveContentTemplateComponentBase<IRadzenPaging<T>>
+
+@if (Current != null)
+{
+	if (Current.IsCompletedSuccessfully)
+	{
+		<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" Rendered="OnRender" />
+	}
+	else if (Current.IsFaulted)
+	{
+		@ExceptionTemplate
+	}
+	else if (Rendered is not null)
+	{
+		@Rendered
+	}
+	else
+	{
+		@LoadingTemplate
+	}
+}
+else
+{
+	<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
+}
+
+
+@code
+{
+	Action<Task> _report = default!;
+	protected override ValueTask Initialize()
+	{
+		_report = Report;
+		return base.Initialize();
+	}
+
+	[Parameter]
+	public IPaging<T>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				if (Current is {IsFaulted: true})
+				{
+					Rendered = null;
+				}
+				Subject = null;
+			}
+		}
+	}	IPaging<T>? _content;
+
+	[Parameter]
+	public bool IncludeCount { get; set; } = true;
+
+	IRadzenPaging<T>? Subject { get; set; }
+
+	RenderFragment? Rendered { get; set; }
+
+	void OnRender(RenderFragment parameter)
+	{
+		Rendered = parameter;
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		Subject ??= Content != null ? New(Content) : default;
+	}
+
+	Task? Current { get; set; }
+
+	void Report(Task parameter)
+	{
+		Current = parameter;
+		StateHasChanged();
+	}
+
+	IRadzenPaging<T> New(IPaging<T> content)
+	{
+		var first = new RadzenPaging<T>(content, IncludeCount);
+		var second = new ValidatedRadzenPaging<T>(first);
+		var result = new ReportedRadzenPaging<T>(second, _report);
+		return result;
+	}
+
+}
+

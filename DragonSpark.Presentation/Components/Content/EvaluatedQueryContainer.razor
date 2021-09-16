@@ -7,7 +7,7 @@
 @code {
 
 	[Parameter]
-	public IEvaluate<T> Input
+	public IPaging<T> Input
 	{
 		get => _input;
 		set
@@ -103,7 +103,7 @@
 	[Parameter]
 	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-	IEvaluate<T> _input = default!;
+	IPaging<T> _input = default!;
 	bool _includeTotalCount;
 	string? _orderBy;
 	string? _filter;

@@ -9,13 +9,11 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime;
 using DragonSpark.Text;
 using Microsoft.Extensions.Caching.Memory;
 using Radzen;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Delegate = System.Delegate;
@@ -24,24 +22,24 @@ namespace DragonSpark.Presentation.Components.Content
 {
 	class Class1 {}
 
-	public interface IRadzenData<out T> : IAllocated<LoadDataArgs>
+	public interface IRadzenPaging<out T> : IAllocated<LoadDataArgs>
 	{
 		public ulong Count { get; }
 
 		public IEnumerable<T> Current { get; }
 	}
 
-	sealed class ValidatedRadzenData<T> : IRadzenData<T>
+	sealed class ValidatedRadzenPaging<T> : IRadzenPaging<T>
 	{
-		readonly IRadzenData<T>                  _previous;
-		readonly IMutable<LoadDataArgs?>         _store;
+		readonly IRadzenPaging<T>                _previous;
+		readonly IMutable<int?>                  _store;
 		readonly IEqualityComparer<LoadDataArgs> _comparer;
 
-		public ValidatedRadzenData(IRadzenData<T> previous, IMutable<LoadDataArgs?> store)
-			: this(previous, store, LoadDataArgsEqualityComparer.Default) {}
+		public ValidatedRadzenPaging(IRadzenPaging<T> previous)
+			: this(previous, new Variable<int?>(), LoadDataArgsEqualityComparer.Default) {}
 
-		public ValidatedRadzenData(IRadzenData<T> previous, IMutable<LoadDataArgs?> store,
-		                           IEqualityComparer<LoadDataArgs> comparer)
+		public ValidatedRadzenPaging(IRadzenPaging<T> previous, IMutable<int?> store,
+		                             IEqualityComparer<LoadDataArgs> comparer)
 		{
 			_previous = previous;
 			_store    = store;
@@ -51,9 +49,10 @@ namespace DragonSpark.Presentation.Components.Content
 		public Task Get(LoadDataArgs parameter)
 		{
 			var current = _store.Get();
-			if (!_comparer.Equals(current, parameter))
+			var code    = _comparer.GetHashCode(parameter);
+			if (!current.HasValue || !code.Equals(current.Value))
 			{
-				_store.Execute(parameter);
+				_store.Execute(code);
 				return _previous.Get(parameter);
 			}
 
@@ -83,9 +82,10 @@ namespace DragonSpark.Presentation.Components.Content
 			   x.GetType() == y.GetType()
 			   &&
 			   x.Skip == y.Skip && x.Top == y.Top
-			   && string.Equals(x.OrderBy, y.OrderBy, StringComparison.InvariantCultureIgnoreCase)
 			   &&
-			   string.Equals(x.Filter, y.Filter, StringComparison.InvariantCultureIgnoreCase);
+			   _comparer.Equals(x.OrderBy, y.OrderBy)
+			   &&
+			   _comparer.Equals(x.Filter, y.Filter);
 
 		public int GetHashCode(LoadDataArgs obj)
 		{
@@ -99,14 +99,14 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
-	public sealed class RadzenData<T> : IRadzenData<T>
+	sealed class RadzenPaging<T> : IRadzenPaging<T>
 	{
-		readonly IEvaluate<T> _evaluate;
-		readonly bool         _includeCount;
+		readonly IPaging<T> _paging;
+		readonly bool       _includeCount;
 
-		public RadzenData(IEvaluate<T> evaluate, bool includeCount = true)
+		public RadzenPaging(IPaging<T> paging, bool includeCount = true)
 		{
-			_evaluate     = evaluate;
+			_paging       = paging;
 			_includeCount = includeCount;
 		}
 
@@ -126,31 +126,30 @@ namespace DragonSpark.Presentation.Components.Content
 				IncludeTotalCount = _includeCount,
 			};
 
-			var evaluate = await _evaluate.Await(input);
+			var evaluate = await _paging.Await(input);
 			Current = evaluate;
 			Count   = evaluate.Total ?? evaluate.Count.Grade();
 		}
 	}
 
-	sealed class DataReferences<T> : DecoratedTable<IEvaluate<T>, IRadzenData<T>>, ICommand
+	/*
+	sealed class DataReferences<T> : DecoratedTable<IPaging<T>, IRadzenPaging<T>>, ICommand
 	{
-		readonly IMutable<LoadDataArgs?>                   _variable;
-		readonly IDictionary<IEvaluate<T>, IRadzenData<T>> _store;
+		readonly IMutable<int?>                            _variable;
+		readonly IDictionary<IPaging<T>, IRadzenPaging<T>> _store;
 
-		public DataReferences(bool count)
-			: this(count, new Variable<LoadDataArgs?>()) {}
+		public DataReferences(bool count) : this(count, new Variable<int?>()) {}
 
-		public DataReferences(bool count, IMutable<LoadDataArgs?> store)
-			: this(store, new ConcurrentDictionary<IEvaluate<T>, IRadzenData<T>>(),
-			       x => new ValidatedRadzenData<T>(new RadzenData<T>(x, count), store)) {}
+		public DataReferences(bool count, IMutable<int?> store)
+			: this(store, new ConcurrentDictionary<IPaging<T>, IRadzenPaging<T>>(),
+			       x => new ValidatedRadzenPaging<T>(new RadzenPaging<T>(x, count), store)) {}
 
-		public DataReferences(IMutable<LoadDataArgs?> variable,
-		                      ConcurrentDictionary<IEvaluate<T>, IRadzenData<T>> store,
-		                      Func<IEvaluate<T>, IRadzenData<T>> factory)
+		public DataReferences(IMutable<int?> variable, ConcurrentDictionary<IPaging<T>, IRadzenPaging<T>> store,
+		                      Func<IPaging<T>, IRadzenPaging<T>> factory)
 			: this(variable, store, factory.ToConcurrentTable(store)) {}
 
-		public DataReferences(IMutable<LoadDataArgs?> variable, IDictionary<IEvaluate<T>, IRadzenData<T>> store,
-		                      ITable<IEvaluate<T>, IRadzenData<T>> table)
+		public DataReferences(IMutable<int?> variable, IDictionary<IPaging<T>, IRadzenPaging<T>> store,
+		                      ITable<IPaging<T>, IRadzenPaging<T>> table)
 			: base(table)
 		{
 			_variable = variable;
@@ -163,6 +162,7 @@ namespace DragonSpark.Presentation.Components.Content
 			_store.Clear();
 		}
 	}
+	*/
 
 	sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 	{
@@ -298,6 +298,7 @@ namespace DragonSpark.Presentation.Components.Content
 					_memory.Remove(key);
 				}
 			}
+
 			_keys.Clear();
 		}
 	}

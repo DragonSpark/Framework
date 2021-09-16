@@ -11,4 +11,11 @@ namespace DragonSpark.Model.Operations
 
 		public ValueTask<T> Get() => _instance.ToOperation();
 	}
+
+	public sealed class Defaulting<T> : Instance<T?>
+	{
+		public static Defaulting<T> Default { get; } = new();
+
+		Defaulting() : base(default) {}
+	}
 }

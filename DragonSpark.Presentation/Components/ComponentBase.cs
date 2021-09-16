@@ -17,6 +17,8 @@ namespace DragonSpark.Presentation.Components
 
 		protected virtual ValueTask Initialize() => Task.CompletedTask.ToOperation();
 
+		protected Action StateChanged => _state;
+
 		protected virtual ValueTask RefreshState() => InvokeAsync(_state).ToOperation();
 
 		[Inject]

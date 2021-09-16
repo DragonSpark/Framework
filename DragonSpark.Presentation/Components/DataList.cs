@@ -1,12 +1,11 @@
 ﻿using Radzen.Blazor;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
 	public class DataList<T> : RadzenDataList<T>
 	{
-		protected override Task OnParametersSetAsync()
-			=> Data == null && Rendered ? Reload() : base.OnParametersSetAsync();
+		/*protected override Task OnParametersSetAsync()
+			=> /*Data == null && Rendered ? Reload() :#1# base.OnParametersSetAsync();
 
 		bool Rendered { get; set; }
 
@@ -14,6 +13,6 @@ namespace DragonSpark.Presentation.Components
 		{
 			base.OnAfterRender(firstRender);
 			Rendered = true;
-		}
+		}*/
 	}
 }
