@@ -19,12 +19,18 @@
 	LoadingTemplate="@LoadingTemplate"
 	NoElementsFoundTemplate="@NoElementsFoundTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
-	ExceptionTemplate="@ExceptionTemplate">
-	@ChildContent(new RadzenPaging<T>(context, IncludeCount))
+	ExceptionTemplate="@ExceptionTemplate"
+	ReportedType="@ReportedType"
+>
+	<RadzenPagingContainer ChildContent="@ChildContent"
+	                       LoadingTemplate="@LoadingTemplate"
+	                       NotAssignedTemplate="@NotAssignedTemplate"
+	                       ExceptionTemplate="@ExceptionTemplate"
+						   IncludeCount="@IncludeCount"
+	/>
 </QueryContentContainer>
 
 @code {
-
 	[Parameter]
 	public IQueries<T>? Content { get; set; }
 
@@ -37,29 +43,7 @@
 	[Parameter]
 	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
-	@*protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		Events.Subscribe(this);
-		References = new DataReferences<T>(IncludeCount);
-	}
-
-	public Task HandleAsync(IQueries<T> parameter)
-	{
-		if (parameter == Content)
-		{
-			References.Execute();
-			StateHasChanged();
-		}
-		return Task.CompletedTask;
-	}
-
-	/*DataReferences<T> References { get; set; } = default!;*/
-
-
-	public void Dispose()
-	{
-		Events.Unsubscribe(this);
-	}*@
+	[Parameter]
+	public Type? ReportedType { get; set; }
 }
 

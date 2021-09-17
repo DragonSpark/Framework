@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose.Model.Selection;
+﻿using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
@@ -63,6 +64,10 @@ namespace DragonSpark.Compose
 			 => new(new Accounted<TIn, TOut>(@this.Get()));
 
 		public static Selector<TIn, TOut?> AccountOut<TIn, TOut>(this Selector<TIn, TOut> @this)
+			=> @this.Select(x => x.Account());
+
+		public static OperationResultSelector<TIn, TOut?> AccountOut<TIn, TOut>(
+			this OperationResultSelector<TIn, TOut> @this)
 			=> @this.Select(x => x.Account());
 
 		public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class

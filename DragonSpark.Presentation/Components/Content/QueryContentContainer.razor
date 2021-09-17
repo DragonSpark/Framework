@@ -5,6 +5,8 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation.Components.Eventing
+@using DragonSpark.Application.Diagnostics
+@using DragonSpark.Application
 
 @inherits ManyActiveContentTemplateComponentBase<IPaging<T>>
 @implements DragonSpark.Presentation.Components.Eventing.IHandle<RefreshQueriesMessage<T>>
@@ -72,6 +74,9 @@
 		}
 	}	IPagers<T> _pagers = Pagers<T>.Default;
 
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
 	IResulting<IPaging<T>?>? Subject { get; set; }
 
 	protected override void OnParametersSet()
@@ -85,8 +90,12 @@
 		if (Content != null)
 		{
 			var selector = NoElementsFoundTemplate == null ? Pagers.Then().Operation().Out() : new Pagings<T>(Pagers);
-			var bind = selector.Then().Select(x => x.Account()).Bind(new PagingInput<T>(Content, Compose));
-			var result = bind.Out();
+			var result = selector.Then()
+			                     .AccountOut()
+								 .Bind(new PagingInput<T>(Content, Compose))
+								 .Then()
+								 .Handle(Exceptions, ReportedType ?? GetType())
+								 .Out();
 			return result;
 		}
 
@@ -102,9 +111,6 @@
 		}
 		return Task.CompletedTask;
 	}
-
-	/*DataReferences<T> References { get; set; } = default!;*/
-
 
 	public void Dispose()
 	{

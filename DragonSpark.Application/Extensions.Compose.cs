@@ -7,6 +7,7 @@ using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
 using DragonSpark.Application.Compose.Store;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
@@ -141,6 +142,10 @@ namespace DragonSpark.Application
 			=> @this.Get().Out();
 		public static IForming<TIn, T> Out<TIn, T>(this ISelect<In<TIn>, ValueTask<T>> @this)
 			=> @this as IForming<TIn, T> ?? new Forming<TIn, T>(@this);
+
+		public static OperationResultSelector<T?> Handle<T>(this OperationResultSelector<T?> @this,
+		                                                   IExceptions exceptions, Type? reportedType = null)
+			=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
 
 		// Scoped:
 
