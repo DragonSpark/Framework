@@ -5,11 +5,15 @@
 
 @inherits ActiveContentTemplateComponentBase<T>
 
-@if (Subject is {IsCompleted: true})
+@if (Subject is null)
+{
+	@NotAssignedTemplate
+}
+else if (Subject is {IsCompleted: true})
 {
 	if (Subject.IsCompletedSuccessfully)
 	{
-		<ContentView Content="@Subject.Result" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" Rendered="OnRender" />
+		<ContentView Content="@Subject.Result" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
 	}
 	else if (Subject.IsFaulted)
 	{
@@ -49,15 +53,19 @@ else
 
 	RenderFragment? Rendered { get; set; }
 
-	void OnRender(RenderFragment parameter)
-	{
-		Rendered = parameter;
-	}
-
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
 		Subject ??= DetermineSubject();
+	}
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+		/*if (Rendered == null && (Subject?.IsCompletedSuccessfully ?? false) && Subject.Result is not null)
+		{
+			Rendered = ChildContent(Subject.Result);
+		}*/
 	}
 
 	Task<T?> DetermineSubject()

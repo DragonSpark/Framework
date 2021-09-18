@@ -126,6 +126,8 @@ namespace DragonSpark.Presentation.Components.Content
 				IncludeTotalCount = _includeCount,
 			};
 
+			await Task.Delay(1500);
+
 			var evaluate = await _paging.Await(input);
 			Current = evaluate;
 			Count   = evaluate.Total ?? evaluate.Count.Grade();
@@ -236,7 +238,7 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public static PreRenderingWindow Default { get; } = new();
 
-		PreRenderingWindow() : base(TimeSpan.FromSeconds(3)) {}
+		PreRenderingWindow() : base(TimeSpan.FromSeconds(5)) {}
 	}
 
 	sealed class StoreAwareRenderContentKey : IRenderContentKey

@@ -22,11 +22,13 @@
 	ExceptionTemplate="@ExceptionTemplate"
 	ReportedType="@ReportedType"
 >
-	<RadzenPagingContainer ChildContent="@ChildContent"
-	                       LoadingTemplate="@LoadingTemplate"
-	                       NotAssignedTemplate="@NotAssignedTemplate"
-	                       ExceptionTemplate="@ExceptionTemplate"
-						   IncludeCount="@IncludeCount"
+	<RadzenPagingContainer
+		Content="context"
+		ChildContent="@ChildContent"
+	    LoadingTemplate="@LoadingTemplate"
+	    NotAssignedTemplate="@NotAssignedTemplate"
+	    ExceptionTemplate="@ExceptionTemplate"
+		IncludeCount="@IncludeCount"
 	/>
 </QueryContentContainer>
 

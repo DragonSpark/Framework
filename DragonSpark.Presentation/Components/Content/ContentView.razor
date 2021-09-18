@@ -5,11 +5,11 @@
 
 @if (Content is not null)
 {
-	@Store(ChildContent(Content))
+	@ChildContent(Content)
 }
 else
 {
-	@Store(NotFoundTemplate)
+	@NotFoundTemplate
 }
 
 @code {
@@ -21,22 +21,5 @@ else
 	public RenderFragment<TValue> ChildContent { get; set; } = default!;
 
 	[Parameter]
-	public RenderFragment NotFoundTemplate { get; set; } = @<div>This view's required information does not exist.</div>
-	;
-
-	[Parameter]
-	public EventCallback<RenderFragment> Rendered { get; set; }
-
-	RenderFragment? Current { get; set; }
-
-	RenderFragment Store(RenderFragment current) => Current = current;
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (Current is not null)
-		{
-			await Rendered.InvokeAsync(Current);
-		}
-	}
-
+	public RenderFragment NotFoundTemplate { get; set; } = @<div>This view's required information does not exist.</div>;
 }

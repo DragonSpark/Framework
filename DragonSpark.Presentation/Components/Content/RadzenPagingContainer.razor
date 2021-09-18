@@ -7,28 +7,21 @@
 
 @inherits ActiveContentTemplateComponentBase<IRadzenPaging<T>>
 
-@if (Current != null)
-{
-	if (Current.IsCompletedSuccessfully)
-	{
-		<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" Rendered="OnRender" />
-	}
-	else if (Current.IsFaulted)
-	{
-		@ExceptionTemplate
-	}
-	else if (Rendered is not null)
-	{
-		@Rendered
-	}
-	else
-	{
-		@LoadingTemplate
-	}
-}
-else
+@if (Current is null or {IsCompletedSuccessfully : true})
 {
 	<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
+}
+else if (Current is {IsFaulted : true })
+{
+	@ExceptionTemplate
+}
+@*else if (Rendered is not null)
+{
+	@Rendered
+}*@
+else
+{
+	@LoadingTemplate
 }
 
 
@@ -55,6 +48,7 @@ else
 					Rendered = null;
 				}
 				Subject = null;
+				Current = null;
 			}
 		}
 	}	IPaging<T>? _content;
@@ -66,23 +60,32 @@ else
 
 	RenderFragment? Rendered { get; set; }
 
-	void OnRender(RenderFragment parameter)
-	{
-		Rendered = parameter;
-	}
-
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
 		Subject ??= Content != null ? New(Content) : default;
 	}
 
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+
+		/*if (Current is { IsCompletedSuccessfully: true })
+		{
+			Rendered ??= Subject is not null ? ChildContent(Subject) : NotAssignedTemplate;
+		}*/
+	}
+
 	Task? Current { get; set; }
 
 	void Report(Task parameter)
 	{
+		var update = Current is null;
 		Current = parameter;
-		StateHasChanged();
+		if (update)
+		{
+			StateHasChanged();
+		}
 	}
 
 	IRadzenPaging<T> New(IPaging<T> content)

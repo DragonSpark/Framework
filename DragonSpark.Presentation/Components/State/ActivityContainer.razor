@@ -1,6 +1,7 @@
 ﻿@using DragonSpark.Presentation.Compose
 @using Majorsoft.Blazor.Components.Common.JsInterop.Focus
 @using System.Diagnostics
+@using DragonSpark.Compose
 
 @inject IFocusHandler Focus
 
@@ -26,12 +27,6 @@
 
 	[Parameter]
 	public RenderFragment<object> ChildContent { get; set; } = default!;
-	
-	[Parameter]
-	public EventCallback Started { get; set; }
-
-	[Parameter]
-	public EventCallback Completed { get; set; }
 
 	object ActualReceiver => Receiver ?? this;
 
@@ -74,18 +69,17 @@
 
 		if (Update())
 		{
-			await Started.InvokeAsync();
 			StateHasChanged();
 		}
 	}
 
-	public async ValueTask Complete()
+	public ValueTask Complete()
 	{
 		Restore = Update();
 		if (Restore)
 		{
-			await Completed.InvokeAsync();
 			StateHasChanged();
 		}
+		return Task.CompletedTask.ToOperation();
 	}
 }

@@ -11,37 +11,6 @@ namespace DragonSpark.Presentation.Components.Content
 
 	public sealed record RefreshQueriesMessage<T>(IQueries<T> Subject);
 
-	public abstract record ContentStateBase;
-
-	/*public record ContentState<T>(T? Subject) : ContentStateBase
-	{
-		public static ContentState<T> Default { get; } = new();
-
-		ContentState() : this(default(T?)) {}
-	}*/
-
-	/*public interface IContentStates<in TIn, TOut> : ISelecting<TIn, ContentState<TOut?>?> {}
-
-	public class ContentStates<TIn, TOut> : IContentStates<TIn, TOut>
-	{
-		readonly ISelecting<TIn, TOut> _selecting;
-
-		public ContentStates(ISelect<TIn, TOut> select) : this(select.Then().Operation().Out()) {}
-
-		public ContentStates(ISelecting<TIn, TOut> selecting) => _selecting = selecting;
-
-		public async ValueTask<ContentState<TOut?>?> Get(TIn parameter) => new (await _selecting.Await(parameter));
-	}*/
-
-	/*sealed class EmptyContent<TIn, TOut> : IContentStates<TIn, TOut>
-	{
-		public static EmptyContent<TIn,TOut> Default { get; } = new();
-
-		EmptyContent() {}
-
-		public ValueTask<ContentState<TOut?>?> Get(TIn parameter) => default;
-	}*/
-
 	public class AnyAwareSelect<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly ISelecting<TIn, TOut> _previous;
