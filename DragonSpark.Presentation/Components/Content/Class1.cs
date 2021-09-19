@@ -26,7 +26,7 @@ namespace DragonSpark.Presentation.Components.Content
 	{
 		public ulong Count { get; }
 
-		public IEnumerable<T> Current { get; }
+		public IEnumerable<T>? Current { get; }
 	}
 
 	sealed class ValidatedRadzenPaging<T> : IRadzenPaging<T>
@@ -61,7 +61,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		public ulong Count => _previous.Count;
 
-		public IEnumerable<T> Current => _previous.Current;
+		public IEnumerable<T>? Current => _previous.Current;
 	}
 
 	sealed class LoadDataArgsEqualityComparer : IEqualityComparer<LoadDataArgs>
@@ -99,20 +99,31 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
+	sealed class Reload<T> : List<T>
+	{
+		public Reload(IEnumerable<T> collection) : base(collection) {}
+
+		public Reload(IList<T> list) : base(list) {}
+	}
+
+	public readonly record struct PagingState<T>(IEnumerable<T> Current, ulong Count);
+
 	sealed class RadzenPaging<T> : IRadzenPaging<T>
 	{
 		readonly IPaging<T> _paging;
 		readonly bool       _includeCount;
 
-		public RadzenPaging(IPaging<T> paging, bool includeCount = true)
+		public RadzenPaging(IPaging<T> paging, bool includeCount = true, PagingState<T>? state = null)
 		{
 			_paging       = paging;
 			_includeCount = includeCount;
+			Count         = state?.Count ?? 0;
+			Current       = state?.Current!;
 		}
 
 		public ulong Count { get; private set; }
 
-		public IEnumerable<T> Current { get; private set; } = default!;
+		public IEnumerable<T>? Current { get; private set; }
 
 		public async Task Get(LoadDataArgs parameter)
 		{
@@ -121,12 +132,12 @@ namespace DragonSpark.Presentation.Components.Content
 				Filter  = parameter.Filter,
 				OrderBy = parameter.OrderBy,
 				Partition = parameter.Skip.HasValue || parameter.Top.HasValue
-					            ? new Partition(parameter.Skip, parameter.Top)
+					            ? new (parameter.Skip, parameter.Top)
 					            : null,
 				IncludeTotalCount = _includeCount,
 			};
 
-			await Task.Delay(1500);
+			/*await Task.Delay(1500);*/
 
 			var evaluate = await _paging.Await(input);
 			Current = evaluate;

@@ -42,7 +42,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 		public ulong Count => _previous.Count;
 
-		public IEnumerable<T> Current => _previous.Current;
+		public IEnumerable<T>? Current => _previous.Current;
 	}
 
 }

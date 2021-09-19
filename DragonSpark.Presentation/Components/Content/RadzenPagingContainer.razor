@@ -15,15 +15,10 @@ else if (Current is {IsFaulted : true })
 {
 	@ExceptionTemplate
 }
-@*else if (Rendered is not null)
-{
-	@Rendered
-}*@
 else
 {
 	@LoadingTemplate
 }
-
 
 @code
 {
@@ -43,12 +38,9 @@ else
 			if (_content != value)
 			{
 				_content = value;
-				if (Current is {IsFaulted: true})
-				{
-					Rendered = null;
-				}
+				PagingState = Subject is {Current: {}} ? new (new Reload<T>(Subject.Current), Subject.Count) : null;
 				Subject = null;
-				Current = null;
+				/*Current = null;*/
 			}
 		}
 	}	IPaging<T>? _content;
@@ -56,24 +48,31 @@ else
 	[Parameter]
 	public bool IncludeCount { get; set; } = true;
 
+	PagingState<T>? PagingState { get; set; }
 	IRadzenPaging<T>? Subject { get; set; }
 
-	RenderFragment? Rendered { get; set; }
+	/*IRadzenPaging<T>? Subject
+	{
+		get => _subject;
+		set
+		{
+			if (_subject != value)
+			{
+				if (_subject != null)
+				{
+
+				}
+
+				_subject = value;
+
+			}
+		}
+	}	IRadzenPaging<T>? _subject = default!;*/
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
 		Subject ??= Content != null ? New(Content) : default;
-	}
-
-	protected override void OnAfterRender(bool firstRender)
-	{
-		base.OnAfterRender(firstRender);
-
-		/*if (Current is { IsCompletedSuccessfully: true })
-		{
-			Rendered ??= Subject is not null ? ChildContent(Subject) : NotAssignedTemplate;
-		}*/
 	}
 
 	Task? Current { get; set; }
@@ -90,7 +89,7 @@ else
 
 	IRadzenPaging<T> New(IPaging<T> content)
 	{
-		var first = new RadzenPaging<T>(content, IncludeCount);
+		var first = new RadzenPaging<T>(content, IncludeCount, PagingState);
 		var second = new ValidatedRadzenPaging<T>(first);
 		var result = new ReportedRadzenPaging<T>(second, _report);
 		return result;

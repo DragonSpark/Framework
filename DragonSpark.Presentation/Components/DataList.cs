@@ -1,4 +1,5 @@
-﻿using Radzen.Blazor;
+﻿using DragonSpark.Presentation.Components.Content;
+using Radzen.Blazor;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
@@ -16,7 +17,7 @@ namespace DragonSpark.Presentation.Components
 
 		protected override Task OnAfterRenderAsync(bool firstRender)
 		{
-			if (!firstRender && Visible && LoadData.HasDelegate && Data == null && !Active)
+			if (!firstRender && Visible && LoadData.HasDelegate && Data is null or Reload<T> && !Active)
 			{
 				InvokeAsync(Reload);
 			}
