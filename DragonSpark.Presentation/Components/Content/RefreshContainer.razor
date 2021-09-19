@@ -1,0 +1,53 @@
+﻿@typeparam T
+
+@using DragonSpark.Presentation.Components.Eventing
+@using DragonSpark.Application.Entities.Queries.Runtime
+@using DragonSpark.Compose
+@using NetFabric.Hyperlinq
+
+@implements DragonSpark.Presentation.Components.Eventing.IHandle<RefreshQueriesMessage<T>>
+@implements IDisposable
+
+@inject IEventAggregator Events
+
+<CascadingValue Value="@Subject">
+	@ChildContent
+</CascadingValue>
+
+@code {
+	readonly ICollection<IRefreshAware> _children = new List<IRefreshAware>();
+
+	IRefreshContainer Subject { get; set; } = default!;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Subject = new RefreshContainer(_children);
+		Events.Subscribe(this);
+	}
+
+	[Parameter]
+	public IQueries<T> Topic { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	public async Task HandleAsync(RefreshQueriesMessage<T> message)
+	{
+		if (message.Subject == Topic)
+		{
+			using var lease = _children.AsValueEnumerable().AsLease();
+			var memory = lease.AsMemory();
+			for (byte i = 0; i < lease.Length; i++)
+			{
+				await memory.Span[i].Await();
+			}
+		}
+	}
+
+	public void Dispose()
+	{
+		_children.Clear();
+		Events.Unsubscribe(this);
+	}
+}

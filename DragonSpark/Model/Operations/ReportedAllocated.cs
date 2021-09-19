@@ -8,7 +8,7 @@ namespace DragonSpark.Model.Operations
 		readonly IAllocated<T> _previous;
 		readonly Action<Task>  _report;
 
-		public ReportedAllocated(IAllocated<T> previous, Action<Task> report)
+		protected ReportedAllocated(IAllocated<T> previous, Action<Task> report)
 		{
 			_previous = previous;
 			_report   = report;

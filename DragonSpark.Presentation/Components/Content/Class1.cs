@@ -99,26 +99,15 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
-	sealed class Reload<T> : List<T>
-	{
-		public Reload(IEnumerable<T> collection) : base(collection) {}
-
-		public Reload(IList<T> list) : base(list) {}
-	}
-
-	public readonly record struct PagingState<T>(IEnumerable<T> Current, ulong Count);
-
 	sealed class RadzenPaging<T> : IRadzenPaging<T>
 	{
 		readonly IPaging<T> _paging;
 		readonly bool       _includeCount;
 
-		public RadzenPaging(IPaging<T> paging, bool includeCount = true, PagingState<T>? state = null)
+		public RadzenPaging(IPaging<T> paging, bool includeCount = true)
 		{
 			_paging       = paging;
 			_includeCount = includeCount;
-			Count         = state?.Count ?? 0;
-			Current       = state?.Current!;
 		}
 
 		public ulong Count { get; private set; }
@@ -137,7 +126,7 @@ namespace DragonSpark.Presentation.Components.Content
 				IncludeTotalCount = _includeCount,
 			};
 
-			/*await Task.Delay(1500);*/
+			await Task.Delay(1500);
 
 			var evaluate = await _paging.Await(input);
 			Current = evaluate;

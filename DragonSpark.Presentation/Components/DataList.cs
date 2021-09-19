@@ -1,27 +1,36 @@
-﻿using DragonSpark.Presentation.Components.Content;
+﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Content;
+using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public class DataList<T> : RadzenDataList<T>
+	public class DataList<T> : RadzenDataList<T>, IRefreshAware
 	{
-		bool Active { get; set; }
-
-		public override async Task Reload()
+		[CascadingParameter]
+		IRefreshContainer? Container
 		{
-			Active = true;
-			await base.Reload().ConfigureAwait(false);
-			Active = false;
-		}
-
-		protected override Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (!firstRender && Visible && LoadData.HasDelegate && Data is null or Reload<T> && !Active)
+			get => _container.Verify();
+			set
 			{
-				InvokeAsync(Reload);
+				if (_container != value)
+				{
+					_container?.Remove.Execute(this);
+
+					_container = value;
+
+					_container?.Add.Execute(this);
+				}
 			}
-			return base.OnAfterRenderAsync(firstRender);
+		}	IRefreshContainer? _container = default!;
+
+		public Task Get() => Reload();
+
+		public override void Dispose()
+		{
+			Container = null;
+			base.Dispose();
 		}
 	}
 }

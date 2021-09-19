@@ -9,10 +9,6 @@
 @using DragonSpark.Application
 
 @inherits ManyActiveContentTemplateComponentBase<IPaging<T>>
-@implements DragonSpark.Presentation.Components.Eventing.IHandle<RefreshQueriesMessage<T>>
-@implements IDisposable
-
-@inject IEventAggregator Events
 
 <OperationContentContainer T="IPaging<T>"
 	Content="@Subject"
@@ -79,12 +75,6 @@
 
 	IResulting<IPaging<T>?>? Subject { get; set; }
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		Events.Subscribe(this);
-	}
-
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
@@ -106,20 +96,5 @@
 		}
 
 		return Defaulting<IPaging<T>>.Default;
-	}
-
-	public Task HandleAsync(RefreshQueriesMessage<T> parameter)
-	{
-		if (parameter.Subject == Content)
-		{
-			Subject = null;
-			StateHasChanged();
-		}
-		return Task.CompletedTask;
-	}
-
-	public void Dispose()
-	{
-		Events.Unsubscribe(this);
 	}
 }

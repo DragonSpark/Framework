@@ -7,13 +7,13 @@
 
 @inherits ActiveContentTemplateComponentBase<IRadzenPaging<T>>
 
-@if (Current is null or {IsCompletedSuccessfully : true})
-{
-	<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
-}
-else if (Current is {IsFaulted : true })
+@if (Current is {IsFaulted : true })
 {
 	@ExceptionTemplate
+}
+else if (Current is null || Loaded)
+{
+	<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
 }
 else
 {
@@ -38,9 +38,8 @@ else
 			if (_content != value)
 			{
 				_content = value;
-				PagingState = Subject is {Current: {}} ? new (new Reload<T>(Subject.Current), Subject.Count) : null;
+				Loaded = false;
 				Subject = null;
-				/*Current = null;*/
 			}
 		}
 	}	IPaging<T>? _content;
@@ -48,50 +47,30 @@ else
 	[Parameter]
 	public bool IncludeCount { get; set; } = true;
 
-	PagingState<T>? PagingState { get; set; }
 	IRadzenPaging<T>? Subject { get; set; }
 
-	/*IRadzenPaging<T>? Subject
-	{
-		get => _subject;
-		set
-		{
-			if (_subject != value)
-			{
-				if (_subject != null)
-				{
+	Task? Current { get; set; }
 
-				}
-
-				_subject = value;
-
-			}
-		}
-	}	IRadzenPaging<T>? _subject = default!;*/
+	bool Loaded { get; set; }
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
 		Subject ??= Content != null ? New(Content) : default;
+		Loaded |= Current is { IsCompletedSuccessfully: true };
 	}
-
-	Task? Current { get; set; }
 
 	void Report(Task parameter)
 	{
-		var update = Current is null;
 		Current = parameter;
-		if (update)
-		{
-			StateHasChanged();
-		}
+		StateHasChanged();
 	}
 
 	IRadzenPaging<T> New(IPaging<T> content)
 	{
-		var first = new RadzenPaging<T>(content, IncludeCount, PagingState);
-		var second = new ValidatedRadzenPaging<T>(first);
-		var result = new ReportedRadzenPaging<T>(second, _report);
+		var first = new RadzenPaging<T>(content, IncludeCount);
+		/*var second = new ValidatedRadzenPaging<T>(first);*/
+		var result = new ReportedRadzenPaging<T>(first, _report);
 		return result;
 	}
 
