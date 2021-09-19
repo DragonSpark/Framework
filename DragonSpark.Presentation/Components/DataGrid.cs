@@ -1,7 +1,6 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Runtime;
-using DragonSpark.Compose;
-using DragonSpark.Presentation.Components.State;
+﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Reflection.Members;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen.Blazor;
@@ -16,11 +15,48 @@ namespace DragonSpark.Presentation.Components
 	/// https://forum.radzen.com/t/issues-with-radzengrid-dispose/5265
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class DataGrid<T> : RadzenGrid<T>
+	public class DataGrid<T> : RadzenGrid<T>, IRefreshAware
 	{
+		[CascadingParameter]
+		IRefreshContainer? Container
+		{
+			get => _container.Verify();
+			set
+			{
+				if (_container != value)
+				{
+					_container?.Remove.Execute(this);
+
+					_container = value;
+
+					_container?.Add.Execute(this);
+				}
+			}
+		}	IRefreshContainer? _container = default!;
+
+		public Task Get() => Reload();
+
+		protected override void OnParametersSet()
+		{
+			if (Container != null)
+			{
+				if (Visible && LoadData.HasDelegate && Data == null)
+				{
+					Visible = false;
+					InvokeAsync(Reload);
+				}
+				else
+				{
+					Visible = Data != null;
+				}
+			}
+			base.OnParametersSet();
+		}
+
 		public override void Dispose()
 		{
 			GC.SuppressFinalize(this);
+			Container = null;
 			InvokeAsync(Disposing);
 		}
 
@@ -46,20 +82,21 @@ namespace DragonSpark.Presentation.Components
 			{
 				await InvokeVoid("Radzen.removeMouseLeave", UniqueID);
 
-				var columns = GetType()
-				              .GetField("columns")
-				              .Verify()
-				              .GetValue(this)
-				              .Verify()
-				              .To<List<RadzenGridColumn<T>>>();
-
-				var id = $"popup{UniqueID}";
+				var columns = ColumnsField.Default.Get(this);
+				var id      = $"popup{UniqueID}";
 
 				foreach (var column in columns.Where(c => c.Visible))
 				{
 					await InvokeVoid("Radzen.destroyPopup", id + column.GetFilterProperty());
 				}
 			}
+		}
+
+		sealed class ColumnsField : FieldAccessor<DataGrid<T>, List<RadzenGridColumn<T>>>
+		{
+			public static ColumnsField Default { get; } = new();
+
+			ColumnsField() : base("columns") {}
 		}
 	}
 }
