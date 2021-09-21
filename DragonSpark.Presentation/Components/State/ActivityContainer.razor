@@ -33,18 +33,10 @@
 
 	object ActualReceiver => Receiver ?? this;
 
-	protected override void OnParametersSet()
-	{
-		Update();
-
-		base.OnParametersSet();
-	}
-
-	// ReSharper disable once FlagArgument
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		Allowed = true;
-		if (!firstRender && Restore)
+		Allowed |= true;
+		if (Restore)
 		{
 			Restore = false;
 			await Focus.RestoreStoredElementFocusAsync();
