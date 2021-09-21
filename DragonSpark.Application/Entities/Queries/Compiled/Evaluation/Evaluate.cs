@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public async ValueTask<TResult> Get(TIn parameter)
 		{
 			using var invocation = await _invoke.Await(parameter);
-			var       result     = await _evaluate.Get(invocation.Elements);
+			var       result     = await _evaluate.Await(invocation.Elements);
 			return result;
 		}
 	}

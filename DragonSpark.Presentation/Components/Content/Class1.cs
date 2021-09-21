@@ -134,38 +134,6 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
-	/*
-	sealed class DataReferences<T> : DecoratedTable<IPaging<T>, IRadzenPaging<T>>, ICommand
-	{
-		readonly IMutable<int?>                            _variable;
-		readonly IDictionary<IPaging<T>, IRadzenPaging<T>> _store;
-
-		public DataReferences(bool count) : this(count, new Variable<int?>()) {}
-
-		public DataReferences(bool count, IMutable<int?> store)
-			: this(store, new ConcurrentDictionary<IPaging<T>, IRadzenPaging<T>>(),
-			       x => new ValidatedRadzenPaging<T>(new RadzenPaging<T>(x, count), store)) {}
-
-		public DataReferences(IMutable<int?> variable, ConcurrentDictionary<IPaging<T>, IRadzenPaging<T>> store,
-		                      Func<IPaging<T>, IRadzenPaging<T>> factory)
-			: this(variable, store, factory.ToConcurrentTable(store)) {}
-
-		public DataReferences(IMutable<int?> variable, IDictionary<IPaging<T>, IRadzenPaging<T>> store,
-		                      ITable<IPaging<T>, IRadzenPaging<T>> table)
-			: base(table)
-		{
-			_variable = variable;
-			_store    = store;
-		}
-
-		public void Execute(None parameter)
-		{
-			_variable.Execute(null);
-			_store.Clear();
-		}
-	}
-	*/
-
 	sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 	{
 		readonly IActiveContents<T>           _previous;
@@ -191,7 +159,7 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
-	sealed class PreRenderActiveContent<T> : Validated<ValueTask<T>>, IActiveContent<T>
+	sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveContent<T>
 	{
 		public PreRenderActiveContent(ICondition condition, IActiveContent<T> memory, IActiveContent<T> previous)
 			: base(condition, memory, previous) {}
@@ -305,7 +273,7 @@ namespace DragonSpark.Presentation.Components.Content
 		}
 	}
 
-	sealed class MemoryAwareActiveContent<T> : Resulting<T>, IActiveContent<T>
+	sealed class MemoryAwareActiveContent<T> : Resulting<T?>, IActiveContent<T>
 	{
 		public MemoryAwareActiveContent(IActiveContent<T> previous, IMemoryCache memory, string key)
 			: base(previous.Then()

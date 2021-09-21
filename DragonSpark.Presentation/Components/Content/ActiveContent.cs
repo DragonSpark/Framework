@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public class ActiveContent<T> : IActiveContent<T>
+	sealed class ActiveContent<T> : IActiveContent<T>
 	{
 		readonly Func<ValueTask<T>>       _content;
 		readonly IMutable<ValueTuple<T>?> _store;
@@ -17,16 +17,12 @@ namespace DragonSpark.Presentation.Components.Content
 			_content = content;
 		}
 
-		public override string? ToString() => _store.Get()?.Item1?.ToString();
-
-		public bool HasValue => _store.Get().HasValue;
-
-		public async ValueTask<T> Get()
+		public async ValueTask<T?> Get()
 		{
 			var store = _store.Get();
 			if (store is null)
 			{
-				var result = await _content();
+				var result = await _content().ConfigureAwait(false);
 				_store.Execute(ValueTuple.Create(result));
 				return result;
 			}

@@ -61,6 +61,8 @@ else
 		Loaded |= Current is { IsCompletedSuccessfully: true };
 	}
 
+	protected override Task OnParametersSetAsync() => Current ?? base.OnParametersSetAsync();
+
 	void Report(Task parameter)
 	{
 		Current = parameter;

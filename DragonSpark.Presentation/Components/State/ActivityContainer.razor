@@ -3,9 +3,12 @@
 @using System.Diagnostics
 @using DragonSpark.Compose
 
-@inject IFocusHandler Focus
+@inherits DragonSpark.Presentation.Components.ComponentBase
 
 @implements IActivityReceiver
+@implements IAsyncDisposable
+
+@inject IFocusHandler Focus
 
 <div class="@(Active ? ActiveStyle : null)">
 	<fieldset disabled="@Active">
@@ -64,22 +67,30 @@
 	{
 		if (Allowed)
 		{
-			await Focus.StoreFocusedElementAsync();
+			await Focus.StoreFocusedElementAsync().ConfigureAwait(false);
 		}
-
 		if (Update())
 		{
-			StateHasChanged();
+			await RefreshState().ConfigureAwait(false);
 		}
 	}
 
-	public ValueTask Complete()
+	public async ValueTask Complete()
 	{
 		Restore = Update();
 		if (Restore)
 		{
-			StateHasChanged();
+			await RefreshState().ConfigureAwait(false);
 		}
-		return Task.CompletedTask.ToOperation();
 	}
+
+	public async ValueTask DisposeAsync()
+	{
+		try
+		{
+			await Focus.DisposeAsync().ConfigureAwait(false);
+		}
+		catch (JSDisconnectedException) {}
+	}
+
 }

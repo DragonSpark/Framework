@@ -1,6 +1,10 @@
 ﻿@using DragonSpark.Model.Selection
 @using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Application
 @typeparam TValue
+
+@inherits DragonSpark.Presentation.Components.Content.ActiveContentTemplateComponentBase<TValue>
 
 <ActivityContainer Context="receiver">
 	<ActiveContentView Content="@Contents.Get(receiver)"
@@ -29,18 +33,6 @@
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;
-
-	[Parameter]
-	public RenderFragment<TValue> ChildContent { get; set; } = default!;
-
-	[Parameter]
-	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-	[Parameter]
-	public RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
-
-	[Parameter]
-	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

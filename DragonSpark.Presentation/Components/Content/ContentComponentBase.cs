@@ -23,6 +23,12 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected abstract ValueTask<T> GetContent();
 
+		protected override void OnInitialized()
+		{
+			Apply();
+			base.OnInitialized();
+		}
+
 		protected override void OnParametersSet()
 		{
 			base.OnParametersSet();

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Presentation.Components.Content;
+﻿using DragonSpark.Presentation.Components.Content;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace DragonSpark.Presentation.Components
 		[CascadingParameter]
 		IRefreshContainer? Container
 		{
-			get => _container.Verify();
+			get => _container;
 			set
 			{
 				if (_container != value)

@@ -9,20 +9,13 @@
 {
 	@NotAssignedTemplate
 }
-else if (Subject is {IsCompleted: true})
+else if (Subject is { IsFaulted : true })
 {
-	if (Subject.IsCompletedSuccessfully)
-	{
-		<ContentView Content="@Subject.Result" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
-	}
-	else if (Subject.IsFaulted)
-	{
-		@ExceptionTemplate
-	}
+	@ExceptionTemplate
 }
-else if (Rendered is not null)
+else if (Fragment != null)
 {
-	@Rendered
+	@Fragment
 }
 else
 {
@@ -40,33 +33,42 @@ else
 			if (_content != value && value is not null)
 			{
 				_content = value;
-				if (Subject is {IsFaulted: true})
-				{
-					Rendered = null;
-				}
+				Loaded = false;
 				Subject = null;
 			}
 		}
 	}	IResulting<T?>? _content;
 
+	RenderFragment? Fragment { get; set; }
+
 	Task<T?>? Subject { get; set; }
 
-	RenderFragment? Rendered { get; set; }
+	bool Loaded
+	{
+		get => _loaded;
+		set
+		{
+			if (_loaded != value)
+			{
+				_loaded = value;
+				if (value)
+				{
+					var result = Subject.Verify().Result;
+					Fragment = result != null ? ChildContent(result) : NotAssignedTemplate;
+					StateHasChanged();
+				}
+			}
+		}
+	}	bool _loaded;
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
 		Subject ??= DetermineSubject();
+		Update();
 	}
 
-	protected override void OnAfterRender(bool firstRender)
-	{
-		base.OnAfterRender(firstRender);
-		/*if (Rendered == null && (Subject?.IsCompletedSuccessfully ?? false) && Subject.Result is not null)
-		{
-			Rendered = ChildContent(Subject.Result);
-		}*/
-	}
+	 protected override Task OnParametersSetAsync() => Subject ?? base.OnParametersSetAsync();
 
 	Task<T?> DetermineSubject()
 	{
@@ -74,4 +76,16 @@ else
 		var result = content.Get().AsTask();
 		return result;
 	}
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+		Update();
+	}
+
+	void Update()
+	{
+		Loaded |= Subject is { IsCompletedSuccessfully: true };
+	}
+
 }

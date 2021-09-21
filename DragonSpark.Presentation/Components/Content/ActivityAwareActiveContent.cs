@@ -3,11 +3,11 @@ using DragonSpark.Presentation.Components.State;
 
 namespace DragonSpark.Presentation.Components.Content
 {
-	public sealed class ActivityAwareActiveContent<T> : Resulting<T>, IActiveContent<T>
+	public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveContent<T>
 	{
 		public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver)
-			: this(new ActivityAwareResulting<T>(previous, receiver)) {}
+			: this(new ActivityAwareResult<T>(previous, receiver)) {}
 
-		public ActivityAwareActiveContent(IResulting<T> resulting) : base(resulting) {}
+		public ActivityAwareActiveContent(IResulting<T?> resulting) : base(resulting) {}
 	}
 }

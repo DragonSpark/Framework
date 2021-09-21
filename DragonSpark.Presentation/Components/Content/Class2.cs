@@ -19,14 +19,14 @@ namespace DragonSpark.Presentation.Components.Content
 
 		protected AnyAwareSelect(ISelecting<TIn, TOut> previous, Await<TIn, bool> any, TOut @default)
 		{
-			_previous     = previous;
-			_any          = any;
-			_default = @default;
+			_previous = previous;
+			_any      = any;
+			_default  = @default;
 		}
 
 		public async ValueTask<TOut> Get(TIn parameter)
 		{
-			var any     = await _any(parameter);
+			var any    = await _any(parameter);
 			var result = any ? await _previous.Await(parameter) : _default;
 			return result;
 		}
@@ -53,7 +53,7 @@ namespace DragonSpark.Presentation.Components.Content
 
 			public async ValueTask<bool> Get(IQueries<T> parameter)
 			{
-				using var query  = await parameter.Get();
+				using var query  = await parameter.Await();
 				var       result = await _any.Await(query.Subject);
 				return result;
 			}

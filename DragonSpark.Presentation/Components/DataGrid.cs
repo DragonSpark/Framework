@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Presentation.Components.Content;
+﻿using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Reflection.Members;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -20,7 +19,7 @@ namespace DragonSpark.Presentation.Components
 		[CascadingParameter]
 		IRefreshContainer? Container
 		{
-			get => _container.Verify();
+			get => _container;
 			set
 			{
 				if (_container != value)

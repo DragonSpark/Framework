@@ -64,7 +64,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var invoke   = new Invoke<None, Subject>(new Invocations<Context>(contexts), Query.Default);
 			{
 				using var invocation = await invoke.Get(None.Default);
-				var             elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
+				var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
 				elements.Should().HaveCount(2);
 				elements.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -88,8 +88,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory));
 			{
-				var results  = await evaluate.Await();
-				var open = results.Open();
+				var results = await evaluate.Await();
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -113,8 +113,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory), Complex.Default);
 			{
-				var results  = await evaluate.Await();
-				var open = results.Open();
+				var results = await evaluate.Await();
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -138,8 +138,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var evaluate = new SubjectsNotWithParameter(new Contexts<Context>(factory));
 			{
-				var results  = await evaluate.Await("One");
-				var open = results.Open();
+				var results = await evaluate.Await("One");
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 			}
@@ -147,8 +147,8 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(2);
 
 			{
-				var results  = await evaluate.Await("Two");
-				var open = results.Open();
+				var results = await evaluate.Await("Two");
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
@@ -169,15 +169,15 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			var parameter = new SubjectsNotWithParameter(factory);
 			{
-				var results  = await parameter.Await("One");
-				var open = results.Open();
+				var results = await parameter.Await("One");
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 			}
 
 			{
-				var results  = await parameter.Await("Two");
-				var open = results.Open();
+				var results = await parameter.Await("Two");
+				var open    = results.Open();
 				open.Should().HaveCount(2);
 				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 			}
