@@ -28,7 +28,7 @@ namespace DragonSpark.Composition.Compose
 			_leases     = leases;
 		}
 
-		public Lease<Type> Get(Type parameter)
+		public Model.Sequences.Memory.Lease<Type> Get(Type parameter)
 		{
 			var types       = _candidates.Get(parameter).Open();
 			var result      = _leases.Get(types.Length);

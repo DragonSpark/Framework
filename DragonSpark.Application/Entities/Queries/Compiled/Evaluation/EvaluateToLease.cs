@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Model;
-using DragonSpark.Model.Sequences.Memory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToLease(IInvoke<None, T> invoke) : base(invoke) {}
 	}
 
-	public class EvaluateToLease<TIn, T> : Evaluate<TIn, T, Lease<T>>
+	public class EvaluateToLease<TIn, T> : Evaluate<TIn, T, DragonSpark.Model.Sequences.Memory.Lease<T>>
 	{
 		/*public EvaluateToLease(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
 

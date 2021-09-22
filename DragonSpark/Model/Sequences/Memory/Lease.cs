@@ -1,5 +1,5 @@
-﻿using NetFabric.Hyperlinq;
-using System;
+﻿using System;
+using System.Buffers;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
@@ -7,16 +7,16 @@ namespace DragonSpark.Model.Sequences.Memory
 	{
 		public static implicit operator Memory<T>(Lease<T> instance) => instance.AsMemory();
 
-		public static Lease<T> Default { get; } = new(new ValueMemoryOwner<T>(), Memory<T>.Empty, 0);
+		public static Lease<T> Default { get; } = new(EmptyOwner<T>.Default, Memory<T>.Empty, 0);
 
-		readonly ValueMemoryOwner<T> _owner;
-		readonly Memory<T>           _reference;
+		readonly IMemoryOwner<T> _owner;
+		readonly Memory<T>       _reference;
 
-		public Lease(ValueMemoryOwner<T> owner) : this(owner, (uint)owner.Memory.Length) {}
+		public Lease(IMemoryOwner<T> owner) : this(owner, (uint)owner.Memory.Length) {}
 
-		public Lease(ValueMemoryOwner<T> owner, uint length) : this(owner, owner.Memory, length) {}
+		public Lease(IMemoryOwner<T> owner, uint length) : this(owner, owner.Memory, length) {}
 
-		public Lease(ValueMemoryOwner<T> owner, Memory<T> reference, uint length)
+		public Lease(IMemoryOwner<T> owner, Memory<T> reference, uint length)
 		{
 			_owner     = owner;
 			_reference = reference;

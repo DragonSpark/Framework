@@ -15,7 +15,7 @@
     <PackageReference Include="AsyncUtilities" Version="1.0.1" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.1.21415.6" />
-    <PackageReference Include="NetFabric.Hyperlinq" Version="3.0.1-beta45" />
+    <PackageReference Include="NetFabric.Hyperlinq" Version="3.0.0-beta46" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0-rc.1.21415.6" />
     <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
     <PackageReference Include="Polly" Version="7.2.2" />

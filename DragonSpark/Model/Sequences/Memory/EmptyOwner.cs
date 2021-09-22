@@ -7,7 +7,7 @@ namespace DragonSpark.Model.Sequences.Memory
 	{
 		public static EmptyOwner<T> Default { get; } = new EmptyOwner<T>();
 
-		EmptyOwner() : this(new(Empty.Array<T>())) {}
+		EmptyOwner() : this(Memory<T>.Empty) {}
 
 		public EmptyOwner(Memory<T> memory) => Memory = memory;
 
