@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components
 {
-	public class DataList<T> : RadzenDataList<T>, IRefreshAware
+	public class DropDownGrid<T> : RadzenDropDownDataGrid<T>, IRefreshAware
 	{
 		[CascadingParameter]
 		IRefreshContainer? Container
@@ -41,7 +41,11 @@ namespace DragonSpark.Presentation.Components
 			base.OnParametersSet();
 		}
 
-		public Task Get() => Reload();
+		public Task Get()
+		{
+			Reload(); // ISSUE: Asynchronize
+			return Task.CompletedTask;
+		}
 
 		public override void Dispose()
 		{
