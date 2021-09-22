@@ -33,7 +33,7 @@ namespace DragonSpark.Presentation.Components.Content.Sequences
 				IncludeTotalCount = _includeCount,
 			};
 
-			await Task.Delay(1500);
+			/*await Task.Delay(1500);*/
 
 			var evaluate = await _paging.Await(input);
 			Current = evaluate;
