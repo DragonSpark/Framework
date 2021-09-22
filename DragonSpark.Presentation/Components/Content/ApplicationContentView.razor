@@ -7,13 +7,13 @@
 @inherits DragonSpark.Presentation.Components.Content.ActiveContentTemplateComponentBase<TValue>
 
 <ActivityContainer Context="receiver">
-	<ActiveContentView Content="@Contents.Get(receiver)"
-					   ChildContent="@ChildContent"
-					   LoadingTemplate="@LoadingTemplate"
-					   NotAssignedTemplate="@NotAssignedTemplate"
-					   ExceptionTemplate="@ExceptionTemplate"
-					   ReportedType="@ReportedType"
-					   />
+	<ReportingContentView Content="@Contents.Get(receiver)"
+		ChildContent="@ChildContent"
+		LoadingTemplate="@LoadingTemplate"
+		NotAssignedTemplate="@NotAssignedTemplate"
+		ExceptionTemplate="@ExceptionTemplate"
+		ReportedType="@ReportedType"
+		/>
 </ActivityContainer>
 
 @code

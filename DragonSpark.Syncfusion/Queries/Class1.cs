@@ -67,7 +67,12 @@ namespace DragonSpark.Syncfusion.Queries
 			};
 	}
 
-	public sealed class DataRequests<T> : ReferenceValueStore<IPaging<T>, IDataRequest>
+	public interface IDataRequests<T> : ISelect<IPaging<T>, IDataRequest>
+	{
+		
+	}
+
+	public sealed class DataRequests<T> : ReferenceValueStore<IPaging<T>, IDataRequest>, IDataRequests<T>
 	{
 		public static DataRequests<T> Default { get; } = new DataRequests<T>();
 

@@ -4,6 +4,8 @@
 
 @typeparam T
 
+@inherits ManyActiveContentTemplateComponentBase<IDataRequest>
+
 <QueryContentContainer
 	Content="@Content"
 	Compose="@Compose"
@@ -13,7 +15,7 @@
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 >
-	@ChildContent(DataRequests<T>.Default.Get(context))
+	@ChildContent(Requests.Get(context))
 </QueryContentContainer>
 
 @code {
@@ -22,27 +24,11 @@
 	public IQueries<T>? Content { get; set; }
 
 	[Parameter]
-	public bool IncludeCount { get; set; } = true;
-
-	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
 	[Parameter]
 	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
 	[Parameter]
-	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-	[Parameter]
-	public RenderFragment<IDataRequest> ChildContent { get; set; } = default!;
-
-	[Parameter]
-	public RenderFragment? NoElementsFoundTemplate { get; set; }
-
-	[Parameter]
-	public RenderFragment NotAssignedTemplate { get; set; }
-		= @<p>No instance was found for this view's content.</p> ;
-
-	[Parameter]
-	public RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
 }

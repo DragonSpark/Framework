@@ -10,8 +10,7 @@
 
 @inherits ManyActiveContentTemplateComponentBase<IPaging<T>>
 
-<OperationContentContainer
-	Content="@Subject"
+<ResultingContentView Content="@Subject"
 	LoadingTemplate="@LoadingTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
@@ -24,7 +23,7 @@
 	{
 		@NoElementsFoundTemplate
 	}
-</OperationContentContainer>
+</ResultingContentView>
 
 @code
 {

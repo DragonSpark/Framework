@@ -13,7 +13,7 @@
 }
 else if (Current is null || Loaded)
 {
-	<ContentView Content="@Subject" ChildContent="@ChildContent" NotFoundTemplate="@NotAssignedTemplate" />
+	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotAssignedTemplate" />
 }
 else
 {

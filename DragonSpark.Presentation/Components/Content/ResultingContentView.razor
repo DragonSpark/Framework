@@ -54,7 +54,7 @@ else
 				if (value)
 				{
 					var result = Subject.Verify().Result;
-					Fragment = result != null ? ChildContent(result) : NotAssignedTemplate;
+					Fragment = result is not null ? ChildContent(result) : NotAssignedTemplate;
 					StateHasChanged();
 				}
 			}

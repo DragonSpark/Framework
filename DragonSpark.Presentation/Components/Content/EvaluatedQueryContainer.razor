@@ -1,8 +1,25 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+
 @typeparam T
 
-@Fragment
+@inherits ManyActiveContentTemplateComponentBase<Current<T>>
+
+<ResultingContentView Content="@Subject"
+					  LoadingTemplate="@LoadingTemplate"
+					  NotAssignedTemplate="@NotAssignedTemplate"
+					  ExceptionTemplate="@ExceptionTemplate"
+>
+	@if (context.Count > 0)
+	{
+		@ChildContent(context)
+	}
+	else
+	{
+		@NoElementsFoundTemplate
+	}
+</ResultingContentView>
 
 @code {
 
@@ -15,10 +32,9 @@
 			if (_input != value)
 			{
 				_input = value;
-				Fragment = null;
+				Subject = null;
 			}
 		}
-
 	}
 
 	[Parameter]
@@ -30,7 +46,7 @@
 			if (_includeTotalCount != value)
 			{
 				_includeTotalCount = value;
-				Fragment = null;
+				Subject = null;
 			}
 		}
 	}
@@ -44,7 +60,7 @@
 			if (_orderBy != value)
 			{
 				_orderBy = value;
-				Fragment = null;
+				Subject = null;
 			}
 		}
 	}
@@ -58,7 +74,7 @@
 			if (_filter != value)
 			{
 				_filter = value;
-				Fragment = null;
+				Subject = null;
 			}
 		}
 	}
@@ -72,40 +88,34 @@
 			if (_partition != value)
 			{
 				_partition = value;
-				Fragment = null;
+				Subject = null;
 			}
 		}
-
 	}
 
-	RenderFragment? Fragment { get; set; }
+	[Parameter]
+	public override RenderFragment? NoElementsFoundTemplate { get; set; } = @<p>No elements found for this view's content.</p>;
 
-	protected override async Task OnParametersSetAsync()
+	IResulting<Current<T>>? Subject { get; set; }
+
+	protected override void OnParametersSet()
 	{
-		Fragment ??= await DetermineFragment();
+		base.OnParametersSet();
+		Subject ??= DetermineSubject();
 	}
 
-	async ValueTask<RenderFragment> DetermineFragment()
+	IResulting<Current<T>> DetermineSubject()
 	{
-		Fragment = LoadingTemplate; // Account for re-entry
-		var queryInput = new QueryInput
+		var input = new QueryInput
 		{
 			Filter = Filter, OrderBy = OrderBy, IncludeTotalCount = IncludeTotalCount, Partition = Partition
 		};
-		var current = await Input.Await(queryInput);
-		var result = ChildContent(current);
+		var result = Input.Then().Bind(input).Out();
 		return result;
 	}
 
-	[Parameter]
-	public RenderFragment<Current<T>> ChildContent { get; set; } = default!;
-
-	[Parameter]
-	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
 	IPaging<T> _input = default!;
 	bool _includeTotalCount;
-	string? _orderBy;
-	string? _filter;
+	string? _orderBy, _filter;
 	Partition? _partition;
 }
