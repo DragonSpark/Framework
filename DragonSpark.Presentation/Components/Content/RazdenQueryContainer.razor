@@ -12,27 +12,29 @@
 
 @inherits ManyActiveContentTemplateComponentBase<IRadzenPaging<T>>
 
-<QueryContentContainer
-	Content="@Content"
-	Compose="@Compose"
-	Pagers="@Pagers"
-	LoadingTemplate="@LoadingTemplate"
-	EmptyElementsTemplate="@EmptyElementsTemplate"
-	NotAssignedTemplate="@NotAssignedTemplate"
-	ExceptionTemplate="@ExceptionTemplate"
-	ReportedType="@ReportedType"
->
-	<RefreshContainer Topic="@Content">
-		<RadzenPagingContainer
-			Content="@context"
-			ChildContent="@ChildContent"
-			LoadingTemplate="@LoadingTemplate"
-			NotAssignedTemplate="@NotAssignedTemplate"
-			ExceptionTemplate="@ExceptionTemplate"
-			IncludeCount="@IncludeCount"
-		/>
-	</RefreshContainer>
-</QueryContentContainer>
+<div>
+	<QueryContentContainer
+		Content="@Content"
+		Compose="@Compose"
+		Pagers="@Pagers"
+		LoadingTemplate="@LoadingTemplate"
+		EmptyElementsTemplate="@EmptyElementsTemplate"
+		NotFoundTemplate="@NotFoundTemplate"
+		ExceptionTemplate="@ExceptionTemplate"
+		ReportedType="@ReportedType"
+	>
+		<RefreshContainer Topic="@Content">
+			<RadzenPagingContainer
+				Content="@context"
+				ChildContent="@ChildContent"
+				LoadingTemplate="@LoadingTemplate"
+				NotFoundTemplate="@NotFoundTemplate"
+				ExceptionTemplate="@ExceptionTemplate"
+				IncludeCount="@IncludeCount"
+			/>
+		</RefreshContainer>
+	</QueryContentContainer>
+</div>
 
 @code {
 	[Parameter]

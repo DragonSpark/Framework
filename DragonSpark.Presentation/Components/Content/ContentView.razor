@@ -1,7 +1,7 @@
 ﻿
 @typeparam TValue
 
-@inherits DragonSpark.Presentation.Components.ComponentBase
+@inherits ContentTemplateComponentBase<TValue>
 
 @if (Content is not null)
 {
@@ -12,14 +12,8 @@ else
 	@NotFoundTemplate
 }
 
-@code {
-
+@code
+{
 	[Parameter]
 	public TValue? Content { get; set; }
-
-	[Parameter]
-	public RenderFragment<TValue> ChildContent { get; set; } = default!;
-
-	[Parameter]
-	public RenderFragment NotFoundTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
 }

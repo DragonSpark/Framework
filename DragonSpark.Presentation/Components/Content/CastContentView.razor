@@ -5,7 +5,7 @@
 
 @if (Content is null)
 {
-	@NotAssignedTemplate
+	@NotFoundTemplate
 }
 else if (Content is TContent content)
 {
@@ -24,5 +24,5 @@ else
 	public RenderFragment NotCompatibleTemplate { get; set; } = x => x.AddContent(0, "The provided content is not compatible with this view.");
 
 	[Parameter]
-	public override RenderFragment NotAssignedTemplate { get; set; } = NotFoundTemplate.Default;
+	public override RenderFragment NotFoundTemplate { get; set; } = Components.Content.NotFoundTemplate.Default;
 }

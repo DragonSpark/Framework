@@ -2,7 +2,7 @@
 
 @inherits ManyContentTemplateComponentBase<ICollection<TItem>>
 
-<ContentView TValue="ICollection<TItem>" Content="Content" NotFoundTemplate="@NotAssignedTemplate">
+<ContentView TValue="ICollection<TItem>" Content="Content" NotFoundTemplate="@NotFoundTemplate">
 	@if (context.Count > 0)
 	{
 		@ChildContent(context)

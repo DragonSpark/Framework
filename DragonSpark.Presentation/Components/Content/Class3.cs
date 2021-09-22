@@ -31,7 +31,7 @@ namespace DragonSpark.Presentation.Components.Content
 		public virtual RenderFragment<T> ChildContent { get; set; } = default!;
 
 		[Parameter]
-		public virtual RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
+		public virtual RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;
 	}
 
 	public class ManyContentTemplateComponentBase<T> : ActiveContentTemplateComponentBase<T>

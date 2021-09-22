@@ -7,7 +7,7 @@
 
 @if (Subject is null)
 {
-	@NotAssignedTemplate
+	@NotFoundTemplate
 }
 else if (Subject is { IsFaulted : true })
 {
@@ -54,7 +54,7 @@ else
 				if (value)
 				{
 					var result = Subject.Verify().Result;
-					Fragment = result is not null ? ChildContent(result) : NotAssignedTemplate;
+					Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
 					StateHasChanged();
 				}
 			}
