@@ -10,10 +10,11 @@
 
 @inherits ManyActiveContentTemplateComponentBase<IPaging<T>>
 
-<ResultingContentView Content="@Subject"
+<ReportingContentView Content="@Subject"
 	LoadingTemplate="@LoadingTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
+	ReportedType="@ReportedType"
 >
 	@if (context != EmptyPaging<T>.Default)
 	{
@@ -21,9 +22,9 @@
 	}
 	else
 	{
-		@NoElementsFoundTemplate
+		@EmptyElementsTemplate
 	}
-</ResultingContentView>
+</ReportingContentView>
 
 @code
 {
@@ -84,13 +85,12 @@
 	{
 		if (Content != null)
 		{
-			var selector = NoElementsFoundTemplate == null ? Pagers.Then().Operation().Out() : new Pagings<T>(Pagers);
-			var result = selector.Then()
-			                     .AccountOut()
-								 .Bind(new PagingInput<T>(Content, Compose))
-								 .Then()
-								 .Handle(Exceptions, ReportedType ?? GetType())
-								 .Out();
+			var result = new Pagings<T>(Pagers).Then()
+			                                   .AccountOut()
+			                                   .Bind(new PagingInput<T>(Content, Compose))
+			                                   .Then()
+			                                   .Handle(Exceptions, ReportedType ?? GetType())
+			                                   .Out();
 			return result;
 		}
 

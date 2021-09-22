@@ -17,7 +17,7 @@
 	}
 	else
 	{
-		@NoElementsFoundTemplate
+		@EmptyElementsTemplate
 	}
 </ResultingContentView>
 
@@ -92,9 +92,6 @@
 			}
 		}
 	}
-
-	[Parameter]
-	public override RenderFragment? NoElementsFoundTemplate { get; set; } = @<p>No elements found for this view's content.</p>;
 
 	IResulting<Current<T>>? Subject { get; set; }
 

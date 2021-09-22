@@ -11,9 +11,10 @@
 	Compose="@Compose"
 	Pagers="@Pagers"
 	LoadingTemplate="@LoadingTemplate"
-	NoElementsFoundTemplate="@NoElementsFoundTemplate"
+	EmptyElementsTemplate="@EmptyElementsTemplate"
 	NotAssignedTemplate="@NotAssignedTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
+	ReportedType="@ReportedType"
 >
 	@ChildContent(Requests.Get(context))
 </QueryContentContainer>
@@ -31,4 +32,7 @@
 
 	[Parameter]
 	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
 }

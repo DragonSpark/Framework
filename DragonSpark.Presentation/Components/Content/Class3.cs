@@ -12,13 +12,17 @@ namespace DragonSpark.Presentation.Components.Content
 	public class ManyActiveContentTemplateComponentBase<T> : ActiveContentTemplateComponentBase<T>
 	{
 		[Parameter]
-		public virtual RenderFragment? NoElementsFoundTemplate { get; set; }
+		public virtual RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 	}
 
 	public class ActiveContentTemplateComponentBase<T> : ContentTemplateComponentBase<T>
 	{
 		[Parameter]
 		public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+		[Parameter]
+		public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+
 	}
 
 	public class ContentTemplateComponentBase<T> : ComponentBase
@@ -28,9 +32,12 @@ namespace DragonSpark.Presentation.Components.Content
 
 		[Parameter]
 		public virtual RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
+	}
 
+	public class ManyContentTemplateComponentBase<T> : ActiveContentTemplateComponentBase<T>
+	{
 		[Parameter]
-		public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+		public virtual RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 	}
 
 	public class ReportedRadzenPaging<T> : ReportedAllocated<LoadDataArgs>, IRadzenPaging<T>

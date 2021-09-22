@@ -1,46 +1,19 @@
 ﻿@typeparam TItem
 
-@Fragment
+@inherits ManyContentTemplateComponentBase<ICollection<TItem>>
+
+<ContentView TValue="ICollection<TItem>" Content="Content" NotFoundTemplate="@NotAssignedTemplate">
+	@if (context.Count > 0)
+	{
+		@ChildContent(context)
+	}
+	else
+	{
+		@EmptyElementsTemplate
+	}
+</ContentView>
 
 @code {
-    [Parameter]
-    public ICollection<TItem>? Content
-    {
-        get => _content;
-        set
-        {
-            if (!Equals(_content, value))
-            {
-                Fragment = null;
-                _content = value;
-            }
-        }
-    }
-
-    ICollection<TItem>? _content;
-
-    [Parameter]
-    public RenderFragment<ICollection<TItem>> ChildContent { get; set; } = default!;
-
-    [Parameter]
-    public RenderFragment NotAssignedTemplate { get; set; } = DefaultNotAssignedTemplate.Default;
-
-    [Parameter]
-    public RenderFragment EmptyTemplate { get; set; } = x => x.AddContent(2, "No elements found.");
-
-    RenderFragment? Fragment { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        Fragment ??= DetermineFragment();
-    }
-
-    RenderFragment DetermineFragment()
-    {
-        var result = Content != null ?
-                         Content.Count > 0
-                             ? ChildContent(Content) : EmptyTemplate
-                         : NotAssignedTemplate;
-        return result;
-    }
+	[Parameter]
+	public ICollection<TItem>? Content { get; set; }
 }

@@ -17,7 +17,7 @@
 {
 
 	[Parameter]
-	public IActiveContent<TValue>? Content
+	public IResulting<TValue?>? Content
 	{
 		get => _content;
 		set
@@ -28,7 +28,7 @@
 				Subject = null;
 			}
 		}
-	}	IActiveContent<TValue>? _content;
+	}	IResulting<TValue?>? _content;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
@@ -41,7 +41,7 @@
 		Subject ??= Content != null ? DetermineSubject(Content) : null;
 	}
 
-	IResulting<TValue?> DetermineSubject(IActiveContent<TValue> content)
+	IResulting<TValue?> DetermineSubject(IResulting<TValue?> content)
 		=> content.Then().Handle(Exceptions, ReportedType ?? GetType()).Out();
 
 }
