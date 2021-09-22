@@ -1,0 +1,28 @@
+﻿
+@typeparam TContent
+
+@inherits ContentTemplateComponentBase<TContent>
+
+@if (Content is null)
+{
+	@NotAssignedTemplate
+}
+else if (Content is TContent content)
+{
+	@ChildContent(content)
+}
+else
+{
+	@NotCompatibleTemplate
+}
+
+@code {
+	[Parameter]
+	public object? Content { get; set; }
+
+	[Parameter]
+	public RenderFragment NotCompatibleTemplate { get; set; } = x => x.AddContent(0, "The provided content is not compatible with this view.");
+
+	[Parameter]
+	public override RenderFragment NotAssignedTemplate { get; set; } = NotFoundTemplate.Default;
+}
