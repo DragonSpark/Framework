@@ -1,6 +1,6 @@
 ﻿@typeparam TItem
 
-@inherits ManyContentTemplateComponentBase<ICollection<TItem>>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyContentTemplateComponentBase<ICollection<TItem>>
 
 <ContentView TValue="ICollection<TItem>" Content="Content" NotFoundTemplate="@NotFoundTemplate">
 	@if (context.Count > 0)

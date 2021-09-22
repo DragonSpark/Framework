@@ -1,7 +1,7 @@
 ﻿
 @typeparam TContent
 
-@inherits ContentTemplateComponentBase<TContent>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ContentTemplateComponentBase<TContent>
 
 @if (Content is null)
 {
@@ -24,5 +24,5 @@ else
 	public RenderFragment NotCompatibleTemplate { get; set; } = x => x.AddContent(0, "The provided content is not compatible with this view.");
 
 	[Parameter]
-	public override RenderFragment NotFoundTemplate { get; set; } = Components.Content.NotFoundTemplate.Default;
+	public override RenderFragment NotFoundTemplate { get; set; } = Templates.NotFoundTemplate.Default;
 }

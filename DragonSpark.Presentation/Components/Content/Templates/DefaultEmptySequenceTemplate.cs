@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Components.Content
+namespace DragonSpark.Presentation.Components.Content.Templates
 {
 	public sealed class DefaultEmptySequenceTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
 	{

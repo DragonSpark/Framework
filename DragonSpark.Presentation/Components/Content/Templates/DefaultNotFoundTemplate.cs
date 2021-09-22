@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Components.Content
+namespace DragonSpark.Presentation.Components.Content.Templates
 {
 	public sealed class DefaultNotFoundTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
 	{

@@ -2,10 +2,8 @@
 using DragonSpark.Model.Sequences.Collections;
 using System.Collections.Generic;
 
-namespace DragonSpark.Presentation.Components.Content
+namespace DragonSpark.Presentation.Components.State
 {
-	internal class Class4 {}
-
 	public interface IRefreshContainer : IMembership<IRefreshAware> {}
 
 	sealed class RefreshContainer : Membership<IRefreshAware>, IRefreshContainer

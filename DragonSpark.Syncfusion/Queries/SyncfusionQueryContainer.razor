@@ -1,10 +1,11 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Presentation.Components.Content
+@using DragonSpark.Presentation.Components.Content.Sequences
 
 @typeparam T
 
-@inherits ManyActiveContentTemplateComponentBase<IDataRequest>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
 
 <QueryContentContainer
 	Content="@Content"

@@ -2,6 +2,7 @@
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Presentation.Components.Content.Rendering;
 
 namespace DragonSpark.Presentation
 {
