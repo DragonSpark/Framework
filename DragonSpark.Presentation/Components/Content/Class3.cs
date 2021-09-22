@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using System;
@@ -28,7 +29,7 @@ namespace DragonSpark.Presentation.Components.Content
 	public class ContentTemplateComponentBase<T> : ComponentBase
 	{
 		[Parameter]
-		public virtual RenderFragment<T> ChildContent { get; set; } = default!;
+		public virtual RenderFragment<T> ChildContent { get; set; } = EmptyContentTemplate.Default.Get().Accept;
 
 		[Parameter]
 		public virtual RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;

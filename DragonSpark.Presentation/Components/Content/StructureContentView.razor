@@ -1,0 +1,19 @@
+﻿@typeparam TContent
+
+@inherits ContentTemplateComponentBase<TContent>
+
+@if (Content.HasValue)
+{
+	@ChildContent(Content.Value)
+
+}
+else
+{
+	@NotFoundTemplate
+}
+
+@code
+{
+	[Parameter]
+	public TContent? Content { get; set; }
+}
