@@ -46,16 +46,16 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
-	public class Adding<T, TTo> : IForming<T, TTo> where TTo : class
+	public class AddForming<T, TTo> : IForming<T, TTo> where TTo : class
 	{
 		readonly IForming<T, TTo> _select;
 		readonly IModify<TTo>     _add;
 
-		protected Adding(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
+		protected AddForming(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
 
-		protected Adding(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
+		protected AddForming(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
 
-		protected Adding(IForming<T, TTo> select, IModify<TTo> add)
+		protected AddForming(IForming<T, TTo> select, IModify<TTo> add)
 		{
 			_select = @select;
 			_add    = add;
