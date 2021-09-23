@@ -10,11 +10,36 @@ namespace DragonSpark.Presentation.Components.Interaction
 		where T : IInteractionResult
 	{
 		[Parameter]
-		public IInteractionResult Result { get; set; } = default!;
+		public IInteractionResult Result
+		{
+			get => _result;
+			set
+			{
+				if (_result != value)
+				{
+					_result = value;
+					Current = null;
+				}
+			}
+		}	IInteractionResult _result = NoActionResult.Default;
 
 		[Inject]
 		THandler Operation { get; set; } = default!;
 
-		protected override ValueTask Initialize() => Operation.Then().Adapt().Get(Result);
+		IInteractionResultHandler Subject { get; set; } = default!;
+
+		Task? Current { get; set; }
+
+		protected override void OnInitialized()
+		{
+			Subject = Operation.Then().Adapt();
+			base.OnInitialized();
+		}
+
+		protected override Task OnParametersSetAsync()
+		{
+			Current ??= Subject.Get(Result).AsTask();
+			return Current;
+		}
 	}
 }
