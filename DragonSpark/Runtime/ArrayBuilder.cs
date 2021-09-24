@@ -67,14 +67,14 @@ namespace DragonSpark.Runtime
 
 		public readonly Span<T> AsSpan() => buffer!.AsSpan(..Count);
 
-		public readonly Lease<T> AsLease()
+		public readonly Leasing<T> AsLease()
 		{
 			if (Count == 0)
 			{
-				return Lease<T>.Default;
+				return Leasing<T>.Default;
 			}
 
-			var result = Leases<T>.Default.Get((uint)Count);
+			var result = NewLeasing<T>.Default.Get((uint)Count);
 			AsSpan().CopyTo(result.AsSpan());
 			return result;
 		}

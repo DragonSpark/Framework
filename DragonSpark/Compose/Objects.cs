@@ -3,7 +3,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Runtime;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -27,18 +26,6 @@ namespace DragonSpark.Compose
 		{
 			action(@this.Item1, @this.Item2);
 			return @this;
-		}
-
-		public static T[] Lease<T>(this ArrayPool<T> @this, int count)
-		{
-			var result = @this.Rent(count);
-			var length = result.Length;
-			for (var i = 0u; i < length; i++)
-			{
-				result[i] = default!;
-			}
-
-			return result;
 		}
 
 		public static TOut Return<T, TOut>(this T _, TOut result) => result;

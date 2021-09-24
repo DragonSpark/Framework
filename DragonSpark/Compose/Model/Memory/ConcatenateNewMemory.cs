@@ -7,17 +7,17 @@ namespace DragonSpark.Compose.Model.Memory
 	{
 		public static ConcatenateNewMemory<T> Default { get; } = new();
 
-		ConcatenateNewMemory() : this(Leases<T>.Default) {}
+		ConcatenateNewMemory() : this(NewLeasing<T>.Default) {}
 
-		readonly ILeases<T> _leases;
+		readonly INewLeasing<T> _new;
 
-		public ConcatenateNewMemory(ILeases<T> leases) => _leases = leases;
+		public ConcatenateNewMemory(INewLeasing<T> @new) => _new = @new;
 
-		public Lease<T> Get((Memory<T> First, Memory<T> Second, uint size) parameter)
+		public Leasing<T> Get((Memory<T> First, Memory<T> Second, uint size) parameter)
 		{
 			var (first, second, size) = parameter;
 
-			var result      = _leases.Get(size);
+			var result      = _new.Get(size);
 			var destination = result.AsSpan();
 
 			var one = first.Span;

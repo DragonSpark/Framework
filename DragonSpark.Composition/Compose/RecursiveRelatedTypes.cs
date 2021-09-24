@@ -7,14 +7,14 @@ namespace DragonSpark.Composition.Compose
 	sealed class RecursiveRelatedTypes : IRelatedTypes
 	{
 		readonly IRelatedTypes _related;
-		readonly ILeases<Type> _leases;
+		readonly INewLeasing<Type> _new;
 
-		public RecursiveRelatedTypes(IRelatedTypes related) : this(related, Leases<Type>.Default) {}
+		public RecursiveRelatedTypes(IRelatedTypes related) : this(related, NewLeasing<Type>.Default) {}
 
-		public RecursiveRelatedTypes(IRelatedTypes related, ILeases<Type> leases)
+		public RecursiveRelatedTypes(IRelatedTypes related, INewLeasing<Type> @new)
 		{
 			_related = related;
-			_leases  = leases;
+			_new  = @new;
 		}
 
 		void Expand(HashSet<Type> state, Type current)
@@ -32,12 +32,12 @@ namespace DragonSpark.Composition.Compose
 			}
 		}
 
-		public Lease<Type> Get(Type parameter)
+		public Leasing<Type> Get(Type parameter)
 		{
 			var state = new HashSet<Type>();
 			Expand(state, parameter);
 			var count       = (uint)state.Count;
-			var lease       = _leases.Get(count);
+			var lease       = _new.Get(count);
 			var index       = 0;
 			var destination = lease.AsSpan();
 			foreach (var type in state)

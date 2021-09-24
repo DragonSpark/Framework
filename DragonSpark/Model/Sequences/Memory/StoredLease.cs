@@ -7,21 +7,21 @@ namespace DragonSpark.Model.Sequences.Memory
 	public readonly struct StoredLease<T> : IDisposable, IAsyncDisposable
 	{
 		public static implicit operator T[](StoredLease<T> source) => source.Store.Elements;
-		public static implicit operator Memory<T>(StoredLease<T> source) => source.Lease.AsMemory();
+		public static implicit operator Memory<T>(StoredLease<T> source) => source.Leasing.AsMemory();
 
-		public StoredLease(Lease<T> lease, Store<T> store)
+		public StoredLease(Leasing<T> memory, Store<T> store)
 		{
-			Lease = lease;
+			Leasing = memory;
 			Store = store;
 		}
 
-		public Lease<T> Lease { get; }
+		public Leasing<T> Leasing { get; }
 
 		public Store<T> Store { get; }
 
 		public void Dispose()
 		{
-			Lease.Dispose();
+			Leasing.Dispose();
 			Store.Dispose();
 		}
 

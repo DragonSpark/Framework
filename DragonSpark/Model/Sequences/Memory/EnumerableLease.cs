@@ -13,6 +13,6 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public EnumerableLease(ArrayPool<T> leases) => _leases   = leases;
 
-		public Lease<T> Get(EnumerableExtensions.ValueEnumerable<T> parameter) => new(parameter.ToArray(_leases));
+		public Leasing<T> Get(EnumerableExtensions.ValueEnumerable<T> parameter) => new(parameter.ToArray(_leases));
 	}
 }

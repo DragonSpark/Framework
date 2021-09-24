@@ -13,7 +13,7 @@ namespace DragonSpark.Compose.Model.Memory
 
 		public ConcatenateMemory(ConcatenateNewMemory<T> @new) => _new = @new;
 
-		public Lease<T> Get((Memory<T> First, Memory<T> Second) parameter)
+		public Leasing<T> Get((Memory<T> First, Memory<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 			var size   = (uint)(first.Length + second.Length);

@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-    sealed class ConcatenateLeases<T> : ISelect<(Lease<T> First, Memory<T> Second), Concatenation<T>>
+    sealed class ConcatenateLeases<T> : ISelect<(Leasing<T> First, Memory<T> Second), Concatenation<T>>
 	{
 		public static ConcatenateLeases<T> Default { get; } = new ConcatenateLeases<T>();
 
@@ -19,7 +19,7 @@ namespace DragonSpark.Compose.Model.Memory
 			_existing = existing;
 		}
 
-		public Concatenation<T> Get((Lease<T> First, Memory<T> Second) parameter)
+		public Concatenation<T> Get((Leasing<T> First, Memory<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 			var size   = (uint)(first.Length + second.Length);

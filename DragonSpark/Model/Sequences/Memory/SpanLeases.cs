@@ -13,7 +13,7 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public EnumerableListLease(ArrayPool<T> pool) => _pool = pool;
 
-		public Lease<T> Get(ArrayExtensions.ArraySegmentValueEnumerable<T> parameter) => new(parameter.ToArray(_pool));
+		public Leasing<T> Get(ArrayExtensions.ArraySegmentValueEnumerable<T> parameter) => new(parameter.ToArray(_pool));
 	}
 
 	sealed class SpanLeases<T>
@@ -26,6 +26,6 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public SpanLeases(ArrayPool<T> pool) => _pool = pool;
 
-		public Lease<T> Get(ArrayExtensions.SpanValueEnumerable<T> parameter) => new(parameter.ToArray(_pool));
+		public Leasing<T> Get(ArrayExtensions.SpanValueEnumerable<T> parameter) => new(parameter.ToArray(_pool));
 	}
 }

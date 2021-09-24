@@ -7,13 +7,13 @@ namespace DragonSpark.Composition.Compose
 	sealed class TypesRegistration : IRegistration
 	{
 		readonly IServiceCollection _services;
-		readonly Lease<Type>        _types;
+		readonly Leasing<Type>        _types;
 		readonly uint               _length;
 
-		public TypesRegistration(IServiceCollection services, Lease<Type> types)
+		public TypesRegistration(IServiceCollection services, Leasing<Type> types)
 			: this(services, types, types.Length) {}
 
-		public TypesRegistration(IServiceCollection services, Lease<Type> types, uint length)
+		public TypesRegistration(IServiceCollection services, Leasing<Type> types, uint length)
 		{
 			_services = services;
 			_types    = types;

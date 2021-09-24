@@ -2,19 +2,19 @@
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class OfType<T, TTo> : ILease<Lease<T>, TTo>
+	sealed class OfType<T, TTo> : ILease<Leasing<T>, TTo>
 	{
 		public static OfType<T, TTo> Default { get; } = new OfType<T, TTo>();
 
-		OfType() : this(Leases<TTo>.Default) {}
+		OfType() : this(NewLeasing<TTo>.Default) {}
 
-		readonly ILeases<TTo> _leases;
+		readonly INewLeasing<TTo> _new;
 
-		public OfType(ILeases<TTo> leases) => _leases = leases;
+		public OfType(INewLeasing<TTo> @new) => _new = @new;
 
-		public Lease<TTo> Get(Lease<T> parameter)
+		public Leasing<TTo> Get(Leasing<T> parameter)
 		{
-			var lease       = _leases.Get(parameter.Length);
+			var lease       = _new.Get(parameter.Length);
 			var span        = parameter.AsSpan();
 			var destination = lease.AsSpan();
 			var length      = 0;

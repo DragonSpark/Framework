@@ -4,10 +4,10 @@ using System;
 
 namespace DragonSpark.Composition.Compose
 {
-	sealed class RelatedTypes : Select<Type, Lease<Type>>, IRelatedTypes
+	sealed class RelatedTypes : Select<Type, Leasing<Type>>, IRelatedTypes
 	{
 		public static RelatedTypes Default { get; } = new RelatedTypes();
 
-		RelatedTypes() : base(_ => Lease<Type>.Default) {}
+		RelatedTypes() : base(_ => Leasing<Type>.Default) {}
 	}
 }

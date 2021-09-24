@@ -6,21 +6,21 @@ namespace DragonSpark.Compose.Model.Memory
 {
 	public readonly struct Concatenation<T> : IDisposable, IAsyncDisposable
 	{
-		readonly Lease<T> _first;
+		readonly Leasing<T> _first;
 
-		public Concatenation(Lease<T> first, Lease<T> instance)
+		public Concatenation(Leasing<T> first, Leasing<T> instance)
 		{
 			_first   = first;
 			Instance = instance;
 		}
 
-		public Lease<T> Result()
+		public Leasing<T> Result()
 		{
 			_first.Dispose();
 			return Instance;
 		}
 
-		public Lease<T> Instance { get; }
+		public Leasing<T> Instance { get; }
 
 		public void Dispose()
 		{

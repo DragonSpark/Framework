@@ -10,7 +10,7 @@ namespace DragonSpark.Compose.Model.Memory
 
 		public MemorySelector(Memory<T> subject) => _subject = subject;
 
-		public Lease<T> Concat(Memory<T> memory) => ConcatenateMemory<T>.Default.Get(_subject, memory);
+		public Leasing<T> Concat(Memory<T> memory) => ConcatenateMemory<T>.Default.Get(_subject, memory);
 
 		public uint? IndexOf(T candidate) => IndexOf(candidate, EqualityComparer<T>.Default);
 

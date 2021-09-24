@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public IEdit<TIn, Array<T>> Array() => new Edit<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
-		public IEdit<TIn, Lease<T>> Lease() => new Edit<TIn, T, Lease<T>>(_subject, ToLease<T>.Default);
+		public IEdit<TIn, Leasing<T>> Lease() => new Edit<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
 
 		public IEdit<TIn, List<T>> List() => new Edit<TIn, T, List<T>>(_subject, ToList<T>.Default);
 

@@ -5,7 +5,7 @@ using NetFabric.Hyperlinq;
 namespace DragonSpark.Compose.Model.Memory
 {
 	sealed class Concatenate<T>
-		: ISelect<(DragonSpark.Model.Sequences.Memory.Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second),
+		: ISelect<(DragonSpark.Model.Sequences.Memory.Leasing<T> First, EnumerableExtensions.ValueEnumerable<T> Second),
 			Concatenation<T>>
 	{
 		public static Concatenate<T> Default { get; } = new Concatenate<T>();
@@ -13,7 +13,7 @@ namespace DragonSpark.Compose.Model.Memory
 		Concatenate() {}
 
 		public Concatenation<T> Get(
-			(DragonSpark.Model.Sequences.Memory.Lease<T> First, EnumerableExtensions.ValueEnumerable<T> Second)
+			(DragonSpark.Model.Sequences.Memory.Leasing<T> First, EnumerableExtensions.ValueEnumerable<T> Second)
 				parameter)
 		{
 			var (first, second) = parameter;

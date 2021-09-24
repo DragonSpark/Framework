@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	sealed class StoredLeases<T> : ISelect<Lease<T>, StoredLease<T>>
+	sealed class StoredLeases<T> : ISelect<Leasing<T>, StoredLease<T>>
 	{
 		public static StoredLeases<T> Default { get; } = new StoredLeases<T>();
 
@@ -12,6 +12,6 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		public StoredLeases(Stores<T> stores) => _stores = stores;
 
-		public StoredLease<T> Get(Lease<T> parameter) => new(parameter, _stores.Get(parameter.AsMemory()));
+		public StoredLease<T> Get(Leasing<T> parameter) => new(parameter, _stores.Get(parameter.AsMemory()));
 	}
 }

@@ -17,7 +17,7 @@ namespace DragonSpark.Model.Sequences.Memory
 			_other = other;
 		}
 
-		public Lease<T> Get(ICollection<T> parameter)
+		public Leasing<T> Get(ICollection<T> parameter)
 			=> parameter is List<T> list ? _list.Get(list) : _other.Get(parameter);
 	}
 }

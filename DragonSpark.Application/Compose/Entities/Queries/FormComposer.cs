@@ -15,7 +15,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public FormComposer(IForm<TIn, T> subject) => _subject = subject;
 		public IForming<TIn, Array<T>> Array() => new Forming<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
-		public IForming<TIn, Lease<T>> Lease() => new Forming<TIn, T, Lease<T>>(_subject, ToLease<T>.Default);
+		public IForming<TIn, Leasing<T>> Lease() => new Forming<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
 
 		public IForming<TIn, List<T>> List() => new Forming<TIn, T, List<T>>(_subject, ToList<T>.Default);
 

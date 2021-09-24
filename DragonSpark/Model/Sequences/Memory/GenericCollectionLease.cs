@@ -9,7 +9,7 @@ namespace DragonSpark.Model.Sequences.Memory
 
 		GenericCollectionLease() {}
 
-		public Lease<T> Get(ICollection<T> parameter)
+		public Leasing<T> Get(ICollection<T> parameter)
 		{
 			using var builder = ArrayBuilder.New<T>(parameter.Count);
 			builder.Add(parameter);

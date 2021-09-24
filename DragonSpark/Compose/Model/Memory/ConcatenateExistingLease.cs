@@ -4,13 +4,13 @@ using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class ConcatenateExistingLease<T> : ISelect<(Lease<T> First, Memory<T> Second), Concatenation<T>>
+	sealed class ConcatenateExistingLease<T> : ISelect<(Leasing<T> First, Memory<T> Second), Concatenation<T>>
 	{
 		public static ConcatenateExistingLease<T> Default { get; } = new ConcatenateExistingLease<T>();
 
 		ConcatenateExistingLease() {}
 
-		public Concatenation<T> Get((Lease<T> First, Memory<T> Second) parameter)
+		public Concatenation<T> Get((Leasing<T> First, Memory<T> Second) parameter)
 		{
 			var (first, second) = parameter;
 

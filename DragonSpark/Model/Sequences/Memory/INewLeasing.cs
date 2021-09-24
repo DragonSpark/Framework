@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	public interface ILeases<T> : ISelect<uint, Lease<T>> {}
+	public interface INewLeasing<T> : ISelect<uint, Leasing<T>> {}
 }

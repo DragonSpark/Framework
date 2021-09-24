@@ -13,25 +13,25 @@ namespace DragonSpark.Composition.Compose
 	{
 		readonly Func<Type, bool>   _can;
 		readonly IArray<Type, Type> _candidates;
-		readonly ILeases<Type>      _leases;
+		readonly INewLeasing<Type>      _new;
 
 		public DependencyRelatedTypes(IServiceCollection services)
 			: this(new CanRegister(services).Then()
 			                                .And(IsNativeSystemType.Default.Then().Inverse())
 			                                .And(new HashSet<Type>().Add),
-			       DependencyCandidates.Default, Leases<Type>.Default) {}
+			       DependencyCandidates.Default, NewLeasing<Type>.Default) {}
 
-		public DependencyRelatedTypes(Func<Type, bool> can, IArray<Type, Type> candidates, ILeases<Type> leases)
+		public DependencyRelatedTypes(Func<Type, bool> can, IArray<Type, Type> candidates, INewLeasing<Type> @new)
 		{
 			_can        = can;
 			_candidates = candidates;
-			_leases     = leases;
+			_new     = @new;
 		}
 
-		public Model.Sequences.Memory.Lease<Type> Get(Type parameter)
+		public Leasing<Type> Get(Type parameter)
 		{
 			var types       = _candidates.Get(parameter).Open();
-			var result      = _leases.Get(types.Length);
+			var result      = _new.Get(types.Length);
 			var index       = 0;
 			var destination = result.AsSpan();
 			foreach (var type in types.AsValueEnumerable().Where(_can))

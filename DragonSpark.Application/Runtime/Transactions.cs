@@ -7,18 +7,18 @@ namespace DragonSpark.Application.Runtime
 {
 	public readonly struct Transactions<T> : IDisposable, IAsyncDisposable
 	{
-		public Transactions(Lease<T> add, Lease<(T Stored, T Source)> update, Lease<T> delete)
+		public Transactions(Leasing<T> add, Leasing<(T Stored, T Source)> update, Leasing<T> delete)
 		{
 			Add    = add;
 			Update = update;
 			Delete = delete;
 		}
 
-		public Lease<T> Add { get; }
+		public Leasing<T> Add { get; }
 
-		public Lease<(T Stored, T Source)> Update { get; }
+		public Leasing<(T Stored, T Source)> Update { get; }
 
-		public Lease<T> Delete { get; }
+		public Leasing<T> Delete { get; }
 
 		public bool Any() => Add.Length > 0 || Update.Length > 0 || Delete.Length > 0;
 

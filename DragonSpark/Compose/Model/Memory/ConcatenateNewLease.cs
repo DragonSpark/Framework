@@ -4,21 +4,21 @@ using System;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	sealed class ConcatenateNewLease<T> : ISelect<(Lease<T> First, Memory<T> Second, uint size), Concatenation<T>>
+	sealed class ConcatenateNewLease<T> : ISelect<(Leasing<T> First, Memory<T> Second, uint size), Concatenation<T>>
 	{
 		public static ConcatenateNewLease<T> Default { get; } = new();
 
-		ConcatenateNewLease() : this(Leases<T>.Default) {}
+		ConcatenateNewLease() : this(NewLeasing<T>.Default) {}
 
-		readonly ILeases<T> _leases;
+		readonly INewLeasing<T> _new;
 
-		public ConcatenateNewLease(ILeases<T> leases) => _leases = leases;
+		public ConcatenateNewLease(INewLeasing<T> @new) => _new = @new;
 
-		public Concatenation<T> Get((Lease<T> First, Memory<T> Second, uint size) parameter)
+		public Concatenation<T> Get((Leasing<T> First, Memory<T> Second, uint size) parameter)
 		{
 			var (first, second, size) = parameter;
 
-			var result      = _leases.Get(size);
+			var result      = _new.Get(size);
 			var destination = result.AsSpan();
 
 			var one = first.AsSpan();

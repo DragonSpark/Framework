@@ -16,7 +16,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public ISelecting<TIn, Array<T>> Array() => new Evaluate<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
-		public ISelecting<TIn, Lease<T>> Lease() => new Evaluate<TIn, T, Lease<T>>(_subject, ToLease<T>.Default);
+		public ISelecting<TIn, Leasing<T>> Lease() => new Evaluate<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
 
 		public ISelecting<TIn, List<T>> List() => new Evaluate<TIn, T, List<T>>(_subject, ToList<T>.Default);
 

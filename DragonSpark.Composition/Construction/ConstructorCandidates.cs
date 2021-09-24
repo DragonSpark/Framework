@@ -24,7 +24,7 @@ namespace DragonSpark.Composition.Construction
 			_candidate = candidate;
 		}
 
-		public Model.Sequences.Memory.Lease<ConstructorCandidate> Get(Type parameter)
+		public Leasing<ConstructorCandidate> Get(Type parameter)
 			=> new(parameter.GetTypeInfo()
 			                .DeclaredConstructors.Select(x => new ConstructorCandidate(x))
 			                .OrderByDescending(x => x.Parameters.Length)

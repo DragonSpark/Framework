@@ -36,7 +36,7 @@
 	{
 		if (message.Subject == Topic)
 		{
-			using var lease = _children.AsValueEnumerable().AsLease();
+			using var lease = _children.AsValueEnumerable().Then();
 			var memory = lease.AsMemory();
 			for (byte i = 0; i < lease.Length; i++)
 			{

@@ -3,13 +3,13 @@ using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Model.Sequences.Memory
 {
-	sealed class Distinct<T> : IAlteration<Lease<T>>
+	sealed class Distinct<T> : IAlteration<Leasing<T>>
 	{
 		public static Distinct<T> Default { get; } = new Distinct<T>();
 
 		Distinct() {}
 
-		public Lease<T> Get(Lease<T> parameter)
+		public Leasing<T> Get(Leasing<T> parameter)
 		{
 			var index       = 0;
 			var destination = parameter.AsSpan();

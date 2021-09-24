@@ -20,7 +20,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 				new(), new Extended(), new Extended(), new(), new()
 			};
 
-			var sut = instances.AsValueEnumerable().AsLease().Then().OfType<Extended>().ToArray();
+			var sut = instances.AsValueEnumerable().Then().Then().OfType<Extended>().ToArray();
 
 			sut.Should().HaveCount(2).And.AllBeOfType<Extended>();
 			sut.Should().Equal(instances.OfType<Extended>());
@@ -36,7 +36,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			var first  = new[] { 1, 2, 3, 4 };
 			var second = new[] { 5, 6, 7, 8 };
 
-			var sut = first.AsValueEnumerable().AsLease().Then().Concat(second).Result().ToArray();
+			var sut = first.AsValueEnumerable().Then().Then().Concat(second).Result().ToArray();
 			sut.Should().Equal(first.Concat(second));
 		}
 
@@ -46,7 +46,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			using var native = MemoryPool<int>.Shared.Rent(3);
 			native.Memory.Length.Should().NotBe(3);
 
-			using var sut = Leases<int>.Default.Get(3);
+			using var sut = NewLeasing<int>.Default.Get(3);
 
 			var memory = sut.AsMemory();
 			memory.Length.Should().Be(3);
@@ -65,14 +65,14 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			var second = new[] { 5, 6, 7, 8 };
 
 			var       result   = 0;
-			using var other    = second.Hide().AsValueEnumerable().AsLease();
+			using var other    = second.Hide().AsValueEnumerable().Then();
 			var       memory = other.AsMemory();
 
 			for (int i = 0; i < memory.Length; i++)
 			{
 				_output.WriteLine(memory.Span[i].ToString());
 			}
-			using var sut      = first.Hide().AsValueEnumerable().AsLease().Then().Concat(memory).Result();
+			using var sut      = first.Hide().AsValueEnumerable().Then().Then().Concat(memory).Result();
 			var       span     = sut.AsSpan();
 
 			_output.WriteLine($"{memory.Length} - {span.Length}");
@@ -96,7 +96,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			var expected = first.Concat(second).Sum();
 			using var sut = first.Hide()
 			                     .AsValueEnumerable()
-			                     .AsLease()
+			                     .Then()
 			                     .Then()
 			                     .Concat(second.Hide().AsValueEnumerable())
 			                     .Result();
@@ -143,7 +143,7 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 			public int NoAllocations()
 			{
 				var       result = 0;
-				using var sut    = first.AsValueEnumerable().AsLease().Then().Concat(second).Result();
+				using var sut    = first.AsValueEnumerable().Then().Then().Concat(second).Result();
 				var       span   = sut.AsSpan();
 				for (var i = 0; i < sut.Length; i++)
 				{
