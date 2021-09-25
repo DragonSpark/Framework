@@ -31,6 +31,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		                                 Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
-		public EvaluateToSingleOrDefault(IInvoke<TIn, T> invoke) : base(invoke, SingleOrDefault<T>.Default) {}
+		public EvaluateToSingleOrDefault(IInvoke<TIn, T> invoke) : base(invoke, ToSingleOrDefault<T>.Default) {}
 	}
 }

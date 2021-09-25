@@ -8,11 +8,16 @@ namespace DragonSpark.Application.Security.Identity.Profile
 
 	sealed class LocateUser<T> : ILocateUser<T> where T : IdentityUser
 	{
-		readonly UserManager<T> _users;
+		readonly IUsers<T> _users;
 
-		public LocateUser(UserManager<T> users) => _users = users;
+		public LocateUser(IUsers<T> users) => _users = users;
 
 		public async ValueTask<T?> Get(ExternalLoginInfo parameter)
-			=> await _users.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey).ConfigureAwait(false);
+		{
+			await using var users = _users.Get();
+			var result = await users.Subject.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey)
+			                        .ConfigureAwait(false);
+			return result;
+		}
 	}
 }

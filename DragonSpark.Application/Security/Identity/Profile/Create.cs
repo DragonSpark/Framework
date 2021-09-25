@@ -1,51 +1,43 @@
-﻿using DragonSpark.Compose;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	sealed class Create<T> : ICreate<T> where T : IdentityUser
+	/*[UsedImplicitly]
+	sealed class Created<T> : ICreated<T> where T : class
 	{
-		readonly ICreated<T> _created;
-		readonly INew<T>     _new;
+		readonly Array<ICreated<T>> _actions;
 
-		public Create(INew<T> @new, ICreated<T> created)
+		public Created(CreateUserOperation<T> create, AddLoginOperation<T> login)
+			: this(Array.Of<ICreated<T>>(create, login)) {}
+
+		public Created(ICreated<T>[] actions) => _actions = actions;
+
+		public async ValueTask<IdentityResult> Get((ExternalLoginInfo Login, T User) parameter)
 		{
-			_created = created;
-			_new     = @new;
-		}
-
-		public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
-		{
-			var user   = await _new.Await(parameter);
-			var call   = await _created.Await(new(parameter, user));
-			var result = new CreateUserResult<T>(user, call);
-			return result;
-		}
-	}
-
-	sealed class LoggingAwareCreate<T> : ICreate<T> where T : IdentityUser
-	{
-		readonly ICreate<T>                     _previous;
-		readonly ILogger<LoggingAwareCreate<T>> _logger;
-
-		public LoggingAwareCreate(ICreate<T> previous, ILogger<LoggingAwareCreate<T>> logger)
-		{
-			_previous = previous;
-			_logger   = logger;
-		}
-
-		public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
-		{
-			var result = await _previous.Await(parameter);
-			if (result.Result.Succeeded)
+			var length = _actions.Length;
+			for (var i = 0; i < length; i++)
 			{
-				var (user, _) = result;
-				_logger.LogInformation("User {UserName} created an account using {Provider} having {Key}.",
-				                       user.UserName, parameter.LoginProvider, parameter.ProviderKey);
+				var current = await _actions[i].Get(parameter);
+				if (!current.Succeeded)
+				{
+					return current;
+				}
 			}
 
+			return IdentityResult.Success;
+		}
+	}*/
+	sealed class Create<T> : ICreate<T> where T : class
+	{
+		readonly IUsers<T> _users;
+
+		public Create(IUsers<T> users) => _users = users;
+
+		public async ValueTask<IdentityResult> Get(Login<T> parameter)
+		{
+			await using var users  = _users.Get();
+			var             result = await users.Subject.CreateAsync(parameter.User).ConfigureAwait(false);
 			return result;
 		}
 	}

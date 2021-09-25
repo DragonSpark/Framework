@@ -95,7 +95,7 @@ namespace DragonSpark.Composition
 			=> @this.Select(Construction.WithComposition.Default);
 
 		public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
-			=> @this.ComposeUsing<ConfigureDefaultActivation>();
+			=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
 
 		public static BuildHostContext RegisterModularity(this BuildHostContext @this)
 			=> @this.Configure(Composition.RegisterModularity.Default);

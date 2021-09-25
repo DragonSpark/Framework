@@ -28,6 +28,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToAny(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
-		public EvaluateToAny(IInvoke<TIn, T> invoke) : base(invoke, Any<T>.Default) {}
+		public EvaluateToAny(IInvoke<TIn, T> invoke) : base(invoke, ToAny<T>.Default) {}
 	}
 }

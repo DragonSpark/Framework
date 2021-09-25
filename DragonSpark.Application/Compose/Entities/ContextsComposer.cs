@@ -1,6 +1,7 @@
 ﻿
 using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Model;
@@ -24,9 +25,9 @@ namespace DragonSpark.Application.Compose.Entities
 			=> new(Invocations(), query);
 
 		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
-			=> new StartEdit<TIn, T, TOut>(_subject, select);
+			=> new EditSelection<TIn, T, TOut>(_subject, select);
 
-		public IInvocations Invocations() => new Invocations<T>(_subject);
+		public IInvocations Invocations() => new AmbientAwareInvocations(new Invocations<T>(_subject));
 	}
 
 	public sealed class ContextsComposer<TIn, T> where T : DbContext

@@ -27,6 +27,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToSingle(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
-		public EvaluateToSingle(IInvoke<TIn, T> invoke) : base(invoke, Single<T>.Default) {}
+		public EvaluateToSingle(IInvoke<TIn, T> invoke) : base(invoke, ToSingle<T>.Default) {}
 	}
 }

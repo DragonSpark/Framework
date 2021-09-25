@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Hosting.BenchmarkDotNet;
 using DragonSpark.Compose;
-using DragonSpark.Testing.Model.Selection;
+using DragonSpark.Testing.Runtime.Execution;
 
 namespace DragonSpark.Testing
 {
@@ -8,8 +8,7 @@ namespace DragonSpark.Testing
 	{
 		static void Main(params string[] arguments)
 		{
-			Configuration.Default.Get(arguments).To(Run.A<SelectionTests.InParameterSelectionBenchmarks>);
+			Configuration.Default.Get(arguments).To(Run.A<LogicalTests.Benchmarks>);
 		}
 	}
-
 }

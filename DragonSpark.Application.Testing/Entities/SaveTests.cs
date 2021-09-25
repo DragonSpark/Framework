@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;

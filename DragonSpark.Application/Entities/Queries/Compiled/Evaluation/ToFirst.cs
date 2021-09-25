@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
-	sealed class First<T> : IEvaluate<T, T>
+	sealed class ToFirst<T> : IEvaluate<T, T>
 	{
-		public static First<T> Default { get; } = new ();
+		public static ToFirst<T> Default { get; } = new ();
 
-		First() {}
+		ToFirst() {}
 
 		public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.FirstAsync();
 	}

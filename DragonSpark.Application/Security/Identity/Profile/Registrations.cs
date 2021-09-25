@@ -14,34 +14,36 @@ namespace DragonSpark.Application.Security.Identity.Profile
 		{
 			parameter.Start<IUserSynchronization>()
 			         .Forward<UserSynchronization<T>>()
-			         .Scoped()
+			         .Singleton()
 			         //
 			         .Then.Start<IUserSynchronizer<T>>()
 			         .Forward<UserSynchronizer<T>>()
-			         .Scoped()
+			         .Singleton()
 			         //
 			         .Then.Start<ICreateRequest>()
 			         .Forward<CreateRequest<T>>()
-			         .Scoped()
+					 .Include(x => x.Dependencies.Recursive())
+			         .Singleton()
 			         //
 			         .Then.Start<INew<T>>()
 			         .Forward<New<T>>()
-			         .Scoped()
+			         .Singleton()
+			         //
+			         .Then.Start<ICreateExternal<T>>()
+			         .Forward<CreateExternal<T>>()
+			         .Decorate<LoggingAwareCreateExternal<T>>()
+			         .Decorate<SynchronizationAwareCreateExternal<T>>()
+			         .Include(x => x.Dependencies)
+					 .Singleton()
 			         //
 			         .Then.Start<ICreate<T>>()
 			         .Forward<Create<T>>()
-			         .Decorate<LoggingAwareCreate<T>>()
-			         .Scoped()
-			         //
-			         .Then.Start<ICreated<T>>()
-			         .Forward<Created<T>>()
-			         .Decorate<AddLoginAwareCreated<T>>()
-			         .Decorate<SynchronizationAwareCreated<T>>()
-			         .Scoped()
+			         .Decorate<AddLoginAwareCreate<T>>()
+			         .Singleton()
 			         //
 			         .Then.Start<ILocateUser<T>>()
 			         .Forward<LocateUser<T>>()
-			         .Scoped()
+			         .Singleton()
 				;
 		}
 	}

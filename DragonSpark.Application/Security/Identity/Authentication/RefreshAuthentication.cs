@@ -7,17 +7,17 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 	sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : IdentityUser
 	{
 		readonly SignInManager<T> _authentication;
-		readonly Compose          _compose;
+		readonly Compositions          _compositions;
 
-		public RefreshAuthentication(SignInManager<T> authentication, Compose compose)
+		public RefreshAuthentication(SignInManager<T> authentication, Compositions compositions)
 		{
 			_authentication = authentication;
-			_compose        = compose;
+			_compositions        = compositions;
 		}
 
 		public async ValueTask Get(T parameter)
 		{
-			var authentication = await _compose.Await();
+			var authentication = await _compositions.Await();
 			if (authentication != null)
 			{
 				var (properties, claims) = authentication.Value;

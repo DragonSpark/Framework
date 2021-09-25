@@ -6,83 +6,83 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	class Class1 {}
 
 	public class Attach<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<In<T>> modification)
+		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 			: this(contexts, query, modification.Await) {}
 
 		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<T> configure)
-			: this(contexts, query, x => configure(x.Parameter)) {}
+			: this(contexts, query, x => configure(x.Subject)) {}
 
-		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<In<T>> configure)
+		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(contexts, query, Attach<T>.Default.Then().Operation().Append(configure)) {}
 
 		protected Attach(IEdit<TIn, T> @select, IOperation<T> configure) : this(@select, configure.Await) {}
 
-		protected Attach(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Parameter)) {}
+		protected Attach(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
 
-		protected Attach(IEdit<TIn, T> @select, IOperation<In<T>> configure) : this(@select, configure.Await) {}
+		protected Attach(IEdit<TIn, T> @select, IOperation<Edit<T>> configure) : this(@select, configure.Await) {}
 
-		protected Attach(IEdit<TIn, T> @select, Await<In<T>> configure)
+		protected Attach(IEdit<TIn, T> @select, Await<Edit<T>> configure)
 			: base(@select, Attach<T>.Default.Then().Operation().Append(configure)) {}
 	}
 
 	public class Attach<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
 	{
-		protected Attach(IContexts<TContext> contexts, IOperation<In<T>> modification) :
-			this(contexts, modification.Await) {}
+		protected Attach(IContexts<TContext> contexts, IOperation<Edit<T>> modification)
+			: this(contexts, modification.Await) {}
 
-		protected Attach(IContexts<TContext> contexts, Await<T> configure) :
-			this(contexts, x => configure(x.Parameter)) {}
+		protected Attach(IContexts<TContext> contexts, Await<T> configure)
+			: this(contexts, x => configure(x.Subject)) {}
 
-		protected Attach(IContexts<TContext> contexts, Await<In<T>> configure)
+		protected Attach(IContexts<TContext> contexts, Await<Edit<T>> configure)
 			: base(contexts, Attach<T>.Default.Then().Operation().Append(configure)) {}
 	}
 
-	public sealed class Attach<T> : Command<In<T>>, IModify<T> where T : class
+	public sealed class Attach<T> : Command<Edit<T>>, IModify<T> where T : class
 	{
 		public static Attach<T> Default { get; } = new Attach<T>();
 
-		Attach() : base(x => x.Context.Set<T>().Attach(x.Parameter)) {}
+		Attach() : base(x => x.Attach(x.Subject)) {}
 	}
 
 	public class Modify<TContext, T> : Modify<T, TContext, T> where TContext : DbContext
 	{
-		protected Modify(IContexts<TContext> contexts, IOperation<In<T>> modification) :
-			this(contexts, modification.Await) {}
+		protected Modify(IContexts<TContext> contexts, IOperation<Edit<T>> modification)
+			: this(contexts, modification.Await) {}
 
-		protected Modify(IContexts<TContext> contexts, Await<T> configure) :
-			this(contexts, x => configure(x.Parameter)) {}
+		protected Modify(IContexts<TContext> contexts, Await<T> configure)
+			: this(contexts, x => configure(x.Subject)) {}
 
-		protected Modify(IContexts<TContext> contexts, Await<In<T>> configure)
+		protected Modify(IContexts<TContext> contexts, Await<Edit<T>> configure)
 			: base(contexts.Then().Edit(A.Self<T>().Then().Operation().Out()), configure) {}
 	}
 
 	public class Modify<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext
 	{
-		readonly IEdit<TIn, T> _select;
-		readonly Await<In<T>>  _configure;
+		readonly IEdit<TIn, T>  _select;
+		readonly Await<Edit<T>> _configure;
 
-		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<In<T>> modification)
+		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 			: this(query.Then().Invoke(contexts).Edit.Single(), modification) {}
 
 		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<T> configure)
 			: this(query.Then().Invoke(contexts).Edit.Single(), configure) {}
 
-		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<In<T>> configure)
+		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: this(query.Then().Invoke(contexts).Edit.Single(), configure) {}
 
 		protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(@select, configure.Await) {}
 
-		protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(@select, x => configure(x.Parameter)) {}
+		protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
 
-		protected Modify(IEdit<TIn, T> select, IOperation<In<T>> configure) : this(select, configure.Await) {}
+		protected Modify(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
 
-		protected Modify(IEdit<TIn, T> select, Await<In<T>> configure)
+		protected Modify(IEdit<TIn, T> select, Await<Edit<T>> configure)
 		{
 			_select    = select;
 			_configure = configure;
@@ -90,27 +90,31 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask Get(TIn parameter)
 		{
-			await using var edit = await _select.Get(parameter);
+			using var edit = await _select.Get(parameter);
 			await _configure(edit);
-			await edit.Context.SaveChangesAsync().ConfigureAwait(false);
+			await edit.Await();
 		}
 	}
 
 	public class SelectedAttach<TContext, TFrom, TTo> : Modify<TContext, TFrom>
 		where TContext : DbContext where TTo : class
 	{
-		protected SelectedAttach(IContexts<TContext> contexts, IOperation<In<TFrom>> from, Func<TFrom, TTo> select)
+		protected SelectedAttach(IContexts<TContext> contexts, IOperation<Edit<TFrom>> from, Func<TFrom, TTo> select)
 			: base(contexts,
-			       Start.A.Selection<In<TFrom>>()
-			            .By.Calling(x => x.Subject(select(x.Parameter)))
+			       Start.A.Selection<Edit<TFrom>>()
+			            .By.Calling(x =>
+			                        {
+				                        var (editor, subject) = x;
+				                        return new Edit<TTo>(editor, select(subject));
+			                        })
 			            .Terminate(Attach<TTo>.Default)
 			            .Operation()
 			            .Append(from)) {}
 	}
 
-	public interface IModify<T> : ICommand<In<T>> {}
+	public interface IModify<T> : ICommand<Edit<T>> {}
 
-	public interface IModifying<T> : IOperation<In<T>> {}
+	public interface IModifying<T> : IOperation<Edit<T>> {}
 
 	public class Remove<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
@@ -118,24 +122,24 @@ namespace DragonSpark.Application.Entities
 			: this(contexts, query, configure.Await) {}
 
 		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<T> configure)
-			: base(contexts, query, x => configure(x.Parameter)) {}
+			: base(contexts, query, x => configure(x.Subject)) {}
 
 		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query)
-			: this(contexts, query, (In<T> _) => Task.CompletedTask.ToOperation().ConfigureAwait(false)) {}
+			: this(contexts, query, (Edit<T> _) => Task.CompletedTask.ToOperation().ConfigureAwait(false)) {}
 
-		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<In<T>> configure)
+		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
 			: this(contexts, query, configure.Await) {}
 
-		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<In<T>> configure)
+		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(contexts, query, Start.An.Operation(configure).Append(Remove<T>.Default)) {}
 
 		protected Remove(IEdit<TIn, T> @select, IOperation<T> configure) : this(@select, configure.Await) {}
 
-		protected Remove(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Parameter)) {}
+		protected Remove(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
 
-		protected Remove(IEdit<TIn, T> @select, IOperation<In<T>> configure) : this(@select, configure.Await) {}
+		protected Remove(IEdit<TIn, T> @select, IOperation<Edit<T>> configure) : this(@select, configure.Await) {}
 
-		protected Remove(IEdit<TIn, T> @select, Await<In<T>> configure)
+		protected Remove(IEdit<TIn, T> @select, Await<Edit<T>> configure)
 			: base(@select, Start.An.Operation(configure).Append(Remove<T>.Default)) {}
 	}
 
@@ -156,10 +160,10 @@ namespace DragonSpark.Application.Entities
 		protected Remove(IContexts<TContext> contexts) : base(contexts, Remove<T>.Default.Then().Operation()) {}
 	}
 
-	public sealed class Remove<T> : Command<In<T>>, IModify<T> where T : class
+	public sealed class Remove<T> : Command<Edit<T>>, IModify<T> where T : class
 	{
 		public static Remove<T> Default { get; } = new Remove<T>();
 
-		Remove() : base(x => x.Context.Set<T>().Remove(x.Parameter)) {}
+		Remove() : base(x => x.Remove(x.Subject)) {}
 	}
 }

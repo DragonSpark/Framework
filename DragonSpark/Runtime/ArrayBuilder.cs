@@ -122,6 +122,7 @@ namespace DragonSpark.Runtime
 			{
 				EnsureCapacity(total);
 			}
+
 			if (buffer is not null)
 			{
 				others.Span.CopyTo(buffer[Count..]);

@@ -9,13 +9,13 @@ namespace DragonSpark.Application.Security.Identity.Profile
 {
 	sealed class CreateRequest<T> : ICreateRequest where T : IdentityUser
 	{
-		readonly ICreate<T>                                    _create;
+		readonly ICreateExternal<T>                            _create;
 		readonly ISelecting<ExternalLoginInfo, IdentityResult> _select;
 
-		public CreateRequest(ICreate<T> create, IExternalSignin signin)
+		public CreateRequest(ICreateExternal<T> create, IExternalSignin signin)
 			: this(create, signin.Then().Select(IdentityResults.Default).Out()) {}
 
-		public CreateRequest(ICreate<T> create, ISelecting<ExternalLoginInfo, IdentityResult> select)
+		public CreateRequest(ICreateExternal<T> create, ISelecting<ExternalLoginInfo, IdentityResult> select)
 		{
 			_create = create;
 			_select = select;

@@ -1,9 +1,11 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +56,36 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 		{
 			_session.Dispose();
 		}
+	}
+
+	sealed class AmbientAwareInvocations : IInvocations
+	{
+		readonly IInvocations               _previous;
+		readonly IResult<IServiceProvider?> _provider;
+
+		public AmbientAwareInvocations(IInvocations previous) : this(previous, AmbientProvider.Default) {}
+
+		public AmbientAwareInvocations(IInvocations previous, IResult<IServiceProvider?> provider)
+		{
+			_previous = previous;
+			_provider = provider;
+		}
+
+		public Invocation Get()
+		{
+			var provider = _provider.Get();
+			var result = provider != null
+				             ? new Invocation(provider.GetRequiredService<DbContext>(), EmptySession.Default)
+				             : _previous.Get();
+			return result;
+		}
+	}
+
+	sealed class EmptySession : DragonSpark.Model.Operations.Instance<IDisposable>, ISession
+	{
+		public static EmptySession Default { get; } = new();
+
+		EmptySession() : base(EmptyDisposable.Default) {}
 	}
 
 	public interface IInvocations : IResult<Invocation> {}

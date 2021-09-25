@@ -1,41 +1,17 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DragonSpark.Model.Commands;
+using LightInject;
 
 namespace DragonSpark.Application.Security.Identity.Authentication
 {
-	sealed class Compose : IResulting<Composition?>
+	sealed class Compose : ICommand<IServiceContainer>
 	{
-		readonly IHttpContextAccessor _accessor;
-		readonly ICurrentKnownClaims  _claims;
-		readonly ApplicationClaims    _state;
+		public static Compose Default { get; } = new();
 
-		public Compose(IHttpContextAccessor accessor, ICurrentKnownClaims claims)
-			: this(accessor, claims, ApplicationClaims.Default) {}
+		Compose() {}
 
-		public Compose(IHttpContextAccessor accessor, ICurrentKnownClaims claims, ApplicationClaims state)
+		public void Execute(IServiceContainer parameter)
 		{
-			_accessor = accessor;
-			_claims   = claims;
-			_state    = state;
-		}
-
-		public async ValueTask<Composition?> Get()
-		{
-			var authentication = await _accessor.HttpContext.Verify()
-			                                    .AuthenticateAsync(IdentityConstants.ApplicationScheme)
-			                                    .ConfigureAwait(false);
-			var identity = authentication.Principal;
-			var result = identity != null
-				             ? new(authentication.Properties,
-				                   _claims.Get().Open().Union(_state.Get(identity).Open()).ToArray())
-				             : default(Composition?);
-			return result;
+			parameter.Decorate(typeof(IAuthentications<>), typeof(AmbientAwareAuthentications<>));
 		}
 	}
 }

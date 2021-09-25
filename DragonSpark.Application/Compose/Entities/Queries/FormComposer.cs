@@ -27,15 +27,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			where TKey : notnull
 			=> new Forming<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-		public IForming<TIn, T> Single() => new Forming<TIn, T, T>(_subject, Single<T>.Default);
+		public IForming<TIn, T> Single() => new Forming<TIn, T, T>(_subject, ToSingle<T>.Default);
 
-		public IForming<TIn, T?> SingleOrDefault() => new Forming<TIn, T, T?>(_subject, SingleOrDefault<T>.Default);
+		public IForming<TIn, T?> SingleOrDefault() => new Forming<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
 
-		public IForming<TIn, T> First() => new Forming<TIn, T, T>(_subject, First<T>.Default);
+		public IForming<TIn, T> First() => new Forming<TIn, T, T>(_subject, ToFirst<T>.Default);
 
-		public IForming<TIn, T?> FirstOrDefault() => new Forming<TIn, T, T?>(_subject, FirstOrDefault<T>.Default);
+		public IForming<TIn, T?> FirstOrDefault() => new Forming<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
 
-		public IForming<TIn, bool> Any() => new Forming<TIn, T, bool>(_subject, Any<T>.Default);
+		public IForming<TIn, bool> Any() => new Forming<TIn, T, bool>(_subject, ToAny<T>.Default);
 
 	}
 }

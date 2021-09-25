@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	public class SaveMany<T> : Modify<T, Memory<object>> where T : DbContext
 	{
@@ -20,7 +20,7 @@ namespace DragonSpark.Application.Entities
 
 		UpdateMany() {}
 
-		public void Execute(In<Memory<object>> parameter)
+		public void Execute(Edit<Memory<object>> parameter)
 		{
 			var (context, memory) = parameter;
 			for (var i = 0; i < memory.Length; i++)
@@ -36,13 +36,12 @@ namespace DragonSpark.Application.Entities
 
 		UpdateMany() {}
 
-		public void Execute(In<Memory<T>> parameter)
+		public void Execute(Edit<Memory<T>> parameter)
 		{
 			var (context, memory) = parameter;
-			var set = context.Set<T>();
 			for (var i = 0; i < memory.Length; i++)
 			{
-				set.Update(memory.Span[i]);
+				context.Update(memory.Span[i]);
 			}
 		}
 	}

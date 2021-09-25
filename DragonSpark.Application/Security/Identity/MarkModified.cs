@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Runtime;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;

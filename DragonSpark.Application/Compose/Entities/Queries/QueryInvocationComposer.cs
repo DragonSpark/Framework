@@ -28,14 +28,14 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			where TKey : notnull
 			=> new Evaluate<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-		public ISelecting<TIn, T> Single() => new Evaluate<TIn, T, T>(_subject, Single<T>.Default);
+		public ISelecting<TIn, T> Single() => new Evaluate<TIn, T, T>(_subject, ToSingle<T>.Default);
 
-		public ISelecting<TIn, T?> SingleOrDefault() => new Evaluate<TIn, T, T?>(_subject, SingleOrDefault<T>.Default);
+		public ISelecting<TIn, T?> SingleOrDefault() => new Evaluate<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
 
-		public ISelecting<TIn, T> First() => new Evaluate<TIn, T, T>(_subject, First<T>.Default);
+		public ISelecting<TIn, T> First() => new Evaluate<TIn, T, T>(_subject, ToFirst<T>.Default);
 
-		public ISelecting<TIn, T?> FirstOrDefault() => new Evaluate<TIn, T, T?>(_subject, FirstOrDefault<T>.Default);
+		public ISelecting<TIn, T?> FirstOrDefault() => new Evaluate<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
 
-		public ISelecting<TIn, bool> Any() => new Evaluate<TIn, T, bool>(_subject, Any<T>.Default);
+		public ISelecting<TIn, bool> Any() => new Evaluate<TIn, T, bool>(_subject, ToAny<T>.Default);
 	}
 }

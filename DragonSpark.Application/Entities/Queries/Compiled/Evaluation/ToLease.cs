@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
-	sealed class ToLease<T> : IEvaluate<T, Leasing<T>>
+	public sealed class ToLease<T> : IEvaluate<T, Leasing<T>>
 	{
 		public static ToLease<T> Default { get; } = new ToLease<T>();
 

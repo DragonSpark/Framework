@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries.Compiled;
+﻿using DragonSpark.Application.Entities.Editing;
+using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Model;
@@ -41,30 +42,32 @@ namespace DragonSpark.Application.Entities
 
 		public async ValueTask Get(In<T> parameter)
 		{
+			var (context, _) = parameter;
 			var entity = await _select.Await(parameter);
-			_add.Execute(parameter.Subject(entity));
+			_add.Execute(new(new Editor(context), entity));
 		}
 	}
 
 	public class AddForming<T, TTo> : IForming<T, TTo> where TTo : class
 	{
 		readonly IForming<T, TTo> _select;
-		readonly IModify<TTo>     _add;
+		readonly IModify<TTo>     _configure;
 
 		protected AddForming(ISelecting<T, TTo> selecting) : this(new Adapter<T, TTo>(selecting)) {}
 
 		protected AddForming(IForming<T, TTo> select) : this(@select, Update<TTo>.Default) {}
 
-		protected AddForming(IForming<T, TTo> select, IModify<TTo> add)
+		protected AddForming(IForming<T, TTo> select, IModify<TTo> configure)
 		{
-			_select = @select;
-			_add    = add;
+			_select    = @select;
+			_configure = configure;
 		}
 
 		public async ValueTask<TTo> Get(In<T> parameter)
 		{
+			var (context, _) = parameter;
 			var result = await _select.Await(parameter);
-			_add.Execute(parameter.Subject(result));
+			_configure.Execute(new(new Editor(context), result));
 			return result;
 		}
 	}

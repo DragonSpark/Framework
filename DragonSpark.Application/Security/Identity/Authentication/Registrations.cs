@@ -30,8 +30,8 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 			         .Forward<RefreshAuthentication<T>>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
-					 //
-					 .Then.AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
+			         //
+			         .Then.AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
 				;
 		}
 	}

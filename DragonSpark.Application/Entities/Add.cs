@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Entities.Editing;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities

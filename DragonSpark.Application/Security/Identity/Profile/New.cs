@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	public interface INew<T> : ISelecting<ExternalLoginInfo, T> where T : IdentityUser {}
+	public interface INew<T> : ISelecting<ExternalLoginInfo, T> where T : class {}
 
 	public sealed class New<T> : INew<T> where T : IdentityUser
 	{

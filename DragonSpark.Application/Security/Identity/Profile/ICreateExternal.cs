@@ -3,5 +3,5 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	public interface ICreated<T> : ISelecting<Login<T>, IdentityResult> {}
+	public interface ICreateExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResult<T>> {}
 }

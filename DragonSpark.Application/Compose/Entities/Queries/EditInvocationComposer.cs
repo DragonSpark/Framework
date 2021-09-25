@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Sequences;
@@ -28,12 +28,12 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			where TKey : notnull
 			=> new Edit<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-		public IEdit<TIn, T> Single() => new Edit<TIn, T, T>(_subject, Single<T>.Default);
+		public IEdit<TIn, T> Single() => new Edit<TIn, T, T>(_subject, ToSingle<T>.Default);
 
-		public IEdit<TIn, T?> SingleOrDefault() => new Edit<TIn, T, T?>(_subject, SingleOrDefault<T>.Default);
+		public IEdit<TIn, T?> SingleOrDefault() => new Edit<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
 
-		public IEdit<TIn, T> First() => new Edit<TIn, T, T>(_subject, First<T>.Default);
+		public IEdit<TIn, T> First() => new Edit<TIn, T, T>(_subject, ToFirst<T>.Default);
 
-		public IEdit<TIn, T?> FirstOrDefault() => new Edit<TIn, T, T?>(_subject, FirstOrDefault<T>.Default);
+		public IEdit<TIn, T?> FirstOrDefault() => new Edit<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
 	}
 }

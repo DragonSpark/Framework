@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	sealed class Save<T> : ISave<T> where T : class
 	{
@@ -32,10 +32,10 @@ namespace DragonSpark.Application.Entities
 
 		Update() {}
 
-		public void Execute(In<T> parameter)
+		public void Execute(Edit<T> parameter)
 		{
 			var (context, subject) = parameter;
-			context.Set<T>().Update(subject);
+			context.Update(subject);
 		}
 	}
 

@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Compose
 {
@@ -92,19 +91,6 @@ namespace DragonSpark.Compose
 			yield return @this;
 
 			yield return other;
-		}
-
-		public static ValueTask Disposed(this IDisposable @this)
-		{
-			// ReSharper disable once SuspiciousTypeConversion.Global
-			if (@this is IAsyncDisposable disposable)
-			{
-				return disposable.DisposeAsync();
-			}
-
-			@this.Dispose();
-
-			return Task.CompletedTask.ToOperation();
 		}
 
 		public static IDisposable ToDisposable(this object @this) => @this as IDisposable ?? EmptyDisposable.Default;
