@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 		public async ValueTask Get(Login<T> parameter)
 		{
 			var (information, user) = parameter;
-			await using var authentication = _authentication.Get();
+			using var authentication = _authentication.Get();
 			var claims = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
 			await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).ConfigureAwait(false);
 		}

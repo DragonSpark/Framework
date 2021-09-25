@@ -3,17 +3,16 @@ using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
 	class Class1 {}
 
-	public readonly struct UsersSession<T> : IAsyncDisposable where T : class
+	public readonly struct UsersSession<T> : IDisposable where T : class
 	{
-		readonly AsyncServiceScope? _scope;
+		readonly IServiceScope? _scope;
 
-		public UsersSession(UserManager<T> subject, AsyncServiceScope? scope = null)
+		public UsersSession(UserManager<T> subject, IServiceScope? scope = null)
 		{
 			_scope  = scope;
 			Subject = subject;
@@ -21,20 +20,23 @@ namespace DragonSpark.Application.Security.Identity
 
 		public UserManager<T> Subject { get; }
 
-		public ValueTask DisposeAsync() => _scope?.DisposeAsync() ?? ValueTask.CompletedTask;
+		public void Dispose()
+		{
+			_scope?.Dispose();
+		}
 	}
 
 	public interface IUsers<T> : IResult<UsersSession<T>> where T : class {}
 
 	sealed class Users<T> : IUsers<T> where T : class
 	{
-		readonly IScopes _scopes;
+		readonly IScoping _scoping;
 
-		public Users(IScopes scopes) => _scopes = scopes;
+		public Users(IScoping scoping) => _scoping = scoping;
 
 		public UsersSession<T> Get()
 		{
-			var scope   = _scopes.Get();
+			var scope   = _scoping.Get();
 			var subject = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
 			return new(subject, scope);
 		}

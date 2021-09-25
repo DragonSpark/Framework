@@ -15,32 +15,40 @@ namespace DragonSpark.Application.Security.Identity.Model
 		{
 			parameter.Start<IAuthenticationRequest>()
 			         .Forward<AuthenticationRequest>()
-			         .Scoped()
+			         .Singleton()
+			         //
+			         .Then.Start<ExternalLoginModelActions<T>>()
+			         .And<ClearCurrentAuthenticationState>()
+			         .And<ChallengedModelBinder>()
+			         .Include(x => x.Dependencies)
+			         .Singleton()
 			         //
 			         .Then.Start<ExternalLoginChallengingModelBinder>()
-			         .And<ChallengedModelBinder>()
 			         .And<ReturnOrRoot>()
 			         .And<ExternalLoginModel<T>>()
-			         .And<ClearCurrentAuthenticationState>()
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //
 			         .Then.Start<IAddExternalSignin>()
 			         .Forward<AddExternalSignin<T>>()
-			         .Decorate<StateViewAwareAddExternalSignin>()
+			         .Decorate<StateAwareAddExternalSignin>()
 			         .Decorate<SignOutAwareAddExternalSignin>()
 			         .Decorate<ExceptionAwareAddExternalLogin>()
 			         .Include(x => x.Dependencies)
-			         .Scoped()
+			         .Singleton()
 			         //
 			         .Then.Start<IChallenged<T>>()
 			         .Forward<Challenged<T>>()
 			         .Decorate<AuthenticationAwareChallenged<T>>()
-			         .Scoped()
+			         .Singleton()
 			         //
 			         .Then.Start<IAddLogin<T>>()
 			         .Forward<AddLogin<T>>()
-			         .Scoped()
+			         .Singleton()
+			         //
+			         .Then.Start<IRemoveLogin<T>>()
+			         .Forward<RemoveLogin<T>>()
+			         .Singleton()
 			         //
 			         .Then.Start<IClearAuthenticationState>()
 			         .Forward<ClearAuthenticationState>()

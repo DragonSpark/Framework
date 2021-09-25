@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	internal class Class2
-	{
-	}
+	internal class Class2 {}
 
 	public readonly struct Edit<T> : IEditor
 	{
@@ -131,18 +129,18 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public interface IEdit<in TIn, T> : ISelecting<TIn, Edit<T>> {}
 
-	public sealed class EditSelection<TIn, TContext, T> : IEdit<TIn, T> where TContext : DbContext
+	public sealed class SelectedEdit<TIn, TContext, T> : IEdit<TIn, T> where TContext : DbContext
 	{
-		readonly IInvocations        _invocations;
-		readonly ISelecting<TIn, T>  _select;
+		readonly IInvocations       _invocations;
+		readonly ISelecting<TIn, T> _select;
 
-		public EditSelection(IContexts<TContext> contexts, ISelecting<TIn, T> select)
-			: this(contexts.Then().Invocations(), @select) {}
+		public SelectedEdit(IContexts<TContext> contexts, ISelecting<TIn, T> select)
+			: this(new AmbientAwareInvocations(contexts.Then().Invocations()), @select) {}
 
-		public EditSelection(IInvocations invocations, ISelecting<TIn, T> select)
+		public SelectedEdit(IInvocations invocations, ISelecting<TIn, T> select)
 		{
 			_invocations = invocations;
-			_select           = @select;
+			_select      = @select;
 		}
 
 		public async ValueTask<Edit<T>> Get(TIn parameter)
@@ -166,15 +164,16 @@ namespace DragonSpark.Application.Entities.Editing
 
 		public async ValueTask<Edit<TResult>> Get(TIn parameter)
 		{
-			var (context, elements) = await _invoke.Await(parameter);
+			var (context, disposable, elements) = await _invoke.Await(parameter);
 			var evaluate = await _evaluate.Await(elements);
-			return new(new Editor(context), evaluate);
+			return new(new Editor(context, disposable), evaluate);
 		}
 	}
 
 	public class EditExisting<T, TContext> : EditExisting<T> where TContext : DbContext where T : class
 	{
-		protected EditExisting(IContexts<TContext> contexts) : base(contexts.Then().Invocations()) {}
+		protected EditExisting(IContexts<TContext> contexts)
+			: base(new AmbientAwareInvocations(contexts.Then().Invocations())) {}
 	}
 
 	public class EditExisting<T> : ISelecting<T, Edit<T>> where T : class
@@ -198,7 +197,7 @@ namespace DragonSpark.Application.Entities.Editing
 		readonly IEdit<TIn, Leasing<T>> _edit;
 
 		protected EditMany(IContexts<TContext> context, IQuery<TIn, T> query)
-			: this(new Edit<TIn, T, Leasing<T>>(context.Then().Use(query).Get(), ToLease<T>.Default)) {}
+			: this(new Edit<TIn, T, Leasing<T>>(context.Then().Use(query).ForEditing().Get(), ToLease<T>.Default)) {}
 
 		protected EditMany(IEdit<TIn, Leasing<T>> edit) => _edit = edit;
 

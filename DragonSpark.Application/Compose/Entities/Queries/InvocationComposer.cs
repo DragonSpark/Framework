@@ -17,6 +17,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			_query       = query;
 		}
 
+		public InvocationComposer<TIn, T> ForEditing()
+			=> new InvocationComposer<TIn, T>(new AmbientAwareInvocations(_invocations), _query);
+
 		public QueryInvocationComposer<TIn, T> To => new(Get());
 
 		public EditInvocationComposer<TIn, T> Edit => new(Get());

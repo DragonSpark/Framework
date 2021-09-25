@@ -23,10 +23,11 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 
 		public IAsyncEnumerable<T> Elements { get; }
 
-		public void Deconstruct(out DbContext context, out IAsyncEnumerable<T> elements)
+		public void Deconstruct(out DbContext context, out IDisposable disposable, out IAsyncEnumerable<T> elements)
 		{
-			context  = Context;
-			elements = Elements;
+			context    = Context;
+			disposable = _disposable;
+			elements   = Elements;
 		}
 
 		public void Dispose()

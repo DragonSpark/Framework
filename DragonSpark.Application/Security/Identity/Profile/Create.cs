@@ -36,8 +36,8 @@ namespace DragonSpark.Application.Security.Identity.Profile
 
 		public async ValueTask<IdentityResult> Get(Login<T> parameter)
 		{
-			await using var users  = _users.Get();
-			var             result = await users.Subject.CreateAsync(parameter.User).ConfigureAwait(false);
+			using var users  = _users.Get();
+			var       result = await users.Subject.CreateAsync(parameter.User).ConfigureAwait(false);
 			return result;
 		}
 	}

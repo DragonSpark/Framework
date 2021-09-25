@@ -25,9 +25,9 @@ namespace DragonSpark.Application.Compose.Entities
 			=> new(Invocations(), query);
 
 		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
-			=> new EditSelection<TIn, T, TOut>(_subject, select);
+			=> new SelectedEdit<TIn, T, TOut>(_subject, select);
 
-		public IInvocations Invocations() => new AmbientAwareInvocations(new Invocations<T>(_subject));
+		public IInvocations Invocations() => new Invocations<T>(_subject);
 	}
 
 	public sealed class ContextsComposer<TIn, T> where T : DbContext

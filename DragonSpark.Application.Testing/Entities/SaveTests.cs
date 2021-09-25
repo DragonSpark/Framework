@@ -171,5 +171,46 @@ namespace DragonSpark.Application.Testing.Entities
 				return await context.Subjects.SingleAsync();
 			}
 		}
+
+		public class DisposeBenchmarks
+		{
+			readonly IContexts<Context> _contexts;
+
+			public DisposeBenchmarks() : this(new PooledMemoryContexts<Context>()) {}
+
+			DisposeBenchmarks(IContexts<Context> contexts) => _contexts = contexts;
+
+			[GlobalSetup]
+			public async Task GlobalSetup()
+			{
+				await using var context = _contexts.Get();
+				await context.Database.EnsureDeletedAsync();
+				await context.Database.EnsureCreatedAsync();
+				context.Subjects.Add(new Subject { Name = "One" });
+				await context.SaveChangesAsync();
+			}
+
+			[Benchmark(Baseline = true)]
+			public void Synchronous()
+			{
+				using var context = _contexts.Get();
+
+			}
+
+			[Benchmark]
+			public async ValueTask Operation()
+			{
+				await using var context = _contexts.Get();
+			}
+
+			[Benchmark]
+			public ValueTask SynchronousOperation()
+			{
+				using var context = _contexts.Get();
+				return ValueTask.CompletedTask;
+			}
+
+		}
+
 	}
 }

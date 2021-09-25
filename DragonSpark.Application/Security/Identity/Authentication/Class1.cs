@@ -3,7 +3,6 @@ using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication
 {
@@ -11,14 +10,14 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 
 	public interface IAuthentications<T> : IResult<AuthenticationSession<T>> where T : class {}
 
-	public readonly struct AuthenticationSession<T> : IAsyncDisposable where T : class
+	public readonly struct AuthenticationSession<T> : IDisposable where T : class
 	{
-		readonly AsyncServiceScope? _scope;
+		readonly IServiceScope? _scope;
 
-		public AuthenticationSession(SignInManager<T> subject, AsyncServiceScope? scope = null)
+		public AuthenticationSession(SignInManager<T> subject, IServiceScope? scope = null)
 			: this(subject, subject.UserManager, scope) {}
 
-		public AuthenticationSession(SignInManager<T> subject, UserManager<T> users, AsyncServiceScope? scope)
+		public AuthenticationSession(SignInManager<T> subject, UserManager<T> users, IServiceScope? scope)
 		{
 			Subject = subject;
 			Users   = users;
@@ -28,24 +27,27 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 		public SignInManager<T> Subject { get; }
 		public UserManager<T> Users { get; }
 
-		public ValueTask DisposeAsync() => _scope?.DisposeAsync() ?? ValueTask.CompletedTask;
-
 		public void Deconstruct(out SignInManager<T> subject, out UserManager<T> users)
 		{
 			subject = Subject;
 			users   = Users;
 		}
+
+		public void Dispose()
+		{
+			_scope?.Dispose();
+		}
 	}
 
 	sealed class Authentications<T> : IAuthentications<T> where T : class
 	{
-		readonly IServiceScopeFactory _scopes;
+		readonly IScopes _scopes;
 
-		public Authentications(IServiceScopeFactory scopes) => _scopes = scopes;
+		public Authentications(IScopes scopes) => _scopes = scopes;
 
 		public AuthenticationSession<T> Get()
 		{
-			var scope   = _scopes.CreateAsyncScope();
+			var scope   = _scopes.Get();
 			var subject = scope.ServiceProvider.GetRequiredService<SignInManager<T>>();
 			return new(subject, scope);
 		}

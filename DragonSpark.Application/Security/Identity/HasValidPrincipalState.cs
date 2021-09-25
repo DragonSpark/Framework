@@ -12,9 +12,9 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 		{
-			await using var session = _authentications.Get();
-			var             user    = await session.Subject.ValidateSecurityStampAsync(parameter).ConfigureAwait(false);
-			var             result  = user != null;
+			using var session = _authentications.Get();
+			var       user    = await session.Subject.ValidateSecurityStampAsync(parameter).ConfigureAwait(false);
+			var       result  = user != null;
 			return result;
 		}
 	}

@@ -22,9 +22,9 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 
 		public async ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
 		{
-			await using var users   = _users.Get();
-			var             manager = users.Subject;
-			var             user    = await manager.GetUserAsync(parameter);
+			using var users   = _users.Get();
+			var       manager = users.Subject;
+			var       user    = await manager.GetUserAsync(parameter);
 			var result = user != null
 				             ? new StateView<T>(new AuthenticationState<T>(parameter, user),
 				                                manager.SupportsUserSecurityStamp

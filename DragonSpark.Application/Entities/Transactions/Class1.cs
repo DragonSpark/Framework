@@ -53,20 +53,17 @@ namespace DragonSpark.Application.Entities.Transactions
 
 		public IServiceProvider Provider { get; }
 
-		public ValueTask DisposeAsync()
-		{
-			_store.Execute(default);
-			return _instance.DisposeAsync();
-		}
-
-		public ValueTask Get()
-		{
-			return ValueTask.CompletedTask;
-		}
+		public ValueTask Get() => ValueTask.CompletedTask;
 
 		public void Execute(None parameter)
 		{
 			_store.Execute(_instance);
+		}
+
+		public ValueTask DisposeAsync()
+		{
+			_store.Execute(default);
+			return _instance.DisposeAsync();
 		}
 	}
 
@@ -133,21 +130,21 @@ namespace DragonSpark.Application.Entities.Transactions
 
 	public sealed class ScopedTransactions : IScopedTransactions
 	{
-		readonly IScopes                      _scopes;
+		readonly IScoping                      _scoping;
 		readonly IMutable<AsyncServiceScope?> _store;
 
-		public ScopedTransactions(IScopes scopes) : this(scopes, LogicalScope.Default) {}
+		public ScopedTransactions(IScoping scoping) : this(scoping, LogicalScope.Default) {}
 
-		public ScopedTransactions(IScopes scopes, IMutable<AsyncServiceScope?> store)
+		public ScopedTransactions(IScoping scoping, IMutable<AsyncServiceScope?> store)
 		{
-			_scopes = scopes;
+			_scoping = scoping;
 			_store  = store;
 		}
 
-		public IScopedTransaction Get() => new ScopedTransaction(_store, _scopes.Get());
+		public IScopedTransaction Get() => new ScopedTransaction(_store, _scoping.Get());
 	}
 
-	sealed class AmbientAwareContexts<T> : IContexts<T> where T : DbContext
+	/*sealed class AmbientAwareContexts<T> : IContexts<T> where T : DbContext
 	{
 		readonly IContexts<T>               _previous;
 		readonly IResult<IServiceProvider?> _store;
@@ -166,5 +163,5 @@ namespace DragonSpark.Application.Entities.Transactions
 			var result  = current != null ? current.GetRequiredService<T>() : _previous.Get();
 			return result;
 		}
-	}
+	}*/
 }

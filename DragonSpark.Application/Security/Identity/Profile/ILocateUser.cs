@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 
 		public async ValueTask<T?> Get(ExternalLoginInfo parameter)
 		{
-			await using var users = _users.Get();
+			using var users = _users.Get();
 			var result = await users.Subject.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey)
 			                        .ConfigureAwait(false);
 			return result;

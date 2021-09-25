@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Security.Identity
 
 		public async ValueTask<bool> Get(T parameter)
 		{
-			await using var session = _authentications.Get();
+			using var session = _authentications.Get();
 			var (authentication, users) = session;
 			var user = await users.FindByNameAsync(parameter.UserName).ConfigureAwait(false);
 			var result = await authentication.ValidateSecurityStampAsync(user, parameter.SecurityStamp)

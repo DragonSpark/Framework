@@ -7,13 +7,24 @@ namespace DragonSpark.Composition
 {
 	internal class Class1 {}
 
-	public interface IScopes : IResult<AsyncServiceScope> {}
+	public interface IScopes : IResult<IServiceScope> {}
 
 	sealed class Scopes : IScopes
 	{
 		readonly IServiceScopeFactory _scopes;
 
 		public Scopes(IServiceScopeFactory scopes) => _scopes = scopes;
+
+		public IServiceScope Get() => _scopes.CreateScope();
+	}
+
+	public interface IScoping : IResult<AsyncServiceScope> {}
+
+	sealed class Scoping : IScoping
+	{
+		readonly IServiceScopeFactory _scopes;
+
+		public Scoping(IServiceScopeFactory scopes) => _scopes = scopes;
 
 		public AsyncServiceScope Get() => _scopes.CreateAsyncScope();
 	}

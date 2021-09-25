@@ -11,7 +11,15 @@ namespace DragonSpark.Composition
 
 		public void Execute(IServiceCollection parameter)
 		{
-			parameter.Start<IScopes>().Forward<Scopes>().Singleton();
+			parameter.Start<IScopes>()
+			         .Forward<Scopes>()
+			         .Singleton()
+			         //
+			         .Then.Start<IScoping>()
+			         .Forward<Scoping>()
+			         .Singleton()
+				//
+				;
 		}
 	}
 }

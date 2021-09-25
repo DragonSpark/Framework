@@ -21,9 +21,9 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			if (previous.Succeeded)
 			{
 				var (login, user) = parameter;
-				await using var users  = _users.Get();
-				var             local  = await users.Subject.FindByNameAsync(user.UserName).ConfigureAwait(false);
-				var             result = await users.Subject.AddLoginAsync(local, login).ConfigureAwait(false);
+				using var users  = _users.Get();
+				var       local  = await users.Subject.FindByNameAsync(user.UserName).ConfigureAwait(false);
+				var       result = await users.Subject.AddLoginAsync(local, login).ConfigureAwait(false);
 				return result;
 			}
 

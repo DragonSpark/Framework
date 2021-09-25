@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,11 @@ namespace DragonSpark.Application.Security.Identity.Model
 		where T : class
 	{
 		readonly IAuthenticationRequest _authenticate;
-		readonly SignInManager<T>       _authentication;
+		readonly IAuthentications<T>    _authentication;
 		readonly ICreateRequest         _create;
 
 		public ExternalLoginModelActions(IAuthenticationRequest authenticate, ICreateRequest create,
-		                                 SignInManager<T> authentication)
+		                                 IAuthentications<T> authentication)
 		{
 			_authenticate   = authenticate;
 			_create         = create;
@@ -27,8 +28,9 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public IActionResult Get(Challenging parameter)
 		{
 			var (provider, origin) = parameter;
-			var properties = _authentication.ConfigureExternalAuthenticationProperties(provider, origin);
-			var result     = new ChallengeResult(provider, properties);
+			using var authentication = _authentication.Get();
+			var       properties = authentication.Subject.ConfigureExternalAuthenticationProperties(provider, origin);
+			var       result = new ChallengeResult(provider, properties);
 			return result;
 		}
 
