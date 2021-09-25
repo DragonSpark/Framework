@@ -31,8 +31,8 @@ namespace DragonSpark.Application.Entities
 
 		public SessionBody(ISelecting<In<TIn>, TOut?> select, IOperation<In<TSave>> save)
 		{
-			_select    = @select;
-			_save = save;
+			_select = @select;
+			_save   = save;
 		}
 
 		public ValueTask<TOut?> Get(In<TIn> parameter) => _select.Get(parameter);
@@ -66,12 +66,30 @@ namespace DragonSpark.Application.Entities
 		public ValueTask DisposeAsync() => _context.DisposeAsync();
 	}
 
-	public sealed class FormedAdapter<T> : IOperation<T>
+	sealed class FormedAdapter<T, TContext> : IOperation<T> where TContext : DbContext
+	{
+		readonly IContexts<TContext> _contexts;
+		readonly IFormed<T>          _operation;
+
+		public FormedAdapter(IContexts<TContext> contexts, IFormed<T> operation)
+		{
+			_contexts  = contexts;
+			_operation = operation;
+		}
+
+		public async ValueTask Get(T parameter)
+		{
+			await using var context = _contexts.Get();
+			await _operation.Await(new(context, parameter));
+		}
+	}
+
+	sealed class ScopedFormedAdapter<T> : IOperation<T>
 	{
 		readonly DbContext  _context;
 		readonly IFormed<T> _operation;
 
-		public FormedAdapter(DbContext context, IFormed<T> operation)
+		public ScopedFormedAdapter(DbContext context, IFormed<T> operation)
 		{
 			_context   = context;
 			_operation = operation;

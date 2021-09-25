@@ -24,10 +24,14 @@ namespace DragonSpark.Application.Compose.Entities
 		public InvocationComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
 			=> new(Invocations(), query);
 
-		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
-			=> new SelectedEdit<TIn, T, TOut>(_subject, select);
+		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new FormedAdapter<TIn, T>(_subject, formed);
 
 		public IInvocations Invocations() => new Invocations<T>(_subject);
+
+		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
+			=> new SelectForEdit<TIn, TOut>(Editing(), select);
+
+		public IInvocations Editing() => new AmbientAwareInvocations(Invocations());
 	}
 
 	public sealed class ContextsComposer<TIn, T> where T : DbContext

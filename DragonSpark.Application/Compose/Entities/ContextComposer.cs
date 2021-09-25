@@ -25,6 +25,6 @@ namespace DragonSpark.Application.Compose.Entities
 		public ISelecting<TIn, TOut> Form<TIn, TOut>(IForming<TIn, TOut> forming)
 			=> new Scoping<TIn, TOut>(_subject, forming);
 
-		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new FormedAdapter<TIn>(_subject, formed);
+		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new ScopedFormedAdapter<TIn>(_subject, formed);
 	}
 }

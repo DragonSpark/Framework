@@ -28,6 +28,11 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		                         Expression<Func<TIn, T, bool>> where,
 		                         Expression<Func<TIn, IQueryable<T>, IQueryable<TTo>>> select)
 			: base(previous, (@in, q) => select.Invoke(@in, q.Where(x => where.Invoke(@in, x)))) {}
+
+		protected WhereSelection(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+		                         Expression<Func<TIn, T, bool>> where,
+		                         Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
+			: base(previous, (context, @in, q) => select.Invoke(context, @in, q.Where(x => where.Invoke(@in, x)))) {}
 	}
 
 	public class WhereSelection<T, TTo> : WhereSelection<None, T, TTo>

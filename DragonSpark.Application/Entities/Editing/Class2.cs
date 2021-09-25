@@ -4,6 +4,7 @@ using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Memory;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -129,15 +130,12 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public interface IEdit<in TIn, T> : ISelecting<TIn, Edit<T>> {}
 
-	public sealed class SelectedEdit<TIn, TContext, T> : IEdit<TIn, T> where TContext : DbContext
+	public sealed class SelectForEdit<TIn, T> : IEdit<TIn, T>
 	{
 		readonly IInvocations       _invocations;
 		readonly ISelecting<TIn, T> _select;
 
-		public SelectedEdit(IContexts<TContext> contexts, ISelecting<TIn, T> select)
-			: this(new AmbientAwareInvocations(contexts.Then().Invocations()), @select) {}
-
-		public SelectedEdit(IInvocations invocations, ISelecting<TIn, T> select)
+		public SelectForEdit(IInvocations invocations, ISelecting<TIn, T> select)
 		{
 			_invocations = invocations;
 			_select      = @select;
@@ -192,12 +190,25 @@ namespace DragonSpark.Application.Entities.Editing
 		}
 	}
 
+	public class Edit<TIn, T> : Selecting<TIn, Edit<T>>, IEdit<TIn, T>
+	{
+		protected Edit(ISelect<TIn, ValueTask<Edit<T>>> @select) : base(@select) {}
+
+		protected Edit(Func<TIn, ValueTask<Edit<T>>> @select) : base(@select) {}
+	}
+
+	public class Editing<TIn, TContext, T> : Edit<TIn, T> where TContext : DbContext
+	{
+		protected Editing(IContexts<TContext> context, IQuery<TIn, T> query)
+			: base(context.Then().Use(query).Edit.Single()) {}
+	}
+
 	public class EditMany<TIn, TContext, T> : ISelecting<TIn, LeasedEdit<T>> where TContext : DbContext
 	{
 		readonly IEdit<TIn, Leasing<T>> _edit;
 
 		protected EditMany(IContexts<TContext> context, IQuery<TIn, T> query)
-			: this(new Edit<TIn, T, Leasing<T>>(context.Then().Use(query).ForEditing().Get(), ToLease<T>.Default)) {}
+			: this(context.Then().Use(query).Edit.Lease()) {}
 
 		protected EditMany(IEdit<TIn, Leasing<T>> edit) => _edit = edit;
 
