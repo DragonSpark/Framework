@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Model.Sequences.Memory;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Compose.Model.Memory
 {
-	public readonly struct Concatenation<T> : IDisposable, IAsyncDisposable
+	public readonly struct Concatenation<T> : IDisposable
 	{
 		readonly Leasing<T> _first;
 
@@ -29,12 +28,6 @@ namespace DragonSpark.Compose.Model.Memory
 
 			var result = Instance;
 			result.Dispose();
-		}
-
-		public ValueTask DisposeAsync()
-		{
-			Dispose();
-			return Task.CompletedTask.ToOperation();
 		}
 	}
 }

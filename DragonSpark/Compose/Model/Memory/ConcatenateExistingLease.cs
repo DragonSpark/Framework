@@ -17,7 +17,7 @@ namespace DragonSpark.Compose.Model.Memory
 			var span = second.Span;
 			span.CopyTo(first.Remaining.Span);
 
-			return new Concatenation<T>(first, first.Size((uint)(first.Length + span.Length)));
+			return new Concatenation<T>(Leasing<T>.Default, first.Size((uint)(first.Length + span.Length)));
 		}
 	}
 }
