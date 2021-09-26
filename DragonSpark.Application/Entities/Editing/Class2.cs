@@ -28,6 +28,11 @@ namespace DragonSpark.Application.Entities.Editing
 
 		public ValueTask Get() => _context.Get();
 
+		public void Add(object entity)
+		{
+			_context.Add(entity);
+		}
+
 		public void Attach(object entity)
 		{
 			_context.Attach(entity);
@@ -55,13 +60,13 @@ namespace DragonSpark.Application.Entities.Editing
 		}
 	}
 
-	public readonly struct LeasedEdit<T> : IEditor
+	public readonly struct ManyEdit<T> : IEditor
 	{
 		readonly IEditor _context;
 
-		public static implicit operator Memory<T>(LeasedEdit<T> instance) => instance.Subject;
+		public static implicit operator Memory<T>(ManyEdit<T> instance) => instance.Subject;
 
-		public LeasedEdit(IEditor context, Leasing<T> subject)
+		public ManyEdit(IEditor context, Leasing<T> subject)
 		{
 			Subject  = subject;
 			_context = context;
@@ -76,6 +81,11 @@ namespace DragonSpark.Application.Entities.Editing
 		}
 
 		public ValueTask Get() => _context.Get();
+
+		public void Add(object entity)
+		{
+			_context.Add(entity);
+		}
 
 		public void Attach(object entity)
 		{
@@ -92,41 +102,6 @@ namespace DragonSpark.Application.Entities.Editing
 			_context.Remove(entity);
 		}
 	}
-
-	/*public class EditSingle<TIn, TContext, T> : Edit<TIn, T> where TContext : DbContext
-	{
-		protected EditSingle(IContexts<TContext> contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> query,
-		                     Action<T> configure)
-			: this(contexts, query.Then().Get(), configure) {}
-
-		protected EditSingle(IContexts<TContext> contexts, IQuery<TIn, T> query, Action<T> configure)
-			: base(query.Then().Invoke(contexts).Edit.Single(), configure) {}
-	}*/
-
-	/*public class Edit<TIn, T> : IOperation<TIn>
-	{
-		readonly IEdit<TIn, T>   _edit;
-		readonly Action<Edit<T>> _configure;
-
-		public Edit(IEdit<TIn, T> edit, ICommand<T> configure) : this(edit, configure.Execute) {}
-
-		public Edit(IEdit<TIn, T> edit, Action<T> configure) : this(edit, x => configure(x.Subject)) {}
-
-		public Edit(IEdit<TIn, T> edit, ICommand<Edit<T>> configure) : this(edit, configure.Execute) {}
-
-		public Edit(IEdit<TIn, T> edit, Action<Edit<T>> configure)
-		{
-			_edit      = edit;
-			_configure = configure;
-		}
-
-		public async ValueTask Get(TIn parameter)
-		{
-			using var edit = await _edit.Await(parameter);
-			_configure(edit);
-			await edit.Context.SaveChangesAsync().ConfigureAwait(false);
-		}
-	}*/
 
 	public interface IEdit<in TIn, T> : ISelecting<TIn, Edit<T>> {}
 
@@ -203,7 +178,9 @@ namespace DragonSpark.Application.Entities.Editing
 			: base(context.Then().Use(query).Edit.Single()) {}
 	}
 
-	public class EditMany<TIn, TContext, T> : ISelecting<TIn, LeasedEdit<T>> where TContext : DbContext
+	public interface IEditMany<in TIn, T> : ISelecting<TIn, ManyEdit<T>> {}
+
+	public class EditMany<TIn, TContext, T> : IEditMany<TIn, T> where TContext : DbContext
 	{
 		readonly IEdit<TIn, Leasing<T>> _edit;
 
@@ -212,15 +189,40 @@ namespace DragonSpark.Application.Entities.Editing
 
 		protected EditMany(IEdit<TIn, Leasing<T>> edit) => _edit = edit;
 
-		public async ValueTask<LeasedEdit<T>> Get(TIn parameter)
+		public async ValueTask<ManyEdit<T>> Get(TIn parameter)
 		{
 			var (editor, subject) = await _edit.Await(parameter);
 			return new(editor, subject);
 		}
 	}
 
+	public class EditCombined<TIn, TContext, T> : IEditMany<TIn, T> where TContext : DbContext
+	{
+		readonly IEdit<TIn, Leasing<T>> _first, _second;
+
+		protected EditCombined(IContexts<TContext> context, IQuery<TIn, T> first, IQuery<TIn, T> second)
+			: this(context.Then().Use(first).Edit.Lease(), context.Then().Use(second).Edit.Lease()) {}
+
+		protected EditCombined(IEdit<TIn, Leasing<T>> first, IEdit<TIn, Leasing<T>> second)
+		{
+			_first  = first;
+			_second = second;
+		}
+
+		public async ValueTask<ManyEdit<T>> Get(TIn parameter)
+		{
+			var (editor, first) = await _first.Await(parameter);
+			var (_, second)     = await _second.Await(parameter);
+			var combined = first.Then().Concat(second).Result();
+			second.Dispose();
+			return new(editor, combined);
+		}
+	}
+
 	public interface IEditor : IOperation, IDisposable
 	{
+		void Add(object entity);
+
 		void Attach(object entity);
 
 		void Update(object entity);
@@ -244,6 +246,11 @@ namespace DragonSpark.Application.Entities.Editing
 		public async ValueTask Get()
 		{
 			await _context.SaveChangesAsync().ConfigureAwait(false);
+		}
+
+		public void Add(object entity)
+		{
+			_context.Add(entity);
 		}
 
 		public void Attach(object entity)

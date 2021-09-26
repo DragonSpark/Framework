@@ -4,6 +4,7 @@ using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,10 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public QueryComposer<TIn, TOther> OfType<TOther>() where TOther : class, T
 			=> Select(x => x.OfType<TOther>());
 
+		public QueryComposer<TIn, T> One() => Take(1);
+
+		public QueryComposer<TIn, T> Take(int number) => Select(x => x.Take(number));
+
 		public QueryComposer<TIn, TTo> Select<TTo>(Expression<Func<T, TTo>> select)
 			=> Next(new Select<TIn, T, TTo>(_subject.Get(), select));
 
@@ -79,11 +84,15 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			Select<TTo>(Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
 			=> Next(new Combine<TIn, T, TTo>(_subject.Get(), select));
 
+		public QueryComposer<TIn, TTo> SelectMany<TTo>(IQuery<T, TTo> query) => SelectMany(query.Get());
+
+		public QueryComposer<TIn, TTo> SelectMany<TTo>(Expression<Func<DbContext, T, IQueryable<TTo>>> select)
+			=> Select((context, queryable) => queryable.SelectMany(x => select.Invoke(context, x)));
+
 		public QueryComposer<TIn, TTo> SelectMany<TTo>(Expression<Func<T, IEnumerable<TTo>>> select)
 			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
-		public QueryComposer<TIn, TTo> SelectMany<TTo>(
-			Expression<Func<TIn, T, IEnumerable<TTo>>> select)
+		public QueryComposer<TIn, TTo> SelectMany<TTo>(Expression<Func<TIn, T, IEnumerable<TTo>>> select)
 			=> Next(new SelectMany<TIn, T, TTo>(_subject.Get(), select));
 
 		public IntroducedQueryComposer<TIn, T, TOther> Introduce<TOther>(IQuery<TOther> other)
