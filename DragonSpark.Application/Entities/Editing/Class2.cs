@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	internal class Class2 {}
-
 	public readonly struct Edit<T> : IEditor
 	{
 		readonly IEditor _context;

@@ -20,9 +20,9 @@ namespace DragonSpark.Application.Entities
 
 	public class Formed<T> : Operation<In<T>>, IFormed<T>
 	{
-		public Formed(ISelect<In<T>, ValueTask> @select) : base(@select) {}
+		protected Formed(ISelect<In<T>, ValueTask> @select) : base(@select) {}
 
-		public Formed(Func<In<T>, ValueTask> @select) : base(@select) {}
+		protected Formed(Func<In<T>, ValueTask> @select) : base(@select) {}
 	}
 
 	public class AddFormed<T, TTo> : IFormed<T> where TTo : class
