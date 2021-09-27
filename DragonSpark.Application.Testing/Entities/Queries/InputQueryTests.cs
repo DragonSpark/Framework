@@ -35,7 +35,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var evaluate =
-				new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Invocations(),
+				new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Scopes(),
 				                                    Selected.Default);
 			{
 				var results = await evaluate.Await("One");
@@ -106,7 +106,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await context.SaveChangesAsync();
 			}
 
-			var evaluation = new EvaluateToArray<string, string>(factory.Then().Invocations(), Selected.Default);
+			var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 			{
 				var results = await evaluation.Await("One");
 				var open    = results.Open();
@@ -138,7 +138,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 			var evaluate =
-				new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Invocations(),
+				new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Scopes(),
 				                                   ComplexSelected.Default);
 			{
 				var results = await evaluate.Await(new(id, "One"));

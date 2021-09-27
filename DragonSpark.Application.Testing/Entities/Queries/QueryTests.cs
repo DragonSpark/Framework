@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var contexts = new Contexts<Context>(factory);
-			var invoke   = new Reading<None, Subject>(new Scopes<Context>(contexts), Query.Default);
+			var invoke   = new Reading<None, Subject>(new FactoryScopes<Context>(contexts), Query.Default);
 			{
 				using var invocation = await invoke.Get(None.Default);
 				var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
@@ -256,16 +256,16 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 		sealed class SubjectsNotTwo : EvaluateToArray<None, Subject>
 		{
-			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts.Then().Invocations(), Query.Default) {}
+			public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts.Then().Scopes(), Query.Default) {}
 
 			public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query)
-				: base(contexts.Then().Invocations(), query.Get()) {}
+				: base(contexts.Then().Scopes(), query.Get()) {}
 		}
 
 		sealed class SubjectsNotWithParameter : EvaluateToArray<string, Subject>
 		{
 			public SubjectsNotWithParameter(IContexts<Context> contexts)
-				: base(contexts.Then().Invocations(), Parameter.Default) {}
+				: base(contexts.Then().Scopes(), Parameter.Default) {}
 		}
 
 		public class Benchmarks

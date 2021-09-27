@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class Attach<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
+	public class Attach<TContext, T> : ContextualModify<TContext, T> where TContext : DbContext where T : class
 	{
 		protected Attach(IContexts<TContext> contexts, IOperation<Edit<T>> modification)
 			: this(contexts, modification.Await) {}
@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Entities.Editing
 		Attach() : base(x => x.Attach(x.Subject)) {}
 	}
 
-	public class Attach<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
+	public class Attach<TIn, TContext, T> : ContextualModify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
 		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 			: this(contexts, query, modification.Await) {}

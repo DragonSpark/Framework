@@ -70,7 +70,7 @@ namespace DragonSpark.Application.Entities.Editing
 	}
 	*/
 
-	public class Save<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
+	public class Save<TContext, T> : ContextualModify<TContext, T> where TContext : DbContext where T : class
 	{
 		public Save(IContexts<TContext> contexts) : base(contexts, Update<T>.Default.Then().Operation()) {}
 	}

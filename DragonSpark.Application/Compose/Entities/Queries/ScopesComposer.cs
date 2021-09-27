@@ -9,13 +9,13 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 {
 	public sealed class ScopesComposer<TIn, T> : IResult<IReading<TIn, T>>
 	{
-		readonly IScopes   _scopes;
+		readonly IScopes        _scopes;
 		readonly IQuery<TIn, T> _query;
 
 		public ScopesComposer(IScopes scopes, IQuery<TIn, T> query)
 		{
 			_scopes = scopes;
-			_query       = query;
+			_query  = query;
 		}
 
 		public QueryInvocationComposer<TIn, T> To => new(Get());

@@ -9,6 +9,7 @@ namespace DragonSpark.Application.Entities
 
 	public readonly record struct In<T>(DbContext Context, T Parameter);
 
+
 	sealed class Contextual<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly IScopes             _scopes;
@@ -24,7 +25,7 @@ namespace DragonSpark.Application.Entities
 		{
 			var (subject, boundary) = _scopes.Get();
 			using var _      = await boundary.Await();
-			var       result = await _context.Await(new In<TIn>(subject, parameter));
+			var       result = await _context.Await(new(subject, parameter));
 			return result;
 		}
 	}

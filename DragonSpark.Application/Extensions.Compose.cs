@@ -11,7 +11,6 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
-using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
@@ -31,7 +30,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application
@@ -107,6 +105,8 @@ namespace DragonSpark.Application
 
 		public static ContextsComposer<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
+		public static ScopesComposer Then(this IScopes @this) => new(@this);
+
 		public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 
 		public static TrackingComposer<TIn, T> Tracking<TIn, T>(this QueryComposer<TIn, T> @this) where T : class
@@ -135,14 +135,6 @@ namespace DragonSpark.Application
 		//
 
 		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
-
-		public static IForming<T> Then<T>(this IForming<None, T> @this)
-			=> @this as IForming<T> ?? new Forming<T>(@this.Get);
-
-		public static IForming<TIn, T> Out<TIn, T>(this Selector<In<TIn>, ValueTask<T>> @this)
-			=> @this.Get().Out();
-		public static IForming<TIn, T> Out<TIn, T>(this ISelect<In<TIn>, ValueTask<T>> @this)
-			=> @this as IForming<TIn, T> ?? new Forming<TIn, T>(@this);
 
 		public static OperationResultSelector<T?> Handle<T>(this OperationResultSelector<T?> @this,
 		                                                   IExceptions exceptions, Type? reportedType = null)

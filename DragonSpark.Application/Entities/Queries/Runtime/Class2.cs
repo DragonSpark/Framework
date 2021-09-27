@@ -13,13 +13,13 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 	public class ContextRuntimeQuery<TContext, TOut> : RuntimeQuery<TOut> where TContext : DbContext
 	{
 		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TOut> query)
-			: base(new Scopes<TContext>(contexts), query) {}
+			: base(new FactoryScopes<TContext>(contexts), query) {}
 	}
 
 	public class ContextRuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
 	{
 		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
-			: base(new Scopes<TContext>(contexts), query) {}
+			: base(new FactoryScopes<TContext>(contexts), query) {}
 	}
 
 	sealed class CompileAdapter<TIn, TOut> : ISelect<(DbContext, TIn), IQueryable<TOut>>
@@ -48,7 +48,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
 		protected RuntimeQuery(DbContext context, IQuery<TIn, TOut> query)
-			: this(new Scopes(context), query) {}
+			: this(new SessionScopes(context), query) {}
 
 		public RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query)
 			: this(scopes, query.Get().Expand().Compile()) {}

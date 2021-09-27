@@ -74,7 +74,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		sealed class SingleSubject : EvaluateToSingle<string, Subject>
 		{
 			public SingleSubject(IContexts<ContextWithData> contexts)
-				: base(contexts.Then().Invocations(), SelectSubjectsByName.Default) {}
+				: base(contexts.Then().Scopes(), SelectSubjectsByName.Default) {}
 		}
 
 		public class Benchmarks

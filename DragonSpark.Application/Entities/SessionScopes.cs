@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class Scopes<T> : IScopes where T : DbContext
+	public interface IFactoryScopes : IScopes {}
+
+	public interface ISessionScopes : IScopes {}
+
+	public class FactoryScopes<T> : IFactoryScopes where T : DbContext
 	{
 		readonly IContexts<T> _contexts;
 
-		public Scopes(IContexts<T> contexts) => _contexts = contexts;
+		public FactoryScopes(IContexts<T> contexts) => _contexts = contexts;
 
 		public Scope Get()
 		{
@@ -25,13 +29,13 @@ namespace DragonSpark.Application.Entities
 		}
 	}
 
-	sealed class Scopes : DragonSpark.Model.Results.Instance<Scope>, IScopes
+	public class SessionScopes : DragonSpark.Model.Results.Instance<Scope>, ISessionScopes
 	{
-		public Scopes(DbContext context) : this(context, Locks.Default.Get(context)) {}
+		public SessionScopes(DbContext context) : this(context, Locks.Default.Get(context)) {}
 
-		public Scopes(DbContext context, AsyncLock @lock) : this(new Scope(context, new Boundary(@lock))) {}
+		public SessionScopes(DbContext context, AsyncLock @lock) : this(new Scope(context, new Boundary(@lock))) {}
 
-		public Scopes(Scope instance) : base(instance) {}
+		public SessionScopes(Scope instance) : base(instance) {}
 
 		sealed class Boundary : IBoundary
 		{

@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class SelectedAttach<TContext, TFrom, TTo> : Modify<TContext, TFrom>
+	public class SelectedAttach<TContext, TFrom, TTo> : ContextualModify<TContext, TFrom>
 		where TContext : DbContext where TTo : class
 	{
 		protected SelectedAttach(IContexts<TContext> contexts, IOperation<Edit<TFrom>> from, Func<TFrom, TTo> select)

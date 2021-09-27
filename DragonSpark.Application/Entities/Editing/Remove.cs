@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class Remove<TContext, T> : Modify<TContext, T> where TContext : DbContext where T : class
+	public class Remove<TContext, T> : ContextualModify<TContext, T> where TContext : DbContext where T : class
 	{
 		protected Remove(IContexts<TContext> contexts) : base(contexts, Remove<T>.Default.Then().Operation()) {}
 	}
@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Entities.Editing
 		Remove() : base(x => x.Remove(x.Subject)) {}
 	}
 
-	public class Remove<TIn, TContext, T> : Modify<TIn, TContext, T> where TContext : DbContext where T : class
+	public class Remove<TIn, TContext, T> : ContextualModify<TIn, TContext, T> where TContext : DbContext where T : class
 	{
 		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<T> configure)
 			: this(contexts, query, configure.Await) {}

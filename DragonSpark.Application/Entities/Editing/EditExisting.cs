@@ -24,6 +24,6 @@ namespace DragonSpark.Application.Entities.Editing
 	public class EditExisting<T, TContext> : EditExisting<T> where TContext : DbContext where T : class
 	{
 		protected EditExisting(IContexts<TContext> contexts)
-			: base(new AmbientAwareScopes(contexts.Then().Invocations())) {}
+			: base(new AmbientAwareScopes(contexts.Then().Scopes())) {}
 	}
 }

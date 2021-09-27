@@ -1,11 +1,12 @@
 ﻿using DragonSpark.Application.Entities.Editing;
+using DragonSpark.Compose;
 using DragonSpark.Runtime;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity
 {
-	sealed class MarkModified<TContext, T> : IMarkModified<T> 
+	sealed class MarkModified<TContext, T> : IMarkModified<T>
 		where TContext : DbContext
 		where T : IdentityUser
 	{
@@ -20,10 +21,10 @@ namespace DragonSpark.Application.Security.Identity
 			_time = time;
 		}
 
-		public ValueTask Get(T parameter)
+		public async ValueTask Get(T parameter)
 		{
 			parameter.Modified = _time.Get();
-			return _save.Get(parameter);
+			await _save.Await(parameter);
 		}
 	}
 }
