@@ -14,14 +14,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToCount(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		public EvaluateToCount(IInvoke<None, T> invoke) : base(invoke) {}
+		public EvaluateToCount(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToCount<TIn, T> : Evaluate<TIn, T, uint>
 	{
 		public EvaluateToCount(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		public EvaluateToCount(IInvoke<TIn, T> invoke) : base(invoke, ToCount<T>.Default) {}
+		public EvaluateToCount(IReading<TIn, T> reading) : base(reading, ToCount<T>.Default) {}
 	}
 }

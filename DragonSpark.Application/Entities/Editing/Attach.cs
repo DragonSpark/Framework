@@ -36,13 +36,13 @@ namespace DragonSpark.Application.Entities.Editing
 		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(contexts, query, Attach<T>.Default.Then().Operation().Append(configure)) {}
 
-		protected Attach(IEdit<TIn, T> @select, IOperation<T> configure) : this(@select, configure.Await) {}
+		protected Attach(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
 
-		protected Attach(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
+		protected Attach(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
-		protected Attach(IEdit<TIn, T> @select, IOperation<Edit<T>> configure) : this(@select, configure.Await) {}
+		protected Attach(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
 
-		protected Attach(IEdit<TIn, T> @select, Await<Edit<T>> configure)
-			: base(@select, Attach<T>.Default.Then().Operation().Append(configure)) {}
+		protected Attach(IEdit<TIn, T> select, Await<Edit<T>> configure)
+			: base(select, Attach<T>.Default.Then().Operation().Append(configure)) {}
 	}
 }

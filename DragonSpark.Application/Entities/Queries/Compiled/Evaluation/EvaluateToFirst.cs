@@ -14,14 +14,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		protected EvaluateToFirst(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		protected EvaluateToFirst(IInvoke<None, T> invoke) : base(invoke) {}
+		protected EvaluateToFirst(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToFirst<TIn, T> : Evaluate<TIn, T, T>
 	{
 		protected EvaluateToFirst(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToFirst(IInvoke<TIn, T> invoke) : base(invoke, ToFirst<T>.Default) {}
+		protected EvaluateToFirst(IReading<TIn, T> reading) : base(reading, ToFirst<T>.Default) {}
 	}
 }

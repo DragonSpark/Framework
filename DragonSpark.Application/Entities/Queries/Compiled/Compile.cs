@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled
 {
-	sealed class Compile<TIn, TOut> : ISelect<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IForm<TIn, TOut>>
+	sealed class Compile<TIn, TOut> : ISelect<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IElements<TIn, TOut>>
 	{
 		public static Compile<TIn, TOut> Default { get; } = new Compile<TIn, TOut>();
 
@@ -23,7 +23,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 			_types    = types;
 		}
 
-		public IForm<TIn, TOut> Get(Expression<Func<DbContext, TIn, IQueryable<TOut>>> parameter)
+		public IElements<TIn, TOut> Get(Expression<Func<DbContext, TIn, IQueryable<TOut>>> parameter)
 		{
 			var (lambda, types, delegates) = new ParameterUsageEditor(parameter).Rewrite();
 			switch (types.Length)

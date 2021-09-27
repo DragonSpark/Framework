@@ -233,6 +233,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 			where TContext : DbContext
 			=> new(new Scopes<TContext>(contexts), _subject);
 
-		public FormComposer<TIn, T> Form => new(new Form<TIn, T>(_subject));
+		public FormComposer<TIn, T> Form => new(new Elements<TIn, T>(_subject));
 	}
 }

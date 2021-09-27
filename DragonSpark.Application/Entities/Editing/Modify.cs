@@ -20,9 +20,9 @@ namespace DragonSpark.Application.Entities.Editing
 		protected Modify(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: this(query.Then().Invoke(contexts).Edit.Single(), configure) {}
 
-		protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(@select, configure.Await) {}
+		protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
 
-		protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
+		protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
 		protected Modify(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
 

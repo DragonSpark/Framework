@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Security.Identity.Claims.Access
 		public AccessClaim(IReadClaim read, Func<string, T> select, Claim<T> @default)
 		{
 			_read    = read;
-			_select  = @select;
+			_select  = select;
 			_default = @default;
 		}
 

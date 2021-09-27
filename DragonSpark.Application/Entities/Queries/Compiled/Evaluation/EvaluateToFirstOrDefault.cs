@@ -16,15 +16,15 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		                                   Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		protected EvaluateToFirstOrDefault(IInvoke<None, T> invoke) : base(invoke) {}
+		protected EvaluateToFirstOrDefault(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToFirstOrDefault<TIn, T> : Evaluate<TIn, T, T?>
 	{
 		protected EvaluateToFirstOrDefault(IScopes scopes,
 		                                   Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToFirstOrDefault(IInvoke<TIn, T> invoke) : base(invoke, ToFirstOrDefault<T>.Default) {}
+		protected EvaluateToFirstOrDefault(IReading<TIn, T> reading) : base(reading, ToFirstOrDefault<T>.Default) {}
 	}
 }

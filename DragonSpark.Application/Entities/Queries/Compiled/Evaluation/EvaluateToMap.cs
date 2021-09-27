@@ -17,8 +17,8 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		protected EvaluateToMap(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression,
 		                        Func<T, TKey> key) : base(scopes, expression, key) {}
 
-		protected EvaluateToMap(IInvoke<None, T> invoke, IEvaluate<T, Dictionary<TKey, T>> evaluate)
-			: base(invoke, evaluate) {}
+		protected EvaluateToMap(IReading<None, T> reading, IEvaluate<T, Dictionary<TKey, T>> evaluate)
+			: base(reading, evaluate) {}
 	}
 
 	public class EvaluateToMap<TIn, T, TKey> : Evaluate<TIn, T, Dictionary<TKey, T>>
@@ -26,9 +26,9 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 	{
 		protected EvaluateToMap(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression,
 		                        Func<T, TKey> key)
-			: this(new Invoke<TIn, T>(scopes, expression), new ToDictionary<T, TKey>(key)) {}
+			: this(new Reading<TIn, T>(scopes, expression), new ToDictionary<T, TKey>(key)) {}
 
-		protected EvaluateToMap(IInvoke<TIn, T> invoke, IEvaluate<T, Dictionary<TKey, T>> evaluate)
-			: base(invoke, evaluate) {}
+		protected EvaluateToMap(IReading<TIn, T> reading, IEvaluate<T, Dictionary<TKey, T>> evaluate)
+			: base(reading, evaluate) {}
 	}
 }

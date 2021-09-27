@@ -60,7 +60,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			counter.Get().Should().Be(1);
 
 			var contexts = new Contexts<Context>(factory);
-			var invoke   = new Invoke<None, Subject>(new Scopes<Context>(contexts), Query.Default);
+			var invoke   = new Reading<None, Subject>(new Scopes<Context>(contexts), Query.Default);
 			{
 				using var invocation = await invoke.Get(None.Default);
 				var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();

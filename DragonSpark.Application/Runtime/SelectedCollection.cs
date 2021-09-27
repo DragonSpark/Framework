@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Runtime
 		public SelectedCollection(IEnumerable<T> list, Func<T, TValue> select, IEqualityComparer<TValue> equality)
 			: base(list)
 		{
-			_select   = @select;
+			_select   = select;
 			_equality = equality;
 		}
 

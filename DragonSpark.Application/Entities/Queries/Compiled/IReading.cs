@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities.Queries.Compiled
 {
-	public interface IInvoke<in TIn, T> : ISelecting<TIn, Invoke<T>> {}
+	public interface IReading<in TIn, T> : ISelecting<TIn, Reading<T>> {}
 }

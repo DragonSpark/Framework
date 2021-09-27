@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled
 {
-	sealed class Compiled<TIn, TOut> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, IAsyncEnumerable<TOut>> _select;
 
@@ -21,7 +20,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		public IAsyncEnumerable<TOut> Get(In<TIn> parameter) => _select(parameter.Context);
 	}
 
-	sealed class Compiled<TIn, TOut, T1> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                               _first;
@@ -47,7 +46,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                   _first;
@@ -79,7 +78,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                       _first;
@@ -117,7 +116,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                           _first;
@@ -158,7 +157,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                               _first;
@@ -203,7 +202,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                   _first;
@@ -253,7 +252,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                       _first;
@@ -306,7 +305,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                           _first;
@@ -362,7 +361,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		}
 	}
 
-	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IForm<TIn, TOut>
+	sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IElements<TIn, TOut>
 	{
 		readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> _select;
 		readonly Func<TIn, T1>                                                               _first;

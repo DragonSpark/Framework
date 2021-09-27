@@ -18,7 +18,7 @@ namespace DragonSpark.Application.Security.Identity.Claims.Access
 		public CoalescedAccessClaim(Array<IReadClaim> read, Func<string, T> select, Claim<T> @default)
 		{
 			_read    = read;
-			_select  = @select;
+			_select  = select;
 			_default = @default;
 		}
 

@@ -7,7 +7,7 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
 {
-	public sealed class ScopesComposer<TIn, T> : IResult<IInvoke<TIn, T>>
+	public sealed class ScopesComposer<TIn, T> : IResult<IReading<TIn, T>>
 	{
 		readonly IScopes   _scopes;
 		readonly IQuery<TIn, T> _query;
@@ -29,6 +29,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public IRuntimeQuery<TIn, T> Compile() => new RuntimeQuery<TIn, T>(_scopes, _query);
 
-		public IInvoke<TIn, T> Get() => new Invoke<TIn, T>(_scopes, _query.Get());
+		public IReading<TIn, T> Get() => new Reading<TIn, T>(_scopes, _query.Get());
 	}
 }

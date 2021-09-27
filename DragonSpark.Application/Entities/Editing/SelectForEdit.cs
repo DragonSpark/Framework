@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Entities.Editing
 		public SelectForEdit(IScopes scopes, ISelecting<TIn, T> select)
 		{
 			_scopes = scopes;
-			_select = @select;
+			_select = select;
 		}
 
 		public async ValueTask<Edit<T>> Get(TIn parameter)

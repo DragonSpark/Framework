@@ -23,8 +23,8 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		                                    Func<T, TValue> value)
 			: base(scopes, expression, key, value) {}
 
-		protected EvaluateToMappedSelection(IInvoke<None, T> invoke, Func<T, TKey> key, Func<T, TValue> value)
-			: base(invoke, key, value) {}
+		protected EvaluateToMappedSelection(IReading<None, T> reading, Func<T, TKey> key, Func<T, TValue> value)
+			: base(reading, key, value) {}
 	}
 
 	public class EvaluateToMappedSelection<TIn, T, TKey, TValue> : Evaluate<TIn, T, Dictionary<TKey, TValue>>
@@ -34,9 +34,9 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		protected EvaluateToMappedSelection(IScopes scopes,
 		                                    Expression<Func<DbContext, TIn, IQueryable<T>>> expression,
 		                                    Func<T, TKey> key, Func<T, TValue> value)
-			: this(new Invoke<TIn, T>(scopes, expression), key, value) {}
+			: this(new Reading<TIn, T>(scopes, expression), key, value) {}
 
-		protected EvaluateToMappedSelection(IInvoke<TIn, T> invoke, Func<T, TKey> key, Func<T, TValue> value)
-			: base(invoke, new ToDictionary<T, TKey, TValue>(key, value)) {}
+		protected EvaluateToMappedSelection(IReading<TIn, T> reading, Func<T, TKey> key, Func<T, TValue> value)
+			: base(reading, new ToDictionary<T, TKey, TValue>(key, value)) {}
 	}
 }

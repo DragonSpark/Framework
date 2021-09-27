@@ -15,14 +15,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToAny(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		public EvaluateToAny(IInvoke<None, T> invoke) : base(invoke) {}
+		public EvaluateToAny(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToAny<TIn, T> : Evaluate<TIn, T, bool>, IDepending<TIn>
 	{
 		protected EvaluateToAny(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToAny(IInvoke<TIn, T> invoke) : base(invoke, ToAny<T>.Default) {}
+		protected EvaluateToAny(IReading<TIn, T> reading) : base(reading, ToAny<T>.Default) {}
 	}
 }

@@ -14,14 +14,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		public EvaluateToSingle(IInvoke<None, T> invoke) : base(invoke) {}
+		public EvaluateToSingle(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToSingle<TIn, T> : Evaluate<TIn, T, T>
 	{
 		protected EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToSingle(IInvoke<TIn, T> invoke) : base(invoke, ToSingle<T>.Default) {}
+		protected EvaluateToSingle(IReading<TIn, T> reading) : base(reading, ToSingle<T>.Default) {}
 	}
 }

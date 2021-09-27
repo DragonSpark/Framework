@@ -10,18 +10,18 @@ namespace DragonSpark.Application.Entities.Editing
 {
 	public class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 	{
-		readonly IInvoke<TIn, T>       _invoke;
+		readonly IReading<TIn, T>       _reading;
 		readonly IEvaluate<T, TResult> _evaluate;
 
-		public Edit(IInvoke<TIn, T> invoke, IEvaluate<T, TResult> evaluate)
+		public Edit(IReading<TIn, T> reading, IEvaluate<T, TResult> evaluate)
 		{
-			_invoke   = invoke;
+			_reading   = reading;
 			_evaluate = evaluate;
 		}
 
 		public async ValueTask<Edit<TResult>> Get(TIn parameter)
 		{
-			var (context, disposable, elements) = await _invoke.Await(parameter);
+			var (context, disposable, elements) = await _reading.Await(parameter);
 			var evaluate = await _evaluate.Await(elements);
 			return new(new Editor(context, disposable), evaluate);
 		}
@@ -75,8 +75,8 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public class Edit<TIn, T> : Selecting<TIn, Edit<T>>, IEdit<TIn, T>
 	{
-		protected Edit(ISelect<TIn, ValueTask<Edit<T>>> @select) : base(@select) {}
+		protected Edit(ISelect<TIn, ValueTask<Edit<T>>> select) : base(select) {}
 
-		protected Edit(Func<TIn, ValueTask<Edit<T>>> @select) : base(@select) {}
+		protected Edit(Func<TIn, ValueTask<Edit<T>>> select) : base(select) {}
 	}
 }

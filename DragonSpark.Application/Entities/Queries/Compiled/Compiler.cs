@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled
 {
-	sealed class Compiler<TIn, TOut> : Select<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IForm<TIn, TOut>>
+	sealed class Compiler<TIn, TOut> : Select<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IElements<TIn, TOut>>
 	{
 		public static Compiler<TIn, TOut> Default { get; } = new Compiler<TIn, TOut>();
 

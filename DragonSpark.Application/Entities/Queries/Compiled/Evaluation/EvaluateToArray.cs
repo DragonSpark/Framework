@@ -15,14 +15,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		public EvaluateToArray(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		public EvaluateToArray(IInvoke<None, T> invoke) : base(invoke) {}
+		public EvaluateToArray(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToArray<TIn, T> : Evaluate<TIn, T, Array<T>>
 	{
 		public EvaluateToArray(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
+		protected EvaluateToArray(IReading<TIn, T> reading) : base(reading, ToArray<T>.Default) {}
 	}
 }

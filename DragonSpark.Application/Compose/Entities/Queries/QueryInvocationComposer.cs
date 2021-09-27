@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 {
 	public sealed class QueryInvocationComposer<TIn, T>
 	{
-		readonly IInvoke<TIn, T> _subject;
+		readonly IReading<TIn, T> _subject;
 
-		public QueryInvocationComposer(IInvoke<TIn, T> subject) => _subject = subject;
+		public QueryInvocationComposer(IReading<TIn, T> subject) => _subject = subject;
 
 		public ISelecting<TIn, Array<T>> Array() => new Evaluate<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 

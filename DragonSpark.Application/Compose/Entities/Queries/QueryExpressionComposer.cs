@@ -14,7 +14,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public QueryExpressionComposer(Expression<Func<DbContext, TIn, IQueryable<T>>> subject) => _subject = subject;
 
-		public IForm<TIn, T> Compile() => Compiler<TIn, T>.Default.Get(_subject);
+		public IElements<TIn, T> Compile() => Compiler<TIn, T>.Default.Get(_subject);
 
 		public IQuery<TIn, T> Get() => new Query<TIn, T>(_subject);
 	}

@@ -26,9 +26,23 @@ namespace DragonSpark.Application.Entities.Editing
 		}
 	}
 
+	public sealed class Add<T> : IModify<T> where T : class
+	{
+		public static Add<T> Default { get; } = new ();
+
+		Add() {}
+
+		public void Execute(Edit<T> parameter)
+		{
+			var (context, subject) = parameter;
+			context.Add(subject);
+		}
+	}
+
+
 	public sealed class Update<T> : IModify<T> where T : class
 	{
-		public static Update<T> Default { get; } = new Update<T>();
+		public static Update<T> Default { get; } = new();
 
 		Update() {}
 

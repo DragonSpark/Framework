@@ -9,8 +9,8 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 {
 	public class Where<T> : Where<None, T>, IQuery<T>
 	{
-		public Where(Expression<Func<DbContext, None, IQueryable<T>>> previous, Expression<Func<T, bool>> @where)
-			: base(previous, @where) {}
+		public Where(Expression<Func<DbContext, None, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
+			: base(previous, where) {}
 
 		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
 			: base(previous.Then().Accept(), where) {}

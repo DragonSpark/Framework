@@ -36,13 +36,13 @@ namespace DragonSpark.Application.Entities.Editing
 		protected Remove(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(contexts, query, Start.An.Operation(configure).Append(Remove<T>.Default)) {}
 
-		protected Remove(IEdit<TIn, T> @select, IOperation<T> configure) : this(@select, configure.Await) {}
+		protected Remove(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
 
-		protected Remove(IEdit<TIn, T> @select, Await<T> configure) : this(@select, x => configure(x.Subject)) {}
+		protected Remove(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
-		protected Remove(IEdit<TIn, T> @select, IOperation<Edit<T>> configure) : this(@select, configure.Await) {}
+		protected Remove(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
 
-		protected Remove(IEdit<TIn, T> @select, Await<Edit<T>> configure)
-			: base(@select, Start.An.Operation(configure).Append(Remove<T>.Default)) {}
+		protected Remove(IEdit<TIn, T> select, Await<Edit<T>> configure)
+			: base(select, Start.An.Operation(configure).Append(Remove<T>.Default)) {}
 	}
 }

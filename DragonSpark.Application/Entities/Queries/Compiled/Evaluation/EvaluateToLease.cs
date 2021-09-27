@@ -15,14 +15,14 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		                          Expression<Func<DbContext, None, IQueryable<T>>> expression)
 			: base(scopes, expression) {}
 
-		protected EvaluateToLease(IInvoke<None, T> invoke) : base(invoke) {}
+		protected EvaluateToLease(IReading<None, T> reading) : base(reading) {}
 	}
 
 	public class EvaluateToLease<TIn, T> : Evaluate<TIn, T, DragonSpark.Model.Sequences.Memory.Leasing<T>>
 	{
 		protected EvaluateToLease(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(scopes, expression)) {}
+			: this(new Reading<TIn, T>(scopes, expression)) {}
 
-		protected EvaluateToLease(IInvoke<TIn, T> invoke) : base(invoke, ToLease<T>.Default) {}
+		protected EvaluateToLease(IReading<TIn, T> reading) : base(reading, ToLease<T>.Default) {}
 	}
 }

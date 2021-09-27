@@ -16,8 +16,8 @@ namespace DragonSpark.Application.Entities.Editing
 
 		protected Session(TContext context, ISessionBody<TIn, TOut, TSave> body) : base(context, body) {}
 
-		protected Session(TContext context, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
-			: base(context, @select, apply) {}
+		protected Session(TContext context, IForming<TIn, TOut?> select, IOperation<In<TSave>> apply)
+			: base(context, select, apply) {}
 	}
 
 	public interface ISession<in TIn, TOut, in TSave> : ISelecting<TIn, TOut?>, IOperation<TSave>, IAsyncDisposable {}
@@ -31,7 +31,7 @@ namespace DragonSpark.Application.Entities.Editing
 
 		public SessionBody(ISelecting<In<TIn>, TOut?> select, IOperation<In<TSave>> save)
 		{
-			_select = @select;
+			_select = select;
 			_save   = save;
 		}
 

@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 {
 	public sealed class EditInvocationComposer<TIn, T>
 	{
-		readonly IInvoke<TIn, T> _subject;
+		readonly IReading<TIn, T> _subject;
 
-		public EditInvocationComposer(IInvoke<TIn, T> subject) => _subject = subject;
+		public EditInvocationComposer(IReading<TIn, T> subject) => _subject = subject;
 
 		public IEdit<TIn, Array<T>> Array() => new Edit<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 

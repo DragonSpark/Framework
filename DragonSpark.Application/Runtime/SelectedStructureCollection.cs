@@ -24,7 +24,7 @@ namespace DragonSpark.Application.Runtime
 		                                   IEqualityComparer<TValue> equality)
 			: base(list)
 		{
-			_select   = @select;
+			_select   = select;
 			_equality = equality;
 		}
 

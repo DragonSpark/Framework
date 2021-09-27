@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 {
 	public sealed class FormComposer<TIn, T>
 	{
-		readonly IForm<TIn, T> _subject;
+		readonly IElements<TIn, T> _subject;
 
-		public FormComposer(IForm<TIn, T> subject) => _subject = subject;
+		public FormComposer(IElements<TIn, T> subject) => _subject = subject;
 		public IForming<TIn, Array<T>> Array() => new Forming<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
 		public IForming<TIn, Leasing<T>> Lease() => new Forming<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
