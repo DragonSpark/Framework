@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
+﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Sequences;
@@ -13,29 +13,29 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		readonly IElements<TIn, T> _subject;
 
 		public FormComposer(IElements<TIn, T> subject) => _subject = subject;
-		public IForming<TIn, Array<T>> Array() => new Forming<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
+		public IInput<TIn, Array<T>> Array() => new Input<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
-		public IForming<TIn, Leasing<T>> Lease() => new Forming<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
+		public IInput<TIn, Leasing<T>> Lease() => new Input<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
 
-		public IForming<TIn, List<T>> List() => new Forming<TIn, T, List<T>>(_subject, ToList<T>.Default);
+		public IInput<TIn, List<T>> List() => new Input<TIn, T, List<T>>(_subject, ToList<T>.Default);
 
-		public IForming<TIn, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
-			=> new Forming<TIn, T, Dictionary<TKey, T>>(_subject, new ToDictionary<T, TKey>(key));
+		public IInput<TIn, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
+			=> new Input<TIn, T, Dictionary<TKey, T>>(_subject, new ToDictionary<T, TKey>(key));
 
-		public IForming<TIn, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
+		public IInput<TIn, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
 			Func<T, TKey> key, Func<T, TValue> value)
 			where TKey : notnull
-			=> new Forming<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
+			=> new Input<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-		public IForming<TIn, T> Single() => new Forming<TIn, T, T>(_subject, ToSingle<T>.Default);
+		public IInput<TIn, T> Single() => new Input<TIn, T, T>(_subject, ToSingle<T>.Default);
 
-		public IForming<TIn, T?> SingleOrDefault() => new Forming<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
+		public IInput<TIn, T?> SingleOrDefault() => new Input<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
 
-		public IForming<TIn, T> First() => new Forming<TIn, T, T>(_subject, ToFirst<T>.Default);
+		public IInput<TIn, T> First() => new Input<TIn, T, T>(_subject, ToFirst<T>.Default);
 
-		public IForming<TIn, T?> FirstOrDefault() => new Forming<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
+		public IInput<TIn, T?> FirstOrDefault() => new Input<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
 
-		public IForming<TIn, bool> Any() => new Forming<TIn, T, bool>(_subject, ToAny<T>.Default);
+		public IInput<TIn, bool> Any() => new Input<TIn, T, bool>(_subject, ToAny<T>.Default);
 
 	}
 }
