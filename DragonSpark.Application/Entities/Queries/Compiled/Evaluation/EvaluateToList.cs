@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
 	public class EvaluateToList<T> : EvaluateToList<None, T>
 	{
-		/*public EvaluateToList(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
-
 		public EvaluateToList(IInvocations invocations, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(invocations, expression.Then()) {}
 
@@ -23,11 +20,9 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 
 	public class EvaluateToList<TIn, T> : Evaluate<TIn, T, List<T>>
 	{
-		/*public EvaluateToList(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
-
-		public EvaluateToList(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		protected EvaluateToList(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
-		public EvaluateToList(IInvoke<TIn, T> invoke) : base(invoke, ToList<T>.Default) {}
+		protected EvaluateToList(IInvoke<TIn, T> invoke) : base(invoke, ToList<T>.Default) {}
 	}
 }

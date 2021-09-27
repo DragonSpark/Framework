@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Sequences;

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Application.Entities.Queries.Compiled;
+﻿using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Model;
@@ -10,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	class Class4 {}
 

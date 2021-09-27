@@ -1,114 +1,90 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Compose;
+﻿using AsyncUtilities;
+using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
+using DragonSpark.Runtime;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities
 {
-	class Class3 {}
+	public interface IBoundary : IResulting<IDisposable> {}
 
-	public class Session<TIn, TContext, TOut, TSave> : Session<TIn, TOut, TSave> where TContext : DbContext
+	sealed class AmbientAwareInvocations : IInvocations
 	{
-		protected Session(TContext context, IQuery<TIn, TOut> select, IOperation<In<TSave>> apply)
-			: base(context, select.Then().Form.SingleOrDefault(), apply) {}
+		readonly IInvocations               _previous;
+		readonly IResult<IServiceProvider?> _provider;
 
-		protected Session(TContext context, ISessionBody<TIn, TOut, TSave> body) : base(context, body) {}
+		public AmbientAwareInvocations(IInvocations previous) : this(previous, AmbientProvider.Default) {}
 
-		protected Session(TContext context, IForming<TIn, TOut?> @select, IOperation<In<TSave>> apply)
-			: base(context, @select, apply) {}
-	}
-
-	public interface ISession<in TIn, TOut, in TSave> : ISelecting<TIn, TOut?>, IOperation<TSave>, IAsyncDisposable {}
-
-	public interface ISessionBody<TIn, TOut, TSave> : IForming<TIn, TOut?>, IFormed<TSave> {}
-
-	public class SessionBody<TIn, TOut, TSave> : ISessionBody<TIn, TOut, TSave>
-	{
-		readonly ISelecting<In<TIn>, TOut?> _select;
-		readonly IOperation<In<TSave>>      _save;
-
-		public SessionBody(ISelecting<In<TIn>, TOut?> select, IOperation<In<TSave>> save)
+		public AmbientAwareInvocations(IInvocations previous, IResult<IServiceProvider?> provider)
 		{
-			_select = @select;
-			_save   = save;
+			_previous = previous;
+			_provider = provider;
 		}
 
-		public ValueTask<TOut?> Get(In<TIn> parameter) => _select.Get(parameter);
-
-		public ValueTask Get(In<TSave> parameter) => _save.Get(parameter);
-	}
-
-	public class Session<TIn, TOut, TSave> : ISession<TIn, TOut, TSave>
-	{
-		readonly DbContext                  _context;
-		readonly ISelecting<In<TIn>, TOut?> _select;
-		readonly IOperation<In<TSave>>      _apply;
-
-		protected Session(DbContext context, ISessionBody<TIn, TOut, TSave> body) : this(context, body, body) {}
-
-		protected Session(DbContext context, IForming<TIn, TOut?> select, IOperation<In<TSave>> apply)
+		public Invocation Get()
 		{
-			_context = context;
-			_select  = select;
-			_apply   = apply;
-		}
-
-		public ValueTask<TOut?> Get(TIn parameter) => _select.Get(new(_context, parameter));
-
-		public async ValueTask Get(TSave parameter)
-		{
-			await _apply.Await(new(_context, parameter));
-			await _context.SaveChangesAsync().ConfigureAwait(false);
-		}
-
-		public ValueTask DisposeAsync() => _context.DisposeAsync();
-	}
-
-	sealed class FormedAdapter<T, TContext> : IOperation<T> where TContext : DbContext
-	{
-		readonly IContexts<TContext> _contexts;
-		readonly IFormed<T>          _operation;
-
-		public FormedAdapter(IContexts<TContext> contexts, IFormed<T> operation)
-		{
-			_contexts  = contexts;
-			_operation = operation;
-		}
-
-		public async ValueTask Get(T parameter)
-		{
-			await using var context = _contexts.Get();
-			await _operation.Await(new(context, parameter));
+			var provider = _provider.Get();
+			var result = provider != null
+				             ? new Invocation(provider.GetRequiredService<DbContext>(), EmptyBoundary.Default)
+				             : _previous.Get();
+			return result;
 		}
 	}
 
-	sealed class ScopedFormedAdapter<T> : IOperation<T>
+	sealed class EmptyBoundary : DragonSpark.Model.Operations.Instance<IDisposable>, IBoundary
 	{
-		readonly DbContext  _context;
-		readonly IFormed<T> _operation;
+		public static EmptyBoundary Default { get; } = new();
 
-		public ScopedFormedAdapter(DbContext context, IFormed<T> operation)
-		{
-			_context   = context;
-			_operation = operation;
-		}
-
-		public ValueTask Get(T parameter) => _operation.Get(new In<T>(_context, parameter));
+		EmptyBoundary() : base(EmptyDisposable.Default) {}
 	}
 
-	public class Scoping<TIn, TOut> : ISelecting<TIn, TOut>
-	{
-		readonly DbContext           _instance;
-		readonly IForming<TIn, TOut> _forming;
+	public interface IInvocations : IResult<Invocation> {}
 
-		public Scoping(DbContext instance, IForming<TIn, TOut> forming)
+	sealed class Invocations<T> : IInvocations where T : DbContext
+	{
+		readonly IContexts<T> _contexts;
+
+		public Invocations(IContexts<T> contexts) => _contexts = contexts;
+
+		public Invocation Get()
 		{
-			_instance = instance;
-			_forming  = forming;
+			var context = _contexts.Get();
+			return new(context, new Boundary(context));
 		}
 
-		public ValueTask<TOut> Get(TIn parameter) => _forming.Get(new(_instance, parameter));
+		sealed class Boundary : DragonSpark.Model.Operations.Instance<IDisposable>, IBoundary
+		{
+			public Boundary(IDisposable instance) : base(instance) {}
+		}
 	}
+
+	sealed class ScopedInvocation : DragonSpark.Model.Results.Instance<Invocation>, IInvocations
+	{
+		public ScopedInvocation(DbContext context) : this(context, Locks.Default.Get(context)) {}
+
+		public ScopedInvocation(DbContext context, AsyncLock @lock)
+			: this(new Invocation(context, new Boundary(@lock))) {}
+
+		public ScopedInvocation(Invocation instance) : base(instance) {}
+
+		sealed class Boundary : IBoundary
+		{
+			readonly AsyncLock _lock;
+
+			public Boundary(AsyncLock @lock) => _lock = @lock;
+
+			public async ValueTask<IDisposable> Get() => new Instance(await _lock.LockAsync());
+
+			sealed class Instance : Disposable<AsyncLock.Releaser>
+			{
+				public Instance(AsyncLock.Releaser disposable) : base(disposable) {}
+			}
+		}
+	}
+
+	public readonly record struct Invocation(DbContext Subject, IBoundary Boundary);
 }

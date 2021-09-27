@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Initialization
 {
 	public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 	{

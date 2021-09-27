@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Initialization
 {
 	public class ModifySchema : IModifySchema
 	{
@@ -22,8 +22,7 @@ namespace DragonSpark.Application.Entities
 
 	public class ModifySchema<T> : ModifySchema where T : DbContext
 	{
-		protected ModifySchema(Action<ModelBuilder> configure)
-			: this(Start.A.Command(configure).Get()) {}
+		protected ModifySchema(Action<ModelBuilder> configure) : this(Start.A.Command(configure).Get()) {}
 
 		protected ModifySchema(ICommand<ModelBuilder> instance) : base(Is.AssignableFrom<T>().Out(), instance) {}
 	}

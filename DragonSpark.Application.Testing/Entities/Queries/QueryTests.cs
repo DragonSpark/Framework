@@ -3,7 +3,6 @@ using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Application.Entities.Queries.Runtime.Selection;
 using DragonSpark.Compose;
 using DragonSpark.Model;

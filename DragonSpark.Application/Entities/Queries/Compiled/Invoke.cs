@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +54,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 		{
 			var (context, session) = _invocations.Get();
 			var form = _form.Get(new(context, parameter));
-
 			return new(context, await session.Get(), form);
 		}
 	}

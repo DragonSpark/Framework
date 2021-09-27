@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	sealed class Excludes : ISelect<DbContext, ExcludeSession>
 	{

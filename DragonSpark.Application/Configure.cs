@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
@@ -14,6 +13,6 @@ namespace DragonSpark.Application
 		public BuildHostContext Get(BuildHostContext parameter)
 			=> parameter.Configure(DefaultRegistrations.Default)
 			            .Configure(Components.Registrations.Default)
-			            .ComposeUsing(CompositionRegistrations.Default);
+			            .ComposeUsing(Entities.Compose.Default);
 	}
 }

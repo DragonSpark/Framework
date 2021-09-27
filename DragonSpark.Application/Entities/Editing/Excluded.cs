@@ -6,7 +6,7 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	sealed class Excluded : ISelect<DbContext, Func<EntityEntry, bool>>
 	{

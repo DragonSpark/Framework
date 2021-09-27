@@ -11,6 +11,7 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
+using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	sealed class StateAwareSave<T> : ISave<T> where T : class
 	{

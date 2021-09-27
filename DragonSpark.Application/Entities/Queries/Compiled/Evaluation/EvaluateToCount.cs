@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -24,4 +23,5 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
 		public EvaluateToCount(IInvoke<TIn, T> invoke) : base(invoke, ToCount<T>.Default) {}
-	}}
+	}
+}

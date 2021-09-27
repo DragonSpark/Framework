@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,8 +9,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
 	public class EvaluateToArray<T> : EvaluateToArray<None, T>
 	{
-		/*public EvaluateToArray(IContexts<TContext> contexts, IQuery<None, T> query) : base(contexts, query) {}*/
-
 		public EvaluateToArray(IInvocations invocations, Expression<Func<DbContext, IQueryable<T>>> expression)
 			: base(invocations, expression.Then()) {}
 
@@ -23,11 +20,9 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 
 	public class EvaluateToArray<TIn, T> : Evaluate<TIn, T, Array<T>>
 	{
-		/*public EvaluateToArray(IContexts<TContext> contexts, IQuery<TIn, T> query) : this(contexts, query.Get()) {}*/
-
 		public EvaluateToArray(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(new Invoke<TIn, T>(invocations, expression)) {}
 
-		public EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
+		protected EvaluateToArray(IInvoke<TIn, T> invoke) : base(invoke, ToArray<T>.Default) {}
 	}
 }

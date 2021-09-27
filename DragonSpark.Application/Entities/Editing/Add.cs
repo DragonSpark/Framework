@@ -1,8 +1,7 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities.Editing
 {
 	/*
 	public class Add<TIn, TOut> : ISelecting<TIn, TOut>
