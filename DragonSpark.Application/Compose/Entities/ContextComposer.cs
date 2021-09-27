@@ -14,17 +14,19 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ContextComposer(DbContext subject) => _subject = subject;
 
-		public IInvocations Invocations() => new ScopedInvocation(_subject);
+		public IScopes Scopes() => new Scopes(_subject);
 
-		public InvocationComposer<None, TElement> Use<TElement>() where TElement : class
-			=> new(Invocations(), Set<TElement>.Default);
+		public IEditor Editor() => new Editor(_subject);
 
-		public InvocationComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
-			=> new(Invocations(), query);
+		public ScopesComposer<None, TElement> Use<TElement>() where TElement : class
+			=> new(Scopes(), Set<TElement>.Default);
+
+		public ScopesComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
+			=> new(Scopes(), query);
 
 		public ISelecting<TIn, TOut> Form<TIn, TOut>(IForming<TIn, TOut> forming)
-			=> new Scoping<TIn, TOut>(_subject, forming);
+			=> new FixedAdapter<TIn, TOut>(_subject, forming);
 
-		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new ScopedFormedAdapter<TIn>(_subject, formed);
+		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new FixedFormedAdapter<TIn>(_subject, formed);
 	}
 }

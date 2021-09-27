@@ -38,13 +38,13 @@ namespace DragonSpark.Application.Entities.Queries.Compiled
 
 	public class Invoke<TIn, T> : IInvoke<TIn, T>
 	{
-		readonly IInvocations  _invocations;
+		readonly IScopes  _invocations;
 		readonly IForm<TIn, T> _form;
 
-		public Invoke(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		public Invoke(IScopes invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 			: this(invocations, new Form<TIn, T>(expression)) {}
 
-		public Invoke(IInvocations invocations, IForm<TIn, T> form)
+		public Invoke(IScopes invocations, IForm<TIn, T> form)
 		{
 			_invocations = invocations;
 			_form        = form;

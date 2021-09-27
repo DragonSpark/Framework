@@ -13,13 +13,13 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 	public class ContextRuntimeQuery<TContext, TOut> : RuntimeQuery<TOut> where TContext : DbContext
 	{
 		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TOut> query)
-			: base(new Invocations<TContext>(contexts), query) {}
+			: base(new Scopes<TContext>(contexts), query) {}
 	}
 
 	public class ContextRuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
 	{
 		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
-			: base(new Invocations<TContext>(contexts), query) {}
+			: base(new Scopes<TContext>(contexts), query) {}
 	}
 
 	sealed class CompileAdapter<TIn, TOut> : ISelect<(DbContext, TIn), IQueryable<TOut>>
@@ -39,26 +39,26 @@ namespace DragonSpark.Application.Entities.Queries.Runtime
 	{
 		protected RuntimeQuery(DbContext context, IQuery<None, T> query) : base(context, query) {}
 
-		public RuntimeQuery(IInvocations invocations, IQuery<None, T> query) : base(invocations, query) {}
+		public RuntimeQuery(IScopes scopes, IQuery<None, T> query) : base(scopes, query) {}
 	}
 
 	public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
 	{
-		readonly IInvocations                           _invocations;
+		readonly IScopes                           _scopes;
 		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
 		protected RuntimeQuery(DbContext context, IQuery<TIn, TOut> query)
-			: this(new ScopedInvocation(context), query) {}
+			: this(new Scopes(context), query) {}
 
-		public RuntimeQuery(IInvocations invocations, IQuery<TIn, TOut> query)
-			: this(invocations, query.Get().Expand().Compile()) {}
+		public RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query)
+			: this(scopes, query.Get().Expand().Compile()) {}
 
-		RuntimeQuery(IInvocations invocations, Func<DbContext, TIn, IQueryable<TOut>> compiled)
+		RuntimeQuery(IScopes scopes, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 		{
-			_invocations = invocations;
+			_scopes = scopes;
 			_compiled    = compiled;
 		}
 
-		public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_invocations, parameter, _compiled);
+		public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_scopes, parameter, _compiled);
 	}
 }

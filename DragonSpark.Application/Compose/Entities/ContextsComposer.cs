@@ -17,20 +17,20 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ContextsComposer<TAccept, T> Accept<TAccept>() => new(_subject);
 
-		public InvocationComposer<None, TElement> Use<TElement>() where TElement : class
+		public ScopesComposer<None, TElement> Use<TElement>() where TElement : class
 			=> new(Invocations(), Set<TElement>.Default);
 
-		public InvocationComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
+		public ScopesComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
 			=> new(Invocations(), query);
 
 		public IOperation<TIn> Form<TIn>(IFormed<TIn> formed) => new FormedAdapter<TIn, T>(_subject, formed);
 
-		public IInvocations Invocations() => new Invocations<T>(_subject);
+		public IScopes Invocations() => new Scopes<T>(_subject);
 
 		public IEdit<TIn, TOut> Edit<TIn, TOut>(ISelecting<TIn, TOut> select)
 			=> new SelectForEdit<TIn, TOut>(Editing(), select);
 
-		public IInvocations Editing() => new AmbientAwareInvocations(Invocations());
+		public IScopes Editing() => new AmbientAwareScopes(Invocations());
 	}
 
 	public sealed class ContextsComposer<TIn, T> where T : DbContext
@@ -39,12 +39,12 @@ namespace DragonSpark.Application.Compose.Entities
 
 		public ContextsComposer(IContexts<T> subject) => _subject = subject;
 
-		public InvocationComposer<TIn, TElement> Use<TElement>() where TElement : class
-			=> new(new Invocations<T>(_subject), Set<TIn, TElement>.Default);
+		public ScopesComposer<TIn, TElement> Use<TElement>() where TElement : class
+			=> new(new Scopes<T>(_subject), Set<TIn, TElement>.Default);
 
-		public InvocationComposer<TIn, TElement> Use<TElement>(IQuery<TIn, TElement> query)
-			=> new(new Invocations<T>(_subject), query);
+		public ScopesComposer<TIn, TElement> Use<TElement>(IQuery<TIn, TElement> query)
+			=> new(new Scopes<T>(_subject), query);
 
-		public IInvocations Invocations() => new Invocations<T>(_subject);
+		public IScopes Invocations() => new Scopes<T>(_subject);
 	}
 }

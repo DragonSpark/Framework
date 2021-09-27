@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model;
@@ -224,14 +225,14 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		QueryComposer<TIn, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(next);
 
-		public InvocationComposer<TIn, T> Invoke<TContext>(TContext context)
+		public ScopesComposer<TIn, T> Invoke<TContext>(TContext context)
 			where TContext : DbContext
-			=> new(new ScopedInvocation(context), _subject);
+			=> new(new Scopes(context), _subject);
 
-		public InvocationComposer<TIn, T> Invoke<TContext>(IContexts<TContext> contexts)
+		public ScopesComposer<TIn, T> Invoke<TContext>(IContexts<TContext> contexts)
 			where TContext : DbContext
-			=> new(new Invocations<TContext>(contexts), _subject);
+			=> new(new Scopes<TContext>(contexts), _subject);
 
-		public FormComposer<TIn, T> Form => new(new Application.Entities.Queries.Compiled.Form<TIn, T>(_subject));
+		public FormComposer<TIn, T> Form => new(new Form<TIn, T>(_subject));
 	}
 }

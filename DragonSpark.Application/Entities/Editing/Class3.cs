@@ -84,12 +84,12 @@ namespace DragonSpark.Application.Entities.Editing
 		}
 	}
 
-	sealed class ScopedFormedAdapter<T> : IOperation<T>
+	sealed class FixedFormedAdapter<T> : IOperation<T>
 	{
 		readonly DbContext  _context;
 		readonly IFormed<T> _operation;
 
-		public ScopedFormedAdapter(DbContext context, IFormed<T> operation)
+		public FixedFormedAdapter(DbContext context, IFormed<T> operation)
 		{
 			_context   = context;
 			_operation = operation;
@@ -98,12 +98,12 @@ namespace DragonSpark.Application.Entities.Editing
 		public ValueTask Get(T parameter) => _operation.Get(new In<T>(_context, parameter));
 	}
 
-	public class Scoping<TIn, TOut> : ISelecting<TIn, TOut>
+	public class FixedAdapter<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly DbContext           _instance;
 		readonly IForming<TIn, TOut> _forming;
 
-		public Scoping(DbContext instance, IForming<TIn, TOut> forming)
+		public FixedAdapter(DbContext instance, IForming<TIn, TOut> forming)
 		{
 			_instance = instance;
 			_forming  = forming;

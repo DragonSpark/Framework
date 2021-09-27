@@ -8,20 +8,20 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
 	public class EvaluateToLease<T> : EvaluateToLease<None, T>
 	{
-		protected EvaluateToLease(IInvocations invocations, Expression<Func<DbContext, IQueryable<T>>> expression)
-			: base(invocations, expression.Then()) {}
+		protected EvaluateToLease(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
+			: base(scopes, expression.Then()) {}
 
-		protected EvaluateToLease(IInvocations invocations,
+		protected EvaluateToLease(IScopes scopes,
 		                          Expression<Func<DbContext, None, IQueryable<T>>> expression)
-			: base(invocations, expression) {}
+			: base(scopes, expression) {}
 
 		protected EvaluateToLease(IInvoke<None, T> invoke) : base(invoke) {}
 	}
 
 	public class EvaluateToLease<TIn, T> : Evaluate<TIn, T, DragonSpark.Model.Sequences.Memory.Leasing<T>>
 	{
-		protected EvaluateToLease(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(invocations, expression)) {}
+		protected EvaluateToLease(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: this(new Invoke<TIn, T>(scopes, expression)) {}
 
 		protected EvaluateToLease(IInvoke<TIn, T> invoke) : base(invoke, ToLease<T>.Default) {}
 	}

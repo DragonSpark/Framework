@@ -9,19 +9,19 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 {
 	public class EvaluateToAny<T> : EvaluateToAny<None, T>
 	{
-		public EvaluateToAny(IInvocations invocations, Expression<Func<DbContext, IQueryable<T>>> expression)
-			: base(invocations, expression.Then()) {}
+		public EvaluateToAny(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
+			: base(scopes, expression.Then()) {}
 
-		public EvaluateToAny(IInvocations invocations, Expression<Func<DbContext, None, IQueryable<T>>> expression)
-			: base(invocations, expression) {}
+		public EvaluateToAny(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
+			: base(scopes, expression) {}
 
 		public EvaluateToAny(IInvoke<None, T> invoke) : base(invoke) {}
 	}
 
 	public class EvaluateToAny<TIn, T> : Evaluate<TIn, T, bool>, IDepending<TIn>
 	{
-		protected EvaluateToAny(IInvocations invocations, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: this(new Invoke<TIn, T>(invocations, expression)) {}
+		protected EvaluateToAny(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+			: this(new Invoke<TIn, T>(scopes, expression)) {}
 
 		protected EvaluateToAny(IInvoke<TIn, T> invoke) : base(invoke, ToAny<T>.Default) {}
 	}

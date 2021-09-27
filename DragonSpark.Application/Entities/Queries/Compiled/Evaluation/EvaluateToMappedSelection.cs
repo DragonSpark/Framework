@@ -11,17 +11,17 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		where TKey : notnull
 	{
 		// ReSharper disable once TooManyDependencies
-		protected EvaluateToMappedSelection(IInvocations invocations,
+		protected EvaluateToMappedSelection(IScopes scopes,
 		                                    Expression<Func<DbContext, IQueryable<T>>> expression, Func<T, TKey> key,
 		                                    Func<T, TValue> value)
-			: base(invocations, expression.Then(), key, value) {}
+			: base(scopes, expression.Then(), key, value) {}
 
 		// ReSharper disable once TooManyDependencies
-		protected EvaluateToMappedSelection(IInvocations invocations,
+		protected EvaluateToMappedSelection(IScopes scopes,
 		                                    Expression<Func<DbContext, None, IQueryable<T>>> expression,
 		                                    Func<T, TKey> key,
 		                                    Func<T, TValue> value)
-			: base(invocations, expression, key, value) {}
+			: base(scopes, expression, key, value) {}
 
 		protected EvaluateToMappedSelection(IInvoke<None, T> invoke, Func<T, TKey> key, Func<T, TValue> value)
 			: base(invoke, key, value) {}
@@ -31,10 +31,10 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 		where TKey : notnull
 	{
 		// ReSharper disable once TooManyDependencies
-		protected EvaluateToMappedSelection(IInvocations invocations,
+		protected EvaluateToMappedSelection(IScopes scopes,
 		                                    Expression<Func<DbContext, TIn, IQueryable<T>>> expression,
 		                                    Func<T, TKey> key, Func<T, TValue> value)
-			: this(new Invoke<TIn, T>(invocations, expression), key, value) {}
+			: this(new Invoke<TIn, T>(scopes, expression), key, value) {}
 
 		protected EvaluateToMappedSelection(IInvoke<TIn, T> invoke, Func<T, TKey> key, Func<T, TValue> value)
 			: base(invoke, new ToDictionary<T, TKey, TValue>(key, value)) {}
