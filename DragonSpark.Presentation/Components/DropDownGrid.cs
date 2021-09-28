@@ -41,11 +41,7 @@ namespace DragonSpark.Presentation.Components
 			base.OnParametersSet();
 		}
 
-		public Task Get()
-		{
-			Reload(); // ISSUE: Asynchronize
-			return Task.CompletedTask;
-		}
+		public Task Get() => Reload();
 
 		public override void Dispose()
 		{
