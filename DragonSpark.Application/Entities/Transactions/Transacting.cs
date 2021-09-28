@@ -18,6 +18,7 @@ namespace DragonSpark.Application.Entities.Transactions
 		public async ValueTask Get(T parameter)
 		{
 			await using var transaction = await _transactions.Await();
+			transaction.Execute();
 			await _previous.Await(parameter);
 			await transaction.Await();
 		}

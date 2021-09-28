@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions
 {
-	sealed class Transactions : ITransactions
+	public sealed class Transactions : ITransactions
 	{
 		readonly IScopedTransactions _transactions;
 

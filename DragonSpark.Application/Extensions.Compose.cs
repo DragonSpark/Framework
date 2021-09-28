@@ -101,8 +101,6 @@ namespace DragonSpark.Application
 
 		public static ComposeComposer<T> Compose<T>(this ModelContext _) where T : class => new ();
 
-		public static ContextComposer Then(this DbContext @this) => new(@this);
-
 		public static ContextsComposer<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
 		public static ScopesComposer Then(this IScopes @this) => new(@this);

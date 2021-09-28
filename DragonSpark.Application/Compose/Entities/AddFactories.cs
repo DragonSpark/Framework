@@ -6,7 +6,6 @@ using System;
 
 namespace DragonSpark.Application.Compose.Entities
 {
-	// TODO: Remove
 	sealed class AddFactories<T> : IAlteration<IServiceCollection> where T : DbContext
 	{
 		readonly IStorageConfiguration     _storage;

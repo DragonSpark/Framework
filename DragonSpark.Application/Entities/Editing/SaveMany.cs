@@ -1,17 +1,16 @@
 ﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class SaveMany<T> : ContextualModify<T, Memory<object>> where T : DbContext
+	public class SaveMany : Modify<Memory<object>>
 	{
-		protected SaveMany(IContexts<T> contexts) : base(contexts, UpdateMany<object>.Default.Then().Operation()) {}
+		protected SaveMany(IStandardScopes scopes) : base(scopes, UpdateMany.Default.Then().Operation().Out()) {}
 	}
 
-	public class SaveMany<TContext, T> : ContextualModify<TContext, Memory<T>> where TContext : DbContext where T : class
+	public class SaveMany<T> : Modify<Memory<T>> where T : class
 	{
-		protected SaveMany(IContexts<TContext> contexts) : base(contexts, UpdateMany<T>.Default.Then().Operation()) {}
+		protected SaveMany(IStandardScopes scopes) : base(scopes, UpdateMany<T>.Default.Then().Operation()) {}
 	}
 
 	sealed class UpdateMany : IModify<Memory<object>>

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
@@ -19,11 +18,5 @@ namespace DragonSpark.Application.Entities.Editing
 			await context.Entry(parameter).ReloadAsync().ConfigureAwait(false);
 			return new(editor, parameter);
 		}
-	}
-
-	public class EditExisting<T, TContext> : EditExisting<T> where TContext : DbContext where T : class
-	{
-		protected EditExisting(IContexts<TContext> contexts)
-			: base(new AmbientAwareScopes(contexts.Then().Scopes())) {}
 	}
 }

@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public interface ISave<in T> : IOperation<T> {}
+	public interface ISessionSave<in T> : IOperation<T> {}
 }

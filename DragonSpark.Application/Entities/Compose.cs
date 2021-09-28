@@ -12,7 +12,7 @@ namespace DragonSpark.Application.Entities
 
 		public void Execute(IServiceContainer parameter)
 		{
-			parameter.Decorate(typeof(ISave<>), typeof(StateAwareSave<>));
+			parameter.Decorate(typeof(ISessionSave<>), typeof(StateAwareSave<>));
 		}
 	}
 }

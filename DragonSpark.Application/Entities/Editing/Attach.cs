@@ -1,40 +1,23 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class Attach<TContext, T> : ContextualModify<TContext, T> where TContext : DbContext where T : class
+	public class Attach<TIn, T> : Modify<TIn, T> where T : class
 	{
-		protected Attach(IContexts<TContext> contexts, IOperation<Edit<T>> modification)
-			: this(contexts, modification.Await) {}
+		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
+			: this(scopes, query, modification.Await) {}
 
-		protected Attach(IContexts<TContext> contexts, Await<T> configure)
-			: this(contexts, x => configure(x.Subject)) {}
+		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Await<T> configure)
+			: this(scopes, query, x => configure(x.Subject)) {}
 
-		protected Attach(IContexts<TContext> contexts, Await<Edit<T>> configure)
-			: base(contexts, Attach<T>.Default.Then().Operation().Append(configure)) {}
-	}
+		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
+			: base(scopes, query, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 
-	public sealed class Attach<T> : Command<Edit<T>>, IModify<T> where T : class
-	{
-		public static Attach<T> Default { get; } = new Attach<T>();
-
-		Attach() : base(x => x.Attach(x.Subject)) {}
-	}
-
-	public class Attach<TIn, TContext, T> : ContextualModify<TIn, TContext, T> where TContext : DbContext where T : class
-	{
-		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
-			: this(contexts, query, modification.Await) {}
-
-		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<T> configure)
-			: this(contexts, query, x => configure(x.Subject)) {}
-
-		protected Attach(IContexts<TContext> contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
-			: base(contexts, query, Attach<T>.Default.Then().Operation().Append(configure)) {}
+		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Action<T> configure)
+			: this(scopes, query, Start.A.Command(configure).Operation()) {}
 
 		protected Attach(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
 
@@ -43,6 +26,16 @@ namespace DragonSpark.Application.Entities.Editing
 		protected Attach(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
 
 		protected Attach(IEdit<TIn, T> select, Await<Edit<T>> configure)
-			: base(select, Attach<T>.Default.Then().Operation().Append(configure)) {}
+			: base(select, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
+	}
+
+	public class Attach<T> : Modify<T> where T : class
+	{
+		protected Attach(IStandardScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
+
+		protected Attach(IStandardScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
+
+		protected Attach(IStandardScopes scopes, Await<Edit<T>> configure)
+			: base(scopes, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 	}
 }

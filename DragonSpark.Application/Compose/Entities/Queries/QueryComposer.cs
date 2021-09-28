@@ -225,13 +225,9 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		QueryComposer<TIn, TTo> Next<TTo>(IQuery<TIn, TTo> next) => new(next);
 
-		public ScopesComposer<TIn, T> Invoke<TContext>(TContext context)
-			where TContext : DbContext
-			=> new(new SessionScopes(context), _subject);
-
 		public ScopesComposer<TIn, T> Invoke<TContext>(IContexts<TContext> contexts)
 			where TContext : DbContext
-			=> new(new FactoryScopes<TContext>(contexts), _subject);
+			=> new(new StandardScopes<TContext>(contexts), _subject);
 
 		public FormComposer<TIn, T> Form => new(new Elements<TIn, T>(_subject));
 	}

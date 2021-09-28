@@ -1,18 +1,17 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class Removal<TIn, TContext, T> : IOperation<TIn> where TContext : DbContext where T : class
+	public class Removal<TIn, T> : IOperation<TIn> where T : class
 	{
 		readonly ISelecting<TIn, T?>            _select;
-		readonly Remove<TContext, T> _remove;
+		readonly Remove<T> _remove;
 		readonly ICommand<TIn>                  _command;
 
-		protected Removal(ISelecting<TIn, T?> select, Remove<TContext, T> remove, ICommand<TIn> command)
+		protected Removal(ISelecting<TIn, T?> select, Remove<T> remove, ICommand<TIn> command)
 		{
 			_select  = select;
 			_remove  = remove;

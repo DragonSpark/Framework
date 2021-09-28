@@ -15,8 +15,8 @@ namespace DragonSpark.Application.Security.Identity
 		public void Execute(IServiceCollection parameter)
 		{
 			parameter.Start<IMarkModified<T>>()
-			         .Forward<MarkModified<TContext, T>>()
-			         .Scoped()
+			         .Forward<MarkModified<T>>()
+			         .Singleton()
 			         //
 			         .Then.Start<IHasValidPrincipalState>()
 			         .Forward<HasValidPrincipalState<T>>()

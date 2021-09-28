@@ -1,17 +1,14 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
-using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime
 {
-	public class ContextRuntimeQuery<TIn, TContext, TOut> : RuntimeQuery<TIn, TOut> where TContext : DbContext
+	public class ContextRuntimeQuery<TIn, TOut> : RuntimeQuery<TIn, TOut>
 	{
-		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TIn, TOut> query)
-			: base(new FactoryScopes<TContext>(contexts), query) {}
+		protected ContextRuntimeQuery(IStandardScopes scopes, IQuery<TIn, TOut> query) : base(scopes, query) {}
 	}
 
-	public class ContextRuntimeQuery<TContext, TOut> : RuntimeQuery<TOut> where TContext : DbContext
+	public class ContextRuntimeQuery<TOut> : RuntimeQuery<TOut>
 	{
-		protected ContextRuntimeQuery(IContexts<TContext> contexts, IQuery<TOut> query)
-			: base(new FactoryScopes<TContext>(contexts), query) {}
+		protected ContextRuntimeQuery(IStandardScopes scopes, IQuery<TOut> query) : base(scopes, query) {}
 	}
 }

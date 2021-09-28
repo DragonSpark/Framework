@@ -10,6 +10,6 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 
 		ToSingle() {}
 
-		public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.SingleAsync(); // ISSUE: https://github.com/NetFabric/NetFabric.Hyperlinq/issues/375
+		public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.SingleAsync();
 	}
 }

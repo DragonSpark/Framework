@@ -1,22 +1,20 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class SelectedAttach<TContext, TFrom, TTo> : ContextualModify<TContext, TFrom>
-		where TContext : DbContext where TTo : class
+	public class SelectedAttach<TFrom, TTo> : Modify<TFrom> where TTo : class
 	{
-		protected SelectedAttach(IContexts<TContext> contexts, IOperation<Edit<TFrom>> from, Func<TFrom, TTo> select)
-			: base(contexts,
+		protected SelectedAttach(IStandardScopes scopes, IOperation<Edit<TFrom>> from, Func<TFrom, TTo> select)
+			: base(scopes,
 			       Start.A.Selection<Edit<TFrom>>()
 			            .By.Calling(x =>
 			                        {
 				                        var (editor, subject) = x;
 				                        return new Edit<TTo>(editor, select(subject));
 			                        })
-			            .Terminate(Attach<TTo>.Default)
+			            .Terminate(AttachLocal<TTo>.Default)
 			            .Operation()
 			            .Append(from)) {}
 	}

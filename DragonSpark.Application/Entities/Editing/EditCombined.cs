@@ -1,17 +1,16 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Memory;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	public class EditCombined<TIn, TContext, T> : IEditMany<TIn, T> where TContext : DbContext
+	public class EditCombined<TIn, T> : IEditMany<TIn, T>
 	{
 		readonly IEdit<TIn, Leasing<T>> _first, _second;
 
-		protected EditCombined(IContexts<TContext> context, IQuery<TIn, T> first, IQuery<TIn, T> second)
-			: this(context.Then().Use(first).Edit.Lease(), context.Then().Use(second).Edit.Lease()) {}
+		protected EditCombined(IStandardScopes scopes, IQuery<TIn, T> first, IQuery<TIn, T> second)
+			: this(scopes.Then().Use(first).Edit.Lease(), scopes.Then().Use(second).Edit.Lease()) {}
 
 		protected EditCombined(IEdit<TIn, Leasing<T>> first, IEdit<TIn, Leasing<T>> second)
 		{

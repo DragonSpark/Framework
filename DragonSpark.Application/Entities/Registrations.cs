@@ -18,9 +18,27 @@ namespace DragonSpark.Application.Entities
 			         .Forward<Contexts<T>>()
 			         .Singleton()
 			         //
-			         .Then.AddScoped(typeof(ISave<>), typeof(Save<>))
+			         .Then
+			         .Start<IStandardScopes>()
+			         .Forward<StandardScopes<T>>()
+			         .Singleton()
+			         //
+			         .Then.Start<ISessionScopes>()
+			         .Forward<SessionScopes>()
+			         .Include(x => x.Dependencies)
+			         .Scoped()
+			         //
+			         .Then.Start<Remove<object>>()
+			         .Generic()
+			         .Singleton()
+			         //
+			         .Then.Start<Save<object>>()
+			         .Generic()
+			         .Singleton()
+			         //
+			         .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))
 			         .AddSingleton(typeof(Save<,>))
-			         ;
+				;
 		}
 	}
 }

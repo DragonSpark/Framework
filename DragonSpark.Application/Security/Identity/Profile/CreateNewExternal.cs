@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 	sealed class CreateExternal<T> : Transacting<ExternalLoginInfo, CreateUserResult<T>>, ICreateExternal<T>
 		where T : IdentityUser
 	{
-		public CreateExternal(CreateNewExternal<T> previous, DatabaseTransactions database)
+		public CreateExternal(CreateNewExternal<T> previous, ScopedDatabaseTransactions database)
 			: base(previous, database) {}
 	}
 

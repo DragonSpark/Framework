@@ -6,9 +6,9 @@ using System;
 
 namespace DragonSpark.Application.Entities
 {
-	sealed class AmbientAwareScopes : IScopes
+	public class AmbientAwareScopes : IScopes
 	{
-		readonly IScopes               _previous;
+		readonly IScopes                    _previous;
 		readonly IResult<IServiceProvider?> _provider;
 
 		public AmbientAwareScopes(IScopes previous) : this(previous, AmbientProvider.Default) {}

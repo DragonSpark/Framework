@@ -1,16 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
-using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
-using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Testing.Objects.Entities;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Testing.Entities.Queries
 {
@@ -64,20 +54,20 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			public int Number { get; set; }
 		}
 
-		sealed class SelectSubjectsByName : StartWhere<string, Subject>
+		/*sealed class SelectSubjectsByName : StartWhere<string, Subject>
 		{
 			public static SelectSubjectsByName Default { get; } = new SelectSubjectsByName();
 
 			SelectSubjectsByName() : base((s, subject) => subject.Name == s) {}
-		}
+		}*/
 
-		sealed class SingleSubject : EvaluateToSingle<string, Subject>
+		/*sealed class SingleSubject : EvaluateToSingle<string, Subject>
 		{
 			public SingleSubject(IContexts<ContextWithData> contexts)
 				: base(contexts.Then().Scopes(), SelectSubjectsByName.Default) {}
-		}
+		}*/
 
-		public class Benchmarks
+		/*public class Benchmarks
 		{
 			readonly IContexts<ContextWithData>      _contexts;
 			readonly IRuntimeQuery<string, Subject>       _scoped, _singleton;
@@ -136,6 +126,6 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 
 			[Benchmark]
 			public async ValueTask<object> Single() => await _single.Await("One");
-		}
+		}*/
 	}
 }

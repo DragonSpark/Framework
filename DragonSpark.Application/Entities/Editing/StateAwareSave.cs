@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing
 {
-	sealed class StateAwareSave<T> : ISave<T> where T : class
+	sealed class StateAwareSave<T> : ISessionSave<T> where T : class
 	{
-		readonly ISave<T>             _previous;
+		readonly ISessionSave<T>             _previous;
 		readonly Func<ExcludeSession> _session;
 
 		[UsedImplicitly]
-		public StateAwareSave(DbContext context, ISave<T> previous)
+		public StateAwareSave(DbContext context, ISessionSave<T> previous)
 			: this(previous, Excludes.Default.Then().Bind(context)) {}
 
 		[Candidate(false)]
-		public StateAwareSave(ISave<T> previous, Func<ExcludeSession> session)
+		public StateAwareSave(ISessionSave<T> previous, Func<ExcludeSession> session)
 		{
 			_previous = previous;
 			_session  = session;
