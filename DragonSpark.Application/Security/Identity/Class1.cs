@@ -30,9 +30,9 @@ namespace DragonSpark.Application.Security.Identity
 
 	sealed class Users<T> : IUsers<T> where T : class
 	{
-		readonly IScoping _scoping;
+		readonly IScopes _scoping;
 
-		public Users(IScoping scoping) => _scoping = scoping;
+		public Users(IScopes scoping) => _scoping = scoping;
 
 		public UsersSession<T> Get()
 		{
