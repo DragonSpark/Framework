@@ -156,5 +156,7 @@ namespace DragonSpark.Presentation
 
 		public static InteractionResultHandlerComposer<T> Then<T>(this IOperation<T> @this) where T : IInteractionResult
 			=> new(@this);
+
+		public static ActiveContentComposer<T> Then<T>(this IActiveContent<T> @this) => new (@this);
 	}
 }

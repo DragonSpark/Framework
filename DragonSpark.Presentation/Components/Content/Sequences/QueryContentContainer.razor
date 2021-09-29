@@ -10,11 +10,10 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IPaging<T>>
 
-<ReportingContentView Content="@Subject"
+<ResultingContentView Content="@Subject"
 	LoadingTemplate="@LoadingTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
-	ReportedType="@ReportedType"
 >
 	@if (context != EmptyPaging<T>.Default)
 	{
@@ -24,7 +23,7 @@
 	{
 		@EmptyElementsTemplate
 	}
-</ReportingContentView>
+</ResultingContentView>
 
 @code
 {

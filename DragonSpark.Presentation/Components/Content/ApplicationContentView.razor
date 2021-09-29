@@ -7,12 +7,11 @@
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
 
 <ActivityContainer Context="receiver">
-	<ReportingContentView Content="@Contents.Get(receiver)"
+	<ResultingContentView Content="@Contents.Get(receiver)"
 		ChildContent="@ChildContent"
 		LoadingTemplate="@LoadingTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
-		ReportedType="@ReportedType"
 		/>
 </ActivityContainer>
 
@@ -33,7 +32,4 @@
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
 }

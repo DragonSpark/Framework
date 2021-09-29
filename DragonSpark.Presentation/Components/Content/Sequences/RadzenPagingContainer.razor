@@ -7,7 +7,7 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<IRadzenPaging<T>>
 
-@if (Current is {IsFaulted : true })
+@if (Current?.Result is {IsFaulted : true })
 {
 	@ExceptionTemplate
 }
@@ -50,7 +50,7 @@ else
 
 	IRadzenPaging<T>? Subject { get; set; }
 
-	Task? Current { get; set; }
+	ContentWorker? Current { get; set; }
 
 	bool Loaded { get; set; }
 
@@ -58,14 +58,14 @@ else
 	{
 		base.OnParametersSet();
 		Subject ??= Content != null ? New(Content) : default;
-		Loaded |= Current is { IsCompletedSuccessfully: true };
+		Loaded |= Current?.Result is { IsCompletedSuccessfully: true };
 	}
 
-	protected override Task OnParametersSetAsync() => Current ?? base.OnParametersSetAsync();
+	protected override Task OnParametersSetAsync() => Current?.Worker ?? base.OnParametersSetAsync();
 
 	void Report(Task parameter)
 	{
-		Current = parameter;
+		Current = ContentWorkers.Default.Get(parameter);
 		StateHasChanged();
 	}
 

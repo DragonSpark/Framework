@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Diagnostics
 {
 	public class ExceptionAwareResult<T> : IResulting<T?>
 	{
-		readonly AwaitOf<T?>  _previous;
+		readonly AwaitOf<T?> _previous;
 		readonly IExceptions _exceptions;
 		readonly Type?       _reportedType;
 
@@ -16,8 +16,8 @@ namespace DragonSpark.Application.Diagnostics
 
 		public ExceptionAwareResult(AwaitOf<T?> previous, IExceptions exceptions, Type? reportedType = null)
 		{
-			_previous          = previous;
-			_exceptions        = exceptions;
+			_previous     = previous;
+			_exceptions   = exceptions;
 			_reportedType = reportedType;
 		}
 
@@ -30,7 +30,7 @@ namespace DragonSpark.Application.Diagnostics
 			catch (Exception e)
 			{
 				await _exceptions.Await(_reportedType ?? GetType(), e);
-				return default;
+				throw;
 			}
 		}
 	}

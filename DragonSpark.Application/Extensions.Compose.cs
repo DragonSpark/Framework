@@ -99,7 +99,7 @@ namespace DragonSpark.Application
 
 		public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
 
-		public static ComposeComposer<T> Compose<T>(this ModelContext _) where T : class => new ();
+		public static ComposeComposer<T> Compose<T>(this ModelContext _) where T : class => new();
 
 		public static ContextsComposer<T> Then<T>(this IContexts<T> @this) where T : DbContext => new(@this);
 
@@ -135,18 +135,21 @@ namespace DragonSpark.Application
 		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
 		public static OperationResultSelector<T?> Handle<T>(this OperationResultSelector<T?> @this,
-		                                                   IExceptions exceptions, Type? reportedType = null)
+		                                                    IExceptions exceptions, Type? reportedType = null)
 			=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
 
 		// Scoped:
 
-		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(this Entities.Queries.Runtime.Selection.IQuery<TIn, T> @this)
+		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(
+			this Entities.Queries.Runtime.Selection.IQuery<TIn, T> @this)
 			=> new(@this);
 
-		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(this ISelect<TIn, IQueryable<T>> @this)
+		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(
+			this ISelect<TIn, IQueryable<T>> @this)
 			=> new Entities.Queries.Runtime.Selection.Adapter<TIn, T>(@this);
 
-		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(this Selector<TIn, IQueryable<T>> @this)
+		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(
+			this Selector<TIn, IQueryable<T>> @this)
 			=> @this.Get().Out();
 
 		/**/
