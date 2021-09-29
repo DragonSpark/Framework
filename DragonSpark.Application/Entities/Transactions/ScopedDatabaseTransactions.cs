@@ -12,11 +12,10 @@ namespace DragonSpark.Application.Entities.Transactions
 
 		public async ValueTask<ITransaction> Get()
 		{
-			var previous = _boundaries.Get();
-			var transaction = await previous.Provider.GetRequiredService<DbContext>()
-			                                .Database.BeginTransactionAsync()
-			                                .ConfigureAwait(false);
-			var result = new AppendedTransaction(previous, new DatabaseTransaction(transaction));
+			var previous    = _boundaries.Get();
+			var context     = previous.Provider.GetRequiredService<DbContext>();
+			var transaction = await context.Database.BeginTransactionAsync().ConfigureAwait(false);
+			var result      = new AppendedTransaction(previous, new DatabaseTransaction(context, transaction));
 			return result;
 		}
 	}
