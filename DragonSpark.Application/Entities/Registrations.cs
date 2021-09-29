@@ -36,8 +36,11 @@ namespace DragonSpark.Application.Entities
 			         .Generic()
 			         .Singleton()
 			         //
-			         .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))
-			         .AddSingleton(typeof(Save<,>))
+			         .Then.Start<SaveMany<object>>()
+			         .Generic()
+			         .Singleton()
+					 //
+					 .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))
 				;
 		}
 	}

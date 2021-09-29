@@ -16,13 +16,13 @@ namespace DragonSpark.Application.Security.Identity.Authentication
 
 		public async ValueTask Get(T parameter)
 		{
-			var authentication = await _compositions.Await();
-			if (authentication != null)
+			var composition = await _compositions.Await();
+			if (composition != null)
 			{
-				var (properties, claims) = authentication.Value;
-				using var authentications = _authentications.Get();
-				await authentications.Subject.SignInWithClaimsAsync(parameter, properties, claims.Open())
-				                     .ConfigureAwait(false);
+				var (properties, claims) = composition.Value;
+				using var authentication = _authentications.Get();
+				await authentication.Subject.SignInWithClaimsAsync(parameter, properties, claims.Open())
+				                    .ConfigureAwait(false);
 			}
 		}
 	}

@@ -34,6 +34,6 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public class Remove<T> : Modify<T> where T : class
 	{
-		protected Remove(IStandardScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
+		public Remove(IStandardScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
 	}
 }

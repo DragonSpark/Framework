@@ -15,14 +15,14 @@ namespace DragonSpark.Presentation.Components.Security
 		public string FormatPath { get; set; } = AccessDeniedPathTemplate.Default;
 
 		[Inject, UsedImplicitly]
-		ILogger<RedirectToLogin> Logger { get; set; } = default!;
+		ILogger<RedirectToAccessDenied> Logger { get; set; } = default!;
 
 		[Inject]
 		CurrentRootPath CurrentPath { get; set; } = default!;
 
 		protected override void OnInitialized()
 		{
-			Path = new LoginPath(FormatPath).Get(CurrentPath.Get());
+			Path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
 
 			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}",
 			                Navigation.Uri, Path);

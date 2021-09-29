@@ -24,7 +24,7 @@ namespace DragonSpark.Presentation.Components.Security
 
 		protected override void OnInitialized()
 		{
-			Path = new LoginPath(FormatPath).Get(CurrentPath.Get());
+			Path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
 
 			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}",
 			                Navigation.Uri, Path);

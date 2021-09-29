@@ -31,9 +31,6 @@ namespace DragonSpark.Application.Security.Identity
 			         //
 			         .Then.Start<CurrentProviderIdentity>()
 			         .Singleton()
-			         //
-			         .Then.AddSingleton(typeof(IUsers<>), typeof(Users<>))
-			         
 				;
 		}
 	}
