@@ -18,13 +18,13 @@ namespace DragonSpark.Application.Compose.Store.Operations
 			=> _configure = configure;
 
 		public OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
-			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName ?? throw new InvalidOperationException(), key).Get);
+			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
 		public OperationResultSelector<TIn, TOut> Using(ISelect<TIn, object> key) => Using(key.Get);
 
 		public OperationResultSelector<TIn, TOut> Using(Func<TIn, object> key)
 			=> new Memory<TIn, TOut>(Memory,
-			                         new Source<TIn, TOut>(Memory, Subject.Get, _configure.Execute).Get,
+			                         new Source<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await,
 			                         key).Then();
 	}
 }

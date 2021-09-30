@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose.Model.Selection;
+﻿using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Compose.Model.Validation;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
@@ -21,6 +22,8 @@ namespace DragonSpark.Compose.Model.Results
 		public Selector<None, T> Accept() => Accept<None>();
 
 		public Selector<object, T> Any() => Accept<object>();
+
+		public OperationResultSelector<T> Operation() => new (_instance.Then().Select(x => x.ToOperation()).Out());
 
 		public ResultContext<T> Singleton() => new DeferredSingleton<T>(_instance.Get).Then();
 

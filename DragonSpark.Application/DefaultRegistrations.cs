@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -49,7 +50,13 @@ namespace DragonSpark.Application
 			         //
 			         .Then.Start<IExecuteOperation>()
 			         .Forward<ExecuteOperation>()
-			         .Scoped();
+			         .Scoped()
+			         //
+			         .Then.Start<ICurrentUserName>()
+			         .Forward<CurrentUserName>()
+			         .Singleton()
+					 ;
+
 		}
 	}
 }

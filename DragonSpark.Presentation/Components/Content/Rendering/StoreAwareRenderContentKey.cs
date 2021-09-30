@@ -15,9 +15,9 @@ namespace DragonSpark.Presentation.Components.Content.Rendering
 
 		public string Get(Delegate parameter)
 		{
-			var previous = _previous.Get(parameter);
-			_store.Add(previous);
-			return previous;
+			var result = _previous.Get(parameter);
+			_store.Add(result);
+			return result;
 		}
 	}
 }

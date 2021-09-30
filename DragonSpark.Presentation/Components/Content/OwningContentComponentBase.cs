@@ -33,8 +33,11 @@ namespace DragonSpark.Presentation.Components.Content
 
 		void Apply()
 		{
-			_current ??= Contents.Get(_content);
+			_current ??= Create(Contents.Get(_content));
 		}
+
+		protected virtual IActiveContent<TContent> Create(IActiveContent<TContent> parameter)
+			=> parameter.Then().Handle(Exceptions, GetType()).Get();
 
 		protected void RequestNewContent()
 		{

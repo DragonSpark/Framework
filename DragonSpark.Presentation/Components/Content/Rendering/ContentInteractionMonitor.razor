@@ -1,0 +1,19 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Application.Components
+
+@inject IContentInteraction Interaction
+
+@code {
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			StateHasChanged();
+		}
+		else
+		{
+			Interaction.Execute();
+		}
+	}
+}

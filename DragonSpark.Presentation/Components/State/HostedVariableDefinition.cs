@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State
 {
-	public class SessionVariableDefinition<T> : ISessionVariableDefinition<T>
+	public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
 	{
 		readonly string              _key;
-		readonly ISessionVariable<T> _store;
+		readonly IHostedVariable<T> _store;
 
-		public SessionVariableDefinition(string key, ProtectedSessionStorage store)
-			: this(key, new SessionVariable<T>(store)) {}
+		protected HostedVariableDefinition(string key, ProtectedBrowserStorage storage)
+			: this(key, new HostedVariable<T>(storage)) {}
 
-		public SessionVariableDefinition(string key, ISessionVariable<T> store)
+		protected HostedVariableDefinition(string key, IHostedVariable<T> store)
 			: this(key, store, new Operation(store.Remove.Then().Bind(key))) {}
 
-		public SessionVariableDefinition(string key, ISessionVariable<T> store, IOperation remove)
+		protected HostedVariableDefinition(string key, IHostedVariable<T> store, IOperation remove)
 		{
 			Remove = remove;
 			_key   = key;

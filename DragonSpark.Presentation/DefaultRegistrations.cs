@@ -8,6 +8,7 @@ using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
+using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,14 +33,7 @@ namespace DragonSpark.Presentation
 			         .Decorate<IExceptions, NotificationAwareExceptions>()
 			         .Decorate<IExceptions, NavigationAwareExceptions>()
 			         //
-			         .Start<DialogService>()
-			         .And<NotificationService>()
-			         .Scoped()
-			         //
-			         .Then.Start<RouterSession>()
-			         .Scoped()
-			         //
-			         .Then.Start<IEventAggregator>()
+			         .Start<IEventAggregator>()
 			         .Forward<EventAggregator>()
 			         .Scoped()
 			         //
@@ -62,12 +56,32 @@ namespace DragonSpark.Presentation
 			         //
 			         .Then.Start<IContentInteraction>()
 			         .Forward<ContentInteraction>()
-			         .Include(x => x.Dependencies)
+			         .Include(x => x.Dependencies.Recursive())
 			         .Scoped()
 			         //
 			         .Then.Start<DefaultExternalLogin>()
 			         .And<IsPreRendering>()
 			         .Include(x => x.Dependencies)
+			         .Scoped()
+			         //
+			         .Then.Start<ClientIdentifierAccessor>()
+			         .Singleton()
+			         .Then.Start<ClientIdentifier>()
+			         .Include(x => x.Dependencies.Recursive())
+			         .Scoped()
+			         //
+			         .Then.Start<DialogService>()
+			         .And<NotificationService>()
+			         .And<RouterSession>()
+			         .And<NavigateToInitialize>()
+			         .Scoped()
+			         //
+			         .Then.Start<IInitialized>()
+			         .Forward<Initialized>()
+			         .Singleton()
+			         //
+			         .Then.Start<IInitializeConnection>()
+			         .Forward<InitializeConnection>()
 			         .Scoped()
 			         //
 			         .Then.AddJsInteropExtensions()

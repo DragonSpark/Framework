@@ -1,34 +1,9 @@
-﻿using DragonSpark.Model;
-using Microsoft.Extensions.Caching.Memory;
+﻿using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering
 {
-	sealed class ContentInteraction : IContentInteraction
+	sealed class ContentInteraction : ValidatedCommand, IContentInteraction
 	{
-		readonly IsTracking        _switch;
-		readonly IMemoryCache      _memory;
-		readonly RenderContentKeys _keys;
-
-		public ContentInteraction(IsTracking @switch, IMemoryCache memory, RenderContentKeys keys)
-		{
-			_switch = @switch;
-			_memory = memory;
-			_keys   = keys;
-		}
-
-		public void Execute(None parameter)
-		{
-			if (_switch.Get())
-			{
-				_switch.Execute(false);
-
-				foreach (var key in _keys)
-				{
-					_memory.Remove(key);
-				}
-			}
-
-			_keys.Clear();
-		}
+		public ContentInteraction(ShouldClearKeys condition, ClearContentKeys keys) : base(condition, keys) {}
 	}
 }

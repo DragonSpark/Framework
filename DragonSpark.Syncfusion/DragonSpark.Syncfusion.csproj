@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,7 +9,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Syncfusion.Blazor" Version="19.2.0.62" />
+    <PackageReference Include="Syncfusion.Blazor" Version="19.3.0.43" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />

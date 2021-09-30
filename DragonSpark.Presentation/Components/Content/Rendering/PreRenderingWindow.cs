@@ -6,6 +6,6 @@ namespace DragonSpark.Presentation.Components.Content.Rendering
 	{
 		public static PreRenderingWindow Default { get; } = new();
 
-		PreRenderingWindow() : base(TimeSpan.FromSeconds(1.5)) {}
+		PreRenderingWindow() : base(TimeSpan.FromSeconds(30)) {}
 	}
 }

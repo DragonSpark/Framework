@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Components.State
 {
 	public sealed class Remove : IRemove
 	{
-		readonly ProtectedSessionStorage _store;
+		readonly ProtectedBrowserStorage _store;
 
-		public Remove(ProtectedSessionStorage store) => _store = store;
+		public Remove(ProtectedBrowserStorage store) => _store = store;
 
 		public ValueTask Get(string parameter) => _store.DeleteAsync(parameter);
 	}

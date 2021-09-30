@@ -1,8 +1,10 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.Components;
+using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Presentation.Connections.Initialization;
 
 namespace DragonSpark.Presentation
 {
@@ -16,6 +18,7 @@ namespace DragonSpark.Presentation
 			=> parameter.Configure(DefaultRegistrations.Default)
 			            .Configure(Interaction.Registrations.Default)
 			            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>),
-			                                          typeof(PreRenderAwareActiveContents<>)));
+			                                          typeof(PreRenderAwareActiveContents<>))
+			                                .Decorate<IClientIdentifier, ClientIdentifier>());
 	}
 }

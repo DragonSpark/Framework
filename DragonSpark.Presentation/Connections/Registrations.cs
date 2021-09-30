@@ -17,7 +17,14 @@ namespace DragonSpark.Presentation.Connections
 		{
 			parameter.Start<IConfigureConnection>()
 			         .Forward<ConfigureConnection>()
-			         .Scoped();
+			         .Scoped()
+			         //
+			         /*.Then.Start<ClientIdentifier>()
+			         .Include(x => x.Dependencies)
+			         .Scoped()
+			         //
+			         .Then.Decorate<IClientIdentifier, ClientIdentifier>()*/
+				;
 		}
 	}
 

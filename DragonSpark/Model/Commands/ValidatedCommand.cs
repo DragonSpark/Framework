@@ -3,6 +3,11 @@ using System;
 
 namespace DragonSpark.Model.Commands
 {
+	public class ValidatedCommand : ValidatedCommand<None>
+	{
+		public ValidatedCommand(ICondition condition, ICommand command) : base(condition, command) {}
+	}
+
 	public class ValidatedCommand<T> : ICommand<T>
 	{
 		readonly Action<T> _command;

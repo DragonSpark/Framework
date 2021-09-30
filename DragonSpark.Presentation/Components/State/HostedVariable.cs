@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State
 {
-	public class SessionVariable<T> : ISessionVariable<T>
+	public sealed class HostedVariable<T> : IHostedVariable<T>
 	{
-		readonly ProtectedSessionStorage _store;
+		readonly ProtectedBrowserStorage _store;
 
-		public SessionVariable(ProtectedSessionStorage store) : this(store, new Remove(store)) {}
+		public HostedVariable(ProtectedBrowserStorage store) : this(store, new Remove(store)) {}
 
-		public SessionVariable(ProtectedSessionStorage store, IRemove remove)
+		public HostedVariable(ProtectedBrowserStorage store, IRemove remove)
 		{
 			_store = store;
 			Remove = remove;

@@ -14,7 +14,7 @@ namespace DragonSpark.Presentation.Components.Content.Rendering
 			        .Then()
 			        .Store()
 			        .In(memory)
-			        .For(PreRenderingWindow.Default.Get())
+			        .For(PreRenderingWindow.Default.Get().Slide())
 			        .Using(key.Accept)
 			        .Bind()) {}
 	}
