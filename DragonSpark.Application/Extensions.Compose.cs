@@ -86,7 +86,7 @@ namespace DragonSpark.Application
 		public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this) => new(@this);
 
 		public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
-			this OperationResultSelector<TIn, TOut> @this)
+			this DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> @this)
 			=> new(@this);
 
 		public static Slide Slide(this TimeSpan @this) => new(@this);

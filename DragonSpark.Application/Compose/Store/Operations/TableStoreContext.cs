@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
@@ -19,12 +18,12 @@ namespace DragonSpark.Application.Compose.Store.Operations
 			_storage = storage;
 		}
 
-		public OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
+		public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
 			=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
-		public OperationResultSelector<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
+		public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
 
-		public OperationResultSelector<TIn, TOut> Using(Func<TIn, string> key)
+		public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, string> key)
 			=> new Source(_storage, _subject.Get, key).Then();
 
 		sealed class Source : ISelecting<TIn, TOut>
