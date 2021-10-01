@@ -24,7 +24,7 @@ namespace DragonSpark.Presentation.Components
 			}
 		}	IRefreshContainer? _container;
 
-		protected override void OnParametersSet()
+		/*protected override void OnParametersSet()
 		{
 			if (Container != null)
 			{
@@ -39,7 +39,7 @@ namespace DragonSpark.Presentation.Components
 				}
 			}
 			base.OnParametersSet();
-		}
+		}*/
 
 		public Task Get() => Reload();
 

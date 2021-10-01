@@ -1,5 +1,6 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
 @using DragonSpark.Model
 @using DragonSpark.Model.Commands
@@ -21,7 +22,6 @@
 		EmptyElementsTemplate="@EmptyElementsTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
-		ReportedType="@ReportedType"
 	>
 		<RefreshContainer Topic="@Content">
 			<RadzenPagingContainer
@@ -30,7 +30,7 @@
 				LoadingTemplate="@LoadingTemplate"
 				NotFoundTemplate="@NotFoundTemplate"
 				ExceptionTemplate="@ExceptionTemplate"
-				IncludeCount="@IncludeCount"
+				Reporter="@Reporter"
 			/>
 		</RefreshContainer>
 	</QueryContentContainer>
@@ -41,15 +41,12 @@
 	public IQueries<T>? Content { get; set; }
 
 	[Parameter]
-	public bool IncludeCount { get; set; } = true;
+	public IReporter<IPaging<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;
 
 	[Parameter]
 	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
 }
 

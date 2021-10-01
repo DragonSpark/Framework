@@ -1,0 +1,46 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Application
+@typeparam TValue
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
+
+<ResultingContentView Content="@Subject"
+					  ChildContent="@ChildContent"
+					  LoadingTemplate="@LoadingTemplate"
+					  NotFoundTemplate="@NotFoundTemplate"
+					  ExceptionTemplate="@ExceptionTemplate"
+					  />
+
+@code
+{
+
+	[Parameter]
+	public IResulting<TValue?>? Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				Subject = null;
+			}
+		}
+	}	IResulting<TValue?>? _content;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
+	IResulting<TValue?>? Subject { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		Subject ??= Content != null ? DetermineSubject(Content) : null;
+	}
+
+	IResulting<TValue?> DetermineSubject(IResulting<TValue?> content)
+		=> content.Then().Handle(Exceptions, ReportedType ?? GetType()).Out();
+
+}

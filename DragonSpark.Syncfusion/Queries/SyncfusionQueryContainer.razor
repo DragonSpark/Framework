@@ -1,5 +1,7 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Model.Selection.Stores
 @using DragonSpark.Presentation.Components.Content
 @using DragonSpark.Presentation.Components.Content.Sequences
 
@@ -15,9 +17,15 @@
 	EmptyElementsTemplate="@EmptyElementsTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
-	ReportedType="@ReportedType"
 >
-	@ChildContent(Requests.Get(context))
+	<SyncfusionPagingContainer
+		Content="@context"
+		Reporter="@Reporter"
+		ChildContent="@ChildContent"
+		LoadingTemplate="@LoadingTemplate"
+		ExceptionTemplate="@ExceptionTemplate"
+		NotFoundTemplate="@NotFoundTemplate"
+	/>
 </QueryContentContainer>
 
 @code {
@@ -32,8 +40,8 @@
 	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
 	[Parameter]
-	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
+	public IReporter<IDataRequest>? Reporter { get; set; } = DragonSpark.Syncfusion.Queries.Reporter.Default;
 
-	[Parameter]
-	public Type? ReportedType { get; set; }
+
+
 }

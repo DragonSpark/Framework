@@ -1,22 +1,37 @@
-﻿@using DragonSpark.Compose
-@using DragonSpark.Model.Operations
-@using DragonSpark.Application
-@typeparam TValue
+﻿@typeparam TIn
+@typeparam TOut
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
+@using DragonSpark.Application.Runtime.Operations
+@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TOut>
 
-<ResultingContentView Content="@Subject"
-					  ChildContent="@ChildContent"
-					  LoadingTemplate="@LoadingTemplate"
-					  NotFoundTemplate="@NotFoundTemplate"
-					  ExceptionTemplate="@ExceptionTemplate"
-					  />
+@if (Current?.Status is {IsFaulted : true })
+{
+	@ExceptionTemplate
+}
+else
+{
+	var initializing = Current is null || !Loaded;
+	if (initializing)
+	{
+		@LoadingTemplate
+	}
+	<div class="@(initializing ? "d-none" : string.Empty)">
+		<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
+	</div>
+}
 
 @code
 {
+	Action<Task> _report = default!;
+
+	protected override ValueTask Initialize()
+	{
+		_report = Report;
+		return base.Initialize();
+	}
 
 	[Parameter]
-	public IResulting<TValue?>? Content
+	public TIn? Content
 	{
 		get => _content;
 		set
@@ -24,23 +39,38 @@
 			if (_content != value)
 			{
 				_content = value;
-				Subject = null;
+				Loaded = false;
+				Current = null;
+				Subject = default;
 			}
 		}
-	}	IResulting<TValue?>? _content;
+	}	TIn? _content;
 
 	[Parameter]
-	public Type? ReportedType { get; set; }
+	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
 
-	IResulting<TValue?>? Subject { get; set; }
+	TOut? Subject { get; set; }
+
+	Worker? Current { get; set; }
+
+	bool Loaded { get; set; }
+
+	bool Rendered { get; set; }
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= Content != null ? DetermineSubject(Content) : null;
+		Subject ??= Content != null ? Reporter.Get(new(Content, _report)) : default;
+		Loaded |= Current?.Status is { IsCompletedSuccessfully: true };
 	}
 
-	IResulting<TValue?> DetermineSubject(IResulting<TValue?> content)
-		=> content.Then().Handle(Exceptions, ReportedType ?? GetType()).Out();
+	protected override Task OnParametersSetAsync() => Current?.AsTask() ?? base.OnParametersSetAsync();
+
+	void Report(Task parameter)
+	{
+		Current = Workers.Default.Get(parameter);
+		StateHasChanged();
+	}
+
 
 }

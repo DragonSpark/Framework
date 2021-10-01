@@ -1,0 +1,54 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Presentation.Components.Content
+@using DragonSpark.Presentation.Components.Content.Sequences
+@typeparam T
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+
+<ReportingContentView
+	TIn="IDataRequest"
+	TOut="IDataRequest"
+	Content="@Subject"
+	Reporter="@Reporter"
+	LoadingTemplate="@LoadingTemplate"
+	ExceptionTemplate="@ExceptionTemplate"
+	NotFoundTemplate="@NotFoundTemplate"
+	Context="request"
+>
+	@ChildContent(request)
+</ReportingContentView>
+
+@code {
+	[Parameter]
+	public IPaging<T> Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				Subject = null;
+			}
+		}
+	}	IPaging<T> _content = default!;
+
+	[Parameter]
+	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
+
+	[Parameter]
+	public IReporter<IDataRequest> Reporter { get; set; } = DragonSpark.Syncfusion.Queries.Reporter.Default;
+
+
+	IDataRequest? Subject { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		Subject ??= DetermineSubject();
+	}
+
+	IDataRequest DetermineSubject() => Requests.Get(Content);
+
+}

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
 {
-	public sealed class Paging<T> : IPaging<T>
+	sealed class Paging<T> : IPaging<T>
 	{
 		readonly IQueries<T> _queries;
 		readonly ICompose<T> _compose;

@@ -236,7 +236,20 @@ namespace DragonSpark.Compose
 		public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, ValueTask<TOut>> @this)
 			=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
 
-		public static IResulting<T> Out<T>(this ResultContext<ValueTask<T>> @this) => new Resulting<T>(@this.Get());
+
+		public static IAllocating<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, Task<TOut>> @this) => @this.Get().Out();
+		public static IAllocating<TIn, TOut> Out<TIn, TOut>(this ISelect<TIn, Task<TOut>> @this)
+			=> new Allocating<TIn, TOut>(@this);
+
+		public static IAllocated<T> Out<T>(this Selector<T, Task> @this) => @this.Get().Out();
+		public static IAllocated<T> Out<T>(this ISelect<T, Task> @this) => new Allocated<T>(@this);
+
+
+		public static IAllocatedResult<T> Out<T>(this ResultContext<Task<T>> @this) => @this.Get().Out();
+		public static IAllocatedResult<T> Out<T>(this IResult<Task<T>> @this) => new AllocatedResult<T>(@this);
+
+		public static IResulting<T> Out<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Out();
+		public static IResulting<T> Out<T>(this IResult<ValueTask<T>> @this) => new Resulting<T>(@this);
 
 		/**/
 

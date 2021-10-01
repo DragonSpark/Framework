@@ -1,12 +1,26 @@
 ﻿@inherits global::Syncfusion.Blazor.DataAdaptor
 
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
 @using global::Syncfusion.Blazor
+@using global::Syncfusion.Blazor.Data
 
 @code {
 
 	[Parameter]
-	public IDataRequest Input { get; set; } = default!;
+	public Await<DataManagerRequest, object> Input { get; set; } = default!;
 
-	public override Task<object> ReadAsync(DataManagerRequest request, string? key = null)
-		=> Input.Get(request).AsTask();
+	public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
+	{
+		try
+		{
+			return await Input(request);
+		}
+		// ReSharper disable once CatchAllClause
+		catch (Exception)
+		{
+			return new DataResult();
+		}
+	}
+
 }

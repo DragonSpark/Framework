@@ -1,20 +1,19 @@
 ﻿@typeparam T
 
-@using DragonSpark.Compose
 @using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation.Components.Eventing
 @using DragonSpark.Application.Diagnostics
 @using DragonSpark.Application
+@using DragonSpark.Compose
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IPaging<T>>
 
 <ResultingContentView Content="@Subject"
-	LoadingTemplate="@LoadingTemplate"
-	NotFoundTemplate="@NotFoundTemplate"
-	ExceptionTemplate="@ExceptionTemplate"
->
+					  LoadingTemplate="@LoadingTemplate"
+					  NotFoundTemplate="@NotFoundTemplate"
+					  ExceptionTemplate="@ExceptionTemplate">
 	@if (context != EmptyPaging<T>.Default)
 	{
 		@ChildContent(context)
@@ -67,7 +66,9 @@
 				Subject = null;
 			}
 		}
-	}	IPagers<T> _pagers = Pagers<T>.Default;
+	}
+
+	IPagers<T> _pagers = Pagers<T>.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
@@ -84,12 +85,9 @@
 	{
 		if (Content != null)
 		{
-			var result = new Pagings<T>(Pagers).Then()
-			                                   .AccountOut()
-			                                   .Bind(new PagingInput<T>(Content, Compose))
-			                                   .Then()
-			                                   .Handle(Exceptions, ReportedType ?? GetType())
-			                                   .Out();
+			var selector = new Pagings<T>(Pagers).Then().AccountOut().Bind(new PagingInput<T>(Content, Compose));
+			var subject = ReportedType != null ? selector.Then().Handle(Exceptions, ReportedType) : selector;
+			var result = subject.Out();
 			return result;
 		}
 

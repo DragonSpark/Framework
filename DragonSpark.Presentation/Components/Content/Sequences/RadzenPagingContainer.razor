@@ -1,81 +1,29 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Eventing
 
-@typeparam T
-
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<IRadzenPaging<T>>
 
-@if (Current?.Result is {IsFaulted : true })
-{
-	@ExceptionTemplate
-}
-else if (Current is null || Loaded)
-{
-	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
-}
-else
-{
-	@LoadingTemplate
-}
+@typeparam T
+
+<ReportingContentView
+	TIn="IPaging<T>"
+	TOut="IRadzenPaging<T>"
+	Content="@Content"
+	Reporter="@Reporter"
+	ChildContent="@ChildContent"
+	LoadingTemplate="@LoadingTemplate"
+	ExceptionTemplate="@ExceptionTemplate"
+	NotFoundTemplate="@NotFoundTemplate"
+	/>
 
 @code
 {
-	Action<Task> _report = default!;
-	protected override ValueTask Initialize()
-	{
-		_report = Report;
-		return base.Initialize();
-	}
+	[Parameter]
+	public IPaging<T>? Content { get; set; }
 
 	[Parameter]
-	public IPaging<T>? Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content = value;
-				Loaded = false;
-				Current = null;
-				Subject = null;
-			}
-		}
-	}	IPaging<T>? _content;
-
-	[Parameter]
-	public bool IncludeCount { get; set; } = true;
-
-	IRadzenPaging<T>? Subject { get; set; }
-
-	ContentWorker? Current { get; set; }
-
-	bool Loaded { get; set; }
-
-	protected override void OnParametersSet()
-	{
-		base.OnParametersSet();
-		Subject ??= Content != null ? New(Content) : default;
-		Loaded |= Current?.Result is { IsCompletedSuccessfully: true };
-	}
-
-	protected override Task OnParametersSetAsync() => Current?.Worker ?? base.OnParametersSetAsync();
-
-	void Report(Task parameter)
-	{
-		Current = ContentWorkers.Default.Get(parameter);
-		StateHasChanged();
-	}
-
-	IRadzenPaging<T> New(IPaging<T> content)
-	{
-		var first = new RadzenPaging<T>(content, IncludeCount);
-		/*var second = new ValidatedRadzenPaging<T>(first);*/
-		var result = new ReportedRadzenPaging<T>(first, _report);
-		return result;
-	}
-
+	public IReporter<IPaging<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
 }
-

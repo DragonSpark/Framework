@@ -158,5 +158,8 @@ namespace DragonSpark.Presentation
 			=> new(@this);
 
 		public static ActiveContentComposer<T> Then<T>(this IActiveContent<T> @this) => new (@this);
+
+		public static Compose.OperationResultSelectorExtended<_, T> Then<_, T>(this OperationResultSelector<_, T> @this)
+			=> new(@this.Out());
 	}
 }

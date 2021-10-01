@@ -22,9 +22,8 @@ namespace DragonSpark.Presentation.Connections.Initialization
 		{
 			var options = new CookieOptions
 			{
-				Expires  = DateTime.Now.AddDays(30),
-				SameSite = SameSiteMode.Strict,
-				Secure   = true
+				Expires  = DateTime.Now.AddHours(1),
+				IsEssential = true
 			};
 
 			parameter.Response.Cookies.Append(_name, _identifier.Get().ToString(), options);
