@@ -3,6 +3,7 @@ using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
+using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
@@ -11,6 +12,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using System;
+using Action = System.Action;
 using CommandContext = DragonSpark.Compose.Extents.Commands.CommandContext;
 
 namespace DragonSpark.Compose
@@ -25,7 +27,7 @@ namespace DragonSpark.Compose
 		public static T Instance<T>(this VowelContext _) => Extents.Instance<T>.Implementation.Activate();
 
 		public static OperationContext<T> Operation<T>(this VowelContext _, Await<T> start)
-			=> new (new Awaiting<T>(start));
+			=> new(new Awaiting<T>(start));
 
 		public static T Instance<T>(this VowelContext _, T instance) => instance;
 
@@ -52,14 +54,18 @@ namespace DragonSpark.Compose
 
 		public static CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
 
-		public static Model.Commands.CommandContext<T> Command<T>(this ModelContext @this, Action<T> action)
+		public static Model.Commands.CommandContext<T> Command<T>(this ModelContext @this, System.Action<T> action)
 			=> @this.Command.Of.Type<T>().By.Calling(action);
 
-		public static Model.Commands.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this, Action<T1, T2> action)
+		public static Model.Commands.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this,
+		                                                                      Action<T1, T2> action)
 			=> @this.Command.Of.Type<(T1, T2)>().By.Calling(action.Invoke);
 
 		public static Model.Commands.CommandContext Command(this ModelContext _, Action action)
 			=> new(new Command(action));
+
+		public static CommandResultContext Command(this ModelContext _, Func<ICommand> action)
+			=> new(action.Start().Get());
 
 		public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();
 

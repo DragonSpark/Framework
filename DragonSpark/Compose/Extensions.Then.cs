@@ -28,101 +28,101 @@ namespace DragonSpark.Compose
 		 * https://youtu.be/oqwzuiSy9y0
 		 */
 
-		public static ResultContext<T> Then<T>(this IResult<T> @this) => new ResultContext<T>(@this);
+		public static ResultContext<T> Then<T>(this IResult<T> @this) => new(@this);
 
 		public static NestedResultContext<T> Then<T>(this IResult<IResult<T>> @this)
-			=> new NestedResultContext<T>(@this);
+			=> new(@this);
 
 		public static NestedResultContext<T> Then<T>(this ResultContext<IResult<T>> @this)
 			=> @this.Get().Then();
 
 		public static ResultDelegateContext<T> Then<T>(this IResult<Func<T>> @this)
-			=> new ResultDelegateContext<T>(@this);
+			=> new(@this);
 
 		public static ResultDelegateContext<T> Then<T>(this ResultContext<Func<T>> @this)
 			=> @this.Get().Then();
 
 		public static SelectionResultContext<T, bool> Then<T>(this IResult<ICondition<T>> @this)
-			=> new SelectionResultContext<T, bool>(@this);
+			=> new(@this);
 
 		public static SelectionResultContext<T, bool> Then<T>(this ResultContext<ICondition<T>> @this)
 			=> @this.Get().Then();
 
 		public static SelectionResultContext<TIn, TOut> Then<TIn, TOut>(this IResult<ISelect<TIn, TOut>> @this)
-			=> new SelectionResultContext<TIn, TOut>(@this);
+			=> new(@this);
 
 		public static SelectionResultContext<TIn, TOut> Then<TIn, TOut>(this ResultContext<ISelect<TIn, TOut>> @this)
 			=> @this.Get().Then();
 
 		public static SelectionDelegateResultContext<TIn, TOut> Then<TIn, TOut>(this IResult<Func<TIn, TOut>> @this)
-			=> new SelectionDelegateResultContext<TIn, TOut>(@this);
+			=> new(@this);
 
 		public static SelectionDelegateResultContext<TIn, TOut> Then<TIn, TOut>(
 			this ResultContext<Func<TIn, TOut>> @this)
 			=> @this.Get().Then();
 
-		public static CommandResultContext<T> Then<T>(this IResult<ICommand<T>> @this)
-			=> new CommandResultContext<T>(@this);
+		public static CommandResultContext Then(this IResult<ICommand> @this) => new(@this);
 
-		public static CommandResultContext<T> Then<T>(this ResultContext<ICommand<T>> @this)
-			=> @this.Get().Then();
+		public static CommandResultContext<T> Then<T>(this IResult<ICommand<T>> @this) => new(@this);
+
+
 
 		/**/
 
-		public static Selector<T> Then<T>(this ISelect<None, T> @this) => new Selector<T>(@this);
+		public static Selector<T> Then<T>(this ISelect<None, T> @this) => new(@this);
 
 		public static NestedConditionSelector Then(this ISelect<None, bool> @this)
-			=> new NestedConditionSelector(@this);
+			=> new(@this);
 
 		public static NestedConditionSelector Then(this Selector<None, bool> @this)
 			=> @this.Get().Then();
 
 		public static Selector<TIn, TOut> Then<TIn, TOut>(this ISelect<TIn, TOut> @this)
-			=> new Selector<TIn, TOut>(@this);
+			=> new(@this);
 
 		public static ConditionalSelector<TIn, TOut> Then<TIn, TOut>(this IConditional<TIn, TOut> @this)
-			=> new ConditionalSelector<TIn, TOut>(@this);
+			=> new(@this);
 
 		public static TableSelector<TIn, TOut> Then<TIn, TOut>(this ITable<TIn, TOut> @this)
-			=> new TableSelector<TIn, TOut>(@this);
+			=> new(@this);
 
-		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new ConditionSelector<T>(@this);
+		public static ConditionSelector<T> Then<T>(this ISelect<T, bool> @this) => new(@this);
 
 		public static ConditionSelector<T> Then<T>(this Selector<T, bool> @this) => @this.Get().Then();
 
-		public static TypeSelector<T> Then<T>(this ISelect<T, Type> @this) => new TypeSelector<T>(@this);
+		public static TypeSelector<T> Then<T>(this ISelect<T, Type> @this) => new(@this);
 
 		public static TypeSelector<T> Then<T>(this Selector<T, Type> @this) => @this.Get().Then();
 
-		public static MetadataSelector<T> Then<T>(this ISelect<T, TypeInfo> @this) => new MetadataSelector<T>(@this);
+		public static MetadataSelector<T> Then<T>(this ISelect<T, TypeInfo> @this) => new(@this);
 
 		public static MetadataSelector<T> Then<T>(this Selector<T, TypeInfo> @this) => @this.Get().Then();
 
 		public static NestedConditionSelector<_, T> Then<_, T>(this ISelect<_, ICondition<T>> @this)
-			=> new NestedConditionSelector<_, T>(@this);
+			=> new(@this);
 
 		public static NestedConditionSelector<_, T> Then<_, T>(this Selector<_, ICondition<T>> @this)
 			=> @this.Get().Then();
 
 
-		public static OperationContext<T> Then<T>(this IOperation<T> @this) => new OperationContext<T>(@this);
-		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new OperationContext<T>(@this);
+		public static OperationContext<T> Then<T>(this IOperation<T> @this) => new(@this);
+		public static OperationContext<T> Then<T>(this ISelect<T, ValueTask> @this) => new(@this);
 
 		public static OperationContext<T> Then<T>(this Await<T> @this)
-			=> new OperationContext<T>(@this.Target as ISelect<T, ValueTask> ?? new Awaiting<T>(@this));
+			=> new(@this.Target as ISelect<T, ValueTask> ?? new Awaiting<T>(@this));
 
 		public static OperationContext<T> Then<T>(this Selector<T, ValueTask> @this) => @this.Get().Then();
 
 		public static OperationResultSelector<T> Then<T>(this IResult<ValueTask<T>> @this)
-			=> new OperationResultSelector<T>(@this);
+			=> new(@this);
 
 		public static OperationResultSelector<T> Then<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Then();
 
-		public static OperationSelector Then(this IResult<ValueTask> @this) => new OperationSelector(@this);
+		public static OperationSelector Then(this IResult<ValueTask> @this) => new(@this);
 
 		public static OperationSelector Then(this ResultContext<ValueTask> @this) => @this.Get().Then();
 
-		public static AllocatedOperationSelector Then(this IResult<Task> @this) => new AllocatedOperationSelector(@this);
+		public static AllocatedOperationSelector Then(this IResult<Task> @this) => new(@this);
 
 		public static AllocatedOperationSelector Then(this ResultContext<Task> @this) => @this.Get().Then();
 
@@ -131,85 +131,86 @@ namespace DragonSpark.Compose
 		public static OperationResultSelector<T> Then<T>(this ResultContext<Task<T>> @this) => @this.Select(x => x.ToOperation()).Then();*/
 
 		public static OperationResultSelector<_, T> Then<_, T>(this ISelecting<_, T> @this)
-			=> new OperationResultSelector<_, T>(@this);
+			=> new(@this);
 
 		public static OperationResultSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this)
-			=> new OperationResultSelector<_, T>(@this);
+			=> new(@this);
 
 		public static OperationResultSelector<_, T> Then<_, T>(this Selector<_, ValueTask<T>> @this)
 			=> @this.Get().Then();
 
-		public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new TaskSelector<_, T>(@this);
+		public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new(@this);
 
 		public static TaskSelector<_, T> Then<_, T>(this Selector<_, Task<T>> @this) => @this.Get().Then();
 
-		public static TaskSelector<_> Then<_>(this ISelect<_, Task> @this) => new TaskSelector<_>(@this);
+		public static TaskSelector<_> Then<_>(this ISelect<_, Task> @this) => new(@this);
 
 		public static TaskSelector<_> Then<_>(this Selector<_, Task> @this) => @this.Get().Then();
 
 /**/
 
-		public static CommandContext Then(this ICommand @this) => new CommandContext(@this);
+		public static CommandContext Then(this ICommand @this) => new(@this);
 
-		public static CommandContext<T> Then<T>(this ICommand<T> @this) => new CommandContext<T>(@this);
+		public static CommandContext<T> Then<T>(this ICommand<T> @this) => new(@this);
 
 		public static CommandInstanceSelector<_, T> Then<_, T>(this ISelect<_, ICommand<T>> @this)
-			=> new CommandInstanceSelector<_, T>(@this);
+			=> new(@this);
 
 		public static CommandInstanceSelector<_, T> Then<_, T>(this Selector<_, ICommand<T>> @this)
 			=> @this.Get().Then();
 
 		public static ResultDelegateSelector<_, T> Then<_, T>(this ISelect<_, Func<T>> @this)
-			=> new ResultDelegateSelector<_, T>(@this);
+			=> new(@this);
 
 		public static ResultDelegateSelector<_, T> Then<_, T>(this Selector<_, Func<T>> @this)
 			=> @this.Get().Then();
 
 		public static ResultSelectionSelector<_, T> Then<_, T>(this ISelect<_, IResult<T>> @this)
-			=> new ResultSelectionSelector<_, T>(@this);
+			=> new(@this);
 
 		public static ResultSelectionSelector<_, T> Then<_, T>(this Selector<_, IResult<T>> @this)
 			=> @this.Get().Then();
 
 		public static SelectionSelector<_, TIn, TOut> Then<_, TIn, TOut>(this ISelect<_, ISelect<TIn, TOut>> @this)
-			=> new SelectionSelector<_, TIn, TOut>(@this);
+			=> new(@this);
 
 		public static SelectionSelector<_, TIn, TOut> Then<_, TIn, TOut>(this Selector<_, ISelect<TIn, TOut>> @this)
 			=> @this.Get().Then();
 
 		public static ExpressionSelector<T> Then<T>(this ISelect<T, Expression> @this)
-			=> new ExpressionSelector<T>(@this);
+			=> new(@this);
 
 		public static ExpressionSelector<T> Then<T>(this Selector<T, Expression> @this)
 			=> @this.Get().Then();
 
 		public static SequenceSelector<_, T> Then<_, T>(this ISelect<_, IEnumerable<T>> @this)
-			=> new SequenceSelector<_, T>(@this);
+			=> new(@this);
 
 		public static SequenceSelector<_, T> Then<_, T>(this Selector<_, IEnumerable<T>> @this)
 			=> @this.Get().Then();
 
 		public static CollectionSelector<_, T> Then<_, T>(this ISelect<_, ICollection<T>> @this)
-			=> new CollectionSelector<_, T>(@this);
+			=> new(@this);
 
 		public static CollectionSelector<_, T> Then<_, T>(this Selector<_, ICollection<T>> @this)
 			=> @this.Get().Then();
 
 		public static OpenArraySelector<_, T> Then<_, T>(this ISelect<_, T[]> @this)
-			=> new OpenArraySelector<_, T>(@this);
+			=> new(@this);
 
 		public static OpenArraySelector<_, T> Then<_, T>(this Selector<_, T[]> @this)
 			=> @this.Get().Then();
 
 		public static ArraySelector<_, T> Then<_, T>(this ISelect<_, Array<T>> @this)
-			=> new ArraySelector<_, T>(@this);
+			=> new(@this);
 
 		public static ArraySelector<_, T> Then<_, T>(this Selector<_, Array<T>> @this)
 			=> @this.Get().Then();
 
 		/**/
 
-		public static ICommand Out<T>(this CommandContext<T> @this, T parameter) => @this.Bind(parameter).Command;
+		public static ICommand Out(this CommandContext<None> @this)
+			=> @this.Get().To(x => x as ICommand ?? new Command(x.Execute));
 
 		public static IAlteration<T> Out<T>(this CommandContext<T> @this) => @this.ToConfiguration().Out();
 

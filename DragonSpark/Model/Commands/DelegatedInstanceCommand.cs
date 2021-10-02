@@ -4,6 +4,14 @@ using System;
 
 namespace DragonSpark.Model.Commands
 {
+	public class DelegatedInstanceCommand : DelegatedInstanceCommand<None>, ICommand
+	{
+		public DelegatedInstanceCommand(IResult<ICommand> result) : base(result) {}
+
+		public DelegatedInstanceCommand(Func<ICommand> instance) : base(instance) {}
+	}
+
+
 	public class DelegatedInstanceCommand<T> : ICommand<T>, IActivateUsing<IResult<ICommand<T>>>
 	{
 		readonly Func<ICommand<T>> _instance;

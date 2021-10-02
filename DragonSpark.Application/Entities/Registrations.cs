@@ -18,9 +18,12 @@ namespace DragonSpark.Application.Entities
 			         .Forward<Contexts<T>>()
 			         .Singleton()
 			         //
-			         .Then
-			         .Start<IStandardScopes>()
+			         .Then.Start<IStandardScopes>()
 			         .Forward<StandardScopes<T>>()
+			         .Singleton()
+			         //
+			         .Then.Start<IEnlistedScopes>()
+			         .Forward<EnlistedScopes>()
 			         .Singleton()
 			         //
 			         .Then.Start<ISessionScopes>()
@@ -33,6 +36,10 @@ namespace DragonSpark.Application.Entities
 			         .Singleton()
 			         //
 			         .Then.Start<Save<object>>()
+			         .Generic()
+			         .Singleton()
+			         //
+			         .Then.Start<EnlistedSave<object>>()
 			         .Generic()
 			         .Singleton()
 			         //

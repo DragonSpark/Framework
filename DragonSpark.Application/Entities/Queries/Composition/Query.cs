@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 			: base((context, _) => instance.Invoke(context)) {}
 
 		public Query(Expression<Func<TIn, IQueryable<T>>> instance)
-			: base((context, @in) => instance.Invoke(@in)) {}
+			: base((_, @in) => instance.Invoke(@in)) {}
 
 		public Query(Expression<Func<DbContext, TIn, IQueryable<T>>> instance) : base(instance) {}
 	}

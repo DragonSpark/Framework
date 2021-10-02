@@ -1,13 +1,15 @@
 ﻿using DragonSpark.Model.Results;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Composition
 {
-	public class Project<TFrom, TTo> : Instance<Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TTo>>>>
+	public interface ISelection<TFrom, TTo> : IResult<Expression<Func<IQueryable<TFrom>, IQueryable<TTo>>>> {}
+
+	public class Selection<TFrom, TTo> : Instance<Expression<Func<IQueryable<TFrom>, IQueryable<TTo>>>>,
+	                                      ISelection<TFrom, TTo>
 	{
-		protected Project(Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TTo>>> instance) : base(instance) {}
+		protected Selection(Expression<Func<IQueryable<TFrom>, IQueryable<TTo>>> instance) : base(instance) {}
 	}
 }

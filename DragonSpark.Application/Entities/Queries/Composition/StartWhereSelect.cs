@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Composition
@@ -21,6 +22,10 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 			: base(Set<TIn, T>.Default, where, select) {}
 
 		protected StartWhereSelect(Expression<Func<TIn, T, bool>> where, Expression<Func<TIn, T, TTo>> select)
+			: base(Set<TIn, T>.Default, where, select) {}
+
+		protected StartWhereSelect(Expression<Func<TIn, T, bool>> where,
+		                           Expression<Func<DbContext, TIn, T, TTo>> select)
 			: base(Set<TIn, T>.Default, where, select) {}
 	}
 }

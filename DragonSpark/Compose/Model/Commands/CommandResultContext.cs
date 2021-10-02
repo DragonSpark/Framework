@@ -4,10 +4,17 @@ using DragonSpark.Model.Results;
 
 namespace DragonSpark.Compose.Model.Commands
 {
+	public class CommandResultContext : ResultContext<ICommand>
+	{
+		public CommandResultContext(IResult<ICommand> instance) : base(instance) {}
+
+		public CommandContext Assume() => new(new DelegatedInstanceCommand(Get()));
+	}
+
 	public class CommandResultContext<T> : ResultContext<ICommand<T>>
 	{
 		public CommandResultContext(IResult<ICommand<T>> instance) : base(instance) {}
 
-		public CommandContext<T> Assume() => new DelegatedInstanceCommand<T>(Get()).Then();
+		public CommandContext<T> Assume() => new(new DelegatedInstanceCommand<T>(Get()));
 	}
 }

@@ -25,6 +25,9 @@ namespace DragonSpark.Compose
 		public static IResult<ISelect<TIn, TOut>> SelectionResult<TIn, TOut>(IResult<ISelect<TIn, TOut>> instance)
 			=> instance;
 
+		public static IResult<ICommand> CommandResult(IResult<ICommand> @this) => @this;
+		public static IResult<ICommand<T>> CommandResult<T>(IResult<ICommand<T>> @this) => @this;
+
 		public static IResult<IConditional<TIn, TOut>> ConditionalResult<TIn, TOut>(
 			IResult<IConditional<TIn, TOut>> @this) => @this;
 

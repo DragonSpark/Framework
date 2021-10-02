@@ -25,6 +25,12 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		public WhereMany(Expression<Func<DbContext, TIn, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where,
 		                 Expression<Func<TIn, T, IEnumerable<TTo>>> select)
 			: base(previous, (@in, q) => q.Where(x => where.Invoke(@in, x)).SelectMany(x => select.Invoke(@in, x))) {}
+
+		public WhereMany(Expression<Func<DbContext, TIn, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where,
+		                 Expression<Func<DbContext, TIn, T, IEnumerable<TTo>>> select)
+			: base(previous,
+			       (context, @in, q)
+				       => q.Where(x => where.Invoke(@in, x)).SelectMany(x => select.Invoke(context, @in, x))) {}
 	}
 
 	public class WhereMany<T, TTo> : WhereMany<None, T, TTo>, IQuery<TTo>
