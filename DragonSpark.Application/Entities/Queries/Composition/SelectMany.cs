@@ -17,6 +17,10 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		public SelectMany(Expression<Func<DbContext, TIn, IQueryable<TFrom>>> previous,
 		                  Expression<Func<TIn, TFrom, IEnumerable<TTo>>> select)
 			: base(previous, (@in, q) => q.SelectMany(x => select.Invoke(@in, x))) {}
+
+		protected SelectMany(Expression<Func<DbContext, TIn, IQueryable<TFrom>>> previous,
+		                     Expression<Func<DbContext, TIn, TFrom, IEnumerable<TTo>>> select)
+			: base(previous, (context, @in, q) => q.SelectMany(x => select.Invoke(context, @in, x))) {}
 	}
 
 	public class SelectMany<TFrom, TTo> : SelectMany<None, TFrom, TTo>, IQuery<TTo>
