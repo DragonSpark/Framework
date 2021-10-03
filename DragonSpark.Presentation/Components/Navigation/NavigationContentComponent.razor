@@ -1,0 +1,21 @@
+﻿@inject NavigationManager Navigation
+
+@if (Navigation.Uri.EndsWith(Path))
+{
+	@ChildContent
+}
+else
+{
+	<NavigateTo Path="@Path" Forced="@Forced" />
+}
+
+@code {
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public string Path { get; set; } = default!;
+
+	[Parameter]
+	public bool Forced { get; set; }
+}
