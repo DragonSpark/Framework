@@ -150,5 +150,12 @@ namespace DragonSpark.Application
 			@this.Remove.Execute();
 			return result;
 		}
+
+		public static bool TryPop<T>(this IMutable<T?> @this, out T? element)
+		{
+			element = @this.Get();
+			@this.Execute(default);
+			return element is not null;
+		}
 	}
 }

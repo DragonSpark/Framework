@@ -21,7 +21,9 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
 			: this((context, _) => previous.Invoke(context), where) {}
 
-		public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where)
+		protected Where(IQuery<T> previous, Expression<Func<TIn, T, bool>> where) : this(previous.Then(), where) {}
+
+		protected Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where)
 			: this((context, _) => previous.Invoke(context), where) {}
 
 		public Where(Expression<Func<DbContext, TIn, IQueryable<T>>> previous, Expression<Func<T, bool>> where)

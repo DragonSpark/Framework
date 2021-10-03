@@ -24,15 +24,15 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 
 	public class Introduce<TFrom, TOther, TTo> : Introduce<None, TFrom, TOther, TTo>, IQuery<TTo>
 	{
-		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
-		                 Expression<Func<DbContext, IQueryable<TOther>>> other,
-		                 Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)
+		protected Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                    Expression<Func<DbContext, IQueryable<TOther>>> other,
+		                    Expression<Func<DbContext, IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)
 			: base((context, _) => from.Invoke(context), (context, _) => other.Invoke(context),
 			       (context, _, f, o) => select.Invoke(context, f, o)) {}
 
-		public Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
-		                 Expression<Func<DbContext, IQueryable<TOther>>> other,
-		                 Expression<Func<IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)
+		protected Introduce(Expression<Func<DbContext, IQueryable<TFrom>>> from,
+		                    Expression<Func<DbContext, IQueryable<TOther>>> other,
+		                    Expression<Func<IQueryable<TFrom>, IQueryable<TOther>, IQueryable<TTo>>> select)
 			: base((context, _) => from.Invoke(context), (context, _) => other.Invoke(context),
 			       (context, _, f, o) => select.Invoke(f, o)) {}
 	}
