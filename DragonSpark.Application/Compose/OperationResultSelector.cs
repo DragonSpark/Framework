@@ -16,5 +16,11 @@ namespace DragonSpark.Application.Compose
 
 		public OperationResultSelector<_, T> Handle(IExceptions exceptions, Type reportedType)
 			=> new(new ExceptionAwareSelecting<_, T>(_subject, exceptions, reportedType));
+
+		public OperationResultSelector<_, T> Handle<TReported>(IExceptions exceptions, T @default)
+			=> Handle(exceptions, A.Type<TReported>(), @default);
+
+		public OperationResultSelector<_, T> Handle(IExceptions exceptions, Type reportedType, T @default)
+			=> new(new ExceptionAwareSelectingDefault<_, T>(new ExceptionAwareSelecting<_, T>(_subject, exceptions, reportedType), @default));
 	}
 }

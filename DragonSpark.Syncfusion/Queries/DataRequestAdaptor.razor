@@ -11,16 +11,5 @@
 	public Await<DataManagerRequest, object> Input { get; set; } = default!;
 
 	public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
-	{
-		try
-		{
-			return await Input(request);
-		}
-		// ReSharper disable once CatchAllClause
-		catch (Exception)
-		{
-			return new DataResult();
-		}
-	}
-
+		=> await Input(request);
 }
