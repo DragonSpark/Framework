@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
@@ -19,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -39,24 +37,11 @@ namespace DragonSpark.Application
 
 		/**/
 
-		public static IQueryable<TEntity> Includes<TEntity>(this IQueryable<TEntity> source, params string[] includes)
-			where TEntity : class => includes.Aggregate(source, (entities, include)
-				                                                    => entities.Include(include));
+		public static IQueryable<T> Includes<T>(this IQueryable<T> source, params string[] includes)
+			where T : class => includes.Aggregate(source, (entities, include)
+				                                              => entities.Include(include));
 
-		public static QueryComposer<TIn, TEntity> Include<TIn, TEntity, TOther>(this QueryComposer<TIn, TEntity> source,
-		                                                                Expression<Func<TEntity, TOther>> path)
-			where TEntity : class
-			=> source.Select(q => q.Include(path));
-
-		public static QueryComposer<TIn, TEntity> Include<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
-		                                                                string include)
-			where TEntity : class
-			=> source.Select(q => q.Include(include));
-
-		public static QueryComposer<TIn, TEntity> Includes<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
-		                                                                 params string[] includes)
-			where TEntity : class
-			=> includes.Aggregate(source, (current, include) => current.Include(include));
+		
 
 		/**/
 

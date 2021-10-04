@@ -130,6 +130,26 @@ namespace DragonSpark.Application
 
 		public static In<TTo> Subject<T, TTo>(this In<T> @this, TTo subject) => new(@this.Context, subject);
 
+		public static QueryComposer<TIn, T?> Account<TIn, T>(this QueryComposer<TIn, T> @this) where T : struct
+			=> @this.Select(x => new T?(x));
+
+		public static QueryComposer<TIn, TEntity> Include<TIn, TEntity, TOther>(this QueryComposer<TIn, TEntity> source,
+		                                                                        Expression<Func<TEntity, TOther>> path)
+			where TEntity : class
+			=> source.Select(q => q.Include(path));
+
+		public static QueryComposer<TIn, TEntity> Include<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
+		                                                                string include)
+			where TEntity : class
+			=> source.Select(q => q.Include(include));
+
+		public static QueryComposer<TIn, TEntity> Includes<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
+		                                                                 params string[] includes)
+			where TEntity : class
+			=> includes.Aggregate(source, (current, include) => current.Include(include));
+
+/**/
+
 		//
 
 		public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
