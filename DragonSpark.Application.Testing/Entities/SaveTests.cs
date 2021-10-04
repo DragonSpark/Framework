@@ -27,7 +27,7 @@ namespace DragonSpark.Application.Testing.Entities
 				await data.SaveChangesAsync();
 			}
 			var query = contexts.Then().Use<Subject>().To.Single();
-			var sut   = new Save<Subject>(contexts.Then().Scopes());
+			var sut   = new StandardSave<Subject>(contexts.Then().Scopes());
 			{
 				var first = await query.Await();
 				first.Name.Should().Be(original);

@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Entities.Editing
 {
 	sealed class StateAwareSave<T> : ISessionSave<T> where T : class
 	{
-		readonly ISessionSave<T>             _previous;
+		readonly ISessionSave<T>      _previous;
 		readonly Func<ExcludeSession> _session;
 
 		[UsedImplicitly]
@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Entities.Editing
 
 		public async ValueTask Get(T parameter)
 		{
-			await using var session = _session();
+			using var session = _session();
 			await _previous.Await(parameter);
 		}
 	}

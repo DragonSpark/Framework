@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Security.Identity
 		readonly ITime   _time;
 		readonly Save<T> _save;
 
-		public MarkModified(Save<T> save) : this(save, Time.Default) {}
+		public MarkModified(StandardSave<T> save) : this(save, Time.Default) {}
 
-		public MarkModified(Save<T> save, ITime time)
+		public MarkModified(StandardSave<T> save, ITime time)
 		{
 			_save = save;
 			_time = time;

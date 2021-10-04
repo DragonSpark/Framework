@@ -22,7 +22,7 @@ namespace DragonSpark.Presentation.Connections.Initialization
 		{
 			var options = new CookieOptions
 			{
-				Expires  = DateTime.Now.AddHours(1),
+				Expires  = DateTime.Now.AddMonths(1),
 				IsEssential = true
 			};
 

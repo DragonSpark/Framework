@@ -12,8 +12,6 @@ namespace DragonSpark.Composition.Compose
 		public Registration(IServiceCollection subject, IRegistrations types) : base(subject, types) {}
 
 		public Registration<T> Decorate<TNext>() where TNext : class, T
-			=> new Registration<T>(Services, Next(new Registrations<TNext>(Services)
-				                                      .Then(new Decorate<T, TNext>(Services))
-			                                     ));
+			=> new(Services, Next(new Registrations<TNext>(Services).Then(new Decorate<T, TNext>(Services))));
 	}
 }

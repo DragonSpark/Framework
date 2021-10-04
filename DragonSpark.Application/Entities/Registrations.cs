@@ -31,11 +31,15 @@ namespace DragonSpark.Application.Entities
 			         .Include(x => x.Dependencies)
 			         .Scoped()
 			         //
+			         .Then.Start<AmbientProcessScopes>()
+			         .Include(x => x.Dependencies.Recursive())
+			         .Scoped()
+			         //
 			         .Then.Start<Remove<object>>()
 			         .Generic()
 			         .Singleton()
 			         //
-			         .Then.Start<Save<object>>()
+			         .Then.Start<StandardSave<object>>()
 			         .Generic()
 			         .Singleton()
 			         //
@@ -43,11 +47,15 @@ namespace DragonSpark.Application.Entities
 			         .Generic()
 			         .Singleton()
 			         //
+			         .Then.Start<ProcessSave<object>>()
+			         .Generic()
+			         .Scoped()
+			         //
 			         .Then.Start<SaveMany<object>>()
 			         .Generic()
 			         .Singleton()
-					 //
-					 .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))
+			         //
+			         .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))
 				;
 		}
 	}

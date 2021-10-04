@@ -9,9 +9,9 @@ namespace DragonSpark.Application.Entities.Editing
 	{
 		protected Modify(IStandardScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
 
-		protected Modify(IStandardScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
+		protected Modify(IScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
-		protected Modify(IStandardScopes scopes, Await<Edit<T>> configure)
+		protected Modify(IScopes scopes, Await<Edit<T>> configure)
 			: base(scopes.Then().Edit(A.Self<T>().Then().Operation().Out()), configure) {}
 
 	}
@@ -21,13 +21,13 @@ namespace DragonSpark.Application.Entities.Editing
 		readonly IEdit<TIn, T>  _select;
 		readonly Await<Edit<T>> _configure;
 
-		protected Modify(IStandardScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
+		protected Modify(IScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 			: this(scopes.Then().Use(query).Edit.Single(), modification) {}
 
-		protected Modify(IStandardScopes scopes, IQuery<TIn, T> query, Await<T> configure)
+		protected Modify(IScopes scopes, IQuery<TIn, T> query, Await<T> configure)
 			: this(scopes.Then().Use(query).Edit.Single(), configure) {}
 
-		protected Modify(IStandardScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
+		protected Modify(IScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: this(scopes.Then().Use(query).Edit.Single(), configure) {}
 
 		protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}

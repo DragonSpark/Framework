@@ -1,26 +1,23 @@
-﻿using DragonSpark.Model.Selection;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	sealed class Assuming<T> : ISelect<ValueTask<ValueTask<T>>, ValueTask<T>>
+	public class Assuming<TIn, TOut> : ISelecting<TIn, TOut>
 	{
-		public static Assuming<T> Default { get; } = new Assuming<T>();
+		readonly Func<ISelecting<TIn, TOut>> _previous;
 
-		Assuming() : this(false) {}
+		protected Assuming(Func<ISelecting<TIn, TOut>> previous) => _previous = previous;
 
-		readonly bool _capture;
+		public ValueTask<TOut> Get(TIn parameter) => _previous().Get(parameter);
+	}
 
-		public Assuming(bool capture = false) => _capture = capture;
+	public class Assuming<T> : IOperation<T>
+	{
+		readonly Func<IOperation<T>> _previous;
 
-		public ValueTask<T> Get(ValueTask<ValueTask<T>> parameter)
-			=> parameter.IsCompletedSuccessfully ? parameter.Result : Yield(parameter);
+		public Assuming(Func<IOperation<T>> previous) => _previous = previous;
 
-		async ValueTask<T> Yield(ValueTask<ValueTask<T>> parameter)
-		{
-			var outer  = await parameter.ConfigureAwait(_capture);
-			var result = await outer.ConfigureAwait(_capture);
-			return result;
-		}
+		public ValueTask Get(T parameter) => _previous().Get(parameter);
 	}
 }
