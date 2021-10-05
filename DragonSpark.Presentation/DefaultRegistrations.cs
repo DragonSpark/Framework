@@ -6,6 +6,7 @@ using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
+using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections.Initialization;
@@ -83,6 +84,9 @@ namespace DragonSpark.Presentation
 			         .Then.Start<IInitializeConnection>()
 			         .Forward<InitializeConnection>()
 			         .Scoped()
+			         //
+			         .Then.Start<ResourceExistsValidation>()
+			         .Singleton()
 			         //
 			         .Then.AddJsInteropExtensions()
 				;
