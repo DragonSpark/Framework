@@ -8,6 +8,9 @@ namespace DragonSpark.Model.Operations
 		readonly Await<TSource, TResult> _select;
 		readonly Await<TResult>          _configure;
 
+		public ConfiguringResult(IOperation<TResult> operation)
+			: this(Start.A.Selection.Of.Type<TSource>().By.Instantiation<TResult>().Operation().Out(), operation) {}
+
 		public ConfiguringResult(ISelecting<TSource, TResult> select, IOperation<TResult> operation)
 			: this(select.Await, operation.Await) {}
 
