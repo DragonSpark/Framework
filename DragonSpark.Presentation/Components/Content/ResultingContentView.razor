@@ -31,7 +31,7 @@ else
 		get => _content;
 		set
 		{
-			if (_content != value && value is not null)
+			if (_content != value)
 			{
 				_content = value;
 				Loaded = false;
@@ -40,25 +40,12 @@ else
 		}
 	}	IResulting<T?>? _content;
 
+	[Parameter]
+	public EventCallback Refreshed { get; set; }
+
 	RenderFragment? Fragment { get; set; }
 
-	bool Loaded
-	{
-		get => _loaded;
-		set
-		{
-			if (_loaded != value)
-			{
-				_loaded = value;
-				if (value)
-				{
-					var result = Subject.Value().Status.Result;
-					Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
-					StateHasChanged();
-				}
-			}
-		}
-	}	bool _loaded;
+	bool Loaded { get; set; }
 
 	protected override void OnParametersSet()
 	{
@@ -67,26 +54,35 @@ else
 		Update();
 	}
 
-	protected override Task OnParametersSetAsync() => Subject?.AsTask() ?? base.OnParametersSetAsync();
+	protected override async Task OnParametersSetAsync()
+	{
+		await Update();
+		await (Subject?.AsTask() ?? base.OnParametersSetAsync());
+	}
 
 	Worker<T?>? Subject { get; set; }
 
-	Worker<T?> DetermineSubject()
-	{
-		var content = Content ?? Defaulting<T>.Default;
-		var result = new WorkingResult<T?>(content).Get();
-		return result;
-	}
+	Worker<T?> DetermineSubject() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default).Get();
 
-	protected override void OnAfterRender(bool firstRender)
-	{
-		base.OnAfterRender(firstRender);
-		Update();
-	}
+	protected override Task OnAfterRenderAsync(bool firstRender) => Update();
 
-	void Update()
+	Task Update()
 	{
-		Loaded |= Subject?.Status is { IsCompletedSuccessfully: true };
+		var loaded = Subject?.Status is { IsCompletedSuccessfully: true };
+		var update = loaded && loaded != Loaded;
+		Loaded = loaded;
+		if (update)
+		{
+			var result = Subject.Value().Status.Result;
+			var refresh = Fragment is not null;
+			Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
+			StateHasChanged();
+			if (refresh)
+			{
+				return Refreshed.InvokeAsync(this);
+			}
+		}
+		return Task.CompletedTask;
 	}
 
 }

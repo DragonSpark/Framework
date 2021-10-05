@@ -12,6 +12,7 @@
 		LoadingTemplate="@LoadingTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
+		Refreshed="@Refreshed"
 		/>
 </ActivityContainer>
 
@@ -32,4 +33,7 @@
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;
+
+	[Parameter]
+	public EventCallback Refreshed { get; set; }
 }
