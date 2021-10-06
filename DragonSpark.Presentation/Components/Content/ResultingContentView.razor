@@ -41,7 +41,10 @@ else
 	}	IResulting<T?>? _content;
 
 	[Parameter]
-	public EventCallback Refreshed { get; set; }
+	public EventCallback<T> Rendered { get; set; }
+
+	[Parameter]
+	public EventCallback<T> Refreshed { get; set; }
 
 	RenderFragment? Fragment { get; set; }
 
@@ -77,9 +80,10 @@ else
 			var refresh = Fragment is not null;
 			Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
 			StateHasChanged();
-			if (refresh)
+			if (result is not null)
 			{
-				return Refreshed.InvokeAsync(this);
+				var callback = refresh ? Refreshed : Rendered;
+				return callback.InvokeAsync(result);
 			}
 		}
 		return Task.CompletedTask;

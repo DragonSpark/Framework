@@ -1,5 +1,6 @@
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
@@ -55,6 +56,9 @@ namespace DragonSpark.Model.Sequences
 		[Pure]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public T[] Open() => _reference;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => _reference.AsValueEnumerable();
 
 		sealed class RawData
 		{

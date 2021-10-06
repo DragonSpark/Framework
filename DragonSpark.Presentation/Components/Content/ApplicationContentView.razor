@@ -7,11 +7,12 @@
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
 
 <ActivityContainer Context="receiver">
-	<ResultingContentView Content="@Contents.Get(receiver)"
+	<ResultingContentView T="TValue" Content="@Contents.Get(receiver)"
 		ChildContent="@ChildContent"
 		LoadingTemplate="@LoadingTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
+		Rendered="@Rendered"
 		Refreshed="@Refreshed"
 		/>
 </ActivityContainer>
@@ -35,5 +36,8 @@
 	}   IActiveContent<TValue> _content = default!;
 
 	[Parameter]
-	public EventCallback Refreshed { get; set; }
+	public EventCallback<TValue> Rendered { get; set; }
+
+	[Parameter]
+	public EventCallback<TValue> Refreshed { get; set; }
 }

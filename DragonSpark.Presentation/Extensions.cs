@@ -147,6 +147,10 @@ namespace DragonSpark.Presentation
 		/**/
 
 		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
+			this Memory<SelectionListing<T>> @this)
+			=> Compose.ToSelectionListingCollection<T>.Default.Get(@this);
+
+		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
 			this IEnumerable<SelectionListing<T>> @this) => new(@this);
 
 		public static SelectionListingCollection<T> ToSelectionListingCollection<T>(

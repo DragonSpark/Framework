@@ -3,43 +3,44 @@
 @inherits EditorComponent
 
 <DialogContext T="DragonSpark.Model.None" @ref="_confirm" Title="@Title" Context="_">
-    <Confirm Accept="@(Start.A.Callback(Exit).Using(ActualReceiver).Handle<ChangeMonitor>(Exceptions).UpdateActivity())"
-             PrimaryClass="primary button fit"
-             SecondaryClass="button fit"
-             ChildContent="@ConfirmContent"
-    />
+	<Confirm Accept="@(Start.A.Callback(Exit).Using(ActualReceiver).Handle<ChangeMonitor>(Exceptions).UpdateActivity())"
+			 PrimaryClass="primary button fit"
+			 SecondaryClass="button fit"
+			 ChildContent="@ConfirmContent"
+	/>
 </DialogContext>
 
 @ChildContent?.Invoke(EventCallback.Factory.Create(this, Confirm))
 
 @code {
-    [UsedImplicitly]
-    DialogContext<DragonSpark.Model.None> _confirm = default!;
+	[UsedImplicitly]
+	DialogContext<DragonSpark.Model.None> _confirm = default!;
 
-    [Parameter]
-    public string Title { get; set; } = "Changes Detected";
+	[Parameter]
+	public string Title { get; set; } = "Changes Detected";
 
-    [Parameter]
-    public RenderFragment<EventCallback>? ChildContent { get; set; }
+	[Parameter]
+	public RenderFragment<EventCallback>? ChildContent { get; set; }
 
-    [Parameter]
-    public RenderFragment ConfirmContent { get; set; } = @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
+	[Parameter]
+	public RenderFragment ConfirmContent { get; set; }
+		= @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
 
-    [Parameter]
-    public object? Receiver { get; set; }
+	[Parameter]
+	public object? Receiver { get; set; }
 
-    [Parameter]
-    public bool Enabled { get; set; } = true;
+	[Parameter]
+	public bool Enabled { get; set; } = true;
 
-    [CascadingParameter]
-    IActivityReceiver DefaultReceiver { get; set; } = default!;
+	[CascadingParameter]
+	IActivityReceiver DefaultReceiver { get; set; } = default!;
 
-    object ActualReceiver => Receiver ?? DefaultReceiver;
+	object ActualReceiver => Receiver ?? DefaultReceiver;
 
-    public override bool HasChanges => Enabled && base.HasChanges;
+	public override bool HasChanges => Enabled && base.HasChanges;
 
-    Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
+	Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
 
-    protected override Task OnNavigationCanceled()
-        => Task.Delay(25).ContinueWith(_ => _confirm.Open(DragonSpark.Model.None.Default));
+	protected override Task OnNavigationCanceled()
+		=> Task.Delay(25).ContinueWith(_ => _confirm.Open(DragonSpark.Model.None.Default));
 }

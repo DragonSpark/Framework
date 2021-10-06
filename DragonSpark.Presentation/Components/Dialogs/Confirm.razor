@@ -12,7 +12,7 @@
 <DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
     <RadzenCard Style="padding: 20px;">
         <ActivityReceiverContainer Context="receiver">
-            <p style="margin-bottom: 25px;">@ChildContent</p>
+            <p class="mb-4">@ChildContent</p>
             <div class="d-flex justify-content-between" style="gap: 20px">
                 <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                  class="@SecondaryClass" />

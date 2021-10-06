@@ -1,25 +1,28 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Application.Runtime
 {
-	public class SelectedCollection<T> : List<T> where T : class
+	public class SelectedCollection<T> : List<T>
 	{
 		public SelectedCollection(IEnumerable<T> list) : base(list) {}
 
 		public virtual T? Selected { get; set; }
 	}
 
-	public class SelectedCollection<T, TValue> : SelectedCollection<T>, ICondition<TValue> where T : class
+	public class SelectedCollection<T, TValue> : SelectedCollection<T>, ICondition<TValue>
 	{
 		readonly Func<T, TValue>           _select;
 		readonly IEqualityComparer<TValue> _equality;
 
-		public SelectedCollection(IEnumerable<T> list, Func<T, TValue> select)
+		protected SelectedCollection(Func<T, TValue> select) : this(Empty.Array<T>(), @select) {}
+
+		protected SelectedCollection(IEnumerable<T> list, Func<T, TValue> select)
 			: this(list, select, EqualityComparer<TValue>.Default) {}
 
-		public SelectedCollection(IEnumerable<T> list, Func<T, TValue> select, IEqualityComparer<TValue> equality)
+		protected SelectedCollection(IEnumerable<T> list, Func<T, TValue> select, IEqualityComparer<TValue> equality)
 			: base(list)
 		{
 			_select   = select;

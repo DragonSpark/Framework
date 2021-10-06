@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
+using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
@@ -41,7 +42,7 @@ namespace DragonSpark.Application
 			where T : class => includes.Aggregate(source, (entities, include)
 				                                              => entities.Include(include));
 
-		
+
 
 		/**/
 
@@ -95,6 +96,10 @@ namespace DragonSpark.Application
 
 		public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
 			=> new SelectedCollection<T>(@this);
+
+		public static TList AddRange<TList, T>(this TList @this, Memory<T> range) where TList : List<T>
+			=> CopyList<TList, T>.Default.Get(new(range, @this));
+
 
 		/**/
 
