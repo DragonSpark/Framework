@@ -39,7 +39,7 @@ namespace DragonSpark.Application.Entities
 			         .Generic()
 			         .Singleton()
 			         //
-			         .Then.Start<StandardSave<object>>()
+			         .Then.Start<Save<object>>()
 			         .Generic()
 			         .Singleton()
 			         //

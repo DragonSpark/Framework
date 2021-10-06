@@ -4,6 +4,11 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Entities.Editing
 {
+	public class Update<T> : Modify<T> where T : class
+	{
+		protected Update(IScopes scopes) : base(scopes, UpdateLocal<T>.Default.Then().Operation()) {}
+	}
+
 	public class Update<TIn, TOut> : Modify<TIn, TOut> where TOut : class
 	{
 		protected Update(IScopes scopes, IQuery<TIn, TOut> query) : this(scopes.Then().Use(query).Edit.Single()) {}

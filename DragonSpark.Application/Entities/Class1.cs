@@ -17,7 +17,7 @@ namespace DragonSpark.Application.Entities
 		public AmbientProcessScopes(ProcessInstanceScopes previous) : base(previous) {}
 	}
 
-	public sealed class ProcessSave<T> : Save<T> where T : class
+	public sealed class ProcessSave<T> : Update<T> where T : class
 	{
 		public ProcessSave(AmbientProcessScopes scopes) : base(scopes) {}
 	}
