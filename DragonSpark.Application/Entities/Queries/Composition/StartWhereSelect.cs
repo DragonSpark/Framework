@@ -24,6 +24,10 @@ namespace DragonSpark.Application.Entities.Queries.Composition
 		protected StartWhereSelect(Expression<Func<T, bool>> where, Expression<Func<TIn, T, TTo>> select)
 			: base(Set<TIn, T>.Default, where, select) {}
 
+		protected StartWhereSelect(Expression<Func<IQueryable<T>, IQueryable<T>>> query,
+		                           Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
+			: base((context, @in) => query.Invoke(Set<TIn, T>.Default.Get().Invoke(context, @in)), where, select) {}
+
 		protected StartWhereSelect(Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
 			: base(Set<TIn, T>.Default, where, select) {}
 
