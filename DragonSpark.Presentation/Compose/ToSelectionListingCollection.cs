@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Presentation.Model;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace DragonSpark.Presentation.Compose
 {
@@ -21,8 +21,12 @@ namespace DragonSpark.Presentation.Compose
 		{
 			var source      = parameter.Span;
 			var result      = new SelectionListingCollection<T>(_comparer) { Capacity = source.Length };
-			var destination = CollectionsMarshal.AsSpan(result);
-			source.CopyTo(destination);
+
+			foreach (var item in source.AsValueEnumerable())
+			{
+				result.Add(item);
+			}
+
 			return result;
 		}
 	}

@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+using DragonSpark.Text;
 using System;
 
 namespace DragonSpark.Application.Compose.Store
 {
-	public class Key<T> : ISelect<T, string>
+	public class Key<T> : IFormatter<T>
 	{
 		readonly string          _prefix;
 		readonly char            _delimiter;
