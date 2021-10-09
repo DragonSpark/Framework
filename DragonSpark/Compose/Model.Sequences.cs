@@ -90,6 +90,6 @@ namespace DragonSpark.Compose
 		public static T? ValueOrDefault<T>(this Option<T> @this) where T : struct
 			=> @this.IsSome ? @this.Value : default(T?);
 
-		public static T? OrDefault<T>(this Option<T> @this) => @this.IsSome ? @this.Value : default(T?);
+		public static T? OrDefault<T>(this Option<T> @this) => @this.IsSome ? @this.Value : default;
 	}
 }
