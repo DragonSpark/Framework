@@ -3,6 +3,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
+	public class Assuming : IOperation
+	{
+		readonly Func<IOperation> _previous;
+
+		public Assuming(Func<IOperation> previous) => this._previous = previous;
+
+		public ValueTask Get() => _previous().Get();
+	}
+
 	public class Assuming<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		readonly Func<ISelecting<TIn, TOut>> _previous;

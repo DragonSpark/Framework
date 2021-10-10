@@ -18,7 +18,12 @@ namespace DragonSpark.Application.Entities.Transactions
 			         //
 			         .Then.Start<ITransactions>()
 			         .Forward<Transactions>()
-			         .Singleton();
+			         .Singleton()
+			         //
+			         .Then.Start<EntityContextTransactions>()
+			         .And<ScopedDatabaseTransactions>()
+			         .Singleton()
+				;
 		}
 	}
 }
