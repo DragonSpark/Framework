@@ -22,7 +22,7 @@ namespace DragonSpark.Model.Selection.Conditions
 	}
 
 	public class Equaling<T> : ICondition<T>, IActivateUsing<T>
-	{ 
+	{
 		readonly IEqualityComparer<T> _comparer;
 
 		readonly Func<T> _source;
