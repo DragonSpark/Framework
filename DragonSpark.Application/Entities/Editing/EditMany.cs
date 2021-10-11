@@ -9,7 +9,8 @@ namespace DragonSpark.Application.Entities.Editing
 	{
 		readonly IEdit<TIn, Leasing<T>> _edit;
 
-		protected EditMany(IEnlistedScopes context, IQuery<TIn, T> query) : this(context.Then().Use(query).Edit.Lease()) {}
+		protected EditMany(IEnlistedScopes context, IQuery<TIn, T> query)
+			: this(context.Then().Use(query).Edit.Lease()) {}
 
 		protected EditMany(IEdit<TIn, Leasing<T>> edit) => _edit = edit;
 

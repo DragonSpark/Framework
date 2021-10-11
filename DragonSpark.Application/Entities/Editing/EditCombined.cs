@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Entities.Editing
 	{
 		readonly IEdit<TIn, Leasing<T>> _first, _second;
 
-		protected EditCombined(IStandardScopes scopes, IQuery<TIn, T> first, IQuery<TIn, T> second)
+		protected EditCombined(IEnlistedScopes scopes, IQuery<TIn, T> first, IQuery<TIn, T> second)
 			: this(scopes.Then().Use(first).Edit.Lease(), scopes.Then().Use(second).Edit.Lease()) {}
 
 		protected EditCombined(IEdit<TIn, Leasing<T>> first, IEdit<TIn, Leasing<T>> second)
