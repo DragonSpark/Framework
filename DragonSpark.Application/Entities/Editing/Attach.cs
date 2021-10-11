@@ -7,16 +7,16 @@ namespace DragonSpark.Application.Entities.Editing
 {
 	public class Attach<TIn, T> : Modify<TIn, T> where T : class
 	{
-		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
+		protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 			: this(scopes, query, modification.Await) {}
 
-		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Await<T> configure)
+		protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<T> configure)
 			: this(scopes, query, x => configure(x.Subject)) {}
 
-		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
+		protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(scopes, query, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 
-		protected Attach(IStandardScopes scopes, IQuery<TIn, T> query, Action<T> configure)
+		protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Action<T> configure)
 			: this(scopes, query, Start.A.Command(configure).Operation()) {}
 
 		protected Attach(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
@@ -31,11 +31,11 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public class Attach<T> : Modify<T> where T : class
 	{
-		protected Attach(IStandardScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
+		protected Attach(IEnlistedScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
 
-		protected Attach(IStandardScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
+		protected Attach(IEnlistedScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
-		protected Attach(IStandardScopes scopes, Await<Edit<T>> configure)
+		protected Attach(IEnlistedScopes scopes, Await<Edit<T>> configure)
 			: base(scopes, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿namespace DragonSpark.Application.Entities
 {
-	sealed class EnlistedScopes : AmbientAwareScopes, IEnlistedScopes
+	sealed class EnlistedScopes : AmbientAwareScopes
 	{
-		public EnlistedScopes(IStandardScopes previous) : base(previous) {}
+		public EnlistedScopes(IStandardScopes previous, IAmbientContext context) : base(previous, context) {}
 	}
 }

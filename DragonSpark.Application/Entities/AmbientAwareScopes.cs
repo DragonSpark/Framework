@@ -1,30 +1,20 @@
-﻿using DragonSpark.Composition;
-using DragonSpark.Model.Results;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-
-namespace DragonSpark.Application.Entities
+﻿namespace DragonSpark.Application.Entities
 {
-	public class AmbientAwareScopes : IScopes
+	public class AmbientAwareScopes : IEnlistedScopes
 	{
 		readonly IScopes                    _previous;
-		readonly IResult<IServiceProvider?> _provider;
+		readonly IAmbientContext            _context;
 
-		public AmbientAwareScopes(IScopes previous) : this(previous, AmbientProvider.Default) {}
-
-		public AmbientAwareScopes(IScopes previous, IResult<IServiceProvider?> provider)
+		public AmbientAwareScopes(IScopes previous, IAmbientContext context)
 		{
 			_previous = previous;
-			_provider = provider;
+			_context  = context;
 		}
 
 		public Scope Get()
 		{
-			var provider = _provider.Get();
-			var result = provider != null
-				             ? new Scope(provider.GetRequiredService<DbContext>(), EmptyBoundary.Default)
-				             : _previous.Get();
+			var context = _context.Get();
+			var result = context != null ? new Scope(context, EmptyBoundary.Default) : _previous.Get();
 			return result;
 		}
 	}

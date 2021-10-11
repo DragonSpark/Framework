@@ -5,12 +5,12 @@ namespace DragonSpark.Application.Entities.Editing
 {
 	public class SaveMany : Modify<Memory<object>>
 	{
-		public SaveMany(IStandardScopes scopes) : base(scopes, UpdateMany.Default.Then().Operation().Out()) {}
+		public SaveMany(IEnlistedScopes scopes) : base(scopes, UpdateMany.Default.Then().Operation().Out()) {}
 	}
 
 	public class SaveMany<T> : Modify<Memory<T>> where T : class
 	{
-		public SaveMany(IStandardScopes scopes) : base(scopes, UpdateMany<T>.Default.Then().Operation()) {}
+		public SaveMany(IEnlistedScopes scopes) : base(scopes, UpdateMany<T>.Default.Then().Operation()) {}
 	}
 
 	sealed class UpdateMany : IModify<Memory<object>>

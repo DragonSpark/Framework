@@ -2,6 +2,7 @@
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -27,7 +28,8 @@ namespace DragonSpark.Application.Testing.Entities
 				await data.SaveChangesAsync();
 			}
 			var query = contexts.Then().Use<Subject>().To.Single();
-			var sut   = new Save<Subject>(contexts.Then().Scopes());
+			var sut = new Save<Subject>(new EnlistedScopes(new StandardScopes<Context>(contexts),
+			                                               EmptyAmbientContext.Default));
 			{
 				var first = await query.Await();
 				first.Name.Should().Be(original);
@@ -60,11 +62,17 @@ namespace DragonSpark.Application.Testing.Entities
 				await data.SaveChangesAsync();
 			}
 			{
-				await using var data   = contexts.Get();
-				var count = await data.Set<Second>().CountAsync();
+				await using var data  = contexts.Get();
+				var             count = await data.Set<Second>().CountAsync();
 				count.Should().Be(1);
 			}
+		}
 
+		sealed class EmptyAmbientContext : Instance<DbContext?>, IAmbientContext
+		{
+			public static EmptyAmbientContext Default { get; } = new();
+
+			EmptyAmbientContext() : base(default) {}
 		}
 
 		sealed class Context : DbContext
@@ -87,7 +95,11 @@ namespace DragonSpark.Application.Testing.Entities
 
 			protected override void OnModelCreating(ModelBuilder modelBuilder)
 			{
-				modelBuilder.Entity<Second>().HasOne(x => x.First).WithOne().HasForeignKey<Second>("FirstId").IsRequired();
+				modelBuilder.Entity<Second>()
+				            .HasOne(x => x.First)
+				            .WithOne()
+				            .HasForeignKey<Second>("FirstId")
+				            .IsRequired();
 				base.OnModelCreating(modelBuilder);
 			}
 		}
@@ -136,7 +148,7 @@ namespace DragonSpark.Application.Testing.Entities
 			public async Task<object> MeasureUnit()
 			{
 				await using var context = _contexts.Get();
-				var result = await context.Subjects.SingleAsync();
+				var             result  = await context.Subjects.SingleAsync();
 				result.Name = "Updated";
 				await context.SaveChangesAsync();
 				return result;
@@ -194,7 +206,6 @@ namespace DragonSpark.Application.Testing.Entities
 			public void Synchronous()
 			{
 				using var context = _contexts.Get();
-
 			}
 
 			[Benchmark]
@@ -209,8 +220,6 @@ namespace DragonSpark.Application.Testing.Entities
 				using var context = _contexts.Get();
 				return ValueTask.CompletedTask;
 			}
-
 		}
-
 	}
 }

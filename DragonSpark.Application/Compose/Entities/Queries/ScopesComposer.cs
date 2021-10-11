@@ -19,8 +19,7 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 
 		public QueryInvocationComposer<TIn, T> To => new(Get());
 
-		public EditInvocationComposer<TIn, T> Edit
-			=> new(new ScopesComposer<TIn, T>(_scopes.Then().WithAmbientLocation(), _query).Get());
+		public EditInvocationComposer<TIn, T> Edit => new(Get());
 
 		public IRuntimeQuery<TIn, T> Compile() => new RuntimeQuery<TIn, T>(_scopes, _query);
 

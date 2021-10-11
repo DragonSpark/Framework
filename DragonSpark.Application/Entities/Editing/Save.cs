@@ -2,6 +2,6 @@
 {
 	public sealed class Save<T> : Update<T> where T : class
 	{
-		public Save(IStandardScopes scopes) : base(scopes) {}
+		public Save(IEnlistedScopes scopes) : base(scopes) {}
 	}
 }

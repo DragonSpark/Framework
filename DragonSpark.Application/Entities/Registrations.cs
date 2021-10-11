@@ -43,16 +43,17 @@ namespace DragonSpark.Application.Entities
 			         .Generic()
 			         .Singleton()
 			         //
-			         .Then.Start<EnlistedSave<object>>()
-			         .Generic()
-			         .Singleton()
-			         //
 			         .Then.Start<ProcessSave<object>>()
 			         .Generic()
 			         .Scoped()
 			         //
 			         .Then.Start<SaveMany<object>>()
 			         .Generic()
+			         .Singleton()
+			         //
+			         .Then.Start<IAmbientContext>()
+			         .Forward<AmbientContext>()
+			         .Decorate<ProviderAwareAmbientContext>()
 			         .Singleton()
 			         //
 			         .Then.AddScoped(typeof(ISessionSave<>), typeof(SessionSave<>))

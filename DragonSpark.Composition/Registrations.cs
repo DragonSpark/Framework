@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Composition.Scopes;
+using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition
@@ -12,7 +13,7 @@ namespace DragonSpark.Composition
 		public void Execute(IServiceCollection parameter)
 		{
 			parameter.Start<IScopes>()
-			         .Forward<Scopes>()
+			         .Forward<Scopes.Scopes>()
 			         .Singleton()
 			         //
 			         .Then.Start<IScoping>()

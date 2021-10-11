@@ -1,4 +1,4 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Composition.Scopes;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;

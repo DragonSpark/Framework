@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities
 {
-	internal class Class1 {}
-
 	// TODO: These classes should eventually go away and are meant to assist scoped-to-singleton transition:
 
 	public sealed class ProcessInstanceScopes : InstanceScopes
@@ -14,7 +12,8 @@ namespace DragonSpark.Application.Entities
 
 	public sealed class AmbientProcessScopes : AmbientAwareScopes
 	{
-		public AmbientProcessScopes(ProcessInstanceScopes previous) : base(previous) {}
+		public AmbientProcessScopes(ProcessInstanceScopes previous, IAmbientContext context)
+			: base(previous, context) {}
 	}
 
 	public sealed class ProcessSave<T> : Update<T> where T : class

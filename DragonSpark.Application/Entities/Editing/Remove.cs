@@ -7,19 +7,19 @@ namespace DragonSpark.Application.Entities.Editing
 {
 	public class Remove<TIn, T> : Modify<TIn, T> where T : class
 	{
-		protected Remove(IStandardScopes scopes, IQuery<TIn, T> query, IOperation<T> configure)
+		protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<T> configure)
 			: this(scopes, query, configure.Await) {}
 
-		protected Remove(IStandardScopes scopes, IQuery<TIn, T> query, Await<T> configure)
+		protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<T> configure)
 			: base(scopes, query, x => configure(x.Subject)) {}
 
-		protected Remove(IStandardScopes scopes, IQuery<TIn, T> query)
+		protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query)
 			: this(scopes, query, (Edit<T> _) => Task.CompletedTask.ToOperation().ConfigureAwait(false)) {}
 
-		protected Remove(IStandardScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
+		protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
 			: this(scopes, query, configure.Await) {}
 
-		protected Remove(IStandardScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
+		protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 			: base(scopes, query, Start.An.Operation(configure).Append(RemoveLocal<T>.Default)) {}
 
 		protected Remove(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
@@ -34,6 +34,6 @@ namespace DragonSpark.Application.Entities.Editing
 
 	public class Remove<T> : Modify<T> where T : class
 	{
-		public Remove(IStandardScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
+		public Remove(IEnlistedScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
 	}
 }
