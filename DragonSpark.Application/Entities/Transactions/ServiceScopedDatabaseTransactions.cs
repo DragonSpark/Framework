@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions
 {
-	public sealed class ScopedDatabaseTransactions : ITransactions
+	public sealed class ServiceScopedDatabaseTransactions : ITransactions
 	{
 		readonly IScopedTransactions _boundaries;
 
-		public ScopedDatabaseTransactions(IScopedTransactions boundaries) => _boundaries = boundaries;
+		public ServiceScopedDatabaseTransactions(IScopedTransactions boundaries) => _boundaries = boundaries;
 
 		public async ValueTask<ITransaction> Get()
 		{

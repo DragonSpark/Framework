@@ -21,7 +21,7 @@ namespace DragonSpark.Application.Entities.Transactions
 			         .Singleton()
 			         //
 			         .Then.Start<EntityContextTransactions>()
-			         .And<ScopedDatabaseTransactions>()
+			         .And<ServiceScopedDatabaseTransactions>()
 			         .Singleton()
 			         //
 			         .Then.Start<ScopedEntityContextTransactions>()

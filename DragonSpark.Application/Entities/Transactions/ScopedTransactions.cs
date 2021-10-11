@@ -17,6 +17,6 @@ namespace DragonSpark.Application.Entities.Transactions
 			_store   = store;
 		}
 
-		public IScopedTransaction Get() => new ScopedTransaction(_store, _scoping.Get());
+		public IScopedTransaction Get() => new ServiceScopedTransaction(_store, _scoping.Get());
 	}
 }

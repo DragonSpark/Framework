@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions
 {
-	sealed class ScopedTransaction : IScopedTransaction
+	sealed class ServiceScopedTransaction : IScopedTransaction
 	{
 		readonly ICommand<AsyncServiceScope?> _store;
 		readonly AsyncServiceScope            _instance;
 
-		public ScopedTransaction(ICommand<AsyncServiceScope?> store, AsyncServiceScope instance)
+		public ServiceScopedTransaction(ICommand<AsyncServiceScope?> store, AsyncServiceScope instance)
 			: this(store, instance, instance.ServiceProvider) {}
 
-		public ScopedTransaction(ICommand<AsyncServiceScope?> store, AsyncServiceScope instance,
+		public ServiceScopedTransaction(ICommand<AsyncServiceScope?> store, AsyncServiceScope instance,
 		                         IServiceProvider provider)
 		{
 			Provider  = provider;
