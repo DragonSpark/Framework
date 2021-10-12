@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Amazon" Version="5.0.14" />
+    <PackageReference Include="AspNet.Security.OAuth.Amazon" Version="5.0.16" />
   </ItemGroup>
 
   <ItemGroup>
