@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Compose.Entities.Queries
@@ -20,8 +19,6 @@ namespace DragonSpark.Application.Compose.Entities.Queries
 		public QueryInvocationComposer<TIn, T> To => new(Get());
 
 		public EditInvocationComposer<TIn, T> Edit => new(Get());
-
-		public IRuntimeQuery<TIn, T> Compile() => new RuntimeQuery<TIn, T>(_scopes, _query);
 
 		public IReading<TIn, T> Get() => new Reading<TIn, T>(_scopes, _query.Get());
 	}
