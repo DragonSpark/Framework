@@ -9,13 +9,6 @@ namespace DragonSpark.Application.Runtime
 		MembershipTransaction() {}
 	}
 
-	public sealed class DefaultMembershipTransaction<T, V> : MembershipTransaction<T, V> where V : T
-	{
-		public static DefaultMembershipTransaction<T, V> Default { get; } = new DefaultMembershipTransaction<T, V>();
-
-		DefaultMembershipTransaction() {}
-	}
-
 	public class MembershipTransaction<T, V> : IMembershipTransaction<T, V> where V : T
 	{
 		public void Execute((ICollection<T> Subject, Transactions<V> Transactions) parameter)

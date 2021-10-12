@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Reflection.Members;
 using LightInject;
 using LightInject.Microsoft.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,12 +33,5 @@ namespace DragonSpark.Composition.Construction
 			var result   = parameter.UseServiceProviderFactory(factory);
 			return result;
 		}
-	}
-
-	sealed class ConstructionInfoProvider : FieldDefinition<ServiceContainer>
-	{
-		public static ConstructionInfoProvider Default { get; } = new ConstructionInfoProvider();
-
-		ConstructionInfoProvider() : base("constructionInfoProvider") {}
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -27,24 +26,5 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			var result = call.Succeeded ? await _select.Await(parameter) : call;
 			return result;
 		}
-	}
-
-	sealed class IdentityResults : ISelect<SignInResult, IdentityResult>
-	{
-		public static IdentityResults Default { get; } = new IdentityResults();
-
-		IdentityResults() {}
-
-		public IdentityResult Get(SignInResult parameter)
-			=> parameter.Succeeded
-				   ? IdentityResult.Success
-				   : IdentityResult.Failed(new IdentityError
-				   {
-					   Description = parameter.IsLockedOut
-						                 ? "User is Locked Out"
-						                 : parameter.IsNotAllowed
-							                 ? "Authentication is Not Allowed for this user"
-							                 : "Two Factor Authentication is Required"
-				   });
 	}
 }

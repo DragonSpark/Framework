@@ -3,11 +3,6 @@ using System;
 
 namespace DragonSpark.Compose.Extents.Commands
 {
-	public interface ICommandContext
-	{
-		CommandExtent Of { get; }
-	}
-
 	public sealed class CommandContext : ICommandContext
 	{
 		public static CommandContext Default { get; } = new CommandContext();

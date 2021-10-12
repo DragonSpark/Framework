@@ -3,11 +3,6 @@ using System;
 
 namespace DragonSpark.Compose.Extents.Conditions
 {
-	public interface IConditionContext
-	{
-		ConditionExtent Of { get; }
-	}
-
 	public sealed class ConditionContext : IConditionContext
 	{
 		public static ConditionContext Default { get; } = new ConditionContext();

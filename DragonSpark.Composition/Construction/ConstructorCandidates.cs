@@ -1,6 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Model.Sequences.Memory;
+﻿using DragonSpark.Model.Sequences.Memory;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
@@ -31,16 +29,5 @@ namespace DragonSpark.Composition.Construction
 			                .AsValueEnumerable()
 			                .Where(_candidate)
 			                .ToArray(_pool));
-	}
-
-	sealed class IsCandidate : ICondition<ConstructorCandidate>
-	{
-		public static IsCandidate Default { get; } = new IsCandidate();
-
-		IsCandidate() {}
-
-		public bool Get(ConstructorCandidate parameter)
-			=> parameter.Constructor.IsPublic && !parameter.Constructor.IsStatic &&
-			   (parameter.Constructor.Attribute<CandidateAttribute>()?.Enabled ?? true);
 	}
 }

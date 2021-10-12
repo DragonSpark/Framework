@@ -1,11 +1,8 @@
-﻿using DragonSpark.Model.Selection;
-using System;
+﻿using System;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Access
 {
-	public interface IAccessClaim<T> : ISelect<ClaimsPrincipal, Claim<T>> {}
-
 	public class AccessClaim : AccessClaim<string>
 	{
 		public AccessClaim(string claim) : base(claim, s => s) {}

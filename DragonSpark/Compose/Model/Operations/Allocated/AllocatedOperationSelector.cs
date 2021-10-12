@@ -15,11 +15,4 @@ namespace DragonSpark.Compose.Model.Operations.Allocated
 
 		public OperationSelector Structure() => new OperationSelector(Select(x => x.ToOperation()).Get());
 	}
-
-	public class AllocatedOperationResultSelector<T> : ResultContext<Task<T>>
-	{
-		public AllocatedOperationResultSelector(IResult<Task<T>> instance) : base(instance) {}
-
-		public OperationResultSelector<T> Structure() => new(Select(x => x.ToOperation()).Get());
-	}
 }

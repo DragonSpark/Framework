@@ -95,46 +95,4 @@ namespace DragonSpark.Compose.Model.Operations
 		public OperationResultSelector<_, T> Watching(Func<CancellationToken> token)
 			=> new(new TokenAwareSelecting<_, T>(Get(), token));
 	}
-
-	sealed class TokenAwareOperationResult<T> : IResulting<T>
-	{
-		readonly IResult<ValueTask<T>>   _operation;
-		readonly Func<CancellationToken> _token;
-
-		public TokenAwareOperationResult(IResult<ValueTask<T>> operation, Func<CancellationToken> token)
-		{
-			_operation = operation;
-			_token     = token;
-		}
-
-		public async ValueTask<T> Get()
-		{
-			var token = _token();
-			token.ThrowIfCancellationRequested();
-			var result = await _operation.Await();
-			token.ThrowIfCancellationRequested();
-			return result;
-		}
-	}
-
-	sealed class TokenAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
-	{
-		readonly ISelect<TIn, ValueTask<TOut>> _operation;
-		readonly Func<CancellationToken>       _token;
-
-		public TokenAwareSelecting(ISelect<TIn, ValueTask<TOut>> operation, Func<CancellationToken> token)
-		{
-			_operation = operation;
-			_token     = token;
-		}
-
-		public async ValueTask<TOut> Get(TIn parameter)
-		{
-			var token = _token();
-			token.ThrowIfCancellationRequested();
-			var result = await _operation.Await(parameter);
-			token.ThrowIfCancellationRequested();
-			return result;
-		}
-	}
 }

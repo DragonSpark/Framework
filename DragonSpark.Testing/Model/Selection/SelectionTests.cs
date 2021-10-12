@@ -184,24 +184,6 @@ namespace DragonSpark.Testing.Model.Selection
 		}
 	}
 
-	public interface IInSelect<TIn, out TOut>
-	{
-		TOut Get(in TIn parameter);
-	}
-
-	public class InSelect<TIn, TOut> : IInSelect<TIn, TOut>
-	{
-		readonly In<TIn, TOut> _source;
-
-		public InSelect(ISelect<TIn, TOut> select) : this(select.Get) {}
-
-		public InSelect(In<TIn, TOut> select) => _source = select;
-
-		public TOut Get(in TIn parameter) => _source(parameter);
-	}
-
-	public delegate TOut In<TIn, out TOut>(in TIn parameter);
-
 	public class InSelect<TIn, TFrom, TTo> : IInSelect<TIn, TTo>
 	{
 		readonly In<TFrom, TTo> _current;
@@ -217,10 +199,5 @@ namespace DragonSpark.Testing.Model.Selection
 		}
 
 		public TTo Get(in TIn parameter) => _current(_previous(in parameter));
-	}
-
-	public static class Extensions
-	{
-		public static TOut Get<TIn, TOut>(this ISelect<TIn, TOut> @this, in TIn parameter) => @this.Get(parameter);
 	}
 }

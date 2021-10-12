@@ -42,30 +42,4 @@ namespace DragonSpark.Identity.PayPal
 			}
 		}
 	}
-
-	public sealed class PayPalClaimNamespace : Text.Text
-	{
-		public static PayPalClaimNamespace Default { get; } = new PayPalClaimNamespace();
-
-		PayPalClaimNamespace() : base("urn:paypal") {}
-	}
-
-	public sealed class PayIdentifierClaimAction : ClaimAction
-	{
-		public static PayIdentifierClaimAction Default { get; } = new PayIdentifierClaimAction();
-
-		PayIdentifierClaimAction() : base(PayIdentifier.Default, "payer_id") {}
-	}
-
-	public class PayPalClaim : Text.Text
-	{
-		protected PayPalClaim(string name) : base($"{PayPalClaimNamespace.Default}:{name}") {}
-	}
-
-	public sealed class PayIdentifier : PayPalClaim
-	{
-		public static PayIdentifier Default { get; } = new PayIdentifier();
-
-		PayIdentifier() : base(nameof(PayIdentifier).ToLower()) {}
-	}
 }

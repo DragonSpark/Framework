@@ -1,11 +1,8 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations
 {
-	public readonly record struct Many<T>(Array<IAltering<T>> Alterations, T Seed);
-
 	sealed class Aggregate<T> : ISelecting<Many<T>, T>
 	{
 		public static Aggregate<T> Default { get; } = new Aggregate<T>();

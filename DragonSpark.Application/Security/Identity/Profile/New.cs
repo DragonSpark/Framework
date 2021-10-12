@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -8,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile
 {
-	public interface INew<T> : ISelecting<ExternalLoginInfo, T> where T : class {}
-
 	public sealed class New<T> : INew<T> where T : IdentityUser
 	{
 		public static New<T> Default { get; } = new New<T>();

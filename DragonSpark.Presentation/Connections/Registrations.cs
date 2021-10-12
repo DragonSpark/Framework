@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Application.Connections;
 using DragonSpark.Composition;
-using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection.Alterations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Presentation.Connections
@@ -26,14 +24,5 @@ namespace DragonSpark.Presentation.Connections
 			         .Then.Decorate<IClientIdentifier, ClientIdentifier>()*/
 				;
 		}
-	}
-
-	sealed class Configure : IAlteration<BuildHostContext>
-	{
-		public static Configure Default { get; } = new Configure();
-
-		Configure() {}
-
-		public BuildHostContext Get(BuildHostContext parameter) => parameter.Configure(Registrations.Default);
 	}
 }
