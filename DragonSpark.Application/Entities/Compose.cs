@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using LightInject;
 
 namespace DragonSpark.Application.Entities
@@ -10,9 +9,6 @@ namespace DragonSpark.Application.Entities
 
 		Compose() {}
 
-		public void Execute(IServiceContainer parameter)
-		{
-			parameter.Decorate(typeof(ISessionSave<>), typeof(StateAwareSave<>));
-		}
+		public void Execute(IServiceContainer parameter) {}
 	}
 }
