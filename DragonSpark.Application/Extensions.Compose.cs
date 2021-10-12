@@ -19,7 +19,6 @@ using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -148,7 +147,7 @@ namespace DragonSpark.Application
 			where TEntity : class
 			=> includes.Aggregate(source, (current, include) => current.Include(include));
 
-/**/
+		/**/
 
 		//
 
@@ -157,20 +156,6 @@ namespace DragonSpark.Application
 		public static OperationResultSelector<T?> Handle<T>(this OperationResultSelector<T?> @this,
 		                                                    IExceptions exceptions, Type? reportedType = null)
 			=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
-
-		// Scoped:
-
-		public static ScopedQuerySelector<TIn, T> Then<TIn, T>(
-			this Entities.Queries.Runtime.Selection.IQuery<TIn, T> @this)
-			=> new(@this);
-
-		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(
-			this ISelect<TIn, IQueryable<T>> @this)
-			=> new Entities.Queries.Runtime.Selection.Adapter<TIn, T>(@this);
-
-		public static Entities.Queries.Runtime.Selection.IQuery<TIn, T> Out<TIn, T>(
-			this Selector<TIn, IQueryable<T>> @this)
-			=> @this.Get().Out();
 
 		/**/
 

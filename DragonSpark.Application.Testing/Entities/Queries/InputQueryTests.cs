@@ -2,7 +2,6 @@
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Application.Entities.Queries.Runtime.Selection.Materialize.Specialized;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;
@@ -284,7 +283,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 		public class Benchmarks
 		{
 			readonly IContexts<ContextWithData> _contexts;
-			readonly ISelecting<Input, Result>  _select, _scoped;
+			readonly ISelecting<Input, Result>  _select;
 
 			public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
 			                                                                         .Options) {}
@@ -292,10 +291,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			Benchmarks(DbContextOptions<ContextWithData> options) :
 				this(new PooledDbContextFactory<ContextWithData>(options)) {}
 
-			Benchmarks(IDbContextFactory<ContextWithData> factory)
-				: this(factory, new Contexts<ContextWithData>(factory)) {}
+			Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new Contexts<ContextWithData>(factory)) {}
 
-			Benchmarks(IDbContextFactory<ContextWithData> factory, IContexts<ContextWithData> contexts)
+			Benchmarks(IContexts<ContextWithData> contexts)
 				: this(contexts,
 				       Start.A.Query<Subject>()
 				            .Accept<Input>()
@@ -304,15 +302,12 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				            .Where((input, subject) => input.Identity == subject.Id)
 				            .Select(x => new Result(x.Id, x.Name))
 				            .Invoke(contexts)
-				            .To.Single(),
-				       new Scoped(factory.CreateDbContext())) {}
+				            .To.Single()) {}
 
-			Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select,
-			           ISelecting<Input, Result> scoped)
+			Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select)
 			{
 				_contexts = contexts;
 				_select   = @select;
-				_scoped   = scoped;
 			}
 
 			[GlobalSetup]
@@ -322,21 +317,9 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 				await dbContext.Database.EnsureCreatedAsync();
 			}
 
-			[Benchmark(Baseline = true)]
-			public ValueTask<Result> MeasureScoped()
-				=> _scoped.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
-
 			[Benchmark]
 			public ValueTask<Result> MeasureCompiled()
 				=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
-		}
-
-		sealed class Scoped : SingleSelected<Input, Subject, Result>
-		{
-			public Scoped(DbContext instance)
-				: base(instance.Set<Subject>(),
-				       parameter => subject => subject.Id == parameter.Identity &&
-				                               subject.Name.StartsWith(parameter.Name), x => new(x.Id, x.Name)) {}
 		}
 	}
 }
