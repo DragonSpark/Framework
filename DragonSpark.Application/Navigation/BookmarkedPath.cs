@@ -5,12 +5,14 @@ namespace DragonSpark.Application.Navigation
 {
 	public class BookmarkedPath : IResult<string>
 	{
-		readonly CurrentPath _current;
-		readonly string      _property, _name;
+		public static implicit operator string(BookmarkedPath instance) => instance.ToString();
 
-		public BookmarkedPath(CurrentPath current, string name) : this(current, name, ScrollToSection.Default) {}
+		readonly IResult<string> _current;
+		readonly string          _property, _name;
 
-		public BookmarkedPath(CurrentPath current, string name, string property)
+		protected BookmarkedPath(IResult<string> current, string name) : this(current, name, ScrollToSection.Default) {}
+
+		protected BookmarkedPath(IResult<string> current, string name, string property)
 		{
 			_current  = current;
 			_name     = name;
@@ -18,5 +20,7 @@ namespace DragonSpark.Application.Navigation
 		}
 
 		public string Get() => _current.Get().SetQueryParam(_property, _name);
+
+		public override string ToString() => Get();
 	}
 }

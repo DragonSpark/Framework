@@ -1,0 +1,9 @@
+﻿@inject IJSRuntime Runtime
+
+@code {
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> firstRender ? Runtime.InvokeVoidAsync("applyLocationHash").AsTask()
+			   : base.OnAfterRenderAsync(firstRender);
+
+}
