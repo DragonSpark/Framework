@@ -19,7 +19,7 @@ namespace DragonSpark.Application.Compose.Communication
 		public ConfigureApi(Action<IServiceProvider, HttpClient> configure,
 		                    Func<IServiceProvider, RefitSettings?> settings)
 			: this(configure, settings,
-			       LocationAwareConnectionPolicy.Default.Then()
+			       ExistingAwareConnectionPolicy.Default.Then()
 			                                    .Select(RetryPolicy.Default)
 			                                    .Instance(),
 			       ConnectionPolicy.Default.Then().Select(CircuitBreakerPolicy.Default).Instance()) {}

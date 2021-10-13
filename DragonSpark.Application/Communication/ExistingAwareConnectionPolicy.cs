@@ -5,11 +5,11 @@ using System.Net.Http;
 
 namespace DragonSpark.Application.Communication
 {
-	sealed class LocationAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
+	sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
 	{
-		public static LocationAwareConnectionPolicy Default { get; } = new LocationAwareConnectionPolicy();
+		public static ExistingAwareConnectionPolicy Default { get; } = new ExistingAwareConnectionPolicy();
 
-		LocationAwareConnectionPolicy()
+		ExistingAwareConnectionPolicy()
 			: base(ConnectionPolicy.Default.Then()
 			                       .Select(x => x.OrResult(y => y.StatusCode == System.Net.HttpStatusCode.NotFound))
 			                       .Instance()) {}
