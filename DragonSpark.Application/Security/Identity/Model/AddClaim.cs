@@ -23,7 +23,7 @@ namespace DragonSpark.Application.Security.Identity.Model
 		public async ValueTask<IdentityResult> Get(T parameter)
 		{
 			using var users  = _users.Get();
-			var       user   = await users.Subject.FindByNameAsync(parameter.UserName).ConfigureAwait(false);
+			var       user   = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
 			var       result = await users.Subject.AddClaimAsync(user, _claim(parameter)).ConfigureAwait(false);
 			return result;
 		}

@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Security.Identity.Model.Authenticators
 		{
 			using var users = _users.Get();
 			var (user, (provider, identity)) = parameter;
-			var found  = await users.Subject.FindByNameAsync(user.UserName);
+			var found  = await users.Subject.FindByIdAsync(user.Id.ToString());
 			var result = await users.Subject.RemoveLoginAsync(found, provider, identity);
 			if (result.Succeeded)
 			{

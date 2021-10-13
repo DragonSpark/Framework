@@ -13,7 +13,7 @@ namespace DragonSpark.Application.Security.Identity
 		{
 			using var session = _authentications.Get();
 			var (authentication, users) = session;
-			var user = await users.FindByNameAsync(parameter.UserName).ConfigureAwait(false);
+			var user = await users.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
 			var result = await authentication.ValidateSecurityStampAsync(user, parameter.SecurityStamp)
 			                                 .ConfigureAwait(false);
 			return result;

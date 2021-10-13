@@ -22,7 +22,7 @@ namespace DragonSpark.Application.Security.Identity.Profile
 			{
 				var (login, user) = parameter;
 				using var users  = _users.Get();
-				var       local  = await users.Subject.FindByNameAsync(user.UserName).ConfigureAwait(false);
+				var       local  = await users.Subject.FindByIdAsync(user.Id.ToString()).ConfigureAwait(false);
 				var       result = await users.Subject.AddLoginAsync(local, login).ConfigureAwait(false);
 				return result;
 			}
