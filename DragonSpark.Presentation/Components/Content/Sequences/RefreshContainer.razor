@@ -36,11 +36,9 @@
 	{
 		if (message.Subject == Topic)
 		{
-			using var lease = _children.AsValueEnumerable().Then();
-			var memory = lease.AsMemory();
-			for (byte i = 0; i < lease.Length; i++)
+			foreach (var item in _children.AsValueEnumerable())
 			{
-				await memory.Span[i].Await();
+				await item.Await();
 			}
 		}
 	}
