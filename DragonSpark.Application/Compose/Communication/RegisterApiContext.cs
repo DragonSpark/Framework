@@ -22,6 +22,6 @@ namespace DragonSpark.Application.Compose.Communication
 			=> Configure(new Configure<TConfiguration>(baseUri).Execute);
 
 		public ConfiguredApiContextRegistration<T> Configure(Action<IServiceProvider, HttpClient> configure)
-			=> new ConfiguredApiContextRegistration<T>(_subject, configure, _settings);
+			=> new(_subject, configure, _settings);
 	}
 }
