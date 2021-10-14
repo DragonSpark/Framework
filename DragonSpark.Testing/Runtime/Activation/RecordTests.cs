@@ -27,6 +27,7 @@ namespace DragonSpark.Testing.Runtime.Activation
 
 		}
 
+		// ReSharper disable once NotAccessedPositionalProperty.Local
 		sealed record Subject(string Message, int Number)
 		{
 			public string Message { get; set; } = Message;
