@@ -300,43 +300,5 @@ namespace DragonSpark.Application.Testing.Entities.Queries
 			[Benchmark]
 			public async Task<Array> MeasureCompiledParameter() => await _selected.Await("Two");
 		}
-
-		/*
-		public class Benchmarks
-		{
-			readonly DbContext                      _subject;
-			readonly IAssignable<DbContext, string> _select;
-
-			public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
-
-			Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
-
-			Benchmarks(IDbContextFactory<Context> factory)
-				: this(factory.CreateDbContext(), Parameters<string>.Default) {}
-
-			Benchmarks(DbContext subject, IAssignable<DbContext, string> select)
-			{
-				_subject = subject;
-				_select  = @select;
-			}
-
-			[Benchmark(Baseline = true)]
-			public string MeasureAccess() => _select.Get(_subject);
-
-			[Benchmark]
-			public None MeasureAssign()
-			{
-				_select.Assign(_subject, "None.Default");
-				return None.Default;
-			}
-
-			[Benchmark]
-			public string MeasureFull()
-			{
-				_select.Assign(_subject, "None.Default");
-				return _select.Get(_subject);
-			}
-		}
-	*/
 	}
 }

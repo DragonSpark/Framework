@@ -127,18 +127,6 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 				return result;
 			}
 
-			/*[Benchmark]
-			public int MeasureValue()
-			{
-				var result = 0;
-				foreach (var element in first.Concat(second).AsValueEnumerable())
-				{
-					result += element;
-				}
-
-				return result;
-			}*/
-
 			[Benchmark]
 			public int NoAllocations()
 			{
@@ -152,18 +140,6 @@ namespace DragonSpark.Testing.Compose.Model.Memory
 
 				return result;
 			}
-
-			/*[Benchmark]
-			public int MeasureBoxing()
-			{
-				var       result = 0;
-				foreach (var element in first.AsValueEnumerable().Concat(second).AsValueEnumerable())
-				{
-					result += element;
-				}
-
-				return result;
-			}*/
 		}
 	}
 }

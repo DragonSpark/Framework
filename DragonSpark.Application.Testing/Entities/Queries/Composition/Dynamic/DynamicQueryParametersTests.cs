@@ -53,15 +53,5 @@ namespace DragonSpark.Application.Testing.Entities.Queries.Composition.Dynamic
 			[UsedImplicitly]
 			public int Number { get; set; }
 		}
-
-		/*
-		public class Benchmarks
-		{
-			public Benchmarks(ISelecting<string, Array<Subject>> scoped, ISelecting<string, Array<Subject>> scoped) {}
-
-			[Benchmark]
-			public object Measure() => default;
-		}
-	*/
 	}
 }

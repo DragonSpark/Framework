@@ -24,11 +24,6 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected abstract ValueTask<T> GetContent();
 
-	/*protected override void OnInitialized()
-	{
-		Apply();
-	}*/
-
 	protected override void OnParametersSet()
 	{
 		Apply();

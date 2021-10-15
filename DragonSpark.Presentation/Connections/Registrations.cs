@@ -17,11 +17,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<ConfigureConnection>()
 		         .Scoped()
 			//
-			/*.Then.Start<ClientIdentifier>()
-			.Include(x => x.Dependencies)
-			.Scoped()
-			//
-			.Then.Decorate<IClientIdentifier, ClientIdentifier>()*/
 			;
 	}
 }

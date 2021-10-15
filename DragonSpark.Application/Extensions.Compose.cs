@@ -177,11 +177,5 @@ public static partial class Extensions
 		=> @this.Generate((faker, _) => faker.Generate(0));
 	/**/
 
-	/*public static RegisterApiContext<T> Api<T>(this IServiceCollection @this, IHttpContentSerializer serializer)
-		where T : class
-		=> Api<T>(@this, new RefitSettings(serializer));*/
-
-	public static StartApiContext<T> Api<T>(this IServiceCollection @this)
-		where T : class
-		=> new(@this);
+	public static StartApiContext<T> Api<T>(this IServiceCollection @this) where T : class => new(@this);
 }

@@ -85,9 +85,6 @@ public static partial class ExtensionMethods
 	public static ConfiguredValueTaskAwaitable<T> Await<T>(this IResult<ValueTask<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
 
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable Await(this IResult<ValueTask> @this)
-		=> @this.Get().ConfigureAwait(false);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable Await<T>(this T @this) where T : IResult<ValueTask>
