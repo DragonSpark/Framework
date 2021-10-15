@@ -3,24 +3,23 @@ using LightInject;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace DragonSpark.Composition
+namespace DragonSpark.Composition;
+
+class ConfigureContainer : ICommand<IHostBuilder>
 {
-	class ConfigureContainer : ICommand<IHostBuilder>
+	readonly Action<IServiceContainer> _configure;
+
+	public ConfigureContainer(Action<IServiceContainer> configure) => _configure = configure;
+
+	public void Execute(IHostBuilder parameter)
 	{
-		readonly Action<IServiceContainer> _configure;
-
-		public ConfigureContainer(Action<IServiceContainer> configure) => _configure = configure;
-
-		public void Execute(IHostBuilder parameter)
-		{
-			parameter.ConfigureContainer(_configure);
-		}
+		parameter.ConfigureContainer(_configure);
 	}
+}
 
-	sealed class ConfigureContainer<T> : ConfigureContainer where T : ICompositionRoot, new()
-	{
-		public static ConfigureContainer<T> Default { get; } = new ConfigureContainer<T>();
+sealed class ConfigureContainer<T> : ConfigureContainer where T : ICompositionRoot, new()
+{
+	public static ConfigureContainer<T> Default { get; } = new ConfigureContainer<T>();
 
-		ConfigureContainer() : base(x => x.RegisterFrom<T>()) {}
-	}
+	ConfigureContainer() : base(x => x.RegisterFrom<T>()) {}
 }

@@ -1,12 +1,11 @@
 using DragonSpark.Runtime;
 using System;
 
-namespace DragonSpark.Reflection
-{
-	sealed class IsAssignableStructure : IsAssigned<Type, Type>
-	{
-		public static IsAssignableStructure Default { get; } = new IsAssignableStructure();
+namespace DragonSpark.Reflection;
 
-		IsAssignableStructure() : base(Nullable.GetUnderlyingType!) {}
-	}
+sealed class IsAssignableStructure : IsAssigned<Type, Type>
+{
+	public static IsAssignableStructure Default { get; } = new IsAssignableStructure();
+
+	IsAssignableStructure() : base(Nullable.GetUnderlyingType!) {}
 }

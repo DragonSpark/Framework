@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations;
 using System;
 
-namespace DragonSpark.Application.Entities.Transactions
-{
-	public interface ITransaction : ICommand, IOperation, IAsyncDisposable {}
-}
+namespace DragonSpark.Application.Entities.Transactions;
+
+public interface ITransaction : ICommand, IOperation, IAsyncDisposable {}

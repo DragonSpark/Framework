@@ -1,13 +1,12 @@
 ﻿using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims
+namespace DragonSpark.Application.Security.Identity.Claims;
+
+sealed class DisplayNameClaim : IDisplayNameClaim
 {
-	sealed class DisplayNameClaim : IDisplayNameClaim
-	{
-		public static DisplayNameClaim Default { get; } = new DisplayNameClaim();
+	public static DisplayNameClaim Default { get; } = new DisplayNameClaim();
 
-		DisplayNameClaim() {}
+	DisplayNameClaim() {}
 
-		public string Get(string parameter) => ClaimTypes.Name;
-	}
+	public string Get(string parameter) => ClaimTypes.Name;
 }

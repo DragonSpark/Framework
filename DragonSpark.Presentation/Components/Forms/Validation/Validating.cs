@@ -5,97 +5,96 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Presentation.Components.Forms.Validation;
+
+public class Validating : ComponentBase, IDisposable
 {
-	public class Validating : ComponentBase, IDisposable
+	readonly IOperationsStore _store;
+	readonly Func<Task>       _update;
+
+	ValidationMessageStore _messages = default!;
+	IOperations            _list     = default!;
+	EditContext?           _context;
+
+	public Validating() : this(OperationsStore.Default) {}
+
+	public Validating(IOperationsStore store)
 	{
-		readonly IOperationsStore _store;
-		readonly Func<Task>       _update;
+		_store  = store;
+		_update = Update;
+	}
 
-		ValidationMessageStore _messages = default!;
-		IOperations            _list     = default!;
-		EditContext?           _context;
+	[Parameter]
+	public FieldIdentifier Identifier { get; set; }
 
-		public Validating() : this(OperationsStore.Default) {}
+	[Parameter]
+	public string Message { get; set; } = "This field does not contain a valid value.";
 
-		public Validating(IOperationsStore store)
+	[Parameter]
+	public EventCallback<ValidationContext> Validate { get; set; }
+
+	[CascadingParameter]
+	EditContext? Context
+	{
+		get => _context;
+		set
 		{
-			_store  = store;
-			_update = Update;
-		}
-
-		[Parameter]
-		public FieldIdentifier Identifier { get; set; }
-
-		[Parameter]
-		public string Message { get; set; } = "This field does not contain a valid value.";
-
-		[Parameter]
-		public EventCallback<ValidationContext> Validate { get; set; }
-
-		[CascadingParameter]
-		EditContext? Context
-		{
-			get => _context;
-			set
+			if (_context != value)
 			{
-				if (_context != value)
+				if (_context != null)
 				{
-					if (_context != null)
-					{
-						_list.Execute();
-						_messages.Clear();
-						_context.OnFieldChanged        -= FieldChanged;
-						_context.OnValidationRequested -= ValidationRequested;
-					}
+					_list.Execute();
+					_messages.Clear();
+					_context.OnFieldChanged        -= FieldChanged;
+					_context.OnValidationRequested -= ValidationRequested;
+				}
 
-					if ((_context = value) != null)
-					{
-						_messages = new ValidationMessageStore(_context);
-						_list     = _store.Get(_context);
+				if ((_context = value) != null)
+				{
+					_messages = new ValidationMessageStore(_context);
+					_list     = _store.Get(_context);
 
-						_context.OnFieldChanged        += FieldChanged;
-						_context.OnValidationRequested += ValidationRequested;
-					}
+					_context.OnFieldChanged        += FieldChanged;
+					_context.OnValidationRequested += ValidationRequested;
 				}
 			}
 		}
+	}
 
-		void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
+	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
+	{
+		if (!_messages[Identifier].AsValueEnumerable().Any())
 		{
-			if (!_messages[Identifier].AsValueEnumerable().Any())
-			{
-				_list.Execute(InvokeAsync(_update));
-			}
+			_list.Execute(InvokeAsync(_update));
 		}
+	}
 
-		void FieldChanged(object? sender, FieldChangedEventArgs e)
+	void FieldChanged(object? sender, FieldChangedEventArgs e)
+	{
+		if (e.FieldIdentifier.Equals(Identifier))
 		{
-			if (e.FieldIdentifier.Equals(Identifier))
-			{
-				InvokeAsync(_update);
-			}
+			InvokeAsync(_update);
 		}
+	}
 
-		async Task Update()
+	async Task Update()
+	{
+		_messages.Clear(Identifier);
+
+		var edit = _context.Verify();
+		if (!edit.GetValidationMessages(Identifier).AsValueEnumerable().Any())
 		{
-			_messages.Clear(Identifier);
+			var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
 
-			var edit = _context.Verify();
-			if (!edit.GetValidationMessages(Identifier).AsValueEnumerable().Any())
-			{
-				var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
+			await Validate.InvokeAsync(context);
 
-				await Validate.InvokeAsync(context);
-
-				edit.NotifyValidationStateChanged();
-			}
+			edit.NotifyValidationStateChanged();
 		}
+	}
 
-		public virtual void Dispose()
-		{
-			Context = null;
-			GC.SuppressFinalize(this);
-		}
+	public virtual void Dispose()
+	{
+		Context = null;
+		GC.SuppressFinalize(this);
 	}
 }

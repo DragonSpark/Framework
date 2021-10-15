@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition.Compose
+namespace DragonSpark.Composition.Compose;
+
+sealed class ServiceTypes : FixedResult<IServiceCollection, IRelatedTypes>, IServiceTypes
 {
-	sealed class ServiceTypes : FixedResult<IServiceCollection, IRelatedTypes>, IServiceTypes
-	{
-		public static ServiceTypes Default { get; } = new ServiceTypes();
+	public static ServiceTypes Default { get; } = new ServiceTypes();
 
-		ServiceTypes() : this(RelatedTypes.Default) {}
+	ServiceTypes() : this(RelatedTypes.Default) {}
 
-		public ServiceTypes(IRelatedTypes instance) : base(instance) {}
-	}
+	public ServiceTypes(IRelatedTypes instance) : base(instance) {}
 }

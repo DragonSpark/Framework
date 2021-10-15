@@ -7,41 +7,40 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Objects;
 using System;
 
-namespace DragonSpark.Compose.Model.Results
+namespace DragonSpark.Compose.Model.Results;
+
+public class ResultContext<T>
 {
-	public class ResultContext<T>
-	{
-		public static implicit operator Func<T>(ResultContext<T> instance) => instance.Get().Get;
+	public static implicit operator Func<T>(ResultContext<T> instance) => instance.Get().Get;
 
-		readonly IResult<T> _instance;
+	readonly IResult<T> _instance;
 
-		public ResultContext(IResult<T> instance) => _instance = instance;
+	public ResultContext(IResult<T> instance) => _instance = instance;
 
-		public Selector<TIn, T> Accept<TIn>() => new DelegatedResult<TIn, T>(this).Then();
+	public Selector<TIn, T> Accept<TIn>() => new DelegatedResult<TIn, T>(this).Then();
 
-		public Selector<None, T> Accept() => Accept<None>();
+	public Selector<None, T> Accept() => Accept<None>();
 
-		public Selector<object, T> Any() => Accept<object>();
+	public Selector<object, T> Any() => Accept<object>();
 
-		public OperationResultSelector<T> Operation() => new (_instance.Then().Select(x => x.ToOperation()).Out());
+	public OperationResultSelector<T> Operation() => new (_instance.Then().Select(x => x.ToOperation()).Out());
 
-		public ResultContext<T> Singleton() => new DeferredSingleton<T>(_instance.Get).Then();
+	public ResultContext<T> Singleton() => new DeferredSingleton<T>(_instance.Get).Then();
 
-		public ResultContext<TOut> Select<TOut>(Selector<T, TOut> select) => Select(select.Get());
+	public ResultContext<TOut> Select<TOut>(Selector<T, TOut> select) => Select(select.Get());
 
-		public ResultContext<TOut> Select<TOut>(ISelect<T, TOut> select) => Select(select.Get);
+	public ResultContext<TOut> Select<TOut>(ISelect<T, TOut> select) => Select(select.Get);
 
-		public ResultContext<TOut> Select<TOut>(Func<T, TOut> select)
-			=> new DelegatedSelection<T, TOut>(select, this).Then();
+	public ResultContext<TOut> Select<TOut>(Func<T, TOut> select)
+		=> new DelegatedSelection<T, TOut>(select, this).Then();
 
-		public ResultContext<TTo> Cast<TTo>() => Select(CastOrDefault<T, TTo>.Default);
+	public ResultContext<TTo> Cast<TTo>() => Select(CastOrDefault<T, TTo>.Default);
 
-		public ValidatedResultContext<T> Unless(ResultContext<T> other) => Unless(other.Get());
+	public ValidatedResultContext<T> Unless(ResultContext<T> other) => Unless(other.Get());
 
-		public ValidatedResultContext<T> Unless(IResult<T> other) => new(Get(), other);
+	public ValidatedResultContext<T> Unless(IResult<T> other) => new(Get(), other);
 
-		public Func<T> ReferenceDelegate() => Delegates<T>.Default.Get(Get());
+	public Func<T> ReferenceDelegate() => Delegates<T>.Default.Get(Get());
 
-		public IResult<T> Get() => _instance;
-	}
+	public IResult<T> Get() => _instance;
 }

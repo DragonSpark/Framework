@@ -1,37 +1,36 @@
 ﻿using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Components.Routing
+namespace DragonSpark.Presentation.Components.Routing;
+
+/// <summary>
+/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
+/// </summary>
+class RouteTable
 {
-	/// <summary>
-	/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
-	/// </summary>
-	class RouteTable
+	readonly uint _length;
+
+	public RouteTable(Array<RouteEntry> routes) : this(routes, routes.Length) {}
+
+	public RouteTable(Array<RouteEntry> routes, uint length)
 	{
-		readonly uint _length;
+		_length = length;
+		Routes  = routes;
+	}
 
-		public RouteTable(Array<RouteEntry> routes) : this(routes, routes.Length) {}
+	public RouteEntry[] Routes { get; }
 
-		public RouteTable(Array<RouteEntry> routes, uint length)
+	internal RouteData? Route(RouteContext routeContext)
+	{
+		for (var i = 0; i < _length; i++)
 		{
-			_length = length;
-			Routes  = routes;
-		}
-
-		public RouteEntry[] Routes { get; }
-
-		internal RouteData? Route(RouteContext routeContext)
-		{
-			for (var i = 0; i < _length; i++)
+			var result = Routes[i].Get(routeContext);
+			if (result != null)
 			{
-				var result = Routes[i].Get(routeContext);
-				if (result != null)
-				{
-					return result;
-				}
+				return result;
 			}
-
-			return null;
 		}
+
+		return null;
 	}
 }

@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Model.Selection.Stores;
 using System.IO;
 
-namespace DragonSpark.Runtime
-{
-	sealed class BytesToStream : ActivatedStore<byte[], MemoryStream>
-	{
-		public static BytesToStream Default { get; } = new BytesToStream();
+namespace DragonSpark.Runtime;
 
-		BytesToStream() {}
-	}
+sealed class BytesToStream : ActivatedStore<byte[], MemoryStream>
+{
+	public static BytesToStream Default { get; } = new BytesToStream();
+
+	BytesToStream() {}
 }

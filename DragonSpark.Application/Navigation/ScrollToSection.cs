@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Navigation
-{
-	public sealed class ScrollToSection : Text.Text
-	{
-		public static ScrollToSection Default { get; } = new ScrollToSection();
+﻿namespace DragonSpark.Application.Navigation;
 
-		ScrollToSection() : base(nameof(ScrollToSection)) {}
-	}
+public sealed class ScrollToSection : Text.Text
+{
+	public static ScrollToSection Default { get; } = new ScrollToSection();
+
+	ScrollToSection() : base(nameof(ScrollToSection)) {}
 }

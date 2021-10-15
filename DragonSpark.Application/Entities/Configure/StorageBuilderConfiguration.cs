@@ -2,11 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure
+namespace DragonSpark.Application.Entities.Configure;
+
+public class StorageBuilderConfiguration<T> : AppendedCommand<DbContextOptionsBuilder<T>> where T : DbContext
 {
-	public class StorageBuilderConfiguration<T> : AppendedCommand<DbContextOptionsBuilder<T>> where T : DbContext
-	{
-		public StorageBuilderConfiguration(Type migrations, params object[] services)
-			: base(new ConfigureSqlServerWithMigration<T>(migrations), new ConfigureApplicationServices(services)) {}
-	}
+	public StorageBuilderConfiguration(Type migrations, params object[] services)
+		: base(new ConfigureSqlServerWithMigration<T>(migrations), new ConfigureApplicationServices(services)) {}
 }

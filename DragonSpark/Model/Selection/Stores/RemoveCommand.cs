@@ -1,16 +1,15 @@
 ﻿using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Model.Selection.Stores
+namespace DragonSpark.Model.Selection.Stores;
+
+class RemoveCommand<TIn, TOut> : ICommand<TIn>
 {
-	class RemoveCommand<TIn, TOut> : ICommand<TIn>
+	readonly ITable<TIn, TOut> _table;
+
+	public RemoveCommand(ITable<TIn, TOut> table) => _table = table;
+
+	public void Execute(TIn parameter)
 	{
-		readonly ITable<TIn, TOut> _table;
-
-		public RemoveCommand(ITable<TIn, TOut> table) => _table = table;
-
-		public void Execute(TIn parameter)
-		{
-			_table.Remove(parameter);
-		}
+		_table.Remove(parameter);
 	}
 }

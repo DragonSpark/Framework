@@ -2,68 +2,67 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Composition.Compose
+namespace DragonSpark.Composition.Compose;
+
+sealed class TypesRegistration : IRegistration
 {
-	sealed class TypesRegistration : IRegistration
+	readonly IServiceCollection _services;
+	readonly Leasing<Type>      _types;
+	readonly uint               _length;
+
+	public TypesRegistration(IServiceCollection services, Leasing<Type> types)
+		: this(services, types, types.Length) {}
+
+	public TypesRegistration(IServiceCollection services, Leasing<Type> types, uint length)
 	{
-		readonly IServiceCollection _services;
-		readonly Leasing<Type>      _types;
-		readonly uint               _length;
+		_services = services;
+		_types    = types;
+		_length   = length;
+	}
 
-		public TypesRegistration(IServiceCollection services, Leasing<Type> types)
-			: this(services, types, types.Length) {}
-
-		public TypesRegistration(IServiceCollection services, Leasing<Type> types, uint length)
+	public RegistrationResult Singleton()
+	{
+		var services    = _services;
+		var destination = _types.AsSpan();
+		for (var i = 0; i < _length; i++)
 		{
-			_services = services;
-			_types    = types;
-			_length   = length;
+			services = services.AddSingleton(destination[i]);
 		}
 
-		public RegistrationResult Singleton()
-		{
-			var services    = _services;
-			var destination = _types.AsSpan();
-			for (var i = 0; i < _length; i++)
-			{
-				services = services.AddSingleton(destination[i]);
-			}
+		var result = Result(services);
+		return result;
+	}
 
-			var result = Result(services);
-			return result;
+	RegistrationResult Result(IServiceCollection services)
+	{
+		var result = services.Result();
+		_types.Dispose();
+		return result;
+	}
+
+	public RegistrationResult Transient()
+	{
+		var services    = _services;
+		var destination = _types.AsSpan();
+		for (var i = 0; i < _length; i++)
+		{
+			services = services.AddTransient(destination[i]);
 		}
 
-		RegistrationResult Result(IServiceCollection services)
+		var result = Result(services);
+		return result;
+	}
+
+	public RegistrationResult Scoped()
+	{
+		var services    = _services;
+		var destination = _types.AsSpan();
+		for (var i = 0; i < _length; i++)
 		{
-			var result = services.Result();
-			_types.Dispose();
-			return result;
+			services = services.AddScoped(destination[i]);
 		}
 
-		public RegistrationResult Transient()
-		{
-			var services    = _services;
-			var destination = _types.AsSpan();
-			for (var i = 0; i < _length; i++)
-			{
-				services = services.AddTransient(destination[i]);
-			}
-
-			var result = Result(services);
-			return result;
-		}
-
-		public RegistrationResult Scoped()
-		{
-			var services    = _services;
-			var destination = _types.AsSpan();
-			for (var i = 0; i < _length; i++)
-			{
-				services = services.AddScoped(destination[i]);
-			}
-
-			var result = Result(services);
-			return result;
-		}
+		var result = Result(services);
+		return result;
 	}
 }

@@ -1,13 +1,12 @@
-﻿namespace DragonSpark.Presentation.Components.Navigation
+﻿namespace DragonSpark.Presentation.Components.Navigation;
+
+public class ServerNavigateTo : NavigateTo
 {
-	public class ServerNavigateTo : NavigateTo
+	protected override void OnInitialized() {}
+
+	protected override void OnAfterRender(bool firstRender)
 	{
-		protected override void OnInitialized() {}
-
-		protected override void OnAfterRender(bool firstRender)
-		{
-			Navigate();
-		}
-
+		Navigate();
 	}
+
 }

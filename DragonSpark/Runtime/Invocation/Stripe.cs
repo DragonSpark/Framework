@@ -2,29 +2,28 @@
 using DragonSpark.Runtime.Activation;
 using System;
 
-namespace DragonSpark.Runtime.Invocation
+namespace DragonSpark.Runtime.Invocation;
+
+sealed class Stripe<TIn, TOut> : ISelect<TIn, TOut>, IActivateUsing<Func<TIn, TOut>> where TIn : notnull
 {
-	sealed class Stripe<TIn, TOut> : ISelect<TIn, TOut>, IActivateUsing<Func<TIn, TOut>> where TIn : notnull
+	readonly static Func<TIn, object> Lock = Locks<TIn>.Default.Get;
+
+	readonly Func<TIn, object> _lock;
+	readonly Func<TIn, TOut>   _source;
+
+	public Stripe(Func<TIn, TOut> source) : this(Lock, source) {}
+
+	public Stripe(Func<TIn, object> @lock, Func<TIn, TOut> source)
 	{
-		readonly static Func<TIn, object> Lock = Locks<TIn>.Default.Get;
+		_lock   = @lock;
+		_source = source;
+	}
 
-		readonly Func<TIn, object> _lock;
-		readonly Func<TIn, TOut>   _source;
-
-		public Stripe(Func<TIn, TOut> source) : this(Lock, source) {}
-
-		public Stripe(Func<TIn, object> @lock, Func<TIn, TOut> source)
+	public TOut Get(TIn parameter)
+	{
+		lock (_lock(parameter))
 		{
-			_lock   = @lock;
-			_source = source;
-		}
-
-		public TOut Get(TIn parameter)
-		{
-			lock (_lock(parameter))
-			{
-				return _source(parameter);
-			}
+			return _source(parameter);
 		}
 	}
 }

@@ -3,30 +3,29 @@ using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Diagnostics
+namespace DragonSpark.Application.Diagnostics;
+
+public class ExceptionLoggerAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	public class ExceptionLoggerAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+	readonly ISelecting<TIn, TOut> _previous;
+	readonly IExceptionLogger      _logger;
+
+	public ExceptionLoggerAwareSelecting(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
 	{
-		readonly ISelecting<TIn, TOut> _previous;
-		readonly IExceptionLogger      _logger;
+		_previous = previous;
+		_logger   = logger;
+	}
 
-		public ExceptionLoggerAwareSelecting(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
+	public async ValueTask<TOut> Get(TIn parameter)
+	{
+		try
 		{
-			_previous = previous;
-			_logger   = logger;
+			return await _previous.Await(parameter);
 		}
-
-		public async ValueTask<TOut> Get(TIn parameter)
+		catch (Exception e)
 		{
-			try
-			{
-				return await _previous.Await(parameter);
-			}
-			catch (Exception e)
-			{
-				// ReSharper disable once UnthrowableException
-				throw await _logger.Await(GetType(), e);
-			}
+			// ReSharper disable once UnthrowableException
+			throw await _logger.Await(GetType(), e);
 		}
 	}
 }

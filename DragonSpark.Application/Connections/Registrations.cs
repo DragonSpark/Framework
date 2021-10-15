@@ -2,20 +2,19 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Connections
+namespace DragonSpark.Application.Connections;
+
+sealed class Registrations : ICommand<IServiceCollection>
 {
-	sealed class Registrations : ICommand<IServiceCollection>
+	public static Registrations Default { get; } = new Registrations();
+
+	Registrations() {}
+
+	public void Execute(IServiceCollection parameter)
 	{
-		public static Registrations Default { get; } = new Registrations();
-
-		Registrations() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Start<IHubConnections>()
-			         .Forward<HubConnections>()
-			         .Scoped()
-				;
-		}
+		parameter.Start<IHubConnections>()
+		         .Forward<HubConnections>()
+		         .Scoped()
+			;
 	}
 }

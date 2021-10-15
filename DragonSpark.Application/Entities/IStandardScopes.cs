@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Application.Entities
-{
-	public interface IStandardScopes : IScopes {}
-}
+﻿namespace DragonSpark.Application.Entities;
+
+public interface IStandardScopes : IScopes {}

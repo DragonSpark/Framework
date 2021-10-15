@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Model
+namespace DragonSpark.Application.Security.Identity.Model;
+
+sealed class KnownClaims : IKnownClaims
 {
-	sealed class KnownClaims : IKnownClaims
+	public static KnownClaims Default { get; } = new KnownClaims();
+
+	KnownClaims() {}
+
+	public IEnumerable<string> Get()
 	{
-		public static KnownClaims Default { get; } = new KnownClaims();
-
-		KnownClaims() {}
-
-		public IEnumerable<string> Get()
-		{
-			yield return ClaimTypes.AuthenticationMethod;
-			yield return ExternalIdentity.Default;
-			yield return DisplayName.Default;
-		}
+		yield return ClaimTypes.AuthenticationMethod;
+		yield return ExternalIdentity.Default;
+		yield return DisplayName.Default;
 	}
 }

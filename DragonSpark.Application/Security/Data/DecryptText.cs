@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.DataProtection;
 
-namespace DragonSpark.Application.Security.Data
+namespace DragonSpark.Application.Security.Data;
+
+sealed class DecryptText : Alteration<string>, IDecryptText
 {
-	sealed class DecryptText : Alteration<string>, IDecryptText
-	{
-		public DecryptText(CertificateBasedDataProtector protector) : base(protector.Unprotect) {}
-	}
+	public DecryptText(CertificateBasedDataProtector protector) : base(protector.Unprotect) {}
 }

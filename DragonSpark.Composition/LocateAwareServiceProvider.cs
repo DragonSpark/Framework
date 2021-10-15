@@ -2,38 +2,37 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Composition
+namespace DragonSpark.Composition;
+
+sealed class LocateAwareServiceProvider : IServiceProvider
 {
-	sealed class LocateAwareServiceProvider : IServiceProvider
+	readonly IServiceProvider     _previous;
+	readonly ISelect<Type, Type?> _locate;
+
+	public LocateAwareServiceProvider(IServiceProvider previous, IServiceCollection collection)
+		: this(previous, new LocateImplementation(collection)) {}
+
+	public LocateAwareServiceProvider(IServiceProvider previous, ISelect<Type, Type?> locate)
 	{
-		readonly IServiceProvider     _previous;
-		readonly ISelect<Type, Type?> _locate;
+		_previous = previous;
+		_locate   = locate;
+	}
 
-		public LocateAwareServiceProvider(IServiceProvider previous, IServiceCollection collection)
-			: this(previous, new LocateImplementation(collection)) {}
-
-		public LocateAwareServiceProvider(IServiceProvider previous, ISelect<Type, Type?> locate)
+	public object? GetService(Type serviceType)
+	{
+		try
 		{
-			_previous = previous;
-			_locate   = locate;
+			return _previous.GetService(serviceType);
 		}
-
-		public object? GetService(Type serviceType)
+		catch (InvalidOperationException)
 		{
-			try
+			var located = _locate.Get(serviceType);
+			if (located != null)
 			{
-				return _previous.GetService(serviceType);
+				return _previous.GetService(located);
 			}
-			catch (InvalidOperationException)
-			{
-				var located = _locate.Get(serviceType);
-				if (located != null)
-				{
-					return _previous.GetService(located);
-				}
 
-				throw;
-			}
+			throw;
 		}
 	}
 }

@@ -1,11 +1,10 @@
-﻿namespace DragonSpark.Application.Security.Identity
+﻿namespace DragonSpark.Application.Security.Identity;
+
+sealed class CurrentUserName : ICurrentUserName
 {
-	sealed class CurrentUserName : ICurrentUserName
-	{
-		readonly ICurrentPrincipal _principal;
+	readonly ICurrentPrincipal _principal;
 
-		public CurrentUserName(ICurrentPrincipal principal) => _principal = principal;
+	public CurrentUserName(ICurrentPrincipal principal) => _principal = principal;
 
-		public string Get() => _principal.Get().UserName();
-	}
+	public string Get() => _principal.Get().UserName();
 }

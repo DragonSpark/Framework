@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Presentation.Components.Forms.Validation
-{
-	public class DecimalFieldValidator : FieldValidation<decimal> {}
-}
+﻿namespace DragonSpark.Presentation.Components.Forms.Validation;
+
+public class DecimalFieldValidator : FieldValidation<decimal> {}

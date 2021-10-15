@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Model.Results
+﻿namespace DragonSpark.Model.Results;
+
+public interface IResult<out T>
 {
-	public interface IResult<out T>
-	{
-		T Get();
-	}
+	T Get();
 }

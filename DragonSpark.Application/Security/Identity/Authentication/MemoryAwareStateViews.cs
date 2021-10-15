@@ -5,16 +5,15 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Authentication
+namespace DragonSpark.Application.Security.Identity.Authentication;
+
+sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : class
 {
-	sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : class
-	{
-		[UsedImplicitly]
-		public MemoryAwareStateViews(IStateViews<T> previous, IMemoryCache memory)
-			: base(previous.Then()
-			               .Store()
-			               .In(memory)
-			               .For(TimeSpan.FromMinutes(1).Slide())
-			               .Using(StateViewKey.Default)) {}
-	}
+	[UsedImplicitly]
+	public MemoryAwareStateViews(IStateViews<T> previous, IMemoryCache memory)
+		: base(previous.Then()
+		               .Store()
+		               .In(memory)
+		               .For(TimeSpan.FromMinutes(1).Slide())
+		               .Using(StateViewKey.Default)) {}
 }

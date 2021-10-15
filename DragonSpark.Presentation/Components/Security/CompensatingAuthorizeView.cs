@@ -2,29 +2,28 @@
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Security
+namespace DragonSpark.Presentation.Components.Security;
+
+public sealed class CompensatingAuthorizeView : AuthorizeView
 {
-	public sealed class CompensatingAuthorizeView : AuthorizeView
+	bool Ready { get; set; }
+
+	protected override async Task OnParametersSetAsync()
 	{
-		bool Ready { get; set; }
+		Ready = false;
+		await base.OnParametersSetAsync();
+		Ready = true;
+	}
 
-		protected override async Task OnParametersSetAsync()
+	protected override void BuildRenderTree(RenderTreeBuilder builder)
+	{
+		if (Ready)
 		{
-			Ready = false;
-			await base.OnParametersSetAsync();
-			Ready = true;
+			base.BuildRenderTree(builder);
 		}
-
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		else
 		{
-			if (Ready)
-			{
-				base.BuildRenderTree(builder);
-			}
-			else
-			{
-				builder.AddContent(0, Authorizing);
-			}
+			builder.AddContent(0, Authorizing);
 		}
 	}
 }

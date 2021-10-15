@@ -1,26 +1,25 @@
 ﻿using System.Security;
 
-namespace DragonSpark.Application.Security.Data
+namespace DragonSpark.Application.Security.Data;
+
+public sealed class EncryptionSettings
 {
-	public sealed class EncryptionSettings
+	public string CertificatePath { get; set; } = default!;
+
+	public string PasswordStored
 	{
-		public string CertificatePath { get; set; } = default!;
-
-		public string PasswordStored
+		get => string.Empty;
+		set
 		{
-			get => string.Empty;
-			set
+			var secure = new SecureString();
+			foreach (var @char in value)
 			{
-				var secure = new SecureString();
-				foreach (var @char in value)
-				{
-					secure.AppendChar(@char);
-				}
-
-				Password = secure;
+				secure.AppendChar(@char);
 			}
-		}
 
-		public SecureString Password { get; private set; } = default!;
+			Password = secure;
+		}
 	}
+
+	public SecureString Password { get; private set; } = default!;
 }

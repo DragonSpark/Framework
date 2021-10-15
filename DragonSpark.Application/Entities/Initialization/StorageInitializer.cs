@@ -5,21 +5,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization
+namespace DragonSpark.Application.Entities.Initialization;
+
+public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 {
-	public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
+	readonly Array<IInitializer<T>> _initializers;
+
+	public StorageInitializer(params IInitializer<T>[] initializers) => _initializers = initializers;
+
+	public async ValueTask Get(IHost parameter)
 	{
-		readonly Array<IInitializer<T>> _initializers;
-
-		public StorageInitializer(params IInitializer<T>[] initializers) => _initializers = initializers;
-
-		public async ValueTask Get(IHost parameter)
+		var context = parameter.Services.GetRequiredService<T>();
+		foreach (var initializer in _initializers.Open())
 		{
-			var context = parameter.Services.GetRequiredService<T>();
-			foreach (var initializer in _initializers.Open())
-			{
-				await initializer.Await(context);
-			}
+			await initializer.Await(context);
 		}
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Application.Compose.Entities.Generation
+﻿namespace DragonSpark.Application.Compose.Entities.Generation;
+
+public static class Extensions
 {
-	public static class Extensions
-	{
 		
-	}
 }

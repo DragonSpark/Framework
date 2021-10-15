@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Composition;
 
-namespace DragonSpark.Application.Compose
-{
-	public interface IApplicationProfile : IServiceConfiguration, IApplicationConfiguration {}
-}
+namespace DragonSpark.Application.Compose;
+
+public interface IApplicationProfile : IServiceConfiguration, IApplicationConfiguration {}

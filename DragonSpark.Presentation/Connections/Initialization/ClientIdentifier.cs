@@ -2,11 +2,10 @@
 using DragonSpark.Model.Results;
 using System;
 
-namespace DragonSpark.Presentation.Connections.Initialization
+namespace DragonSpark.Presentation.Connections.Initialization;
+
+sealed class ClientIdentifier : CoalesceStructure<Guid>, IClientIdentifier
 {
-	sealed class ClientIdentifier : CoalesceStructure<Guid>, IClientIdentifier
-	{
-		public ClientIdentifier(IClientIdentifier previous, ClientIdentifierAccessor accessor)
-			: base(accessor, previous) {}
-	}
+	public ClientIdentifier(IClientIdentifier previous, ClientIdentifierAccessor accessor)
+		: base(accessor, previous) {}
 }

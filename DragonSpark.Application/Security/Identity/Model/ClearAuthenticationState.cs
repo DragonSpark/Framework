@@ -2,10 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Model
+namespace DragonSpark.Application.Security.Identity.Model;
+
+sealed class ClearAuthenticationState : RemoveFromMemory<ClaimsPrincipal>, IClearAuthenticationState
 {
-	sealed class ClearAuthenticationState : RemoveFromMemory<ClaimsPrincipal>, IClearAuthenticationState
-	{
-		public ClearAuthenticationState(IMemoryCache memory) : base(memory, StateViewKey.Default) {}
-	}
+	public ClearAuthenticationState(IMemoryCache memory) : base(memory, StateViewKey.Default) {}
 }

@@ -4,21 +4,20 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Diagnostics
+namespace DragonSpark.Application.Entities.Diagnostics;
+
+sealed class ReloadEntities : IOperation<(DbUpdateConcurrencyException, TimeSpan)>
 {
-	sealed class ReloadEntities : IOperation<(DbUpdateConcurrencyException, TimeSpan)>
+	public static ReloadEntities Default { get; } = new ReloadEntities();
+
+	ReloadEntities() {}
+
+	public async ValueTask Get((DbUpdateConcurrencyException, TimeSpan) parameter)
 	{
-		public static ReloadEntities Default { get; } = new ReloadEntities();
-
-		ReloadEntities() {}
-
-		public async ValueTask Get((DbUpdateConcurrencyException, TimeSpan) parameter)
+		var (exception, _) = parameter;
+		foreach (var entry in exception.Entries.AsValueEnumerable())
 		{
-			var (exception, _) = parameter;
-			foreach (var entry in exception.Entries.AsValueEnumerable())
-			{
-				await entry.ReloadAsync().ConfigureAwait(false);
-			}
+			await entry.ReloadAsync().ConfigureAwait(false);
 		}
 	}
 }

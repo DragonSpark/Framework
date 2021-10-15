@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace DragonSpark.Text.Formatting
-{
-	sealed class ApplicationDomainName : FormatEntry<AppDomain>
-	{
-		public static ApplicationDomainName Default { get; } = new ApplicationDomainName();
+namespace DragonSpark.Text.Formatting;
 
-		ApplicationDomainName() : base("F", x => x.FriendlyName) {}
-	}
+sealed class ApplicationDomainName : FormatEntry<AppDomain>
+{
+	public static ApplicationDomainName Default { get; } = new ApplicationDomainName();
+
+	ApplicationDomainName() : base("F", x => x.FriendlyName) {}
 }

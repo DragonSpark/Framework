@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Reflection.Members;
 using LightInject;
 
-namespace DragonSpark.Composition.Construction
-{
-	sealed class ConstructionInfoProvider : FieldDefinition<ServiceContainer>
-	{
-		public static ConstructionInfoProvider Default { get; } = new ConstructionInfoProvider();
+namespace DragonSpark.Composition.Construction;
 
-		ConstructionInfoProvider() : base("constructionInfoProvider") {}
-	}
+sealed class ConstructionInfoProvider : FieldDefinition<ServiceContainer>
+{
+	public static ConstructionInfoProvider Default { get; } = new ConstructionInfoProvider();
+
+	ConstructionInfoProvider() : base("constructionInfoProvider") {}
 }

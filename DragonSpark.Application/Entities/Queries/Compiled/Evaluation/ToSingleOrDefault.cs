@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
+namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+
+sealed class ToSingleOrDefault<T> : IEvaluate<T, T?>
 {
-	sealed class ToSingleOrDefault<T> : IEvaluate<T, T?>
-	{
-		public static ToSingleOrDefault<T> Default { get; } = new ();
+	public static ToSingleOrDefault<T> Default { get; } = new ();
 
-		ToSingleOrDefault() {}
+	ToSingleOrDefault() {}
 
-		public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.SingleOrDefaultAsync();
-	}
+	public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.SingleOrDefaultAsync();
 }

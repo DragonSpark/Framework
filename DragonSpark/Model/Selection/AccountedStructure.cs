@@ -1,11 +1,10 @@
-﻿namespace DragonSpark.Model.Selection
+﻿namespace DragonSpark.Model.Selection;
+
+sealed class AccountedStructure<_, T> : ISelect<_?, T> where _ : struct
 {
-	sealed class AccountedStructure<_, T> : ISelect<_?, T> where _ : struct
-	{
-		readonly ISelect<_, T> _select;
+	readonly ISelect<_, T> _select;
 
-		public AccountedStructure(ISelect<_, T> select) => _select = select;
+	public AccountedStructure(ISelect<_, T> select) => _select = select;
 
-		public T Get(_? parameter) => _select.Get(parameter.GetValueOrDefault());
-	}
+	public T Get(_? parameter) => _select.Get(parameter.GetValueOrDefault());
 }

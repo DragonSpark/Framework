@@ -1,13 +1,12 @@
-﻿namespace DragonSpark.Model.Results
+﻿namespace DragonSpark.Model.Results;
+
+public class Instance<T> : IResult<T>
 {
-	public class Instance<T> : IResult<T>
-	{
-		public static implicit operator T(Instance<T> instance) => instance.Get();
+	public static implicit operator T(Instance<T> instance) => instance.Get();
 
-		readonly T _instance;
+	readonly T _instance;
 
-		public Instance(T instance) => _instance = instance;
+	public Instance(T instance) => _instance = instance;
 
-		public T Get() => _instance;
-	}
+	public T Get() => _instance;
 }

@@ -2,18 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application;
+
+sealed class EnvironmentalConfiguration : Result<IConfiguration>
 {
-	sealed class EnvironmentalConfiguration : Result<IConfiguration>
-	{
-		public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
+	public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
 
-		EnvironmentalConfiguration() : this(EnvironmentName.Default!) {}
+	EnvironmentalConfiguration() : this(EnvironmentName.Default!) {}
 
-		public EnvironmentalConfiguration(string environment)
-			: base(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-			                                 .AddJsonFile("appsettings.json")
-			                                 .AddJsonFile($"appsettings.{environment}.json", true)
-			                                 .Build) {}
-	}
+	public EnvironmentalConfiguration(string environment)
+		: base(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+		                                 .AddJsonFile("appsettings.json")
+		                                 .AddJsonFile($"appsettings.{environment}.json", true)
+		                                 .Build) {}
 }

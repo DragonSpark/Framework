@@ -3,15 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities
+namespace DragonSpark.Application.Compose.Entities;
+
+sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
 {
-	sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
-	{
-		public static DefaultContextFactory<T> Default { get; } = new DefaultContextFactory<T>();
+	public static DefaultContextFactory<T> Default { get; } = new DefaultContextFactory<T>();
 
-		DefaultContextFactory() {}
+	DefaultContextFactory() {}
 
-		public T Get(IServiceProvider parameter)
-			=> parameter.GetRequiredService<IDbContextFactory<T>>().CreateDbContext();
-	}
+	public T Get(IServiceProvider parameter)
+		=> parameter.GetRequiredService<IDbContextFactory<T>>().CreateDbContext();
 }

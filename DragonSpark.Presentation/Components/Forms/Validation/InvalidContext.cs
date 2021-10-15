@@ -1,12 +1,11 @@
-﻿namespace DragonSpark.Presentation.Components.Forms.Validation
+﻿namespace DragonSpark.Presentation.Components.Forms.Validation;
+
+public sealed class InvalidContext
 {
-	public sealed class InvalidContext
-	{
-		public static InvalidContext Default { get; } = new InvalidContext();
+	public static InvalidContext Default { get; } = new InvalidContext();
 
-		InvalidContext() {}
+	InvalidContext() {}
 
-		[Invalid]
-		public string Invalid { get; set; } = default!;
-	}
+	[Invalid]
+	public string Invalid { get; set; } = default!;
 }

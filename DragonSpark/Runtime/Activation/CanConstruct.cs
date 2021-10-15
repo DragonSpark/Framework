@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System;
 
-namespace DragonSpark.Runtime.Activation
+namespace DragonSpark.Runtime.Activation;
+
+sealed class CanConstruct : ICondition<Type>
 {
-	sealed class CanConstruct : ICondition<Type>
-	{
-		public static CanConstruct Default { get; } = new CanConstruct();
+	public static CanConstruct Default { get; } = new CanConstruct();
 
-		CanConstruct() {}
+	CanConstruct() {}
 
-		public bool Get(Type parameter) => !parameter.IsAbstract && parameter.IsClass;
-	}
+	public bool Get(Type parameter) => !parameter.IsAbstract && parameter.IsClass;
 }

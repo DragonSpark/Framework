@@ -1,9 +1,8 @@
-namespace DragonSpark.Model.Sequences.Collections
-{
-	sealed class SortComparer<T> : DelegatedComparer<T>
-	{
-		public static SortComparer<T> Default { get; } = new SortComparer<T>();
+namespace DragonSpark.Model.Sequences.Collections;
 
-		SortComparer() : base(SortSelector<T>.Default.Get) {}
-	}
+sealed class SortComparer<T> : DelegatedComparer<T>
+{
+	public static SortComparer<T> Default { get; } = new SortComparer<T>();
+
+	SortComparer() : base(SortSelector<T>.Default.Get) {}
 }

@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Text
-{
-	sealed class None : Text
-	{
-		public static None Default { get; } = new None();
+﻿namespace DragonSpark.Text;
 
-		None() : base("N/A") {}
-	}
+sealed class None : Text
+{
+	public static None Default { get; } = new None();
+
+	None() : base("N/A") {}
 }

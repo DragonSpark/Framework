@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
-{
-	public delegate ValueTask<T> OperateOf<T>();
-}
+namespace DragonSpark.Model.Operations;
+
+public delegate ValueTask<T> OperateOf<T>();

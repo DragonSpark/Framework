@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Application.Entities.Transactions
-{
-	public interface ITransactions : IResulting<ITransaction> {}
-}
+namespace DragonSpark.Application.Entities.Transactions;
+
+public interface ITransactions : IResulting<ITransaction> {}

@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Runtime;
 
-namespace DragonSpark.Server.Security
-{
-	sealed class AuthenticationBaseAddress : EnvironmentVariable
-	{
-		public static AuthenticationBaseAddress Default { get; } = new AuthenticationBaseAddress();
+namespace DragonSpark.Server.Security;
 
-		AuthenticationBaseAddress() : base(nameof(AuthenticationBaseAddress)) {}
-	}
+sealed class AuthenticationBaseAddress : EnvironmentVariable
+{
+	public static AuthenticationBaseAddress Default { get; } = new AuthenticationBaseAddress();
+
+	AuthenticationBaseAddress() : base(nameof(AuthenticationBaseAddress)) {}
 }

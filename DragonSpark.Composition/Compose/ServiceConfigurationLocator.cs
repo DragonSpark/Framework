@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Composition.Compose
-{
-	sealed class ServiceConfigurationLocator : ServiceComponentLocator<IServiceConfiguration>
-	{
-		public static ServiceConfigurationLocator Default { get; } = new ServiceConfigurationLocator();
+﻿namespace DragonSpark.Composition.Compose;
 
-		ServiceConfigurationLocator() {}
-	}
+sealed class ServiceConfigurationLocator : ServiceComponentLocator<IServiceConfiguration>
+{
+	public static ServiceConfigurationLocator Default { get; } = new ServiceConfigurationLocator();
+
+	ServiceConfigurationLocator() {}
 }

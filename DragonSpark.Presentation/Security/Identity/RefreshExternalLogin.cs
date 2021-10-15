@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Application.Navigation;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Security.Identity
+namespace DragonSpark.Presentation.Security.Identity;
+
+public class RefreshExternalLogin : Navigation
 {
-	public class RefreshExternalLogin : Navigation
-	{
-		protected RefreshExternalLogin(NavigationManager navigation, CurrentExternalLogin current)
-			: base(navigation, current.Get, true) {}
-	}
+	protected RefreshExternalLogin(NavigationManager navigation, CurrentExternalLogin current)
+		: base(navigation, current.Get, true) {}
 }

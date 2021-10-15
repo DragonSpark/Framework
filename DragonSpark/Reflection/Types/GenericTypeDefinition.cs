@@ -1,12 +1,11 @@
 using DragonSpark.Model.Selection.Alterations;
 using System;
 
-namespace DragonSpark.Reflection.Types
-{
-	sealed class GenericTypeDefinition : Alteration<Type>
-	{
-		public static GenericTypeDefinition Default { get; } = new GenericTypeDefinition();
+namespace DragonSpark.Reflection.Types;
 
-		GenericTypeDefinition() : base(x => x.GetGenericTypeDefinition()) {}
-	}
+sealed class GenericTypeDefinition : Alteration<Type>
+{
+	public static GenericTypeDefinition Default { get; } = new GenericTypeDefinition();
+
+	GenericTypeDefinition() : base(x => x.GetGenericTypeDefinition()) {}
 }

@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Application.Connections
+namespace DragonSpark.Application.Connections;
+
+public sealed class Configure : IAlteration<BuildHostContext>
 {
-	public sealed class Configure : IAlteration<BuildHostContext>
-	{
-		public static Configure Default { get; } = new Configure();
+	public static Configure Default { get; } = new Configure();
 
-		Configure() {}
+	Configure() {}
 
-		public BuildHostContext Get(BuildHostContext parameter) => parameter.Configure(Registrations.Default);
-	}
+	public BuildHostContext Get(BuildHostContext parameter) => parameter.Configure(Registrations.Default);
 }

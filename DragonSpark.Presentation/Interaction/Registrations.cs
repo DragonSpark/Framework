@@ -2,17 +2,16 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Presentation.Interaction
+namespace DragonSpark.Presentation.Interaction;
+
+sealed class Registrations : ICommand<IServiceCollection>
 {
-	sealed class Registrations : ICommand<IServiceCollection>
+	public static Registrations Default { get; } = new();
+
+	Registrations() {}
+
+	public void Execute(IServiceCollection parameter)
 	{
-		public static Registrations Default { get; } = new();
-
-		Registrations() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Start<NavigationResultHandler>().Scoped();
-		}
+		parameter.Start<NavigationResultHandler>().Scoped();
 	}
 }

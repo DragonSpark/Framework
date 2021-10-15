@@ -2,15 +2,14 @@
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Diagnostics
+namespace DragonSpark.Application.Diagnostics;
+
+public sealed class Aggregation : IAlteration<Exception>
 {
-	public sealed class Aggregation : IAlteration<Exception>
-	{
-		public static Aggregation Default { get; } = new();
+	public static Aggregation Default { get; } = new();
 
-		Aggregation() {}
+	Aggregation() {}
 
-		public Exception Get(Exception parameter)
-			=> parameter is AggregateException aggregate ? aggregate.InnerExceptions.First() : parameter;
-	}
+	public Exception Get(Exception parameter)
+		=> parameter is AggregateException aggregate ? aggregate.InnerExceptions.First() : parameter;
 }

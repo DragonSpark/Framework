@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace DragonSpark.Application.Security.Identity.Model
+namespace DragonSpark.Application.Security.Identity.Model;
+
+sealed class ExternalLoginReturnLocation : ReturnLocation
 {
-	sealed class ExternalLoginReturnLocation : ReturnLocation
-	{
-		public ExternalLoginReturnLocation(IUrlHelperFactory factory)
-			: base(factory, ExternalLoginReturnDefinition.Default) {}
-	}
+	public ExternalLoginReturnLocation(IUrlHelperFactory factory)
+		: base(factory, ExternalLoginReturnDefinition.Default) {}
 }

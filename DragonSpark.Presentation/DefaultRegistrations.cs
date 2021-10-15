@@ -15,81 +15,80 @@ using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 
-namespace DragonSpark.Presentation
+namespace DragonSpark.Presentation;
+
+sealed class DefaultRegistrations : ICommand<IServiceCollection>
 {
-	sealed class DefaultRegistrations : ICommand<IServiceCollection>
+	public static DefaultRegistrations Default { get; } = new DefaultRegistrations();
+
+	DefaultRegistrations() {}
+
+	public void Execute(IServiceCollection parameter)
 	{
-		public static DefaultRegistrations Default { get; } = new DefaultRegistrations();
-
-		DefaultRegistrations() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Start<IExceptionNotification>()
-			         .Forward<ExceptionNotification>()
-			         .Decorate<ClientExceptionAwareExceptionNotification>()
-			         .Scoped()
-			         //
-			         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
-			         .Decorate<IExceptions, NotificationAwareExceptions>()
-			         .Decorate<IExceptions, NavigationAwareExceptions>()
-			         //
-			         .Start<IEventAggregator>()
-			         .Forward<EventAggregator>()
-			         .Scoped()
-			         //
-			         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
-			         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-			         .ForDefinition<MemoryAwareActiveContents<object>>()
-			         .Scoped()
-			         .Then.Start<IRenderContentKey>()
-			         .Forward<RenderContentKey>()
-			         .Decorate<StoreAwareRenderContentKey>()
-			         .Scoped()
-			         //
-			         .Then.Start<IApplyQueryStringValues>()
-			         .Forward<ApplyQueryStringValues>()
-			         .Scoped()
-			         //
-			         .Then.Start<ICurrentPrincipal>()
-			         .Forward<CurrentPrincipal>()
-			         .Singleton()
-			         //
-			         .Then.Start<IContentInteraction>()
-			         .Forward<ContentInteraction>()
-			         .Include(x => x.Dependencies.Recursive())
-			         .Scoped()
-			         //
-			         .Then.Start<DefaultExternalLogin>()
-			         .And<IsPreRendering>()
-			         .Include(x => x.Dependencies)
-			         .Scoped()
-			         //
-			         .Then.Start<ClientIdentifierAccessor>()
-			         .Singleton()
-			         .Then.Start<ClientIdentifier>()
-			         .Include(x => x.Dependencies.Recursive())
-			         .Scoped()
-			         //
-			         .Then.Start<DialogService>()
-			         .And<NotificationService>()
-			         .And<RouterSession>()
-			         .And<NavigateToInitialize>()
-			         .Scoped()
-			         //
-			         .Then.Start<IInitialized>()
-			         .Forward<Initialized>()
-			         .Singleton()
-			         //
-			         .Then.Start<IInitializeConnection>()
-			         .Forward<InitializeConnection>()
-			         .Scoped()
-			         //
-			         .Then.Start<ResourceExistsValidation>()
-			         .Singleton()
-			         //
-			         .Then.AddJsInteropExtensions()
-				;
-		}
+		parameter.Start<IExceptionNotification>()
+		         .Forward<ExceptionNotification>()
+		         .Decorate<ClientExceptionAwareExceptionNotification>()
+		         .Scoped()
+		         //
+		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
+		         .Decorate<IExceptions, NotificationAwareExceptions>()
+		         .Decorate<IExceptions, NavigationAwareExceptions>()
+		         //
+		         .Start<IEventAggregator>()
+		         .Forward<EventAggregator>()
+		         .Scoped()
+		         //
+		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
+		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
+		         .ForDefinition<MemoryAwareActiveContents<object>>()
+		         .Scoped()
+		         .Then.Start<IRenderContentKey>()
+		         .Forward<RenderContentKey>()
+		         .Decorate<StoreAwareRenderContentKey>()
+		         .Scoped()
+		         //
+		         .Then.Start<IApplyQueryStringValues>()
+		         .Forward<ApplyQueryStringValues>()
+		         .Scoped()
+		         //
+		         .Then.Start<ICurrentPrincipal>()
+		         .Forward<CurrentPrincipal>()
+		         .Singleton()
+		         //
+		         .Then.Start<IContentInteraction>()
+		         .Forward<ContentInteraction>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
+		         .Then.Start<DefaultExternalLogin>()
+		         .And<IsPreRendering>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         //
+		         .Then.Start<ClientIdentifierAccessor>()
+		         .Singleton()
+		         .Then.Start<ClientIdentifier>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
+		         .Then.Start<DialogService>()
+		         .And<NotificationService>()
+		         .And<RouterSession>()
+		         .And<NavigateToInitialize>()
+		         .Scoped()
+		         //
+		         .Then.Start<IInitialized>()
+		         .Forward<Initialized>()
+		         .Singleton()
+		         //
+		         .Then.Start<IInitializeConnection>()
+		         .Forward<InitializeConnection>()
+		         .Scoped()
+		         //
+		         .Then.Start<ResourceExistsValidation>()
+		         .Singleton()
+		         //
+		         .Then.AddJsInteropExtensions()
+			;
 	}
 }

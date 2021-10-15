@@ -4,36 +4,35 @@ using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace DragonSpark.Application.Security.Data
+namespace DragonSpark.Application.Security.Data;
+
+sealed class CertificateBasedDataProtector : IDataProtector
 {
-	sealed class CertificateBasedDataProtector : IDataProtector
+	readonly X509Certificate2     _certificate;
+	readonly RSAEncryptionPadding _padding;
+
+	public CertificateBasedDataProtector(X509Certificate2 certificate)
+		: this(certificate, RSAEncryptionPadding.OaepSHA1) {}
+
+	public CertificateBasedDataProtector(X509Certificate2 certificate, RSAEncryptionPadding padding)
 	{
-		readonly X509Certificate2     _certificate;
-		readonly RSAEncryptionPadding _padding;
+		_certificate = certificate;
+		_padding     = padding;
+	}
 
-		public CertificateBasedDataProtector(X509Certificate2 certificate)
-			: this(certificate, RSAEncryptionPadding.OaepSHA1) {}
+	public IDataProtector CreateProtector(string purpose) => throw new NotSupportedException();
 
-		public CertificateBasedDataProtector(X509Certificate2 certificate, RSAEncryptionPadding padding)
-		{
-			_certificate = certificate;
-			_padding     = padding;
-		}
+	public byte[] Protect(byte[] plaintext)
+	{
+		using var rsa    = _certificate.GetRSAPublicKey().Verify();
+		var       result = rsa.Encrypt(plaintext, _padding);
+		return result;
+	}
 
-		public IDataProtector CreateProtector(string purpose) => throw new NotSupportedException();
-
-		public byte[] Protect(byte[] plaintext)
-		{
-			using var rsa    = _certificate.GetRSAPublicKey().Verify();
-			var       result = rsa.Encrypt(plaintext, _padding);
-			return result;
-		}
-
-		public byte[] Unprotect(byte[] protectedData)
-		{
-			using var rsa    = _certificate.GetRSAPrivateKey().Verify();
-			var       result = rsa.Decrypt(protectedData, _padding);
-			return result;
-		}
+	public byte[] Unprotect(byte[] protectedData)
+	{
+		using var rsa    = _certificate.GetRSAPrivateKey().Verify();
+		var       result = rsa.Decrypt(protectedData, _padding);
+		return result;
 	}
 }

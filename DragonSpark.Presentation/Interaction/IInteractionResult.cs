@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Presentation.Interaction
-{
-	public interface IInteractionResult {}
-}
+﻿namespace DragonSpark.Presentation.Interaction;
+
+public interface IInteractionResult {}

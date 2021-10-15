@@ -1,26 +1,25 @@
 ﻿using System.Reflection;
 
-namespace DragonSpark.Composition.Construction
+namespace DragonSpark.Composition.Construction;
+
+public readonly struct ConstructorCandidate
 {
-	public readonly struct ConstructorCandidate
+	public ConstructorCandidate(ConstructorInfo constructor)
+		: this(constructor, constructor.GetParameters()) {}
+
+	public ConstructorCandidate(ConstructorInfo constructor, ParameterInfo[] parameters)
 	{
-		public ConstructorCandidate(ConstructorInfo constructor)
-			: this(constructor, constructor.GetParameters()) {}
+		Constructor = constructor;
+		Parameters  = parameters;
+	}
 
-		public ConstructorCandidate(ConstructorInfo constructor, ParameterInfo[] parameters)
-		{
-			Constructor = constructor;
-			Parameters  = parameters;
-		}
+	public ConstructorInfo Constructor { get; }
 
-		public ConstructorInfo Constructor { get; }
+	public ParameterInfo[] Parameters { get; }
 
-		public ParameterInfo[] Parameters { get; }
-
-		public void Deconstruct(out ConstructorInfo constructor, out ParameterInfo[] parameters)
-		{
-			constructor = Constructor;
-			parameters  = Parameters;
-		}
+	public void Deconstruct(out ConstructorInfo constructor, out ParameterInfo[] parameters)
+	{
+		constructor = Constructor;
+		parameters  = Parameters;
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Application.Security.Identity.Model
+﻿namespace DragonSpark.Application.Security.Identity.Model;
+
+sealed class ExternalLoginChallengingModelBinder : ChallengingModelBinder
 {
-	sealed class ExternalLoginChallengingModelBinder : ChallengingModelBinder
-	{
-		public ExternalLoginChallengingModelBinder(ExternalLoginReturnLocation @return) : base(@return) {}
-	}
+	public ExternalLoginChallengingModelBinder(ExternalLoginReturnLocation @return) : base(@return) {}
 }

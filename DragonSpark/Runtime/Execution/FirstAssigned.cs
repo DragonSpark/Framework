@@ -2,30 +2,29 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Runtime.Execution
+namespace DragonSpark.Runtime.Execution;
+
+public class FirstAssigned : ICondition
 {
-	public class FirstAssigned : ICondition
+	readonly IMutable<bool> _store;
+	readonly bool           _target;
+
+	protected FirstAssigned(IMutable<bool> store) : this(store, store.Get()) {}
+
+	protected FirstAssigned(IMutable<bool> store, bool target)
 	{
-		readonly IMutable<bool> _store;
-		readonly bool           _target;
+		_store  = store;
+		_target = target;
+	}
 
-		protected FirstAssigned(IMutable<bool> store) : this(store, store.Get()) {}
-
-		protected FirstAssigned(IMutable<bool> store, bool target)
+	public bool Get(None parameter)
+	{
+		var result = _store.Get() == _target;
+		if (result)
 		{
-			_store  = store;
-			_target = target;
+			_store.Execute(!_target);
 		}
 
-		public bool Get(None parameter)
-		{
-			var result = _store.Get() == _target;
-			if (result)
-			{
-				_store.Execute(!_target);
-			}
-
-			return result;
-		}
+		return result;
 	}
 }

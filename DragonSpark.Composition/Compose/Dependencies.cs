@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition.Compose
+namespace DragonSpark.Composition.Compose;
+
+public sealed class Dependencies : IServiceTypes
 {
-	public sealed class Dependencies : IServiceTypes
-	{
-		public static Dependencies Default { get; } = new Dependencies();
+	public static Dependencies Default { get; } = new Dependencies();
 
-		Dependencies() {}
+	Dependencies() {}
 
-		public IRelatedTypes Get(IServiceCollection parameter) => new DependencyRelatedTypes(parameter);
-	}
+	public IRelatedTypes Get(IServiceCollection parameter) => new DependencyRelatedTypes(parameter);
 }

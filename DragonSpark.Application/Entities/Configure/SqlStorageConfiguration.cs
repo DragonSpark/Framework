@@ -4,19 +4,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure
+namespace DragonSpark.Application.Entities.Configure;
+
+sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbContext
 {
-	sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbContext
-	{
-		public static SqlStorageConfiguration<T> Default { get; } = new SqlStorageConfiguration<T>();
+	public static SqlStorageConfiguration<T> Default { get; } = new SqlStorageConfiguration<T>();
 
-		SqlStorageConfiguration() : this(ConnectionName<T>.Default) {}
+	SqlStorageConfiguration() : this(ConnectionName<T>.Default) {}
 
-		readonly string _name;
+	readonly string _name;
 
-		public SqlStorageConfiguration(string name) => _name = name;
+	public SqlStorageConfiguration(string name) => _name = name;
 
-		public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
-			=> new ConfigureSqlServer<T>(parameter.Configuration().GetConnectionString(_name)).Execute;
-	}
+	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
+		=> new ConfigureSqlServer<T>(parameter.Configuration().GetConnectionString(_name)).Execute;
 }

@@ -2,12 +2,11 @@
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Diagnostics
-{
-	sealed class JitterStrategy : Select<int, TimeSpan>
-	{
-		public static JitterStrategy Default { get; } = new JitterStrategy();
+namespace DragonSpark.Diagnostics;
 
-		JitterStrategy() : base(RetryStrategy.Default.Then().Select(AddJitter.Default)) {}
-	}
+sealed class JitterStrategy : Select<int, TimeSpan>
+{
+	public static JitterStrategy Default { get; } = new JitterStrategy();
+
+	JitterStrategy() : base(RetryStrategy.Default.Then().Select(AddJitter.Default)) {}
 }

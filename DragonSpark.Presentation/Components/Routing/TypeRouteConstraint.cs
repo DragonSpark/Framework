@@ -1,31 +1,30 @@
-﻿namespace DragonSpark.Presentation.Components.Routing
+﻿namespace DragonSpark.Presentation.Components.Routing;
+
+/// <summary>
+/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
+/// </summary>
+class TypeRouteConstraint<T> : RouteConstraint
 {
-	/// <summary>
-	/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
-	/// </summary>
-	class TypeRouteConstraint<T> : RouteConstraint
+	public delegate bool TryParseDelegate(string str, out T result);
+
+	private readonly TryParseDelegate _parser;
+
+	public TypeRouteConstraint(TryParseDelegate parser)
 	{
-		public delegate bool TryParseDelegate(string str, out T result);
+		_parser = parser;
+	}
 
-		private readonly TryParseDelegate _parser;
-
-		public TypeRouteConstraint(TryParseDelegate parser)
+	public override bool Match(string pathSegment, out object convertedValue)
+	{
+		if (_parser(pathSegment, out var result))
 		{
-			_parser = parser;
+			convertedValue = result!;
+			return true;
 		}
-
-		public override bool Match(string pathSegment, out object convertedValue)
+		else
 		{
-			if (_parser(pathSegment, out var result))
-			{
-				convertedValue = result!;
-				return true;
-			}
-			else
-			{
-				convertedValue = null!;
-				return false;
-			}
+			convertedValue = null!;
+			return false;
 		}
 	}
 }

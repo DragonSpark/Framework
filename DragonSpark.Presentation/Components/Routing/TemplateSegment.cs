@@ -1,95 +1,94 @@
 ﻿using System;
 using System.Linq;
 
-namespace DragonSpark.Presentation.Components.Routing
+namespace DragonSpark.Presentation.Components.Routing;
+
+/// <summary>
+/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
+/// </summary>
+class TemplateSegment
 {
-	/// <summary>
-	/// ATTRIBUTION: https://github.com/ShaunCurtis/CEC.Routing/tree/master/CEC.Routing/Routing
-	/// </summary>
-	class TemplateSegment
+	public TemplateSegment(string template, string segment, bool isParameter)
 	{
-		public TemplateSegment(string template, string segment, bool isParameter)
+		IsParameter = isParameter;
+
+		// Process segments that are not parameters or do not contain
+		// a token separating a type constraint.
+		if (!isParameter || segment.IndexOf(':') < 0)
 		{
-			IsParameter = isParameter;
-
-			// Process segments that are not parameters or do not contain
-			// a token separating a type constraint.
-			if (!isParameter || segment.IndexOf(':') < 0)
+			// Set the IsOptional flag to true for segments that contain
+			// a parameter with no type constraints but optionality set
+			// via the '?' token.
+			var length = segment.Length - 1;
+			if (segment.IndexOf('?') == length)
 			{
-				// Set the IsOptional flag to true for segments that contain
-				// a parameter with no type constraints but optionality set
-				// via the '?' token.
-				var length = segment.Length - 1;
-				if (segment.IndexOf('?') == length)
-				{
-					IsOptional = true;
-					Value      = segment.Substring(0, length);
-				}
-				// If the `?` optional marker shows up in the segment but not at the very end,
-				// then throw an error.
-				else if (segment.Contains('?') && segment.IndexOf('?') != length)
-				{
-					throw new
-						ArgumentException($"Malformed parameter '{segment}' in route '{template}'. '?' character can only appear at the end of parameter name.");
-				}
-				else
-				{
-					Value = segment;
-				}
-
-				Constraints = Array.Empty<RouteConstraint>();
+				IsOptional = true;
+				Value      = segment.Substring(0, length);
+			}
+			// If the `?` optional marker shows up in the segment but not at the very end,
+			// then throw an error.
+			else if (segment.Contains('?') && segment.IndexOf('?') != length)
+			{
+				throw new
+					ArgumentException($"Malformed parameter '{segment}' in route '{template}'. '?' character can only appear at the end of parameter name.");
 			}
 			else
 			{
-				var tokens = segment.Split(':');
-				if (tokens[0].Length == 0)
-				{
-					throw new
-						ArgumentException($"Malformed parameter '{segment}' in route '{template}' has no name before the constraints list.");
-				}
-
-				// Set the IsOptional flag to true if any type constraints
-				// for this parameter are designated as optional.
-				IsOptional = tokens.Skip(1).Any(token => token.EndsWith("?"));
-
-				Value = tokens[0];
-				Constraints = tokens.Skip(1)
-				                    .Select(token => RouteConstraint.Parse(template, segment, token))
-				                    .ToArray();
+				Value = segment;
 			}
+
+			Constraints = Array.Empty<RouteConstraint>();
 		}
-
-		// The value of the segment. The exact text to match when is a literal.
-		// The parameter name when its a segment
-		public string Value { get; }
-
-		public bool IsParameter { get; }
-
-		public bool IsOptional { get; }
-
-		public RouteConstraint[] Constraints { get; }
-
-		public bool Match(string pathSegment, out object matchedParameterValue)
+		else
 		{
-			if (IsParameter)
+			var tokens = segment.Split(':');
+			if (tokens[0].Length == 0)
 			{
-				matchedParameterValue = pathSegment;
+				throw new
+					ArgumentException($"Malformed parameter '{segment}' in route '{template}' has no name before the constraints list.");
+			}
 
-				foreach (var constraint in Constraints)
+			// Set the IsOptional flag to true if any type constraints
+			// for this parameter are designated as optional.
+			IsOptional = tokens.Skip(1).Any(token => token.EndsWith("?"));
+
+			Value = tokens[0];
+			Constraints = tokens.Skip(1)
+			                    .Select(token => RouteConstraint.Parse(template, segment, token))
+			                    .ToArray();
+		}
+	}
+
+	// The value of the segment. The exact text to match when is a literal.
+	// The parameter name when its a segment
+	public string Value { get; }
+
+	public bool IsParameter { get; }
+
+	public bool IsOptional { get; }
+
+	public RouteConstraint[] Constraints { get; }
+
+	public bool Match(string pathSegment, out object matchedParameterValue)
+	{
+		if (IsParameter)
+		{
+			matchedParameterValue = pathSegment;
+
+			foreach (var constraint in Constraints)
+			{
+				if (!constraint.Match(pathSegment, out matchedParameterValue))
 				{
-					if (!constraint.Match(pathSegment, out matchedParameterValue))
-					{
-						return false;
-					}
+					return false;
 				}
+			}
 
-				return true;
-			}
-			else
-			{
-				matchedParameterValue = null!;
-				return string.Equals(Value, pathSegment, StringComparison.OrdinalIgnoreCase);
-			}
+			return true;
+		}
+		else
+		{
+			matchedParameterValue = null!;
+			return string.Equals(Value, pathSegment, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }

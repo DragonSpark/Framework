@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace DragonSpark.Model.Commands
+namespace DragonSpark.Model.Commands;
+
+public class FixedParameterCommand<T> : ICommand
 {
-	public class FixedParameterCommand<T> : ICommand
+	readonly Action<T> _command;
+	readonly T         _parameter;
+
+	public FixedParameterCommand(Action<T> command, T parameter)
 	{
-		readonly Action<T> _command;
-		readonly T         _parameter;
+		_command   = command;
+		_parameter = parameter;
+	}
 
-		public FixedParameterCommand(Action<T> command, T parameter)
-		{
-			_command   = command;
-			_parameter = parameter;
-		}
-
-		public void Execute(None parameter)
-		{
-			_command(_parameter);
-		}
+	public void Execute(None parameter)
+	{
+		_command(_parameter);
 	}
 }

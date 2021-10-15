@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Model.Results
-{
-	sealed class Default<T> : Instance<T>
-	{
-		public static Default<T> Instance { get; } = new Default<T>();
+﻿namespace DragonSpark.Model.Results;
 
-		Default() : base(default!) {}
-	}
+sealed class Default<T> : Instance<T>
+{
+	public static Default<T> Instance { get; } = new Default<T>();
+
+	Default() : base(default!) {}
 }

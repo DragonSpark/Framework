@@ -1,9 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Server.Requests
-{
-	public interface IPolicy : ISelecting<Unique, bool?> {}
+namespace DragonSpark.Server.Requests;
 
-	public interface IPolicy<T> : ISelecting<Request<T>, bool?> {}
+public interface IPolicy : ISelecting<Unique, bool?> {}
 
-}
+public interface IPolicy<T> : ISelecting<Request<T>, bool?> {}

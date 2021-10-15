@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application
-{
-	public interface IProgram : ISelect<IHostBuilder, Task> {}
-}
+namespace DragonSpark.Application;
+
+public interface IProgram : ISelect<IHostBuilder, Task> {}

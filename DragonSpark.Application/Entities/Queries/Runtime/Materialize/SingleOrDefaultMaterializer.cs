@@ -3,19 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize
+namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+
+public sealed class SingleOrDefaultMaterializer<T> : IMaterializer<T, T?>
 {
-	public sealed class SingleOrDefaultMaterializer<T> : IMaterializer<T, T?>
+	public static SingleOrDefaultMaterializer<T> Default { get; } = new SingleOrDefaultMaterializer<T>();
+
+	SingleOrDefaultMaterializer() {}
+
+	public async ValueTask<T?> Get(IQueryable<T> parameter)
 	{
-		public static SingleOrDefaultMaterializer<T> Default { get; } = new SingleOrDefaultMaterializer<T>();
-
-		SingleOrDefaultMaterializer() {}
-
-		public async ValueTask<T?> Get(IQueryable<T> parameter)
-		{
-			var entity = await parameter.SingleOrDefaultAsync().ConfigureAwait(false);
-			var result = entity.Account();
-			return result;
-		}
+		var entity = await parameter.SingleOrDefaultAsync().ConfigureAwait(false);
+		var result = entity.Account();
+		return result;
 	}
 }

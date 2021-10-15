@@ -2,21 +2,20 @@
 using DragonSpark.Model.Sequences.Collections.Commands;
 using System.Collections.Generic;
 
-namespace DragonSpark.Model.Sequences.Collections
+namespace DragonSpark.Model.Sequences.Collections;
+
+public class Membership<T> : IMembership<T>
 {
-	public class Membership<T> : IMembership<T>
+	public Membership(ICollection<T> collection)
+		: this(new AddCommand<T>(collection), new RemoveCommand<T>(collection)) {}
+
+	protected Membership(ICommand<T> add, ICommand<T> remove)
 	{
-		public Membership(ICollection<T> collection)
-			: this(new AddCommand<T>(collection), new RemoveCommand<T>(collection)) {}
-
-		protected Membership(ICommand<T> add, ICommand<T> remove)
-		{
-			Add    = add;
-			Remove = remove;
-		}
-
-		public ICommand<T> Add { get; }
-
-		public ICommand<T> Remove { get; }
+		Add    = add;
+		Remove = remove;
 	}
+
+	public ICommand<T> Add { get; }
+
+	public ICommand<T> Remove { get; }
 }

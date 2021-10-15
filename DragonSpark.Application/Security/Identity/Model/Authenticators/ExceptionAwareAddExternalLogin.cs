@@ -5,34 +5,33 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model.Authenticators
+namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
+
+sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
 {
-	sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
+	readonly IAddExternalSignin _previous;
+	readonly IExceptionLogger   _logger;
+
+	public ExceptionAwareAddExternalLogin(IAddExternalSignin previous, IExceptionLogger logger)
 	{
-		readonly IAddExternalSignin _previous;
-		readonly IExceptionLogger   _logger;
+		_previous = previous;
+		_logger   = logger;
+	}
 
-		public ExceptionAwareAddExternalLogin(IAddExternalSignin previous, IExceptionLogger logger)
+	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+	{
+		try
 		{
-			_previous = previous;
-			_logger   = logger;
+			return await _previous.Await(parameter);
 		}
-
-		public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+		catch (Exception e)
 		{
-			try
+			await _logger.Await(GetType(), e);
+			return IdentityResult.Failed(new IdentityError
 			{
-				return await _previous.Await(parameter);
-			}
-			catch (Exception e)
-			{
-				await _logger.Await(GetType(), e);
-				return IdentityResult.Failed(new IdentityError
-				{
-					Description =
-						"A unexpected problem occurred while adding this external identity to your account and has been recorded for system administrators to review."
-				});
-			}
+				Description =
+					"A unexpected problem occurred while adding this external identity to your account and has been recorded for system administrators to review."
+			});
 		}
 	}
 }

@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace DragonSpark.Runtime
-{
-	public sealed class EmptyDisposing : Disposing
-	{
-		public static EmptyDisposing Default { get; } = new ();
+namespace DragonSpark.Runtime;
 
-		EmptyDisposing() : base(() => ValueTask.CompletedTask) {}
-	}
+public sealed class EmptyDisposing : Disposing
+{
+	public static EmptyDisposing Default { get; } = new ();
+
+	EmptyDisposing() : base(() => ValueTask.CompletedTask) {}
 }

@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+public class ReportedAllocating<TIn, TOut> : IAllocating<TIn, TOut>
 {
-	public class ReportedAllocating<TIn, TOut> : IAllocating<TIn, TOut>
+	readonly IAllocating<TIn, TOut> _previous;
+	readonly Action<Task<TOut>>     _report;
+
+	public ReportedAllocating(IAllocating<TIn, TOut> previous, Action<Task<TOut>> report)
 	{
-		readonly IAllocating<TIn, TOut> _previous;
-		readonly Action<Task<TOut>>     _report;
+		_previous = previous;
+		_report   = report;
+	}
 
-		public ReportedAllocating(IAllocating<TIn, TOut> previous, Action<Task<TOut>> report)
-		{
-			_previous    = previous;
-			_report = report;
-		}
-
-		public Task<TOut> Get(TIn parameter)
-		{
-			var result = _previous.Get(parameter);
-			_report.Invoke(result);
-			return result;
-		}
+	public Task<TOut> Get(TIn parameter)
+	{
+		var result = _previous.Get(parameter);
+		_report.Invoke(result);
+		return result;
 	}
 }

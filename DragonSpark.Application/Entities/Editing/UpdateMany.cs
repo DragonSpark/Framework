@@ -1,20 +1,19 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Entities.Editing
+namespace DragonSpark.Application.Entities.Editing;
+
+sealed class UpdateMany : IModify<Memory<object>>
 {
-	sealed class UpdateMany : IModify<Memory<object>>
+	public static UpdateMany Default { get; } = new();
+
+	UpdateMany() {}
+
+	public void Execute(Edit<Memory<object>> parameter)
 	{
-		public static UpdateMany Default { get; } = new();
-
-		UpdateMany() {}
-
-		public void Execute(Edit<Memory<object>> parameter)
+		var (context, memory) = parameter;
+		for (var i = 0; i < memory.Length; i++)
 		{
-			var (context, memory) = parameter;
-			for (var i = 0; i < memory.Length; i++)
-			{
-				context.Update(memory.Span[i]);
-			}
+			context.Update(memory.Span[i]);
 		}
 	}
 }

@@ -2,14 +2,13 @@
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Reflection.Types
+namespace DragonSpark.Reflection.Types;
+
+public sealed class TypeSelector : ISelect<TypeInfo, Type>
 {
-	public sealed class TypeSelector : ISelect<TypeInfo, Type>
-	{
-		public static TypeSelector Default { get; } = new TypeSelector();
+	public static TypeSelector Default { get; } = new TypeSelector();
 
-		TypeSelector() {}
+	TypeSelector() {}
 
-		public Type Get(TypeInfo parameter) => parameter.AsType();
-	}
+	public Type Get(TypeInfo parameter) => parameter.AsType();
 }

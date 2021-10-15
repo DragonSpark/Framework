@@ -1,25 +1,24 @@
-﻿namespace DragonSpark.Application.Security.Identity.Authentication
+﻿namespace DragonSpark.Application.Security.Identity.Authentication;
+
+public sealed class StateView<T> where T : class
 {
-	public sealed class StateView<T> where T : class
+	public static StateView<T> Default { get; } = new StateView<T>();
+
+	StateView() : this(AuthenticationState<T>.Default, null) {}
+
+	public StateView(AuthenticationState<T> state, string? hash)
 	{
-		public static StateView<T> Default { get; } = new StateView<T>();
+		State = state;
+		Hash  = hash;
+	}
 
-		StateView() : this(AuthenticationState<T>.Default, null) {}
+	public AuthenticationState<T> State { get; }
 
-		public StateView(AuthenticationState<T> state, string? hash)
-		{
-			State = state;
-			Hash  = hash;
-		}
+	public string? Hash { get; }
 
-		public AuthenticationState<T> State { get; }
-
-		public string? Hash { get; }
-
-		public void Deconstruct(out AuthenticationState<T> state, out string? hash)
-		{
-			state = State;
-			hash  = Hash;
-		}
+	public void Deconstruct(out AuthenticationState<T> state, out string? hash)
+	{
+		state = State;
+		hash  = Hash;
 	}
 }

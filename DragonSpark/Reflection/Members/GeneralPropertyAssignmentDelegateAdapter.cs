@@ -5,29 +5,28 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Reflection.Members
+namespace DragonSpark.Reflection.Members;
+
+sealed class GeneralPropertyAssignmentDelegateAdapter<T, TValue> : Select<PropertyInfo, Action<object, object>>,
+                                                                   IPropertyAssignmentDelegate
 {
-	sealed class GeneralPropertyAssignmentDelegateAdapter<T, TValue> : Select<PropertyInfo, Action<object, object>>,
-	                                                                   IPropertyAssignmentDelegate
+	public static GeneralPropertyAssignmentDelegateAdapter<T, TValue> Default { get; } = new();
+
+	GeneralPropertyAssignmentDelegateAdapter()
+		: base(Start.An.Instance(PropertyAssignmentDelegate<T, TValue>.Default)
+		            .Select(x => new Adapter(x).ToAssignmentDelegate())) {}
+
+	sealed class Adapter : IAssign<object, object>
 	{
-		public static GeneralPropertyAssignmentDelegateAdapter<T, TValue> Default { get; } = new();
+		readonly Action<T, TValue> _assign;
 
-		GeneralPropertyAssignmentDelegateAdapter()
-			: base(Start.An.Instance(PropertyAssignmentDelegate<T, TValue>.Default)
-			            .Select(x => new Adapter(x).ToAssignmentDelegate())) {}
+		public Adapter(Action<T, TValue> assign) => _assign = assign;
 
-		sealed class Adapter : IAssign<object, object>
+		public void Execute(Pair<object, object> parameter)
 		{
-			readonly Action<T, TValue> _assign;
-
-			public Adapter(Action<T, TValue> assign) => _assign = assign;
-
-			public void Execute(Pair<object, object> parameter)
-			{
-				var (key, value) = parameter;
-				_assign(key.To<T>(), value.To<TValue>());
-			}
+			var (key, value) = parameter;
+			_assign(key.To<T>(), value.To<TValue>());
 		}
-
 	}
+
 }

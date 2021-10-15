@@ -2,18 +2,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Composition.Scopes
+namespace DragonSpark.Composition.Scopes;
+
+public sealed class AmbientProvider : IResult<IServiceProvider?>
 {
-	public sealed class AmbientProvider : IResult<IServiceProvider?>
-	{
-		public static AmbientProvider Default { get; } = new();
+	public static AmbientProvider Default { get; } = new();
 
-		AmbientProvider() : this(LogicalScope.Default) {}
+	AmbientProvider() : this(LogicalScope.Default) {}
 
-		readonly IResult<AsyncServiceScope?> _scope;
+	readonly IResult<AsyncServiceScope?> _scope;
 
-		public AmbientProvider(IResult<AsyncServiceScope?> scope) => _scope = scope;
+	public AmbientProvider(IResult<AsyncServiceScope?> scope) => _scope = scope;
 
-		public IServiceProvider? Get() => _scope.Get()?.ServiceProvider;
-	}
+	public IServiceProvider? Get() => _scope.Get()?.ServiceProvider;
 }

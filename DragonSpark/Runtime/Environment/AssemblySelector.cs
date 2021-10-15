@@ -9,24 +9,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DragonSpark.Runtime.Environment
+namespace DragonSpark.Runtime.Environment;
+
+sealed class AssemblySelector : IAlteration<Array<Assembly>>,
+                                IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
 {
-	sealed class AssemblySelector : IAlteration<Array<Assembly>>,
-	                                IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
-	{
-		public static AssemblySelector Default { get; } = new AssemblySelector();
+	public static AssemblySelector Default { get; } = new AssemblySelector();
 
-		AssemblySelector() : this(ComponentAssemblyNames.Default) {}
+	AssemblySelector() : this(ComponentAssemblyNames.Default) {}
 
-		readonly Func<Array<Assembly>, IEnumerable<Assembly>> _select;
+	readonly Func<Array<Assembly>, IEnumerable<Assembly>> _select;
 
-		[UsedImplicitly]
-		public AssemblySelector(ISelect<AssemblyName, IEnumerable<AssemblyName>> names)
-			: this(Start.A.Selection.Of.Type<Assembly>()
-			            .As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
+	[UsedImplicitly]
+	public AssemblySelector(ISelect<AssemblyName, IEnumerable<AssemblyName>> names)
+		: this(Start.A.Selection.Of.Type<Assembly>()
+		            .As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
 
-		public AssemblySelector(Func<Array<Assembly>, Assembly[]> select) => _select = select;
+	public AssemblySelector(Func<Array<Assembly>, Assembly[]> select) => _select = select;
 
-		public Array<Assembly> Get(Array<Assembly> parameter) => _select(parameter).Union(parameter.Open()).Result();
-	}
+	public Array<Assembly> Get(Array<Assembly> parameter) => _select(parameter).Union(parameter.Open()).Result();
 }

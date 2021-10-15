@@ -2,30 +2,29 @@
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Diagnostics
+namespace DragonSpark.Application.Diagnostics;
+
+public class ExceptionSelectingDefault<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	public class ExceptionSelectingDefault<TIn, TOut> : ISelecting<TIn, TOut>
+	readonly ISelecting<TIn, TOut> _previous;
+	readonly TOut                  _default;
+
+	protected ExceptionSelectingDefault(ExceptionAwareSelecting<TIn, TOut> previous, TOut @default)
 	{
-		readonly ISelecting<TIn, TOut> _previous;
-		readonly TOut                  _default;
+		_previous = previous;
+		_default  = @default;
+	}
 
-		protected ExceptionSelectingDefault(ExceptionAwareSelecting<TIn, TOut> previous, TOut @default)
+	public async ValueTask<TOut> Get(TIn parameter)
+	{
+		try
 		{
-			_previous     = previous;
-			_default = @default;
+			return await _previous.Await(parameter);
 		}
-
-		public async ValueTask<TOut> Get(TIn parameter)
+		// ReSharper disable once CatchAllClause
+		catch
 		{
-			try
-			{
-				return await _previous.Await(parameter);
-			}
-			// ReSharper disable once CatchAllClause
-			catch
-			{
-				return _default;
-			}
+			return _default;
 		}
 	}
 }

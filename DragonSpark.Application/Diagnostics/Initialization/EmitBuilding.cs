@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Diagnostics.Initialization
-{
-	sealed class EmitBuilding<T> : EmitProgramLog
-	{
-		public static EmitBuilding<T> Default { get; } = new EmitBuilding<T>();
+﻿namespace DragonSpark.Application.Diagnostics.Initialization;
 
-		EmitBuilding() : base(LogBuildingMessage<T>.Default) {}
-	}
+sealed class EmitBuilding<T> : EmitProgramLog
+{
+	public static EmitBuilding<T> Default { get; } = new EmitBuilding<T>();
+
+	EmitBuilding() : base(LogBuildingMessage<T>.Default) {}
 }

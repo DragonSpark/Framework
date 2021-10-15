@@ -1,31 +1,30 @@
 ﻿using System;
 
-namespace DragonSpark.Model.Selection
+namespace DragonSpark.Model.Selection;
+
+public class Try<TException, TIn, TOut> : ISelect<TIn, TOut> where TException : Exception
 {
-	public class Try<TException, TIn, TOut> : ISelect<TIn, TOut> where TException : Exception
+	readonly Func<TIn, TOut> _fallback;
+	readonly Func<TIn, TOut> _source;
+
+	public Try(Func<TIn, TOut> source) : this(source, Default<TIn, TOut>.Instance.Get) {}
+
+	public Try(Func<TIn, TOut> source, Func<TIn, TOut> fallback)
 	{
-		readonly Func<TIn, TOut> _fallback;
-		readonly Func<TIn, TOut> _source;
+		_source   = source;
+		_fallback = fallback;
+	}
 
-		public Try(Func<TIn, TOut> source) : this(source, Default<TIn, TOut>.Instance.Get) {}
-
-		public Try(Func<TIn, TOut> source, Func<TIn, TOut> fallback)
+	public TOut Get(TIn parameter)
+	{
+		try
 		{
-			_source   = source;
-			_fallback = fallback;
+			var source = _source(parameter);
+			return source;
 		}
-
-		public TOut Get(TIn parameter)
+		catch (TException)
 		{
-			try
-			{
-				var source = _source(parameter);
-				return source;
-			}
-			catch (TException)
-			{
-				return _fallback(parameter);
-			}
+			return _fallback(parameter);
 		}
 	}
 }

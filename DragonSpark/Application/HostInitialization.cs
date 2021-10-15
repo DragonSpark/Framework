@@ -4,20 +4,19 @@ using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application;
+
+sealed class HostInitialization : IHostInitializer
 {
-	sealed class HostInitialization : IHostInitializer
+	public static HostInitialization Default { get; } = new HostInitialization();
+
+	HostInitialization() {}
+
+	public async ValueTask Get(IHost parameter)
 	{
-		public static HostInitialization Default { get; } = new HostInitialization();
-
-		HostInitialization() {}
-
-		public async ValueTask Get(IHost parameter)
+		foreach (var initializer in parameter.Services.GetServices<IHostInitializer>().AsValueEnumerable())
 		{
-			foreach (var initializer in parameter.Services.GetServices<IHostInitializer>().AsValueEnumerable())
-			{
-				await initializer.Await(parameter);
-			}
+			await initializer.Await(parameter);
 		}
 	}
 }

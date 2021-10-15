@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 
-namespace DragonSpark.Reflection.Assemblies
-{
-	sealed class AssemblyCompany : Declared<AssemblyCompanyAttribute, string>
-	{
-		public static AssemblyCompany Default { get; } = new AssemblyCompany();
+namespace DragonSpark.Reflection.Assemblies;
 
-		AssemblyCompany() : base(x => x.Company) {}
-	}
+sealed class AssemblyCompany : Declared<AssemblyCompanyAttribute, string>
+{
+	public static AssemblyCompany Default { get; } = new AssemblyCompany();
+
+	AssemblyCompany() : base(x => x.Company) {}
 }

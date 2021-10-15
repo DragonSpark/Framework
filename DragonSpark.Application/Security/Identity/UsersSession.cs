@@ -2,23 +2,22 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Security.Identity
+namespace DragonSpark.Application.Security.Identity;
+
+public readonly struct UsersSession<T> : IDisposable where T : class
 {
-	public readonly struct UsersSession<T> : IDisposable where T : class
+	readonly IServiceScope? _scope;
+
+	public UsersSession(UserManager<T> subject, IServiceScope? scope = null)
 	{
-		readonly IServiceScope? _scope;
+		_scope  = scope;
+		Subject = subject;
+	}
 
-		public UsersSession(UserManager<T> subject, IServiceScope? scope = null)
-		{
-			_scope  = scope;
-			Subject = subject;
-		}
+	public UserManager<T> Subject { get; }
 
-		public UserManager<T> Subject { get; }
-
-		public void Dispose()
-		{
-			_scope?.Dispose();
-		}
+	public void Dispose()
+	{
+		_scope?.Dispose();
 	}
 }

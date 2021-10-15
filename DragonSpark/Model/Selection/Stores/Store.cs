@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace DragonSpark.Model.Selection.Stores
+namespace DragonSpark.Model.Selection.Stores;
+
+public class Store<TIn, TOut> : Select<TIn, TOut>
 {
-	public class Store<TIn, TOut> : Select<TIn, TOut>
-	{
-		public Store(Func<TIn, TOut> source) : base(Stores<TIn, TOut>.Default.Get(source)) {}
-	}
+	public Store(Func<TIn, TOut> source) : base(Stores<TIn, TOut>.Default.Get(source)) {}
 }

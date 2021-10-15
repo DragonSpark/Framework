@@ -3,28 +3,27 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model.Authenticators
+namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
+
+sealed class StateAwareAddExternalSignin : IAddExternalSignin
 {
-	sealed class StateAwareAddExternalSignin : IAddExternalSignin
+	readonly IAddExternalSignin        _previous;
+	readonly IClearAuthenticationState _clear;
+
+	public StateAwareAddExternalSignin(IAddExternalSignin previous, IClearAuthenticationState clear)
 	{
-		readonly IAddExternalSignin        _previous;
-		readonly IClearAuthenticationState _clear;
+		_previous = previous;
+		_clear    = clear;
+	}
 
-		public StateAwareAddExternalSignin(IAddExternalSignin previous, IClearAuthenticationState clear)
+	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+	{
+		var result = await _previous.Await(parameter);
+		if (result?.Succeeded ?? false)
 		{
-			_previous = previous;
-			_clear    = clear;
+			_clear.Execute(parameter);
 		}
 
-		public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
-		{
-			var result = await _previous.Await(parameter);
-			if (result?.Succeeded ?? false)
-			{
-				_clear.Execute(parameter);
-			}
-
-			return result;
-		}
+		return result;
 	}
 }

@@ -1,13 +1,12 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Text
+namespace DragonSpark.Text;
+
+public class Character : Instance<char>
 {
-	public class Character : Instance<char>
-	{
-		public static implicit operator string(Character instance) => instance.ToString();
+	public static implicit operator string(Character instance) => instance.ToString();
 
-		public Character(char instance) : base(instance) {}
+	public Character(char instance) : base(instance) {}
 
-		public override string ToString() => Get().ToString();
-	}
+	public override string ToString() => Get().ToString();
 }

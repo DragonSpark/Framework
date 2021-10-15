@@ -1,19 +1,18 @@
 ﻿using DragonSpark.Runtime.Activation;
 
-namespace DragonSpark.Compose.Extents
+namespace DragonSpark.Compose.Extents;
+
+public sealed class Instance<T>
 {
-	public sealed class Instance<T>
-	{
-		public static Instance<T> Implementation { get; } = new Instance<T>();
+	public static Instance<T> Implementation { get; } = new Instance<T>();
 
-		Instance() {}
+	Instance() {}
 
-		public T Default => default!;
+	public T Default => default!;
 
-		public T New() => Location<T>.Default.New();
+	public T New() => Location<T>.Default.New();
 
-		public T Activate() => Location<T>.Default.Activate();
+	public T Activate() => Location<T>.Default.Activate();
 
-		public T Singleton() => Singleton<T>.Default.Get();
-	}
+	public T Singleton() => Singleton<T>.Default.Get();
 }

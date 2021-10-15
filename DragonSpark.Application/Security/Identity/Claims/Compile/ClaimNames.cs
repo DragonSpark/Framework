@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Compile
+namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+
+sealed class ClaimNames : IEnumerable<string>
 {
-	sealed class ClaimNames : IEnumerable<string>
-	{
-		readonly IKnownClaims _known;
+	readonly IKnownClaims _known;
 
-		public ClaimNames(IKnownClaims known) => _known = known;
+	public ClaimNames(IKnownClaims known) => _known = known;
 
-		public IEnumerator<string> GetEnumerator() => _known.Get().GetEnumerator();
+	public IEnumerator<string> GetEnumerator() => _known.Get().GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

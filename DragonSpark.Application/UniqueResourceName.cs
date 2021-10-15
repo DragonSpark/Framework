@@ -2,19 +2,18 @@
 using Sluggy;
 using Sluggy.Strategies;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application;
+
+public class UniqueResourceName : IAlteration<string>
 {
-	public class UniqueResourceName : IAlteration<string>
+	readonly string               _separator;
+	readonly ITranslationStrategy _strategy;
+
+	public UniqueResourceName(string separator, ITranslationStrategy strategy)
 	{
-		readonly string               _separator;
-		readonly ITranslationStrategy _strategy;
-
-		public UniqueResourceName(string separator, ITranslationStrategy strategy)
-		{
-			_separator = separator;
-			_strategy  = strategy;
-		}
-
-		public string Get(string parameter) => parameter.Replace(_separator, " ").ToSlug(_separator, _strategy);
+		_separator = separator;
+		_strategy  = strategy;
 	}
+
+	public string Get(string parameter) => parameter.Replace(_separator, " ").ToSlug(_separator, _strategy);
 }

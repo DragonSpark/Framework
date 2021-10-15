@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Presentation.Security
+﻿namespace DragonSpark.Presentation.Security;
+
+public sealed class ContentSecurityConfiguration
 {
-	public sealed class ContentSecurityConfiguration
-	{
-		public string Policy { get; set; } = default!;
-	}
+	public string Policy { get; set; } = default!;
 }

@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Application.Runtime
-{
-	public interface IIMembershipTransaction<T> : IMembershipTransaction<T, T> {}
-}
+﻿namespace DragonSpark.Application.Runtime;
+
+public interface IIMembershipTransaction<T> : IMembershipTransaction<T, T> {}

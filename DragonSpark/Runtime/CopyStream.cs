@@ -1,20 +1,19 @@
 ﻿using DragonSpark.Model.Selection;
 using System.IO;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Runtime;
+
+public sealed class CopyStream : ISelect<Stream, MemoryStream>
 {
-	public sealed class CopyStream : ISelect<Stream, MemoryStream>
+	public static CopyStream Default { get; } = new CopyStream();
+
+	CopyStream() {}
+
+	public MemoryStream Get(Stream parameter)
 	{
-		public static CopyStream Default { get; } = new CopyStream();
-
-		CopyStream() {}
-
-		public MemoryStream Get(Stream parameter)
-		{
-			var result = new MemoryStream();
-			parameter.Seek(0, SeekOrigin.Begin);
-			parameter.CopyTo(result);
-			return result;
-		}
+		var result = new MemoryStream();
+		parameter.Seek(0, SeekOrigin.Begin);
+		parameter.CopyTo(result);
+		return result;
 	}
 }

@@ -2,32 +2,31 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Content
+namespace DragonSpark.Presentation.Components.Content;
+
+sealed class ActiveContent<T> : IActiveContent<T>
 {
-	sealed class ActiveContent<T> : IActiveContent<T>
+	readonly Func<ValueTask<T>>       _content;
+	readonly IMutable<ValueTuple<T>?> _store;
+
+	public ActiveContent(Func<ValueTask<T>> content) : this(new Variable<ValueTuple<T>?>(), content) {}
+
+	public ActiveContent(IMutable<ValueTuple<T>?> store, Func<ValueTask<T>> content)
 	{
-		readonly Func<ValueTask<T>>       _content;
-		readonly IMutable<ValueTuple<T>?> _store;
+		_store   = store;
+		_content = content;
+	}
 
-		public ActiveContent(Func<ValueTask<T>> content) : this(new Variable<ValueTuple<T>?>(), content) {}
-
-		public ActiveContent(IMutable<ValueTuple<T>?> store, Func<ValueTask<T>> content)
+	public async ValueTask<T?> Get()
+	{
+		var store = _store.Get();
+		if (store is null)
 		{
-			_store   = store;
-			_content = content;
+			var result = await _content().ConfigureAwait(false);
+			_store.Execute(ValueTuple.Create(result));
+			return result;
 		}
 
-		public async ValueTask<T?> Get()
-		{
-			var store = _store.Get();
-			if (store is null)
-			{
-				var result = await _content().ConfigureAwait(false);
-				_store.Execute(ValueTuple.Create(result));
-				return result;
-			}
-
-			return store.Value.Item1;
-		}
+		return store.Value.Item1;
 	}
 }

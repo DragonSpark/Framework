@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Security.Identity.Model
-{
-	public sealed class RemoteError : Text.Text
-	{
-		public static RemoteError Default { get; } = new RemoteError();
+﻿namespace DragonSpark.Application.Security.Identity.Model;
 
-		RemoteError() : base("remoteError") {}
-	}
+public sealed class RemoteError : Text.Text
+{
+	public static RemoteError Default { get; } = new RemoteError();
+
+	RemoteError() : base("remoteError") {}
 }

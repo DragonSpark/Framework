@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+public class ReportAwareAllocated<T> : IAllocated<T>
 {
-	public class ReportAwareAllocated<T> : IAllocated<T>
+	readonly IAllocated<T> _previous;
+	readonly Action        _report;
+
+	public ReportAwareAllocated(IAllocated<T> previous, Action report)
 	{
-		readonly IAllocated<T> _previous;
-		readonly Action        _report;
+		_previous = previous;
+		_report   = report;
+	}
 
-		public ReportAwareAllocated(IAllocated<T> previous, Action report)
+	public async Task Get(T parameter)
+	{
+		try
 		{
-			_previous = previous;
-			_report   = report;
+			await _previous.Get(parameter);
 		}
-
-		public async Task Get(T parameter)
+		finally
 		{
-			try
-			{
-				await _previous.Get(parameter);
-			}
-			finally
-			{
-				_report();
-			}
+			_report();
 		}
 	}
 }

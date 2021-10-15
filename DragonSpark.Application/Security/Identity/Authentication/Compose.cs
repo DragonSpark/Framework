@@ -1,17 +1,16 @@
 ﻿using DragonSpark.Model.Commands;
 using LightInject;
 
-namespace DragonSpark.Application.Security.Identity.Authentication
+namespace DragonSpark.Application.Security.Identity.Authentication;
+
+sealed class Compose : ICommand<IServiceContainer>
 {
-	sealed class Compose : ICommand<IServiceContainer>
+	public static Compose Default { get; } = new();
+
+	Compose() {}
+
+	public void Execute(IServiceContainer parameter)
 	{
-		public static Compose Default { get; } = new();
-
-		Compose() {}
-
-		public void Execute(IServiceContainer parameter)
-		{
-			parameter.Decorate(typeof(IAuthentications<>), typeof(AmbientAwareAuthentications<>));
-		}
+		parameter.Decorate(typeof(IAuthentications<>), typeof(AmbientAwareAuthentications<>));
 	}
 }

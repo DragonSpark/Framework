@@ -2,23 +2,22 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+public class Terminated<T> : IOperation
 {
-	public class Terminated<T> : IOperation
+	readonly IResult<ValueTask<T>> _result;
+	readonly Func<T, ValueTask>    _configure;
+
+	public Terminated(IResult<ValueTask<T>> result, Func<T, ValueTask> configure)
 	{
-		readonly IResult<ValueTask<T>> _result;
-		readonly Func<T, ValueTask>    _configure;
+		_result    = result;
+		_configure = configure;
+	}
 
-		public Terminated(IResult<ValueTask<T>> result, Func<T, ValueTask> configure)
-		{
-			_result         = result;
-			_configure = configure;
-		}
-
-		public async ValueTask Get()
-		{
-			var parameter = await _result.Get();
-			await _configure(parameter);
-		}
+	public async ValueTask Get()
+	{
+		var parameter = await _result.Get();
+		await _configure(parameter);
 	}
 }

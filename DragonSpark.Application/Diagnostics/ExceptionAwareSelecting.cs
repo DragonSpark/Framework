@@ -3,33 +3,32 @@ using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Diagnostics
+namespace DragonSpark.Application.Diagnostics;
+
+public class ExceptionAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	public class ExceptionAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+	readonly ISelecting<TIn, TOut> _previous;
+	readonly IExceptions           _exceptions;
+	readonly Type?                 _reportedType;
+
+	public ExceptionAwareSelecting(ISelecting<TIn, TOut> previous, IExceptions exceptions,
+	                               Type? reportedType = null)
 	{
-		readonly ISelecting<TIn, TOut> _previous;
-		readonly IExceptions           _exceptions;
-		readonly Type?                 _reportedType;
+		_previous     = previous;
+		_exceptions   = exceptions;
+		_reportedType = reportedType;
+	}
 
-		public ExceptionAwareSelecting(ISelecting<TIn, TOut> previous, IExceptions exceptions,
-		                               Type? reportedType = null)
+	public async ValueTask<TOut> Get(TIn parameter)
+	{
+		try
 		{
-			_previous     = previous;
-			_exceptions   = exceptions;
-			_reportedType = reportedType;
+			return await _previous.Await(parameter);
 		}
-
-		public async ValueTask<TOut> Get(TIn parameter)
+		catch (Exception e)
 		{
-			try
-			{
-				return await _previous.Await(parameter);
-			}
-			catch (Exception e)
-			{
-				await _exceptions.Await(_reportedType ?? GetType(), e);
-				throw;
-			}
+			await _exceptions.Await(_reportedType ?? GetType(), e);
+			throw;
 		}
 	}
 }

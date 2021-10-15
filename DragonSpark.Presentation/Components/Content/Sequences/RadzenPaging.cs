@@ -4,38 +4,37 @@ using Radzen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences
+namespace DragonSpark.Presentation.Components.Content.Sequences;
+
+sealed class RadzenPaging<T> : IRadzenPaging<T>
 {
-	sealed class RadzenPaging<T> : IRadzenPaging<T>
+	readonly IPaging<T> _paging;
+	readonly bool       _includeCount;
+
+	public RadzenPaging(IPaging<T> paging, bool includeCount = true)
 	{
-		readonly IPaging<T> _paging;
-		readonly bool       _includeCount;
+		_paging       = paging;
+		_includeCount = includeCount;
+	}
 
-		public RadzenPaging(IPaging<T> paging, bool includeCount = true)
+	public ulong Count { get; private set; }
+
+	public IEnumerable<T>? Current { get; private set; }
+
+	public async Task Get(LoadDataArgs parameter)
+	{
+		var input = new QueryInput
 		{
-			_paging       = paging;
-			_includeCount = includeCount;
-		}
+			Filter  = parameter.Filter,
+			OrderBy = parameter.OrderBy,
+			Partition = parameter.Skip.HasValue || parameter.Top.HasValue
+				            ? new (parameter.Skip, parameter.Top)
+				            : null,
+			IncludeTotalCount = _includeCount,
+		};
 
-		public ulong Count { get; private set; }
-
-		public IEnumerable<T>? Current { get; private set; }
-
-		public async Task Get(LoadDataArgs parameter)
-		{
-			var input = new QueryInput
-			{
-				Filter  = parameter.Filter,
-				OrderBy = parameter.OrderBy,
-				Partition = parameter.Skip.HasValue || parameter.Top.HasValue
-					            ? new (parameter.Skip, parameter.Top)
-					            : null,
-				IncludeTotalCount = _includeCount,
-			};
-
-			var evaluate = await _paging.Await(input);
-			Current = evaluate;
-			Count   = evaluate.Total ?? evaluate.Count.Grade();
-		}
+		var evaluate = await _paging.Await(input);
+		Current = evaluate;
+		Count   = evaluate.Total ?? evaluate.Count.Grade();
 	}
 }

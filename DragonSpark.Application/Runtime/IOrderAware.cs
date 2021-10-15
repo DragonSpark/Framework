@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Application.Runtime
+﻿namespace DragonSpark.Application.Runtime;
+
+public interface IOrderAware
 {
-	public interface IOrderAware
-	{
-		public uint? Order { get; set; }
-	}
+	public uint? Order { get; set; }
 }

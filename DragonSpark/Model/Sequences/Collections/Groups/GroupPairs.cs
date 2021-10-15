@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 
-namespace DragonSpark.Model.Sequences.Collections.Groups
+namespace DragonSpark.Model.Sequences.Collections.Groups;
+
+sealed class GroupPairs<T> : IGroupPairs<T>
 {
-	sealed class GroupPairs<T> : IGroupPairs<T>
-	{
-		public static GroupPairs<T> Default { get; } = new GroupPairs<T>();
+	public static GroupPairs<T> Default { get; } = new GroupPairs<T>();
 
-		GroupPairs() {}
+	GroupPairs() {}
 
-		public Pair<GroupName, IList<T>> Get(IGroup<T> parameter)
-			=> Pairs.Create(parameter.Name, (IList<T>)parameter);
-	}
+	public Pair<GroupName, IList<T>> Get(IGroup<T> parameter)
+		=> Pairs.Create(parameter.Name, (IList<T>)parameter);
 }

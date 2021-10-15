@@ -3,19 +3,18 @@ using DragonSpark.Runtime.Activation;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Reflection.Selection
+namespace DragonSpark.Reflection.Selection;
+
+public sealed class PublicAssemblyTypes<T> : ArrayResult<Type>
 {
-	public sealed class PublicAssemblyTypes<T> : ArrayResult<Type>
-	{
-		public static PublicAssemblyTypes<T> Default { get; } = new PublicAssemblyTypes<T>();
+	public static PublicAssemblyTypes<T> Default { get; } = new PublicAssemblyTypes<T>();
 
-		PublicAssemblyTypes() : base(new PublicAssemblyTypes(typeof(T))) {}
-	}
+	PublicAssemblyTypes() : base(new PublicAssemblyTypes(typeof(T))) {}
+}
 
-	public sealed class PublicAssemblyTypes : Instances<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
-	{
-		public PublicAssemblyTypes(Type referenceType) : this(referenceType.Assembly) {}
+public sealed class PublicAssemblyTypes : Instances<Type>, IActivateUsing<Assembly>, IActivateUsing<Type>
+{
+	public PublicAssemblyTypes(Type referenceType) : this(referenceType.Assembly) {}
 
-		public PublicAssemblyTypes(Assembly assembly) : base(assembly.ExportedTypes) {}
-	}
+	public PublicAssemblyTypes(Assembly assembly) : base(assembly.ExportedTypes) {}
 }

@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Compose.Extents.Commands
+﻿namespace DragonSpark.Compose.Extents.Commands;
+
+public interface ICommandContext
 {
-	public interface ICommandContext
-	{
-		CommandExtent Of { get; }
-	}
+	CommandExtent Of { get; }
 }

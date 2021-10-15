@@ -3,12 +3,11 @@ using DragonSpark.Reflection.Members;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Presentation.Components.Scoped
-{
-	sealed class Properties : ArrayStore<Type, PropertyInfo>
-	{
-		public static Properties Default { get; } = new Properties();
+namespace DragonSpark.Presentation.Components.Scoped;
 
-		Properties() : base(Properties<ScopedInjectionAttribute>.Default) {}
-	}
+sealed class Properties : ArrayStore<Type, PropertyInfo>
+{
+	public static Properties Default { get; } = new Properties();
+
+	Properties() : base(Properties<ScopedInjectionAttribute>.Default) {}
 }

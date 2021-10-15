@@ -1,15 +1,13 @@
 ﻿using Polly;
 
-namespace DragonSpark.Diagnostics
+namespace DragonSpark.Diagnostics;
+
+public class Policy<T> : Model.Results.Instance<PolicyBuilder<T>>
 {
-	public class Policy<T> : Model.Results.Instance<PolicyBuilder<T>>
-	{
-		protected Policy(PolicyBuilder<T> instance) : base(instance) {}
-	}
+	protected Policy(PolicyBuilder<T> instance) : base(instance) {}
+}
 
-	public class Policy : Model.Results.Instance<PolicyBuilder>
-	{
-		protected Policy(PolicyBuilder instance) : base(instance) {}
-	}
-
+public class Policy : Model.Results.Instance<PolicyBuilder>
+{
+	protected Policy(PolicyBuilder instance) : base(instance) {}
 }

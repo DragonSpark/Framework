@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
-namespace DragonSpark.Model.Sequences.Collections.Groups
+namespace DragonSpark.Model.Sequences.Collections.Groups;
+
+public interface IGroup<T> : IList<T>
 {
-	public interface IGroup<T> : IList<T>
-	{
-		GroupName Name { get; }
-	}
+	GroupName Name { get; }
 }

@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Application.Components.Validation.Expressions
+namespace DragonSpark.Application.Components.Validation.Expressions;
+
+public class MetadataValueValidator : Condition<object>, IValidateValue<object>
 {
-	public class MetadataValueValidator : Condition<object>, IValidateValue<object>
-	{
-		public MetadataValueValidator(ValidationAttribute metadata) : base(metadata.IsValid) {}
-	}
+	public MetadataValueValidator(ValidationAttribute metadata) : base(metadata.IsValid) {}
 }

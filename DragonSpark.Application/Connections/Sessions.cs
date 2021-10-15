@@ -4,16 +4,15 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Connections
+namespace DragonSpark.Application.Connections;
+
+public sealed class Sessions
+	: DelegatedSelection<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>>
 {
-	public sealed class Sessions
-		: DelegatedSelection<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>>
-	{
-		public static Sessions Default { get; } = new Sessions();
+	public static Sessions Default { get; } = new Sessions();
 
-		Sessions() : this(x => new ConcurrentTable<string, List<UserConnection>>(x, _ => new List<UserConnection>())) {}
+	Sessions() : this(x => new ConcurrentTable<string, List<UserConnection>>(x, _ => new List<UserConnection>())) {}
 
-		public Sessions(Func<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>> tables)
-			: base(tables, () => new MappedConnections()) {}
-	}
+	public Sessions(Func<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>> tables)
+		: base(tables, () => new MappedConnections()) {}
 }

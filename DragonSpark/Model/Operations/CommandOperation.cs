@@ -2,31 +2,30 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+sealed class CommandOperation<T> : IOperation<T>
 {
-	sealed class CommandOperation<T> : IOperation<T>
+	readonly Action<T> _action;
+
+	public CommandOperation(Action<T> action) => _action = action;
+
+	public ValueTask Get(T parameter)
 	{
-		readonly Action<T> _action;
-
-		public CommandOperation(Action<T> action) => _action = action;
-
-		public ValueTask Get(T parameter)
-		{
-			_action(parameter);
-			return Task.CompletedTask.ToOperation();
-		}
+		_action(parameter);
+		return Task.CompletedTask.ToOperation();
 	}
+}
 
-	sealed class CommandOperation : IOperation
+sealed class CommandOperation : IOperation
+{
+	readonly Action _action;
+
+	public CommandOperation(Action action) => _action = action;
+
+	public ValueTask Get()
 	{
-		readonly Action _action;
-
-		public CommandOperation(Action action) => _action = action;
-
-		public ValueTask Get()
-		{
-			_action();
-			return Task.CompletedTask.ToOperation();
-		}
+		_action();
+		return Task.CompletedTask.ToOperation();
 	}
 }

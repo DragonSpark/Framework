@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Compose.Extents
+﻿namespace DragonSpark.Compose.Extents;
+
+public interface IExtents
 {
-	public interface IExtents
-	{
-		Extent Of { get; }
-	}
+	Extent Of { get; }
 }

@@ -1,11 +1,10 @@
-﻿namespace DragonSpark.Compose.Extents
+﻿namespace DragonSpark.Compose.Extents;
+
+public sealed class Extents : IExtents
 {
-	public sealed class Extents : IExtents
-	{
-		public static Extents Default { get; } = new Extents();
+	public static Extents Default { get; } = new Extents();
 
-		Extents() {}
+	Extents() {}
 
-		public Extent Of => Extent.Default;
-	}
+	public Extent Of => Extent.Default;
 }

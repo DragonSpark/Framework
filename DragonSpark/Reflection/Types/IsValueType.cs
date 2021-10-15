@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System.Reflection;
 
-namespace DragonSpark.Reflection.Types
+namespace DragonSpark.Reflection.Types;
+
+sealed class IsValueType : ICondition<TypeInfo>
 {
-	sealed class IsValueType : ICondition<TypeInfo>
-	{
-		public static IsValueType Default { get; } = new IsValueType();
+	public static IsValueType Default { get; } = new IsValueType();
 
-		IsValueType() {}
+	IsValueType() {}
 
-		public bool Get(TypeInfo parameter) => parameter.IsValueType;
-	}
+	public bool Get(TypeInfo parameter) => parameter.IsValueType;
 }

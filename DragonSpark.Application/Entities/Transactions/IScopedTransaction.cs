@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Entities.Transactions
+namespace DragonSpark.Application.Entities.Transactions;
+
+public interface IScopedTransaction : ITransaction
 {
-	public interface IScopedTransaction : ITransaction
-	{
-		IServiceProvider Provider { get; }
-	}
+	IServiceProvider Provider { get; }
 }

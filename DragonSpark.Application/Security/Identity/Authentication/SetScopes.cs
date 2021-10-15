@@ -2,23 +2,21 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace DragonSpark.Application.Security.Identity.Authentication
+namespace DragonSpark.Application.Security.Identity.Authentication;
+
+public class SetScopes<T> : ICommand<T> where T : OAuthOptions
 {
-	public class SetScopes<T> : ICommand<T> where T : OAuthOptions
+	readonly Array<string> _scopes;
+
+	protected SetScopes(params string[] scopes) => _scopes = scopes;
+
+	public void Execute(T parameter)
 	{
-		readonly Array<string> _scopes;
+		parameter.Scope.Clear();
 
-		protected SetScopes(params string[] scopes) => _scopes = scopes;
-
-		public void Execute(T parameter)
+		foreach (var field in _scopes.Open())
 		{
-			parameter.Scope.Clear();
-
-			foreach (var field in _scopes.Open())
-			{
-				parameter.Scope.Add(field);
-			}
+			parameter.Scope.Add(field);
 		}
 	}
-
 }

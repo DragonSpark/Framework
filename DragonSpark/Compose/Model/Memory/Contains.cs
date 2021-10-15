@@ -2,28 +2,27 @@
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Compose.Model.Memory
+namespace DragonSpark.Compose.Model.Memory;
+
+sealed class Contains<T> : ICondition<(Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer)>
 {
-	sealed class Contains<T> : ICondition<(Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer)>
+	public static Contains<T> Default { get; } = new Contains<T>();
+
+	Contains() {}
+
+	public bool Get((Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer) parameter)
 	{
-		public static Contains<T> Default { get; } = new Contains<T>();
+		var (subject, candidate, comparer) = parameter;
 
-		Contains() {}
-
-		public bool Get((Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer) parameter)
+		var span = subject.Span;
+		for (var i = 0; i < span.Length; i++)
 		{
-			var (subject, candidate, comparer) = parameter;
-
-			var span = subject.Span;
-			for (var i = 0; i < span.Length; i++)
+			if (comparer.Equals(span[i], candidate))
 			{
-				if (comparer.Equals(span[i], candidate))
-				{
-					return true;
-				}
+				return true;
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 }

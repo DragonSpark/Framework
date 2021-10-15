@@ -4,30 +4,29 @@ using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 using Exception = System.Exception;
 
-namespace DragonSpark.Model.Operations.Diagnostics
+namespace DragonSpark.Model.Operations.Diagnostics;
+
+sealed class ExceptionAwareOperation<T> : IOperation<T>
 {
-	sealed class ExceptionAwareOperation<T> : IOperation<T>
+	readonly ISelect<T, ValueTask> _operation;
+	readonly ILogException<T>      _log;
+
+	public ExceptionAwareOperation(ISelect<T, ValueTask> operation, ILogException<T> log)
 	{
-		readonly ISelect<T, ValueTask> _operation;
-		readonly ILogException<T>      _log;
+		_operation = operation;
+		_log       = log;
+	}
 
-		public ExceptionAwareOperation(ISelect<T, ValueTask> operation, ILogException<T> log)
+	public async ValueTask Get(T parameter)
+	{
+		try
 		{
-			_operation = operation;
-			_log       = log;
+			await _operation.Await(parameter);
 		}
-
-		public async ValueTask Get(T parameter)
+		// ReSharper disable once CatchAllClause
+		catch (Exception e)
 		{
-			try
-			{
-				await _operation.Await(parameter);
-			}
-			// ReSharper disable once CatchAllClause
-			catch (Exception e)
-			{
-				_log.Execute(new ExceptionParameter<T>(e, parameter));
-			}
+			_log.Execute(new ExceptionParameter<T>(e, parameter));
 		}
 	}
 }

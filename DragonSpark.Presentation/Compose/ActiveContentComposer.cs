@@ -5,17 +5,16 @@ using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
 using System;
 
-namespace DragonSpark.Presentation.Compose
+namespace DragonSpark.Presentation.Compose;
+
+public class ActiveContentComposer<T> : IResult<IActiveContent<T>>
 {
-	public class ActiveContentComposer<T> : IResult<IActiveContent<T>>
-	{
-		readonly IActiveContent<T> _subject;
+	readonly IActiveContent<T> _subject;
 
-		public ActiveContentComposer(IActiveContent<T> subject) => _subject = subject;
+	public ActiveContentComposer(IActiveContent<T> subject) => _subject = subject;
 
-		public ActiveContentComposer<T> Handle(IExceptions exceptions, Type reportedType)
-			=> new (new ActiveContentAdapter<T>(A.Result(_subject).Then().Handle(exceptions, reportedType).Out()));
+	public ActiveContentComposer<T> Handle(IExceptions exceptions, Type reportedType)
+		=> new (new ActiveContentAdapter<T>(A.Result(_subject).Then().Handle(exceptions, reportedType).Out()));
 
-		public IActiveContent<T> Get() => _subject;
-	}
+	public IActiveContent<T> Get() => _subject;
 }

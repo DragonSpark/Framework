@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+public class AllocatedAppended : IAllocated
 {
-	public class AllocatedAppended : IAllocated
+	readonly Func<Task> _previous, _current;
+
+	public AllocatedAppended(Func<Task> previous, Func<Task> current)
 	{
-		readonly Func<Task> _previous, _current;
+		_previous = previous;
+		_current  = current;
+	}
 
-		public AllocatedAppended(Func<Task> previous, Func<Task> current)
-		{
-			_previous = previous;
-			_current  = current;
-		}
-
-		public async Task Get()
-		{
-			await _previous();
-			await _current().ConfigureAwait(false);
-		}
+	public async Task Get()
+	{
+		await _previous();
+		await _current().ConfigureAwait(false);
 	}
 }

@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
 
-namespace DragonSpark.Server.Security
-{
-	public sealed class AuthenticationClaim
-	{
-		[JsonProperty("typ")]
-		public string Type { get; set; } = default!;
+namespace DragonSpark.Server.Security;
 
-		[JsonProperty("val")]
-		public string Value { get; set; } = default!;
-	}
+public sealed class AuthenticationClaim
+{
+	[JsonProperty("typ")]
+	public string Type { get; set; } = default!;
+
+	[JsonProperty("val")]
+	public string Value { get; set; } = default!;
 }

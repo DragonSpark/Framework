@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Compose
+﻿namespace DragonSpark.Compose;
+
+public interface IVowelContext
 {
-	public interface IVowelContext
-	{
-		Extents.Extents Extent { get; }
-	}
+	Extents.Extents Extent { get; }
 }

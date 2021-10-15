@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Compose.Extents.Commands
-{
-	public sealed class DefaultCommandExtent<T> : CommandExtent<T>
-	{
-		public static DefaultCommandExtent<T> Default { get; } = new DefaultCommandExtent<T>();
+﻿namespace DragonSpark.Compose.Extents.Commands;
 
-		DefaultCommandExtent() {}
-	}
+public sealed class DefaultCommandExtent<T> : CommandExtent<T>
+{
+	public static DefaultCommandExtent<T> Default { get; } = new DefaultCommandExtent<T>();
+
+	DefaultCommandExtent() {}
 }

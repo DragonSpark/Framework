@@ -3,14 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize
+namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+
+public sealed class FirstMaterializer<T> : IMaterializer<T, T>
 {
-	public sealed class FirstMaterializer<T> : IMaterializer<T, T>
-	{
-		public static FirstMaterializer<T> Default { get; } = new();
+	public static FirstMaterializer<T> Default { get; } = new();
 
-		FirstMaterializer() {}
+	FirstMaterializer() {}
 
-		public ValueTask<T> Get(IQueryable<T> parameter) => parameter.FirstAsync().ToOperation();
-	}
+	public ValueTask<T> Get(IQueryable<T> parameter) => parameter.FirstAsync().ToOperation();
 }

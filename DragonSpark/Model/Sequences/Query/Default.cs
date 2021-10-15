@@ -1,9 +1,8 @@
 ﻿using System.Buffers;
 
-namespace DragonSpark.Model.Sequences.Query
+namespace DragonSpark.Model.Sequences.Query;
+
+sealed class Default
 {
-	sealed class Default
-	{
-		public static ArrayPool<int> Numbers { get; } = ArrayPool<int>.Shared;
-	}
+	public static ArrayPool<int> Numbers { get; } = ArrayPool<int>.Shared;
 }

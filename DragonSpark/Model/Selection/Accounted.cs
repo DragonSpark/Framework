@@ -1,11 +1,10 @@
-﻿namespace DragonSpark.Model.Selection
+﻿namespace DragonSpark.Model.Selection;
+
+sealed class Accounted<_, T> : ISelect<_?, T>
 {
-	sealed class Accounted<_, T> : ISelect<_?, T>
-	{
-		readonly ISelect<_, T> _select;
+	readonly ISelect<_, T> _select;
 
-		public Accounted(ISelect<_, T> select) => _select = select;
+	public Accounted(ISelect<_, T> select) => _select = select;
 
-		public T Get(_? parameter) => _select.Get(parameter!);
-	}
+	public T Get(_? parameter) => _select.Get(parameter!);
 }

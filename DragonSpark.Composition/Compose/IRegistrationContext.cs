@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition.Compose
+namespace DragonSpark.Composition.Compose;
+
+public interface IRegistrationContext
 {
-	public interface IRegistrationContext
-	{
-		IServiceCollection Singleton();
+	IServiceCollection Singleton();
 
-		IServiceCollection Transient();
+	IServiceCollection Transient();
 
-		IServiceCollection Scoped();
-	}
+	IServiceCollection Scoped();
 }

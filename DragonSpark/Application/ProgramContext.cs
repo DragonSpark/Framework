@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application
+namespace DragonSpark.Application;
+
+public sealed class ProgramContext : Instance<IProgram>
 {
-	public sealed class ProgramContext : Instance<IProgram>
-	{
-		public ProgramContext(IProgram program) : base(program) {}
-	}
+	public ProgramContext(IProgram program) : base(program) {}
 }

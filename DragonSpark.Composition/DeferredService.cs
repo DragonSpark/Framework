@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Composition
+namespace DragonSpark.Composition;
+
+sealed class DeferredService<T> : FixedSelection<IServiceCollection, T> where T : notnull
 {
-	sealed class DeferredService<T> : FixedSelection<IServiceCollection, T> where T : notnull
-	{
-		public DeferredService(IServiceCollection collection) : base(Service<T>.Default, collection) {}
-	}
+	public DeferredService(IServiceCollection collection) : base(Service<T>.Default, collection) {}
 }

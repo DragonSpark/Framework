@@ -2,15 +2,14 @@
 using DragonSpark.Compose;
 using System;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering
+namespace DragonSpark.Presentation.Components.Content.Rendering;
+
+sealed class RenderContentKey : IRenderContentKey
 {
-	sealed class RenderContentKey : IRenderContentKey
-	{
-		readonly IClientIdentifier _identifier;
+	readonly IClientIdentifier _identifier;
 
-		public RenderContentKey(IClientIdentifier identifier) => _identifier = identifier;
+	public RenderContentKey(IClientIdentifier identifier) => _identifier = identifier;
 
-		public string Get(Delegate parameter)
-			=> $"{_identifier.Get().ToString()}+{parameter.Method.DeclaringType.Verify().AssemblyQualifiedName}+{parameter.Method.Name}";
-	}
+	public string Get(Delegate parameter)
+		=> $"{_identifier.Get().ToString()}+{parameter.Method.DeclaringType.Verify().AssemblyQualifiedName}+{parameter.Method.Name}";
 }

@@ -3,12 +3,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize
-{
-	class Count<T> : Materializer<T, uint>, ICount<T>
-	{
-		public Count(ISelect<IQueryable<T>, ValueTask<uint>> select) : base(select) {}
+namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
-		public Count(Func<IQueryable<T>, ValueTask<uint>> select) : base(select) {}
-	}
+class Count<T> : Materializer<T, uint>, ICount<T>
+{
+	public Count(ISelect<IQueryable<T>, ValueTask<uint>> select) : base(select) {}
+
+	public Count(Func<IQueryable<T>, ValueTask<uint>> select) : base(select) {}
 }

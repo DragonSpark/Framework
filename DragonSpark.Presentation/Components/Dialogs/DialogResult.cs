@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Presentation.Components.Dialogs
+﻿namespace DragonSpark.Presentation.Components.Dialogs;
+
+public enum DialogResult
 {
-	public enum DialogResult
-	{
-		Ok,
-		Cancel,
-		Other
-	}
+	Ok,
+	Cancel,
+	Other
 }

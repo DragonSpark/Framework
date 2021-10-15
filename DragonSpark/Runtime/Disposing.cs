@@ -2,14 +2,13 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Runtime;
+
+public class Disposing : IAsyncDisposable
 {
-	public class Disposing : IAsyncDisposable
-	{
-		readonly Operate _operate;
+	readonly Operate _operate;
 
-		public Disposing(Operate operate) => _operate = operate;
+	public Disposing(Operate operate) => _operate = operate;
 
-		public ValueTask DisposeAsync() => _operate();
-	}
+	public ValueTask DisposeAsync() => _operate();
 }

@@ -4,80 +4,79 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Application.Components.Validation
+namespace DragonSpark.Application.Components.Validation;
+
+public sealed class ObjectGraphValidator
 {
-	public sealed class ObjectGraphValidator
+	readonly Func<object?, bool> _condition;
+	readonly IValidationContexts _contexts;
+
+	public ObjectGraphValidator() : this(Is.Assigned<object?>()) {}
+
+	public ObjectGraphValidator(Func<object?, bool> condition) : this(condition, ValidationContexts.Default) {}
+
+	public ObjectGraphValidator(Func<object?, bool> condition, IValidationContexts contexts)
 	{
-		readonly Func<object?, bool> _condition;
-		readonly IValidationContexts _contexts;
+		_condition = condition;
+		_contexts  = contexts;
+	}
 
-		public ObjectGraphValidator() : this(Is.Assigned<object?>()) {}
+	public GraphValidationContext Validate(object? value)
+	{
+		var result = new GraphValidationContext();
+		Validate(value, result);
+		return result;
+	}
 
-		public ObjectGraphValidator(Func<object?, bool> condition) : this(condition, ValidationContexts.Default) {}
-
-		public ObjectGraphValidator(Func<object?, bool> condition, IValidationContexts contexts)
+	public void Validate(object? value, GraphValidationContext context)
+	{
+		if (_condition(value))
 		{
-			_condition = condition;
-			_contexts  = contexts;
+			Apply(value.Verify(), context);
 		}
+	}
 
-		public GraphValidationContext Validate(object? value)
+	void Apply(object value, GraphValidationContext context)
+	{
+		if (context.Get(value))
 		{
-			var result = new GraphValidationContext();
-			Validate(value, result);
-			return result;
-		}
-
-		public void Validate(object? value, GraphValidationContext context)
-		{
-			if (_condition(value))
+			if (value is IEnumerable<object> enumerable)
 			{
-				Apply(value.Verify(), context);
-			}
-		}
-
-		void Apply(object value, GraphValidationContext context)
-		{
-			if (context.Get(value))
-			{
-				if (value is IEnumerable<object> enumerable)
+				foreach (var item in enumerable.AsValueEnumerable())
 				{
-					foreach (var item in enumerable.AsValueEnumerable())
-					{
-						Validate(item, context);
-					}
-				}
-
-				Visit(value, context);
-			}
-		}
-
-		void Visit(object value, GraphValidationContext context)
-		{
-			var path = context.Get();
-			foreach (var item in Results(value, context).AsValueEnumerable())
-			{
-				var names = item.MemberNames.AsValueEnumerable();
-				if (names.Any())
-				{
-					foreach (var name in names)
-					{
-						context.Add(new (path, new(value, name), item.ErrorMessage ?? string.Empty));
-					}
-				}
-				else
-				{
-					context.Add(new (path, value, item.ErrorMessage ?? string.Empty));
+					Validate(item, context);
 				}
 			}
-		}
 
-		IEnumerable<ValidationResult> Results(object value, GraphValidationContext model)
-		{
-			var result  = new List<ValidationResult>();
-			var context = _contexts.Get(new NewValidationContext(value, this, model));
-			Validator.TryValidateObject(value, context, result, true);
-			return result;
+			Visit(value, context);
 		}
+	}
+
+	void Visit(object value, GraphValidationContext context)
+	{
+		var path = context.Get();
+		foreach (var item in Results(value, context).AsValueEnumerable())
+		{
+			var names = item.MemberNames.AsValueEnumerable();
+			if (names.Any())
+			{
+				foreach (var name in names)
+				{
+					context.Add(new (path, new(value, name), item.ErrorMessage ?? string.Empty));
+				}
+			}
+			else
+			{
+				context.Add(new (path, value, item.ErrorMessage ?? string.Empty));
+			}
+		}
+	}
+
+	IEnumerable<ValidationResult> Results(object value, GraphValidationContext model)
+	{
+		var result  = new List<ValidationResult>();
+		var context = _contexts.Get(new NewValidationContext(value, this, model));
+		Validator.TryValidateObject(value, context, result, true);
+		return result;
 	}
 }

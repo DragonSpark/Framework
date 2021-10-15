@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Presentation.Interaction
-{
-	public sealed class NoActionResult : SuccessResultBase
-	{
-		public static NoActionResult Default { get; } = new();
+﻿namespace DragonSpark.Presentation.Interaction;
 
-		NoActionResult() {}
-	}
+public sealed class NoActionResult : SuccessResultBase
+{
+	public static NoActionResult Default { get; } = new();
+
+	NoActionResult() {}
 }

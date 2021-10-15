@@ -1,13 +1,12 @@
 ﻿using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Runtime
+namespace DragonSpark.Runtime;
+
+sealed class UnassignedValueSelector<T> : ISelect<T?, T> where T : struct
 {
-	sealed class UnassignedValueSelector<T> : ISelect<T?, T> where T : struct
-	{
-		public static UnassignedValueSelector<T> Default { get; } = new UnassignedValueSelector<T>();
+	public static UnassignedValueSelector<T> Default { get; } = new UnassignedValueSelector<T>();
 
-		UnassignedValueSelector() {}
+	UnassignedValueSelector() {}
 
-		public T Get(T? parameter) => parameter.GetValueOrDefault();
-	}
+	public T Get(T? parameter) => parameter.GetValueOrDefault();
 }

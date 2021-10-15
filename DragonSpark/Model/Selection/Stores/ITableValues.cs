@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Model.Selection.Stores
+namespace DragonSpark.Model.Selection.Stores;
+
+public interface ITableValues<TIn, TOut> : ITable<TIn, TOut>
 {
-	public interface ITableValues<TIn, TOut> : ITable<TIn, TOut>
-	{
-		IArray<TOut> Values { get; }
-	}
+	IArray<TOut> Values { get; }
 }

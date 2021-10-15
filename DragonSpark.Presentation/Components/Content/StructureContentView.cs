@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Presentation.Components.Content
-{
-	public partial class StructureContentView<TContent> where TContent : struct {}
-}
+﻿namespace DragonSpark.Presentation.Components.Content;
+
+public partial class StructureContentView<TContent> where TContent : struct {}

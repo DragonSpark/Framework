@@ -3,14 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize
+namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+
+public sealed class SumMaterializer : IMaterializer<decimal, decimal>
 {
-	public sealed class SumMaterializer : IMaterializer<decimal, decimal>
-	{
-		public static SumMaterializer Default { get; } = new SumMaterializer();
+	public static SumMaterializer Default { get; } = new SumMaterializer();
 
-		SumMaterializer() {}
+	SumMaterializer() {}
 
-		public ValueTask<decimal> Get(IQueryable<decimal> parameter) => parameter.SumAsync().ToOperation();
-	}
+	public ValueTask<decimal> Get(IQueryable<decimal> parameter) => parameter.SumAsync().ToOperation();
 }

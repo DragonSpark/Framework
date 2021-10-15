@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Model.Selection.Conditions
-{
-	public interface IConditionAware : IConditionAware<None> {}
+﻿namespace DragonSpark.Model.Selection.Conditions;
 
-	public interface IConditionAware<in T>
-	{
-		ICondition<T> Condition { get; }
-	}
+public interface IConditionAware : IConditionAware<None> {}
+
+public interface IConditionAware<in T>
+{
+	ICondition<T> Condition { get; }
 }

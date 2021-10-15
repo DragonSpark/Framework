@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
+namespace DragonSpark.Model.Operations;
+
+public class ReportAwareResult<T> : IResulting<T>
 {
-	public class ReportAwareResult<T> : IResulting<T>
+	readonly AwaitOf<T> _subject;
+	readonly Action     _report;
+
+	public ReportAwareResult(AwaitOf<T> subject, Action report)
 	{
-		readonly AwaitOf<T> _subject;
-		readonly Action     _report;
+		_subject = subject;
+		_report  = report;
+	}
 
-		public ReportAwareResult(AwaitOf<T> subject, Action report)
+	public async ValueTask<T> Get()
+	{
+		try
 		{
-			_subject = subject;
-			_report  = report;
+			return await _subject();
 		}
-
-		public async ValueTask<T> Get()
+		finally
 		{
-			try
-			{
-				return await _subject();
-			}
-			finally
-			{
-				_report();
-			}
+			_report();
 		}
 	}
 }

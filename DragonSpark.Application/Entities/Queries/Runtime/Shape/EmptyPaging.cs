@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape
+namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+
+public sealed class EmptyPaging<T> : IPaging<T>
 {
-	public sealed class EmptyPaging<T> : IPaging<T>
-	{
-		public static EmptyPaging<T> Default { get; } = new();
+	public static EmptyPaging<T> Default { get; } = new();
 
-		EmptyPaging() {}
+	EmptyPaging() {}
 
-		public ValueTask<Current<T>> Get(QueryInput parameter) => Current<T>.Default.ToOperation();
-	}
+	public ValueTask<Current<T>> Get(QueryInput parameter) => Current<T>.Default.ToOperation();
 }

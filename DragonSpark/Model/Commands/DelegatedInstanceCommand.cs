@@ -2,24 +2,23 @@
 using DragonSpark.Runtime.Activation;
 using System;
 
-namespace DragonSpark.Model.Commands
+namespace DragonSpark.Model.Commands;
+
+public class DelegatedInstanceCommand : DelegatedInstanceCommand<None>, ICommand
 {
-	public class DelegatedInstanceCommand : DelegatedInstanceCommand<None>, ICommand
-	{
-		public DelegatedInstanceCommand(IResult<ICommand> result) : base(result) {}
+	public DelegatedInstanceCommand(IResult<ICommand> result) : base(result) {}
 
-		public DelegatedInstanceCommand(Func<ICommand> instance) : base(instance) {}
-	}
+	public DelegatedInstanceCommand(Func<ICommand> instance) : base(instance) {}
+}
 
 
-	public class DelegatedInstanceCommand<T> : ICommand<T>, IActivateUsing<IResult<ICommand<T>>>
-	{
-		readonly Func<ICommand<T>> _instance;
+public class DelegatedInstanceCommand<T> : ICommand<T>, IActivateUsing<IResult<ICommand<T>>>
+{
+	readonly Func<ICommand<T>> _instance;
 
-		public DelegatedInstanceCommand(IResult<ICommand<T>> result) : this(result.Get) {}
+	public DelegatedInstanceCommand(IResult<ICommand<T>> result) : this(result.Get) {}
 
-		public DelegatedInstanceCommand(Func<ICommand<T>> instance) => _instance = instance;
+	public DelegatedInstanceCommand(Func<ICommand<T>> instance) => _instance = instance;
 
-		public void Execute(T parameter) => _instance().Execute(parameter);
-	}
+	public void Execute(T parameter) => _instance().Execute(parameter);
 }

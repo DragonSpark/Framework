@@ -2,69 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DragonSpark.Model.Sequences.Collections.Groups
+namespace DragonSpark.Model.Sequences.Collections.Groups;
+
+public class Group<T> : IGroup<T>
 {
-	public class Group<T> : IGroup<T>
+	readonly IList<T> _collection;
+
+	public Group(GroupName name) : this(name, Enumerable.Empty<T>()) {}
+
+	public Group(GroupName name, params T[] items) : this(name, items.AsEnumerable()) {}
+
+	public Group(GroupName name, IEnumerable<T> items) : this(name, items.ToList()) {}
+
+	public Group(GroupName name, IList<T> collection)
 	{
-		readonly IList<T> _collection;
+		Name        = name;
+		_collection = collection;
+	}
 
-		public Group(GroupName name) : this(name, Enumerable.Empty<T>()) {}
+	public GroupName Name { get; }
 
-		public Group(GroupName name, params T[] items) : this(name, items.AsEnumerable()) {}
+	public IEnumerator<T> GetEnumerator() => _collection.GetEnumerator();
 
-		public Group(GroupName name, IEnumerable<T> items) : this(name, items.ToList()) {}
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public Group(GroupName name, IList<T> collection)
-		{
-			Name        = name;
-			_collection = collection;
-		}
+	public void Add(T item)
+	{
+		_collection.Add(item);
+	}
 
-		public GroupName Name { get; }
+	public void Clear()
+	{
+		_collection.Clear();
+	}
 
-		public IEnumerator<T> GetEnumerator() => _collection.GetEnumerator();
+	public bool Contains(T item) => _collection.Contains(item);
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	public void CopyTo(T[] array, int arrayIndex)
+	{
+		_collection.CopyTo(array, arrayIndex);
+	}
 
-		public void Add(T item)
-		{
-			_collection.Add(item);
-		}
+	public bool Remove(T item) => _collection.Remove(item);
 
-		public void Clear()
-		{
-			_collection.Clear();
-		}
+	public int Count => _collection.Count;
 
-		public bool Contains(T item) => _collection.Contains(item);
+	public bool IsReadOnly => _collection.IsReadOnly;
 
-		public void CopyTo(T[] array, int arrayIndex)
-		{
-			_collection.CopyTo(array, arrayIndex);
-		}
+	public int IndexOf(T item) => _collection.IndexOf(item);
 
-		public bool Remove(T item) => _collection.Remove(item);
+	public void Insert(int index, T item)
+	{
+		_collection.Insert(index, item);
+	}
 
-		public int Count => _collection.Count;
+	public void RemoveAt(int index)
+	{
+		_collection.RemoveAt(index);
+	}
 
-		public bool IsReadOnly => _collection.IsReadOnly;
-
-		public int IndexOf(T item) => _collection.IndexOf(item);
-
-		public void Insert(int index, T item)
-		{
-			_collection.Insert(index, item);
-		}
-
-		public void RemoveAt(int index)
-		{
-			_collection.RemoveAt(index);
-		}
-
-		public T this[int index]
-		{
-			get => _collection[index];
-			set => _collection[index] = value;
-		}
+	public T this[int index]
+	{
+		get => _collection[index];
+		set => _collection[index] = value;
 	}
 }

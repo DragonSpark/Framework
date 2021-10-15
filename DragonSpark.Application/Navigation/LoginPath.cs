@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Navigation
-{
-	public sealed class LoginPath : TemplatedPath
-	{
-		public static LoginPath Default { get; } = new LoginPath();
+﻿namespace DragonSpark.Application.Navigation;
 
-		LoginPath() : base(LoginPathTemplate.Default) {}
-	}
+public sealed class LoginPath : TemplatedPath
+{
+	public static LoginPath Default { get; } = new LoginPath();
+
+	LoginPath() : base(LoginPathTemplate.Default) {}
 }

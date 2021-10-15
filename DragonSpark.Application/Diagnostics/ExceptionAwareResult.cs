@@ -3,35 +3,34 @@ using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Diagnostics
+namespace DragonSpark.Application.Diagnostics;
+
+public class ExceptionAwareResult<T> : IResulting<T?>
 {
-	public class ExceptionAwareResult<T> : IResulting<T?>
+	readonly AwaitOf<T?> _previous;
+	readonly IExceptions _exceptions;
+	readonly Type?       _reportedType;
+
+	public ExceptionAwareResult(IResulting<T?> previous, IExceptions exceptions, Type? reportedType = null)
+		: this(previous.Await, exceptions, reportedType) {}
+
+	public ExceptionAwareResult(AwaitOf<T?> previous, IExceptions exceptions, Type? reportedType = null)
 	{
-		readonly AwaitOf<T?> _previous;
-		readonly IExceptions _exceptions;
-		readonly Type?       _reportedType;
+		_previous     = previous;
+		_exceptions   = exceptions;
+		_reportedType = reportedType;
+	}
 
-		public ExceptionAwareResult(IResulting<T?> previous, IExceptions exceptions, Type? reportedType = null)
-			: this(previous.Await, exceptions, reportedType) {}
-
-		public ExceptionAwareResult(AwaitOf<T?> previous, IExceptions exceptions, Type? reportedType = null)
+	public async ValueTask<T?> Get()
+	{
+		try
 		{
-			_previous     = previous;
-			_exceptions   = exceptions;
-			_reportedType = reportedType;
+			return await _previous();
 		}
-
-		public async ValueTask<T?> Get()
+		catch (Exception e)
 		{
-			try
-			{
-				return await _previous();
-			}
-			catch (Exception e)
-			{
-				await _exceptions.Await(_reportedType ?? GetType(), e);
-				throw;
-			}
+			await _exceptions.Await(_reportedType ?? GetType(), e);
+			throw;
 		}
 	}
 }

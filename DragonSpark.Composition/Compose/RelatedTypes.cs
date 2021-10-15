@@ -2,12 +2,11 @@
 using DragonSpark.Model.Sequences.Memory;
 using System;
 
-namespace DragonSpark.Composition.Compose
-{
-	sealed class RelatedTypes : Select<Type, Leasing<Type>>, IRelatedTypes
-	{
-		public static RelatedTypes Default { get; } = new RelatedTypes();
+namespace DragonSpark.Composition.Compose;
 
-		RelatedTypes() : base(_ => Leasing<Type>.Default) {}
-	}
+sealed class RelatedTypes : Select<Type, Leasing<Type>>, IRelatedTypes
+{
+	public static RelatedTypes Default { get; } = new RelatedTypes();
+
+	RelatedTypes() : base(_ => Leasing<Type>.Default) {}
 }

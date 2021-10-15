@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Components.Content.Templates
-{
-	public sealed class NotFoundTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
-	{
-		public static NotFoundTemplate Default { get; } = new ();
+namespace DragonSpark.Presentation.Components.Content.Templates;
 
-		NotFoundTemplate() : base(x => x.AddContent(0, "Not found.")) {}
-	}
+public sealed class NotFoundTemplate : DragonSpark.Model.Results.Instance<RenderFragment>
+{
+	public static NotFoundTemplate Default { get; } = new ();
+
+	NotFoundTemplate() : base(x => x.AddContent(0, "Not found.")) {}
 }

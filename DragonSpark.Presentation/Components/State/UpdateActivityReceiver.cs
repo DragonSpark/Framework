@@ -2,48 +2,47 @@
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.State
+namespace DragonSpark.Presentation.Components.State;
+
+sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 {
-	sealed class UpdateActivityReceiver : IUpdateActivityReceiver
+	public static UpdateActivityReceiver Default { get; } = new UpdateActivityReceiver();
+
+	UpdateActivityReceiver() : this(UpdateActivity.Default) {}
+
+	readonly IUpdateActivity       _activity;
+	readonly ISelect<object, bool> _active;
+
+	public UpdateActivityReceiver(IUpdateActivity activity) : this(activity, IsActive.Default) {}
+
+	public UpdateActivityReceiver(IUpdateActivity activity, ISelect<object, bool> active)
 	{
-		public static UpdateActivityReceiver Default { get; } = new UpdateActivityReceiver();
+		_activity = activity;
+		_active   = active;
+	}
 
-		UpdateActivityReceiver() : this(UpdateActivity.Default) {}
+	public ValueTask Get(Pair<object, object> parameter)
+	{
+		var (key, _) = parameter;
 
-		readonly IUpdateActivity       _activity;
-		readonly ISelect<object, bool> _active;
+		var start = !_active.Get(key);
 
-		public UpdateActivityReceiver(IUpdateActivity activity) : this(activity, IsActive.Default) {}
+		_activity.Execute(parameter);
 
-		public UpdateActivityReceiver(IUpdateActivity activity, ISelect<object, bool> active)
-		{
-			_activity = activity;
-			_active   = active;
-		}
+		var result = start && key is IActivityReceiver receiver ? receiver.Start() : ValueTask.CompletedTask;
+		return result;
+	}
 
-		public ValueTask Get(Pair<object, object> parameter)
-		{
-			var (key, _) = parameter;
+	public ValueTask Get(object parameter)
+	{
+		var prior = _active.Get(parameter);
 
-			var start = !_active.Get(key);
+		_activity.Execute(parameter);
 
-			_activity.Execute(parameter);
-
-			var result = start && key is IActivityReceiver receiver ? receiver.Start() : ValueTask.CompletedTask;
-			return result;
-		}
-
-		public ValueTask Get(object parameter)
-		{
-			var prior = _active.Get(parameter);
-
-			_activity.Execute(parameter);
-
-			var completed = prior && !_active.Get(parameter);
-			var result = completed && parameter is IActivityReceiver receiver
-				             ? receiver.Complete()
-				             : ValueTask.CompletedTask;
-			return result;
-		}
+		var completed = prior && !_active.Get(parameter);
+		var result = completed && parameter is IActivityReceiver receiver
+			             ? receiver.Complete()
+			             : ValueTask.CompletedTask;
+		return result;
 	}
 }

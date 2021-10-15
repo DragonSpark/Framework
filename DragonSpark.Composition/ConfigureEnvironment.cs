@@ -2,14 +2,13 @@
 using DragonSpark.Runtime.Activation;
 using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Composition
+namespace DragonSpark.Composition;
+
+sealed class ConfigureEnvironment : IAlteration<IHostBuilder>, IActivateUsing<string>
 {
-	sealed class ConfigureEnvironment : IAlteration<IHostBuilder>, IActivateUsing<string>
-	{
-		readonly string _environment;
+	readonly string _environment;
 
-		public ConfigureEnvironment(string environment) => _environment = environment;
+	public ConfigureEnvironment(string environment) => _environment = environment;
 
-		public IHostBuilder Get(IHostBuilder parameter) => parameter.UseEnvironment(_environment);
-	}
+	public IHostBuilder Get(IHostBuilder parameter) => parameter.UseEnvironment(_environment);
 }

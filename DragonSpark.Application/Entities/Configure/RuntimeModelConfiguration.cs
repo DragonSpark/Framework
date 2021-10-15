@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure
+namespace DragonSpark.Application.Entities.Configure;
+
+sealed class RuntimeModelConfiguration : FixedResult<IServiceCollection, Action<DbContextOptionsBuilder>>,
+                                         IStorageConfiguration
 {
-	sealed class RuntimeModelConfiguration : FixedResult<IServiceCollection, Action<DbContextOptionsBuilder>>,
-	                                         IStorageConfiguration
-	{
-		public RuntimeModelConfiguration(IModel instance) : base(builder => builder.UseModel(instance)) {}
-	}
+	public RuntimeModelConfiguration(IModel instance) : base(builder => builder.UseModel(instance)) {}
 }

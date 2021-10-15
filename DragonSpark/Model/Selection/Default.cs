@@ -1,16 +1,15 @@
-﻿namespace DragonSpark.Model.Selection
+﻿namespace DragonSpark.Model.Selection;
+
+sealed class Default<T> : FixedResult<T, T>
 {
-	sealed class Default<T> : FixedResult<T, T>
-	{
-		public static Default<T> Instance { get; } = new Default<T>();
+	public static Default<T> Instance { get; } = new Default<T>();
 
-		Default() : base(default!) {}
-	}
+	Default() : base(default!) {}
+}
 
-	sealed class Default<TIn, TOut> : FixedResult<TIn, TOut>
-	{
-		public static ISelect<TIn, TOut> Instance { get; } = new Default<TIn, TOut>();
+sealed class Default<TIn, TOut> : FixedResult<TIn, TOut>
+{
+	public static ISelect<TIn, TOut> Instance { get; } = new Default<TIn, TOut>();
 
-		Default() : base(default!) {}
-	}
+	Default() : base(default!) {}
 }

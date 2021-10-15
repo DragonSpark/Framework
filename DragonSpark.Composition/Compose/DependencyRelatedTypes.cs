@@ -7,39 +7,38 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Composition.Compose
+namespace DragonSpark.Composition.Compose;
+
+sealed class DependencyRelatedTypes : IRelatedTypes
 {
-	sealed class DependencyRelatedTypes : IRelatedTypes
+	readonly Func<Type, bool>   _can;
+	readonly IArray<Type, Type> _candidates;
+	readonly INewLeasing<Type>  _new;
+
+	public DependencyRelatedTypes(IServiceCollection services)
+		: this(new CanRegister(services).Then()
+		                                .And(IsNativeSystemType.Default.Then().Inverse())
+		                                .And(new HashSet<Type>().Add),
+		       DependencyCandidates.Default, NewLeasing<Type>.Default) {}
+
+	public DependencyRelatedTypes(Func<Type, bool> can, IArray<Type, Type> candidates, INewLeasing<Type> @new)
 	{
-		readonly Func<Type, bool>   _can;
-		readonly IArray<Type, Type> _candidates;
-		readonly INewLeasing<Type>      _new;
+		_can        = can;
+		_candidates = candidates;
+		_new        = @new;
+	}
 
-		public DependencyRelatedTypes(IServiceCollection services)
-			: this(new CanRegister(services).Then()
-			                                .And(IsNativeSystemType.Default.Then().Inverse())
-			                                .And(new HashSet<Type>().Add),
-			       DependencyCandidates.Default, NewLeasing<Type>.Default) {}
-
-		public DependencyRelatedTypes(Func<Type, bool> can, IArray<Type, Type> candidates, INewLeasing<Type> @new)
+	public Leasing<Type> Get(Type parameter)
+	{
+		var types       = _candidates.Get(parameter).Open();
+		var result      = _new.Get(types.Length);
+		var index       = 0;
+		var destination = result.AsSpan();
+		foreach (var type in types.AsValueEnumerable().Where(_can))
 		{
-			_can        = can;
-			_candidates = candidates;
-			_new     = @new;
+			destination[index++] = type;
 		}
 
-		public Leasing<Type> Get(Type parameter)
-		{
-			var types       = _candidates.Get(parameter).Open();
-			var result      = _new.Get(types.Length);
-			var index       = 0;
-			var destination = result.AsSpan();
-			foreach (var type in types.AsValueEnumerable().Where(_can))
-			{
-				destination[index++] = type;
-			}
-
-			return result.Size(index);
-		}
+		return result.Size(index);
 	}
 }

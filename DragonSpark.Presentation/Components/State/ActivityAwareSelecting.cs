@@ -1,35 +1,34 @@
 ﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.State
+namespace DragonSpark.Presentation.Components.State;
+
+public class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	public class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+	readonly ISelecting<TIn, TOut>   _previous;
+	readonly object                  _subject;
+	readonly IUpdateActivityReceiver _activity;
+
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
+		: this(previous, subject, UpdateActivityReceiver.Default) {}
+
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, IUpdateActivityReceiver activity)
 	{
-		readonly ISelecting<TIn, TOut>   _previous;
-		readonly object                  _subject;
-		readonly IUpdateActivityReceiver _activity;
+		_previous = previous;
+		_subject  = subject;
+		_activity = activity;
+	}
 
-		public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
-			: this(previous, subject, UpdateActivityReceiver.Default) {}
-
-		public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, IUpdateActivityReceiver activity)
+	public async ValueTask<TOut> Get(TIn parameter)
+	{
+		await _activity.Get((_subject, _previous));
+		try
 		{
-			_previous = previous;
-			_subject  = subject;
-			_activity = activity;
+			return await _previous.Get(parameter);
 		}
-
-		public async ValueTask<TOut> Get(TIn parameter)
+		finally
 		{
-			await _activity.Get((_subject, _previous));
-			try
-			{
-				return await _previous.Get(parameter);
-			}
-			finally
-			{
-				await _activity.Get(_subject);
-			}
+			await _activity.Get(_subject);
 		}
 	}
 }

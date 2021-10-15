@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Runtime.Execution;
 using System;
 
-namespace DragonSpark.Application.Entities
-{
-	sealed class AmbientLock : Logical<IDisposable?>
-	{
-		public static AmbientLock Default { get; } = new();
+namespace DragonSpark.Application.Entities;
 
-		AmbientLock() {}
-	}
+sealed class AmbientLock : Logical<IDisposable?>
+{
+	public static AmbientLock Default { get; } = new();
+
+	AmbientLock() {}
 }

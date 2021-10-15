@@ -2,12 +2,11 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Compose.Model.Results
-{
-	public sealed class SelectionResultContext<TIn, TOut> : ResultContext<ISelect<TIn, TOut>>
-	{
-		public SelectionResultContext(IResult<ISelect<TIn, TOut>> instance) : base(instance) {}
+namespace DragonSpark.Compose.Model.Results;
 
-		public Selector<TIn, TOut> Assume() => new Assume<TIn, TOut>(Get()).Then();
-	}
+public sealed class SelectionResultContext<TIn, TOut> : ResultContext<ISelect<TIn, TOut>>
+{
+	public SelectionResultContext(IResult<ISelect<TIn, TOut>> instance) : base(instance) {}
+
+	public Selector<TIn, TOut> Assume() => new Assume<TIn, TOut>(Get()).Then();
 }

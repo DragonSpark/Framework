@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 
-namespace DragonSpark.Reflection.Assemblies
-{
-	sealed class AssemblyConfiguration : Declared<AssemblyConfigurationAttribute, string>
-	{
-		public static AssemblyConfiguration Default { get; } = new AssemblyConfiguration();
+namespace DragonSpark.Reflection.Assemblies;
 
-		AssemblyConfiguration() : base(x => x.Configuration) {}
-	}
+sealed class AssemblyConfiguration : Declared<AssemblyConfigurationAttribute, string>
+{
+	public static AssemblyConfiguration Default { get; } = new AssemblyConfiguration();
+
+	AssemblyConfiguration() : base(x => x.Configuration) {}
 }

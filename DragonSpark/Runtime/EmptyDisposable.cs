@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Runtime
-{
-	public sealed class EmptyDisposable : Disposable
-	{
-		public static EmptyDisposable Default { get; } = new EmptyDisposable();
+﻿namespace DragonSpark.Runtime;
 
-		EmptyDisposable() : base(() => {}) {}
-	}
+public sealed class EmptyDisposable : Disposable
+{
+	public static EmptyDisposable Default { get; } = new EmptyDisposable();
+
+	EmptyDisposable() : base(() => {}) {}
 }

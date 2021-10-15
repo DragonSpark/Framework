@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Runtime.Execution;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering
+namespace DragonSpark.Presentation.Components.Content.Rendering;
+
+sealed class ShouldClearKeys : FirstAssigned
 {
-	sealed class ShouldClearKeys : FirstAssigned
-	{
-		public ShouldClearKeys(IsTracking store) : base(store) {}
-	}
+	public ShouldClearKeys(IsTracking store) : base(store) {}
 }

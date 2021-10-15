@@ -5,36 +5,35 @@ using DragonSpark.Model.Selection.Conditions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DragonSpark.Application.Components.Validation
+namespace DragonSpark.Application.Components.Validation;
+
+public sealed class GraphValidationContext : Collection<ValidationResultMessage>,
+                                             ICondition<object>,
+                                             IResult<string>,
+                                             ICommand<string>
 {
-	public sealed class GraphValidationContext : Collection<ValidationResultMessage>,
-	                                             ICondition<object>,
-	                                             IResult<string>,
-	                                             ICommand<string>
+	readonly Stack<string>   _paths;
+	readonly HashSet<object> _visited;
+
+	public GraphValidationContext() : this(new Stack<string>(), new HashSet<object>()) {}
+
+	public GraphValidationContext(Stack<string> paths, HashSet<object> visited)
 	{
-		readonly Stack<string>   _paths;
-		readonly HashSet<object> _visited;
+		_paths   = paths;
+		_visited = visited;
+	}
 
-		public GraphValidationContext() : this(new Stack<string>(), new HashSet<object>()) {}
+	public bool Get(object parameter) => _visited.Add(parameter);
 
-		public GraphValidationContext(Stack<string> paths, HashSet<object> visited)
+	public string Get() => _paths.Only().Account() ?? string.Empty;
+
+	public void Execute(string parameter)
+	{
+		switch (_paths.Count)
 		{
-			_paths   = paths;
-			_visited = visited;
-		}
-
-		public bool Get(object parameter) => _visited.Add(parameter);
-
-		public string Get() => _paths.Only().Account() ?? string.Empty;
-
-		public void Execute(string parameter)
-		{
-			switch (_paths.Count)
-			{
-				case 0:
-					_paths.Push(parameter);
-					break;
-			}
+			case 0:
+				_paths.Push(parameter);
+				break;
 		}
 	}
 }

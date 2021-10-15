@@ -5,28 +5,26 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime
+namespace DragonSpark.Application.Entities.Queries.Runtime;
+
+public class RuntimeQuery<T> : RuntimeQuery<None, T>, IRuntimeQuery<T>
 {
-	public class RuntimeQuery<T> : RuntimeQuery<None, T>, IRuntimeQuery<T>
+	protected RuntimeQuery(IScopes scopes, IQuery<None, T> query) : base(scopes, query) {}
+}
+
+public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
+{
+	readonly IScopes                                _scopes;
+	readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
+
+	public RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query)
+		: this(scopes, query.Get().Expand().Compile()) {}
+
+	RuntimeQuery(IScopes scopes, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 	{
-		protected RuntimeQuery(IScopes scopes, IQuery<None, T> query) : base(scopes, query) {}
+		_scopes   = scopes;
+		_compiled = compiled;
 	}
 
-	public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
-	{
-		readonly IScopes                                _scopes;
-		readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
-
-		public RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query)
-			: this(scopes, query.Get().Expand().Compile()) {}
-
-		RuntimeQuery(IScopes scopes, Func<DbContext, TIn, IQueryable<TOut>> compiled)
-		{
-			_scopes   = scopes;
-			_compiled = compiled;
-		}
-
-		public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_scopes, parameter, _compiled);
-	}
-
+	public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_scopes, parameter, _compiled);
 }

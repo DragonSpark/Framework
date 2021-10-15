@@ -5,22 +5,21 @@ using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
 using System;
 
-namespace DragonSpark.Compose
+namespace DragonSpark.Compose;
+
+public sealed class ModelContext
 {
-	public sealed class ModelContext
-	{
-		public static ModelContext Default { get; } = new ModelContext();
+	public static ModelContext Default { get; } = new ModelContext();
 
-		ModelContext() {}
+	ModelContext() {}
 
-		public ConditionContext Condition => ConditionContext.Default;
+	public ConditionContext Condition => ConditionContext.Default;
 
-		public ResultContext Result => ResultContext.Default;
+	public ResultContext Result => ResultContext.Default;
 
-		public CommandContext Command => CommandContext.Default;
+	public CommandContext Command => CommandContext.Default;
 
-		public SelectionContext Selection => SelectionContext.Default;
+	public SelectionContext Selection => SelectionContext.Default;
 
-		public GenericContext Generic(Type definition) => new GenericContext(definition);
-	}
+	public GenericContext Generic(Type definition) => new GenericContext(definition);
 }

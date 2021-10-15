@@ -3,10 +3,9 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 
-namespace DragonSpark.Runtime.Activation
+namespace DragonSpark.Runtime.Activation;
+
+public class FixedActivator<T> : FixedSelection<Type, T>, IActivator<T>, IActivateUsing<ISelect<Type, T>>
 {
-	public class FixedActivator<T> : FixedSelection<Type, T>, IActivator<T>, IActivateUsing<ISelect<Type, T>>
-	{
-		public FixedActivator(Func<Type, T> select) : base(select, A.Type<T>()) {}
-	}
+	public FixedActivator(Func<Type, T> select) : base(select, A.Type<T>()) {}
 }

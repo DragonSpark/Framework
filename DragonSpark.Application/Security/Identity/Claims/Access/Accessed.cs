@@ -1,25 +1,24 @@
-﻿namespace DragonSpark.Application.Security.Identity.Claims.Access
+﻿namespace DragonSpark.Application.Security.Identity.Claims.Access;
+
+public readonly struct Accessed
 {
-	public readonly struct Accessed
+	public Accessed(string claim, bool exists, string? value)
 	{
-		public Accessed(string claim, bool exists, string? value)
-		{
-			Claim  = claim;
-			Exists = exists;
-			Value  = value;
-		}
+		Claim  = claim;
+		Exists = exists;
+		Value  = value;
+	}
 
-		public string Claim { get; }
+	public string Claim { get; }
 
-		public bool Exists { get; }
+	public bool Exists { get; }
 
-		public string? Value { get; }
+	public string? Value { get; }
 
-		public void Deconstruct(out string claim, out bool exists, out string? value)
-		{
-			claim  = Claim;
-			exists = Exists;
-			value  = Value;
-		}
+	public void Deconstruct(out string claim, out bool exists, out string? value)
+	{
+		claim  = Claim;
+		exists = Exists;
+		value  = Value;
 	}
 }

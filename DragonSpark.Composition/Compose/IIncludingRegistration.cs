@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Composition.Compose
+﻿namespace DragonSpark.Composition.Compose;
+
+public interface IIncludingRegistration : IRegistration
 {
-	public interface IIncludingRegistration : IRegistration
-	{
-		IRegistration Include(IServiceTypes related);
-	}
+	IRegistration Include(IServiceTypes related);
 }

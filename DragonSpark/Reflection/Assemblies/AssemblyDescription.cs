@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 
-namespace DragonSpark.Reflection.Assemblies
-{
-	sealed class AssemblyDescription : Declared<AssemblyDescriptionAttribute, string>
-	{
-		public static AssemblyDescription Default { get; } = new AssemblyDescription();
+namespace DragonSpark.Reflection.Assemblies;
 
-		AssemblyDescription() : base(x => x.Description) {}
-	}
+sealed class AssemblyDescription : Declared<AssemblyDescriptionAttribute, string>
+{
+	public static AssemblyDescription Default { get; } = new AssemblyDescription();
+
+	AssemblyDescription() : base(x => x.Description) {}
 }

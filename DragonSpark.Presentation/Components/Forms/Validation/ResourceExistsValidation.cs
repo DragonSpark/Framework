@@ -3,38 +3,37 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Presentation.Components.Forms.Validation;
+
+public sealed class ResourceExistsValidation : IValidatingValue<string>
 {
-	public sealed class ResourceExistsValidation : IValidatingValue<string>
+	readonly IHttpClientFactory _clients;
+	readonly TimeSpan           _timeout;
+
+	public ResourceExistsValidation(IHttpClientFactory clients) : this(clients, TimeSpan.FromMilliseconds(7500)) {}
+
+	public ResourceExistsValidation(IHttpClientFactory clients, TimeSpan timeout)
 	{
-		readonly IHttpClientFactory _clients;
-		readonly TimeSpan           _timeout;
+		_clients = clients;
+		_timeout = timeout;
+	}
 
-		public ResourceExistsValidation(IHttpClientFactory clients) : this(clients, TimeSpan.FromMilliseconds(7500)) {}
-
-		public ResourceExistsValidation(IHttpClientFactory clients, TimeSpan timeout)
+	/// <summary>
+	/// ATTRIBUTION: https://stackoverflow.com/questions/1979915/can-i-check-if-a-file-exists-at-a-url/12013240
+	/// </summary>
+	/// <param name="parameter"></param>
+	/// <returns></returns>
+	public async ValueTask<bool> Get(string parameter)
+	{
+		if (!string.IsNullOrEmpty(parameter))
 		{
-			_clients = clients;
-			_timeout = timeout;
+			using var client = _clients.CreateClient();
+			client.Timeout = _timeout;
+			var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, parameter))
+			                           .ConfigureAwait(false);
+			return response.IsSuccessStatusCode;
 		}
 
-		/// <summary>
-		/// ATTRIBUTION: https://stackoverflow.com/questions/1979915/can-i-check-if-a-file-exists-at-a-url/12013240
-		/// </summary>
-		/// <param name="parameter"></param>
-		/// <returns></returns>
-		public async ValueTask<bool> Get(string parameter)
-		{
-			if (!string.IsNullOrEmpty(parameter))
-			{
-				using var client = _clients.CreateClient();
-				client.Timeout = _timeout;
-				var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, parameter))
-				                           .ConfigureAwait(false);
-				return response.IsSuccessStatusCode;
-			}
-
-			return true;
-		}
+		return true;
 	}
 }

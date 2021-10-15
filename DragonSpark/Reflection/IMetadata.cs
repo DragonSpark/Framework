@@ -2,7 +2,6 @@
 using DragonSpark.Model.Sequences;
 using System.Reflection;
 
-namespace DragonSpark.Reflection
-{
-	public interface IMetadata<T> : IConditional<ICustomAttributeProvider, Array<T>> {}
-}
+namespace DragonSpark.Reflection;
+
+public interface IMetadata<T> : IConditional<ICustomAttributeProvider, Array<T>> {}

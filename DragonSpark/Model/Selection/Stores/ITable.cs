@@ -1,7 +1,6 @@
-namespace DragonSpark.Model.Selection.Stores
+namespace DragonSpark.Model.Selection.Stores;
+
+public interface ITable<TIn, TOut> : IAssignable<TIn, TOut>
 {
-	public interface ITable<TIn, TOut> : IAssignable<TIn, TOut>
-	{
-		bool Remove(TIn key);
-	}
+	bool Remove(TIn key);
 }

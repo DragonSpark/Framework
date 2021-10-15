@@ -3,19 +3,18 @@ using DragonSpark.Runtime.Activation;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure
+namespace DragonSpark.Application.Entities.Configure;
+
+public class ConfigureApplicationServices : ICommand<DbContextOptionsBuilder>
 {
-	public class ConfigureApplicationServices : ICommand<DbContextOptionsBuilder>
+	readonly IServiceProvider _provider;
+
+	public ConfigureApplicationServices(params object[] services) : this(new ServiceProvider(services)) {}
+
+	public ConfigureApplicationServices(IServiceProvider provider) => _provider = provider;
+
+	public void Execute(DbContextOptionsBuilder parameter)
 	{
-		readonly IServiceProvider _provider;
-
-		public ConfigureApplicationServices(params object[] services) : this(new ServiceProvider(services)) {}
-
-		public ConfigureApplicationServices(IServiceProvider provider) => _provider = provider;
-
-		public void Execute(DbContextOptionsBuilder parameter)
-		{
-			parameter.UseApplicationServiceProvider(_provider);
-		}
+		parameter.UseApplicationServiceProvider(_provider);
 	}
 }

@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Runtime.Environment
-{
-	sealed class DevelopmentRuntimeFile : RuntimeFile
-	{
-		public static DevelopmentRuntimeFile Default { get; } = new DevelopmentRuntimeFile();
+﻿namespace DragonSpark.Runtime.Environment;
 
-		DevelopmentRuntimeFile() : base(".runtimeconfig.dev.json") {}
-	}
+sealed class DevelopmentRuntimeFile : RuntimeFile
+{
+	public static DevelopmentRuntimeFile Default { get; } = new DevelopmentRuntimeFile();
+
+	DevelopmentRuntimeFile() : base(".runtimeconfig.dev.json") {}
 }

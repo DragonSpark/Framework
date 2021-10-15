@@ -2,17 +2,16 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 
-namespace DragonSpark.Application.Connections
+namespace DragonSpark.Application.Connections;
+
+sealed class HubConnections : IHubConnections
 {
-	sealed class HubConnections : IHubConnections
-	{
-		readonly Action<HttpConnectionOptions> _configure;
+	readonly Action<HttpConnectionOptions> _configure;
 
-		public HubConnections(IConfigureConnection configure) : this(configure.Execute) {}
+	public HubConnections(IConfigureConnection configure) : this(configure.Execute) {}
 
-		public HubConnections(Action<HttpConnectionOptions> configure) => _configure = configure;
+	public HubConnections(Action<HttpConnectionOptions> configure) => _configure = configure;
 
-		public HubConnection Get(Uri parameter)
-			=> new HubConnectionBuilder().WithUrl(parameter, _configure).WithAutomaticReconnect().Build();
-	}
+	public HubConnection Get(Uri parameter)
+		=> new HubConnectionBuilder().WithUrl(parameter, _configure).WithAutomaticReconnect().Build();
 }

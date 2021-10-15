@@ -1,11 +1,10 @@
 using DragonSpark.Reflection;
 
-namespace DragonSpark.Model.Sequences.Collections.Groups
-{
-	sealed class DeclaredGroupNames<T> : InstanceMetadata<T, GroupElementAttribute, string>
-	{
-		public static DeclaredGroupNames<T> Default { get; } = new DeclaredGroupNames<T>();
+namespace DragonSpark.Model.Sequences.Collections.Groups;
 
-		DeclaredGroupNames() {}
-	}
+sealed class DeclaredGroupNames<T> : InstanceMetadata<T, GroupElementAttribute, string>
+{
+	public static DeclaredGroupNames<T> Default { get; } = new DeclaredGroupNames<T>();
+
+	DeclaredGroupNames() {}
 }

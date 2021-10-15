@@ -1,34 +1,33 @@
-﻿namespace DragonSpark.Composition.Compose
+﻿namespace DragonSpark.Composition.Compose;
+
+sealed class LinkedRegistrationContext : IRegistration
 {
-	sealed class LinkedRegistrationContext : IRegistration
+	readonly IRegistration _next, _previous;
+
+	public LinkedRegistrationContext(IRegistration previous, IRegistration next)
 	{
-		readonly IRegistration _next, _previous;
+		_previous = previous;
+		_next     = next;
+	}
 
-		public LinkedRegistrationContext(IRegistration previous, IRegistration next)
-		{
-			_previous = previous;
-			_next     = next;
-		}
+	public RegistrationResult Singleton()
+	{
+		_previous.Singleton();
+		var result = _next.Singleton();
+		return result;
+	}
 
-		public RegistrationResult Singleton()
-		{
-			_previous.Singleton();
-			var result = _next.Singleton();
-			return result;
-		}
+	public RegistrationResult Transient()
+	{
+		_previous.Transient();
+		var result = _next.Transient();
+		return result;
+	}
 
-		public RegistrationResult Transient()
-		{
-			_previous.Transient();
-			var result = _next.Transient();
-			return result;
-		}
-
-		public RegistrationResult Scoped()
-		{
-			_previous.Scoped();
-			var result = _next.Scoped();
-			return result;
-		}
+	public RegistrationResult Scoped()
+	{
+		_previous.Scoped();
+		var result = _next.Scoped();
+		return result;
 	}
 }

@@ -2,12 +2,11 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
-{
-	public class Allocating<T, TOut> : Select<T, Task<TOut>>, IAllocating<T, TOut>
-	{
-		public Allocating(ISelect<T, Task<TOut>> @select) : base(@select) {}
+namespace DragonSpark.Model.Operations;
 
-		public Allocating(Func<T, Task<TOut>> @select) : base(@select) {}
-	}
+public class Allocating<T, TOut> : Select<T, Task<TOut>>, IAllocating<T, TOut>
+{
+	public Allocating(ISelect<T, Task<TOut>> @select) : base(@select) {}
+
+	public Allocating(Func<T, Task<TOut>> @select) : base(@select) {}
 }

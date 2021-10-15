@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering
+namespace DragonSpark.Presentation.Components.Content.Rendering;
+
+sealed class IsTracking : Variable<bool>
 {
-	sealed class IsTracking : Variable<bool>
-	{
-		public IsTracking() : base(true) {}
-	}
+	public IsTracking() : base(true) {}
 }

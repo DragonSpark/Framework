@@ -2,8 +2,7 @@
 using Polly;
 using System.Net.Http;
 
-namespace DragonSpark.Application.Communication
-{
-	public interface ICommunicationsPolicy
-		: ISelect<PolicyBuilder<HttpResponseMessage>, IAsyncPolicy<HttpResponseMessage>> {}
-}
+namespace DragonSpark.Application.Communication;
+
+public interface ICommunicationsPolicy
+	: ISelect<PolicyBuilder<HttpResponseMessage>, IAsyncPolicy<HttpResponseMessage>> {}

@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Presentation.Components
+﻿namespace DragonSpark.Presentation.Components;
+
+public sealed class Instance<T>
 {
-	public sealed class Instance<T>
-	{
-		public T Value { get; set; } = default!;
-	}
+	public T Value { get; set; } = default!;
 }

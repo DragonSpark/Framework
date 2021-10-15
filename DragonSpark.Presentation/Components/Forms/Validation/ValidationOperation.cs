@@ -3,21 +3,20 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation
+namespace DragonSpark.Presentation.Components.Forms.Validation;
+
+sealed class ValidationOperation<T> : IOperation<ValidationContext>
 {
-	sealed class ValidationOperation<T> : IOperation<ValidationContext>
+	readonly IValidatingValue<T> _validator;
+
+	public ValidationOperation(IValidatingValue<T> validator) => _validator = validator;
+
+	public async ValueTask Get(ValidationContext parameter)
 	{
-		readonly IValidatingValue<T> _validator;
-
-		public ValidationOperation(IValidatingValue<T> validator) => _validator = validator;
-
-		public async ValueTask Get(ValidationContext parameter)
+		var ((_, field), messages, (invalid, _, _)) = parameter;
+		if (!await _validator.Await(field.GetValue<T>()))
 		{
-			var ((_, field), messages, (invalid, _, _)) = parameter;
-			if (!await _validator.Await(field.GetValue<T>()))
-			{
-				messages.Add(in field, invalid);
-			}
+			messages.Add(in field, invalid);
 		}
 	}
 }

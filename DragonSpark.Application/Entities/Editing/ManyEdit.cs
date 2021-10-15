@@ -2,48 +2,47 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing
+namespace DragonSpark.Application.Entities.Editing;
+
+public readonly struct ManyEdit<T> : IEditor
 {
-	public readonly struct ManyEdit<T> : IEditor
+	readonly IEditor _context;
+
+	public static implicit operator Memory<T>(ManyEdit<T> instance) => instance.Subject;
+
+	public ManyEdit(IEditor context, Leasing<T> subject)
 	{
-		readonly IEditor _context;
+		Subject  = subject;
+		_context = context;
+	}
 
-		public static implicit operator Memory<T>(ManyEdit<T> instance) => instance.Subject;
+	public Leasing<T> Subject { get; }
 
-		public ManyEdit(IEditor context, Leasing<T> subject)
-		{
-			Subject  = subject;
-			_context = context;
-		}
+	public void Dispose()
+	{
+		_context.Dispose();
+		Subject.Dispose();
+	}
 
-		public Leasing<T> Subject { get; }
+	public ValueTask Get() => _context.Get();
 
-		public void Dispose()
-		{
-			_context.Dispose();
-			Subject.Dispose();
-		}
+	public void Add(object entity)
+	{
+		_context.Add(entity);
+	}
 
-		public ValueTask Get() => _context.Get();
+	public void Attach(object entity)
+	{
+		_context.Attach(entity);
+	}
 
-		public void Add(object entity)
-		{
-			_context.Add(entity);
-		}
+	public void Update(object entity)
+	{
+		_context.Update(entity);
+	}
 
-		public void Attach(object entity)
-		{
-			_context.Attach(entity);
-		}
-
-		public void Update(object entity)
-		{
-			_context.Update(entity);
-		}
-
-		public void Remove(object entity)
-		{
-			_context.Remove(entity);
-		}
+	public void Remove(object entity)
+	{
+		_context.Remove(entity);
 	}
 }

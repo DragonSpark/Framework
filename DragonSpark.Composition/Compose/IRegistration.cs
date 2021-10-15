@@ -1,11 +1,10 @@
-﻿namespace DragonSpark.Composition.Compose
+﻿namespace DragonSpark.Composition.Compose;
+
+public interface IRegistration
 {
-	public interface IRegistration
-	{
-		RegistrationResult Singleton();
+	RegistrationResult Singleton();
 
-		RegistrationResult Transient();
+	RegistrationResult Transient();
 
-		RegistrationResult Scoped();
-	}
+	RegistrationResult Scoped();
 }

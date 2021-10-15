@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities
-{
-	sealed class AmbientContext : Result<DbContext?>, IAmbientContext
-	{
-		public static AmbientContext Default { get; } = new();
+namespace DragonSpark.Application.Entities;
 
-		AmbientContext() : base(LogicalContext.Default) {}
-	}
+sealed class AmbientContext : Result<DbContext?>, IAmbientContext
+{
+	public static AmbientContext Default { get; } = new();
+
+	AmbientContext() : base(LogicalContext.Default) {}
 }

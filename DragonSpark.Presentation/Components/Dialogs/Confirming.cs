@@ -3,34 +3,32 @@ using DragonSpark.Model.Operations;
 using Radzen;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Dialogs
+namespace DragonSpark.Presentation.Components.Dialogs;
+
+public class Confirming<T> : Confirming<None, T> where T : ConfirmComponentBase
 {
-	public class Confirming<T> : Confirming<None, T> where T : ConfirmComponentBase
-	{
-		protected Confirming(DialogService service, string title, T result) : base(service, title, result) {}
+	protected Confirming(DialogService service, string title, T result) : base(service, title, result) {}
 
-		protected Confirming(IOperation display, IDialogResultAware result) : base(display, result) {}
+	protected Confirming(IOperation display, IDialogResultAware result) : base(display, result) {}
+}
+
+public class Confirming<T, TConfirm> : IConfirming<T> where TConfirm : ConfirmComponentBase
+{
+	readonly IOperation         _display;
+	readonly IDialogResultAware _result;
+
+	protected Confirming(DialogService service, string title, TConfirm result)
+		: this(new OpenDialog(service, title, RenderFragments.Default.Get(result)), result) {}
+
+	protected Confirming(IOperation display, IDialogResultAware result)
+	{
+		_display = display;
+		_result  = result;
 	}
 
-	public class Confirming<T, TConfirm> : IConfirming<T> where TConfirm : ConfirmComponentBase
+	public async ValueTask<DialogResult> Get(T parameter)
 	{
-		readonly IOperation         _display;
-		readonly IDialogResultAware _result;
-
-		protected Confirming(DialogService service, string title, TConfirm result)
-			: this(new OpenDialog(service, title, RenderFragments.Default.Get(result)), result) {}
-
-		protected Confirming(IOperation display, IDialogResultAware result)
-		{
-			_display = display;
-			_result  = result;
-		}
-
-		public async ValueTask<DialogResult> Get(T parameter)
-		{
-			await _display.Get();
-			return _result.Get();
-		}
+		await _display.Get();
+		return _result.Get();
 	}
-
 }

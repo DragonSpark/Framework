@@ -2,9 +2,8 @@
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations
-{
-	public interface IAllocated : IResult<Task> {}
+namespace DragonSpark.Model.Operations;
 
-	public interface IAllocated<in T> : ISelect<T, Task> {}
-}
+public interface IAllocated : IResult<Task> {}
+
+public interface IAllocated<in T> : ISelect<T, Task> {}

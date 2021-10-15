@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Compose.Extents.Conditions
+﻿namespace DragonSpark.Compose.Extents.Conditions;
+
+public interface IConditionContext
 {
-	public interface IConditionContext
-	{
-		ConditionExtent Of { get; }
-	}
+	ConditionExtent Of { get; }
 }

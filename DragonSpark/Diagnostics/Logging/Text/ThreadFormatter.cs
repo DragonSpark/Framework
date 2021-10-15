@@ -2,15 +2,14 @@
 using DragonSpark.Text;
 using System.Threading;
 
-namespace DragonSpark.Diagnostics.Logging.Text
+namespace DragonSpark.Diagnostics.Logging.Text;
+
+sealed class ThreadFormatter : IFormatter<Thread>
 {
-	sealed class ThreadFormatter : IFormatter<Thread>
-	{
-		public static ThreadFormatter Default { get; } = new ThreadFormatter();
+	public static ThreadFormatter Default { get; } = new ThreadFormatter();
 
-		ThreadFormatter() {}
+	ThreadFormatter() {}
 
-		public string Get(Thread parameter)
-			=> $"#{parameter.ManagedThreadId} {parameter.Priority} {parameter.Name.OrNone()}";
-	}
+	public string Get(Thread parameter)
+		=> $"#{parameter.ManagedThreadId} {parameter.Priority} {parameter.Name.OrNone()}";
 }

@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities
+namespace DragonSpark.Application.Entities;
+
+public class Contexts<T> : IContexts<T> where T : DbContext
 {
-	public class Contexts<T> : IContexts<T> where T : DbContext
-	{
-		readonly IDbContextFactory<T> _factory;
+	readonly IDbContextFactory<T> _factory;
 
-		public Contexts(IDbContextFactory<T> factory) => _factory = factory;
+	public Contexts(IDbContextFactory<T> factory) => _factory = factory;
 
-		public T Get() => _factory.CreateDbContext();
-	}
+	public T Get() => _factory.CreateDbContext();
 }

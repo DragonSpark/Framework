@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation
+namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+
+sealed class ToAny<T> : IEvaluate<T, bool>
 {
-	sealed class ToAny<T> : IEvaluate<T, bool>
-	{
-		public static ToAny<T> Default { get; } = new ToAny<T>();
+	public static ToAny<T> Default { get; } = new ToAny<T>();
 
-		ToAny() {}
+	ToAny() {}
 
-		public ValueTask<bool> Get(IAsyncEnumerable<T> parameter) => parameter.AnyAsync();
-	}
+	public ValueTask<bool> Get(IAsyncEnumerable<T> parameter) => parameter.AnyAsync();
 }

@@ -2,83 +2,82 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Routing
+namespace DragonSpark.Presentation.Components.Routing;
+
+/// <summary>
+/// Attribution:
+/// https://github.com/ShaunCurtis/CEC.Routing/blob/master/CEC.RoutingSample/Components/EditorComponentBase.cs
+/// </summary>
+public abstract class ChangeAwareComponent : ComponentBase, IRoutingComponent, IAsyncDisposable
 {
-	/// <summary>
-	/// Attribution:
-	/// https://github.com/ShaunCurtis/CEC.Routing/blob/master/CEC.RoutingSample/Components/EditorComponentBase.cs
-	/// </summary>
-	public abstract class ChangeAwareComponent : ComponentBase, IRoutingComponent, IAsyncDisposable
+	readonly Func<Task> _cancel;
+
+	protected ChangeAwareComponent() => _cancel = OnNavigationCanceled;
+
+	[Inject]
+	public NavigationManager Navigation { get; set; } = default!;
+
+	[Inject]
+	public RouterSession Session { get; set; } = default!;
+
+	[Parameter]
+	public EventCallback Exited { get; set; }
+
+	public string? PageUrl { get; set; }
+
+	public abstract bool HasChanges { get; }
+
+	protected override Task OnInitializedAsync()
 	{
-		readonly Func<Task> _cancel;
+		PageUrl                    =  Navigation.Uri;
+		Session.ActiveComponent    =  this;
+		Session.NavigationCanceled += OnNavigationCanceled;
+		return base.OnInitializedAsync();
+	}
 
-		protected ChangeAwareComponent() => _cancel = OnNavigationCanceled;
+	void OnNavigationCanceled(object? sender, EventArgs e)
+	{
+		InvokeAsync(_cancel);
+	}
 
-		[Inject]
-		public NavigationManager Navigation { get; set; } = default!;
+	protected virtual Task OnNavigationCanceled()
+	{
+		StateHasChanged();
+		return Task.CompletedTask;
+	}
 
-		[Inject]
-		public RouterSession Session { get; set; } = default!;
-
-		[Parameter]
-		public EventCallback Exited { get; set; }
-
-		public string? PageUrl { get; set; }
-
-		public abstract bool HasChanges { get; }
-
-		protected override Task OnInitializedAsync()
+	protected virtual async Task Exit()
+	{
+		await Session.Unregister(this);
+		var destination = Session.NavigationCancelledUrl;
+		if (destination != null)
 		{
-			PageUrl                    =  Navigation.Uri;
-			Session.ActiveComponent    =  this;
-			Session.NavigationCanceled += OnNavigationCanceled;
-			return base.OnInitializedAsync();
+			Navigation.NavigateTo(destination);
 		}
 
-		void OnNavigationCanceled(object? sender, EventArgs e)
-		{
-			InvokeAsync(_cancel);
-		}
+		await Exited.InvokeAsync(this);
+	}
 
-		protected virtual Task OnNavigationCanceled()
-		{
-			StateHasChanged();
-			return Task.CompletedTask;
-		}
+	~ChangeAwareComponent()
+	{
+		OnDispose(false);
+	}
 
-		protected virtual async Task Exit()
-		{
-			await Session.Unregister(this);
-			var destination = Session.NavigationCancelledUrl;
-			if (destination != null)
-			{
-				Navigation.NavigateTo(destination);
-			}
+	public async ValueTask DisposeAsync()
+	{
+		await OnDisposing();
+		GC.SuppressFinalize(this);
+	}
 
-			await Exited.InvokeAsync(this);
-		}
+	protected virtual void OnDispose(bool disposing)
+	{
+		Session.NavigationCanceled -= OnNavigationCanceled;
+		Session.ActiveComponent    =  Session.ActiveComponent == this ? null : Session.ActiveComponent;
+	}
 
-		~ChangeAwareComponent()
-		{
-			OnDispose(false);
-		}
-
-		public async ValueTask DisposeAsync()
-		{
-			await OnDisposing();
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void OnDispose(bool disposing)
-		{
-			Session.NavigationCanceled -= OnNavigationCanceled;
-			Session.ActiveComponent    =  Session.ActiveComponent == this ? null : Session.ActiveComponent;
-		}
-
-		protected virtual async ValueTask OnDisposing()
-		{
-			await Session.Unregister(this);
-			OnDispose(true);
-		}
+	protected virtual async ValueTask OnDisposing()
+	{
+		await Session.Unregister(this);
+		OnDispose(true);
 	}
 }

@@ -3,33 +3,32 @@ using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure
+namespace DragonSpark.Application.Entities.Configure;
+
+public sealed class ConfigureSqlServer<T> : ConfigureSqlServer
 {
-	public sealed class ConfigureSqlServer<T> : ConfigureSqlServer
+	public static ConfigureSqlServer<T> Default { get; } = new ConfigureSqlServer<T>();
+
+	ConfigureSqlServer() : this(A.Type<T>().Assembly.GetName().Name ?? throw new InvalidOperationException()) {}
+
+	public ConfigureSqlServer(string name)
+		: this(ConnectionString<T>.Default.Get(EnvironmentalConfiguration.Default.Get()), name) {}
+
+	public ConfigureSqlServer(string connection, string name) : base(connection, name) {}
+}
+
+public class ConfigureSqlServer : ICommand<DbContextOptionsBuilder>
+{
+	readonly string _connection, _name;
+
+	public ConfigureSqlServer(string connection, string name)
 	{
-		public static ConfigureSqlServer<T> Default { get; } = new ConfigureSqlServer<T>();
-
-		ConfigureSqlServer() : this(A.Type<T>().Assembly.GetName().Name ?? throw new InvalidOperationException()) {}
-
-		public ConfigureSqlServer(string name)
-			: this(ConnectionString<T>.Default.Get(EnvironmentalConfiguration.Default.Get()), name) {}
-
-		public ConfigureSqlServer(string connection, string name) : base(connection, name) {}
+		_connection = connection;
+		_name       = name;
 	}
 
-	public class ConfigureSqlServer : ICommand<DbContextOptionsBuilder>
+	public void Execute(DbContextOptionsBuilder parameter)
 	{
-		readonly string _connection, _name;
-
-		public ConfigureSqlServer(string connection, string name)
-		{
-			_connection = connection;
-			_name       = name;
-		}
-
-		public void Execute(DbContextOptionsBuilder parameter)
-		{
-			parameter.UseSqlServer(_connection, x => x.MigrationsAssembly(_name));
-		}
+		parameter.UseSqlServer(_connection, x => x.MigrationsAssembly(_name));
 	}
 }

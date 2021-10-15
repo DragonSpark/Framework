@@ -3,15 +3,14 @@ using DragonSpark.Model.Results;
 using Polly;
 using System.Net.Http;
 
-namespace DragonSpark.Application.Communication
-{
-	sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
-	{
-		public static ExistingAwareConnectionPolicy Default { get; } = new ExistingAwareConnectionPolicy();
+namespace DragonSpark.Application.Communication;
 
-		ExistingAwareConnectionPolicy()
-			: base(ConnectionPolicy.Default.Then()
-			                       .Select(x => x.OrResult(y => y.StatusCode == System.Net.HttpStatusCode.NotFound))
-			                       .Instance()) {}
-	}
+sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
+{
+	public static ExistingAwareConnectionPolicy Default { get; } = new ExistingAwareConnectionPolicy();
+
+	ExistingAwareConnectionPolicy()
+		: base(ConnectionPolicy.Default.Then()
+		                       .Select(x => x.OrResult(y => y.StatusCode == System.Net.HttpStatusCode.NotFound))
+		                       .Instance()) {}
 }

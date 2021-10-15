@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Security.Identity.Authentication
-{
-	public sealed class Anonymous : Text.Text
-	{
-		public static Anonymous Default { get; } = new Anonymous();
+﻿namespace DragonSpark.Application.Security.Identity.Authentication;
 
-		Anonymous() : base(nameof(Anonymous)) {}
-	}
+public sealed class Anonymous : Text.Text
+{
+	public static Anonymous Default { get; } = new Anonymous();
+
+	Anonymous() : base(nameof(Anonymous)) {}
 }

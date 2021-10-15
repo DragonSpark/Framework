@@ -3,50 +3,49 @@ using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components
+namespace DragonSpark.Presentation.Components;
+
+public class DropDownGrid<T> : RadzenDropDownDataGrid<T>, IRefreshAware
 {
-	public class DropDownGrid<T> : RadzenDropDownDataGrid<T>, IRefreshAware
+	[CascadingParameter]
+	IRefreshContainer? Container
 	{
-		[CascadingParameter]
-		IRefreshContainer? Container
+		get => _container;
+		set
 		{
-			get => _container;
-			set
+			if (_container != value)
 			{
-				if (_container != value)
-				{
-					_container?.Remove.Execute(this);
+				_container?.Remove.Execute(this);
 
-					_container = value;
+				_container = value;
 
-					_container?.Add.Execute(this);
-				}
+				_container?.Add.Execute(this);
 			}
-		}	IRefreshContainer? _container;
+		}
+	}	IRefreshContainer? _container;
 
-		protected override void OnParametersSet()
+	protected override void OnParametersSet()
+	{
+		if (Container != null)
 		{
-			if (Container != null)
+			if (Visible && LoadData.HasDelegate && Data == null)
 			{
-				if (Visible && LoadData.HasDelegate && Data == null)
-				{
-					Visible = false;
-					InvokeAsync(Reload);
-				}
-				else
-				{
-					Visible = Data != null;
-				}
+				Visible = false;
+				InvokeAsync(Reload);
 			}
-			base.OnParametersSet();
+			else
+			{
+				Visible = Data != null;
+			}
 		}
+		base.OnParametersSet();
+	}
 
-		public Task Get() => Reload();
+	public Task Get() => Reload();
 
-		public override void Dispose()
-		{
-			Container = null;
-			base.Dispose();
-		}
+	public override void Dispose()
+	{
+		Container = null;
+		base.Dispose();
 	}
 }

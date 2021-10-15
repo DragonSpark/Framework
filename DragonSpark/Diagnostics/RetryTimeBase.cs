@@ -2,14 +2,13 @@
 using DragonSpark.Model.Selection.Alterations;
 using System;
 
-namespace DragonSpark.Diagnostics
+namespace DragonSpark.Diagnostics;
+
+public abstract class RetryTimeBase : ISelect<int, TimeSpan>
 {
-	public abstract class RetryTimeBase : ISelect<int, TimeSpan>
-	{
-		readonly Alter<int> _time;
+	readonly Alter<int> _time;
 
-		protected RetryTimeBase(Alter<int> time) => _time = time;
+	protected RetryTimeBase(Alter<int> time) => _time = time;
 
-		public TimeSpan Get(int parameter) => TimeSpan.FromSeconds(_time(parameter));
-	}
+	public TimeSpan Get(int parameter) => TimeSpan.FromSeconds(_time(parameter));
 }

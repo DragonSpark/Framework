@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled
-{
-	sealed class Elements<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsyncEnumerable<T>>, IElements<TIn, T>
-	{
-		public Elements(IQuery<TIn, T> query) : this(query.Get()) {}
+namespace DragonSpark.Application.Entities.Queries.Compiled;
 
-		public Elements(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-			: base(expression.Then().Compile()) {}
-	}
+sealed class Elements<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsyncEnumerable<T>>, IElements<TIn, T>
+{
+	public Elements(IQuery<TIn, T> query) : this(query.Get()) {}
+
+	public Elements(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		: base(expression.Then().Compile()) {}
 }
