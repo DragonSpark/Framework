@@ -42,8 +42,6 @@ partial class Extensions
 		where T : class => includes.Aggregate(source, (entities, include)
 			                                              => entities.Include(include));
 
-
-
 	/**/
 
 	public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
@@ -99,7 +97,6 @@ partial class Extensions
 
 	public static TList AddRange<TList, T>(this TList @this, Memory<T> range) where TList : List<T>
 		=> CopyList<TList, T>.Default.Get(new(range, @this));
-
 
 	/**/
 

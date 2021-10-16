@@ -78,8 +78,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 		=> OrDefault(use, Start.A.Selection<TIn>().By.Default<TOut>());
 
 	public Selector<TIn, TOut> OrDefault(Func<TIn, bool> use, Func<TIn, TOut> @default)
-		=> Ensure.Input.Is(use)
-		         .Otherwise.Use(@default);
+		=> Ensure.Input.Is(use).Otherwise.Use(@default);
 
 	public Selector<TIn, TTo> Default<TTo>() => Select(Default<TOut, TTo>.Instance);
 
