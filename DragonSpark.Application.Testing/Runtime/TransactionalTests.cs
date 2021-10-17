@@ -47,7 +47,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.Length.Should().Be(0);
 			transactions.Update.Length.Should().Be(0);
 			transactions.Delete.Length.Should().Be(0);
@@ -73,7 +73,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[0]);
 			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
 			transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
@@ -98,7 +98,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[2]);
 			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
 			subject.Should().BeSameAs(stored[2]);
@@ -126,7 +126,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
 			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
 			transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[2]);
@@ -153,7 +153,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
 			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
 			subject.Should().BeSameAs(stored[3]);

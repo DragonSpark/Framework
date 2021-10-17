@@ -12,18 +12,22 @@ public class Transactional<T> : ITransactional<T> where T : class
 	readonly Func<(T, T), bool>           _modified;
 	readonly Func<(T, Memory<T>), (T, T)> _select;
 
-	public Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified)
+	protected Transactional() : this(_ => false) {}
+
+	protected Transactional(Func<(T, T), bool> modified) : this(EqualityComparer<T>.Default, modified) {}
+
+	protected Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified)
 		: this(equals, modified, new Selector(equals).Get) {}
 
-	public Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified,
-	                     Func<(T, Memory<T>), (T, T)> select)
+	protected Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified,
+	                        Func<(T, Memory<T>), (T, T)> select)
 	{
 		_equals   = equals;
 		_modified = modified;
 		_select   = select;
 	}
 
-	public Transactions<T> Get((Memory<T> Stored, Memory<T> Source) parameter)
+	public Transactions<T> Get(TransactionInput<T> parameter)
 	{
 		var (first, second) = parameter;
 		var (left, add)     = Left(first, second);

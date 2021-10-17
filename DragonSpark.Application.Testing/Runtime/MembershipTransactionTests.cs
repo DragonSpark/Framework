@@ -41,7 +41,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.Length.Should().Be(5);
 			transactions.Update.Length.Should().Be(0);
 			transactions.Delete.Length.Should().Be(0);
@@ -71,7 +71,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.Length.Should().Be(3);
 			transactions.Update.Length.Should().Be(0);
 			transactions.Delete.Length.Should().Be(0);
@@ -101,7 +101,7 @@ namespace DragonSpark.Application.Testing.Runtime
 				new Subject {Id = Ids[4], Message = "Fifth"}
 			};
 
-			using var transactions = Transactional.Default.Get((stored, current));
+			using var transactions = Transactional.Default.Get(new (stored, current));
 			transactions.Add.Length.Should().Be(0);
 			transactions.Update.Length.Should().Be(0);
 			transactions.Delete.Length.Should().Be(2);
