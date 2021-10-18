@@ -60,6 +60,9 @@ public readonly struct Array<T> : IResult<ImmutableArray<T>>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => _reference.AsValueEnumerable();
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public SpanEnumerator<T> GetEnumerator() => AsValueEnumerable().GetEnumerator();
+
 	sealed class RawData
 	{
 #pragma warning disable 649
