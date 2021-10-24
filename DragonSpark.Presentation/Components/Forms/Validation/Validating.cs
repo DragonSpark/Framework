@@ -84,10 +84,8 @@ public class Validating : ComponentBase, IDisposable
 		var edit = _context.Verify();
 		if (!edit.GetValidationMessages(Identifier).AsValueEnumerable().Any())
 		{
-			var context = new ValidationContext(new FieldContext(Context.Verify(), Identifier), _messages, Message);
-
+			var context = new ValidationContext(new (Context.Verify(), Identifier), _messages, Message);
 			await Validate.InvokeAsync(context);
-
 			edit.NotifyValidationStateChanged();
 		}
 	}

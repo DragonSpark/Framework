@@ -8,7 +8,6 @@ public class FieldModelMonitor : ComponentBase
 	[Parameter]
 	public object Model { get; set; } = default!;
 
-	/// <summary>Gets or sets a callback that updates the bound value.</summary>
 	[Parameter]
 	public EventCallback Changed { get; set; }
 

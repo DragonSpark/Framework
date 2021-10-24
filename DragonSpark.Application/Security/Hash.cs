@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 
@@ -13,15 +14,17 @@ public sealed class Hash : IAlteration<string>
 {
 	public static Hash Default { get; } = new Hash();
 
-	Hash() : this(Salt.Default.Then().Subject.Bind(16u), 16_384) {}
+	Hash() : this(Salt.Default.Then().Subject.Bind(16u), 16_384, DataAsText.Default.Get) {}
 
-	readonly Func<Array<byte>> _salt;
-	readonly ushort            _iterations;
+	readonly Func<Array<byte>>    _salt;
+	readonly ushort               _iterations;
+	readonly Func<byte[], string> _text;
 
-	public Hash(Func<Array<byte>> salt, ushort iterations)
+	public Hash(Func<Array<byte>> salt, ushort iterations, Func<byte[], string> text)
 	{
 		_salt       = salt;
 		_iterations = iterations;
+		_text       = text;
 	}
 
 	public string Get(string parameter)
@@ -31,7 +34,7 @@ public sealed class Hash : IAlteration<string>
 		var bytes = KeyDerivation.Pbkdf2(parameter, salt, KeyDerivationPrf.HMACSHA512, _iterations,
 		                                 salt.Length.Degrade());
 
-		var result = $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(bytes)}";
+		var result = $"{_text(salt)}:{_text(bytes)}";
 		return result;
 	}
 }

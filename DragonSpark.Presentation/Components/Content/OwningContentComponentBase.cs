@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Content;
 public abstract class OwningContentComponentBase<TService, TContent> : Scoped.OwningComponentBase<TService>
 	where TService : class
 {
-	readonly Func<ValueTask<TContent>> _content;
+	readonly Func<ValueTask<TContent?>> _content;
 
 	protected OwningContentComponentBase() => _content = GetContent;
 
@@ -23,7 +23,7 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 
 	IActiveContent<TContent>? _current;
 
-	protected abstract ValueTask<TContent> GetContent();
+	protected abstract ValueTask<TContent?> GetContent();
 
 	protected override void OnParametersSet()
 	{

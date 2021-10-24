@@ -6,9 +6,9 @@ namespace DragonSpark.Presentation.Components.Content
 {
 	public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 	{
-		protected abstract T GetInstance();
+		protected abstract T? GetInstance();
 
-		protected override ValueTask<T> GetContent() => GetInstance().ToOperation();
+		protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
 
 		public T? Instance
 		{

@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security;
 /// <summary>
 /// Attribution: https://www.devtrends.co.uk/blog/hashing-encryption-and-random-in-asp.net-core
 /// </summary>
-public sealed class ValidHash : ICondition<(string Hash, string Input)>
+public sealed class ValidHash : ICondition<HashInput>
 {
 	public static ValidHash Default { get; } = new ValidHash();
 
@@ -22,7 +22,7 @@ public sealed class ValidHash : ICondition<(string Hash, string Input)>
 		_size       = size;
 	}
 
-	public bool Get((string Hash, string Input) parameter)
+	public bool Get(HashInput parameter)
 	{
 		var (hash, input) = parameter;
 		var parts  = hash.Split(':');

@@ -4,4 +4,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IActiveContents<T> : ISelect<Func<ValueTask<T>>, IActiveContent<T>> {}
+public interface IActiveContents<T> : ISelect<Func<ValueTask<T?>>, IActiveContent<T>> {}

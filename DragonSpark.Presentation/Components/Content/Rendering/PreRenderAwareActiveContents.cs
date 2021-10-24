@@ -18,7 +18,7 @@ sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 		_memory    = memory;
 	}
 
-	public IActiveContent<T> Get(Func<ValueTask<T>> parameter)
+	public IActiveContent<T> Get(Func<ValueTask<T?>> parameter)
 	{
 		var condition = _condition.Get();
 		var content   = _previous.Get(parameter);

@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Content;
 
 public abstract class ContentComponentBase<T> : ComponentBase
 {
-	readonly Func<ValueTask<T>> _content;
+	readonly Func<ValueTask<T?>> _content;
 
 	protected ContentComponentBase() => _content = GetContent;
 
@@ -22,7 +22,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	IActiveContent<T>? _current;
 
-	protected abstract ValueTask<T> GetContent();
+	protected abstract ValueTask<T?> GetContent();
 
 	protected override void OnParametersSet()
 	{

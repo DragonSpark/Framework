@@ -9,5 +9,5 @@ sealed class ActiveContents<T> : IActiveContents<T>
 
 	ActiveContents() {}
 
-	public IActiveContent<T> Get(Func<ValueTask<T>> parameter) => new ActiveContent<T>(parameter);
+	public IActiveContent<T> Get(Func<ValueTask<T?>> parameter) => new ActiveContent<T>(parameter);
 }

@@ -17,6 +17,7 @@ public class MarkFieldModified : ComponentBase
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+
 		if (Enabled)
 		{
 			EditContext.NotifyFieldChanged(EditContext.Field(FieldName));

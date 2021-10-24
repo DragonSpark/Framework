@@ -22,7 +22,7 @@ sealed class MemoryAwareActiveContents<T> : IActiveContents<T>
 		_key      = key;
 	}
 
-	public IActiveContent<T> Get(Func<ValueTask<T>> parameter)
+	public IActiveContent<T> Get(Func<ValueTask<T?>> parameter)
 	{
 		var previous = _previous.Get(parameter);
 		var key      = _key.Get(parameter);

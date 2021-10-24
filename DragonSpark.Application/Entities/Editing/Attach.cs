@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using System;
 
@@ -15,6 +16,9 @@ public class Attach<TIn, T> : Modify<TIn, T> where T : class
 
 	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 		: base(scopes, query, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
+
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, ICommand<T> configure)
+		: this(scopes, query, configure.Then().Operation()) {}
 
 	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Action<T> configure)
 		: this(scopes, query, Start.A.Command(configure).Operation()) {}

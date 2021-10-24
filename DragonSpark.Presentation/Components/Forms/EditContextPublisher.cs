@@ -16,7 +16,7 @@ public class EditContextPublisher : ComponentBase
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
 		var change = parameters.DidParameterChange(nameof(EditContext), EditContext);
-			
+
 		await base.SetParametersAsync(parameters);
 
 		if (change)

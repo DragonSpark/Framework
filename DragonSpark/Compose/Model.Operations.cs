@@ -31,13 +31,13 @@ public static partial class ExtensionMethods
 		=> new DragonSpark.Model.Operations.Maybe<TIn, TOut>(@this, next).Then();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ValueTask ToOperation(this Task @this) => new ValueTask(@this);
+	public static ValueTask ToOperation(this Task @this) => new(@this);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new ValueTask<T>(@this);
+	public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new(@this);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ValueTask<T> ToOperation<T>(this T @this) => new ValueTask<T>(@this);
+	public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
@@ -95,4 +95,7 @@ public static partial class ExtensionMethods
 	public static Task Allocate(this IOperation @this) => @this.Get().AsTask();
 
 	public static Task Allocate<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
+
+	public static async ValueTask<TOut?> Account<TIn, TOut>(this ISelecting<TIn, TOut> @this, TIn parameter)
+		=> await @this.Await(parameter);
 }
