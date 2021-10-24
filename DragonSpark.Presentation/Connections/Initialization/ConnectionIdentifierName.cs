@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Connections.Initialization;
 
-sealed class ConnectionIdentifierName : Text.Text
+sealed class ConnectionIdentifierName : DragonSpark.Text.Text
 {
 	public static ConnectionIdentifierName Default { get; } = new();
 
