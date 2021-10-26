@@ -10,11 +10,7 @@ public sealed class UserEqualityComparer : IEqualityComparer<IdentityUser>
 	UserEqualityComparer() {}
 
 	public bool Equals(IdentityUser? x, IdentityUser? y)
-		=> ReferenceEquals(x, y)
-		   ||
-		   x != null
-		   && y != null
-		   && string.Equals(x.UserName, y.UserName, StringComparison.OrdinalIgnoreCase);
+		=> ReferenceEquals(x, y) || x != null && y != null && x?.Id == y?.Id;
 
-	public int GetHashCode(IdentityUser obj) => StringComparer.OrdinalIgnoreCase.GetHashCode(obj.UserName);
+	public int GetHashCode(IdentityUser obj) => StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Id.ToString());
 }
