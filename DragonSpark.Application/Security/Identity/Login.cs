@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity;
 
-public readonly record struct Login<T>(ExternalLoginInfo Information, T User);
+public sealed record Login<T>(ExternalLoginInfo Information, T User);
