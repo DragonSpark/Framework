@@ -1,7 +1,7 @@
 ﻿@using JetBrains.Annotations
 @inject IApplyQueryStringValues Apply
 
-<ScrollIntoView Identifier="@Identifier" Enabled="@Enabled">
+<ScrollIntoView Identifier="@Identifier" Enabled="@Enabled" @attributes="AdditionalAttributes">
     @ChildContent
 </ScrollIntoView>
 
@@ -18,6 +18,9 @@
 
     [QueryStringParameter, UsedImplicitly]
     public string? ScrollToSection { get; set; }
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
     protected override void OnInitialized()
     {

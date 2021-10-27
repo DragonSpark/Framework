@@ -1,24 +1,27 @@
 ﻿@using DragonSpark.Application.Runtime
 @inject IJSRuntime Runtime
 
-<section id="@Identifier">
-    @ChildContent
+<section id="@Identifier" @attributes="AdditionalAttributes">
+	@ChildContent
 </section>
 
 
 @code {
 
-    // ReSharper disable once FlagArgument
-    protected override Task OnAfterRenderAsync(bool firstRender)
-        => Enabled && firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
+	// ReSharper disable once FlagArgument
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> Enabled && firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 
-    [Parameter]
-    public string Identifier { get; set; } = IdentifyingText.Default.Get();
+	[Parameter]
+	public string Identifier { get; set; } = IdentifyingText.Default.Get();
 
-    [Parameter]
-    public bool Enabled { get; set; } = true;
+	[Parameter]
+	public bool Enabled { get; set; } = true;
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
 }
