@@ -104,18 +104,7 @@ public class Router : IComponent, IHandleAfterRender, IDisposable
 		return result;
 	}
 
-	readonly struct RenderState
-	{
-		public RenderState(RenderFragment? fragment, string path)
-		{
-			Fragment = fragment;
-			Path     = path;
-		}
-
-		public RenderFragment? Fragment { get; }
-
-		public string Path { get; }
-	}
+	readonly record struct RenderState(RenderFragment? Fragment, string Path);
 
 	void Refresh(bool intercepted)
 	{

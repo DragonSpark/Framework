@@ -1,0 +1,39 @@
+﻿
+@inherits DragonSpark.Presentation.Components.ComponentBase
+@implements IDisposable
+
+@inject NavigationManager Navigation
+
+@ChildContent
+
+@code {
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	protected override Task OnInitializedAsync()
+	{
+		Navigation.LocationChanged += SessionOnIntraPageNavigation;
+		return base.OnInitializedAsync();
+	}
+
+	void SessionOnIntraPageNavigation(object? sender, EventArgs e)
+	{
+		StateHasChanged();
+	}
+
+	~NavigationAwareContentComponent()
+	{
+		OnDispose(false);
+	}
+
+	public void Dispose()
+	{
+		OnDispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	protected virtual void OnDispose(bool disposing)
+	{
+		Navigation.LocationChanged -= SessionOnIntraPageNavigation;
+	}
+}

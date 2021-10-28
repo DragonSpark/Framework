@@ -14,8 +14,7 @@
     [Parameter]
     public bool Force { get; set; }
 
-    protected override bool ShouldRender() => false; // important!!
-
+    protected override bool ShouldRender() => Force;
 
     // ReSharper disable once FlagArgument
     protected override async Task OnAfterRenderAsync(bool firstRender)
