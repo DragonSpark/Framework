@@ -12,6 +12,14 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IKeyCode<T>>().Forward<KeyCode<T>>().Decorate<FormatAwareKeyCode<T>>().Singleton();
+		parameter.Start<IKeyCode<T>>()
+		         .Forward<KeyCode<T>>()
+		         .Decorate<FormatAwareKeyCode<T>>()
+		         .Singleton()
+		         //
+		         .Then.Start<IDisable<T>>()
+		         .Forward<Disable<T>>()
+		         .Singleton()
+			;
 	}
 }
