@@ -1,17 +1,18 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.MultiFactor;
 
-sealed class ConfiguredAwareKey<T> : IKey<T> where T : IdentityUser
+sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : IdentityUser
 {
 	public static ConfiguredAwareKey<T> Default { get; } = new();
 
 	ConfiguredAwareKey() : this(Key<T>.Default) {}
 
-	readonly IKey<T> _previous;
+	readonly ISelecting<UserInput<T>, string> _previous;
 
-	public ConfiguredAwareKey(IKey<T> previous) => _previous = previous;
+	public ConfiguredAwareKey(ISelecting<UserInput<T>, string> previous) => _previous = previous;
 
 	public async ValueTask<string> Get(UserInput<T> parameter)
 	{

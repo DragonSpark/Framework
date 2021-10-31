@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Model.Operations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.MultiFactor;
 
-sealed class Key<T> : IKey<T> where T : IdentityUser
+sealed class Key<T> : ISelecting<UserInput<T>, string> where T : IdentityUser
 {
 	public static Key<T> Default { get; } = new();
 

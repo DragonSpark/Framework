@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.MultiFactor;
@@ -9,10 +10,10 @@ sealed class KeyCode<T> : IKeyCode<T> where T : IdentityUser
 
 	KeyCode() : this(KeyApplicationLocation.Default, ConfiguredAwareKey<T>.Default) {}
 
-	readonly KeyApplicationLocation _location;
-	readonly IKey<T>                _key;
+	readonly KeyApplicationLocation           _location;
+	readonly ISelecting<UserInput<T>, string> _key;
 
-	public KeyCode(KeyApplicationLocation location, IKey<T> key)
+	public KeyCode(KeyApplicationLocation location, ISelecting<UserInput<T>, string> key)
 	{
 		_location = location;
 		_key      = key;
