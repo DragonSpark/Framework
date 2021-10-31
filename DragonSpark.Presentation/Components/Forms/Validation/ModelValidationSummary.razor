@@ -1,0 +1,103 @@
+﻿@inherits DragonSpark.Presentation.Components.ComponentBase
+@using NetFabric.Hyperlinq
+@using DragonSpark.Model
+@using DragonSpark.Compose
+@implements IDisposable
+
+@code {
+	ValidationMessageStore _store = default!;
+
+	[Parameter]
+	public ValidationFieldMessage Message
+	{
+		get => _message;
+		set
+		{
+			if (_message != value)
+			{
+				_message = value;
+				Messages = value.Account() == null ? Empty.Array<ValidationFieldMessage>() : value.Yield().ToArray();
+			}
+		}
+	}	ValidationFieldMessage _message = default!;
+
+	[Parameter]
+	public ICollection<ValidationFieldMessage> Messages
+	{
+		get => _messages;
+		set
+		{
+			var @equals = Equals(_messages, value);
+			if (!@equals)
+			{
+				_messages = value;
+				_store?.Clear();
+
+				if (value.Any())
+				{
+					foreach (var (field, message) in value.AsValueEnumerable())
+					{
+						_store?.Add(field, message);
+					}
+					EditContext?.NotifyValidationStateChanged();
+				}
+			}
+		}
+	}	ICollection<ValidationFieldMessage> _messages = default!;
+
+	EditContext? _context;
+
+	[CascadingParameter]
+	EditContext? EditContext
+	{
+		get => _context;
+		set
+		{
+			if (_context != null)
+			{
+				_store?.Clear();
+				_context.OnFieldChanged        -= Update;
+				_context.OnValidationRequested -= Update;
+			}
+
+			if ((_context = value) != null)
+			{
+				_context.OnFieldChanged        += Update;
+				_context.OnValidationRequested += Update;
+
+				_store = new ValidationMessageStore(_context);
+				if (Messages.Account() != null)
+				{
+					foreach (var (field, message) in Messages.AsValueEnumerable())
+					{
+						_store?.Add(field, message);
+					}
+				}
+			}
+		}
+	}
+
+	void Update(object? sender, EventArgs e)
+	{
+		Update();
+	}
+
+	void Update()
+	{
+		if (EditContext != null)
+		{
+			_store?.Clear();
+		}
+	}
+
+	void FieldChanged(object? sender, FieldChangedEventArgs args)
+	{
+		Update();
+	}
+
+	public void Dispose()
+	{
+		GC.SuppressFinalize(this);
+		EditContext = null;
+	}
+}

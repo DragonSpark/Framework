@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Presentation.Security.Identity;
+namespace DragonSpark.Application.Navigation.Security.Identity;
 
 public class CurrentExternalLogin : DelegatedSelection<string, string>
 {

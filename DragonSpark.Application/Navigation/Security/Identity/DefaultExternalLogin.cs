@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Navigation;
-
-namespace DragonSpark.Presentation.Security.Identity;
+﻿namespace DragonSpark.Application.Navigation.Security.Identity;
 
 public sealed class DefaultExternalLogin : ExternalLogin
 {

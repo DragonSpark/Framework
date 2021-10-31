@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 using System.Reflection;
 
@@ -32,6 +33,7 @@ sealed class AssemblyDetailsSelector : ISelect<Assembly, AssemblyDetails>
 	}
 
 	public AssemblyDetails Get(Assembly parameter)
-		=> new AssemblyDetails(_title(parameter), _product(parameter), _company(parameter), _description(parameter),
-		                       _configuration(parameter), _copyright(parameter), _version(parameter));
+		=> new(_title(parameter), _product(parameter), _company(parameter), _description(parameter),
+		       parameter.GetName().Name.Verify(), _configuration(parameter), _copyright(parameter),
+		       _version(parameter));
 }

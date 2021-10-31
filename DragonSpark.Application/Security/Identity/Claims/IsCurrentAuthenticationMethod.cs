@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System;
 
-namespace DragonSpark.Presentation.Security.Identity;
+namespace DragonSpark.Application.Security.Identity.Claims;
 
 public sealed class IsCurrentAuthenticationMethod : Equaling<string>
 {

@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Presentation.Security.Identity;
+﻿using DragonSpark.Application.Security.Identity.Claims;
+
+namespace DragonSpark.Application.Navigation.Security.Identity;
 
 public sealed class DefaultCurrentExternalLogin : CurrentExternalLogin
 {

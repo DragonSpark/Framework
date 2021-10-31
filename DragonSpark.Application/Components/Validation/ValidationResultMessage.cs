@@ -2,20 +2,8 @@
 
 namespace DragonSpark.Application.Components.Validation;
 
-public readonly struct ValidationResultMessage
+public readonly record struct ValidationResultMessage(string Path, FieldIdentifier Field, string Message)
 {
 	public ValidationResultMessage(string path, object instance, string message)
 		: this(path, new FieldIdentifier(instance, string.Empty), message) {}
-
-	public ValidationResultMessage(string path, FieldIdentifier field, string message)
-	{
-		Path    = path;
-		Field   = field;
-		Message = message;
-	}
-
-	public string Path { get; }
-	public FieldIdentifier Field { get; }
-
-	public string Message { get; }
 }

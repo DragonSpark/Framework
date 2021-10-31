@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using System.Net;
 
-namespace DragonSpark.Presentation.Components.Navigation;
+namespace DragonSpark.Application.Navigation;
 
 public class ReturnPath : IAlteration<string>
 {

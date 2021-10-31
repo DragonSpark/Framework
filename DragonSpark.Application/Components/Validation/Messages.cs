@@ -10,8 +10,8 @@ using System.Linq;
 namespace DragonSpark.Application.Components.Validation;
 
 sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
-                        ICommand<(FieldIdentifier Field, IEnumerable<ValidationResult> Results)>,
-                        ICommand
+						ICommand<(FieldIdentifier Field, IEnumerable<ValidationResult> Results)>,
+						ICommand
 {
 	readonly EditContext                          _edit;
 	readonly ValidationMessageStore               _store;
@@ -44,9 +44,9 @@ sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
 		if (field.Model == _edit.Model)
 		{
 			var select = _messages.Introduce(field.FieldName)
-			                      .AsValueEnumerable()
-			                      .Where(x => x.Item1.Path.Equals(x.Item2))
-			                      .Select(x => x.Item1);
+								  .AsValueEnumerable()
+								  .Where(x => x.Item1.Path.Equals(x.Item2))
+								  .Select(x => x.Item1);
 			foreach (var message in select.Any() ? select.ToArray() : Empty.Array<ValidationResultMessage>())
 			{
 				_store.Clear(message.Field);

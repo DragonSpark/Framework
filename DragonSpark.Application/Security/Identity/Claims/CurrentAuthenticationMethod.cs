@@ -1,7 +1,6 @@
-﻿using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.Security.Identity.Claims.Access;
 
-namespace DragonSpark.Presentation.Security.Identity;
+namespace DragonSpark.Application.Security.Identity.Claims;
 
 public sealed class CurrentAuthenticationMethod : CurrentClaimValue
 {

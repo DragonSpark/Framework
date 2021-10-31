@@ -13,6 +13,6 @@ public sealed class ApplicationRegistrations<TContext, T> : CompositeCommand<ISe
 
 	ApplicationRegistrations() : base(Registrations<T>.Default, Claims.Registrations.Default,
 	                                  Model.Registrations<T>.Default, Profile.Registrations<T>.Default,
-	                                  DefaultRegistrations<TContext, T>.Default,
+	                                  MultiFactor.Registrations<T>.Default, DefaultRegistrations<TContext, T>.Default,
 	                                  CommonRegistrations<TContext, T>.Default) {}
 }

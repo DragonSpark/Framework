@@ -1,7 +1,6 @@
-﻿using DragonSpark.Application.Navigation;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Security.Identity;
+namespace DragonSpark.Application.Navigation.Security.Identity;
 
 public class RefreshExternalLogin : Navigation
 {

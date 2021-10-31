@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;

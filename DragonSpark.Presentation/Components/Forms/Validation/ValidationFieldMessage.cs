@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
-public readonly record struct FieldContext(EditContext Context, FieldIdentifier Identifier);
+public sealed record ValidationFieldMessage(FieldIdentifier Field, string Message);

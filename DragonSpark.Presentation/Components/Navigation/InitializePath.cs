@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Presentation.Components.Navigation;
+﻿using DragonSpark.Application.Navigation;
+
+namespace DragonSpark.Presentation.Components.Navigation;
 
 public sealed class InitializePath : ReturnPath
 {
