@@ -34,7 +34,7 @@
     public async ValueTask<DialogResult> Confirm(T entity)
     {
         await _context.Open(entity);
-        var result = _result.Result ?? DialogResult.Other;
+        var result = _result?.Result ?? DialogResult.Other;
         return result;
     }
 
