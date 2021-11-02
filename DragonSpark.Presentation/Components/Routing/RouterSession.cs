@@ -80,6 +80,12 @@ public class RouterSession
 		}
 	}
 
+	public ValueTask Clear()
+	{
+		_active.Clear();
+		return SetPageExitCheck(false);
+	}
+
 	/// <summary>
 	/// Event to notify Navigation Cancellation
 	/// </summary>

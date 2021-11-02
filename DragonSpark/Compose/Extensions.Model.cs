@@ -14,6 +14,7 @@ using DragonSpark.Runtime.Activation;
 using System;
 using Action = System.Action;
 using CommandContext = DragonSpark.Compose.Extents.Commands.CommandContext;
+using ValueTask = System.Threading.Tasks.ValueTask;
 
 namespace DragonSpark.Compose;
 
@@ -28,6 +29,9 @@ public static partial class ExtensionMethods
 
 	public static OperationContext<T> Operation<T>(this VowelContext _, Await<T> start)
 		=> new(new Awaiting<T>(start));
+
+	public static OperationContext<T> Operation<T>(this VowelContext _, Func<T, ValueTask> start)
+		=> new(new Operation<T>(start));
 
 	public static T Instance<T>(this VowelContext _, T instance) => instance;
 
