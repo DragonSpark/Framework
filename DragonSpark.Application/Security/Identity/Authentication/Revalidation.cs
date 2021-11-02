@@ -13,11 +13,10 @@ sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
 	readonly IValidationServices _validation;
 
 	[UsedImplicitly]
-	public Revalidation(ILoggerFactory loggerFactory, IValidationServices validation)
-		: this(loggerFactory, validation, TimeSpan.FromMinutes(10)) {}
+	public Revalidation(ILoggerFactory loggers, IValidationServices validation)
+		: this(loggers, validation, TimeSpan.FromMinutes(1)) {} // TODO: Revert to 30 minutes
 
-	public Revalidation(ILoggerFactory loggerFactory, IValidationServices validation, TimeSpan interval)
-		: base(loggerFactory)
+	public Revalidation(ILoggerFactory loggers, IValidationServices validation, TimeSpan interval) : base(loggers)
 	{
 		_validation          = validation;
 		RevalidationInterval = interval;

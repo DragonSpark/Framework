@@ -26,12 +26,11 @@ sealed class StateViews<T> : IStateViews<T> where T : class
 		var       manager = users.Subject;
 		var       user    = await manager.GetUserAsync(parameter);
 		var result = user != null
-			             ? new StateView<T>(new AuthenticationState<T>(parameter, user),
+			             ? new StateView<T>(new (parameter, user),
 			                                manager.SupportsUserSecurityStamp
 				                                ? await manager.GetSecurityStampAsync(user) ?? string.Empty
 				                                : null)
 			             : _default;
-
 		return result;
 	}
 }

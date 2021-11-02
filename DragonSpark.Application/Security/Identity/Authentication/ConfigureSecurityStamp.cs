@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
@@ -13,14 +12,13 @@ sealed class ConfigureSecurityStamp : ICommand<SecurityStampValidatorOptions>
 
 	public ConfigureSecurityStamp(Func<IKnownClaims> claims) : this(new DeferredCopyClaims(claims)) {}
 
-	public ConfigureSecurityStamp(ICommand<(ClaimsPrincipal From, ClaimsPrincipal To)> copy)
-		: this(new RefreshPrincipal(copy).Get) {}
+	public ConfigureSecurityStamp(ICommand<Transfer> copy) : this(new RefreshPrincipal(copy).Get) {}
 
-	public ConfigureSecurityStamp(Func<SecurityStampRefreshingPrincipalContext, Task> refresh)
-		=> _refresh = refresh;
+	public ConfigureSecurityStamp(Func<SecurityStampRefreshingPrincipalContext, Task> refresh) => _refresh = refresh;
 
 	public void Execute(SecurityStampValidatorOptions parameter)
 	{
+		parameter.ValidationInterval    = TimeSpan.FromMinutes(2); // TODO: Remove
 		parameter.OnRefreshingPrincipal = _refresh;
 	}
 }

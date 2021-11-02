@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Compile;
 
-public class CopyClaims : ICommand<(ClaimsPrincipal From, ClaimsPrincipal To)>
+public class CopyClaims : ICommand<Transfer>
 {
 	readonly IExtractClaims _extract;
 
@@ -12,7 +12,7 @@ public class CopyClaims : ICommand<(ClaimsPrincipal From, ClaimsPrincipal To)>
 
 	protected CopyClaims(IExtractClaims extract) => _extract = extract;
 
-	public void Execute((ClaimsPrincipal From, ClaimsPrincipal To) parameter)
+	public void Execute(Transfer parameter)
 	{
 		var (from, to) = parameter;
 
