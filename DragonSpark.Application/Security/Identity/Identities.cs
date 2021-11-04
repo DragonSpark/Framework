@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security.Identity;
 
 public sealed class Identities : Select<ClaimsPrincipal, ProviderIdentity>
 {
-	public static Identities Default { get; } = new Identities();
+	public static Identities Default { get; } = new();
 
 	Identities() : this(ExternalIdentityValue.Default, IdentityParser.Default) {}
 

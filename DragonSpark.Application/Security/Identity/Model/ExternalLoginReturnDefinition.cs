@@ -2,7 +2,7 @@
 
 sealed class ExternalLoginReturnDefinition : PagePathDefinition
 {
-	public static ExternalLoginReturnDefinition Default { get; } = new ExternalLoginReturnDefinition();
+	public static ExternalLoginReturnDefinition Default { get; } = new();
 
 	ExternalLoginReturnDefinition() : base("./ExternalLogin", "Callback", ReturnUrlValue.Default) {}
 }

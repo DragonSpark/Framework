@@ -2,7 +2,7 @@
 
 public sealed class DisplayName : ReadClaim
 {
-	public static DisplayName Default { get; } = new DisplayName();
+	public static DisplayName Default { get; } = new();
 
 	DisplayName() : base(Identity.DisplayName.Default) {}
 }

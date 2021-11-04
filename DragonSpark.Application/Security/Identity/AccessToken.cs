@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Identity;
 
 public sealed class AccessToken : IFormatter<AuthenticationProperties>
 {
-	public static AccessToken Default { get; } = new AccessToken();
+	public static AccessToken Default { get; } = new();
 
 	AccessToken() : this(".Token.access_token") {}
 

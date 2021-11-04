@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 
 sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {
-	public static Registrations<T> Default { get; } = new Registrations<T>();
+	public static Registrations<T> Default { get; } = new();
 
 	Registrations() {}
 

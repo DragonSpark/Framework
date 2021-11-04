@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 
 public sealed class New<T> : INew<T> where T : IdentityUser
 {
-	public static New<T> Default { get; } = new New<T>();
+	public static New<T> Default { get; } = new();
 
 	New() : this(Start.A.Selection<ExternalLoginInfo>().By.Instantiation<T>(),
 	             IdentifyingText.Default.Then().Accept<ExternalLoginInfo>(), Time.Default) {}

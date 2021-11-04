@@ -2,7 +2,7 @@
 
 public sealed class RemoteError : Text.Text
 {
-	public static RemoteError Default { get; } = new RemoteError();
+	public static RemoteError Default { get; } = new();
 
 	RemoteError() : base("remoteError") {}
 }

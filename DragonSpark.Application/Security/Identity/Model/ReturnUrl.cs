@@ -2,7 +2,7 @@
 
 public sealed class ReturnUrl : Text.Text
 {
-	public static ReturnUrl Default { get; } = new ReturnUrl();
+	public static ReturnUrl Default { get; } = new();
 
 	ReturnUrl() : base("returnUrl") {}
 }

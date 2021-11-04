@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Security.Identity;
 
 public sealed class IdentityFormatter : IFormatter<ProviderIdentity>
 {
-	public static IdentityFormatter Default { get; } = new IdentityFormatter();
+	public static IdentityFormatter Default { get; } = new();
 
 	IdentityFormatter() : this(KeyDelimiter.Default) {}
 

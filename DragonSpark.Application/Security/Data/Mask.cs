@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Security.Data;
 
 sealed class Mask : IAlteration<string>
 {
-	public static Mask Default { get; } = new Mask();
+	public static Mask Default { get; } = new();
 
 	Mask() : this(new string('.', 3), '*') {}
 

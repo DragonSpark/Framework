@@ -2,7 +2,7 @@
 
 public sealed class StateView<T> where T : class
 {
-	public static StateView<T> Default { get; } = new StateView<T>();
+	public static StateView<T> Default { get; } = new();
 
 	StateView() : this(AuthenticationState<T>.Default, null) {}
 

@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Security;
 /// </summary>
 sealed class Salt : IArray<uint, byte>
 {
-	public static Salt Default { get; } = new Salt();
+	public static Salt Default { get; } = new();
 
 	Salt() {}
 

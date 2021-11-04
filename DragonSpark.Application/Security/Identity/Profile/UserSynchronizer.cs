@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 [UsedImplicitly]
 sealed class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
 {
-	public static UserSynchronizer<T> Default { get; } = new UserSynchronizer<T>();
+	public static UserSynchronizer<T> Default { get; } = new();
 
 	UserSynchronizer() {}
 

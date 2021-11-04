@@ -5,9 +5,9 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 
 public sealed class GravatarImagePath : IAlteration<string>
 {
-	public static GravatarImagePath Default { get; } = new GravatarImagePath();
+	public static GravatarImagePath Default { get; } = new();
 
-	GravatarImagePath() : this(IdentifierHash.Default.Get) {}
+	GravatarImagePath() : this(ContentHash.Default.Get) {}
 
 	readonly Func<string, string> _hash;
 	readonly string               _template;

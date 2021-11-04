@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Security;
 /// </summary>
 public sealed class ValidHash : ICondition<HashInput>
 {
-	public static ValidHash Default { get; } = new ValidHash();
+	public static ValidHash Default { get; } = new();
 
 	ValidHash() : this(16_384, 16) {}
 

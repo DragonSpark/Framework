@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Security.Identity;
 
 public sealed class IdentityParser : ISelect<string, ProviderIdentity>
 {
-	public static IdentityParser Default { get; } = new IdentityParser();
+	public static IdentityParser Default { get; } = new();
 
 	IdentityParser() : this(KeyDelimiter.Default) {}
 

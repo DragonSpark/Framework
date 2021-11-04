@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 
 public sealed class UserEqualityComparer : IEqualityComparer<IdentityUser>
 {
-	public static UserEqualityComparer Default { get; } = new UserEqualityComparer();
+	public static UserEqualityComparer Default { get; } = new();
 
 	UserEqualityComparer() {}
 

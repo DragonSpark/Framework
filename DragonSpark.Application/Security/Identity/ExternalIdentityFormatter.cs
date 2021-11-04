@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security.Identity;
 
 public sealed class ExternalIdentityFormatter : Formatter<ExternalLoginInfo>
 {
-	public static ExternalIdentityFormatter Default { get; } = new ExternalIdentityFormatter();
+	public static ExternalIdentityFormatter Default { get; } = new();
 
 	ExternalIdentityFormatter()
 		: base(ExternalLoginIdentity.Default.Then().Select(IdentityFormatter.Default).Get()) {}

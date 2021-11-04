@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Identity.Profile;
 
 sealed class IdentityResults : ISelect<SignInResult, IdentityResult>
 {
-	public static IdentityResults Default { get; } = new IdentityResults();
+	public static IdentityResults Default { get; } = new();
 
 	IdentityResults() {}
 

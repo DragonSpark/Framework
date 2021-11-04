@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 public sealed class AuthenticationState<T> : AuthenticationState where T : class
 {
-	public static AuthenticationState<T> Default { get; } = new AuthenticationState<T>();
+	public static AuthenticationState<T> Default { get; } = new();
 
 	AuthenticationState() : this(new ClaimsPrincipal(new ClaimsIdentity()), default) {}
 

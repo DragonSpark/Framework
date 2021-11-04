@@ -2,7 +2,7 @@
 
 public sealed class ReturnUrlValue : Value
 {
-	public static ReturnUrlValue Default { get; } = new ReturnUrlValue();
+	public static ReturnUrlValue Default { get; } = new();
 
 	ReturnUrlValue() : base(ReturnUrl.Default) {}
 }

@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Security.Identity.Model;
 
 sealed class KnownClaims : IKnownClaims
 {
-	public static KnownClaims Default { get; } = new KnownClaims();
+	public static KnownClaims Default { get; } = new();
 
 	KnownClaims() {}
 

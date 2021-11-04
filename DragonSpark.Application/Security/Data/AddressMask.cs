@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Security.Data;
 
 public sealed class AddressMask : IFormatter<MailAddress>
 {
-	public static AddressMask Default { get; } = new AddressMask();
+	public static AddressMask Default { get; } = new();
 
 	AddressMask() : this(Mask.Default) {}
 

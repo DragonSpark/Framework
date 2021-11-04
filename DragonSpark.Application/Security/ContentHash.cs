@@ -5,15 +5,15 @@ using System.Text;
 
 namespace DragonSpark.Application.Security;
 
-public sealed class IdentifierHash : IAlteration<string>
+public sealed class ContentHash : IAlteration<string>
 {
-	public static IdentifierHash Default { get; } = new IdentifierHash();
+	public static ContentHash Default { get; } = new();
 
-	IdentifierHash() : this(Encoding.ASCII) {}
+	ContentHash() : this(Encoding.ASCII) {}
 
 	readonly Encoding _encoding;
 
-	public IdentifierHash(Encoding encoding) => _encoding = encoding;
+	public ContentHash(Encoding encoding) => _encoding = encoding;
 
 	public string Get(string parameter)
 	{

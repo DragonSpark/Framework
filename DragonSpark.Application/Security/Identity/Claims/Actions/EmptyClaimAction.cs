@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Identity.Claims.Actions;
 
 public sealed class EmptyClaimAction : Command<ClaimActionCollection>, IClaimAction
 {
-	public static EmptyClaimAction Default { get; } = new EmptyClaimAction();
+	public static EmptyClaimAction Default { get; } = new();
 
 	EmptyClaimAction() : base(_ => {}) {}
 }

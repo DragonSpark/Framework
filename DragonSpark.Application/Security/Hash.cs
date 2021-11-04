@@ -1,40 +1,27 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Model.Sequences;
-using DragonSpark.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
+﻿using DragonSpark.Model.Selection.Alterations;
+using NetFabric.Hyperlinq;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace DragonSpark.Application.Security;
-
-/// <summary>
-/// Attribution: https://www.devtrends.co.uk/blog/hashing-encryption-and-random-in-asp.net-core
-/// </summary>
-public sealed class Hash : IAlteration<string>
+namespace DragonSpark.Application.Security
 {
-	public static Hash Default { get; } = new Hash();
-
-	Hash() : this(Salt.Default.Then().Subject.Bind(16u), 16_384, DataAsText.Default.Get) {}
-
-	readonly Func<Array<byte>>    _salt;
-	readonly ushort               _iterations;
-	readonly Func<byte[], string> _text;
-
-	public Hash(Func<Array<byte>> salt, ushort iterations, Func<byte[], string> text)
+	public sealed class Hash : IAlteration<string>
 	{
-		_salt       = salt;
-		_iterations = iterations;
-		_text       = text;
-	}
+		public static Hash Default { get; } = new();
 
-	public string Get(string parameter)
-	{
-		var salt = _salt();
+		Hash() : this(Encoding.UTF8) {}
 
-		var bytes = KeyDerivation.Pbkdf2(parameter, salt, KeyDerivationPrf.HMACSHA512, _iterations,
-		                                 salt.Length.Degrade());
+		readonly Encoding _encoding;
 
-		var result = $"{_text(salt)}:{_text(bytes)}";
-		return result;
+		public Hash(Encoding encoding) => _encoding = encoding;
+
+		public string Get(string parameter)
+		{
+			using var context = SHA256.Create();
+			var       hash    = context.ComputeHash(_encoding.GetBytes(parameter));
+			var       parts   = hash.AsValueEnumerable().Select(x => x.ToString("x2")).ToArray();
+			var       result  = string.Join(string.Empty, parts);
+			return result;
+		}
 	}
 }
