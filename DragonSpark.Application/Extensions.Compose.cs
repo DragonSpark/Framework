@@ -113,17 +113,10 @@ public static partial class Extensions
 
 	public static IQuery<T> Out<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
-	public static PlaceholderParameterExpressionComposer<T> Then<T>(
-		this Expression<Func<DbContext, None, IQueryable<T>>> @this)
+	public static PlaceholderParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, None, T>> @this)
 		=> new(@this);
 
-	public static QueryExpressionComposer<TIn, T> Then<TIn, T>(
-		this Expression<Func<DbContext, TIn, IQueryable<T>>> @this)
-		=> new(@this);
-
-	public static ElidedParameterExpressionComposer<T> Then<T>(
-		this Expression<Func<DbContext, IQueryable<T>>> @this)
-		=> new(@this);
+	public static ElidedParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, T>> @this) => new(@this);
 
 	public static In<None> Subject<T>(this In<T> @this) => new(@this.Context, None.Default);
 

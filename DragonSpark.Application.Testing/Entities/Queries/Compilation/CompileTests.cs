@@ -29,7 +29,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 				Expression<Func<DbContext, Input, IQueryable<string>>> expression
 					= (c, i) => c.Set<Subject>().Where(x => x.Name == i.Name).Select(x => x.Name);
 
-				var sut = Compile<Input, string>.Default.Get(expression);
+				var sut = ManyCompile<Input, string>.Default.Get(expression);
 				sut.Should().NotBeNull();
 				var query = await sut.Get(new(context, new Input("One"))).SingleAsync();
 				query.Should().Be("One");
@@ -51,7 +51,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 				Expression<Func<DbContext, None, IQueryable<string>>> expression
 					= (c, i) => c.Set<Subject>().Where(x => x.Name != "Two").Select(x => x.Name);
 
-				var sut = Compile<None, string>.Default.Get(expression);
+				var sut = ManyCompile<None, string>.Default.Get(expression);
 				sut.Should().NotBeNull();
 
 				var query = await sut.Get(new(context, None.Default)).ToArrayAsync();

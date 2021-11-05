@@ -3,7 +3,6 @@ using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Results;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,7 +22,7 @@ public sealed class QueryComposer<T> : QueryComposer<None, T>
 	public QueryComposer<TIn, T> Accept<TIn>() => new(new Query<TIn, T>(this));
 }
 
-public class QueryComposer<TIn, T> : Instance<IQuery<TIn, T>>
+public class QueryComposer<TIn, T> : DragonSpark.Model.Results.Instance<IQuery<TIn, T>>
 {
 	public static implicit operator Expression<Func<DbContext, TIn, IQueryable<T>>>(QueryComposer<TIn, T> instance)
 		=> instance.Get().Get();

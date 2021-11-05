@@ -8,31 +8,31 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled;
 
-sealed class Compiled<TIn, TOut> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, IAsyncEnumerable<TOut>> _select;
 
-	public Compiled(Expression<Func<DbContext, IQueryable<TOut>>> expression)
+	public Many(Expression<Func<DbContext, IQueryable<TOut>>> expression)
 		: this(EF.CompileAsyncQuery(expression)) {}
 
-	public Compiled(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = select;
+	public Many(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = select;
 
 	public IAsyncEnumerable<TOut> Get(In<TIn> parameter) => _select(parameter.Context);
 }
 
-sealed class Compiled<TIn, TOut, T1> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                               _first;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, params Delegate[] delegates)
 		: this(expression, delegates[0].To<Func<TIn, T1>>()) {}
 
-	public Compiled(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, Func<TIn, T1> first)
+	public Many(Expression<Func<DbContext, T1, IQueryable<TOut>>> expression, Func<TIn, T1> first)
 		: this(EF.CompileAsyncQuery(expression), first) {}
 
-	public Compiled(Func<DbContext, T1, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first)
+	public Many(Func<DbContext, T1, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first)
 	{
 		_select = select;
 		_first  = first;
@@ -46,24 +46,24 @@ sealed class Compiled<TIn, TOut, T1> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                   _first;
 	readonly Func<TIn, T2>                                   _second;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>()) {}
 
-	public Compiled(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-	                Func<TIn, T2> second)
+	public Many(Expression<Func<DbContext, T1, T2, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+	            Func<TIn, T2> second)
 		: this(EF.CompileAsyncQuery(expression), first, second) {}
 
-	public Compiled(Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second)
+	public Many(Func<DbContext, T1, T2, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second)
 	{
 		_select = select;
 		_first  = first;
@@ -78,7 +78,7 @@ sealed class Compiled<TIn, TOut, T1, T2> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                       _first;
@@ -86,21 +86,21 @@ sealed class Compiled<TIn, TOut, T1, T2, T3> : IElements<TIn, TOut>
 	readonly Func<TIn, T3>                                       _third;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
 		       delegates[2].To<Func<TIn, T3>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third)
+	public Many(Expression<Func<DbContext, T1, T2, T3, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third)
 		: this(EF.CompileAsyncQuery(expression), first, second, third) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third)
+	public Many(Func<DbContext, T1, T2, T3, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third)
 	{
 		_select = select;
 		_first  = first;
@@ -116,7 +116,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                           _first;
@@ -125,8 +125,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
 	readonly Func<TIn, T4>                                           _fourth;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -134,13 +134,13 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
 		       delegates[3].To<Func<TIn, T4>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, IQueryable<TOut>>> expression, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
+	public Many(Func<DbContext, T1, T2, T3, T4, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth)
 	{
 		_select = select;
 		_first  = first;
@@ -157,7 +157,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                               _first;
@@ -167,8 +167,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
 	readonly Func<TIn, T5>                                               _fifth;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -177,14 +177,14 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
 		       delegates[4].To<Func<TIn, T5>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, IQueryable<TOut>>> expression,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth)
+	public Many(Func<DbContext, T1, T2, T3, T4, T5, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth)
 	{
 		_select = select;
 		_first  = first;
@@ -202,7 +202,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                                   _first;
@@ -213,8 +213,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
 	readonly Func<TIn, T6>                                                   _sixth;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -224,15 +224,15 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
 		       delegates[5].To<Func<TIn, T6>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, IQueryable<TOut>>> expression,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
-	                Func<TIn, T6> sixth)
+	public Many(Func<DbContext, T1, T2, T3, T4, T5, T6, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
+	            Func<TIn, T6> sixth)
 	{
 		_select = select;
 		_first  = first;
@@ -252,7 +252,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6> : IElements<TIn, TOut>
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                                       _first;
@@ -264,8 +264,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TO
 	readonly Func<TIn, T7>                                                       _seventh;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -276,15 +276,15 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TO
 		       delegates[6].To<Func<TIn, T7>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IQueryable<TOut>>> expression,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
-	                Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
-	                Func<TIn, T6> sixth, Func<TIn, T7> seventh)
+	public Many(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, IAsyncEnumerable<TOut>> select, Func<TIn, T1> first,
+	            Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth, Func<TIn, T5> fifth,
+	            Func<TIn, T6> sixth, Func<TIn, T7> seventh)
 	{
 		_select  = select;
 		_first   = first;
@@ -305,7 +305,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7> : IElements<TIn, TO
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                                           _first;
@@ -318,8 +318,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn
 	readonly Func<TIn, T8>                                                           _eighth;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -331,15 +331,15 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn
 		       delegates[7].To<Func<TIn, T8>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IQueryable<TOut>>> expression,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh, eighth) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> select,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
+	public Many(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, IAsyncEnumerable<TOut>> select,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth)
 	{
 		_select  = select;
 		_first   = first;
@@ -361,7 +361,7 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8> : IElements<TIn
 	}
 }
 
-sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IElements<TIn, TOut>
+sealed class Many<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> _select;
 	readonly Func<TIn, T1>                                                               _first;
@@ -375,8 +375,8 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IElements
 	readonly Func<TIn, T9>                                                               _ninth;
 
 	[ActivatorUtilitiesConstructor]
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
-	                params Delegate[] delegates)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
+	            params Delegate[] delegates)
 		: this(expression,
 		       delegates[0].To<Func<TIn, T1>>(),
 		       delegates[1].To<Func<TIn, T2>>(),
@@ -389,18 +389,18 @@ sealed class Compiled<TIn, TOut, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IElements
 		       delegates[8].To<Func<TIn, T9>>()) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
-	                Func<TIn, T9> ninth)
+	public Many(Expression<Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IQueryable<TOut>>> expression,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
+	            Func<TIn, T9> ninth)
 		: this(EF.CompileAsyncQuery(expression), first, second, third, fourth, fifth, sixth, seventh, eighth,
 		       ninth) {}
 
 	// ReSharper disable once TooManyDependencies
-	public Compiled(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> select,
-	                Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
-	                Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
-	                Func<TIn, T9> ninth)
+	public Many(Func<DbContext, T1, T2, T3, T4, T5, T6, T7, T8, T9, IAsyncEnumerable<TOut>> select,
+	            Func<TIn, T1> first, Func<TIn, T2> second, Func<TIn, T3> third, Func<TIn, T4> fourth,
+	            Func<TIn, T5> fifth, Func<TIn, T6> sixth, Func<TIn, T7> seventh, Func<TIn, T8> eighth,
+	            Func<TIn, T9> ninth)
 	{
 		_select  = select;
 		_first   = first;

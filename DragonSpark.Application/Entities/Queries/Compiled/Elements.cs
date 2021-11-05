@@ -12,5 +12,5 @@ sealed class Elements<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsy
 	public Elements(IQuery<TIn, T> query) : this(query.Get()) {}
 
 	public Elements(Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: base(expression.Then().Compile()) {}
+		: base(ManyCompiler<TIn, T>.Default.Get(expression)) {}
 }

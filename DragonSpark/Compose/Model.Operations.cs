@@ -96,6 +96,8 @@ public static partial class ExtensionMethods
 
 	public static Task Allocate<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
 
-	public static async ValueTask<TOut?> Account<TIn, TOut>(this ISelecting<TIn, TOut> @this, TIn parameter)
+	public static async ValueTask<TOut?> Accounting<TIn, TOut>(this ISelecting<TIn, TOut> @this, TIn parameter)
 		=> await @this.Await(parameter);
+
+	public static async ValueTask<T?> Accounting<T>(this IResulting<T> @this) => await @this.Await();
 }
