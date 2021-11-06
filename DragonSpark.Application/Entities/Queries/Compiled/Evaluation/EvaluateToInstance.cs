@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
-internal class Class1 {}
-
 public class EvaluateToInstance<T> : EvaluateToInstance<None, T>, IResulting<T>
 {
 	public EvaluateToInstance(IScopes scopes, IInstance<None, T> instance) : base(scopes, instance) {}
