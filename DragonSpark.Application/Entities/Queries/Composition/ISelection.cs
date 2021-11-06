@@ -1,8 +1,5 @@
-﻿using DragonSpark.Model.Results;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries.Composition;
 
-public interface ISelection<TFrom, TTo> : IResult<Expression<Func<IQueryable<TFrom>, IQueryable<TTo>>>> {}
+public interface ISelection<TFrom, TTo> : IProjection<IQueryable<TFrom>, IQueryable<TTo>> {}
