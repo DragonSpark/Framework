@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Presentation.Components.Forms.Validation;
+namespace DragonSpark.Application.Components.Validation;
 
 public sealed class StandardAdjustedInput : Alteration<string>
 {

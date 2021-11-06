@@ -11,7 +11,7 @@ sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalConte
 	readonly ICommand<Transfer> _copy;
 
 	public RefreshPrincipal(ICommand<Transfer> copy) => _copy = copy;
-	 
+
 	public Task Get(SecurityStampRefreshingPrincipalContext parameter)
 	{
 		_copy.Execute(new(parameter.CurrentPrincipal, parameter.NewPrincipal));
