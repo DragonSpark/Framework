@@ -33,6 +33,23 @@ public class Validating : ComponentBase, IDisposable
 	[Parameter]
 	public EventCallback<ValidationContext> Validate { get; set; }
 
+	[Parameter]
+	public bool Enabled
+	{
+		get => _enabled;
+		set
+		{
+			if (_enabled != value)
+			{
+				_enabled = value;
+				if (value)
+				{
+					Request();
+				}
+			}
+		}
+	}	bool _enabled = true;
+
 	[CascadingParameter]
 	EditContext? Context
 	{
@@ -63,7 +80,12 @@ public class Validating : ComponentBase, IDisposable
 
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
-		if (!_messages[Identifier].AsValueEnumerable().Any())
+		Request();
+	}
+
+	void Request()
+	{
+		if (Enabled && !_messages[Identifier].AsValueEnumerable().Any())
 		{
 			_list.Execute(InvokeAsync(_update));
 		}
@@ -71,7 +93,7 @@ public class Validating : ComponentBase, IDisposable
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
 	{
-		if (e.FieldIdentifier.Equals(Identifier))
+		if (Enabled && e.FieldIdentifier.Equals(Identifier))
 		{
 			InvokeAsync(_update);
 		}
