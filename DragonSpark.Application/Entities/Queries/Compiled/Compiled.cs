@@ -1,80 +1,11 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
-using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NetFabric.Hyperlinq;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled;
-
-sealed class Generic<TIn, TOut> : Reflection.Types.Generic<LambdaExpression, Delegate[], IElement<TIn, TOut>>
-{
-	public Generic(Type definition) : base(definition) {}
-}
-
-sealed class Candidates<TIn, TOut> : Instances<Generic<TIn, TOut>>
-{
-	public static Candidates<TIn, TOut> Default { get; } = new Candidates<TIn, TOut>();
-
-	Candidates() : this(typeof(Compiled<,,>), typeof(Compiled<,,,>), typeof(Compiled<,,,,>),
-	                    typeof(Compiled<,,,,,>), typeof(Compiled<,,,,,,>), typeof(Compiled<,,,,,,,>),
-	                    typeof(Compiled<,,,,,,,,>), typeof(Compiled<,,,,,,,,,>), typeof(Compiled<,,,,,,,,,,>)) {}
-
-	public Candidates(params Type[] types)
-		: base(types.AsValueEnumerable().Select(x => new Generic<TIn, TOut>(x)).ToArray()) {}
-}
-
-sealed class Compile<TIn, TOut> : ISelect<Expression<Func<DbContext, TIn, TOut>>, IElement<TIn, TOut>>
-{
-	public static Compile<TIn, TOut> Default { get; } = new Compile<TIn, TOut>();
-
-	Compile() : this(Candidates<TIn, TOut>.Default, A.Type<TIn>(), A.Type<TOut>()) {}
-
-	readonly Array<Generic<TIn, TOut>> _generics;
-	readonly Type[]                    _types;
-
-	public Compile(Array<Generic<TIn, TOut>> generics, params Type[] types)
-	{
-		_generics = generics;
-		_types    = types;
-	}
-
-	public IElement<TIn, TOut> Get(Expression<Func<DbContext, TIn, TOut>> parameter)
-	{
-		var (lambda, types, delegates) = new ParameterUsageEditor(parameter).Rewrite();
-		switch (types.Length)
-		{
-			case 0:
-				return new Compiled<TIn, TOut>((Expression<Func<DbContext, TOut>>)lambda);
-			default:
-				var all    = types.Open().Prepend(_types).ToArray();
-				var result = _generics[types.Length - 1].Get(all).Invoke(lambda, delegates);
-				return result;
-		}
-	}
-}
-
-sealed class Compiler<TIn, TOut> : DragonSpark.Model.Selection.Select<Expression<Func<DbContext, TIn, TOut>>, IElement<TIn, TOut>>
-{
-	public static Compiler<TIn, TOut> Default { get; } = new ();
-
-	Compiler() : base(Start.An.Instance(Expand<TIn, TOut>.Default).Select(Compile<TIn, TOut>.Default)) {}
-}
-
-public interface IElement<TIn, T> : IAllocating<In<TIn>, T> {}
-
-sealed class Element<TIn, T> : Allocating<In<TIn>, T>, IElement<TIn, T>
-{
-	public Element(IInstance<TIn, T> instance) : this(instance.Get()) {}
-
-	public Element(Expression<Func<DbContext, TIn, T>> expression) : base(Compiler<TIn, T>.Default.Get(expression)) {}
-}
 
 sealed class Compiled<TIn, TOut> : IElement<TIn, TOut>
 {
