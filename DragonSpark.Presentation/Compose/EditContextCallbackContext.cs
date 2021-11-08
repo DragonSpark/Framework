@@ -21,9 +21,9 @@ public sealed class EditContextCallbackContext
 	public CallbackContext Field<T>(Expression<Func<T>> expression) => Field(FieldIdentifier.Create(expression));
 
 	public CallbackContext Field(in FieldIdentifier field)
-		=> new CallbackContext(new NotifyField(_context, in field).Then().Operation().Allocate());
+		=> new(new NotifyField(_context, in field).Then().Operation().Allocate());
 
-	public CallbackContext Call(Func<EditContext, Task> method) => new CallbackContext(method.Start().Bind(_context));
+	public CallbackContext Call(Func<EditContext, Task> method) => new(method.Start().Bind(_context));
 
 	sealed class NotifyField : ICommand
 	{
