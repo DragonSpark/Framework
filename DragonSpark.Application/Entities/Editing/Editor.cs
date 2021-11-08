@@ -42,6 +42,11 @@ sealed class Editor : IEditor
 		_context.Remove(entity);
 	}
 
+	public void Clear()
+	{
+		_context.ChangeTracker.Clear();
+	}
+
 	public void Dispose()
 	{
 		_disposable.Dispose();

@@ -12,4 +12,6 @@ public interface IEditor : IOperation, IDisposable
 	void Update(object entity);
 
 	void Remove(object entity);
+
+	void Clear();
 }

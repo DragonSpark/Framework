@@ -6,43 +6,48 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public readonly struct ManyEdit<T> : IEditor
 {
-	readonly IEditor _context;
+	readonly IEditor _editor;
 
 	public static implicit operator Memory<T>(ManyEdit<T> instance) => instance.Subject;
 
-	public ManyEdit(IEditor context, Leasing<T> subject)
+	public ManyEdit(IEditor editor, Leasing<T> subject)
 	{
 		Subject  = subject;
-		_context = context;
+		_editor = editor;
 	}
 
 	public Leasing<T> Subject { get; }
 
 	public void Dispose()
 	{
-		_context.Dispose();
+		_editor.Dispose();
 		Subject.Dispose();
 	}
 
-	public ValueTask Get() => _context.Get();
+	public ValueTask Get() => _editor.Get();
 
 	public void Add(object entity)
 	{
-		_context.Add(entity);
+		_editor.Add(entity);
 	}
 
 	public void Attach(object entity)
 	{
-		_context.Attach(entity);
+		_editor.Attach(entity);
 	}
 
 	public void Update(object entity)
 	{
-		_context.Update(entity);
+		_editor.Update(entity);
 	}
 
 	public void Remove(object entity)
 	{
-		_context.Remove(entity);
+		_editor.Remove(entity);
+	}
+
+	public void Clear()
+	{
+		_editor.Clear();
 	}
 }

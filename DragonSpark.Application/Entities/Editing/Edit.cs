@@ -29,46 +29,51 @@ public class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 
 public readonly struct Edit<T> : IEditor
 {
-	readonly IEditor _context;
+	readonly IEditor _editor;
 
-	public Edit(IEditor context, T subject)
+	public Edit(IEditor editor, T subject)
 	{
 		Subject  = subject;
-		_context = context;
+		_editor = editor;
 	}
 
 	public T Subject { get; }
 
-	public ValueTask Get() => _context.Get();
+	public ValueTask Get() => _editor.Get();
 
 	public void Add(object entity)
 	{
-		_context.Add(entity);
+		_editor.Add(entity);
 	}
 
 	public void Attach(object entity)
 	{
-		_context.Attach(entity);
+		_editor.Attach(entity);
 	}
 
 	public void Update(object entity)
 	{
-		_context.Update(entity);
+		_editor.Update(entity);
 	}
 
 	public void Remove(object entity)
 	{
-		_context.Remove(entity);
+		_editor.Remove(entity);
+	}
+
+	public void Clear()
+	{
+		_editor.Clear();
 	}
 
 	public void Dispose()
 	{
-		_context.Dispose();
+		_editor.Dispose();
 	}
 
 	public void Deconstruct(out IEditor context, out T subject)
 	{
-		context = _context;
+		context = _editor;
 		subject = Subject;
 	}
 }
