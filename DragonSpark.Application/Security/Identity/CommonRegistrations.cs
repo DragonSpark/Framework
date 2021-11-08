@@ -17,6 +17,7 @@ public sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollecti
 	public void Execute(IServiceCollection parameter)
 	{
 		parameter.AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
-		         .AddSingleton(typeof(IUsers<>), typeof(Users<>));
+		         .AddSingleton(typeof(IUsers<>), typeof(Users<>))
+		         .AddSingleton(typeof(UserSessions<>));
 	}
 }
