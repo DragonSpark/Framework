@@ -1,0 +1,46 @@
+﻿@using DragonSpark.Compose
+
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+@implements IValidated
+@implements IDisposable
+
+<CascadingValue TValue="IValidated" Value="@this">
+	@ChildContent(Validation.Verify());
+</CascadingValue>
+
+@code {
+	public event EventHandler<ValidationCallbackEventArgs> Validated = delegate {};
+
+	[Parameter]
+	public RenderFragment<EditorValidation> ChildContent { get; set; } = default!;
+
+	[CascadingParameter]
+	EditContext? EditContext
+	{
+		get => _context;
+		set
+		{
+			if (_context != value)
+			{
+				if (_context != null)
+				{
+					Validated = delegate { };
+				}
+
+				if ((_context = value) != null)
+				{
+					Validation = new EditorValidation(_context, this, () => Validated);
+				}
+			}
+		}
+	}	EditContext? _context;
+
+	EditorValidation? Validation { get; set; }
+
+	public void Dispose()
+	{
+		GC.SuppressFinalize(this);
+		EditContext = null;
+	}
+}

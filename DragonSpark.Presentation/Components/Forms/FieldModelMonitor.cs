@@ -19,16 +19,18 @@ public class FieldModelMonitor : ComponentBase
 		get => _editContext;
 		set
 		{
-			if (_editContext != null)
+			if (_editContext != value)
 			{
-				_editContext.OnFieldChanged -= FieldChanged;
-			}
+				if (_editContext != null)
+				{
+					_editContext.OnFieldChanged -= FieldChanged;
+				}
 
-			if ((_editContext = value) != null)
-			{
-				_editContext.OnFieldChanged += FieldChanged;
+				if ((_editContext = value) != null)
+				{
+					_editContext.OnFieldChanged += FieldChanged;
+				}	
 			}
-
 		}
 	}
 

@@ -45,34 +45,40 @@
 		}
 	}	ICollection<ValidationFieldMessage> _messages = default!;
 
-	EditContext? _context;
-
 	[CascadingParameter]
 	EditContext? EditContext
 	{
 		get => _context;
 		set
 		{
-			if (_context != null)
+			if (_context != value)
 			{
-				_store?.Clear();
-				_context.OnFieldChanged        -= Update;
-				_context.OnValidationRequested -= Update;
-			}
-
-			if ((_context = value) != null)
-			{
-				_context.OnFieldChanged        += Update;
-				_context.OnValidationRequested += Update;
-
-				_store = new ValidationMessageStore(_context);
-				if (Messages.Account() != null)
+				if (_context != null)
 				{
-					foreach (var (field, message) in Messages.AsValueEnumerable())
-					{
-						_store?.Add(field, message);
-					}
+					_store?.Clear();
+					_context.OnFieldChanged        -= Update;
+					_context.OnValidationRequested -= Update;
 				}
+
+				if ((_context = value) != null)
+				{
+					Assign(_context);
+				}
+			}
+		}
+	}	EditContext? _context;
+
+	void Assign(EditContext parameter)
+	{
+		parameter.OnFieldChanged        += Update;
+		parameter.OnValidationRequested += Update;
+
+		_store = new ValidationMessageStore(parameter);
+		if (Messages.Account() != null)
+		{
+			foreach (var (field, message) in Messages.AsValueEnumerable())
+			{
+				_store?.Add(field, message);
 			}
 		}
 	}

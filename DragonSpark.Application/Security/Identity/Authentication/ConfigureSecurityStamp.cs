@@ -18,7 +18,6 @@ sealed class ConfigureSecurityStamp : ICommand<SecurityStampValidatorOptions>
 
 	public void Execute(SecurityStampValidatorOptions parameter)
 	{
-		parameter.ValidationInterval    = TimeSpan.FromMinutes(2); // TODO: Remove
 		parameter.OnRefreshingPrincipal = _refresh;
 	}
 }

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,9 +11,8 @@ sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
 {
 	readonly IValidationServices _validation;
 
-	[UsedImplicitly]
 	public Revalidation(ILoggerFactory loggers, IValidationServices validation)
-		: this(loggers, validation, TimeSpan.FromMinutes(1)) {} // TODO: Revert to 30 minutes
+		: this(loggers, validation, TimeSpan.FromMinutes(30)) {}
 
 	public Revalidation(ILoggerFactory loggers, IValidationServices validation, TimeSpan interval) : base(loggers)
 	{

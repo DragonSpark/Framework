@@ -1,0 +1,42 @@
+﻿@using DragonSpark.Compose
+@implements IDisposable
+
+@code {
+	[Parameter]
+	public EventCallback Validated { get; set; }
+
+	[CascadingParameter]
+	IValidated Validation
+	{
+		get => _validation.Verify();
+		set
+		{
+			if (_validation != value)
+			{
+				if (_validation != null)
+				{
+					_validation.Validated -= ValidationOnValidated;
+				}
+
+				if ((_validation = value) != null)
+				{
+					_validation.Validated += ValidationOnValidated;
+				}
+			}
+		}
+	}
+	IValidated? _validation;
+
+
+	void ValidationOnValidated(object? sender, ValidationCallbackEventArgs e)
+	{
+		e.Callbacks.Add(Validated);
+	}
+
+	public void Dispose()
+	{
+		GC.SuppressFinalize(this);
+		Validation = null!;
+	}
+
+}

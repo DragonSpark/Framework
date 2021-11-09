@@ -17,16 +17,19 @@ public class EditContextMonitor : ComponentBase, IDisposable
 		get => _context;
 		set
 		{
-			if (_context != null)
+			if (_context != value)
 			{
-				_context.OnFieldChanged           -= FieldChanged;
-				_context.OnValidationStateChanged -= ValidationStateChanged;
-			}
+				if (_context != null)
+				{
+					_context.OnFieldChanged           -= FieldChanged;
+					_context.OnValidationStateChanged -= ValidationStateChanged;
+				}
 
-			if ((_context = value) != null)
-			{
-				_context.OnFieldChanged           += FieldChanged;
-				_context.OnValidationStateChanged += ValidationStateChanged;
+				if ((_context = value) != null)
+				{
+					_context.OnFieldChanged           += FieldChanged;
+					_context.OnValidationStateChanged += ValidationStateChanged;
+				}
 			}
 		}
 	}
