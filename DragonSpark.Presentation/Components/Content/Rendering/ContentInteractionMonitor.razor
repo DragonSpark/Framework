@@ -3,7 +3,17 @@
 
 @inject IContentInteraction Interaction
 
+@inherits RadzenComponent
+
 @code {
+
+	Func<Task> _execute = default!;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		_execute = Interaction.Then().Operation().Allocate().Get().Get;
+	}
 
 	protected override void OnAfterRender(bool firstRender)
 	{
@@ -13,7 +23,7 @@
 		}
 		else
 		{
-			Interaction.Execute();
+			Debounce(_execute);
 		}
 	}
 }
