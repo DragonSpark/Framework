@@ -7,11 +7,11 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class Modify<T> : Modify<T, T>
 {
-	protected Modify(IEnlistedScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
+	protected Modify(IScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
 
-	protected Modify(IEnlistedScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
+	protected Modify(IScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
-	protected Modify(IEnlistedScopes scopes, Await<Edit<T>> configure)
+	protected Modify(IScopes scopes, Await<Edit<T>> configure)
 		: base(new SelectForEdit<T, T>(scopes, A.Self<T>().Then().Operation().Out()), configure) {}
 
 }

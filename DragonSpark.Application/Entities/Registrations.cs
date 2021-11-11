@@ -31,6 +31,10 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.Start<RemoveForSession<object>>()
+		         .Generic()
+		         .Scoped()
+		         //
 		         .Then.Start<Remove<object>>()
 		         .Generic()
 		         .Singleton()
