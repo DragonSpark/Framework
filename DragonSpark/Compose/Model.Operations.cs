@@ -96,8 +96,17 @@ public static partial class ExtensionMethods
 
 	public static Task Allocate<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<TOut?> Accounting<TIn, TOut>(this ISelecting<TIn, TOut> @this, TIn parameter)
 		=> await @this.Await(parameter);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<T?> Accounting<T>(this IResulting<T> @this) => await @this.Await();
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static async ValueTask<TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this, TIn parameter)
+		=> (await @this.Await(parameter)).Verify();
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static async ValueTask<T> Verifying<T>(this IResulting<T?> @this) => (await @this.Await()).Verify();
 }
