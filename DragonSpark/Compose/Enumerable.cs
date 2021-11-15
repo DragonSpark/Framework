@@ -86,8 +86,15 @@ public static partial class ExtensionMethods
 		return true;
 	}
 
-	public static T Only<T>(this IEnumerable<T> @this)
-		=> DragonSpark.Model.Sequences.Query.Only<T>.Default.Get(@this);
+	public static T? Only<T>(this IEnumerable<T> @this)
+		=> DragonSpark.Model.Sequences.Query.Only<T>.Default.Get(@this).Account();
+
+	public static TOut? Only<T, TOut>(this IEnumerable<T> @this, Func<T, TOut> select)
+	{
+		var only   = @this.Only();
+		var result = only is not null ? select(only) : default;
+		return result;
+	}
 
 	public static void ForEach<TIn, TOut>(this IEnumerable<TIn> @this, Func<TIn, TOut> select)
 	{

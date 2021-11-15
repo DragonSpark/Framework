@@ -27,8 +27,8 @@ sealed class ActivateExpressions : IActivateExpressions
 	public Expression Get(Type parameter)
 	{
 		var constructors = parameter.GetTypeInfo().DeclaredConstructors.ToArray();
-		var constructor = constructors.Only().Account() ??
-		                  parameter.GetConstructors().Only().Account() ??
+		var constructor = constructors.Only() ??
+		                  parameter.GetConstructors().Only() ??
 		                  parameter.GetConstructor(_types) ??
 		                  constructors.OrderBy(x => x.GetParameters().Length)
 		                              .FirstOrDefault(x => x.Has<ActivatorUtilitiesConstructorAttribute>())

@@ -25,7 +25,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 
 			const string? expected = "Third";
 			var           instance = new Input("Root", 1, new("First", 2, new("Second", 3, new(expected, 123))));
-			delegates.Open().Only().To<Func<Input, string>>()(instance).Should().Be(expected);
+			delegates.Open().Single().To<Func<Input, string>>()(instance).Should().Be(expected);
 			types.Open().Should().Equal(A.Type<string>());
 		}
 
@@ -79,7 +79,7 @@ namespace DragonSpark.Application.Testing.Entities.Queries.Compilation
 
 			var instance = new Input("Root", 1, new("First", 2, new("Second", 3, new("Third", 123))));
 			var open     = delegates.Open();
-			open.Only().To<Func<Input, string>>()(instance).Should().Be(instance.One.Name);
+			open.Single().To<Func<Input, string>>()(instance).Should().Be(instance.One.Name);
 			types.Open().Should().Equal(A.Type<string>());
 		}
 

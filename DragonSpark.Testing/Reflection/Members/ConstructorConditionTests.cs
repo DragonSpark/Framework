@@ -26,7 +26,7 @@ namespace DragonSpark.Testing.Reflection.Members
 		[Fact]
 		public void VerifyOptional()
 		{
-			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only());
+			ConstructorCondition.Default.Get(A.Type<Optional>().GetConstructors().Only().Verify());
 		}
 	}
 }

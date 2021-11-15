@@ -8,9 +8,9 @@ using System.Collections.ObjectModel;
 namespace DragonSpark.Application.Components.Validation;
 
 public sealed class GraphValidationContext : Collection<ValidationResultMessage>,
-                                             ICondition<object>,
-                                             IResult<string>,
-                                             ICommand<string>
+											 ICondition<object>,
+											 IResult<string>,
+											 ICommand<string>
 {
 	readonly Stack<string>   _paths;
 	readonly HashSet<object> _visited;
@@ -25,7 +25,7 @@ public sealed class GraphValidationContext : Collection<ValidationResultMessage>
 
 	public bool Get(object parameter) => _visited.Add(parameter);
 
-	public string Get() => _paths.Only().Account() ?? string.Empty;
+	public string Get() => _paths.Only() ?? string.Empty;
 
 	public void Execute(string parameter)
 	{
