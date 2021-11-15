@@ -49,6 +49,9 @@ public static class Extensions
 	                                                             IValidatingValue<T> validating)
 		=> validating.Callback();
 
+	public static CallbackContext<ValidationContext> Callback<T>(this IValidationMessage<T> validating)
+		=> new ValidationOperationContext(new ValidationMessageOperation<T>(validating)).DenoteExceptions().Get();
+
 	public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
 		=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
 

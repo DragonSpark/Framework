@@ -10,7 +10,6 @@ public class ValidationOperationContext : ValidationCallbackContext
 	public ValidationOperationContext(IOperation<ValidationContext> validation) : base(validation)
 		=> _validation = validation;
 
-	public ValidationCallbackContext DenoteExceptions()
-		=> new ValidationCallbackContext(new ExceptionAwareValidationOperation(_validation));
+	public ValidationCallbackContext DenoteExceptions() => new(new ExceptionAwareValidationOperation(_validation));
 
 }

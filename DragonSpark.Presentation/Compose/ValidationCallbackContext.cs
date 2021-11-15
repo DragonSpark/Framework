@@ -9,9 +9,7 @@ public class ValidationCallbackContext : IResult<CallbackContext<ValidationConte
 {
 	readonly IOperation<ValidationContext> _validation;
 
-	public ValidationCallbackContext(IOperation<ValidationContext> validation)
-		=> _validation = validation;
+	public ValidationCallbackContext(IOperation<ValidationContext> validation) => _validation = validation;
 
-	public CallbackContext<ValidationContext> Get()
-		=> new CallbackContext<ValidationContext>(_validation.Then().Allocate());
+	public CallbackContext<ValidationContext> Get() => new(_validation.Then().Allocate());
 }
