@@ -8,15 +8,32 @@
 
 @code {
 
+	bool _update;
+
 	// ReSharper disable once FlagArgument
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> Enabled && firstRender ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
+	{
+		var result = Enabled && (firstRender || _update) ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
+		_update = false;
+		return result;
+	}
 
 	[Parameter]
 	public string Identifier { get; set; } = IdentifyingText.Default.Get();
 
 	[Parameter]
-	public bool Enabled { get; set; } = true;
+	public bool Enabled
+	{
+		get => _enabled;
+		set
+		{
+			if (_enabled != value)
+			{
+				_enabled = value;
+				_update = true;
+			}
+		}
+	}	bool _enabled = default!;
 
 	[Parameter]
 	public RenderFragment ChildContent { get; set; } = default!;
