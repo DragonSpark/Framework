@@ -48,6 +48,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         //
 		         .Then.Start<IRemoveLogin<T>>()
 		         .Forward<RemoveLogin<T>>()
+		         .Decorate<StateAwareRemoveLogin<T>>()
 		         .Singleton()
 		         //
 		         .Then.Start<IClearAuthenticationState>()
