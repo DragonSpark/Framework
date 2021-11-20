@@ -30,4 +30,11 @@ public static partial class ExtensionMethods
 	public static LeaseSelector<T> Then<T>(this Leasing<T> @this) => new(@this);
 
 	public static MemorySelector<T> Then<T>(this Memory<T> @this) => new(@this);
+
+	public static Leasing<T> AsLease<T>(this T @this)
+	{
+		var result = NewLeasing<T>.Default.Get(1);
+		result.AsSpan()[0] = @this;
+		return result;
+	}
 }

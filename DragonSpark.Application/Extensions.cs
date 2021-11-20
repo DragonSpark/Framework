@@ -34,7 +34,7 @@ partial class Extensions
 		=> Connections.Configure.Default.Get(@this);
 
 	public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
-		=> new ApplicationProfileContext(@this, profile);
+		=> new(@this, profile);
 
 	/**/
 
@@ -54,7 +54,7 @@ partial class Extensions
 
 	public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 
-	public static Claim Claim(this Text.Text @this, string value) => new Claim(@this, value);
+	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
 	public static string DisplayName(this ClaimsPrincipal @this) => @this.DisplayName(Anonymous.Default);
 
@@ -93,7 +93,7 @@ partial class Extensions
 		=> Ordered<T>.Default.Get(@this);
 
 	public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
-		=> new SelectedCollection<T>(@this);
+		=> new(@this);
 
 	public static TList AddRange<TList, T>(this TList @this, Memory<T> range) where TList : List<T>
 		=> CopyList<TList, T>.Default.Get(new(range, @this));
@@ -123,7 +123,7 @@ partial class Extensions
 	public static IValidateValue<object> Validator(this IExpression @this)
 		=> new RegularExpressionValidator(@this.Get());
 
-	public static BoundedExpression Bounded(this IExpression @this) => new BoundedExpression(@this.Get());
+	public static BoundedExpression Bounded(this IExpression @this) => new(@this.Get());
 
 	public static IValidatingValue<T> Adapt<T>(this IValidateValue<T> @this)
 		=> new ValidatingValueAdapter<T>(@this);

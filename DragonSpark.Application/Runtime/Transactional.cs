@@ -33,7 +33,7 @@ public class Transactional<T> : ITransactional<T> where T : class
 		var (left, add)     = Left(first, second);
 		var (right, delete) = Right(first, second);
 
-		var       update = ArrayBuilder.New<(T, T)>(right.Count);
+		using var update = ArrayBuilder.New<(T, T)>(right.Count);
 		using var lease  = left.AsLease();
 		var       both   = lease.AsMemory();
 		foreach (var element in right.AsSpan())
@@ -92,24 +92,8 @@ public class Transactional<T> : ITransactional<T> where T : class
 		return new(right, delete);
 	}
 
-	readonly struct State : IDisposable
+	readonly record struct State(ArrayBuilder<T> Same, ArrayBuilder<T> Difference) : IDisposable
 	{
-		public State(ArrayBuilder<T> same, ArrayBuilder<T> difference)
-		{
-			Same       = same;
-			Difference = difference;
-		}
-
-		public ArrayBuilder<T> Same { get; }
-
-		public ArrayBuilder<T> Difference { get; }
-
-		public void Deconstruct(out ArrayBuilder<T> same, out ArrayBuilder<T> difference)
-		{
-			same       = Same;
-			difference = Difference;
-		}
-
 		public void Dispose()
 		{
 			Same.Dispose();
