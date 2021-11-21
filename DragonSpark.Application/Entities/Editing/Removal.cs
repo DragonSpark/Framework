@@ -11,6 +11,9 @@ public class Removal<TIn, T> : IOperation<TIn> where T : class
 	readonly Remove<T>           _remove;
 	readonly ICommand<TIn>       _command;
 
+	protected Removal(ISelecting<TIn, T?> select, Remove<T> remove)
+		: this(@select, remove, EmptyCommand<TIn>.Default) {}
+
 	protected Removal(ISelecting<TIn, T?> select, Remove<T> remove, ICommand<TIn> command)
 	{
 		_select  = select;

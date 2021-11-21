@@ -6,32 +6,30 @@
 
 @code
 {
-    IReceiver connection = default!;
+	IReceiver connection = default!;
 
-    [Parameter]
-    public IReceive Registration { get; set; } = default!;
+	[Parameter]
+	public IReceive Registration { get; set; } = default!;
 
-    [Parameter]
-    public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
+	[Parameter]
+	public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
 
-    [Parameter]
-    public EventCallback<None> Received { get; set; }
+	[Parameter]
+	public EventCallback<None> Received { get; set; }
 
-    protected override Task OnInitializedAsync()
-    {
-        connection = Registration.Get(OnReceive);
-        connection.Get();
+	protected override Task OnInitializedAsync()
+	{
+		connection = Registration.Get(OnReceive);
+		return connection.Get().AsTask();
+	}
 
-        return base.OnInitializedAsync();
-    }
+	async Task OnReceive()
+	{
+		if (await Condition.Get())
+		{
+			await Received.InvokeAsync(None.Default);
+		}
+	}
 
-    async Task OnReceive()
-    {
-        if (await Condition.Get())
-        {
-            await Received.InvokeAsync(None.Default);
-        }
-    }
-
-    public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }
