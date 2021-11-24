@@ -10,77 +10,76 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities.Queries
+namespace DragonSpark.Application.Testing.Entities.Queries;
+
+public sealed class CombineTests
 {
-	public sealed class CombineTests
+	[Fact]
+	public async Task Verify()
 	{
-		[Fact]
-		public async Task Verify()
+		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 		{
-			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
-			{
-				await using var context = contexts.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
-
-			var evaluate = contexts.Then().Use(Combined.Default).To.Array();
-			{
-				var array = await evaluate.Await();
-				var open  = array.Open();
-				open.Should().HaveCount(2);
-				open.Should().BeEquivalentTo("One", "Three");
-			}
+			await using var context = contexts.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
 		}
 
-		[Fact]
-		public async Task VerifySql()
+		var evaluate = contexts.Then().Use(Combined.Default).To.Array();
 		{
-			await using var factory = await new SqlContexts<Context>().Initialize();
-			{
-				await using var context = factory.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
+			var array = await evaluate.Await();
+			var open  = array.Open();
+			open.Should().HaveCount(2);
+			open.Should().BeEquivalentTo("One", "Three");
+		}
+	}
 
-			var evaluate = factory.Then().Use(Combined.Default).To.Array();
-			{
-				var array = await evaluate.Await();
-				var open  = array.Open();
-				open.Should().HaveCount(2);
-				open.Should().BeEquivalentTo("One", "Three");
-			}
+	[Fact]
+	public async Task VerifySql()
+	{
+		await using var factory = await new SqlContexts<Context>().Initialize();
+		{
+			await using var context = factory.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
 		}
 
-		sealed class Context : DbContext
+		var evaluate = factory.Then().Use(Combined.Default).To.Array();
 		{
-			public Context(DbContextOptions options) : base(options) {}
-
-			public DbSet<Subject> Subjects { get; set; } = default!;
+			var array = await evaluate.Await();
+			var open  = array.Open();
+			open.Should().HaveCount(2);
+			open.Should().BeEquivalentTo("One", "Three");
 		}
+	}
 
-		sealed class Subject
-		{
-			[UsedImplicitly]
-			public Guid Id { get; set; }
+	sealed class Context : DbContext
+	{
+		public Context(DbContextOptions options) : base(options) {}
 
-			public string Name { get; set; } = default!;
-		}
+		public DbSet<Subject> Subjects { get; set; } = default!;
+	}
 
-		sealed class Start : Start<Subject>
-		{
-			public static Start Default { get; } = new Start();
+	sealed class Subject
+	{
+		[UsedImplicitly]
+		public Guid Id { get; set; }
 
-			Start() : base(q => q.Where(x => x.Name != "Two")) {}
-		}
+		public string Name { get; set; } = default!;
+	}
 
-		sealed class Combined : Combine<Subject, string>
-		{
-			public static Combined Default { get; } = new Combined();
+	sealed class Start : Start<Subject>
+	{
+		public static Start Default { get; } = new Start();
 
-			Combined() : base(Start.Default, subjects => subjects.Select(x => x.Name)) {}
-		}
+		Start() : base(q => q.Where(x => x.Name != "Two")) {}
+	}
+
+	sealed class Combined : Combine<Subject, string>
+	{
+		public static Combined Default { get; } = new Combined();
+
+		Combined() : base(Start.Default, subjects => subjects.Select(x => x.Name)) {}
 	}
 }

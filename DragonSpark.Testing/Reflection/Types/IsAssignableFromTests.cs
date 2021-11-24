@@ -3,17 +3,16 @@ using FluentAssertions;
 using System.IO;
 using Xunit;
 
-namespace DragonSpark.Testing.Reflection.Types
+namespace DragonSpark.Testing.Reflection.Types;
+
+public class IsAssignableFromTests
 {
-	public class IsAssignableFromTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			IsAssignableFrom<Stream>.Default
-			                        .Get(typeof(MemoryStream))
-			                        .Should()
-			                        .BeTrue();
-		}
+		IsAssignableFrom<Stream>.Default
+		                        .Get(typeof(MemoryStream))
+		                        .Should()
+		                        .BeTrue();
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
+﻿namespace DragonSpark.Identity.Twitter.Claims;
+
+public class TwitterClaim : Text.Text
 {
-	public class TwitterClaim : Text.Text
-	{
-		protected TwitterClaim(string name) : base($"{TwitterClaimNamespace.Default}:{name}") {}
-	}
+	protected TwitterClaim(string name) : base($"{TwitterClaimNamespace.Default}:{name}") {}
 }

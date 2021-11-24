@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Runtime.Environment;
 
-namespace DragonSpark.Application.Hosting.Azure.WebJobs
+namespace DragonSpark.Application.Hosting.Azure.WebJobs;
+
+public sealed class WebJobApplicationAttribute : HostingAttribute
 {
-	public sealed class WebJobApplicationAttribute : HostingAttribute
-	{
-		public WebJobApplicationAttribute() : base(typeof(WebJobApplicationAttribute).Assembly) {}
-	}
+	public WebJobApplicationAttribute() : base(typeof(WebJobApplicationAttribute).Assembly) {}
 }

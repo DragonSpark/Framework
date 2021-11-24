@@ -5,28 +5,27 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime.Activation
+namespace DragonSpark.Testing.Runtime.Activation;
+
+public class ServiceProviderTests
 {
-	public class ServiceProviderTests
+	[Theory, AutoData]
+	public void Verify(int number)
 	{
-		[Theory, AutoData]
-		public void Verify(int number)
-		{
-			var sut = new ServiceProvider(number);
-			sut.Get(typeof(DateTime))
-			   .Should()
-			   .BeFalse();
-			sut.Get(typeof(int))
-			   .Should()
-			   .BeTrue();
+		var sut = new ServiceProvider(number);
+		sut.Get(typeof(DateTime))
+		   .Should()
+		   .BeFalse();
+		sut.Get(typeof(int))
+		   .Should()
+		   .BeTrue();
 
-			sut.Get<int>()
-			   .Should()
-			   .Be(number);
+		sut.Get<int>()
+		   .Should()
+		   .Be(number);
 
-			sut.Get<DateTime?>()
-			   .Should()
-			   .BeNull();
-		}
+		sut.Get<DateTime?>()
+		   .Should()
+		   .BeNull();
 	}
 }

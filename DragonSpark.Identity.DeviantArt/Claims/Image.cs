@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.DeviantArt.Claims
-{
-	public sealed class Image : DeviantArtClaim
-	{
-		public static Image Default { get; } = new Image();
+﻿namespace DragonSpark.Identity.DeviantArt.Claims;
 
-		Image() : base(nameof(Image).ToLowerInvariant()) {}
-	}
+public sealed class Image : DeviantArtClaim
+{
+	public static Image Default { get; } = new Image();
+
+	Image() : base(nameof(Image).ToLowerInvariant()) {}
 }

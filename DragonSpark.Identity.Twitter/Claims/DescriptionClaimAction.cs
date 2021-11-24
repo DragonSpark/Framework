@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
 
-namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class DescriptionClaimAction : ClaimAction
-	{
-		public static DescriptionClaimAction Default { get; } = new DescriptionClaimAction();
+namespace DragonSpark.Identity.Twitter.Claims;
 
-		DescriptionClaimAction() : base(Description.Default, "description") {}
-	}
+public sealed class DescriptionClaimAction : ClaimAction
+{
+	public static DescriptionClaimAction Default { get; } = new DescriptionClaimAction();
+
+	DescriptionClaimAction() : base(Description.Default, "description") {}
 }

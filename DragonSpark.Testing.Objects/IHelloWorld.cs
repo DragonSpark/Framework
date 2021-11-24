@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Testing.Objects
+﻿namespace DragonSpark.Testing.Objects;
+
+public interface IHelloWorld
 {
-	public interface IHelloWorld
-	{
-		string GetMessage();
-	}
+	string GetMessage();
 }

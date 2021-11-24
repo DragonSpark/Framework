@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Microsoft
-{
-	public sealed class MicrosoftApplicationSettings
-	{
-		public string Key { get; set; }  = null!;
+﻿namespace DragonSpark.Identity.Microsoft;
 
-		public string Secret { get; set; }  = null!;
-	}
+public sealed class MicrosoftApplicationSettings
+{
+	public string Key { get; set; }  = null!;
+
+	public string Secret { get; set; }  = null!;
 }

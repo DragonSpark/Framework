@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class Description : TwitterClaim
-	{
-		public static Description Default { get; } = new Description();
+﻿namespace DragonSpark.Identity.Twitter.Claims;
 
-		Description() : base(nameof(Description).ToLower()) {}
-	}
+public sealed class Description : TwitterClaim
+{
+	public static Description Default { get; } = new Description();
+
+	Description() : base(nameof(Description).ToLower()) {}
 }

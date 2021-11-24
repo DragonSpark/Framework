@@ -5,18 +5,17 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Testing.Server
+namespace DragonSpark.Testing.Server;
+
+sealed class ServerConfiguration : ICommand<IHostBuilder>
 {
-	sealed class ServerConfiguration : ICommand<IHostBuilder>
+	public static ServerConfiguration Default { get; } = new ServerConfiguration();
+
+	ServerConfiguration() {}
+
+	public void Execute(IHostBuilder parameter)
 	{
-		public static ServerConfiguration Default { get; } = new ServerConfiguration();
-
-		ServerConfiguration() {}
-
-		public void Execute(IHostBuilder parameter)
-		{
-			parameter.ConfigureServices(services => services.AddSingleton<IServer, TestServer>()
-			                                                .AddScoped<IHttpContextAccessor, Accessor>());
-		}
+		parameter.ConfigureServices(services => services.AddSingleton<IServer, TestServer>()
+		                                                .AddScoped<IHttpContextAccessor, Accessor>());
 	}
 }

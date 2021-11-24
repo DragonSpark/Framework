@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Identity.Google.Claims
+﻿namespace DragonSpark.Identity.Google.Claims;
+
+public class GoogleClaim : Text.Text
 {
-	public class GoogleClaim : Text.Text
-	{
-		protected GoogleClaim(string name) : base($"{GoogleClaimNamespace.Default}:{name}") {}
-	}
+	protected GoogleClaim(string name) : base($"{GoogleClaimNamespace.Default}:{name}") {}
 }

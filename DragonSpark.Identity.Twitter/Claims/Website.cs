@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class Website : TwitterClaim
-	{
-		public static Website Default { get; } = new Website();
+﻿namespace DragonSpark.Identity.Twitter.Claims;
 
-		Website() : base(nameof(Website).ToLower()) {}
-	}
+public sealed class Website : TwitterClaim
+{
+	public static Website Default { get; } = new Website();
+
+	Website() : base(nameof(Website).ToLower()) {}
 }

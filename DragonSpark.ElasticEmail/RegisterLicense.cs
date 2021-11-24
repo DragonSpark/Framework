@@ -1,17 +1,16 @@
 ﻿using DragonSpark.Model.Commands;
 using ElasticEmailClient;
 
-namespace DragonSpark.ElasticEmail
+namespace DragonSpark.ElasticEmail;
+
+sealed class RegisterLicense : ICommand<string>
 {
-	sealed class RegisterLicense : ICommand<string>
+	public static RegisterLicense Default { get; } = new RegisterLicense();
+
+	RegisterLicense() {}
+
+	public void Execute(string parameter)
 	{
-		public static RegisterLicense Default { get; } = new RegisterLicense();
-
-		RegisterLicense() {}
-
-		public void Execute(string parameter)
-		{
-			Api.ApiKey = parameter;
-		}
+		Api.ApiKey = parameter;
 	}
 }

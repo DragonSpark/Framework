@@ -2,13 +2,12 @@
 using DragonSpark.Application.Testing.Entities;
 using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Testing
+namespace DragonSpark.Application.Testing;
+
+public class Program
 {
-	public class Program
+	static void Main(params string[] arguments)
 	{
-		static void Main(params string[] arguments)
-		{
-			Configuration.Default.Get(arguments).To(Run.A<SaveTests.DisposeBenchmarks>);
-		}
+		Configuration.Default.Get(arguments).To(Run.A<SaveTests.DisposeBenchmarks>);
 	}
 }

@@ -2,10 +2,9 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Azure.Queues
+namespace DragonSpark.Azure.Queues;
+
+public class Queue : Result<QueueClient>, IQueue
 {
-	public class Queue : Result<QueueClient>, IQueue
-	{
-		protected Queue(IQueueClients clients, string name) : base(clients.Then().Bind(name)) {}
-	}
+	protected Queue(IQueueClients clients, string name) : base(clients.Then().Bind(name)) {}
 }

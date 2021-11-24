@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Google
-{
-	public sealed class GoogleApplicationSettings
-	{
-		public string Key { get; set; } = null!;
+﻿namespace DragonSpark.Identity.Google;
 
-		public string Secret { get; set; } = null!;
-	}
+public sealed class GoogleApplicationSettings
+{
+	public string Key { get; set; } = null!;
+
+	public string Secret { get; set; } = null!;
 }

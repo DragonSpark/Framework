@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Identity.PayPal
+﻿namespace DragonSpark.Identity.PayPal;
+
+public class PayPalClaim : Text.Text
 {
-	public class PayPalClaim : Text.Text
-	{
-		protected PayPalClaim(string name) : base($"{PayPalClaimNamespace.Default}:{name}") {}
-	}
+	protected PayPalClaim(string name) : base($"{PayPalClaimNamespace.Default}:{name}") {}
 }

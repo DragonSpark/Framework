@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Testing.Runtime.Activation
-{
-	sealed class New {}
-}
+﻿namespace DragonSpark.Testing.Runtime.Activation;
+
+sealed class New {}

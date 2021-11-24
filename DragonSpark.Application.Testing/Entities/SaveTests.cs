@@ -11,215 +11,214 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities
+namespace DragonSpark.Application.Testing.Entities;
+
+public sealed class SaveTests
 {
-	public sealed class SaveTests
+	[Fact]
+	public async Task Verify()
 	{
-		[Fact]
-		public async Task Verify()
+		const string original = "Default Name",
+		             expected = "Updated Name";
+
+		await using var contexts = await new SqlContexts<Context>().Initialize();
 		{
-			const string original = "Default Name",
-			             expected = "Updated Name";
-
-			await using var contexts = await new SqlContexts<Context>().Initialize();
-			{
-				await using var data = contexts.Get();
-				data.Subjects.Add(new Subject { Name = original });
-				await data.SaveChangesAsync();
-			}
-			var query = contexts.Then().Use<Subject>().To.Single();
-			var sut = new Save<Subject>(new EnlistedScopes(new StandardScopes<Context>(contexts),
-			                                               EmptyAmbientContext.Default));
-			{
-				var first = await query.Await();
-				first.Name.Should().Be(original);
-				first.Name = expected;
-				await sut.Await(first);
-			}
-
-			{
-				var first = await query.Await();
-				first.Name.Should().Be(expected);
-			}
+			await using var data = contexts.Get();
+			data.Subjects.Add(new Subject { Name = original });
+			await data.SaveChangesAsync();
+		}
+		var query = contexts.Then().Use<Subject>().To.Single();
+		var sut = new Save<Subject>(new EnlistedScopes(new StandardScopes<Context>(contexts),
+		                                               EmptyAmbientContext.Default));
+		{
+			var first = await query.Await();
+			first.Name.Should().Be(original);
+			first.Name = expected;
+			await sut.Await(first);
 		}
 
-		[Fact]
-		public async Task VerifyRelationship()
 		{
-			await using var contexts = await new SqlContexts<ContextWithRelationship>().Initialize();
-			{
-				await using var data = contexts.Get();
-				data.Update(new First());
-				await data.SaveChangesAsync();
-			}
+			var first = await query.Await();
+			first.Name.Should().Be(expected);
+		}
+	}
 
-			{
-				await using var data   = contexts.Get();
-				var             first  = await data.Firsts.SingleAsync();
-				var             second = new Second() { First = first };
-				data.Set<First>().Update(first);
-				data.Update(second);
-				await data.SaveChangesAsync();
-			}
-			{
-				await using var data  = contexts.Get();
-				var             count = await data.Set<Second>().CountAsync();
-				count.Should().Be(1);
-			}
+	[Fact]
+	public async Task VerifyRelationship()
+	{
+		await using var contexts = await new SqlContexts<ContextWithRelationship>().Initialize();
+		{
+			await using var data = contexts.Get();
+			data.Update(new First());
+			await data.SaveChangesAsync();
 		}
 
-		sealed class EmptyAmbientContext : Instance<DbContext?>, IAmbientContext
 		{
-			public static EmptyAmbientContext Default { get; } = new();
+			await using var data   = contexts.Get();
+			var             first  = await data.Firsts.SingleAsync();
+			var             second = new Second() { First = first };
+			data.Set<First>().Update(first);
+			data.Update(second);
+			await data.SaveChangesAsync();
+		}
+		{
+			await using var data  = contexts.Get();
+			var             count = await data.Set<Second>().CountAsync();
+			count.Should().Be(1);
+		}
+	}
 
-			EmptyAmbientContext() : base(default) {}
+	sealed class EmptyAmbientContext : Instance<DbContext?>, IAmbientContext
+	{
+		public static EmptyAmbientContext Default { get; } = new();
+
+		EmptyAmbientContext() : base(default) {}
+	}
+
+	sealed class Context : DbContext
+	{
+		public Context(DbContextOptions options) : base(options) {}
+
+		[UsedImplicitly]
+		public DbSet<Subject> Subjects { get; set; } = default!;
+	}
+
+	sealed class ContextWithRelationship : DbContext
+	{
+		public ContextWithRelationship(DbContextOptions options) : base(options) {}
+
+		[UsedImplicitly]
+		public DbSet<First> Firsts { get; set; } = default!;
+
+		[UsedImplicitly]
+		public DbSet<Second> Seconds { get; set; } = default!;
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Second>()
+			            .HasOne(x => x.First)
+			            .WithOne()
+			            .HasForeignKey<Second>("FirstId")
+			            .IsRequired();
+			base.OnModelCreating(modelBuilder);
+		}
+	}
+
+	class Subject
+	{
+		[UsedImplicitly]
+		public virtual Guid Id { get; set; }
+
+		public virtual string Name { [UsedImplicitly] get; set; } = default!;
+	}
+
+	class First
+	{
+		[UsedImplicitly]
+		public virtual Guid Id { get; set; }
+	}
+
+	class Second
+	{
+		[UsedImplicitly]
+		public virtual Guid Id { get; set; }
+
+		public virtual First? First { get; set; }
+	}
+
+	public class Benchmarks
+	{
+		readonly IContexts<Context> _contexts;
+
+		public Benchmarks() : this(new PooledMemoryContexts<Context>()) {}
+
+		Benchmarks(IContexts<Context> contexts) => _contexts = contexts;
+
+		[GlobalSetup]
+		public async Task GlobalSetup()
+		{
+			await using var context = _contexts.Get();
+			await context.Database.EnsureDeletedAsync();
+			await context.Database.EnsureCreatedAsync();
+			context.Subjects.Add(new Subject { Name = "One" });
+			await context.SaveChangesAsync();
 		}
 
-		sealed class Context : DbContext
+		[Benchmark(Baseline = true)]
+		public async Task<object> MeasureUnit()
 		{
-			public Context(DbContextOptions options) : base(options) {}
-
-			[UsedImplicitly]
-			public DbSet<Subject> Subjects { get; set; } = default!;
+			await using var context = _contexts.Get();
+			var             result  = await context.Subjects.SingleAsync();
+			result.Name = "Updated";
+			await context.SaveChangesAsync();
+			return result;
 		}
 
-		sealed class ContextWithRelationship : DbContext
+		[Benchmark]
+		public async Task<object> MeasureAttach()
 		{
-			public ContextWithRelationship(DbContextOptions options) : base(options) {}
-
-			[UsedImplicitly]
-			public DbSet<First> Firsts { get; set; } = default!;
-
-			[UsedImplicitly]
-			public DbSet<Second> Seconds { get; set; } = default!;
-
-			protected override void OnModelCreating(ModelBuilder modelBuilder)
-			{
-				modelBuilder.Entity<Second>()
-				            .HasOne(x => x.First)
-				            .WithOne()
-				            .HasForeignKey<Second>("FirstId")
-				            .IsRequired();
-				base.OnModelCreating(modelBuilder);
-			}
+			await using var context = _contexts.Get();
+			var             result  = await context.Subjects.AsNoTracking().SingleAsync();
+			context.Subjects.Attach(result);
+			result.Name = "Updated";
+			await context.SaveChangesAsync();
+			return result;
 		}
 
-		class Subject
+		[Benchmark]
+		public async Task<object> MeasureSelectAndSave()
 		{
-			[UsedImplicitly]
-			public virtual Guid Id { get; set; }
+			var             result  = await Select();
+			await using var context = _contexts.Get();
+			context.Subjects.Attach(result);
 
-			public virtual string Name { [UsedImplicitly] get; set; } = default!;
+			result.Name = "Updated";
+			await context.SaveChangesAsync();
+			return result;
 		}
 
-		class First
+		async Task<Subject> Select()
 		{
-			[UsedImplicitly]
-			public virtual Guid Id { get; set; }
+			await using var context = _contexts.Get();
+			return await context.Subjects.SingleAsync();
+		}
+	}
+
+	public class DisposeBenchmarks
+	{
+		readonly IContexts<Context> _contexts;
+
+		public DisposeBenchmarks() : this(new PooledMemoryContexts<Context>()) {}
+
+		DisposeBenchmarks(IContexts<Context> contexts) => _contexts = contexts;
+
+		[GlobalSetup]
+		public async Task GlobalSetup()
+		{
+			await using var context = _contexts.Get();
+			await context.Database.EnsureDeletedAsync();
+			await context.Database.EnsureCreatedAsync();
+			context.Subjects.Add(new Subject { Name = "One" });
+			await context.SaveChangesAsync();
 		}
 
-		class Second
+		[Benchmark(Baseline = true)]
+		public void Synchronous()
 		{
-			[UsedImplicitly]
-			public virtual Guid Id { get; set; }
-
-			public virtual First? First { get; set; }
+			using var context = _contexts.Get();
 		}
 
-		public class Benchmarks
+		[Benchmark]
+		public async ValueTask Operation()
 		{
-			readonly IContexts<Context> _contexts;
-
-			public Benchmarks() : this(new PooledMemoryContexts<Context>()) {}
-
-			Benchmarks(IContexts<Context> contexts) => _contexts = contexts;
-
-			[GlobalSetup]
-			public async Task GlobalSetup()
-			{
-				await using var context = _contexts.Get();
-				await context.Database.EnsureDeletedAsync();
-				await context.Database.EnsureCreatedAsync();
-				context.Subjects.Add(new Subject { Name = "One" });
-				await context.SaveChangesAsync();
-			}
-
-			[Benchmark(Baseline = true)]
-			public async Task<object> MeasureUnit()
-			{
-				await using var context = _contexts.Get();
-				var             result  = await context.Subjects.SingleAsync();
-				result.Name = "Updated";
-				await context.SaveChangesAsync();
-				return result;
-			}
-
-			[Benchmark]
-			public async Task<object> MeasureAttach()
-			{
-				await using var context = _contexts.Get();
-				var             result  = await context.Subjects.AsNoTracking().SingleAsync();
-				context.Subjects.Attach(result);
-				result.Name = "Updated";
-				await context.SaveChangesAsync();
-				return result;
-			}
-
-			[Benchmark]
-			public async Task<object> MeasureSelectAndSave()
-			{
-				var             result  = await Select();
-				await using var context = _contexts.Get();
-				context.Subjects.Attach(result);
-
-				result.Name = "Updated";
-				await context.SaveChangesAsync();
-				return result;
-			}
-
-			async Task<Subject> Select()
-			{
-				await using var context = _contexts.Get();
-				return await context.Subjects.SingleAsync();
-			}
+			await using var context = _contexts.Get();
 		}
 
-		public class DisposeBenchmarks
+		[Benchmark]
+		public ValueTask SynchronousOperation()
 		{
-			readonly IContexts<Context> _contexts;
-
-			public DisposeBenchmarks() : this(new PooledMemoryContexts<Context>()) {}
-
-			DisposeBenchmarks(IContexts<Context> contexts) => _contexts = contexts;
-
-			[GlobalSetup]
-			public async Task GlobalSetup()
-			{
-				await using var context = _contexts.Get();
-				await context.Database.EnsureDeletedAsync();
-				await context.Database.EnsureCreatedAsync();
-				context.Subjects.Add(new Subject { Name = "One" });
-				await context.SaveChangesAsync();
-			}
-
-			[Benchmark(Baseline = true)]
-			public void Synchronous()
-			{
-				using var context = _contexts.Get();
-			}
-
-			[Benchmark]
-			public async ValueTask Operation()
-			{
-				await using var context = _contexts.Get();
-			}
-
-			[Benchmark]
-			public ValueTask SynchronousOperation()
-			{
-				using var context = _contexts.Get();
-				return ValueTask.CompletedTask;
-			}
+			using var context = _contexts.Get();
+			return ValueTask.CompletedTask;
 		}
 	}
 }

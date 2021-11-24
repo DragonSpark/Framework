@@ -4,23 +4,22 @@ using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Operations
+namespace DragonSpark.Testing.Model.Operations;
+
+public class OperationTests
 {
-	public class OperationTests
+	sealed class Number : Selecting<string, uint>
 	{
-		sealed class Number : Selecting<string, uint>
-		{
-			public static Number Default { get; } = new Number();
+		public static Number Default { get; } = new Number();
 
-			Number() : base(x => new ValueTask<uint>((uint)x.Length)) {}
-		}
-
-		[Fact]
-		Task Verify() => Number.Default.Then()
-		                       .Select(x => x * 2)
-		                       .Allocate()
-		                       .Get()
-		                       .Get("Hello World!")
-		                       .ContinueWith(x => x.Result.Should().Be(24));
+		Number() : base(x => new ValueTask<uint>((uint)x.Length)) {}
 	}
+
+	[Fact]
+	Task Verify() => Number.Default.Then()
+	                       .Select(x => x * 2)
+	                       .Allocate()
+	                       .Get()
+	                       .Get("Hello World!")
+	                       .ContinueWith(x => x.Result.Should().Be(24));
 }

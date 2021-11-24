@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class Location : TwitterClaim
-	{
-		public static Location Default { get; } = new Location();
+﻿namespace DragonSpark.Identity.Twitter.Claims;
 
-		Location() : base(nameof(Location).ToLower()) {}
-	}
+public sealed class Location : TwitterClaim
+{
+	public static Location Default { get; } = new Location();
+
+	Location() : base(nameof(Location).ToLower()) {}
 }

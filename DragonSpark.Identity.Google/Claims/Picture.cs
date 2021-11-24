@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Google.Claims
-{
-	public sealed class Picture : GoogleClaim
-	{
-		public static Picture Default { get; } = new Picture();
+﻿namespace DragonSpark.Identity.Google.Claims;
 
-		Picture() : base(nameof(Picture).ToLowerInvariant()) {}
-	}
+public sealed class Picture : GoogleClaim
+{
+	public static Picture Default { get; } = new Picture();
+
+	Picture() : base(nameof(Picture).ToLowerInvariant()) {}
 }

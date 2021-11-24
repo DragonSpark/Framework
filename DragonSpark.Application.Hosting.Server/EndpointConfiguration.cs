@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace DragonSpark.Application.Hosting.Server
-{
-	sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
-	{
-		public static EndpointConfiguration Default { get; } = new();
+namespace DragonSpark.Application.Hosting.Server;
 
-		EndpointConfiguration() : base(x => x.MapControllers()) {}
-	}
+sealed class EndpointConfiguration : Command<IEndpointRouteBuilder>
+{
+	public static EndpointConfiguration Default { get; } = new();
+
+	EndpointConfiguration() : base(x => x.MapControllers()) {}
 }

@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Application.Compose;
 
-namespace DragonSpark.Identity.Google
+namespace DragonSpark.Identity.Google;
+
+public static class Extensions
 {
-	public static class Extensions
-	{
-		public static AuthenticationContext UsingGoogle(this AuthenticationContext @this)
-			=> @this.Append(ConfigureApplication.Default);
-	}
+	public static AuthenticationContext UsingGoogle(this AuthenticationContext @this)
+		=> @this.Append(ConfigureApplication.Default);
 }

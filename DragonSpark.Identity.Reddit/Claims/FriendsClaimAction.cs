@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
 
-namespace DragonSpark.Identity.Reddit.Claims
-{
-	public sealed class FriendsClaimAction : ClaimAction
-	{
-		public static FriendsClaimAction Default { get; } = new FriendsClaimAction();
+namespace DragonSpark.Identity.Reddit.Claims;
 
-		FriendsClaimAction() : base(Friends.Default, "num_friends", "integer") {}
-	}
+public sealed class FriendsClaimAction : ClaimAction
+{
+	public static FriendsClaimAction Default { get; } = new FriendsClaimAction();
+
+	FriendsClaimAction() : base(Friends.Default, "num_friends", "integer") {}
 }

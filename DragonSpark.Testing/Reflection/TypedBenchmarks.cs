@@ -1,70 +1,69 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
 
-namespace DragonSpark.Testing.Reflection
+namespace DragonSpark.Testing.Reflection;
+
+public class TypedBenchmarks
 {
-	public class TypedBenchmarks
+	readonly Container _container;
+	readonly Structure _structure;
+
+	public TypedBenchmarks()
+		: this(new Container(), new Structure(() => "Hello", () => "World", () => "Again!")) {}
+
+	public TypedBenchmarks(Container container, Structure structure)
 	{
-		readonly Container _container;
-		readonly Structure _structure;
+		_container = container;
+		_structure = structure;
+	}
 
-		public TypedBenchmarks()
-			: this(new Container(), new Structure(() => "Hello", () => "World", () => "Again!")) {}
+	[Benchmark]
+	public Container Class()
+		=> _container.WithFirst(() => "Hello").WithSecond(() => "World").WithThird(() => "Again!");
 
-		public TypedBenchmarks(Container container, Structure structure)
+	[Benchmark]
+	public Structure Structured()
+		=> _structure.WithFirst(() => "Hello").WithSecond(() => "World").WithThird(() => "Again!");
+
+	public sealed class Container
+	{
+		readonly Func<string> _first;
+		readonly Func<string> _second;
+		readonly Func<string> _third;
+
+		public Container() : this(() => "Hello", () => "World", () => "Again!") {}
+
+		public Container(Func<string> first, Func<string> second, Func<string> third)
 		{
-			_container = container;
-			_structure = structure;
+			_first  = first;
+			_second = second;
+			_third  = third;
 		}
 
-		[Benchmark]
-		public Container Class()
-			=> _container.WithFirst(() => "Hello").WithSecond(() => "World").WithThird(() => "Again!");
+		public Container WithFirst(Func<string> parameter) => new Container(parameter, _second, _third);
 
-		[Benchmark]
-		public Structure Structured()
-			=> _structure.WithFirst(() => "Hello").WithSecond(() => "World").WithThird(() => "Again!");
+		public Container WithSecond(Func<string> parameter) => new Container(_first, parameter, _third);
 
-		public sealed class Container
+		public Container WithThird(Func<string> parameter) => new Container(_first, _second, parameter);
+	}
+
+	public readonly struct Structure
+	{
+		readonly Func<string> _first;
+		readonly Func<string> _second;
+		readonly Func<string> _third;
+
+		public Structure(Func<string> first, Func<string> second, Func<string> third)
 		{
-			readonly Func<string> _first;
-			readonly Func<string> _second;
-			readonly Func<string> _third;
-
-			public Container() : this(() => "Hello", () => "World", () => "Again!") {}
-
-			public Container(Func<string> first, Func<string> second, Func<string> third)
-			{
-				_first  = first;
-				_second = second;
-				_third  = third;
-			}
-
-			public Container WithFirst(Func<string> parameter) => new Container(parameter, _second, _third);
-
-			public Container WithSecond(Func<string> parameter) => new Container(_first, parameter, _third);
-
-			public Container WithThird(Func<string> parameter) => new Container(_first, _second, parameter);
+			_first  = first;
+			_second = second;
+			_third  = third;
 		}
 
-		public readonly struct Structure
-		{
-			readonly Func<string> _first;
-			readonly Func<string> _second;
-			readonly Func<string> _third;
+		public Structure WithFirst(Func<string> parameter) => new Structure(parameter, _second, _third);
 
-			public Structure(Func<string> first, Func<string> second, Func<string> third)
-			{
-				_first  = first;
-				_second = second;
-				_third  = third;
-			}
+		public Structure WithSecond(Func<string> parameter) => new Structure(_first, parameter, _third);
 
-			public Structure WithFirst(Func<string> parameter) => new Structure(parameter, _second, _third);
-
-			public Structure WithSecond(Func<string> parameter) => new Structure(_first, parameter, _third);
-
-			public Structure WithThird(Func<string> parameter) => new Structure(_first, _second, parameter);
-		}
+		public Structure WithThird(Func<string> parameter) => new Structure(_first, _second, parameter);
 	}
 }

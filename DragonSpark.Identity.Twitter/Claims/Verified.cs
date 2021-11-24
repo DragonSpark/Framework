@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class Verified : TwitterClaim
-	{
-		public static Verified Default { get; } = new Verified();
+﻿namespace DragonSpark.Identity.Twitter.Claims;
 
-		Verified() : base(nameof(Verified).ToLower()) {}
-	}
+public sealed class Verified : TwitterClaim
+{
+	public static Verified Default { get; } = new Verified();
+
+	Verified() : base(nameof(Verified).ToLower()) {}
 }

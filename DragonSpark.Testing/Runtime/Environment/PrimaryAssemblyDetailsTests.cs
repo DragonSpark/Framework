@@ -4,17 +4,16 @@ using FluentAssertions;
 using System.Reflection;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime.Environment
+namespace DragonSpark.Testing.Runtime.Environment;
+
+public sealed class PrimaryAssemblyDetailsTests
 {
-	public sealed class PrimaryAssemblyDetailsTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			var details  = PrimaryAssemblyDetails.Default.Get();
-			var assembly = Assembly.GetExecutingAssembly();
-			details.Version.Should().BeEquivalentTo(assembly.GetName().Version);
-			details.Title.Should().NotBeNull().And.Be(AssemblyTitle.Default.Get(assembly));
-		}
+		var details  = PrimaryAssemblyDetails.Default.Get();
+		var assembly = Assembly.GetExecutingAssembly();
+		details.Version.Should().BeEquivalentTo(assembly.GetName().Version);
+		details.Title.Should().NotBeNull().And.Be(AssemblyTitle.Default.Get(assembly));
 	}
 }

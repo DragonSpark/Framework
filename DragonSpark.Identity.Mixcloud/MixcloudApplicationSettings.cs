@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Mixcloud
-{
-	public sealed class MixcloudApplicationSettings
-	{
-		public string Key { get; set; } = null!;
+﻿namespace DragonSpark.Identity.Mixcloud;
 
-		public string Secret { get; set; } = null!;
-	}
+public sealed class MixcloudApplicationSettings
+{
+	public string Key { get; set; } = null!;
+
+	public string Secret { get; set; } = null!;
 }

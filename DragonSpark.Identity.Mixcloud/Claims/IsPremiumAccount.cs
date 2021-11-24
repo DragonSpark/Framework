@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Mixcloud.Claims
-{
-	public sealed class IsPremiumAccount : MixcloudClaim
-	{
-		public static IsPremiumAccount Default { get; } = new();
+﻿namespace DragonSpark.Identity.Mixcloud.Claims;
 
-		IsPremiumAccount() : base(nameof(IsPremiumAccount).ToLower()) {}
-	}
+public sealed class IsPremiumAccount : MixcloudClaim
+{
+	public static IsPremiumAccount Default { get; } = new();
+
+	IsPremiumAccount() : base(nameof(IsPremiumAccount).ToLower()) {}
 }

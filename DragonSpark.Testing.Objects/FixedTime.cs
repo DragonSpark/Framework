@@ -2,10 +2,9 @@
 using DragonSpark.Runtime;
 using System;
 
-namespace DragonSpark.Testing.Objects
+namespace DragonSpark.Testing.Objects;
+
+public class FixedTime : Instance<DateTimeOffset>, ITime
 {
-	public class FixedTime : Instance<DateTimeOffset>, ITime
-	{
-		public FixedTime(DateTimeOffset instance) : base(instance) {}
-	}
+	public FixedTime(DateTimeOffset instance) : base(instance) {}
 }

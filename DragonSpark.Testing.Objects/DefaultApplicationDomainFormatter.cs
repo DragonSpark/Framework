@@ -1,14 +1,13 @@
 ﻿using DragonSpark.Text;
 using System;
 
-namespace DragonSpark.Testing.Objects
+namespace DragonSpark.Testing.Objects;
+
+sealed class DefaultApplicationDomainFormatter : IFormatter<AppDomain>
 {
-	sealed class DefaultApplicationDomainFormatter : IFormatter<AppDomain>
-	{
-		public static DefaultApplicationDomainFormatter Default { get; } = new DefaultApplicationDomainFormatter();
+	public static DefaultApplicationDomainFormatter Default { get; } = new DefaultApplicationDomainFormatter();
 
-		DefaultApplicationDomainFormatter() {}
+	DefaultApplicationDomainFormatter() {}
 
-		public string Get(AppDomain parameter) => $"AppDomain: {parameter.FriendlyName}";
-	}
+	public string Get(AppDomain parameter) => $"AppDomain: {parameter.FriendlyName}";
 }

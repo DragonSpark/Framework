@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Amazon
-{
-	public sealed class AmazonApplicationSettings
-	{
-		public string Key { get; set; }  = null!;
+﻿namespace DragonSpark.Identity.Amazon;
 
-		public string Secret { get; set; }  = null!;
-	}
+public sealed class AmazonApplicationSettings
+{
+	public string Key { get; set; }  = null!;
+
+	public string Secret { get; set; }  = null!;
 }

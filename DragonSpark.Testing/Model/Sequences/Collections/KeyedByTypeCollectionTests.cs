@@ -2,27 +2,26 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Sequences.Collections
+namespace DragonSpark.Testing.Model.Sequences.Collections;
+
+public sealed class KeyedByTypeCollectionTests
 {
-	public sealed class KeyedByTypeCollectionTests
+	public interface ISubject {}
+
+	sealed class Subject : ISubject {}
+
+	sealed class Other : ISubject {}
+
+	[Fact]
+	public void Verify()
 	{
-		public interface ISubject {}
+		var first  = new Subject();
+		var second = new Subject();
+		var other  = new Other();
 
-		sealed class Subject : ISubject {}
+		var sut = new KeyedByTypeCollection<ISubject> {first, second, other};
 
-		sealed class Other : ISubject {}
-
-		[Fact]
-		public void Verify()
-		{
-			var first  = new Subject();
-			var second = new Subject();
-			var other  = new Other();
-
-			var sut = new KeyedByTypeCollection<ISubject> {first, second, other};
-
-			sut[typeof(Other)].Should().BeSameAs(other);
-			sut[typeof(Subject)].Should().BeSameAs(second);
-		}
+		sut[typeof(Other)].Should().BeSameAs(other);
+		sut[typeof(Subject)].Should().BeSameAs(second);
 	}
 }

@@ -10,41 +10,40 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing
+namespace DragonSpark.Application.Testing;
+
+public sealed class IdentityTests
 {
-	public sealed class IdentityTests
+	sealed class ApplicationStorage : IdentityDbContext<User>
 	{
-		sealed class ApplicationStorage : IdentityDbContext<User>
-		{
-			public ApplicationStorage(DbContextOptions<ApplicationStorage> options) : base(options) {}
-		}
+		public ApplicationStorage(DbContextOptions<ApplicationStorage> options) : base(options) {}
+	}
 
-		sealed class User : IdentityUser
-		{
-			// ReSharper disable once UnusedMember.Local
-			public string DisplayName { get; set; } = default!;
-		}
+	sealed class User : IdentityUser
+	{
+		// ReSharper disable once UnusedMember.Local
+		public string DisplayName { get; set; } = default!;
+	}
 
-		sealed class StorageBuilder : StorageBuilder<ApplicationStorage>
-		{
-			[UsedImplicitly]
-			public static StorageBuilder Default { get; } = new StorageBuilder();
+	sealed class StorageBuilder : StorageBuilder<ApplicationStorage>
+	{
+		[UsedImplicitly]
+		public static StorageBuilder Default { get; } = new StorageBuilder();
 
-			StorageBuilder() : base(x => x.UseInMemoryDatabase(Guid.NewGuid().ToString())
-			                              .EnableSensitiveDataLogging()) {}
-		}
+		StorageBuilder() : base(x => x.UseInMemoryDatabase(Guid.NewGuid().ToString())
+		                              .EnableSensitiveDataLogging()) {}
+	}
 
-		[Fact]
-		public async ValueTask Verify()
-		{
-			using var host = await Start.A.Host()
-			                            .WithTestServer()
-			                            .WithDefaultComposition()
-			                            .RegisterModularity()
-			                            .Operations()
-			                            .Run();
+	[Fact]
+	public async ValueTask Verify()
+	{
+		using var host = await Start.A.Host()
+		                            .WithTestServer()
+		                            .WithDefaultComposition()
+		                            .RegisterModularity()
+		                            .Operations()
+		                            .Run();
 
-			await using var context = StorageBuilder.Default.Get();
-		}
+		await using var context = StorageBuilder.Default.Get();
 	}
 }

@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims
-{
-	public sealed class Followers : TwitterClaim
-	{
-		public static Followers Default { get; } = new Followers();
+﻿namespace DragonSpark.Identity.Twitter.Claims;
 
-		Followers() : base(nameof(Followers).ToLower()) {}
-	}
+public sealed class Followers : TwitterClaim
+{
+	public static Followers Default { get; } = new Followers();
+
+	Followers() : base(nameof(Followers).ToLower()) {}
 }

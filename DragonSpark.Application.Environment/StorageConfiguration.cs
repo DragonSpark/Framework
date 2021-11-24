@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Application.Entities.Configure;
 
-namespace DragonSpark.Application.Environment
-{
-	public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
-	{
-		public static StorageConfiguration Default { get; } = new StorageConfiguration();
+namespace DragonSpark.Application.Environment;
 
-		StorageConfiguration() : base(EmptyStorageConfiguration.Default.Get) {}
-	}
+public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
+{
+	public static StorageConfiguration Default { get; } = new StorageConfiguration();
+
+	StorageConfiguration() : base(EmptyStorageConfiguration.Default.Get) {}
 }

@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Reddit.Claims
-{
-	public sealed class Verified : RedditClaim
-	{
-		public static Verified Default { get; } = new Verified();
+﻿namespace DragonSpark.Identity.Reddit.Claims;
 
-		Verified() : base(nameof(Verified).ToLowerInvariant()) {}
-	}
+public sealed class Verified : RedditClaim
+{
+	public static Verified Default { get; } = new Verified();
+
+	Verified() : base(nameof(Verified).ToLowerInvariant()) {}
 }

@@ -5,160 +5,159 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Runtime
+namespace DragonSpark.Application.Testing.Runtime;
+
+public sealed class TransactionalTests
 {
-	public sealed class TransactionalTests
+	readonly static Guid[] Ids = {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+
+	sealed class Subject
 	{
-		readonly static Guid[] Ids = {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+		public Guid Id { get; set; }
 
-		sealed class Subject
+		public string Message { get; set; } = default!;
+	}
+
+	sealed class Transactional : Transactional<Subject>
+	{
+		public static Transactional Default { get; } = new Transactional();
+
+		Transactional() : base(new DelegatedEqualityComparer<Subject, Guid>(x => x.Id),
+		                       x => x.Item1.Message != x.Item2.Message) {}
+	}
+
+	[Fact]
+	public void Verify()
+	{
+		var stored = new[]
 		{
-			public Guid Id { get; set; }
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			public string Message { get; set; } = default!;
-		}
-
-		sealed class Transactional : Transactional<Subject>
+		var current = new[]
 		{
-			public static Transactional Default { get; } = new Transactional();
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			Transactional() : base(new DelegatedEqualityComparer<Subject, Guid>(x => x.Id),
-			                       x => x.Item1.Message != x.Item2.Message) {}
-		}
+		using var transactions = Transactional.Default.Get(new (stored, current));
+		transactions.Add.Length.Should().Be(0);
+		transactions.Update.Length.Should().Be(0);
+		transactions.Delete.Length.Should().Be(0);
+	}
 
-		[Fact]
-		public void Verify()
+	[Fact]
+	public void VerifyAdd()
+	{
+		var stored = new[]
 		{
-			var stored = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			var current = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
-
-			using var transactions = Transactional.Default.Get(new (stored, current));
-			transactions.Add.Length.Should().Be(0);
-			transactions.Update.Length.Should().Be(0);
-			transactions.Delete.Length.Should().Be(0);
-		}
-
-		[Fact]
-		public void VerifyAdd()
+		var current = new[]
 		{
-			var stored = new[]
-			{
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			var current = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+		using var transactions = Transactional.Default.Get(new (stored, current));
+		transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[0]);
+		transactions.Update.AsSpan().ToArray().Should().BeEmpty();
+		transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
+	}
 
-			using var transactions = Transactional.Default.Get(new (stored, current));
-			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[0]);
-			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
-			transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
-		}
-
-		[Fact]
-		public void VerifyAddUpdateDelete()
+	[Fact]
+	public void VerifyAddUpdateDelete()
+	{
+		var stored = new[]
 		{
-			var stored = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			var current = new[]
-			{
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third - Modified"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
-
-			using var transactions = Transactional.Default.Get(new (stored, current));
-			transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[2]);
-			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
-			subject.Should().BeSameAs(stored[2]);
-			source.Should().BeSameAs(current[1]);
-			transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[0]);
-		}
-
-		[Fact]
-		public void VerifyDelete()
+		var current = new[]
 		{
-			var stored = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third - Modified"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			var current = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+		using var transactions = Transactional.Default.Get(new (stored, current));
+		transactions.Add.AsSpan().ToArray().Only().Should().BeSameAs(current[2]);
+		var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
+		subject.Should().BeSameAs(stored[2]);
+		source.Should().BeSameAs(current[1]);
+		transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[0]);
+	}
 
-			using var transactions = Transactional.Default.Get(new (stored, current));
-			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
-			transactions.Update.AsSpan().ToArray().Should().BeEmpty();
-			transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[2]);
-		}
-
-		[Fact]
-		public void VerifyModified()
+	[Fact]
+	public void VerifyDelete()
+	{
+		var stored = new[]
 		{
-			var stored = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			var current = new[]
-			{
-				new Subject {Id = Ids[0], Message = "First"},
-				new Subject {Id = Ids[1], Message = "Second"},
-				new Subject {Id = Ids[2], Message = "Third"},
-				new Subject {Id = Ids[3], Message = "Fourth - Modified"},
-				new Subject {Id = Ids[4], Message = "Fifth"}
-			};
+		var current = new[]
+		{
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
 
-			using var transactions = Transactional.Default.Get(new (stored, current));
-			transactions.Add.AsSpan().ToArray().Should().BeEmpty();
-			var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
-			subject.Should().BeSameAs(stored[3]);
-			source.Should().BeSameAs(current[3]);
-			transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
-		}
+		using var transactions = Transactional.Default.Get(new (stored, current));
+		transactions.Add.AsSpan().ToArray().Should().BeEmpty();
+		transactions.Update.AsSpan().ToArray().Should().BeEmpty();
+		transactions.Delete.AsSpan().ToArray().Only().Should().BeSameAs(stored[2]);
+	}
+
+	[Fact]
+	public void VerifyModified()
+	{
+		var stored = new[]
+		{
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
+
+		var current = new[]
+		{
+			new Subject {Id = Ids[0], Message = "First"},
+			new Subject {Id = Ids[1], Message = "Second"},
+			new Subject {Id = Ids[2], Message = "Third"},
+			new Subject {Id = Ids[3], Message = "Fourth - Modified"},
+			new Subject {Id = Ids[4], Message = "Fifth"}
+		};
+
+		using var transactions = Transactional.Default.Get(new (stored, current));
+		transactions.Add.AsSpan().ToArray().Should().BeEmpty();
+		var (subject, source) = transactions.Update.AsSpan().ToArray().Only();
+		subject.Should().BeSameAs(stored[3]);
+		source.Should().BeSameAs(current[3]);
+		transactions.Delete.AsSpan().ToArray().Should().BeEmpty();
 	}
 }

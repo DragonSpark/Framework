@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Azure
+﻿namespace DragonSpark.Azure;
+
+public sealed class AzureStorageConfiguration
 {
-	public sealed class AzureStorageConfiguration
-	{
-		public string Connection { get; set; } = default!;
-	}
+	public string Connection { get; set; } = default!;
 }

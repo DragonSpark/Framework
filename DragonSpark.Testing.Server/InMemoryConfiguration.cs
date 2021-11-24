@@ -2,18 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Testing.Server
+namespace DragonSpark.Testing.Server;
+
+sealed class InMemoryConfiguration : ICommand<DbContextOptionsBuilder>
 {
-	sealed class InMemoryConfiguration : ICommand<DbContextOptionsBuilder>
+	public static InMemoryConfiguration Default { get; } = new InMemoryConfiguration();
+
+	InMemoryConfiguration() {}
+
+	public void Execute(DbContextOptionsBuilder parameter)
 	{
-		public static InMemoryConfiguration Default { get; } = new InMemoryConfiguration();
-
-		InMemoryConfiguration() {}
-
-		public void Execute(DbContextOptionsBuilder parameter)
-		{
-			parameter.UseInMemoryDatabase(Guid.NewGuid().ToString())
-			         .EnableSensitiveDataLogging();
-		}
+		parameter.UseInMemoryDatabase(Guid.NewGuid().ToString())
+		         .EnableSensitiveDataLogging();
 	}
 }

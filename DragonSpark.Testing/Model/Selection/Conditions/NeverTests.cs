@@ -3,16 +3,15 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Selection.Conditions
+namespace DragonSpark.Testing.Model.Selection.Conditions;
+
+public class NeverTests
 {
-	public class NeverTests
+	[Fact]
+	public void Coverage()
 	{
-		[Fact]
-		public void Coverage()
-		{
-			Never.Default.Get(It.IsAny<object>())
-			     .Should()
-			     .BeFalse();
-		}
+		Never.Default.Get(It.IsAny<object>())
+		     .Should()
+		     .BeFalse();
 	}
 }

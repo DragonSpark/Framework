@@ -2,14 +2,13 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Selection.Conditions
+namespace DragonSpark.Testing.Model.Selection.Conditions;
+
+public class ConditionTests
 {
-	public class ConditionTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			new Condition<object>(Always<object>.Default).Get(new object()).Should().BeTrue();
-		}
+		new Condition<object>(Always<object>.Default).Get(new object()).Should().BeTrue();
 	}
 }

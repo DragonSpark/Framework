@@ -7,59 +7,58 @@ using Xunit;
 
 // ReSharper disable All
 
-namespace DragonSpark.Testing.Application.Runtime.Activation
+namespace DragonSpark.Testing.Application.Runtime.Activation;
+
+public class ActivationsTests
 {
-	public class ActivationsTests
+	sealed class StartValues : ISelect<string, int>
 	{
-		sealed class StartValues : ISelect<string, int>
-		{
-			public static StartValues Default { get; } = new StartValues();
+		public static StartValues Default { get; } = new StartValues();
 
-			StartValues() {}
+		StartValues() {}
 
-			public int Get(string parameter) => parameter.Length;
-		}
+		public int Get(string parameter) => parameter.Length;
+	}
 
-		sealed class StartReferences : ISelect<int, string>
-		{
-			public static StartReferences Default { get; } = new StartReferences();
+	sealed class StartReferences : ISelect<int, string>
+	{
+		public static StartReferences Default { get; } = new StartReferences();
 
-			StartReferences() {}
+		StartReferences() {}
 
-			public string Get(int parameter) => "Hello World";
-		}
+		public string Get(int parameter) => "Hello World";
+	}
 
-		sealed class Values : ISelect<Type, int>, IActivateUsing<int>
-		{
-			readonly int _number;
+	sealed class Values : ISelect<Type, int>, IActivateUsing<int>
+	{
+		readonly int _number;
 
-			public Values(int number) => _number = number;
+		public Values(int number) => _number = number;
 
-			public int Get(Type parameter) => _number + parameter.AssemblyQualifiedName.Verify().Length;
-		}
+		public int Get(Type parameter) => _number + parameter.AssemblyQualifiedName.Verify().Length;
+	}
 
-		sealed class References : ISelect<int, Type>, IActivateUsing<string>
-		{
-			public References(string message) => Message = message;
+	sealed class References : ISelect<int, Type>, IActivateUsing<string>
+	{
+		public References(string message) => Message = message;
 
-			public string Message { get; }
+		public string Message { get; }
 
-			public Type Get(int parameter) => GetType();
-		}
+		public Type Get(int parameter) => GetType();
+	}
 
-		[Fact]
-		public void VerifyReferences()
-		{
-			var source = StartReferences.Default.Then().StoredActivation<References>().Get();
-			source.Get(123).Should().BeSameAs(source.Get(123));
-		}
+	[Fact]
+	public void VerifyReferences()
+	{
+		var source = StartReferences.Default.Then().StoredActivation<References>().Get();
+		source.Get(123).Should().BeSameAs(source.Get(123));
+	}
 
-		[Fact]
-		public void VerifyValues()
-		{
-			var          source    = StartValues.Default.Then().StoredActivation<Values>().Get();
-			const string parameter = "First";
-			source.Get(parameter).Should().NotBeSameAs(source.Get(parameter));
-		}
+	[Fact]
+	public void VerifyValues()
+	{
+		var          source    = StartValues.Default.Then().StoredActivation<Values>().Get();
+		const string parameter = "First";
+		source.Get(parameter).Should().NotBeSameAs(source.Get(parameter));
 	}
 }

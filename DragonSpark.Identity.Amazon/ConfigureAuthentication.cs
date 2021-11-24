@@ -2,28 +2,27 @@
 using DragonSpark.Model.Commands;
 using System;
 
-namespace DragonSpark.Identity.Amazon
+namespace DragonSpark.Identity.Amazon;
+
+sealed class ConfigureAuthentication : ICommand<AmazonAuthenticationOptions>
 {
-	sealed class ConfigureAuthentication : ICommand<AmazonAuthenticationOptions>
+	readonly Func<AmazonApplicationSettings>     _settings;
+	readonly Action<AmazonAuthenticationOptions> _configure;
+
+	public ConfigureAuthentication(Func<AmazonApplicationSettings> settings,
+	                               Action<AmazonAuthenticationOptions> configure)
 	{
-		readonly Func<AmazonApplicationSettings>   _settings;
-		readonly Action<AmazonAuthenticationOptions> _configure;
+		_settings  = settings;
+		_configure = configure;
+	}
 
-		public ConfigureAuthentication(Func<AmazonApplicationSettings> settings,
-		                               Action<AmazonAuthenticationOptions> configure)
-		{
-			_settings  = settings;
-			_configure = configure;
-		}
+	public void Execute(AmazonAuthenticationOptions parameter)
+	{
+		var settings = _settings();
 
-		public void Execute(AmazonAuthenticationOptions parameter)
-		{
-			var settings = _settings();
+		parameter.ClientId     = settings.Key;
+		parameter.ClientSecret = settings.Secret;
 
-			parameter.ClientId     = settings.Key;
-			parameter.ClientSecret = settings.Secret;
-
-			_configure(parameter);
-		}
+		_configure(parameter);
 	}
 }

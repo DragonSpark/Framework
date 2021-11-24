@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Hosting.xUnit
-{
-	[AttributeUsage(AttributeTargets.Method)]
-	public class TestPriorityAttribute : Attribute
-	{
-		public TestPriorityAttribute(int priority) => Priority = priority;
+namespace DragonSpark.Application.Hosting.xUnit;
 
-		public int Priority { get; }
-	}
+[AttributeUsage(AttributeTargets.Method)]
+public class TestPriorityAttribute : Attribute
+{
+	public TestPriorityAttribute(int priority) => Priority = priority;
+
+	public int Priority { get; }
 }

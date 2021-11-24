@@ -2,17 +2,16 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Azure.WebJobs.Host;
 
-namespace DragonSpark.Application.Hosting.Azure.WebJobs
+namespace DragonSpark.Application.Hosting.Azure.WebJobs;
+
+sealed class DefaultQueueConfiguration : ICommand<QueuesOptions>
 {
-	sealed class DefaultQueueConfiguration : ICommand<QueuesOptions>
+	public static DefaultQueueConfiguration Default { get; } = new DefaultQueueConfiguration();
+
+	DefaultQueueConfiguration() {}
+
+	public void Execute(QueuesOptions parameter)
 	{
-		public static DefaultQueueConfiguration Default { get; } = new DefaultQueueConfiguration();
-
-		DefaultQueueConfiguration() {}
-
-		public void Execute(QueuesOptions parameter)
-		{
-			parameter.MessageEncoding = QueueMessageEncoding.None;
-		}
+		parameter.MessageEncoding = QueueMessageEncoding.None;
 	}
 }

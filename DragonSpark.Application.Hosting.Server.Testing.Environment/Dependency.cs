@@ -1,4 +1,3 @@
-﻿namespace DragonSpark.Application.Hosting.Server.Testing.Environment
-{
-	public class Dependency : IDependency {}
-}
+﻿namespace DragonSpark.Application.Hosting.Server.Testing.Environment;
+
+public class Dependency : IDependency {}

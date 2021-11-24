@@ -3,32 +3,31 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime.Activation
+namespace DragonSpark.Testing.Runtime.Activation;
+
+public class HasSingletonPropertyTests
 {
-	public class HasSingletonPropertyTests
+	class Contains
 	{
-		class Contains
-		{
-			[UsedImplicitly]
-			public static Contains Default { get; } = new Contains();
+		[UsedImplicitly]
+		public static Contains Default { get; } = new Contains();
 
-			Contains() {}
-		}
+		Contains() {}
+	}
 
-		[Fact]
-		public void Is()
-		{
-			HasSingletonProperty.Default.Get(typeof(Contains))
-			                    .Should()
-			                    .BeTrue();
-		}
+	[Fact]
+	public void Is()
+	{
+		HasSingletonProperty.Default.Get(typeof(Contains))
+		                    .Should()
+		                    .BeTrue();
+	}
 
-		[Fact]
-		public void IsNot()
-		{
-			HasSingletonProperty.Default.Get(GetType())
-			                    .Should()
-			                    .BeFalse();
-		}
+	[Fact]
+	public void IsNot()
+	{
+		HasSingletonProperty.Default.Get(GetType())
+		                    .Should()
+		                    .BeFalse();
 	}
 }

@@ -1,11 +1,10 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
 
-namespace DragonSpark.Identity.Mixcloud.Claims
-{
-	public class CloudCastsAction : ClaimAction
-	{
-		public static CloudCastsAction Default { get; } = new();
+namespace DragonSpark.Identity.Mixcloud.Claims;
 
-		CloudCastsAction() : base(CloudCasts.Default, "cloudcast_count", "integer") {}
-	}
+public class CloudCastsAction : ClaimAction
+{
+	public static CloudCastsAction Default { get; } = new();
+
+	CloudCastsAction() : base(CloudCasts.Default, "cloudcast_count", "integer") {}
 }

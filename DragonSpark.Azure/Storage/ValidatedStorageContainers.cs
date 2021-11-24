@@ -2,11 +2,10 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Azure.Storage
+namespace DragonSpark.Azure.Storage;
+
+sealed class ValidatedStorageContainers : Select<string, BlobContainerClient>, IStorageContainers
 {
-	sealed class ValidatedStorageContainers : Select<string, BlobContainerClient>, IStorageContainers
-	{
-		public ValidatedStorageContainers(IStorageContainers previous)
-			: base(Start.A.Selection<string>().By.Calling(x => x.ToLowerInvariant()).Select(previous)) {}
-	}
+	public ValidatedStorageContainers(IStorageContainers previous)
+		: base(Start.A.Selection<string>().By.Calling(x => x.ToLowerInvariant()).Select(previous)) {}
 }

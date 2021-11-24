@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Twitter
-{
-	public sealed class TwitterApplicationSettings
-	{
-		public string Key { get; set; } = null!;
+﻿namespace DragonSpark.Identity.Twitter;
 
-		public string Secret { get; set; } = null!;
-	}
+public sealed class TwitterApplicationSettings
+{
+	public string Key { get; set; } = null!;
+
+	public string Secret { get; set; } = null!;
 }

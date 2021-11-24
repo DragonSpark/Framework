@@ -3,26 +3,25 @@ using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Model.Commands;
 using System;
 
-namespace DragonSpark.Identity.Mixcloud
+namespace DragonSpark.Identity.Mixcloud;
+
+sealed class ConfigureAuthentication : ICommand<MixcloudAuthenticationOptions>
 {
-	sealed class ConfigureAuthentication : ICommand<MixcloudAuthenticationOptions>
+	readonly Func<MixcloudApplicationSettings> _settings;
+	readonly IClaimAction                      _claims;
+
+	public ConfigureAuthentication(Func<MixcloudApplicationSettings> settings, IClaimAction claims)
 	{
-		readonly Func<MixcloudApplicationSettings> _settings;
-		readonly IClaimAction                      _claims;
+		_settings = settings;
+		_claims   = claims;
+	}
 
-		public ConfigureAuthentication(Func<MixcloudApplicationSettings> settings, IClaimAction claims)
-		{
-			_settings = settings;
-			_claims   = claims;
-		}
+	public void Execute(MixcloudAuthenticationOptions parameter)
+	{
+		var settings = _settings();
+		parameter.ClientId     = settings.Key;
+		parameter.ClientSecret = settings.Secret;
 
-		public void Execute(MixcloudAuthenticationOptions parameter)
-		{
-			var settings = _settings();
-			parameter.ClientId     = settings.Key;
-			parameter.ClientSecret = settings.Secret;
-
-			_claims.Execute(parameter.ClaimActions);
-		}
+		_claims.Execute(parameter.ClaimActions);
 	}
 }

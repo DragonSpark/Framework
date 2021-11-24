@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Patreon
-{
-	public sealed class PatreonApplicationSettings
-	{
-		public string Key { get; set; } = null!;
+﻿namespace DragonSpark.Identity.Patreon;
 
-		public string Secret { get; set; } = null!;
-	}
+public sealed class PatreonApplicationSettings
+{
+	public string Key { get; set; } = null!;
+
+	public string Secret { get; set; } = null!;
 }

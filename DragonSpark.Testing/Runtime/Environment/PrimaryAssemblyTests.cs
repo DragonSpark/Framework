@@ -2,14 +2,13 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime.Environment
+namespace DragonSpark.Testing.Runtime.Environment;
+
+public sealed class PrimaryAssemblyTests
 {
-	public sealed class PrimaryAssemblyTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			PrimaryAssembly.Default.Get().Should().BeSameAs(GetType().Assembly);
-		}
+		PrimaryAssembly.Default.Get().Should().BeSameAs(GetType().Assembly);
 	}
 }

@@ -5,16 +5,15 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace DragonSpark.Testing.Reflection.Collections
+namespace DragonSpark.Testing.Reflection.Collections;
+
+public sealed class CollectionInnerTypeTests
 {
-	public sealed class CollectionInnerTypeTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			CollectionInnerType.Default.Get(A.Type<ICollection<DateTimeOffset>>())
-			                   .Should()
-			                   .Be(A.Type<DateTimeOffset>());
-		}
+		CollectionInnerType.Default.Get(A.Type<ICollection<DateTimeOffset>>())
+		                   .Should()
+		                   .Be(A.Type<DateTimeOffset>());
 	}
 }

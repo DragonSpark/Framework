@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Mixcloud.Claims
-{
-	public sealed class Followers : MixcloudClaim
-	{
-		public static Followers Default { get; } = new();
+﻿namespace DragonSpark.Identity.Mixcloud.Claims;
 
-		Followers() : base(nameof(Followers).ToLower()) {}
-	}
+public sealed class Followers : MixcloudClaim
+{
+	public static Followers Default { get; } = new();
+
+	Followers() : base(nameof(Followers).ToLower()) {}
 }

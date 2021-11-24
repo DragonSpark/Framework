@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Application.Hosting.BenchmarkDotNet
-{
-	sealed class AlignJitLoops : ConfigureJob
-	{
-		public static AlignJitLoops Default { get; } = new AlignJitLoops();
+﻿namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 
-		AlignJitLoops() : base(AlignJitLoopsSetting.Default) {}
-	}
+sealed class AlignJitLoops : ConfigureJob
+{
+	public static AlignJitLoops Default { get; } = new AlignJitLoops();
+
+	AlignJitLoops() : base(AlignJitLoopsSetting.Default) {}
 }

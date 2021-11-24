@@ -9,41 +9,39 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace DragonSpark.Application.Hosting.xUnit
+namespace DragonSpark.Application.Hosting.xUnit;
+
+// ReSharper disable LocalSuppression
+sealed class TestInvoker : XunitTestInvoker
 {
-	// ReSharper disable LocalSuppression
+	// ReSharper disable once TooManyDependencies
+	public TestInvoker(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
+	                   MethodInfo testMethod, object[] testMethodArguments,
+	                   IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
+	                   ExceptionAggregator aggregator,
+	                   CancellationTokenSource cancellationTokenSource)
+		: base(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
+		       beforeAfterAttributes,
+		       aggregator, cancellationTokenSource) {}
 
-	sealed class TestInvoker : XunitTestInvoker
+	protected override object CallTestMethod(object testClassInstance)
+		=> Result(testClassInstance).ContinueWith(task => task.Exception?
+		                                                      .InnerExceptions
+		                                                      .Select(x => x.Demystify())
+		                                                      .ForEach(Aggregator.Add),
+		                                          TaskContinuationOptions.OnlyOnFaulted);
+
+	Task Result(object instance)
 	{
-		// ReSharper disable once TooManyDependencies
-		public TestInvoker(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
-		                   MethodInfo testMethod, object[] testMethodArguments,
-		                   IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
-		                   ExceptionAggregator aggregator,
-		                   CancellationTokenSource cancellationTokenSource)
-			: base(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
-			       beforeAfterAttributes,
-			       aggregator, cancellationTokenSource) {}
-
-		protected override object CallTestMethod(object testClassInstance)
-			=> Result(testClassInstance).ContinueWith(task => task.Exception?
-			                                                      .InnerExceptions
-			                                                      .Select(x => x.Demystify())
-			                                                      .ForEach(Aggregator.Add),
-			                                          TaskContinuationOptions.OnlyOnFaulted);
-
-		Task Result(object instance)
+		try
 		{
-			try
-			{
-				return GetTaskFromResult(base.CallTestMethod(instance));
-			}
-			catch (Exception e)
-			{
-				// ReSharper disable once UnthrowableException
-				// ReSharper disable once ThrowingSystemException
-				throw e.Demystify();
-			}
+			return GetTaskFromResult(base.CallTestMethod(instance));
+		}
+		catch (Exception e)
+		{
+			// ReSharper disable once UnthrowableException
+			// ReSharper disable once ThrowingSystemException
+			throw e.Demystify();
 		}
 	}
 }

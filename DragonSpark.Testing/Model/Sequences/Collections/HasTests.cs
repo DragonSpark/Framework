@@ -4,17 +4,16 @@ using FluentAssertions;
 using System.Linq;
 using Xunit;
 
-namespace DragonSpark.Testing.Model.Sequences.Collections
+namespace DragonSpark.Testing.Model.Sequences.Collections;
+
+public class HasTests
 {
-	public class HasTests
+	[Fact]
+	public void Verify()
 	{
-		[Fact]
-		public void Verify()
-		{
-			var item = new object();
-			var items = item.Yield()
-			                .ToList();
-			new Has<object>(items).Get(item).Should().BeTrue();
-		}
+		var item = new object();
+		var items = item.Yield()
+		                .ToList();
+		new Has<object>(items).Get(item).Should().BeTrue();
 	}
 }

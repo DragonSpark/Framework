@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace DragonSpark.Presentation.Interaction
+namespace DragonSpark.Presentation.Interaction;
+
+public class UniqueIdentityResult : SuccessResult<Guid>
 {
-	public class UniqueIdentityResult : SuccessResult<Guid>
-	{
-		public UniqueIdentityResult(Guid instance) : base(instance) {}
-	}
+	public UniqueIdentityResult(Guid instance) : base(instance) {}
 }

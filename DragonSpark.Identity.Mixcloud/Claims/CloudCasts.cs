@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Mixcloud.Claims
-{
-	public sealed class CloudCasts : MixcloudClaim
-	{
-		public static CloudCasts Default { get; } = new();
+﻿namespace DragonSpark.Identity.Mixcloud.Claims;
 
-		CloudCasts() : base(nameof(CloudCasts).ToLower()) {}
-	}
+public sealed class CloudCasts : MixcloudClaim
+{
+	public static CloudCasts Default { get; } = new();
+
+	CloudCasts() : base(nameof(CloudCasts).ToLower()) {}
 }

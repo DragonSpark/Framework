@@ -5,21 +5,20 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Application.Hosting.BenchmarkDotNet
+namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
+
+sealed class DeployedConfiguration : ISelect<Job, IConfig>
 {
-	sealed class DeployedConfiguration : ISelect<Job, IConfig>
-	{
-		public static DeployedConfiguration Default { get; } = new DeployedConfiguration();
+	public static DeployedConfiguration Default { get; } = new DeployedConfiguration();
 
-		DeployedConfiguration() : this(AlignJitLoops.Default) {}
+	DeployedConfiguration() : this(AlignJitLoops.Default) {}
 
-		readonly IAlteration<Job> _configure;
+	readonly IAlteration<Job> _configure;
 
-		public DeployedConfiguration(IAlteration<Job> configure) => _configure = configure;
+	public DeployedConfiguration(IAlteration<Job> configure) => _configure = configure;
 
-		public IConfig Get(Job parameter) => ManualConfig.Create(DefaultConfig.Instance)
-		                                                 .AddJob(parameter)
-		                                                 .AddJob(parameter.To(_configure))
-		                                                 .AddDiagnoser(MemoryDiagnoser.Default);
-	}
+	public IConfig Get(Job parameter) => ManualConfig.Create(DefaultConfig.Instance)
+	                                                 .AddJob(parameter)
+	                                                 .AddJob(parameter.To(_configure))
+	                                                 .AddDiagnoser(MemoryDiagnoser.Default);
 }

@@ -3,27 +3,26 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using System;
 
-namespace DragonSpark.Application.Hosting.Server.Blazor
+namespace DragonSpark.Application.Hosting.Server.Blazor;
+
+sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 {
-	sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
+	public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
+
+	DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+
+	readonly Action<IEndpointRouteBuilder> _endpoints;
+
+	public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints)
+		=> _endpoints = endpoints;
+
+	public void Execute(IApplicationBuilder parameter)
 	{
-		public static DefaultApplicationConfiguration Default { get; } = new DefaultApplicationConfiguration();
-
-		DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
-
-		readonly Action<IEndpointRouteBuilder> _endpoints;
-
-		public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints)
-			=> _endpoints = endpoints;
-
-		public void Execute(IApplicationBuilder parameter)
-		{
-			parameter.UseHttpsRedirection()
-			         .UseStaticFiles()
-			         .UseRouting()
-			         .UseAuthentication()
-			         .UseAuthorization()
-			         .UseEndpoints(_endpoints);
-		}
+		parameter.UseHttpsRedirection()
+		         .UseStaticFiles()
+		         .UseRouting()
+		         .UseAuthentication()
+		         .UseAuthorization()
+		         .UseEndpoints(_endpoints);
 	}
 }

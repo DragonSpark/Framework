@@ -5,82 +5,81 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace DragonSpark.Testing
+namespace DragonSpark.Testing;
+
+public class IterationBenchmarks
 {
-	public class IterationBenchmarks
+	// ReSharper disable once UnusedParameter.Local
+	static void Call(string parameter) {}
+
+	readonly Array<string>          _array;
+	readonly ImmutableArray<string> _immutable;
+	readonly string[]               _open;
+
+	public IterationBenchmarks() : this(Data.Default.Get().Take(100).ToArray()) {}
+
+	public IterationBenchmarks(Array<string> array) : this(array, array, array) {}
+
+	public IterationBenchmarks(ImmutableArray<string> immutable, Array<string> array, string[] open)
 	{
-		// ReSharper disable once UnusedParameter.Local
-		static void Call(string parameter) {}
+		_immutable = immutable;
+		_array     = array;
+		_open      = open;
+	}
 
-		readonly Array<string>          _array;
-		readonly ImmutableArray<string> _immutable;
-		readonly string[]               _open;
-
-		public IterationBenchmarks() : this(Data.Default.Get().Take(100).ToArray()) {}
-
-		public IterationBenchmarks(Array<string> array) : this(array, array, array) {}
-
-		public IterationBenchmarks(ImmutableArray<string> immutable, Array<string> array, string[] open)
+	[Benchmark]
+	public void Array()
+	{
+		var array  = _array;
+		var length = array.Length;
+		for (var i = 0; i < length; i++)
 		{
-			_immutable = immutable;
-			_array     = array;
-			_open      = open;
+			Call(array[i]);
 		}
+	}
 
-		[Benchmark]
-		public void Array()
+	[Benchmark]
+	public void Immutable()
+	{
+		var array  = _immutable;
+		var length = array.Length;
+		for (var i = 0; i < length; i++)
 		{
-			var array  = _array;
-			var length = array.Length;
-			for (var i = 0; i < length; i++)
-			{
-				Call(array[i]);
-			}
+			Call(array[i]);
 		}
+	}
 
-		[Benchmark]
-		public void Immutable()
+	[Benchmark(Baseline = true)]
+	public void Open()
+	{
+		var open   = _open;
+		var length = open.Length;
+		for (var i = 0; i < length; i++)
 		{
-			var array  = _immutable;
-			var length = array.Length;
-			for (var i = 0; i < length; i++)
-			{
-				Call(array[i]);
-			}
+			Call(open[i]);
 		}
+	}
 
-		[Benchmark(Baseline = true)]
-		public void Open()
+	[Benchmark]
+	public void Span()
+	{
+		Span<string> array  = _open;
+		var          length = array.Length;
+		for (var i = 0; i < length; i++)
 		{
-			var open   = _open;
-			var length = open.Length;
-			for (var i = 0; i < length; i++)
-			{
-				Call(open[i]);
-			}
+			Call(array[i]);
 		}
+	}
 
-		[Benchmark]
-		public void Span()
+	[Benchmark]
+	public void Memory()
+	{
+		Memory<string> array     = _open;
+		var            length    = array.Length;
+		var            arraySpan = array.Span;
+		for (var i = 0; i < length; i++)
 		{
-			Span<string> array  = _open;
-			var          length = array.Length;
-			for (var i = 0; i < length; i++)
-			{
-				Call(array[i]);
-			}
-		}
-
-		[Benchmark]
-		public void Memory()
-		{
-			Memory<string> array     = _open;
-			var            length    = array.Length;
-			var            arraySpan = array.Span;
-			for (var i = 0; i < length; i++)
-			{
-				Call(arraySpan[i]);
-			}
+			Call(arraySpan[i]);
 		}
 	}
 }

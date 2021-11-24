@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Testing.Model.Selection
+﻿namespace DragonSpark.Testing.Model.Selection;
+
+public interface IInSelect<TIn, out TOut>
 {
-	public interface IInSelect<TIn, out TOut>
-	{
-		TOut Get(in TIn parameter);
-	}
+	TOut Get(in TIn parameter);
 }

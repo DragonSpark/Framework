@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Testing.Runtime.Activation
-{
-	sealed class Subject
-	{
-		public static Subject Default { get; } = new Subject();
+﻿namespace DragonSpark.Testing.Runtime.Activation;
 
-		Subject() {}
-	}
+sealed class Subject
+{
+	public static Subject Default { get; } = new Subject();
+
+	Subject() {}
 }

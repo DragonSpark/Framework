@@ -9,97 +9,96 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities.Generation
+namespace DragonSpark.Application.Testing.Entities.Generation;
+
+public sealed class ModelBinderTests
 {
-	public sealed class ModelBinderTests
+	public ModelBinderTests() : this(ModelBinder<Parent>.Default) {}
+
+	readonly IAutoBinder _binder;
+
+	ModelBinderTests(IAutoBinder binder) => _binder = binder;
+
+	[Fact]
+	public void Verify()
 	{
-		public ModelBinderTests() : this(ModelBinder<Parent>.Default) {}
+		var context = new AutoFaker<Parent>().Configure(x => x.WithConventions().WithBinder(_binder));
+		var subject = context.Generate();
 
-		readonly IAutoBinder _binder;
+		subject.Child.Should().BeNull();
+		subject.Name.Should().NotBeNullOrEmpty();
+	}
 
-		ModelBinderTests(IAutoBinder binder) => _binder = binder;
+	[Fact]
+	public void VerifyRelationship()
+	{
+		var child = new AutoFaker<Child>().Configure(x => x.WithConventions().WithBinder(_binder));
+		var parent = new AutoFaker<Parent>().Configure(x => x.WithConventions().WithBinder(_binder))
+		                                    .RuleFor(x => x.Child, child);
+		var subject = parent.Generate();
 
-		[Fact]
-		public void Verify()
-		{
-			var context = new AutoFaker<Parent>().Configure(x => x.WithConventions().WithBinder(_binder));
-			var subject = context.Generate();
+		subject.Child.Should().NotBeNull();
+		subject.Child.Parent.Should().BeNull();
+		subject.Child.Name.Should().NotBeNullOrEmpty();
+		subject.Name.Should().NotBeNullOrEmpty();
+	}
 
-			subject.Child.Should().BeNull();
-			subject.Name.Should().NotBeNullOrEmpty();
-		}
+	[Fact]
+	public void VerifyBasicModel()
+	{
+		var subject = Start.A.Generator<Parent>().Include(x => x.Child).Get();
+		subject.Child.Should().NotBeNull();
+		subject.Child.Parent.Should().NotBeNull();
+		subject.Child.Parent.Should().BeSameAs(subject);
+		subject.Child.Name.Should().NotBeNullOrEmpty();
+		subject.Name.Should().NotBeNullOrEmpty();
+	}
 
-		[Fact]
-		public void VerifyRelationship()
-		{
-			var child = new AutoFaker<Child>().Configure(x => x.WithConventions().WithBinder(_binder));
-			var parent = new AutoFaker<Parent>().Configure(x => x.WithConventions().WithBinder(_binder))
-			                                    .RuleFor(x => x.Child, child);
-			var subject = parent.Generate();
+	sealed class Parent
+	{
+		[UsedImplicitly]
+		public Guid Id { get; set; }
 
-			subject.Child.Should().NotBeNull();
-			subject.Child.Parent.Should().BeNull();
-			subject.Child.Name.Should().NotBeNullOrEmpty();
-			subject.Name.Should().NotBeNullOrEmpty();
-		}
+		[UsedImplicitly]
+		public bool Enabled { get; set; } = true;
 
-		[Fact]
-		public void VerifyBasicModel()
-		{
-			var subject = Start.A.Generator<Parent>().Include(x => x.Child).Get();
-			subject.Child.Should().NotBeNull();
-			subject.Child.Parent.Should().NotBeNull();
-			subject.Child.Parent.Should().BeSameAs(subject);
-			subject.Child.Name.Should().NotBeNullOrEmpty();
-			subject.Name.Should().NotBeNullOrEmpty();
-		}
+		[UsedImplicitly]
+		public DateTimeOffset Created { get; set; }
 
-		sealed class Parent
-		{
-			[UsedImplicitly]
-			public Guid Id { get; set; }
+		[Required, MaxLength(128)]
+		public string Name { get; set; } = default!;
 
-			[UsedImplicitly]
-			public bool Enabled { get; set; } = true;
+		[MaxLength(1024), UsedImplicitly]
+		public string? Description { get; set; } = string.Empty;
 
-			[UsedImplicitly]
-			public DateTimeOffset Created { get; set; }
+		[Column(TypeName = "decimal(32,16)"), Range(1, 10_000), UsedImplicitly]
+		public decimal Price { get; set; }
 
-			[Required, MaxLength(128)]
-			public string Name { get; set; } = default!;
+		[UsedImplicitly]
+		public Child Child { get; set; } = default!;
+	}
 
-			[MaxLength(1024), UsedImplicitly]
-			public string? Description { get; set; } = string.Empty;
+	sealed class Child
+	{
+		[UsedImplicitly]
+		public Guid Id { get; set; }
 
-			[Column(TypeName = "decimal(32,16)"), Range(1, 10_000), UsedImplicitly]
-			public decimal Price { get; set; }
+		[UsedImplicitly]
+		public bool Enabled { get; set; } = true;
 
-			[UsedImplicitly]
-			public Child Child { get; set; } = default!;
-		}
+		[UsedImplicitly]
+		public DateTimeOffset Created { get; set; }
 
-		sealed class Child
-		{
-			[UsedImplicitly]
-			public Guid Id { get; set; }
+		[Required, MaxLength(128), UsedImplicitly]
+		public string Name { get; set; } = default!;
 
-			[UsedImplicitly]
-			public bool Enabled { get; set; } = true;
+		[MaxLength(1024), UsedImplicitly]
+		public string? Description { get; set; } = string.Empty;
 
-			[UsedImplicitly]
-			public DateTimeOffset Created { get; set; }
+		[Column(TypeName = "decimal(32,16)"), Range(1, 10_000), UsedImplicitly]
+		public decimal Price { get; set; }
 
-			[Required, MaxLength(128), UsedImplicitly]
-			public string Name { get; set; } = default!;
-
-			[MaxLength(1024), UsedImplicitly]
-			public string? Description { get; set; } = string.Empty;
-
-			[Column(TypeName = "decimal(32,16)"), Range(1, 10_000), UsedImplicitly]
-			public decimal Price { get; set; }
-
-			[UsedImplicitly]
-			public Parent Parent { get; set; } = default!;
-		}
+		[UsedImplicitly]
+		public Parent Parent { get; set; } = default!;
 	}
 }

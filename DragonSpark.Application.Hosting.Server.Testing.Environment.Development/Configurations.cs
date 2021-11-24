@@ -1,15 +1,14 @@
 ﻿using DragonSpark.Composition;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Hosting.Server.Testing.Environment.Development
+namespace DragonSpark.Application.Hosting.Server.Testing.Environment.Development;
+
+public sealed class Configurations : IServiceConfiguration
 {
-	public sealed class Configurations : IServiceConfiguration
+	public void Execute(IServiceCollection parameter)
 	{
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Start<IDependency>()
-			         .Forward<Dependency>()
-			         .Singleton();
-		}
+		parameter.Start<IDependency>()
+		         .Forward<Dependency>()
+		         .Singleton();
 	}
 }

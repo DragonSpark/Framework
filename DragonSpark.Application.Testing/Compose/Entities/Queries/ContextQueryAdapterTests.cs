@@ -9,64 +9,63 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Compose.Entities.Queries
+namespace DragonSpark.Application.Testing.Compose.Entities.Queries;
+
+public sealed class ContextQueryAdapterTests
 {
-	public sealed class ContextQueryAdapterTests
+	[Fact]
+	public async Task Verify()
 	{
-		[Fact]
-		public async Task Verify()
+		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
 		{
-			var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
-			{
-				await using var context = contexts.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
-
-			var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
-			{
-				var array = await evaluate.Await();
-				var open  = array.Open();
-				open.Should().HaveCount(2);
-				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
-			}
+			await using var context = contexts.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
 		}
 
-		[Fact]
-		public async Task VerifySql()
+		var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 		{
-			await using var contexts = await new SqlContexts<Context>().Initialize();
-			{
-				await using var context = contexts.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
+			var array = await evaluate.Await();
+			var open  = array.Open();
+			open.Should().HaveCount(2);
+			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
+		}
+	}
 
-			var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
-			{
-				var array = await evaluate.Await();
-				var open  = array.Open();
-				open.Should().HaveCount(2);
-				open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
-			}
-
+	[Fact]
+	public async Task VerifySql()
+	{
+		await using var contexts = await new SqlContexts<Context>().Initialize();
+		{
+			await using var context = contexts.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
 		}
 
-		sealed class Context : DbContext
+		var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 		{
-			public Context(DbContextOptions options) : base(options) {}
-
-			public DbSet<Subject> Subjects { get; set; } = default!;
+			var array = await evaluate.Await();
+			var open  = array.Open();
+			open.Should().HaveCount(2);
+			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
 
-		sealed class Subject
-		{
-			[UsedImplicitly]
-			public Guid Id { get; set; }
+	}
 
-			public string Name { get; set; } = default!;
-		}
+	sealed class Context : DbContext
+	{
+		public Context(DbContextOptions options) : base(options) {}
+
+		public DbSet<Subject> Subjects { get; set; } = default!;
+	}
+
+	sealed class Subject
+	{
+		[UsedImplicitly]
+		public Guid Id { get; set; }
+
+		public string Name { get; set; } = default!;
 	}
 }

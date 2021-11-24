@@ -8,135 +8,134 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Testing.Composition.Compose
+namespace DragonSpark.Testing.Composition.Compose;
+
+// ReSharper disable once TestFileNameWarning
+public sealed class DependencyRegistrationContextTests
 {
-	// ReSharper disable once TestFileNameWarning
-	public sealed class DependencyRegistrationContextTests
+	sealed class Subject
 	{
-		sealed class Subject
-		{
-			public Subject(Other other) => Other = other;
+		public Subject(Other other) => Other = other;
 
-			public Other Other { get; }
+		public Other Other { get; }
+	}
+
+	sealed class Other {}
+
+	sealed class CustomList<T> : List<T>
+	{
+		[UsedImplicitly]
+		public CustomList() {}
+
+		public CustomList(IEnumerable<T> collection) : base(collection) {}
+
+		public CustomList(int capacity) : base(capacity) {}
+	}
+
+	sealed class Multiple
+	{
+		public Multiple(Subject subject, Other other)
+		{
+			Subject = subject;
+			Other   = other;
 		}
 
-		sealed class Other {}
+		public Subject Subject { get; }
 
-		sealed class CustomList<T> : List<T>
+		public Other Other { get; }
+	}
+
+	sealed class Multiple<T>
+	{
+		public Multiple(Subject subject, Other other, CustomList<T> list)
 		{
-			[UsedImplicitly]
-			public CustomList() {}
-
-			public CustomList(IEnumerable<T> collection) : base(collection) {}
-
-			public CustomList(int capacity) : base(capacity) {}
+			Subject = subject;
+			Other   = other;
+			List    = list;
 		}
 
-		sealed class Multiple
-		{
-			public Multiple(Subject subject, Other other)
-			{
-				Subject = subject;
-				Other   = other;
-			}
+		public Subject Subject { get; }
 
-			public Subject Subject { get; }
+		public Other Other { get; }
+		public List<T> List { get; }
+	}
 
-			public Other Other { get; }
-		}
+	[Fact]
+	public async Task Verify()
+	{
+		using var host = await Start.A.Host()
+		                            .WithComposition()
+		                            .Configure(x => x.Start<Subject>()
+		                                             .Include(y => y.Dependencies)
+		                                             .Singleton())
+		                            .Operations()
+		                            .Run();
 
-		sealed class Multiple<T>
-		{
-			public Multiple(Subject subject, Other other, CustomList<T> list)
-			{
-				Subject = subject;
-				Other   = other;
-				List    = list;
-			}
+		host.Services.GetRequiredService<Subject>()
+		    .Should()
+		    .NotBeNull()
+		    .And.Subject.To<Subject>()
+		    .Other.Should()
+		    .NotBeNull();
+	}
 
-			public Subject Subject { get; }
+	[Fact]
+	public async Task VerifyGeneric()
+	{
+		using var host = await Start.A.Host()
+		                            .WithComposition()
+		                            .Configure(x => x.Start<Multiple<int>>()
+		                                             .Include(y => y.Dependencies)
+		                                             .Singleton())
+		                            .Operations()
+		                            .Run();
 
-			public Other Other { get; }
-			public List<T> List { get; }
-		}
+		var multiple = host.Services.GetRequiredService<Multiple<int>>();
+		multiple.Should().NotBeNull();
+		multiple.Other.Should().NotBeNull();
+		multiple.Subject.Should().NotBeNull();
+		multiple.Subject.Other.Should().BeSameAs(multiple.Other);
+		multiple.List.Should().NotBeNull();
 
-		[Fact]
-		public async Task Verify()
-		{
-			using var host = await Start.A.Host()
-			                            .WithComposition()
-			                            .Configure(x => x.Start<Subject>()
-			                                             .Include(y => y.Dependencies)
-			                                             .Singleton())
-			                            .Operations()
-			                            .Run();
+		host.Services.Invoking(x => x.GetRequiredService<Multiple<object>>())
+		    .Should()
+		    .Throw<InvalidOperationException>();
+	}
 
-			host.Services.GetRequiredService<Subject>()
-			    .Should()
-			    .NotBeNull()
-			    .And.Subject.To<Subject>()
-			    .Other.Should()
-			    .NotBeNull();
-		}
+	[Fact]
+	public async Task VerifyGenericDefinition()
+	{
+		using var host = await Start.A.Host()
+		                            .WithComposition()
+		                            .Configure(x => x.ForDefinition<Multiple<object>>()
+		                                             .Include(y => y.Dependencies)
+		                                             .Singleton())
+		                            .Operations()
+		                            .Run();
 
-		[Fact]
-		public async Task VerifyGeneric()
-		{
-			using var host = await Start.A.Host()
-			                            .WithComposition()
-			                            .Configure(x => x.Start<Multiple<int>>()
-			                                             .Include(y => y.Dependencies)
-			                                             .Singleton())
-			                            .Operations()
-			                            .Run();
+		var multiple = host.Services.GetRequiredService<Multiple<int>>();
+		multiple.Should().NotBeNull();
+		multiple.Other.Should().NotBeNull();
+		multiple.Subject.Should().NotBeNull();
+		multiple.Subject.Other.Should().BeSameAs(multiple.Other);
+		multiple.List.Should().NotBeNull();
+	}
 
-			var multiple = host.Services.GetRequiredService<Multiple<int>>();
-			multiple.Should().NotBeNull();
-			multiple.Other.Should().NotBeNull();
-			multiple.Subject.Should().NotBeNull();
-			multiple.Subject.Other.Should().BeSameAs(multiple.Other);
-			multiple.List.Should().NotBeNull();
+	[Fact]
+	public async Task VerifyMultiple()
+	{
+		using var host = await Start.A.Host()
+		                            .WithComposition()
+		                            .Configure(x => x.Start<Multiple>()
+		                                             .Include(y => y.Dependencies)
+		                                             .Singleton())
+		                            .Operations()
+		                            .Run();
 
-			host.Services.Invoking(x => x.GetRequiredService<Multiple<object>>())
-			    .Should()
-			    .Throw<InvalidOperationException>();
-		}
-
-		[Fact]
-		public async Task VerifyGenericDefinition()
-		{
-			using var host = await Start.A.Host()
-			                            .WithComposition()
-			                            .Configure(x => x.ForDefinition<Multiple<object>>()
-			                                             .Include(y => y.Dependencies)
-			                                             .Singleton())
-			                            .Operations()
-			                            .Run();
-
-			var multiple = host.Services.GetRequiredService<Multiple<int>>();
-			multiple.Should().NotBeNull();
-			multiple.Other.Should().NotBeNull();
-			multiple.Subject.Should().NotBeNull();
-			multiple.Subject.Other.Should().BeSameAs(multiple.Other);
-			multiple.List.Should().NotBeNull();
-		}
-
-		[Fact]
-		public async Task VerifyMultiple()
-		{
-			using var host = await Start.A.Host()
-			                            .WithComposition()
-			                            .Configure(x => x.Start<Multiple>()
-			                                             .Include(y => y.Dependencies)
-			                                             .Singleton())
-			                            .Operations()
-			                            .Run();
-
-			var multiple = host.Services.GetRequiredService<Multiple>();
-			multiple.Should().NotBeNull();
-			multiple.Other.Should().NotBeNull();
-			multiple.Subject.Should().NotBeNull();
-			multiple.Subject.Other.Should().BeSameAs(multiple.Other);
-		}
+		var multiple = host.Services.GetRequiredService<Multiple>();
+		multiple.Should().NotBeNull();
+		multiple.Other.Should().NotBeNull();
+		multiple.Subject.Should().NotBeNull();
+		multiple.Subject.Other.Should().BeSameAs(multiple.Other);
 	}
 }

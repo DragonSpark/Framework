@@ -3,21 +3,20 @@ using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Syncfusion.Blazor;
 
-namespace DragonSpark.Syncfusion
+namespace DragonSpark.Syncfusion;
+
+sealed class Registrations : ICommand<IServiceCollection>
 {
-	sealed class Registrations : ICommand<IServiceCollection>
+	public static Registrations Default { get; } = new Registrations();
+
+	Registrations() {}
+
+	public void Execute(IServiceCollection parameter)
 	{
-		public static Registrations Default { get; } = new Registrations();
-
-		Registrations() {}
-
-		public void Execute(IServiceCollection parameter)
-		{
-			parameter.Register<SyncfusionConfiguration>()
-			         .AddSyncfusionBlazor()
-			         .Start<Initializer>()
-			         .Singleton()
-					 ;
-		}
+		parameter.Register<SyncfusionConfiguration>()
+		         .AddSyncfusionBlazor()
+		         .Start<Initializer>()
+		         .Singleton()
+			;
 	}
 }

@@ -5,22 +5,21 @@ using FluentAssertions;
 using System.Reflection;
 using Xunit;
 
-namespace DragonSpark.Testing.Reflection.Collections
-{
-	public class InnerTypeTests
-	{
-		[Fact]
-		public void Coverage()
-		{
-			InnerType.Default.Get(GetType())
-			         .Should()
-			         .BeNull();
-		}
+namespace DragonSpark.Testing.Reflection.Collections;
 
-		[Fact]
-		public void Verify()
-		{
-			InnerType.Default.Get(A.Type<Always<TypeInfo>>()).Should().Be<TypeInfo>();
-		}
+public class InnerTypeTests
+{
+	[Fact]
+	public void Coverage()
+	{
+		InnerType.Default.Get(GetType())
+		         .Should()
+		         .BeNull();
+	}
+
+	[Fact]
+	public void Verify()
+	{
+		InnerType.Default.Get(A.Type<Always<TypeInfo>>()).Should().Be<TypeInfo>();
 	}
 }

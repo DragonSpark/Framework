@@ -7,13 +7,12 @@ using System.Linq;
 
 // ReSharper disable All
 
-namespace DragonSpark.Testing.Application.Runtime.Environment
+namespace DragonSpark.Testing.Application.Runtime.Environment;
+
+public sealed class TypesTests
 {
-	public sealed class TypesTests
+	sealed class Types : Instances<Type>
 	{
-		sealed class Types : Instances<Type>
-		{
-			public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter!)) {}
-		}
+		public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter!)) {}
 	}
 }

@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Amazon
-{
-	public sealed class ProviderName : Text.Text
-	{
-		public static ProviderName Default { get; } = new ProviderName();
+﻿namespace DragonSpark.Identity.Amazon;
 
-		ProviderName() : base("Coinbase") {}
-	}
+public sealed class ProviderName : Text.Text
+{
+	public static ProviderName Default { get; } = new ProviderName();
+
+	ProviderName() : base("Coinbase") {}
 }

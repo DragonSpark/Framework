@@ -6,14 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DragonSpark.Application.Hosting.xUnit
+namespace DragonSpark.Application.Hosting.xUnit;
+
+sealed class SingletonMethod : FixedSelection<Type, object>, IMethod
 {
-	sealed class SingletonMethod : FixedSelection<Type, object>, IMethod
-	{
-		public SingletonMethod(Type parameter) : base(Singletons.Default, parameter) {}
+	public SingletonMethod(Type parameter) : base(Singletons.Default, parameter) {}
 
-		public IEnumerable<ParameterInfo> Parameters { get; } = Empty<ParameterInfo>.Enumerable;
+	public IEnumerable<ParameterInfo> Parameters { get; } = Empty<ParameterInfo>.Enumerable;
 
-		object IMethod.Invoke(IEnumerable<object> parameters) => Get();
-	}
+	object IMethod.Invoke(IEnumerable<object> parameters) => Get();
 }

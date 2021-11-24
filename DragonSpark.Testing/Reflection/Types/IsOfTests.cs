@@ -3,20 +3,19 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace DragonSpark.Testing.Reflection.Types
-{
-	public class IsOfTests
-	{
-		[Fact]
-		public void Verify()
-		{
-			IsOf<int>.Default.Get(6776)
-			         .Should()
-			         .BeTrue();
+namespace DragonSpark.Testing.Reflection.Types;
 
-			IsOf<int>.Default.Get(DateTime.Now)
-			         .Should()
-			         .BeFalse();
-		}
+public class IsOfTests
+{
+	[Fact]
+	public void Verify()
+	{
+		IsOf<int>.Default.Get(6776)
+		         .Should()
+		         .BeTrue();
+
+		IsOf<int>.Default.Get(DateTime.Now)
+		         .Should()
+		         .BeFalse();
 	}
 }

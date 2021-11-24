@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Identity.Facebook.Claims
+﻿namespace DragonSpark.Identity.Facebook.Claims;
+
+public class FacebookClaim : Text.Text
 {
-	public class FacebookClaim : Text.Text
-	{
-		protected FacebookClaim(string name) : base($"{FacebookClaimNamespace.Default}:{name}") {}
-	}
+	protected FacebookClaim(string name) : base($"{FacebookClaimNamespace.Default}:{name}") {}
 }

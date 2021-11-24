@@ -15,311 +15,310 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DragonSpark.Application.Testing.Entities.Queries
+namespace DragonSpark.Application.Testing.Entities.Queries;
+
+public sealed class InputQueryTests
 {
-	public sealed class InputQueryTests
+	[Fact]
+	public async Task VerifySelected()
 	{
-		[Fact]
-		public async Task VerifySelected()
+		var counter = new Counter();
+		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
-			var counter = new Counter();
-			var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
-			{
-				await using var context = factory.CreateDbContext();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
-
-			counter.Get().Should().Be(1);
-
-			var evaluate =
-				new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Scopes(),
-				                                    Selected.Default);
-			{
-				var results = await evaluate.Await("One");
-				var open    = results.Open();
-				open.Should().HaveCount(2);
-				open.Should().BeEquivalentTo("Two", "Three");
-			}
-
-			counter.Get().Should().Be(2);
+			await using var context = factory.CreateDbContext();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
 		}
 
-		[Fact]
-		public async Task VerifyExternalParameter()
+		counter.Get().Should().Be(1);
+
+		var evaluate =
+			new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Scopes(),
+			                                    Selected.Default);
 		{
-			var contexts = new MemoryContexts<Context>();
-			{
-				await using var context = contexts.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
-
-			const string name = "Two";
-
-			var sut = Start.A.Query<Subject>()
-			               .Accept<string>()
-			               .Where((s, subject) => subject.Name == name || subject.Name == s)
-			               .Invoke(contexts)
-			               .To.Array();
-			var subjects = await sut.Await("One");
-			var open     = subjects.Open();
+			var results = await evaluate.Await("One");
+			var open    = results.Open();
 			open.Should().HaveCount(2);
-			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
-		[Fact]
-		public async Task VerifyExternalParameterSql()
+		counter.Get().Should().Be(2);
+	}
+
+	[Fact]
+	public async Task VerifyExternalParameter()
+	{
+		var contexts = new MemoryContexts<Context>();
 		{
-			await using var contexts = await new SqlContexts<Context>().Initialize();
-			{
-				await using var context = contexts.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
+			await using var context = contexts.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
+		}
 
-			const string name = "Two";
+		const string name = "Two";
 
-			var sut = Start.A.Query<Subject>()
-			               .Accept<string>()
-			               .Where((s, subject) => subject.Name == name || subject.Name == s)
-			               .Invoke(contexts)
-			               .To.Array();
-			var subjects = await sut.Await("One");
-			var open     = subjects.Open();
+		var sut = Start.A.Query<Subject>()
+		               .Accept<string>()
+		               .Where((s, subject) => subject.Name == name || subject.Name == s)
+		               .Invoke(contexts)
+		               .To.Array();
+		var subjects = await sut.Await("One");
+		var open     = subjects.Open();
+		open.Should().HaveCount(2);
+		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+	}
+
+	[Fact]
+	public async Task VerifyExternalParameterSql()
+	{
+		await using var contexts = await new SqlContexts<Context>().Initialize();
+		{
+			await using var context = contexts.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
+		}
+
+		const string name = "Two";
+
+		var sut = Start.A.Query<Subject>()
+		               .Accept<string>()
+		               .Where((s, subject) => subject.Name == name || subject.Name == s)
+		               .Invoke(contexts)
+		               .To.Array();
+		var subjects = await sut.Await("One");
+		var open     = subjects.Open();
+		open.Should().HaveCount(2);
+		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+	}
+
+	[Fact]
+	public async Task VerifySelectedSql()
+	{
+		await using var factory = await new SqlContexts<Context>().Initialize();
+		{
+			await using var context = factory.Get();
+			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
+			                          new Subject { Name = "Three" });
+			await context.SaveChangesAsync();
+		}
+
+		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
+		{
+			var results = await evaluation.Await("One");
+			var open    = results.Open();
 			open.Should().HaveCount(2);
-			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
+			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
-		[Fact]
-		public async Task VerifySelectedSql()
 		{
-			await using var factory = await new SqlContexts<Context>().Initialize();
-			{
-				await using var context = factory.Get();
-				context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-				                          new Subject { Name = "Three" });
-				await context.SaveChangesAsync();
-			}
-
-			var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
-			{
-				var results = await evaluation.Await("One");
-				var open    = results.Open();
-				open.Should().HaveCount(2);
-				open.Should().BeEquivalentTo("Two", "Three");
-			}
-
-			{
-				var results = await evaluation.Await("Two");
-				var open    = results.Open();
-				open.Should().HaveCount(2);
-				open.Should().BeEquivalentTo("One", "Three");
-			}
+			var results = await evaluation.Await("Two");
+			var open    = results.Open();
+			open.Should().HaveCount(2);
+			open.Should().BeEquivalentTo("One", "Three");
 		}
+	}
 
-		[Fact]
-		public async Task VerifyComplexSelected()
+	[Fact]
+	public async Task VerifyComplexSelected()
+	{
+		var counter = new Counter();
+		var contexts =
+			new CounterAwareDbContexts<ContextWithData>(new InMemoryDbContextFactory<ContextWithData>(), counter);
 		{
-			var counter = new Counter();
-			var contexts =
-				new CounterAwareDbContexts<ContextWithData>(new InMemoryDbContextFactory<ContextWithData>(), counter);
-			{
-				await using var context = contexts.CreateDbContext();
-				await context.Database.EnsureCreatedAsync();
-			}
-
-			counter.Get().Should().Be(1);
-
-			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
-
-			var evaluate =
-				new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Scopes(),
-				                                   ComplexSelected.Default);
-			{
-				var results = await evaluate.Await(new(id, "One"));
-				var only    = results.Open().Only();
-				only.Should().NotBeNull();
-				only.Should().Be("One");
-			}
-
-			counter.Get().Should().Be(2);
+			await using var context = contexts.CreateDbContext();
+			await context.Database.EnsureCreatedAsync();
 		}
 
-		[Fact]
-		public async Task VerifyComplexSelectedSql()
+		counter.Get().Should().Be(1);
+
+		var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
+
+		var evaluate =
+			new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Scopes(),
+			                                   ComplexSelected.Default);
 		{
-			await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
-			{
-				await using var context = contexts.Get();
-				await context.Database.EnsureCreatedAsync();
-			}
-
-			var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
-
-			var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
-			{
-				var results = await evaluate.Await(new(id, "One"));
-				var only    = results.Open().Only();
-				only.Should().NotBeNull();
-				only.Should().Be("One");
-			}
+			var results = await evaluate.Await(new(id, "One"));
+			var only    = results.Open().Only();
+			only.Should().NotBeNull();
+			only.Should().Be("One");
 		}
 
-		[Fact]
-		public async Task VerifyWhereWithParameter()
+		counter.Get().Should().Be(2);
+	}
+
+	[Fact]
+	public async Task VerifyComplexSelectedSql()
+	{
+		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
 		{
-			var contexts = new MemoryContexts<ContextWithData>();
-			{
-				await using var data = contexts.Get();
-				await data.Database.EnsureCreatedAsync();
-			}
-
-			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
-
-			var sut = Start.A.Query<Subject>()
-			               .Accept<Input>()
-			               .Where((input, subject) => subject.Name.StartsWith(input.Name))
-			               .Where((input, subject) => input.Identity == subject.Id)
-			               .Invoke(contexts)
-			               .To.Single();
-			{
-				await using var data = contexts.Get();
-				var             item = await sut.Await(new Input(id, "Two"));
-				item.Should().NotBeNull();
-				item.Id.Should().Be(id);
-				item.Name.Should().Be("Two");
-			}
+			await using var context = contexts.Get();
+			await context.Database.EnsureCreatedAsync();
 		}
 
-		[Fact]
-		public async Task VerifyWhereWithParameterSql()
+		var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
+
+		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
-			await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
-			{
-				await using var data = contexts.Get();
-				await data.Database.EnsureCreatedAsync();
-			}
-
-			var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
-
-			var sut = Start.A.Query<Subject>()
-			               .Accept<Input>()
-			               .Where((input, subject) => subject.Name.StartsWith(input.Name))
-			               .Where((input, subject) => input.Identity == subject.Id)
-			               .Select(x => new Result(x.Id, x.Name))
-			               .Invoke(contexts)
-			               .To.Single();
-			{
-				var item = await sut.Await(new Input(id, "Two"));
-				item.Identity.Should().Be(id);
-				item.Name.Should().Be("Two");
-			}
+			var results = await evaluate.Await(new(id, "One"));
+			var only    = results.Open().Only();
+			only.Should().NotBeNull();
+			only.Should().Be("One");
 		}
+	}
 
-		sealed class Context : DbContext
+	[Fact]
+	public async Task VerifyWhereWithParameter()
+	{
+		var contexts = new MemoryContexts<ContextWithData>();
 		{
-			public Context(DbContextOptions options) : base(options) {}
-
-			[UsedImplicitly]
-			public DbSet<Subject> Subjects { get; set; } = default!;
+			await using var data = contexts.Get();
+			await data.Database.EnsureCreatedAsync();
 		}
 
-		sealed class ContextWithData : DbContext
+		var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
+
+		var sut = Start.A.Query<Subject>()
+		               .Accept<Input>()
+		               .Where((input, subject) => subject.Name.StartsWith(input.Name))
+		               .Where((input, subject) => input.Identity == subject.Id)
+		               .Invoke(contexts)
+		               .To.Single();
 		{
-			public ContextWithData(DbContextOptions options) : base(options) {}
-
-			[UsedImplicitly]
-			public DbSet<Subject> Subjects { get; set; } = default!;
-
-			protected override void OnModelCreating(ModelBuilder modelBuilder)
-			{
-				base.OnModelCreating(modelBuilder);
-				modelBuilder.Entity<Subject>()
-				            .HasData(new Subject { Id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3"), Name = "One" },
-				                     new Subject
-				                     {
-					                     Id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), Name = "Two"
-				                     },
-				                     new Subject
-				                     {
-					                     Id = new Guid("5559B8B9-1F19-4F91-A6C8-DE3BB5E47603"), Name = "Three"
-				                     });
-			}
+			await using var data = contexts.Get();
+			var             item = await sut.Await(new Input(id, "Two"));
+			item.Should().NotBeNull();
+			item.Id.Should().Be(id);
+			item.Name.Should().Be("Two");
 		}
+	}
 
-		sealed class Subject
+	[Fact]
+	public async Task VerifyWhereWithParameterSql()
+	{
+		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
 		{
-			[UsedImplicitly]
-			public Guid Id { get; set; }
-
-			public string Name { [UsedImplicitly] get; set; } = default!;
+			await using var data = contexts.Get();
+			await data.Database.EnsureCreatedAsync();
 		}
 
-		sealed class Selected : StartInput<string, Subject, string>
+		var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
+
+		var sut = Start.A.Query<Subject>()
+		               .Accept<Input>()
+		               .Where((input, subject) => subject.Name.StartsWith(input.Name))
+		               .Where((input, subject) => input.Identity == subject.Id)
+		               .Select(x => new Result(x.Id, x.Name))
+		               .Invoke(contexts)
+		               .To.Single();
 		{
-			public static Selected Default { get; } = new Selected();
-
-			Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
+			var item = await sut.Await(new Input(id, "Two"));
+			item.Identity.Should().Be(id);
+			item.Name.Should().Be("Two");
 		}
+	}
 
-		readonly record struct Input(Guid Identity, string Name);
+	sealed class Context : DbContext
+	{
+		public Context(DbContextOptions options) : base(options) {}
 
-		public readonly record struct Result(Guid Identity, string Name);
+		[UsedImplicitly]
+		public DbSet<Subject> Subjects { get; set; } = default!;
+	}
 
-		sealed class ComplexSelected : StartInput<Input, Subject, string>
+	sealed class ContextWithData : DbContext
+	{
+		public ContextWithData(DbContextOptions options) : base(options) {}
+
+		[UsedImplicitly]
+		public DbSet<Subject> Subjects { get; set; } = default!;
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			public static ComplexSelected Default { get; } = new();
-
-			ComplexSelected()
-				: base((input, queryable)
-					       => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
-					                   .Select(y => y.Name)) {}
+			base.OnModelCreating(modelBuilder);
+			modelBuilder.Entity<Subject>()
+			            .HasData(new Subject { Id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3"), Name = "One" },
+			                     new Subject
+			                     {
+				                     Id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), Name = "Two"
+			                     },
+			                     new Subject
+			                     {
+				                     Id = new Guid("5559B8B9-1F19-4F91-A6C8-DE3BB5E47603"), Name = "Three"
+			                     });
 		}
+	}
 
-		public class Benchmarks
+	sealed class Subject
+	{
+		[UsedImplicitly]
+		public Guid Id { get; set; }
+
+		public string Name { [UsedImplicitly] get; set; } = default!;
+	}
+
+	sealed class Selected : StartInput<string, Subject, string>
+	{
+		public static Selected Default { get; } = new Selected();
+
+		Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
+	}
+
+	readonly record struct Input(Guid Identity, string Name);
+
+	public readonly record struct Result(Guid Identity, string Name);
+
+	sealed class ComplexSelected : StartInput<Input, Subject, string>
+	{
+		public static ComplexSelected Default { get; } = new();
+
+		ComplexSelected()
+			: base((input, queryable)
+				       => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
+				                   .Select(y => y.Name)) {}
+	}
+
+	public class Benchmarks
+	{
+		readonly IContexts<ContextWithData> _contexts;
+		readonly ISelecting<Input, Result>  _select;
+
+		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
+		                                                                         .Options) {}
+
+		Benchmarks(DbContextOptions<ContextWithData> options) :
+			this(new PooledDbContextFactory<ContextWithData>(options)) {}
+
+		Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new Contexts<ContextWithData>(factory)) {}
+
+		Benchmarks(IContexts<ContextWithData> contexts)
+			: this(contexts,
+			       Start.A.Query<Subject>()
+			            .Accept<Input>()
+			            .Where((input, subject)
+				                   => subject.Name.StartsWith(input.Name))
+			            .Where((input, subject) => input.Identity == subject.Id)
+			            .Select(x => new Result(x.Id, x.Name))
+			            .Invoke(contexts)
+			            .To.Single()) {}
+
+		Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select)
 		{
-			readonly IContexts<ContextWithData> _contexts;
-			readonly ISelecting<Input, Result>  _select;
-
-			public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
-			                                                                         .Options) {}
-
-			Benchmarks(DbContextOptions<ContextWithData> options) :
-				this(new PooledDbContextFactory<ContextWithData>(options)) {}
-
-			Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new Contexts<ContextWithData>(factory)) {}
-
-			Benchmarks(IContexts<ContextWithData> contexts)
-				: this(contexts,
-				       Start.A.Query<Subject>()
-				            .Accept<Input>()
-				            .Where((input, subject)
-					                   => subject.Name.StartsWith(input.Name))
-				            .Where((input, subject) => input.Identity == subject.Id)
-				            .Select(x => new Result(x.Id, x.Name))
-				            .Invoke(contexts)
-				            .To.Single()) {}
-
-			Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select)
-			{
-				_contexts = contexts;
-				_select   = @select;
-			}
-
-			[GlobalSetup]
-			public async Task GlobalSetup()
-			{
-				await using var dbContext = _contexts.Get();
-				await dbContext.Database.EnsureCreatedAsync();
-			}
-
-			[Benchmark]
-			public ValueTask<Result> MeasureCompiled()
-				=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
+			_contexts = contexts;
+			_select   = @select;
 		}
+
+		[GlobalSetup]
+		public async Task GlobalSetup()
+		{
+			await using var dbContext = _contexts.Get();
+			await dbContext.Database.EnsureCreatedAsync();
+		}
+
+		[Benchmark]
+		public ValueTask<Result> MeasureCompiled()
+			=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
 	}
 }

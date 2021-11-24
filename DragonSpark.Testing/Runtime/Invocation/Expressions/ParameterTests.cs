@@ -2,15 +2,14 @@
 using FluentAssertions;
 using Xunit;
 
-namespace DragonSpark.Testing.Runtime.Invocation.Expressions
+namespace DragonSpark.Testing.Runtime.Invocation.Expressions;
+
+public class ParameterTests
 {
-	public class ParameterTests
+	[Fact]
+	public void Coverage()
 	{
-		[Fact]
-		public void Coverage()
-		{
-			Parameter.Default.Should()
-			         .BeSameAs(Parameter.Default);
-		}
+		Parameter.Default.Should()
+		         .BeSameAs(Parameter.Default);
 	}
 }

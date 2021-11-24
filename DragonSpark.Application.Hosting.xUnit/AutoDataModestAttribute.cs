@@ -1,7 +1,6 @@
-﻿namespace DragonSpark.Application.Hosting.xUnit
+﻿namespace DragonSpark.Application.Hosting.xUnit;
+
+public sealed class AutoDataModestAttribute : AutoDataAttribute
 {
-	public sealed class AutoDataModestAttribute : AutoDataAttribute
-	{
-		public AutoDataModestAttribute() : base(OptionalParameterAlteration.Default) {}
-	}
+	public AutoDataModestAttribute() : base(OptionalParameterAlteration.Default) {}
 }

@@ -3,37 +3,36 @@ using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Testing.Runtime.Execution
+namespace DragonSpark.Testing.Runtime.Execution;
+
+public sealed class LogicalTests
 {
-	public sealed class LogicalTests
+	public class Benchmarks
 	{
-		public class Benchmarks
+		readonly Logical<object> _subject;
+
+		public Benchmarks() : this(new Logical<object>()) {}
+
+		public Benchmarks(Logical<object> subject) => _subject = subject;
+
+		[GlobalSetup]
+		public Task GlobalSetup()
 		{
-			readonly Logical<object> _subject;
+			_subject.Execute(new object());
+			return Task.CompletedTask;
+		}
 
-			public Benchmarks() : this(new Logical<object>()) {}
+		[Benchmark]
+		public ValueTask<object?> Measure()
+		{
+			var result = _subject.Get();
+			return result.ToOperation();
+		}
 
-			public Benchmarks(Logical<object> subject) => _subject = subject;
+		[Benchmark]
+		public void Assign()
+		{
 
-			[GlobalSetup]
-			public Task GlobalSetup()
-			{
-				_subject.Execute(new object());
-				return Task.CompletedTask;
-			}
-
-			[Benchmark]
-			public ValueTask<object?> Measure()
-			{
-				var result = _subject.Get();
-				return result.ToOperation();
-			}
-
-			[Benchmark]
-			public void Assign()
-			{
-
-			}
 		}
 	}
 }

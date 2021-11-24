@@ -2,26 +2,25 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.Content
+namespace DragonSpark.Presentation.Components.Content;
+
+public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 {
-	public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
+	protected abstract T? GetInstance();
+
+	protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
+
+	public T? Instance
 	{
-		protected abstract T? GetInstance();
-
-		protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
-
-		public T? Instance
+		get
 		{
-			get
-			{
-				var content = Content.Get();
-				var result = content.IsCompletedSuccessfully
-					             ? content.Result
-					             : throw new
-						               InvalidOperationException($"{GetType()} expected an in-memory instance to be available, but it was not.");
-				return result;
-			}
+			var content = Content.Get();
+			var result = content.IsCompletedSuccessfully
+				             ? content.Result
+				             : throw new
+					               InvalidOperationException($"{GetType()} expected an in-memory instance to be available, but it was not.");
+			return result;
 		}
-		
 	}
+		
 }

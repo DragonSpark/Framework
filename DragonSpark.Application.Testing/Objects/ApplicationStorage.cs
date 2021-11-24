@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Testing.Objects
+namespace DragonSpark.Application.Testing.Objects;
+
+sealed class ApplicationStorage : Application.Security.Identity.IdentityDbContext<User>
 {
-	sealed class ApplicationStorage : Application.Security.Identity.IdentityDbContext<User>
-	{
-		public ApplicationStorage(DbContextOptions<ApplicationStorage> options) : base(options) {}
-	}
+	public ApplicationStorage(DbContextOptions<ApplicationStorage> options) : base(options) {}
 }

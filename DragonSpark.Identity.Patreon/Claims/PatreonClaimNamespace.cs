@@ -1,9 +1,8 @@
-﻿namespace DragonSpark.Identity.Patreon.Claims
-{
-	public sealed class PatreonClaimNamespace : Text.Text
-	{
-		public static PatreonClaimNamespace Default { get; } = new PatreonClaimNamespace();
+﻿namespace DragonSpark.Identity.Patreon.Claims;
 
-		PatreonClaimNamespace() : base("urn:patreon") {}
-	}
+public sealed class PatreonClaimNamespace : Text.Text
+{
+	public static PatreonClaimNamespace Default { get; } = new PatreonClaimNamespace();
+
+	PatreonClaimNamespace() : base("urn:patreon") {}
 }

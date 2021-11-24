@@ -2,21 +2,20 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Identity.Patreon
+namespace DragonSpark.Identity.Patreon;
+
+public class SetPatreonFields : ICommand<PatreonAuthenticationOptions>
 {
-	public class SetPatreonFields : ICommand<PatreonAuthenticationOptions>
+	readonly Array<string> _fields;
+
+	protected SetPatreonFields(params string[] fields) => _fields = fields;
+
+	public void Execute(PatreonAuthenticationOptions parameter)
 	{
-		readonly Array<string> _fields;
-
-		protected SetPatreonFields(params string[] fields) => _fields = fields;
-
-		public void Execute(PatreonAuthenticationOptions parameter)
+		parameter.Fields.Clear();
+		foreach (var field in _fields.Open())
 		{
-			parameter.Fields.Clear();
-			foreach (var field in _fields.Open())
-			{
-				parameter.Fields.Add(field);
-			}
+			parameter.Fields.Add(field);
 		}
 	}
 }
