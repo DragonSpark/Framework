@@ -4,6 +4,27 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
+public class Protecting<T> : IResulting<T>
+{
+	readonly IResulting<T> _previous;
+	readonly AsyncLock     _lock;
+
+	public Protecting(IResulting<T> previous) : this(previous, new AsyncLock()) {}
+
+	public Protecting(IResulting<T> previous, AsyncLock @lock)
+	{
+		_previous = previous;
+		_lock     = @lock;
+	}
+
+	public async ValueTask<T> Get()
+	{
+		using var @lock  = await _lock.LockAsync().ConfigureAwait(false);
+		var       result = await _previous.Await();
+		return result;
+	}
+}
+
 public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly Await<TIn, TOut> _previous;

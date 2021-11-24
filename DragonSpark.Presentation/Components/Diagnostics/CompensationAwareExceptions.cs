@@ -18,10 +18,10 @@ sealed class CompensationAwareExceptions : IExceptions
 		_alter    = alter;
 	}
 
-	public ValueTask Get((Type Owner, Exception Exception) parameter)
+	public ValueTask Get(ExceptionInput parameter)
 	{
 		var (owner, exception) = parameter;
-		var result = _previous.Get((owner, _alter(exception)));
+		var result = _previous.Get(new (owner, _alter(exception)));
 		return result;
 	}
 }

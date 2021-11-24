@@ -29,7 +29,7 @@ sealed class ExecuteOperation : IExecuteOperation
 		// ReSharper disable once CatchAllClause
 		catch (Exception error)
 		{
-			await _exceptions.Await((owner, error));
+			await _exceptions.Await(new (owner, error));
 			return error;
 		}
 	}

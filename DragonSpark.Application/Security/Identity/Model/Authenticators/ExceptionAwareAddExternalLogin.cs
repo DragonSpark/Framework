@@ -26,7 +26,7 @@ sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
 		}
 		catch (Exception e)
 		{
-			await _logger.Await(GetType(), e);
+			await _logger.Await(new (GetType(), e));
 			return IdentityResult.Failed(new IdentityError
 			{
 				Description =

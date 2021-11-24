@@ -39,9 +39,14 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ScopedTable>()
 		         .Scoped()
 		         //
+		         .Then.Start<ILogException>()
+		         .Forward<LogException>()
+		         .Decorate<TemplateAwareLogException>()
+		         .Singleton()
+		         //
 		         .Then.Start<IExceptionLogger>()
 		         .Forward<ExceptionLogger>()
-		         .Scoped()
+		         .Singleton()
 		         //
 		         .Then.Start<IExceptions>()
 		         .Forward<Exceptions>()
@@ -56,6 +61,5 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<CurrentUserName>()
 		         .Singleton()
 			;
-
 	}
 }

@@ -10,7 +10,7 @@ public class ExceptionLoggerAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly ISelecting<TIn, TOut> _previous;
 	readonly IExceptionLogger      _logger;
 
-	public ExceptionLoggerAwareSelecting(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
+	protected ExceptionLoggerAwareSelecting(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
 	{
 		_previous = previous;
 		_logger   = logger;
@@ -24,8 +24,7 @@ public class ExceptionLoggerAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 		}
 		catch (Exception e)
 		{
-			// ReSharper disable once UnthrowableException
-			throw await _logger.Await(GetType(), e);
+			throw await _logger.Await(new(GetType(), e));
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using Radzen;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
@@ -19,7 +18,7 @@ sealed class NotificationAwareExceptions : IExceptions
 		_message       = message;
 	}
 
-	public ValueTask Get((Type Owner, Exception Exception) parameter)
+	public ValueTask Get(ExceptionInput parameter)
 	{
 		var result = _exceptions.Get(parameter);
 

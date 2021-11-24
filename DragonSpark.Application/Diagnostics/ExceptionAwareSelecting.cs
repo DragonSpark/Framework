@@ -27,7 +27,7 @@ public class ExceptionAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 		}
 		catch (Exception e)
 		{
-			await _exceptions.Await(_reportedType ?? GetType(), e);
+			await _exceptions.Await(new(_reportedType ?? GetType(), e));
 			throw;
 		}
 	}

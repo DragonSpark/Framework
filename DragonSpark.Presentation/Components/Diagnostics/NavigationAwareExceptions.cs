@@ -19,7 +19,7 @@ sealed class NavigationAwareExceptions : IExceptions
 		_select   = @select;
 	}
 
-	public ValueTask Get((Type Owner, Exception Exception) parameter)
+	public ValueTask Get(ExceptionInput parameter)
 	{
 		var (_, exception) = parameter;
 		var select = _select(exception);
