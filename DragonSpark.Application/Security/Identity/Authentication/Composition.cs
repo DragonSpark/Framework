@@ -4,21 +4,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public readonly struct Composition
-{
-	public Composition(AuthenticationProperties? properties, Array<Claim> claims)
-	{
-		Properties = properties;
-		Claims     = claims;
-	}
-
-	public AuthenticationProperties? Properties { get; }
-
-	public Array<Claim> Claims { get; }
-
-	public void Deconstruct(out AuthenticationProperties? properties, out Array<Claim> claims)
-	{
-		properties = Properties;
-		claims     = Claims;
-	}
-}
+public readonly record struct Composition(AuthenticationProperties? properties, Array<Claim> claims);

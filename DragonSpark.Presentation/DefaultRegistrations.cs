@@ -11,6 +11,7 @@ using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections.Initialization;
+using DragonSpark.Presentation.Security;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,14 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ApplyQueryStringValues>()
 		         .Scoped()
 		         //
+		         .Then.Start<ICurrentContext>()
+		         .Forward<CurrentContext>()
+		         .Singleton()
+		         //
+		         .Then.Start<SignOut>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+		         //
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()
 		         .Singleton()
@@ -90,6 +99,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Singleton()
 		         //
 		         .Then.AddJsInteropExtensions()
+		         
 			;
 	}
 }

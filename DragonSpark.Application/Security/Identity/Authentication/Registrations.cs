@@ -14,22 +14,26 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 	{
 		parameter.Start<IAuthenticate<T>>()
 		         .Forward<Authenticate<T>>()
-		         .Scoped()
+		         .Singleton()
 		         .Then.Start<IAuthentication>()
 		         .Forward<Authentication>()
-		         .Scoped()
+		         .Singleton()
 		         .Then.Start<IAuthenticationProfile>()
 		         .Forward<AuthenticationProfile<T>>()
-		         .Scoped()
+		         .Singleton()
 		         .Then.Start<IExternalSignin>()
 		         .Forward<ExternalSignin<T>>()
 		         .Include(x => x.Dependencies)
-		         .Scoped()
+		         .Singleton()
+		         //
+		         .Then.Start<ISignOut>()
+		         .Forward<SignOut<T>>()
+		         .Singleton()
 		         //
 		         .Then.Start<IRefreshAuthentication<T>>()
 		         .Forward<RefreshAuthentication<T>>()
 		         .Include(x => x.Dependencies)
-		         .Scoped()
+		         .Singleton()
 			;
 	}
 }

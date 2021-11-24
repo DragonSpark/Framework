@@ -1,12 +1,13 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
 using Humanizer;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,9 +27,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		parameter.Start<IAccessToken>()
-		         .Forward<ApiAccessToken>()
-		         .Decorate<ExpirationAwareAccessToken>()
-		         .Decorate<ThreadAwareApiAccessToken>()
+		         .Forward<GetAccessToken>()
+		         .Decorate<MemoryAwareAccessToken>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
@@ -40,48 +40,13 @@ sealed class Registrations : ICommand<IServiceCollection>
 	}
 }
 
-sealed class ThreadAwareApiAccessToken : Protecting<AccessToken>, IAccessToken
+sealed class MemoryAwareAccessToken : Resulting<AccessToken>, IAccessToken
 {
-	public ThreadAwareApiAccessToken(IAccessToken source) : base(source) {}
-}
+	public MemoryAwareAccessToken(IAccessToken previous, IMemoryCache memory)
+		: this(previous, memory, TimeSpan.FromMinutes(59)) {}
 
-sealed class ExpirationAwareAccessToken : IAccessToken
-{
-	readonly IMutable<AccessToken?>  _store;
-	readonly IResulting<AccessToken> _previous;
-	readonly ITime                   _time;
-
-	public ExpirationAwareAccessToken(IAccessToken previous)
-		: this(AccessTokenStore.Default, previous, Time.Default) {}
-
-	public ExpirationAwareAccessToken(IMutable<AccessToken?> store, IResulting<AccessToken> previous, ITime time)
-	{
-		_store    = store;
-		_previous = previous;
-		_time     = time;
-	}
-
-	public ValueTask<AccessToken> Get()
-	{
-		if (_store.Get()?.Expires < _time.Get())
-		{
-			_store.Execute(default);
-		}
-
-		return _previous.Get();
-	}
-}
-
-sealed class ApiAccessToken : Deferring<AccessToken>, IAccessToken
-{
-	public ApiAccessToken(GetAccessToken get) : base(AccessTokenStore.Default, get) {}
-}
-
-sealed class AccessTokenStore : Variable<AccessToken?>
-{
-	public static AccessTokenStore Default { get; } = new();
-
-	AccessTokenStore() {}
+	public MemoryAwareAccessToken(IAccessToken previous, IMemoryCache memory, TimeSpan time)
+		: base(previous.Then().Accept().Store().In(memory).For(time).Using<MemoryAwareAccessToken>().Bind()) {}
 }
 
 public interface IAccessToken : IResulting<AccessToken> {}
@@ -89,13 +54,11 @@ public interface IAccessToken : IResulting<AccessToken> {}
 sealed class AccessTokenLocation : Model.Results.Instance<Uri>
 {
 	public AccessTokenLocation(DeviantArtApplicationSettings settings)
-		: this(new
+		: base(new
 			       Uri($"https://www.deviantart.com/oauth2/token?grant_type=client_credentials&client_id={settings.Key}&client_secret={settings.Secret}")) {}
-
-	public AccessTokenLocation(Uri instance) : base(instance) {}
 }
 
-sealed class GetAccessToken : IResulting<AccessToken>
+sealed class GetAccessToken : IAccessToken
 {
 	readonly IHttpClientFactory                        _clients;
 	readonly Uri                                       _location;
@@ -117,7 +80,8 @@ sealed class GetAccessToken : IResulting<AccessToken>
 		var response = await client.GetFromJsonAsync<AccessTokenResponse>(_location).ConfigureAwait(false)
 		               ??
 		               throw new InvalidOperationException();
-		return _token.Get(response);
+		var result = _token.Get(response);
+		return result;
 	}
 }
 

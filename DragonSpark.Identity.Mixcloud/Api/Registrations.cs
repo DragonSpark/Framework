@@ -2,20 +2,20 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Presentation.Security;
+namespace DragonSpark.Identity.Mixcloud.Api;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new Registrations();
+	public static Registrations Default { get; } = new();
 
 	Registrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<AntiforgeryStore>()
-		         .Scoped()
-		         //
-		         .Then.Register<ContentSecurityConfiguration>()
-				 ;
+		parameter.Start<IUserIdentifierQuery>()
+		         .Forward<UserIdentifierQuery>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+			;
 	}
 }

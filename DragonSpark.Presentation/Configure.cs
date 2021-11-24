@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Application.Components;
+using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Connections.Initialization;
+using DragonSpark.Presentation.Security.Identity;
 
 namespace DragonSpark.Presentation;
 
@@ -19,5 +21,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		            .Configure(Interaction.Registrations.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>),
 		                                          typeof(PreRenderAwareActiveContents<>))
-		                                .Decorate<IClientIdentifier, ClientIdentifier>());
+		                                .Decorate<IClientIdentifier, ClientIdentifier>()
+		                                //
+		                                .Decorate<ISignOut, SignOut>());
 }
