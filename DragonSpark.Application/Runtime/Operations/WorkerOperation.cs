@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
@@ -34,11 +35,13 @@ sealed class WorkerOperation<T> : IAllocated
 {
 	readonly Task<T>                 _subject;
 	readonly TaskCompletionSource<T> _source;
+	readonly IExceptionLogger        _logger;
 
-	public WorkerOperation(Task<T> subject, TaskCompletionSource<T> source)
+	public WorkerOperation(Task<T> subject, TaskCompletionSource<T> source, IExceptionLogger logger)
 	{
 		_subject = subject;
 		_source  = source;
+		_logger  = logger;
 	}
 
 	public async Task Get()
@@ -52,6 +55,7 @@ sealed class WorkerOperation<T> : IAllocated
 		catch (Exception e)
 		{
 			_source.SetException(e);
+			await _logger.Get(new ExceptionInput(GetType(), e));
 		}
 	}
 }

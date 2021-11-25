@@ -1,10 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Application.Runtime.Operations;
 
-namespace DragonSpark.Application.Runtime.Operations;
-
-public class Working<TIn, TOut> : IWorking<TIn, TOut>
+/*public class Working<TIn, TOut> : IWorking<TIn, TOut>
 {
 	readonly IAllocating<TIn, TOut> _previous;
 
@@ -36,4 +32,4 @@ public class Working<T> : IWorking<T>
 		var worker   = new WorkerOperation(previous, source).Get();
 		return new(worker, source.Task);
 	}
-}
+}*/

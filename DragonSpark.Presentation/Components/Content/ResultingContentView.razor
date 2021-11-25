@@ -3,8 +3,11 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Application.Diagnostics
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<T>
+
+@inject IExceptionLogger Logger
 
 @if (Subject is null)
 {
@@ -65,7 +68,7 @@ else
 
 	Worker<T?>? Subject { get; set; }
 
-	Worker<T?> DetermineSubject() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default).Get();
+	Worker<T?> DetermineSubject() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default, Logger).Get();
 
 	protected override Task OnAfterRenderAsync(bool firstRender) => Update();
 
