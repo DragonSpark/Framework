@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,7 +43,13 @@ public static partial class Extensions
 
 	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
 		where T : DbContext
-		=> @this.Append(new ConfigureSqlServer<T>(name).Execute);
+		=> @this.Append(new ConfigureSqlServer<T>(new SqlServerMigrations(name).Execute).Execute);
+
+	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name,
+	                                                           Action<SqlServerDbContextOptionsBuilder> configure)
+		where T : DbContext
+		=> @this.Append(new ConfigureSqlServer<T>(new SqlServerMigrations(name).Then()
+		                                                                       .Append(configure)).Execute);
 
 	public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
 		=> @this.Append(EnvironmentalStorageConfiguration.Default);

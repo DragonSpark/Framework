@@ -9,5 +9,6 @@ public sealed class ConfigureSqlServerWithMigration<T> : Command<DbContextOption
 {
 	public ConfigureSqlServerWithMigration(Type type) : this(type.Assembly.GetName().Name.Verify()) {}
 
-	public ConfigureSqlServerWithMigration(string name) : base(new ConfigureSqlServer<T>(name)) {}
+	public ConfigureSqlServerWithMigration(string name)
+		: base(new ConfigureSqlServer<T>(name)) {}
 }
