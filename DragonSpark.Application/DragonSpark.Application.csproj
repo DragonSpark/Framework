@@ -22,9 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="Flurl" Version="3.0.2" />
-    <PackageReference Include="Humanizer" Version="2.11.10" />
+    <PackageReference Include="Humanizer" Version="2.13.14" />
     <PackageReference Include="AutoBogus.Conventions" Version="2.13.1" />
-    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="5.0.26" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="6.0.27" />
     <PackageReference Include="Markdig" Version="0.26.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0" />
@@ -40,7 +40,7 @@
     <PackageReference Include="SluggyUnidecode" Version="2.0.1" />
     <PackageReference Include="SmartFormat.NET" Version="2.7.1" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.13" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.14" />
   </ItemGroup>
 
   <ItemGroup>
