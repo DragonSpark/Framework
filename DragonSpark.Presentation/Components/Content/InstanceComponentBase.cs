@@ -10,7 +10,7 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 
 	protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
 
-	public T? Instance
+	protected T? Instance
 	{
 		get
 		{

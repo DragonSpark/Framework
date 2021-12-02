@@ -29,7 +29,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 		Apply();
 	}
 
-	void Apply()
+	protected void Apply()
 	{
 		_current ??= Create(Contents.Get(_content));
 	}
@@ -37,7 +37,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	protected virtual IActiveContent<T> Create(IActiveContent<T> parameter)
 		=> parameter.Then().Handle(Exceptions, GetType()).Get();
 
-	protected void RequestNewContent()
+	protected virtual void RequestNewContent()
 	{
 		_current = null;
 	}

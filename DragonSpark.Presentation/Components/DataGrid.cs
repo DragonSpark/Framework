@@ -1,6 +1,4 @@
-﻿using DragonSpark.Presentation.Components.State;
-using DragonSpark.Reflection.Members;
-using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Reflection.Members;
 using Microsoft.JSInterop;
 using Radzen.Blazor;
 using System;
@@ -14,40 +12,18 @@ namespace DragonSpark.Presentation.Components;
 /// https://forum.radzen.com/t/issues-with-radzengrid-dispose/5265
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class DataGrid<T> : RadzenGrid<T>, IRefreshAware
+public class DataGrid<T> : RadzenGrid<T>
 {
-	[CascadingParameter]
-	IRefreshContainer? Container
-	{
-		get => _container;
-		set
-		{
-			if (_container != value)
-			{
-				_container?.Remove.Execute(this);
-
-				_container = value;
-
-				_container?.Add.Execute(this);
-			}
-		}
-	}	IRefreshContainer? _container = default!;
-
-	public Task Get() => Reload();
-
 	protected override void OnParametersSet()
 	{
-		if (Container != null)
+		if (Visible && LoadData.HasDelegate && Data == null)
 		{
-			if (Visible && LoadData.HasDelegate && Data == null)
-			{
-				Visible = false;
-				InvokeAsync(Reload);
-			}
-			else
-			{
-				Visible = Data != null;
-			}
+			Visible = false;
+			InvokeAsync(Reload);
+		}
+		else
+		{
+			Visible |= Data != null;
 		}
 		base.OnParametersSet();
 	}
@@ -55,7 +31,6 @@ public class DataGrid<T> : RadzenGrid<T>, IRefreshAware
 	public override void Dispose()
 	{
 		GC.SuppressFinalize(this);
-		Container = null;
 		InvokeAsync(Disposing);
 	}
 
