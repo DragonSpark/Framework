@@ -23,14 +23,16 @@
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
 	>
-		<RadzenPagingContainer
-			Content="@context"
-			ChildContent="@ChildContent"
-			LoadingTemplate="@LoadingTemplate"
-			NotFoundTemplate="@NotFoundTemplate"
-			ExceptionTemplate="@ExceptionTemplate"
-			Reporter="@Reporter"
-		/>
+		<RefreshContainer Topic="@Content">
+			<RadzenPagingContainer
+				Content="@context"
+				ChildContent="@ChildContent"
+				LoadingTemplate="@LoadingTemplate"
+				NotFoundTemplate="@NotFoundTemplate"
+				ExceptionTemplate="@ExceptionTemplate"
+				Reporter="@Reporter"
+			/>
+		</RefreshContainer>
 	</QueryContentContainer>
 </div>
 
