@@ -12,7 +12,7 @@ sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
 	readonly IValidationServices _validation;
 
 	public Revalidation(ILoggerFactory loggers, IValidationServices validation)
-		: this(loggers, validation, TimeSpan.FromMinutes(30)) {}
+		: this(loggers, validation, TimeSpan.FromMinutes(10)) {}
 
 	public Revalidation(ILoggerFactory loggers, IValidationServices validation, TimeSpan interval) : base(loggers)
 	{
