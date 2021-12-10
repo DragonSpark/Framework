@@ -1,16 +1,24 @@
 ﻿.ui-messages-active {
-    display: inline-block;
-    font-size: 0.75rem;
+	display: inline-block;
+	font-size: 0.75rem;
 }
 
 .dragonspark-activity-active {
-    pointer-events: none;
-    opacity: 0.4;
+	pointer-events: none;
+	opacity: 0.4;
 }
 
 .dragonspark-input-hidden {
-    position: absolute;
-    left: -999px;
-    opacity: 0;
-    z-index: -999;
+	position: absolute;
+	left: -999px;
+	opacity: 0;
+	z-index: -999;
+}
+
+.dragonspark-minimal {
+	min-height: 75%;
+}
+
+.dragonspark-minimal div.sf-grid {
+	position: unset !important;
 }

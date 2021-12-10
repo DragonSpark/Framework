@@ -46,7 +46,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public ResultContext<TOut> Bind(IResult<TIn> parameter) => Bind(parameter.Get);
 
 	public ResultContext<TOut> Bind(Func<TIn> parameter)
-		=> new DelegatedSelection<TIn, TOut>(_subject.Get, parameter).Then();
+		=> new SelectedResult<TIn, TOut>(parameter, _subject.Get).Then();
 
 	public Selector<TIn, TTo> Select<TTo>(Selector<TOut, TTo> select) => Select(select.Get());
 

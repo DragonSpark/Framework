@@ -5,10 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Testing.Objects.Entities;
 
-public sealed class NewSqlOptions<T> : DelegatedSelection<string, DbContextOptions<T>> where T : DbContext
+public sealed class NewSqlOptions<T> : SelectedResult<string, DbContextOptions<T>> where T : DbContext
 {
 	public static NewSqlOptions<T> Default { get; } = new();
 
-	NewSqlOptions() : base(SqlOptions<T>.Default.Get,
-	                       NewSqlDatabaseName.Default.Then().Bind(IdentifyingText.Default.Get)) {}
+	NewSqlOptions() : base(NewSqlDatabaseName.Default.Then().Bind(IdentifyingText.Default.Get), SqlOptions<T>.Default.Get) {}
 }

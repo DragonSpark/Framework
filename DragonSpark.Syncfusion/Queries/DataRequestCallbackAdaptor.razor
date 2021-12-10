@@ -1,0 +1,16 @@
+﻿@inherits global::Syncfusion.Blazor.DataAdaptor
+@using global::Syncfusion.Blazor
+
+@code {
+
+	[Parameter]
+	public EventCallback<DataRequestResult> Requested { get; set; }
+
+	public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
+	{
+		var result = new DataRequestResult(request, key);
+		await Requested.InvokeAsync(result);
+		return result.Get();
+	}
+
+}

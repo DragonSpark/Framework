@@ -1,10 +1,28 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Conditions;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
-public class Deferring<T> : IResulting<T>
+public interface IDeferring<T> : IResulting<T>, ICondition {}
+
+public class Deferring<T> : IDeferring<T>
+{
+	readonly Lazy<Task<T>> _store;
+
+	public Deferring(Func<ValueTask<T>> resulting) : this(resulting.Start().Then().Allocate()) {}
+
+	public Deferring(Func<Task<T>> resulting) : this(new Lazy<Task<T>>(resulting)) {}
+
+	public Deferring(Lazy<Task<T>> store) => _store = store;
+
+	public bool Get(None parameter) => _store.IsValueCreated;
+
+	public ValueTask<T> Get() => _store.Value.ToOperation();
+}
+
+/*public class Deferring<T> : IResulting<T>
 {
 	readonly IMutable<T?> _store;
 	readonly AwaitOf<T>   _result;
@@ -28,4 +46,4 @@ public class Deferring<T> : IResulting<T>
 		}
 		return current;
 	}
-}
+}*/

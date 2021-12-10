@@ -31,8 +31,7 @@ public class ResultContext<T>
 
 	public ResultContext<TOut> Select<TOut>(ISelect<T, TOut> select) => Select(select.Get);
 
-	public ResultContext<TOut> Select<TOut>(Func<T, TOut> select)
-		=> new DelegatedSelection<T, TOut>(select, this).Then();
+	public ResultContext<TOut> Select<TOut>(Func<T, TOut> select) => new SelectedResult<T, TOut>(this, select).Then();
 
 	public ResultContext<TTo> Cast<TTo>() => Select(CastOrDefault<T, TTo>.Default);
 

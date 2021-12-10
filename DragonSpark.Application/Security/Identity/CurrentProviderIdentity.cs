@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity;
 
-public sealed class CurrentProviderIdentity : DelegatedSelection<ClaimsPrincipal, ProviderIdentity>
+public sealed class CurrentProviderIdentity : SelectedResult<ClaimsPrincipal, ProviderIdentity>
 {
-	public CurrentProviderIdentity(ICurrentPrincipal parameter) : base(Identities.Default, parameter) {}
+	public CurrentProviderIdentity(ICurrentPrincipal previous) : base(previous, Identities.Default) {}
 }

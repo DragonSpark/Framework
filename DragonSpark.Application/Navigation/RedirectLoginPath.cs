@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Application.Navigation;
 
-public sealed class RedirectLoginPath : DelegatedSelection<string, string>
+public sealed class RedirectLoginPath : SelectedResult<string, string>
 {
-	public RedirectLoginPath(CurrentRootPath parameter) : base(LoginPath.Default, parameter) {}
+	public RedirectLoginPath(CurrentRootPath previous) : base(previous, LoginPath.Default) {}
 }

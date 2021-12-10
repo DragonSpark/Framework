@@ -1,0 +1,34 @@
+﻿@inject ResizeMonitors Modules
+
+@using DragonSpark.Compose
+@implements IAsyncDisposable
+
+@code
+{
+	[Parameter]
+	public EventCallback<ushort> Callback { get; set; }
+
+	[Parameter]
+	public ElementReference Element { get; set; }
+
+	IResizeMonitor Module { get; set; } = default!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Module = await Modules.Await(Callback);
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await Module.Add(Element).ConfigureAwait(false);
+		}
+	}
+
+	public async ValueTask DisposeAsync()
+	{
+		await Module.Remove(Element).ConfigureAwait(false);
+		await Module.DisposeAsync().ConfigureAwait(false);
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"noImplicitAny": false,
+		"noEmitOnError": true,
+		"removeComments": false,
+		"sourceMap": true,
+		"outDir": "./wwwroot"
+	},
+	"exclude": [
+		"node_modules",
+		"wwwroot"
+	],
+	"compileOnSave": true
+}

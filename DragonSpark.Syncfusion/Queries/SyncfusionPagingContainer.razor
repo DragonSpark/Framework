@@ -14,9 +14,8 @@
 	LoadingTemplate="@LoadingTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
-	Context="request"
 >
-	@ChildContent(request)
+	@ChildContent(context)
 </ReportingContentView>
 
 @code {
@@ -38,7 +37,7 @@
 	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
 
 	[Parameter]
-	public IReporter<IDataRequest> Reporter { get; set; } = DragonSpark.Syncfusion.Queries.Reporter.Default;
+	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
 	IDataRequest? Subject { get; set; }
 

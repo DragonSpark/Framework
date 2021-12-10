@@ -1,0 +1,94 @@
+﻿@typeparam T
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.State
+@using DragonSpark.Syncfusion.Queries
+@using global::Syncfusion.Blazor
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+<AdaptiveGrid T="T"
+	FilterType="@FilterType"
+	ReportedType="@ReportedType"
+	Columns="@Columns"
+	AllowPaging="@AllowPaging"
+	AllowFiltering="@AllowFiltering"
+	AllowSorting="@AllowSorting"
+	Target="@Target"
+	PageSize="@PageSize"
+	@attributes="@AdditionalAttributes">
+	<SfDataManager>
+		<DataRequestCallbackAdaptor Requested="@OnRequest" />
+	</SfDataManager>
+	@if (ChildContent is not null)
+	{
+		@ChildContent
+	}
+</AdaptiveGrid>
+
+@code {
+	[Parameter]
+	public IDataRequest Content
+	{
+		get => _content;
+		set
+		{
+			if (_content != value)
+			{
+				_content = value;
+				Input = null;
+			}
+		}
+	}	IDataRequest _content = default!;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
+	[Parameter]
+	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+	[Parameter]
+	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter]
+	public bool AllowPaging { get; set; } = true;
+
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
+
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
+
+	[Parameter]
+	public ushort Target { get; set; } = 576;
+
+	[Parameter]
+	public ushort PageSize { get; set; } = 10;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+	[CascadingParameter]
+	IActivityReceiver Receiver { get; set; } = default!;
+
+	Await<DataManagerRequest, object>? Input { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		Input ??= _content.Then()
+		                .Then()
+		                .UpdateActivity(Receiver)
+		                .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+		base.OnParametersSet();
+	}
+
+	async Task OnRequest(DataRequestResult parameter)
+	{
+		var data = await Input!(parameter.Request);
+		parameter.Execute(data);
+	}
+
+}

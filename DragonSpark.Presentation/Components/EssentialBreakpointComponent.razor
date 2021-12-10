@@ -1,0 +1,46 @@
+﻿<div @ref="@_element" class="w-100">
+	@Template
+</div>
+
+<ResizeComponent Element="@_element" Callback="@OnUpdate" />
+
+@code {
+	ElementReference _element;
+
+	[Parameter]
+	public ushort Target { get; set; } = 576;
+
+	[Parameter]
+	public RenderFragment MinimalTemplate { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	RenderFragment Template { get; set; } = default!;
+
+	bool DefaultView
+	{
+		get => _defaultView;
+		set
+		{
+			if (_defaultView != value)
+			{
+				_defaultView = value;
+				Template = _defaultView ? ChildContent : MinimalTemplate;
+				StateHasChanged();
+			}
+		}
+	}	bool _defaultView;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Template = ChildContent;
+	}
+
+	Task OnUpdate(ushort parameter)
+	{
+		DefaultView = parameter > Target;
+		return Task.CompletedTask;
+	}
+}

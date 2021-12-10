@@ -4,14 +4,12 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime.Activation;
-using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Runtime.Invocation;
 
 public class Deferred<TIn, TOut> : Select<TIn, TOut>, IActivateUsing<ISelect<TIn, TOut>>
 {
-	[UsedImplicitly]
 	public Deferred(ISelect<TIn, TOut> select)
 		: this(select, Start.A.Selection<TIn>().AndOf<TOut>().Into.Table()) {}
 

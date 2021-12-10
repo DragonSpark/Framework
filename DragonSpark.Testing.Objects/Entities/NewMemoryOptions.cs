@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Testing.Objects.Entities;
 
-public sealed class NewMemoryOptions<T> : DelegatedSelection<string, DbContextOptions<T>> where T : DbContext
+public sealed class NewMemoryOptions<T> : SelectedResult<string, DbContextOptions<T>> where T : DbContext
 {
 	public static NewMemoryOptions<T> Default { get; } = new NewMemoryOptions<T>();
 
-	NewMemoryOptions() : base(MemoryOptions<T>.Default, IdentifyingText.Default) {}
+	NewMemoryOptions() : base(IdentifyingText.Default, MemoryOptions<T>.Default) {}
 }

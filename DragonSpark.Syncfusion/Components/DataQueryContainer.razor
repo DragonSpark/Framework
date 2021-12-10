@@ -1,0 +1,78 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime
+@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Syncfusion.Queries
+
+@typeparam T
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+
+<DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
+	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Pagers="@Pagers" Reporter="@Reporter"
+	                          LoadingTemplate="@LoadingTemplate"
+	                          EmptyElementsTemplate="@EmptyElementsTemplate"
+	                          NotFoundTemplate="@NotFoundTemplate"
+	                          ExceptionTemplate="@ExceptionTemplate"
+	                          >
+		<DataQueryGrid T="T" Content="context"
+		               FilterType="@FilterType"
+		               ReportedType="@ReportedType"
+		               Columns="@Columns"
+		               AllowPaging="@AllowPaging"
+		               AllowFiltering="@AllowFiltering"
+		               AllowSorting="@AllowSorting"
+		               Target="@Target"
+		               PageSize="@PageSize"
+		               @attributes="@AdditionalAttributes"
+		>
+			@if (ChildContentTemplate is not null)
+			{
+				@ChildContentTemplate
+			}
+		</DataQueryGrid>
+	</SyncfusionQueryContainer>
+</DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
+
+@code {
+	[Parameter]
+	public IQueries<T> Content {get; set; } = default!;
+
+	[Parameter]
+	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
+
+	[Parameter]
+	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
+
+	[Parameter]
+	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
+	[Parameter]
+	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+	[Parameter]
+	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment? ChildContentTemplate { get; set; }
+
+	[Parameter]
+	public bool AllowPaging { get; set; } = true;
+
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
+
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
+
+	[Parameter]
+	public ushort Target { get; set; } = 576;
+
+	[Parameter]
+	public ushort PageSize { get; set; } = 10;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+}

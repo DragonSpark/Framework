@@ -1,0 +1,65 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.State
+@using DragonSpark.Syncfusion.Queries
+@using global::Syncfusion.Blazor
+
+@typeparam T
+
+<DragonSpark.Presentation.Components.EssentialBreakpointComponent Target="@Target">
+	<ChildContent>
+		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" @attributes="@AdditionalAttributes">
+			<GridPageSettings PageSize="@PageSize" />
+			<GridFilterSettings FilterType="@FilterType" />
+			<GridColumns ChildContent="@Columns" />
+			@if (ChildContent is not null)
+			{
+				@ChildContent
+			}
+		</SfGrid>
+	</ChildContent>
+	<MinimalTemplate>
+		<SfGrid TValue="T" class="@MinimalClass" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" EnableAdaptiveUI="true" RowDirection="@RowDirection.Vertical" @attributes="@AdditionalAttributes">
+			<GridPageSettings PageSize="@PageSize" />
+			<GridFilterSettings FilterType="@FilterType" />
+			<GridColumns ChildContent="@Columns" />
+			@if (ChildContent is not null)
+			{
+				@ChildContent
+			}
+		</SfGrid>
+	</MinimalTemplate>
+</DragonSpark.Presentation.Components.EssentialBreakpointComponent>
+
+@code {
+	[Parameter]
+	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+	[Parameter]
+	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter]
+	public bool AllowPaging { get; set; } = true;
+
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
+
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
+
+	[Parameter]
+	public ushort PageSize { get; set; } = 10;
+
+	[Parameter]
+	public ushort Target { get; set; } = 576;
+
+	[Parameter]
+	public string MinimalClass { get; set; } = "dragonspark-minimal";
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+}

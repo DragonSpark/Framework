@@ -4,8 +4,8 @@ using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.Navigation.Security.Identity;
 
-public class CurrentExternalLogin : DelegatedSelection<string, string>
+public class CurrentExternalLogin : SelectedResult<string, string>
 {
 	protected CurrentExternalLogin(IAlteration<string> select, CurrentAuthenticationMethod current)
-		: base(select, current) {}
+		: base(current, @select) {}
 }

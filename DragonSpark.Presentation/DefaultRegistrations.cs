@@ -3,6 +3,7 @@ using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Diagnostics;
@@ -97,6 +98,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ResourceExistsValidation>()
 		         .Singleton()
+				 //
+				 .Then.Start<ResizeMonitors>().Include(x => x.Dependencies.Recursive()).Scoped()
 		         //
 		         .Then.AddJsInteropExtensions()
 		         
