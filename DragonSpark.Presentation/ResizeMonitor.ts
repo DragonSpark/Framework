@@ -31,14 +31,18 @@ class ResizeMonitor {
 		return this.references.size;
 	}
 
-	public Add(reference: IDotNetReference, identifier: string, element: HTMLElement): void {
-		let current = element.dataset["ResizeMonitor.UniqueIdentifier"];
-		if (current) {
-			this.Remove(current);
+	public Add(reference: IDotNetReference, identifier: string, element: HTMLElement): boolean {
+		if (element.dataset) {
+			const current = element.dataset["ResizeMonitor.UniqueIdentifier"];
+			if (current) {
+				this.Remove(current);
+			}
+			element.dataset["ResizeMonitor.UniqueIdentifier"] = identifier;
+			this.references.set(identifier, [reference, element]);
+			this.observer.observe(element);
+			return true;
 		}
-		element.dataset["ResizeMonitor.UniqueIdentifier"] = identifier;
-		this.references.set(identifier, [reference, element]);
-		this.observer.observe(element);
+		return false;
 	}
 
 	public Remove(identifier: string): void {

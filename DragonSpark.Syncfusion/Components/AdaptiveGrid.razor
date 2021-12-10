@@ -1,15 +1,16 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.Syncfusion.Queries
 @using global::Syncfusion.Blazor
 
 @typeparam T
 
-<DragonSpark.Presentation.Components.EssentialBreakpointComponent Target="@Target">
+<DragonSpark.Presentation.Components.EssentialBreakpointComponent Target="@Target" LoadingTemplate="@LoadingTemplate">
 	<ChildContent>
-		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" @attributes="@AdditionalAttributes">
+		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" Toolbar="@DefaultToolbar.Default" @attributes="@AdditionalAttributes">
 			<GridPageSettings PageSize="@PageSize" />
 			<GridFilterSettings FilterType="@FilterType" />
 			<GridColumns ChildContent="@Columns" />
@@ -20,15 +21,20 @@
 		</SfGrid>
 	</ChildContent>
 	<MinimalTemplate>
-		<SfGrid TValue="T" class="@MinimalClass" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" EnableAdaptiveUI="true" RowDirection="@RowDirection.Vertical" @attributes="@AdditionalAttributes">
-			<GridPageSettings PageSize="@PageSize" />
-			<GridFilterSettings FilterType="@FilterType" />
-			<GridColumns ChildContent="@Columns" />
-			@if (ChildContent is not null)
-			{
-				@ChildContent
-			}
-		</SfGrid>
+		<div class="@MinimalClass">
+			<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" EnableAdaptiveUI="true"
+				RowDirection="@RowDirection.Vertical"
+				Toolbar="@DefaultToolbar.Default"
+				@attributes="@AdditionalAttributes">
+				<GridPageSettings PageSize="@PageSize" />
+				<GridFilterSettings FilterType="@FilterType" />
+				<GridColumns ChildContent="@Columns" />
+				@if (ChildContent is not null)
+				{
+					@ChildContent
+				}
+			</SfGrid>
+		</div>
 	</MinimalTemplate>
 </DragonSpark.Presentation.Components.EssentialBreakpointComponent>
 
@@ -38,6 +44,9 @@
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }

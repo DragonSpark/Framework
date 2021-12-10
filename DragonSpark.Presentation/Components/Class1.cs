@@ -75,7 +75,7 @@ sealed class ResizeCallback : IOperation<ushort>
 
 public interface IResizeMonitor : IAsyncDisposable
 {
-	ValueTask Add(ElementReference element);
+	ValueTask<bool> Add(ElementReference element);
 
 	ValueTask Remove(ElementReference element);
 }
@@ -118,8 +118,8 @@ sealed class ResizeMonitor : IResizeMonitor
 		_reference = reference;
 	}
 
-	public ValueTask Add(ElementReference element)
-		=> _instance.InvokeVoidAsync(nameof(Add), _reference, element.Id, element);
+	public ValueTask<bool> Add(ElementReference element)
+		=> _instance.InvokeAsync<bool>(nameof(Add), _reference, element.Id, element);
 
 	public ValueTask Remove(ElementReference element) => _instance.InvokeVoidAsync(nameof(Remove), element.Id);
 

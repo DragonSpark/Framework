@@ -44,9 +44,9 @@
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= DetermineSubject();
+		Subject ??= Requests.Get(Content);
 	}
 
-	IDataRequest DetermineSubject() => Requests.Get(Content);
+	
 
 }

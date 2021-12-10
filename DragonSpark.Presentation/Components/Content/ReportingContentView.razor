@@ -15,9 +15,7 @@ else
 	{
 		@LoadingTemplate
 	}
-	<div class="@(initializing ? "d-none" : string.Empty)">
-		<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
-	</div>
+	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
 }
 
 @code
@@ -55,8 +53,6 @@ else
 
 	bool Loaded { get; set; }
 
-	bool Rendered { get; set; }
-
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
@@ -71,6 +67,4 @@ else
 		Current = Workers.Default.Get(parameter);
 		StateHasChanged();
 	}
-
-
 }

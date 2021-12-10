@@ -1,6 +1,8 @@
 ﻿@inject ResizeMonitors Modules
 
 @using DragonSpark.Compose
+@using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Runtime.Execution
 @implements IAsyncDisposable
 
 @code
@@ -9,26 +11,62 @@
 	public EventCallback<ushort> Callback { get; set; }
 
 	[Parameter]
-	public ElementReference Element { get; set; }
+	public ElementReference? Element
+	{
+		get => _element;
+		set
+		{
+			if (_element?.Id != value?.Id)
+			{
+				if (_element != null)
+				{
+					_remove.Enqueue(_element.Value);
+				}
 
-	IResizeMonitor Module { get; set; } = default!;
+				_element = value;
+				if (_element != null)
+				{
+					_add.Enqueue(_element.Value);
+				}
+
+			}
+		}
+	}	ElementReference? _element;
+
+	IResizeMonitor? Module { get; set; } = default!;
+
+	readonly Queue<ElementReference> _remove = new(), _add = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		Module = await Modules.Await(Callback);
+		Module = await Modules.Get(Callback);
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
+		if (Module is not null)
 		{
-			await Module.Add(Element).ConfigureAwait(false);
+			while (_add.TryDequeue(out var current))
+			{
+				await Module.Add(current).ConfigureAwait(false);
+			}
+
+			while (_remove.TryDequeue(out var current))
+			{
+				await Module.Remove(current).ConfigureAwait(false);
+			}
 		}
 	}
 
 	public async ValueTask DisposeAsync()
 	{
-		await Module.Remove(Element).ConfigureAwait(false);
-		await Module.DisposeAsync().ConfigureAwait(false);
+		if (Module is not null)
+		{
+			if (Element.HasValue)
+			{
+				await Module.Remove(Element.Value).ConfigureAwait(false);
+			}
+			await Module.DisposeAsync().ConfigureAwait(false);
+		}
 	}
 }

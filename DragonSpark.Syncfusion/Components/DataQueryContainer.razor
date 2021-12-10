@@ -1,6 +1,7 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Syncfusion.Queries
 
 @typeparam T
@@ -9,7 +10,7 @@
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
 	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Pagers="@Pagers" Reporter="@Reporter"
-	                          LoadingTemplate="@LoadingTemplate"
+	                          LoadingTemplate="@EmptyContentTemplate.Default"
 	                          EmptyElementsTemplate="@EmptyElementsTemplate"
 	                          NotFoundTemplate="@NotFoundTemplate"
 	                          ExceptionTemplate="@ExceptionTemplate"
@@ -21,6 +22,7 @@
 		               AllowPaging="@AllowPaging"
 		               AllowFiltering="@AllowFiltering"
 		               AllowSorting="@AllowSorting"
+					   LoadingTemplate="@LoadingTemplate"
 		               Target="@Target"
 		               PageSize="@PageSize"
 		               @attributes="@AdditionalAttributes"

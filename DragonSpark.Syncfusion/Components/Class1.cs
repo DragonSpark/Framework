@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor;
+using System.Collections.Generic;
 
 namespace DragonSpark.Syncfusion.Components;
 
@@ -13,6 +14,13 @@ public class SfGrid<TValue> : global::Syncfusion.Blazor.Grids.SfGrid<TValue>
 		get => (RowDirection)RowRenderingMode;
 		set => RowRenderingMode = (global::Syncfusion.Blazor.Grids.RowDirection)value;
 	}
+}
+
+public sealed class DefaultToolbar : List<string>
+{
+	public static DefaultToolbar Default { get; } = new();
+
+	DefaultToolbar() : base(new[] { "Filter" }) {}
 }
 
 public class SfDataManager : global::Syncfusion.Blazor.Data.SfDataManager

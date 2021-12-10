@@ -1,4 +1,5 @@
-﻿<div @ref="@_element" class="w-100">
+﻿@using DragonSpark.Presentation.Components.Content.Templates
+<div @ref="@_element" class="w-100">
 	@Template
 </div>
 
@@ -16,9 +17,12 @@
 	[Parameter]
 	public RenderFragment ChildContent { get; set; } = default!;
 
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
 	RenderFragment Template { get; set; } = default!;
 
-	bool DefaultView
+	bool? DefaultView
 	{
 		get => _defaultView;
 		set
@@ -26,17 +30,18 @@
 			if (_defaultView != value)
 			{
 				_defaultView = value;
-				Template = _defaultView ? ChildContent : MinimalTemplate;
+				Template = _defaultView != null ? _defaultView.Value ? ChildContent : MinimalTemplate : LoadingTemplate;
 				StateHasChanged();
 			}
 		}
-	}	bool _defaultView;
+	}	bool? _defaultView;
 
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		Template = ChildContent;
+		Template = LoadingTemplate;
 	}
+
 
 	Task OnUpdate(ushort parameter)
 	{

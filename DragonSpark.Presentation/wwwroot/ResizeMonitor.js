@@ -21,13 +21,17 @@ class ResizeMonitor {
         return this.references.size;
     }
     Add(reference, identifier, element) {
-        let current = element.dataset["ResizeMonitor.UniqueIdentifier"];
-        if (current) {
-            this.Remove(current);
+        if (element.dataset) {
+            const current = element.dataset["ResizeMonitor.UniqueIdentifier"];
+            if (current) {
+                this.Remove(current);
+            }
+            element.dataset["ResizeMonitor.UniqueIdentifier"] = identifier;
+            this.references.set(identifier, [reference, element]);
+            this.observer.observe(element);
+            return true;
         }
-        element.dataset["ResizeMonitor.UniqueIdentifier"] = identifier;
-        this.references.set(identifier, [reference, element]);
-        this.observer.observe(element);
+        return false;
     }
     Remove(identifier) {
         const reference = this.references.get(identifier);

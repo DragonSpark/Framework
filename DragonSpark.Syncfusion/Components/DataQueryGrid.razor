@@ -2,6 +2,7 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.Syncfusion.Queries
 @using global::Syncfusion.Blazor
@@ -16,6 +17,7 @@
 	AllowSorting="@AllowSorting"
 	Target="@Target"
 	PageSize="@PageSize"
+	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
 	<SfDataManager>
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
@@ -49,6 +51,9 @@
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
