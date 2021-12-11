@@ -1,5 +1,5 @@
 ﻿@using DragonSpark.Presentation.Compose
-@using Majorsoft.Blazor.Components.Common.JsInterop.Focus
+@using DragonSpark.Presentation.Browser
 @using System.Diagnostics
 @using DragonSpark.Compose
 
@@ -8,7 +8,7 @@
 @implements IActivityReceiver
 @implements IAsyncDisposable
 
-@inject IFocusHandler Focus
+@inject IFocusedElement Focus
 
 <div class="@(Active ? ActiveStyle : null)">
 	<fieldset disabled="@Active">
@@ -20,26 +20,26 @@
 
 @code
 {
-	bool Active { get; set; }
+		bool Active { get; set; }
 
-	[Parameter]
-	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+		[Parameter]
+		public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-	[Parameter]
-	public object? Receiver { get; set; }
+		[Parameter]
+		public object? Receiver { get; set; }
 
-	[Parameter]
-	public RenderFragment<object> ChildContent { get; set; } = default!;
+		[Parameter]
+		public RenderFragment<object> ChildContent { get; set; } = default!;
 
-	object ActualReceiver => Receiver ?? this;
+		object ActualReceiver => Receiver ?? this;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		Allowed |= true;
+		Allowed = true;
 		if (Restore)
 		{
 			Restore = false;
-			await Focus.RestoreStoredElementFocusAsync();
+			await Focus.Restore.Await();
 		}
 	}
 
@@ -59,8 +59,7 @@
 	{
 		if (Allowed)
 		{
-			// TODO:
-			await Focus.StoreFocusedElementAsync().ConfigureAwait(false);
+			await Focus.Store.Await();
 		}
 		if (Update())
 		{
@@ -77,13 +76,6 @@
 		}
 	}
 
-	public async ValueTask DisposeAsync()
-	{
-		try
-		{
-			await Focus.DisposeAsync().ConfigureAwait(false);
-		}
-		catch (JSDisconnectedException) {}
-	}
+	public ValueTask DisposeAsync() => Focus.DisposeAsync();
 
 }

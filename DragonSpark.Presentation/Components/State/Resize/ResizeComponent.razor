@@ -1,13 +1,12 @@
 ﻿@inject ResizeMonitors Modules
 
-@using DragonSpark.Compose
-@using DragonSpark.Model.Selection.Conditions
-@using DragonSpark.Runtime.Execution
-@using System.Diagnostics
-@using AsyncUtilities
 @using DragonSpark.Presentation.Browser
 @using ValueTask = System.Threading.Tasks.ValueTask
+@using DragonSpark.Compose
+@using DragonSpark.Application.Diagnostics
+
 @implements IAsyncDisposable
+@inject IExceptionLogger Logger
 
 @code
 {
@@ -17,23 +16,44 @@
 	[Parameter]
 	public IElementReference Element { get; set; } = default!;
 
-	IResizeMonitor? Module { get; set; } = default!;
+	IResizeMonitor? Module { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
 		{
 			Module ??= await Modules.Get(Callback);
-			await Module.Add(Element.Get());
 		}
+
+		if (Module != null)
+		{
+			var reference = Element.Get();
+			if (reference is not null)
+			{
+				try
+				{
+					await Module.Add(reference.Value);
+				}
+				catch (JSException e)
+				{
+					await Logger.Await(new ExceptionInput(GetType(), e));
+				}
+			}
+		}
+
 	}
 
 	public async ValueTask DisposeAsync()
 	{
 		if (Module is not null)
 		{
-			await Module.Remove(Element.Get()).ConfigureAwait(false);
+			var element = Element.Get();
+			if (element != null)
+			{
+				await Module.Remove(element.Value).ConfigureAwait(false);
+			}
 			await Module.DisposeAsync().ConfigureAwait(false);
+			Module = null;
 		}
 	}
 }

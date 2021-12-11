@@ -7,7 +7,7 @@
 <ResizeComponent Element="@this" Callback="@OnUpdate" />
 
 @code {
-	ElementReference _element;
+	ElementReference? _element;
 
 	[Parameter]
 	public ushort Target { get; set; } = 576;
@@ -49,5 +49,5 @@
 		return Task.CompletedTask;
 	}
 
-	public ElementReference Get() => _element;
+	public ElementReference? Get() => _element;
 }

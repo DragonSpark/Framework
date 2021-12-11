@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Browser;
 
-public interface IElementReference : IResult<ElementReference> {}
+public interface IElementReference : IResult<ElementReference?> {}
