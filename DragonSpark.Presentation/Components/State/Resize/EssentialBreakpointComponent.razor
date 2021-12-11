@@ -1,9 +1,10 @@
 ﻿@using DragonSpark.Presentation.Components.Content.Templates
+@implements DragonSpark.Presentation.Browser.IElementReference
 <div @ref="@_element" class="w-100">
 	@Template
 </div>
 
-<ResizeComponent Element="@_element" Callback="@OnUpdate" />
+<ResizeComponent Element="@this" Callback="@OnUpdate" />
 
 @code {
 	ElementReference _element;
@@ -24,7 +25,6 @@
 
 	bool? DefaultView
 	{
-		get => _defaultView;
 		set
 		{
 			if (_defaultView != value)
@@ -48,4 +48,6 @@
 		DefaultView = parameter > Target;
 		return Task.CompletedTask;
 	}
+
+	public ElementReference Get() => _element;
 }

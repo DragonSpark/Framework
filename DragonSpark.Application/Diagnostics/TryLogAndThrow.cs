@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 
-public class ExceptionLoggerAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+public class TryLogAndThrow<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelecting<TIn, TOut> _previous;
 	readonly IExceptionLogger      _logger;
 
-	protected ExceptionLoggerAwareSelecting(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
+	protected TryLogAndThrow(ISelecting<TIn, TOut> previous, IExceptionLogger logger)
 	{
 		_previous = previous;
 		_logger   = logger;

@@ -13,7 +13,7 @@
 {
 	@NotFoundTemplate
 }
-else if (Subject?.Status is { IsFaulted : true })
+else if (Subject is { Status.IsFaulted : true })
 {
 	@ExceptionTemplate
 }
@@ -28,6 +28,8 @@ else
 
 @code
 {
+	Action _update = default!;
+
 	[Parameter]
 	public IResulting<T?>? Content
 	{
@@ -53,28 +55,32 @@ else
 
 	bool Loaded { get; set; }
 
+	protected override void OnInitialized()
+	{
+		_update = StateHasChanged;
+		base.OnInitialized();
+	}
+
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= DetermineSubject();
+		Subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update, Logger).Get();
 		Update();
 	}
 
 	protected override async Task OnParametersSetAsync()
 	{
 		await Update();
-		await (Subject?.AsTask() ?? base.OnParametersSetAsync());
+		await (Subject?.AsTask() ?? base.OnParametersSetAsync()).ConfigureAwait(false);
 	}
 
 	Worker<T?>? Subject { get; set; }
-
-	Worker<T?> DetermineSubject() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default, Logger).Get();
 
 	protected override Task OnAfterRenderAsync(bool firstRender) => Update();
 
 	Task Update()
 	{
-		var loaded = Subject?.Status is { IsCompletedSuccessfully: true };
+		var loaded = Subject is { Status.IsCompletedSuccessfully: true };
 		var update = loaded && loaded != Loaded;
 		Loaded = loaded;
 		if (update)

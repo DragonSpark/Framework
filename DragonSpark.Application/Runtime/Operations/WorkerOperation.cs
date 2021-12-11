@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
 
@@ -9,18 +8,20 @@ sealed class WorkerOperation : IAllocated
 {
 	readonly Task                 _subject;
 	readonly TaskCompletionSource _source;
+	readonly Action               _complete;
 
-	public WorkerOperation(Task subject, TaskCompletionSource source)
+	public WorkerOperation(Task subject, TaskCompletionSource source, Action complete)
 	{
-		_subject = subject;
-		_source  = source;
+		_subject  = subject;
+		_source   = source;
+		_complete = complete;
 	}
 
 	public async Task Get()
 	{
 		try
 		{
-			await _subject.ConfigureAwait(false);
+			await _subject;
 			_source.SetResult();
 		}
 		// ReSharper disable once CatchAllClause
@@ -28,34 +29,41 @@ sealed class WorkerOperation : IAllocated
 		{
 			_source.SetException(e);
 		}
+		finally
+		{
+			_complete();
+		}
 	}
 }
 
-sealed class WorkerOperation<T> : IAllocated
+sealed class WorkerOperation<T> : IOperation
 {
 	readonly Task<T>                 _subject;
 	readonly TaskCompletionSource<T> _source;
-	readonly IExceptionLogger        _logger;
+	readonly Action                  _complete;
 
-	public WorkerOperation(Task<T> subject, TaskCompletionSource<T> source, IExceptionLogger logger)
+	public WorkerOperation(Task<T> subject, TaskCompletionSource<T> source, Action complete)
 	{
-		_subject = subject;
-		_source  = source;
-		_logger  = logger;
+		_subject  = subject;
+		_source   = source;
+		_complete = complete;
 	}
 
-	public async Task Get()
+	public async ValueTask Get()
 	{
 		try
 		{
-			var content = await _subject.ConfigureAwait(false);
+			var content = await _subject;
 			_source.SetResult(content);
 		}
 		// ReSharper disable once CatchAllClause
 		catch (Exception e)
 		{
 			_source.SetException(e);
-			await _logger.Get(new ExceptionInput(GetType(), e));
+		}
+		finally
+		{
+			_complete();
 		}
 	}
 }

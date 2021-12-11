@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+﻿using DragonSpark.Presentation.Components.State;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.State;
+namespace DragonSpark.Presentation.Browser;
 
 public sealed class HostedVariable<T> : IHostedVariable<T>
 {

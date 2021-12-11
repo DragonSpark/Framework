@@ -1,0 +1,13 @@
+﻿using Microsoft.AspNetCore.Components;
+
+namespace DragonSpark.Syncfusion.Components;
+
+public class SfGrid<TValue> : global::Syncfusion.Blazor.Grids.SfGrid<TValue>
+{
+	[Parameter]
+	public RowDirection RowDirection
+	{
+		get => (RowDirection)RowRenderingMode;
+		set => RowRenderingMode = (global::Syncfusion.Blazor.Grids.RowDirection)value;
+	}
+}

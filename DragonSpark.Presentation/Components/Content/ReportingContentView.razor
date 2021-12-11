@@ -4,7 +4,7 @@
 @using DragonSpark.Application.Runtime.Operations
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TOut>
 
-@if (Current?.Status is {IsFaulted : true })
+@if (Current is { Status.IsFaulted : true })
 {
 	@ExceptionTemplate
 }
@@ -15,15 +15,18 @@ else
 	{
 		@LoadingTemplate
 	}
+
 	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
 }
 
 @code
 {
+	Action _call = default!;
 	Action<Task> _report = default!;
 
 	protected override ValueTask Initialize()
 	{
+		_call = Update;
 		_report = Report;
 		return base.Initialize();
 	}
@@ -55,16 +58,20 @@ else
 
 	protected override void OnParametersSet()
 	{
-		base.OnParametersSet();
 		Subject ??= Content != null ? Reporter.Get(new(Content, _report)) : default;
-		Loaded |= Current?.Status is { IsCompletedSuccessfully: true };
+
 	}
 
 	protected override Task OnParametersSetAsync() => Current?.AsTask() ?? base.OnParametersSetAsync();
 
 	void Report(Task parameter)
 	{
-		Current = Workers.Default.Get(parameter);
+		Current = Workers.Default.Get(new (parameter, _call));
+	}
+
+	void Update()
+	{
+		Loaded = Current is { Status.IsCompletedSuccessfully: true };
 		StateHasChanged();
 	}
 }

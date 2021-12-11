@@ -8,9 +8,10 @@
 
 @typeparam T
 
-<DragonSpark.Presentation.Components.EssentialBreakpointComponent Target="@Target" LoadingTemplate="@LoadingTemplate">
+<DragonSpark.Presentation.Components.State.Resize.EssentialBreakpointComponent Target="@Target" LoadingTemplate="@LoadingTemplate">
 	<ChildContent>
-		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" Toolbar="@DefaultToolbar.Default" @attributes="@AdditionalAttributes">
+		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" attributes="@AdditionalAttributes">
+			<GridTemplates LoadingTemplate="@LoadingTemplate" />
 			<GridPageSettings PageSize="@PageSize" />
 			<GridFilterSettings FilterType="@FilterType" />
 			<GridColumns ChildContent="@Columns" />
@@ -26,6 +27,7 @@
 				RowDirection="@RowDirection.Vertical"
 				Toolbar="@DefaultToolbar.Default"
 				@attributes="@AdditionalAttributes">
+				<GridTemplates LoadingTemplate="@LoadingTemplate" />
 				<GridPageSettings PageSize="@PageSize" />
 				<GridFilterSettings FilterType="@FilterType" />
 				<GridColumns ChildContent="@Columns" />
@@ -36,7 +38,7 @@
 			</SfGrid>
 		</div>
 	</MinimalTemplate>
-</DragonSpark.Presentation.Components.EssentialBreakpointComponent>
+</DragonSpark.Presentation.Components.State.Resize.EssentialBreakpointComponent>
 
 @code {
 	[Parameter]
@@ -47,6 +49,9 @@
 
 	[Parameter]
 	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+	[Parameter]
+	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }

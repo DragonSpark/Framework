@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Components.State;
+namespace DragonSpark.Presentation.Browser;
 
 public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
 {

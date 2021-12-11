@@ -8,7 +8,7 @@ public class Reporting<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly ISelecting<TIn, TOut> _previous;
 	readonly Action<Task<TOut>>    _report;
 
-	public Reporting(ISelecting<TIn, TOut> previous, Action<Task<TOut>> report)
+	protected Reporting(ISelecting<TIn, TOut> previous, Action<Task<TOut>> report)
 	{
 		_previous = previous;
 		_report   = report;
