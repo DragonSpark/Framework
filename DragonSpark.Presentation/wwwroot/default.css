@@ -26,3 +26,7 @@ div.dragonspark-minimal.sf-grid div.e-gridcontent div.e-content {
 div.dragonspark-minimal.sf-grid div.e-gridcontent div.e-content table.e-table {
 	width: unset !important;
 }
+
+div.dragonspark-minimal.sf-grid .e-spinner-pane .e-spinner-inner {
+	top: 65%;
+}
