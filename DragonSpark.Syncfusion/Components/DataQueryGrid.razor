@@ -84,9 +84,9 @@
 	protected override void OnParametersSet()
 	{
 		Input ??= _content.Then()
-		                .Then()
-		                .UpdateActivity(Receiver)
-		                .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+		                  .Then()
+		                  .UpdateActivity(Receiver)
+		                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
 		base.OnParametersSet();
 	}
 

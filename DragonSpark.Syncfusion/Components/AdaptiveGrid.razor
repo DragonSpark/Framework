@@ -10,7 +10,7 @@
 
 <DragonSpark.Presentation.Components.State.Resize.EssentialBreakpointComponent Target="@Target" LoadingTemplate="@LoadingTemplate">
 	<ChildContent>
-		<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" attributes="@AdditionalAttributes">
+		<SfGrid TValue="T" AllowFiltering="@AllowFiltering" AllowPaging="@AllowPaging" AllowSorting="@AllowSorting" attributes="@AdditionalAttributes">
 			<GridTemplates LoadingTemplate="@LoadingTemplate" />
 			<GridPageSettings PageSize="@PageSize" />
 			<GridFilterSettings FilterType="@FilterType" />
@@ -23,7 +23,7 @@
 	</ChildContent>
 	<MinimalTemplate>
 		<div class="@MinimalClass">
-			<SfGrid TValue="T" AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" EnableAdaptiveUI="true"
+			<SfGrid TValue="T" AllowFiltering="@AllowFiltering" AllowPaging="@AllowPaging" AllowSorting="@AllowSorting" EnableAdaptiveUI="true"
 				RowDirection="@RowDirection.Vertical"
 				Toolbar="@DefaultToolbar.Default"
 				@attributes="@AdditionalAttributes">
