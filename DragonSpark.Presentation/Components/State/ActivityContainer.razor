@@ -10,7 +10,7 @@
 
 @inject IFocusedElement Focus
 
-<div class="@(Active ? ActiveStyle : null)">
+<div class="@Class">
 	<fieldset disabled="@Active">
 		<CascadingValue TValue="IActivityReceiver" Value="@this">
 			@ChildContent(ActualReceiver)
@@ -20,18 +20,30 @@
 
 @code
 {
-		bool Active { get; set; }
+	bool Active { get; set; }
 
-		[Parameter]
-		public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
-		[Parameter]
-		public object? Receiver { get; set; }
+	[Parameter]
+	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-		[Parameter]
-		public RenderFragment<object> ChildContent { get; set; } = default!;
+	[Parameter]
+	public object? Receiver { get; set; }
 
-		object ActualReceiver => Receiver ?? this;
+	[Parameter]
+	public RenderFragment<object> ChildContent { get; set; } = default!;
+
+	string? Class
+	{
+		get {
+			var start = Active ? ActiveStyle : null;
+			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
+			return result;
+		}
+	}
+
+	object ActualReceiver => Receiver ?? this;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -77,5 +89,4 @@
 	}
 
 	public ValueTask DisposeAsync() => Focus.DisposeAsync();
-
 }

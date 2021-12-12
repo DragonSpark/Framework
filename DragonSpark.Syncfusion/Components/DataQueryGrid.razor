@@ -1,4 +1,5 @@
 ﻿@typeparam T
+@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
@@ -15,7 +16,8 @@
 	AllowPaging="@AllowPaging"
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
-	Target="@Target"
+	Breakpoint="@Breakpoint"
+	CssClass="@CssClass"
 	PageSize="@PageSize"
 	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
@@ -68,7 +70,10 @@
 	public bool AllowSorting { get; set; } = true;
 
 	[Parameter]
-	public ushort Target { get; set; } = 576;
+	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+	
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;

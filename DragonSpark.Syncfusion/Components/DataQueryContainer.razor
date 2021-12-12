@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Application.Entities.Queries.Runtime
+﻿@using BlazorPro.BlazorSize
+@using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Presentation.Components.Content.Templates
@@ -23,7 +24,8 @@
 		               AllowFiltering="@AllowFiltering"
 		               AllowSorting="@AllowSorting"
 					   LoadingTemplate="@LoadingTemplate"
-		               Target="@Target"
+					   CssClass="@CssClass"
+		               Breakpoint="@Breakpoint"
 		               PageSize="@PageSize"
 		               @attributes="@AdditionalAttributes"
 		>
@@ -70,7 +72,10 @@
 	public bool AllowSorting { get; set; } = true;
 
 	[Parameter]
-	public ushort Target { get; set; } = 576;
+	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;

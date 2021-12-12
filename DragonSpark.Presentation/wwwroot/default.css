@@ -15,10 +15,14 @@
 	z-index: -999;
 }
 
-.dragonspark-minimal div.sf-grid {
+div.dragonspark-minimal.sf-grid {
 	position: unset !important;
 }
 
-.dragonspark-minimal div.sf-grid div.e-gridcontent div.e-content {
+div.dragonspark-minimal.sf-grid div.e-gridcontent div.e-content {
 	max-height: 55vh;
+}
+
+div.dragonspark-minimal.sf-grid div.e-gridcontent div.e-content table.e-table {
+	width: unset !important;
 }

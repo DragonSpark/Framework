@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Diagnostics;
+﻿using BlazorPro.BlazorSize;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
@@ -11,7 +12,6 @@ using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
-using DragonSpark.Presentation.Components.State.Resize;
 using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Security;
 using DragonSpark.Presentation.Security.Identity;
@@ -100,16 +100,13 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<ResourceExistsValidation>()
 		         .Singleton()
 		         //
-		         .Then.Start<ResizeMonitors>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
 		         .Then.Start<IFocusedElement>()
 		         .Forward<FocusedElement>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.AddJsInteropExtensions()
+		         .AddMediaQueryService()
 			;
 	}
 }

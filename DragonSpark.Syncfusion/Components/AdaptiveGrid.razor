@@ -1,44 +1,44 @@
-﻿@using DragonSpark.Compose
+﻿@using BlazorPro.BlazorSize
+@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.Syncfusion.Queries
 @using global::Syncfusion.Blazor
+@using Microsoft.AspNetCore.Components
 
 @typeparam T
 
-<DragonSpark.Presentation.Components.State.Resize.EssentialBreakpointComponent Target="@Target" LoadingTemplate="@LoadingTemplate">
-	<ChildContent>
-		<SfGrid TValue="T" AllowFiltering="@AllowFiltering" AllowPaging="@AllowPaging" AllowSorting="@AllowSorting" attributes="@AdditionalAttributes">
-			<GridTemplates LoadingTemplate="@LoadingTemplate" />
-			<GridPageSettings PageSize="@PageSize" />
-			<GridFilterSettings FilterType="@FilterType" />
-			<GridColumns ChildContent="@Columns" />
-			@if (ChildContent is not null)
-			{
-				@ChildContent
-			}
-		</SfGrid>
-	</ChildContent>
-	<MinimalTemplate>
-		<div class="@MinimalClass">
-			<SfGrid TValue="T" AllowFiltering="@AllowFiltering" AllowPaging="@AllowPaging" AllowSorting="@AllowSorting" EnableAdaptiveUI="true"
-				RowDirection="@RowDirection.Vertical"
-				Toolbar="@DefaultToolbar.Default"
-				@attributes="@AdditionalAttributes">
-				<GridTemplates LoadingTemplate="@LoadingTemplate" />
-				<GridPageSettings PageSize="@PageSize" />
-				<GridFilterSettings FilterType="@FilterType" />
-				<GridColumns ChildContent="@Columns" />
-				@if (ChildContent is not null)
-				{
-					@ChildContent
-				}
-			</SfGrid>
-		</div>
-	</MinimalTemplate>
-</DragonSpark.Presentation.Components.State.Resize.EssentialBreakpointComponent>
+@if(State is null)
+{
+
+	@LoadingTemplate
+}
+else
+{
+	<SfGrid TValue="T"
+	        AllowFiltering="@AllowFiltering"
+	        AllowPaging="@AllowPaging"
+	        AllowSorting="@AllowSorting"
+	        Clipping="@ClipMode.EllipsisWithTooltip"
+	        Toolbar="@(Matches ? null : DefaultToolbar.Default)"
+	        EnableAdaptiveUI="@(!Matches)"
+	        RowDirection="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
+	        class="@Class"
+	        @attributes="@AdditionalAttributes">
+		<GridTemplates LoadingTemplate="@LoadingTemplate" />
+		<GridPageSettings PageSize="@PageSize" />
+		<GridFilterSettings FilterType="@FilterType" />
+		<GridColumns ChildContent="@Columns" />
+		@if (ChildContent is not null)
+		{
+			@ChildContent
+		}
+	</SfGrid>
+}
+
+<MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
 	[Parameter]
@@ -69,11 +69,31 @@
 	public ushort PageSize { get; set; } = 10;
 
 	[Parameter]
-	public ushort Target { get; set; } = 576;
+	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
 	[Parameter]
 	public string MinimalClass { get; set; } = "dragonspark-minimal";
 
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+	bool? State { get; set; }
+
+	bool Matches
+	{
+		get => State.GetValueOrDefault();
+		set => State = value;
+	}
+
+	string? Class
+	{
+		get {
+			var start = Matches ? string.Empty : MinimalClass;
+			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
+			return result;
+		}
+	}
 }

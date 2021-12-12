@@ -10,4 +10,18 @@ public class SfGrid<TValue> : global::Syncfusion.Blazor.Grids.SfGrid<TValue>
 		get => (RowDirection)RowRenderingMode;
 		set => RowRenderingMode = (global::Syncfusion.Blazor.Grids.RowDirection)value;
 	}
+
+	[Parameter]
+	public ClipMode Clipping
+	{
+		get => (ClipMode)ClipMode;
+		set => ClipMode = (global::Syncfusion.Blazor.Grids.ClipMode)value;
+	}
+}
+
+public enum ClipMode
+{
+	Clip,
+	Ellipsis,
+	EllipsisWithTooltip,
 }
