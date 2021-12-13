@@ -16,6 +16,11 @@
 	                          NotFoundTemplate="@NotFoundTemplate"
 	                          ExceptionTemplate="@ExceptionTemplate"
 	                          >
+		@if (HeaderTemplate is not null)
+		{
+			@HeaderTemplate
+		}
+
 		<DataQueryGrid T="T" Content="context"
 		               FilterType="@FilterType"
 		               ReportedType="@ReportedType"
@@ -34,6 +39,11 @@
 				@ChildContentTemplate
 			}
 		</DataQueryGrid>
+
+		@if (FooterTemplate is not null)
+		{
+			@FooterTemplate
+		}
 	</SyncfusionQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
@@ -60,7 +70,13 @@
 	public RenderFragment Columns { get; set; } = default!;
 
 	[Parameter]
+	public RenderFragment? HeaderTemplate { get; set; }
+
+	[Parameter]
 	public RenderFragment? ChildContentTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment? FooterTemplate { get; set; }
 
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;

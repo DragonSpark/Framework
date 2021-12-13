@@ -17,6 +17,7 @@
 else
 {
 	<SfGrid TValue="T"
+			@ref="@_subject"
 	        AllowFiltering="@AllowFiltering"
 	        AllowPaging="@AllowPaging"
 	        AllowSorting="@AllowSorting"
@@ -24,6 +25,7 @@ else
 	        Toolbar="@(Matches ? null : DefaultToolbar.Default)"
 	        EnableAdaptiveUI="@(!Matches)"
 	        RowDirection="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
+			DataSource="@DataSource"
 	        class="@Class"
 	        @attributes="@AdditionalAttributes">
 		<GridTemplates LoadingTemplate="@LoadingTemplate" />
@@ -40,6 +42,8 @@ else
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
+	SfGrid<T> _subject = default!;
+
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
@@ -54,6 +58,9 @@ else
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter]
+	public IEnumerable<T>? DataSource { get; set; }
 
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;
@@ -78,6 +85,8 @@ else
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+	public Task Refresh() => _subject.RefreshHeaderAsync();
 
 	bool? State { get; set; }
 

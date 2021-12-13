@@ -17,6 +17,7 @@
 	EmptyElementsTemplate="@EmptyElementsTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
+	ReportedType="@ReportedType"
 >
 	<SyncfusionPagingContainer
 		Content="@context"
@@ -42,6 +43,6 @@
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
 
-
-
+	[Parameter]
+	public Type? ReportedType { get; set; }
 }
