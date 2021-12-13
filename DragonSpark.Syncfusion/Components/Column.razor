@@ -1,0 +1,47 @@
+﻿@typeparam T
+
+<GridColumnDefinition
+	AutoFit="@AutoFit"
+	AllowFiltering="@AllowFiltering"
+	AllowSorting="@AllowSorting"
+	Format="@Format"
+	HeaderText="@HeaderText"
+	Field="@Field"
+	Width="@Width"
+	Template="@ActualTemplate"
+/>
+
+@code {
+
+	protected override void OnInitialized()
+	{
+		ActualTemplate = Template != null ? x => Template((T)x) : null;
+		base.OnInitialized();
+	}
+
+	RenderFragment<object>? ActualTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment<T>? Template { get; set; }
+
+	[Parameter]
+	public bool AutoFit { get; set; }
+
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
+
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
+
+	[Parameter]
+	public string Format { get; set; } = default!;
+
+	[Parameter]
+	public string Width { get; set; } = string.Empty;
+
+	[Parameter]
+	public string? HeaderText { get; set; }
+
+	[Parameter]
+	public string Field { get; set; } = string.Empty;
+}

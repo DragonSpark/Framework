@@ -18,10 +18,3 @@ public class SfGrid<TValue> : global::Syncfusion.Blazor.Grids.SfGrid<TValue>
 		set => ClipMode = (global::Syncfusion.Blazor.Grids.ClipMode)value;
 	}
 }
-
-public enum ClipMode
-{
-	Clip,
-	Ellipsis,
-	EllipsisWithTooltip,
-}

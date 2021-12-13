@@ -17,7 +17,7 @@
 else
 {
 	<SfGrid TValue="T"
-			@ref="@_subject"
+			@ref="@_subject" AllowSelection="false"
 	        AllowFiltering="@AllowFiltering"
 	        AllowPaging="@AllowPaging"
 	        AllowSorting="@AllowSorting"
@@ -28,7 +28,6 @@ else
 			DataSource="@DataSource"
 	        class="@Class"
 	        @attributes="@AdditionalAttributes">
-		<GridTemplates LoadingTemplate="@LoadingTemplate" />
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings FilterType="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
@@ -86,7 +85,11 @@ else
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
-	public Task Refresh() => _subject.RefreshHeaderAsync();
+	public Task Refresh()
+	{
+		_subject.Refresh();
+		return Task.CompletedTask;
+	}
 
 	bool? State { get; set; }
 
