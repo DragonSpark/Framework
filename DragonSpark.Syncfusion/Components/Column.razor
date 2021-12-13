@@ -9,6 +9,7 @@
 	Field="@Field"
 	Width="@Width"
 	Template="@ActualTemplate"
+	Clipping="@ClipMode"
 />
 
 @code {
@@ -44,4 +45,7 @@
 
 	[Parameter]
 	public string Field { get; set; } = string.Empty;
+
+	[Parameter]
+	public ClipMode ClipMode { get; set; } = ClipMode.Ellipsis;
 }
