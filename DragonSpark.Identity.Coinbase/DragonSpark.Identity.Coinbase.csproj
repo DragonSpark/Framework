@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Coinbase" Version="6.0.1" />
-    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="6.0.0" />
+    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

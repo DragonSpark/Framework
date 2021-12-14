@@ -10,7 +10,7 @@
 @inject IExceptions Exceptions
 
 <DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
-	<RadzenCard Style="padding: 20px;">
+	<RadzenCard>
 		<ActivityReceiverContainer Context="receiver">
 			<p class="mb-4">@ChildContent</p>
 			<div class="d-flex justify-content-between" style="gap: 20px">
