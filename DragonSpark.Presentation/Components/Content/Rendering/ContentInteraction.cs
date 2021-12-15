@@ -4,5 +4,5 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class ContentInteraction : ValidatedCommand, IContentInteraction
 {
-	public ContentInteraction(ShouldClearKeys condition, ClearContentKeys keys) : base(condition, keys) {}
+	public ContentInteraction(ShouldClearKeys condition, ClearContentKeys command) : base(condition, command) {}
 }

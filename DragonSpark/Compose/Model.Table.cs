@@ -25,8 +25,11 @@ public static partial class ExtensionMethods
 		=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);
 
 	public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
+		where TIn : notnull => ToTable(@this, _ => default!);
+
+	public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this, Func<TIn, TOut> select)
 		where TIn : notnull
-		=> new StandardTable<TIn, TOut>(@this);
+		=> new StandardTable<TIn, TOut>(@this, select);
 
 	public static ITable<TIn, TOut> ToTable<TIn, TOut>(this ConcurrentDictionary<TIn, TOut> @this)
 		where TIn : notnull

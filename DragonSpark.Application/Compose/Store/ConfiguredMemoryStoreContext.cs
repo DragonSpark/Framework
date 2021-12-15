@@ -18,8 +18,10 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 
 	public Selector<TIn, TOut> Using<T>() => Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
 
+	public Selector<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
+
 	public Selector<TIn, TOut> Using<T>(Func<TIn, string> key)
-		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName ?? throw new InvalidOperationException(), key).Get);
+		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
 	public Selector<TIn, TOut> Using(Func<TIn, object> key)
 		=> new Memory<TIn, TOut>(Memory,

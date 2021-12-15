@@ -10,7 +10,7 @@
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
-	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Pagers="@Pagers" Reporter="@Reporter"
+	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Reporter="@Reporter"
 	                          LoadingTemplate="@EmptyContentTemplate.Default"
 	                          EmptyElementsTemplate="@EmptyElementsTemplate"
 	                          NotFoundTemplate="@NotFoundTemplate"
@@ -53,9 +53,6 @@
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
-
-	[Parameter]
-	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;

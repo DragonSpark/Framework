@@ -1,15 +1,18 @@
 ﻿using DragonSpark.Application.Components;
-using DragonSpark.Compose;
-using System;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderContentKey : IRenderContentKey
 {
-	readonly IClientIdentifier _identifier;
+	readonly IClientIdentifier     _identifier;
+	readonly ContentIdentification _content;
 
-	public RenderContentKey(IClientIdentifier identifier) => _identifier = identifier;
+	public RenderContentKey(IClientIdentifier identifier, ContentIdentification content)
+	{
+		_identifier   = identifier;
+		_content = content;
+	}
 
-	public string Get(Delegate parameter)
-		=> $"{_identifier.Get().ToString()}+{parameter.Method.DeclaringType.Verify().AssemblyQualifiedName}+{parameter.Method.Name}";
+	public string Get(Microsoft.AspNetCore.Components.ComponentBase parameter)
+		=> $"{_identifier.Get().ToString()}+{_content.Get(parameter)}";
 }

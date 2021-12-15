@@ -7,6 +7,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Browser;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Presentation.Components.Content.Sequences;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -42,13 +43,29 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<EventAggregator>()
 		         .Scoped()
 		         //
+		         .Then.Start<InMemoryRenderStates>()
+		         .Singleton()
+		         .Then.Start<RenderStates>()
+		         .Use<CurrentRenderStates>()
+		         .Scoped()
+		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-		         .ForDefinition<MemoryAwareActiveContents<object>>()
+		         .ForDefinition<RenderAwareActiveContentBuilder<object>>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
+		         //
+		         .Then.ForDefinition<PreRenderingAwarePagerBuilder<object>>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         //
+		         .Then.Start<ContentIdentification>()
+		         .Scoped()
+		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
 		         .Decorate<StoreAwareRenderContentKey>()
+		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
 		         .Then.Start<IApplyQueryStringValues>()

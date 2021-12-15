@@ -21,7 +21,8 @@ sealed class Memory<TIn, TOut> : ISelect<TIn, TOut>
 	public TOut Get(TIn parameter)
 	{
 		var key    = _key(parameter);
-		var result = _memory.TryGetValue(key, out var stored) ? stored.To<TOut>() : _get((parameter, key));
+		var value  = _memory.TryGetValue(key, out var stored);
+		var result = value ? stored.To<TOut>() : _get((parameter, key));
 		return result;
 	}
 }

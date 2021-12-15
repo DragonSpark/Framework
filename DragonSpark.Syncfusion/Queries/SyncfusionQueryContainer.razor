@@ -12,7 +12,6 @@
 <QueryContentContainer
 	Content="@Content"
 	Compose="@Compose"
-	Pagers="@Pagers"
 	LoadingTemplate="@LoadingTemplate"
 	EmptyElementsTemplate="@EmptyElementsTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
@@ -36,9 +35,6 @@
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
-
-	[Parameter]
-	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class StoreAwareRenderContentKey : IRenderContentKey
 {
@@ -13,7 +11,7 @@ sealed class StoreAwareRenderContentKey : IRenderContentKey
 		_store    = store;
 	}
 
-	public string Get(Delegate parameter)
+	public string Get(Microsoft.AspNetCore.Components.ComponentBase parameter)
 	{
 		var result = _previous.Get(parameter);
 		_store.Add(result);

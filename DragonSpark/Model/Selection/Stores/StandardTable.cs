@@ -1,15 +1,18 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores;
 
-public class StandardTable<TIn, TOut> : ITable<TIn, TOut> where TIn : notnull
+public class StandardTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn : notnull
 {
 	readonly Func<TIn, TOut>        _select;
 	readonly IDictionary<TIn, TOut> _table;
 
 	public StandardTable(IDictionary<TIn, TOut> table) : this(table, _ => default!) {}
+
+	public StandardTable(Func<TIn, TOut> select) : this(new Dictionary<TIn, TOut>(), @select) {}
 
 	public StandardTable(IDictionary<TIn, TOut> table, Func<TIn, TOut> select)
 		: this(new Condition<TIn>(table.ContainsKey), table, select) {}
@@ -41,4 +44,9 @@ public class StandardTable<TIn, TOut> : ITable<TIn, TOut> where TIn : notnull
 	}
 
 	public bool Remove(TIn key) => _table.Remove(key);
+
+	public void Execute(None parameter)
+	{
+		_table.Clear();
+	}
 }

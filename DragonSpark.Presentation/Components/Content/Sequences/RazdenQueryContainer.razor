@@ -17,7 +17,6 @@
 	<QueryContentContainer
 		Content="@Content"
 		Compose="@Compose"
-		Pagers="@Pagers"
 		LoadingTemplate="@LoadingTemplate"
 		EmptyElementsTemplate="@EmptyElementsTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
@@ -45,8 +44,5 @@
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;
-
-	[Parameter]
-	public IPagers<T> Pagers { get; set; } = Pagers<T>.Default;
 }
 

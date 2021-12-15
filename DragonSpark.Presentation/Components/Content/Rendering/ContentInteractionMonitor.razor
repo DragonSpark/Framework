@@ -1,29 +1,10 @@
 ﻿@using DragonSpark.Compose
-@using DragonSpark.Application.Components
 
+@inject NavigationManager Navigation
 @inject IContentInteraction Interaction
 
 @inherits RadzenComponent
 
 @code {
 
-	Func<Task> _execute = default!;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		_execute = Interaction.Then().Operation().Allocate().Get().Get;
-	}
-
-	protected override void OnAfterRender(bool firstRender)
-	{
-		if (firstRender)
-		{
-			StateHasChanged();
-		}
-		else
-		{
-			Debounce(_execute, 1500);
-		}
-	}
 }

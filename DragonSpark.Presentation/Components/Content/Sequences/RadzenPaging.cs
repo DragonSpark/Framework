@@ -28,12 +28,14 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 			Filter  = parameter.Filter,
 			OrderBy = parameter.OrderBy,
 			Partition = parameter.Skip.HasValue || parameter.Top.HasValue
-				            ? new (parameter.Skip, parameter.Top)
+				            ? new(parameter.Skip, parameter.Top)
 				            : null,
 			IncludeTotalCount = _includeCount,
 		};
 
-		var evaluate = await _paging.Await(input);
+		var current      = _paging.Get(input);
+		var successfully = current.IsCompletedSuccessfully;
+		var evaluate     = successfully ? current.Result : await current.ConfigureAwait(false);
 		Current = evaluate;
 		Count   = evaluate.Total ?? evaluate.Count.Grade();
 	}

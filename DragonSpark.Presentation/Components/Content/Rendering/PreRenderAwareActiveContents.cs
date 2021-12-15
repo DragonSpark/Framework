@@ -6,16 +6,16 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 {
-	readonly IActiveContents<T>           _previous;
-	readonly IsPreRendering               _condition;
-	readonly MemoryAwareActiveContents<T> _memory;
+	readonly IActiveContents<T>                 _previous;
+	readonly IsPreRendering                     _condition;
+	readonly RenderAwareActiveContentBuilder<T> _builder;
 
 	public PreRenderAwareActiveContents(IActiveContents<T> previous, IsPreRendering condition,
-	                                    MemoryAwareActiveContents<T> memory)
+	                                    RenderAwareActiveContentBuilder<T> builder)
 	{
 		_previous  = previous;
 		_condition = condition;
-		_memory    = memory;
+		_builder   = builder;
 	}
 
 	public IActiveContent<T> Get(Func<ValueTask<T?>> parameter)
@@ -23,7 +23,7 @@ sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 		var condition = _condition.Get();
 		var content   = _previous.Get(parameter);
 		var result = condition
-			             ? new PreRenderActiveContent<T>(_condition, _memory.Get(parameter), content)
+			             ? new PreRenderActiveContent<T>(_condition, _builder.Get(parameter), content)
 			             : content;
 		return result;
 	}
