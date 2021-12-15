@@ -8,10 +8,10 @@ namespace DragonSpark.Application.Runtime.Operations;
 public class WorkingResult<T> : IWorkingResult<T>
 {
 	readonly IResulting<T>    _previous;
-	readonly Action           _complete;
+	readonly Func<Task>  _complete;
 	readonly IExceptionLogger _logger;
 
-	public WorkingResult(IResulting<T> previous, Action complete, IExceptionLogger logger)
+	public WorkingResult(IResulting<T> previous, Func<Task> complete, IExceptionLogger logger)
 	{
 		_previous = previous;
 		_complete = complete;

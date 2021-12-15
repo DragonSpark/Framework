@@ -19,8 +19,8 @@ sealed class Configure : IAlteration<BuildHostContext>
 	public BuildHostContext Get(BuildHostContext parameter)
 		=> parameter.Configure(DefaultRegistrations.Default)
 		            .Configure(Interaction.Registrations.Default)
-		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>),
-		                                          typeof(PreRenderAwareActiveContents<>))
+		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))
+		                                .Decorate(typeof(IActiveContents<>), typeof(SingletonAwareActiveContents<>))
 		                                .Decorate<IClientIdentifier, ClientIdentifier>()
 		                                //
 		                                .Decorate<ISignOut, SignOut>());

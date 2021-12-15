@@ -6,7 +6,7 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class ContentIdentification : IFormatter<Microsoft.AspNetCore.Components.ComponentBase>
+sealed class ContentIdentification : IFormatter<object>
 {
 	readonly CurrentPath                _path;
 	readonly IResult<ContentIdentifier> _identifiers;
@@ -20,7 +20,7 @@ sealed class ContentIdentification : IFormatter<Microsoft.AspNetCore.Components.
 		_identifiers = identifiers;
 	}
 
-	public string Get(Microsoft.AspNetCore.Components.ComponentBase parameter)
+	public string Get(object parameter)
 	{
 		var result = $"{_path.Get()}+{_identifiers.Get().Get(parameter)}";
 		return result;

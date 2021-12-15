@@ -6,5 +6,5 @@ sealed class PreRenderingWindow : DragonSpark.Model.Results.Instance<TimeSpan>
 {
 	public static PreRenderingWindow Default { get; } = new();
 
-	PreRenderingWindow() : base(TimeSpan.FromSeconds(25)) {}
+	PreRenderingWindow() : base(TimeSpan.FromSeconds(30)) {}
 }

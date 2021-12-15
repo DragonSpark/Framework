@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T>
 {
-	Action _update = default!;
+	Func<Task> _update = default!;
 
 	[Parameter]
 	public IResulting<T?>? Content
@@ -38,7 +38,7 @@ partial class ResultingContentView<T>
 
 	protected override void OnInitialized()
 	{
-		_update = StateHasChanged;
+		_update = Update;
 		base.OnInitialized();
 	}
 

@@ -11,7 +11,7 @@ sealed class StoreAwareRenderContentKey : IRenderContentKey
 		_store    = store;
 	}
 
-	public string Get(Microsoft.AspNetCore.Components.ComponentBase parameter)
+	public string Get(object parameter)
 	{
 		var result = _previous.Get(parameter);
 		_store.Add(result);

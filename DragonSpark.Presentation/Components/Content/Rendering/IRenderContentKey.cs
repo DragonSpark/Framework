@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-public interface IRenderContentKey : IFormatter<Microsoft.AspNetCore.Components.ComponentBase> {}
+public interface IRenderContentKey : IFormatter<object> {}

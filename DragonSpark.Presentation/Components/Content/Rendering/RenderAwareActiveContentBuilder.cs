@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -7,35 +6,31 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class RenderAwareActiveContentBuilder<T> : IActiveContents<T>
+sealed class RenderAwareActiveContentBuilder<T> : ISelect<RenderAwareActiveContentBuilderInput<T>, IActiveContent<T>>
 {
-	readonly IActiveContents<T>                _previous;
 	readonly IRenderContentKey                 _key;
 	readonly RenderStateAwareActiveContents<T> _contents;
 
 	public RenderAwareActiveContentBuilder(IRenderContentKey key, RenderStateAwareActiveContents<T> contents)
-		: this(ActiveContents<T>.Default, key, contents) {}
-
-	[Candidate(false)]
-	public RenderAwareActiveContentBuilder(IActiveContents<T> previous, IRenderContentKey key,
-	                                       RenderStateAwareActiveContents<T> contents)
 	{
-		_previous = previous;
 		_key      = key;
 		_contents = contents;
 	}
 
-	public IActiveContent<T> Get(Func<ValueTask<T?>> parameter)
+	public IActiveContent<T> Get(RenderAwareActiveContentBuilderInput<T> parameter)
 	{
-		var previous = _previous.Get(parameter);
-		var key      = _key.Get(parameter.Target.Verify().To<Microsoft.AspNetCore.Components.ComponentBase>());
-		var input    = new RenderStateContentInput<T>(previous, key);
-		var result   = _contents.Get(input);
+		var (previous, content) = parameter;
+		var key    = _key.Get(content.Target.Verify());
+		var input  = new RenderStateContentInput<T>(previous, key);
+		var result = _contents.Get(input);
 		return result;
 	}
 }
 
 // TODO:
+
+public readonly record struct RenderAwareActiveContentBuilderInput<T>(IActiveContent<T> Previous,
+                                                                      Func<ValueTask<T?>> Content);
 
 public readonly record struct RenderStateContentInput<T>(IActiveContent<T> Previous, string Key);
 

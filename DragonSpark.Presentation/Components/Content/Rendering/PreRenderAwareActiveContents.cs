@@ -23,7 +23,7 @@ sealed class PreRenderAwareActiveContents<T> : IActiveContents<T>
 		var condition = _condition.Get();
 		var content   = _previous.Get(parameter);
 		var result = condition
-			             ? new PreRenderActiveContent<T>(_condition, _builder.Get(parameter), content)
+			             ? new PreRenderActiveContent<T>(_condition, _builder.Get(new(content, parameter)), content)
 			             : content;
 		return result;
 	}

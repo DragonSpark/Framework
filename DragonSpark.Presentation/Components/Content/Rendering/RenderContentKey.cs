@@ -13,6 +13,5 @@ sealed class RenderContentKey : IRenderContentKey
 		_content = content;
 	}
 
-	public string Get(Microsoft.AspNetCore.Components.ComponentBase parameter)
-		=> $"{_identifier.Get().ToString()}+{_content.Get(parameter)}";
+	public string Get(object parameter) => $"{_identifier.Get().ToString()}+{_content.Get(parameter)}";
 }
