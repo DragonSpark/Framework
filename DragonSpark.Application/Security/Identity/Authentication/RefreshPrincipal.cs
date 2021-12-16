@@ -14,6 +14,10 @@ sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalConte
 
 	public Task Get(SecurityStampRefreshingPrincipalContext parameter)
 	{
+		var current = parameter.CurrentPrincipal.HasClaim(ExternalIdentity.Default);
+		var @new    = parameter.NewPrincipal.HasClaim(ExternalIdentity.Default);
+		// ReSharper disable once UnusedVariable -- for debugging.
+		var stop    = !current || @new;
 		_copy.Execute(new(parameter.CurrentPrincipal, parameter.NewPrincipal));
 		return Task.CompletedTask;
 	}
