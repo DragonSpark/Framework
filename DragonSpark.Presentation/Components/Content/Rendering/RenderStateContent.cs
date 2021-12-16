@@ -74,7 +74,7 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 				if (_memory.TryGetValue(_key, out var existing))
 				{
 					_memory.Remove(_key);
-					return existing.To<T?>();
+					return (T?)existing;
 				}
 
 				break;
