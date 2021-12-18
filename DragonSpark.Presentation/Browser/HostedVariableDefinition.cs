@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Browser;
@@ -9,6 +10,9 @@ public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
 {
 	readonly string             _key;
 	readonly IHostedVariable<T> _store;
+
+	protected HostedVariableDefinition(Type key, ProtectedBrowserStorage storage)
+		: this(key.AssemblyQualifiedName.Verify(), storage) {}
 
 	protected HostedVariableDefinition(string key, ProtectedBrowserStorage storage)
 		: this(key, new HostedVariable<T>(storage)) {}
