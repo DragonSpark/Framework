@@ -13,8 +13,8 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IAuthenticationRequest>()
-		         .Forward<AuthenticationRequest>()
+		parameter.Start<IAuthenticateRequest>()
+		         .Forward<AuthenticateRequest>()
 		         .Singleton()
 		         //
 		         .Then.Start<ExternalLoginModelActions<T>>()

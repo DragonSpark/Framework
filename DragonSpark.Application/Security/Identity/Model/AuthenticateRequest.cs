@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace DragonSpark.Application.Security.Identity.Model;
 
 [UsedImplicitly]
-sealed class AuthenticationRequest : IAuthenticationRequest
+sealed class AuthenticateRequest : IAuthenticateRequest
 {
 	readonly IAuthentication _authentication;
 
-	public AuthenticationRequest(IAuthentication authentication) => _authentication = authentication;
+	public AuthenticateRequest(IAuthentication authentication) => _authentication = authentication;
 
 	public async ValueTask<IActionResult?> Get(Challenged parameter)
 	{
