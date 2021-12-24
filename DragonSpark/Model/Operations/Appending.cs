@@ -7,6 +7,8 @@ public class Appending : IOperation
 {
 	readonly Await _previous, _current;
 
+	public Appending(IOperation first, IOperation second) : this(first.Await, second.Await) {}
+
 	public Appending(Await previous, Await current)
 	{
 		_previous = previous;
