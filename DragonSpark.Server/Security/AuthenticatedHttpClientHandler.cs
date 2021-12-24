@@ -16,7 +16,7 @@ sealed class AuthenticatedHttpClientHandler : HttpClientHandler
 	readonly Alter<string> _secret;
 
 	public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
-	                                      string secret) : this(logger, apiKey, new Encryptor(secret).Get) {}
+	                                      string secret) : this(logger, apiKey, new HmacSha512Hasher(secret).Get) {}
 
 	public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
 	                                      Alter<string> secret) : base(logger)
