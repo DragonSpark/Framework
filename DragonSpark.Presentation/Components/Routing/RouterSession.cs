@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,6 +18,8 @@ namespace DragonSpark.Presentation.Components.Routing;
 public class RouterSession
 {
 	readonly IJSRuntime _runtime;
+
+	readonly HashSet<object> _active = new HashSet<object>();
 
 	public RouterSession(IJSRuntime runtime) => _runtime = runtime;
 
@@ -59,10 +60,8 @@ public class RouterSession
 	/// </summary>
 	public void TriggerIntraPageNavigation() => IntraPageNavigation?.Invoke(this, EventArgs.Empty);
 
-	readonly HashSet<object> _active = new HashSet<object>();
-
 	public ValueTask Register(object instance)
-		=> _active.Add(instance) ? SetPageExitCheck(true) : Task.CompletedTask.ToOperation();
+		=> _active.Add(instance) ? SetPageExitCheck(true) : ValueTask.CompletedTask;
 
 	public ValueTask Unregister(object instance)
 	{
@@ -76,7 +75,7 @@ public class RouterSession
 		if (show != ExitShowState)
 		{
 			ExitShowState = show;
-			await _runtime.InvokeVoidAsync("cec_setEditorExitCheck", show);
+			await _runtime.InvokeVoidAsync("cec_setEditorExitCheck", show).ConfigureAwait(false);
 		}
 	}
 

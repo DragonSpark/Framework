@@ -19,14 +19,12 @@
     // ReSharper disable once FlagArgument
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-
         if ((firstRender || Force) && Type == "text/javascript")
         {
             var script = ChildContent.Text();
             if (!string.IsNullOrWhiteSpace(script))
             {
-                await JSRuntime.InvokeVoidAsync("eval", script);
+                await JSRuntime.InvokeVoidAsync("eval", script).ConfigureAwait(false);
             }
         }
     }
