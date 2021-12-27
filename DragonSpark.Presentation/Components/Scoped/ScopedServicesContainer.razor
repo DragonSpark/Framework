@@ -2,7 +2,7 @@
 @using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase
 @implements IScopedServiceInjector
 
-<CascadingValue TValue="IScopedServiceInjector" Value="@this">
+<CascadingValue TValue="IScopedServiceInjector" Value="@this" IsFixed="true">
     @ChildContent
 </CascadingValue>
 

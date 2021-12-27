@@ -5,7 +5,7 @@
 @implements IValidated
 @implements IDisposable
 
-<CascadingValue TValue="IValidated" Value="@this">
+<CascadingValue TValue="IValidated" Value="@this"  IsFixed="true">
 	@ChildContent(Validation.Verify());
 </CascadingValue>
 
