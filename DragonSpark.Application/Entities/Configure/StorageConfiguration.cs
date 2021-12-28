@@ -7,7 +7,7 @@ using System;
 namespace DragonSpark.Application.Entities.Configure;
 
 public class StorageConfiguration : Select<IServiceCollection, Action<DbContextOptionsBuilder>>,
-                                    IStorageConfiguration
+									IStorageConfiguration
 {
 	public StorageConfiguration(Action<DbContextOptionsBuilder> configure)
 		: this(configure.Start().Accept<IServiceCollection>()) {}
