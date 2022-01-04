@@ -1,17 +1,13 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
 using DragonSpark.Model.Selection;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace DragonSpark.Diagnostics;
 
-sealed class DefaultLogger : Select<IServiceCollection, ILogger>
+sealed class DefaultLogger : Select<IConfiguration, ILogger>
 {
 	public static DefaultLogger Default { get; } = new();
 
-	DefaultLogger() : base(Start.A.Selection<IServiceCollection>()
-	                            .By.Calling(x => x.Configuration())
-	                            .Select(CreateConfiguration.Default)
-	                            .Select(CreateLogger.Default)) {}
+	DefaultLogger() : base(CreateConfiguration.Default.Then().Select(CreateLogger.Default)) {}
 }

@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Composition.Compose;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using System;
 using ILogger = Serilog.ILogger;
 
@@ -10,6 +10,6 @@ public static class Extensions
 	public static BuildHostContext WithSerilog(this BuildHostContext @this)
 		=> @this.WithSerilog(DefaultLogger.Default.Get);
 
-	public static BuildHostContext WithSerilog(this BuildHostContext @this, Func<IServiceCollection, ILogger> logger)
+	public static BuildHostContext WithSerilog(this BuildHostContext @this, Func<IConfiguration, ILogger> logger)
 		=> @this.Configure(new ConfigureSerilog(logger));
 }
