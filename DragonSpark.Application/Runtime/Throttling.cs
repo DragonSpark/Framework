@@ -7,7 +7,7 @@ using ValueTask = System.Threading.Tasks.ValueTask;
 
 namespace DragonSpark.Application.Runtime;
 
-public class Throttling<T> : IThrottling<T>
+public class Throttling<T> : IThrottling<T> where T : notnull
 {
 	readonly StripedAsyncLock<T> _lock;
 	readonly ITable<T, Timer>    _timers;

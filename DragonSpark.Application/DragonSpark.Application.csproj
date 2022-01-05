@@ -38,7 +38,7 @@
     <PackageReference Include="Refit" Version="6.1.15" />
     <PackageReference Include="Refit.HttpClientFactory" Version="6.1.15" />
     <PackageReference Include="SluggyUnidecode" Version="2.0.1" />
-    <PackageReference Include="SmartFormat.NET" Version="2.7.1" />
+    <PackageReference Include="SmartFormat.NET" Version="2.7.2" />
     <PackageReference Include="System.Linq.Async" Version="5.1.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.15" />
   </ItemGroup>
