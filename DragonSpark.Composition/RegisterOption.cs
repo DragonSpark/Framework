@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace DragonSpark.Composition;
 
-sealed class RegisterOption<T> : IAlteration<IServiceCollection> where T : class, new()
+sealed class RegisterOption<T> : IAlteration<IServiceCollection> where T : class
 {
 	public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
 

@@ -22,10 +22,13 @@ public static class Extensions
 		              .By.Self.Get()
 		              .To(DragonSpark.Compose.Start.An.Extent<BuildHostContext>());
 
-	public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class, new()
+	public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
 		=> RegisterOption<T>.Default.Get(@this);
 
-	public static HostOperationsContext Operations(this BuildHostContext @this) => new HostOperationsContext(@this);
+	public static T Section<T>(this IServiceCollection @this) where T : class
+		=> Composition.Section<T>.Default.Get(@this);
+
+	public static HostOperationsContext Operations(this BuildHostContext @this) => new(@this);
 
 	public static IConfiguration Configuration(this IServiceCollection @this)
 		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
@@ -79,8 +82,7 @@ public static class Extensions
 			.To<T>();
 
 /**/
-	public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class
-		=> new StartRegistration<T>(@this);
+	public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class => new(@this);
 
 	public static IncludingRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
 		=> new GenericDefinitionRegistration<T>(@this);
