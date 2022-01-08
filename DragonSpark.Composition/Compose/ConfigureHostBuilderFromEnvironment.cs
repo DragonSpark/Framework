@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition.Compose;
@@ -10,13 +9,13 @@ public sealed class ConfigureHostBuilderFromEnvironment : ICommand<IHostBuilder>
 
 	ConfigureHostBuilderFromEnvironment() : this(ConfigureHostBuilderFromEnvironmentCommand.Default) {}
 
-	readonly ICommand<(IHostEnvironment Environment, IHostBuilder Builder)> _configure;
+	readonly ICommand<HostConfiguration> _configure;
 
-	public ConfigureHostBuilderFromEnvironment(ICommand<(IHostEnvironment Environment, IHostBuilder Builder)> configure)
+	public ConfigureHostBuilderFromEnvironment(ICommand<HostConfiguration> configure)
 		=> _configure = configure;
 
 	public void Execute(IHostBuilder parameter)
 	{
-		parameter.ConfigureAppConfiguration((context, _) => _configure.Execute(context.HostingEnvironment, parameter));
+		parameter.ConfigureAppConfiguration((context, builder) => _configure.Execute(new(parameter, context, builder)));
 	}
 }

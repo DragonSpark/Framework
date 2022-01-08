@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition.Compose;
 
-sealed class ConfigureHostBuilderFromEnvironmentCommand : ICommand<(IHostEnvironment Environment, IHostBuilder Builder)>
+sealed class ConfigureHostBuilderFromEnvironmentCommand : ICommand<HostConfiguration>
 {
 	public static ConfigureHostBuilderFromEnvironmentCommand Default { get; } = new();
 
@@ -20,9 +20,8 @@ sealed class ConfigureHostBuilderFromEnvironmentCommand : ICommand<(IHostEnviron
 	public ConfigureHostBuilderFromEnvironmentCommand(ISelect<IHostEnvironment, IHostConfiguration> configuration)
 		=> _configuration = configuration;
 
-	public void Execute((IHostEnvironment Environment, IHostBuilder Builder) parameter)
+	public void Execute(HostConfiguration parameter)
 	{
-		var (environment, builder) = parameter;
-		_configuration.Get(environment).Execute(builder);
+		_configuration.Get(parameter.Context.HostingEnvironment).Execute(parameter);
 	}
 }
