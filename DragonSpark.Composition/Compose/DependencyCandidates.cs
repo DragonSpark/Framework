@@ -13,7 +13,7 @@ namespace DragonSpark.Composition.Compose;
 
 sealed class DependencyCandidates : ArrayStore<Type, Type>
 {
-	public static DependencyCandidates Default { get; } = new DependencyCandidates();
+	public static DependencyCandidates Default { get; } = new();
 
 	DependencyCandidates() : base(x => Constructors.Default.Select(new Select(x)).Get(x)) {}
 

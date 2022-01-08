@@ -1,6 +1,7 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
+using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -28,11 +29,12 @@ sealed class ComponentAssemblyNames : ISelect<AssemblyName, IEnumerable<Assembly
 
 	public IEnumerable<AssemblyName> Get(AssemblyName parameter)
 	{
-		foreach (var name in _expand(parameter))
+		foreach (var name in _expand(parameter).AsValueEnumerable())
 		{
 			foreach (var alteration in _names.Open())
 			{
-				yield return alteration.Get(name);
+				var assemblyName = alteration.Get(name);
+				yield return assemblyName;
 			}
 		}
 	}

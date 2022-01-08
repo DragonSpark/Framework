@@ -4,7 +4,7 @@ namespace DragonSpark.Composition.Compose;
 
 public sealed class Dependencies : IServiceTypes
 {
-	public static Dependencies Default { get; } = new Dependencies();
+	public static Dependencies Default { get; } = new();
 
 	Dependencies() {}
 

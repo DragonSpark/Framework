@@ -5,7 +5,7 @@ namespace DragonSpark.Composition.Construction;
 
 sealed class IsCandidate : ICondition<ConstructorCandidate>
 {
-	public static IsCandidate Default { get; } = new IsCandidate();
+	public static IsCandidate Default { get; } = new();
 
 	IsCandidate() {}
 

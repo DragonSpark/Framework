@@ -2,7 +2,7 @@
 
 public sealed class DefaultServiceComponentLocator<T> : ServiceComponentLocator<T>
 {
-	public static DefaultServiceComponentLocator<T> Default { get; } = new DefaultServiceComponentLocator<T>();
+	public static DefaultServiceComponentLocator<T> Default { get; } = new();
 
 	DefaultServiceComponentLocator() {}
 }

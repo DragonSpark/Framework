@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DragonSpark.Composition.Compose;
 
 public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>,
-                                       IActivateUsing<IAlteration<IHostBuilder>>
+									   IActivateUsing<IAlteration<IHostBuilder>>
 {
 	public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context)
 		=> context._select.Get;
@@ -37,7 +37,5 @@ public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>,
 
 	public BuildHostContext Select(IAlteration<IHostBuilder> select) => new(_select.Then().Select(select).Out());
 
-	public ValueTask<IHost> Get(HostBuilder parameter) => _select.Get(parameter)
-	                                                             .StartAsync()
-	                                                             .ToOperation();
+	public ValueTask<IHost> Get(HostBuilder parameter) => _select.Get(parameter).StartAsync().ToOperation();
 }

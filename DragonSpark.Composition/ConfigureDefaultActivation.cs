@@ -9,7 +9,7 @@ namespace DragonSpark.Composition;
 sealed class ConfigureDefaultActivation : ICommand<IServiceContainer>
 {
 	[UsedImplicitly]
-	public static ConfigureDefaultActivation Default { get; } = new ConfigureDefaultActivation();
+	public static ConfigureDefaultActivation Default { get; } = new();
 
 	ConfigureDefaultActivation() : this(IsFallbackCandidate.Default.Get, Start.A.Selection<ServiceRequest>()
 	                                                                          .By.Calling(x => x.ServiceType)

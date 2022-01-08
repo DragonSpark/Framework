@@ -5,7 +5,7 @@ namespace DragonSpark.Composition.Compose;
 
 sealed class ServiceTypes : FixedResult<IServiceCollection, IRelatedTypes>, IServiceTypes
 {
-	public static ServiceTypes Default { get; } = new ServiceTypes();
+	public static ServiceTypes Default { get; } = new();
 
 	ServiceTypes() : this(RelatedTypes.Default) {}
 

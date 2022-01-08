@@ -15,21 +15,20 @@ public sealed class StartRegistration<T> : Instance<IServiceCollection>, IInclud
 	IRegistrations Expanded => new Registrations<T>(_subject).Then(Current);
 
 	public CompositeRegistration And<TNext>() where TNext : class
-		=> new CompositeRegistration(_subject,
-		                             Expanded.Then(new Registrations<TNext>(_subject)
-			                                           .Then(new Register<TNext>(_subject))));
+		=> new(_subject,
+		       Expanded.Then(new Registrations<TNext>(_subject)
+			                     .Then(new Register<TNext>(_subject))));
 
 	public Registration<T> Forward<TTo>() where TTo : class, T
-		=> new Registration<T>(_subject,
-		                       new Registrations<TTo>(_subject).Then(new Forward<T, TTo>(_subject)));
+		=> new(_subject,
+		       new Registrations<TTo>(_subject).Then(new Forward<T, TTo>(_subject)));
 
 	public Registration<T> Use<TResult>() where TResult : class, IResult<T>
-		=> new Registration<T>(_subject,
-		                       new Registrations<TResult>(_subject)
-			                       .Then(new ResultRegistration<T, TResult>(_subject)));
+		=> new(_subject,
+		       new Registrations<TResult>(_subject)
+			       .Then(new ResultRegistration<T, TResult>(_subject)));
 
-	public Registration<T> UseEnvironment()
-		=> new Registration<T>(_subject, new SelectedRegistration<T>(_subject));
+	public Registration<T> UseEnvironment() => new(_subject, new SelectedRegistration<T>(_subject));
 
 	public IRegistration Include(Func<RelatedTypesHolster, IServiceTypes> related)
 		=> Include(related(RelatedTypesHolster.Default));

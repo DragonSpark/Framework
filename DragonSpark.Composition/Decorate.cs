@@ -18,7 +18,7 @@ sealed class Decorate<T> : ICommand<IServiceContainer>
 
 sealed class Decorate<TFrom, TTo> : ICommand<IServiceContainer> where TTo : TFrom
 {
-	public static Decorate<TFrom,TTo> Default { get; } = new Decorate<TFrom,TTo>();
+	public static Decorate<TFrom,TTo> Default { get; } = new();
 
 	Decorate() {}
 

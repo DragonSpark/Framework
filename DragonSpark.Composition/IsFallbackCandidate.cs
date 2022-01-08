@@ -7,7 +7,7 @@ namespace DragonSpark.Composition;
 
 sealed class IsFallbackCandidate : AllCondition<Type>
 {
-	public static IsFallbackCandidate Default { get; } = new IsFallbackCandidate();
+	public static IsFallbackCandidate Default { get; } = new();
 
 	IsFallbackCandidate() : base(CanActivate.Default.Get, IsNativeFrameworkType.Default.Then().Inverse()) {}
 }

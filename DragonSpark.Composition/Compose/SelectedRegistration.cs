@@ -30,7 +30,7 @@ sealed class SelectedRegistration<T> : IRegistrationContext where T : class
 
 	sealed class Selector : Generic<ISelect<IServiceProvider, T>>
 	{
-		public static Selector Default { get; } = new Selector();
+		public static Selector Default { get; } = new();
 
 		Selector() : base(typeof(Selector<>)) {}
 	}
@@ -38,7 +38,7 @@ sealed class SelectedRegistration<T> : IRegistrationContext where T : class
 	sealed class Selector<TTo> : Select<IServiceProvider, T> where TTo : class, T
 	{
 		[UsedImplicitly]
-		public static Selector<TTo> Default { get; } = new Selector<TTo>();
+		public static Selector<TTo> Default { get; } = new();
 
 		Selector() : base(x => x.GetService<TTo>()!) {}
 	}

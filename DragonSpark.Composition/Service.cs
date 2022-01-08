@@ -5,7 +5,7 @@ namespace DragonSpark.Composition;
 
 sealed class Service<T> : ISelect<IServiceCollection, T> where T : notnull
 {
-	public static Service<T> Default { get; } = new Service<T>();
+	public static Service<T> Default { get; } = new();
 
 	Service() {}
 

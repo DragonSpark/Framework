@@ -19,7 +19,7 @@ class ConfigureContainer : ICommand<IHostBuilder>
 
 sealed class ConfigureContainer<T> : ConfigureContainer where T : ICompositionRoot, new()
 {
-	public static ConfigureContainer<T> Default { get; } = new ConfigureContainer<T>();
+	public static ConfigureContainer<T> Default { get; } = new();
 
 	ConfigureContainer() : base(x => x.RegisterFrom<T>()) {}
 }

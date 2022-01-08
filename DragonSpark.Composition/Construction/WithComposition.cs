@@ -10,7 +10,7 @@ namespace DragonSpark.Composition.Construction;
 
 sealed class WithComposition : IAlteration<IHostBuilder>
 {
-	public static WithComposition Default { get; } = new WithComposition();
+	public static WithComposition Default { get; } = new();
 
 	WithComposition() : this(ConstructionInfoProvider.Default) {}
 

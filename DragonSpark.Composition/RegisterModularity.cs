@@ -1,7 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Selection;
-using DragonSpark.Runtime.Environment;
-using JetBrains.Annotations;
+﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -11,36 +9,22 @@ namespace DragonSpark.Composition;
 
 sealed class RegisterModularity : IServiceConfiguration
 {
-	[UsedImplicitly]
-	public static RegisterModularity Default { get; } = new RegisterModularity();
+	public static RegisterModularity Default { get; } = new();
 
-	RegisterModularity() : this(TypeSelection<PublicAssemblyTypes>.Default.Get) {}
+	RegisterModularity() : this(ModularityComponents.Default) {}
 
-	readonly Func<Array<Type>, IComponentTypes> _locator;
-	readonly Func<string, Array<Assembly>>      _select;
-	readonly Func<Array<Assembly>, Array<Type>> _types;
+	readonly ISelect<IHostEnvironment, Modularity> _components;
 
-	public RegisterModularity(Func<Array<Assembly>, Array<Type>> types)
-		: this(ComponentTypeLocators.Default.Get, types, EnvironmentAwareAssemblies.Default.Get) {}
-
-	public RegisterModularity(Func<Array<Type>, IComponentTypes> locator, Func<Array<Assembly>, Array<Type>> types,
-	                          Func<string, Array<Assembly>> select)
-	{
-		_locator = locator;
-		_types   = types;
-		_select  = select;
-	}
+	public RegisterModularity(ISelect<IHostEnvironment, Modularity> components) => _components = components;
 
 	public void Execute(IServiceCollection parameter)
 	{
-		var name       = parameter.GetRequiredInstance<IHostEnvironment>().EnvironmentName;
-		var assemblies = _select(name);
-		var types      = _types(assemblies);
-		var locator    = _locator(types);
+		var (assemblies, types, locator, componentType) =
+			_components.Get(parameter.GetRequiredInstance<IHostEnvironment>());
 
 		parameter.AddSingleton<IArray<Assembly>>(new Instances<Assembly>(assemblies))
 		         .AddSingleton<IArray<Type>>(new Instances<Type>(types))
 		         .AddSingleton(locator)
-		         .AddSingleton<IComponentType>(new ComponentType(locator));
+		         .AddSingleton(componentType);
 	}
 }

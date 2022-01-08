@@ -5,7 +5,7 @@ namespace DragonSpark.Composition.Compose;
 
 sealed class ConfigureFromEnvironment : SelectedCommand<IServiceCollection>
 {
-	public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
+	public static ConfigureFromEnvironment Default { get; } = new();
 
-	ConfigureFromEnvironment() : base(ServiceConfigurationLocator.Default.Get) {}
+	ConfigureFromEnvironment() : base(EnvironmentalServiceConfiguration.Default) {}
 }

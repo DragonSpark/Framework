@@ -25,11 +25,14 @@ public static class Extensions
 	public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
 		=> RegisterOption<T>.Default.Get(@this);
 
-	public static T Section<T>(this IServiceCollection @this) where T : class
-		=> Composition.Section<T>.Default.Get(@this);
+	public static T Section<T>(this IConfiguration @this) where T : class => Composition.Section<T>.Default.Get(@this);
+
+	public static T Section<T>(this IServiceCollection @this) where T : class => @this.Configuration().Section<T>();
 
 	public static HostOperationsContext Operations(this BuildHostContext @this) => new(@this);
 
+	public static IConfigurationRoot ConfigurationRoot(this IServiceCollection @this)
+		=> @this.Configuration().To<IConfigurationRoot>();
 	public static IConfiguration Configuration(this IServiceCollection @this)
 		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 		        .ImplementationFactory?.Invoke(null!)
@@ -96,6 +99,9 @@ public static class Extensions
 	public static BuildHostContext WithComposition(this BuildHostContext @this)
 		=> @this.Select(Construction.WithComposition.Default);
 
+	/*public static BuildHostContext WithSharedSettings(this BuildHostContext @this)
+		=> @this.Select(SharedSettings.Default);*/
+
 	public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
 		=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
 
@@ -104,7 +110,7 @@ public static class Extensions
 
 	public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
 		where T : class, IActivateUsing<Assembly>, IArray<Type>
-		=> @this.Configure(new RegisterModularity(TypeSelection<T>.Default.Get));
+		=> @this.Configure(new RegisterModularity(new CreateModularityComponents(TypeSelection<T>.Default.Get)));
 
 	public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 		=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);

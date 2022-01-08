@@ -18,3 +18,10 @@ public class LocateComponent<TIn, TOut> : Select<TIn, TOut>
 		                          .Ensure.Output.IsAssigned.Otherwise.Throw(LocateComponentMessage<TOut>.Default)
 		                    )) {}
 }
+
+public class Locate<T> : LocateComponent<IComponentType, T>
+{
+	public static Locate<T> Default { get; } = new();
+
+	Locate() : base(x => x) {}
+}

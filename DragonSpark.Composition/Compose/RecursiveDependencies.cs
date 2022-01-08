@@ -4,7 +4,7 @@ namespace DragonSpark.Composition.Compose;
 
 sealed class RecursiveDependencies : IServiceTypes
 {
-	public static RecursiveDependencies Default { get; } = new RecursiveDependencies();
+	public static RecursiveDependencies Default { get; } = new();
 
 	RecursiveDependencies() : this(Dependencies.Default) {}
 

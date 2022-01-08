@@ -9,7 +9,7 @@ namespace DragonSpark.Composition.Construction;
 
 sealed class ConstructorCandidates : ILease<Type, ConstructorCandidate>
 {
-	public static ConstructorCandidates Default { get; } = new ConstructorCandidates();
+	public static ConstructorCandidates Default { get; } = new();
 
 	ConstructorCandidates() : this(ArrayPool<ConstructorCandidate>.Shared, IsCandidate.Default.Get) {}
 

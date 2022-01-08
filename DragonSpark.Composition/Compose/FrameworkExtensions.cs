@@ -20,5 +20,5 @@ static class FrameworkExtensions
 
 	public static IRegistration Adapt(this IRegistrationContext @this) => new Adapter(@this);
 
-	public static RegistrationResult Result(this IServiceCollection @this) => new RegistrationResult(@this);
+	public static RegistrationResult Result(this IServiceCollection @this) => new(@this);
 }

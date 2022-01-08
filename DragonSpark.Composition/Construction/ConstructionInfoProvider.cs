@@ -5,7 +5,7 @@ namespace DragonSpark.Composition.Construction;
 
 sealed class ConstructionInfoProvider : FieldDefinition<ServiceContainer>
 {
-	public static ConstructionInfoProvider Default { get; } = new ConstructionInfoProvider();
+	public static ConstructionInfoProvider Default { get; } = new();
 
 	ConstructionInfoProvider() : base("constructionInfoProvider") {}
 }

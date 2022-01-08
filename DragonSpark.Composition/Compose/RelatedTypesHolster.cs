@@ -2,7 +2,7 @@
 
 public sealed class RelatedTypesHolster
 {
-	public static RelatedTypesHolster Default { get; } = new RelatedTypesHolster();
+	public static RelatedTypesHolster Default { get; } = new();
 
 	RelatedTypesHolster() : this(ServiceTypes.Default, Dependencies.Default) {}
 

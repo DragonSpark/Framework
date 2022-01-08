@@ -7,7 +7,7 @@ namespace DragonSpark.Composition;
 
 sealed class RegisterOption<T> : IAlteration<IServiceCollection> where T : class
 {
-	public static RegisterOption<T> Default { get; } = new RegisterOption<T>();
+	public static RegisterOption<T> Default { get; } = new();
 
 	RegisterOption() : this(A.Type<T>().Name) {}
 

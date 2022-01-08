@@ -7,6 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.Environment\DragonSpark.Application.Environment.csproj" />
   </ItemGroup>
 </Project>
