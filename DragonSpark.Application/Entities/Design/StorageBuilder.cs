@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Configure;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -11,8 +10,6 @@ public class StorageBuilder<T> : IResult<T>, IDesignTimeDbContextFactory<T> wher
 {
 	readonly Action<DbContextOptionsBuilder<T>> _configure;
 	readonly Func<DbContextOptions<T>, T>       _create;
-
-	protected StorageBuilder() : this(ConfigureSqlServer<T>.Default.Execute) {}
 
 	protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure)
 		: this(configure, Start.A.Selection<DbContextOptions<T>>()

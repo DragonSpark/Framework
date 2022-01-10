@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Text;
 using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-sealed class ConnectionString<T> : ISelect<IConfiguration, string>
+sealed class ConnectionString<T> : IFormatter<IConfiguration>
 {
 	public static ConnectionString<T> Default { get; } = new ConnectionString<T>();
 

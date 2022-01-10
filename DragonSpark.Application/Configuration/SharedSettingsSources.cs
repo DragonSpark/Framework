@@ -14,16 +14,15 @@ sealed class SharedSettingsSources : ISelect<IHostEnvironment, Leasing<JsonConfi
 {
 	public static SharedSettingsSources Default { get; } = new();
 
-	SharedSettingsSources() : this(".configuration") {}
+	SharedSettingsSources() : this(SharedSettingsRoot.Default) {}
 
-	readonly string _name;
+	readonly ISelect<IHostEnvironment, DirectoryInfo> _root;
 
-	public SharedSettingsSources(string name) => _name = name;
+	public SharedSettingsSources(ISelect<IHostEnvironment, DirectoryInfo> root) => _root = root;
 
 	public Leasing<JsonConfigurationSource> Get(IHostEnvironment parameter)
 	{
-		var path      = Path.Combine(parameter.ContentRootPath, _name);
-		var directory = new DirectoryInfo(path);
+		var directory = _root.Get(parameter);
 		var result = directory.Exists
 			             ? directory.GetFiles("*.json", SearchOption.AllDirectories)
 			                        .OrderBy(x => x.FullName.Count(y => y == Path.DirectorySeparatorChar))

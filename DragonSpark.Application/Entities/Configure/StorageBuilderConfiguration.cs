@@ -6,6 +6,6 @@ namespace DragonSpark.Application.Entities.Configure;
 
 public class StorageBuilderConfiguration<T> : AppendedCommand<DbContextOptionsBuilder<T>> where T : DbContext
 {
-	public StorageBuilderConfiguration(Type migrations, params object[] services)
-		: base(new ConfigureSqlServerWithMigration<T>(migrations), new ConfigureApplicationServices(services)) {}
+	protected StorageBuilderConfiguration(Type migrations, params object[] services)
+		: base(new ConfigureSqlServer<T>(migrations), new ConfigureApplicationServices(services)) {}
 }
