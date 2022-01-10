@@ -13,7 +13,9 @@ sealed class CreateConfiguration : ISelect<IConfiguration, LoggerConfiguration>
 
 	public LoggerConfiguration Get(IConfiguration parameter)
 	{
-		var instance = new LoggerConfiguration().Enrich.WithDemystifiedStackTraces()
+		var instance = new LoggerConfiguration().Enrich.With(PrimaryAssemblyEnricher.Default)
+		                                        .Enrich.WithDemystifiedStackTraces()
+		                                        .Enrich.WithExceptionStackTraceHash()
 		                                        .Enrich.WithEnvironmentName()
 		                                        .Enrich.WithEnvironmentUserName()
 		                                        .Enrich.FromLogContext()

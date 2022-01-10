@@ -17,7 +17,7 @@ public sealed class GeneratorState
 	readonly ITypedTable<object>                _chain;
 	readonly ISelect<TypeInfo, IFakerTInternal> _generators;
 
-	public GeneratorState(Configuration configuration)
+	public GeneratorState(Application.Entities.Generation.Configuration configuration)
 		: this(new TypedTable<object>(), new TypedTable<object>(),
 		       new GeneratorTables(configuration).ToStandardTable()) {}
 

@@ -8,6 +8,6 @@ public class Program
 {
 	static void Main(params string[] arguments)
 	{
-		Configuration.Default.Get(arguments).To(Run.A<SaveTests.DisposeBenchmarks>);
+		Hosting.BenchmarkDotNet.Configuration.Default.Get(arguments).To(Run.A<SaveTests.DisposeBenchmarks>);
 	}
 }

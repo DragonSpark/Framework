@@ -11,7 +11,6 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
-using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
@@ -160,13 +159,13 @@ public static partial class Extensions
 	/**/
 
 	public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)
-		where T : class => _.Generator<T>(new Configuration(seed));
+		where T : class => _.Generator<T>(new Entities.Generation.Configuration(seed));
 
 	public static GeneratorContext<T> Generator<T>(this ModelContext _,
 	                                               Action<IAutoGenerateConfigBuilder> configure)
-		where T : class => _.Generator<T>(new Configuration(null, configure));
+		where T : class => _.Generator<T>(new Entities.Generation.Configuration(null, configure));
 
-	public static GeneratorContext<T> Generator<T>(this ModelContext _, Configuration configuration)
+	public static GeneratorContext<T> Generator<T>(this ModelContext _, Entities.Generation.Configuration configuration)
 		where T : class => new(configuration);
 
 	public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range)

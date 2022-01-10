@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
+using DragonSpark.Application.Configuration;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
@@ -32,6 +33,9 @@ partial class Extensions
 
 	public static BuildHostContext WithConnectionConfigurations(this BuildHostContext @this)
 		=> Connections.Configure.Default.Get(@this);
+
+	public static BuildHostContext WithAmbientConfiguration(this BuildHostContext @this)
+		=> @this.Select(WithSharedSettings.Default);
 
 	public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
 		=> new(@this, profile);

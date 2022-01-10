@@ -1,7 +1,6 @@
 ﻿// ReSharper disable TooManyArguments
 
 using Bogus;
-using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
@@ -18,7 +17,8 @@ public class GeneratorContext<T> : IResult<T> where T : class
 	readonly Faker<T>       _subject;
 	readonly GeneratorState _state;
 
-	public GeneratorContext(Configuration configuration) : this(new GeneratorState(configuration)) {}
+	public GeneratorContext(Application.Entities.Generation.Configuration configuration)
+		: this(new GeneratorState(configuration)) {}
 
 	public GeneratorContext(GeneratorState state) : this(state.Get<T>(), state) {}
 
