@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
 sealed class Services<T> : ICommand<IServiceCollection> where T : QueueHost
 {
-	public static Services<T> Default { get; } = new Services<T>();
+	public static Services<T> Default { get; } = new();
 
 	Services() {}
 

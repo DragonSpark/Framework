@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
 sealed class QueueApplicationProfile<T> : ApplicationProfile where T : QueueHost
 {
-	public static QueueApplicationProfile<T> Default { get; } = new QueueApplicationProfile<T>();
+	public static QueueApplicationProfile<T> Default { get; } = new();
 
 	QueueApplicationProfile() : base(Services<T>.Default.Execute, _ => {}) {}
 }
