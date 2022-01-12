@@ -7,8 +7,6 @@ using Xunit;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCopyright("Copyright © 2020 DragonSpark Technologies Incorporated")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -33,4 +31,4 @@ using Xunit;
 [assembly: XunitTestingApplication]
 
 [assembly:
-	TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")]
+	TestFramework("DragonSpark.Application.Hosting.xUnit.TestFramework", "DragonSpark.Application.Hosting.xUnit")] 

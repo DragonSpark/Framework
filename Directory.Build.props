@@ -5,6 +5,9 @@
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
 	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+	 <Company>DragonSpark Technologies Incorporated</Company>
+	 <Copyright>Copyright &#169; 2022 DragonSpark Technologies Incorporated</Copyright>
+	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>NU1603;NU1608;CS8669</NoWarn>
