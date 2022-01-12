@@ -30,4 +30,10 @@
 		<PackageReference Include="MatBlazor" Version="2.8.0" />
 		<PackageReference Include="Radzen.Blazor" Version="3.13.12" />
 	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="packages.lock.json" />
+		<None Update="packages.lock.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>
