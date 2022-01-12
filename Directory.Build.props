@@ -1,0 +1,24 @@
+﻿<Project>
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+	<EnableNETAnalyzers>true</EnableNETAnalyzers>
+	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
+	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>NU1603;NU1608;CS8669</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
+    <NoWarn>CS8669</NoWarn>
+  </PropertyGroup>
+	<ItemGroup>
+		<Content Remove="packages.lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never"  />			
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Nerdbank.GitVersioning"
+                    Version="3.4.255"
+                    PrivateAssets="all"
+                    Condition="!Exists('packages.config')" />
+	</ItemGroup>
+</Project>
