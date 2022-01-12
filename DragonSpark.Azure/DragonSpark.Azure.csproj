@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-    <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" Version="1.20.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+		<PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
+	</ItemGroup>
 
 </Project>

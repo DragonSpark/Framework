@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Patreon": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "oS+peuKyNGam0GoXFSyqOA4mVYEDeOQvHbJPksPE5R1huG4DNBlTHpVKlOxO+qFBH3HwA8jxFqHHbdkCbDlKVA=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "iGSZUQ2AQNnSuTaYCc5oY5N7fZIHI0jyzCyAb9uK6QVCdgUj1bpJrsfVIcvEJNJijqQOKZo+RytEomluGkr8vQ=="
       },
       "AsyncUtilities": {
         "type": "Transitive",

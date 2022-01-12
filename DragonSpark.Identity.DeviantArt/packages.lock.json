@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.DeviantArt": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "e83euikA9iFporq+QJRUC3ey8BCmFqrKQUQdE00e03FpO87QHRJDcjiwhqwqaoA5pO/xapmzbsaDgXrCWZNcqA=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "XB7WRpTIj8xTN6c8hLCKldSWHiHPLMRNH0/R56MtffubstY+LsvgUkuo/Vw+r0AdVetICwQ5ih+nrW1MFSoFbQ=="
       },
       "AsyncUtilities": {
         "type": "Transitive",

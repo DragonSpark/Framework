@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Paypal": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "GyuyuWqZDVZLWPah8dOnP7WxKpllceNQmECPkysguS6IfmwC0JA0RP+Ft5NYvtE6rFvryKgUE0Zq5xqf6xBTMQ=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "hzQa8E4aWpln7I3U/y2gyb0ZjftZPEcEj+sTmP1xX0/VKIeG4aBtbaDVo/PpkK0dX1QPnXFW7i+qsZATh6C82g=="
       },
       "AsyncUtilities": {
         "type": "Transitive",

@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Coinbase": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "lI6HSIUIhxnkOGWC/77krPbSMYkE2uYzZqrzBc72NQbQyc52WVRz0sbEUioejLweud0/mGeOs3wjn+ql1Bm/Pw=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "LFdR+SNFjcbEEsLkLi7YVFmFmOJsS3cuvpYt6Pc+07HagxWV+l7NVv0D6dBPlQBsC8N3/vzbfEbG8OeofVT66g=="
       },
       "Coinbase": {
         "type": "Direct",

@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Mixcloud": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "ucBWhU30xx33ZXGyXibsUFpDQ13xAAc/W/noqlB4/qPcW8V3tvhvhXieettTNHxUSFj/QnFzplGpWWHz+KrnRA=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "joorZ4TRZYrLxYj/rhHURlvFXpy8dZIYXcRZytyaPvW/zLxrraoT4JjlRSboiexfD/yYVsi82RrNIIY8kpNT1g=="
       },
       "AsyncUtilities": {
         "type": "Transitive",

@@ -1593,8 +1593,8 @@
       },
       "Radzen.Blazor": {
         "type": "Transitive",
-        "resolved": "3.13.12",
-        "contentHash": "yAtuZet9ycWkZ89IIwoD7xl7xhFZPpGRSvqreuUOW0nqsDVStwYJZEMD0fxuMcbIKYRIKsfgxpM/Uff+D4Qg5Q==",
+        "resolved": "3.14.1",
+        "contentHash": "198yMXo3V2CMncVvcsRQST1XuLdhoI6li03UQwQRh7TO6Sa2opvszJ5r/fGyoDiBoFWMzvVRrsUN/Oe7MKWzVw==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "5.0.0",
           "Microsoft.AspNetCore.Components.Web": "5.0.0",
@@ -2891,7 +2891,7 @@
           "DragonSpark.Application": "1.0.0",
           "Majorsoft.Blazor.Components.Common.JsInterop": "1.5.0",
           "MatBlazor": "2.8.0",
-          "Radzen.Blazor": "3.13.12"
+          "Radzen.Blazor": "3.14.1"
         }
       },
       "dragonspark.server": {

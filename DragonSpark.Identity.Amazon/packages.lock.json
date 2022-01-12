@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Amazon": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "eefLaOfGhWR/2x0csTjWoISUDk+T+ixTaD8SKTXnByrVVNb9yuP9zwrg4QeZhw20/WBN6ku9rbUHzIC1XT9rYQ=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "+Y6TxyOY88a/hPboMSmsu1CA3wM08MHlRTD0HdWIp1dpIZNiyTerD2U9/8Iwab9Kb8aOY4F3PDHg/DrnmoddOA=="
       },
       "AsyncUtilities": {
         "type": "Transitive",

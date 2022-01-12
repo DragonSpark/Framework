@@ -4,9 +4,9 @@
     "net6.0": {
       "AspNet.Security.OAuth.Reddit": {
         "type": "Direct",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "8Yg0TJ/yv22StCPvzk2zcux29lgTjU8DXV36ZJgV6ACjspZefzVKpm+HGrGxEX2TAu/ovsaT5kZcGPG1iM0jZA=="
+        "requested": "[6.0.2, )",
+        "resolved": "6.0.2",
+        "contentHash": "1tOxDRhIvcbmHuc8fr60qR0y7xvQAOZjoI9O9BIFr7OsaHSCSs3vX/ADcQEu3qbWk41B00ho2uYhLRLqaqe6Bg=="
       },
       "AsyncUtilities": {
         "type": "Transitive",
