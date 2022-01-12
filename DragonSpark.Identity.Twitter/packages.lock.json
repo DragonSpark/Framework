@@ -8,6 +8,12 @@
         "resolved": "6.0.1",
         "contentHash": "t9ZUaGfM0WC2w9oEhzcsrtxnbMp4qUpwyIy/ooRjC4LyqLc9Q3lvpteVcmz+X5viv1n4JXBD/MrRsUDp4ZmCYQ=="
       },
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.4.255, )",
+        "resolved": "3.4.255",
+        "contentHash": "7aJa6+VzdKNDVJqGIWGtvIDh2HsIx8DIDfUg4yWViXc798awhSohPMk1oiAZqSntnrKThKJtn4vAMRdsCj8dtg=="
+      },
       "TweetinviAPI": {
         "type": "Direct",
         "requested": "[5.0.4, )",

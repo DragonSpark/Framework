@@ -8,6 +8,12 @@
         "resolved": "6.0.2",
         "contentHash": "+Y6TxyOY88a/hPboMSmsu1CA3wM08MHlRTD0HdWIp1dpIZNiyTerD2U9/8Iwab9Kb8aOY4F3PDHg/DrnmoddOA=="
       },
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.4.255, )",
+        "resolved": "3.4.255",
+        "contentHash": "7aJa6+VzdKNDVJqGIWGtvIDh2HsIx8DIDfUg4yWViXc798awhSohPMk1oiAZqSntnrKThKJtn4vAMRdsCj8dtg=="
+      },
       "AsyncUtilities": {
         "type": "Transitive",
         "resolved": "1.1.1",
