@@ -1,6 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	<RestoreLockedMode Condition="'$(Agent_Id)'!=''">true</RestoreLockedMode>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
@@ -16,12 +17,13 @@
     <NoWarn>CS8669</NoWarn>
   </PropertyGroup>
 	<ItemGroup>
-		<Content Remove="packages.lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never"  />			
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Nerdbank.GitVersioning"
                     Version="3.4.255"
                     PrivateAssets="all"
                     Condition="!Exists('packages.config')" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="packages.lock.json" />
+		<None Remove="packages.lock.json" />
 	</ItemGroup>
 </Project>
