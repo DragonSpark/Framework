@@ -1,12 +1,11 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DragonSpark.Presentation.Components.Navigation;
 
 public class NavigateTo : ComponentBase
 {
-	[Inject, UsedImplicitly]
+	[Inject]
 	protected NavigationManager Navigation { get; set; } = default!;
 
 	[Parameter]
@@ -22,7 +21,7 @@ public class NavigateTo : ComponentBase
 
 	protected void Navigate()
 	{
-		var path = Path ?? throw new InvalidOperationException("Path not provided for navigation.");
+		var path = Path.Verify("Path not provided for navigation.");
 		if (path.TrimStart('/') != Navigation.ToBaseRelativePath(Navigation.Uri))
 		{
 			Navigation.NavigateTo(path, Forced);

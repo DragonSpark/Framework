@@ -1,17 +1,17 @@
 ﻿using DragonSpark.Application.Navigation;
-using DragonSpark.Presentation.Components.Navigation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Security;
 
 /// <summary>
 /// ATTRIBUTION: https://blog.vfrz.fr/blazor-redirect-non-authenticated-user/
 /// </summary>
-public sealed class RedirectToLogin : NavigateTo
+public sealed class RedirectToLogin : ComponentBase
 {
-	public RedirectToLogin() => Forced = true;
+	/*public RedirectToLogin() => Forced = true;*/
 
 	[Parameter]
 	public string FormatPath { get; set; } = LoginPathTemplate.Default;
@@ -22,12 +22,17 @@ public sealed class RedirectToLogin : NavigateTo
 	[Inject]
 	CurrentRootPath CurrentPath { get; set; } = default!;
 
-	protected override void OnInitialized()
-	{
-		Path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
+	[Inject]
+	NavigationManager Navigation { get; set; } = default!;
 
-		Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}",
-		                Navigation.Uri, Path);
-		base.OnInitialized();
+	[Inject]
+	IJSRuntime Runtime { get; set; } = default!;
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+	{
+		var path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
+
+		Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}", Navigation.Uri, path);
+		return firstRender ? Runtime.InvokeVoidAsync("location.replace", path).AsTask() : base.OnAfterRenderAsync(firstRender);
 	}
 }
