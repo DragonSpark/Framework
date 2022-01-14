@@ -12,7 +12,7 @@ public sealed class SqlOptions<T> : ISelect<string, DbContextOptions<T>> where T
 	public DbContextOptions<T> Get(string parameter)
 	{
 		var connection =
-			$@"Server=(localdb)\mssqllocaldb;Database={parameter};Trusted_Connection=True;MultipleActiveResultSets=true";
+			$@"Server=(localdb)\mssqllocaldb;Database={parameter};Trusted_Connection=True";
 		var result = new DbContextOptionsBuilder<T>().UseSqlServer(connection).Options;
 		return result;
 	}

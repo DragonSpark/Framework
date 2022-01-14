@@ -11,6 +11,5 @@ public sealed class StorageConfiguration : Entities.Configure.StorageConfigurati
 	StorageConfiguration()
 		: base(x => x.EnableSensitiveDataLogging()
 		             .EnableDetailedErrors()
-		             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
-		                                      .Ignore(SqlServerEventId.SavepointsDisabledBecauseOfMARS))) {}
+		             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning))) {}
 }
