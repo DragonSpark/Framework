@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Azure.Queues;
 
-public sealed class QueueClients : IQueueClients
+sealed class QueueClients : IQueueClients
 {
 	readonly string _connection;
 
