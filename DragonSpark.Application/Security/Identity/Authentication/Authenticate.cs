@@ -1,26 +1,24 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 {
-	readonly IAuthentications<T> _authentication;
-	readonly IClaims             _claims;
-	readonly bool                _persist;
+	readonly PersistAuthentication<T> _persist;
+	readonly IClaims                  _claims;
 
-	public Authenticate(IAuthentications<T> authentication, IClaims claims, bool persist = true)
+	public Authenticate(PersistAuthentication<T> persist, IClaims claims)
 	{
-		_authentication = authentication;
-		_claims         = claims;
-		_persist        = persist;
+		_persist = persist;
+		_claims  = claims;
 	}
 
-	public async ValueTask Get(Login<T> parameter)
+	public ValueTask Get(Login<T> parameter)
 	{
 		var (information, user) = parameter;
-		using var authentication = _authentication.Get();
-		var       claims = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
-		await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).ConfigureAwait(false);
+		var claims = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
+		return _persist.Get(new StoreAuthenticationInput<T>(user, claims.Open()));
 	}
 }

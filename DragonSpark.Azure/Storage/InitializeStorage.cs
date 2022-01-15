@@ -17,7 +17,7 @@ public sealed class InitializeStorage : ICommand<IApplicationBuilder>
 		                                   .AsValueEnumerable()
 		                                   .Select(x => x.Get()))
 		{
-			container!.CreateIfNotExists();
+			container.CreateIfNotExists();
 		}
 	}
 }

@@ -32,6 +32,10 @@ sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable
 		{
 			return _activator.Get(serviceType);
 		}
+		catch (Exception e)
+		{
+			throw new InvalidOperationException($"A problem was encountered while resolving type {serviceType}", e);
+		}
 	}
 
 	public void Dispose()

@@ -14,6 +14,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 	{
 		parameter.Start<IAuthenticate<T>>()
 		         .Forward<Authenticate<T>>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         .Then.Start<IAuthentication>()
 		         .Forward<Authentication>()

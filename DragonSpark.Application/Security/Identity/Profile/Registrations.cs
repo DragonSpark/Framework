@@ -31,8 +31,9 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         //
 		         .Then.Start<ICreateExternal<T>>()
 		         .Forward<CreateExternal<T>>()
-		         .Decorate<LoggingAwareCreateExternal<T>>()
 		         .Decorate<SynchronizationAwareCreateExternal<T>>()
+		         .Decorate<LoggingAwareCreateExternal<T>>()
+				 .Decorate<FailureAwareCreateExternal<T>>()
 		         .Include(x => x.Dependencies)
 		         .Singleton()
 		         //

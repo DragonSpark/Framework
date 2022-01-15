@@ -2,6 +2,7 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
@@ -16,9 +17,13 @@ sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalConte
 	{
 		var current = parameter.CurrentPrincipal.HasClaim(ExternalIdentity.Default);
 		_copy.Execute(new(parameter.CurrentPrincipal, parameter.NewPrincipal));
-		var @new    = parameter.NewPrincipal.HasClaim(ExternalIdentity.Default);
-		// ReSharper disable once UnusedVariable -- for debugging.
-		var stop    = !current || !@new;
+		var @new = parameter.NewPrincipal.HasClaim(ExternalIdentity.Default);
+		var stop = !current || !@new;
+		if (stop)
+		{
+			throw new InvalidOperationException($"Expected to have claim but was missing {current} - {@new}");
+		}
+
 		return Task.CompletedTask;
 	}
 }
