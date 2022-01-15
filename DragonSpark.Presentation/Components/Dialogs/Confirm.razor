@@ -10,18 +10,20 @@
 @inject IExceptions Exceptions
 
 <DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
-	<RadzenCard>
-		<ActivityReceiverContainer Context="receiver">
-			<p class="mb-4">@ChildContent</p>
-			<div class="d-flex justify-content-between" style="gap: 20px">
-				<ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-								 class="@SecondaryClass" />
+	<ActivityReceiverContainer Context="receiver">
+		<div class="card">
+			<div class="@ContentClass">@ChildContent</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-between" style="gap: 20px">
+					<ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+					                 class="@SecondaryClass" />
 
-				<ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(receiver).UpdateActivity())"
-								 class="@PrimaryClass" />
+					<ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(receiver).UpdateActivity())"
+					                 class="@PrimaryClass" />
+				</div>
 			</div>
-		</ActivityReceiverContainer>
-	</RadzenCard>
+		</div>
+	</ActivityReceiverContainer>
 </DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
 
 @code
@@ -48,6 +50,9 @@
 
 	[Parameter]
 	public string SecondaryText { get; set; } = "Cancel";
+
+	[Parameter]
+	public string ContentClass { get; set; } = "ds-dialog-content card-body";
 
 	[Parameter]
 	public string PrimaryClass { get; set; } = default!;
