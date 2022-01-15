@@ -25,7 +25,7 @@ sealed class AuthenticationValidation<T> : IAuthenticationValidation where T : c
 	public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 	{
 		var (_, hash) = await _views.Await(parameter);
-		var result = hash is null || parameter.FindFirstValue(_type) == hash;
+		var result = hash is not null && parameter.FindFirstValue(_type) == hash;
 		return result;
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using System.Collections.Generic;
-using System.Security.Claims;
+using System.Linq;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Compile;
 
@@ -16,11 +16,13 @@ public class CopyClaims : ICommand<Transfer>
 	{
 		var (from, to) = parameter;
 
-		var claims = _extract.Get(from);
-
-		if (claims.Length > 0)
+		var destination = to.Identities.First();
+		foreach (var claim in _extract.Get(from))
 		{
-			to.AddIdentity(new ClaimsIdentity(claims.Open()));
+			if (!to.HasClaim(claim.Type))
+			{
+				destination.AddClaim(claim);
+			}
 		}
 	}
 }
