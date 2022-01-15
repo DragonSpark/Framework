@@ -52,5 +52,6 @@ partial class ContentInteractionMonitor
 		{
 			Interaction.Execute();
 		}
+		Navigation.LocationChanged -= _changed;
 	}
 }
