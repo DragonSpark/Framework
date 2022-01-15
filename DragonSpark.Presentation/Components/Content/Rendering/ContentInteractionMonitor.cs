@@ -15,9 +15,15 @@ partial class ContentInteractionMonitor
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		_execute                   =  Interaction.Then().Operation().Allocate().Get().Get;
+		_execute                   =  OnReady;
 		_changed                   =  NavigationOnLocationChanged;
 		Navigation.LocationChanged += _changed;
+	}
+
+	Task OnReady()
+	{
+		Interaction.Execute();
+		return Task.CompletedTask;
 	}
 
 	void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -32,10 +38,10 @@ partial class ContentInteractionMonitor
 		{
 			StateHasChanged();
 		}
-		else
+		else if (!Rendered)
 		{
-			Debounce(_execute, (int)PreRenderingWindow.Default.Get().TotalMilliseconds);
 			Rendered = true;
+			Debounce(_execute, (int)PreRenderingWindow.Default.Get().TotalMilliseconds);
 		}
 	}
 
