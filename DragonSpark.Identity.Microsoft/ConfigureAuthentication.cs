@@ -13,7 +13,9 @@ sealed class ConfigureAuthentication : ICommand<MicrosoftAccountOptions>
 	public void Execute(MicrosoftAccountOptions parameter)
 	{
 		var settings = _settings();
-		parameter.ClientId     = settings.Key;
-		parameter.ClientSecret = settings.Secret;
+		parameter.ClientId              = settings.Key;
+		parameter.ClientSecret          = settings.Secret;
+		parameter.AuthorizationEndpoint = settings.AuthorizationEndpoint;
+		parameter.TokenEndpoint         = settings.TokenEndpoint;
 	}
 }
