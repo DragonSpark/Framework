@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
+sealed class Revalidation<T> : RevalidatingServerAuthenticationStateProvider where T : class
 {
 	readonly IValidationServices _validation;
 
@@ -25,7 +25,7 @@ sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
 	public override Task<AuthenticationState> GetAuthenticationStateAsync()
 		=> _validation.Get(base.GetAuthenticationStateAsync());
 
-	protected override Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState,
-	                                                               CancellationToken cancellationToken)
-		=> _validation.Get(authenticationState.User).AsTask();
+	protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState,
+	                                                                     CancellationToken cancellationToken)
+		=> authenticationState is AuthenticationState<T> && await _validation.Get(authenticationState.User);
 }

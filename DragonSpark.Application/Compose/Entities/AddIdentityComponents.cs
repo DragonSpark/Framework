@@ -36,7 +36,7 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : c
 		         .Forward<ValidationServices>()
 		         .Scoped()
 		         .Then.Start<AuthenticationStateProvider>()
-		         .Forward<Revalidation>()
+		         .Forward<Revalidation<T>>()
 		         .Scoped()
 		         //
 		         .Then.AddScoped<IUserClaimsPrincipalFactory<T>, UserClaimsPrincipals<T>>()
