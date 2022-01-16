@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // ReSharper disable All
@@ -65,7 +66,7 @@ public class RouterSession
 		if (!_active.Contains(instance))
 		{
 			_active.Push(ActiveComponent = instance);
-			return SetPageExitCheck(true);
+			return UpdateExitState();
 		}
 		return ValueTask.CompletedTask;
 	}
@@ -87,8 +88,10 @@ public class RouterSession
 		var more = _active.TryPeek(out var current);
 		ActiveComponent = more ? current : null;
 
-		return SetPageExitCheck(more);
+		return UpdateExitState();
 	}
+
+	public ValueTask UpdateExitState() => SetPageExitCheck(_active.Any(x => x.HasChanges));
 
 	async ValueTask SetPageExitCheck(bool show)
 	{
