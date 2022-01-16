@@ -128,7 +128,7 @@ public class Router : IComponent, IHandleAfterRender, IDisposable
 		if (_renderHandle.IsInitialized && Routes != null && !Session.HasChanges)
 		{
 			// Clear the Active Component - the next page will load itself if required
-			Session.ActiveComponent        = null;
+			Session.Reset();
 			Session.NavigationCancelledUrl = null;
 			Refresh(args.IsNavigationIntercepted);
 		}

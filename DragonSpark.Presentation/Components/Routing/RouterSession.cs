@@ -19,14 +19,14 @@ public class RouterSession
 {
 	readonly IJSRuntime _runtime;
 
-	readonly HashSet<object> _active = new HashSet<object>();
+	readonly Stack<IRoutingComponent> _active = new Stack<IRoutingComponent>();
 
 	public RouterSession(IJSRuntime runtime) => _runtime = runtime;
 
 	/// <summary>
 	/// Property containing the currently loaded component if set
 	/// </summary>
-	public IRoutingComponent? ActiveComponent { get; set; }
+	public IRoutingComponent? ActiveComponent { get; private set; }
 
 	/// <summary>
 	/// Boolean to check if the Router Should Navigate
@@ -60,14 +60,34 @@ public class RouterSession
 	/// </summary>
 	public void TriggerIntraPageNavigation() => IntraPageNavigation?.Invoke(this, EventArgs.Empty);
 
-	public ValueTask Register(object instance)
-		=> _active.Add(instance) ? SetPageExitCheck(true) : ValueTask.CompletedTask;
-
-	public ValueTask Unregister(object instance)
+	public ValueTask Register(IRoutingComponent instance)
 	{
-		_active.Remove(instance);
+		if (!_active.Contains(instance))
+		{
+			_active.Push(ActiveComponent = instance);
+			return SetPageExitCheck(true);
+		}
+		return ValueTask.CompletedTask;
+	}
 
-		return SetPageExitCheck(_active.Count > 0);
+	internal void Reset()
+	{
+		_active.Clear();
+		ActiveComponent = null;
+	}
+
+	public ValueTask Unregister(IRoutingComponent instance)
+	{
+		var routingComponent = _active.Pop();
+		if (routingComponent != instance)
+		{
+			throw new InvalidOperationException("Unexpected routing component encountered");
+		}
+
+		var more = _active.TryPeek(out var current);
+		ActiveComponent = more ? current : null;
+
+		return SetPageExitCheck(more);
 	}
 
 	async ValueTask SetPageExitCheck(bool show)
