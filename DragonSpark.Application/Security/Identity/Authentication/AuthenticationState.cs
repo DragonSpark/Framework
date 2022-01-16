@@ -13,7 +13,7 @@ public sealed class AuthenticationState<T> : AuthenticationState where T : class
 
 	public T? Profile { get; }
 
-	public void Deconstruct(out T? profile, out ClaimsPrincipal principal)
+	public void Deconstruct(out ClaimsPrincipal principal, out T? profile)
 	{
 		profile   = Profile;
 		principal = User;
