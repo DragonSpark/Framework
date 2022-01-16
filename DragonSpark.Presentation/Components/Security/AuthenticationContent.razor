@@ -1,0 +1,19 @@
+﻿@using DragonSpark.Application.Security.Identity.Authentication
+@using DragonSpark.Compose
+@typeparam T where T : class
+<DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
+	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay>
+		@{
+			var state = context.To<AuthenticationState<T>>();
+		}
+		<CascadingValue TValue="AuthenticationState<T>" Value="@state">
+			@ChildContent(state)
+		</CascadingValue>
+	</DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay>
+</DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
+
+@code {
+	[Parameter]
+	public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
+
+}

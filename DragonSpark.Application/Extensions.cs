@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 
@@ -74,14 +73,6 @@ partial class Extensions
 	{
 		var value  = @this.GetValue(key);
 		var result = value != ValueProviderResult.None ? value.FirstValue : null;
-		return result;
-	}
-
-	public static async Task<AuthenticationState<T>> Promote<T>(this Task<AuthenticationState> @this)
-		where T : class
-	{
-		var state  = await @this;
-		var result = state.To<AuthenticationState<T>>();
 		return result;
 	}
 

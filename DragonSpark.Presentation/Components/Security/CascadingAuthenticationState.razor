@@ -3,26 +3,26 @@
 
 <CascadingValue TValue="Task<AuthenticationState>" Value="@_currentAuthenticationStateTask" ChildContent="@ChildContent"/>
 
-@code {
+@code
+{
 	Task<AuthenticationState>? _currentAuthenticationStateTask;
 	AuthenticationStateChangedHandler _handler = default!;
 
-	/// <summary>
-	/// The content to which the authentication state should be provided.
-	/// </summary>
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
 	protected override void OnInitialized()
 	{
+
 		_handler = OnAuthenticationStateChanged;
 		AuthenticationStateProvider.AuthenticationStateChanged += _handler;
 
 		_currentAuthenticationStateTask = AuthenticationStateProvider.GetAuthenticationStateAsync();
 	}
 
-	
-	void OnAuthenticationStateChanged(Task<AuthenticationState> newAuthStateTask)
+	protected override Task OnParametersSetAsync() => _currentAuthenticationStateTask ?? base.OnParametersSetAsync();
+
+	void OnAuthenticationStateChanged(Task<AuthenticationState> _)
 	{
 		InvokeAsync(() =>
 		            {
