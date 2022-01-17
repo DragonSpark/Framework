@@ -71,12 +71,6 @@ public class RouterSession
 		return ValueTask.CompletedTask;
 	}
 
-	internal void Reset()
-	{
-		_active.Clear();
-		ActiveComponent = null;
-	}
-
 	public ValueTask Unregister(IRoutingComponent instance)
 	{
 		var routingComponent = _active.Pop();
@@ -104,6 +98,7 @@ public class RouterSession
 
 	public ValueTask Clear()
 	{
+		ActiveComponent = null;
 		_active.Clear();
 		return SetPageExitCheck(false);
 	}
