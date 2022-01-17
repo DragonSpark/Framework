@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
+using DragonSpark.Application.Security.Identity.Claims.Compile;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -6,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Security.Identity.Claims;
 
-public sealed class Registrations : ICommand<IServiceCollection>
+public sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {
-	public static Registrations Default { get; } = new();
+	public static Registrations<T> Default { get; } = new();
 
 	Registrations() {}
 
@@ -28,6 +29,26 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<IExtractClaims>()
 		         .Forward<ExtractClaims>()
 		         .Singleton()
-		         .Then.AddSingleton<IKnownClaims>(KnownClaims.Default);
+		         .Then.AddSingleton<IKnownClaims>(KnownClaims.Default)
+		         //
+		         .Start<IPersistClaims<T>>()
+		         .Forward<PersistClaims<T>>()
+		         .Decorate<LogAwarePersistClaims<T>>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Singleton()
+				 //
+		         //
+		         .Then.Start<IPersist<T>>()
+		         .Forward<Persist<T>>()
+		         .Decorate<ClearAwarePersist<T>>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+		         //
+		         .Then.Start<IPersistRefresh<T>>()
+		         .Forward<PersistRefresh<T>>()
+		         .Decorate<ClearAwarePersistRefresh<T>>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+			;
 	}
 }

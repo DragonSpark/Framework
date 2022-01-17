@@ -1,19 +1,18 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : IdentityUser
 {
-	readonly IAuthentications<T> _authentications;
-	readonly LogAuthentication   _log;
 	readonly Compositions        _compositions;
+	readonly IPersistRefresh<T>  _persist;
 
-	public RefreshAuthentication(IAuthentications<T> authentications, LogAuthentication log, Compositions compositions)
+	public RefreshAuthentication(Compositions compositions, IPersistRefresh<T> persist)
 	{
-		_authentications = authentications;
-		_log             = log;
 		_compositions    = compositions;
+		_persist         = persist;
 	}
 
 	public async ValueTask Get(T parameter)
@@ -22,10 +21,7 @@ sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : Iden
 		if (composition != null)
 		{
 			var (properties, claims) = composition.Value;
-			using var authentication = _authentications.Get();
-			var       open           = claims.Open();
-			await authentication.Subject.SignInWithClaimsAsync(parameter, properties, open).ConfigureAwait(false);
-			_log.Execute(new (parameter.UserName, open));
+			await _persist.Await(new PersistMetadataInput<T>(parameter, properties, claims));
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Claims.Compile;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Composition;
@@ -18,7 +17,6 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : c
 
 	public void Execute(IServiceCollection parameter)
 	{
-		var stamp = new ConfigureSecurityStamp(parameter.Deferred<IKnownClaims>());
 		parameter.Start<IStateViews<T>>()
 		         .Forward<StateViews<T>>()
 		         .Decorate<MemoryAwareStateViews<T>>()
@@ -39,10 +37,10 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : c
 		         .Forward<Revalidation>()
 		         .Scoped()
 		         //
-		         .Then.AddScoped<IUserClaimsPrincipalFactory<T>, UserClaimsPrincipals<T>>()
-		         //
-		         .Decorate<INavigateToSignOut, AuthenticationStateAwareNavigateToSignOut>()
-		         //
-		         .Configure<SecurityStampValidatorOptions>(stamp.Execute);
+		         .Then.Start<IUserClaimsPrincipalFactory<T>>()
+		         .Forward<UserClaimsPrincipals<T>>()
+		         .Scoped()
+				 //
+		         .Then.Decorate<INavigateToSignOut, AuthenticationStateAwareNavigateToSignOut>();
 	}
 }

@@ -11,7 +11,7 @@ public sealed class ApplicationRegistrations<TContext, T> : CompositeCommand<ISe
 {
 	public static ApplicationRegistrations<TContext, T> Default { get; } = new();
 
-	ApplicationRegistrations() : base(Registrations<T>.Default, Claims.Registrations.Default,
+	ApplicationRegistrations() : base(Registrations<T>.Default, Claims.Registrations<T>.Default,
 	                                  Model.Registrations<T>.Default, Profile.Registrations<T>.Default,
 	                                  MultiFactor.Registrations<T>.Default, DefaultRegistrations<TContext, T>.Default,
 	                                  CommonRegistrations<TContext, T>.Default) {}

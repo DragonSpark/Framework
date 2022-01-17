@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
+using DragonSpark.Application.Security.Identity.Claims.Compile;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 {
-	readonly PersistAuthentication<T> _persist;
-	readonly IClaims                  _claims;
+	readonly IPersist<T> _persist;
+	readonly IClaims     _claims;
 
-	public Authenticate(PersistAuthentication<T> persist, IClaims claims)
+	public Authenticate(IPersist<T> persist, IClaims claims)
 	{
 		_persist = persist;
 		_claims  = claims;
@@ -19,6 +20,6 @@ sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 	{
 		var (information, user) = parameter;
 		var claims = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
-		return _persist.Get(new StoreAuthenticationInput<T>(user, claims.Open()));
+		return _persist.Get(new(user, claims.Open()));
 	}
 }
