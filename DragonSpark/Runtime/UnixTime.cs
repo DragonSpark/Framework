@@ -7,16 +7,11 @@ public sealed class UnixTime : ISelect<double, DateTime>
 {
 	public static UnixTime Default { get; } = new UnixTime();
 
-	UnixTime() : this(UnixEpoch.Default.Get()) {}
+	UnixTime() : this(DateTime.UnixEpoch) {}
 
 	readonly DateTime _epoch;
 
 	public UnixTime(DateTime epoch) => _epoch = epoch;
 
-	public DateTime Get(double parameter)
-	{
-		var time   = _epoch;
-		var result = time.AddSeconds(parameter);
-		return result;
-	}
+	public DateTime Get(double parameter) => _epoch.AddSeconds(parameter);
 }

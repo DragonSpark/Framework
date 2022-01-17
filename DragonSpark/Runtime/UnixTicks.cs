@@ -7,7 +7,7 @@ public sealed class UnixTicks : ISelect<DateTime, double>
 {
 	public static UnixTicks Default { get; } = new UnixTicks();
 
-	UnixTicks() : this(UnixEpoch.Default.Get()) {}
+	UnixTicks() : this(DateTime.UnixEpoch) {}
 
 	readonly DateTime _epoch;
 

@@ -5,11 +5,11 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Assemblies;
 
-sealed class AssemblyDetailsSelector : ISelect<Assembly, AssemblyDetails>
+sealed class GetAssemblyDetails : ISelect<Assembly, AssemblyDetails>
 {
-	public static AssemblyDetailsSelector Default { get; } = new AssemblyDetailsSelector();
+	public static GetAssemblyDetails Default { get; } = new GetAssemblyDetails();
 
-	AssemblyDetailsSelector() : this(AssemblyTitle.Default.Get, AssemblyProduct.Default.Get,
+	GetAssemblyDetails() : this(AssemblyTitle.Default.Get, AssemblyProduct.Default.Get,
 	                                 AssemblyCompany.Default.Get, AssemblyDescription.Default.Get,
 	                                 AssemblyConfiguration.Default.Get, AssemblyCopyright.Default.Get,
 	                                 AssemblyVersion.Default.Get) {}
@@ -18,7 +18,7 @@ sealed class AssemblyDetailsSelector : ISelect<Assembly, AssemblyDetails>
 	readonly Func<Assembly, Version> _version;
 
 	// ReSharper disable once TooManyDependencies -	These are properties taken from the assembly manifest.
-	public AssemblyDetailsSelector(Func<Assembly, string> title, Func<Assembly, string> product,
+	public GetAssemblyDetails(Func<Assembly, string> title, Func<Assembly, string> product,
 	                               Func<Assembly, string> company, Func<Assembly, string> description,
 	                               Func<Assembly, string> configuration, Func<Assembly, string> copyright,
 	                               Func<Assembly, Version> version)

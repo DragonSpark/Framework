@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
 public class EditContextMonitor : ComponentBase, IDisposable
 {
 	[Parameter]
+	public bool NotifyOnInitialized { get; set; }
+
+	[Parameter]
 	public EventCallback<EditContext> Changed { get; set; }
 
-	EditContext? _context;
-
 	[CascadingParameter]
-	EditContext? EditContext
+	protected EditContext? EditContext
 	{
 		get => _context;
 		set
@@ -32,7 +34,10 @@ public class EditContextMonitor : ComponentBase, IDisposable
 				}
 			}
 		}
-	}
+	}	EditContext? _context;
+
+	protected override Task OnInitializedAsync()
+		=> NotifyOnInitialized && EditContext != null ? Changed.InvokeAsync(EditContext) : base.OnInitializedAsync();
 
 	void ValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
 	{

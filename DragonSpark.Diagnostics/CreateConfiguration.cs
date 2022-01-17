@@ -13,7 +13,8 @@ sealed class CreateConfiguration : ISelect<IConfiguration, LoggerConfiguration>
 
 	public LoggerConfiguration Get(IConfiguration parameter)
 	{
-		var instance = new LoggerConfiguration().Enrich.With(PrimaryAssemblyEnricher.Default)
+		var instance = new LoggerConfiguration().Enrich.With(PrimaryAssemblyEnricher.Default,
+		                                                     AssemblyDeployInformationEnricher.Default)
 		                                        .Enrich.WithDemystifiedStackTraces()
 		                                        .Enrich.WithExceptionStackTraceHash()
 		                                        .Enrich.WithEnvironmentName()

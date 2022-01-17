@@ -8,5 +8,5 @@ public sealed class PrimaryAssemblyDetails : FixedSelectedSingleton<Assembly, As
 {
 	public static PrimaryAssemblyDetails Default { get; } = new PrimaryAssemblyDetails();
 
-	PrimaryAssemblyDetails() : base(AssemblyDetailsSelector.Default, PrimaryAssembly.Default) {}
+	PrimaryAssemblyDetails() : base(GetAssemblyDetails.Default, PrimaryAssembly.Default) {}
 }
