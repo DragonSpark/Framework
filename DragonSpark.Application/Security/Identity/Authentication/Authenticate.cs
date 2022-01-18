@@ -7,10 +7,10 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 {
-	readonly IPersist<T> _persist;
+	readonly IPersistSignIn<T> _persist;
 	readonly IClaims     _claims;
 
-	public Authenticate(IPersist<T> persist, IClaims claims)
+	public Authenticate(IPersistSignIn<T> persist, IClaims claims)
 	{
 		_persist = persist;
 		_claims  = claims;

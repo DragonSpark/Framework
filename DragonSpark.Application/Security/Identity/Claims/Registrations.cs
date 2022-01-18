@@ -38,15 +38,15 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Singleton()
 				 //
 		         //
-		         .Then.Start<IPersist<T>>()
-		         .Forward<Persist<T>>()
-		         .Decorate<ClearAwarePersist<T>>()
+		         .Then.Start<IPersistSignIn<T>>()
+		         .Forward<PersistSignIn<T>>()
+		         .Decorate<ClearAwarePersistSignIn<T>>()
 		         .Include(x => x.Dependencies)
 		         .Singleton()
 		         //
-		         .Then.Start<IPersistRefresh<T>>()
-		         .Forward<PersistRefresh<T>>()
-		         .Decorate<ClearAwarePersistRefresh<T>>()
+		         .Then.Start<IPersistSignInWithMetadata<T>>()
+		         .Forward<PersistSignInWithMetadata<T>>()
+		         .Decorate<ClearAwarePersistSignInWithMetadata<T>>()
 		         .Include(x => x.Dependencies)
 		         .Singleton()
 			;

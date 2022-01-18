@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
-public interface IPersist<T> : IOperation<PersistInput<T>> where T : IdentityUser {}
+public interface IPersistSignInWithMetadata<T> : IOperation<PersistMetadataInput<T>> {}

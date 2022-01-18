@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
-sealed class Persist<T> : IPersist<T> where T : IdentityUser
+sealed class PersistSignIn<T> : IPersistSignIn<T> where T : IdentityUser
 {
 	readonly IAuthentications<T> _authentication;
 	readonly IPersistClaims<T>   _claims;
 	readonly bool                _persist;
 
-	public Persist(IAuthentications<T> authentication, IPersistClaims<T> claims, bool persist = true)
+	public PersistSignIn(IAuthentications<T> authentication, IPersistClaims<T> claims, bool persist = true)
 	{
 		_authentication = authentication;
 		_claims         = claims;

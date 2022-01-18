@@ -3,9 +3,9 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
-sealed class ClearAwarePersistRefresh<T> : Appending<PersistMetadataInput<T>>, IPersistRefresh<T> where T : IdentityUser
+sealed class ClearAwarePersistSignInWithMetadata<T> : Appending<PersistMetadataInput<T>>, IPersistSignInWithMetadata<T> where T : IdentityUser
 {
-	public ClearAwarePersistRefresh(ClearExistingClaims<T> first, IPersistRefresh<T> second)
+	public ClearAwarePersistSignInWithMetadata(ClearExistingClaims<T> first, IPersistSignInWithMetadata<T> second)
 		: base(Start.A.Selection<PersistMetadataInput<T>>()
 		            .By.Calling(x => new PersistInput<T>(x.User, x.Claims))
 		            .Select(first)

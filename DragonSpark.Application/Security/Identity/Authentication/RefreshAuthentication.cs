@@ -7,9 +7,9 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : IdentityUser
 {
 	readonly Compositions        _compositions;
-	readonly IPersistRefresh<T>  _persist;
+	readonly IPersistSignInWithMetadata<T>  _persist;
 
-	public RefreshAuthentication(Compositions compositions, IPersistRefresh<T> persist)
+	public RefreshAuthentication(Compositions compositions, IPersistSignInWithMetadata<T> persist)
 	{
 		_compositions    = compositions;
 		_persist         = persist;

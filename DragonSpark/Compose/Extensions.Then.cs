@@ -65,6 +65,8 @@ public static partial class ExtensionMethods
 
 	public static CommandResultContext<T> Then<T>(this IResult<ICommand<T>> @this) => new(@this);
 
+	public static CommandResultContext<T> Then<T>(this ResultContext<ICommand<T>> @this) => new(@this.Get());
+
 
 
 	/**/

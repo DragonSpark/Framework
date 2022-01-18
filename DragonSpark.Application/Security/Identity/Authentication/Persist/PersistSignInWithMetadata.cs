@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
-sealed class PersistRefresh<T> : IPersistRefresh<T> where T : IdentityUser
+sealed class PersistSignInWithMetadata<T> : IPersistSignInWithMetadata<T> where T : IdentityUser
 {
 	readonly IAuthentications<T> _authentications;
 	readonly IPersistClaims<T>   _claims;
 
-	public PersistRefresh(IAuthentications<T> authentications, IPersistClaims<T> claims)
+	public PersistSignInWithMetadata(IAuthentications<T> authentications, IPersistClaims<T> claims)
 	{
 		_authentications = authentications;
 		_claims          = claims;
