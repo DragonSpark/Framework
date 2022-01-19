@@ -42,17 +42,16 @@ public sealed class ApplicationProfileContext
 	public ApplicationProfileContext Configure(Func<BuildHostContext, BuildHostContext> context)
 		=> new(context(_context), _profile, _configure);
 
-	// TODO: Append
-	public ApplicationProfileContext Then(System.Action<IServiceCollection> other)
-		=> Then(Start.A.Command(other).Get());
+	public ApplicationProfileContext Append(System.Action<IServiceCollection> other)
+		=> Append(Start.A.Command(other).Get());
 
-	public ApplicationProfileContext Then(ICommand<IServiceCollection> other)
+	public ApplicationProfileContext Append(ICommand<IServiceCollection> other)
 		=> Get(x => new ApplicationProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
-	public ApplicationProfileContext Then(System.Action<IApplicationBuilder> other)
-		=> Then(Start.A.Command(other).Get());
+	public ApplicationProfileContext Append(System.Action<IApplicationBuilder> other)
+		=> Append(Start.A.Command(other).Get());
 
-	public ApplicationProfileContext Then(ICommand<IApplicationBuilder> other)
+	public ApplicationProfileContext Append(ICommand<IApplicationBuilder> other)
 		=> Get(x => new ApplicationProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
 
 	public ApplicationProfileContext WithEnvironmentalConfiguration()

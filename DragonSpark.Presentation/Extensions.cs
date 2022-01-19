@@ -128,7 +128,7 @@ public static class Extensions
 	/**/
 
 	public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
-		=> @this.Then(x => x.AddContentSecurity()).Then(x => x.UseContentSecurity());
+		=> @this.Append(x => x.AddContentSecurity()).Append(x => x.UseContentSecurity());
 
 	public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
 		=> @this.Configure(Security.Registrations.Default);

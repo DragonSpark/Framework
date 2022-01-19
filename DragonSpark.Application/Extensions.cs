@@ -38,7 +38,7 @@ partial class Extensions
 		=> new(@this, profile);
 
 	public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
-		=> @this.Then(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
+		=> @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
 
 	/**/
 

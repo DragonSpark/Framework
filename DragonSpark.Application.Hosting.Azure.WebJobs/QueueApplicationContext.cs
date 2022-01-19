@@ -18,5 +18,5 @@ public sealed class QueueApplicationContext<T> where T : class, IApplication
 	public ApplicationProfileContext HostedUsing<THost>(Action<QueuesOptions> configure) where THost : QueueHost
 		=> _subject.Configure(new Hosting(configure))
 		           .Apply(QueueApplicationProfile<THost>.Default)
-		           .Then(x => x.Start<IApplication>().Forward<T>().Include(y => y.Dependencies).Scoped());
+		           .Append(x => x.Start<IApplication>().Forward<T>().Include(y => y.Dependencies).Scoped());
 }

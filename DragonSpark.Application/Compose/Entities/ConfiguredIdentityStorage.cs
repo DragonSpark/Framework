@@ -27,7 +27,7 @@ public sealed class ConfiguredIdentityStorage<T, TContext> where TContext : DbCo
 		=> new(_subject, _configure, new AppendedStorageConfiguration(_configuration, configuration));
 
 	public ApplicationProfileContext Then
-		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure));
+		=> _subject.Append(new AddIdentity<T, TContext>(_configuration, _configure));
 
 	/*public ApplicationProfileContext Register(Func<IServiceProvider, TContext> factory)
 		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, factory));*/

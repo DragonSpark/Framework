@@ -13,5 +13,5 @@ public static class Extensions
 		=> @this.Append(new ConfigureTwitterApplication(claims));
 
 	public static ApplicationProfileContext WithTwitterApi(this ApplicationProfileContext @this)
-		=> @this.Then(Registrations.Default);
+		=> @this.Append(Registrations.Default);
 }

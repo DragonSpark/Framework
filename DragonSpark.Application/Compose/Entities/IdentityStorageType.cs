@@ -19,17 +19,17 @@ public sealed class IdentityStorageType<T, TContext> where TContext : DbContext 
 	}
 
 	public IdentityStorageUsing<T, TContext> Application()
-		=> new(_subject.Then(ApplicationRegistrations<TContext, T>.Default)
+		=> new(_subject.Append(ApplicationRegistrations<TContext, T>.Default)
 		               .Configure(x => x.ComposeUsing(Security.Identity.Compose.Default)
 		                                .ComposeUsing(Security.Identity.Authentication.Compose.Default))
-		               .Then(AddIdentityComponents<T>.Default)
-		               .Then(DragonSpark.Application.Entities.Registrations<TContext>.Default)
-		               .Then(DragonSpark.Application.Entities.Transactions.Registrations.Default),
+		               .Append(AddIdentityComponents<T>.Default)
+		               .Append(DragonSpark.Application.Entities.Registrations<TContext>.Default)
+		               .Append(DragonSpark.Application.Entities.Transactions.Registrations.Default),
 		       _configure);
 
 	public IdentityStorageUsing<T, TContext> Is
-		=> new(_subject.Then(CommonRegistrations<TContext, T>.Default)
-		               .Then(DragonSpark.Application.Entities.Registrations<TContext>.Default)
-		               .Then(DragonSpark.Application.Entities.Transactions.Registrations.Default),
+		=> new(_subject.Append(CommonRegistrations<TContext, T>.Default)
+		               .Append(DragonSpark.Application.Entities.Registrations<TContext>.Default)
+		               .Append(DragonSpark.Application.Entities.Transactions.Registrations.Default),
 		       _configure);
 }

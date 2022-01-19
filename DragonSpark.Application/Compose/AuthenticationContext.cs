@@ -39,5 +39,5 @@ public sealed class AuthenticationContext : IResult<ApplicationProfileContext>
 
 	public ApplicationProfileContext Then => Get();
 
-	public ApplicationProfileContext Get() => _subject.Then(new AuthenticationContextCommand(_configure, _options));
+	public ApplicationProfileContext Get() => _subject.Append(new AuthenticationContextCommand(_configure, _options));
 }

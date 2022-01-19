@@ -67,7 +67,7 @@ public static partial class Extensions
 
 	public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
 	                                                       Action<AuthorizationOptions> policy)
-		=> @this.Then(new AuthorizeConfiguration(policy));
+		=> @this.Append(new AuthorizeConfiguration(policy));
 	/**/
 
 	public static BuildHostContext WithDataSecurity(this BuildHostContext @this)

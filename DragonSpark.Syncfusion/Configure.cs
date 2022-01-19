@@ -10,6 +10,6 @@ sealed class Configure : IAlteration<ApplicationProfileContext>
 	Configure() {}
 
 	public ApplicationProfileContext Get(ApplicationProfileContext parameter)
-		=> parameter.Then(Registrations.Default)
-		            .Then(ApplicationConfiguration.Default);
+		=> parameter.Append(Registrations.Default)
+		            .Append(ApplicationConfiguration.Default);
 }
