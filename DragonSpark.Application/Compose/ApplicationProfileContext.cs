@@ -42,6 +42,7 @@ public sealed class ApplicationProfileContext
 	public ApplicationProfileContext Configure(Func<BuildHostContext, BuildHostContext> context)
 		=> new(context(_context), _profile, _configure);
 
+	// TODO: Append
 	public ApplicationProfileContext Then(System.Action<IServiceCollection> other)
 		=> Then(Start.A.Command(other).Get());
 

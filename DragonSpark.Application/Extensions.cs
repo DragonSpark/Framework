@@ -16,10 +16,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
@@ -39,11 +37,8 @@ partial class Extensions
 	public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
 		=> new(@this, profile);
 
-	/**/
-
-	public static IQueryable<T> Includes<T>(this IQueryable<T> source, params string[] includes)
-		where T : class => includes.Aggregate(source, (entities, include)
-			                                              => entities.Include(include));
+	public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
+		=> @this.Then(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
 
 	/**/
 

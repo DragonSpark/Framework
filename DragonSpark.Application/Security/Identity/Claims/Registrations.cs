@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
 using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,10 +17,11 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		parameter.Start<IClaims>()
 		         .Forward<Compile.Claims>()
 		         .Include(x => x.Dependencies)
-		         .Scoped()
+		         .Singleton()
+				 //
 		         .Then.Start<ICurrentKnownClaims>()
 		         .Forward<CurrentKnownClaims>()
-		         .Scoped()
+		         .Singleton()
 		         .Then.Start<IDisplayNameClaim>()
 		         .Forward<DisplayNameClaim>()
 		         .Singleton()
@@ -29,25 +29,13 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Then.Start<IExtractClaims>()
 		         .Forward<ExtractClaims>()
 		         .Singleton()
-		         .Then.AddSingleton<IKnownClaims>(KnownClaims.Default)
-		         //
-		         .Start<IPersistClaims<T>>()
-		         .Forward<PersistClaims<T>>()
-		         .Decorate<LogAwarePersistClaims<T>>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
 				 //
-		         //
 		         .Then.Start<IPersistSignIn<T>>()
 		         .Forward<PersistSignIn<T>>()
-		         .Decorate<ClearAwarePersistSignIn<T>>()
-		         .Include(x => x.Dependencies)
 		         .Singleton()
 		         //
 		         .Then.Start<IPersistSignInWithMetadata<T>>()
 		         .Forward<PersistSignInWithMetadata<T>>()
-		         .Decorate<ClearAwarePersistSignInWithMetadata<T>>()
-		         .Include(x => x.Dependencies)
 		         .Singleton()
 			;
 	}

@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +18,8 @@ public sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollecti
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
+		parameter.AddSingleton<IKnownClaims>(KnownClaims.Default)
+		         .AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
 		         .AddSingleton(typeof(IUsers<>), typeof(Users<>))
 		         .AddSingleton(typeof(UserSessions<>));
 	}

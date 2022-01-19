@@ -2,7 +2,6 @@
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Application.Compose.Entities;
@@ -27,11 +26,12 @@ public sealed class ConfiguredIdentityStorage<T, TContext> where TContext : DbCo
 	public ConfiguredIdentityStorage<T, TContext> And(IStorageConfiguration configuration)
 		=> new(_subject, _configure, new AppendedStorageConfiguration(_configuration, configuration));
 
-	public ApplicationProfileContext Then => Register(ServiceLifetime.Scoped);
+	public ApplicationProfileContext Then
+		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure));
 
-	public ApplicationProfileContext Register(Func<IServiceProvider, TContext> factory)
-		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, factory));
+	/*public ApplicationProfileContext Register(Func<IServiceProvider, TContext> factory)
+		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, factory));*/
 
-	public ApplicationProfileContext Register(ServiceLifetime lifetime)
-		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure, lifetime));
+	/*public ApplicationProfileContext Register(ServiceLifetime lifetime)
+		=> _subject.Then(new AddIdentity<T, TContext>(_configuration, _configure, lifetime));*/
 }
