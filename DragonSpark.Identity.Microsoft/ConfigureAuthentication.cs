@@ -7,8 +7,14 @@ namespace DragonSpark.Identity.Microsoft;
 sealed class ConfigureAuthentication : ICommand<MicrosoftAccountOptions>
 {
 	readonly Func<MicrosoftApplicationSettings> _settings;
+	readonly Action<MicrosoftAccountOptions>    _configure;
 
-	public ConfigureAuthentication(Func<MicrosoftApplicationSettings> settings) => _settings = settings;
+	public ConfigureAuthentication(Func<MicrosoftApplicationSettings> settings,
+	                               Action<MicrosoftAccountOptions> configure)
+	{
+		_settings  = settings;
+		_configure = configure;
+	}
 
 	public void Execute(MicrosoftAccountOptions parameter)
 	{
@@ -17,5 +23,6 @@ sealed class ConfigureAuthentication : ICommand<MicrosoftAccountOptions>
 		parameter.ClientSecret          = settings.Secret;
 		parameter.AuthorizationEndpoint = settings.AuthorizationEndpoint;
 		parameter.TokenEndpoint         = settings.TokenEndpoint;
+		_configure(parameter);
 	}
 }

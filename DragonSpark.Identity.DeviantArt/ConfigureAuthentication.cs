@@ -7,13 +7,16 @@ namespace DragonSpark.Identity.DeviantArt;
 
 sealed class ConfigureAuthentication : ICommand<DeviantArtAuthenticationOptions>
 {
-	readonly Func<DeviantArtApplicationSettings> _settings;
-	readonly IClaimAction                        _claims;
+	readonly Func<DeviantArtApplicationSettings>     _settings;
+	readonly IClaimAction                            _claims;
+	readonly Action<DeviantArtAuthenticationOptions> _configure;
 
-	public ConfigureAuthentication(Func<DeviantArtApplicationSettings> settings, IClaimAction claims)
+	public ConfigureAuthentication(Func<DeviantArtApplicationSettings> settings, IClaimAction claims,
+	                               Action<DeviantArtAuthenticationOptions> configure)
 	{
-		_settings = settings;
-		_claims   = claims;
+		_settings  = settings;
+		_claims    = claims;
+		_configure = configure;
 	}
 
 	public void Execute(DeviantArtAuthenticationOptions parameter)
@@ -25,5 +28,6 @@ sealed class ConfigureAuthentication : ICommand<DeviantArtAuthenticationOptions>
 		parameter.UserInformationEndpoint = settings.UserInformationEndpoint;
 
 		_claims.Execute(parameter.ClaimActions);
+		_configure(parameter);
 	}
 }

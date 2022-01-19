@@ -9,11 +9,14 @@ sealed class ConfigureTwitterAuthentication : ICommand<TwitterOptions>
 {
 	readonly Func<TwitterApplicationSettings> _settings;
 	readonly IClaimAction                     _action;
+	readonly Action<TwitterOptions>           _configure;
 
-	public ConfigureTwitterAuthentication(Func<TwitterApplicationSettings> settings, IClaimAction action)
+	public ConfigureTwitterAuthentication(Func<TwitterApplicationSettings> settings, IClaimAction action,
+	                                      Action<TwitterOptions> configure)
 	{
-		_settings = settings;
-		_action   = action;
+		_settings  = settings;
+		_action    = action;
+		_configure = configure;
 	}
 
 	public void Execute(TwitterOptions parameter)
@@ -25,5 +28,6 @@ sealed class ConfigureTwitterAuthentication : ICommand<TwitterOptions>
 		parameter.RetrieveUserDetails = true;
 
 		_action.Execute(parameter.ClaimActions);
+		_configure(parameter);
 	}
 }

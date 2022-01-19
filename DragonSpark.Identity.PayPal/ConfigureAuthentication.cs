@@ -7,16 +7,19 @@ namespace DragonSpark.Identity.PayPal;
 
 sealed class ConfigureAuthentication : ICommand<PaypalAuthenticationOptions>
 {
-	readonly Func<PayPalApplicationSettings> _settings;
-	readonly IClaimAction                    _claim;
+	readonly Func<PayPalApplicationSettings>     _settings;
+	readonly IClaimAction                        _claim;
+	readonly Action<PaypalAuthenticationOptions> _configure;
 
-	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings)
-		: this(settings, PayIdentifierClaimAction.Default) {}
+	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings, Action<PaypalAuthenticationOptions> configure)
+		: this(settings, PayIdentifierClaimAction.Default, configure) {}
 
-	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings, IClaimAction claim)
+	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings, IClaimAction claim,
+	                               Action<PaypalAuthenticationOptions> configure)
 	{
-		_settings = settings;
-		_claim    = claim;
+		_settings  = settings;
+		_claim     = claim;
+		_configure = configure;
 	}
 
 	public void Execute(PaypalAuthenticationOptions parameter)
@@ -40,5 +43,7 @@ sealed class ConfigureAuthentication : ICommand<PaypalAuthenticationOptions>
 				parameter.Scope.Add(scope);
 			}
 		}
+
+		_configure(parameter);
 	}
 }

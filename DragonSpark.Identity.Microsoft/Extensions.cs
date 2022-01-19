@@ -1,9 +1,15 @@
 ﻿using DragonSpark.Application.Compose;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using System;
 
 namespace DragonSpark.Identity.Microsoft;
 
 public static class Extensions
 {
 	public static AuthenticationContext UsingMicrosoft(this AuthenticationContext @this)
-		=> @this.Append(ConfigureApplication.Default);
+		=> UsingMicrosoft(@this, _ => {});
+
+	public static AuthenticationContext UsingMicrosoft(this AuthenticationContext @this,
+	                                                   Action<MicrosoftAccountOptions> configure)
+		=> @this.Append(new ConfigureApplication(configure));
 }

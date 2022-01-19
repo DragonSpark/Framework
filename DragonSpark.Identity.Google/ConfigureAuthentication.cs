@@ -9,11 +9,13 @@ sealed class ConfigureAuthentication : ICommand<GoogleOptions>
 {
 	readonly Func<GoogleApplicationSettings> _settings;
 	readonly IClaimAction                    _claims;
+	readonly Action<GoogleOptions>           _configure;
 
-	public ConfigureAuthentication(Func<GoogleApplicationSettings> settings, IClaimAction claims)
+	public ConfigureAuthentication(Func<GoogleApplicationSettings> settings, IClaimAction claims, Action<GoogleOptions> configure)
 	{
-		_settings = settings;
-		_claims   = claims;
+		_settings       = settings;
+		_claims         = claims;
+		_configure = configure;
 	}
 
 	public void Execute(GoogleOptions parameter)
@@ -23,5 +25,6 @@ sealed class ConfigureAuthentication : ICommand<GoogleOptions>
 		parameter.ClientSecret = settings.Secret;
 
 		_claims.Execute(parameter.ClaimActions);
+		_configure(parameter);
 	}
 }

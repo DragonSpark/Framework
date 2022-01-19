@@ -7,13 +7,16 @@ namespace DragonSpark.Identity.Reddit;
 
 sealed class ConfigureAuthentication : ICommand<RedditAuthenticationOptions>
 {
-	readonly Func<RedditApplicationSettings> _settings;
-	readonly IClaimAction                    _claims;
+	readonly Func<RedditApplicationSettings>     _settings;
+	readonly IClaimAction                        _claims;
+	readonly Action<RedditAuthenticationOptions> _configure;
 
-	public ConfigureAuthentication(Func<RedditApplicationSettings> settings, IClaimAction claims)
+	public ConfigureAuthentication(Func<RedditApplicationSettings> settings, IClaimAction claims,
+	                               Action<RedditAuthenticationOptions> configure)
 	{
-		_settings = settings;
-		_claims   = claims;
+		_settings       = settings;
+		_claims         = claims;
+		_configure = configure;
 	}
 
 	public void Execute(RedditAuthenticationOptions parameter)
@@ -23,5 +26,6 @@ sealed class ConfigureAuthentication : ICommand<RedditAuthenticationOptions>
 		parameter.ClientSecret = settings.Secret;
 
 		_claims.Execute(parameter.ClaimActions);
+		_configure(parameter);
 	}
 }
