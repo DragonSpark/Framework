@@ -9,9 +9,9 @@ public sealed class ConfigureHostBuilderFromEnvironment : ICommand<IHostBuilder>
 
 	ConfigureHostBuilderFromEnvironment() : this(ConfigureHostBuilderFromEnvironmentCommand.Default) {}
 
-	readonly ICommand<HostConfiguration> _configure;
+	readonly ICommand<HostingInput> _configure;
 
-	public ConfigureHostBuilderFromEnvironment(ICommand<HostConfiguration> configure)
+	public ConfigureHostBuilderFromEnvironment(ICommand<HostingInput> configure)
 		=> _configure = configure;
 
 	public void Execute(IHostBuilder parameter)

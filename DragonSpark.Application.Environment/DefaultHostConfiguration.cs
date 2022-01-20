@@ -10,5 +10,5 @@ public sealed class DefaultHostConfiguration : IHostConfiguration
 
 	DefaultHostConfiguration() {}
 
-	public void Execute(HostConfiguration parameter) {}
+	public void Execute(HostingInput parameter) {}
 }
