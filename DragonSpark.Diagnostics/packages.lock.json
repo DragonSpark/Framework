@@ -130,9 +130,9 @@
       },
       "Serilog.Sinks.Seq": {
         "type": "Direct",
-        "requested": "[5.1.0, )",
-        "resolved": "5.1.0",
-        "contentHash": "VZbcBAB3rnQe5dq21aYvxpdLQs6dLQE4pZAtrhYb1TODaTCzf/BVDRaxi5MyQOW1vNVMNjT+iDUkgwxfeFI4qA==",
+        "requested": "[5.1.1, )",
+        "resolved": "5.1.1",
+        "contentHash": "+BsIoanNyZPEcWY5sVtx2nL/88UcCw9gr/l0nCfe4bjuSoFS2clDIUmKaH1UXA/hx9undHCgw4epVltOulGuxw==",
         "dependencies": {
           "Serilog": "2.10.0",
           "Serilog.Formatting.Compact": "1.1.0",
@@ -549,8 +549,8 @@
       },
       "Polly": {
         "type": "Transitive",
-        "resolved": "7.2.2",
-        "contentHash": "E6CeKyS513j7taKAq4q2MESDBvzuzWnR1rQ2Y2zqJvpiVtKMm699Aubb20MUPBDmb0Ov8PmcLHTCVFdCjoy2kA=="
+        "resolved": "7.2.3",
+        "contentHash": "DeCY0OFbNdNxsjntr1gTXHJ5pKUwYzp04Er2LLeN3g6pWhffsGuKVfMBLe1lw7x76HrPkLxKEFxBlpRxS2nDEQ=="
       },
       "Scrutor": {
         "type": "Transitive",
@@ -919,7 +919,7 @@
           "JetBrains.Annotations": "2021.3.0",
           "Microsoft.Extensions.Hosting": "6.0.0",
           "NetFabric.Hyperlinq": "3.0.0-beta48",
-          "Polly": "7.2.2",
+          "Polly": "7.2.3",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },

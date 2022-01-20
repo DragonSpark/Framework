@@ -525,8 +525,8 @@
       },
       "Polly": {
         "type": "Transitive",
-        "resolved": "7.2.2",
-        "contentHash": "E6CeKyS513j7taKAq4q2MESDBvzuzWnR1rQ2Y2zqJvpiVtKMm699Aubb20MUPBDmb0Ov8PmcLHTCVFdCjoy2kA=="
+        "resolved": "7.2.3",
+        "contentHash": "DeCY0OFbNdNxsjntr1gTXHJ5pKUwYzp04Er2LLeN3g6pWhffsGuKVfMBLe1lw7x76HrPkLxKEFxBlpRxS2nDEQ=="
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
         "type": "Transitive",
@@ -1590,7 +1590,7 @@
           "JetBrains.Annotations": "2021.3.0",
           "Microsoft.Extensions.Hosting": "6.0.0",
           "NetFabric.Hyperlinq": "3.0.0-beta48",
-          "Polly": "7.2.2",
+          "Polly": "7.2.3",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       }

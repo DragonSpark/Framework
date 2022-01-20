@@ -673,11 +673,17 @@
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0"
         }
       },
+      "LinqKit.Core": {
+        "type": "Transitive",
+        "resolved": "1.2.0",
+        "contentHash": "TaALTy7hPWt9+BMuF+TpQ0DyOXwTzXIDIWOQaP41lNZP5Zo7x3U6xL6wD2DhiPDJndE8TOLbNd2ml1c0QC2dhw=="
+      },
       "LinqKit.Microsoft.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.27",
-        "contentHash": "t4EQmhn10xxmiE4JN3xeW+4ZX+/fzPrm83LtYb7aFF5MQ6Tf83DJ3ru5Ctdqkyc6aEXH0EBrrfF2J3IoXP+BHg==",
+        "resolved": "6.1.0",
+        "contentHash": "GnJ2iCirWGiYyqOazlw9TDcql36FmSENRyflxs5cx8Okv8rjqVTRm3ujf4pPMLj2wxVlOjxIPlsZB5hj62W71w==",
         "dependencies": {
+          "LinqKit.Core": "1.2.0",
           "Microsoft.EntityFrameworkCore": "6.0.0"
         }
       },
@@ -1649,8 +1655,8 @@
       },
       "Polly": {
         "type": "Transitive",
-        "resolved": "7.2.2",
-        "contentHash": "E6CeKyS513j7taKAq4q2MESDBvzuzWnR1rQ2Y2zqJvpiVtKMm699Aubb20MUPBDmb0Ov8PmcLHTCVFdCjoy2kA=="
+        "resolved": "7.2.3",
+        "contentHash": "DeCY0OFbNdNxsjntr1gTXHJ5pKUwYzp04Er2LLeN3g6pWhffsGuKVfMBLe1lw7x76HrPkLxKEFxBlpRxS2nDEQ=="
       },
       "Polly.Extensions.Http": {
         "type": "Transitive",
@@ -3000,7 +3006,7 @@
           "JetBrains.Annotations": "2021.3.0",
           "Microsoft.Extensions.Hosting": "6.0.0",
           "NetFabric.Hyperlinq": "3.0.0-beta48",
-          "Polly": "7.2.2",
+          "Polly": "7.2.3",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
@@ -3012,7 +3018,7 @@
           "DragonSpark.Composition": "1.0.0",
           "Flurl": "3.0.2",
           "Humanizer": "2.13.14",
-          "LinqKit.Microsoft.EntityFrameworkCore": "6.0.27",
+          "LinqKit.Microsoft.EntityFrameworkCore": "6.1.0",
           "Markdig": "0.26.0",
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "6.0.1",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.1",
