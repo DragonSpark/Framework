@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <RestorePackagesWithLockFile Condition="'$(Configuration)'!='Debug'">true</RestorePackagesWithLockFile>
+    <RestorePackagesWithLockFile Condition="'$(Configuration)'=='Release'">true</RestorePackagesWithLockFile>
 	<RestoreLockedMode Condition="'$(Agent_Id)'!=''">true</RestoreLockedMode>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
