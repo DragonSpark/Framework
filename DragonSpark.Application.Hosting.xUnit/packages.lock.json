@@ -31,6 +31,12 @@
           "System.Configuration.ConfigurationManager": "4.4.0"
         }
       },
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.4.255, )",
+        "resolved": "3.4.255",
+        "contentHash": "7aJa6+VzdKNDVJqGIWGtvIDh2HsIx8DIDfUg4yWViXc798awhSohPMk1oiAZqSntnrKThKJtn4vAMRdsCj8dtg=="
+      },
       "System.ComponentModel.TypeConverter": {
         "type": "Direct",
         "requested": "[4.3.0, )",
