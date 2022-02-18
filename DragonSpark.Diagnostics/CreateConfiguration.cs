@@ -15,6 +15,8 @@ sealed class CreateConfiguration : ISelect<IConfiguration, LoggerConfiguration>
 	{
 		var instance = new LoggerConfiguration().Enrich.With(PrimaryAssemblyEnricher.Default,
 		                                                     AssemblyDeployInformationEnricher.Default)
+		                                        .Enrich.WithClientIp()
+		                                        .Enrich.WithClientAgent()
 		                                        .Enrich.WithDemystifiedStackTraces()
 		                                        .Enrich.WithExceptionStackTraceHash()
 		                                        .Enrich.WithEnvironmentName()
