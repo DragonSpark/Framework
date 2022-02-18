@@ -25,6 +25,16 @@
           "Microsoft.Extensions.Logging.Configuration": "2.1.0"
         }
       },
+      "Serilog.Enrichers.ClientInfo": {
+        "type": "Direct",
+        "requested": "[1.1.4, )",
+        "resolved": "1.1.4",
+        "contentHash": "kJL9v/JrVtbkYbyfxTanutS8Sw+33X9MCnha0gV/F56MzNCDgN1D6GB9vxI2KZQbhaglce51aWgrVayPEdRnlg==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.2",
+          "Serilog": "2.9.0"
+        }
+      },
       "Serilog.Enrichers.Context": {
         "type": "Direct",
         "requested": "[4.2.0, )",
