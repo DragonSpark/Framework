@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Navigation;
-using DragonSpark.Application.Security;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Text;
@@ -11,8 +10,7 @@ sealed class ContentIdentification : IFormatter<object>
 	readonly CurrentPath                _path;
 	readonly IResult<ContentIdentifier> _identifiers;
 
-	public ContentIdentification(CurrentPath path, ICurrentContext context)
-		: this(path, ContentIdentifiers.Default.Then().Bind(context).Get()) {}
+	public ContentIdentification(CurrentPath path) : this(path, ContentIdentifiers.Default.Then().Bind(path).Get()) {}
 
 	public ContentIdentification(CurrentPath path, IResult<ContentIdentifier> identifiers)
 	{
