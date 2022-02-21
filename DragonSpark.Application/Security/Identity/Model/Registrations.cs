@@ -15,13 +15,12 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 	{
 		parameter.Start<IAuthenticateRequest>()
 		         .Forward<AuthenticateRequest>()
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ExternalLoginModelActions<T>>()
-		         .And<ClearCurrentAuthenticationState>()
 		         .And<ChallengedModelBinder>()
 		         .Include(x => x.Dependencies)
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ExternalLoginChallengingModelBinder>()
 		         .And<ReturnOrRoot>()
@@ -35,12 +34,12 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Decorate<SignOutAwareAddExternalSignin>()
 		         .Decorate<ExceptionAwareAddExternalLogin>()
 		         .Include(x => x.Dependencies)
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<IChallenged<T>>()
 		         .Forward<Challenged<T>>()
 		         .Decorate<AuthenticationAwareChallenged<T>>()
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<IAddLogin<T>>()
 		         .Forward<AddLogin<T>>()

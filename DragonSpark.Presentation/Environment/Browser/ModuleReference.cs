@@ -2,7 +2,7 @@
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Browser;
+namespace DragonSpark.Presentation.Environment.Browser;
 
 public sealed class ModuleReference : ISelecting<string, IJSObjectReference>
 {

@@ -6,13 +6,13 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : IdentityUser
 {
-	readonly Compositions        _compositions;
-	readonly IPersistSignInWithMetadata<T>  _persist;
+	readonly Compositions                  _compositions;
+	readonly IPersistSignInWithMetadata<T> _persist;
 
 	public RefreshAuthentication(Compositions compositions, IPersistSignInWithMetadata<T> persist)
 	{
-		_compositions    = compositions;
-		_persist         = persist;
+		_compositions = compositions;
+		_persist      = persist;
 	}
 
 	public async ValueTask Get(T parameter)
@@ -21,7 +21,7 @@ sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : Iden
 		if (composition != null)
 		{
 			var (properties, claims) = composition.Value;
-			await _persist.Await(new PersistMetadataInput<T>(parameter, properties, claims));
+			await _persist.Await(new(parameter, properties, claims));
 		}
 	}
 }

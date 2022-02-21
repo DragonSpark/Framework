@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Composition;
@@ -39,6 +40,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ScopedTable>()
 		         .Scoped()
 		         //
+		         .Then.Start<ICurrentContext>()
+		         .Forward<CurrentContext>()
+		         .Scoped()
+		         //
 		         .Then.Start<ILogException>()
 		         .Forward<LogException>()
 		         .Decorate<TemplateAwareLogException>()
@@ -59,7 +64,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ICurrentUserName>()
 		         .Forward<CurrentUserName>()
-		         .Singleton()
+		         .Scoped()
 			;
 	}
 }

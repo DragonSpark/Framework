@@ -1,13 +1,11 @@
 ﻿using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Compose;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-[UsedImplicitly]
 sealed class Authentication : IAuthentication
 {
 	readonly IExternalSignin         _signin;

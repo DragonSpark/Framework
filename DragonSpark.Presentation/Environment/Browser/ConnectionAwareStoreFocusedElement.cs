@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Browser;
+namespace DragonSpark.Presentation.Environment.Browser;
 
 sealed class ConnectionAwareStoreFocusedElement : IOperation
 {

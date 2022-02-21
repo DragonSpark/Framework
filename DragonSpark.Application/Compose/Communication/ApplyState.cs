@@ -1,6 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security;
 using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using NetFabric.Hyperlinq;
@@ -20,8 +19,8 @@ sealed class ApplyState : ICommand<(IServiceProvider, HttpClient)>
 	{
 		var (provider, client) = parameter;
 
-		var values = provider.GetRequiredService<IHttpContextAccessor>()
-		                     .HttpContext.Verify()
+		var values = provider.GetRequiredService<ICurrentContext>()
+		                     .Get()
 		                     .Request.Cookies.AsValueEnumerable()
 		                     .Select(x => (string)new StringValues($"{x.Key}={x.Value}"))
 		                     .ToArray();

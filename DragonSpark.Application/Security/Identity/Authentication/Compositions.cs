@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,14 +9,14 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class Compositions : IResulting<Composition?>
 {
-	readonly IHttpContextAccessor _accessor;
-	readonly ICurrentKnownClaims  _claims;
-	readonly ApplicationClaims    _state;
+	readonly ICurrentContext     _accessor;
+	readonly ICurrentKnownClaims _claims;
+	readonly ApplicationClaims   _state;
 
-	public Compositions(IHttpContextAccessor accessor, ICurrentKnownClaims claims)
+	public Compositions(ICurrentContext accessor, ICurrentKnownClaims claims)
 		: this(accessor, claims, ApplicationClaims.Default) {}
 
-	public Compositions(IHttpContextAccessor accessor, ICurrentKnownClaims claims, ApplicationClaims state)
+	public Compositions(ICurrentContext accessor, ICurrentKnownClaims claims, ApplicationClaims state)
 	{
 		_accessor = accessor;
 		_claims   = claims;
@@ -27,7 +25,7 @@ sealed class Compositions : IResulting<Composition?>
 
 	public async ValueTask<Composition?> Get()
 	{
-		var authentication = await _accessor.HttpContext.Verify()
+		var authentication = await _accessor.Get()
 		                                    .AuthenticateAsync(IdentityConstants.ApplicationScheme)
 		                                    .ConfigureAwait(false);
 		var identity = authentication.Principal;

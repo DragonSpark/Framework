@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Application.Security.Identity;
 using System.Security.Claims;
 
 namespace DragonSpark.Presentation.Security.Identity;

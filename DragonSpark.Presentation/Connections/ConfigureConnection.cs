@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Connections;
-using DragonSpark.Compose;
-using Microsoft.AspNetCore.Http;
+using DragonSpark.Application.Security;
 using Microsoft.AspNetCore.Http.Connections.Client;
 using System.Net;
 
@@ -8,13 +7,12 @@ namespace DragonSpark.Presentation.Connections;
 
 sealed class ConfigureConnection : IConfigureConnection
 {
-	readonly IHttpContextAccessor _accessor;
-	readonly string               _key;
+	readonly ICurrentContext _accessor;
+	readonly string          _key;
 
-	public ConfigureConnection(IHttpContextAccessor accessor)
-		: this(accessor, HttpRequestHeader.Cookie.ToString()) {}
+	public ConfigureConnection(ICurrentContext accessor) : this(accessor, HttpRequestHeader.Cookie.ToString()) {}
 
-	public ConfigureConnection(IHttpContextAccessor accessor, string key)
+	public ConfigureConnection(ICurrentContext accessor, string key)
 	{
 		_accessor = accessor;
 		_key      = key;
@@ -22,6 +20,6 @@ sealed class ConfigureConnection : IConfigureConnection
 
 	public void Execute(HttpConnectionOptions parameter)
 	{
-		parameter.Headers[_key] = _accessor.HttpContext.Verify().Request.Headers[_key];
+		parameter.Headers[_key] = _accessor.Get().Request.Headers[_key];
 	}
 }

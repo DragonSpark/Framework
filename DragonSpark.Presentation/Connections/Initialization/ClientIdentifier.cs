@@ -6,6 +6,5 @@ namespace DragonSpark.Presentation.Connections.Initialization;
 
 sealed class ClientIdentifier : CoalesceStructure<Guid>, IClientIdentifier
 {
-	public ClientIdentifier(IClientIdentifier previous, ClientIdentifierAccessor accessor)
-		: base(accessor, previous) {}
+	public ClientIdentifier(ClientIdentifierStore store, IClientIdentifier previous) : base(store, previous) {}
 }

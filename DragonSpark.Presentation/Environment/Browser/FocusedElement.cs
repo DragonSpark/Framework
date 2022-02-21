@@ -3,7 +3,7 @@ using Majorsoft.Blazor.Components.Common.JsInterop.Focus;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Browser;
+namespace DragonSpark.Presentation.Environment.Browser;
 
 sealed class FocusedElement : IFocusedElement
 {

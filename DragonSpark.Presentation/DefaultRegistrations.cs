@@ -4,7 +4,6 @@ using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Presentation.Browser;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Content.Sequences;
@@ -14,7 +13,8 @@ using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections.Initialization;
-using DragonSpark.Presentation.Security;
+using DragonSpark.Presentation.Environment;
+using DragonSpark.Presentation.Environment.Browser;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,17 +72,13 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ApplyQueryStringValues>()
 		         .Scoped()
 		         //
-		         .Then.Start<ICurrentContext>()
-		         .Forward<CurrentContext>()
-		         .Singleton()
-		         //
 		         .Then.Start<SignOut>()
 		         .Include(x => x.Dependencies)
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<IContentInteraction>()
 		         .Forward<ContentInteraction>()
@@ -91,14 +87,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<DefaultExternalLogin>()
 		         .And<IsPreRendering>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<ClientIdentifierAccessor>()
-		         .Singleton()
-		         .Then.Start<ClientIdentifier>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
+		         .And<ContextRenderApply>()
+		         .And<ClientIdentifier>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
 		         //
 		         .Then.Start<DialogService>()
 		         .And<NotificationService>()
@@ -108,7 +100,9 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IInitialized>()
 		         .Forward<Initialized>()
-		         .Singleton()
+		         .Decorate<ContextAwareInitialized>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
 		         //
 		         .Then.Start<IInitializeConnection>()
 		         .Forward<InitializeConnection>()

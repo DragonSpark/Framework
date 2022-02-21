@@ -22,9 +22,6 @@ sealed class DefaultRegistrations<TContext, T> : ICommand<IServiceCollection>
 		         .Forward<HasValidPrincipalState<T>>()
 		         .Singleton()
 		         //
-		         .Then.Start<IsCurrentSecurityStateValid>()
-		         .Singleton()
-		         //
 		         .Then.Start<IHasValidState<T>>()
 		         .Forward<HasValidState<T>>()
 		         .Singleton()

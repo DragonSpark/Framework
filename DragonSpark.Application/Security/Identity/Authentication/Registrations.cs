@@ -18,14 +18,14 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Singleton()
 		         .Then.Start<IAuthentication>()
 		         .Forward<Authentication>()
-		         .Singleton()
+		         .Scoped()
 		         .Then.Start<IAuthenticationProfile>()
 		         .Forward<AuthenticationProfile<T>>()
 		         .Singleton()
 		         .Then.Start<IExternalSignin>()
 		         .Forward<ExternalSignin<T>>()
 		         .Include(x => x.Dependencies)
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ISignOut>()
 		         .Forward<SignOut<T>>()
@@ -34,6 +34,6 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Then.Start<IRefreshAuthentication<T>>()
 		         .Forward<RefreshAuthentication<T>>()
 		         .Include(x => x.Dependencies)
-		         .Singleton();
+		         .Scoped();
 	}
 }

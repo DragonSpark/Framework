@@ -21,7 +21,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 				 //
 		         .Then.Start<ICurrentKnownClaims>()
 		         .Forward<CurrentKnownClaims>()
-		         .Singleton()
+		         .Scoped()
 		         .Then.Start<IDisplayNameClaim>()
 		         .Forward<DisplayNameClaim>()
 		         .Singleton()

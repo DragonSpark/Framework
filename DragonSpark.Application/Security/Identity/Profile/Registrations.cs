@@ -14,7 +14,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 	{
 		parameter.Start<IUserSynchronization>()
 		         .Forward<UserSynchronization<T>>()
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<IUserSynchronizer<T>>()
 		         .Forward<UserSynchronizer<T>>()
@@ -23,7 +23,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Then.Start<ICreateRequest>()
 		         .Forward<CreateRequest<T>>()
 		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<INew<T>>()
 		         .Forward<New<T>>()
@@ -35,7 +35,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Decorate<LoggingAwareCreateExternal<T>>()
 				 .Decorate<FailureAwareCreateExternal<T>>()
 		         .Include(x => x.Dependencies)
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ICreate<T>>()
 		         .Forward<Create<T>>()

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Browser;
+namespace DragonSpark.Presentation.Environment.Browser;
 
 public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
 {

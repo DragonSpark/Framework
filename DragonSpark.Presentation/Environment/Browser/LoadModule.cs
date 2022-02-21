@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using Microsoft.JSInterop;
 using System;
 
-namespace DragonSpark.Presentation.Browser;
+namespace DragonSpark.Presentation.Environment.Browser;
 
 public class LoadModule : Resulting<IJSObjectReference>
 {
