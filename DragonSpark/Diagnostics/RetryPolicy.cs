@@ -9,7 +9,7 @@ public class RetryPolicy<T> : IPolicy<T>
 	readonly byte                _times;
 	readonly Func<int, TimeSpan> _strategy;
 
-	protected RetryPolicy() : this(5, JitterStrategy.Default.Get) {}
+	protected RetryPolicy() : this(5, DefaultJitterStrategy.Default.Get) {}
 
 	public RetryPolicy(byte times, Func<int, TimeSpan> strategy)
 	{
@@ -26,7 +26,7 @@ public class RetryPolicy : IPolicy
 	readonly Func<int, TimeSpan>             _strategy;
 	readonly Func<Exception, TimeSpan, Task> _retry;
 
-	protected RetryPolicy() : this(5, JitterStrategy.Default.Get) {}
+	protected RetryPolicy() : this(5, DefaultJitterStrategy.Default.Get) {}
 
 	public RetryPolicy(byte times, Func<int, TimeSpan> strategy)
 		: this(times, strategy, (_, _) => Task.CompletedTask) {}

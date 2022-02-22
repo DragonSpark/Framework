@@ -20,6 +20,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 
 	public BuildHostContext Get(BuildHostContext parameter)
 		=> parameter.Configure(DefaultRegistrations.Default)
+		            .Configure(Environment.Browser.Registrations.Default)
 		            .Configure(Interaction.Registrations.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(SingletonAwareActiveContents<>))

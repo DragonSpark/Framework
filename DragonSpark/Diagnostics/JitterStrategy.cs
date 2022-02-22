@@ -4,9 +4,7 @@ using System;
 
 namespace DragonSpark.Diagnostics;
 
-sealed class JitterStrategy : Select<int, TimeSpan>
+class JitterStrategy : Select<int, TimeSpan>
 {
-	public static JitterStrategy Default { get; } = new JitterStrategy();
-
-	JitterStrategy() : base(RetryStrategy.Default.Then().Select(AddJitter.Default)) {}
+	protected JitterStrategy(ISelect<int, TimeSpan> retry) : base(retry.Then().Select(AddJitter.Default)) {}
 }

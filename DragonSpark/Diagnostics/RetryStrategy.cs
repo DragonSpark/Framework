@@ -3,9 +3,15 @@ using System;
 
 namespace DragonSpark.Diagnostics;
 
-public sealed class RetryStrategy : Select<int, TimeSpan>
+public class RetryStrategy : ISelect<int, TimeSpan>
 {
-	public static RetryStrategy Default { get; } = new RetryStrategy();
+	readonly float _seconds;
 
-	RetryStrategy() : base(count => TimeSpan.FromSeconds(Math.Pow(2, count))) {}
+	protected RetryStrategy(float seconds) => _seconds = seconds;
+
+	public TimeSpan Get(int parameter)
+	{
+		var total = Math.Pow(_seconds, parameter);
+		return TimeSpan.FromSeconds(total);
+	}
 }
