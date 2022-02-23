@@ -89,14 +89,18 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .And<IsPreRendering>()
 		         .And<ContextRenderApply>()
 		         .And<ClientIdentifier>()
-				 .Include(x => x.Dependencies)
-				 .Scoped()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
 		         //
 		         .Then.Start<DialogService>()
 		         .And<NotificationService>()
 		         .And<RouterSession>()
 		         .And<NavigateToInitialize>()
 		         .Scoped()
+		         //
+		         .Then.Start<IIsInitialized>()
+		         .Forward<IsInitialized>()
+		         .Singleton()
 		         //
 		         .Then.Start<IInitialized>()
 		         .Forward<Initialized>()

@@ -26,6 +26,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BlazorPro.BlazorSize" Version="6.1.2" />
+		<PackageReference Include="DeviceDetector.NET" Version="4.3.0" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Common.JsInterop" Version="1.5.0" />
 		<PackageReference Include="MatBlazor" Version="2.8.0" />
 		<PackageReference Include="Radzen.Blazor" Version="3.15.5" />

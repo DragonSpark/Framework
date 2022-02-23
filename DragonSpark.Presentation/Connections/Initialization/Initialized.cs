@@ -4,20 +4,18 @@ namespace DragonSpark.Presentation.Connections.Initialization;
 
 sealed class Initialized : IInitialized
 {
+	readonly IIsInitialized        _initialized;
 	readonly IInitializeConnection _initialize;
-	readonly string                _key;
 
-	public Initialized(IInitializeConnection initialize) : this(initialize, ConnectionIdentifierName.Default) {}
-
-	public Initialized(IInitializeConnection initialize, string key)
+	public Initialized(IIsInitialized initialized, IInitializeConnection initialize)
 	{
-		_initialize = initialize;
-		_key        = key;
+		_initialized = initialized;
+		_initialize  = initialize;
 	}
 
 	public bool Get(HttpContext parameter)
 	{
-		var result = parameter.Request.Cookies.ContainsKey(_key);
+		var result = _initialized.Get(parameter);
 		if (!result)
 		{
 			_initialize.Execute(parameter);

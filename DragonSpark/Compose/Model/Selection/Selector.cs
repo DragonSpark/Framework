@@ -31,11 +31,14 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 
 	public Selector(ISelect<TIn, TOut> subject) => _subject = subject;
 
-	public EnsureSelectionContext<TIn, TOut> Ensure => new EnsureSelectionContext<TIn, TOut>(_subject);
+	public EnsureSelectionContext<TIn, TOut> Ensure => new(_subject);
 
-	public UnlessContext<TIn, TOut> Unless => new UnlessContext<TIn, TOut>(_subject);
+	public UnlessContext<TIn, TOut> Unless => new(_subject);
 
-	public TypeSelector<TIn> Type() => new TypeSelector<TIn>(_subject.Select(InstanceType<TOut>.Default));
+	public TypeSelector<TIn> Type() => new(_subject.Select(InstanceType<TOut>.Default));
+
+	public Selector<T, TOut> Accept<T>(Func<T, TIn> select)
+		=> Start.A.Selection<T>().By.Calling(select).Select(_subject);
 
 	public Selector<TIn, TTo> StoredActivation<TTo>() where TTo : IActivateUsing<TOut>
 		=> Select(Activations<TOut, TTo>.Default);
@@ -68,7 +71,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Selector<TIn, TOut> Configure(System.Action<TOut> configure)
 		=> new ConfigureOutput<TIn, TOut>(_subject.Get, configure).Then();
 
-	public SequenceSelector<TIn, TOut> Yield() => new SequenceSelector<TIn, TOut>(Select(x => x.Yield()).Get());
+	public SequenceSelector<TIn, TOut> Yield() => new(Select(x => x.Yield()).Get());
 
 	public Selector<TIn, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>());
 
@@ -122,8 +125,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public CommandContext<(TIn, T)> Terminate<T>(Action<TOut, T> command)
 		=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();
 
-	public OperationResultSelector<TIn, TOut> Operation()
-		=> new OperationResultSelector<TIn, TOut>(_subject.Select(x => x.ToOperation()));
+	public OperationResultSelector<TIn, TOut> Operation() => new(_subject.Select(x => x.ToOperation()));
 
 	public ISelect<TIn, TOut> Get() => _subject;
 }
