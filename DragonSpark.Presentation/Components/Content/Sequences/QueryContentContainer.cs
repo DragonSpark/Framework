@@ -46,7 +46,11 @@ partial class QueryContentContainer<T>
 
 	protected override void OnInitialized()
 	{
-		Paging = new Pagings<T>(new PreRenderAwarePagers<T>(Builder, new QueryInputKey(Identification.Get(this))));
+		var key       = Identification.Get(this);
+		var formatter = new QueryInputKey(key);
+		var pagers    = new PreRenderAwarePagers<T>(Builder, formatter);
+		var any       = Any.Get(key);
+		Paging = new Pagings<T>(pagers, any);
 		base.OnInitialized();
 	}
 
@@ -57,6 +61,9 @@ partial class QueryContentContainer<T>
 
 	[Inject]
 	PreRenderingAwarePagerBuilder<T> Builder { get; set; } = default!;
+
+	[Inject]
+	PreRenderingAwareAnyBuilder<T> Any { get; set; } = default!;
 
 	protected override void OnParametersSet()
 	{

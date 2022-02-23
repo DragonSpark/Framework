@@ -59,6 +59,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.ForDefinition<PreRenderingAwareAnyBuilder<object>>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         //
 		         .Then.Start<ContentIdentification>()
 		         .Scoped()
 		         //

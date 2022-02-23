@@ -10,7 +10,7 @@ public class AnyAwareSelect<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly Await<TIn, bool>      _any;
 	readonly TOut                  _default;
 
-	protected AnyAwareSelect(ISelecting<TIn, TOut> previous, Await<TIn, bool> any, TOut @default)
+	protected AnyAwareSelect(Await<TIn, bool> any, ISelecting<TIn, TOut> previous, TOut @default)
 	{
 		_previous = previous;
 		_any      = any;

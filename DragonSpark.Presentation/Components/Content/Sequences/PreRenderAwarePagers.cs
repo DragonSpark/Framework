@@ -5,14 +5,14 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 sealed class PreRenderAwarePagers<T> : IPagers<T>
 {
-	readonly PreRenderingAwarePagerBuilder<T> _pagers;
+	readonly PreRenderingAwarePagerBuilder<T> _builder;
 	readonly IFormatter<QueryInput>           _key;
 
-	public PreRenderAwarePagers(PreRenderingAwarePagerBuilder<T> pagers, IFormatter<QueryInput> key)
+	public PreRenderAwarePagers(PreRenderingAwarePagerBuilder<T> builder, IFormatter<QueryInput> key)
 	{
-		_pagers = pagers;
-		_key    = key;
+		_builder = builder;
+		_key     = key;
 	}
 
-	public IPaging<T> Get(PagingInput<T> parameter) => _pagers.Get(new(parameter, _key));
+	public IPaging<T> Get(PagingInput<T> parameter) => _builder.Get(new(parameter, _key));
 }
