@@ -4,8 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace DragonSpark.Presentation.Environment;
 
-public sealed class ContextRenderInitialize : RenderInitialize<HttpContext>
+sealed class ContextRenderInitialize : RenderInitialize<HttpContext>
 {
-	public ContextRenderInitialize(IMemoryCache memory, ContextStore store)
-		: base(memory, ContextHostRenderKey.Default, store) {}
+	public ContextRenderInitialize(IMemoryCache memory, ContextHostRenderKey key, ContextStore store)
+		: base(memory, key, store) {}
 }
