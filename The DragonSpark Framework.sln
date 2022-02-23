@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32210.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark", "DragonSpark\DragonSpark.csproj", "{A79A5912-9575-4916-807C-DACF5C227D6D}"
 EndProject
@@ -68,6 +68,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Environment", "DragonSpark.Application.Environment\DragonSpark.Application.Environment.csproj", "{909391EF-1E4B-46D8-B246-2A3BA3C78E65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{5A258A1B-48EE-4AFD-B9B4-83B9A910606B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Presentation.Testing", "DragonSpark.Presentation.Testing\DragonSpark.Presentation.Testing.csproj", "{767355A8-B2AE-43B8-B0F2-5625CCD1139E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +181,10 @@ Global
 		{909391EF-1E4B-46D8-B246-2A3BA3C78E65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{909391EF-1E4B-46D8-B246-2A3BA3C78E65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{909391EF-1E4B-46D8-B246-2A3BA3C78E65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767355A8-B2AE-43B8-B0F2-5625CCD1139E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767355A8-B2AE-43B8-B0F2-5625CCD1139E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767355A8-B2AE-43B8-B0F2-5625CCD1139E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767355A8-B2AE-43B8-B0F2-5625CCD1139E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{42BF04BC-6AF4-4E70-B794-DB0A31197585} = {5A258A1B-48EE-4AFD-B9B4-83B9A910606B}
 		{AB6B025C-D3A6-4216-8083-663EE21808F5} = {5A258A1B-48EE-4AFD-B9B4-83B9A910606B}
 		{909391EF-1E4B-46D8-B246-2A3BA3C78E65} = {5A258A1B-48EE-4AFD-B9B4-83B9A910606B}
+		{767355A8-B2AE-43B8-B0F2-5625CCD1139E} = {273E561B-EB06-4B9D-B073-BFD88F87441C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7E910BA-B9EE-40A8-9C18-08D091DA997F}
