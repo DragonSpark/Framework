@@ -1,4 +1,4 @@
-﻿using DeviceDetectorNET;
+﻿using DeviceDetectorNET.Parser;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Http;
@@ -15,5 +15,11 @@ sealed class IsBot : ICondition<HttpRequest>
 
 	public IsBot(IFormatter<HttpRequest> agent) => _agent = agent;
 
-	public bool Get(HttpRequest parameter) => new DeviceDetector(_agent.Get(parameter)).IsBot();
+	public bool Get(HttpRequest parameter)
+	{
+		var sut = new BotParser { DiscardDetails = true };
+		sut.SetUserAgent(_agent.Get(parameter));
+		var result = sut.Parse().Success;
+		return result;
+	}
 }
