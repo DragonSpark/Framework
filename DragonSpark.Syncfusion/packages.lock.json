@@ -96,6 +96,18 @@
         "resolved": "31.0.3",
         "contentHash": "CMVbZndfEihsd7A5GgdfMQTNiUzjTTng2IPoTe4J2cyxUaEqCW5M5HO8uGF/Qkq1NL219AbLHX+4dx9MxWDSiA=="
       },
+      "DeviceDetector.NET": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "ACblgn8ajbd2K1LiA8gmgOxFFFJWCTzgUHM8qXIYxLK4V3bzHNm6ZZqDSCIhrBW7FjKZF8KuHfrBrFIu8lSOVg==",
+        "dependencies": {
+          "LiteDB": "5.0.11",
+          "Microsoft.Extensions.Logging.Abstractions": "5.0.0",
+          "Newtonsoft.Json": "13.0.1",
+          "YamlDotNet": "11.2.1",
+          "semver": "2.0.6"
+        }
+      },
       "Flurl": {
         "type": "Transitive",
         "resolved": "3.0.4",
@@ -591,6 +603,11 @@
           "LinqKit.Core": "1.2.0",
           "Microsoft.EntityFrameworkCore": "6.0.0"
         }
+      },
+      "LiteDB": {
+        "type": "Transitive",
+        "resolved": "5.0.11",
+        "contentHash": "6cL4bOmVCUB0gIK+6qIr68HeqjjHZicPDGQjvJ87mIOvkFsEsJWkIps3yoKNeLpHhJQur++yoQ9Q8gxsdos0xQ=="
       },
       "Majorsoft.Blazor.Components.Common.JsInterop": {
         "type": "Transitive",
@@ -1308,8 +1325,8 @@
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
-        "resolved": "12.0.3",
-        "contentHash": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg=="
+        "resolved": "13.0.1",
+        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
       },
       "Polly": {
         "type": "Transitive",
@@ -1360,6 +1377,14 @@
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
           "Microsoft.Extensions.DependencyModel": "6.0.0"
+        }
+      },
+      "Semver": {
+        "type": "Transitive",
+        "resolved": "2.0.6",
+        "contentHash": "6OD3Gn+ElluZ9xNa0SspcANjvLt0KdSLiR1wl7ls6ykZxdfDBUruY5LMpMk2q8+EAT3DsvX4SjCDi7EVqdA/fA==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
         }
       },
       "Sluggy": {
@@ -1697,6 +1722,11 @@
         "resolved": "2.0.0",
         "contentHash": "MHadlRfvWHdRvTXHu73MqDVUr9MdlYoksovtiqJG9dUVl+/BvCrTNeNbds8eO2/Eczloakq1tPQ0pb+kIGNs0A=="
       },
+      "YamlDotNet": {
+        "type": "Transitive",
+        "resolved": "11.2.1",
+        "contentHash": "tBt8K+korVfrjH9wyDEhiLKxbs8qoLCLIFwvYgkSUuMC9//w3z0cFQ8LQAI/5MCKq+BMil0cfRTRvPeE7eXhQw=="
+      },
       "dragonspark": {
         "type": "Project",
         "dependencies": {
@@ -1749,6 +1779,7 @@
         "type": "Project",
         "dependencies": {
           "BlazorPro.BlazorSize": "6.1.2",
+          "DeviceDetector.NET": "4.3.0",
           "DragonSpark.Application": "1.0.0",
           "Majorsoft.Blazor.Components.Common.JsInterop": "1.5.0",
           "MatBlazor": "2.8.0",
