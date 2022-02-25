@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Results;
 
-public class Variable<T> : IMutable<T>
+public class Variable<T> : IMutable<T?>
 {
-	readonly T[] _store = new T[1];
+	readonly T?[] _store = new T[1];
 
 	public Variable(T? instance = default) => Execute(instance!);
 
@@ -19,7 +19,7 @@ public class Variable<T> : IMutable<T>
 		return result;
 	}
 
-	public void Execute(T parameter)
+	public void Execute(T? parameter)
 	{
 		_store[0] = parameter;
 	}
