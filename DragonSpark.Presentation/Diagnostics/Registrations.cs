@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 
@@ -15,6 +16,12 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Start<ILogEventEnricher>()
 		         .Forward<CircuitRecordEnricher>()
-		         .Singleton();
+		         .Singleton()
+		         //
+		         .Then.Start<CircuitHandler>()
+		         .Forward<DiagnosticsCircuitHandler>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+			;
 	}
 }

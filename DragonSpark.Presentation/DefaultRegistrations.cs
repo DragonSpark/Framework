@@ -82,6 +82,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()
+		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
 		         .Then.Start<IContentInteraction>()

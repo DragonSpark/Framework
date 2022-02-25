@@ -6,9 +6,18 @@ namespace DragonSpark.Presentation.Security.Identity;
 
 sealed class CurrentPrincipal : ICurrentPrincipal
 {
-	readonly ICurrentContext _accessor;
+	readonly AuthenticationStatePrincipal _state;
+	readonly ICurrentContext              _accessor;
 
-	public CurrentPrincipal(ICurrentContext accessor) => _accessor = accessor;
+	public CurrentPrincipal(AuthenticationStatePrincipal state, ICurrentContext accessor)
+	{
+		_state    = state;
+		_accessor = accessor;
+	}
 
-	public ClaimsPrincipal Get() => _accessor.Get().User;
+	public ClaimsPrincipal Get()
+	{
+		var result = _state.Get() ?? _accessor.Get().User;
+		return result;
+	}
 }
