@@ -29,10 +29,6 @@ sealed class ClearCircuit : IOperation<Circuit>
 			_assigned.Execute(parameter.Id, current.Subject.Id);
 			_current.Execute(null);
 		}
-		/*else if (parameter.Id != current.Subject.Id)
-		{
-			_unexpected.Execute(parameter.Id, current.Subject.Id);
-		}*/
 
 		return ValueTask.CompletedTask;
 	}
