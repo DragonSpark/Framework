@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;
 

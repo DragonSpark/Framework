@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Components.Validation;
-using DragonSpark.Application.Hosting.xUnit;
+﻿using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
+using DragonSpark.Reflection.Members;
 using FluentAssertions;
 using Xunit;
 
@@ -12,7 +12,7 @@ public sealed class DelegatesTests
 	public void Verify(string message)
 	{
 		var instance = new Subject { Message = message };
-		var actual   = Delegates.Default.Get(A.Type<Subject>(), nameof(Subject.Message))(instance);
+		var actual   = PropertyDelegates.Default.Get(A.Type<Subject>(), nameof(Subject.Message))(instance);
 		actual.Should().Be(message);
 	}
 
@@ -21,12 +21,12 @@ public sealed class DelegatesTests
 	{
 		{
 			var instance = new BaseSubject { Message = message };
-			var actual   = Delegates.Default.Get(instance.GetType(), nameof(BaseSubject.Message))(instance);
+			var actual   = PropertyDelegates.Default.Get(instance.GetType(), nameof(BaseSubject.Message))(instance);
 			actual.Should().Be(message);
 		}
 		{
 			var instance = new ExtendedSubject { Message = message };
-			var actual   = Delegates.Default.Get(instance.GetType(), nameof(BaseSubject.Message))(instance);
+			var actual   = PropertyDelegates.Default.Get(instance.GetType(), nameof(BaseSubject.Message))(instance);
 			actual.Should().Be(message);
 		}
 	}

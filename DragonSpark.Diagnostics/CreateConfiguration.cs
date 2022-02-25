@@ -1,37 +1,24 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Enrichers.Correlation;
+using Serilog.Core;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Diagnostics;
 
-sealed class CreateConfiguration : ISelect<IConfiguration, LoggerConfiguration>
+sealed class CreateConfiguration : ISelect<IServiceProvider, LoggerConfiguration>
 {
 	public static CreateConfiguration Default { get; } = new();
 
 	CreateConfiguration() {}
 
-	public LoggerConfiguration Get(IConfiguration parameter)
+	public LoggerConfiguration Get(IServiceProvider parameter)
 	{
-		var instance = new LoggerConfiguration().Enrich.With(PrimaryAssemblyEnricher.Default,
-		                                                     AssemblyDeployInformationEnricher.Default)
-		                                        .Enrich.WithClientIp()
-		                                        .Enrich.WithClientAgent()
-		                                        .Enrich.WithDemystifiedStackTraces()
-		                                        .Enrich.WithExceptionStackTraceHash()
-		                                        .Enrich.WithEnvironmentName()
-		                                        .Enrich.WithEnvironmentUserName()
-		                                        .Enrich.FromLogContext()
-		                                        .Enrich.WithProcessId()
-		                                        .Enrich.WithProcessName()
-		                                        .Enrich.WithMemoryUsage()
-		                                        .Enrich.WithThreadId()
-		                                        .Enrich.WithThreadName()
-		                                        .Enrich.WithCorrelationId()
-		                                        .Enrich.WithEnvironmentUserName()
-		                                        .Enrich;
-		var result = EnvironmentLoggerConfigurationExtensions.WithMachineName(instance)
-		                                                     .ReadFrom.Configuration(parameter);
+		var enrichers = parameter.GetServices<ILogEventEnricher>().ToArray();
+		var result = new LoggerConfiguration().ReadFrom.Configuration(parameter.GetRequiredService<IConfiguration>())
+		                                      .Enrich.With(enrichers);
 		return result;
 	}
 }

@@ -1,23 +1,18 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+﻿using DragonSpark.Model.Commands;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;
 
-sealed class ConfigureSerilog : ICommand<IHostBuilder>
+sealed class ConfigureSerilog : ICommand<IServiceCollection>
 {
-	readonly Action<HostBuilderContext, ILoggingBuilder> _add;
+	readonly Func<IServiceProvider, ILoggerProvider> _provider;
 
-	public ConfigureSerilog(Func<IConfiguration, ILogger> logger) : this(new AddProvider(logger).Execute) {}
+	public ConfigureSerilog(Func<IServiceProvider, ILoggerProvider> provider) => _provider = provider;
 
-	public ConfigureSerilog(Action<HostBuilderContext, ILoggingBuilder> add) => _add = add;
-
-	public void Execute(IHostBuilder parameter)
+	public void Execute(IServiceCollection parameter)
 	{
-		parameter.ConfigureLogging(_add);
+		parameter.AddScoped(_provider);
 	}
 }

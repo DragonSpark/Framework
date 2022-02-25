@@ -19,9 +19,11 @@ sealed class Configure : IAlteration<BuildHostContext>
 	Configure() {}
 
 	public BuildHostContext Get(BuildHostContext parameter)
-		=> parameter.Configure(DefaultRegistrations.Default)
-		            .Configure(Environment.Browser.Registrations.Default)
-		            .Configure(Interaction.Registrations.Default)
+		=> parameter.Configure(DefaultRegistrations.Default,
+		                       Environment.Browser.Registrations.Default,
+							   Connections.Circuits.Registrations.Default,
+							   Diagnostics.Registrations.Default,
+							   Interaction.Registrations.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(SingletonAwareActiveContents<>))
 		                                .Decorate<IClientIdentifier, ClientIdentifier>()
