@@ -91,6 +91,12 @@ else
 		return Task.CompletedTask;
 	}
 
+	public Task RefreshDataState(DataManager manager)
+	{
+		_subject.DataManager = manager;
+		return Refresh();
+	}
+
 	bool? State { get; set; }
 
 	bool Matches

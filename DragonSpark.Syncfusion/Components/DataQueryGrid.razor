@@ -12,7 +12,6 @@
 <AdaptiveGrid T="T"
 	@ref="@_subject"
 	FilterType="@FilterType"
-	ReportedType="@ReportedType"
 	Columns="@Columns"
 	AllowPaging="@AllowPaging"
 	AllowFiltering="@AllowFiltering"
@@ -23,7 +22,7 @@
 	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
 	<GridTemplates LoadingTemplate="@LoadingTemplate" />
-	<SfDataManager>
+	<SfDataManager @ref="@_hack">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
 	</SfDataManager>
 	@if (ChildContent is not null)
@@ -33,6 +32,7 @@
 </AdaptiveGrid>
 
 @code {
+	SfDataManager _hack = default!;
 	AdaptiveGrid<T> _subject = default!;
 
 	[Parameter]
@@ -44,6 +44,7 @@
 			if (_content != value)
 			{
 				_content = value;
+				RefreshRequested = Input != null;
 				Input = null;
 			}
 		}
@@ -92,6 +93,8 @@
 
 	Await<DataManagerRequest, object>? Input { get; set; }
 
+	bool RefreshRequested { get; set; }
+
 	protected override void OnParametersSet()
 	{
 		Input ??= _content.Then()
@@ -99,6 +102,16 @@
 		                  .UpdateActivity(Receiver)
 		                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
 		base.OnParametersSet();
+	}
+
+	protected override Task OnParametersSetAsync()
+	{
+		if (RefreshRequested)
+		{
+			RefreshRequested = false;
+			return _subject.RefreshDataState(_hack);
+		}
+		return base.OnParametersSetAsync();
 	}
 
 	async Task OnRequest(DataRequestResult parameter)
