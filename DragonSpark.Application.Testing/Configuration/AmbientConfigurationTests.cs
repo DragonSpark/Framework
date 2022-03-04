@@ -23,6 +23,10 @@ public sealed class AmbientConfigurationTests
 	[InlineData("worker", "Testing")]
 	[InlineData("worker", "Production")]
 	[InlineData("worker", "Staging")]
+	[InlineData("server", "Development")]
+	[InlineData("server", "Testing")]
+	[InlineData("server", "Production")]
+	[InlineData("server", "Staging")]
 	public void Verify(string category, string environment)
 	{
 		var root = PrimaryDirectory.Default.Get()
