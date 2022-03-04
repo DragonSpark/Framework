@@ -18,5 +18,6 @@ sealed class ConnectionAwareStoreFocusedElement : IOperation
 			await _previous.Await();
 		}
 		catch (JSDisconnectedException) {}
+		catch (TaskCanceledException) {}
 	}
 }
