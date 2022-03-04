@@ -6,16 +6,16 @@ using System.IO;
 
 namespace DragonSpark.Application.Configuration;
 
-sealed class SharedSettingsRoot : ISelect<IHostEnvironment, DirectoryInfo>
+sealed class AmbientConfigurationRoot : ISelect<IHostEnvironment, DirectoryInfo>
 {
-	public static SharedSettingsRoot Default { get; } = new();
+	public static AmbientConfigurationRoot Default { get; } = new();
 
-	SharedSettingsRoot() : this(".configuration", PrimaryDirectory.Default) {}
+	AmbientConfigurationRoot() : this(".configuration", PrimaryDirectory.Default) {}
 
 	readonly string                 _name;
 	readonly IResult<DirectoryInfo> _default;
 
-	public SharedSettingsRoot(string name, IResult<DirectoryInfo> @default)
+	public AmbientConfigurationRoot(string name, IResult<DirectoryInfo> @default)
 	{
 		_name    = name;
 		_default = @default;

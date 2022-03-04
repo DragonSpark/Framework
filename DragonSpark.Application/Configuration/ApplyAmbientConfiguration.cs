@@ -4,15 +4,15 @@ using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.Configuration;
 
-sealed class ApplySharedSettings : ICommand<(HostBuilderContext Context, IConfigurationBuilder Builder)>
+sealed class ApplyAmbientConfiguration : ICommand<(HostBuilderContext Context, IConfigurationBuilder Builder)>
 {
-	public static ApplySharedSettings Default { get; } = new();
+	public static ApplyAmbientConfiguration Default { get; } = new();
 
-	ApplySharedSettings() : this(SharedSettingsSources.Default) {}
+	ApplyAmbientConfiguration() : this(AmbientConfigurationSources.Default) {}
 
-	readonly SharedSettingsSources _sources;
+	readonly AmbientConfigurationSources _sources;
 
-	public ApplySharedSettings(SharedSettingsSources sources) => _sources = sources;
+	public ApplyAmbientConfiguration(AmbientConfigurationSources sources) => _sources = sources;
 
 	public void Execute((HostBuilderContext Context, IConfigurationBuilder Builder) parameter)
 	{

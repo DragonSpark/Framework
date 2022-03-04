@@ -10,24 +10,25 @@ using System.Linq;
 
 namespace DragonSpark.Application.Configuration;
 
-sealed class SharedSettingsSources : ISelect<IHostEnvironment, Leasing<JsonConfigurationSource>>
+sealed class AmbientConfigurationSources : ISelect<IHostEnvironment, Leasing<JsonConfigurationSource>>
 {
-	public static SharedSettingsSources Default { get; } = new();
+	public static AmbientConfigurationSources Default { get; } = new();
 
-	SharedSettingsSources() : this(SharedSettingsRoot.Default) {}
+	AmbientConfigurationSources() : this(AmbientConfigurationRoot.Default) {}
 
 	readonly ISelect<IHostEnvironment, DirectoryInfo> _root;
 
-	public SharedSettingsSources(ISelect<IHostEnvironment, DirectoryInfo> root) => _root = root;
+	public AmbientConfigurationSources(ISelect<IHostEnvironment, DirectoryInfo> root) => _root = root;
 
 	public Leasing<JsonConfigurationSource> Get(IHostEnvironment parameter)
 	{
 		var directory = _root.Get(parameter);
 		var result = directory.Exists
-			             ? directory.GetFiles("*.json", SearchOption.AllDirectories)
+			             ? directory.GetFiles("appsettings.json", SearchOption.AllDirectories)
+			                        .Concat(directory.GetFiles($"appsettings.{parameter.EnvironmentName}.json",
+			                                                   SearchOption.AllDirectories))
 			                        .OrderBy(x => x.FullName.Count(y => y == Path.DirectorySeparatorChar))
 			                        .ThenBy(x => x.Name.Count(y => y == '.'))
-			                        .AsEnumerable()
 			                        .AsValueEnumerable()
 			                        .Select(x => new JsonConfigurationSource
 			                        {
