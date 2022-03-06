@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
 
@@ -23,8 +22,7 @@ class ChallengingModelBinder : IModelBinder
 	{
 		var provider = bindingContext.ValueProvider.Get(_name);
 		bindingContext.Result = provider != null
-			                        ? ModelBindingResult.Success(new Challenging(provider.Verify(),
-			                                                                     _return.Get(bindingContext)))
+			                        ? ModelBindingResult.Success(new Challenging(provider, _return.Get(bindingContext)))
 			                        : ModelBindingResult.Failed();
 		return Task.CompletedTask;
 	}
