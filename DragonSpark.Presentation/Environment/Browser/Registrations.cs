@@ -15,6 +15,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Start<IEvaluate>()
 		         .Forward<Evaluate>()
+		         .Decorate<ConnectionAwareEvaluate>()
 		         .Decorate<PolicyAwareEvaluate>()
 		         .Scoped()
 		         //
