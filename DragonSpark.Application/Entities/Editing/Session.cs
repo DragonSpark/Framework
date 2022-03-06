@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
@@ -8,9 +7,6 @@ public class Session<TIn, TOut, TSave> : ISession<TIn, TOut, TSave>
 {
 	readonly ISelecting<TIn, TOut?> _select;
 	readonly IOperation<TSave>      _apply;
-
-	protected Session(ISessionScopes scopes, IQuery<TIn, TOut> select, IOperation<TSave> apply)
-		: this(scopes.Then().Use(select).To.SingleOrDefault(), apply) {}
 
 	protected Session(ISelecting<TIn, TOut?> select, IOperation<TSave> apply)
 	{
