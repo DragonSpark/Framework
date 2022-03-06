@@ -21,11 +21,11 @@ class ChallengingModelBinder : IModelBinder
 
 	public Task BindModelAsync(ModelBindingContext bindingContext)
 	{
-		var instance = new Challenging(bindingContext.ValueProvider.Get(_name).Verify(),
-		                               _return.Get(bindingContext));
-
-		bindingContext.Result = ModelBindingResult.Success(instance);
-
+		var provider = bindingContext.ValueProvider.Get(_name);
+		bindingContext.Result = provider != null
+			                        ? ModelBindingResult.Success(new Challenging(provider.Verify(),
+			                                                                     _return.Get(bindingContext)))
+			                        : ModelBindingResult.Failed();
 		return Task.CompletedTask;
 	}
 }
