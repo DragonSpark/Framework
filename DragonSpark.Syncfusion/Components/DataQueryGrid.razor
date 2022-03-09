@@ -22,7 +22,7 @@
 	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
 	<GridTemplates LoadingTemplate="@LoadingTemplate" />
-	<SfDataManager @ref="@_hack">
+	<SfDataManager>
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
 	</SfDataManager>
 	@if (ChildContent is not null)
@@ -32,7 +32,6 @@
 </AdaptiveGrid>
 
 @code {
-	SfDataManager _hack = default!;
 	AdaptiveGrid<T> _subject = default!;
 
 	[Parameter]
@@ -109,7 +108,7 @@
 		if (RefreshRequested)
 		{
 			RefreshRequested = false;
-			return _subject.RefreshDataState(_hack);
+			return _subject.Refresh();
 		}
 		return base.OnParametersSetAsync();
 	}
