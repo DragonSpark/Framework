@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Composition.Compose;
 
-public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>,
-									   IActivateUsing<IAlteration<IHostBuilder>>
+public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>, IActivateUsing<IAlteration<IHostBuilder>>
 {
-	public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context)
-		=> context._select.Get;
+	public static implicit operator Func<IHostBuilder, IHostBuilder>(BuildHostContext context) => context._select.Get;
 
 	readonly IAlteration<IHostBuilder> _select;
+
+	public BuildHostContext() : this(A.Self<IHostBuilder>()) {}
 
 	public BuildHostContext(IAlteration<IHostBuilder> select) => _select = select;
 

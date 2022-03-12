@@ -15,13 +15,14 @@ sealed class ConfigureHostBuilderFromEnvironmentCommand : ICommand<HostingInput>
 		                           .Select(Locate<IHostConfiguration>.Default)
 		                           .Get()) {}
 
-	readonly ISelect<IHostEnvironment, IHostConfiguration> _configuration;
+	readonly ISelect<HostBuilderContext, IHostConfiguration> _configuration;
 
-	public ConfigureHostBuilderFromEnvironmentCommand(ISelect<IHostEnvironment, IHostConfiguration> configuration)
+	public ConfigureHostBuilderFromEnvironmentCommand(ISelect<HostBuilderContext, IHostConfiguration> configuration)
 		=> _configuration = configuration;
 
 	public void Execute(HostingInput parameter)
 	{
-		_configuration.Get(parameter.Context.HostingEnvironment).Execute(parameter);
+		var configuration = _configuration.Get(parameter.Context);
+		configuration.Execute(parameter);
 	}
 }

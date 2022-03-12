@@ -6,8 +6,7 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public static partial class ExtensionMethods
 {
-	public static TTo To<T, TTo>(this T @this, Extent<TTo> select) where TTo : IActivateUsing<T>
-		=> select.From(@this);
+	public static TTo To<T, TTo>(this T @this, Extent<TTo> select) where TTo : IActivateUsing<T> => select.From(@this);
 
 	public static TTo New<TFrom, TTo>(this Extent<TTo> _, TFrom parameter)
 		=> Runtime.Activation.New<TFrom, TTo>.Default.Get(parameter);

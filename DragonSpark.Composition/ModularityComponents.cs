@@ -3,9 +3,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition;
 
-sealed class ModularityComponents : ReferenceValueStore<IHostEnvironment, Modularity>
+sealed class ModularityComponents : ReferenceValueStore<HostBuilderContext, Modularity>
 {
 	public static ModularityComponents Default { get; } = new();
 
-	ModularityComponents() : base(CreateModularityComponents.Default) {}
+	ModularityComponents() : base(DetermineModularity.Default) {}
 }

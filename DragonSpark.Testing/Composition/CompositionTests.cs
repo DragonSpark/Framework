@@ -2,7 +2,6 @@
 using DragonSpark.Composition;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Selection;
 using DragonSpark.Testing.Environment.Development;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
@@ -111,7 +110,7 @@ public sealed class CompositionTests
 		    .Throw<InvalidOperationException>();
 	}
 
-	[Fact]
+	/*[Fact]
 	public async Task VerifyAllAssemblyTypes()
 	{
 		using var host = await Start.A.Host()
@@ -119,7 +118,7 @@ public sealed class CompositionTests
 		                            .Operations()
 		                            .Run();
 		host.Services.GetRequiredService<IArray<Assembly>>().Should().NotBeNull();
-	}
+	}*/
 
 	[Fact]
 	public async Task VerifyAssemblies()

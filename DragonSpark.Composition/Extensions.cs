@@ -1,26 +1,19 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Environment;
 using LightInject;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Composition;
 
 public static class Extensions
 {
-	public static BuildHostContext Host(this ModelContext _)
-		=> DragonSpark.Compose.Start.A.Selection.Of<IHostBuilder>()
-		              .By.Self.Get()
-		              .To(DragonSpark.Compose.Start.An.Extent<BuildHostContext>());
+	public static BuildHostContext Host(this ModelContext _) => new();
 
 	public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
 		=> RegisterOption<T>.Default.Get(@this);
@@ -108,9 +101,9 @@ public static class Extensions
 	public static BuildHostContext RegisterModularity(this BuildHostContext @this)
 		=> @this.Configure(Composition.RegisterModularity.Default);
 
-	public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
+	/*public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
 		where T : class, IActivateUsing<Assembly>, IArray<Type>
-		=> @this.Configure(new RegisterModularity(new CreateModularityComponents(TypeSelection<T>.Default.Get)));
+		=> @this.Configure(new RegisterModularity(new CreateModularity(TypeSelection<T>.Default.Get)));*/
 
 	public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 		=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);

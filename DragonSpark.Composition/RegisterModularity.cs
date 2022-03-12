@@ -13,14 +13,14 @@ sealed class RegisterModularity : IServiceConfiguration
 
 	RegisterModularity() : this(ModularityComponents.Default) {}
 
-	readonly ISelect<IHostEnvironment, Modularity> _components;
+	readonly ISelect<HostBuilderContext, Modularity> _components;
 
-	public RegisterModularity(ISelect<IHostEnvironment, Modularity> components) => _components = components;
+	public RegisterModularity(ISelect<HostBuilderContext, Modularity> components) => _components = components;
 
 	public void Execute(IServiceCollection parameter)
 	{
 		var (assemblies, types, locator, componentType) =
-			_components.Get(parameter.GetRequiredInstance<IHostEnvironment>());
+			_components.Get(parameter.GetRequiredInstance<HostBuilderContext>());
 
 		parameter.AddSingleton<IArray<Assembly>>(new Instances<Assembly>(assemblies))
 		         .AddSingleton<IArray<Type>>(new Instances<Type>(types))
