@@ -1,1 +1,2 @@
-resharperhelpers_tests_project_name = "DragonSpark.Presentation.Testing"
+[*.cs]
+resharperhelpers_tests_project_name = DragonSpark.Presentation.Testing
