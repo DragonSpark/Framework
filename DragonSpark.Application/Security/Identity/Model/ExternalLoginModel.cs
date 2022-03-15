@@ -15,19 +15,18 @@ public class ExternalLoginModel<T> : PageModel where T : class
 
 	public string? LoginProvider { get; private set; }
 
-	public IActionResult OnGet([ModelBinder(typeof(ExternalLoginChallengingModelBinder))]
-	                           Challenging context)
-		=> _actions.Get(context);
+	public IActionResult OnGet([ModelBinder(typeof(ExternalLoginChallengingModelBinder))] Challenging context)
+		=> ModelState.IsValid ? _actions.Get(context) : BadRequest();
 
-	public IActionResult OnPost([ModelBinder(typeof(ExternalLoginChallengingModelBinder))]
-	                            Challenging context)
-		=> _actions.Get(context);
+	public IActionResult OnPost([ModelBinder(typeof(ExternalLoginChallengingModelBinder))] Challenging context)
+		=> ModelState.IsValid ? _actions.Get(context) : BadRequest();
 
-	public async Task<IActionResult> OnGetCallback([ModelBinder(typeof(ChallengedModelBinder))]
-	                                               Challenged context)
-		=> await _actions.Get(context) ?? (await _actions.Get((context.Login, ModelState))
-			                                   ? LocalRedirect(context.Origin)
-			                                   : Bind(context.Login));
+	public async Task<IActionResult> OnGetCallback([ModelBinder(typeof(ChallengedModelBinder))] Challenged context)
+		=> ModelState.IsValid
+			   ? await _actions.Get(context) ?? (await _actions.Get((context.Login, ModelState))
+				                                     ? LocalRedirect(context.Origin)
+				                                     : Bind(context.Login))
+			   : BadRequest();
 
 	IActionResult Bind(UserLoginInfo login)
 	{
