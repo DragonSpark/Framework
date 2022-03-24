@@ -5,7 +5,7 @@
 @implements IDisposable
 
 @code {
-	ValidationMessageStore _store = default!;
+	ValidationMessageStore? _store;
 
 	[Parameter]
 	public ValidationFieldMessage Message
@@ -21,6 +21,8 @@
 		}
 	}	ValidationFieldMessage _message = default!;
 
+
+
 	[Parameter]
 	public ICollection<ValidationFieldMessage> Messages
 	{
@@ -30,6 +32,8 @@
 			var @equals = Equals(_messages, value);
 			if (!@equals)
 			{
+
+
 				_messages = value;
 				_store?.Clear();
 
