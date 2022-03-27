@@ -28,7 +28,7 @@ public class Unauthorized<T> : IRequesting<T>
 
 	public sealed class Template : LogWarning<string, string, Guid>
 	{
-		public Template(ILogger<Unauthorized<T>> logger)
+		public Template(ILogger<Template> logger)
 			: base(logger, "User '{UserName}' does not have access to '{Type}' with identity #'{Identity}'.") {}
 	}
 }

@@ -15,7 +15,7 @@ sealed class LogException : ILogException
 	public ValueTask<Exception> Get(LogExceptionInput parameter)
 	{
 		var (logger, exception) = parameter;
-		logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation.");
+		logger.LogError(exception.Demystify(), "A problem was encountered while performing this operation");
 		return exception.ToOperation();
 	}
 }

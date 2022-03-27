@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Diagnostics.Initialization;
+﻿// ReSharper disable TemplateIsNotCompileTimeConstantProblem
+using DragonSpark.Application.Diagnostics.Initialization;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;

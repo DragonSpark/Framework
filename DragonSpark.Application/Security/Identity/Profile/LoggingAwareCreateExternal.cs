@@ -39,6 +39,6 @@ sealed class LoggingAwareCreateExternal<T> : ICreateExternal<T> where T : Identi
 
 	internal sealed class Created : LogMessage<string, string, string>
 	{
-		public Created(ILogger<Creating> logger) : base(logger, "Created {UserName} via {Provider} having {Key}.") {}
+		public Created(ILogger<Created> logger) : base(logger, "Created {UserName} via {Provider} having {Key}.") {}
 	}
 }

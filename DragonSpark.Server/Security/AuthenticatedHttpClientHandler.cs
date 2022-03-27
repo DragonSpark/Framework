@@ -15,10 +15,10 @@ sealed class AuthenticatedHttpClientHandler : HttpClientHandler
 	readonly string        _apiKey;
 	readonly Alter<string> _secret;
 
-	public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
+	public AuthenticatedHttpClientHandler(ILogger<AuthenticatedHttpClientHandler> logger, string apiKey,
 	                                      string secret) : this(logger, apiKey, new HmacSha512Hasher(secret).Get) {}
 
-	public AuthenticatedHttpClientHandler(ILogger<HttpClientHandler> logger, string apiKey,
+	public AuthenticatedHttpClientHandler(ILogger<AuthenticatedHttpClientHandler> logger, string apiKey,
 	                                      Alter<string> secret) : base(logger)
 	{
 		_apiKey = apiKey;

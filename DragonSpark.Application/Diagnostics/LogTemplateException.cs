@@ -28,9 +28,11 @@ sealed class LogTemplateException : ISelecting<LogExceptionInput, Exception?>
 			var inner = template.InnerException;
 			if (inner != null && inner is not TemplateException)
 			{
+				// ReSharper disable once TemplateIsNotCompileTimeConstantProblem
 				logger.LogError(inner.Demystify(), template.Message, template.Parameters.Open());
 				return inner.Account().ToOperation();
 			}
+			// ReSharper disable once TemplateIsNotCompileTimeConstantProblem
 			logger.LogError(template.Message, template.Parameters.Open());
 
 			template = inner as TemplateException;

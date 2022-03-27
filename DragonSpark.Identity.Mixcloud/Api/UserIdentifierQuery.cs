@@ -35,7 +35,7 @@ sealed class UserIdentifierQuery : IUserIdentifierQuery
 
 	public sealed class Template : LogWarning<string, string?, string?>
 	{
-		public Template(ILogger<UserIdentifierQuery> logger)
+		public Template(ILogger<Template> logger)
 			: base(logger, "There was a problem with querying {Query}: {Code} - {Message}") {}
 	}
 }
