@@ -656,8 +656,8 @@
       },
       "Markdig": {
         "type": "Transitive",
-        "resolved": "0.27.0",
-        "contentHash": "0nX9KT/sxKpuYc6tjnCP8FQhrFCUe438c4CcXPgwJkri1SEi9iHfvMkYmI44l1Djp+ThhC2KNfmRBpXN72Z/Mw=="
+        "resolved": "0.28.1",
+        "contentHash": "70CneXw2N/1t7v6OfZJqMKLPRB1YWTPddEIcHT/P6IL6X1zsXELIu/DHVt96kr83PIVLznMuXoFK6b9N9KTODg=="
       },
       "Microsoft.AspNetCore.Connections.Abstractions": {
         "type": "Transitive",
@@ -1371,8 +1371,8 @@
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
-        "resolved": "12.0.3",
-        "contentHash": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg=="
+        "resolved": "13.0.1",
+        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
       },
       "Polly": {
         "type": "Transitive",
@@ -1612,14 +1612,59 @@
           "Unidecode.NET": "2.0.0"
         }
       },
+      "SmartFormat": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zVoeAhc3Ax27Mdi13iWOHrBMIJDNf8ZIMm8bHX6PdsuBdHGcepkKS0B+2PIYI8SIppOhA+LBD4mLqAalfYCI+g==",
+        "dependencies": {
+          "System.Memory": "4.5.4",
+          "System.ValueTuple": "4.5.0"
+        }
+      },
+      "SmartFormat.Extensions.Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zMLj48GrHOKbNtw2Sp31uf5+URBbOxJTg1GUwFzULTG39MaHg3Cwt76dPF87odqL187TASonI+R+/kZiLDZq5A==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "SmartFormat": "3.0.0"
+        }
+      },
+      "SmartFormat.Extensions.System.Text.Json": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "gS3DIpOK7r4I5M+3Lfl5Wet4iTqPas2D9CMBKua0fApw+muK6Janl3HbIL8NgP6IueBCHRMuKMb9f4cgx4YYEw==",
+        "dependencies": {
+          "SmartFormat": "3.0.0",
+          "System.Text.Json": "6.0.2"
+        }
+      },
+      "SmartFormat.Extensions.Time": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zARCuyH/TBjFwEkcx7c++r3Ug3ceJx5Clzh5qIgNmwvy7j0rTjhXcPDVF3h4KuukO2ZqKV8X7o6tb5l7oROHhA==",
+        "dependencies": {
+          "SmartFormat": "3.0.0"
+        }
+      },
+      "SmartFormat.Extensions.Xml": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "D03XCHRmRHdtPqdodrGrQm7b3pBOxWgoJv+Dlffk2j7OiJGnCd0CSZiXeSvDjncafFdQux4E6Y53XuTXwYNxYQ==",
+        "dependencies": {
+          "SmartFormat": "3.0.0"
+        }
+      },
       "SmartFormat.NET": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "TxlRRi4Azzizw+T4gUOmrZqdxeRC4jfM4wqAwgQR7AFJTLz8eYKukO47pSbI4+Gp1znwb72979x3YPzqr49bng==",
+        "resolved": "3.0.0",
+        "contentHash": "rTOmkcG0Xi4W4FDsUWzWZn0uINU9QU1obK76gsvZlwNmohs8E7H1uJpjBE/7VjnYBcK9mVQAnEyWrz8Z8ACqdA==",
         "dependencies": {
-          "Newtonsoft.Json": "12.0.3",
-          "System.Text.Json": "4.7.2",
-          "System.ValueTuple": "4.5.0"
+          "SmartFormat": "3.0.0",
+          "SmartFormat.Extensions.Newtonsoft.Json": "3.0.0",
+          "SmartFormat.Extensions.System.Text.Json": "3.0.0",
+          "SmartFormat.Extensions.Time": "3.0.0",
+          "SmartFormat.Extensions.Xml": "3.0.0"
         }
       },
       "System.AppContext": {
@@ -2520,8 +2565,8 @@
       },
       "System.Text.Json": {
         "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "zaJsHfESQvJ11vbXnNlkrR46IaMULk/gHxYsJphzSF+07kTjPHv+Oc14w6QEOfo3Q4hqLJgStUaYB9DBl0TmWg==",
+        "resolved": "6.0.2",
+        "contentHash": "0nE2gwXLn3PTBOPwORLqwuYvWB+Beomt9ZBX+6LmogMNKUvfD1SoDb/ycB1vBntT94rGaB/SvxEyeLu14H6aEg==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Text.Encodings.Web": "6.0.0"
@@ -2751,7 +2796,7 @@
           "Flurl": "3.0.4",
           "Humanizer": "2.14.1",
           "LinqKit.Microsoft.EntityFrameworkCore": "6.1.2",
-          "Markdig": "0.27.0",
+          "Markdig": "0.28.1",
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "6.0.3",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.3",
@@ -2765,7 +2810,7 @@
           "Refit": "6.3.2",
           "Refit.HttpClientFactory": "6.3.2",
           "SluggyUnidecode": "2.0.1",
-          "SmartFormat.NET": "2.7.2",
+          "SmartFormat.NET": "3.0.0",
           "System.Linq.Async": "6.0.1",
           "System.Linq.Dynamic.Core": "1.2.18"
         }

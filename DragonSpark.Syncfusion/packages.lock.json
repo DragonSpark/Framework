@@ -10,16 +10,16 @@
       },
       "Syncfusion.Blazor": {
         "type": "Direct",
-        "requested": "[19.4.0.55, )",
-        "resolved": "19.4.0.55",
-        "contentHash": "IA0XfUUJdJfuUk+ojADQXN3BayCGKjohMDeP7ZZQMuCJ8P6aMpzExkRI+q8lqY/m+4mnALqn8T34Rird9shXpw==",
+        "requested": "[19.4.0.56, )",
+        "resolved": "19.4.0.56",
+        "contentHash": "uEemR8qjizb5RLs7mo+yEo6ggMIhWSHMG4AmzgjeNVzOdBCO63ooIK5tiI0NG2iij/PVsAVUZbrAO2CtKG/aMA==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "6.0.0",
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "12.0.3",
-          "Syncfusion.ExcelExport.Net.Core": "19.4.0.55",
-          "Syncfusion.Licensing": "19.4.0.55",
-          "Syncfusion.PdfExport.Net.Core": "19.4.0.55",
+          "Syncfusion.ExcelExport.Net.Core": "19.4.0.56",
+          "Syncfusion.Licensing": "19.4.0.56",
+          "Syncfusion.PdfExport.Net.Core": "19.4.0.56",
           "System.Text.Json": "6.0.0"
         }
       },
@@ -619,8 +619,8 @@
       },
       "Markdig": {
         "type": "Transitive",
-        "resolved": "0.27.0",
-        "contentHash": "0nX9KT/sxKpuYc6tjnCP8FQhrFCUe438c4CcXPgwJkri1SEi9iHfvMkYmI44l1Djp+ThhC2KNfmRBpXN72Z/Mw=="
+        "resolved": "0.28.1",
+        "contentHash": "70CneXw2N/1t7v6OfZJqMKLPRB1YWTPddEIcHT/P6IL6X1zsXELIu/DHVt96kr83PIVLznMuXoFK6b9N9KTODg=="
       },
       "MatBlazor": {
         "type": "Transitive",
@@ -1343,8 +1343,8 @@
       },
       "Radzen.Blazor": {
         "type": "Transitive",
-        "resolved": "3.16.3",
-        "contentHash": "v+ZIS44csGyxoZUIug6QiUAGI5Ru1DgpvgxZYui9Pt5Uze9d/UGqUwC7CEUOpdti7xTQeXr6iEFQjiulcXr70g==",
+        "resolved": "3.17.1",
+        "contentHash": "G47FvbU+uBGPeUISLKJkeudKAWC3VXJaKOQum9gU64PLAtOqW7YsE5bVn1yFtujxBSfIB/VpetGIfJcS0OHl8g==",
         "dependencies": {
           "LibSassBuilder": "2.0.1",
           "Microsoft.AspNetCore.Components": "5.0.0",
@@ -1479,33 +1479,78 @@
           "Unidecode.NET": "2.0.0"
         }
       },
+      "SmartFormat": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zVoeAhc3Ax27Mdi13iWOHrBMIJDNf8ZIMm8bHX6PdsuBdHGcepkKS0B+2PIYI8SIppOhA+LBD4mLqAalfYCI+g==",
+        "dependencies": {
+          "System.Memory": "4.5.4",
+          "System.ValueTuple": "4.5.0"
+        }
+      },
+      "SmartFormat.Extensions.Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zMLj48GrHOKbNtw2Sp31uf5+URBbOxJTg1GUwFzULTG39MaHg3Cwt76dPF87odqL187TASonI+R+/kZiLDZq5A==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "SmartFormat": "3.0.0"
+        }
+      },
+      "SmartFormat.Extensions.System.Text.Json": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "gS3DIpOK7r4I5M+3Lfl5Wet4iTqPas2D9CMBKua0fApw+muK6Janl3HbIL8NgP6IueBCHRMuKMb9f4cgx4YYEw==",
+        "dependencies": {
+          "SmartFormat": "3.0.0",
+          "System.Text.Json": "6.0.2"
+        }
+      },
+      "SmartFormat.Extensions.Time": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "zARCuyH/TBjFwEkcx7c++r3Ug3ceJx5Clzh5qIgNmwvy7j0rTjhXcPDVF3h4KuukO2ZqKV8X7o6tb5l7oROHhA==",
+        "dependencies": {
+          "SmartFormat": "3.0.0"
+        }
+      },
+      "SmartFormat.Extensions.Xml": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "D03XCHRmRHdtPqdodrGrQm7b3pBOxWgoJv+Dlffk2j7OiJGnCd0CSZiXeSvDjncafFdQux4E6Y53XuTXwYNxYQ==",
+        "dependencies": {
+          "SmartFormat": "3.0.0"
+        }
+      },
       "SmartFormat.NET": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "TxlRRi4Azzizw+T4gUOmrZqdxeRC4jfM4wqAwgQR7AFJTLz8eYKukO47pSbI4+Gp1znwb72979x3YPzqr49bng==",
+        "resolved": "3.0.0",
+        "contentHash": "rTOmkcG0Xi4W4FDsUWzWZn0uINU9QU1obK76gsvZlwNmohs8E7H1uJpjBE/7VjnYBcK9mVQAnEyWrz8Z8ACqdA==",
         "dependencies": {
-          "Newtonsoft.Json": "12.0.3",
-          "System.Text.Json": "4.7.2",
-          "System.ValueTuple": "4.5.0"
+          "SmartFormat": "3.0.0",
+          "SmartFormat.Extensions.Newtonsoft.Json": "3.0.0",
+          "SmartFormat.Extensions.System.Text.Json": "3.0.0",
+          "SmartFormat.Extensions.Time": "3.0.0",
+          "SmartFormat.Extensions.Xml": "3.0.0"
         }
       },
       "Syncfusion.ExcelExport.Net.Core": {
         "type": "Transitive",
-        "resolved": "19.4.0.55",
-        "contentHash": "0e11AGgZmNO5xu5BP7u9gtE3FTqxT3u3uFh2agtKzNSsNjYxtVqmgLOsxjXTbEzp3JMkSyQgbuvjKz4GbWZl7A==",
+        "resolved": "19.4.0.56",
+        "contentHash": "qzfE08eEbjeTlFj32VO9mBuvCuP3m6fSxNOfh+/pwMJcTG63AYbUarJGP9BLc4nYjQjIW6ETzhnM3jCVF+r9xw==",
         "dependencies": {
           "NETStandard.Library": "2.0.0"
         }
       },
       "Syncfusion.Licensing": {
         "type": "Transitive",
-        "resolved": "19.4.0.55",
-        "contentHash": "TRw+uyLdh5v40bE/qjA8sBHAMVRQm+7wo5boqPsFUl5COQ90yxEgFW7c21JXGnHyc1wV4jQ3sC78ccaUo7pCzg=="
+        "resolved": "19.4.0.56",
+        "contentHash": "yVHeTDHo67ZQ6xr4YSOYu/smiDZ3cXYiqZ2K9RzJ9WaMYGs5LgI7hmSRPiYDbV6VBHiPPgogdzKKjmJ9VWfhfw=="
       },
       "Syncfusion.PdfExport.Net.Core": {
         "type": "Transitive",
-        "resolved": "19.4.0.55",
-        "contentHash": "C0v/4gbBqKG2SoEA7nC6QRCKdTzDMyjPRYKbGEX0rhUWbf6vZ5OfgvGyL1Ic1cMccSfUDeRubY+JWydTm7djVw==",
+        "resolved": "19.4.0.56",
+        "contentHash": "RBuP7Yucj64RscpzbjaNtLy2CGtZ3BE7Gu0ABMaoIIy6yQ1DAbD+OtZvaU/gHL+cQ/3rU8ZH1Z3CBwFRdb+1nQ==",
         "dependencies": {
           "NETStandard.Library": "2.0.0"
         }
@@ -1869,8 +1914,8 @@
       },
       "System.Text.Json": {
         "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "zaJsHfESQvJ11vbXnNlkrR46IaMULk/gHxYsJphzSF+07kTjPHv+Oc14w6QEOfo3Q4hqLJgStUaYB9DBl0TmWg==",
+        "resolved": "6.0.2",
+        "contentHash": "0nE2gwXLn3PTBOPwORLqwuYvWB+Beomt9ZBX+6LmogMNKUvfD1SoDb/ycB1vBntT94rGaB/SvxEyeLu14H6aEg==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Text.Encodings.Web": "6.0.0"
@@ -1960,7 +2005,7 @@
           "Flurl": "3.0.4",
           "Humanizer": "2.14.1",
           "LinqKit.Microsoft.EntityFrameworkCore": "6.1.2",
-          "Markdig": "0.27.0",
+          "Markdig": "0.28.1",
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "6.0.3",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.3",
@@ -1974,7 +2019,7 @@
           "Refit": "6.3.2",
           "Refit.HttpClientFactory": "6.3.2",
           "SluggyUnidecode": "2.0.1",
-          "SmartFormat.NET": "2.7.2",
+          "SmartFormat.NET": "3.0.0",
           "System.Linq.Async": "6.0.1",
           "System.Linq.Dynamic.Core": "1.2.18"
         }
@@ -2006,7 +2051,7 @@
           "DragonSpark.Application": "1.0.0",
           "Majorsoft.Blazor.Components.Common.JsInterop": "1.5.0",
           "MatBlazor": "2.8.0",
-          "Radzen.Blazor": "3.16.3"
+          "Radzen.Blazor": "3.17.1"
         }
       }
     }
