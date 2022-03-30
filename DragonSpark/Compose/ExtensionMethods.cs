@@ -8,6 +8,7 @@ using Exception = System.Exception;
 namespace DragonSpark.Compose;
 
 // ReSharper disable once MismatchedFileName
+// ReSharper disable TemplateIsNotCompileTimeConstantProblem
 // ReSharper disable TooManyArguments
 public static partial class ExtensionMethods
 {

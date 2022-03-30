@@ -1,4 +1,5 @@
-﻿using DragonSpark.Diagnostics.Logging.Text;
+﻿// ReSharper disable TemplateIsNotCompileTimeConstantProblem
+using DragonSpark.Diagnostics.Logging.Text;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Logging;
 using Polly;

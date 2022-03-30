@@ -14,6 +14,7 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public static partial class ExtensionMethods
 {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T With<T>(this T @this, Action<T> action)
 	{
 		action(@this);
@@ -26,6 +27,7 @@ public static partial class ExtensionMethods
 		return @this;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TOut Return<T, TOut>(this T _, TOut result) => result;
 
 	public static TOut To<T, TOut>(this T @this, ISelect<T, TOut> select) => @this.To(select.Get);

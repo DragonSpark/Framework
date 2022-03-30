@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface ISaveContent : IOperation<FileContent> {}
+public interface ISaveContent : ISelecting<NewStorageEntryInput, IStorageEntry> {}
