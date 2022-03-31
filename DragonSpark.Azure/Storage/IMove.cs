@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDeleteContent : IDepending<string> {}
+public interface IMove : ISelecting<DestinationInput, IStorageEntry> {}

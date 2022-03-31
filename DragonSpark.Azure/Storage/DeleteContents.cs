@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class DeleteContent : IDeleteContent
+sealed class DeleteContents : IDeleteContents
 {
 	readonly BlobContainerClient _client;
 
-	public DeleteContent(BlobContainerClient client) => _client = client;
+	public DeleteContents(BlobContainerClient client) => _client = client;
 
 	public async ValueTask<bool> Get(string parameter)
 	{
