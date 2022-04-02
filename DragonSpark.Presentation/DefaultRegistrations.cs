@@ -102,6 +102,11 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .And<RouterSession>()
 		         .And<NavigateToInitialize>()
 		         .Scoped()
+				 //
+		         .Then.Start<ISetPageExitCheck>()
+		         .Forward<SetPageExitCheck>()
+		         .Decorate<ConnectionAwareSetPageExitCheck>()
+		         .Scoped()
 		         //
 		         .Then.Start<IIsInitialized>()
 		         .Forward<IsInitialized>()

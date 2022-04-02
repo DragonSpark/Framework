@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +17,11 @@ namespace DragonSpark.Presentation.Components.Routing;
 /// </summary>
 public class RouterSession
 {
-	readonly IJSRuntime _runtime;
+	readonly ISetPageExitCheck _runtime;
 
 	readonly Stack<IRoutingComponent> _active = new Stack<IRoutingComponent>();
 
-	public RouterSession(IJSRuntime runtime) => _runtime = runtime;
+	public RouterSession(ISetPageExitCheck runtime) => _runtime = runtime;
 
 	/// <summary>
 	/// Property containing the currently loaded component if set
@@ -68,6 +67,7 @@ public class RouterSession
 			_active.Push(ActiveComponent = instance);
 			return UpdateExitState();
 		}
+
 		return ValueTask.CompletedTask;
 	}
 
@@ -87,13 +87,15 @@ public class RouterSession
 
 	public ValueTask UpdateExitState() => SetPageExitCheck(_active.Any(x => x.HasChanges));
 
-	async ValueTask SetPageExitCheck(bool show)
+	ValueTask SetPageExitCheck(bool show)
 	{
 		if (show != ExitShowState)
 		{
 			ExitShowState = show;
-			await _runtime.InvokeVoidAsync("cec_setEditorExitCheck", show).ConfigureAwait(false);
+			return _runtime.Get(show);
 		}
+
+		return ValueTask.CompletedTask;
 	}
 
 	public ValueTask Clear()

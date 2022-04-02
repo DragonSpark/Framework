@@ -8,11 +8,11 @@ namespace DragonSpark.Azure.Storage;
 sealed class Copy : ICopy
 {
 	readonly BlobContainerClient                  _client;
-	readonly ISelecting<BlobClient, StorageEntry> _entry;
+	readonly ISelecting<BlobClient, DefaultStorageEntry> _entry;
 
 	public Copy(BlobContainerClient client) : this(client, GetClientEntry.Default) {}
 
-	public Copy(BlobContainerClient client, ISelecting<BlobClient, StorageEntry> entry)
+	public Copy(BlobContainerClient client, ISelecting<BlobClient, DefaultStorageEntry> entry)
 	{
 		_client = client;
 		_entry  = entry;

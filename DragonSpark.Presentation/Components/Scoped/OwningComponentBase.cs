@@ -1,34 +1,89 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Compose;
-using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition.Scopes.Hierarchy;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Scoped;
 
-public class OwningComponentBase<T> : Microsoft.AspNetCore.Components.OwningComponentBase<T>, IAsyncDisposable
-	where T : class
+public abstract class OwningComponentBase : ComponentBase, IDisposable, IAsyncDisposable
 {
-	readonly Action _state;
+	IScopedServiceProvider? _services;
 
-	public OwningComponentBase() => _state = StateHasChanged;
+	[Inject]
+	IScopedServices Services { get; set; } = default!;
+
+	protected bool IsDisposed { get; private set; }
+
+	protected IServiceProvider ScopedServices
+	{
+		get
+		{
+			if (Services == null)
+			{
+				throw new InvalidOperationException("Services cannot be accessed before the component is initialized.");
+			}
+
+			if (IsDisposed)
+			{
+				throw new ObjectDisposedException(GetType().Name);
+			}
+
+			_services ??= Services.Get();
+			return _services;
+		}
+	}
+
+	void IDisposable.Dispose()
+	{
+		if (!IsDisposed)
+		{
+			_services?.Dispose();
+			_services = null;
+			Dispose(true);
+			IsDisposed = true;
+		}
+	}
+
+	protected virtual void Dispose(bool disposing) {}
+
+	public virtual ValueTask DisposeAsync()
+	{
+		Dispose(true);
+		return _services?.DisposeAsync() ?? ValueTask.CompletedTask;
+	}
+}
+
+
+public class OwningComponentBase<T> : OwningComponentBase where T : class
+{
+	T? _item;
+
+	protected T Service
+	{
+		get
+		{
+			if (IsDisposed)
+			{
+				throw new ObjectDisposedException(GetType().Name);
+			}
+
+			// We cache this because we don't know the lifetime. We have to assume that it could be transient.
+			// ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
+			_item ??= ScopedServices.GetRequiredService<T>();
+			return _item;
+		}
+	}
 
 	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
 
-	protected virtual ValueTask Initialize() => Task.CompletedTask.ToOperation();
-
-	protected virtual ValueTask RefreshState() => InvokeAsync(_state).ToOperation();
-
-	[Inject]
-	protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;
-
-	[Inject]
-	protected IExecuteOperation Execute { get; [UsedImplicitly]set; } = default!;
-
-	public ValueTask DisposeAsync()
+	public override async ValueTask DisposeAsync()
 	{
-		Dispose(true);
-		return Service is IAsyncDisposable disposable ? disposable.DisposeAsync() : ValueTask.CompletedTask;
+		await base.DisposeAsync();
+		if (_item is IAsyncDisposable disposable)
+		{
+			await disposable.DisposeAsync();
+		}
 	}
 }

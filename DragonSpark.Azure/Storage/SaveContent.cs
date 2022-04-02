@@ -8,11 +8,11 @@ namespace DragonSpark.Azure.Storage;
 sealed class SaveContent : ISaveContent
 {
 	readonly IWrite                               _write;
-	readonly ISelecting<BlobClient, StorageEntry> _entry;
+	readonly ISelecting<BlobClient, DefaultStorageEntry> _entry;
 
 	public SaveContent(IWrite write) : this(write, GetClientEntry.Default) {}
 
-	public SaveContent(IWrite write, ISelecting<BlobClient, StorageEntry> entry)
+	public SaveContent(IWrite write, ISelecting<BlobClient, DefaultStorageEntry> entry)
 	{
 		_write = write;
 		_entry = entry;

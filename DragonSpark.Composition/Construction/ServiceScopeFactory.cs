@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Composition.Construction;
 
@@ -9,19 +10,28 @@ sealed class ServiceScopeFactory : IServiceScopeFactory
 
 	public ServiceScopeFactory(IServiceScopeFactory factory) => _factory = factory;
 
-	public IServiceScope CreateScope() => new Scope(_factory.CreateScope());
+	public IServiceScope CreateScope() => new Scope(_factory.CreateAsyncScope());
 
-	sealed class Scope : IServiceScope
+	sealed class Scope : IServiceScope, IAsyncDisposable
 	{
-		readonly IServiceScope _scope;
+		readonly AsyncServiceScope _scope;
 
-		public Scope(IServiceScope scope) => _scope = scope;
+		public Scope(AsyncServiceScope scope)
+			: this(scope, new ActivationAwareServiceProvider(scope.ServiceProvider)) {}
 
-		public IServiceProvider ServiceProvider => new ActivationAwareServiceProvider(_scope.ServiceProvider);
+		public Scope(AsyncServiceScope scope, IServiceProvider provider)
+		{
+			_scope          = scope;
+			ServiceProvider = provider;
+		}
+
+		public IServiceProvider ServiceProvider { get; }
 
 		public void Dispose()
 		{
 			_scope.Dispose();
 		}
+
+		public ValueTask DisposeAsync() => _scope.DisposeAsync();
 	}
 }

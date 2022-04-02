@@ -1,21 +1,21 @@
-﻿using Azure.Storage.Blobs;
-using DragonSpark.Compose;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class StorageEntry : IStorageEntry
+public class StorageEntry : IStorageEntry
 {
-	readonly BlobClient _client;
+	readonly IStorageEntry _previous;
 
-	public StorageEntry(BlobClient client, StorageEntryProperties entry)
+	public StorageEntry(IStorageEntry previous) : this(previous, previous.Properties) {}
+
+	public StorageEntry(IStorageEntry previous, StorageEntryProperties properties)
 	{
-		_client    = client;
-		Properties = entry;
+		_previous  = previous;
+		Properties = properties;
 	}
 
 	public StorageEntryProperties Properties { get; }
 
-	public ValueTask<Stream> Get() => _client.OpenReadAsync().ToOperation();
+	public ValueTask<Stream> Get() => _previous.Get();
 }

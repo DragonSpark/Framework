@@ -8,12 +8,12 @@ public class CommandResultContext : ResultContext<ICommand>
 {
 	public CommandResultContext(IResult<ICommand> instance) : base(instance) {}
 
-	public CommandContext Assume() => new(new DelegatedInstanceCommand(Get()));
+	public CommandContext Assume() => new(new Assume(Get()));
 }
 
 public class CommandResultContext<T> : ResultContext<ICommand<T>>
 {
 	public CommandResultContext(IResult<ICommand<T>> instance) : base(instance) {}
 
-	public CommandContext<T> Assume() => new(new DelegatedInstanceCommand<T>(Get()));
+	public CommandContext<T> Assume() => new(new DragonSpark.Model.Commands.Assume<T>(Get()));
 }

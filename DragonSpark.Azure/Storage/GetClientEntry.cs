@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class GetClientEntry : ISelecting<BlobClient, StorageEntry>
+sealed class GetClientEntry : ISelecting<BlobClient, DefaultStorageEntry>
 {
 	public static GetClientEntry Default { get; } = new();
 
 	GetClientEntry() {}
 
-	public async ValueTask<StorageEntry> Get(BlobClient parameter)
+	public async ValueTask<DefaultStorageEntry> Get(BlobClient parameter)
 	{
 		var response = await parameter.GetPropertiesAsync().ConfigureAwait(false);
 		var value    = response.Value;
