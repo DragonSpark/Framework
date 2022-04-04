@@ -15,6 +15,7 @@ public static class Extensions
 	public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Write());
 
 	public static IWrite Write(this IContainer @this) => new Write(@this.Get());
+	public static IAppend Append(this IContainer @this) => new Append(@this.Get());
 	public static IMove Move(this IContainer @this) => new Move(@this.Copy(), @this.Delete());
 	public static ICopy Copy(this IContainer @this) => new Copy(@this.Get());
 	public static IDelete Delete(this IContainer @this) => new Delete(@this.Get());

@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Initialization;
 
-public sealed class EnsureCreated<T> : IInitializer<T> where T : DbContext
+public sealed class EnsureCreated : IInitialize
 {
 	[UsedImplicitly]
-	public static EnsureCreated<T> Default { get; } = new EnsureCreated<T>();
+	public static EnsureCreated Default { get; } = new ();
 
 	EnsureCreated() {}
 
-	public async ValueTask Get(T parameter)
+	public async ValueTask Get(DbContext parameter)
 	{
 		await parameter.Database.EnsureCreatedAsync().ConfigureAwait(false);
 	}

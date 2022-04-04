@@ -17,7 +17,7 @@ public sealed class InitializeQueues : ICommand<IApplicationBuilder>
 		                                .AsValueEnumerable()
 		                                .Select(x => x.Get()))
 		{
-			client!.CreateIfNotExists();
+			client.CreateIfNotExists();
 		}
 	}
 }

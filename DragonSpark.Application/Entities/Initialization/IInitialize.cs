@@ -3,4 +3,4 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities.Initialization;
 
-public interface IInitializer : IOperation<DbContext> {}
+public interface IInitialize : IOperation<DbContext> {}

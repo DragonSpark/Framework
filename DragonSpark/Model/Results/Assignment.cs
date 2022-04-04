@@ -1,3 +1,15 @@
-﻿namespace DragonSpark.Model.Results;
+﻿using System;
 
-public readonly record struct Assignment<T>(T Value, bool Assigned);
+namespace DragonSpark.Model.Results;
+
+public readonly struct Assignment<T> : IDisposable
+{
+	readonly IMutable<T?> _subject;
+
+	public Assignment(IMutable<T?> subject) => _subject = subject;
+
+	public void Dispose()
+	{
+		_subject.Execute(default);
+	}
+}

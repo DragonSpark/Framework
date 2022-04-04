@@ -119,12 +119,10 @@ partial class Extensions
 
 	/**/
 
-	public static bool TryPop<T>(this IScopedVariable<T> @this, out T? element)
+	public static Assignment<T> Assigned<T>(this IMutable<T?> @this, T value)
 	{
-		var result = @this.IsSatisfiedBy();
-		element = result ? @this.Get() : default;
-		@this.Remove.Execute();
-		return result;
+		@this.Pass(value);
+		return new (@this);
 	}
 
 	public static bool TryPop<T>(this IMutable<T?> @this, out T? element)
