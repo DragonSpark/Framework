@@ -5,21 +5,22 @@ using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 
-sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
+public sealed class ConfiguredApplicationConfiguration : ICommand<IApplicationBuilder>
 {
-	public static DefaultApplicationConfiguration Default { get; } = new();
+	public static ConfiguredApplicationConfiguration Default { get; } = new();
 
-	DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+	ConfiguredApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
 
 	readonly Action<IEndpointRouteBuilder> _endpoints;
 
-	public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+	public ConfiguredApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
 
 	public void Execute(IApplicationBuilder parameter)
 	{
 		parameter.UseHttpsRedirection()
 		         .UseRouting()
 		         .UseAuthentication()
+		         .UseCors()
 		         .UseAuthorization()
 		         .UseEndpoints(_endpoints);
 	}

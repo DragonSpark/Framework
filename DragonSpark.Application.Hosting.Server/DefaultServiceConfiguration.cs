@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.Server;
 
 sealed class DefaultServiceConfiguration : ServiceConfiguration
 {
-	public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
+	public static DefaultServiceConfiguration Default { get; } = new();
 
 	DefaultServiceConfiguration() : base(x => x.AddControllers()) {}
 }

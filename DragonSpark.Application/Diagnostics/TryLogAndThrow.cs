@@ -24,6 +24,8 @@ public class TryLogAndThrow<TIn, TOut> : ISelecting<TIn, TOut>
 		}
 		catch (Exception e)
 		{
+			// ReSharper disable once UnthrowableException
+			// ReSharper disable once ThrowingSystemException
 			throw await _logger.Await(new(GetType(), e));
 		}
 	}

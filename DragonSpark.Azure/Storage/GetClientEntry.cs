@@ -1,16 +1,16 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class GetClientEntry : ISelecting<BlobClient, DefaultStorageEntry>
+sealed class GetClientEntry : ISelecting<BlobBaseClient, DefaultStorageEntry>
 {
 	public static GetClientEntry Default { get; } = new();
 
 	GetClientEntry() {}
 
-	public async ValueTask<DefaultStorageEntry> Get(BlobClient parameter)
+	public async ValueTask<DefaultStorageEntry> Get(BlobBaseClient parameter)
 	{
 		var response = await parameter.GetPropertiesAsync().ConfigureAwait(false);
 		var value    = response.Value;

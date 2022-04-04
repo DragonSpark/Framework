@@ -7,7 +7,7 @@ namespace DragonSpark.Azure.Storage;
 
 sealed class SaveContent : ISaveContent
 {
-	readonly IWrite                               _write;
+	readonly IWrite                                      _write;
 	readonly ISelecting<BlobClient, DefaultStorageEntry> _entry;
 
 	public SaveContent(IWrite write) : this(write, GetClientEntry.Default) {}

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DragonSpark.Text;
 
-sealed class EncodedTextAsData : Select<string, byte[]>
+public sealed class EncodedTextAsData : Select<string, byte[]>
 {
 	public static EncodedTextAsData Default { get; } = new EncodedTextAsData();
 

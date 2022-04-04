@@ -1,10 +1,8 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Communication;
+using DragonSpark.Application.Security;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
-using NetFabric.Hyperlinq;
 using System;
-using System.Net;
 using System.Net.Http;
 
 namespace DragonSpark.Application.Compose.Communication;
@@ -13,18 +11,18 @@ sealed class ApplyState : ICommand<(IServiceProvider, HttpClient)>
 {
 	public static ApplyState Default { get; } = new ApplyState();
 
-	ApplyState() {}
+	ApplyState() : this(CookieHeader.Default) {}
+
+	readonly string _name;
+
+	public ApplyState(string name) => _name = name;
 
 	public void Execute((IServiceProvider, HttpClient) parameter)
 	{
 		var (provider, client) = parameter;
 
-		var values = provider.GetRequiredService<ICurrentContext>()
-		                     .Get()
-		                     .Request.Cookies.AsValueEnumerable()
-		                     .Select(x => (string)new StringValues($"{x.Key}={x.Value}"))
-		                     .ToArray();
+		var values = new ClientStateValues(provider.GetRequiredService<ICurrentContext>()).Get().Open();
 
-		client.DefaultRequestHeaders.Add(HttpRequestHeader.Cookie.ToString(), values);
+		client.DefaultRequestHeaders.Add(_name, values);
 	}
 }

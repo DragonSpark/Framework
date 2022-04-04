@@ -21,6 +21,7 @@ sealed class ExecuteOperation : IExecuteOperation
 			}
 			else if (operation.IsFaulted)
 			{
+				// ReSharper disable once UnthrowableException
 				throw operation.AsTask().Exception.Verify();
 			}
 

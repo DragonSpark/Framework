@@ -9,8 +9,7 @@ sealed class InitializeConnection : IInitializeConnection
 	readonly string            _name;
 	readonly IClientIdentifier _identifier;
 
-	public InitializeConnection(IClientIdentifier identifier)
-		: this(ConnectionIdentifierName.Default, identifier) {}
+	public InitializeConnection(IClientIdentifier identifier) : this(ConnectionIdentifierName.Default, identifier) {}
 
 	public InitializeConnection(string name, IClientIdentifier identifier)
 	{

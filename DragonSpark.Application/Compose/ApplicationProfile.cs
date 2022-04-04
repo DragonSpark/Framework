@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DragonSpark.Model.Commands;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -8,6 +9,9 @@ public class ApplicationProfile : IApplicationProfile
 {
 	readonly Action<IApplicationBuilder> _application;
 	readonly Action<IServiceCollection>  _services;
+
+	public ApplicationProfile(ICommand<IServiceCollection> services, ICommand<IApplicationBuilder> application)
+		: this(services.Execute, application.Execute) {}
 
 	public ApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> application)
 	{

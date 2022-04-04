@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Text;
 
-public class Text : Instance<string>
+public class Text : Instance<string>, IText
 {
 	protected Text(string instance) : base(instance) {}
 
