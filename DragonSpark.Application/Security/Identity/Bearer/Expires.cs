@@ -14,5 +14,5 @@ sealed class Expires : ISelect<byte, DateTime>
 
 	public Expires(ITime time) => _time = time;
 
-	public DateTime Get(byte parameter) => _time.Get().UtcDateTime;
+	public DateTime Get(byte parameter) => _time.Get().UtcDateTime.AddDays(parameter);
 }

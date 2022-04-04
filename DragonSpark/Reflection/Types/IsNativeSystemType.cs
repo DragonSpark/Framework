@@ -7,5 +7,9 @@ public sealed class IsNativeSystemType : Condition<Type>
 {
 	public static IsNativeSystemType Default { get; } = new IsNativeSystemType();
 
-	IsNativeSystemType() : base(x => x.Module.ScopeName.StartsWith("System.Private")) {}
+	IsNativeSystemType() : base(x =>
+	                            {
+		                            var name = x.Module.ScopeName;
+		                            return name.StartsWith("System.Private") || name.StartsWith("Microsoft.");
+	                            }) {}
 }

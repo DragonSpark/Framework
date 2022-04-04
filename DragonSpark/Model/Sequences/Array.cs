@@ -1,5 +1,4 @@
 using DragonSpark.Model.Results;
-using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Immutable;
@@ -50,10 +49,8 @@ public readonly struct Array<T> : IResult<ImmutableArray<T>>
 		}
 	}
 
-	[Pure]
 	public ImmutableArray<T> Get() => ImmutableArray.Create(_reference);
 
-	[Pure]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T[] Open() => _reference;
 

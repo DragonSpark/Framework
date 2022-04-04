@@ -9,6 +9,6 @@ sealed class BearerSigningCredentials : Instance<SigningCredentials>
 	public BearerSigningCredentials(BearerSettings settings)
 		: this(new SymmetricSecurityKey(EncodedTextAsData.Default.Get(settings.Key))) {}
 
-	public BearerSigningCredentials(SecurityKey key)
+	BearerSigningCredentials(SecurityKey key)
 		: base(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)) {}
 }

@@ -16,11 +16,12 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Start<ISign>()
 		         .Forward<Sign>()
-		         .Include(x => x.Dependencies)
+		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
 		         .Then.Start<ICurrentBearer>()
 		         .Forward<CurrentBearer>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped();
 	}
 }
