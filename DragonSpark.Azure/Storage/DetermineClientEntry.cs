@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class DetermineClientEntry : ISelecting<BlobClient, DefaultStorageEntry?>
+sealed class DetermineClientEntry : ISelecting<BlobClient, IStorageEntry?>
 {
 	public static DetermineClientEntry Default { get; } = new();
 
@@ -15,6 +15,6 @@ sealed class DetermineClientEntry : ISelecting<BlobClient, DefaultStorageEntry?>
 
 	public DetermineClientEntry(ISelecting<BlobClient, DefaultStorageEntry> previous) => _previous = previous;
 
-	public async ValueTask<DefaultStorageEntry?> Get(BlobClient parameter)
+	public async ValueTask<IStorageEntry?> Get(BlobClient parameter)
 		=> await parameter.ExistsAsync().ConfigureAwait(false) ? await _previous.Await(parameter) : default;
 }
