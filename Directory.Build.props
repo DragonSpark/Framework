@@ -19,9 +19,5 @@
                     Version="3.4.255"
                     PrivateAssets="all"
                     Condition="!Exists('packages.config')" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Remove="packages.lock.json" />
-		<None Remove="packages.lock.json" />
-	</ItemGroup>
+	</ItemGroup>	
 </Project>
