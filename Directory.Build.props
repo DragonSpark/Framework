@@ -1,7 +1,5 @@
 ﻿<Project>
   <PropertyGroup>
-    <RestorePackagesWithLockFile Condition="'$(Configuration)'=='Release'">true</RestorePackagesWithLockFile>
-	<RestoreLockedMode Condition="'$(Agent_Id)'!=''">true</RestoreLockedMode>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
