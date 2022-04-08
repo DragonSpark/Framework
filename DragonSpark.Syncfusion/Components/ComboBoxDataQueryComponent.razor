@@ -1,0 +1,32 @@
+﻿@inherits DataQueryComponent
+
+@using DragonSpark.Syncfusion.Queries
+
+@typeparam TItem
+@typeparam TValue
+
+<SfComboBox TValue="string" TItem="TItem" TValue="TValue" CssClass="CssClass" Placeholder="@Placeholder">
+    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
+    <SfDataManager>
+        <DataRequestCallbackAdaptor Requested="@OnRequest" />
+    </SfDataManager>
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+</SfComboBox>
+
+@code {
+
+    [Parameter]
+    public string Placeholder { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment HeaderTemplate { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+
+    
+
+}

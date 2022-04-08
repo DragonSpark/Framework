@@ -1,5 +1,4 @@
-﻿@typeparam T
-@using BlazorPro.BlazorSize
+﻿@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
@@ -7,7 +6,9 @@
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.Syncfusion.Queries
 @using global::Syncfusion.Blazor
-@inherits DragonSpark.Presentation.Components.ComponentBase
+
+@typeparam T
+@inherits DataQueryComponent
 
 <AdaptiveGrid T="T"
 	@ref="@_subject"
@@ -35,22 +36,14 @@
 	AdaptiveGrid<T> _subject = default!;
 
 	[Parameter]
-	public IDataRequest Content
+	public override IDataRequest Content
 	{
-		get => _content;
 		set
 		{
-			if (_content != value)
-			{
-				_content = value;
-				RefreshRequested = Input != null;
-				Input = null;
-			}
+			RefreshRequested = Input != null;
+			base.Content = value;
 		}
-	}	IDataRequest _content = default!;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
+	}	
 
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
@@ -59,49 +52,13 @@
 	public RenderFragment Columns { get; set; } = default!;
 
 	[Parameter]
-	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
-
-	[Parameter]
-	public bool AllowPaging { get; set; } = true;
-
-	[Parameter]
-	public bool AllowFiltering { get; set; } = true;
-
-	[Parameter]
-	public bool AllowSorting { get; set; } = true;
-
-	[Parameter]
 	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
-
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
-
-	[Parameter]
-	public ushort PageSize { get; set; } = 10;
-
-	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
-
-	[CascadingParameter]
-	IActivityReceiver Receiver { get; set; } = default!;
 
 	public Task Refresh() => _subject.Refresh();
 
 	Await<DataManagerRequest, object>? Input { get; set; }
 
 	bool RefreshRequested { get; set; }
-
-	protected override void OnParametersSet()
-	{
-		Input ??= _content.Then()
-		                  .Then()
-		                  .UpdateActivity(Receiver)
-		                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
-		base.OnParametersSet();
-	}
 
 	protected override Task OnParametersSetAsync()
 	{
@@ -112,11 +69,4 @@
 		}
 		return base.OnParametersSetAsync();
 	}
-
-	async Task OnRequest(DataRequestResult parameter)
-	{
-		var data = await Input!(parameter.Request);
-		parameter.Execute(data);
-	}
-
 }

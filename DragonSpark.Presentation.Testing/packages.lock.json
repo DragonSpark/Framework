@@ -1683,8 +1683,8 @@
       },
       "Radzen.Blazor": {
         "type": "Transitive",
-        "resolved": "3.17.1",
-        "contentHash": "G47FvbU+uBGPeUISLKJkeudKAWC3VXJaKOQum9gU64PLAtOqW7YsE5bVn1yFtujxBSfIB/VpetGIfJcS0OHl8g==",
+        "resolved": "3.18.0",
+        "contentHash": "nA3+1cofJIRZ51EmG+E6rGzmsZc6Wco5XzYw/hdpRCUo+klgTeaAWOPrXDVLXbRiluCsKlDkisaPY7OYmK6HSA==",
         "dependencies": {
           "LibSassBuilder": "2.0.1",
           "Microsoft.AspNetCore.Components": "5.0.0",
@@ -3151,7 +3151,7 @@
           "DragonSpark.Application": "1.0.0",
           "Majorsoft.Blazor.Components.Common.JsInterop": "1.5.0",
           "MatBlazor": "2.8.0",
-          "Radzen.Blazor": "3.17.1"
+          "Radzen.Blazor": "3.18.0"
         }
       },
       "dragonspark.server": {

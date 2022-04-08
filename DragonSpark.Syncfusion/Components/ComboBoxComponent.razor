@@ -1,0 +1,103 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime
+@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.Syncfusion.Queries
+
+@typeparam TItem
+@typeparam TValue
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+
+<DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
+	<SyncfusionQueryContainer T="TItem" Content="@Content" Compose="@Compose" Reporter="@Reporter"
+	                          LoadingTemplate="@EmptyContentTemplate.Default"
+	                          EmptyElementsTemplate="@EmptyElementsTemplate"
+	                          NotFoundTemplate="@NotFoundTemplate"
+	                          ExceptionTemplate="@ExceptionTemplate"
+	                          >
+		@if (HeaderTemplate is not null)
+		{
+			@HeaderTemplate
+		}
+
+		<ComboBoxDataQueryComponent TItem="TItem" TValue="TValue" Content="context"
+		    HeaderTemplate="@ControlHeaderTemplate"
+			ItemTemplate="@ControlItemTemplate"
+			ReportedType="@ReportedType"
+			AllowPaging="@AllowPaging"
+			AllowFiltering="@AllowFiltering"
+			AllowSorting="@AllowSorting"
+			LoadingTemplate="@LoadingTemplate"
+			CssClass="@CssClass"
+			PageSize="@PageSize"
+			@attributes="@AdditionalAttributes"
+		>
+			@if (ChildContentTemplate is not null)
+			{
+				@ChildContentTemplate
+			}
+		</ComboBoxDataQueryComponent>
+
+		@if (FooterTemplate is not null)
+		{
+			@FooterTemplate
+		}
+	</SyncfusionQueryContainer>
+</DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
+
+@code {
+	[Parameter]
+	public IQueries<TItem> Content {get; set; } = default!;
+
+	[Parameter]
+	public ICompose<TItem> Compose { get; set; } = SyncfusionCompose<TItem>.Default;
+
+	[Parameter]
+	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+
+	[Parameter]
+	public Type? ReportedType { get; set; }
+
+	[Parameter]
+	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+	[Parameter]
+	public RenderFragment Columns { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment? HeaderTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment? ChildContentTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment? FooterTemplate { get; set; }
+
+	[Parameter]
+	public bool AllowPaging { get; set; } = true;
+
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
+
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
+
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
+
+	[Parameter]
+	public ushort PageSize { get; set; } = 10;
+
+	[Parameter]
+    public string Placeholder { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ControlHeaderTemplate { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<TItem> ControlItemTemplate { get; set; } = default!;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+}
