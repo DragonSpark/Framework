@@ -32,9 +32,6 @@
 		<PackageReference Include="Radzen.Blazor" Version="3.18.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Remove="packages.lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
-	</ItemGroup>
-	<ItemGroup>
 	  <Compile Update="Properties\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

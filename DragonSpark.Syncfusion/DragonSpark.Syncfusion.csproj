@@ -14,7 +14,4 @@
   <ItemGroup>
 	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
   </ItemGroup>
-	<ItemGroup>
-		<Content Remove="packages.lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
-	</ItemGroup>
 </Project>
