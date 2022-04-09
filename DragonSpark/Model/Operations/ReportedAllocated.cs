@@ -17,7 +17,7 @@ public class ReportedAllocated<T> : IAllocated<T>
 	public Task Get(T parameter)
 	{
 		var result = _previous.Get(parameter);
-		_report.Invoke(result);
+		_report(result);
 		return result;
 	}
 }

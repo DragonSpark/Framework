@@ -16,5 +16,5 @@ public class PropertyAccessor<T> : ISelect<object, T>
 		_name     = name;
 	}
 
-	public T Get(object parameter) => _services.Get(parameter.GetType(), _name).Invoke(parameter);
+	public T Get(object parameter) => _services.Get(parameter.GetType(), _name)(parameter);
 }

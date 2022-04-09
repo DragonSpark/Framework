@@ -31,7 +31,7 @@ public class DataGrid<T> : RadzenGrid<T>, IRefreshAware
 				_container?.Add.Execute(this);
 			}
 		}
-	}	IRefreshContainer? _container = default!;
+	}	IRefreshContainer? _container;
 
 	public Task Get() => Reload();
 

@@ -28,7 +28,7 @@ public static partial class ExtensionMethods
 		=> @this.Execute((first, second));
 
 	public static void Invoke<T1, T2>(this Action<T1, T2> @this, (T1, T2) parameter)
-		=> @this.Invoke(parameter.Item1, parameter.Item2);
+		=> @this(parameter.Item1, parameter.Item2);
 
 	public static void Execute<T1, T2, T3>(this ICommand<(T1, T2, T3)> @this, T1 first, T2 second, T3 third)
 		=> @this.Execute((first, second, third));

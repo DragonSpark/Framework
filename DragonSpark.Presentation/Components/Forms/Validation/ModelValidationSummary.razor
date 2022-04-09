@@ -21,8 +21,6 @@
 		}
 	}	ValidationFieldMessage _message = default!;
 
-
-
 	[Parameter]
 	public ICollection<ValidationFieldMessage> Messages
 	{
@@ -98,11 +96,6 @@
 		{
 			_store?.Clear();
 		}
-	}
-
-	void FieldChanged(object? sender, FieldChangedEventArgs args)
-	{
-		Update();
 	}
 
 	public void Dispose()

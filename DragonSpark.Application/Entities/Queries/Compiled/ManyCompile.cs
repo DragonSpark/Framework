@@ -33,7 +33,7 @@ sealed class ManyCompile<TIn, TOut>
 				return new Many<TIn, TOut>((Expression<Func<DbContext, IQueryable<TOut>>>)lambda);
 			default:
 				var all    = types.Open().Prepend(_types).ToArray();
-				var result = _generics[types.Length - 1].Get(all).Invoke(lambda, delegates);
+				var result = _generics[types.Length - 1].Get(all)(lambda, delegates);
 				return result;
 		}
 	}

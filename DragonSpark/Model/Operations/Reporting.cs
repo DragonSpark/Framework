@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
@@ -16,8 +17,8 @@ public class Reporting<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public ValueTask<TOut> Get(TIn parameter)
 	{
-		var result = _previous.Get(parameter);
-		_report.Invoke(result.AsTask());
-		return result;
+		var result = _previous.Get(parameter).AsTask();
+		_report(result);
+		return result.ToOperation();
 	}
 }

@@ -17,7 +17,7 @@ public class ReportedAllocating<TIn, TOut> : IAllocating<TIn, TOut>
 	public Task<TOut> Get(TIn parameter)
 	{
 		var result = _previous.Get(parameter);
-		_report.Invoke(result);
+		_report(result);
 		return result;
 	}
 }

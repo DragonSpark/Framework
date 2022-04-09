@@ -17,7 +17,7 @@ public sealed class Size : ISize
 
 	public Size(IGeneric<uint> generic) => _generic = generic;
 
-	public uint Get(Type type) => _generic.Get(type).Invoke();
+	public uint Get(Type type) => _generic.Get(type)();
 
 	sealed class SizeOf<T> : IResult<uint>
 	{
