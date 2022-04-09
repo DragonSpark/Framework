@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Connections;
+namespace DragonSpark.Application.Connections.Client;
 
 public class Receive : IReceive
 {

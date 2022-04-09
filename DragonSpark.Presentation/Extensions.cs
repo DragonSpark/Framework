@@ -16,11 +16,8 @@ using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
 using DragonSpark.Presentation.Interaction;
 using DragonSpark.Presentation.Model;
-using DragonSpark.Presentation.Security;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
 using Radzen;
 using System;
@@ -37,10 +34,7 @@ public static class Extensions
 	public static BuildHostContext WithPresentationConfigurations(this BuildHostContext @this)
 		=> Configure.Default.Get(@this);
 
-	public static BuildHostContext WithClientConnectionConfigurations(this BuildHostContext @this)
-		=> Connections.Configure.Default.Get(@this);
-
-/**/
+	/**/
 	public static CallbackContext<ValidationContext> Callback<T>(this ModelContext context,
 	                                                             IValidateValue<T> validate)
 		=> context.Callback(validate.Adapt());
@@ -127,17 +121,8 @@ public static class Extensions
 
 	/**/
 
-	public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
-		=> @this.Append(x => x.AddContentSecurity()).Append(x => x.UseContentSecurity());
-
-	public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
-		=> @this.Configure(Security.Registrations.Default);
-
-	public static IServiceCollection AddContentSecurity(this IServiceCollection @this)
-		=> Security.Registrations.Default.Parameter(@this);
-
-	public static IApplicationBuilder UseContentSecurity(this IApplicationBuilder @this)
-		=> @this.UseMiddleware<ApplyPolicy>();
+	public static ApplicationProfileContext WithAntiforgery(this ApplicationProfileContext @this)
+		=> @this.Append(Security.Registrations.Default);
 
 	/**/
 

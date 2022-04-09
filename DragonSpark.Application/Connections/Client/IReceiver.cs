@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 using System;
 
-namespace DragonSpark.Presentation.Connections;
+namespace DragonSpark.Application.Connections.Client;
 
 public interface IReceiver : IOperation, IAsyncDisposable {}

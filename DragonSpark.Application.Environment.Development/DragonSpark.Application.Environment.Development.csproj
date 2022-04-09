@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>DragonSpark.Application.Environment</AssemblyName>
     <RootNamespace>DragonSpark.Application.Environment</RootNamespace>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>

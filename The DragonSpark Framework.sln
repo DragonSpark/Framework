@@ -109,6 +109,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{22A0C85E-BB47-40AC-B050-9A8F9162E8A9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hosting.Azure.WebJobs", "DragonSpark.Application.Hosting.Azure.WebJobs\DragonSpark.Application.Hosting.Azure.WebJobs.csproj", "{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -291,6 +293,10 @@ Global
 		{B652C187-4F88-49E0-9CEC-8AF5FD7EAF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B652C187-4F88-49E0-9CEC-8AF5FD7EAF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B652C187-4F88-49E0-9CEC-8AF5FD7EAF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,6 +342,7 @@ Global
 		{433FA0A8-58AE-446C-8E39-D87636684555} = {D7340C89-0B20-4B69-A0BB-2291B5FBCF4E}
 		{B652C187-4F88-49E0-9CEC-8AF5FD7EAF52} = {D7340C89-0B20-4B69-A0BB-2291B5FBCF4E}
 		{22A0C85E-BB47-40AC-B050-9A8F9162E8A9} = {D7340C89-0B20-4B69-A0BB-2291B5FBCF4E}
+		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7E910BA-B9EE-40A8-9C18-08D091DA997F}

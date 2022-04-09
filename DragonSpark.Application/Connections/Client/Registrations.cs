@@ -1,9 +1,8 @@
-﻿using DragonSpark.Application.Connections;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Presentation.Connections;
+namespace DragonSpark.Application.Connections.Client;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {

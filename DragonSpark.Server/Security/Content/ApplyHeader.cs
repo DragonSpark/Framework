@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Security;
+namespace DragonSpark.Server.Security.Content;
 
 public class ApplyHeader : IAllocated<HttpContext>
 {

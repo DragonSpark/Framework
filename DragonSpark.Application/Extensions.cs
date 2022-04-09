@@ -30,6 +30,9 @@ partial class Extensions
 	public static BuildHostContext WithConnectionConfigurations(this BuildHostContext @this)
 		=> Connections.Configure.Default.Get(@this);
 
+	public static BuildHostContext WithClientConnectionConfigurations(this BuildHostContext @this)
+		=> Connections.Client.Configure.Default.Get(@this);
+
 	public static BuildHostContext WithAmbientConfiguration(this BuildHostContext @this)
 		=> @this.Select(Configuration.WithAmbientConfiguration.Default);
 

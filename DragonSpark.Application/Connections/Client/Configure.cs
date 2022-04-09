@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Presentation.Connections;
+namespace DragonSpark.Application.Connections.Client;
 
 sealed class Configure : IAlteration<BuildHostContext>
 {

@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Presentation.Security;
+﻿namespace DragonSpark.Server.Security.Content;
 
 public sealed class ContentSecurityConfiguration
 {

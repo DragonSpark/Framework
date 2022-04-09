@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Presentation.Security;
+namespace DragonSpark.Server.Security.Content;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
@@ -12,7 +12,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<AntiforgeryStore>()
-		         .Scoped();
+		parameter.Register<ContentSecurityConfiguration>();
 	}
 }

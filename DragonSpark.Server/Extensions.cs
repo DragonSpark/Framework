@@ -1,7 +1,13 @@
 ﻿using DragonSpark.Application;
+using DragonSpark.Application.Compose;
+using DragonSpark.Compose;
+using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Server.Requests;
+using DragonSpark.Server.Security.Content;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Security.Claims;
 
@@ -9,6 +15,20 @@ namespace DragonSpark.Server;
 
 public static class Extensions
 {
+	public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
+		=> @this.Append(x => x.AddContentSecurity()).Append(x => x.UseContentSecurity());
+
+	public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
+		=> @this.Configure(Registrations.Default);
+
+	public static IServiceCollection AddContentSecurity(this IServiceCollection @this)
+		=> Registrations.Default.Parameter(@this);
+
+	public static IApplicationBuilder UseContentSecurity(this IApplicationBuilder @this)
+		=> @this.UseMiddleware<ApplyPolicy>();
+
+	/**/
+
 	public static View NewView(this Controller @this, Guid subject) => new (@this, subject);
 	public static View<T> NewView<T>(this Controller @this, T subject) => new (@this, subject);
 

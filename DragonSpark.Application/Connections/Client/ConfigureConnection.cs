@@ -1,9 +1,8 @@
-﻿using DragonSpark.Application.Connections;
-using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Security;
 using Microsoft.AspNetCore.Http.Connections.Client;
 using System.Net;
 
-namespace DragonSpark.Presentation.Connections;
+namespace DragonSpark.Application.Connections.Client;
 
 sealed class ConfigureConnection : IConfigureConnection
 {
